@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Chris Lee.Papa – The Creative Archive. BOOK, MUSIC, MOVIE, IMAGE">
+<meta name="description" content="Chris Lee.Papa – The Creative Archive. BOOK, MUSIC, MOVIE, WORSHIP">
 <meta property="og:title" content="Chris Lee.Papa – The Creative Archive">
 <meta property="og:description" content="창작의 경계를 넘나드는 크리에이티브 아카이브">
 <meta property="og:type" content="website">
@@ -303,10 +303,10 @@ main {
 .card:hover::after { border-color: rgba(201,168,76,0.22); }
 
 /* Base background colors per card */
-.card-book  { background: radial-gradient(ellipse at 35% 45%, #1a3a5c, #0a1a30, #050d18); }
-.card-music { background: radial-gradient(ellipse at 65% 35%, #2a1845, #110b26, #050508); }
-.card-movie { background: radial-gradient(ellipse at 40% 55%, #301c0c, #160e06, #050507); }
-.card-image { background: radial-gradient(ellipse at 60% 40%, #1a2840, #0d1520, #050810); }
+.card-book    { background: radial-gradient(ellipse at 35% 45%, #1a3a5c, #0a1a30, #050d18); }
+.card-music   { background: radial-gradient(ellipse at 65% 35%, #2a1845, #110b26, #050508); }
+.card-movie   { background: radial-gradient(ellipse at 40% 55%, #301c0c, #160e06, #050507); }
+.card-worship { background: radial-gradient(ellipse at 50% 50%, #3d1c04, #1a0a02, #050508); }
 
 /* Parallax zoom layer */
 .card-bg {
@@ -319,10 +319,10 @@ main {
 }
 
 /* Card images from /images folder + atmospheric overlay */
-.card-book  .card-bg { background-image: radial-gradient(circle at 40% 55%, rgba(90,150,255,0.18) 0%, transparent 55%), radial-gradient(circle at 70% 25%, rgba(255,200,100,0.14) 0%, transparent 45%), url('/images/book.png'); background-size: cover; background-position: center; }
-.card-music .card-bg { background-image: radial-gradient(circle at 62% 38%, rgba(200,120,255,0.22) 0%, transparent 50%), radial-gradient(circle at 28% 68%, rgba(80,180,255,0.14) 0%, transparent 50%), url('/images/music.jpg'); background-size: cover; background-position: center; }
-.card-movie .card-bg { background-image: radial-gradient(circle at 32% 52%, rgba(255,140,30,0.28) 0%, transparent 55%), radial-gradient(circle at 68% 30%, rgba(160,90,20,0.2) 0%, transparent 40%), url('/images/movie.png'); background-size: cover; background-position: center; }
-.card-image .card-bg { background-image: radial-gradient(circle at 55% 45%, rgba(0,180,255,0.22) 0%, transparent 50%), radial-gradient(circle at 80% 22%, rgba(130,80,210,0.18) 0%, transparent 42%), url('/images/image.png'); background-size: cover; background-position: center; }
+.card-book    .card-bg { background-image: radial-gradient(circle at 40% 55%, rgba(90,150,255,0.18) 0%, transparent 55%), radial-gradient(circle at 70% 25%, rgba(255,200,100,0.14) 0%, transparent 45%), url('images/book.png'); background-size: cover; background-position: center; }
+.card-music   .card-bg { background-image: radial-gradient(circle at 62% 38%, rgba(200,120,255,0.22) 0%, transparent 50%), radial-gradient(circle at 28% 68%, rgba(80,180,255,0.14) 0%, transparent 50%), url('images/music.jpg'); background-size: cover; background-position: center; }
+.card-movie   .card-bg { background-image: radial-gradient(circle at 32% 52%, rgba(255,140,30,0.28) 0%, transparent 55%), radial-gradient(circle at 68% 30%, rgba(160,90,20,0.2) 0%, transparent 40%), url('images/movie.png'); background-size: cover; background-position: center; }
+.card-worship .card-bg { background-image: radial-gradient(circle at 50% 60%, rgba(255,150,50,0.25) 0%, transparent 60%), radial-gradient(circle at 80% 30%, rgba(255,80,30,0.15) 0%, transparent 50%), url('images/worship.png'); background-size: cover; background-position: center; }
 
 .card:hover .card-bg { transform: scale(1.06); }
 
@@ -533,7 +533,6 @@ header { animation: fadeUp 0.7s ease both; }
 </head>
 <body>
 
-<!-- ── NAVIGATION ── -->
 <!-- ── BANNER HEADER ── -->
 <header>
   <div class="banner-top-line"></div>
@@ -582,75 +581,75 @@ header { animation: fadeUp 0.7s ease both; }
 
     <!-- BOOK -->
     <div class="card card-book" onclick="location.href='book.html'" style="cursor:pointer;">
-          <div class="card-bg"></div>
-          <svg class="card-art" viewBox="0 0 640 360" preserveAspectRatio="xMidYMid slice">
-            </svg>
-          <div class="card-body">
-            <p class="card-sub">상상이 종이에 그려진 순간 놀라운 기적이 일어난다.</p>
-            <h2 class="card-label">BOOK</h2>
-          </div>
-        </div>
+      <div class="card-bg"></div>
+      <svg class="card-art" viewBox="0 0 640 360" preserveAspectRatio="xMidYMid slice"></svg>
+      <div class="card-body">
+        <p class="card-sub">상상이 종이에 그려진 순간 놀라운 기적이 일어난다.</p>
+        <h2 class="card-label">BOOK</h2>
+      </div>
+    </div>
 
+    <!-- MUSIC -->
     <div class="card card-music" onclick="location.href='music.html'" style="cursor:pointer;">
-          <div class="card-bg"></div>
-          <svg class="card-art" viewBox="0 0 640 360" preserveAspectRatio="xMidYMid slice">
-            <defs>
-              <radialGradient id="rg-planet-surface" cx="32%" cy="32%" r="65%">
-                <stop offset="0%"   stop-color="#4a2f70" stop-opacity="0.25"/>
-                <stop offset="55%"  stop-color="#1a0d3a" stop-opacity="0.1"/>
-                <stop offset="100%" stop-color="transparent"/>
-              </radialGradient>
-              <radialGradient id="rg-planet-glow" cx="50%" cy="50%" r="50%">
-                <stop offset="75%"  stop-color="transparent"/>
-                <stop offset="88%"  stop-color="#ff8c42" stop-opacity="0.35"/>
-                <stop offset="100%" stop-color="transparent"/>
-              </radialGradient>
-            </defs>
-            <g fill="white" opacity="0.7">
-              <circle cx="45"  cy="38"  r="1"/>
-              <circle cx="145" cy="75"  r="0.8"/>
-              <circle cx="75"  cy="175" r="1.2"/>
-              <circle cx="545" cy="55"  r="1"/>
-              <circle cx="595" cy="145" r="0.8"/>
-              <circle cx="475" cy="275" r="1.2"/>
-              <circle cx="195" cy="245" r="0.8"/>
-              <circle cx="345" cy="305" r="1"/>
-            </g>
-            <circle cx="415" cy="125" r="108" fill="url(#rg-planet-surface)"/>
-            <circle cx="415" cy="125" r="114" fill="url(#rg-planet-glow)"/>
-            <path d="M338,155 Q378,98 418,128 Q458,158 488,118" stroke="#ff6b20" stroke-width="1.5" fill="none" opacity="0.15"/>
-            <g fill="rgba(8,4,18,0.6)">
-              <polygon points="0,360  95,215 190,360"/>
-              <polygon points="45,360 175,195 305,360"/>
-              <polygon points="295,360 428,205 560,360"/>
-              <polygon points="445,360 565,225 640,360"/>
-            </g>
-          </svg>
-          <div class="card-body">
-            <div class="wave" aria-hidden="true">
-              </div>
-            <p class="card-sub">AI가 만들어낸 선율, 영혼을 울리는 멜로디</p>
-            <h2 class="card-label">MUSIC</h2>
-          </div>
-     </div>
+      <div class="card-bg"></div>
+      <svg class="card-art" viewBox="0 0 640 360" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <radialGradient id="rg-planet-surface" cx="32%" cy="32%" r="65%">
+            <stop offset="0%"   stop-color="#4a2f70" stop-opacity="0.25"/>
+            <stop offset="55%"  stop-color="#1a0d3a" stop-opacity="0.1"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+          <radialGradient id="rg-planet-glow" cx="50%" cy="50%" r="50%">
+            <stop offset="75%"  stop-color="transparent"/>
+            <stop offset="88%"  stop-color="#ff8c42" stop-opacity="0.35"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+        </defs>
+        <g fill="white" opacity="0.7">
+          <circle cx="45"  cy="38"  r="1"/>
+          <circle cx="145" cy="75"  r="0.8"/>
+          <circle cx="75"  cy="175" r="1.2"/>
+          <circle cx="545" cy="55"  r="1"/>
+          <circle cx="595" cy="145" r="0.8"/>
+          <circle cx="475" cy="275" r="1.2"/>
+          <circle cx="195" cy="245" r="0.8"/>
+          <circle cx="345" cy="305" r="1"/>
+        </g>
+        <circle cx="415" cy="125" r="108" fill="url(#rg-planet-surface)"/>
+        <circle cx="415" cy="125" r="114" fill="url(#rg-planet-glow)"/>
+        <path d="M338,155 Q378,98 418,128 Q458,158 488,118" stroke="#ff6b20" stroke-width="1.5" fill="none" opacity="0.15"/>
+        <g fill="rgba(8,4,18,0.6)">
+          <polygon points="0,360  95,215 190,360"/>
+          <polygon points="45,360 175,195 305,360"/>
+          <polygon points="295,360 428,205 560,360"/>
+          <polygon points="445,360 565,225 640,360"/>
+        </g>
+      </svg>
+      <div class="card-body">
+        <div class="wave" aria-hidden="true"></div>
+        <p class="card-sub">AI가 만들어낸 선율, 영혼을 울리는 멜로디</p>
+        <h2 class="card-label">MUSIC</h2>
+      </div>
+    </div>
 
-     <div class="card card-movie" onclick="location.href='movie.html'" style="cursor:pointer;">
-          <div class="card-bg"></div>
-          <div class="card-body">
-            <p class="card-sub">프레임에 담긴 무한한 세계</p>
-            <h2 class="card-label">MOVIE</h2>
-          </div>
-        </div>
+    <!-- MOVIE -->
+    <div class="card card-movie" onclick="location.href='movie.html'" style="cursor:pointer;">
+      <div class="card-bg"></div>
+      <div class="card-body">
+        <p class="card-sub">프레임에 담긴 무한한 세계</p>
+        <h2 class="card-label">MOVIE</h2>
+      </div>
+    </div>
 
-        <div class="card card-image">
-          <div class="card-bg"></div>
-          <svg class="card-art" viewBox="0 0 640 360" preserveAspectRatio="xMidYMid slice">
-            </svg>
-          <div class="card-body">
-            <p class="card-sub">무한한 상상이 빚어낸 픽셀</p>
-            <h2 class="card-label">IMAGE</h2>
-          </div>
-        </div>
+    <!-- WORSHIP -->
+    <div class="card card-worship" onclick="location.href='lyrics.html'" style="cursor:pointer;">
+      <div class="card-bg"></div>
+      <svg class="card-art" viewBox="0 0 640 360" preserveAspectRatio="xMidYMid slice"></svg>
+      <div class="card-body">
+        <p class="card-sub">영혼 깊은 곳에서 올려드리는 고백</p>
+        <h2 class="card-label">WORSHIP</h2>
+      </div>
+    </div>
 
   </div><!-- /grid -->
 </main>

@@ -30,7 +30,7 @@ body {
   overflow-x: hidden;
 }
 
-/* Noise overlay */
+/* 노이즈 오버레이 (Noise overlay) */
 body::before {
   content: '';
   position: fixed; inset: 0;
@@ -38,7 +38,7 @@ body::before {
   pointer-events: none; z-index: 900; opacity: 0.45;
 }
 
-/* ── BANNER ── */
+/* ── 배너 (BANNER) ── */
 header {
   position: relative;
   width: 100%;
@@ -140,7 +140,7 @@ header::after {
 .banner-nav a:hover { color: var(--gold-light); }
 .banner-nav a:hover::after { transform: scaleX(1); }
 
-/* ── BACK BUTTON ── */
+/* ── 뒤로가기 버튼 (BACK BUTTON) ── */
 .back-btn {
   display: inline-flex; align-items: center; gap: 8px;
   font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 0.2em;
@@ -156,7 +156,7 @@ header::after {
 .back-btn:hover { color: var(--gold-light); }
 .back-btn:hover::before { transform: translateX(-4px); }
 
-/* ── PAGE TITLE ── */
+/* ── 페이지 타이틀 (PAGE TITLE) ── */
 .page-heading {
   text-align: center;
   padding: 48px 24px 12px;
@@ -179,13 +179,13 @@ header::after {
   background: linear-gradient(to right, transparent, var(--gold), transparent);
 }
 
-/* ── MUSIC GRID ── */
+/* ── 뮤직 그리드 (MUSIC GRID) ── */
 .music-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
   gap: 40px;
   padding: 40px 24px 100px;
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
   animation: fadeUp 0.8s ease both;
 }
@@ -217,10 +217,10 @@ header::after {
 .music-item iframe {
   border-radius: 12px;
   width: 100%;
-  height: 352px;
+  height: 240px; /* 고정 높이 조절 */
 }
 
-/* ── ALBUM HEADER ── */
+/* ── 앨범 헤더 (ALBUM HEADER) ── */
 .album-header {
   display: flex;
   justify-content: space-between;
@@ -248,31 +248,7 @@ header::after {
   text-transform: uppercase;
 }
 
-/* ── ACTION BUTTONS & NOTICE ── */
-.spotify-notice {
-  grid-column: 1 / -1;
-  background: rgba(29, 185, 84, 0.08);
-  border: 1px solid rgba(29, 185, 84, 0.25);
-  border-radius: 12px;
-  padding: 16px 24px;
-  margin-bottom: -10px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.spotify-notice p {
-  font-size: 0.9rem;
-  font-weight: 300;
-  line-height: 1.6;
-  color: rgba(240,236,228,0.85);
-}
-
-.spotify-notice strong {
-  color: #1DB954;
-  font-weight: 400;
-}
-
+/* ── 액션 링크 (ACTION LINKS) ── */
 .action-links {
   display: flex;
   justify-content: space-between;
@@ -300,16 +276,6 @@ header::after {
   border-color: #1ed760;
 }
 
-.youtube-btn {
-  color: #FF0000;
-  border-color: rgba(255, 0, 0, 0.4);
-}
-
-.youtube-btn:hover {
-  color: #ff4d4d;
-  border-color: #ff4d4d;
-}
-
 .lyric-btn {
   color: var(--gold);
   border-color: rgba(201,168,76,0.4);
@@ -320,7 +286,7 @@ header::after {
   border-color: var(--cyan);
 }
 
-/* ── FOOTER ── */
+/* ── 푸터 (FOOTER) ── */
 footer {
   text-align: center; padding: 28px;
   font-family: 'Cinzel', serif; font-size: 0.65rem;
@@ -328,7 +294,7 @@ footer {
   border-top: 1px solid rgba(201,168,76,0.06);
 }
 
-/* ── RESPONSIVE ── */
+/* ── 반응형 (RESPONSIVE) ── */
 @media (max-width: 680px) {
   header { height: 170px; }
   .banner-title { font-size: 2.2rem; }
@@ -379,7 +345,7 @@ footer {
 
 <main class="music-grid">
 
-  <!-- Album 1: To Rise (연주곡) -->
+  <!-- Album: To Rise (Instrumental) -->
   <div class="music-item">
     <div class="album-header">
       <h3 class="album-title">To Rise</h3>
@@ -388,12 +354,11 @@ footer {
     <iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?si=ms5f9fD0ywIBiWwD&amp;list=OLAK5uy_m4zm9Qq57sWlvBb_W7l57NPOkcrbAuLBo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     <div class="action-links">
       <a href="https://open.spotify.com/album/2OSKuof7gooLElmFYvoygK" target="_blank" rel="noopener" class="action-btn spotify-btn">spotify로 듣기</a>
-      <!-- 가사집 버튼이 없는 경우 공간 균형을 위한 빈 div -->
       <div></div>
     </div>
   </div>
 
-  <!-- Album 2: 2026 앨범 -->
+  <!-- Album: 2026 앨범 -->
   <div class="music-item">
     <div class="album-header">
       <h3 class="album-title">2026 앨범</h3>
@@ -402,7 +367,19 @@ footer {
     <iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?si=VNc-P3EezfBYI1yd&amp;list=OLAK5uy_kEiTfwxIvjPCWweGFa2U0-xykLgQ000EI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     <div class="action-links">
       <a href="https://open.spotify.com/album/2AzUPgjWYDodUqFTNjPU1l?si=athoMF7mTMK0jBjv2EJSZQ" target="_blank" rel="noopener" class="action-btn spotify-btn">spotify로 듣기</a>
-      <!-- 가사집 버튼이 없는 경우 공간 균형을 위한 빈 div -->
+      <div></div>
+    </div>
+  </div>
+
+  <!-- Album: 벽력일섬 (Byuk-Ryeok-Il-Seom) -->
+  <div class="music-item">
+    <div class="album-header">
+      <h3 class="album-title">벽력일섬</h3>
+      <span class="album-type">Album</span>
+    </div>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?si=-c35woCR_IM2wkJG&amp;list=OLAK5uy_ndXJukqI1ePIzltvjzIf4Vt2_KQroYszo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <div class="action-links">
+      <a href="https://open.spotify.com/album/25T549XyXnmiZhqGn7p4x4?si=znyTN_gdSUOX7PC-uPW-dQ" target="_blank" rel="noopener" class="action-btn spotify-btn">spotify로 듣기</a>
       <div></div>
     </div>
   </div>

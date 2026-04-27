@@ -182,7 +182,7 @@ header::after {
 /* ── MOVIE WRAPPER ── */
 .movie-wrapper {
   max-width: 1000px;
-  margin: 40px auto 60px;
+  margin: 40px auto 40px;
   padding: 0 24px;
   animation: fadeUp 0.8s ease both;
 }
@@ -247,6 +247,22 @@ header::after {
   color: rgba(240,236,228,0.7);
 }
 
+/* ── VIDEO GALLERY ── */
+.video-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 30px;
+  max-width: 1000px;
+  margin: 0 auto 60px;
+  padding: 0 24px;
+}
+
+.gallery-item {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 /* ── SHORTS SECTION ── */
 .shorts-section {
   max-width: 1000px;
@@ -309,6 +325,7 @@ footer {
   .banner-title { font-size: 2.2rem; }
   .back-btn { margin-left: 24px; }
   .movie-wrapper { padding: 0 16px; margin: 24px auto 40px; }
+  .video-gallery { grid-template-columns: 1fr; padding: 0 16px; }
   .video-info { padding: 24px 20px; }
   .video-title { font-size: 1.3rem; }
   .shorts-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
@@ -354,30 +371,44 @@ footer {
   <div class="divider"></div>
 </div>
 
+<!-- Featured Video -->
 <main class="movie-wrapper">
-  <!-- Featured YouTube Video -->
   <div class="video-container">
     <iframe src="https://www.youtube.com/embed/kAkGg2t1Ats" title="이게 AI 로 되네? 그냥 만들어본 뮤직비디오 'FURIOUS 💥" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
   </div>
 
   <div class="video-info">
     <div class="video-meta">
-      <span>MUSIC VIDEO</span>
+      <span>FEATURED</span>
       <span style="color: rgba(255,255,255,0.2)">|</span>
       <span>Chris LEE_PAPA</span>
     </div>
     <h3 class="video-title">이게 AI 로 되네? 그냥 만들어본 뮤직비디오 'FURIOUS 💥'</h3>
     <p class="video-desc">
-      "희미한 새벽 끝에 빛이 부서지고, 멈춰선 그림자 길을 잃어가..."<br><br>
-      직접 제작하신 AI 기반 오리지널 뮤직비디오입니다. 역동적인 템포와 웅장한 사운드, 화려한 생성형 AI 비주얼이 결합된 'FURIOUS'의 강렬한 세계를 감상해 보세요.
+      직접 제작한 AI 기반 오리지널 뮤직비디오입니다. 역동적인 템포와 생성형 AI 비주얼이 결합된 강렬한 세계를 감상해 보세요.
     </p>
   </div>
 </main>
+
+<!-- Cinematic Gallery -->
+<section class="video-gallery">
+  <div class="gallery-item">
+    <div class="video-container">
+      <iframe src="https://www.youtube.com/embed/byxLKvBHULk?si=Isq-SbQ-U7_xweG2" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+  </div>
+  <div class="gallery-item">
+    <div class="video-container">
+      <iframe src="https://www.youtube.com/embed/vlt7VfCA8bM?si=Ri7VPpOwhzoi7e2b" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+  </div>
+</section>
 
 <!-- YouTube Shorts Section -->
 <section class="shorts-section">
   <h3 class="shorts-heading">Vertical Archives (Shorts)</h3>
   <div class="shorts-grid">
+    <!-- Existing Shorts -->
     <div class="shorts-item">
       <iframe src="https://www.youtube.com/embed/gQ4Ip6cyr1U" title="YouTube Shorts" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
     </div>
@@ -392,6 +423,16 @@ footer {
     </div>
     <div class="shorts-item">
       <iframe src="https://www.youtube.com/embed/XjSUJRduAzI" title="YouTube Shorts" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <!-- New Shorts -->
+    <div class="shorts-item">
+      <iframe src="https://www.youtube.com/embed/MYlAYewAdu4" title="YouTube Shorts" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <div class="shorts-item">
+      <iframe src="https://www.youtube.com/embed/0d-rUizVukQ" title="YouTube Shorts" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <div class="shorts-item">
+      <iframe src="https://www.youtube.com/embed/tgR1Kq3fGWE" title="YouTube Shorts" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
     </div>
   </div>
 </section>

@@ -248,25 +248,64 @@ header::after {
   text-transform: uppercase;
 }
 
-/* ── LYRICS LINK BUTTON ── */
-.lyric-link-wrap {
+/* ── ACTION BUTTONS & NOTICE ── */
+.spotify-notice {
+  grid-column: 1 / -1;
+  background: rgba(29, 185, 84, 0.08);
+  border: 1px solid rgba(29, 185, 84, 0.25);
+  border-radius: 12px;
+  padding: 16px 24px;
+  margin-bottom: -10px;
   display: flex;
-  justify-content: flex-end;
-  padding-right: 8px;
-  margin-top: -4px;
+  align-items: center;
+  gap: 16px;
 }
 
-.lyric-link-btn {
+.spotify-notice p {
+  font-size: 0.9rem;
+  font-weight: 300;
+  line-height: 1.6;
+  color: rgba(240,236,228,0.85);
+}
+
+.spotify-notice strong {
+  color: #1DB954;
+  font-weight: 400;
+}
+
+.action-links {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 4px;
+  margin-top: 4px;
+}
+
+.action-btn {
   font-family: 'Cinzel', 'Noto Serif KR', serif;
   font-size: 0.85rem;
-  color: var(--gold);
   text-decoration: none;
-  border-bottom: 1px solid rgba(201,168,76,0.4);
+  border-bottom: 1px solid;
   padding-bottom: 2px;
   transition: color 0.3s, border-color 0.3s;
 }
 
-.lyric-link-btn:hover {
+.spotify-btn {
+  color: #1DB954;
+  border-color: rgba(29, 185, 84, 0.4);
+}
+
+.spotify-btn:hover {
+  color: #1ed760;
+  border-color: #1ed760;
+}
+
+.lyric-btn {
+  color: var(--gold);
+  border-color: rgba(201,168,76,0.4);
+}
+
+.lyric-btn:hover {
   color: var(--cyan);
   border-color: var(--cyan);
 }
@@ -330,6 +369,11 @@ footer {
 
 <main class="music-grid">
 
+  <!-- Spotify Notice -->
+  <div class="spotify-notice">
+    <p><strong>안내:</strong> 스포티파이 비로그인 상태에서는 30초 미리듣기만 제공됩니다.<br>전곡을 감상하시려면 각 앨범 하단의 <strong>Spotify 로그인 / 전곡 듣기</strong> 버튼을 이용해 주세요.</p>
+  </div>
+
   <!-- Album 1: 찬양 앨범 -->
   <div class="music-item">
     <div class="album-header">
@@ -337,8 +381,9 @@ footer {
       <span class="album-type">Vocal</span>
     </div>
     <iframe style="border-radius:12px" src="https://open.spotify.com/embed/album/0ctoLQNWCmiPEkySv05PAM?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-    <div class="lyric-link-wrap">
-      <a href="lyrics.html" target="_blank" class="lyric-link-btn">가사집 보기 (새 창) ›</a>
+    <div class="action-links">
+      <a href="https://open.spotify.com/album/0ctoLQNWCmiPEkySv05PAM" target="_blank" rel="noopener" class="action-btn spotify-btn">Spotify 로그인 / 전곡 듣기</a>
+      <a href="lyrics.html" target="_blank" class="action-btn lyric-btn">가사집 보기 (새 창) ›</a>
     </div>
   </div>
 
@@ -349,7 +394,11 @@ footer {
       <span class="album-type">Instrumental</span>
     </div>
     <iframe style="border-radius:12px" src="https://open.spotify.com/embed/album/2OSKuof7gooLElmFYvoygK?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-    <!-- 연주곡 앨범이므로 가사집 버튼이 없습니다 -->
+    <div class="action-links">
+      <a href="https://open.spotify.com/album/2OSKuof7gooLElmFYvoygK" target="_blank" rel="noopener" class="action-btn spotify-btn">Spotify 로그인 / 전곡 듣기</a>
+      <!-- 가사집 버튼이 없는 경우 공간 균형을 위한 빈 div -->
+      <div></div>
+    </div>
   </div>
 
 </main>

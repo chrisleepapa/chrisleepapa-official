@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Chris Lee.Papa – Worship Lyrics | 찬양 가사집">
+<title>LYRICS – Chris Lee.Papa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600&family=Noto+Serif+KR:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --gold: #c9a84c;
+  --gold-light: #e8d08a;
+  --cyan: #00d4ff;
+  --bg: #050507;
+  --text: #f0ece4;
+  --text-dim: #9a9490;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Serif KR', serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Noise overlay */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 900; opacity: 0.45;
+}
+
+/* ── BANNER ── */
+header {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(80,40,120,0.35) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 50%, rgba(30,60,100,0.3) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 0%,  rgba(201,168,76,0.12) 0%, transparent 60%),
+    linear-gradient(to bottom, #0a0810 0%, #050507 100%);
+  z-index: 0;
+}
+
+header::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(to right, transparent 0%, rgba(201,168,76,0.15) 15%, rgba(201,168,76,0.55) 35%, rgba(232,208,138,0.9) 50%, rgba(201,168,76,0.55) 65%, rgba(201,168,76,0.15) 85%, transparent 100%);
+  z-index: 2;
+}
+
+.banner-top-line {
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(to right, transparent 0%, rgba(201,168,76,0.4) 30%, rgba(201,168,76,0.8) 50%, rgba(201,168,76,0.4) 70%, transparent 100%);
+  z-index: 2;
+}
+
+.banner-stars {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+}
+.banner-stars span {
+  position: absolute; width: 2px; height: 2px; border-radius: 50%; background: white;
+  animation: twinkle 3s ease-in-out infinite;
+}
+@keyframes twinkle {
+  0%,100% { opacity: 0.2; transform: scale(1); }
+  50%      { opacity: 0.9; transform: scale(1.4); }
+}
+
+.banner-brand {
+  position: relative; z-index: 3;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+
+.banner-deco-row {
+  display: flex; align-items: center; gap: 14px; opacity: 0.7;
+}
+.banner-deco-line { width: 52px; height: 1px; background: linear-gradient(to right, transparent, var(--gold)); }
+.banner-deco-line.right { background: linear-gradient(to left, transparent, var(--gold)); }
+.banner-deco-diamond {
+  width: 6px; height: 6px; background: var(--gold);
+  transform: rotate(45deg); box-shadow: 0 0 8px rgba(201,168,76,0.8);
+}
+
+.banner-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3.2rem; font-weight: 600; letter-spacing: 0.14em; line-height: 1;
+  background: linear-gradient(108deg, #b8922a 0%, #e8d08a 20%, #fffbe8 38%, #c9a84c 52%, #fff0b0 68%, #c9a84c 80%, #e8d08a 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  filter: drop-shadow(0 0 28px rgba(201,168,76,0.5));
+  animation: shimmer 6s linear infinite; background-size: 200% auto;
+}
+@keyframes shimmer {
+  0%   { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+.banner-subtitle {
+  font-family: 'Cinzel', serif; font-size: 0.62rem; letter-spacing: 0.55em;
+  color: rgba(201,168,76,0.55); text-transform: uppercase;
+}
+
+.banner-nav {
+  position: relative; z-index: 3;
+  display: flex; align-items: center; margin-top: 16px;
+}
+.banner-nav a {
+  font-family: 'Cinzel', serif; font-size: 0.78rem; letter-spacing: 0.28em;
+  color: rgba(154,148,144,0.75); text-decoration: none;
+  padding: 6px 28px; position: relative; transition: color 0.3s; text-transform: uppercase;
+}
+.banner-nav a + a::before {
+  content: ''; position: absolute; left: 0; top: 20%; bottom: 20%;
+  width: 1px; background: rgba(201,168,76,0.25);
+}
+.banner-nav a::after {
+  content: ''; position: absolute; bottom: 0; left: 28px; right: 28px; height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold-light), transparent);
+  transform: scaleX(0); transition: transform 0.38s;
+}
+.banner-nav a:hover { color: var(--gold-light); }
+.banner-nav a:hover::after { transform: scaleX(1); }
+
+/* ── BACK BUTTON ── */
+.back-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 0.2em;
+  color: var(--text-dim); text-decoration: none; text-transform: uppercase;
+  padding: 10px 0; margin: 36px 0 0 52px;
+  transition: color 0.3s;
+  position: relative;
+}
+.back-btn::before {
+  content: '‹'; font-size: 1.2rem; line-height: 1;
+  transition: transform 0.3s;
+}
+.back-btn:hover { color: var(--gold-light); }
+.back-btn:hover::before { transform: translateX(-4px); }
+
+/* ── PAGE TITLE ── */
+.page-heading {
+  text-align: center;
+  padding: 48px 24px 12px;
+}
+
+.page-heading .section-tag {
+  font-family: 'Cinzel', serif; font-size: 0.68rem;
+  letter-spacing: 0.5em; color: var(--gold); text-transform: uppercase;
+  display: block; margin-bottom: 14px;
+}
+
+.page-heading h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem; font-weight: 300; letter-spacing: 0.18em;
+  color: var(--text);
+}
+
+.page-heading .divider {
+  width: 80px; height: 1px; margin: 16px auto 0;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+}
+
+/* ── LYRICS BOOK SECTION ── */
+.lyrics-wrapper {
+  max-width: 800px;
+  margin: 40px auto 100px;
+  padding: 0 24px;
+  animation: fadeUp 0.8s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.accordion-item {
+  border-bottom: 1px solid rgba(201,168,76,0.15);
+  margin-bottom: 12px;
+}
+
+.accordion-header {
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 24px 12px;
+  text-align: left;
+  font-family: 'Noto Serif KR', serif;
+  font-size: 1.2rem;
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: color 0.3s, background 0.3s;
+}
+
+.accordion-header:hover {
+  color: var(--gold-light);
+  background: rgba(201,168,76,0.03);
+}
+
+.accordion-header .track-num {
+  font-family: 'Cinzel', serif;
+  color: var(--gold);
+  font-size: 0.9rem;
+  margin-right: 12px;
+}
+
+.accordion-header .toggle-icon {
+  font-size: 1.2rem;
+  color: var(--gold);
+  transition: transform 0.3s ease;
+}
+
+.accordion-item.active .accordion-header {
+  color: var(--cyan);
+}
+
+.accordion-item.active .toggle-icon {
+  transform: rotate(45deg);
+  color: var(--cyan);
+}
+
+.accordion-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out, opacity 0.5s ease;
+  opacity: 0;
+  text-align: center;
+}
+
+.accordion-item.active .accordion-body {
+  max-height: 2000px; /* 임의의 큰 값 */
+  padding: 24px 16px 40px;
+  opacity: 1;
+}
+
+.lyric-text {
+  font-size: 1.05rem;
+  font-weight: 300;
+  line-height: 2.2;
+  color: rgba(240,236,228,0.85);
+  white-space: pre-wrap; /* 줄바꿈 유지 */
+}
+
+/* ── FOOTER ── */
+footer {
+  text-align: center; padding: 28px;
+  font-family: 'Cinzel', serif; font-size: 0.65rem;
+  letter-spacing: 0.2em; color: rgba(154,148,144,0.35);
+  border-top: 1px solid rgba(201,168,76,0.06);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 680px) {
+  header { height: 170px; }
+  .banner-title { font-size: 2.2rem; }
+  .back-btn { margin-left: 24px; }
+  .accordion-header { font-size: 1.1rem; padding: 20px 8px; }
+  .lyric-text { font-size: 0.95rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="banner-top-line"></div>
+  <div class="banner-stars" aria-hidden="true">
+    <span style="left:5%;  top:22%; animation-delay:0s;   opacity:0.6; width:1.5px; height:1.5px;"></span>
+    <span style="left:12%; top:55%; animation-delay:0.8s; opacity:0.4;"></span>
+    <span style="left:18%; top:30%; animation-delay:1.4s; opacity:0.7; width:1.5px; height:1.5px;"></span>
+    <span style="left:32%; top:18%; animation-delay:2.1s; opacity:0.8; width:3px; height:3px;"></span>
+    <span style="left:62%; top:15%; animation-delay:0.6s; opacity:0.8; width:3px; height:3px;"></span>
+    <span style="left:74%; top:28%; animation-delay:0.4s; opacity:0.7; width:1.5px; height:1.5px;"></span>
+    <span style="left:87%; top:35%; animation-delay:1.0s; opacity:0.6; width:1.5px; height:1.5px;"></span>
+    <span style="left:93%; top:52%; animation-delay:1.8s; opacity:0.4;"></span>
+    <span style="left:50%; top:10%; animation-delay:1.5s; opacity:0.5; width:1.5px; height:1.5px;"></span>
+  </div>
+  <div class="banner-brand">
+    <div class="banner-deco-row">
+      <div class="banner-deco-line"></div>
+      <div class="banner-deco-diamond"></div>
+      <div class="banner-deco-line right"></div>
+    </div>
+    <h1 class="banner-title">Chris Lee.Papa</h1>
+    <p class="banner-subtitle">The &nbsp; Creative &nbsp; Archive</p>
+  </div>
+  <nav class="banner-nav">
+    <a href="index.html#about">About</a>
+    <a href="index.html#portfolio">Portfolio</a>
+    <a href="index.html#contact">Contact</a>
+  </nav>
+</header>
+
+<a href="music.html" class="back-btn">음악으로 돌아가기</a>
+
+<div class="page-heading">
+  <span class="section-tag">✦ &nbsp; Lyrics &nbsp; ✦</span>
+  <h2>영혼을 울리는 고백, 찬양 가사집</h2>
+  <div class="divider"></div>
+</div>
+
+<main class="lyrics-wrapper">
+
+  <!-- Track 01 -->
+  <div class="accordion-item">
+    <button class="accordion-header">
+      <span><span class="track-num">01.</span> 이 길 위해서</span>
+      <span class="toggle-icon">+</span>
+    </button>
+    <div class="accordion-body">
+      <p class="lyric-text">[Verse 1]
+빛나는 태양이 저물어 갈 때
+조용히 내 마음 돌아봅니다
+채우려 할수록 비워지는 밤
+가만히 두 눈을 감아봅니다
+
+[Pre-Chorus:]
+작은 한숨조차 기도가 되어
+나의 곁에 계신 주를 느낄 때
+두렵기만 했던 나의 하루를
+다시 시작할 힘을 얻습니다
+
+[Chorus:]
+오늘도 걷는 이 길 위에서
+한없이 부족한 나를 위해서
+말없이 다가와 손 잡아주신
+그 따뜻한 품에 기대어 갑니다
+
+[Verse 2]
+어제와 똑같은 오늘이어도
+마음은 유난히 어두웠는데
+나의 연약함을 아시는 주님
+내 곁에 다가와 안아주시네
+
+[Pre-Chorus]
+작은 소리조차 찬양이 되어
+나를 감싸주는 빛이 비칠 때
+흔들릴 것 같던 나의 목소리
+다시 소리칠 힘을 얻습니다
+
+[Chorus:]
+오늘도 걷는 이 길 위에서
+한없이 부족한 나를 위해서
+조용히 다가와 손 잡아주신
+그 인자한 손 잡고 나아갑니다
+
+[Bridge]
+화려한 믿음은 아닐지라도
+소박한 진심을 아시는 주님
+매일 마주하는 나의 일상에
+주의 은혜가 스며듭니다
+
+[Chorus]
+오늘도 걷는 이 길 위에서 (길 위에서)
+한없이 부족한 나를 위해서 (날 위해서)
+조용히 다가와 손 잡아주신 (나의 주님)
+그 손 잡고 나아갑니다
+
+[Final Chorus]
+오늘도 걷는 이 길 위에서 (걸어가)
+한없이 부족한 나를 위해서 (나를 위해)
+말없이 다가와 손 잡아주신 (나의 주님)
+그 따뜻한 품에 기대어 갑니다
+
+[Outro]
+이 길 위에서...
+나를 위해서...</p>
+    </div>
+  </div>
+
+  <!-- Track 02 -->
+  <div class="accordion-item">
+    <button class="accordion-header">
+      <span><span class="track-num">02.</span> 사랑으로</span>
+      <span class="toggle-icon">+</span>
+    </button>
+    <div class="accordion-body">
+      <p class="lyric-text">[Verse 1]
+메마른 밤을 지나
+숨을 고르며 서 있던 나
+말없이 비춰 오던 빛
+나를 다시 일으켜
+
+[Pre-Chorus]
+손 내밀어 주신 음성
+고개 숙인 그 순간
+두려움보다 먼저
+사랑이 다가왔네
+
+[Chorus]
+사랑으로 날 부르신 주
+넘어질 때도 떠나지 않고
+내가 약해진 그 자리에도
+주 사랑은 남아 있네
+
+[Verse 2]
+끝이 보이지 않아
+걸음이 느려질 때도
+기다림 속에 흐르던
+신실한 그 약속
+
+[Pre-Chorus]
+돌아서려 했던 마음
+수없이 흔들릴 때
+말없이 나를 안아
+다시 걷게 하셨네
+
+[Chorus]
+사랑으로 날 부르신 주
+어둠 속에도 길이 되신 분
+내가 멈춰 선 그 시간에도
+주 사랑은 나를 붙드네
+
+[Bridge]
+말로 다 못한 기도
+눈물로 남겨진 고백
+주님은 이미 알고 계셔
+사랑으로 응답하셨네
+
+[Chorus]
+사랑으로 날 부르신 주
+오늘도 나를 포기 안 해
+시간이 흘러 변해도
+주 사랑은 여기 있네
+
+[Chorus]
+사랑으로 날 여기까지
+이끄신 그 이유
+이제는 내가 노래하네
+
+[Final Chorus]
+주 사랑으로 살아가리
+이제는 내가 포기안해
+시간이 흘러도
+내사랑은 여기 있네</p>
+    </div>
+  </div>
+
+  <!-- Track 03 -->
+  <div class="accordion-item">
+    <button class="accordion-header">
+      <span><span class="track-num">03.</span> 나의 찬양</span>
+      <span class="toggle-icon">+</span>
+    </button>
+    <div class="accordion-body">
+      <p class="lyric-text">[Verse 1]
+내 생명 갖기 전부터
+주님은 날 아셨죠
+내 의지 상관없이
+사랑은 흘렀네요
+
+​[Pre-Chorus]
+길 잃은 밤에도
+날 비춘 그 손길
+변치 않는 신실함
+
+​[Chorus]
+한결같이 날 지키신 주
+늘 곁에 계셨네
+아름다운 그 이름 찬양해
+깊은 감사뿐이죠
+
+​[Verse 2]
+내 모든 걸음 속에
+당신의 은혜가
+변함없는 그 사랑
+선물이 되었네
+
+​[Pre-Chorus]
+외로운 밤에도
+날 안은 그 손길
+나를 향한 신실함
+
+​[Chorus]
+한결같이 날 지키신 주 (지키시고)
+늘 곁에 계셨네 (함께하시네)
+아름다운 그 이름 찬양해
+깊은 감사뿐이죠
+
+​[Bridge]
+언제나 그 자리에
+나를 기다린 사랑
+나의 노래 됩니다
+내 믿음 소망이 되네
+
+​[Chorus]
+한결같이 날 지키신 주 (지키시고)
+늘 곁에 계셨네 (함께하시네)
+아름다운 그 이름 찬양해 (소리높여)
+깊은 감사뿐이죠
+
+​[Chorus]
+사랑합니다 나의 주님 (나의 주)
+영원히 찬양합니다 (찬양해요)
+위대하신 그 이름 전해 (소리높여)
+사랑을 나눠요</p>
+    </div>
+  </div>
+
+  <!-- Track 04 -->
+  <div class="accordion-item">
+    <button class="accordion-header">
+      <span><span class="track-num">04.</span> 기적입니다.</span>
+      <span class="toggle-icon">+</span>
+    </button>
+    <div class="accordion-body">
+      <p class="lyric-text">[Verse 1]
+자랑할 것 하나 없는 나인데
+날마다 넘어지고 죄만 지었었는데
+이런 나를 먼저 찾아와 주시고
+따스한 손길로 꼭 안아주셨죠
+
+[Verse 2]
+세상속에 찌들었던 나인데
+힘없이 무너지고 좌절 했었는데
+조용히 나를 찾아와 주시고
+구원의 손길로 날 건져주셨죠
+
+[Chorus]
+기적입니다 주를 만난 건
+메마른 내 삶에 피어난 노래
+기적입니다 내가 믿는 건
+주의 은혜 아니면 안 되는 일들
+참 감사한 오늘 기적입니다
+
+[Bridge]
+눈을 들어 온 세상을 보니
+주의 사랑이 느껴지네요
+들판에 풀과 하늘의 별까지
+보잘것없는 나도~~
+
+[Chorus]
+사랑입니다 날 부르신 것
+끝없는 죄에서 건져주신 사랑
+기적입니다 주와 걷는 것
+주의 사랑 아니면 안 되는 일들
+참 감사한 오늘 사랑입니다
+
+[Chorus]
+기적입니다 온 땅과 만물 (찬양해)
+주님이 만드신 아름다운 세상
+기적입니다 (기적이죠) 주를 믿는 것
+주의 사랑 아니면 안 되는 일들
+참 감사한 오늘 사랑입니다
+
+[Outro]
+내 삶의 모든 순간 기적입니다
+감사합니다 나의 주님</p>
+    </div>
+  </div>
+
+  <!-- Track 05 -->
+  <div class="accordion-item">
+    <button class="accordion-header">
+      <span><span class="track-num">05.</span> 파레시아</span>
+      <span class="toggle-icon">+</span>
+    </button>
+    <div class="accordion-body">
+      <p class="lyric-text">​[Verse 1]
+새벽 길 위, 무거운 어깨
+오늘 하루, 또 시작되네
+맡겨진 짐, 다 지고 가는
+나의 삶은, 주가 아시네
+
+​[Verse 2]
+떨칠 수 없는, 이름의 무게
+혼자 참아온, 남모를 눈물
+흔들거리는, 나의 발걸음
+주님 오늘, 붙드소서
+
+​[Pre-Chorus]
+나를 부르네, 주의 음성
+내 모습 이대로, 나갑니다
+십자가 사랑, 그 힘을 믿고
+고개 들어, 하늘 보네
+
+​[Chorus]
+파레시아, 주 앞에 가리라
+파레시아, 나의 승리야
+험한 세상도, 두렵지 않네
+주의 강한 손, 날 붙드니까
+당당하게, 한 걸음 더
+
+​[Verse 3]
+함께 걷는, 형제의 고백
+서로를 위해, 손을 잡으리
+세상의 이름, 그보다 귀한
+주의 성도로, 일어서리
+
+​[Bridge]
+세상이 줄 수 없는 평안
+주님이 약속하신 평화
+우리는 결코 혼자가 아냐
+주와 함께 걷는 이 길
+
+​[Chorus]
+파레시아, 주 앞에 가리라
+파레시아, 나의 승리야
+험한 세상도, 두렵지 않네
+주의 강한 손, 날 붙드니까
+당당하게, 한 걸음 더
+
+​[Outro]
+주님과 함께 걷는 길
+담대히 나갑니다
+파레시아, 나의 노래야</p>
+    </div>
+  </div>
+
+  <!-- Track 06 -->
+  <div class="accordion-item">
+    <button class="accordion-header">
+      <span><span class="track-num">06.</span> 나의 목소리</span>
+      <span class="toggle-icon">+</span>
+    </button>
+    <div class="accordion-body">
+      <p class="lyric-text">[Verse 1]
+두 손을 모으고 눈을 감아요
+작은 내 마음을 주님께 드려요
+조용한 이 시간 우리와 함께하시는
+사랑의 하나님 참 감사합니다
+
+[Chorus]
+내 마음속에 계신 하나님
+나의 목소리 들으시는 주님
+잔잔한 바람처럼 내 맘 만지시고
+언제나 우리와 함께하셔요
+
+[Verse 2]
+예쁜 마음 모아 노래 불러요
+작은 내 발걸음 주님만 따라가요
+세상의 빛으로 우리를 부르신
+귀하신 하나님 사랑합니다
+
+[Chorus]
+내 마음속에 계신 하나님
+나의 목소리 들으시는 주님
+잔잔한 바람처럼 내 맘 만지시고
+언제나 우리와 함께하셔요</p>
+    </div>
+  </div>
+
+  <!-- Track 07 -->
+  <div class="accordion-item">
+    <button class="accordion-header">
+      <span><span class="track-num">07.</span> 오 기쁜 날</span>
+      <span class="toggle-icon">+</span>
+    </button>
+    <div class="accordion-body">
+      <p class="lyric-text">​[Verse 1]
+아침 햇살, 반짝이며
+주님 사랑, 노래해요
+우리 마음, 가득하게
+주의 은혜, 넘쳐나요
+
+​[Verse 2]
+슬픈 생각, 모두 잊고
+두 손 높이, 들어봐요
+어린 아이, 할아버지
+모두 함께, 춤을 춰요
+
+​[Pre-Chorus]
+가슴 펴고, 하늘 봐요
+우리 소리, 하나 되어
+주를 향해, 고백해요
+지금 바로, 시작해요!
+
+​[Chorus]
+오 기쁜 날! 주 찬양해!
+온 세상에, 울려라!
+축복의 날! 주 노래해!
+할렐루 할렐루야!
+​사랑의 주~~오!
+나의 주님, 감사해!
+우리 함께, 소리 높여
+할렐루 할렐루야!
+
+​[Verse 3]
+사랑으로, 하나 되어
+서로 보며, 축복해요
+우린 모두, 주의 자녀
+행복하게, 걸어가요
+
+​[Bridge]
+기적 같은, 이 하루를
+소중하게, 보낼래요
+사랑해요, 고마워요
+멈출 수 없는 찬양!
+(One, Two, Three, Jump!)
+
+​[Chorus 3]
+오 기쁜 날! 주 찬양해!
+온 세상에, 울려라!
+축복의 날! 주 노래해!
+할렐루 할렐루야!
+​사랑의 주~~워우예!
+나의 주님, 감사해!
+우리 함께, 소리 높여
+할렐루 할렐루야!
+
+​[Chorus]
+오 기쁜 날! 주 찬양해!
+온 세상에, 울려라!
+축복의 날! 주 노래해!
+할렐루 할렐루야!
+​사랑의 주~~워우예! (참 좋으신)
+나의 주님, 감사해!
+우리 함께, 소리 높여
+할렐루 할렐루야!
+
+​[Chorus]
+오 기쁜 날! 주 찬양해!
+온 세상에, 울려라!
+축복의 날! 주 노래해!
+할렐루 할렐루야!
+​사랑의 주~~오우워! (영광의 주)
+나의 주님, 감사해!
+우리 함께, 소리 높여
+할렐루 할렐루야!
+
+​[Outro]
+기쁜 소리! (Hey!)
+큰 소리로! (Hey!)
+주님만을 찬양해!
+할렐루야! (Amen!)</p>
+    </div>
+  </div>
+
+  <!-- Track 08 -->
+  <div class="accordion-item">
+    <button class="accordion-header">
+      <span><span class="track-num">08.</span> 우리의 예배</span>
+      <span class="toggle-icon">+</span>
+    </button>
+    <div class="accordion-body">
+      <p class="lyric-text">[Verse 1]
+주일 아침 환한 햇살 아래
+설레는 맘으로 모였어요
+나를 위해 준비하신 사랑
+오늘도 기대하며 나아가요
+
+[Verse 2]
+세상 속의 바쁜 마음들은
+모두 다 예쁘게 접어두고
+하나님의 귀한 말씀 속에
+내 마음 깊이 잠겨볼래요
+
+[Chorus]
+우리의 예배를 받아주세요
+가장 귀한 노래로 주님만 높여요
+하늘의 은혜가 가득 내려와
+우리를 기쁨으로 채워주시네
+
+[Chorus]
+사랑의 주님만 바라봅니다
+온 맘 다해 정성을 모두 드려요
+언제나 우리와 함께하시는
+하나님만 높여 예배해요</p>
+    </div>
+  </div>
+
+  <!-- Track 09 -->
+  <div class="accordion-item">
+    <button class="accordion-header">
+      <span><span class="track-num">09.</span> 우리의 마음</span>
+      <span class="toggle-icon">+</span>
+    </button>
+    <div class="accordion-body">
+      <p class="lyric-text">​[Verse 1]
+햇살 반짝! 들려오는 소리
+두 손 모아 기도드려요
+​작은 마음 사랑 가득히
+하나님께 노래할래요
+
+​[Chorus]
+예수님 사랑해요 (사랑해요!)
+내 마음 가득히 (가득히!)
+맑고 고운 소리 (찬송해요!)
+우리 마음 (받아주세요!)
+
+​[Verse 2]
+어제보다 주님 닮아요
+친구들과 예배드려요
+​걸음걸음 인도하시니
+행복한 나 주의 자녀들
+
+​[Chorus]
+예수님 사랑해요 (사랑해요!)
+내 마음 가득히 (가득히!)
+맑고 고운 소리 (찬송해요!)
+우리 마음 (받아주세요!)
+
+​[Bridge]
+언제 어디서나 함께하시는
+주님께 드려요 작은 노래
+
+​[Chorus]
+예수님 사랑해요 (사랑해요!)
+내 마음 가득히 (가득히!)
+맑고 고운 소리 (찬송해요!)
+우리 마음 (받아주세요!)</p>
+    </div>
+  </div>
+
+  <!-- Track 10 -->
+  <div class="accordion-item">
+    <button class="accordion-header">
+      <span><span class="track-num">10.</span> 나의 모든 날</span>
+      <span class="toggle-icon">+</span>
+    </button>
+    <div class="accordion-body">
+      <p class="lyric-text">[Verse 1]
+눈 비비며 일어나는 평범한 아침
+보글보글 찌개 소리 즐거운 우리 집
+당연한 줄 알았더니 모든 게 선물이라
+주님 주신 은혜 속에 오늘 내가 사네.
+
+[Verse 2]
+덜컹거리는 버스 창가 햇살 비치고
+스치는 바람 속에 주의 사랑 느끼네.
+지루했던 일상들이 노래가 되어 터지니
+나의 모든 걸음마다 기쁨 가득하네.
+
+[Pre-Chorus]
+때로는 시련의 벽이 날 막아설 때
+슬픔에 밤을 새며 혼자 울 때
+나보다 앞서가는 주님 믿고
+담대히 나아갑니다.
+
+[Chorus]
+나의 모든 날들이 주님의 은혜라
+어두운 밤 지나고 찬란한 빛 비추네.
+박수치며 찬양해 기쁨의 노래를
+나의 평생 주님만 노래하리라.
+
+[Bridge]
+시련아 물러가라. 주님 내 곁에 계신다.
+절망아 물러가라. 승리는 나의 것이다.
+나보다 나를 더 잘 아시는 주님
+그 계획을 신뢰합니다.
+
+[Chorus]
+나의 모든 날들이 주님의 은혜라 (은혜라)
+어두운 밤 지나고 찬란한 빛 비추네
+박수치며 찬양해 기쁨의 노래를 (노래를)
+나의 평생 주님만 노래하리라
+
+[Chorus]
+나의 모든 날들이(모든날) 주님의 은혜라 (amen)
+어두운 밤 지나고(지나가) 찬란한 빛 비추네
+박수치며 찬양해(찬양해) 기쁨의 노래를 (Jesus)
+나의 평생 주님만 노래하리라(노래해)
+
+[Outro]
+나의 모든 날은 주의 것
+나의 모든 삶은 주의 것
+감사합니다 나의 주님</p>
+    </div>
+  </div>
+
+</main>
+
+<footer>© 2026 Chris Lee.Papa — The Creative Archive</footer>
+
+<script>
+  // 아코디언 동작 스크립트
+  const accordionHeaders = document.querySelectorAll('.accordion-header');
+
+  accordionHeaders.forEach(header => {
+    header.addEventListener('click', function() {
+      const item = this.parentElement;
+      const isActive = item.classList.contains('active');
+
+      // 열려있는 다른 모든 아코디언 닫기 (선택 사항 - 열어둔 채로 두고 싶다면 아래 3줄 삭제)
+      document.querySelectorAll('.accordion-item').forEach(el => {
+        el.classList.remove('active');
+      });
+
+      // 클릭한 항목만 열고 닫기 토글
+      if (!isActive) {
+        item.classList.add('active');
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

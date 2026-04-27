@@ -103,7 +103,8 @@ header::after {
 
 .banner-title {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 3.6rem; font-weight: 600; letter-spacing: 0.14em; line-height: 1;
+  font-size: 3.6rem; /* index.html 사이즈 통일 */
+  font-weight: 600; letter-spacing: 0.14em; line-height: 1;
   background: linear-gradient(108deg, #b8922a 0%, #e8d08a 20%, #fffbe8 38%, #c9a84c 52%, #fff0b0 68%, #c9a84c 80%, #e8d08a 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
   filter: drop-shadow(0 0 28px rgba(201,168,76,0.5));
@@ -115,11 +116,11 @@ header::after {
 }
 
 .banner-subtitle {
-  font-family: 'Cinzel', serif; font-size: 0.68rem; letter-spacing: 0.55em;
-  color: rgba(201,168,76,0.55); text-transform: uppercase;
+  font-family: 'Cinzel', serif; font-size: 0.68rem; /* index.html 사이즈 통일 */
+  letter-spacing: 0.55em; color: rgba(201,168,76,0.55); text-transform: uppercase;
 }
 
-/* 네비게이션 메뉴가 좁은 화면에서도 잘리지 않도록 flex-wrap 적용 */
+/* 네비게이션 메뉴 잘림 방지 (flex-wrap) */
 .banner-nav {
   position: relative; z-index: 3;
   display: flex; align-items: center; justify-content: center; flex-wrap: wrap; margin-top: 16px;
@@ -320,11 +321,10 @@ footer {
   border-top: 1px solid rgba(201,168,76,0.06);
 }
 
-/* ── RESPONSIVE (완벽하게 잘림 방지) ── */
+/* ── RESPONSIVE (잘림 방지) ── */
 @media (max-width: 800px) {
   header { height: 170px; }
-  .banner-title { font-size: 2.4rem; }
-  /* 태블릿 사이즈 진입 시 메뉴 여백(padding)을 줄여서 한 줄에 들어가게 함 */
+  .banner-title { font-size: 2.4rem; } /* index.html 사이즈 통일 */
   .banner-nav a { padding: 6px 16px; font-size: 0.72rem; letter-spacing: 0.15em; }
 }
 
@@ -338,7 +338,7 @@ footer {
 }
 
 @media (max-width: 480px) {
-  /* 좁은 모바일 화면에서는 폰트와 자간을 더 줄여서 잘림을 완벽 차단 */
+  /* 모바일 화면 폰트 자간 조정으로 완벽 차단 */
   .banner-title { font-size: 1.8rem; letter-spacing: 0.1em; }
   .banner-subtitle { font-size: 0.55rem; letter-spacing: 0.3em; }
   .banner-nav a { padding: 6px 10px; font-size: 0.65rem; letter-spacing: 0.1em; }
@@ -366,14 +366,13 @@ footer {
       <div class="banner-deco-diamond"></div>
       <div class="banner-deco-line right"></div>
     </div>
-    <!-- 로고 클릭 시 안전하게 이동하도록 a 태그 사용 (Location 에러 해결) -->
+    <!-- 자바스크립트 오류 원천 차단: 순수 <a> 태그 사용 -->
     <a href="index.html" style="text-decoration: none; display: inline-block;">
       <h1 class="banner-title" title="홈으로 가기">Chris Lee.Papa</h1>
     </a>
     <p class="banner-subtitle">The &nbsp; Creative &nbsp; Archive</p>
   </div>
   
-  <!-- 새로운 네비게이션 메뉴 적용 -->
   <nav class="banner-nav">
     <a href="book.html">BOOK</a>
     <a href="music.html">MUSIC</a>
@@ -427,7 +426,6 @@ footer {
 <section class="shorts-section">
   <h3 class="shorts-heading">Vertical Archives (Shorts)</h3>
   <div class="shorts-grid">
-    <!-- Shorts -->
     <div class="shorts-item">
       <iframe src="https://www.youtube.com/embed/gQ4Ip6cyr1U" title="YouTube Shorts" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
     </div>

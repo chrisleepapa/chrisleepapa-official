@@ -103,7 +103,8 @@ header::after {
 
 .banner-title {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 3.6rem; font-weight: 600; letter-spacing: 0.14em; line-height: 1;
+  font-size: 3.6rem; /* 변경된 부분: index.html 크기와 동일하게 수정 */
+  font-weight: 600; letter-spacing: 0.14em; line-height: 1;
   background: linear-gradient(108deg, #b8922a 0%, #e8d08a 20%, #fffbe8 38%, #c9a84c 52%, #fff0b0 68%, #c9a84c 80%, #e8d08a 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
   filter: drop-shadow(0 0 28px rgba(201,168,76,0.5));
@@ -115,13 +116,14 @@ header::after {
 }
 
 .banner-subtitle {
-  font-family: 'Cinzel', serif; font-size: 0.68rem; letter-spacing: 0.55em;
+  font-family: 'Cinzel', serif; font-size: 0.68rem; /* 변경된 부분: index.html 크기와 동일하게 수정 */ letter-spacing: 0.55em;
   color: rgba(201,168,76,0.55); text-transform: uppercase;
 }
 
+/* 네비게이션 메뉴가 좁은 화면에서도 잘리지 않도록 flex-wrap 적용 */
 .banner-nav {
   position: relative; z-index: 3;
-  display: flex; align-items: center; margin-top: 16px;
+  display: flex; align-items: center; justify-content: center; flex-wrap: wrap; margin-top: 16px;
 }
 .banner-nav a {
   font-family: 'Cinzel', serif; font-size: 0.78rem; letter-spacing: 0.28em;
@@ -366,12 +368,24 @@ footer {
   border-top: 1px solid rgba(201,168,76,0.06);
 }
 
-/* ── RESPONSIVE ── */
-@media (max-width: 680px) {
+/* ── RESPONSIVE (완벽하게 잘림 방지) ── */
+@media (max-width: 800px) {
   header { height: 170px; }
-  .banner-title { font-size: 2.4rem; }
+  .banner-title { font-size: 2.4rem; } /* 변경된 부분: index.html 크기와 동일하게 수정 */
+  /* 태블릿 사이즈 진입 시 메뉴 여백(padding)을 줄여서 한 줄에 들어가게 함 */
+  .banner-nav a { padding: 6px 16px; font-size: 0.72rem; letter-spacing: 0.15em; }
+}
+
+@media (max-width: 680px) {
   .book-grid { gap: 48px; padding: 40px 24px 80px; }
   .back-btn { margin-left: 24px; }
+}
+
+@media (max-width: 480px) {
+  /* 좁은 모바일 화면에서는 폰트와 자간을 더 줄여서 잘림을 완벽 차단 */
+  .banner-title { font-size: 1.8rem; letter-spacing: 0.1em; }
+  .banner-subtitle { font-size: 0.55rem; letter-spacing: 0.3em; }
+  .banner-nav a { padding: 6px 10px; font-size: 0.65rem; letter-spacing: 0.1em; }
 }
 </style>
 </head>
@@ -396,9 +410,12 @@ footer {
       <div class="banner-deco-diamond"></div>
       <div class="banner-deco-line right"></div>
     </div>
-    <h1 class="banner-title" onclick="window.location.href='index.html'" style="cursor: pointer;" title="홈으로 가기">Chris Lee.Papa</h1>
+    <a href="index.html" style="text-decoration: none; display: inline-block;">
+      <h1 class="banner-title" title="홈으로 가기">Chris Lee.Papa</h1>
+    </a>
     <p class="banner-subtitle">The &nbsp; Creative &nbsp; Archive</p>
   </div>
+  
   <nav class="banner-nav">
     <a href="book.html">BOOK</a>
     <a href="music.html">MUSIC</a>

@@ -15,7 +15,7 @@
   --gold-light: #e8d08a;
   --cyan: #00d4ff;
   --bg: #050507;
-  --card-bg: rgba(15, 15, 20, 0.6);
+  --card-bg: rgba(10, 10, 15, 0.6);
   --text: #f0ece4;
   --text-dim: #9a9490;
 }
@@ -36,7 +36,7 @@ header::before { content: ''; position: absolute; inset: 0; background: linear-g
 .banner-nav a:hover { color: var(--gold-light); }
 
 /* Container */
-.detail-container { max-width: 1000px; margin: 0 auto; padding: 40px 24px 100px; }
+.detail-container { max-width: 1100px; margin: 0 auto; padding: 40px 24px 100px; }
 .back-link { display: inline-flex; align-items: center; gap: 8px; font-family: 'Cinzel', serif; font-size: 0.75rem; color: var(--text-dim); text-decoration: none; margin-bottom: 40px; transition: color 0.3s; }
 .back-link:hover { color: var(--gold); }
 
@@ -63,12 +63,89 @@ section { margin-bottom: 100px; }
 .video-container { position: relative; width: 100%; padding-bottom: 56.25%; background: #000; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.6); border: 1px solid rgba(201,168,76,0.1); }
 .video-container iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 
-/* OST Section */
-.ost-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-.ost-card { background: var(--card-bg); border: 1px solid rgba(201,168,76,0.1); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
-.ost-card iframe { border-radius: 12px; }
-.spotify-link { align-self: flex-start; font-family: 'Cinzel', serif; font-size: 0.85rem; color: #1DB954; text-decoration: none; border-bottom: 1px solid rgba(29, 185, 84, 0.3); padding-bottom: 2px; transition: all 0.3s; }
-.spotify-link:hover { color: #1ed760; border-color: #1ed760; }
+/* --- Music Grid UI 스타일 복원 (Worship/Music 페이지와 동일) --- */
+.ost-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+}
+
+.ost-item {
+  background: var(--card-bg);
+  border: 1px solid rgba(201,168,76,0.1);
+  border-radius: 16px;
+  padding: 24px;
+  backdrop-filter: blur(10px);
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s, border-color 0.3s;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ost-item:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.7), 0 0 0 1px rgba(201,168,76,0.2);
+  border-color: rgba(201,168,76,0.4);
+}
+
+.album-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 4px;
+}
+
+.album-title {
+  font-family: 'Cinzel', 'Noto Serif KR', serif;
+  font-size: 1.05rem;
+  color: var(--text);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.album-type {
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  color: var(--gold);
+  background: rgba(201,168,76,0.1);
+  padding: 3px 8px;
+  border-radius: 20px;
+  border: 1px solid rgba(201,168,76,0.3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.ost-item iframe {
+  border-radius: 12px;
+}
+
+.action-links {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 4px;
+  margin-top: 4px;
+}
+
+.action-btn {
+  font-family: 'Cinzel', 'Noto Serif KR', serif;
+  font-size: 0.85rem;
+  text-decoration: none;
+  border-bottom: 1px solid;
+  padding-bottom: 2px;
+  transition: color 0.3s, border-color 0.3s;
+}
+
+.spotify-btn {
+  color: #1DB954;
+  border-color: rgba(29, 185, 84, 0.4);
+}
+
+.spotify-btn:hover {
+  color: #1ed760;
+  border-color: #1ed760;
+}
 
 /* Buy Links */
 .buy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 700px; margin: 0 auto; }
@@ -86,6 +163,7 @@ footer { text-align: center; padding: 40px; font-family: 'Cinzel', serif; font-s
   .buy-grid { grid-template-columns: 1fr; }
   .title-section h1 { font-size: 2.8rem; }
   .banner-title { font-size: 2.2rem; }
+  .ost-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -137,27 +215,50 @@ footer { text-align: center; padding: 40px; font-family: 'Cinzel', serif; font-s
     </div>
   </section>
 
-  <!-- 3. Original Soundtrack -->
+  <!-- 3. Original Soundtrack (수정된 카드 UI) -->
   <section id="ost">
     <h2 class="section-title">Original Soundtrack</h2>
     <div class="ost-grid">
+
       <!-- Original EP -->
-      <div class="ost-card">
-        <iframe src="https://open.spotify.com/embed/album/4UbsRkUcH0QJQGS6SUbtN1?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-        <a href="https://open.spotify.com/album/4UbsRkUcH0QJQGS6SUbtN1?si=cZYsb2t1QdmeLV-99Z9Jtg" target="_blank" rel="noopener" class="spotify-link">Sister Squad EP.01 전곡 듣기 ›</a>
+      <div class="ost-item">
+        <div class="album-header">
+          <h3 class="album-title">Sister Squad EP.01</h3>
+          <span class="album-type">OST</span>
+        </div>
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/album/4UbsRkUcH0QJQGS6SUbtN1?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <div class="action-links">
+          <a href="https://open.spotify.com/album/4UbsRkUcH0QJQGS6SUbtN1?si=cZYsb2t1QdmeLV-99Z9Jtg" target="_blank" rel="noopener" class="action-btn spotify-btn">전곡 듣기 ›</a>
+          <div></div>
+        </div>
       </div>
 
       <!-- Inst EP -->
-      <div class="ost-card">
-        <iframe src="https://open.spotify.com/embed/album/0UsOZREU7OJeNC4MFRt0Og?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-        <a href="https://open.spotify.com/album/0UsOZREU7OJeNC4MFRt0Og?si=1WPlvwb3QxmVe9IxdFhFXg" target="_blank" rel="noopener" class="spotify-link">Sister Squad EP.01 Inst 전곡 듣기 ›</a>
+      <div class="ost-item">
+        <div class="album-header">
+          <h3 class="album-title">Sister Squad EP.01 Inst</h3>
+          <span class="album-type">OST</span>
+        </div>
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/album/0UsOZREU7OJeNC4MFRt0Og?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <div class="action-links">
+          <a href="https://open.spotify.com/album/0UsOZREU7OJeNC4MFRt0Og?si=1WPlvwb3QxmVe9IxdFhFXg" target="_blank" rel="noopener" class="action-btn spotify-btn">전곡 듣기 ›</a>
+          <div></div>
+        </div>
       </div>
 
       <!-- Eng EP -->
-      <div class="ost-card">
-        <iframe src="https://open.spotify.com/embed/album/22frEKSV9Ano8LoWaOLsnT?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-        <a href="https://open.spotify.com/album/22frEKSV9Ano8LoWaOLsnT?si=fXxgTUThRHqqKHyX8PbsfA" target="_blank" rel="noopener" class="spotify-link">Sister Squad EP.01 Eng 전곡 듣기 ›</a>
+      <div class="ost-item">
+        <div class="album-header">
+          <h3 class="album-title">Sister Squad EP.01 Eng</h3>
+          <span class="album-type">OST</span>
+        </div>
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/album/22frEKSV9Ano8LoWaOLsnT?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <div class="action-links">
+          <a href="https://open.spotify.com/album/22frEKSV9Ano8LoWaOLsnT?si=fXxgTUThRHqqKHyX8PbsfA" target="_blank" rel="noopener" class="action-btn spotify-btn">전곡 듣기 ›</a>
+          <div></div>
+        </div>
       </div>
+
     </div>
   </section>
 

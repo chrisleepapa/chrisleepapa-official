@@ -147,6 +147,7 @@ header::after {
 .note-content { max-height: 0; overflow: hidden; transition: max-height 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s; padding: 0 2rem; opacity: 0; }
 .note-text { color: rgba(240,236,228,0.8); font-size: 1.05rem; line-height: 1.9; padding-bottom: 1rem; border-top: 1px solid rgba(201,168,76,0.1); padding-top: 2rem; word-break: keep-all; }
 
+/* 🌟 강조 문구 스타일 */
 .note-text .highlight {
   color: var(--gold-light);
   font-weight: 600;
@@ -262,7 +263,7 @@ main {
 }
 .cta-btn:hover { color: #fff; box-shadow: 0 0 48px rgba(0,212,255,0.4); }
 
-/* --- SECTION PANELS (About / Contact) --- */
+/* --- SECTION PANELS --- */
 .panel {
   max-width: 1300px;
   margin: 0 auto;
@@ -339,6 +340,7 @@ footer { text-align: center; padding: 32px; font-family: 'Cinzel', serif; font-s
   header { min-height: 160px; padding: 25px 0; }
   .banner-title { font-size: 1.9rem; letter-spacing: 0.08em; }
   .banner-subtitle { font-size: 0.5rem; letter-spacing: 0.3em; }
+  .banner-deco-line { width: 40px; }
   .banner-nav { gap: 4px; }
   .banner-nav a { padding: 4px 10px; font-size: 0.65rem; letter-spacing: 0.12em; }
   .banner-nav a + a::before { display: none; }
@@ -365,7 +367,7 @@ footer { text-align: center; padding: 32px; font-family: 'Cinzel', serif; font-s
       <div class="banner-deco-diamond"></div>
       <div class="banner-deco-line right"></div>
     </div>
-    <h1 class="banner-title" onclick="navigateTo('index.html')" style="cursor: pointer;">Chris Lee.Papa</h1>
+    <h1 class="banner-title" onclick="safeNavigate('index.html')" style="cursor: pointer;">Chris Lee.Papa</h1>
     <p class="banner-subtitle">The &nbsp; Creative &nbsp; Archive</p>
   </div>
   <nav class="banner-nav">
@@ -390,7 +392,8 @@ footer { text-align: center; padding: 32px; font-family: 'Cinzel', serif; font-s
         때로는 AI와 기술을 통해 새로운 세계와 아름다운 창작물들이 가득 담겨있고<br>
         <span class="highlight">모든 창작의 원동력이자 어두운 시간 속에서 다시 살게 해주는 신앙이 담겨 있습니다.</span><br><br>
         저의 열정과 진실한 고백이 나란히 담긴 이 공간에 오신 것을 환영합니다.<br><br>
-        <span class="highlight">여러분의 삶 속에서 넘어져도 다시 일어나고 좌절과 포기가 아닌 용기와 희망이 가득하길 기도합니다.</span>
+        여러분의 삶 속에서 넘어져도 다시 일어나고<br>
+        <span class="highlight">좌절과 포기가 아닌 용기와 희망이 가득하길 기도합니다.</span>
       </p>
       <div class="signature">Chris Lee.Papa</div>
     </div>
@@ -399,28 +402,28 @@ footer { text-align: center; padding: 32px; font-family: 'Cinzel', serif; font-s
 
 <main id="portfolio">
   <div class="grid">
-    <div class="card card-book" onclick="navigateTo('book.html')">
+    <div class="card card-book" onclick="safeNavigate('book.html')">
       <div class="card-bg"></div>
       <div class="card-body">
         <p class="card-sub">상상이 종이에 그려진 순간 놀라운 기적이 일어난다.</p>
         <h2 class="card-label">BOOK</h2>
       </div>
     </div>
-    <div class="card card-music" onclick="navigateTo('music.html')">
+    <div class="card card-music" onclick="safeNavigate('music.html')">
       <div class="card-bg"></div>
       <div class="card-body">
         <p class="card-sub">AI가 만들어낸 선율, 영혼을 울리는 멜로디</p>
         <h2 class="card-label">MUSIC</h2>
       </div>
     </div>
-    <div class="card card-movie" onclick="navigateTo('movie.html')">
+    <div class="card card-movie" onclick="safeNavigate('movie.html')">
       <div class="card-bg"></div>
       <div class="card-body">
         <p class="card-sub">프레임에 담긴 무한한 세계</p>
         <h2 class="card-label">MOVIE</h2>
       </div>
     </div>
-    <div class="card card-worship" onclick="navigateTo('worship.html')">
+    <div class="card card-worship" onclick="safeNavigate('worship.html')">
       <div class="card-bg"></div>
       <div class="card-body">
         <p class="card-sub">영혼 깊은 곳에서 올려드리는 고백</p>
@@ -434,7 +437,7 @@ footer { text-align: center; padding: 32px; font-family: 'Cinzel', serif; font-s
   <a href="#about" class="cta-btn">작업 협업 및 문의하기 <span class="cta-arrow">›</span></a>
 </div>
 
-<!-- ── ABOUT SECTION (새로 추가 및 링크 이동) ── -->
+<!-- ── ABOUT SECTION ── -->
 <section id="about" class="panel">
   <p class="panel-title">About</p>
   <p>저는 평범한 아빠였습니다. 2025년 9월까지는.. 새로운 도전 이후 저는 크리에이터, 프로듀서, 작가가 되었습니다. 여러분도 함께 도전하시죠.</p>
@@ -444,7 +447,7 @@ footer { text-align: center; padding: 32px; font-family: 'Cinzel', serif; font-s
   </div>
 </section>
 
-<!-- ── CONTACT SECTION (Email만 유지) ── -->
+<!-- ── CONTACT SECTION ── -->
 <section id="contact" class="panel">
   <p class="panel-title">Contact</p>
   <p>작업 의뢰 및 협업 문의는 아래 채널로 연락주세요.</p>
@@ -458,9 +461,10 @@ footer { text-align: center; padding: 32px; font-family: 'Cinzel', serif; font-s
 </footer>
 
 <script>
-function navigateTo(url) {
-  if (url && url.trim() !== '') {
-    window.location.href = url;
+// 안전한 네비게이션 함수 (SyntaxError 해결)
+function safeNavigate(url) {
+  if (typeof url === 'string' && url.trim() !== '') {
+    window.location.assign(url);
   }
 }
 

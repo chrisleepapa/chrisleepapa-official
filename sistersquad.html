@@ -79,14 +79,6 @@ header::after {
 .banner-stars {
   position: absolute; inset: 0; z-index: 1; pointer-events: none;
 }
-.banner-stars span {
-  position: absolute; width: 2px; height: 2px; border-radius: 50%; background: white;
-  animation: twinkle 3s ease-in-out infinite;
-}
-@keyframes twinkle {
-  0%,100% { opacity: 0.2; transform: scale(1); }
-  50%      { opacity: 0.9; transform: scale(1.4); }
-}
 
 .banner-brand {
   position: relative; z-index: 3;
@@ -98,7 +90,10 @@ header::after {
 }
 .banner-deco-line { width: 60px; height: 1px; background: linear-gradient(to right, transparent, var(--gold)); }
 .banner-deco-line.right { background: linear-gradient(to left, transparent, var(--gold)); }
-.banner-deco-diamond { width: 6px; height: 6px; background: var(--gold); transform: rotate(45deg); box-shadow: 0 0 8px rgba(201,168,76,0.8); }
+.banner-deco-diamond {
+  width: 6px; height: 6px; background: var(--gold);
+  transform: rotate(45deg); box-shadow: 0 0 8px rgba(201,168,76,0.8);
+}
 
 .banner-title {
   font-family: 'Cormorant Garamond', serif;
@@ -109,7 +104,10 @@ header::after {
   filter: drop-shadow(0 0 30px rgba(201,168,76,0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.8));
   animation: shimmer 6s linear infinite; background-size: 200% auto;
 }
-@keyframes shimmer { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+@keyframes shimmer {
+  0%   { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
 
 .banner-subtitle { font-family: 'Cinzel', serif; font-size: 0.68rem; letter-spacing: 0.55em; color: rgba(201,168,76,0.55); text-transform: uppercase; }
 
@@ -159,7 +157,7 @@ section { margin-bottom: 100px; }
 .section-title { font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--gold); letter-spacing: 0.2em; text-transform: uppercase; border-bottom: 1px solid rgba(201,168,76,0.2); padding-bottom: 10px; margin-bottom: 40px; display: flex; align-items: center; gap: 15px; }
 .section-title::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, rgba(201,168,76,0.2), transparent); }
 
-/* Character Intro */
+/* Character Intro (이미지 경로 수정됨) */
 .char-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 .char-card {
   background: var(--card-bg); border: 1px solid rgba(201,168,76,0.1); border-radius: 16px;
@@ -187,7 +185,7 @@ section { margin-bottom: 100px; }
 .video-container { position: relative; width: 100%; padding-bottom: 56.25%; background: #000; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.6); border: 1px solid rgba(201,168,76,0.1); }
 .video-container iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 
-/* OST Grid (Worship/Music Style) */
+/* OST Grid */
 .ost-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
 .ost-item { background: var(--card-bg); border: 1px solid rgba(201,168,76,0.1); border-radius: 16px; padding: 24px; backdrop-filter: blur(10px); transition: all 0.4s; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: flex; flex-direction: column; gap: 16px; }
 .ost-item:hover { transform: translateY(-6px); box-shadow: 0 15px 40px rgba(0,0,0,0.7); border-color: rgba(201,168,76,0.4); }
@@ -256,14 +254,14 @@ footer { text-align: center; padding: 48px; font-family: 'Cinzel', serif; font-s
     <h1>SisterSquad</h1>
   </div>
 
-  <!-- 1. 캐릭터 소개 -->
+  <!-- 1. 캐릭터 소개 (이미지 경로 yul01.png, jung01.png 업데이트) -->
   <section id="characters">
     <h2 class="section-title">Character Introduction</h2>
     <div class="char-grid">
       <!-- 율이 (Yul) -->
       <a href="yul.html" class="char-card">
         <div class="char-thumb-wrap">
-          <img src="KakaoTalk_20250829_162513201_05.png" alt="율이 프로필" class="char-thumb">
+          <img src="images/yul01.png" alt="율이 프로필" class="char-thumb">
         </div>
         <span class="char-name">율이 (Yul)</span>
         <span class="char-role">이성의 검, 염력의 마스터</span>
@@ -274,7 +272,7 @@ footer { text-align: center; padding: 48px; font-family: 'Cinzel', serif; font-s
       <!-- 정이 (Jung) -->
       <div class="char-card">
         <div class="char-thumb-wrap">
-          <div style="width:100%; height:100%; background: linear-gradient(135deg, #222, #444); display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,0.2); font-family:'Cinzel';">Jung</div>
+          <img src="images/jung01.png" alt="정이 프로필" class="char-thumb">
         </div>
         <span class="char-name">정이 (Jung)</span>
         <span class="char-role">공감의 마음, 소통의 마법사</span>
@@ -298,21 +296,18 @@ footer { text-align: center; padding: 48px; font-family: 'Cinzel', serif; font-s
   <section id="ost">
     <h2 class="section-title">Original Soundtrack</h2>
     <div class="ost-grid">
-      <!-- Original EP -->
       <div class="ost-item">
         <div class="album-header"><h3 class="album-title">Sister Squad EP.01</h3><span class="album-type">OST</span></div>
         <iframe src="https://open.spotify.com/embed/album/4UbsRkUcH0QJQGS6SUbtN1?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         <div class="action-links"><a href="https://open.spotify.com/album/4UbsRkUcH0QJQGS6SUbtN1?si=cZYsb2t1QdmeLV-99Z9Jtg" target="_blank" rel="noopener" class="action-btn spotify-btn">전곡 듣기 ›</a></div>
       </div>
 
-      <!-- Inst EP -->
       <div class="ost-item">
         <div class="album-header"><h3 class="album-title">Sister Squad EP.01 Inst</h3><span class="album-type">OST</span></div>
         <iframe src="https://open.spotify.com/embed/album/0UsOZREU7OJeNC4MFRt0Og?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         <div class="action-links"><a href="https://open.spotify.com/album/0UsOZREU7OJeNC4MFRt0Og?si=1WPlvwb3QxmVe9IxdFhFXg" target="_blank" rel="noopener" class="action-btn spotify-btn">전곡 듣기 ›</a></div>
       </div>
 
-      <!-- Eng EP -->
       <div class="ost-item">
         <div class="album-header"><h3 class="album-title">Sister Squad EP.01 Eng</h3><span class="album-type">OST</span></div>
         <iframe src="https://open.spotify.com/embed/album/22frEKSV9Ano8LoWaOLsnT?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
@@ -333,18 +328,5 @@ footer { text-align: center; padding: 48px; font-family: 'Cinzel', serif; font-s
 
 <footer>© 2026 Chris Lee.Papa — The Creative Archive</footer>
 
-<script>
-// Twinkle effect for banner stars
-const starsContainer = document.querySelector('.banner-stars');
-for (let i = 0; i < 10; i++) {
-  const star = document.createElement('span');
-  star.style.left = Math.random() * 100 + '%';
-  star.style.top = Math.random() * 100 + '%';
-  star.style.animationDelay = Math.random() * 3 + 's';
-  star.style.width = (Math.random() * 2 + 1) + 'px';
-  star.style.height = star.style.width;
-  starsContainer.appendChild(star);
-}
-</script>
 </body>
 </html>

@@ -173,7 +173,7 @@ header::after {
   font-family: 'Cormorant Garamond', serif;
   font-size: 2rem; font-weight: 300; letter-spacing: 0.18em;
   color: var(--text);
-  word-break: keep-all; /* 한글 단어 단위 줄바꿈 */
+  word-break: keep-all; 
   line-height: 1.4;
   transition: font-size 0.3s ease;
 }
@@ -253,6 +253,29 @@ header::after {
   background-size: cover, auto, auto;
 }
 
+/* ── SEE YOU SOON 스타일 ── */
+.coming-soon-badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-10deg);
+  z-index: 10;
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--gold-light);
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: 10px 20px;
+  border: 1px solid rgba(201, 168, 76, 0.4);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 0 20px rgba(0,0,0,0.5), inset 0 0 10px rgba(201, 168, 76, 0.2);
+  text-shadow: 0 0 10px rgba(201, 168, 76, 0.8);
+  pointer-events: none;
+}
+
 .book-front-overlay {
   position: absolute; inset: 0;
   display: flex; flex-direction: column;
@@ -312,7 +335,7 @@ header::after {
 
 footer { text-align: center; padding: 28px; font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.2em; color: rgba(154,148,144,0.35); border-top: 1px solid rgba(201,168,76,0.06); }
 
-/* ── RESPONSIVE (반응형 최적화) ── */
+/* ── RESPONSIVE ── */
 @media (max-width: 800px) {
   header { height: 170px; }
   .banner-title { font-size: 2.4rem; }
@@ -320,7 +343,7 @@ footer { text-align: center; padding: 28px; font-family: 'Cinzel', serif; font-s
 }
 
 @media (max-width: 680px) {
-  .page-heading h2 { font-size: 1.5rem; padding: 0 10px; } /* 문구 크기 중간 조절 */
+  .page-heading h2 { font-size: 1.5rem; padding: 0 10px; }
   .book-grid { gap: 48px; padding: 40px 24px 80px; }
   .back-btn { margin-left: 24px; }
 }
@@ -331,10 +354,11 @@ footer { text-align: center; padding: 28px; font-family: 'Cinzel', serif; font-s
   .banner-nav a { padding: 6px 10px; font-size: 0.65rem; letter-spacing: 0.1em; }
   
   .page-heading h2 { 
-    font-size: 1.2rem; /* 모바일에서 최적화된 크기 */
-    letter-spacing: 0.08em; /* 자간을 줄여 가독성 확보 */
+    font-size: 1.2rem; 
+    letter-spacing: 0.08em; 
     line-height: 1.5;
   }
+  .coming-soon-badge { font-size: 0.85rem; padding: 8px 16px; }
 }
 </style>
 </head>
@@ -376,7 +400,7 @@ footer { text-align: center; padding: 28px; font-family: 'Cinzel', serif; font-s
 
 <div class="book-grid">
 
-  <!-- SisterSquad (수정됨: sistersquad.html 연결) -->
+  <!-- SisterSquad -->
   <a class="book-card" href="sistersquad.html">
     <div class="book-cover-wrap">
       <div class="book-cover">
@@ -397,12 +421,14 @@ footer { text-align: center; padding: 28px; font-family: 'Cinzel', serif; font-s
     </div>
   </a>
 
-  <!-- MiracleShot -->
+  <!-- MiracleShot (See you soon 배지 추가) -->
   <a class="book-card" href="#">
     <div class="book-cover-wrap">
       <div class="book-cover">
         <div class="book-spine"><span class="book-spine-text">MiracleShot</span></div>
         <div class="book-front book-miracleshot">
+          <!-- 중앙에 위치한 See you soon 텍스트 -->
+          <div class="coming-soon-badge">See you soon</div>
           <div class="book-front-overlay">
             <span class="book-vol">Vol. 1</span>
             <span class="book-cover-title">Miracle<br>Shot</span>

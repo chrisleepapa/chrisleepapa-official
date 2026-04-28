@@ -103,7 +103,7 @@ header::after {
 
 .banner-title {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 3.6rem; /* 변경된 부분: index.html 크기와 동일하게 수정 */
+  font-size: 3.6rem;
   font-weight: 600; letter-spacing: 0.14em; line-height: 1;
   background: linear-gradient(108deg, #b8922a 0%, #e8d08a 20%, #fffbe8 38%, #c9a84c 52%, #fff0b0 68%, #c9a84c 80%, #e8d08a 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
@@ -116,11 +116,10 @@ header::after {
 }
 
 .banner-subtitle {
-  font-family: 'Cinzel', serif; font-size: 0.68rem; /* 변경된 부분: index.html 크기와 동일하게 수정 */ letter-spacing: 0.55em;
+  font-family: 'Cinzel', serif; font-size: 0.68rem; letter-spacing: 0.55em;
   color: rgba(201,168,76,0.55); text-transform: uppercase;
 }
 
-/* 네비게이션 메뉴가 좁은 화면에서도 잘리지 않도록 flex-wrap 적용 */
 .banner-nav {
   position: relative; z-index: 3;
   display: flex; align-items: center; justify-content: center; flex-wrap: wrap; margin-top: 16px;
@@ -210,14 +209,12 @@ header::after {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Book cover wrapper */
 .book-cover-wrap {
   position: relative;
   width: 260px;
   perspective: 900px;
 }
 
-/* 3D book effect */
 .book-cover {
   position: relative;
   width: 260px;
@@ -225,9 +222,7 @@ header::after {
   transform-style: preserve-3d;
   transform: rotateY(-18deg);
   transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  box-shadow:
-    -10px 10px 40px rgba(0,0,0,0.7),
-    -4px 4px 12px rgba(0,0,0,0.5);
+  box-shadow: -10px 10px 40px rgba(0,0,0,0.7), -4px 4px 12px rgba(0,0,0,0.5);
 }
 
 .book-card:hover .book-cover {
@@ -235,37 +230,26 @@ header::after {
   box-shadow: -18px 18px 55px rgba(0,0,0,0.75), -6px 6px 18px rgba(0,0,0,0.5);
 }
 
-/* Front face */
 .book-front {
   position: absolute; inset: 0;
   background: #1a1a2e;
-  background-image: url('/images/book.png');
+  background-image: url('images/book.png');
   background-size: cover;
   background-position: center;
   border-radius: 2px 6px 6px 2px;
   overflow: hidden;
 }
 
-/* Per-book cover colors (fallback if no image) */
 .book-front.book-sistersquad {
-  background-image: url('/images/sistersquad1.png'),
-    radial-gradient(circle at 50% 35%, rgba(180,100,255,0.4) 0%, transparent 55%),
-    radial-gradient(circle at 80% 70%, rgba(80,50,160,0.3) 0%, transparent 45%),
-    linear-gradient(160deg, #2a1050 0%, #0d0820 60%, #050512 100%);
-  background-size: cover, auto, auto, auto;
-  background-position: center, center, center, center;
+  background-image: url('images/sistersquad1.png'), radial-gradient(circle at 50% 35%, rgba(180,100,255,0.4) 0%, transparent 55%), linear-gradient(160deg, #2a1050 0%, #0d0820 60%, #050512 100%);
+  background-size: cover, auto, auto;
 }
 
 .book-front.book-miracleshot {
-  background-image: url('/images/miracleshot1.png'),
-    radial-gradient(circle at 50% 40%, rgba(0,180,255,0.35) 0%, transparent 55%),
-    radial-gradient(circle at 25% 75%, rgba(0,100,200,0.25) 0%, transparent 45%),
-    linear-gradient(160deg, #082840 0%, #040e1a 60%, #020810 100%);
-  background-size: cover, auto, auto, auto;
-  background-position: center, center, center, center;
+  background-image: url('images/miracleshot1.png'), radial-gradient(circle at 50% 40%, rgba(0,180,255,0.35) 0%, transparent 55%), linear-gradient(160deg, #082840 0%, #040e1a 60%, #020810 100%);
+  background-size: cover, auto, auto;
 }
 
-/* Cover overlay – title area */
 .book-front-overlay {
   position: absolute; inset: 0;
   display: flex; flex-direction: column;
@@ -274,105 +258,60 @@ header::after {
   background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
 }
 
-.book-vol {
-  font-family: 'Cinzel', serif;
-  font-size: 0.6rem; letter-spacing: 0.4em;
-  color: var(--gold); text-transform: uppercase;
-  margin-bottom: 6px;
-}
+.book-vol { font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.4em; color: var(--gold); text-transform: uppercase; margin-bottom: 6px; }
 
 .book-cover-title {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.45rem; font-weight: 600; letter-spacing: 0.08em;
-  line-height: 1.2;
+  font-size: 1.45rem; font-weight: 600; letter-spacing: 0.08em; line-height: 1.2;
   background: linear-gradient(108deg, #e8d08a 0%, #fffbe8 40%, #c9a84c 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 
-/* Book spine */
 .book-spine {
-  position: absolute;
-  left: -14px; top: 0; bottom: 0; width: 14px;
+  position: absolute; left: -14px; top: 0; bottom: 0; width: 14px;
   background: linear-gradient(to right, #0a0810, #1a1228);
   border-radius: 2px 0 0 2px;
   display: flex; align-items: center; justify-content: center;
 }
 
 .book-spine-text {
-  font-family: 'Cinzel', serif; font-size: 0.5rem;
-  letter-spacing: 0.25em; color: rgba(201,168,76,0.4);
-  writing-mode: vertical-rl; transform: rotate(180deg);
-  text-transform: uppercase;
+  font-family: 'Cinzel', serif; font-size: 0.5rem; letter-spacing: 0.25em; color: rgba(201,168,76,0.4);
+  writing-mode: vertical-rl; transform: rotate(180deg); text-transform: uppercase;
 }
 
-/* Glow ring on hover */
 .book-cover-wrap::after {
   content: '';
-  position: absolute;
-  inset: -6px; border-radius: 8px;
+  position: absolute; inset: -6px; border-radius: 8px;
   background: transparent;
   box-shadow: 0 0 0 1px rgba(201,168,76,0);
   transition: box-shadow 0.45s;
   pointer-events: none;
 }
-.book-card:hover .book-cover-wrap::after {
-  box-shadow: 0 0 30px rgba(201,168,76,0.25), 0 0 0 1px rgba(201,168,76,0.15);
-}
+.book-card:hover .book-cover-wrap::after { box-shadow: 0 0 30px rgba(201,168,76,0.25), 0 0 0 1px rgba(201,168,76,0.15); }
 
-/* ── BOOK INFO (below cover) ── */
-.book-info {
-  width: 260px;
-  padding: 24px 4px 0;
-  display: flex; flex-direction: column; gap: 8px;
-  align-items: flex-start;
-}
+.book-info { width: 260px; padding: 24px 4px 0; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
 
-.book-info-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.25rem; font-weight: 600; letter-spacing: 0.06em;
-  color: var(--text);
-  transition: color 0.3s;
-}
+.book-info-title { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 600; letter-spacing: 0.06em; color: var(--text); transition: color 0.3s; }
 .book-card:hover .book-info-title { color: var(--gold-light); }
 
-.book-info-vol {
-  font-family: 'Cinzel', serif; font-size: 0.65rem;
-  letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase;
-}
+.book-info-vol { font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; }
 
-.book-info-desc {
-  font-size: 0.82rem; font-weight: 300; line-height: 1.75;
-  color: rgba(240,236,228,0.55); margin-top: 4px;
-}
+.book-info-desc { font-size: 0.82rem; font-weight: 300; line-height: 1.75; color: rgba(240,236,228,0.55); margin-top: 4px; }
 
 .book-info-btn {
-  display: inline-flex; align-items: center; gap: 6px;
-  margin-top: 12px;
+  display: inline-flex; align-items: center; gap: 6px; margin-top: 12px;
   font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.22em;
   color: var(--cyan); border: 1px solid rgba(0,212,255,0.35);
-  border-radius: 50px; padding: 8px 20px; text-transform: uppercase;
-  text-decoration: none;
+  border-radius: 50px; padding: 8px 20px; text-transform: uppercase; text-decoration: none;
   transition: background 0.3s, color 0.3s, border-color 0.3s;
 }
-.book-card:hover .book-info-btn {
-  background: rgba(0,212,255,0.08);
-  border-color: rgba(0,212,255,0.7);
-  color: #fff;
-}
+.book-card:hover .book-info-btn { background: rgba(0,212,255,0.08); border-color: rgba(0,212,255,0.7); color: #fff; }
 
-/* ── FOOTER ── */
-footer {
-  text-align: center; padding: 28px;
-  font-family: 'Cinzel', serif; font-size: 0.65rem;
-  letter-spacing: 0.2em; color: rgba(154,148,144,0.35);
-  border-top: 1px solid rgba(201,168,76,0.06);
-}
+footer { text-align: center; padding: 28px; font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.2em; color: rgba(154,148,144,0.35); border-top: 1px solid rgba(201,168,76,0.06); }
 
-/* ── RESPONSIVE (완벽하게 잘림 방지) ── */
 @media (max-width: 800px) {
   header { height: 170px; }
-  .banner-title { font-size: 2.4rem; } /* 변경된 부분: index.html 크기와 동일하게 수정 */
-  /* 태블릿 사이즈 진입 시 메뉴 여백(padding)을 줄여서 한 줄에 들어가게 함 */
+  .banner-title { font-size: 2.4rem; }
   .banner-nav a { padding: 6px 16px; font-size: 0.72rem; letter-spacing: 0.15em; }
 }
 
@@ -382,7 +321,6 @@ footer {
 }
 
 @media (max-width: 480px) {
-  /* 좁은 모바일 화면에서는 폰트와 자간을 더 줄여서 잘림을 완벽 차단 */
   .banner-title { font-size: 1.8rem; letter-spacing: 0.1em; }
   .banner-subtitle { font-size: 0.55rem; letter-spacing: 0.3em; }
   .banner-nav a { padding: 6px 10px; font-size: 0.65rem; letter-spacing: 0.1em; }
@@ -394,15 +332,9 @@ footer {
 <header>
   <div class="banner-top-line"></div>
   <div class="banner-stars" aria-hidden="true">
-    <span style="left:5%;  top:22%; animation-delay:0s;   opacity:0.6; width:1.5px; height:1.5px;"></span>
-    <span style="left:12%; top:55%; animation-delay:0.8s; opacity:0.4;"></span>
-    <span style="left:18%; top:30%; animation-delay:1.4s; opacity:0.7; width:1.5px; height:1.5px;"></span>
-    <span style="left:32%; top:18%; animation-delay:2.1s; opacity:0.8; width:3px; height:3px;"></span>
-    <span style="left:62%; top:15%; animation-delay:0.6s; opacity:0.8; width:3px; height:3px;"></span>
-    <span style="left:74%; top:28%; animation-delay:0.4s; opacity:0.7; width:1.5px; height:1.5px;"></span>
-    <span style="left:87%; top:35%; animation-delay:1.0s; opacity:0.6; width:1.5px; height:1.5px;"></span>
-    <span style="left:93%; top:52%; animation-delay:1.8s; opacity:0.4;"></span>
-    <span style="left:50%; top:10%; animation-delay:1.5s; opacity:0.5; width:1.5px; height:1.5px;"></span>
+    <span style="left:5%;  top:22%; width:1.5px; height:1.5px;"></span>
+    <span style="left:32%; top:18%; width:3px; height:3px;"></span>
+    <span style="left:87%; top:35%; width:1.5px; height:1.5px;"></span>
   </div>
   <div class="banner-brand">
     <div class="banner-deco-row">
@@ -411,11 +343,10 @@ footer {
       <div class="banner-deco-line right"></div>
     </div>
     <a href="index.html" style="text-decoration: none; display: inline-block;">
-      <h1 class="banner-title" title="홈으로 가기">Chris Lee.Papa</h1>
+      <h1 class="banner-title">Chris Lee.Papa</h1>
     </a>
     <p class="banner-subtitle">The &nbsp; Creative &nbsp; Archive</p>
   </div>
-  
   <nav class="banner-nav">
     <a href="book.html">BOOK</a>
     <a href="music.html">MUSIC</a>
@@ -434,13 +365,11 @@ footer {
 
 <div class="book-grid">
 
-  <!-- SisterSquad -->
-  <a class="book-card" href="#">
+  <!-- SisterSquad (수정됨: sistersquad.html 연결) -->
+  <a class="book-card" href="sistersquad.html">
     <div class="book-cover-wrap">
       <div class="book-cover">
-        <div class="book-spine">
-          <span class="book-spine-text">SisterSquad</span>
-        </div>
+        <div class="book-spine"><span class="book-spine-text">SisterSquad</span></div>
         <div class="book-front book-sistersquad">
           <div class="book-front-overlay">
             <span class="book-vol">Vol. 1</span>
@@ -452,9 +381,7 @@ footer {
     <div class="book-info">
       <p class="book-info-vol">Vol. 1</p>
       <h3 class="book-info-title">SisterSquad</h3>
-      <p class="book-info-desc">
-      책 속 마법 세계로 빠져든 T 언니 율이와 F 동생 정이! 어둠에 맞서며 용기와 가족의 사랑을 깨닫는 환상적인 모험.
-    </p>
+      <p class="book-info-desc">책 속 마법 세계로 빠져든 T 언니 율이와 F 동생 정이! 어둠에 맞서며 용기와 가족의 사랑을 깨닫는 환상적인 모험.</p>
       <span class="book-info-btn">자세히 보기 ›</span>
     </div>
   </a>
@@ -463,9 +390,7 @@ footer {
   <a class="book-card" href="#">
     <div class="book-cover-wrap">
       <div class="book-cover">
-        <div class="book-spine">
-          <span class="book-spine-text">MiracleShot</span>
-        </div>
+        <div class="book-spine"><span class="book-spine-text">MiracleShot</span></div>
         <div class="book-front book-miracleshot">
           <div class="book-front-overlay">
             <span class="book-vol">Vol. 1</span>
@@ -485,6 +410,5 @@ footer {
 </div>
 
 <footer>© 2026 Chris Lee.Papa — The Creative Archive</footer>
-
 </body>
 </html>

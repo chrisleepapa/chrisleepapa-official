@@ -78,14 +78,6 @@ header::after {
 .banner-stars {
   position: absolute; inset: 0; z-index: 1; pointer-events: none;
 }
-.banner-stars span {
-  position: absolute; width: 2px; height: 2px; border-radius: 50%; background: white;
-  animation: twinkle 3s ease-in-out infinite;
-}
-@keyframes twinkle {
-  0%,100% { opacity: 0.2; transform: scale(1); }
-  50%      { opacity: 0.9; transform: scale(1.4); }
-}
 
 .banner-brand {
   position: relative; z-index: 3;
@@ -146,7 +138,7 @@ header::after {
 .back-btn:hover::before { transform: translateX(-4px); }
 
 /* ── PROFILE CONTENT ── */
-.container { max-width: 1000px; margin: 0 auto; padding: 20px 24px 100px; }
+.container { max-width: 1200px; margin: 0 auto; padding: 20px 24px 100px; }
 
 .profile-header { display: grid; grid-template-columns: 380px 1fr; gap: 50px; align-items: start; margin-bottom: 80px; }
 .profile-img-wrap { position: relative; border-radius: 24px; overflow: hidden; border: 1px solid rgba(201,168,76,0.3); box-shadow: 0 30px 60px rgba(0,0,0,0.8); }
@@ -163,11 +155,12 @@ header::after {
 .bio-text { font-size: 1.1rem; color: rgba(240,236,228,0.85); word-break: keep-all; }
 .bio-text p { margin-bottom: 25px; }
 
-.gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 40px; }
-.media-item { border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); background: #000; aspect-ratio: 16/9; box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
+/* 갤러리 그리드 레이아웃 최적화 */
+.gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; margin-top: 40px; }
+.media-item { border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); background: #000; aspect-ratio: 16/9; box-shadow: 0 15px 35px rgba(0,0,0,0.5); position: relative; }
 .media-item iframe { width: 100%; height: 100%; border: 0; }
-.photo-item { background-size: cover; background-position: center; border: 1px solid rgba(201,168,76,0.15); filter: brightness(0.85); transition: filter 0.3s; }
-.photo-item:hover { filter: brightness(1); }
+.photo-item { background-size: cover; background-position: center; border: 1px solid rgba(201,168,76,0.15); filter: brightness(0.85); transition: all 0.4s; }
+.photo-item:hover { filter: brightness(1); transform: translateY(-5px); border-color: var(--gold); }
 
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
@@ -177,7 +170,6 @@ header::after {
   .profile-header { grid-template-columns: 1fr; justify-items: center; text-align: center; gap: 40px; }
   .profile-img-wrap { max-width: 450px; }
   .info-content .title-tag { border-left: 0; border-bottom: 2px solid var(--cyan); padding-left: 0; padding-bottom: 10px; display: inline-block; }
-  .gallery-grid { grid-template-columns: 1fr; }
   .back-btn { margin-left: 24px; }
 }
 
@@ -218,7 +210,6 @@ footer { text-align: center; padding: 48px; font-family: 'Cinzel', serif; font-s
 <main class="container">
   <div class="profile-header">
     <div class="profile-img-wrap">
-      <!-- 율이 메인 이미지 경로: yul01.png -->
       <img src="images/yul01.png" alt="율이 프로필" class="profile-img">
     </div>
     <div class="info-content">
@@ -246,15 +237,26 @@ footer { text-align: center; padding: 48px; font-family: 'Cinzel', serif; font-s
     </div>
   </section>
 
+  <!-- Visual Archives 섹션 업데이트 -->
   <section class="bio-section">
     <h2>Visual Archives</h2>
     <div class="gallery-grid">
+      <!-- 메인 트레일러 영상 -->
       <div class="media-item">
         <iframe src="https://www.youtube.com/embed/C0lluI-l0gc" title="SisterSquad Trailer" allowfullscreen></iframe>
       </div>
-      <!-- 아카이브 이미지 경로: yul01.png -->
-      <div class="media-item photo-item" style="background-image: url('images/yul01.png');">
-      </div>
+
+      <!-- 율이 이미지 아카이브 (yul01 ~ yul10) -->
+      <div class="media-item photo-item" style="background-image: url('images/yul01.png');"></div>
+      <div class="media-item photo-item" style="background-image: url('images/yul02.png');"></div>
+      <div class="media-item photo-item" style="background-image: url('images/yul03.png');"></div>
+      <div class="media-item photo-item" style="background-image: url('images/yul04.png');"></div>
+      <div class="media-item photo-item" style="background-image: url('images/yul05.png');"></div>
+      <div class="media-item photo-item" style="background-image: url('images/yul06.png');"></div>
+      <div class="media-item photo-item" style="background-image: url('images/yul07.png');"></div>
+      <div class="media-item photo-item" style="background-image: url('images/yul08.png');"></div>
+      <div class="media-item photo-item" style="background-image: url('images/yul09.png');"></div>
+      <div class="media-item photo-item" style="background-image: url('images/yul10.png');"></div>
     </div>
   </section>
 </main>
@@ -266,13 +268,17 @@ footer { text-align: center; padding: 48px; font-family: 'Cinzel', serif; font-s
 <script>
 // Twinkle effect for banner stars
 const starsContainer = document.querySelector('.banner-stars');
-for (let i = 0; i < 12; i++) {
+for (let i = 0; i < 15; i++) {
   const star = document.createElement('span');
   star.style.left = Math.random() * 100 + '%';
   star.style.top = Math.random() * 100 + '%';
   star.style.animationDelay = Math.random() * 3 + 's';
   star.style.width = (Math.random() * 2 + 1) + 'px';
   star.style.height = star.style.width;
+  star.style.position = 'absolute';
+  star.style.borderRadius = '50%';
+  star.style.background = 'white';
+  star.style.animation = 'twinkle 3s ease-in-out infinite';
   starsContainer.appendChild(star);
 }
 </script>

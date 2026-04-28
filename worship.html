@@ -120,7 +120,6 @@ header::after {
   letter-spacing: 0.55em; color: rgba(201,168,76,0.55); text-transform: uppercase;
 }
 
-/* 네비게이션 메뉴 잘림 방지 (flex-wrap) */
 .banner-nav {
   position: relative; z-index: 3;
   display: flex; align-items: center; justify-content: center; flex-wrap: wrap; margin-top: 16px;
@@ -174,6 +173,9 @@ header::after {
   font-family: 'Cormorant Garamond', serif;
   font-size: 2rem; font-weight: 300; letter-spacing: 0.18em;
   color: var(--text);
+  word-break: keep-all;
+  line-height: 1.4;
+  transition: font-size 0.3s ease;
 }
 
 .page-heading .divider {
@@ -181,7 +183,7 @@ header::after {
   background: linear-gradient(to right, transparent, var(--gold), transparent);
 }
 
-/* ── 뮤직/워십 그리드 (MUSIC GRID) ── */
+/* ── MUSIC GRID ── */
 .music-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
@@ -213,7 +215,7 @@ header::after {
 .music-item:hover {
   transform: translateY(-6px);
   box-shadow: 0 15px 40px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,140,50,0.25);
-  border-color: rgba(255,140,50,0.4); /* Worship 느낌을 위한 오렌지골드 포인트 */
+  border-color: rgba(255,140,50,0.4);
 }
 
 .music-item iframe {
@@ -222,7 +224,6 @@ header::after {
   height: 352px;
 }
 
-/* ── 앨범 헤더 (ALBUM HEADER) ── */
 .album-header {
   display: flex;
   justify-content: space-between;
@@ -250,7 +251,6 @@ header::after {
   text-transform: uppercase;
 }
 
-/* ── 액션 링크 (ACTION LINKS) ── */
 .action-links {
   display: flex;
   justify-content: space-between;
@@ -272,24 +272,14 @@ header::after {
   color: #1DB954;
   border-color: rgba(29, 185, 84, 0.4);
 }
+.spotify-btn:hover { color: #1ed760; border-color: #1ed760; }
 
-.spotify-btn:hover {
-  color: #1ed760;
-  border-color: #1ed760;
-}
-
-/* 추가된 가사 보기 버튼 디자인 */
 .lyric-btn {
   color: var(--gold);
   border-color: rgba(201,168,76,0.4);
 }
+.lyric-btn:hover { color: var(--cyan); border-color: var(--cyan); }
 
-.lyric-btn:hover {
-  color: var(--cyan);
-  border-color: var(--cyan);
-}
-
-/* ── FOOTER ── */
 footer {
   text-align: center; padding: 28px;
   font-family: 'Cinzel', serif; font-size: 0.65rem;
@@ -297,7 +287,7 @@ footer {
   border-top: 1px solid rgba(201,168,76,0.06);
 }
 
-/* ── RESPONSIVE ── */
+/* ── RESPONSIVE (타이틀 폰트 조절) ── */
 @media (max-width: 800px) {
   header { height: 170px; }
   .banner-title { font-size: 2.4rem; }
@@ -305,6 +295,7 @@ footer {
 }
 
 @media (max-width: 680px) {
+  .page-heading h2 { font-size: 1.5rem; padding: 0 10px; }
   .back-btn { margin-left: 24px; }
   .music-grid { padding: 32px 16px 80px; gap: 24px; }
   .music-item { padding: 16px; }
@@ -313,7 +304,13 @@ footer {
 @media (max-width: 480px) {
   .banner-title { font-size: 1.8rem; letter-spacing: 0.1em; }
   .banner-subtitle { font-size: 0.55rem; letter-spacing: 0.3em; }
-  .banner-nav a { padding: 6px 10px; font-size: 0.65rem; letter-spacing: 0.1em; }
+  .banner-nav a { padding: 6px 10px; font-size: 0.65rem; letter-spacing: 0.12em; }
+  
+  .page-heading h2 { 
+    font-size: 1.2rem; 
+    letter-spacing: 0.08em; 
+    line-height: 1.5;
+  }
 }
 </style>
 </head>
@@ -321,30 +318,18 @@ footer {
 
 <header>
   <div class="banner-top-line"></div>
-  <div class="banner-stars" aria-hidden="true">
-    <span style="left:5%;  top:22%; animation-delay:0s;   opacity:0.6; width:1.5px; height:1.5px;"></span>
-    <span style="left:12%; top:55%; animation-delay:0.8s; opacity:0.4;"></span>
-    <span style="left:18%; top:30%; animation-delay:1.4s; opacity:0.7; width:1.5px; height:1.5px;"></span>
-    <span style="left:32%; top:18%; animation-delay:2.1s; opacity:0.8; width:3px; height:3px;"></span>
-    <span style="left:62%; top:15%; animation-delay:0.6s; opacity:0.8; width:3px; height:3px;"></span>
-    <span style="left:74%; top:28%; animation-delay:0.4s; opacity:0.7; width:1.5px; height:1.5px;"></span>
-    <span style="left:87%; top:35%; animation-delay:1.0s; opacity:0.6; width:1.5px; height:1.5px;"></span>
-    <span style="left:93%; top:52%; animation-delay:1.8s; opacity:0.4;"></span>
-    <span style="left:50%; top:10%; animation-delay:1.5s; opacity:0.5; width:1.5px; height:1.5px;"></span>
-  </div>
+  <div class="banner-stars" aria-hidden="true"></div>
   <div class="banner-brand">
     <div class="banner-deco-row">
       <div class="banner-deco-line"></div>
       <div class="banner-deco-diamond"></div>
       <div class="banner-deco-line right"></div>
     </div>
-    <!-- 안전한 홈 이동 기능 (<a> 태그) -->
     <a href="index.html" style="text-decoration: none; display: inline-block;">
       <h1 class="banner-title" title="홈으로 가기">Chris Lee.Papa</h1>
     </a>
     <p class="banner-subtitle">The &nbsp; Creative &nbsp; Archive</p>
   </div>
-  
   <nav class="banner-nav">
     <a href="book.html">BOOK</a>
     <a href="music.html">MUSIC</a>
@@ -376,7 +361,20 @@ footer {
     </div>
   </div>
 
-  <!-- Worship Track 1 -->
+  <!-- 나의 찬양 vol 2 (추가됨) -->
+  <div class="music-item">
+    <div class="album-header">
+      <h3 class="album-title">나의 찬양 vol 2</h3>
+      <span class="album-type">Album</span>
+    </div>
+    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/album/0yhn8oEojOqsI864an6Qki?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    <div class="action-links">
+      <a href="https://open.spotify.com/album/0yhn8oEojOqsI864an6Qki?si=I3WpBBRkS4mQokSoeeuQBA" target="_blank" rel="noopener" class="action-btn spotify-btn">전곡 듣기</a>
+      <div></div>
+    </div>
+  </div>
+
+  <!-- Worship Track 1: 파레시아 -->
   <div class="music-item">
     <div class="album-header">
       <h3 class="album-title">파레시아</h3>
@@ -389,7 +387,7 @@ footer {
     </div>
   </div>
 
-  <!-- Worship Track 2 -->
+  <!-- Worship Track 2: 주를 향해 노래하리 -->
   <div class="music-item">
     <div class="album-header">
       <h3 class="album-title">주를 향해 노래하리</h3>
@@ -402,7 +400,7 @@ footer {
     </div>
   </div>
 
-  <!-- Worship Track 3 -->
+  <!-- Worship Track 3: 기적입니다 -->
   <div class="music-item">
     <div class="album-header">
       <h3 class="album-title">기적입니다</h3>
@@ -415,7 +413,7 @@ footer {
     </div>
   </div>
 
-  <!-- Worship Track 4 -->
+  <!-- Worship Track 4: 일어나 외쳐 -->
   <div class="music-item">
     <div class="album-header">
       <h3 class="album-title">일어나 외쳐</h3>
@@ -428,7 +426,7 @@ footer {
     </div>
   </div>
 
-  <!-- Worship Track 5 -->
+  <!-- Worship Track 5: 사랑으로 -->
   <div class="music-item">
     <div class="album-header">
       <h3 class="album-title">사랑으로</h3>
@@ -441,7 +439,7 @@ footer {
     </div>
   </div>
 
-  <!-- Worship Track 6 -->
+  <!-- Worship Track 6: 우리의 예배 -->
   <div class="music-item">
     <div class="album-header">
       <h3 class="album-title">우리의 예배</h3>
@@ -457,6 +455,24 @@ footer {
 </main>
 
 <footer>© 2026 Chris Lee.Papa — The Creative Archive</footer>
+
+<script>
+// Twinkle effect for banner stars
+const starsContainer = document.querySelector('.banner-stars');
+for (let i = 0; i < 12; i++) {
+  const star = document.createElement('span');
+  star.style.left = Math.random() * 100 + '%';
+  star.style.top = Math.random() * 100 + '%';
+  star.style.animationDelay = Math.random() * 3 + 's';
+  star.style.width = (Math.random() * 2 + 1) + 'px';
+  star.style.height = star.style.width;
+  star.style.position = 'absolute';
+  star.style.borderRadius = '50%';
+  star.style.background = 'white';
+  star.style.animation = 'twinkle 3s ease-in-out infinite';
+  starsContainer.appendChild(star);
+}
+</script>
 
 </body>
 </html>

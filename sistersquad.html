@@ -19,6 +19,14 @@
   --text-dim: #9a9490;
 }
 body { background: var(--bg); color: var(--text); font-family: 'Noto Serif KR', serif; line-height: 1.6; min-height: 100vh; overflow-x: hidden; }
+
+/* Noise overlay */
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 900; opacity: 0.4;
+}
+
 header { position: relative; width: 100%; height: 220px; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 header::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, #0a0810 0%, #050507 100%); z-index: 0; }
 .banner-brand { position: relative; z-index: 3; display: flex; flex-direction: column; align-items: center; }
@@ -45,12 +53,15 @@ section { margin-bottom: 100px; }
 .char-desc { font-size: 0.95rem; color: rgba(240,236,228,0.7); word-break: keep-all; }
 .view-detail { font-family: 'Cinzel', serif; font-size: 0.75rem; color: var(--gold); margin-top: 25px; }
 
+/* OST Grid (3단 구성으로 변경) */
 .ost-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
-.ost-item { background: var(--card-bg); border: 1px solid rgba(201,168,76,0.1); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px; }
-.album-header { display: flex; justify-content: space-between; align-items: center; }
+.ost-item { background: var(--card-bg); border: 1px solid rgba(201,168,76,0.1); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px; transition: transform 0.3s; }
+.ost-item:hover { transform: translateY(-5px); border-color: rgba(201,168,76,0.3); }
+.album-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
 .album-title { font-family: 'Cinzel', serif; font-size: 1.05rem; color: var(--text); }
 .album-type { font-family: 'Cinzel', serif; font-size: 0.65rem; color: var(--gold); border: 1px solid; padding: 3px 8px; border-radius: 20px; }
-.action-btn { font-family: 'Cinzel', serif; font-size: 0.85rem; text-decoration: none; color: #1DB954; }
+.action-btn { font-family: 'Cinzel', serif; font-size: 0.85rem; text-decoration: none; color: #1DB954; font-weight: 600; margin-top: 8px; align-self: flex-start; border-bottom: 1px solid transparent; transition: border-color 0.3s; }
+.action-btn:hover { border-color: #1DB954; }
 
 .buy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 700px; margin: 0 auto; }
 .buy-btn { display: flex; align-items: center; justify-content: center; padding: 22px; border-radius: 12px; text-decoration: none; font-family: 'Cinzel', serif; font-size: 0.95rem; }
@@ -58,12 +69,21 @@ section { margin-bottom: 100px; }
 .btn-ebook { border: 1.5px solid var(--cyan); color: var(--cyan); }
 
 footer { text-align: center; padding: 48px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: rgba(154,148,144,0.4); border-top: 1px solid rgba(201,168,76,0.06); }
+
+@media (max-width: 768px) {
+  .char-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
 
 <header>
   <div class="banner-brand">
+    <div class="banner-deco-row">
+      <div class="banner-deco-line"></div>
+      <div class="banner-deco-diamond"></div>
+      <div class="banner-deco-line right"></div>
+    </div>
     <a href="index.html" style="text-decoration: none;"><h1 class="banner-title">Chris Lee.Papa</h1></a>
     <nav class="banner-nav">
       <a href="book.html">BOOK</a>
@@ -93,7 +113,7 @@ footer { text-align: center; padding: 48px; font-family: 'Cinzel', serif; font-s
         <p class="char-desc">냉철한 이성과 분석력을 가진 11세 소녀. 동생을 지키기 위해 강력한 염력의 힘을 각성시킵니다.</p>
         <span class="view-detail">VIEW PROFILE ›</span>
       </a>
-      <!-- 정이 (수정됨: jung.html 연결) -->
+      <!-- 정이 -->
       <a href="jung.html" class="char-card">
         <div class="char-thumb-wrap"><img src="images/jung01.png" alt="Jung" class="char-thumb"></div>
         <span class="char-name">정이 (Jung)</span>
@@ -111,18 +131,29 @@ footer { text-align: center; padding: 48px; font-family: 'Cinzel', serif; font-s
     </div>
   </section>
 
+  <!-- OST 섹션 (Eng 버전 추가) -->
   <section id="ost">
     <h2 class="section-title">Original Soundtrack</h2>
     <div class="ost-grid">
+      <!-- Original EP -->
       <div class="ost-item">
         <div class="album-header"><h3 class="album-title">Sister Squad EP.01</h3><span class="album-type">OST</span></div>
-        <iframe src="https://open.spotify.com/embed/album/4UbsRkUcH0QJQGS6SUbtN1" width="100%" height="352" frameBorder="0"></iframe>
-        <a href="https://open.spotify.com/album/4UbsRkUcH0QJQGS6SUbtN1" target="_blank" class="action-btn">전곡 듣기 ›</a>
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/album/4UbsRkUcH0QJQGS6SUbtN1?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <a href="https://open.spotify.com/album/4UbsRkUcH0QJQGS6SUbtN1?si=cZYsb2t1QdmeLV-99Z9Jtg" target="_blank" rel="noopener" class="action-btn">전곡 듣기 ›</a>
       </div>
+
+      <!-- Inst EP -->
       <div class="ost-item">
         <div class="album-header"><h3 class="album-title">Sister Squad EP.01 Inst</h3><span class="album-type">OST</span></div>
-        <iframe src="https://open.spotify.com/embed/album/0UsOZREU7OJeNC4MFRt0Og" width="100%" height="352" frameBorder="0"></iframe>
-        <a href="https://open.spotify.com/album/0UsOZREU7OJeNC4MFRt0Og" target="_blank" class="action-btn">전곡 듣기 ›</a>
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/album/0UsOZREU7OJeNC4MFRt0Og?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <a href="https://open.spotify.com/album/0UsOZREU7OJeNC4MFRt0Og?si=1WPlvwb3QxmVe9IxdFhFXg" target="_blank" rel="noopener" class="action-btn">전곡 듣기 ›</a>
+      </div>
+
+      <!-- Eng EP (추가됨) -->
+      <div class="ost-item">
+        <div class="album-header"><h3 class="album-title">Sister Squad EP.01 Eng</h3><span class="album-type">OST</span></div>
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/album/22frEKSV9Ano8LoWaOLsnT?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <a href="https://open.spotify.com/album/22frEKSV9Ano8LoWaOLsnT?si=fXxgTUThRHqqKHyX8PbsfA" target="_blank" rel="noopener" class="action-btn">전곡 듣기 ›</a>
       </div>
     </div>
   </section>

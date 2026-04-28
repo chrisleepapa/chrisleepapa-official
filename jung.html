@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>정이 (Jung) Profile – SisterSquad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600&family=Noto+Serif+KR:wght@300;400&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & BASE ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --gold: #c9a84c;
+  --gold-light: #e8d08a;
+  --pink-light: #f4d0d8;
+  --cyan: #00d4ff;
+  --bg: #050507;
+  --text: #f0ece4;
+  --text-dim: #9a9490;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Serif KR', serif;
+  line-height: 1.8;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Noise overlay */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 900; opacity: 0.4;
+}
+
+/* ── BANNER HEADER ── */
+header {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(80,40,120,0.35) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 50%, rgba(30,60,100,0.3) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 0%,  rgba(201,168,76,0.12) 0%, transparent 60%),
+    linear-gradient(to bottom, #0a0810 0%, #050507 100%);
+  z-index: 0;
+}
+
+header::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(to right, transparent 0%, rgba(201,168,76,0.15) 15%, rgba(201,168,76,0.55) 35%, rgba(232,208,138,0.9) 50%, rgba(201,168,76,0.55) 65%, rgba(201,168,76,0.15) 85%, transparent 100%);
+  z-index: 2;
+}
+
+.banner-top-line {
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(to right, transparent 0%, rgba(201,168,76,0.4) 30%, rgba(201,168,76,0.8) 50%, rgba(201,168,76,0.4) 70%, transparent 100%);
+  z-index: 2;
+}
+
+.banner-brand {
+  position: relative; z-index: 3;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+
+.banner-deco-row {
+  display: flex; align-items: center; gap: 14px; opacity: 0.7;
+}
+.banner-deco-line { width: 60px; height: 1px; background: linear-gradient(to right, transparent, var(--gold)); }
+.banner-deco-line.right { background: linear-gradient(to left, transparent, var(--gold)); }
+.banner-deco-diamond { width: 6px; height: 6px; background: var(--gold); transform: rotate(45deg); box-shadow: 0 0 8px rgba(201,168,76,0.8); }
+
+.banner-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3.6rem;
+  font-weight: 600; letter-spacing: 0.14em; line-height: 1;
+  background: linear-gradient(108deg, #b8922a 0%, #e8d08a 20%, #fffbe8 38%, #c9a84c 52%, #fff0b0 68%, #c9a84c 80%, #e8d08a 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  filter: drop-shadow(0 0 30px rgba(201,168,76,0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+  animation: shimmer 6s linear infinite; background-size: 200% auto;
+}
+@keyframes shimmer { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+
+.banner-nav {
+  position: relative; z-index: 3;
+  display: flex; align-items: center; justify-content: center; flex-wrap: wrap; margin-top: 18px;
+}
+.banner-nav a {
+  font-family: 'Cinzel', serif; font-size: 0.78rem; font-weight: 400; letter-spacing: 0.28em; color: rgba(154,148,144,0.75); text-decoration: none;
+  padding: 6px 28px; position: relative; transition: color 0.3s; text-transform: uppercase;
+}
+.banner-nav a:hover { color: var(--gold-light); }
+
+/* ── BACK BUTTON ── */
+.back-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 0.2em;
+  color: var(--text-dim); text-decoration: none; text-transform: uppercase;
+  padding: 10px 0; margin: 36px 0 0 52px;
+  transition: color 0.3s;
+  position: relative;
+}
+.back-btn::before { content: '‹'; font-size: 1.2rem; line-height: 1; transition: transform 0.3s; }
+.back-btn:hover { color: var(--gold-light); }
+
+/* ── PROFILE CONTENT ── */
+.container { max-width: 1200px; margin: 0 auto; padding: 20px 24px 100px; }
+
+.profile-header { display: grid; grid-template-columns: 380px 1fr; gap: 50px; align-items: start; margin-bottom: 80px; }
+.profile-img-wrap { position: relative; border-radius: 24px; overflow: hidden; border: 1px solid rgba(201,168,76,0.3); box-shadow: 0 30px 60px rgba(0,0,0,0.8); }
+.profile-img { width: 100%; display: block; transition: transform 0.7s; }
+.profile-img:hover { transform: scale(1.05); }
+
+.info-content h1 { font-family: 'Cinzel', serif; font-size: 3rem; color: var(--gold-light); margin-bottom: 5px; }
+.info-content .age { font-family: 'Cinzel', serif; font-size: 1.1rem; color: var(--gold); opacity: 0.8; margin-bottom: 20px; display: block; }
+.info-content .title-tag { font-size: 1.05rem; color: #ff8fb1; letter-spacing: 0.15em; font-weight: 600; text-transform: uppercase; margin-bottom: 30px; display: block; border-left: 3px solid #ff8fb1; padding-left: 15px; }
+.info-content .quote { font-style: italic; font-size: 1.2rem; color: var(--text); margin-top: 40px; padding: 25px; background: rgba(255, 143, 177, 0.05); border-radius: 16px; text-align: center; border: 1px dashed rgba(255, 143, 177, 0.2); line-height: 1.6; }
+
+.bio-section { margin-bottom: 60px; }
+.bio-section h2 { font-family: 'Cinzel', serif; font-size: 1.3rem; color: var(--gold); margin-bottom: 25px; border-bottom: 1px solid rgba(201,168,76,0.2); padding-bottom: 10px; letter-spacing: 0.1em; }
+.bio-text { font-size: 1.1rem; color: rgba(240,236,228,0.85); word-break: keep-all; }
+.bio-text p { margin-bottom: 25px; }
+
+/* Visual Archives Gallery */
+.gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; margin-top: 40px; }
+.media-item { border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); background: #000; aspect-ratio: 16/9; box-shadow: 0 15px 35px rgba(0,0,0,0.5); position: relative; transition: all 0.4s; }
+.photo-item { background-size: cover; background-position: center; filter: brightness(0.85); transition: filter 0.3s, transform 0.4s; }
+.media-item:hover { filter: brightness(1); transform: translateY(-5px); border-color: var(--gold); box-shadow: 0 20px 40px rgba(201,168,76,0.2); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  header { height: 180px; }
+  .banner-title { font-size: 2.6rem; }
+  .banner-nav a { padding: 6px 18px; font-size: 0.72rem; }
+  .profile-header { grid-template-columns: 1fr; justify-items: center; text-align: center; gap: 40px; }
+  .profile-img-wrap { max-width: 450px; }
+  .info-content .title-tag { border-left: 0; border-bottom: 2px solid #ff8fb1; padding-left: 0; padding-bottom: 10px; display: inline-block; }
+}
+
+footer { text-align: center; padding: 48px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: rgba(154,148,144,0.4); border-top: 1px solid rgba(201,168,76,0.06); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="banner-brand">
+    <div class="banner-deco-row">
+      <div class="banner-deco-line"></div>
+      <div class="banner-deco-diamond"></div>
+      <div class="banner-deco-line right"></div>
+    </div>
+    <a href="index.html" style="text-decoration: none; display: inline-block;">
+      <h1 class="banner-title">Chris Lee.Papa</h1>
+    </a>
+    <p class="banner-subtitle">The &nbsp; Creative &nbsp; Archive</p>
+  </div>
+  <nav class="banner-nav">
+    <a href="book.html">BOOK</a>
+    <a href="music.html">MUSIC</a>
+    <a href="movie.html">MOVIE</a>
+    <a href="worship.html">WORSHIP</a>
+  </nav>
+</header>
+
+<a href="sistersquad.html" class="back-btn">SisterSquad로 돌아가기</a>
+
+<main class="container">
+  <div class="profile-header">
+    <div class="profile-img-wrap">
+      <img src="images/jung01.png" alt="정이 프로필" class="profile-img">
+    </div>
+    <div class="info-content">
+      <h1>정이 (Jung)</h1>
+      <span class="age">7 Years Old</span>
+      <span class="title-tag">순수의 활, 교감의 마스터</span>
+      
+      <div class="bio-section">
+        <div class="bio-text">
+          <p>세상 모든 것에 호기심을 느끼고 소통하는 순수한 영혼의 소유자. 언니 율이가 세상을 머리로 이해한다면, 정이는 가슴으로 느낍니다. 겁이 많지만 새로운 것에 대한 호기심이 두려움을 이겨내며, 자매를 모험으로 이끄는 데 큰 역할을 합니다.</p>
+          <p>요정 마을의 아름다움에 누구보다 감동하고, 요정들의 슬픔에 진심으로 공감하는 정이는 팀 내에서 마음을 잇는 가교가 됩니다.</p>
+        </div>
+      </div>
+
+      <div class="quote">
+        "괜찮아, 무섭지 않아. 너도 사실은 외로웠구나.<br>우리 친구 할까?"
+      </div>
+    </div>
+  </div>
+
+  <section class="bio-section">
+    <h2>Special Abilities: Taming & Empathy</h2>
+    <div class="bio-text">
+      <p>그녀의 잠재 능력인 테이밍은 모든 살아 숨 쉬는 것들과 친구가 되고 싶어 하는 순수한 마음에서 비롯되었습니다. 노래하는 나비, 흉포한 숲의 괴수, 심지어 어둠의 공간까지, 그녀는 진심 어린 교감을 통해 그들의 마음을 열고 친구로 만듭니다.</p>
+      <p>전투 상황에서는 직접적인 파괴력보다 아군을 돕거나 적을 무력화시키는 등 예상치 못한 방식으로 활약하며 평화적인 해결책을 제시합니다.</p>
+    </div>
+  </section>
+
+  <section class="bio-section">
+    <h2>Visual Archives</h2>
+    <div class="gallery-grid">
+      <div class="media-item photo-item" style="background-image: url('images/jung01.png');"></div>
+      <div class="media-item photo-item" style="background-image: url('images/image.png');"></div> <!-- 정이와 율이가 함께 있는 이미지 -->
+    </div>
+  </section>
+</main>
+
+<footer>
+  © 2026 Chris Lee.Papa — The Creative Archive
+</footer>
+
+</body>
+</html>

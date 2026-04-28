@@ -56,7 +56,7 @@ body::before {
 header {
   position: relative;
   width: 100%;
-  min-height: 220px; /* 고정 높이에서 최소 높이로 변경 */
+  min-height: 220px;
   padding: 20px 0;
   overflow: hidden;
   display: flex;
@@ -144,7 +144,16 @@ header::after {
 .toggle-symbol { margin-top: 0.5rem; font-size: 1.2rem; color: var(--gold); transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
 .note-content { max-height: 0; overflow: hidden; transition: max-height 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s; padding: 0 2rem; opacity: 0; }
 .note-text { color: rgba(240,236,228,0.8); font-size: 1.05rem; line-height: 1.9; padding-bottom: 1rem; border-top: 1px solid rgba(201,168,76,0.1); padding-top: 2rem; word-break: keep-all; }
-.note-text strong { color: var(--gold); font-weight: 600; }
+
+/* 멋지게 강조된 문구 스타일 */
+.note-text .highlight {
+  color: var(--gold-light);
+  font-weight: 600;
+  text-shadow: 0 0 15px rgba(201,168,76,0.4);
+  display: inline-block;
+  padding: 0 2px;
+}
+
 .signature { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 1.5rem; font-style: italic; opacity: 0.9; padding-bottom: 3rem; }
 .note-container.active .note-content { max-height: 1200px; opacity: 1; padding-bottom: 1rem; }
 .note-container.active .toggle-symbol { transform: rotate(45deg); color: var(--cyan); }
@@ -287,7 +296,7 @@ footer { text-align: center; padding: 32px; font-family: 'Cinzel', serif; font-s
   .banner-deco-line { width: 40px; }
   .banner-nav { gap: 4px; }
   .banner-nav a { padding: 4px 10px; font-size: 0.65rem; letter-spacing: 0.12em; }
-  .banner-nav a + a::before { display: none; } /* 모바일에서 세로선 제거로 공간 확보 */
+  .banner-nav a + a::before { display: none; }
   .banner-nav a::after { left: 10px; right: 10px; }
   .note-container { border-radius: 12px; }
   .note-trigger { padding: 1.5rem 1rem; }
@@ -332,9 +341,11 @@ footer { text-align: center; padding: 32px; font-family: 'Cinzel', serif; font-s
     </div>
     <div class="note-content">
       <p class="note-text">
-        이곳은 상상력으로 빚어낸 이야기들과 제 삶의 중심이 되는 신앙이 함께 공존하는 아카이브입니다.<br><br>
-        때로는 AI와 기술을 통해 새로운 세계와 선율을 빚어내기도 하지만, 이 모든 창작의 원동력이자 <strong>어두운 시간 속에서 저를 다시 살게 하고 일으켜 세운 굳건한 반석은 바로 찬양과 믿음, 예배, 그리고 말씀입니다.</strong><br><br>
-        크리에이터로서의 열정과 한 사람으로서의 진실한 고백이 나란히 담긴 이 공간에 오신 것을 환영합니다.
+        이곳은 상상력으로 빚어낸 이야기들과 제 삶의 중심이 되는 신앙이 함께 공존하는 공간입니다.<br><br>
+        때로는 AI와 기술을 통해 새로운 세계와 아름다운 창작물들이 가득 담겨있고 <span class="highlight">모든 창작의 원동력이자 어두운 시간 속에서 다시 살게 해주는 신앙이 담겨 있습니다.</span><br><br>
+        저의 열정과 진실한 고백이 나란히 담긴 이 공간에 오신 것을 환영합니다.<br><br>
+        여러분의 삶 속에서 넘어져도 다시 일어나고<br><br>
+        <span class="highlight">좌절과 포기가 아닌 용기와 희망이 가득하길 기도합니다.</span>
       </p>
       <div class="signature">Chris Lee.Papa</div>
     </div>

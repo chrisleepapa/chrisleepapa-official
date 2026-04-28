@@ -103,7 +103,7 @@ header::after {
 
 .banner-title {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 3.6rem; /* index.html 사이즈 통일 */
+  font-size: 3.6rem;
   font-weight: 600; letter-spacing: 0.14em; line-height: 1;
   background: linear-gradient(108deg, #b8922a 0%, #e8d08a 20%, #fffbe8 38%, #c9a84c 52%, #fff0b0 68%, #c9a84c 80%, #e8d08a 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
@@ -116,11 +116,10 @@ header::after {
 }
 
 .banner-subtitle {
-  font-family: 'Cinzel', serif; font-size: 0.68rem; /* index.html 사이즈 통일 */
+  font-family: 'Cinzel', serif; font-size: 0.68rem;
   letter-spacing: 0.55em; color: rgba(201,168,76,0.55); text-transform: uppercase;
 }
 
-/* 네비게이션 메뉴 잘림 방지 (flex-wrap) */
 .banner-nav {
   position: relative; z-index: 3;
   display: flex; align-items: center; justify-content: center; flex-wrap: wrap; margin-top: 16px;
@@ -174,6 +173,9 @@ header::after {
   font-family: 'Cormorant Garamond', serif;
   font-size: 2rem; font-weight: 300; letter-spacing: 0.18em;
   color: var(--text);
+  word-break: keep-all; /* 한글 단어 단위 줄바꿈 */
+  line-height: 1.4;
+  transition: font-size 0.3s ease;
 }
 
 .page-heading .divider {
@@ -321,14 +323,15 @@ footer {
   border-top: 1px solid rgba(201,168,76,0.06);
 }
 
-/* ── RESPONSIVE (잘림 방지) ── */
+/* ── RESPONSIVE ── */
 @media (max-width: 800px) {
   header { height: 170px; }
-  .banner-title { font-size: 2.4rem; } /* index.html 사이즈 통일 */
+  .banner-title { font-size: 2.4rem; }
   .banner-nav a { padding: 6px 16px; font-size: 0.72rem; letter-spacing: 0.15em; }
 }
 
 @media (max-width: 680px) {
+  .page-heading h2 { font-size: 1.5rem; padding: 0 10px; } /* 문구 크기 중간 조절 */
   .back-btn { margin-left: 24px; }
   .movie-wrapper { padding: 0 16px; margin: 24px auto 40px; }
   .video-gallery { grid-template-columns: 1fr; padding: 0 16px; }
@@ -338,10 +341,16 @@ footer {
 }
 
 @media (max-width: 480px) {
-  /* 모바일 화면 폰트 자간 조정으로 완벽 차단 */
   .banner-title { font-size: 1.8rem; letter-spacing: 0.1em; }
   .banner-subtitle { font-size: 0.55rem; letter-spacing: 0.3em; }
   .banner-nav a { padding: 6px 10px; font-size: 0.65rem; letter-spacing: 0.1em; }
+  
+  /* 모바일 최적화 타이틀 문구 */
+  .page-heading h2 { 
+    font-size: 1.2rem; 
+    letter-spacing: 0.08em; 
+    line-height: 1.5;
+  }
 }
 </style>
 </head>
@@ -350,15 +359,9 @@ footer {
 <header>
   <div class="banner-top-line"></div>
   <div class="banner-stars" aria-hidden="true">
-    <span style="left:5%;  top:22%; animation-delay:0s;   opacity:0.6; width:1.5px; height:1.5px;"></span>
-    <span style="left:12%; top:55%; animation-delay:0.8s; opacity:0.4;"></span>
-    <span style="left:18%; top:30%; animation-delay:1.4s; opacity:0.7; width:1.5px; height:1.5px;"></span>
-    <span style="left:32%; top:18%; animation-delay:2.1s; opacity:0.8; width:3px; height:3px;"></span>
-    <span style="left:62%; top:15%; animation-delay:0.6s; opacity:0.8; width:3px; height:3px;"></span>
-    <span style="left:74%; top:28%; animation-delay:0.4s; opacity:0.7; width:1.5px; height:1.5px;"></span>
-    <span style="left:87%; top:35%; animation-delay:1.0s; opacity:0.6; width:1.5px; height:1.5px;"></span>
-    <span style="left:93%; top:52%; animation-delay:1.8s; opacity:0.4;"></span>
-    <span style="left:50%; top:10%; animation-delay:1.5s; opacity:0.5; width:1.5px; height:1.5px;"></span>
+    <span style="left:5%;  top:22%; width:1.5px; height:1.5px;"></span>
+    <span style="left:32%; top:18%; width:3px; height:3px;"></span>
+    <span style="left:87%; top:35%; width:1.5px; height:1.5px;"></span>
   </div>
   <div class="banner-brand">
     <div class="banner-deco-row">
@@ -366,13 +369,11 @@ footer {
       <div class="banner-deco-diamond"></div>
       <div class="banner-deco-line right"></div>
     </div>
-    <!-- 자바스크립트 오류 원천 차단: 순수 <a> 태그 사용 -->
     <a href="index.html" style="text-decoration: none; display: inline-block;">
       <h1 class="banner-title" title="홈으로 가기">Chris Lee.Papa</h1>
     </a>
     <p class="banner-subtitle">The &nbsp; Creative &nbsp; Archive</p>
   </div>
-  
   <nav class="banner-nav">
     <a href="book.html">BOOK</a>
     <a href="music.html">MUSIC</a>
@@ -392,7 +393,7 @@ footer {
 <!-- Featured Video -->
 <main class="movie-wrapper">
   <div class="video-container">
-    <iframe src="https://www.youtube.com/embed/kAkGg2t1Ats" title="이게 AI 로 되네? 그냥 만들어본 뮤직비디오 'FURIOUS 💥" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/kAkGg2t1Ats" title="Furious Music Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
   </div>
   
   <div class="video-info">
@@ -412,12 +413,12 @@ footer {
 <section class="video-gallery">
   <div class="gallery-item">
     <div class="video-container">
-      <iframe src="https://www.youtube.com/embed/byxLKvBHULk?si=Isq-SbQ-U7_xweG2" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/byxLKvBHULk" title="Cinematic Video 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     </div>
   </div>
   <div class="gallery-item">
     <div class="video-container">
-      <iframe src="https://www.youtube.com/embed/vlt7VfCA8bM?si=Ri7VPpOwhzoi7e2b" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/vlt7VfCA8bM" title="Cinematic Video 2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     </div>
   </div>
 </section>
@@ -426,30 +427,14 @@ footer {
 <section class="shorts-section">
   <h3 class="shorts-heading">Vertical Archives (Shorts)</h3>
   <div class="shorts-grid">
-    <div class="shorts-item">
-      <iframe src="https://www.youtube.com/embed/gQ4Ip6cyr1U" title="YouTube Shorts" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-    </div>
-    <div class="shorts-item">
-      <iframe src="https://www.youtube.com/embed/z-2LOBuWos8" title="YouTube Shorts" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-    </div>
-    <div class="shorts-item">
-      <iframe src="https://www.youtube.com/embed/pGibrT9Pp3I" title="YouTube Shorts" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-    </div>
-    <div class="shorts-item">
-      <iframe src="https://www.youtube.com/embed/VXWdSOXGwKQ" title="YouTube Shorts" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-    </div>
-    <div class="shorts-item">
-      <iframe src="https://www.youtube.com/embed/XjSUJRduAzI" title="YouTube Shorts" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-    </div>
-    <div class="shorts-item">
-      <iframe src="https://www.youtube.com/embed/MYlAYewAdu4" title="YouTube Shorts" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-    </div>
-    <div class="shorts-item">
-      <iframe src="https://www.youtube.com/embed/0d-rUizVukQ" title="YouTube Shorts" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-    </div>
-    <div class="shorts-item">
-      <iframe src="https://www.youtube.com/embed/tgR1Kq3fGWE" title="YouTube Shorts" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-    </div>
+    <div class="shorts-item"><iframe src="https://www.youtube.com/embed/gQ4Ip6cyr1U" frameborder="0" allowfullscreen></iframe></div>
+    <div class="shorts-item"><iframe src="https://www.youtube.com/embed/z-2LOBuWos8" frameborder="0" allowfullscreen></iframe></div>
+    <div class="shorts-item"><iframe src="https://www.youtube.com/embed/pGibrT9Pp3I" frameborder="0" allowfullscreen></iframe></div>
+    <div class="shorts-item"><iframe src="https://www.youtube.com/embed/VXWdSOXGwKQ" frameborder="0" allowfullscreen></iframe></div>
+    <div class="shorts-item"><iframe src="https://www.youtube.com/embed/XjSUJRduAzI" frameborder="0" allowfullscreen></iframe></div>
+    <div class="shorts-item"><iframe src="https://www.youtube.com/embed/MYlAYewAdu4" frameborder="0" allowfullscreen></iframe></div>
+    <div class="shorts-item"><iframe src="https://www.youtube.com/embed/0d-rUizVukQ" frameborder="0" allowfullscreen></iframe></div>
+    <div class="shorts-item"><iframe src="https://www.youtube.com/embed/tgR1Kq3fGWE" frameborder="0" allowfullscreen></iframe></div>
   </div>
 </section>
 

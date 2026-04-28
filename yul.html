@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>율이 (Yul) Profile – SisterSquad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600&family=Noto+Serif+KR:wght@300;400&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & BASE ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --gold: #c9a84c;
+  --gold-light: #e8d08a;
+  --cyan: #00d4ff;
+  --bg: #050507;
+  --text: #f0ece4;
+  --text-dim: #9a9490;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Serif KR', serif;
+  line-height: 1.8;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Noise overlay */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 900; opacity: 0.4;
+}
+
+/* ── BANNER HEADER (통일된 디자인) ── */
+header {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(80,40,120,0.35) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 50%, rgba(30,60,100,0.3) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 0%,  rgba(201,168,76,0.12) 0%, transparent 60%),
+    linear-gradient(to bottom, #0a0810 0%, #050507 100%);
+  z-index: 0;
+}
+
+header::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(to right, transparent 0%, rgba(201,168,76,0.15) 15%, rgba(201,168,76,0.55) 35%, rgba(232,208,138,0.9) 50%, rgba(201,168,76,0.55) 65%, rgba(201,168,76,0.15) 85%, transparent 100%);
+  z-index: 2;
+}
+
+.banner-top-line {
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(to right, transparent 0%, rgba(201,168,76,0.4) 30%, rgba(201,168,76,0.8) 50%, rgba(201,168,76,0.4) 70%, transparent 100%);
+  z-index: 2;
+}
+
+.banner-stars {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+}
+.banner-stars span {
+  position: absolute; width: 2px; height: 2px; border-radius: 50%; background: white;
+  animation: twinkle 3s ease-in-out infinite;
+}
+@keyframes twinkle {
+  0%,100% { opacity: 0.2; transform: scale(1); }
+  50%      { opacity: 0.9; transform: scale(1.4); }
+}
+
+.banner-brand {
+  position: relative; z-index: 3;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+
+.banner-deco-row {
+  display: flex; align-items: center; gap: 14px; opacity: 0.7;
+}
+.banner-deco-line { width: 60px; height: 1px; background: linear-gradient(to right, transparent, var(--gold)); }
+.banner-deco-line.right { background: linear-gradient(to left, transparent, var(--gold)); }
+.banner-deco-diamond { width: 6px; height: 6px; background: var(--gold); transform: rotate(45deg); box-shadow: 0 0 8px rgba(201,168,76,0.8); }
+
+.banner-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3.6rem;
+  font-weight: 600; letter-spacing: 0.14em; line-height: 1;
+  background: linear-gradient(108deg, #b8922a 0%, #e8d08a 20%, #fffbe8 38%, #c9a84c 52%, #fff0b0 68%, #c9a84c 80%, #e8d08a 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  filter: drop-shadow(0 0 30px rgba(201,168,76,0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+  animation: shimmer 6s linear infinite; background-size: 200% auto;
+}
+@keyframes shimmer { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+
+.banner-subtitle { font-family: 'Cinzel', serif; font-size: 0.68rem; letter-spacing: 0.55em; color: rgba(201,168,76,0.55); text-transform: uppercase; }
+
+.banner-nav {
+  position: relative; z-index: 3;
+  display: flex; align-items: center; justify-content: center; flex-wrap: wrap; margin-top: 18px;
+}
+.banner-nav a {
+  font-family: 'Cinzel', serif; font-size: 0.78rem; font-weight: 400; letter-spacing: 0.28em; color: rgba(154,148,144,0.75); text-decoration: none;
+  padding: 6px 28px; position: relative; transition: color 0.3s; text-transform: uppercase;
+}
+.banner-nav a + a::before { content: ''; position: absolute; left: 0; top: 20%; bottom: 20%; width: 1px; background: rgba(201,168,76,0.25); }
+.banner-nav a::after {
+  content: ''; position: absolute; bottom: 0; left: 28px; right: 28px; height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold-light), transparent);
+  transform: scaleX(0); transition: transform 0.38s;
+}
+.banner-nav a:hover { color: var(--gold-light); }
+.banner-nav a:hover::after { transform: scaleX(1); }
+
+/* ── BACK BUTTON ── */
+.back-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 0.2em;
+  color: var(--text-dim); text-decoration: none; text-transform: uppercase;
+  padding: 10px 0; margin: 36px 0 0 52px;
+  transition: color 0.3s;
+  position: relative;
+}
+.back-btn::before {
+  content: '‹'; font-size: 1.2rem; line-height: 1;
+  transition: transform 0.3s;
+}
+.back-btn:hover { color: var(--gold-light); }
+.back-btn:hover::before { transform: translateX(-4px); }
+
+/* ── PROFILE CONTENT ── */
+.container { max-width: 1000px; margin: 0 auto; padding: 20px 24px 100px; }
+
+.profile-header { display: grid; grid-template-columns: 380px 1fr; gap: 50px; align-items: start; margin-bottom: 80px; }
+.profile-img-wrap { position: relative; border-radius: 24px; overflow: hidden; border: 1px solid rgba(201,168,76,0.3); box-shadow: 0 30px 60px rgba(0,0,0,0.8); }
+.profile-img { width: 100%; display: block; transition: transform 0.7s; }
+.profile-img:hover { transform: scale(1.05); }
+
+.info-content h1 { font-family: 'Cinzel', serif; font-size: 3rem; color: var(--gold-light); margin-bottom: 5px; }
+.info-content .age { font-family: 'Cinzel', serif; font-size: 1.1rem; color: var(--gold); opacity: 0.8; margin-bottom: 20px; display: block; }
+.info-content .title-tag { font-size: 1.05rem; color: var(--cyan); letter-spacing: 0.15em; font-weight: 600; text-transform: uppercase; margin-bottom: 30px; display: block; border-left: 3px solid var(--cyan); padding-left: 15px; }
+.info-content .quote { font-style: italic; font-size: 1.2rem; color: var(--text); margin-top: 40px; padding: 25px; background: rgba(201,168,76,0.05); border-radius: 16px; text-align: center; border: 1px dashed rgba(201,168,76,0.2); line-height: 1.6; }
+
+.bio-section { margin-bottom: 60px; }
+.bio-section h2 { font-family: 'Cinzel', serif; font-size: 1.3rem; color: var(--gold); margin-bottom: 25px; border-bottom: 1px solid rgba(201,168,76,0.2); padding-bottom: 10px; letter-spacing: 0.1em; }
+.bio-text { font-size: 1.1rem; color: rgba(240,236,228,0.85); word-break: keep-all; }
+.bio-text p { margin-bottom: 25px; }
+
+.gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 40px; }
+.media-item { border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); background: #000; aspect-ratio: 16/9; box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
+.media-item iframe { width: 100%; height: 100%; border: 0; }
+.photo-item { background-size: cover; background-position: center; border: 1px solid rgba(201,168,76,0.15); filter: brightness(0.85); transition: filter 0.3s; }
+.photo-item:hover { filter: brightness(1); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  header { height: 180px; }
+  .banner-title { font-size: 2.6rem; }
+  .banner-nav a { padding: 6px 18px; font-size: 0.72rem; }
+  .profile-header { grid-template-columns: 1fr; justify-items: center; text-align: center; gap: 40px; }
+  .profile-img-wrap { max-width: 450px; }
+  .info-content .title-tag { border-left: 0; border-bottom: 2px solid var(--cyan); padding-left: 0; padding-bottom: 10px; display: inline-block; }
+  .gallery-grid { grid-template-columns: 1fr; }
+  .back-btn { margin-left: 24px; }
+}
+
+@media (max-width: 480px) {
+  .banner-title { font-size: 2rem; }
+  .banner-nav a { padding: 4px 12px; font-size: 0.65rem; }
+}
+
+footer { text-align: center; padding: 48px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: rgba(154,148,144,0.4); border-top: 1px solid rgba(201,168,76,0.06); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="banner-top-line"></div>
+  <div class="banner-stars" aria-hidden="true"></div>
+  <div class="banner-brand">
+    <div class="banner-deco-row">
+      <div class="banner-deco-line"></div>
+      <div class="banner-deco-diamond"></div>
+      <div class="banner-deco-line right"></div>
+    </div>
+    <a href="index.html" style="text-decoration: none; display: inline-block;">
+      <h1 class="banner-title">Chris Lee.Papa</h1>
+    </a>
+    <p class="banner-subtitle">The &nbsp; Creative &nbsp; Archive</p>
+  </div>
+  <nav class="banner-nav">
+    <a href="book.html">BOOK</a>
+    <a href="music.html">MUSIC</a>
+    <a href="movie.html">MOVIE</a>
+    <a href="worship.html">WORSHIP</a>
+  </nav>
+</header>
+
+<a href="sistersquad.html" class="back-btn">SisterSquad로 돌아가기</a>
+
+<main class="container">
+  <div class="profile-header">
+    <div class="profile-img-wrap">
+      <img src="KakaoTalk_20250829_162513201_05.png" alt="율이 프로필" class="profile-img">
+    </div>
+    <div class="info-content">
+      <h1>율이 (Yul)</h1>
+      <span class="age">11 Years Old</span>
+      <span class="title-tag">이성의 검, 염력의 마스터</span>
+
+      <div class="bio-section">
+        <div class="bio-text">
+          <p>언제나 세상을 분석하고 모든 것을 머리로 이해하려는 똑똑한 소녀. 갑작스럽게 휘말린 마법의 세계를 처음에는 믿지 못하고, 말도 안 되는 현상 앞에서 혼란스러워합니다. 하지만 동생과 요정들을 지켜야 한다는 책임감이 싹트면서, 자신의 마음을 조금씩 열기 시작합니다.</p>
+          <p>그녀의 성장은 이해할 수 없는 것을 받아들이는 과정입니다. 처음에는 검과 활을 다루는 법을 머리로만 접근하려 하지만, 점차 마음으로 느끼고 본능을 믿는 법을 배웁니다.</p>
+        </div>
+      </div>
+
+      <div class="quote">
+        "말도 안 돼. 이런 건 본 적 없어.<br>하지만 극복하고 말겠어."
+      </div>
+    </div>
+  </div>
+
+  <section class="bio-section">
+    <h2>Special Abilities: Psychokinesis</h2>
+    <div class="bio-text">
+      <p>그녀의 잠재 능력인 염력은 세상 모든 것에 새로운 질서를 부여하고 싶어하는 그녀의 바람이 현실이 된 것입니다. 처음에는 작은 돌멩이를 띄우는 수준이었지만, 동생을 구하려는 간절한 마음이 폭발하며, 주변의 모든 것을 제어하는 강력한 힘으로 각성합니다.</p>
+    </div>
+  </section>
+
+  <section class="bio-section">
+    <h2>Visual Archives</h2>
+    <div class="gallery-grid">
+      <div class="media-item">
+        <iframe src="https://www.youtube.com/embed/C0lluI-l0gc" title="SisterSquad Trailer" allowfullscreen></iframe>
+      </div>
+      <div class="media-item photo-item" style="background-image: url('KakaoTalk_20250829_162513201_05.png');">
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  © 2026 Chris Lee.Papa — The Creative Archive
+</footer>
+
+<script>
+// Twinkle effect for banner stars
+const starsContainer = document.querySelector('.banner-stars');
+for (let i = 0; i < 12; i++) {
+  const star = document.createElement('span');
+  star.style.left = Math.random() * 100 + '%';
+  star.style.top = Math.random() * 100 + '%';
+  star.style.animationDelay = Math.random() * 3 + 's';
+  star.style.width = (Math.random() * 2 + 1) + 'px';
+  star.style.height = star.style.width;
+  starsContainer.appendChild(star);
+}
+</script>
+
+</body>
+</html>

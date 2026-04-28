@@ -173,6 +173,9 @@ header::after {
   font-family: 'Cormorant Garamond', serif;
   font-size: 2rem; font-weight: 300; letter-spacing: 0.18em;
   color: var(--text);
+  word-break: keep-all; /* 한글 단어 단위 줄바꿈 */
+  line-height: 1.4;
+  transition: font-size 0.3s ease;
 }
 
 .page-heading .divider {
@@ -309,6 +312,7 @@ header::after {
 
 footer { text-align: center; padding: 28px; font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.2em; color: rgba(154,148,144,0.35); border-top: 1px solid rgba(201,168,76,0.06); }
 
+/* ── RESPONSIVE (반응형 최적화) ── */
 @media (max-width: 800px) {
   header { height: 170px; }
   .banner-title { font-size: 2.4rem; }
@@ -316,6 +320,7 @@ footer { text-align: center; padding: 28px; font-family: 'Cinzel', serif; font-s
 }
 
 @media (max-width: 680px) {
+  .page-heading h2 { font-size: 1.5rem; padding: 0 10px; } /* 문구 크기 중간 조절 */
   .book-grid { gap: 48px; padding: 40px 24px 80px; }
   .back-btn { margin-left: 24px; }
 }
@@ -324,6 +329,12 @@ footer { text-align: center; padding: 28px; font-family: 'Cinzel', serif; font-s
   .banner-title { font-size: 1.8rem; letter-spacing: 0.1em; }
   .banner-subtitle { font-size: 0.55rem; letter-spacing: 0.3em; }
   .banner-nav a { padding: 6px 10px; font-size: 0.65rem; letter-spacing: 0.1em; }
+  
+  .page-heading h2 { 
+    font-size: 1.2rem; /* 모바일에서 최적화된 크기 */
+    letter-spacing: 0.08em; /* 자간을 줄여 가독성 확보 */
+    line-height: 1.5;
+  }
 }
 </style>
 </head>

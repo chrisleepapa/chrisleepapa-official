@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="SisterSquad - 캐릭터 소개, 영상, OST 및 구매 링크">
+<title>SisterSquad – Chris Lee.Papa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600&family=Noto+Serif+KR:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --gold: #c9a84c;
+  --gold-light: #e8d08a;
+  --cyan: #00d4ff;
+  --bg: #050507;
+  --card-bg: rgba(15, 15, 20, 0.6);
+  --text: #f0ece4;
+  --text-dim: #9a9490;
+}
+body { background: var(--bg); color: var(--text); font-family: 'Noto Serif KR', serif; line-height: 1.6; min-height: 100vh; overflow-x: hidden; }
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 900; opacity: 0.4;
+}
+
+/* Header & Nav */
+header { position: relative; width: 100%; height: 180px; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+header::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, #0a0810 0%, #050507 100%); z-index: 0; }
+.banner-brand { position: relative; z-index: 3; display: flex; flex-direction: column; align-items: center; }
+.banner-title { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 600; letter-spacing: 0.1em; background: linear-gradient(108deg, #b8922a, #fffbe8, #c9a84c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+.banner-nav { display: flex; gap: 20px; margin-top: 10px; z-index: 3; }
+.banner-nav a { font-family: 'Cinzel', serif; font-size: 0.7rem; color: var(--text-dim); text-decoration: none; letter-spacing: 0.2em; text-transform: uppercase; transition: color 0.3s; }
+.banner-nav a:hover { color: var(--gold-light); }
+
+/* Container */
+.detail-container { max-width: 1000px; margin: 0 auto; padding: 40px 24px 100px; }
+.back-link { display: inline-flex; align-items: center; gap: 8px; font-family: 'Cinzel', serif; font-size: 0.75rem; color: var(--text-dim); text-decoration: none; margin-bottom: 40px; transition: color 0.3s; }
+.back-link:hover { color: var(--gold); }
+
+/* Title Section */
+.title-section { text-align: center; margin-bottom: 60px; }
+.title-section h1 { font-family: 'Cormorant Garamond', serif; font-size: 3.5rem; letter-spacing: 0.05em; color: var(--gold-light); margin-bottom: 10px; }
+.title-section p { font-family: 'Cinzel', serif; font-size: 0.9rem; color: var(--gold); letter-spacing: 0.3em; text-transform: uppercase; }
+
+/* Sections */
+section { margin-bottom: 100px; }
+.section-title { font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--gold); letter-spacing: 0.2em; text-transform: uppercase; border-bottom: 1px solid rgba(201,168,76,0.2); padding-bottom: 10px; margin-bottom: 40px; display: flex; align-items: center; gap: 15px; }
+.section-title::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, rgba(201,168,76,0.2), transparent); }
+
+/* Character Intro */
+.char-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.char-card { background: var(--card-bg); border: 1px solid rgba(201,168,76,0.1); border-radius: 16px; padding: 30px; backdrop-filter: blur(10px); transition: transform 0.3s, border-color 0.3s; }
+.char-card:hover { transform: translateY(-5px); border-color: rgba(201,168,76,0.4); }
+.char-name { font-family: 'Cinzel', serif; font-size: 1.4rem; color: var(--gold-light); margin-bottom: 8px; display: block; }
+.char-role { font-size: 0.8rem; color: var(--cyan); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 20px; display: block; }
+.char-desc { font-size: 1rem; color: rgba(240,236,228,0.8); word-break: keep-all; }
+
+/* Video */
+.video-wrapper { max-width: 800px; margin: 0 auto; }
+.video-container { position: relative; width: 100%; padding-bottom: 56.25%; background: #000; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.6); border: 1px solid rgba(201,168,76,0.1); }
+.video-container iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+/* OST Section */
+.ost-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+.ost-card { background: var(--card-bg); border: 1px solid rgba(201,168,76,0.1); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
+.ost-card iframe { border-radius: 12px; }
+.spotify-link { align-self: flex-start; font-family: 'Cinzel', serif; font-size: 0.85rem; color: #1DB954; text-decoration: none; border-bottom: 1px solid rgba(29, 185, 84, 0.3); padding-bottom: 2px; transition: all 0.3s; }
+.spotify-link:hover { color: #1ed760; border-color: #1ed760; }
+
+/* Buy Links */
+.buy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 700px; margin: 0 auto; }
+.buy-btn { display: flex; align-items: center; justify-content: center; padding: 22px; border-radius: 12px; text-decoration: none; font-family: 'Cinzel', serif; font-size: 0.95rem; letter-spacing: 0.1em; transition: all 0.3s; text-align: center; }
+.btn-paper { background: var(--gold); color: #000; font-weight: 700; }
+.btn-paper:hover { background: var(--gold-light); transform: scale(1.02); box-shadow: 0 0 30px rgba(201,168,76,0.3); }
+.btn-ebook { border: 1.5px solid var(--cyan); color: var(--cyan); font-weight: 500; }
+.btn-ebook:hover { background: rgba(0,212,255,0.1); transform: scale(1.02); box-shadow: 0 0 30px rgba(0,212,255,0.2); }
+
+/* Footer */
+footer { text-align: center; padding: 40px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: rgba(154,148,144,0.4); border-top: 1px solid rgba(201,168,76,0.06); }
+
+@media (max-width: 768px) {
+  .char-grid { grid-template-columns: 1fr; }
+  .buy-grid { grid-template-columns: 1fr; }
+  .title-section h1 { font-size: 2.8rem; }
+  .banner-title { font-size: 2.2rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="banner-brand">
+    <a href="index.html" class="banner-title">Chris Lee.Papa</a>
+    <nav class="banner-nav">
+      <a href="index.html">HOME</a>
+      <a href="book.html">BOOK</a>
+      <a href="music.html">MUSIC</a>
+    </nav>
+  </div>
+</header>
+
+<main class="detail-container">
+  <a href="book.html" class="back-link">‹ Back to Library</a>
+
+  <div class="title-section">
+    <p>The Enchanted Chronicles</p>
+    <h1>SisterSquad</h1>
+  </div>
+
+  <!-- 1. 캐릭터 소개 -->
+  <section id="characters">
+    <h2 class="section-title">Character Introduction</h2>
+    <div class="char-grid">
+      <div class="char-card">
+        <span class="char-name">율이 (Yul)</span>
+        <span class="char-role">The Rational Leader (T)</span>
+        <p class="char-desc">냉철한 이성과 빠른 판단력을 가진 언니. 마법 세계의 복잡한 퍼즐을 논리적으로 풀어나가며 동생을 지킵니다.</p>
+      </div>
+      <div class="char-card">
+        <span class="char-name">정이 (Jung)</span>
+        <span class="char-role">The Empathetic Heart (F)</span>
+        <p class="char-desc">풍부한 감성과 공감 능력을 가진 동생. 숲의 정령들과 소통하며 위기의 순간 따뜻한 기적을 만들어냅니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. 줄거리 소개 영상 -->
+  <section id="trailer">
+    <h2 class="section-title">Story Trailer</h2>
+    <div class="video-wrapper">
+      <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/C0lluI-l0gc?si=9SWYaS59-Et1AURR" title="SisterSquad Story Trailer" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Original Soundtrack -->
+  <section id="ost">
+    <h2 class="section-title">Original Soundtrack</h2>
+    <div class="ost-grid">
+      <!-- Original EP -->
+      <div class="ost-card">
+        <iframe src="https://open.spotify.com/embed/album/4UbsRkUcH0QJQGS6SUbtN1?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <a href="https://open.spotify.com/album/4UbsRkUcH0QJQGS6SUbtN1?si=cZYsb2t1QdmeLV-99Z9Jtg" target="_blank" rel="noopener" class="spotify-link">Sister Squad EP.01 전곡 듣기 ›</a>
+      </div>
+
+      <!-- Inst EP -->
+      <div class="ost-card">
+        <iframe src="https://open.spotify.com/embed/album/0UsOZREU7OJeNC4MFRt0Og?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <a href="https://open.spotify.com/album/0UsOZREU7OJeNC4MFRt0Og?si=1WPlvwb3QxmVe9IxdFhFXg" target="_blank" rel="noopener" class="spotify-link">Sister Squad EP.01 Inst 전곡 듣기 ›</a>
+      </div>
+
+      <!-- Eng EP -->
+      <div class="ost-card">
+        <iframe src="https://open.spotify.com/embed/album/22frEKSV9Ano8LoWaOLsnT?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <a href="https://open.spotify.com/album/22frEKSV9Ano8LoWaOLsnT?si=fXxgTUThRHqqKHyX8PbsfA" target="_blank" rel="noopener" class="spotify-link">Sister Squad EP.01 Eng 전곡 듣기 ›</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. 구매 링크 -->
+  <section id="buy">
+    <h2 class="section-title">Get the Book</h2>
+    <div class="buy-grid">
+      <a href="#" class="buy-btn btn-paper">종이책 구매하기 (Paperback)</a>
+      <a href="#" class="buy-btn btn-ebook">전자책 구매하기 (E-Book)</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>© 2026 Chris Lee.Papa — The Creative Archive</footer>
+
+</body>
+</html>

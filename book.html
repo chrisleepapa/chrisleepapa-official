@@ -1,451 +1,302 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Chris Lee.Papa – BOOK | SisterSquad · MiracleShot">
-<title>BOOK – Chris Lee.Papa</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600&family=Noto+Serif+KR:wght@300;400&display=swap" rel="stylesheet">
-<style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Chris Lee.Papa – BOOK | SisterSquad · MiracleShot">
+    
+    <title>BOOK – Chris LEE.PAPA</title>
+    
+    <!-- 폰트 통합 호출 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Cormorant+Garamond:wght@600&family=Noto+Serif+KR:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
 
-:root {
-  --gold: #c9a84c;
-  --gold-light: #e8d08a;
-  --cyan: #00d4ff;
-  --bg: #050507;
-  --text: #f0ece4;
-  --text-dim: #9a9490;
-}
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+        :root {
+            --gold: #c9a84c;
+            --gold-light: #e8d08a;
+            --cyan: #00d4ff;
+            --bg: #030305;
+            --text: #f0ece4;
+            --text-dim: #9a9490;
+            --nav-height: 70px;
+            --pink-glow: rgba(255, 180, 200, 0.3);
+        }
 
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Noto Serif KR', serif;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
+        html { scroll-behavior: smooth; background-color: var(--bg); }
 
-/* Noise overlay */
-body::before {
-  content: '';
-  position: fixed; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events: none; z-index: 900; opacity: 0.45;
-}
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Pretendard', 'Noto Serif KR', serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at top right, rgba(20, 20, 40, 0.8), transparent 60%),
+                              radial-gradient(circle at bottom left, rgba(10, 10, 20, 0.9), transparent 60%);
+        }
 
-/* ── BANNER ── */
-header {
-  position: relative;
-  width: 100%;
-  height: 200px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
+        /* 아날로그 노이즈 레이어 */
+        body::before {
+            content: ''; position: fixed; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none; z-index: 900; opacity: 0.3;
+        }
 
-header::before {
-  content: '';
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse at 20% 50%, rgba(80,40,120,0.35) 0%, transparent 55%),
-    radial-gradient(ellipse at 80% 50%, rgba(30,60,100,0.3) 0%, transparent 55%),
-    radial-gradient(ellipse at 50% 0%,  rgba(201,168,76,0.12) 0%, transparent 60%),
-    linear-gradient(to bottom, #0a0810 0%, #050507 100%);
-  z-index: 0;
-}
+        a { text-decoration: none; color: inherit; }
 
-header::after {
-  content: '';
-  position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(to right, transparent 0%, rgba(201,168,76,0.15) 15%, rgba(201,168,76,0.55) 35%, rgba(232,208,138,0.9) 50%, rgba(201,168,76,0.55) 65%, rgba(201,168,76,0.15) 85%, transparent 100%);
-  z-index: 2;
-}
+        /* ── 네비게이션 ── */
+        nav {
+            position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; background: rgba(3, 3, 5, 0.8); backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
 
-.banner-top-line {
-  position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(to right, transparent 0%, rgba(201,168,76,0.4) 30%, rgba(201,168,76,0.8) 50%, rgba(201,168,76,0.4) 70%, transparent 100%);
-  z-index: 2;
-}
+        .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); z-index: 1001; }
 
-.banner-stars {
-  position: absolute; inset: 0; z-index: 1; pointer-events: none;
-}
-.banner-stars span {
-  position: absolute; width: 2px; height: 2px; border-radius: 50%; background: white;
-  animation: twinkle 3s ease-in-out infinite;
-}
-@keyframes twinkle {
-  0%,100% { opacity: 0.2; transform: scale(1); }
-  50%      { opacity: 0.9; transform: scale(1.4); }
-}
+        .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
+        .menu-toggle span { width: 22px; height: 1.5px; background-color: var(--gold-light); transition: 0.3s; }
 
-.banner-brand {
-  position: relative; z-index: 3;
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-}
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; }
+        .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
 
-.banner-deco-row {
-  display: flex; align-items: center; gap: 14px; opacity: 0.7;
-}
-.banner-deco-line { width: 52px; height: 1px; background: linear-gradient(to right, transparent, var(--gold)); }
-.banner-deco-line.right { background: linear-gradient(to left, transparent, var(--gold)); }
-.banner-deco-diamond {
-  width: 6px; height: 6px; background: var(--gold);
-  transform: rotate(45deg); box-shadow: 0 0 8px rgba(201,168,76,0.8);
-}
+        /* ── 헤더 섹션 ── */
+        .page-header {
+            position: relative; width: 100%; height: 350px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            overflow: hidden; padding-top: var(--nav-height);
+        }
 
-.banner-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 3.6rem;
-  font-weight: 600; letter-spacing: 0.14em; line-height: 1;
-  background: linear-gradient(108deg, #b8922a 0%, #e8d08a 20%, #fffbe8 38%, #c9a84c 52%, #fff0b0 68%, #c9a84c 80%, #e8d08a 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  filter: drop-shadow(0 0 28px rgba(201,168,76,0.5));
-  animation: shimmer 6s linear infinite; background-size: 200% auto;
-}
-@keyframes shimmer {
-  0%   { background-position: 0% center; }
-  100% { background-position: 200% center; }
-}
+        #stars-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
 
-.banner-subtitle {
-  font-family: 'Cinzel', serif; font-size: 0.68rem; letter-spacing: 0.55em;
-  color: rgba(201,168,76,0.55); text-transform: uppercase;
-}
+        .header-content { position: relative; z-index: 3; text-align: center; animation: fadeUp 1.2s ease both; }
 
-.banner-nav {
-  position: relative; z-index: 3;
-  display: flex; align-items: center; justify-content: center; flex-wrap: wrap; margin-top: 16px;
-}
-.banner-nav a {
-  font-family: 'Cinzel', serif; font-size: 0.78rem; letter-spacing: 0.28em;
-  color: rgba(154,148,144,0.75); text-decoration: none;
-  padding: 6px 28px; position: relative; transition: color 0.3s; text-transform: uppercase;
-}
-.banner-nav a + a::before {
-  content: ''; position: absolute; left: 0; top: 20%; bottom: 20%;
-  width: 1px; background: rgba(201,168,76,0.25);
-}
-.banner-nav a::after {
-  content: ''; position: absolute; bottom: 0; left: 28px; right: 28px; height: 1px;
-  background: linear-gradient(to right, transparent, var(--gold-light), transparent);
-  transform: scaleX(0); transition: transform 0.38s;
-}
-.banner-nav a:hover { color: var(--gold-light); }
-.banner-nav a:hover::after { transform: scaleX(1); }
+        .header-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 8vw, 3.5rem); 
+            font-weight: 600; letter-spacing: 0.1em;
+            color: var(--gold-light);
+            text-shadow: 0 0 20px rgba(201,168,76,0.3);
+            margin-bottom: 10px;
+        }
 
-/* ── BACK BUTTON ── */
-.back-btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 0.2em;
-  color: var(--text-dim); text-decoration: none; text-transform: uppercase;
-  padding: 10px 0; margin: 36px 0 0 52px;
-  transition: color 0.3s;
-  position: relative;
-}
-.back-btn::before {
-  content: '‹'; font-size: 1.2rem; line-height: 1;
-  transition: transform 0.3s;
-}
-.back-btn:hover { color: var(--gold-light); }
-.back-btn:hover::before { transform: translateX(-4px); }
+        .header-slogan {
+            font-family: 'Cinzel', serif; font-size: clamp(0.7rem, 2vw, 0.9rem); 
+            letter-spacing: 0.4em; color: var(--text-dim);
+            text-transform: uppercase;
+        }
 
-/* ── PAGE TITLE ── */
-.page-heading {
-  text-align: center;
-  padding: 48px 24px 12px;
-}
+        /* ── 콘텐츠 레이아웃 ── */
+        .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px 100px; position: relative; z-index: 10; }
 
-.page-heading .section-tag {
-  font-family: 'Cinzel', serif; font-size: 0.68rem;
-  letter-spacing: 0.5em; color: var(--gold); text-transform: uppercase;
-  display: block; margin-bottom: 14px;
-}
+        /* SISTER SQUAD 메인 카드 */
+        .hero-card.sistersquad {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 180, 200, 0.2);
+            border-radius: 24px; padding: 60px 40px;
+            text-align: center; margin-bottom: 60px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.4s ease, border-color 0.4s, box-shadow 0.4s;
+            animation: fadeUp 1s ease 0.2s both;
+            cursor: pointer;
+        }
+        
+        .hero-card.sistersquad:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255, 180, 200, 0.5);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 40px var(--pink-glow);
+        }
 
-.page-heading h2 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 2rem; font-weight: 300; letter-spacing: 0.18em;
-  color: var(--text);
-  word-break: keep-all; 
-  line-height: 1.4;
-  transition: font-size 0.3s ease;
-}
+        .card-image-box {
+            width: 100%; max-width: 500px; height: 300px;
+            margin: 0 auto 35px; border-radius: 16px;
+            background-image: url('images/book.png');
+            background-size: cover; background-position: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
 
-.page-heading .divider {
-  width: 80px; height: 1px; margin: 16px auto 0;
-  background: linear-gradient(to right, transparent, var(--gold), transparent);
-}
+        .sister-title { 
+            font-family: 'Cinzel', serif; font-size: clamp(2rem, 6vw, 3.2rem); 
+            font-weight: 700; color: #ffb4c8; margin-bottom: 20px; 
+            letter-spacing: 2px; text-shadow: 0 0 15px var(--pink-glow);
+        }
 
-/* ── BOOK GRID ── */
-.book-grid {
-  display: flex;
-  justify-content: center;
-  gap: 60px;
-  padding: 60px 40px 100px;
-  flex-wrap: wrap;
-  max-width: 1100px;
-  margin: 0 auto;
-}
+        .desc-text { 
+            font-size: 1.1rem; color: #cdd6f4; max-width: 750px; 
+            margin: 0 auto 35px; line-height: 1.8; font-weight: 300; word-break: keep-all;
+        }
 
-/* ── BOOK CARD ── */
-.book-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0;
-  cursor: pointer;
-  text-decoration: none;
-  color: inherit;
-  animation: fadeUp 0.8s ease both;
-}
-.book-card:nth-child(2) { animation-delay: 0.15s; }
+        .action-btn {
+            display: inline-block; padding: 12px 45px;
+            background: transparent; color: #fff;
+            border: 1px solid #ffb4c8; border-radius: 30px;
+            font-weight: 600; font-size: 0.95rem; transition: 0.3s;
+            letter-spacing: 1px; text-transform: uppercase;
+        }
+        .hero-card:hover .action-btn { background: #ffb4c8; color: #000; box-shadow: 0 0 20px var(--pink-glow); }
 
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(32px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
+        /* Miracle Shot 티저 카드 */
+        .teaser-card {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px; padding: 50px 40px;
+            display: flex; align-items: center; gap: 40px;
+            backdrop-filter: blur(5px);
+            animation: fadeUp 1s ease 0.4s both;
+        }
 
-.book-cover-wrap {
-  position: relative;
-  width: 260px;
-  perspective: 900px;
-}
+        .teaser-content { flex: 1.5; }
+        .teaser-badge {
+            display: inline-block; background: #4a90e2; color: #fff;
+            padding: 5px 18px; border-radius: 20px; font-size: 0.75rem;
+            font-weight: 700; margin-bottom: 20px; letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+        .teaser-title { font-size: 2rem; color: #ffffff; margin-bottom: 15px; font-weight: 700; }
+        .teaser-desc { color: #8a8a9d; font-size: 1rem; line-height: 1.7; word-break: keep-all; }
 
-.book-cover {
-  position: relative;
-  width: 260px;
-  height: 360px;
-  transform-style: preserve-3d;
-  transform: rotateY(-18deg);
-  transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  box-shadow: -10px 10px 40px rgba(0,0,0,0.7), -4px 4px 12px rgba(0,0,0,0.5);
-}
+        .teaser-img {
+            flex: 1; width: 100%; height: 200px; border-radius: 12px;
+            background-image: url('images/miracleshot1.png');
+            background-size: cover; background-position: center;
+            opacity: 0.6; filter: grayscale(40%);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
 
-.book-card:hover .book-cover {
-  transform: rotateY(-4deg);
-  box-shadow: -18px 18px 55px rgba(0,0,0,0.75), -6px 6px 18px rgba(0,0,0,0.5);
-}
+        footer { text-align: center; padding: 80px 40px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: #555; border-top: 1px solid rgba(255,255,255,0.03); }
 
-.book-front {
-  position: absolute; inset: 0;
-  background: #1a1a2e;
-  background-image: url('images/book.png');
-  background-size: cover;
-  background-position: center;
-  border-radius: 2px 6px 6px 2px;
-  overflow: hidden;
-}
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            nav { padding: 0 20px; }
+            .menu-toggle { display: flex; }
+            .nav-links {
+                position: fixed; top: var(--nav-height); left: 0; width: 100%; height: 0;
+                background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center;
+                gap: 25px; overflow: hidden; transition: 0.4s ease-in-out;
+            }
+            .nav-links.active { height: calc(100vh - var(--nav-height)); }
+            .hero-card.sistersquad { padding: 45px 20px; }
+            .teaser-card { flex-direction: column; text-align: center; gap: 25px; padding: 40px 20px; }
+            .teaser-img { height: 180px; max-width: 100%; }
+        }
 
-.book-front.book-sistersquad {
-  background-image: url('images/sistersquad1.png'), radial-gradient(circle at 50% 35%, rgba(180,100,255,0.4) 0%, transparent 55%), linear-gradient(160deg, #2a1050 0%, #0d0820 60%, #050512 100%);
-  background-size: cover, auto, auto;
-}
-
-.book-front.book-miracleshot {
-  background-image: url('images/miracleshot1.png'), radial-gradient(circle at 50% 40%, rgba(0,180,255,0.35) 0%, transparent 55%), linear-gradient(160deg, #082840 0%, #040e1a 60%, #020810 100%);
-  background-size: cover, auto, auto;
-}
-
-/* ── SEE YOU SOON 스타일 ── */
-.coming-soon-badge {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(-10deg);
-  z-index: 10;
-  font-family: 'Cinzel', serif;
-  font-size: 1rem;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  color: var(--gold-light);
-  text-transform: uppercase;
-  white-space: nowrap;
-  padding: 10px 20px;
-  border: 1px solid rgba(201, 168, 76, 0.4);
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
-  box-shadow: 0 0 20px rgba(0,0,0,0.5), inset 0 0 10px rgba(201, 168, 76, 0.2);
-  text-shadow: 0 0 10px rgba(201, 168, 76, 0.8);
-  pointer-events: none;
-}
-
-.book-front-overlay {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column;
-  justify-content: flex-end;
-  padding: 22px 18px;
-  background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
-}
-
-.book-vol { font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.4em; color: var(--gold); text-transform: uppercase; margin-bottom: 6px; }
-
-.book-cover-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.45rem; font-weight: 600; letter-spacing: 0.08em; line-height: 1.2;
-  background: linear-gradient(108deg, #e8d08a 0%, #fffbe8 40%, #c9a84c 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-}
-
-.book-spine {
-  position: absolute; left: -14px; top: 0; bottom: 0; width: 14px;
-  background: linear-gradient(to right, #0a0810, #1a1228);
-  border-radius: 2px 0 0 2px;
-  display: flex; align-items: center; justify-content: center;
-}
-
-.book-spine-text {
-  font-family: 'Cinzel', serif; font-size: 0.5rem; letter-spacing: 0.25em; color: rgba(201,168,76,0.4);
-  writing-mode: vertical-rl; transform: rotate(180deg); text-transform: uppercase;
-}
-
-.book-cover-wrap::after {
-  content: '';
-  position: absolute; inset: -6px; border-radius: 8px;
-  background: transparent;
-  box-shadow: 0 0 0 1px rgba(201,168,76,0);
-  transition: box-shadow 0.45s;
-  pointer-events: none;
-}
-.book-card:hover .book-cover-wrap::after { box-shadow: 0 0 30px rgba(201,168,76,0.25), 0 0 0 1px rgba(201,168,76,0.15); }
-
-.book-info { width: 260px; padding: 24px 4px 0; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
-
-.book-info-title { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 600; letter-spacing: 0.06em; color: var(--text); transition: color 0.3s; }
-.book-card:hover .book-info-title { color: var(--gold-light); }
-
-.book-info-vol { font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; }
-
-.book-info-desc { font-size: 0.82rem; font-weight: 300; line-height: 1.75; color: rgba(240,236,228,0.55); margin-top: 4px; }
-
-.book-info-btn {
-  display: inline-flex; align-items: center; gap: 6px; margin-top: 12px;
-  font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.22em;
-  color: var(--cyan); border: 1px solid rgba(0,212,255,0.35);
-  border-radius: 50px; padding: 8px 20px; text-transform: uppercase; text-decoration: none;
-  transition: background 0.3s, color 0.3s, border-color 0.3s;
-}
-.book-card:hover .book-info-btn { background: rgba(0,212,255,0.08); border-color: rgba(0,212,255,0.7); color: #fff; }
-
-footer { text-align: center; padding: 28px; font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.2em; color: rgba(154,148,144,0.35); border-top: 1px solid rgba(201,168,76,0.06); }
-
-/* ── RESPONSIVE ── */
-@media (max-width: 800px) {
-  header { height: 170px; }
-  .banner-title { font-size: 2.4rem; }
-  .banner-nav a { padding: 6px 16px; font-size: 0.72rem; letter-spacing: 0.15em; }
-}
-
-@media (max-width: 680px) {
-  .page-heading h2 { font-size: 1.5rem; padding: 0 10px; }
-  .book-grid { gap: 48px; padding: 40px 24px 80px; }
-  .back-btn { margin-left: 24px; }
-}
-
-@media (max-width: 480px) {
-  .banner-title { font-size: 1.8rem; letter-spacing: 0.1em; }
-  .banner-subtitle { font-size: 0.55rem; letter-spacing: 0.3em; }
-  .banner-nav a { padding: 6px 10px; font-size: 0.65rem; letter-spacing: 0.1em; }
-  
-  .page-heading h2 { 
-    font-size: 1.2rem; 
-    letter-spacing: 0.08em; 
-    line-height: 1.5;
-  }
-  .coming-soon-badge { font-size: 0.85rem; padding: 8px 16px; }
-}
-</style>
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
 </head>
 <body>
 
-<header>
-  <div class="banner-top-line"></div>
-  <div class="banner-stars" aria-hidden="true">
-    <span style="left:5%;  top:22%; width:1.5px; height:1.5px;"></span>
-    <span style="left:32%; top:18%; width:3px; height:3px;"></span>
-    <span style="left:87%; top:35%; width:1.5px; height:1.5px;"></span>
-  </div>
-  <div class="banner-brand">
-    <div class="banner-deco-row">
-      <div class="banner-deco-line"></div>
-      <div class="banner-deco-diamond"></div>
-      <div class="banner-deco-line right"></div>
-    </div>
-    <a href="index.html" style="text-decoration: none; display: inline-block;">
-      <h1 class="banner-title">Chris Lee.Papa</h1>
-    </a>
-    <p class="banner-subtitle">The &nbsp; Creative &nbsp; Archive</p>
-  </div>
-  <nav class="banner-nav">
-    <a href="book.html">BOOK</a>
-    <a href="music.html">MUSIC</a>
-    <a href="movie.html">MOVIE</a>
-    <a href="worship.html">WORSHIP</a>
-  </nav>
-</header>
-
-<a href="index.html" class="back-btn">홈으로 돌아가기</a>
-
-<div class="page-heading">
-  <span class="section-tag">✦ &nbsp; Book &nbsp; ✦</span>
-  <h2>상상이 종이에 그려진 순간 놀라운 기적이 일어난다</h2>
-  <div class="divider"></div>
-</div>
-
-<div class="book-grid">
-
-  <!-- SisterSquad -->
-  <a class="book-card" href="sistersquad.html">
-    <div class="book-cover-wrap">
-      <div class="book-cover">
-        <div class="book-spine"><span class="book-spine-text">SisterSquad</span></div>
-        <div class="book-front book-sistersquad">
-          <div class="book-front-overlay">
-            <span class="book-vol">Vol. 1</span>
-            <span class="book-cover-title">Sister<br>Squad</span>
-          </div>
+    <!-- 1. 네비게이션 -->
+    <nav>
+        <a href="index.html" class="brand-logo">Chris LEE.PAPA</a>
+        <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
+        <div class="nav-links" id="navLinks">
+            <a href="index.html">Home</a>
+            <a href="worship.html">Worship</a>
+            <a href="music.html">Music</a>
+            <a href="book.html" class="active">Books</a>
+            <a href="movie.html">Movies</a>
         </div>
-      </div>
-    </div>
-    <div class="book-info">
-      <p class="book-info-vol">Vol. 1</p>
-      <h3 class="book-info-title">SisterSquad</h3>
-      <p class="book-info-desc">책 속 마법 세계로 빠져든 T 언니 율이와 F 동생 정이! 어둠에 맞서며 용기와 가족의 사랑을 깨닫는 환상적인 모험.</p>
-      <span class="book-info-btn">자세히 보기 ›</span>
-    </div>
-  </a>
+    </nav>
 
-  <!-- MiracleShot (See you soon 배지 추가) -->
-  <a class="book-card" href="#">
-    <div class="book-cover-wrap">
-      <div class="book-cover">
-        <div class="book-spine"><span class="book-spine-text">MiracleShot</span></div>
-        <div class="book-front book-miracleshot">
-          <!-- 중앙에 위치한 See you soon 텍스트 -->
-          <div class="coming-soon-badge">See you soon</div>
-          <div class="book-front-overlay">
-            <span class="book-vol">Vol. 1</span>
-            <span class="book-cover-title">Miracle<br>Shot</span>
-          </div>
+    <!-- 2. 페이지 헤더 -->
+    <header class="page-header">
+        <canvas id="stars-canvas"></canvas>
+        <div class="header-content">
+            <h1 class="header-title">Books & Universe</h1>
+            <p class="header-slogan">Imagination to Reality</p>
         </div>
-      </div>
-    </div>
-    <div class="book-info">
-      <p class="book-info-vol">Vol. 1</p>
-      <h3 class="book-info-title">MiracleShot</h3>
-      <p class="book-info-desc">개성이 넘치는 아이들과 함께 실패에서 기적을 쏘아 올리는 이코치의 이야기</p>
-      <span class="book-info-btn">자세히 보기 ›</span>
-    </div>
-  </a>
+    </header>
 
-</div>
+    <!-- 3. 메인 콘텐츠 -->
+    <div class="container">
+        
+        <!-- SISTER SQUAD 메인 섹션 -->
+        <section class="hero-card sistersquad" onclick="window.location.href='sistersquad.html'">
+            <div class="card-image-box"></div>
+            <h2 class="sister-title">SISTER SQUAD</h2>
+            <p class="desc-text">
+                책 속 마법 세계로 빠져든 T 언니 율이와 F 동생 정이!<br>
+                어둠에 맞서며 용기와 가족의 사랑을 깨닫는 환상적인 모험.<br>
+                사랑하는 두 딸에게서 영감을 받아 탄생한 따뜻한 에듀테인먼트 세계관입니다.
+            </p>
+            <a href="sistersquad.html" class="action-btn">Read More</a>
+        </section>
 
-<footer>© 2026 Chris Lee.Papa — The Creative Archive</footer>
+        <!-- Miracle Shot 티저 섹션 -->
+        <section class="teaser-card">
+            <div class="teaser-content">
+                <span class="teaser-badge">Coming Soon</span>
+                <h2 class="teaser-title">Miracle Shot</h2>
+                <p class="teaser-desc">
+                    개성이 넘치는 아이들과 함께 실패에서 기적을 쏘아 올리는 이코치의 이야기.<br>
+                    최강 골레이로 '영', 불꽃슈터 '황', 슈퍼소닉 '길', 패스마스터 '고'.<br>
+                    네 소년의 뜨거운 청춘 풋살 판타지가 곧 공개됩니다.
+                </p>
+            </div>
+            <div class="teaser-img"></div>
+        </section>
+
+    </div>
+
+    <footer><p>© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
+
+    <script>
+        // 모바일 메뉴 컨트롤
+        const menuToggle = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('navLinks');
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // ── 고성능 캔버스 별빛 효과 ──
+        const canvas = document.getElementById('stars-canvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = 350;
+            initStars();
+        }
+
+        function initStars() {
+            stars = [];
+            const count = (canvas.width * canvas.height) / 7500;
+            for (let i = 0; i < count; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 1.6 + 0.2,
+                    opacity: Math.random(),
+                    speed: Math.random() * 0.02 + 0.005
+                });
+            }
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(s => {
+                s.opacity += s.speed;
+                if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed;
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0, s.opacity)})`;
+                ctx.fill();
+            });
+            requestAnimationFrame(draw);
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+        draw();
+    </script>
 </body>
 </html>

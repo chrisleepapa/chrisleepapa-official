@@ -120,13 +120,20 @@
         .synopsis-section {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 180, 200, 0.15);
-            border-radius: 24px; padding: 50px;
+            border-radius: 24px; padding: 50px 30px;
             margin-bottom: 100px; backdrop-filter: blur(10px);
             animation: fadeUp 1s ease 0.2s both;
         }
+        .section-label {
+            font-family: 'Cinzel', serif; color: var(--pink-accent);
+            font-size: 0.8rem; letter-spacing: 4px; display: block; margin-bottom: 20px;
+            text-align: center;
+        }
         .synopsis-text {
-            font-size: 1.15rem; line-height: 2.2; text-align: center; color: #e0e0ff;
-            word-break: keep-all; font-weight: 300;
+            /* 기존 1.15rem에서 조금 줄이고 뷰포트에 따라 조절되는 clamp 적용 */
+            font-size: clamp(0.9rem, 2.5vw, 1.05rem); 
+            line-height: 2.2; text-align: center; color: #e0e0ff;
+            word-break: keep-all; font-weight: 300; max-width: 900px; margin: 0 auto;
         }
         .synopsis-text b { color: var(--pink-accent); font-weight: 500; }
 
@@ -197,7 +204,7 @@
             .nav-links.active { height: calc(100vh - var(--nav-height)); }
             .character-grid { grid-template-columns: 1fr; }
             .char-img-area { height: 300px; }
-            .synopsis-section { padding: 35px 25px; }
+            .synopsis-section { padding: 35px 20px; }
             .container { padding-bottom: 60px; }
         }
 
@@ -214,7 +221,7 @@
             <a href="index.html">Home</a>
             <a href="worship.html">Worship</a>
             <a href="music.html">Music</a>
-            <a href="book.html">Books</a>
+            <a href="book.html" class="active">Books</a>
             <a href="movie.html">Movies</a>
         </div>
     </nav>
@@ -239,6 +246,7 @@
 
         <!-- 시놉시스 -->
         <section class="synopsis-section">
+            <span class="section-label">THE STORY</span>
             <p class="synopsis-text">
                 어느 날 갑자기 펼쳐진 신비로운 책 속의 세계.<br>
                 이성적이고 용감한 <b>T 언니 '율'</b>과 따뜻하고 공감 능력이 뛰어난 <b>F 동생 '정'</b>은<br>

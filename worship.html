@@ -15,6 +15,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Chris Lee.Papa – WORSHIP | The Creative Archive">
+
+    <!-- SNS 공유용 OG 태그 (최종 수정본) -->
+    <meta property="og:title" content="Chris Lee.Papa – WORSHIP">
+    <meta property="og:description" content="영혼 깊은 곳에서 올려드리는 고백과 찬양의 기록들.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://chrisleepapa-official.vercel.app/worship.html">
+    <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1">
+
+    <link rel="canonical" href="https://chrisleepapa-official.vercel.app/worship.html">
     <title>WORSHIP – Chris LEE.PAPA</title>
     
     <!-- 폰트 통합 호출 -->
@@ -43,21 +52,16 @@
             font-family: 'Pretendard', 'Noto Serif KR', serif;
             line-height: 1.6;
             overflow-x: hidden;
-            /* 성소의 느낌을 주는 신비롭고 깊은 보라/금빛 효과 */
             background-image: radial-gradient(circle at top center, rgba(60, 30, 80, 0.4), transparent 60%),
                               radial-gradient(circle at bottom, rgba(40, 30, 10, 0.6), transparent 70%);
-            /* 드래그 및 선택 방지 */
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
         }
 
-        img {
-            -webkit-user-drag: none; /* 이미지 드래그 방지 */
-        }
+        img { -webkit-user-drag: none; }
 
-        /* 아날로그 노이즈 레이어 */
         body::before {
             content: ''; position: fixed; inset: 0;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
@@ -76,12 +80,49 @@
 
         .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); z-index: 1001; }
 
-        .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
-        .menu-toggle span { width: 22px; height: 1.5px; background-color: var(--gold-light); transition: 0.3s; }
-
+        .nav-right { display: flex; align-items: center; gap: 30px; }
         .nav-links { display: flex; gap: 30px; }
         .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; }
         .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+
+        .share-trigger {
+            cursor: pointer; padding: 6px 14px; border: 1px solid rgba(201,168,76,0.3);
+            border-radius: 20px; font-family: 'Cinzel', serif; font-size: 0.7rem;
+            color: var(--gold-light); transition: 0.3s; letter-spacing: 1px;
+        }
+        .share-trigger:hover { background: rgba(201,168,76,0.1); border-color: var(--gold-light); }
+
+        .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
+        .menu-toggle span { width: 22px; height: 1.5px; background-color: var(--gold-light); transition: 0.3s; }
+
+        /* ── 공유 모달 & 토스트 ── */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+            z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: 0.3s;
+        }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .share-modal {
+            background: #0a0a0f; border: 1px solid var(--gold); border-radius: 24px;
+            width: 90%; max-width: 400px; padding: 45px 30px; text-align: center;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.9);
+        }
+        .share-modal h3 { font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--gold-light); margin-bottom: 15px; }
+        .share-modal p { font-size: 0.9rem; color: #888; margin-bottom: 35px; }
+        .share-buttons { display: flex; flex-direction: column; gap: 14px; }
+        .modal-btn {
+            padding: 15px; border-radius: 12px; border: none; font-family: 'Cinzel', serif;
+            font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: 0.3s;
+        }
+        .btn-copy { background: var(--gold); color: #000; }
+        .btn-sns { background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #fff; }
+        .btn-sns:hover { background: rgba(255,255,255,0.05); }
+        .btn-close { margin-top: 25px; color: #666; background: none; font-size: 0.75rem; text-decoration: underline; }
+
+        .toast-msg {
+            position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%);
+            background: var(--gold); color: #000; padding: 12px 30px; border-radius: 40px;
+            font-size: 0.9rem; font-weight: 700; z-index: 3000; display: none; animation: fadeUp 0.4s ease;
+        }
 
         /* ── 헤더 섹션 ── */
         .page-header {
@@ -118,62 +159,40 @@
         /* ── 메인 콘텐츠 ── */
         .container { max-width: 1200px; margin: 0 auto; padding: 20px 20px 100px; position: relative; z-index: 10; }
 
-        /* 메인 앨범 하이라이트 (Vol. 1 & Vol. 2) */
         .featured-albums {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 40px; margin-bottom: 120px;
         }
 
         .featured-card {
-            position: relative;
-            overflow: hidden;
+            position: relative; overflow: hidden;
             border: 1px solid rgba(201,168,76,0.3);
             border-radius: 24px; padding: 40px 30px;
-            text-align: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-            transition: all 0.4s ease;
-            animation: fadeUp 1s ease 0.2s both;
+            text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            transition: all 0.4s ease; animation: fadeUp 1s ease 0.2s both;
         }
 
         .featured-card::before {
-            content: '';
-            position: absolute;
-            inset: -5px; 
-            z-index: 0;
-            background-size: cover;
-            background-position: center;
-            /* 블러 수치를 낮춰 이미지가 잘 보이게 처리 */
-            filter: blur(1.5px) brightness(0.4);
-            transition: all 0.5s ease;
+            content: ''; position: absolute; inset: -5px; z-index: 0;
+            background-size: cover; background-position: center;
+            filter: blur(1.5px) brightness(0.4); transition: all 0.5s ease;
         }
 
         .featured-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(201,168,76,0.8);
+            transform: translateY(-8px); border-color: rgba(201,168,76,0.8);
             box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 30px rgba(201,168,76,0.2);
         }
 
-        .featured-card:hover::before {
-            transform: scale(1.05);
-            /* 호버시 블러 완전히 해제 */
-            filter: blur(0px) brightness(0.5);
-        }
+        .featured-card:hover::before { transform: scale(1.05); filter: blur(0px) brightness(0.5); }
+        .featured-card > * { position: relative; z-index: 1; }
 
-        /* 카드 내부 콘텐츠를 배경 위로 띄움 */
-        .featured-card > * {
-            position: relative;
-            z-index: 1;
-        }
-
-        /* 각 앨범 카드별 고유 배경 이미지 */
         .card-vol1::before { background-image: url('https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=800&auto=format&fit=crop'); }
         .card-vol2::before { background-image: url('https://images.unsplash.com/photo-1504052434569-70ad5836ab65?q=80&w=800&auto=format&fit=crop'); }
 
         .featured-card iframe {
             border-radius: 12px; width: 100%; margin-bottom: 30px;
             box-shadow: 0 15px 30px rgba(0,0,0,0.8);
-            border: 1px solid rgba(255,255,255,0.1);
-            background: transparent;
+            border: 1px solid rgba(255,255,255,0.1); background: transparent;
         }
 
         .featured-card h3 { font-family: 'Noto Serif KR', serif; font-size: 1.8rem; font-weight: 600; color: var(--gold-light); margin-bottom: 5px; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
@@ -181,7 +200,6 @@
 
         .btn-group { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
 
-        /* ── 트랙 리스트 영역 ── */
         .track-list-section { max-width: 900px; margin: 0 auto; animation: fadeUp 1s ease 0.4s both; }
 
         .section-title {
@@ -206,7 +224,6 @@
         .track-title { font-family: 'Noto Serif KR', serif; font-size: 1.3rem; font-weight: 600; color: #ffffff; margin-bottom: 5px; }
         .track-badge { font-family: 'Cinzel', serif; font-size: 0.75rem; color: var(--gold-light); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
 
-        /* 트랙 리스트 내부 스포티파이 버튼 */
         .track-btn {
             display: inline-block; font-size: 0.75rem; font-weight: 600; color: var(--spotify);
             border: 1px solid var(--spotify); padding: 5px 14px; border-radius: 20px;
@@ -216,7 +233,6 @@
 
         .track-item iframe { width: 350px; height: 80px; border-radius: 12px; flex-shrink: 0; box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
 
-        /* ── 액션 버튼 디자인 (메인 카드용) ── */
         .action-btn {
             display: inline-flex; align-items: center; justify-content: center; gap: 8px;
             font-size: 0.95rem; font-weight: 600; padding: 12px 28px; border-radius: 30px;
@@ -231,22 +247,18 @@
 
         footer { text-align: center; padding: 80px 40px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: #555; border-top: 1px solid rgba(255,255,255,0.03); }
 
-        /* ── RESPONSIVE ── */
         @media (max-width: 900px) {
             nav { padding: 0 20px; }
-            .menu-toggle { display: flex; }
-            .nav-links {
-                position: fixed; top: var(--nav-height); left: 0; width: 100%; height: 0;
-                background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center;
-                gap: 25px; overflow: hidden; transition: 0.4s ease-in-out;
+            .nav-links { display: none; }
+            .nav-links.active {
+                display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height));
+                background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 25px;
             }
-            .nav-links.active { height: calc(100vh - var(--nav-height)); }
-            
+            .menu-toggle { display: flex; }
             .page-header { height: 350px; }
             .featured-albums { grid-template-columns: 1fr; }
             .track-item { flex-direction: column; text-align: center; gap: 20px; padding: 30px 20px; }
             .track-info { align-items: center; }
-            .track-item:hover { transform: translateY(-5px); }
             .track-item iframe { width: 100%; }
         }
 
@@ -255,20 +267,37 @@
 </head>
 <body>
 
-    <!-- 1. 네비게이션 -->
     <nav>
         <a href="index.html" class="brand-logo">Chris LEE.PAPA</a>
-        <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
-        <div class="nav-links" id="navLinks">
-            <a href="index.html">Home</a>
-            <a href="worship.html" class="active">Worship</a>
-            <a href="music.html">Music</a>
-            <a href="book.html">Books</a>
-            <a href="movie.html">Movies</a>
+        <div class="nav-right">
+            <div class="nav-links" id="navLinks">
+                <a href="index.html">Home</a>
+                <a href="worship.html" class="active">Worship</a>
+                <a href="music.html">Music</a>
+                <a href="book.html">Books</a>
+                <a href="movie.html">Movies</a>
+            </div>
+            <div class="share-trigger" onclick="openShareModal()">SHARE</div>
+            <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
         </div>
     </nav>
 
-    <!-- 2. 페이지 헤더 -->
+    <!-- 공유 모달 팝업 -->
+    <div class="modal-overlay" id="shareOverlay" onclick="closeShareModal(event)">
+        <div class="share-modal" onclick="event.stopPropagation()">
+            <h3>SHARE WORSHIP</h3>
+            <p>이곳의 고백과 찬양이 누군가에게 위로가 되길 바랍니다.</p>
+            <div class="share-buttons">
+                <button class="modal-btn btn-copy" onclick="copyURL()">COPY LINK</button>
+                <button class="modal-btn btn-sns" onclick="shareViaWebAPI()">SNS SHARE</button>
+            </div>
+            <button class="modal-btn btn-close" onclick="closeShareModal(null)">Close</button>
+        </div>
+    </div>
+
+    <!-- 토스트 메시지 -->
+    <div class="toast-msg" id="toast">Link copied!</div>
+
     <header class="page-header">
         <canvas id="stars-canvas"></canvas>
         <div class="header-content">
@@ -277,13 +306,8 @@
         </div>
     </header>
 
-    <!-- 3. 메인 콘텐츠 -->
     <div class="container">
-
-        <!-- 메인 앨범 하이라이트 -->
         <section class="featured-albums">
-            
-            <!-- Vol 1. 카드 (lyrics.html 링크) -->
             <div class="featured-card card-vol1">
                 <iframe src="https://open.spotify.com/embed/album/0ctoLQNWCmiPEkySv05PAM?utm_source=generator" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
                 <h3>나의 찬양 Vol. 1</h3>
@@ -293,8 +317,6 @@
                     <a href="lyrics.html" onclick="window.open(this.href, 'lyricsPopup', 'width=450,height=750,scrollbars=yes,resizable=yes'); return false;" class="action-btn btn-lyric">가사 보기</a>
                 </div>
             </div>
-
-            <!-- Vol 2. 카드 (lyrics2.html 링크) -->
             <div class="featured-card card-vol2">
                 <iframe src="https://open.spotify.com/embed/album/0yhn8oEojOqsI864an6Qki?utm_source=generator" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
                 <h3>나의 찬양 Vol. 2</h3>
@@ -304,75 +326,24 @@
                     <a href="lyrics2.html" onclick="window.open(this.href, 'lyricsPopup2', 'width=450,height=750,scrollbars=yes,resizable=yes'); return false;" class="action-btn btn-lyric">가사 보기</a>
                 </div>
             </div>
-
         </section>
 
-        <!-- 싱글 트랙 리스트 -->
         <section class="track-list-section">
             <h2 class="section-title">Worship Tracks</h2>
-
-            <div class="track-item">
-                <div class="track-info">
-                    <div class="track-title">파레시아</div>
-                    <div class="track-badge">Vocal Track</div>
-                    <a href="https://open.spotify.com/album/0QGLxuT24EuccIuk0oX0o8" target="_blank" class="track-btn">Spotify 듣기 ›</a>
-                </div>
-                <iframe src="https://open.spotify.com/embed/album/0QGLxuT24EuccIuk0oX0o8?utm_source=generator" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-            </div>
-
-            <div class="track-item">
-                <div class="track-info">
-                    <div class="track-title">주를 향해 노래하리</div>
-                    <div class="track-badge">Vocal Track</div>
-                    <a href="https://open.spotify.com/album/1L5Ee2OArmJDbHn3dl1137" target="_blank" class="track-btn">Spotify 듣기 ›</a>
-                </div>
-                <iframe src="https://open.spotify.com/embed/album/1L5Ee2OArmJDbHn3dl1137?utm_source=generator" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-            </div>
-
-            <div class="track-item">
-                <div class="track-info">
-                    <div class="track-title">기적입니다</div>
-                    <div class="track-badge">Vocal Track</div>
-                    <a href="https://open.spotify.com/album/53arzUULOmohQPo1njoNgl" target="_blank" class="track-btn">Spotify 듣기 ›</a>
-                </div>
-                <iframe src="https://open.spotify.com/embed/album/53arzUULOmohQPo1njoNgl?utm_source=generator" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-            </div>
-
-            <div class="track-item">
-                <div class="track-info">
-                    <div class="track-title">일어나 외쳐</div>
-                    <div class="track-badge">Vocal Track</div>
-                    <a href="https://open.spotify.com/album/2wEUPNTnhYRMPjyTDXbzME" target="_blank" class="track-btn">Spotify 듣기 ›</a>
-                </div>
-                <iframe src="https://open.spotify.com/embed/album/2wEUPNTnhYRMPjyTDXbzME?utm_source=generator" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-            </div>
-
-            <div class="track-item">
-                <div class="track-info">
-                    <div class="track-title">사랑으로</div>
-                    <div class="track-badge">Vocal Track</div>
-                    <a href="https://open.spotify.com/album/0mdTNiRQD6GNa8vsLGpGhl" target="_blank" class="track-btn">Spotify 듣기 ›</a>
-                </div>
-                <iframe src="https://open.spotify.com/embed/album/0mdTNiRQD6GNa8vsLGpGhl?utm_source=generator" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-            </div>
-
-            <div class="track-item">
-                <div class="track-info">
-                    <div class="track-title">우리의 예배</div>
-                    <div class="track-badge">Vocal Track</div>
-                    <a href="https://open.spotify.com/album/6lPERr8sZxJIntiFNwN3Vg" target="_blank" class="track-btn">Spotify 듣기 ›</a>
-                </div>
-                <iframe src="https://open.spotify.com/embed/album/6lPERr8sZxJIntiFNwN3Vg?utm_source=generator" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-            </div>
-
+            <div class="track-item"><div class="track-info"><div class="track-title">파레시아</div><div class="track-badge">Vocal Track</div><a href="https://open.spotify.com/album/0QGLxuT24EuccIuk0oX0o8" target="_blank" class="track-btn">Spotify 듣기 ›</a></div><iframe src="https://open.spotify.com/embed/album/0QGLxuT24EuccIuk0oX0o8?utm_source=generator" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></div>
+            <div class="track-item"><div class="track-info"><div class="track-title">주를 향해 노래하리</div><div class="track-badge">Vocal Track</div><a href="https://open.spotify.com/album/1L5Ee2OArmJDbHn3dl1137" target="_blank" class="track-btn">Spotify 듣기 ›</a></div><iframe src="https://open.spotify.com/embed/album/1L5Ee2OArmJDbHn3dl1137?utm_source=generator" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></div>
+            <div class="track-item"><div class="track-info"><div class="track-title">기적입니다</div><div class="track-badge">Vocal Track</div><a href="https://open.spotify.com/album/53arzUULOmohQPo1njoNgl" target="_blank" class="track-btn">Spotify 듣기 ›</a></div><iframe src="https://open.spotify.com/embed/album/53arzUULOmohQPo1njoNgl?utm_source=generator" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></div>
+            <div class="track-item"><div class="track-info"><div class="track-title">일어나 외쳐</div><div class="track-badge">Vocal Track</div><a href="https://open.spotify.com/album/2wEUPNTnhYRMPjyTDXbzME" target="_blank" class="track-btn">Spotify 듣기 ›</a></div><iframe src="https://open.spotify.com/embed/album/2wEUPNTnhYRMPjyTDXbzME?utm_source=generator" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></div>
+            <div class="track-item"><div class="track-info"><div class="track-title">사랑으로</div><div class="track-badge">Vocal Track</div><a href="https://open.spotify.com/album/0mdTNiRQD6GNa8vsLGpGhl" target="_blank" class="track-btn">Spotify 듣기 ›</a></div><iframe src="https://open.spotify.com/embed/album/0mdTNiRQD6GNa8vsLGpGhl?utm_source=generator" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></div>
+            <div class="track-item"><div class="track-info"><div class="track-title">우리의 예배</div><div class="track-badge">Vocal Track</div><a href="https://open.spotify.com/album/6lPERr8sZxJIntiFNwN3Vg" target="_blank" class="track-btn">Spotify 듣기 ›</a></div><iframe src="https://open.spotify.com/embed/album/6lPERr8sZxJIntiFNwN3Vg?utm_source=generator" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></div>
         </section>
-
     </div>
 
     <footer><p>© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
 
     <script>
-        // 모바일 메뉴 컨트롤
+        function safeNavigate(url) { if (url && url.trim() !== "") { window.location.assign(url); } }
+
         const menuToggle = document.getElementById('mobile-menu');
         const navLinks = document.getElementById('navLinks');
         menuToggle.addEventListener('click', () => {
@@ -380,17 +351,59 @@
             navLinks.classList.toggle('active');
         });
 
-        // ── 고성능 캔버스 별빛 효과 (성소 컨셉: 15% 금빛 별) ──
+        // ── 공유 로직 ──
+        const shareOverlay = document.getElementById('shareOverlay');
+        const toast = document.getElementById('toast');
+
+        function openShareModal() {
+            shareOverlay.style.display = 'flex';
+            setTimeout(() => shareOverlay.classList.add('active'), 10);
+        }
+
+        function closeShareModal(e) {
+            if (e && e.target !== shareOverlay && e.type !== 'click') return;
+            shareOverlay.classList.remove('active');
+            setTimeout(() => shareOverlay.style.display = 'none', 300);
+        }
+
+        function copyURL() {
+            const el = document.createElement('textarea');
+            el.value = window.location.href;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            showToast('Link copied to clipboard!');
+            closeShareModal();
+        }
+
+        function shareViaWebAPI() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Chris LEE.PAPA - WORSHIP',
+                    text: '영혼을 울리는 찬양과 고백의 기록들',
+                    url: window.location.href
+                }).catch(console.error);
+            } else {
+                showToast('Sharing is not supported on this browser.');
+            }
+        }
+
+        function showToast(msg) {
+            toast.textContent = msg;
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 2500);
+        }
+
+        // 별빛 배경
         const canvas = document.getElementById('stars-canvas');
         const ctx = canvas.getContext('2d');
         let stars = [];
-
         function resize() {
             canvas.width = window.innerWidth;
             canvas.height = 450;
             initStars();
         }
-
         function initStars() {
             stars = [];
             const count = (canvas.width * canvas.height) / 7000;
@@ -405,7 +418,6 @@
                 });
             }
         }
-
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             stars.forEach(s => {
@@ -418,39 +430,17 @@
             });
             requestAnimationFrame(draw);
         }
-
         window.addEventListener('resize', resize);
         resize();
         draw();
 
-        // ── 우클릭, 복사, 캡처 및 개발자도구 방지 스크립트 ──
-        
-        // 1. 우클릭 방지
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-        });
-
-        // 2. 복사 방지
-        document.addEventListener('copy', function(e) {
-            e.preventDefault();
-        });
-
-        // 3. 단축키 방지 (개발자 도구, 복사, 저장, 인쇄 등)
-        document.addEventListener('keydown', function(e) {
-            // F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U (개발자 도구 및 소스 보기)
-            if (e.key === 'F12' || 
-               (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j')) || 
-               (e.ctrlKey && (e.key === 'U' || e.key === 'u'))) {
-                e.preventDefault();
-            }
-            // Ctrl+C, Ctrl+S, Ctrl+P (복사, 저장, 인쇄)
-            if (e.ctrlKey && (e.key === 'c' || e.key === 'C' || e.key === 's' || e.key === 'S' || e.key === 'p' || e.key === 'P')) {
-                e.preventDefault();
-            }
-            // PrintScreen 키 입력 시 클립보드 비우기 (일부 브라우저 동작)
-            if (e.key === 'PrintScreen') {
-                navigator.clipboard.writeText('');
-            }
+        // 보안
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('copy', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || (e.ctrlKey && e.key === 'U')) e.preventDefault();
+            if (e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'p')) e.preventDefault();
+            if (e.key === 'PrintScreen') navigator.clipboard.writeText('');
         });
     </script>
 </body>

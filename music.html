@@ -136,6 +136,17 @@
         }
         .spotify-container iframe { width: 100%; height: 152px; display: block; }
 
+        .external-link-btn {
+            display: inline-block; margin-top: 25px; padding: 12px 30px;
+            border-radius: 30px; background: rgba(29, 185, 84, 0.1);
+            color: var(--spotify-green); border: 1px solid rgba(29, 185, 84, 0.4);
+            font-size: 0.9rem; font-weight: 600; letter-spacing: 1px; transition: all 0.3s;
+        }
+        .external-link-btn:hover {
+            background: var(--spotify-green); color: #000;
+            box-shadow: 0 0 15px rgba(29, 185, 84, 0.5);
+        }
+
         /* 오른쪽: 플레이리스트 사이드바 */
         .playlist-sidebar {
             flex: 1; background: rgba(255, 255, 255, 0.01);
@@ -229,6 +240,8 @@
             <div class="spotify-container">
                 <iframe id="main-spotify" src="https://open.spotify.com/embed/album/2OSKuof7gooLElmFYvoygK?utm_source=generator" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
             </div>
+
+            <a id="main-external-link" href="https://open.spotify.com/album/2OSKuof7gooLElmFYvoygK" target="_blank" rel="noopener" class="external-link-btn">Spotify에서 전곡 듣기 ›</a>
         </section>
 
         <aside class="playlist-sidebar">
@@ -333,6 +346,7 @@
         const mainTitle = document.getElementById('main-title');
         const mainType = document.getElementById('main-type');
         const mainSpotify = document.getElementById('main-spotify');
+        const mainExternalLink = document.getElementById('main-external-link');
 
         // 스포티파이 API에서 커버 이미지를 동적으로 가져옵니다.
         async function fetchSpotifyCovers() {
@@ -382,6 +396,7 @@
             mainTitle.textContent = track.title;
             mainType.textContent = track.type;
             mainSpotify.src = track.embedUrl;
+            mainExternalLink.href = `https://open.spotify.com/album/${track.albumId}`;
 
             // 애니메이션 재시작
             mainCover.style.animation = 'none';

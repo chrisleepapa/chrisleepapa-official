@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NBGELYQ4TZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-NBGELYQ4TZ');
+      gtag('config', 'GT-5MJDBTR2');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ABOUT - Chris LEE.PAPA</title>
@@ -9,13 +20,23 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root { --gold: #c9a84c; --gold-light: #e8d08a; --bg: #030305; --text: #f0ece4; }
-
+        
         body {
             background-color: var(--bg); color: var(--text);
             font-family: 'Pretendard', sans-serif;
             background-image: radial-gradient(circle at top right, rgba(20, 20, 40, 0.8), transparent 60%),
                               radial-gradient(circle at bottom left, rgba(10, 10, 20, 0.9), transparent 60%);
             min-height: 100vh; display: flex; flex-direction: column;
+            
+            /* 드래그 및 선택 방지 */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        img {
+            -webkit-user-drag: none; /* 이미지 드래그 방지 */
         }
 
         /* ── 공통 네비게이션 ── */
@@ -96,5 +117,34 @@
     </div>
 
     <footer><p>© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
+
+    <script>
+        // ── 우클릭, 복사, 캡처 및 개발자도구 방지 스크립트 ──
+        
+        // 1. 우클릭 방지
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        // 2. 복사 방지
+        document.addEventListener('copy', function(e) {
+            e.preventDefault();
+        });
+
+        // 3. 단축키 방지 (개발자 도구, 복사, 저장, 인쇄 등)
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12' || 
+               (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j')) || 
+               (e.ctrlKey && (e.key === 'U' || e.key === 'u'))) {
+                e.preventDefault();
+            }
+            if (e.ctrlKey && (e.key === 'c' || e.key === 'C' || e.key === 's' || e.key === 'S' || e.key === 'p' || e.key === 'P')) {
+                e.preventDefault();
+            }
+            if (e.key === 'PrintScreen') {
+                navigator.clipboard.writeText('');
+            }
+        });
+    </script>
 </body>
 </html>

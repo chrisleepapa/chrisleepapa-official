@@ -35,6 +35,7 @@
             --bg: #030305;
             --text: #f0ece4;
             --text-dim: #9a9490;
+            --nav-height: 70px;
         }
 
         html { scroll-behavior: smooth; }
@@ -45,7 +46,6 @@
             font-family: 'Pretendard', 'Noto Serif KR', serif;
             line-height: 1.6;
             overflow-x: hidden;
-            /* 심연의 우주 배경 질감 */
             background-image: radial-gradient(circle at top right, rgba(20, 20, 40, 0.8), transparent 60%),
                               radial-gradient(circle at bottom left, rgba(10, 10, 20, 0.9), transparent 60%);
         }
@@ -59,25 +59,47 @@
 
         a { text-decoration: none; color: inherit; }
 
-        /* ── 메인 네비게이션 ── */
+        /* ── 메인 네비게이션 (반응형 개선) ── */
         nav {
-            position: fixed; top: 0; width: 100%; padding: 20px 50px;
+            position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px;
             display: flex; justify-content: space-between; align-items: center;
             z-index: 1000;
-            background: rgba(3, 3, 5, 0.6);
+            background: rgba(3, 3, 5, 0.8);
             backdrop-filter: blur(15px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
         }
 
-        .brand-logo { font-family: 'Cinzel', serif; font-size: 1.5rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); }
+        .brand-logo { 
+            font-family: 'Cinzel', serif; font-size: 1.4rem; font-weight: 800; 
+            letter-spacing: 2px; color: var(--gold-light); z-index: 1001;
+        }
+
+        /* 햄버거 토글 버튼 (기본 숨김) */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        .menu-toggle span {
+            width: 25px; height: 2px; background-color: var(--gold-light);
+            transition: all 0.3s ease;
+        }
+
         .nav-links { display: flex; gap: 35px; }
-        .nav-links a { font-family: 'Cinzel', serif; font-size: 0.9rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; }
+        .nav-links a { 
+            font-family: 'Cinzel', serif; font-size: 0.85rem; letter-spacing: 1px; 
+            color: #a0a0b5; transition: 0.3s; text-transform: uppercase; 
+            position: relative;
+        }
         .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 15px rgba(255,255,255,0.8); }
 
-        /* ── 히어로 섹션 (이미지 제거 및 별빛 강화) ── */
+        /* ── 히어로 섹션 (가변 폰트 적용) ── */
         .hero-section {
             position: relative; width: 100vw; height: 100vh;
-            background-color: var(--bg); /* 이미지를 없애고 순수 검은색 배경 사용 */
+            background-color: var(--bg);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             overflow: hidden;
         }
@@ -90,26 +112,8 @@
         }
         @keyframes twinkle { 
             0% { opacity: 0; transform: scale(0.4); } 
-            50% { opacity: 1; transform: scale(1.6); box-shadow: 0 0 30px rgba(255, 255, 255, 1), 0 0 15px rgba(255, 255, 255, 0.6); } 
+            50% { opacity: 1; transform: scale(1.6); box-shadow: 0 0 30px rgba(255, 255, 255, 1); } 
             100% { opacity: 0; transform: scale(0.4); } 
-        }
-
-        /* 별똥별 효과 */
-        .shooting-star {
-            position: absolute;
-            width: 150px;
-            height: 2px;
-            background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1), rgba(255,255,255,0));
-            transform: rotate(-45deg);
-            z-index: 2;
-            opacity: 0;
-            pointer-events: none;
-            filter: drop-shadow(0 0 15px rgba(255,255,255,0.9));
-        }
-
-        @keyframes shooting {
-            0% { transform: translateX(0) translateY(0) rotate(-45deg) scale(1); opacity: 1; }
-            100% { transform: translateX(-1500px) translateY(1500px) rotate(-45deg) scale(0.2); opacity: 0; }
         }
 
         .hero-overlay {
@@ -118,22 +122,26 @@
         }
 
         .hero-content {
-            position: relative; z-index: 3; text-align: center;
+            position: relative; z-index: 3; text-align: center; width: 90%;
             animation: fadeUp 1s ease both;
         }
 
         .hero-title {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 5.5rem; font-weight: 600; letter-spacing: 0.1em;
+            /* clamp(최소, 가변, 최대) 사용하여 화면 크기에 따라 반응 */
+            font-size: clamp(2.5rem, 12vw, 5.5rem); 
+            font-weight: 600; letter-spacing: 0.05em;
             background: linear-gradient(108deg, #b8922a 0%, #e8d08a 20%, #fffbe8 38%, #c9a84c 52%, #fff0b0 68%, #c9a84c 80%, #e8d08a 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-            filter: drop-shadow(0 0 40px rgba(201,168,76,0.4));
+            filter: drop-shadow(0 0 30px rgba(201,168,76,0.3));
             animation: shimmer 6s linear infinite; background-size: 200% auto;
             margin-bottom: 10px;
+            line-height: 1.1;
         }
 
         .hero-slogan {
-            font-family: 'Cinzel', serif; font-size: 1.1rem; letter-spacing: 0.6em; color: rgba(201,168,76,0.8);
+            font-family: 'Cinzel', serif; font-size: clamp(0.7rem, 2.5vw, 1.1rem); 
+            letter-spacing: 0.5em; color: rgba(201,168,76,0.8);
             text-transform: uppercase; text-shadow: 0 2px 10px rgba(0,0,0,0.9);
         }
 
@@ -142,7 +150,6 @@
             display: flex; justify-content: center; padding: 5rem 1.5rem;
             position: relative; z-index: 10; margin-top: -100px;
         }
-        
         .note-container {
             max-width: 900px; width: 100%; text-align: center;
             border: 1px solid rgba(201,168,76,0.2); border-radius: 24px;
@@ -150,30 +157,26 @@
             box-shadow: 0 20px 50px rgba(0,0,0,0.6);
             overflow: hidden; transition: all 0.4s ease;
         }
-        
         .note-trigger { padding: 2.5rem 2rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; }
         .section-tag { color: var(--gold); font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 1rem; }
-        .note-title { color: #ffffff; font-size: 1.6rem; font-weight: 400; font-family: 'Noto Serif KR', serif; letter-spacing: 1px; }
+        .note-title { color: #ffffff; font-size: clamp(1.1rem, 4vw, 1.6rem); font-weight: 400; font-family: 'Noto Serif KR', serif; letter-spacing: 1px; line-height: 1.4; }
         .note-hint { margin-top: 1rem; font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.2em; color: var(--gold-light); opacity: 0.6; }
         .toggle-symbol { margin-top: 0.5rem; font-size: 1.5rem; color: var(--gold); transition: transform 0.5s; }
-        
-        .note-content { max-height: 0; overflow: hidden; transition: max-height 0.8s ease, opacity 0.6s; padding: 0 3rem; opacity: 0; }
-        .note-text { color: rgba(240,236,228,0.9); font-size: 1.1rem; line-height: 2; border-top: 1px solid rgba(201,168,76,0.15); padding: 2.5rem 0; word-break: keep-all; }
+        .note-content { max-height: 0; overflow: hidden; transition: max-height 0.8s ease, opacity 0.6s; padding: 0 2rem; opacity: 0; }
+        .note-text { color: rgba(240,236,228,0.9); font-size: 1rem; line-height: 2; border-top: 1px solid rgba(201,168,76,0.15); padding: 2.5rem 0; word-break: keep-all; }
         .note-text .highlight { color: var(--gold-light); font-weight: 600; text-shadow: 0 0 15px rgba(201,168,76,0.5); }
-        .signature { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 1.8rem; font-style: italic; opacity: 0.9; margin-top: 1rem; padding-bottom: 2rem;}
-        
-        .note-container.active .note-content { max-height: 1200px; opacity: 1; }
+        .signature { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 1.6rem; font-style: italic; opacity: 0.9; margin-top: 1rem; padding-bottom: 2rem;}
+        .note-container.active .note-content { max-height: 1500px; opacity: 1; }
         .note-container.active .toggle-symbol { transform: rotate(45deg); color: var(--cyan); }
-        .note-container.active .note-title { color: var(--gold-light); }
 
-        /* ── 포트폴리오 카드 그리드 ── */
+        /* ── 포트폴리오 카드 그리드 (6개 섹션) ── */
         .portfolio-grid {
             padding: 40px 30px 100px;
             max-width: 1400px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
             perspective: 1200px;
         }
 
@@ -186,7 +189,7 @@
             background: #000;
             border: 1px solid rgba(255,255,255,0.1);
             transform-style: preserve-3d;
-            transition: border-color 0.4s, box-shadow 0.4s;
+            transition: border-color 0.4s, box-shadow 0.4s, transform 0.3s ease;
         }
 
         .card:hover {
@@ -201,10 +204,9 @@
             filter: brightness(0.6) contrast(1.1);
         }
 
-        /* 카드 이미지 설정 */
         .card-worship .card-bg { background-image: url('images/worship.png'); }
         .card-book .card-bg    { background-image: url('images/book.png'); }
-        .card-music .card-bg   { background-image: url('images/music.jpg'); } /* .png에서 .jpg로 변경 */
+        .card-music .card-bg   { background-image: url('images/music.jpg'); }
         .card-movie .card-bg   { background-image: url('images/movie.png'); }
         .card-about .card-bg   { background-image: url('https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop'); }
         .card-contact .card-bg { background-image: url('https://images.unsplash.com/photo-1423666639041-f56000c27a9a?q=80&w=800&auto=format&fit=crop'); }
@@ -217,13 +219,13 @@
         }
 
         .card-sub {
-            font-size: 0.95rem; font-weight: 300; color: #a0a0b5;
+            font-size: 0.9rem; font-weight: 300; color: #a0a0b5;
             margin-bottom: 8px; transform: translateY(15px); opacity: 0;
             transition: all 0.4s ease;
         }
 
         .card-label {
-            font-family: 'Cinzel', serif; font-size: 2.8rem; font-weight: 700;
+            font-family: 'Cinzel', serif; font-size: clamp(2rem, 5vw, 2.8rem); font-weight: 700;
             letter-spacing: 0.15em; color: #ffffff;
             transition: all 0.4s;
         }
@@ -232,32 +234,70 @@
         .card:hover .card-sub { transform: translateY(0); opacity: 1; color: var(--gold-light); }
         .card:hover .card-label { color: var(--gold-light); text-shadow: 0 0 20px rgba(201,168,76,0.5); }
 
-        footer { text-align: center; padding: 60px 40px; font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 2px; color: #555; border-top: 1px solid rgba(255,255,255,0.05); }
-
-        /* 애니메이션 등장 효과 */
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
-        .card:nth-child(1) { animation: fadeUp 0.8s ease 0.1s both; }
-        .card:nth-child(2) { animation: fadeUp 0.8s ease 0.2s both; }
-        .card:nth-child(3) { animation: fadeUp 0.8s ease 0.3s both; }
-        .card:nth-child(4) { animation: fadeUp 0.8s ease 0.4s both; }
-        .card:nth-child(5) { animation: fadeUp 0.8s ease 0.5s both; }
-        .card:nth-child(6) { animation: fadeUp 0.8s ease 0.6s both; }
-
-        @media (max-width: 800px) {
-            .hero-title { font-size: 3.2rem; }
-            .hero-slogan { font-size: 0.8rem; letter-spacing: 0.3em; }
-            nav { padding: 15px 20px; flex-direction: column; gap: 10px; }
-            .portfolio-grid { grid-template-columns: 1fr; padding: 20px; gap: 25px; }
-            .note-title { font-size: 1.2rem; }
+        /* 별똥별 효과 */
+        .shooting-star {
+            position: absolute; width: 150px; height: 2px;
+            background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1), rgba(255,255,255,0));
+            transform: rotate(-45deg); z-index: 2; opacity: 0; pointer-events: none;
+            filter: drop-shadow(0 0 15px rgba(255,255,255,0.9));
         }
+        @keyframes shooting {
+            0% { transform: translateX(0) translateY(0) rotate(-45deg) scale(1); opacity: 1; }
+            100% { transform: translateX(-1500px) translateY(1500px) rotate(-45deg) scale(0.2); opacity: 0; }
+        }
+
+        footer { text-align: center; padding: 60px 40px; font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 2px; color: #555; border-top: 1px solid rgba(255,255,255,0.05); }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            nav { padding: 0 25px; }
+            
+            /* 모바일 네비게이션 토글 스타일 */
+            .menu-toggle { display: flex; }
+            
+            .nav-links {
+                position: fixed; top: var(--nav-height); left: 0; width: 100%; height: 0;
+                background: rgba(3, 3, 5, 0.95); backdrop-filter: blur(20px);
+                flex-direction: column; align-items: center; justify-content: center;
+                gap: 30px; overflow: hidden; transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                border-bottom: 0 solid rgba(255,255,255,0.1);
+            }
+
+            .nav-links.active {
+                height: calc(100vh - var(--nav-height));
+                border-bottom-width: 1px;
+            }
+
+            .nav-links a { font-size: 1.2rem; }
+
+            /* 햄버거 애니메이션 */
+            .menu-toggle.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+            .menu-toggle.active span:nth-child(2) { opacity: 0; }
+            .menu-toggle.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+            .hero-content { width: 95%; }
+            .portfolio-grid { grid-template-columns: 1fr; padding: 20px; gap: 20px; }
+            .card { height: 300px; }
+            .creator-note { margin-top: -60px; padding: 3rem 1rem; }
+        }
+
+        @keyframes shimmer { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
     <!-- 1. 네비게이션 -->
-    <nav>
+    <nav id="mainNav">
         <a href="index.html" class="brand-logo">Chris LEE.PAPA</a>
-        <div class="nav-links">
+        
+        <div class="menu-toggle" id="mobile-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <div class="nav-links" id="navLinks">
             <a href="index.html" class="active">Home</a>
             <a href="worship.html">Worship</a>
             <a href="music.html">Music</a>
@@ -266,7 +306,7 @@
         </div>
     </nav>
 
-    <!-- 2. 히어로 섹션 (심연의 밤하늘) -->
+    <!-- 2. 히어로 섹션 -->
     <header class="hero-section">
         <div class="banner-stars" id="stars-container"></div>
         <div class="hero-overlay"></div>
@@ -299,9 +339,8 @@
         </div>
     </section>
 
-    <!-- 4. 3D 포트폴리오 카드 (6개 섹션) -->
+    <!-- 4. 3D 포트폴리오 카드 -->
     <main class="portfolio-grid">
-        <!-- Worship -->
         <div class="card card-worship" onclick="safeNavigate('worship.html')">
             <div class="card-bg"></div>
             <div class="card-body">
@@ -309,7 +348,6 @@
                 <h2 class="card-label">WORSHIP</h2>
             </div>
         </div>
-        <!-- Book -->
         <div class="card card-book" onclick="safeNavigate('book.html')">
             <div class="card-bg"></div>
             <div class="card-body">
@@ -317,7 +355,6 @@
                 <h2 class="card-label">BOOK</h2>
             </div>
         </div>
-        <!-- Music -->
         <div class="card card-music" onclick="safeNavigate('music.html')">
             <div class="card-bg"></div>
             <div class="card-body">
@@ -325,7 +362,6 @@
                 <h2 class="card-label">MUSIC</h2>
             </div>
         </div>
-        <!-- Movie -->
         <div class="card card-movie" onclick="safeNavigate('movie.html')">
             <div class="card-bg"></div>
             <div class="card-body">
@@ -333,7 +369,6 @@
                 <h2 class="card-label">MOVIE</h2>
             </div>
         </div>
-        <!-- About -->
         <div class="card card-about" onclick="safeNavigate('about.html')">
             <div class="card-bg"></div>
             <div class="card-body">
@@ -341,7 +376,6 @@
                 <h2 class="card-label">ABOUT</h2>
             </div>
         </div>
-        <!-- Contact -->
         <div class="card card-contact" onclick="safeNavigate('contact.html')">
             <div class="card-bg"></div>
             <div class="card-body">
@@ -356,79 +390,83 @@
     </footer>
 
     <script>
+        // 안전한 네비게이션
         function safeNavigate(url) {
             if (typeof url === 'string' && url.trim() !== '') {
                 window.location.assign(url);
             }
         }
 
+        // 모바일 메뉴 토글
+        const menuToggle = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('navLinks');
+        
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // 링크 클릭 시 메뉴 닫기
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // 크리에이터 노트 토글
         function toggleNote() {
-            const accordion = document.getElementById('noteAccordion');
-            accordion.classList.toggle('active');
+            document.getElementById('noteAccordion').classList.toggle('active');
         }
 
-        // 히어로 섹션 별빛 무작위 생성 (밀도 및 밝기 강화)
+        // 별빛 생성 (밀도 강화)
         const starsContainer = document.getElementById('stars-container');
-        const starCount = 180; // 더 촘촘하게
-        
+        const starCount = 180;
         for (let i = 0; i < starCount; i++) {
             const star = document.createElement('span');
             star.style.left = Math.random() * 100 + '%';
             star.style.top = Math.random() * 100 + '%';
-            
-            // 깜빡이는 속도 다양화
-            star.style.animationDuration = (Math.random() * 3 + 1) + 's';
+            star.style.animationDuration = (Math.random() * 3 + 1.5) + 's';
             star.style.animationDelay = Math.random() * 5 + 's';
-            
-            // 크기 다양화 (왕별 확률 15%)
             let size = Math.random() * 2 + 0.5;
-            if (Math.random() > 0.85) {
-                size += 1.8;
-                star.style.boxShadow = '0 0 15px rgba(255, 255, 255, 0.9)';
-            }
-            
+            if (Math.random() > 0.85) size += 1.5;
             star.style.width = size + 'px';
             star.style.height = size + 'px';
-            star.style.opacity = Math.random() * 0.8 + 0.2;
-            
             starsContainer.appendChild(star);
         }
 
-        // 별똥별(Shooting Star) 생성
+        // 별똥별 생성
         function spawnShootingStar() {
             const star = document.createElement('div');
             star.classList.add('shooting-star');
-            star.style.top = (Math.random() * 40 - 10) + 'vh'; 
-            star.style.left = (Math.random() * 70 + 30) + 'vw';
-            const duration = Math.random() * 1.2 + 1.2; 
+            star.style.top = (Math.random() * 30 - 10) + 'vh'; 
+            star.style.left = (Math.random() * 60 + 40) + 'vw';
+            const duration = Math.random() * 1.5 + 1.2; 
             star.style.animation = `shooting ${duration}s ease-in forwards`;
             starsContainer.appendChild(star);
             setTimeout(() => star.remove(), duration * 1000);
-            setTimeout(spawnShootingStar, Math.random() * 5000 + 2000);
+            setTimeout(spawnShootingStar, Math.random() * 6000 + 3000);
         }
         spawnShootingStar();
 
-        // 3D Parallax 효과
-        document.querySelectorAll('.card').forEach(card => {
-            const bg = card.querySelector('.card-bg');
-            const body = card.querySelector('.card-body');
-            
-            card.addEventListener('mousemove', e => {
-                const r = card.getBoundingClientRect();
-                const x = (e.clientX - r.left) / r.width - 0.5;
-                const y = (e.clientY - r.top) / r.height - 0.5;
-                
-                card.style.transform = `perspective(1200px) rotateY(${x * 12}deg) rotateX(${-y * 12}deg) scale3d(1.02, 1.02, 1.02)`;
-                bg.style.transform = `scale(1.15) translate(${-x * 25}px, ${-y * 25}px)`;
-                body.style.transform = `translateZ(70px) translate(${x * 10}px, ${y * 10}px)`;
+        // 3D Parallax (데스크톱 전용 체크)
+        if (window.innerWidth > 900) {
+            document.querySelectorAll('.card').forEach(card => {
+                const bg = card.querySelector('.card-bg');
+                const body = card.querySelector('.card-body');
+                card.addEventListener('mousemove', e => {
+                    const r = card.getBoundingClientRect();
+                    const x = (e.clientX - r.left) / r.width - 0.5;
+                    const y = (e.clientY - r.top) / r.height - 0.5;
+                    card.style.transform = `perspective(1200px) rotateY(${x * 12}deg) rotateX(${-y * 12}deg) scale3d(1.02, 1.02, 1.02)`;
+                    bg.style.transform = `scale(1.15) translate(${-x * 25}px, ${-y * 25}px)`;
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(1200px) rotateY(0deg) rotateX(0deg) scale3d(1, 1, 1)';
+                    bg.style.transform = '';
+                });
             });
-            
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'perspective(1200px) rotateY(0deg) rotateX(0deg) scale3d(1, 1, 1)';
-                bg.style.transform = '';
-                body.style.transform = 'translateZ(0)';
-            });
-        });
+        }
     </script>
 </body>
 </html>

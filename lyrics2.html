@@ -41,7 +41,6 @@
             --bg: #030305;
             --text: #f0ece4;
             --nav-height: 70px;
-            --cyan: #4a90e2;
         }
 
         html { scroll-behavior: smooth; background-color: var(--bg); }
@@ -179,7 +178,6 @@
             .nav-links.active { display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height)); background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 25px; z-index: 1002; }
             .menu-toggle { display: flex; }
         }
-
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
@@ -341,18 +339,23 @@
             if (!success) {
                 const textArea = document.createElement("textarea");
                 textArea.value = currentUrl;
+                textArea.id = "temp-copy-area"; // 고유 ID 부여
                 textArea.style.position = "fixed";
                 textArea.style.left = "-9999px";
-                textArea.style.top = "0";
                 document.body.appendChild(textArea);
                 textArea.focus();
                 textArea.select();
-                try { success = document.execCommand('copy'); } catch (err) { console.error("execCommand failed:", err); }
+                try {
+                    success = document.execCommand('copy');
+                } catch (err) { console.error("execCommand failed:", err); }
                 document.body.removeChild(textArea);
             }
 
-            if (success) { showToast('Link copied to clipboard!'); }
-            else { showToast('Copy failed. Please copy manually.'); }
+            if (success) {
+                showToast('Link copied to clipboard!');
+            } else {
+                showToast('Copy failed. Please copy manually.');
+            }
             closeShareModal();
         }
 
@@ -397,12 +400,13 @@
         window.addEventListener('resize', resize);
         resize(); draw();
 
-        // ── 보안 스크립트 (조건부 복사 차단) ──
+        // ── 보안 스크립트 (충돌 해결 버전) ──
         document.addEventListener('contextmenu', e => e.preventDefault());
         
         document.addEventListener('copy', e => {
-            const selection = window.getSelection().toString();
-            if (selection.length > 0) e.preventDefault();
+            if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) {
+                e.preventDefault();
+            }
         });
 
         document.addEventListener('keydown', e => {

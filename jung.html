@@ -21,7 +21,7 @@
     <meta property="og:description" content="순수의 활, 교감의 마스터 정의 프로필을 확인해보세요.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://chrisleepapa-official.vercel.app/jung.html">
-    <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1">
+    <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png">
 
     <link rel="canonical" href="https://chrisleepapa-official.vercel.app/jung.html">
     <title>Jung (정) Profile – SisterSquad</title>
@@ -359,25 +359,30 @@
                 try {
                     await navigator.clipboard.writeText(currentUrl);
                     success = true;
-                } catch (err) { console.error("Clipboard API failed:", err); }
+                } catch (err) {}
             }
 
             // 2. Fallback 방식
             if (!success) {
                 const textArea = document.createElement("textarea");
                 textArea.value = currentUrl;
+                textArea.id = "temp-copy-area"; // 고유 ID 부여
                 textArea.style.position = "fixed";
                 textArea.style.left = "-9999px";
-                textArea.style.top = "0";
                 document.body.appendChild(textArea);
                 textArea.focus();
                 textArea.select();
-                try { success = document.execCommand('copy'); } catch (err) { console.error("execCommand failed:", err); }
+                try {
+                    success = document.execCommand('copy');
+                } catch (err) {}
                 document.body.removeChild(textArea);
             }
 
-            if (success) { showToast('Link copied to clipboard!'); }
-            else { showToast('Copy failed. Please copy manually.'); }
+            if (success) {
+                showToast('Link copied to clipboard!');
+            } else {
+                showToast('Copy failed. Please copy manually.');
+            }
             closeShareModal();
         }
 
@@ -437,18 +442,17 @@
         closeGallery.addEventListener('click', closeLightBox);
         galleryModal.addEventListener('click', (e) => { if (e.target === galleryModal) closeLightBox(); });
 
-        // ── 보안 스크립트 (조건부 복사 차단) ──
+        // ── 보안 스크립트 (충돌 해결 버전) ──
         document.addEventListener('contextmenu', e => e.preventDefault());
-        
         document.addEventListener('copy', e => {
-            const selection = window.getSelection().toString();
-            if (selection.length > 0) e.preventDefault();
+            if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) {
+                e.preventDefault();
+            }
         });
-
         document.addEventListener('keydown', e => {
             if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || (e.ctrlKey && e.key === 'U')) e.preventDefault();
-            if (e.ctrlKey && (e.key === 'c')) {
-                if (window.getSelection().toString().length > 0) e.preventDefault();
+            if (e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'p')) {
+                if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) e.preventDefault();
             }
             if (e.key === 'PrintScreen') navigator.clipboard.writeText('');
         });

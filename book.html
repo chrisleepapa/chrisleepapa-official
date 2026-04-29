@@ -15,7 +15,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Chris Lee.Papa – BOOK | SisterSquad · MiracleShot">
-    
+
+    <!-- SNS 공유용 OG 태그 (최종 수정본) -->
+    <meta property="og:title" content="BOOK – Chris LEE.PAPA">
+    <meta property="og:description" content="상상력이 종이에 그려진 순간 일어나는 기적, 도서 및 세계관 아카이브입니다.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://chrisleepapa-official.vercel.app/book.html">
+    <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1">
+
+    <link rel="canonical" href="https://chrisleepapa-official.vercel.app/book.html">
     <title>BOOK – Chris LEE.PAPA</title>
     
     <!-- 폰트 통합 호출 -->
@@ -55,14 +63,12 @@
             user-select: none;
         }
 
-        img {
-            -webkit-user-drag: none; /* 이미지 드래그 방지 */
-        }
+        img { -webkit-user-drag: none; }
 
         /* 아날로그 노이즈 레이어 */
         body::before {
             content: ''; position: fixed; inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
             pointer-events: none; z-index: 900; opacity: 0.3;
         }
 
@@ -78,14 +84,51 @@
 
         .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); z-index: 1001; }
 
-        .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
-        .menu-toggle span { width: 22px; height: 1.5px; background-color: var(--gold-light); transition: 0.3s; }
-
+        .nav-right { display: flex; align-items: center; gap: 30px; }
         .nav-links { display: flex; gap: 30px; }
         .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; }
         .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
 
-        /* ── 헤더 섹션 ── */
+        .share-trigger {
+            cursor: pointer; padding: 6px 14px; border: 1px solid rgba(201,168,76,0.3);
+            border-radius: 20px; font-family: 'Cinzel', serif; font-size: 0.7rem;
+            color: var(--gold-light); transition: 0.3s; letter-spacing: 1px;
+        }
+        .share-trigger:hover { background: rgba(201,168,76,0.1); border-color: var(--gold-light); }
+
+        .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
+        .menu-toggle span { width: 22px; height: 1.5px; background-color: var(--gold-light); transition: 0.3s; }
+
+        /* ── 공유 모달 & 토스트 ── */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+            z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: 0.3s;
+        }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .share-modal {
+            background: #0a0a0f; border: 1px solid var(--gold); border-radius: 24px;
+            width: 90%; max-width: 400px; padding: 45px 30px; text-align: center;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.9);
+        }
+        .share-modal h3 { font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--gold-light); margin-bottom: 15px; }
+        .share-modal p { font-size: 0.9rem; color: #888; margin-bottom: 35px; }
+        .share-buttons { display: flex; flex-direction: column; gap: 14px; }
+        .modal-btn {
+            padding: 16px; border-radius: 12px; border: none; font-family: 'Cinzel', serif;
+            font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: 0.3s;
+        }
+        .btn-copy { background: var(--gold); color: #000; }
+        .btn-sns { background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #fff; }
+        .btn-sns:hover { background: rgba(255,255,255,0.05); }
+        .btn-close-modal { margin-top: 25px; color: #666; background: none; font-size: 0.75rem; text-decoration: underline; }
+
+        .toast-msg {
+            position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%);
+            background: var(--gold); color: #000; padding: 12px 30px; border-radius: 40px;
+            font-size: 0.9rem; font-weight: 700; z-index: 3000; display: none; animation: fadeUp 0.4s ease;
+        }
+
+        /* ── 페이지 헤더 ── */
         .page-header {
             position: relative; width: 100%; height: 350px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -114,7 +157,6 @@
         /* ── 콘텐츠 레이아웃 ── */
         .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px 100px; position: relative; z-index: 10; }
 
-        /* SISTER SQUAD 메인 카드 */
         .hero-card.sistersquad {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 180, 200, 0.2);
@@ -161,7 +203,6 @@
         }
         .hero-card:hover .action-btn { background: #ffb4c8; color: #000; box-shadow: 0 0 20px var(--pink-glow); }
 
-        /* Miracle Shot 티저 카드 */
         .teaser-card {
             background: rgba(255, 255, 255, 0.01);
             border: 1px solid rgba(255, 255, 255, 0.05);
@@ -192,16 +233,15 @@
 
         footer { text-align: center; padding: 80px 40px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: #555; border-top: 1px solid rgba(255,255,255,0.03); }
 
-        /* ── RESPONSIVE ── */
         @media (max-width: 900px) {
             nav { padding: 0 20px; }
-            .menu-toggle { display: flex; }
-            .nav-links {
-                position: fixed; top: var(--nav-height); left: 0; width: 100%; height: 0;
-                background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center;
-                gap: 25px; overflow: hidden; transition: 0.4s ease-in-out;
+            .nav-links { display: none; }
+            .nav-links.active {
+                display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height));
+                background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 25px;
+                z-index: 1002;
             }
-            .nav-links.active { height: calc(100vh - var(--nav-height)); }
+            .menu-toggle { display: flex; }
             .hero-card.sistersquad { padding: 45px 20px; }
             .teaser-card { flex-direction: column; text-align: center; gap: 25px; padding: 40px 20px; }
             .teaser-img { height: 180px; max-width: 100%; }
@@ -212,20 +252,37 @@
 </head>
 <body>
 
-    <!-- 1. 네비게이션 -->
     <nav>
         <a href="index.html" class="brand-logo">Chris LEE.PAPA</a>
-        <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
-        <div class="nav-links" id="navLinks">
-            <a href="index.html">Home</a>
-            <a href="worship.html">Worship</a>
-            <a href="music.html">Music</a>
-            <a href="book.html" class="active">Books</a>
-            <a href="movie.html">Movies</a>
+        <div class="nav-right">
+            <div class="nav-links" id="navLinks">
+                <a href="index.html">Home</a>
+                <a href="worship.html">Worship</a>
+                <a href="music.html">Music</a>
+                <a href="book.html" class="active">Books</a>
+                <a href="movie.html">Movies</a>
+            </div>
+            <div class="share-trigger" onclick="openShareModal()">SHARE</div>
+            <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
         </div>
     </nav>
 
-    <!-- 2. 페이지 헤더 -->
+    <!-- 공유 모달 팝업 -->
+    <div class="modal-overlay" id="shareOverlay" onclick="closeShareModal(event)">
+        <div class="share-modal" onclick="event.stopPropagation()">
+            <h3>SHARE UNIVERSE</h3>
+            <p>상상 속 마법 같은 세계관을 소중한 사람들에게 전하세요.</p>
+            <div class="share-buttons">
+                <button class="modal-btn btn-copy" onclick="copyURL()">COPY LINK</button>
+                <button class="modal-btn btn-sns" onclick="shareViaWebAPI()">SNS SHARE</button>
+            </div>
+            <button class="modal-btn btn-close-modal" onclick="closeShareModal(null)">Close</button>
+        </div>
+    </div>
+
+    <!-- 토스트 메시지 -->
+    <div class="toast-msg" id="toast">Link copied!</div>
+
     <header class="page-header">
         <canvas id="stars-canvas"></canvas>
         <div class="header-content">
@@ -234,11 +291,9 @@
         </div>
     </header>
 
-    <!-- 3. 메인 콘텐츠 -->
     <div class="container">
-        
         <!-- SISTER SQUAD 메인 섹션 -->
-        <section class="hero-card sistersquad" onclick="window.location.href='sistersquad.html'">
+        <section class="hero-card sistersquad" onclick="safeNavigate('sistersquad.html')">
             <div class="card-image-box"></div>
             <h2 class="sister-title">SISTER SQUAD</h2>
             <p class="desc-text">
@@ -262,19 +317,63 @@
             </div>
             <div class="teaser-img"></div>
         </section>
-
     </div>
 
     <footer><p>© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
 
     <script>
-        // 모바일 메뉴 컨트롤
+        function safeNavigate(url) { if (url && url.trim() !== "") { window.location.assign(url); } }
+
         const menuToggle = document.getElementById('mobile-menu');
         const navLinks = document.getElementById('navLinks');
         menuToggle.addEventListener('click', () => {
             menuToggle.classList.toggle('active');
             navLinks.classList.toggle('active');
         });
+
+        // ── 공유 로직 ──
+        const shareOverlay = document.getElementById('shareOverlay');
+        const toast = document.getElementById('toast');
+
+        function openShareModal() {
+            shareOverlay.style.display = 'flex';
+            setTimeout(() => shareOverlay.classList.add('active'), 10);
+        }
+
+        function closeShareModal(e) {
+            if (e && e.target !== shareOverlay && e.type !== 'click') return;
+            shareOverlay.classList.remove('active');
+            setTimeout(() => shareOverlay.style.display = 'none', 300);
+        }
+
+        function copyURL() {
+            const el = document.createElement('textarea');
+            el.value = window.location.href;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            showToast('Link copied to clipboard!');
+            closeShareModal();
+        }
+
+        function shareViaWebAPI() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Chris LEE.PAPA - BOOKS',
+                    text: '상상이 현실이 되는 곳, 크리스리의 책과 세계관 아카이브입니다.',
+                    url: window.location.href
+                }).catch(console.error);
+            } else {
+                showToast('Sharing is not supported on this browser.');
+            }
+        }
+
+        function showToast(msg) {
+            toast.textContent = msg;
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 2500);
+        }
 
         // ── 고성능 캔버스 별빛 효과 ──
         const canvas = document.getElementById('stars-canvas');
@@ -318,34 +417,13 @@
         resize();
         draw();
 
-        // ── 우클릭, 복사, 캡처 및 개발자도구 방지 스크립트 ──
-        
-        // 1. 우클릭 방지
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-        });
-
-        // 2. 복사 방지
-        document.addEventListener('copy', function(e) {
-            e.preventDefault();
-        });
-
-        // 3. 단축키 방지 (개발자 도구, 복사, 저장, 인쇄 등)
-        document.addEventListener('keydown', function(e) {
-            // F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U (개발자 도구 및 소스 보기)
-            if (e.key === 'F12' || 
-               (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j')) || 
-               (e.ctrlKey && (e.key === 'U' || e.key === 'u'))) {
-                e.preventDefault();
-            }
-            // Ctrl+C, Ctrl+S, Ctrl+P (복사, 저장, 인쇄)
-            if (e.ctrlKey && (e.key === 'c' || e.key === 'C' || e.key === 's' || e.key === 'S' || e.key === 'p' || e.key === 'P')) {
-                e.preventDefault();
-            }
-            // PrintScreen 키 입력 시 클립보드 비우기 (일부 브라우저 동작)
-            if (e.key === 'PrintScreen') {
-                navigator.clipboard.writeText('');
-            }
+        // ── 보안 ──
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('copy', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || (e.ctrlKey && e.key === 'U')) e.preventDefault();
+            if (e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'p')) e.preventDefault();
+            if (e.key === 'PrintScreen') navigator.clipboard.writeText('');
         });
     </script>
 </body>

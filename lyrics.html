@@ -112,10 +112,14 @@
 
         .page-heading {
             text-align: center; margin-bottom: 50px;
+            padding: 0 10px; /* 모바일 좌우 여백 약간 추가 */
         }
         .page-heading h2 {
-            font-family: 'Noto Serif KR', serif; font-size: 1.8rem; font-weight: 400; color: #fff;
-            letter-spacing: 1px;
+            font-family: 'Noto Serif KR', serif; 
+            font-size: clamp(1rem, 4.5vw, 1.5rem); /* 글씨 크기를 전체적으로 줄이고 반응형으로 설정 */
+            font-weight: 400; color: #fff;
+            letter-spacing: 0.5px;
+            white-space: nowrap; /* 무조건 한 줄로 나오도록 고정 */
         }
 
         /* ── 글래스모피즘 아코디언 가사집 ── */

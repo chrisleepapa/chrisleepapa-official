@@ -95,12 +95,13 @@
         .btn-copy { background: var(--cyan); color: #fff; }
         .btn-sns { background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #fff; }
         .btn-sns:hover { background: rgba(255,255,255,0.05); }
-        .btn-close-modal { margin-top: 25px; color: #666; background: none; font-size: 0.8rem; text-decoration: underline; }
+        .btn-close-modal { margin-top: 25px; color: #666; background: none; font-size: 0.8rem; text-decoration: underline; cursor: pointer; border: none; }
 
         .toast-msg {
             position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%);
             background: var(--cyan); color: #fff; padding: 12px 30px; border-radius: 40px;
             font-size: 0.9rem; font-weight: 700; z-index: 3000; display: none; animation: fadeUp 0.4s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         /* ── 콘텐츠 ── */
@@ -162,7 +163,7 @@
     <div class="modal-overlay" id="shareOverlay" onclick="closeShareModal(event)">
         <div class="share-modal" onclick="event.stopPropagation()">
             <h3>SHARE CONTACT</h3>
-            <p>크리스리와의 협업 기회를 주변에 알려주세요.</p>
+            <p>크리스리의 새로운 도전과 협업의 기회를 주변에 알려주세요.</p>
             <div class="share-buttons">
                 <button class="modal-btn btn-copy" onclick="copyURL()">COPY LINK</button>
                 <button class="modal-btn btn-sns" onclick="shareViaWebAPI()">SNS SHARE</button>
@@ -201,7 +202,7 @@
             navLinks.classList.toggle('active');
         });
 
-        // ── 공유 로직 ──
+        // ── 공유 로직 (보안 설정 우회 및 하이브리드 로직) ──
         const shareOverlay = document.getElementById('shareOverlay');
         const toast = document.getElementById('toast');
 
@@ -216,14 +217,43 @@
             setTimeout(() => shareOverlay.style.display = 'none', 300);
         }
 
-        function copyURL() {
-            const el = document.createElement('textarea');
-            el.value = window.location.href;
-            document.body.appendChild(el);
-            el.select();
-            document.execCommand('copy');
-            document.body.removeChild(el);
-            showToast('Link copied to clipboard!');
+        async function copyURL() {
+            const currentUrl = window.location.href;
+            let success = false;
+
+            // 1. 우선적으로 최신 API 시도
+            if (navigator.clipboard && window.isSecureContext) {
+                try {
+                    await navigator.clipboard.writeText(currentUrl);
+                    success = true;
+                } catch (err) {
+                    console.error("Clipboard API failed:", err);
+                }
+            }
+
+            // 2. Fallback: Textarea를 생성하여 복사
+            if (!success) {
+                const textArea = document.createElement("textarea");
+                textArea.value = currentUrl;
+                textArea.style.position = "fixed";
+                textArea.style.left = "-9999px";
+                textArea.style.top = "0";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    success = document.execCommand('copy');
+                } catch (err) {
+                    console.error("execCommand failed:", err);
+                }
+                document.body.removeChild(textArea);
+            }
+
+            if (success) {
+                showToast('Link copied to clipboard!');
+            } else {
+                showToast('Copy failed. Please copy manually.');
+            }
             closeShareModal();
         }
 
@@ -245,12 +275,23 @@
             setTimeout(() => { toast.style.display = 'none'; }, 2500);
         }
 
-        // ── 보안 스크립트 ──
+        // ── 보안 스크립트 (공유 기능 허용을 위해 조건부 차단 적용) ──
         document.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('copy', e => e.preventDefault());
+        
+        // 사용자가 텍스트를 직접 드래그해서 복사하는 것만 방지
+        document.addEventListener('copy', e => {
+            const selection = window.getSelection().toString();
+            if (selection.length > 0) {
+                e.preventDefault();
+            }
+        });
+
         document.addEventListener('keydown', e => {
             if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || (e.ctrlKey && e.key === 'U')) e.preventDefault();
-            if (e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'p')) e.preventDefault();
+            if (e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'p')) {
+                // 선택된 텍스트가 있을 때만 차단
+                if (window.getSelection().toString().length > 0) e.preventDefault();
+            }
             if (e.key === 'PrintScreen') navigator.clipboard.writeText('');
         });
     </script>

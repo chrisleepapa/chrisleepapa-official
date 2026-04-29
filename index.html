@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NBGELYQ4TZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-NBGELYQ4TZ');
+      gtag('config', 'GT-5MJDBTR2');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Chris Lee.Papa – The Creative Archive. 나를 살린 찬양과 믿음, 그리고 상상력으로 빚어낸 기록들.">
@@ -44,6 +55,15 @@
             overflow-x: hidden;
             background-image: radial-gradient(circle at top right, rgba(20, 20, 40, 0.8), transparent 60%),
                               radial-gradient(circle at bottom left, rgba(10, 10, 20, 0.9), transparent 60%);
+            /* 드래그 및 선택 방지 */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        img {
+            -webkit-user-drag: none; /* 이미지 드래그 방지 */
         }
 
         /* 아날로그 노이즈 레이어 - 성능을 위해 opacity 최적화 */
@@ -216,13 +236,11 @@
             </div>
             <div class="note-content">
                 <p class="note-text">
-                   이곳은 상상력으로 빚어낸 이야기들과 제 삶의 중심이 되는 신앙이 함께 공존하는 공간입니다.<br>
-                   몇개월 전부터 AI와 기술을 통해 새로운 세계와 만나고 아름다운 창작물들을 만들고 있습니다.<br><br>
-                   <strong style="color:var(--gold-light)">어두운 시간 속에서 하늘의 무수히 많은 별빛을 보게 해주시고<br>
-                   다시 일어날 용기를 주신 주님께 모든 영광을 올립니다.</strong><br><br>
-                   저의 열정과 진실한 고백이 담긴 이 곳에 오신 것을 환영합니다.<br>
-                   여러분의 삶 속에서 시련을 만난고 넘어지고 쓰러져도<br>
-                   포기하지 않고 다시 일어날 수 있는 용기와 기적이 가득하길 기도합니다.
+                    이곳은 상상력으로 빚어낸 이야기들과 제 삶의 중심이 되는 신앙이 함께 공존하는 공간입니다.<br><br>
+                    때로는 AI와 기술을 통해 새로운 세계와 아름다운 창작물들이 가득 담겨있고<br>
+                    <strong style="color:var(--gold-light)">모든 창작의 원동력이자 어두운 시간 속에서 다시 살게 해주는 신앙이 담겨 있습니다.</strong><br><br>
+                    저의 열정과 진실한 고백이 나란히 담긴 이 공간에 오신 것을 환영합니다.<br><br>
+                    여러분의 삶 속에서 넘어져도 다시 일어나고 용기와 희망이 가득하길 기도합니다.
                 </p>
             </div>
         </div>
@@ -360,6 +378,36 @@
         window.addEventListener('resize', resize);
         resize();
         draw();
+
+        // ── 우클릭, 복사, 캡처 및 개발자도구 방지 스크립트 ──
+        
+        // 1. 우클릭 방지
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        // 2. 복사 방지
+        document.addEventListener('copy', function(e) {
+            e.preventDefault();
+        });
+
+        // 3. 단축키 방지 (개발자 도구, 복사, 저장, 인쇄 등)
+        document.addEventListener('keydown', function(e) {
+            // F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U (개발자 도구 및 소스 보기)
+            if (e.key === 'F12' || 
+               (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j')) || 
+               (e.ctrlKey && (e.key === 'U' || e.key === 'u'))) {
+                e.preventDefault();
+            }
+            // Ctrl+C, Ctrl+S, Ctrl+P (복사, 저장, 인쇄)
+            if (e.ctrlKey && (e.key === 'c' || e.key === 'C' || e.key === 's' || e.key === 'S' || e.key === 'p' || e.key === 'P')) {
+                e.preventDefault();
+            }
+            // PrintScreen 키 입력 시 클립보드 비우기 (일부 브라우저 동작)
+            if (e.key === 'PrintScreen') {
+                navigator.clipboard.writeText('');
+            }
+        });
     </script>
 </body>
 </html>

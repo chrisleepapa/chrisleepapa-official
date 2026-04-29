@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONTACT - Chris LEE.PAPA</title>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --cyan: #4a90e2; --cyan-light: #e0e0ff; --bg: #030305; --text: #f0ece4; }
+
+        body {
+            background-color: var(--bg); color: var(--text);
+            font-family: 'Pretendard', sans-serif;
+            background-image: radial-gradient(circle at top right, rgba(20, 20, 40, 0.8), transparent 60%),
+                              radial-gradient(circle at bottom left, rgba(10, 10, 20, 0.9), transparent 60%);
+            min-height: 100vh; display: flex; flex-direction: column;
+        }
+
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 20px 50px;
+            display: flex; justify-content: space-between; align-items: center; z-index: 1000;
+            background: rgba(3, 3, 5, 0.7); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .brand-logo { font-family: 'Cinzel', serif; font-size: 1.4rem; font-weight: 800; letter-spacing: 1.5px; color: var(--cyan-light); text-decoration: none; }
+        .nav-links { display: flex; gap: 35px; }
+        .nav-links a { font-family: 'Cinzel', serif; font-size: 0.95rem; color: #a0a0b5; text-decoration: none; transition: 0.3s; letter-spacing: 1px; }
+        .nav-links a:hover { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+
+        .page-wrapper {
+            flex: 1; display: flex; align-items: center; justify-content: center;
+            padding: 120px 20px; position: relative;
+        }
+
+        .glass-card {
+            background: rgba(15, 15, 20, 0.4);
+            border: 1px solid rgba(74, 144, 226, 0.3);
+            border-radius: 24px; padding: 60px 50px;
+            text-align: center; max-width: 700px; width: 100%;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6), inset 0 0 30px rgba(74, 144, 226, 0.05);
+            animation: fadeUp 1s ease both;
+        }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        .title { font-family: 'Cinzel', serif; font-size: 3rem; font-weight: 600; letter-spacing: 0.2em; color: var(--cyan-light); margin-bottom: 30px; text-shadow: 0 0 20px rgba(74, 144, 226, 0.4); }
+        .content-text { font-size: 1.1rem; line-height: 2; color: rgba(240,236,228,0.9); margin-bottom: 40px; word-break: keep-all; font-weight: 300; }
+        .highlight { color: #ffffff; font-weight: 600; }
+
+        .link-container { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .action-btn {
+            font-family: 'Cinzel', serif; font-size: 0.9rem; font-weight: 600; letter-spacing: 0.1em;
+            padding: 12px 30px; border-radius: 30px; text-decoration: none; transition: 0.3s;
+            border: 1px solid rgba(74, 144, 226, 0.4); color: var(--cyan-light); background: rgba(74, 144, 226, 0.05);
+        }
+        .action-btn:hover { background: var(--cyan); color: #fff; box-shadow: 0 0 20px rgba(74, 144, 226, 0.4); }
+
+        footer { text-align: center; padding: 30px; font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 2px; color: #555; border-top: 1px solid rgba(255,255,255,0.05); }
+
+        @media (max-width: 768px) {
+            nav { padding: 15px 20px; flex-direction: column; gap: 10px; }
+            .glass-card { padding: 40px 20px; }
+            .title { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="brand-logo">Chris LEE.PAPA</a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="worship.html">Worship</a>
+            <a href="music.html">Music</a>
+            <a href="book.html">Books</a>
+            <a href="movie.html">Movies</a>
+        </div>
+    </nav>
+
+    <div class="page-wrapper">
+        <div class="glass-card">
+            <h1 class="title">CONTACT</h1>
+            <p class="content-text">
+                작업 의뢰 및 협업 문의는 아래 채널로 연락주세요.<br>
+                <span class="highlight">새로운 영감과 비즈니스 제안을 환영합니다.</span>
+            </p>
+            <div class="link-container">
+                <a href="mailto:papamunglog@gmail.com" class="action-btn">Email Us</a>
+                <a href="#" class="action-btn">Instagram</a> <!-- 링크 수정 필요 -->
+                <a href="#" class="action-btn">Blog</a> <!-- 링크 수정 필요 -->
+            </div>
+        </div>
+    </div>
+
+    <footer><p>© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
+</body>
+</html>

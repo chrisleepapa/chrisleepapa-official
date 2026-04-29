@@ -118,7 +118,7 @@
         .btn-copy { background: var(--gold); color: #000; }
         .btn-sns { background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #fff; }
         .btn-sns:hover { background: rgba(255,255,255,0.05); }
-        .btn-close-modal { margin-top: 25px; color: #666; background: none; font-size: 0.8rem; text-decoration: underline; border: none; cursor: pointer; }
+        .btn-close-modal { margin-top: 25px; color: #666; background: none; font-size: 0.75rem; text-decoration: underline; border: none; cursor: pointer; }
 
         .toast-msg {
             position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%);
@@ -304,7 +304,7 @@
     </header>
 
     <div class="container">
-        <a href="book.html" class="back-link" onclick="safeNavigate('book.html'); return false;">‹ Back to Library</a>
+        <a href="book.html" class="back-link" onclick="location.assign('book.html'); return false;">‹ Back to Library</a>
         
         <!-- 트레일러 영상 -->
         <div class="video-wrapper">
@@ -327,7 +327,7 @@
         <!-- 캐릭터 소개 -->
         <h2 class="section-title">Character Introduction</h2>
         <div class="character-grid">
-            <div class="char-card" onclick="safeNavigate('yul.html')">
+            <div class="char-card" onclick="location.assign('yul.html')">
                 <div class="char-img-area" style="background-image: url('images/yul01.png');"></div>
                 <div class="char-content">
                     <span class="char-tag">The Brave Leader</span>
@@ -335,7 +335,7 @@
                     <p class="char-desc">냉철한 이성과 분석력을 가진 11세 소녀. 동생을 지키기 위해 강력한 염력의 힘을 각성시킵니다.</p>
                 </div>
             </div>
-            <div class="char-card" onclick="safeNavigate('jung.html')">
+            <div class="char-card" onclick="location.assign('jung.html')">
                 <div class="char-img-area" style="background-image: url('images/jung01.png');"></div>
                 <div class="char-content">
                     <span class="char-tag">The Heart Weaver</span>
@@ -390,8 +390,6 @@
     <footer><p>© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
 
     <script>
-        function safeNavigate(url) { if (url && url.trim() !== "") { window.location.assign(url); } }
-
         const menuToggle = document.getElementById('mobile-menu');
         const navLinks = document.getElementById('navLinks');
         menuToggle.addEventListener('click', () => {
@@ -418,30 +416,33 @@
             const currentUrl = window.location.href;
             let success = false;
 
-            // 1. 최신 API 시도
             if (navigator.clipboard && window.isSecureContext) {
                 try {
                     await navigator.clipboard.writeText(currentUrl);
                     success = true;
-                } catch (err) { console.error("Clipboard API failed:", err); }
+                } catch (err) {}
             }
 
-            // 2. Fallback 방식
             if (!success) {
                 const textArea = document.createElement("textarea");
                 textArea.value = currentUrl;
+                textArea.id = "temp-copy-area"; // 고유 ID 부여
                 textArea.style.position = "fixed";
                 textArea.style.left = "-9999px";
-                textArea.style.top = "0";
                 document.body.appendChild(textArea);
                 textArea.focus();
                 textArea.select();
-                try { success = document.execCommand('copy'); } catch (err) { console.error("execCommand failed:", err); }
+                try {
+                    success = document.execCommand('copy');
+                } catch (err) {}
                 document.body.removeChild(textArea);
             }
 
-            if (success) { showToast('Link copied to clipboard!'); }
-            else { showToast('Copy failed. Please copy manually.'); }
+            if (success) {
+                showToast('Link copied to clipboard!');
+            } else {
+                showToast('Copy failed. Please copy manually.');
+            }
             closeShareModal();
         }
 
@@ -449,7 +450,7 @@
             if (navigator.share) {
                 navigator.share({
                     title: 'Chris LEE.PAPA - SISTER SQUAD',
-                    text: '마법 세계로 빠져든 두 자매의 환상적인 모험 이야기를 만나보세요.',
+                    text: '두 자매의 마법 같은 모험 이야기',
                     url: window.location.href
                 }).catch(console.error);
             } else {
@@ -458,7 +459,8 @@
         }
 
         function showToast(msg) {
-            toast.textContent = msg; toast.style.display = 'block';
+            toast.textContent = msg;
+            toast.style.display = 'block';
             setTimeout(() => { toast.style.display = 'none'; }, 2500);
         }
 
@@ -492,18 +494,17 @@
         window.addEventListener('resize', resize);
         resize(); draw();
 
-        // ── 보안 스크립트 (조건부 복사 차단) ──
+        // ── 보안 스크립트 (충돌 해결 버전) ──
         document.addEventListener('contextmenu', e => e.preventDefault());
-        
         document.addEventListener('copy', e => {
-            const selection = window.getSelection().toString();
-            if (selection.length > 0) e.preventDefault();
+            if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) {
+                e.preventDefault();
+            }
         });
-
         document.addEventListener('keydown', e => {
             if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || (e.ctrlKey && e.key === 'U')) e.preventDefault();
-            if (e.ctrlKey && (e.key === 'c')) {
-                if (window.getSelection().toString().length > 0) e.preventDefault();
+            if (e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'p')) {
+                if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) e.preventDefault();
             }
             if (e.key === 'PrintScreen') navigator.clipboard.writeText('');
         });

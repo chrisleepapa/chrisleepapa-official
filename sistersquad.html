@@ -21,7 +21,7 @@
     <meta property="og:description" content="마법 세계로 빠져든 두 자매의 환상적인 모험 이야기를 만나보세요.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://chrisleepapa-official.vercel.app/sistersquad.html">
-    <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1">
+    <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png">
 
     <link rel="canonical" href="https://chrisleepapa-official.vercel.app/sistersquad.html">
     <title>SISTER SQUAD – Chris LEE.PAPA</title>
@@ -64,7 +64,6 @@
 
         img { -webkit-user-drag: none; }
 
-        /* 아날로그 노이즈 레이어 */
         body::before {
             content: ''; position: fixed; inset: 0;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
@@ -119,15 +118,16 @@
         .btn-copy { background: var(--gold); color: #000; }
         .btn-sns { background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #fff; }
         .btn-sns:hover { background: rgba(255,255,255,0.05); }
-        .btn-close-modal { margin-top: 25px; color: #666; background: none; font-size: 0.75rem; text-decoration: underline; }
+        .btn-close-modal { margin-top: 25px; color: #666; background: none; font-size: 0.8rem; text-decoration: underline; border: none; cursor: pointer; }
 
         .toast-msg {
             position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%);
             background: var(--gold); color: #000; padding: 12px 30px; border-radius: 40px;
             font-size: 0.9rem; font-weight: 700; z-index: 3000; display: none; animation: fadeUp 0.4s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        /* ── 헤더 섹션 ── */
+        /* ── 페이지 헤더 ── */
         .page-header {
             position: relative; width: 100%; height: 400px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -177,7 +177,7 @@
         .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
         .synopsis-section {
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(15, 15, 20, 0.4);
             border: 1px solid rgba(255, 180, 200, 0.15);
             border-radius: 24px; padding: 50px 30px;
             margin-bottom: 100px; backdrop-filter: blur(10px);
@@ -271,7 +271,7 @@
                 <a href="index.html">Home</a>
                 <a href="worship.html">Worship</a>
                 <a href="music.html">Music</a>
-                <a href="book.html" class="active">Books</a>
+                <a href="book.html">Books</a>
                 <a href="movie.html">Movies</a>
             </div>
             <div class="share-trigger" onclick="openShareModal()">SHARE</div>
@@ -399,7 +399,7 @@
             navLinks.classList.toggle('active');
         });
 
-        // ── 공유 로직 ──
+        // ── 공유 로직 (보안 우회 및 하이브리드 로직) ──
         const shareOverlay = document.getElementById('shareOverlay');
         const toast = document.getElementById('toast');
 
@@ -414,14 +414,34 @@
             setTimeout(() => shareOverlay.style.display = 'none', 300);
         }
 
-        function copyURL() {
-            const el = document.createElement('textarea');
-            el.value = window.location.href;
-            document.body.appendChild(el);
-            el.select();
-            document.execCommand('copy');
-            document.body.removeChild(el);
-            showToast('Link copied to clipboard!');
+        async function copyURL() {
+            const currentUrl = window.location.href;
+            let success = false;
+
+            // 1. 최신 API 시도
+            if (navigator.clipboard && window.isSecureContext) {
+                try {
+                    await navigator.clipboard.writeText(currentUrl);
+                    success = true;
+                } catch (err) { console.error("Clipboard API failed:", err); }
+            }
+
+            // 2. Fallback 방식
+            if (!success) {
+                const textArea = document.createElement("textarea");
+                textArea.value = currentUrl;
+                textArea.style.position = "fixed";
+                textArea.style.left = "-9999px";
+                textArea.style.top = "0";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try { success = document.execCommand('copy'); } catch (err) { console.error("execCommand failed:", err); }
+                document.body.removeChild(textArea);
+            }
+
+            if (success) { showToast('Link copied to clipboard!'); }
+            else { showToast('Copy failed. Please copy manually.'); }
             closeShareModal();
         }
 
@@ -433,13 +453,12 @@
                     url: window.location.href
                 }).catch(console.error);
             } else {
-                showToast('Sharing is not supported on this browser.');
+                showToast('Sharing is not supported.');
             }
         }
 
         function showToast(msg) {
-            toast.textContent = msg;
-            toast.style.display = 'block';
+            toast.textContent = msg; toast.style.display = 'block';
             setTimeout(() => { toast.style.display = 'none'; }, 2500);
         }
 
@@ -447,51 +466,45 @@
         const canvas = document.getElementById('stars-canvas');
         const ctx = canvas.getContext('2d');
         let stars = [];
-
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = 400;
-            initStars();
-        }
-
+        function resize() { canvas.width = window.innerWidth; canvas.height = 400; initStars(); }
         function initStars() {
             stars = [];
             const count = (canvas.width * canvas.height) / 7000;
             for (let i = 0; i < count; i++) {
                 stars.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    size: Math.random() * 1.5 + 0.2,
-                    opacity: Math.random(),
+                    x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+                    size: Math.random() * 1.5 + 0.2, opacity: Math.random(),
                     speed: Math.random() * 0.015 + 0.005,
                     color: Math.random() > 0.8 ? '255, 180, 200' : '255, 255, 255'
                 });
             }
         }
-
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             stars.forEach(s => {
                 s.opacity += s.speed;
                 if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed;
-                ctx.beginPath();
-                ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(${s.color}, ${Math.max(0, s.opacity)})`;
-                ctx.fill();
+                ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${s.color}, ${Math.max(0, s.opacity)})`; ctx.fill();
             });
             requestAnimationFrame(draw);
         }
-
         window.addEventListener('resize', resize);
-        resize();
-        draw();
+        resize(); draw();
 
-        // ── 보안 ──
+        // ── 보안 스크립트 (조건부 복사 차단) ──
         document.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('copy', e => e.preventDefault());
+        
+        document.addEventListener('copy', e => {
+            const selection = window.getSelection().toString();
+            if (selection.length > 0) e.preventDefault();
+        });
+
         document.addEventListener('keydown', e => {
             if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || (e.ctrlKey && e.key === 'U')) e.preventDefault();
-            if (e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'p')) e.preventDefault();
+            if (e.ctrlKey && (e.key === 'c')) {
+                if (window.getSelection().toString().length > 0) e.preventDefault();
+            }
             if (e.key === 'PrintScreen') navigator.clipboard.writeText('');
         });
     </script>

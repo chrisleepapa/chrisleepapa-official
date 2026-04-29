@@ -1,252 +1,350 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>율이 (Yul) Profile – SisterSquad</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600&family=Noto+Serif+KR:wght@300;400&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
-<style>
-/* ── RESET & BASE ── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="율이 (Yul) Profile – SisterSquad | Chris LEE.PAPA">
+    
+    <title>율이 (Yul) Profile – SisterSquad</title>
+    
+    <!-- 폰트 통합 호출 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Cormorant+Garamond:wght@600&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
 
-:root {
-  --gold: #c9a84c;
-  --gold-light: #e8d08a;
-  --cyan: #00d4ff;
-  --bg: #050507;
-  --text: #f0ece4;
-  --text-dim: #9a9490;
-}
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+        :root {
+            --gold: #c9a84c;
+            --gold-light: #e8d08a;
+            --bg: #030305;
+            --text: #f0ece4;
+            --nav-height: 70px;
+            --char-accent: #00d4ff; /* 율이 고유 컬러: 냉철한 이성의 시안(Cyan) */
+            --char-glow: rgba(0, 212, 255, 0.4);
+        }
 
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Noto Serif KR', serif;
-  line-height: 1.8;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
+        html { scroll-behavior: smooth; background-color: var(--bg); }
 
-/* Noise overlay */
-body::before {
-  content: '';
-  position: fixed; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events: none; z-index: 900; opacity: 0.4;
-}
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Pretendard', 'Noto Serif KR', serif;
+            line-height: 1.7;
+            overflow-x: hidden;
+            /* 율이 테마에 맞춘 푸른빛 배경 그래디언트 */
+            background-image: radial-gradient(circle at top left, rgba(10, 30, 60, 0.8), transparent 60%),
+                              radial-gradient(circle at bottom right, rgba(10, 10, 30, 0.9), transparent 60%);
+        }
 
-/* ── BANNER HEADER ── */
-header {
-  position: relative;
-  width: 100%;
-  height: 220px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
+        /* 아날로그 노이즈 레이어 */
+        body::before {
+            content: ''; position: fixed; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
+            pointer-events: none; z-index: 900; opacity: 0.3;
+        }
 
-header::before {
-  content: '';
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse at 20% 50%, rgba(80,40,120,0.35) 0%, transparent 55%),
-    radial-gradient(ellipse at 80% 50%, rgba(30,60,100,0.3) 0%, transparent 55%),
-    radial-gradient(ellipse at 50% 0%,  rgba(201,168,76,0.12) 0%, transparent 60%),
-    linear-gradient(to bottom, #0a0810 0%, #050507 100%);
-  z-index: 0;
-}
+        a { text-decoration: none; color: inherit; }
 
-header::after {
-  content: '';
-  position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(to right, transparent 0%, rgba(201,168,76,0.15) 15%, rgba(201,168,76,0.55) 35%, rgba(232,208,138,0.9) 50%, rgba(201,168,76,0.55) 65%, rgba(201,168,76,0.15) 85%, transparent 100%);
-  z-index: 2;
-}
+        /* ── 네비게이션 ── */
+        nav {
+            position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; background: rgba(3, 3, 5, 0.8); backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
 
-.banner-top-line {
-  position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(to right, transparent 0%, rgba(201,168,76,0.4) 30%, rgba(201,168,76,0.8) 50%, rgba(201,168,76,0.4) 70%, transparent 100%);
-  z-index: 2;
-}
+        .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); }
 
-.banner-brand {
-  position: relative; z-index: 3;
-  display: flex; flex-direction: column; align-items: center; gap: 10px;
-}
+        .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
+        .menu-toggle span { width: 22px; height: 1.5px; background-color: var(--gold-light); transition: 0.3s; }
 
-.banner-deco-row {
-  display: flex; align-items: center; gap: 14px; opacity: 0.7;
-}
-.banner-deco-line { width: 60px; height: 1px; background: linear-gradient(to right, transparent, var(--gold)); }
-.banner-deco-line.right { background: linear-gradient(to left, transparent, var(--gold)); }
-.banner-deco-diamond { width: 6px; height: 6px; background: var(--gold); transform: rotate(45deg); box-shadow: 0 0 8px rgba(201,168,76,0.8); }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; }
+        .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
 
-.banner-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 3.6rem;
-  font-weight: 600; letter-spacing: 0.14em; line-height: 1;
-  background: linear-gradient(108deg, #b8922a 0%, #e8d08a 20%, #fffbe8 38%, #c9a84c 52%, #fff0b0 68%, #c9a84c 80%, #e8d08a 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  filter: drop-shadow(0 0 30px rgba(201,168,76,0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.8));
-  animation: shimmer 6s linear infinite; background-size: 200% auto;
-}
-@keyframes shimmer { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+        /* ── 헤더 섹션 ── */
+        .page-header {
+            position: relative; width: 100%; height: 400px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            overflow: hidden; padding-top: var(--nav-height);
+        }
 
-.banner-subtitle { font-family: 'Cinzel', serif; font-size: 0.68rem; letter-spacing: 0.55em; color: rgba(201,168,76,0.55); text-transform: uppercase; }
+        #stars-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
 
-.banner-nav {
-  position: relative; z-index: 3;
-  display: flex; align-items: center; justify-content: center; flex-wrap: wrap; margin-top: 18px;
-}
-.banner-nav a {
-  font-family: 'Cinzel', serif; font-size: 0.78rem; font-weight: 400; letter-spacing: 0.28em; color: rgba(154,148,144,0.75); text-decoration: none;
-  padding: 6px 28px; position: relative; transition: color 0.3s; text-transform: uppercase;
-}
-.banner-nav a + a::before { content: ''; position: absolute; left: 0; top: 20%; bottom: 20%; width: 1px; background: rgba(201,168,76,0.25); }
-.banner-nav a::after {
-  content: ''; position: absolute; bottom: 0; left: 28px; right: 28px; height: 1px;
-  background: linear-gradient(to right, transparent, var(--gold-light), transparent);
-  transform: scaleX(0); transition: transform 0.38s;
-}
-.banner-nav a:hover { color: var(--gold-light); }
-.banner-nav a:hover::after { transform: scaleX(1); }
+        .header-content { position: relative; z-index: 3; text-align: center; animation: fadeUp 1.2s ease both; }
 
-/* ── BACK BUTTON ── */
-.back-btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 0.2em;
-  color: var(--text-dim); text-decoration: none; text-transform: uppercase;
-  padding: 10px 0; margin: 36px 0 0 52px;
-  transition: color 0.3s;
-  position: relative;
-}
-.back-btn::before { content: '‹'; font-size: 1.2rem; line-height: 1; transition: transform 0.3s; }
-.back-btn:hover { color: var(--gold-light); }
-.back-btn:hover::before { transform: translateX(-4px); }
+        .header-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(3rem, 8vw, 5rem); 
+            font-weight: 700; letter-spacing: 0.2em;
+            color: #ffffff;
+            text-shadow: 0 0 30px var(--char-glow), 0 0 10px var(--char-accent);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
 
-/* ── PROFILE CONTENT ── */
-.container { max-width: 1200px; margin: 0 auto; padding: 20px 24px 100px; }
+        .header-slogan {
+            font-family: 'Cormorant Garamond', serif; font-size: clamp(1rem, 2.5vw, 1.4rem); 
+            letter-spacing: 0.3em; color: var(--char-accent); font-style: italic;
+        }
 
-.profile-header { display: grid; grid-template-columns: 380px 1fr; gap: 50px; align-items: start; margin-bottom: 80px; }
-.profile-img-wrap { position: relative; border-radius: 24px; overflow: hidden; border: 1px solid rgba(201,168,76,0.3); box-shadow: 0 30px 60px rgba(0,0,0,0.8); }
-.profile-img { width: 100%; display: block; transition: transform 0.7s; }
-.profile-img:hover { transform: scale(1.05); }
+        /* ── 메인 콘텐츠 ── */
+        .container { max-width: 1200px; margin: 0 auto; padding: 10px 20px 100px; position: relative; z-index: 10; }
 
-.info-content h1 { font-family: 'Cinzel', serif; font-size: 3rem; color: var(--gold-light); margin-bottom: 5px; }
-.info-content .age { font-family: 'Cinzel', serif; font-size: 1.1rem; color: var(--gold); opacity: 0.8; margin-bottom: 20px; display: block; }
-.info-content .title-tag { font-size: 1.05rem; color: var(--cyan); letter-spacing: 0.15em; font-weight: 600; text-transform: uppercase; margin-bottom: 30px; display: block; border-left: 3px solid var(--cyan); padding-left: 15px; }
-.info-content .quote { font-style: italic; font-size: 1.2rem; color: var(--text); margin-top: 40px; padding: 25px; background: rgba(201,168,76,0.05); border-radius: 16px; text-align: center; border: 1px dashed rgba(201,168,76,0.2); line-height: 1.6; }
+        .back-link {
+            display: inline-flex; align-items: center; gap: 8px; font-family: 'Cinzel', serif;
+            font-size: 0.75rem; letter-spacing: 0.2em; color: var(--gold-light);
+            margin-bottom: 40px; transition: 0.3s; text-transform: uppercase;
+        }
+        .back-link:hover { text-shadow: 0 0 10px var(--gold-light); transform: translateX(-5px); }
 
-.bio-section { margin-bottom: 60px; }
-.bio-section h2 { font-family: 'Cinzel', serif; font-size: 1.3rem; color: var(--gold); margin-bottom: 25px; border-bottom: 1px solid rgba(201,168,76,0.2); padding-bottom: 10px; letter-spacing: 0.1em; }
-.bio-text { font-size: 1.1rem; color: rgba(240,236,228,0.85); word-break: keep-all; }
-.bio-text p { margin-bottom: 25px; }
+        /* 프로필 글래스모피즘 레이아웃 */
+        .profile-layout {
+            display: grid; grid-template-columns: 400px 1fr; gap: 50px;
+            margin-bottom: 80px; align-items: stretch;
+        }
 
-/* Visual Archives Gallery */
-.gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; margin-top: 40px; }
-.media-item { border-radius: 16px; overflow: hidden; border: 1px solid rgba(201,168,76,0.15); background: #000; aspect-ratio: 16/9; box-shadow: 0 15px 35px rgba(0,0,0,0.5); position: relative; transition: all 0.4s; }
-.photo-item { background-size: cover; background-position: center; filter: brightness(0.85); transition: filter 0.3s, transform 0.4s; }
-.media-item:hover { filter: brightness(1); transform: translateY(-5px); border-color: var(--gold); box-shadow: 0 20px 40px rgba(201,168,76,0.2); }
+        /* 왼쪽: 비주얼 영역 */
+        .profile-visual {
+            position: relative;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 24px; padding: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            animation: fadeUp 1s ease 0.2s both;
+        }
 
-/* ── RESPONSIVE ── */
-@media (max-width: 900px) {
-  header { height: 180px; }
-  .banner-title { font-size: 2.6rem; }
-  .banner-nav a { padding: 6px 18px; font-size: 0.72rem; }
-  .profile-header { grid-template-columns: 1fr; justify-items: center; text-align: center; gap: 40px; }
-  .profile-img-wrap { max-width: 450px; }
-  .info-content .title-tag { border-left: 0; border-bottom: 2px solid var(--cyan); padding-left: 0; padding-bottom: 10px; display: inline-block; }
-  .gallery-grid { grid-template-columns: 1fr; }
-  .back-btn { margin-left: 24px; }
-}
+        .profile-img-wrap {
+            border-radius: 16px; overflow: hidden; width: 100%; height: 100%;
+            border: 1px solid rgba(255,255,255,0.05); position: relative;
+        }
+        .profile-img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.9); transition: 0.5s; }
+        .profile-visual:hover .profile-img { transform: scale(1.03); filter: brightness(1.1); }
 
-footer { text-align: center; padding: 48px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: rgba(154,148,144,0.4); border-top: 1px solid rgba(201,168,76,0.06); }
-</style>
+        /* 오른쪽: 인포 영역 */
+        .profile-data {
+            display: flex; flex-direction: column; justify-content: center;
+            animation: fadeUp 1s ease 0.4s both;
+        }
+
+        .data-header { margin-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 30px; }
+        .name-ko { font-family: 'Noto Serif KR', serif; font-size: 2.8rem; font-weight: 600; color: #fff; margin-bottom: 5px; }
+        .age { font-family: 'Cinzel', serif; font-size: 1rem; color: #a0a0b5; letter-spacing: 2px; display: block; margin-bottom: 20px; }
+        .role-tag {
+            display: inline-block; padding: 6px 18px; border-radius: 30px;
+            background: rgba(0, 212, 255, 0.1); border: 1px solid var(--char-accent);
+            color: var(--char-accent); font-size: 0.9rem; font-weight: 600; letter-spacing: 1px;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+        }
+
+        .bio-block { margin-bottom: 40px; }
+        .bio-block h3 { font-family: 'Cinzel', serif; font-size: 1.1rem; color: var(--gold-light); margin-bottom: 15px; letter-spacing: 2px; text-transform: uppercase; }
+        .bio-block p { font-size: 1.05rem; color: #cdd6f4; line-height: 1.9; font-weight: 300; word-break: keep-all; margin-bottom: 15px; }
+
+        /* 명언(Quote) 글래스 박스 */
+        .quote-box {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05) 0%, rgba(0, 0, 0, 0) 100%);
+            border-left: 3px solid var(--char-accent);
+            padding: 25px 30px; border-radius: 0 16px 16px 0;
+            font-family: 'Noto Serif KR', serif; font-size: 1.2rem; font-style: italic;
+            color: #fff; line-height: 1.6;
+        }
+
+        /* ── Visual Archives (갤러리) ── */
+        .section-title {
+            font-family: 'Cinzel', serif; font-size: 1.8rem; color: var(--gold);
+            letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 40px;
+            padding-bottom: 15px; border-bottom: 1px solid rgba(201,168,76,0.2);
+            text-align: center; margin-top: 80px; animation: fadeUp 1s ease 0.6s both;
+        }
+
+        .gallery-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px;
+            animation: fadeUp 1s ease 0.8s both;
+        }
+
+        .gallery-item {
+            position: relative; border-radius: 16px; overflow: hidden;
+            aspect-ratio: 16/9; background: #000;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            cursor: pointer; transition: all 0.4s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-8px); border-color: var(--char-accent);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
+        }
+
+        .gallery-img {
+            width: 100%; height: 100%; background-size: cover; background-position: center;
+            filter: brightness(0.8) grayscale(20%); transition: all 0.5s ease;
+        }
+
+        .gallery-item:hover .gallery-img { filter: brightness(1.1) grayscale(0%); transform: scale(1.08); }
+
+        footer { text-align: center; padding: 80px 40px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: #555; border-top: 1px solid rgba(255,255,255,0.03); }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            nav { padding: 0 20px; }
+            .menu-toggle { display: flex; }
+            .nav-links {
+                position: fixed; top: var(--nav-height); left: 0; width: 100%; height: 0;
+                background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center;
+                gap: 25px; overflow: hidden; transition: 0.4s ease-in-out;
+            }
+            .nav-links.active { height: calc(100vh - var(--nav-height)); }
+            
+            .profile-layout { grid-template-columns: 1fr; gap: 40px; }
+            .profile-visual { max-width: 500px; margin: 0 auto; }
+            .data-header { text-align: center; }
+            .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
+        }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
 </head>
 <body>
 
-<header>
-  <div class="banner-top-line"></div>
-  <div class="banner-brand">
-    <div class="banner-deco-row">
-      <div class="banner-deco-line"></div>
-      <div class="banner-deco-diamond"></div>
-      <div class="banner-deco-line right"></div>
-    </div>
-    <a href="index.html" style="text-decoration: none; display: inline-block;">
-      <h1 class="banner-title">Chris Lee.Papa</h1>
-    </a>
-    <p class="banner-subtitle">The &nbsp; Creative &nbsp; Archive</p>
-  </div>
-  <nav class="banner-nav">
-    <a href="book.html">BOOK</a>
-    <a href="music.html">MUSIC</a>
-    <a href="movie.html">MOVIE</a>
-    <a href="worship.html">WORSHIP</a>
-  </nav>
-</header>
-
-<a href="sistersquad.html" class="back-btn">SisterSquad로 돌아가기</a>
-
-<main class="container">
-  <div class="profile-header">
-    <div class="profile-img-wrap">
-      <img src="images/yul01.png" alt="율이 프로필" class="profile-img">
-    </div>
-    <div class="info-content">
-      <h1>율이 (Yul)</h1>
-      <span class="age">11 Years Old</span>
-      <span class="title-tag">이성의 검, 염력의 마스터</span>
-      
-      <div class="bio-section">
-        <div class="bio-text">
-          <p>언제나 세상을 분석하고 모든 것을 머리로 이해하려는 똑똑한 소녀. 갑작스럽게 휘말린 마법의 세계를 처음에는 믿지 못하고, 말도 안 되는 현상 앞에서 혼란스러워합니다. 하지만 동생과 요정들을 지켜야 한다는 책임감이 싹트면서, 자신의 마음을 조금씩 열기 시작합니다.</p>
-          <p>그녀의 성장은 이해할 수 없는 것을 받아들이는 과정입니다. 처음에는 검과 활을 다루는 법을 머리로만 접근하려 하지만, 점차 마음으로 느끼고 본능을 믿는 법을 배웁니다.</p>
+    <!-- 1. 네비게이션 -->
+    <nav>
+        <a href="index.html" class="brand-logo">Chris LEE.PAPA</a>
+        <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
+        <div class="nav-links" id="navLinks">
+            <a href="index.html">Home</a>
+            <a href="worship.html">Worship</a>
+            <a href="music.html">Music</a>
+            <a href="book.html">Books</a>
+            <a href="movie.html">Movies</a>
         </div>
-      </div>
+    </nav>
 
-      <div class="quote">
-        "말도 안 돼. 이런 건 본 적 없어.<br>하지만 극복하고 말겠어."
-      </div>
-    </div>
-  </div>
+    <!-- 2. 페이지 헤더 (푸른 별빛 캔버스) -->
+    <header class="page-header">
+        <canvas id="stars-canvas"></canvas>
+        <div class="header-content">
+            <h1 class="header-title">YUL</h1>
+            <p class="header-slogan">The Brave Leader</p>
+        </div>
+    </header>
 
-  <section class="bio-section">
-    <h2>Special Abilities: Psychokinesis</h2>
-    <div class="bio-text">
-      <p>그녀의 잠재 능력인 염력은 세상 모든 것에 새로운 질서를 부여하고 싶어하는 그녀의 바람이 현실이 된 것입니다. 처음에는 작은 돌멩이를 띄우는 수준이었지만, 동생을 구하려는 간절한 마음이 폭발하며, 주변의 모든 것을 제어하는 강력한 힘으로 각성합니다.</p>
-    </div>
-  </section>
+    <!-- 3. 메인 콘텐츠 -->
+    <main class="container">
+        
+        <a href="sistersquad.html" class="back-link">‹ Back to SisterSquad</a>
 
-  <!-- ── Visual Archives (yul11.jpg 추가 완료) ── -->
-  <section class="bio-section">
-    <h2>Visual Archives</h2>
-    <div class="gallery-grid">
-      <!-- .png images -->
-      <div class="media-item photo-item" style="background-image: url('images/yul01.png');"></div>
-      <div class="media-item photo-item" style="background-image: url('images/yul02.jpg');"></div>
-      <div class="media-item photo-item" style="background-image: url('images/yul03.png');"></div>
-      <div class="media-item photo-item" style="background-image: url('images/yul04.jpg');"></div>
-      <div class="media-item photo-item" style="background-image: url('images/yul05.jpg');"></div>
-      <div class="media-item photo-item" style="background-image: url('images/yul06.jpg');"></div>
-      <div class="media-item photo-item" style="background-image: url('images/yul07.jpg');"></div>
-      <div class="media-item photo-item" style="background-image: url('images/yul08.jpg');"></div>
-      <div class="media-item photo-item" style="background-image: url('images/yul09.jpg');"></div>
-      <div class="media-item photo-item" style="background-image: url('images/yul10.jpg');"></div>
-      <div class="media-item photo-item" style="background-image: url('images/yul11.jpg');"></div>
-    </div>
-  </section>
-</main>
+        <!-- 프로필 레이아웃 -->
+        <div class="profile-layout">
+            
+            <!-- 좌측 이미지 -->
+            <div class="profile-visual">
+                <div class="profile-img-wrap">
+                    <img src="images/yul01.png" alt="율이 프로필" class="profile-img" onerror="this.src='https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=800&auto=format&fit=crop'">
+                </div>
+            </div>
 
-<footer>
-  © 2026 Chris Lee.Papa — The Creative Archive
-</footer>
+            <!-- 우측 정보 -->
+            <div class="profile-data">
+                <div class="data-header">
+                    <h2 class="name-ko">율 (Yul)</h2>
+                    <span class="age">11 YEARS OLD</span>
+                    <span class="role-tag">이성의 검, 염력의 마스터</span>
+                </div>
 
+                <div class="bio-block">
+                    <h3>Character Profile</h3>
+                    <p>언제나 세상을 분석하고 모든 것을 머리로 이해하려는 똑똑한 소녀. 갑작스럽게 휘말린 마법의 세계를 처음에는 믿지 못하고, 말도 안 되는 현상 앞에서 혼란스러워합니다. 하지만 동생과 요정들을 지켜야 한다는 책임감이 싹트면서, 자신의 마음을 조금씩 열기 시작합니다.</p>
+                    <p>그녀의 성장은 이해할 수 없는 것을 받아들이는 과정입니다. 처음에는 검과 활을 다루는 법을 머리로만 접근하려 하지만, 점차 마음으로 느끼고 본능을 믿는 법을 배웁니다.</p>
+                </div>
+
+                <div class="bio-block">
+                    <h3>Special Abilities</h3>
+                    <p><strong>Psychokinesis (염력):</strong> 그녀의 잠재 능력인 염력은 세상 모든 것에 새로운 질서를 부여하고 싶어하는 그녀의 바람이 현실이 된 것입니다. 처음에는 작은 돌멩이를 띄우는 수준이었지만, 동생을 구하려는 간절한 마음이 폭발하며 주변의 모든 것을 제어하는 강력한 힘으로 각성합니다.</p>
+                </div>
+
+                <div class="quote-box">
+                    "말도 안 돼. 이런 건 본 적 없어.<br>하지만 극복하고 말겠어."
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 비주얼 갤러리 -->
+        <h2 class="section-title">Visual Archives</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/yul01.png');"></div></div>
+            <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/yul02.jpg');"></div></div>
+            <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/yul03.png');"></div></div>
+            <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/yul04.jpg');"></div></div>
+            <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/yul05.jpg');"></div></div>
+            <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/yul06.jpg');"></div></div>
+            <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/yul07.jpg');"></div></div>
+            <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/yul08.jpg');"></div></div>
+            <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/yul09.jpg');"></div></div>
+            <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/yul10.jpg');"></div></div>
+            <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/yul11.jpg');"></div></div>
+        </div>
+
+    </main>
+
+    <footer><p>© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
+
+    <script>
+        // 모바일 메뉴 컨트롤
+        const menuToggle = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('navLinks');
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // ── 고성능 캔버스 별빛 효과 (율이 테마: 푸른빛 가미) ──
+        const canvas = document.getElementById('stars-canvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = 400;
+            initStars();
+        }
+
+        function initStars() {
+            stars = [];
+            const count = (canvas.width * canvas.height) / 7000;
+            for (let i = 0; i < count; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 1.5 + 0.2,
+                    opacity: Math.random(),
+                    speed: Math.random() * 0.015 + 0.005,
+                    color: Math.random() > 0.75 ? '0, 212, 255' : '255, 255, 255' // 25% 확률로 시안(푸른빛) 별
+                });
+            }
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(s => {
+                s.opacity += s.speed;
+                if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed;
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${s.color}, ${Math.max(0, s.opacity)})`;
+                ctx.fill();
+            });
+            requestAnimationFrame(draw);
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+        draw();
+    </script>
 </body>
 </html>

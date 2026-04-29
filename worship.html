@@ -118,12 +118,12 @@
         .featured-card::before {
             content: '';
             position: absolute;
-            inset: -20px; 
+            inset: -5px; 
             z-index: 0;
             background-size: cover;
             background-position: center;
-            /* 블러 수치를 20px -> 6px로 줄여 이미지가 보이게 수정 */
-            filter: blur(6px) brightness(0.35);
+            /* 블러 수치를 낮춰 이미지가 잘 보이게 처리 */
+            filter: blur(1.5px) brightness(0.4);
             transition: all 0.5s ease;
         }
 
@@ -135,7 +135,8 @@
 
         .featured-card:hover::before {
             transform: scale(1.05);
-            filter: blur(3px) brightness(0.45); /* 호버시 더 또렷하게 */
+            /* 호버시 블러 완전히 해제 */
+            filter: blur(0px) brightness(0.5);
         }
 
         /* 카드 내부 콘텐츠를 배경 위로 띄움 */
@@ -144,7 +145,7 @@
             z-index: 1;
         }
 
-        /* 각 앨범 카드별 고유 배경 이미지 (추후 실제 로컬 앨범 커버 경로로 변경 가능) */
+        /* 각 앨범 카드별 고유 배경 이미지 */
         .card-vol1::before { background-image: url('https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=800&auto=format&fit=crop'); }
         .card-vol2::before { background-image: url('https://images.unsplash.com/photo-1504052434569-70ad5836ab65?q=80&w=800&auto=format&fit=crop'); }
 
@@ -262,6 +263,7 @@
         <!-- 메인 앨범 하이라이트 -->
         <section class="featured-albums">
             
+            <!-- Vol 1. 카드 (lyrics.html 링크) -->
             <div class="featured-card card-vol1">
                 <iframe src="https://open.spotify.com/embed/album/0ctoLQNWCmiPEkySv05PAM?utm_source=generator" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
                 <h3>나의 찬양 Vol. 1</h3>
@@ -272,12 +274,14 @@
                 </div>
             </div>
 
+            <!-- Vol 2. 카드 (lyrics2.html 링크) -->
             <div class="featured-card card-vol2">
                 <iframe src="https://open.spotify.com/embed/album/0yhn8oEojOqsI864an6Qki?utm_source=generator" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
                 <h3>나의 찬양 Vol. 2</h3>
                 <p>The Second Journey</p>
                 <div class="btn-group">
                     <a href="https://open.spotify.com/album/0yhn8oEojOqsI864an6Qki" target="_blank" rel="noopener" class="action-btn btn-spotify">Spotify 전곡 듣기</a>
+                    <a href="lyrics2.html" onclick="window.open(this.href, 'lyricsPopup2', 'width=450,height=750,scrollbars=yes,resizable=yes'); return false;" class="action-btn btn-lyric">가사 보기</a>
                 </div>
             </div>
 
@@ -348,6 +352,7 @@
     <footer><p>© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
 
     <script>
+        // 모바일 메뉴 컨트롤
         const menuToggle = document.getElementById('mobile-menu');
         const navLinks = document.getElementById('navLinks');
         menuToggle.addEventListener('click', () => {
@@ -355,7 +360,7 @@
             navLinks.classList.toggle('active');
         });
 
-        // ── 고성능 캔버스 별빛 효과 ──
+        // ── 고성능 캔버스 별빛 효과 (성소 컨셉: 15% 금빛 별) ──
         const canvas = document.getElementById('stars-canvas');
         const ctx = canvas.getContext('2d');
         let stars = [];

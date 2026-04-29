@@ -37,6 +37,15 @@
             /* 율이 테마에 맞춘 푸른빛 배경 그래디언트 */
             background-image: radial-gradient(circle at top left, rgba(10, 30, 60, 0.8), transparent 60%),
                               radial-gradient(circle at bottom right, rgba(10, 10, 30, 0.9), transparent 60%);
+            /* 드래그 및 선택 방지 */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        img {
+            -webkit-user-drag: none; /* 이미지 드래그 방지 */
         }
 
         /* 아날로그 노이즈 레이어 */
@@ -187,6 +196,28 @@
 
         .gallery-item:hover .gallery-img { filter: brightness(1.1) grayscale(0%); transform: scale(1.08); }
 
+        /* ── 모달 (Lightbox) 팝업 CSS ── */
+        .modal {
+            display: none; position: fixed; z-index: 2000; inset: 0;
+            background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px);
+            align-items: center; justify-content: center;
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .modal.show { display: flex; opacity: 1; }
+        .modal-content {
+            max-width: 90vw; max-height: 90vh; border-radius: 12px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            transform: scale(0.95); transition: transform 0.3s ease;
+            object-fit: contain;
+        }
+        .modal.show .modal-content { transform: scale(1); }
+        .close-modal {
+            position: absolute; top: 30px; right: 40px;
+            color: #fff; font-size: 40px; font-weight: 300;
+            cursor: pointer; transition: 0.3s; z-index: 2001;
+        }
+        .close-modal:hover { color: var(--char-accent); transform: scale(1.1); }
+
         footer { text-align: center; padding: 80px 40px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: #555; border-top: 1px solid rgba(255,255,255,0.03); }
 
         /* ── RESPONSIVE ── */
@@ -288,9 +319,17 @@
             <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/yul09.jpg');"></div></div>
             <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/yul10.jpg');"></div></div>
             <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/yul11.jpg');"></div></div>
+            <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/yul12.jpg');"></div></div>
+            <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/yul13.jpg');"></div></div>
         </div>
 
     </main>
+
+    <!-- 이미지 모달 팝업 영역 -->
+    <div id="imageModal" class="modal">
+        <span class="close-modal" id="closeModal">&times;</span>
+        <img class="modal-content" id="modalImg" alt="확대된 이미지">
+    </div>
 
     <footer><p>© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
 
@@ -345,6 +384,69 @@
         window.addEventListener('resize', resize);
         resize();
         draw();
+
+        // ── 우클릭, 복사, 캡처 및 개발자도구 방지 스크립트 ──
+        
+        // 1. 우클릭 방지
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        // 2. 복사 방지
+        document.addEventListener('copy', function(e) {
+            e.preventDefault();
+        });
+
+        // 3. 단축키 방지 (개발자 도구, 복사, 저장, 인쇄 등)
+        document.addEventListener('keydown', function(e) {
+            // F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U (개발자 도구 및 소스 보기)
+            if (e.key === 'F12' || 
+               (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j')) || 
+               (e.ctrlKey && (e.key === 'U' || e.key === 'u'))) {
+                e.preventDefault();
+            }
+            // Ctrl+C, Ctrl+S, Ctrl+P (복사, 저장, 인쇄)
+            if (e.ctrlKey && (e.key === 'c' || e.key === 'C' || e.key === 's' || e.key === 'S' || e.key === 'p' || e.key === 'P')) {
+                e.preventDefault();
+            }
+            // PrintScreen 키 입력 시 클립보드 비우기 (일부 브라우저 동작)
+            if (e.key === 'PrintScreen') {
+                navigator.clipboard.writeText('');
+            }
+        });
+
+        // ── 이미지 갤러리 모달 (Lightbox) 로직 ──
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImg');
+        const closeModalBtn = document.getElementById('closeModal');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+
+        // 각 갤러리 아이템 클릭 시 모달 열기
+        galleryItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const imgDiv = item.querySelector('.gallery-img');
+                // background-image 값에서 URL 부분만 추출
+                const bgImage = window.getComputedStyle(imgDiv).backgroundImage;
+                const url = bgImage.replace(/(url\(|\)|"|')/g, ''); 
+                
+                modalImg.src = url;
+                modal.classList.add('show');
+            });
+        });
+
+        // 모달 닫기 함수
+        function closeModal() {
+            modal.classList.remove('show');
+            // 부드러운 페이드아웃 후 src 제거
+            setTimeout(() => { modalImg.src = ''; }, 300); 
+        }
+
+        closeModalBtn.addEventListener('click', closeModal);
+        
+        // 배경(이미지 밖 영역) 클릭 시 모달 닫기
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
     </script>
 </body>
 </html>

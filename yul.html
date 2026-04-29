@@ -16,6 +16,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="율이 (Yul) Profile – SisterSquad | Chris LEE.PAPA">
     
+    <!-- SNS 공유용 OG 태그 (최종 수정본) -->
+    <meta property="og:title" content="율이 (Yul) Profile – SisterSquad">
+    <meta property="og:description" content="냉철한 이성의 검, 염력의 마스터 율이의 프로필을 확인해보세요.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://chrisleepapa-official.vercel.app/yul.html">
+    <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1">
+
+    <link rel="canonical" href="https://chrisleepapa-official.vercel.app/yul.html">
     <title>율이 (Yul) Profile – SisterSquad</title>
     
     <!-- 폰트 통합 호출 -->
@@ -33,7 +41,7 @@
             --bg: #030305;
             --text: #f0ece4;
             --nav-height: 70px;
-            --char-accent: #00d4ff; /* 율이 고유 컬러: 냉철한 이성의 시안(Cyan) */
+            --char-accent: #00d4ff; 
             --char-glow: rgba(0, 212, 255, 0.4);
         }
 
@@ -45,21 +53,16 @@
             font-family: 'Pretendard', 'Noto Serif KR', serif;
             line-height: 1.7;
             overflow-x: hidden;
-            /* 율이 테마에 맞춘 푸른빛 배경 그래디언트 */
             background-image: radial-gradient(circle at top left, rgba(10, 30, 60, 0.8), transparent 60%),
                               radial-gradient(circle at bottom right, rgba(10, 10, 30, 0.9), transparent 60%);
-            /* 드래그 및 선택 방지 */
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
         }
 
-        img {
-            -webkit-user-drag: none; /* 이미지 드래그 방지 */
-        }
+        img { -webkit-user-drag: none; }
 
-        /* 아날로그 노이즈 레이어 */
         body::before {
             content: ''; position: fixed; inset: 0;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
@@ -78,12 +81,48 @@
 
         .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); }
 
-        .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
-        .menu-toggle span { width: 22px; height: 1.5px; background-color: var(--gold-light); transition: 0.3s; }
-
+        .nav-right { display: flex; align-items: center; gap: 30px; }
         .nav-links { display: flex; gap: 30px; }
         .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; }
         .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+
+        .share-trigger {
+            cursor: pointer; padding: 6px 14px; border: 1px solid rgba(201,168,76,0.3);
+            border-radius: 20px; font-family: 'Cinzel', serif; font-size: 0.7rem;
+            color: var(--gold-light); transition: 0.3s; letter-spacing: 1px;
+        }
+        .share-trigger:hover { background: rgba(201,168,76,0.1); border-color: var(--gold-light); }
+
+        .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
+        .menu-toggle span { width: 22px; height: 1.5px; background-color: var(--gold-light); transition: 0.3s; }
+
+        /* ── 공유 모달 & 토스트 ── */
+        .modal-overlay-share {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+            z-index: 3000; display: none; align-items: center; justify-content: center; opacity: 0; transition: 0.3s;
+        }
+        .modal-overlay-share.active { display: flex; opacity: 1; }
+        .share-modal {
+            background: #0a0a0f; border: 1px solid var(--gold); border-radius: 24px;
+            width: 90%; max-width: 400px; padding: 45px 30px; text-align: center;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.9);
+        }
+        .share-modal h3 { font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--gold-light); margin-bottom: 15px; }
+        .share-modal p { font-size: 0.9rem; color: #888; margin-bottom: 35px; }
+        .share-buttons { display: flex; flex-direction: column; gap: 14px; }
+        .modal-btn {
+            padding: 16px; border-radius: 12px; border: none; font-family: 'Cinzel', serif;
+            font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: 0.3s;
+        }
+        .btn-copy { background: var(--gold); color: #000; }
+        .btn-sns { background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #fff; }
+        .btn-close-share { margin-top: 25px; color: #666; background: none; font-size: 0.8rem; text-decoration: underline; }
+
+        .toast-msg {
+            position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%);
+            background: var(--gold); color: #000; padding: 12px 30px; border-radius: 40px;
+            font-size: 0.9rem; font-weight: 700; z-index: 4000; display: none; animation: fadeUp 0.4s ease;
+        }
 
         /* ── 헤더 섹션 ── */
         .page-header {
@@ -91,21 +130,14 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             overflow: hidden; padding-top: var(--nav-height);
         }
-
         #stars-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
-
         .header-content { position: relative; z-index: 3; text-align: center; animation: fadeUp 1.2s ease both; }
-
         .header-title {
-            font-family: 'Cinzel', serif;
-            font-size: clamp(3rem, 8vw, 5rem); 
-            font-weight: 700; letter-spacing: 0.2em;
-            color: #ffffff;
+            font-family: 'Cinzel', serif; font-size: clamp(3rem, 8vw, 5rem); 
+            font-weight: 700; letter-spacing: 0.2em; color: #ffffff;
             text-shadow: 0 0 30px var(--char-glow), 0 0 10px var(--char-accent);
-            margin-bottom: 10px;
-            text-transform: uppercase;
+            margin-bottom: 10px; text-transform: uppercase;
         }
-
         .header-slogan {
             font-family: 'Cormorant Garamond', serif; font-size: clamp(1rem, 2.5vw, 1.4rem); 
             letter-spacing: 0.3em; color: var(--char-accent); font-style: italic;
@@ -113,44 +145,25 @@
 
         /* ── 메인 콘텐츠 ── */
         .container { max-width: 1200px; margin: 0 auto; padding: 10px 20px 100px; position: relative; z-index: 10; }
-
         .back-link {
             display: inline-flex; align-items: center; gap: 8px; font-family: 'Cinzel', serif;
             font-size: 0.75rem; letter-spacing: 0.2em; color: var(--gold-light);
-            margin-bottom: 40px; transition: 0.3s; text-transform: uppercase;
+            margin-bottom: 40px; transition: 0.3s; text-transform: uppercase; cursor: pointer;
         }
         .back-link:hover { text-shadow: 0 0 10px var(--gold-light); transform: translateX(-5px); }
 
-        /* 프로필 글래스모피즘 레이아웃 */
-        .profile-layout {
-            display: grid; grid-template-columns: 400px 1fr; gap: 50px;
-            margin-bottom: 80px; align-items: stretch;
-        }
-
-        /* 왼쪽: 비주얼 영역 */
+        .profile-layout { display: grid; grid-template-columns: 400px 1fr; gap: 50px; margin-bottom: 80px; align-items: stretch; }
         .profile-visual {
-            position: relative;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(0, 212, 255, 0.2);
-            border-radius: 24px; padding: 20px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            position: relative; background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(0, 212, 255, 0.2); border-radius: 24px; padding: 20px;
+            backdrop-filter: blur(10px); box-shadow: 0 20px 50px rgba(0,0,0,0.6);
             animation: fadeUp 1s ease 0.2s both;
         }
-
-        .profile-img-wrap {
-            border-radius: 16px; overflow: hidden; width: 100%; height: 100%;
-            border: 1px solid rgba(255,255,255,0.05); position: relative;
-        }
+        .profile-img-wrap { border-radius: 16px; overflow: hidden; width: 100%; height: 100%; border: 1px solid rgba(255,255,255,0.05); position: relative; }
         .profile-img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.9); transition: 0.5s; }
         .profile-visual:hover .profile-img { transform: scale(1.03); filter: brightness(1.1); }
 
-        /* 오른쪽: 인포 영역 */
-        .profile-data {
-            display: flex; flex-direction: column; justify-content: center;
-            animation: fadeUp 1s ease 0.4s both;
-        }
-
+        .profile-data { display: flex; flex-direction: column; justify-content: center; animation: fadeUp 1s ease 0.4s both; }
         .data-header { margin-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 30px; }
         .name-ko { font-family: 'Noto Serif KR', serif; font-size: 2.8rem; font-weight: 600; color: #fff; margin-bottom: 5px; }
         .age { font-family: 'Cinzel', serif; font-size: 1rem; color: #a0a0b5; letter-spacing: 2px; display: block; margin-bottom: 20px; }
@@ -160,88 +173,53 @@
             color: var(--char-accent); font-size: 0.9rem; font-weight: 600; letter-spacing: 1px;
             box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
         }
-
         .bio-block { margin-bottom: 40px; }
         .bio-block h3 { font-family: 'Cinzel', serif; font-size: 1.1rem; color: var(--gold-light); margin-bottom: 15px; letter-spacing: 2px; text-transform: uppercase; }
         .bio-block p { font-size: 1.05rem; color: #cdd6f4; line-height: 1.9; font-weight: 300; word-break: keep-all; margin-bottom: 15px; }
-
-        /* 명언(Quote) 글래스 박스 */
         .quote-box {
             background: linear-gradient(135deg, rgba(0, 212, 255, 0.05) 0%, rgba(0, 0, 0, 0) 100%);
-            border-left: 3px solid var(--char-accent);
-            padding: 25px 30px; border-radius: 0 16px 16px 0;
-            font-family: 'Noto Serif KR', serif; font-size: 1.2rem; font-style: italic;
-            color: #fff; line-height: 1.6;
+            border-left: 3px solid var(--char-accent); padding: 25px 30px; border-radius: 0 16px 16px 0;
+            font-family: 'Noto Serif KR', serif; font-size: 1.2rem; font-style: italic; color: #fff; line-height: 1.6;
         }
 
-        /* ── Visual Archives (갤러리) ── */
         .section-title {
             font-family: 'Cinzel', serif; font-size: 1.8rem; color: var(--gold);
             letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 40px;
             padding-bottom: 15px; border-bottom: 1px solid rgba(201,168,76,0.2);
             text-align: center; margin-top: 80px; animation: fadeUp 1s ease 0.6s both;
         }
-
-        .gallery-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px;
-            animation: fadeUp 1s ease 0.8s both;
-        }
-
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; animation: fadeUp 1s ease 0.8s both; }
         .gallery-item {
-            position: relative; border-radius: 16px; overflow: hidden;
-            aspect-ratio: 16/9; background: #000;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            position: relative; border-radius: 16px; overflow: hidden; aspect-ratio: 16/9; background: #000;
+            border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 15px 35px rgba(0,0,0,0.5);
             cursor: pointer; transition: all 0.4s ease;
         }
-
-        .gallery-item:hover {
-            transform: translateY(-8px); border-color: var(--char-accent);
-            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
-        }
-
-        .gallery-img {
-            width: 100%; height: 100%; background-size: cover; background-position: center;
-            filter: brightness(0.8) grayscale(20%); transition: all 0.5s ease;
-        }
-
+        .gallery-item:hover { transform: translateY(-8px); border-color: var(--char-accent); box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2); }
+        .gallery-img { width: 100%; height: 100%; background-size: cover; background-position: center; filter: brightness(0.8) grayscale(20%); transition: all 0.5s ease; }
         .gallery-item:hover .gallery-img { filter: brightness(1.1) grayscale(0%); transform: scale(1.08); }
 
-        /* ── 모달 (Lightbox) 팝업 CSS ── */
-        .modal {
+        /* 라이트박스 모달 */
+        .modal-gallery {
             display: none; position: fixed; z-index: 2000; inset: 0;
             background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px);
-            align-items: center; justify-content: center;
-            opacity: 0; transition: opacity 0.3s ease;
+            align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;
         }
-        .modal.show { display: flex; opacity: 1; }
-        .modal-content {
-            max-width: 90vw; max-height: 90vh; border-radius: 12px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-            transform: scale(0.95); transition: transform 0.3s ease;
-            object-fit: contain;
-        }
-        .modal.show .modal-content { transform: scale(1); }
-        .close-modal {
-            position: absolute; top: 30px; right: 40px;
-            color: #fff; font-size: 40px; font-weight: 300;
-            cursor: pointer; transition: 0.3s; z-index: 2001;
-        }
-        .close-modal:hover { color: var(--char-accent); transform: scale(1.1); }
+        .modal-gallery.show { display: flex; opacity: 1; }
+        .modal-content { max-width: 90vw; max-height: 90vh; border-radius: 12px; box-shadow: 0 15px 40px rgba(0,0,0,0.6); transform: scale(0.95); transition: transform 0.3s ease; object-fit: contain; }
+        .modal-gallery.show .modal-content { transform: scale(1); }
+        .close-gallery { position: absolute; top: 30px; right: 40px; color: #fff; font-size: 40px; font-weight: 300; cursor: pointer; transition: 0.3s; z-index: 2001; }
+        .close-gallery:hover { color: var(--char-accent); transform: scale(1.1); }
 
         footer { text-align: center; padding: 80px 40px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: #555; border-top: 1px solid rgba(255,255,255,0.03); }
 
-        /* ── RESPONSIVE ── */
         @media (max-width: 900px) {
             nav { padding: 0 20px; }
-            .menu-toggle { display: flex; }
-            .nav-links {
-                position: fixed; top: var(--nav-height); left: 0; width: 100%; height: 0;
-                background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center;
-                gap: 25px; overflow: hidden; transition: 0.4s ease-in-out;
+            .nav-links { display: none; }
+            .nav-links.active {
+                display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height));
+                background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 25px; z-index: 1002;
             }
-            .nav-links.active { height: calc(100vh - var(--nav-height)); }
-            
+            .menu-toggle { display: flex; }
             .profile-layout { grid-template-columns: 1fr; gap: 40px; }
             .profile-visual { max-width: 500px; margin: 0 auto; }
             .data-header { text-align: center; }
@@ -253,20 +231,37 @@
 </head>
 <body>
 
-    <!-- 1. 네비게이션 -->
     <nav>
         <a href="index.html" class="brand-logo">Chris LEE.PAPA</a>
-        <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
-        <div class="nav-links" id="navLinks">
-            <a href="index.html">Home</a>
-            <a href="worship.html">Worship</a>
-            <a href="music.html">Music</a>
-            <a href="book.html">Books</a>
-            <a href="movie.html">Movies</a>
+        <div class="nav-right">
+            <div class="nav-links" id="navLinks">
+                <a href="index.html">Home</a>
+                <a href="worship.html">Worship</a>
+                <a href="music.html">Music</a>
+                <a href="book.html">Books</a>
+                <a href="movie.html">Movies</a>
+            </div>
+            <div class="share-trigger" onclick="openShareModal()">SHARE</div>
+            <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
         </div>
     </nav>
 
-    <!-- 2. 페이지 헤더 (푸른 별빛 캔버스) -->
+    <!-- 공유 모달 팝업 -->
+    <div class="modal-overlay-share" id="shareOverlay" onclick="closeShareModal(event)">
+        <div class="share-modal" onclick="event.stopPropagation()">
+            <h3>SHARE YUL'S PROFILE</h3>
+            <p>냉철한 이성과 염력의 마스터, 율이를 소개해보세요.</p>
+            <div class="share-buttons">
+                <button class="modal-btn btn-copy" onclick="copyURL()">COPY LINK</button>
+                <button class="modal-btn btn-sns" onclick="shareViaWebAPI()">SNS SHARE</button>
+            </div>
+            <button class="modal-btn btn-close-share" onclick="closeShareModal(null)">Close</button>
+        </div>
+    </div>
+
+    <!-- 토스트 메시지 -->
+    <div class="toast-msg" id="toast">Link copied!</div>
+
     <header class="page-header">
         <canvas id="stars-canvas"></canvas>
         <div class="header-content">
@@ -275,48 +270,35 @@
         </div>
     </header>
 
-    <!-- 3. 메인 콘텐츠 -->
     <main class="container">
-        
-        <a href="sistersquad.html" class="back-link">‹ Back to SisterSquad</a>
+        <a href="sistersquad.html" class="back-link" onclick="safeNavigate('sistersquad.html'); return false;">‹ Back to SisterSquad</a>
 
-        <!-- 프로필 레이아웃 -->
         <div class="profile-layout">
-            
-            <!-- 좌측 이미지 -->
             <div class="profile-visual">
                 <div class="profile-img-wrap">
                     <img src="images/yul01.png" alt="율이 프로필" class="profile-img" onerror="this.src='https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=800&auto=format&fit=crop'">
                 </div>
             </div>
 
-            <!-- 우측 정보 -->
             <div class="profile-data">
                 <div class="data-header">
                     <h2 class="name-ko">율 (Yul)</h2>
                     <span class="age">11 YEARS OLD</span>
                     <span class="role-tag">이성의 검, 염력의 마스터</span>
                 </div>
-
                 <div class="bio-block">
                     <h3>Character Profile</h3>
                     <p>언제나 세상을 분석하고 모든 것을 머리로 이해하려는 똑똑한 소녀. 갑작스럽게 휘말린 마법의 세계를 처음에는 믿지 못하고, 말도 안 되는 현상 앞에서 혼란스러워합니다. 하지만 동생과 요정들을 지켜야 한다는 책임감이 싹트면서, 자신의 마음을 조금씩 열기 시작합니다.</p>
                     <p>그녀의 성장은 이해할 수 없는 것을 받아들이는 과정입니다. 처음에는 검과 활을 다루는 법을 머리로만 접근하려 하지만, 점차 마음으로 느끼고 본능을 믿는 법을 배웁니다.</p>
                 </div>
-
                 <div class="bio-block">
                     <h3>Special Abilities</h3>
                     <p><strong>Psychokinesis (염력):</strong> 그녀의 잠재 능력인 염력은 세상 모든 것에 새로운 질서를 부여하고 싶어하는 그녀의 바람이 현실이 된 것입니다. 처음에는 작은 돌멩이를 띄우는 수준이었지만, 동생을 구하려는 간절한 마음이 폭발하며 주변의 모든 것을 제어하는 강력한 힘으로 각성합니다.</p>
                 </div>
-
-                <div class="quote-box">
-                    "말도 안 돼. 이런 건 본 적 없어.<br>하지만 극복하고 말겠어."
-                </div>
+                <div class="quote-box">"말도 안 돼. 이런 건 본 적 없어.<br>하지만 극복하고 말겠어."</div>
             </div>
-
         </div>
 
-        <!-- 비주얼 갤러리 -->
         <h2 class="section-title">Visual Archives</h2>
         <div class="gallery-grid">
             <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/yul01.png');"></div></div>
@@ -333,19 +315,18 @@
             <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/yul12.jpg');"></div></div>
             <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/yul13.jpg');"></div></div>
         </div>
-
     </main>
 
-    <!-- 이미지 모달 팝업 영역 -->
-    <div id="imageModal" class="modal">
-        <span class="close-modal" id="closeModal">&times;</span>
+    <div id="imageModal" class="modal-gallery">
+        <span class="close-gallery" id="closeGallery">&times;</span>
         <img class="modal-content" id="modalImg" alt="확대된 이미지">
     </div>
 
     <footer><p>© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
 
     <script>
-        // 모바일 메뉴 컨트롤
+        function safeNavigate(url) { if (url && url.trim() !== "") { window.location.assign(url); } }
+
         const menuToggle = document.getElementById('mobile-menu');
         const navLinks = document.getElementById('navLinks');
         menuToggle.addEventListener('click', () => {
@@ -353,110 +334,95 @@
             navLinks.classList.toggle('active');
         });
 
-        // ── 고성능 캔버스 별빛 효과 (율이 테마: 푸른빛 가미) ──
+        // ── 공유 로직 ──
+        const shareOverlay = document.getElementById('shareOverlay');
+        const toast = document.getElementById('toast');
+
+        function openShareModal() {
+            shareOverlay.style.display = 'flex';
+            setTimeout(() => shareOverlay.classList.add('active'), 10);
+        }
+
+        function closeShareModal(e) {
+            if (e && e.target !== shareOverlay && e.type !== 'click') return;
+            shareOverlay.classList.remove('active');
+            setTimeout(() => shareOverlay.style.display = 'none', 300);
+        }
+
+        function copyURL() {
+            const el = document.createElement('textarea');
+            el.value = window.location.href;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            showToast('Link copied to clipboard!');
+            closeShareModal();
+        }
+
+        function shareViaWebAPI() {
+            if (navigator.share) {
+                navigator.share({ title: 'Yul (SisterSquad) Profile', url: window.location.href }).catch(console.error);
+            } else { showToast('Sharing is not supported.'); }
+        }
+
+        function showToast(msg) {
+            toast.textContent = msg; toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 2500);
+        }
+
+        // ── 캔버스 별빛 ──
         const canvas = document.getElementById('stars-canvas');
         const ctx = canvas.getContext('2d');
         let stars = [];
-
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = 400;
-            initStars();
-        }
-
+        function resize() { canvas.width = window.innerWidth; canvas.height = 400; initStars(); }
         function initStars() {
             stars = [];
             const count = (canvas.width * canvas.height) / 7000;
             for (let i = 0; i < count; i++) {
                 stars.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    size: Math.random() * 1.5 + 0.2,
-                    opacity: Math.random(),
+                    x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+                    size: Math.random() * 1.5 + 0.2, opacity: Math.random(),
                     speed: Math.random() * 0.015 + 0.005,
-                    color: Math.random() > 0.75 ? '0, 212, 255' : '255, 255, 255' // 25% 확률로 시안(푸른빛) 별
+                    color: Math.random() > 0.75 ? '0, 212, 255' : '255, 255, 255'
                 });
             }
         }
-
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             stars.forEach(s => {
                 s.opacity += s.speed;
                 if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed;
-                ctx.beginPath();
-                ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(${s.color}, ${Math.max(0, s.opacity)})`;
-                ctx.fill();
+                ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${s.color}, ${Math.max(0, s.opacity)})`; ctx.fill();
             });
             requestAnimationFrame(draw);
         }
-
         window.addEventListener('resize', resize);
-        resize();
-        draw();
+        resize(); draw();
 
-        // ── 우클릭, 복사, 캡처 및 개발자도구 방지 스크립트 ──
-        
-        // 1. 우클릭 방지
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-        });
-
-        // 2. 복사 방지
-        document.addEventListener('copy', function(e) {
-            e.preventDefault();
-        });
-
-        // 3. 단축키 방지 (개발자 도구, 복사, 저장, 인쇄 등)
-        document.addEventListener('keydown', function(e) {
-            // F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U (개발자 도구 및 소스 보기)
-            if (e.key === 'F12' || 
-               (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j')) || 
-               (e.ctrlKey && (e.key === 'U' || e.key === 'u'))) {
-                e.preventDefault();
-            }
-            // Ctrl+C, Ctrl+S, Ctrl+P (복사, 저장, 인쇄)
-            if (e.ctrlKey && (e.key === 'c' || e.key === 'C' || e.key === 's' || e.key === 'S' || e.key === 'p' || e.key === 'P')) {
-                e.preventDefault();
-            }
-            // PrintScreen 키 입력 시 클립보드 비우기 (일부 브라우저 동작)
-            if (e.key === 'PrintScreen') {
-                navigator.clipboard.writeText('');
-            }
-        });
-
-        // ── 이미지 갤러리 모달 (Lightbox) 로직 ──
-        const modal = document.getElementById('imageModal');
+        // ── 갤러리 ──
+        const galleryModal = document.getElementById('imageModal');
         const modalImg = document.getElementById('modalImg');
-        const closeModalBtn = document.getElementById('closeModal');
-        const galleryItems = document.querySelectorAll('.gallery-item');
-
-        // 각 갤러리 아이템 클릭 시 모달 열기
-        galleryItems.forEach(item => {
+        const closeGallery = document.getElementById('closeGallery');
+        document.querySelectorAll('.gallery-item').forEach(item => {
             item.addEventListener('click', () => {
-                const imgDiv = item.querySelector('.gallery-img');
-                // background-image 값에서 URL 부분만 추출
-                const bgImage = window.getComputedStyle(imgDiv).backgroundImage;
-                const url = bgImage.replace(/(url\(|\)|"|')/g, ''); 
-                
-                modalImg.src = url;
-                modal.classList.add('show');
+                const bgImage = window.getComputedStyle(item.querySelector('.gallery-img')).backgroundImage;
+                modalImg.src = bgImage.replace(/(url\(|\)|"|')/g, '');
+                galleryModal.classList.add('show');
             });
         });
+        function closeLightBox() { galleryModal.classList.remove('show'); setTimeout(() => { modalImg.src = ''; }, 300); }
+        closeGallery.addEventListener('click', closeLightBox);
+        galleryModal.addEventListener('click', (e) => { if (e.target === galleryModal) closeLightBox(); });
 
-        // 모달 닫기 함수
-        function closeModal() {
-            modal.classList.remove('show');
-            // 부드러운 페이드아웃 후 src 제거
-            setTimeout(() => { modalImg.src = ''; }, 300); 
-        }
-
-        closeModalBtn.addEventListener('click', closeModal);
-        
-        // 배경(이미지 밖 영역) 클릭 시 모달 닫기
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeModal();
+        // 보안
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('copy', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || (e.ctrlKey && e.key === 'U')) e.preventDefault();
+            if (e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'p')) e.preventDefault();
+            if (e.key === 'PrintScreen') navigator.clipboard.writeText('');
         });
     </script>
 </body>

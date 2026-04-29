@@ -26,7 +26,6 @@
     <link rel="canonical" href="https://chrisleepapa-official.vercel.app/">
     <title>Chris LEE.PAPA - The Creative Archive</title>
     
-    <!-- 폰트 로딩 최적화 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Cormorant+Garamond:wght@600&family=Noto+Serif+KR:wght@300;400&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
@@ -118,12 +117,13 @@
         .btn-copy:hover { background: var(--gold-light); }
         .btn-sns { background: transparent; border: 1px solid rgba(255,255,255,0.1); color: #fff; }
         .btn-sns:hover { background: rgba(255,255,255,0.05); }
-        .btn-close { margin-top: 20px; color: #555; background: none; font-size: 0.75rem; text-decoration: underline; }
+        .btn-close { margin-top: 20px; color: #555; background: none; font-size: 0.75rem; text-decoration: underline; cursor: pointer; border: none; }
 
         .toast-msg {
             position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
-            background: var(--gold); color: #000; padding: 10px 25px; border-radius: 30px;
-            font-size: 0.85rem; font-weight: 600; z-index: 3000; display: none; animation: fadeUp 0.4s ease;
+            background: var(--gold); color: #000; padding: 12px 30px; border-radius: 30px;
+            font-size: 0.85rem; font-weight: 700; z-index: 3000; display: none; animation: fadeUp 0.4s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         /* ── 히어로 섹션 ── */
@@ -356,15 +356,44 @@
             setTimeout(() => shareOverlay.style.display = 'none', 300);
         }
 
-        function copyURL() {
-            const el = document.createElement('textarea');
-            el.value = window.location.href;
-            document.body.appendChild(el);
-            el.select();
-            document.execCommand('copy');
-            document.body.removeChild(el);
-            
-            showToast('Link copied to clipboard!');
+        // 복사 방지 설정을 우회하여 URL을 복사하는 강화된 함수
+        async function copyURL() {
+            const currentUrl = window.location.href;
+            let success = false;
+
+            // 1. 우선적으로 최신 API 시도
+            if (navigator.clipboard && window.isSecureContext) {
+                try {
+                    await navigator.clipboard.writeText(currentUrl);
+                    success = true;
+                } catch (err) {
+                    console.error("Clipboard API failed:", err);
+                }
+            }
+
+            // 2. Fallback: Textarea를 생성하여 복사 (전체 복사 방지를 우회하기 위해 일시적으로 사용)
+            if (!success) {
+                const textArea = document.createElement("textarea");
+                textArea.value = currentUrl;
+                textArea.style.position = "fixed";
+                textArea.style.left = "-9999px";
+                textArea.style.top = "0";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    success = document.execCommand('copy');
+                } catch (err) {
+                    console.error("execCommand failed:", err);
+                }
+                document.body.removeChild(textArea);
+            }
+
+            if (success) {
+                showToast('Link copied to clipboard!');
+            } else {
+                showToast('Copy failed. Please copy manually.');
+            }
             closeShareModal();
         }
 
@@ -457,10 +486,24 @@
 
         // ── 보안 스크립트 ──
         document.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('copy', e => e.preventDefault());
+        
+        // 텍스트 드래그/선택을 통한 복사는 막되, copyURL 함수 내에서의 동작은 예외 처리됨
+        document.addEventListener('copy', e => {
+            // 프로그래밍 방식으로 복사할 때는 allowCopy 플래그를 쓰거나 
+            // 단순히 현재 선택된 텍스트가 없을 때만 preventDefault를 할 수도 있음.
+            // 여기서는 단순 드래그 복사를 차단함.
+            const selection = window.getSelection().toString();
+            if (selection.length > 0) {
+                e.preventDefault();
+            }
+        });
+
         document.addEventListener('keydown', e => {
             if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || (e.ctrlKey && e.key === 'U')) e.preventDefault();
-            if (e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'p')) e.preventDefault();
+            if (e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'p')) {
+                // Ctrl+C의 경우 선택된 텍스트가 있을 때만 차단
+                if (window.getSelection().toString().length > 0) e.preventDefault();
+            }
             if (e.key === 'PrintScreen') navigator.clipboard.writeText('');
         });
     </script>

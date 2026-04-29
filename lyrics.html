@@ -1,334 +1,240 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Chris Lee.Papa – Worship Lyrics | 찬양 가사집">
-<title>LYRICS – Chris Lee.Papa</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600&family=Noto+Serif+KR:wght@300;400&display=swap" rel="stylesheet">
-<style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Chris Lee.Papa – Worship Lyrics | 찬양 가사집">
+    <title>LYRICS – Chris LEE.PAPA</title>
+    
+    <!-- 폰트 통합 호출 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Cormorant+Garamond:wght@300;600&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
 
-:root {
-  --gold: #c9a84c;
-  --gold-light: #e8d08a;
-  --cyan: #00d4ff;
-  --bg: #050507;
-  --text: #f0ece4;
-  --text-dim: #9a9490;
-}
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+        :root {
+            --gold: #c9a84c;
+            --gold-light: #e8d08a;
+            --bg: #030305;
+            --text: #f0ece4;
+            --nav-height: 70px;
+            --cyan: #4a90e2;
+        }
 
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Noto Serif KR', serif;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
+        html { scroll-behavior: smooth; background-color: var(--bg); }
 
-/* Noise overlay */
-body::before {
-  content: '';
-  position: fixed; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events: none; z-index: 900; opacity: 0.45;
-}
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Pretendard', 'Noto Serif KR', serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            /* 성소 컨셉 배경 */
+            background-image: radial-gradient(circle at top center, rgba(60, 30, 80, 0.4), transparent 60%),
+                              radial-gradient(circle at bottom, rgba(40, 30, 10, 0.6), transparent 70%);
+        }
 
-/* ── BANNER ── */
-header {
-  position: relative;
-  width: 100%;
-  height: 200px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
+        /* 아날로그 노이즈 레이어 */
+        body::before {
+            content: ''; position: fixed; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
+            pointer-events: none; z-index: 900; opacity: 0.4;
+        }
 
-header::before {
-  content: '';
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse at 20% 50%, rgba(80,40,120,0.35) 0%, transparent 55%),
-    radial-gradient(ellipse at 80% 50%, rgba(30,60,100,0.3) 0%, transparent 55%),
-    radial-gradient(ellipse at 50% 0%,  rgba(201,168,76,0.12) 0%, transparent 60%),
-    linear-gradient(to bottom, #0a0810 0%, #050507 100%);
-  z-index: 0;
-}
+        a { text-decoration: none; color: inherit; }
 
-header::after {
-  content: '';
-  position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(to right, transparent 0%, rgba(201,168,76,0.15) 15%, rgba(201,168,76,0.55) 35%, rgba(232,208,138,0.9) 50%, rgba(201,168,76,0.55) 65%, rgba(201,168,76,0.15) 85%, transparent 100%);
-  z-index: 2;
-}
+        /* ── 네비게이션 ── */
+        nav {
+            position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; background: rgba(3, 3, 5, 0.7); backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
 
-.banner-top-line {
-  position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(to right, transparent 0%, rgba(201,168,76,0.4) 30%, rgba(201,168,76,0.8) 50%, rgba(201,168,76,0.4) 70%, transparent 100%);
-  z-index: 2;
-}
+        .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); z-index: 1001; }
 
-.banner-stars {
-  position: absolute; inset: 0; z-index: 1; pointer-events: none;
-}
-.banner-stars span {
-  position: absolute; width: 2px; height: 2px; border-radius: 50%; background: white;
-  animation: twinkle 3s ease-in-out infinite;
-}
-@keyframes twinkle {
-  0%,100% { opacity: 0.2; transform: scale(1); }
-  50%      { opacity: 0.9; transform: scale(1.4); }
-}
+        .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
+        .menu-toggle span { width: 22px; height: 1.5px; background-color: var(--gold-light); transition: 0.3s; }
 
-.banner-brand {
-  position: relative; z-index: 3;
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-}
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; }
+        .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
 
-.banner-deco-row {
-  display: flex; align-items: center; gap: 14px; opacity: 0.7;
-}
-.banner-deco-line { width: 52px; height: 1px; background: linear-gradient(to right, transparent, var(--gold)); }
-.banner-deco-line.right { background: linear-gradient(to left, transparent, var(--gold)); }
-.banner-deco-diamond {
-  width: 6px; height: 6px; background: var(--gold);
-  transform: rotate(45deg); box-shadow: 0 0 8px rgba(201,168,76,0.8);
-}
+        /* ── 헤더 섹션 ── */
+        .page-header {
+            position: relative; width: 100%; height: 350px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            overflow: hidden; padding-top: var(--nav-height);
+        }
 
-.banner-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 3.2rem; font-weight: 600; letter-spacing: 0.14em; line-height: 1;
-  background: linear-gradient(108deg, #b8922a 0%, #e8d08a 20%, #fffbe8 38%, #c9a84c 52%, #fff0b0 68%, #c9a84c 80%, #e8d08a 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  filter: drop-shadow(0 0 28px rgba(201,168,76,0.5));
-  animation: shimmer 6s linear infinite; background-size: 200% auto;
-}
-@keyframes shimmer {
-  0%   { background-position: 0% center; }
-  100% { background-position: 200% center; }
-}
+        .page-header::after {
+            content: ''; display: block; width: 1px; height: 60px;
+            background: linear-gradient(to bottom, rgba(201,168,76,0.8), transparent);
+            margin: 30px auto 0; position: relative; z-index: 3;
+            animation: fadeUp 1.5s ease both;
+        }
 
-.banner-subtitle {
-  font-family: 'Cinzel', serif; font-size: 0.62rem; letter-spacing: 0.55em;
-  color: rgba(201,168,76,0.55); text-transform: uppercase;
-}
+        #stars-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
 
-.banner-nav {
-  position: relative; z-index: 3;
-  display: flex; align-items: center; margin-top: 16px;
-}
-.banner-nav a {
-  font-family: 'Cinzel', serif; font-size: 0.78rem; letter-spacing: 0.28em;
-  color: rgba(154,148,144,0.75); text-decoration: none;
-  padding: 6px 28px; position: relative; transition: color 0.3s; text-transform: uppercase;
-}
-.banner-nav a + a::before {
-  content: ''; position: absolute; left: 0; top: 20%; bottom: 20%;
-  width: 1px; background: rgba(201,168,76,0.25);
-}
-.banner-nav a::after {
-  content: ''; position: absolute; bottom: 0; left: 28px; right: 28px; height: 1px;
-  background: linear-gradient(to right, transparent, var(--gold-light), transparent);
-  transform: scaleX(0); transition: transform 0.38s;
-}
-.banner-nav a:hover { color: var(--gold-light); }
-.banner-nav a:hover::after { transform: scaleX(1); }
+        .header-content { position: relative; z-index: 3; text-align: center; animation: fadeUp 1.2s ease both; }
 
-/* ── BACK BUTTON ── */
-.back-btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 0.2em;
-  color: var(--text-dim); text-decoration: none; text-transform: uppercase;
-  padding: 10px 0; margin: 36px 0 0 52px;
-  transition: color 0.3s;
-  position: relative;
-}
-.back-btn::before {
-  content: '‹'; font-size: 1.2rem; line-height: 1;
-  transition: transform 0.3s;
-}
-.back-btn:hover { color: var(--gold-light); }
-.back-btn:hover::before { transform: translateX(-4px); }
+        .header-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2.5rem, 8vw, 4rem); 
+            font-weight: 700; letter-spacing: 0.15em;
+            color: var(--gold-light);
+            text-shadow: 0 0 30px rgba(201,168,76,0.3);
+            margin-bottom: 10px;
+        }
 
-/* ── PAGE TITLE ── */
-.page-heading {
-  text-align: center;
-  padding: 48px 24px 12px;
-}
+        .header-slogan {
+            font-family: 'Noto Serif KR', serif; font-size: clamp(0.9rem, 2vw, 1.1rem); 
+            letter-spacing: 2px; color: #cdd6f4; font-weight: 300;
+        }
 
-.page-heading .section-tag {
-  font-family: 'Cinzel', serif; font-size: 0.68rem;
-  letter-spacing: 0.5em; color: var(--gold); text-transform: uppercase;
-  display: block; margin-bottom: 14px;
-}
+        /* ── 메인 콘텐츠 ── */
+        .container { max-width: 800px; margin: 0 auto; padding: 20px 20px 100px; position: relative; z-index: 10; animation: fadeUp 1s ease 0.3s both; }
 
-.page-heading h2 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 2rem; font-weight: 300; letter-spacing: 0.18em;
-  color: var(--text);
-}
+        .back-link {
+            display: inline-flex; align-items: center; gap: 8px; font-family: 'Cinzel', serif;
+            font-size: 0.75rem; letter-spacing: 0.2em; color: var(--gold-light);
+            margin-bottom: 40px; transition: 0.3s; text-transform: uppercase; cursor: pointer;
+        }
+        .back-link:hover { text-shadow: 0 0 10px var(--gold-light); transform: translateX(-5px); }
 
-.page-heading .divider {
-  width: 80px; height: 1px; margin: 16px auto 0;
-  background: linear-gradient(to right, transparent, var(--gold), transparent);
-}
+        .section-tag {
+            font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.4em; color: var(--gold);
+            text-transform: uppercase; display: block; margin-bottom: 15px; text-align: center;
+        }
 
-/* ── LYRICS BOOK SECTION ── */
-.lyrics-wrapper {
-  max-width: 800px;
-  margin: 40px auto 100px;
-  padding: 0 24px;
-  animation: fadeUp 0.8s ease both;
-}
+        .page-heading {
+            text-align: center; margin-bottom: 50px;
+        }
+        .page-heading h2 {
+            font-family: 'Noto Serif KR', serif; font-size: 1.8rem; font-weight: 400; color: #fff;
+            letter-spacing: 1px;
+        }
 
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(32px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
+        /* ── 글래스모피즘 아코디언 가사집 ── */
+        .accordion-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px; margin-bottom: 15px;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+            overflow: hidden;
+        }
 
-.accordion-item {
-  border-bottom: 1px solid rgba(201,168,76,0.15);
-  margin-bottom: 12px;
-}
+        .accordion-header {
+            width: 100%; background: transparent; border: none;
+            padding: 20px 25px; text-align: left; font-family: 'Noto Serif KR', serif;
+            font-size: 1.2rem; font-weight: 600; color: var(--text);
+            cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+            transition: all 0.3s ease;
+        }
 
-.accordion-header {
-  width: 100%;
-  background: transparent;
-  border: none;
-  padding: 24px 12px;
-  text-align: left;
-  font-family: 'Noto Serif KR', serif;
-  font-size: 1.2rem;
-  color: var(--text);
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: color 0.3s, background 0.3s;
-}
+        .accordion-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(201,168,76,0.3);
+            transform: translateX(5px);
+        }
 
-.accordion-header:hover {
-  color: var(--gold-light);
-  background: rgba(201,168,76,0.03);
-}
+        .accordion-header:hover { color: var(--gold-light); }
 
-.accordion-header .track-num {
-  font-family: 'Cinzel', serif;
-  color: var(--gold);
-  font-size: 0.9rem;
-  margin-right: 12px;
-}
+        .track-num { font-family: 'Cinzel', serif; color: var(--gold); font-size: 1rem; margin-right: 15px; font-weight: 700; }
+        .toggle-icon { font-size: 1.4rem; color: var(--gold); transition: transform 0.4s ease; font-weight: 300; }
 
-.accordion-header .toggle-icon {
-  font-size: 1.2rem;
-  color: var(--gold);
-  transition: transform 0.3s ease;
-}
+        .accordion-item.active {
+            border-color: rgba(201,168,76,0.5);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            background: rgba(20, 15, 25, 0.6);
+        }
 
-.accordion-item.active .accordion-header {
-  color: var(--cyan);
-}
+        .accordion-item.active .accordion-header { color: var(--gold-light); border-bottom: 1px solid rgba(201,168,76,0.1); }
+        .accordion-item.active .toggle-icon { transform: rotate(45deg); color: var(--gold-light); }
 
-.accordion-item.active .toggle-icon {
-  transform: rotate(45deg);
-  color: var(--cyan);
-}
+        .accordion-body {
+            max-height: 0; overflow: hidden; transition: all 0.5s ease-in-out;
+            opacity: 0; text-align: center;
+        }
 
-.accordion-body {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out, opacity 0.5s ease;
-  opacity: 0;
-  text-align: center;
-}
+        .accordion-item.active .accordion-body {
+            max-height: 2500px; padding: 40px 20px; opacity: 1;
+        }
 
-.accordion-item.active .accordion-body {
-  max-height: 2000px; /* 임의의 큰 값 */
-  padding: 24px 16px 40px;
-  opacity: 1;
-}
+        .lyric-text {
+            font-size: 1.05rem; font-weight: 300; line-height: 2.4;
+            color: rgba(240,236,228,0.9); white-space: pre-wrap;
+            letter-spacing: 0.5px;
+        }
 
-.lyric-text {
-  font-size: 1.05rem;
-  font-weight: 300;
-  line-height: 2.2;
-  color: rgba(240,236,228,0.85);
-  white-space: pre-wrap; /* 줄바꿈 유지 */
-}
+        footer { text-align: center; padding: 60px 20px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: #555; border-top: 1px solid rgba(255,255,255,0.03); }
 
-/* ── FOOTER ── */
-footer {
-  text-align: center; padding: 28px;
-  font-family: 'Cinzel', serif; font-size: 0.65rem;
-  letter-spacing: 0.2em; color: rgba(154,148,144,0.35);
-  border-top: 1px solid rgba(201,168,76,0.06);
-}
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            nav { padding: 0 20px; }
+            .menu-toggle { display: flex; }
+            .nav-links {
+                position: fixed; top: var(--nav-height); left: 0; width: 100%; height: 0;
+                background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center;
+                gap: 25px; overflow: hidden; transition: 0.4s ease-in-out;
+            }
+            .nav-links.active { height: calc(100vh - var(--nav-height)); }
+            .page-header { height: 280px; }
+            .accordion-header { font-size: 1.05rem; padding: 18px 15px; }
+            .lyric-text { font-size: 0.95rem; }
+        }
 
-/* ── RESPONSIVE ── */
-@media (max-width: 680px) {
-  header { height: 170px; }
-  .banner-title { font-size: 2.2rem; }
-  .back-btn { margin-left: 24px; }
-  .accordion-header { font-size: 1.1rem; padding: 20px 8px; }
-  .lyric-text { font-size: 0.95rem; }
-}
-</style>
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
 </head>
 <body>
 
-<header>
-  <div class="banner-top-line"></div>
-  <div class="banner-stars" aria-hidden="true">
-    <span style="left:5%;  top:22%; animation-delay:0s;   opacity:0.6; width:1.5px; height:1.5px;"></span>
-    <span style="left:12%; top:55%; animation-delay:0.8s; opacity:0.4;"></span>
-    <span style="left:18%; top:30%; animation-delay:1.4s; opacity:0.7; width:1.5px; height:1.5px;"></span>
-    <span style="left:32%; top:18%; animation-delay:2.1s; opacity:0.8; width:3px; height:3px;"></span>
-    <span style="left:62%; top:15%; animation-delay:0.6s; opacity:0.8; width:3px; height:3px;"></span>
-    <span style="left:74%; top:28%; animation-delay:0.4s; opacity:0.7; width:1.5px; height:1.5px;"></span>
-    <span style="left:87%; top:35%; animation-delay:1.0s; opacity:0.6; width:1.5px; height:1.5px;"></span>
-    <span style="left:93%; top:52%; animation-delay:1.8s; opacity:0.4;"></span>
-    <span style="left:50%; top:10%; animation-delay:1.5s; opacity:0.5; width:1.5px; height:1.5px;"></span>
-  </div>
-  <div class="banner-brand">
-    <div class="banner-deco-row">
-      <div class="banner-deco-line"></div>
-      <div class="banner-deco-diamond"></div>
-      <div class="banner-deco-line right"></div>
-    </div>
-    <h1 class="banner-title">Chris Lee.Papa</h1>
-    <p class="banner-subtitle">The &nbsp; Creative &nbsp; Archive</p>
-  </div>
-  <nav class="banner-nav">
-    <a href="index.html#about">About</a>
-    <a href="index.html#portfolio">Portfolio</a>
-    <a href="index.html#contact">Contact</a>
-  </nav>
-</header>
+    <!-- 1. 네비게이션 -->
+    <nav>
+        <a href="index.html" class="brand-logo">Chris LEE.PAPA</a>
+        <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
+        <div class="nav-links" id="navLinks">
+            <a href="index.html">Home</a>
+            <a href="worship.html" class="active">Worship</a>
+            <a href="music.html">Music</a>
+            <a href="book.html">Books</a>
+            <a href="movie.html">Movies</a>
+        </div>
+    </nav>
 
-<a href="music.html" class="back-btn">음악으로 돌아가기</a>
+    <!-- 2. 페이지 헤더 (성소 컨셉의 캔버스 별빛) -->
+    <header class="page-header">
+        <canvas id="stars-canvas"></canvas>
+        <div class="header-content">
+            <h1 class="header-title">LYRICS</h1>
+            <p class="header-slogan">나의 찬양 Vol. 1 가사집</p>
+        </div>
+    </header>
 
-<div class="page-heading">
-  <span class="section-tag">✦ &nbsp; Lyrics &nbsp; ✦</span>
-  <h2>영혼을 울리는 고백, 찬양 가사집</h2>
-  <div class="divider"></div>
-</div>
+    <!-- 3. 메인 콘텐츠 -->
+    <main class="container">
+        
+        <!-- 뒤로가기 버튼 (클릭 시 창닫기 혹은 뒤로가기) -->
+        <a href="worship.html" class="back-link">‹ 예배로 돌아가기</a>
 
-<main class="lyrics-wrapper">
+        <div class="page-heading">
+            <span class="section-tag">✦ &nbsp; The Confession &nbsp; ✦</span>
+            <h2>영혼을 울리는 고백, 찬양 가사집</h2>
+        </div>
 
-  <!-- Track 01 -->
-  <div class="accordion-item">
-    <button class="accordion-header">
-      <span><span class="track-num">01.</span> 이 길 위해서</span>
-      <span class="toggle-icon">+</span>
-    </button>
-    <div class="accordion-body">
-      <p class="lyric-text">[Verse 1]
+        <div class="lyrics-wrapper">
+            <!-- Track 01 -->
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <span><span class="track-num">01.</span> 이 길 위해서</span>
+                    <span class="toggle-icon">+</span>
+                </button>
+                <div class="accordion-body">
+                    <p class="lyric-text">[Verse 1]
 빛나는 태양이 저물어 갈 때
 조용히 내 마음 돌아봅니다
 채우려 할수록 비워지는 밤
@@ -385,17 +291,17 @@ footer {
 [Outro]
 이 길 위에서...
 나를 위해서...</p>
-    </div>
-  </div>
+                </div>
+            </div>
 
-  <!-- Track 02 -->
-  <div class="accordion-item">
-    <button class="accordion-header">
-      <span><span class="track-num">02.</span> 사랑으로</span>
-      <span class="toggle-icon">+</span>
-    </button>
-    <div class="accordion-body">
-      <p class="lyric-text">[Verse 1]
+            <!-- Track 02 -->
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <span><span class="track-num">02.</span> 사랑으로</span>
+                    <span class="toggle-icon">+</span>
+                </button>
+                <div class="accordion-body">
+                    <p class="lyric-text">[Verse 1]
 메마른 밤을 지나
 숨을 고르며 서 있던 나
 말없이 비춰 오던 빛
@@ -453,17 +359,17 @@ footer {
 이제는 내가 포기안해
 시간이 흘러도
 내사랑은 여기 있네</p>
-    </div>
-  </div>
+                </div>
+            </div>
 
-  <!-- Track 03 -->
-  <div class="accordion-item">
-    <button class="accordion-header">
-      <span><span class="track-num">03.</span> 나의 찬양</span>
-      <span class="toggle-icon">+</span>
-    </button>
-    <div class="accordion-body">
-      <p class="lyric-text">[Verse 1]
+            <!-- Track 03 -->
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <span><span class="track-num">03.</span> 나의 찬양</span>
+                    <span class="toggle-icon">+</span>
+                </button>
+                <div class="accordion-body">
+                    <p class="lyric-text">[Verse 1]
 내 생명 갖기 전부터
 주님은 날 아셨죠
 내 의지 상관없이
@@ -514,17 +420,17 @@ footer {
 영원히 찬양합니다 (찬양해요)
 위대하신 그 이름 전해 (소리높여)
 사랑을 나눠요</p>
-    </div>
-  </div>
+                </div>
+            </div>
 
-  <!-- Track 04 -->
-  <div class="accordion-item">
-    <button class="accordion-header">
-      <span><span class="track-num">04.</span> 기적입니다.</span>
-      <span class="toggle-icon">+</span>
-    </button>
-    <div class="accordion-body">
-      <p class="lyric-text">[Verse 1]
+            <!-- Track 04 -->
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <span><span class="track-num">04.</span> 기적입니다.</span>
+                    <span class="toggle-icon">+</span>
+                </button>
+                <div class="accordion-body">
+                    <p class="lyric-text">[Verse 1]
 자랑할 것 하나 없는 나인데
 날마다 넘어지고 죄만 지었었는데
 이런 나를 먼저 찾아와 주시고
@@ -566,17 +472,17 @@ footer {
 [Outro]
 내 삶의 모든 순간 기적입니다
 감사합니다 나의 주님</p>
-    </div>
-  </div>
+                </div>
+            </div>
 
-  <!-- Track 05 -->
-  <div class="accordion-item">
-    <button class="accordion-header">
-      <span><span class="track-num">05.</span> 파레시아</span>
-      <span class="toggle-icon">+</span>
-    </button>
-    <div class="accordion-body">
-      <p class="lyric-text">​[Verse 1]
+            <!-- Track 05 -->
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <span><span class="track-num">05.</span> 파레시아</span>
+                    <span class="toggle-icon">+</span>
+                </button>
+                <div class="accordion-body">
+                    <p class="lyric-text">​[Verse 1]
 새벽 길 위, 무거운 어깨
 오늘 하루, 또 시작되네
 맡겨진 짐, 다 지고 가는
@@ -624,17 +530,17 @@ footer {
 주님과 함께 걷는 길
 담대히 나갑니다
 파레시아, 나의 노래야</p>
-    </div>
-  </div>
+                </div>
+            </div>
 
-  <!-- Track 06 -->
-  <div class="accordion-item">
-    <button class="accordion-header">
-      <span><span class="track-num">06.</span> 나의 목소리</span>
-      <span class="toggle-icon">+</span>
-    </button>
-    <div class="accordion-body">
-      <p class="lyric-text">[Verse 1]
+            <!-- Track 06 -->
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <span><span class="track-num">06.</span> 나의 목소리</span>
+                    <span class="toggle-icon">+</span>
+                </button>
+                <div class="accordion-body">
+                    <p class="lyric-text">[Verse 1]
 두 손을 모으고 눈을 감아요
 작은 내 마음을 주님께 드려요
 조용한 이 시간 우리와 함께하시는
@@ -657,17 +563,17 @@ footer {
 나의 목소리 들으시는 주님
 잔잔한 바람처럼 내 맘 만지시고
 언제나 우리와 함께하셔요</p>
-    </div>
-  </div>
+                </div>
+            </div>
 
-  <!-- Track 07 -->
-  <div class="accordion-item">
-    <button class="accordion-header">
-      <span><span class="track-num">07.</span> 오 기쁜 날</span>
-      <span class="toggle-icon">+</span>
-    </button>
-    <div class="accordion-body">
-      <p class="lyric-text">​[Verse 1]
+            <!-- Track 07 -->
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <span><span class="track-num">07.</span> 오 기쁜 날</span>
+                    <span class="toggle-icon">+</span>
+                </button>
+                <div class="accordion-body">
+                    <p class="lyric-text">​[Verse 1]
 아침 햇살, 반짝이며
 주님 사랑, 노래해요
 우리 마음, 가득하게
@@ -743,17 +649,17 @@ footer {
 큰 소리로! (Hey!)
 주님만을 찬양해!
 할렐루야! (Amen!)</p>
-    </div>
-  </div>
+                </div>
+            </div>
 
-  <!-- Track 08 -->
-  <div class="accordion-item">
-    <button class="accordion-header">
-      <span><span class="track-num">08.</span> 우리의 예배</span>
-      <span class="toggle-icon">+</span>
-    </button>
-    <div class="accordion-body">
-      <p class="lyric-text">[Verse 1]
+            <!-- Track 08 -->
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <span><span class="track-num">08.</span> 우리의 예배</span>
+                    <span class="toggle-icon">+</span>
+                </button>
+                <div class="accordion-body">
+                    <p class="lyric-text">[Verse 1]
 주일 아침 환한 햇살 아래
 설레는 맘으로 모였어요
 나를 위해 준비하신 사랑
@@ -776,17 +682,17 @@ footer {
 온 맘 다해 정성을 모두 드려요
 언제나 우리와 함께하시는
 하나님만 높여 예배해요</p>
-    </div>
-  </div>
+                </div>
+            </div>
 
-  <!-- Track 09 -->
-  <div class="accordion-item">
-    <button class="accordion-header">
-      <span><span class="track-num">09.</span> 우리의 마음</span>
-      <span class="toggle-icon">+</span>
-    </button>
-    <div class="accordion-body">
-      <p class="lyric-text">​[Verse 1]
+            <!-- Track 09 -->
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <span><span class="track-num">09.</span> 우리의 마음</span>
+                    <span class="toggle-icon">+</span>
+                </button>
+                <div class="accordion-body">
+                    <p class="lyric-text">​[Verse 1]
 햇살 반짝! 들려오는 소리
 두 손 모아 기도드려요
 ​작은 마음 사랑 가득히
@@ -819,17 +725,17 @@ footer {
 내 마음 가득히 (가득히!)
 맑고 고운 소리 (찬송해요!)
 우리 마음 (받아주세요!)</p>
-    </div>
-  </div>
+                </div>
+            </div>
 
-  <!-- Track 10 -->
-  <div class="accordion-item">
-    <button class="accordion-header">
-      <span><span class="track-num">10.</span> 나의 모든 날</span>
-      <span class="toggle-icon">+</span>
-    </button>
-    <div class="accordion-body">
-      <p class="lyric-text">[Verse 1]
+            <!-- Track 10 -->
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <span><span class="track-num">10.</span> 나의 모든 날</span>
+                    <span class="toggle-icon">+</span>
+                </button>
+                <div class="accordion-body">
+                    <p class="lyric-text">[Verse 1]
 눈 비비며 일어나는 평범한 아침
 보글보글 찌개 소리 즐거운 우리 집
 당연한 줄 알았더니 모든 게 선물이라
@@ -875,34 +781,92 @@ footer {
 나의 모든 날은 주의 것
 나의 모든 삶은 주의 것
 감사합니다 나의 주님</p>
-    </div>
-  </div>
+                </div>
+            </div>
 
-</main>
+        </div>
+    </main>
 
-<footer>© 2026 Chris Lee.Papa — The Creative Archive</footer>
+    <footer><p>© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
 
-<script>
-  // 아코디언 동작 스크립트
-  const accordionHeaders = document.querySelectorAll('.accordion-header');
+    <script>
+        // 모바일 메뉴 컨트롤
+        const menuToggle = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('navLinks');
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
 
-  accordionHeaders.forEach(header => {
-    header.addEventListener('click', function() {
-      const item = this.parentElement;
-      const isActive = item.classList.contains('active');
+        // 아코디언 동작 스크립트
+        const accordionHeaders = document.querySelectorAll('.accordion-header');
 
-      // 열려있는 다른 모든 아코디언 닫기 (선택 사항 - 열어둔 채로 두고 싶다면 아래 3줄 삭제)
-      document.querySelectorAll('.accordion-item').forEach(el => {
-        el.classList.remove('active');
-      });
+        accordionHeaders.forEach(header => {
+            header.addEventListener('click', function() {
+                const item = this.parentElement;
+                const isActive = item.classList.contains('active');
 
-      // 클릭한 항목만 열고 닫기 토글
-      if (!isActive) {
-        item.classList.add('active');
-      }
-    });
-  });
-</script>
+                // 다른 아코디언 모두 닫기
+                document.querySelectorAll('.accordion-item').forEach(el => {
+                    el.classList.remove('active');
+                });
 
+                // 클릭한 항목 토글
+                if (!isActive) {
+                    item.classList.add('active');
+                    // 열릴 때 살짝 위로 스크롤하여 보기 편하게 조절 (옵션)
+                    setTimeout(() => {
+                        window.scrollTo({
+                            top: item.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }, 300);
+                }
+            });
+        });
+
+        // ── 고성능 캔버스 별빛 효과 ──
+        const canvas = document.getElementById('stars-canvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = 350;
+            initStars();
+        }
+
+        function initStars() {
+            stars = [];
+            const count = (canvas.width * canvas.height) / 7000;
+            for (let i = 0; i < count; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 1.5 + 0.3,
+                    opacity: Math.random(),
+                    speed: Math.random() * 0.015 + 0.005,
+                    color: Math.random() > 0.85 ? '201, 168, 76' : '255, 255, 255'
+                });
+            }
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(s => {
+                s.opacity += s.speed;
+                if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed;
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${s.color}, ${Math.max(0, s.opacity)})`;
+                ctx.fill();
+            });
+            requestAnimationFrame(draw);
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+        draw();
+    </script>
 </body>
 </html>

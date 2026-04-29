@@ -1,444 +1,432 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Chris Lee.Papa – MOVIE | The Creative Archive">
-<title>MOVIE – Chris Lee.Papa</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600&family=Noto+Serif+KR:wght@300;400&display=swap" rel="stylesheet">
-<style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Chris Lee.Papa – MOVIE | The Creative Archive">
+    <title>MOVIE – Chris Lee.Papa</title>
+    
+    <!-- 폰트 통합 호출 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Cormorant+Garamond:wght@600&family=Noto+Serif+KR:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
 
-:root {
-  --gold: #c9a84c;
-  --gold-light: #e8d08a;
-  --cyan: #00d4ff;
-  --bg: #050507;
-  --text: #f0ece4;
-  --text-dim: #9a9490;
-}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Pretendard', sans-serif;
+        }
 
-html { scroll-behavior: smooth; }
+        :root {
+            --gold: #c9a84c;
+            --gold-light: #e8d08a;
+            --cyan: #00d4ff;
+            --bg: #030305;
+            --text: #f0ece4;
+            --text-dim: #9a9490;
+            --nav-height: 70px;
+        }
 
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Noto Serif KR', serif;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
+        html { scroll-behavior: smooth; background-color: var(--bg); }
 
-/* 노이즈 오버레이 */
-body::before {
-  content: '';
-  position: fixed; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events: none; z-index: 900; opacity: 0.45;
-}
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Pretendard', 'Noto Serif KR', serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at top left, rgba(20, 20, 40, 0.8), transparent 60%),
+                              radial-gradient(circle at bottom right, rgba(10, 10, 25, 0.9), transparent 60%);
+        }
 
-/* ── BANNER ── */
-header {
-  position: relative;
-  width: 100%;
-  height: 200px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
+        /* 아날로그 노이즈 오버레이 최적화 */
+        body::before {
+            content: ''; position: fixed; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none; z-index: 900; opacity: 0.3;
+        }
 
-header::before {
-  content: '';
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse at 20% 50%, rgba(80,40,120,0.35) 0%, transparent 55%),
-    radial-gradient(ellipse at 80% 50%, rgba(30,60,100,0.3) 0%, transparent 55%),
-    radial-gradient(ellipse at 50% 0%,  rgba(201,168,76,0.12) 0%, transparent 60%),
-    linear-gradient(to bottom, #0a0810 0%, #050507 100%);
-  z-index: 0;
-}
+        a { text-decoration: none; color: inherit; }
 
-header::after {
-  content: '';
-  position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(to right, transparent 0%, rgba(201,168,76,0.15) 15%, rgba(201,168,76,0.55) 35%, rgba(232,208,138,0.9) 50%, rgba(201,168,76,0.55) 65%, rgba(201,168,76,0.15) 85%, transparent 100%);
-  z-index: 2;
-}
+        /* ── 공통 네비게이션 ── */
+        nav {
+            position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; background: rgba(3, 3, 5, 0.8); backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
 
-.banner-top-line {
-  position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(to right, transparent 0%, rgba(201,168,76,0.4) 30%, rgba(201,168,76,0.8) 50%, rgba(201,168,76,0.4) 70%, transparent 100%);
-  z-index: 2;
-}
+        .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); z-index: 1001; }
 
-.banner-stars {
-  position: absolute; inset: 0; z-index: 1; pointer-events: none;
-}
-.banner-stars span {
-  position: absolute; width: 2px; height: 2px; border-radius: 50%; background: white;
-  animation: twinkle 3s ease-in-out infinite;
-}
-@keyframes twinkle {
-  0%,100% { opacity: 0.2; transform: scale(1); }
-  50%      { opacity: 0.9; transform: scale(1.4); }
-}
+        .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
+        .menu-toggle span { width: 22px; height: 1.5px; background-color: var(--gold-light); transition: 0.3s; }
 
-.banner-brand {
-  position: relative; z-index: 3;
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-}
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; }
+        .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
 
-.banner-deco-row {
-  display: flex; align-items: center; gap: 14px; opacity: 0.7;
-}
-.banner-deco-line { width: 52px; height: 1px; background: linear-gradient(to right, transparent, var(--gold)); }
-.banner-deco-line.right { background: linear-gradient(to left, transparent, var(--gold)); }
-.banner-deco-diamond {
-  width: 6px; height: 6px; background: var(--gold);
-  transform: rotate(45deg); box-shadow: 0 0 8px rgba(201,168,76,0.8);
-}
+        /* ── 페이지 헤더 ── */
+        .page-header {
+            position: relative; width: 100%; height: 350px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            overflow: hidden; padding-top: var(--nav-height);
+        }
 
-.banner-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 3.6rem;
-  font-weight: 600; letter-spacing: 0.14em; line-height: 1;
-  background: linear-gradient(108deg, #b8922a 0%, #e8d08a 20%, #fffbe8 38%, #c9a84c 52%, #fff0b0 68%, #c9a84c 80%, #e8d08a 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  filter: drop-shadow(0 0 28px rgba(201,168,76,0.5));
-  animation: shimmer 6s linear infinite; background-size: 200% auto;
-}
-@keyframes shimmer {
-  0%   { background-position: 0% center; }
-  100% { background-position: 200% center; }
-}
+        #stars-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
 
-.banner-subtitle {
-  font-family: 'Cinzel', serif; font-size: 0.68rem;
-  letter-spacing: 0.55em; color: rgba(201,168,76,0.55); text-transform: uppercase;
-}
+        .header-content { position: relative; z-index: 3; text-align: center; animation: fadeUp 1.2s ease both; }
 
-.banner-nav {
-  position: relative; z-index: 3;
-  display: flex; align-items: center; justify-content: center; flex-wrap: wrap; margin-top: 16px;
-}
-.banner-nav a {
-  font-family: 'Cinzel', serif; font-size: 0.78rem; letter-spacing: 0.28em;
-  color: rgba(154,148,144,0.75); text-decoration: none;
-  padding: 6px 28px; position: relative; transition: color 0.3s; text-transform: uppercase;
-}
-.banner-nav a + a::before {
-  content: ''; position: absolute; left: 0; top: 20%; bottom: 20%;
-  width: 1px; background: rgba(201,168,76,0.25);
-}
-.banner-nav a::after {
-  content: ''; position: absolute; bottom: 0; left: 28px; right: 28px; height: 1px;
-  background: linear-gradient(to right, transparent, var(--gold-light), transparent);
-  transform: scaleX(0); transition: transform 0.38s;
-}
-.banner-nav a:hover { color: var(--gold-light); }
-.banner-nav a:hover::after { transform: scaleX(1); }
+        .header-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2.5rem, 8vw, 4.5rem); 
+            font-weight: 700; letter-spacing: 0.15em;
+            color: #ffffff; text-shadow: 0 0 20px rgba(255,255,255,0.3);
+            margin-bottom: 10px;
+        }
 
-/* ── BACK BUTTON ── */
-.back-btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 0.2em;
-  color: var(--text-dim); text-decoration: none; text-transform: uppercase;
-  padding: 10px 0; margin: 36px 0 0 52px;
-  transition: color 0.3s;
-  position: relative;
-}
-.back-btn::before {
-  content: '‹'; font-size: 1.2rem; line-height: 1;
-  transition: transform 0.3s;
-}
-.back-btn:hover { color: var(--gold-light); }
-.back-btn:hover::before { transform: translateX(-4px); }
+        .header-slogan {
+            font-size: clamp(0.85rem, 2vw, 1rem); color: var(--text-dim); letter-spacing: 1px;
+        }
 
-/* ── PAGE TITLE ── */
-.page-heading {
-  text-align: center;
-  padding: 48px 24px 12px;
-}
+        /* ── 1. 메인 시네마틱 극장 (Theater) ── */
+        .theater-wrapper {
+            max-width: 1100px;
+            margin: 0 auto 40px;
+            padding: 0 20px;
+            animation: fadeUp 1s ease 0.2s both;
+            position: relative;
+            z-index: 10;
+        }
 
-.page-heading .section-tag {
-  font-family: 'Cinzel', serif; font-size: 0.68rem;
-  letter-spacing: 0.5em; color: var(--gold); text-transform: uppercase;
-  display: block; margin-bottom: 14px;
-}
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
 
-.page-heading h2 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 2rem; font-weight: 300; letter-spacing: 0.18em;
-  color: var(--text);
-  word-break: keep-all; /* 한글 단어 단위 줄바꿈 */
-  line-height: 1.4;
-  transition: font-size 0.3s ease;
-}
+        .main-screen {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            background: #000;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05);
+            z-index: 10;
+        }
 
-.page-heading .divider {
-  width: 80px; height: 1px; margin: 16px auto 0;
-  background: linear-gradient(to right, transparent, var(--gold), transparent);
-}
+        .main-screen iframe {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;
+        }
 
-/* ── MOVIE WRAPPER ── */
-.movie-wrapper {
-  max-width: 1000px;
-  margin: 40px auto 40px;
-  padding: 0 24px;
-  animation: fadeUp 0.8s ease both;
-}
+        /* 영상 정보 패널 (Glassmorphism) */
+        .screen-info {
+            margin-top: -20px;
+            padding: 50px 40px 40px;
+            background: rgba(15, 15, 20, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 0 0 24px 24px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+            position: relative;
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
 
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(32px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
+        .video-badge {
+            align-self: flex-start; padding: 6px 16px;
+            background: rgba(74, 144, 226, 0.1); color: #4a90e2;
+            border: 1px solid rgba(74, 144, 226, 0.3); border-radius: 20px;
+            font-size: 0.85rem; font-weight: 700; letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
 
-.video-container {
-  position: relative;
-  width: 100%;
-  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
-  background: #000;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 0 1px rgba(201,168,76,0.15);
-}
+        .video-title { font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 700; color: #ffffff; line-height: 1.4; }
+        .video-desc { font-size: 1.05rem; color: #a0a0b5; font-weight: 300; line-height: 1.8; max-width: 850px; word-break: keep-all; }
 
-.video-container iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
-}
+        /* ── 2. 회전목마 갤러리 (Carousel) ── */
+        .carousel-section {
+            max-width: 1100px; margin: 0 auto 80px; padding: 0 20px;
+            position: relative; z-index: 10;
+        }
 
-.video-info {
-  margin-top: 24px;
-  padding: 32px;
-  background: rgba(10, 10, 15, 0.6);
-  border: 1px solid rgba(201,168,76,0.1);
-  border-radius: 12px;
-  backdrop-filter: blur(10px);
-}
+        .carousel-heading {
+            font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--gold);
+            margin-bottom: 20px; font-weight: 600; letter-spacing: 0.15em;
+            border-bottom: 1px solid rgba(201,168,76,0.2); padding-bottom: 15px;
+        }
 
-.video-meta {
-  font-family: 'Cinzel', serif;
-  font-size: 0.8rem;
-  color: var(--gold);
-  letter-spacing: 0.1em;
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
+        .carousel-container {
+            display: flex; gap: 20px; overflow-x: auto; padding-bottom: 20px;
+            scroll-snap-type: x mandatory; scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,0.2) transparent;
+        }
 
-.video-title {
-  font-family: 'Noto Serif KR', serif;
-  font-size: 1.5rem;
-  font-weight: 400;
-  color: var(--text);
-  margin-bottom: 16px;
-  line-height: 1.4;
-}
+        .carousel-container::-webkit-scrollbar { height: 8px; }
+        .carousel-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
 
-.video-desc {
-  font-size: 0.95rem;
-  font-weight: 300;
-  line-height: 1.8;
-  color: rgba(240,236,228,0.7);
-}
+        .thumbnail-card {
+            flex: 0 0 280px; scroll-snap-align: start; cursor: pointer;
+            border-radius: 16px; overflow: hidden; position: relative;
+            transition: all 0.3s ease; border: 2px solid transparent;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
 
-/* ── VIDEO GALLERY ── */
-.video-gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: 30px;
-  max-width: 1000px;
-  margin: 0 auto 60px;
-  padding: 0 24px;
-}
+        .thumbnail-card.active { border-color: #4a90e2; box-shadow: 0 0 25px rgba(74, 144, 226, 0.4); transform: scale(0.98); }
+        .thumbnail-card:hover:not(.active) { transform: translateY(-8px); border-color: rgba(255,255,255,0.3); }
 
-.gallery-item {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
+        .thumb-img {
+            width: 100%; height: 158px; background-size: cover; background-position: center; transition: 0.5s ease;
+        }
+        .thumbnail-card:hover .thumb-img { transform: scale(1.05); }
 
-/* ── SHORTS SECTION ── */
-.shorts-section {
-  max-width: 1000px;
-  margin: 60px auto 100px;
-  padding: 0 24px;
-}
+        .thumb-overlay {
+            position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0.1));
+            display: flex; flex-direction: column; justify-content: flex-end; padding: 20px;
+            opacity: 0.8; transition: opacity 0.3s;
+        }
 
-.shorts-heading {
-  font-family: 'Cinzel', serif;
-  font-size: 1.2rem;
-  letter-spacing: 0.2em;
-  color: var(--gold-light);
-  margin-bottom: 30px;
-  text-align: center;
-  text-transform: uppercase;
-}
+        .thumbnail-card:hover .thumb-overlay, .thumbnail-card.active .thumb-overlay { opacity: 1; }
 
-.shorts-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 20px;
-}
+        .thumb-title { color: #fff; font-size: 0.95rem; font-weight: 500; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; }
 
-.shorts-item {
-  position: relative;
-  width: 100%;
-  padding-bottom: 177.78%; /* 9:16 Aspect Ratio */
-  background: #000;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.5), 0 0 0 1px rgba(201,168,76,0.1);
-  transition: transform 0.3s ease, border-color 0.3s ease;
-}
+        /* ── 3. 세로형 아카이브 (Shorts) ── */
+        .shorts-section {
+            max-width: 1100px; margin: 0 auto 100px; padding: 50px 30px;
+            background: rgba(255,255,255,0.01); border-radius: 24px;
+            border: 1px solid rgba(255,255,255,0.03); backdrop-filter: blur(10px);
+            position: relative; z-index: 10;
+        }
 
-.shorts-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 30px rgba(0,0,0,0.7), 0 0 0 1px var(--gold);
-}
+        .shorts-heading {
+            font-family: 'Cinzel', serif; font-size: 1.4rem; letter-spacing: 2px;
+            color: #e0e0ff; margin-bottom: 40px; text-align: center; font-weight: 700;
+        }
 
-.shorts-item iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
-}
+        .shorts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 25px; }
 
-/* ── FOOTER ── */
-footer {
-  text-align: center; padding: 28px;
-  font-family: 'Cinzel', serif; font-size: 0.65rem;
-  letter-spacing: 0.2em; color: rgba(154,148,144,0.35);
-  border-top: 1px solid rgba(201,168,76,0.06);
-}
+        .shorts-item {
+            position: relative; width: 100%; padding-bottom: 177.78%; /* 9:16 비율 */
+            background: #000; border-radius: 12px; overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.6); transition: transform 0.4s;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
 
-/* ── RESPONSIVE ── */
-@media (max-width: 800px) {
-  header { height: 170px; }
-  .banner-title { font-size: 2.4rem; }
-  .banner-nav a { padding: 6px 16px; font-size: 0.72rem; letter-spacing: 0.15em; }
-}
+        .shorts-item:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.9), 0 0 0 1px rgba(100, 150, 255, 0.4); }
+        .shorts-item iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-@media (max-width: 680px) {
-  .page-heading h2 { font-size: 1.5rem; padding: 0 10px; } /* 문구 크기 중간 조절 */
-  .back-btn { margin-left: 24px; }
-  .movie-wrapper { padding: 0 16px; margin: 24px auto 40px; }
-  .video-gallery { grid-template-columns: 1fr; padding: 0 16px; }
-  .video-info { padding: 24px 20px; }
-  .video-title { font-size: 1.3rem; }
-  .shorts-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-}
+        /* ── 풋터 ── */
+        footer { text-align: center; padding: 60px 40px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: #555; border-top: 1px solid rgba(255,255,255,0.03); }
 
-@media (max-width: 480px) {
-  .banner-title { font-size: 1.8rem; letter-spacing: 0.1em; }
-  .banner-subtitle { font-size: 0.55rem; letter-spacing: 0.3em; }
-  .banner-nav a { padding: 6px 10px; font-size: 0.65rem; letter-spacing: 0.1em; }
-  
-  /* 모바일 최적화 타이틀 문구 */
-  .page-heading h2 { 
-    font-size: 1.2rem; 
-    letter-spacing: 0.08em; 
-    line-height: 1.5;
-  }
-}
-</style>
+        /* ── 반응형 ── */
+        @media (max-width: 900px) {
+            nav { padding: 0 20px; }
+            .menu-toggle { display: flex; }
+            .nav-links {
+                position: fixed; top: var(--nav-height); left: 0; width: 100%; height: 0;
+                background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center;
+                gap: 25px; overflow: hidden; transition: 0.4s ease-in-out;
+            }
+            .nav-links.active { height: calc(100vh - var(--nav-height)); }
+            .page-header { height: 250px; }
+            .screen-info { padding: 40px 20px 30px; }
+            .thumbnail-card { flex: 0 0 220px; }
+            .thumb-img { height: 124px; }
+            .shorts-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+            .shorts-section { padding: 40px 20px; }
+        }
+    </style>
 </head>
 <body>
 
-<header>
-  <div class="banner-top-line"></div>
-  <div class="banner-stars" aria-hidden="true">
-    <span style="left:5%;  top:22%; width:1.5px; height:1.5px;"></span>
-    <span style="left:32%; top:18%; width:3px; height:3px;"></span>
-    <span style="left:87%; top:35%; width:1.5px; height:1.5px;"></span>
-  </div>
-  <div class="banner-brand">
-    <div class="banner-deco-row">
-      <div class="banner-deco-line"></div>
-      <div class="banner-deco-diamond"></div>
-      <div class="banner-deco-line right"></div>
-    </div>
-    <a href="index.html" style="text-decoration: none; display: inline-block;">
-      <h1 class="banner-title" title="홈으로 가기">Chris Lee.Papa</h1>
-    </a>
-    <p class="banner-subtitle">The &nbsp; Creative &nbsp; Archive</p>
-  </div>
-  <nav class="banner-nav">
-    <a href="book.html">BOOK</a>
-    <a href="music.html">MUSIC</a>
-    <a href="movie.html">MOVIE</a>
-    <a href="worship.html">WORSHIP</a>
-  </nav>
-</header>
+    <!-- 1. 네비게이션 -->
+    <nav>
+        <a href="index.html" class="brand-logo">Chris LEE.PAPA</a>
+        <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
+        <div class="nav-links" id="navLinks">
+            <a href="index.html">Home</a>
+            <a href="worship.html">Worship</a>
+            <a href="music.html">Music</a>
+            <a href="book.html">Books</a>
+            <a href="movie.html" class="active">Movies</a>
+        </div>
+    </nav>
 
-<a href="index.html" class="back-btn">홈으로 돌아가기</a>
+    <!-- 2. 헤더 섹션 (별빛 캔버스) -->
+    <header class="page-header">
+        <canvas id="stars-canvas"></canvas>
+        <div class="header-content">
+            <h1 class="header-title">MOVIE ARCHIVE</h1>
+            <p class="header-slogan">프레임에 담긴 무한한 세계</p>
+        </div>
+    </header>
 
-<div class="page-heading">
-  <span class="section-tag">✦ &nbsp; Movie &nbsp; ✦</span>
-  <h2>프레임에 담긴 무한한 세계</h2>
-  <div class="divider"></div>
-</div>
+    <!-- 3. 메인 시네마틱 극장 -->
+    <main class="theater-wrapper">
+        <div class="main-screen">
+            <iframe id="main-video-player" src="https://www.youtube.com/embed/kAkGg2t1Ats?autoplay=0" title="Main Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        
+        <div class="screen-info">
+            <span class="video-badge" id="main-video-badge">FEATURED</span>
+            <h2 class="video-title" id="main-video-title">이게 AI 로 되네? 그냥 만들어본 뮤직비디오 'FURIOUS 💥'</h2>
+            <p class="video-desc" id="main-video-desc">
+                직접 제작한 AI 기반 오리지널 뮤직비디오입니다. 역동적인 템포와 생성형 AI 비주얼이 결합된 강렬한 세계를 감상해 보세요.
+            </p>
+        </div>
+    </main>
 
-<!-- Featured Video -->
-<main class="movie-wrapper">
-  <div class="video-container">
-    <iframe src="https://www.youtube.com/embed/kAkGg2t1Ats" title="Furious Music Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-  </div>
-  
-  <div class="video-info">
-    <div class="video-meta">
-      <span>FEATURED</span>
-      <span style="color: rgba(255,255,255,0.2)">|</span>
-      <span>Chris LEE_PAPA</span>
-    </div>
-    <h3 class="video-title">이게 AI 로 되네? 그냥 만들어본 뮤직비디오 'FURIOUS 💥'</h3>
-    <p class="video-desc">
-      직접 제작한 AI 기반 오리지널 뮤직비디오입니다. 역동적인 템포와 생성형 AI 비주얼이 결합된 강렬한 세계를 감상해 보세요.
-    </p>
-  </div>
-</main>
+    <!-- 4. 회전목마 갤러리 -->
+    <section class="carousel-section">
+        <h3 class="carousel-heading">UP NEXT</h3>
+        <div class="carousel-container" id="carousel-list">
+            <!-- JS 렌더링 -->
+        </div>
+    </section>
 
-<!-- Cinematic Gallery -->
-<section class="video-gallery">
-  <div class="gallery-item">
-    <div class="video-container">
-      <iframe src="https://www.youtube.com/embed/byxLKvBHULk" title="Cinematic Video 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    </div>
-  </div>
-  <div class="gallery-item">
-    <div class="video-container">
-      <iframe src="https://www.youtube.com/embed/vlt7VfCA8bM" title="Cinematic Video 2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    </div>
-  </div>
-</section>
+    <!-- 5. 쇼츠 아카이브 -->
+    <section class="shorts-section">
+        <h3 class="shorts-heading">VERTICAL ARCHIVES</h3>
+        <div class="shorts-grid">
+            <div class="shorts-item"><iframe src="https://www.youtube.com/embed/gQ4Ip6cyr1U" frameborder="0" allowfullscreen loading="lazy"></iframe></div>
+            <div class="shorts-item"><iframe src="https://www.youtube.com/embed/z-2LOBuWos8" frameborder="0" allowfullscreen loading="lazy"></iframe></div>
+            <div class="shorts-item"><iframe src="https://www.youtube.com/embed/pGibrT9Pp3I" frameborder="0" allowfullscreen loading="lazy"></iframe></div>
+            <div class="shorts-item"><iframe src="https://www.youtube.com/embed/VXWdSOXGwKQ" frameborder="0" allowfullscreen loading="lazy"></iframe></div>
+            <div class="shorts-item"><iframe src="https://www.youtube.com/embed/XjSUJRduAzI" frameborder="0" allowfullscreen loading="lazy"></iframe></div>
+            <div class="shorts-item"><iframe src="https://www.youtube.com/embed/MYlAYewAdu4" frameborder="0" allowfullscreen loading="lazy"></iframe></div>
+            <div class="shorts-item"><iframe src="https://www.youtube.com/embed/0d-rUizVukQ" frameborder="0" allowfullscreen loading="lazy"></iframe></div>
+            <div class="shorts-item"><iframe src="https://www.youtube.com/embed/tgR1Kq3fGWE" frameborder="0" allowfullscreen loading="lazy"></iframe></div>
+        </div>
+    </section>
 
-<!-- YouTube Shorts Section -->
-<section class="shorts-section">
-  <h3 class="shorts-heading">Vertical Archives (Shorts)</h3>
-  <div class="shorts-grid">
-    <div class="shorts-item"><iframe src="https://www.youtube.com/embed/gQ4Ip6cyr1U" frameborder="0" allowfullscreen></iframe></div>
-    <div class="shorts-item"><iframe src="https://www.youtube.com/embed/z-2LOBuWos8" frameborder="0" allowfullscreen></iframe></div>
-    <div class="shorts-item"><iframe src="https://www.youtube.com/embed/pGibrT9Pp3I" frameborder="0" allowfullscreen></iframe></div>
-    <div class="shorts-item"><iframe src="https://www.youtube.com/embed/VXWdSOXGwKQ" frameborder="0" allowfullscreen></iframe></div>
-    <div class="shorts-item"><iframe src="https://www.youtube.com/embed/XjSUJRduAzI" frameborder="0" allowfullscreen></iframe></div>
-    <div class="shorts-item"><iframe src="https://www.youtube.com/embed/MYlAYewAdu4" frameborder="0" allowfullscreen></iframe></div>
-    <div class="shorts-item"><iframe src="https://www.youtube.com/embed/0d-rUizVukQ" frameborder="0" allowfullscreen></iframe></div>
-    <div class="shorts-item"><iframe src="https://www.youtube.com/embed/tgR1Kq3fGWE" frameborder="0" allowfullscreen></iframe></div>
-  </div>
-</section>
+    <footer>
+        <p>&copy; 2026 Chris LEE.PAPA. All rights reserved.</p>
+    </footer>
 
-<footer>© 2026 Chris Lee.Papa — The Creative Archive</footer>
+    <script>
+        // 모바일 메뉴 컨트롤
+        const menuToggle = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('navLinks');
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
 
+        // ── 고성능 캔버스 별빛 효과 ──
+        const canvas = document.getElementById('stars-canvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = 350;
+            initStars();
+        }
+
+        function initStars() {
+            stars = [];
+            const count = (canvas.width * canvas.height) / 6000;
+            for (let i = 0; i < count; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 1.5 + 0.2,
+                    opacity: Math.random(),
+                    speed: Math.random() * 0.02 + 0.005
+                });
+            }
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(s => {
+                s.opacity += s.speed;
+                if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed;
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0, s.opacity)})`;
+                ctx.fill();
+            });
+            requestAnimationFrame(draw);
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+        draw();
+
+        // ── 시네마틱 갤러리 비디오 로직 ──
+        const videoData = [
+            {
+                id: 'kAkGg2t1Ats',
+                title: "이게 AI 로 되네? 그냥 만들어본 뮤직비디오 'FURIOUS 💥'",
+                badge: 'FEATURED',
+                desc: '직접 제작한 AI 기반 오리지널 뮤직비디오입니다. 역동적인 템포와 생성형 AI 비주얼이 결합된 강렬한 세계를 감상해 보세요.'
+            },
+            {
+                id: 'byxLKvBHULk',
+                title: "Chris LEE.PAPA Cinematic Vision 1",
+                badge: 'CINEMATIC',
+                desc: '끝없는 상상력을 바탕으로 렌더링된 초고화질 시네마틱 아트워크 영상입니다. AI가 그려낸 환상적인 배경과 연출을 확인하세요.'
+            },
+            {
+                id: 'vlt7VfCA8bM',
+                title: "Chris LEE.PAPA Cinematic Vision 2",
+                badge: 'CINEMATIC',
+                desc: '아름다운 빛과 그림자가 교차하는 AI 기반 숏필름 비주얼. 음악의 감동을 시각적으로 배가시키는 아카이브 영상입니다.'
+            }
+        ];
+
+        const carouselList = document.getElementById('carousel-list');
+        const mainPlayer = document.getElementById('main-video-player');
+        const mainTitle = document.getElementById('main-video-title');
+        const mainBadge = document.getElementById('main-video-badge');
+        const mainDesc = document.getElementById('main-video-desc');
+
+        function renderCarousel() {
+            videoData.forEach((video, index) => {
+                const card = document.createElement('div');
+                card.className = `thumbnail-card ${index === 0 ? 'active' : ''}`;
+                const thumbUrl = `https://img.youtube.com/vi/${video.id}/hqdefault.jpg`;
+                
+                card.innerHTML = `
+                    <div class="thumb-img" style="background-image: url('${thumbUrl}');"></div>
+                    <div class="thumb-overlay">
+                        <span class="thumb-title">${video.title}</span>
+                    </div>
+                `;
+
+                card.addEventListener('click', () => loadMainVideo(index, card));
+                carouselList.appendChild(card);
+            });
+        }
+
+        function loadMainVideo(index, cardElement) {
+            const video = videoData[index];
+            
+            // 영상 교체 (자동재생)
+            mainPlayer.src = `https://www.youtube.com/embed/${video.id}?autoplay=1`;
+            
+            // 정보 패널 교체
+            mainTitle.textContent = video.title;
+            mainBadge.textContent = video.badge;
+            mainDesc.textContent = video.desc;
+
+            // 활성 상태 변경
+            document.querySelectorAll('.thumbnail-card').forEach(el => el.classList.remove('active'));
+            cardElement.classList.add('active');
+
+            // 부드럽게 스크롤
+            window.scrollTo({
+                top: document.querySelector('.theater-wrapper').offsetTop - 120,
+                behavior: 'smooth'
+            });
+        }
+
+        renderCarousel();
+    </script>
 </body>
 </html>

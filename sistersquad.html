@@ -1,334 +1,369 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SisterSquad – Chris Lee.Papa</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600&family=Noto+Serif+KR:wght@300;400&display=swap" rel="stylesheet">
-<style>
-/* ── RESET & BASE ── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SISTER SQUAD - 마법 세계로 빠져든 두 자매의 환상적인 모험">
+    
+    <title>SISTER SQUAD – Chris LEE.PAPA</title>
+    
+    <!-- 폰트 통합 호출 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Cormorant+Garamond:wght@600&family=Noto+Serif+KR:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
 
-:root {
-  --gold: #c9a84c;
-  --gold-light: #e8d08a;
-  --cyan: #00d4ff;
-  --bg: #050507;
-  --card-bg: rgba(10, 10, 15, 0.6);
-  --text: #f0ece4;
-  --text-dim: #9a9490;
-}
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+        :root {
+            --gold: #c9a84c;
+            --gold-light: #e8d08a;
+            --bg: #030305;
+            --text: #f0ece4;
+            --nav-height: 70px;
+            --pink-accent: #ffb4c8;
+            --pink-glow: rgba(255, 180, 200, 0.4);
+            --cyan: #4a90e2;
+        }
 
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Noto Serif KR', serif;
-  line-height: 1.6;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
+        html { scroll-behavior: smooth; background-color: var(--bg); }
 
-/* Noise overlay */
-body::before {
-  content: '';
-  position: fixed; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events: none; z-index: 900; opacity: 0.4;
-}
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Pretendard', 'Noto Serif KR', serif;
+            line-height: 1.7;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at top right, rgba(40, 20, 40, 0.8), transparent 60%),
+                              radial-gradient(circle at bottom left, rgba(10, 10, 20, 0.9), transparent 60%);
+        }
 
-/* ── BANNER HEADER (통일된 디자인) ── */
-header {
-  position: relative;
-  width: 100%;
-  height: 220px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
+        /* 아날로그 노이즈 레이어 */
+        body::before {
+            content: ''; position: fixed; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
+            pointer-events: none; z-index: 900; opacity: 0.3;
+        }
 
-header::before {
-  content: '';
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse at 20% 50%, rgba(80,40,120,0.35) 0%, transparent 55%),
-    radial-gradient(ellipse at 80% 50%, rgba(30,60,100,0.3) 0%, transparent 55%),
-    radial-gradient(ellipse at 50% 0%,  rgba(201,168,76,0.12) 0%, transparent 60%),
-    linear-gradient(to bottom, #0a0810 0%, #050507 100%);
-  z-index: 0;
-}
+        a { text-decoration: none; color: inherit; }
 
-header::after {
-  content: '';
-  position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(to right, transparent 0%, rgba(201,168,76,0.15) 15%, rgba(201,168,76,0.55) 35%, rgba(232,208,138,0.9) 50%, rgba(201,168,76,0.55) 65%, rgba(201,168,76,0.15) 85%, transparent 100%);
-  z-index: 2;
-}
+        /* ── 네비게이션 ── */
+        nav {
+            position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; background: rgba(3, 3, 5, 0.8); backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
 
-.banner-top-line {
-  position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(to right, transparent 0%, rgba(201,168,76,0.4) 30%, rgba(201,168,76,0.8) 50%, rgba(201,168,76,0.4) 70%, transparent 100%);
-  z-index: 2;
-}
+        .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); }
 
-.banner-stars {
-  position: absolute; inset: 0; z-index: 1; pointer-events: none;
-}
-.banner-stars span {
-  position: absolute; width: 2px; height: 2px; border-radius: 50%; background: white;
-  animation: twinkle 3s ease-in-out infinite;
-}
-@keyframes twinkle {
-  0%,100% { opacity: 0.2; transform: scale(1); }
-  50%      { opacity: 0.9; transform: scale(1.4); }
-}
+        .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
+        .menu-toggle span { width: 22px; height: 1.5px; background-color: var(--gold-light); transition: 0.3s; }
 
-.banner-brand {
-  position: relative; z-index: 3;
-  display: flex; flex-direction: column; align-items: center; gap: 10px;
-}
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; }
+        .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
 
-.banner-deco-row {
-  display: flex; align-items: center; gap: 14px; opacity: 0.7;
-}
-.banner-deco-line { width: 60px; height: 1px; background: linear-gradient(to right, transparent, var(--gold)); }
-.banner-deco-line.right { background: linear-gradient(to left, transparent, var(--gold)); }
-.banner-deco-diamond { width: 6px; height: 6px; background: var(--gold); transform: rotate(45deg); box-shadow: 0 0 8px rgba(201,168,76,0.8); }
+        /* ── 헤더 섹션 ── */
+        .page-header {
+            position: relative; width: 100%; height: 400px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            overflow: hidden; padding-top: var(--nav-height);
+        }
 
-.banner-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 3.6rem;
-  font-weight: 600; letter-spacing: 0.14em; line-height: 1;
-  background: linear-gradient(108deg, #b8922a 0%, #e8d08a 20%, #fffbe8 38%, #c9a84c 52%, #fff0b0 68%, #c9a84c 80%, #e8d08a 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  filter: drop-shadow(0 0 30px rgba(201,168,76,0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.8));
-  animation: shimmer 6s linear infinite; background-size: 200% auto;
-  text-decoration: none;
-}
-@keyframes shimmer { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+        #stars-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
 
-.banner-subtitle { font-family: 'Cinzel', serif; font-size: 0.68rem; letter-spacing: 0.55em; color: rgba(201,168,76,0.55); text-transform: uppercase; }
+        .header-content { position: relative; z-index: 3; text-align: center; animation: fadeUp 1.2s ease both; }
 
-.banner-nav {
-  position: relative; z-index: 3;
-  display: flex; align-items: center; justify-content: center; flex-wrap: wrap; margin-top: 18px;
-}
-.banner-nav a {
-  font-family: 'Cinzel', serif; font-size: 0.78rem; font-weight: 400; letter-spacing: 0.28em; color: rgba(154,148,144,0.75); text-decoration: none;
-  padding: 6px 28px; position: relative; transition: color 0.3s; text-transform: uppercase;
-}
-.banner-nav a + a::before { content: ''; position: absolute; left: 0; top: 20%; bottom: 20%; width: 1px; background: rgba(201,168,76,0.25); }
-.banner-nav a::after {
-  content: ''; position: absolute; bottom: 0; left: 28px; right: 28px; height: 1px;
-  background: linear-gradient(to right, transparent, var(--gold-light), transparent);
-  transform: scaleX(0); transition: transform 0.38s;
-}
-.banner-nav a:hover { color: var(--gold-light); }
-.banner-nav a:hover::after { transform: scaleX(1); }
+        .header-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2.5rem, 8vw, 4.5rem); 
+            font-weight: 700; letter-spacing: 0.2em;
+            color: var(--pink-accent);
+            text-shadow: 0 0 30px var(--pink-glow);
+            margin-bottom: 15px;
+        }
 
-/* ── CONTENT STYLES ── */
-.detail-container { max-width: 1100px; margin: 0 auto; padding: 10px 24px 100px; }
+        .header-slogan {
+            font-family: 'Cormorant Garamond', serif; font-size: clamp(0.9rem, 2.5vw, 1.2rem); 
+            letter-spacing: 0.3em; color: #cdd6f4; font-style: italic;
+        }
 
-.back-btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 0.2em;
-  color: var(--text-dim); text-decoration: none; text-transform: uppercase;
-  padding: 10px 0; margin: 36px 0 0 52px;
-  transition: color 0.3s;
-  position: relative;
-}
-.back-btn::before { content: '‹'; font-size: 1.2rem; line-height: 1; transition: transform 0.3s; }
-.back-btn:hover { color: var(--gold-light); }
-.back-btn:hover::before { transform: translateX(-4px); }
+        /* ── 메인 콘텐츠 ── */
+        .container { max-width: 1100px; margin: 0 auto; padding: 10px 20px 100px; position: relative; z-index: 10; }
 
-.title-section { text-align: center; margin-bottom: 60px; margin-top: 40px; }
-.title-section h1 { font-family: 'Cormorant Garamond', serif; font-size: 3.5rem; color: var(--gold-light); margin-bottom: 10px; }
+        .back-link {
+            display: inline-flex; align-items: center; gap: 8px; font-family: 'Cinzel', serif;
+            font-size: 0.75rem; letter-spacing: 0.2em; color: var(--gold-light);
+            margin-bottom: 40px; transition: 0.3s; text-transform: uppercase;
+        }
+        .back-link:hover { text-shadow: 0 0 10px var(--gold-light); transform: translateX(-5px); }
 
-section { margin-bottom: 100px; }
-.section-title { font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--gold); letter-spacing: 0.2em; text-transform: uppercase; border-bottom: 1px solid rgba(201,168,76,0.2); padding-bottom: 10px; margin-bottom: 40px; display: flex; align-items: center; gap: 15px; }
+        /* 섹션 공통 타이틀 */
+        .section-title {
+            font-family: 'Cinzel', serif; font-size: 1.4rem; color: var(--gold);
+            letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 40px;
+            padding-bottom: 15px; border-bottom: 1px solid rgba(201,168,76,0.2);
+            text-align: center;
+        }
 
-/* Character Intro */
-.char-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-.char-card { background: var(--card-bg); border: 1px solid rgba(201,168,76,0.1); border-radius: 16px; padding: 40px 30px; backdrop-filter: blur(10px); transition: all 0.4s; text-decoration: none; display: flex; flex-direction: column; align-items: center; text-align: center; color: inherit; }
-.char-card:hover { transform: translateY(-8px); border-color: rgba(201,168,76,0.6); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
-.char-thumb-wrap { width: 140px; height: 140px; border-radius: 50%; overflow: hidden; border: 2px solid var(--gold); margin-bottom: 25px; }
-.char-thumb { width: 100%; height: 100%; object-fit: cover; }
-.char-name { font-family: 'Cinzel', serif; font-size: 1.6rem; color: var(--gold-light); margin-bottom: 6px; }
-.char-role { font-size: 0.85rem; color: var(--cyan); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 20px; font-weight: 600; }
-.char-desc { font-size: 0.95rem; color: rgba(240,236,228,0.7); word-break: keep-all; }
-.view-detail { font-family: 'Cinzel', serif; font-size: 0.75rem; color: var(--gold); margin-top: 25px; }
+        /* 비디오 섹션 */
+        .video-wrapper {
+            position: relative; width: 100%; padding-bottom: 56.25%; 
+            border-radius: 24px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6); margin-bottom: 80px; background: #000;
+        }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-/* OST Grid */
-.ost-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
-.ost-item { background: var(--card-bg); border: 1px solid rgba(201,168,76,0.1); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px; transition: transform 0.3s; }
-.ost-item:hover { transform: translateY(-5px); border-color: rgba(201,168,76,0.3); }
-.album-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-.album-title { font-family: 'Cinzel', serif; font-size: 1.05rem; color: var(--text); }
-.album-type { font-family: 'Cinzel', serif; font-size: 0.65rem; color: var(--gold); border: 1px solid; padding: 3px 8px; border-radius: 20px; }
-.action-btn { font-family: 'Cinzel', serif; font-size: 0.85rem; text-decoration: none; color: #1DB954; font-weight: 600; margin-top: 8px; align-self: flex-start; border-bottom: 1px solid transparent; transition: border-color 0.3s; }
-.action-btn:hover { border-color: #1DB954; }
+        /* 시놉시스 카드 */
+        .synopsis-section {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 180, 200, 0.15);
+            border-radius: 24px; padding: 50px;
+            margin-bottom: 100px; backdrop-filter: blur(10px);
+            animation: fadeUp 1s ease 0.2s both;
+        }
+        .synopsis-text {
+            font-size: 1.15rem; line-height: 2.2; text-align: center; color: #e0e0ff;
+            word-break: keep-all; font-weight: 300;
+        }
+        .synopsis-text b { color: var(--pink-accent); font-weight: 500; }
 
-/* Buy Section */
-.buy-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1100px; margin: 0 auto; }
-.buy-card { background: var(--card-bg); border: 1px solid rgba(201,168,76,0.15); border-radius: 20px; padding: 30px; display: flex; flex-direction: column; align-items: center; transition: all 0.4s; backdrop-filter: blur(10px); }
-.buy-card:hover { transform: translateY(-10px); border-color: var(--gold); }
-.book-img-wrap { width: 100%; aspect-ratio: 3 / 4; background: #111; border-radius: 8px; margin-bottom: 25px; overflow: hidden; box-shadow: 5px 15px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); }
-.book-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
-.buy-card:hover .book-img { transform: scale(1.05); }
-.book-type-label { font-family: 'Cinzel', serif; font-size: 0.75rem; color: var(--gold); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 8px; }
-.book-full-title { font-family: 'Cormorant Garamond', 'Noto Serif KR', serif; font-size: 1.4rem; font-weight: 600; text-align: center; margin-bottom: 25px; color: var(--text); }
-.buy-btn { width: 100%; display: flex; align-items: center; justify-content: center; padding: 16px; border-radius: 12px; text-decoration: none; font-family: 'Cinzel', serif; font-size: 0.9rem; font-weight: 700; transition: all 0.3s; }
-.btn-paper { background: var(--gold); color: #000; }
-.btn-ebook { border: 1.5px solid var(--cyan); color: var(--cyan); }
-.btn-coloring { border: 1.5px solid var(--gold); color: var(--gold); }
+        /* 캐릭터 섹션 */
+        .character-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 100px; }
+        .char-card {
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px; text-align: center; transition: 0.4s ease;
+            backdrop-filter: blur(5px); overflow: hidden; cursor: pointer;
+        }
+        .char-card:hover { transform: translateY(-12px); border-color: var(--pink-accent); box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 25px var(--pink-glow); }
+        .char-img-area { width: 100%; height: 350px; background-size: cover; background-position: center; transition: 0.6s ease; }
+        .char-card:hover .char-img-area { transform: scale(1.05); }
+        .char-content { padding: 40px 30px; }
+        .char-tag { font-size: 0.7rem; color: var(--pink-accent); border: 1px solid var(--pink-accent); padding: 3px 14px; border-radius: 20px; margin-bottom: 15px; display: inline-block; text-transform: uppercase; letter-spacing: 1px; }
+        .char-name { font-family: 'Cinzel', serif; font-size: 1.8rem; font-weight: 700; margin-bottom: 15px; color: #fff; }
+        .char-desc { font-size: 1rem; color: #a0a0b5; line-height: 1.8; word-break: keep-all; font-weight: 300; }
 
-footer { text-align: center; padding: 48px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: rgba(154,148,144,0.4); border-top: 1px solid rgba(201,168,76,0.06); }
+        /* OST 섹션 */
+        .ost-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin-bottom: 100px; }
+        .ost-item {
+            background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px; padding: 25px; backdrop-filter: blur(5px); transition: 0.3s;
+        }
+        .ost-item:hover { border-color: #1DB954; transform: translateY(-5px); }
+        .album-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .album-title { font-family: 'Cinzel', serif; font-size: 1.1rem; color: #fff; }
+        .album-type { font-size: 0.7rem; color: var(--gold-light); border: 1px solid; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; }
+        .ost-btn { display: inline-block; margin-top: 15px; color: #1DB954; font-weight: 600; font-size: 0.9rem; transition: 0.3s; }
+        .ost-btn:hover { text-shadow: 0 0 10px rgba(29, 185, 84, 0.5); }
 
-@media (max-width: 800px) {
-  header { height: 180px; }
-  .banner-title { font-size: 2.6rem; }
-  .banner-nav a { padding: 6px 18px; font-size: 0.72rem; }
-}
-@media (max-width: 680px) {
-  .char-grid { grid-template-columns: 1fr; }
-  .back-btn { margin-left: 24px; }
-}
-@media (max-width: 480px) {
-  .banner-title { font-size: 1.8rem; }
-  .banner-nav a { padding: 6px 10px; font-size: 0.65rem; }
-}
-</style>
+        /* 도서 구매 섹션 */
+        .buy-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
+        .buy-card {
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(201,168,76,0.15);
+            border-radius: 24px; padding: 40px 30px; text-align: center; transition: 0.4s; backdrop-filter: blur(10px);
+        }
+        .buy-card:hover { transform: translateY(-10px); border-color: var(--gold); }
+        .book-img-wrap {
+            width: 100%; aspect-ratio: 3 / 4; margin-bottom: 30px; border-radius: 12px; overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05);
+        }
+        .book-img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
+        .buy-card:hover .book-img { transform: scale(1.05); }
+        .book-type-label { font-family: 'Cinzel', serif; font-size: 0.8rem; color: var(--gold-light); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 25px; display: block; }
+        
+        .buy-btn {
+            display: block; width: 100%; padding: 15px; border-radius: 30px; font-weight: 700; font-size: 0.9rem; transition: 0.3s; text-transform: uppercase;
+        }
+        .btn-paper { background: var(--gold); color: #000; }
+        .btn-paper:hover { background: var(--gold-light); box-shadow: 0 0 20px rgba(201,168,76,0.4); }
+        .btn-ebook { border: 1.5px solid var(--cyan); color: var(--cyan); }
+        .btn-ebook:hover { background: var(--cyan); color: #fff; }
+        .btn-coloring { border: 1.5px solid var(--pink-accent); color: var(--pink-accent); }
+        .btn-coloring:hover { background: var(--pink-accent); color: #000; }
+
+        footer { text-align: center; padding: 100px 40px 60px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: #555; border-top: 1px solid rgba(255,255,255,0.03); }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            nav { padding: 0 20px; }
+            .menu-toggle { display: flex; }
+            .nav-links {
+                position: fixed; top: var(--nav-height); left: 0; width: 100%; height: 0;
+                background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center;
+                gap: 25px; overflow: hidden; transition: 0.4s ease-in-out;
+            }
+            .nav-links.active { height: calc(100vh - var(--nav-height)); }
+            .character-grid { grid-template-columns: 1fr; }
+            .char-img-area { height: 300px; }
+            .synopsis-section { padding: 35px 25px; }
+            .container { padding-bottom: 60px; }
+        }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
 </head>
 <body>
 
-<header>
-  <div class="banner-top-line"></div>
-  <div class="banner-stars" aria-hidden="true"></div>
-  <div class="banner-brand">
-    <div class="banner-deco-row">
-      <div class="banner-deco-line"></div>
-      <div class="banner-deco-diamond"></div>
-      <div class="banner-deco-line right"></div>
+    <!-- 1. 네비게이션 -->
+    <nav>
+        <a href="index.html" class="brand-logo">Chris LEE.PAPA</a>
+        <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
+        <div class="nav-links" id="navLinks">
+            <a href="index.html">Home</a>
+            <a href="worship.html">Worship</a>
+            <a href="music.html">Music</a>
+            <a href="book.html">Books</a>
+            <a href="movie.html">Movies</a>
+        </div>
+    </nav>
+
+    <!-- 2. 페이지 헤더 -->
+    <header class="page-header">
+        <canvas id="stars-canvas"></canvas>
+        <div class="header-content">
+            <h1 class="header-title">SISTER SQUAD</h1>
+            <p class="header-slogan">Two Sisters, One Magical Destiny</p>
+        </div>
+    </header>
+
+    <!-- 3. 메인 콘텐츠 -->
+    <div class="container">
+        <a href="book.html" class="back-link">‹ Back to Library</a>
+        
+        <!-- 트레일러 영상 -->
+        <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/C0lluI-l0gc?si=ge1zqQo_NiVpHfcc" title="SISTER SQUAD Cinematic Trailer" allowfullscreen></iframe>
+        </div>
+
+        <!-- 시놉시스 -->
+        <section class="synopsis-section">
+            <p class="synopsis-text">
+                어느 날 갑자기 펼쳐진 신비로운 책 속의 세계.<br>
+                이성적이고 용감한 <b>T 언니 '율'</b>과 따뜻하고 공감 능력이 뛰어난 <b>F 동생 '정'</b>은<br>
+                현실 세계로 돌아가기 위한 환상적인 모험을 시작합니다.<br><br>
+                어둠의 그림자가 덮쳐오는 위기의 순간마다,<br>
+                서로 다른 성격의 두 자매는 서로의 부족함을 채워주며<br>
+                <b>가족의 사랑과 진정한 용기</b>의 가치를 깨달아갑니다.
+            </p>
+        </section>
+
+        <!-- 캐릭터 소개 -->
+        <h2 class="section-title">Character Introduction</h2>
+        <div class="character-grid">
+            <div class="char-card" onclick="window.location.href='yul.html'">
+                <div class="char-img-area" style="background-image: url('images/yul01.png');"></div>
+                <div class="char-content">
+                    <span class="char-tag">The Brave Leader</span>
+                    <h3 class="char-name">Yul (율)</h3>
+                    <p class="char-desc">냉철한 이성과 분석력을 가진 11세 소녀. 동생을 지키기 위해 강력한 염력의 힘을 각성시킵니다.</p>
+                </div>
+            </div>
+            <div class="char-card" onclick="window.location.href='jung.html'">
+                <div class="char-img-area" style="background-image: url('images/jung01.png');"></div>
+                <div class="char-content">
+                    <span class="char-tag">The Heart Weaver</span>
+                    <h3 class="char-name">Jung (정)</h3>
+                    <p class="char-desc">풍부한 감성과 따뜻한 마음을 가진 7세 동생. 살아 숨 쉬는 모든 것과 교감하며 기적을 만들어냅니다.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- OST 섹션 -->
+        <h2 class="section-title">Original Soundtrack</h2>
+        <div class="ost-grid">
+            <div class="ost-item">
+                <div class="album-header"><h3 class="album-title">EP.01 Main</h3><span class="album-type">OST</span></div>
+                <iframe src="https://open.spotify.com/embed/album/4UbsRkUcH0QJQGS6SUbtN1?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                <a href="https://open.spotify.com/album/4UbsRkUcH0QJQGS6SUbtN1" target="_blank" class="ost-btn">Listen Full Album ›</a>
+            </div>
+            <div class="ost-item">
+                <div class="album-header"><h3 class="album-title">EP.01 Inst</h3><span class="album-type">OST</span></div>
+                <iframe src="https://open.spotify.com/embed/album/0UsOZREU7OJeNC4MFRt0Og?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                <a href="https://open.spotify.com/album/0UsOZREU7OJeNC4MFRt0Og" target="_blank" class="ost-btn">Listen Full Album ›</a>
+            </div>
+            <div class="ost-item">
+                <div class="album-header"><h3 class="album-title">EP.01 Eng</h3><span class="album-type">OST</span></div>
+                <iframe src="https://open.spotify.com/embed/album/22frEKSV9Ano8LoWaOLsnT?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                <a href="https://open.spotify.com/album/22frEKSV9Ano8LoWaOLsnT" target="_blank" class="ost-btn">Listen Full Album ›</a>
+            </div>
+        </div>
+
+        <!-- 구매 섹션 -->
+        <h2 class="section-title">Get the Book</h2>
+        <div class="buy-grid">
+            <div class="buy-card">
+                <div class="book-img-wrap"><img src="images/sister01.png" alt="Paperback" class="book-img"></div>
+                <span class="book-type-label">Paperback</span>
+                <a href="https://www.yes24.com/product/goods/155292789" target="_blank" class="buy-btn btn-paper">종이책 구매 (YES24)</a>
+            </div>
+            <div class="buy-card">
+                <div class="book-img-wrap"><img src="images/sister02.png" alt="E-Book" class="book-img"></div>
+                <span class="book-type-label">E-Book</span>
+                <a href="https://www.yes24.com/product/goods/154234770" target="_blank" class="buy-btn btn-ebook">전자책 구매 (YES24)</a>
+            </div>
+            <div class="buy-card">
+                <div class="book-img-wrap"><img src="images/sister03.png" alt="Coloring Book" class="book-img"></div>
+                <span class="book-type-label">Coloring Book</span>
+                <a href="https://www.yes24.com/product/goods/165140479" target="_blank" class="buy-btn btn-coloring">컬러링북 구매 (YES24)</a>
+            </div>
+        </div>
+
     </div>
-    <a href="index.html" style="text-decoration: none; display: inline-block;">
-      <h1 class="banner-title">Chris Lee.Papa</h1>
-    </a>
-    <p class="banner-subtitle">The &nbsp; Creative &nbsp; Archive</p>
-  </div>
-  <nav class="banner-nav">
-    <a href="book.html">BOOK</a>
-    <a href="music.html">MUSIC</a>
-    <a href="movie.html">MOVIE</a>
-    <a href="worship.html">WORSHIP</a>
-  </nav>
-</header>
 
-<main class="detail-container">
-  <a href="book.html" class="back-btn">‹ Back to Library</a>
+    <footer><p>© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
 
-  <div class="title-section">
-    <p style="font-family:'Cinzel'; letter-spacing:0.3em; color:var(--gold);">The Enchanted Chronicles</p>
-    <h1>SisterSquad</h1>
-  </div>
+    <script>
+        const menuToggle = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('navLinks');
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
 
-  <section id="characters">
-    <h2 class="section-title">Character Introduction</h2>
-    <div class="char-grid">
-      <a href="yul.html" class="char-card">
-        <div class="char-thumb-wrap"><img src="images/yul01.png" alt="Yul" class="char-thumb"></div>
-        <span class="char-name">율이 (Yul)</span>
-        <span class="char-role">이성의 검, 염력의 마스터</span>
-        <p class="char-desc">냉철한 이성과 분석력을 가진 11세 소녀. 동생을 지키기 위해 강력한 염력의 힘을 각성시킵니다.</p>
-        <span class="view-detail">VIEW PROFILE ›</span>
-      </a>
-      <a href="jung.html" class="char-card">
-        <div class="char-thumb-wrap"><img src="images/jung01.png" alt="Jung" class="char-thumb"></div>
-        <span class="char-name">정이 (Jung)</span>
-        <span class="char-role">순수의 활, 교감의 마스터</span>
-        <p class="char-desc">풍부한 감성과 따뜻한 마음을 가진 7세 동생. 살아 숨 쉬는 모든 것과 교감하며 기적을 만들어냅니다.</p>
-        <span class="view-detail">VIEW PROFILE ›</span>
-      </a>
-    </div>
-  </section>
+        // ── 캔버스 별빛 효과 ──
+        const canvas = document.getElementById('stars-canvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
 
-  <section id="trailer">
-    <h2 class="section-title">Story Trailer</h2>
-    <div style="max-width:800px; margin:0 auto; border-radius:16px; overflow:hidden; border:1px solid rgba(201,168,76,0.1);">
-      <iframe src="https://www.youtube.com/embed/C0lluI-l0gc" width="100%" height="450" frameBorder="0" allowfullscreen></iframe>
-    </div>
-  </section>
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = 400;
+            initStars();
+        }
 
-  <section id="ost">
-    <h2 class="section-title">Original Soundtrack</h2>
-    <div class="ost-grid">
-      <div class="ost-item">
-        <div class="album-header"><h3 class="album-title">Sister Squad EP.01</h3><span class="album-type">OST</span></div>
-        <iframe src="https://open.spotify.com/embed/album/4UbsRkUcH0QJQGS6SUbtN1?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-        <a href="https://open.spotify.com/album/4UbsRkUcH0QJQGS6SUbtN1?si=cZYsb2t1QdmeLV-99Z9Jtg" target="_blank" class="action-btn">전곡 듣기 ›</a>
-      </div>
-      <div class="ost-item">
-        <div class="album-header"><h3 class="album-title">Sister Squad EP.01 Inst</h3><span class="album-type">OST</span></div>
-        <iframe src="https://open.spotify.com/embed/album/0UsOZREU7OJeNC4MFRt0Og?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-        <a href="https://open.spotify.com/album/0UsOZREU7OJeNC4MFRt0Og?si=1WPlvwb3QxmVe9IxdFhFXg" target="_blank" class="action-btn">전곡 듣기 ›</a>
-      </div>
-      <div class="ost-item">
-        <div class="album-header"><h3 class="album-title">Sister Squad EP.01 Eng</h3><span class="album-type">OST</span></div>
-        <iframe src="https://open.spotify.com/embed/album/22frEKSV9Ano8LoWaOLsnT?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-        <a href="https://open.spotify.com/album/22frEKSV9Ano8LoWaOLsnT?si=fXxgTUThRHqqKHyX8PbsfA" target="_blank" class="action-btn">전곡 듣기 ›</a>
-      </div>
-    </div>
-  </section>
+        function initStars() {
+            stars = [];
+            const count = (canvas.width * canvas.height) / 7000;
+            for (let i = 0; i < count; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 1.5 + 0.2,
+                    opacity: Math.random(),
+                    speed: Math.random() * 0.015 + 0.005,
+                    color: Math.random() > 0.8 ? '255, 180, 200' : '255, 255, 255'
+                });
+            }
+        }
 
-  <section id="buy">
-    <h2 class="section-title">Get the Book</h2>
-    <div class="buy-grid">
-      <div class="buy-card">
-        <a href="https://www.yes24.com/product/goods/155292789" target="_blank" class="book-img-wrap">
-          <img src="images/sister01.png" alt="Paperback" class="book-img">
-        </a>
-        <span class="book-type-label">Paperback</span>
-        <h3 class="book-full-title">SisterSquad Vol.1</h3>
-        <a href="https://www.yes24.com/product/goods/155292789" target="_blank" class="buy-btn btn-paper">종이책 구매 (YES24)</a>
-      </div>
-      <div class="buy-card">
-        <a href="https://www.yes24.com/product/goods/154234770" target="_blank" class="book-img-wrap">
-          <img src="images/sister02.png" alt="E-Book" class="book-img">
-        </a>
-        <span class="book-type-label">E-Book</span>
-        <h3 class="book-full-title">SisterSquad Vol.1</h3>
-        <a href="https://www.yes24.com/product/goods/154234770" target="_blank" class="buy-btn btn-ebook">전자책 구매 (YES24)</a>
-      </div>
-      <div class="buy-card">
-        <a href="https://www.yes24.com/product/goods/165140479" target="_blank" class="book-img-wrap">
-          <img src="images/sister03.png" alt="Coloring Book" class="book-img">
-        </a>
-        <span class="book-type-label">Coloring Book</span>
-        <h3 class="book-full-title">SisterSquad 컬러링북</h3>
-        <a href="https://www.yes24.com/product/goods/165140479" target="_blank" class="buy-btn btn-coloring">컬러링북 구매 (YES24)</a>
-      </div>
-    </div>
-  </section>
-</main>
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(s => {
+                s.opacity += s.speed;
+                if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed;
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${s.color}, ${Math.max(0, s.opacity)})`;
+                ctx.fill();
+            });
+            requestAnimationFrame(draw);
+        }
 
-<footer>© 2026 Chris Lee.Papa — The Creative Archive</footer>
-
-<script>
-// Twinkle stars effect
-const starsContainer = document.querySelector('.banner-stars');
-for (let i = 0; i < 12; i++) {
-  const star = document.createElement('span');
-  star.style.left = Math.random() * 100 + '%';
-  star.style.top = Math.random() * 100 + '%';
-  star.style.animationDelay = Math.random() * 3 + 's';
-  star.style.width = (Math.random() * 2 + 1) + 'px';
-  star.style.height = star.style.width;
-  starsContainer.appendChild(star);
-}
-</script>
+        window.addEventListener('resize', resize);
+        resize();
+        draw();
+    </script>
 </body>
 </html>

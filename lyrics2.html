@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NBGELYQ4TZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-NBGELYQ4TZ');
+      gtag('config', 'GT-5MJDBTR2');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Chris Lee.Papa – Worship Lyrics Vol.2 | 나의 찬양 2집 가사집">
@@ -35,6 +46,15 @@
             /* 성소 컨셉 배경 */
             background-image: radial-gradient(circle at top center, rgba(60, 30, 80, 0.4), transparent 60%),
                               radial-gradient(circle at bottom, rgba(40, 30, 10, 0.6), transparent 70%);
+            /* 드래그 및 선택 방지 */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        img {
+            -webkit-user-drag: none; /* 이미지 드래그 방지 */
         }
 
         /* 아날로그 노이즈 레이어 */
@@ -964,6 +984,36 @@
         window.addEventListener('resize', resize);
         resize();
         draw();
+
+        // ── 우클릭, 복사, 캡처 및 개발자도구 방지 스크립트 ──
+        
+        // 1. 우클릭 방지
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        // 2. 복사 방지
+        document.addEventListener('copy', function(e) {
+            e.preventDefault();
+        });
+
+        // 3. 단축키 방지 (개발자 도구, 복사, 저장, 인쇄 등)
+        document.addEventListener('keydown', function(e) {
+            // F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U (개발자 도구 및 소스 보기)
+            if (e.key === 'F12' || 
+               (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j')) || 
+               (e.ctrlKey && (e.key === 'U' || e.key === 'u'))) {
+                e.preventDefault();
+            }
+            // Ctrl+C, Ctrl+S, Ctrl+P (복사, 저장, 인쇄)
+            if (e.ctrlKey && (e.key === 'c' || e.key === 'C' || e.key === 's' || e.key === 'S' || e.key === 'p' || e.key === 'P')) {
+                e.preventDefault();
+            }
+            // PrintScreen 키 입력 시 클립보드 비우기 (일부 브라우저 동작)
+            if (e.key === 'PrintScreen') {
+                navigator.clipboard.writeText('');
+            }
+        });
     </script>
 </body>
 </html>

@@ -86,7 +86,7 @@
         }
         .share-modal h3 { font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--gold-light); margin-bottom: 15px; }
         .share-modal p { font-size: 0.9rem; color: #888; margin-bottom: 35px; }
-        .share-buttons { display: flex; flex-direction: column; gap: 14px; }
+        .share-buttons { display: flex; flex-direction: column; gap: 12px; }
         .modal-btn {
             padding: 16px; border-radius: 12px; border: none; font-family: 'Cinzel', serif;
             font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: 0.3s;
@@ -94,12 +94,13 @@
         .btn-copy { background: var(--gold); color: #000; }
         .btn-sns { background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #fff; }
         .btn-sns:hover { background: rgba(255,255,255,0.05); }
-        .btn-close-modal { margin-top: 25px; color: #666; background: none; font-size: 0.8rem; text-decoration: underline; }
+        .btn-close-modal { margin-top: 25px; color: #666; background: none; font-size: 0.8rem; text-decoration: underline; cursor: pointer; border: none; }
 
         .toast-msg {
             position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%);
             background: var(--gold); color: #000; padding: 12px 30px; border-radius: 40px;
             font-size: 0.9rem; font-weight: 700; z-index: 3000; display: none; animation: fadeUp 0.4s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         /* ── 콘텐츠 ── */
@@ -200,7 +201,7 @@
             navLinks.classList.toggle('active');
         });
 
-        // ── 공유 로직 ──
+        // ── 공유 로직 (보안 설정 우회 및 하이브리드 로직) ──
         const shareOverlay = document.getElementById('shareOverlay');
         const toast = document.getElementById('toast');
 
@@ -215,14 +216,43 @@
             setTimeout(() => shareOverlay.style.display = 'none', 300);
         }
 
-        function copyURL() {
-            const el = document.createElement('textarea');
-            el.value = window.location.href;
-            document.body.appendChild(el);
-            el.select();
-            document.execCommand('copy');
-            document.body.removeChild(el);
-            showToast('Link copied to clipboard!');
+        async function copyURL() {
+            const currentUrl = window.location.href;
+            let success = false;
+
+            // 1. 우선적으로 최신 API 시도
+            if (navigator.clipboard && window.isSecureContext) {
+                try {
+                    await navigator.clipboard.writeText(currentUrl);
+                    success = true;
+                } catch (err) {
+                    console.error("Clipboard API failed:", err);
+                }
+            }
+
+            // 2. Fallback: Textarea를 생성하여 복사
+            if (!success) {
+                const textArea = document.createElement("textarea");
+                textArea.value = currentUrl;
+                textArea.style.position = "fixed";
+                textArea.style.left = "-9999px";
+                textArea.style.top = "0";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    success = document.execCommand('copy');
+                } catch (err) {
+                    console.error("execCommand failed:", err);
+                }
+                document.body.removeChild(textArea);
+            }
+
+            if (success) {
+                showToast('Link copied to clipboard!');
+            } else {
+                showToast('Copy failed. Please copy manually.');
+            }
             closeShareModal();
         }
 
@@ -246,10 +276,21 @@
 
         // ── 보안 스크립트 ──
         document.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('copy', e => e.preventDefault());
+        
+        // 텍스트 드래그/선택을 통한 복사는 막되, copyURL 함수 내에서의 동작은 예외 처리
+        document.addEventListener('copy', e => {
+            const selection = window.getSelection().toString();
+            if (selection.length > 0) {
+                e.preventDefault();
+            }
+        });
+
         document.addEventListener('keydown', e => {
             if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || (e.ctrlKey && e.key === 'U')) e.preventDefault();
-            if (e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'p')) e.preventDefault();
+            if (e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'p')) {
+                // Ctrl+C의 경우 선택된 텍스트가 있을 때만 차단
+                if (window.getSelection().toString().length > 0) e.preventDefault();
+            }
             if (e.key === 'PrintScreen') navigator.clipboard.writeText('');
         });
     </script>

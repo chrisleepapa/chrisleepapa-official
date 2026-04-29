@@ -14,12 +14,31 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Chris Lee.Papa – CONTACT | 새로운 영감과 비즈니스 제안">
+
+    <!-- SNS 공유용 OG 태그 (최종 수정본) -->
+    <meta property="og:title" content="CONTACT – Chris LEE.PAPA">
+    <meta property="og:description" content="협업 및 작업 의뢰는 이 페이지를 통해 문의해 주세요.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://chrisleepapa-official.vercel.app/contact.html">
+    <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1">
+
+    <link rel="canonical" href="https://chrisleepapa-official.vercel.app/contact.html">
     <title>CONTACT - Chris LEE.PAPA</title>
+    
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:wght@300;600&display=swap" rel="stylesheet">
+    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root { --cyan: #4a90e2; --cyan-light: #e0e0ff; --bg: #030305; --text: #f0ece4; }
+        :root { 
+            --cyan: #4a90e2; 
+            --cyan-light: #e0e0ff; 
+            --bg: #030305; 
+            --text: #f0ece4; 
+            --nav-height: 70px; 
+            --gold: #c9a84c; 
+        }
         
         body {
             background-color: var(--bg); color: var(--text);
@@ -27,40 +46,69 @@
             background-image: radial-gradient(circle at top right, rgba(20, 20, 40, 0.8), transparent 60%),
                               radial-gradient(circle at bottom left, rgba(10, 10, 20, 0.9), transparent 60%);
             min-height: 100vh; display: flex; flex-direction: column;
-
-            /* 드래그 및 선택 방지 */
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
+            -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
         }
 
-        img {
-            -webkit-user-drag: none; /* 이미지 드래그 방지 */
-        }
+        img { -webkit-user-drag: none; }
 
+        /* ── 네비게이션 ── */
         nav {
-            position: fixed; top: 0; width: 100%; padding: 20px 50px;
+            position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px;
             display: flex; justify-content: space-between; align-items: center; z-index: 1000;
             background: rgba(3, 3, 5, 0.7); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
         .brand-logo { font-family: 'Cinzel', serif; font-size: 1.4rem; font-weight: 800; letter-spacing: 1.5px; color: var(--cyan-light); text-decoration: none; }
-        .nav-links { display: flex; gap: 35px; }
-        .nav-links a { font-family: 'Cinzel', serif; font-size: 0.95rem; color: #a0a0b5; text-decoration: none; transition: 0.3s; letter-spacing: 1px; }
+        
+        .nav-right { display: flex; align-items: center; gap: 30px; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; color: #a0a0b5; text-decoration: none; transition: 0.3s; letter-spacing: 1px; text-transform: uppercase; }
         .nav-links a:hover { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
 
-        .page-wrapper {
-            flex: 1; display: flex; align-items: center; justify-content: center;
-            padding: 120px 20px; position: relative;
+        .share-trigger {
+            cursor: pointer; padding: 6px 14px; border: 1px solid rgba(74, 144, 226, 0.3);
+            border-radius: 20px; font-family: 'Cinzel', serif; font-size: 0.7rem;
+            color: var(--cyan-light); transition: 0.3s; letter-spacing: 1px;
+        }
+        .share-trigger:hover { background: rgba(74, 144, 226, 0.1); border-color: var(--cyan); }
+
+        .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
+        .menu-toggle span { width: 22px; height: 1.5px; background-color: var(--cyan-light); transition: 0.3s; }
+
+        /* ── 공유 모달 & 토스트 ── */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+            z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: 0.3s;
+        }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .share-modal {
+            background: #0a0a0f; border: 1px solid var(--cyan); border-radius: 24px;
+            width: 90%; max-width: 400px; padding: 45px 30px; text-align: center;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.9);
+        }
+        .share-modal h3 { font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--cyan-light); margin-bottom: 15px; }
+        .share-modal p { font-size: 0.9rem; color: #888; margin-bottom: 35px; }
+        .share-buttons { display: flex; flex-direction: column; gap: 14px; }
+        .modal-btn {
+            padding: 16px; border-radius: 12px; border: none; font-family: 'Cinzel', serif;
+            font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: 0.3s;
+        }
+        .btn-copy { background: var(--cyan); color: #fff; }
+        .btn-sns { background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #fff; }
+        .btn-sns:hover { background: rgba(255,255,255,0.05); }
+        .btn-close-modal { margin-top: 25px; color: #666; background: none; font-size: 0.8rem; text-decoration: underline; }
+
+        .toast-msg {
+            position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%);
+            background: var(--cyan); color: #fff; padding: 12px 30px; border-radius: 40px;
+            font-size: 0.9rem; font-weight: 700; z-index: 3000; display: none; animation: fadeUp 0.4s ease;
         }
 
+        /* ── 콘텐츠 ── */
+        .page-wrapper { flex: 1; display: flex; align-items: center; justify-content: center; padding: 120px 20px; position: relative; }
         .glass-card {
-            background: rgba(15, 15, 20, 0.4);
-            border: 1px solid rgba(74, 144, 226, 0.3);
-            border-radius: 24px; padding: 60px 50px;
-            text-align: center; max-width: 700px; width: 100%;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6), inset 0 0 30px rgba(74, 144, 226, 0.05);
+            background: rgba(15, 15, 20, 0.4); border: 1px solid rgba(74, 144, 226, 0.3);
+            border-radius: 24px; padding: 60px 50px; text-align: center; max-width: 700px; width: 100%;
+            backdrop-filter: blur(20px); box-shadow: 0 20px 50px rgba(0,0,0,0.6), inset 0 0 30px rgba(74, 144, 226, 0.05);
             animation: fadeUp 1s ease both;
         }
 
@@ -80,8 +128,15 @@
 
         footer { text-align: center; padding: 30px; font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 2px; color: #555; border-top: 1px solid rgba(255,255,255,0.05); }
 
-        @media (max-width: 768px) {
-            nav { padding: 15px 20px; flex-direction: column; gap: 10px; }
+        @media (max-width: 900px) {
+            nav { padding: 0 20px; }
+            .nav-links { display: none; }
+            .nav-links.active {
+                display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height));
+                background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 25px;
+                z-index: 1002;
+            }
+            .menu-toggle { display: flex; }
             .glass-card { padding: 40px 20px; }
             .title { font-size: 2.2rem; }
         }
@@ -90,14 +145,34 @@
 <body>
     <nav>
         <a href="index.html" class="brand-logo">Chris LEE.PAPA</a>
-        <div class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="worship.html">Worship</a>
-            <a href="music.html">Music</a>
-            <a href="book.html">Books</a>
-            <a href="movie.html">Movies</a>
+        <div class="nav-right">
+            <div class="nav-links" id="navLinks">
+                <a href="index.html">Home</a>
+                <a href="worship.html">Worship</a>
+                <a href="music.html">Music</a>
+                <a href="book.html">Books</a>
+                <a href="movie.html">Movies</a>
+            </div>
+            <div class="share-trigger" onclick="openShareModal()">SHARE</div>
+            <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
         </div>
     </nav>
+
+    <!-- 공유 모달 팝업 -->
+    <div class="modal-overlay" id="shareOverlay" onclick="closeShareModal(event)">
+        <div class="share-modal" onclick="event.stopPropagation()">
+            <h3>SHARE CONTACT</h3>
+            <p>크리스리와의 협업 기회를 주변에 알려주세요.</p>
+            <div class="share-buttons">
+                <button class="modal-btn btn-copy" onclick="copyURL()">COPY LINK</button>
+                <button class="modal-btn btn-sns" onclick="shareViaWebAPI()">SNS SHARE</button>
+            </div>
+            <button class="modal-btn btn-close-modal" onclick="closeShareModal(null)">Close</button>
+        </div>
+    </div>
+
+    <!-- 토스트 메시지 -->
+    <div class="toast-msg" id="toast">Link copied!</div>
 
     <div class="page-wrapper">
         <div class="glass-card">
@@ -108,8 +183,8 @@
             </p>
             <div class="link-container">
                 <a href="mailto:papamunglog@gmail.com" class="action-btn">Email Us</a>
-                <a href="#" class="action-btn">Instagram</a> <!-- 링크 수정 필요 -->
-                <a href="#" class="action-btn">Blog</a> <!-- 링크 수정 필요 -->
+                <a href="https://youtube.com/@chrisleepapaofficial?si=RrBATuGdnOd2GlG2" target="_blank" rel="noopener" class="action-btn">YouTube</a>
+                <a href="https://m.blog.naver.com/chrislee_papa" target="_blank" rel="noopener" class="action-btn">Blog</a>
             </div>
         </div>
     </div>
@@ -117,31 +192,66 @@
     <footer><p>© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
 
     <script>
-        // ── 우클릭, 복사, 캡처 및 개발자도구 방지 스크립트 ──
-        
-        // 1. 우클릭 방지
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
+        function safeNavigate(url) { if (url && url.trim() !== "") { window.location.assign(url); } }
+
+        const menuToggle = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('navLinks');
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
         });
 
-        // 2. 복사 방지
-        document.addEventListener('copy', function(e) {
-            e.preventDefault();
-        });
+        // ── 공유 로직 ──
+        const shareOverlay = document.getElementById('shareOverlay');
+        const toast = document.getElementById('toast');
 
-        // 3. 단축키 방지 (개발자 도구, 복사, 저장, 인쇄 등)
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'F12' || 
-               (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j')) || 
-               (e.ctrlKey && (e.key === 'U' || e.key === 'u'))) {
-                e.preventDefault();
+        function openShareModal() {
+            shareOverlay.style.display = 'flex';
+            setTimeout(() => shareOverlay.classList.add('active'), 10);
+        }
+
+        function closeShareModal(e) {
+            if (e && e.target !== shareOverlay && e.type !== 'click') return;
+            shareOverlay.classList.remove('active');
+            setTimeout(() => shareOverlay.style.display = 'none', 300);
+        }
+
+        function copyURL() {
+            const el = document.createElement('textarea');
+            el.value = window.location.href;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            showToast('Link copied to clipboard!');
+            closeShareModal();
+        }
+
+        function shareViaWebAPI() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'CONTACT Chris LEE.PAPA',
+                    text: '크리스리와의 협업 및 소통을 위한 공식 아카이브입니다.',
+                    url: window.location.href
+                }).catch(console.error);
+            } else {
+                showToast('Sharing is not supported.');
             }
-            if (e.ctrlKey && (e.key === 'c' || e.key === 'C' || e.key === 's' || e.key === 'S' || e.key === 'p' || e.key === 'P')) {
-                e.preventDefault();
-            }
-            if (e.key === 'PrintScreen') {
-                navigator.clipboard.writeText('');
-            }
+        }
+
+        function showToast(msg) {
+            toast.textContent = msg;
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 2500);
+        }
+
+        // ── 보안 스크립트 ──
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('copy', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || (e.ctrlKey && e.key === 'U')) e.preventDefault();
+            if (e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'p')) e.preventDefault();
+            if (e.key === 'PrintScreen') navigator.clipboard.writeText('');
         });
     </script>
 </body>

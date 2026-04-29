@@ -16,7 +16,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Chris Lee.Papa – WORSHIP | The Creative Archive">
 
-    <!-- SNS 공유용 OG 태그 (최종 수정본) -->
+    <!-- SNS 공유용 OG 태그 -->
     <meta property="og:title" content="Chris Lee.Papa – WORSHIP">
     <meta property="og:description" content="영혼 깊은 곳에서 올려드리는 고백과 찬양의 기록들.">
     <meta property="og:type" content="website">
@@ -26,7 +26,6 @@
     <link rel="canonical" href="https://chrisleepapa-official.vercel.app/worship.html">
     <title>WORSHIP – Chris LEE.PAPA</title>
     
-    <!-- 폰트 통합 호출 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Cormorant+Garamond:wght@300;600&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
@@ -34,7 +33,6 @@
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         :root {
             --gold: #c9a84c;
             --gold-light: #e8d08a;
@@ -43,227 +41,98 @@
             --nav-height: 70px;
             --spotify: #1DB954;
         }
-
         html { scroll-behavior: smooth; background-color: var(--bg); }
-
         body {
-            background-color: var(--bg);
-            color: var(--text);
+            background-color: var(--bg); color: var(--text);
             font-family: 'Pretendard', 'Noto Serif KR', serif;
-            line-height: 1.6;
-            overflow-x: hidden;
+            line-height: 1.6; overflow-x: hidden;
             background-image: radial-gradient(circle at top center, rgba(60, 30, 80, 0.4), transparent 60%),
                               radial-gradient(circle at bottom, rgba(40, 30, 10, 0.6), transparent 70%);
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
+            -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
         }
-
         img { -webkit-user-drag: none; }
-
         body::before {
             content: ''; position: fixed; inset: 0;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
             pointer-events: none; z-index: 900; opacity: 0.4;
         }
-
-        a { text-decoration: none; color: inherit; }
-
-        /* ── 네비게이션 ── */
         nav {
             position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px;
             display: flex; justify-content: space-between; align-items: center;
             z-index: 1000; background: rgba(3, 3, 5, 0.7); backdrop-filter: blur(15px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-
         .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); z-index: 1001; }
-
         .nav-right { display: flex; align-items: center; gap: 30px; }
         .nav-links { display: flex; gap: 30px; }
         .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; }
         .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
-
-        .share-trigger {
-            cursor: pointer; padding: 6px 14px; border: 1px solid rgba(201,168,76,0.3);
-            border-radius: 20px; font-family: 'Cinzel', serif; font-size: 0.7rem;
-            color: var(--gold-light); transition: 0.3s; letter-spacing: 1px;
-        }
+        .share-trigger { cursor: pointer; padding: 6px 14px; border: 1px solid rgba(201,168,76,0.3); border-radius: 20px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: var(--gold-light); transition: 0.3s; letter-spacing: 1px; }
         .share-trigger:hover { background: rgba(201,168,76,0.1); border-color: var(--gold-light); }
-
         .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
         .menu-toggle span { width: 22px; height: 1.5px; background-color: var(--gold-light); transition: 0.3s; }
 
-        /* ── 공유 모달 & 토스트 ── */
-        .modal-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
-            z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: 0.3s;
-        }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; }
         .modal-overlay.active { display: flex; opacity: 1; }
-        .share-modal {
-            background: #0a0a0f; border: 1px solid var(--gold); border-radius: 24px;
-            width: 90%; max-width: 400px; padding: 45px 30px; text-align: center;
-            box-shadow: 0 30px 70px rgba(0,0,0,0.9);
-        }
+        .share-modal { background: #0a0a0f; border: 1px solid var(--gold); border-radius: 24px; width: 90%; max-width: 400px; padding: 45px 30px; text-align: center; box-shadow: 0 30px 70px rgba(0,0,0,0.9); }
         .share-modal h3 { font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--gold-light); margin-bottom: 15px; }
         .share-modal p { font-size: 0.9rem; color: #888; margin-bottom: 35px; }
         .share-buttons { display: flex; flex-direction: column; gap: 14px; }
-        .modal-btn {
-            padding: 16px; border-radius: 12px; border: none; font-family: 'Cinzel', serif;
-            font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: 0.3s;
-        }
+        .modal-btn { padding: 16px; border-radius: 12px; border: none; font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: 0.3s; }
         .btn-copy { background: var(--gold); color: #000; }
         .btn-sns { background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #fff; }
-        .btn-sns:hover { background: rgba(255,255,255,0.05); }
         .btn-close { margin-top: 25px; color: #666; background: none; font-size: 0.75rem; text-decoration: underline; cursor: pointer; border: none; }
+        .toast-msg { position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%); background: var(--gold); color: #000; padding: 12px 30px; border-radius: 40px; font-size: 0.9rem; font-weight: 700; z-index: 3000; display: none; animation: fadeUp 0.4s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 
-        .toast-msg {
-            position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%);
-            background: var(--gold); color: #000; padding: 12px 30px; border-radius: 40px;
-            font-size: 0.9rem; font-weight: 700; z-index: 3000; display: none; animation: fadeUp 0.4s ease;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        /* ── 헤더 섹션 ── */
-        .page-header {
-            position: relative; width: 100%; height: 450px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            overflow: hidden; padding-top: var(--nav-height);
-        }
-
-        .page-header::after {
-            content: ''; display: block; width: 1px; height: 80px;
-            background: linear-gradient(to bottom, rgba(201,168,76,0.8), transparent);
-            margin: 40px auto 0; position: relative; z-index: 3;
-            animation: fadeUp 1.5s ease both;
-        }
-
+        .page-header { position: relative; width: 100%; height: 450px; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; padding-top: var(--nav-height); }
+        .page-header::after { content: ''; display: block; width: 1px; height: 80px; background: linear-gradient(to bottom, rgba(201,168,76,0.8), transparent); margin: 40px auto 0; position: relative; z-index: 3; animation: fadeUp 1.5s ease both; }
         #stars-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
-
         .header-content { position: relative; z-index: 3; text-align: center; animation: fadeUp 1.2s ease both; }
+        .header-title { font-family: 'Cinzel', serif; font-size: clamp(3rem, 10vw, 5rem); font-weight: 700; letter-spacing: 0.15em; color: var(--gold-light); text-shadow: 0 0 30px rgba(201,168,76,0.3); margin-bottom: 15px; }
+        .header-slogan { font-family: 'Noto Serif KR', serif; font-size: clamp(1rem, 2.5vw, 1.2rem); letter-spacing: 2px; color: #cdd6f4; font-weight: 300; }
 
-        .header-title {
-            font-family: 'Cinzel', serif;
-            font-size: clamp(3rem, 10vw, 5rem); 
-            font-weight: 700; letter-spacing: 0.15em;
-            color: var(--gold-light);
-            text-shadow: 0 0 30px rgba(201,168,76,0.3);
-            margin-bottom: 15px;
-        }
-
-        .header-slogan {
-            font-family: 'Noto Serif KR', serif; font-size: clamp(1rem, 2.5vw, 1.2rem); 
-            letter-spacing: 2px; color: #cdd6f4; font-weight: 300;
-        }
-
-        /* ── 메인 콘텐츠 ── */
         .container { max-width: 1200px; margin: 0 auto; padding: 20px 20px 100px; position: relative; z-index: 10; }
-
-        .featured-albums {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 40px; margin-bottom: 120px;
-        }
-
-        .featured-card {
-            position: relative; overflow: hidden;
-            border: 1px solid rgba(201,168,76,0.3);
-            border-radius: 24px; padding: 40px 30px;
-            text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-            transition: all 0.4s ease; animation: fadeUp 1s ease 0.2s both;
-        }
-
-        .featured-card::before {
-            content: ''; position: absolute; inset: -5px; z-index: 0;
-            background-size: cover; background-position: center;
-            filter: blur(1.5px) brightness(0.4); transition: all 0.5s ease;
-        }
-
-        .featured-card:hover {
-            transform: translateY(-8px); border-color: rgba(201,168,76,0.8);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 30px rgba(201,168,76,0.2);
-        }
-
+        .featured-albums { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; margin-bottom: 120px; }
+        .featured-card { position: relative; overflow: hidden; border: 1px solid rgba(201,168,76,0.3); border-radius: 24px; padding: 40px 30px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.6); transition: all 0.4s ease; animation: fadeUp 1s ease 0.2s both; }
+        .featured-card::before { content: ''; position: absolute; inset: -5px; z-index: 0; background-size: cover; background-position: center; filter: blur(1.5px) brightness(0.4); transition: all 0.5s ease; }
+        .featured-card:hover { transform: translateY(-8px); border-color: rgba(201,168,76,0.8); box-shadow: 0 30px 60px rgba(0,0,0,0.8); }
         .featured-card:hover::before { transform: scale(1.05); filter: blur(0px) brightness(0.5); }
         .featured-card > * { position: relative; z-index: 1; }
-
         .card-vol1::before { background-image: url('https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=800&auto=format&fit=crop'); }
         .card-vol2::before { background-image: url('https://images.unsplash.com/photo-1504052434569-70ad5836ab65?q=80&w=800&auto=format&fit=crop'); }
-
-        .featured-card iframe {
-            border-radius: 12px; width: 100%; margin-bottom: 30px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.8);
-            border: 1px solid rgba(255,255,255,0.1); background: transparent;
-        }
-
-        .featured-card h3 { font-family: 'Noto Serif KR', serif; font-size: 1.8rem; font-weight: 600; color: var(--gold-light); margin-bottom: 5px; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
-        .featured-card p { font-family: 'Cinzel', serif; font-size: 0.9rem; letter-spacing: 2px; color: #e0e0ff; margin-bottom: 30px; text-transform: uppercase; text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
-
+        .featured-card iframe { border-radius: 12px; width: 100%; margin-bottom: 30px; box-shadow: 0 15px 30px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.1); background: transparent; }
+        .featured-card h3 { font-family: 'Noto Serif KR', serif; font-size: 1.8rem; font-weight: 600; color: var(--gold-light); margin-bottom: 5px; }
+        .featured-card p { font-family: 'Cinzel', serif; font-size: 0.9rem; letter-spacing: 2px; color: #e0e0ff; margin-bottom: 30px; text-transform: uppercase; }
         .btn-group { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+        .action-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.95rem; font-weight: 600; padding: 12px 28px; border-radius: 30px; text-decoration: none; transition: all 0.3s; border: 1px solid; letter-spacing: 0.5px; }
+        .btn-spotify { background: rgba(29, 185, 84, 0.08); color: var(--spotify); border-color: rgba(29, 185, 84, 0.4); }
+        .btn-spotify:hover { background: var(--spotify); color: #000; }
+        .btn-lyric { background: rgba(201,168,76, 0.05); color: var(--gold-light); border-color: rgba(201,168,76, 0.4); }
+        .btn-lyric:hover { background: var(--gold); color: #000; }
 
         .track-list-section { max-width: 900px; margin: 0 auto; animation: fadeUp 1s ease 0.4s both; }
-
-        .section-title {
-            text-align: center; font-family: 'Cinzel', serif; font-size: 1.5rem; color: var(--gold);
-            margin-bottom: 50px; letter-spacing: 0.2em; text-transform: uppercase;
-            border-bottom: 1px solid rgba(201,168,76,0.2); padding-bottom: 20px;
-        }
-
-        .track-item {
-            display: flex; align-items: center; justify-content: space-between; gap: 30px;
-            background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 20px; padding: 25px 30px; margin-bottom: 20px;
-            transition: all 0.3s ease; backdrop-filter: blur(5px);
-        }
-
-        .track-item:hover {
-            background: rgba(255, 255, 255, 0.04); border-color: rgba(201,168,76,0.3);
-            transform: translateX(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-        }
-
+        .section-title { text-align: center; font-family: 'Cinzel', serif; font-size: 1.5rem; color: var(--gold); margin-bottom: 50px; letter-spacing: 0.2em; text-transform: uppercase; border-bottom: 1px solid rgba(201,168,76,0.2); padding-bottom: 20px; }
+        .track-item { display: flex; align-items: center; justify-content: space-between; gap: 30px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 25px 30px; margin-bottom: 20px; transition: all 0.3s ease; backdrop-filter: blur(5px); }
+        .track-item:hover { background: rgba(255, 255, 255, 0.04); border-color: rgba(201,168,76,0.3); transform: translateX(10px); }
         .track-info { flex: 1; display: flex; flex-direction: column; align-items: flex-start; }
         .track-title { font-family: 'Noto Serif KR', serif; font-size: 1.3rem; font-weight: 600; color: #ffffff; margin-bottom: 5px; }
         .track-badge { font-family: 'Cinzel', serif; font-size: 0.75rem; color: var(--gold-light); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
-
-        .track-btn {
-            display: inline-block; font-size: 0.75rem; font-weight: 600; color: var(--spotify);
-            border: 1px solid var(--spotify); padding: 5px 14px; border-radius: 20px;
-            transition: all 0.3s; letter-spacing: 0.5px;
-        }
-        .track-btn:hover { background: var(--spotify); color: #000; box-shadow: 0 0 12px rgba(29, 185, 84, 0.4); }
-
-        .track-item iframe { width: 350px; height: 80px; border-radius: 12px; flex-shrink: 0; box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
-
-        .action-btn {
-            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-            font-size: 0.95rem; font-weight: 600; padding: 12px 28px; border-radius: 30px;
-            text-decoration: none; transition: all 0.3s; border: 1px solid; letter-spacing: 0.5px;
-        }
-
-        .btn-spotify { background: rgba(29, 185, 84, 0.08); color: var(--spotify); border-color: rgba(29, 185, 84, 0.4); }
-        .btn-spotify:hover { background: var(--spotify); color: #000; box-shadow: 0 0 20px rgba(29, 185, 84, 0.5); }
-
-        .btn-lyric { background: rgba(201,168,76, 0.05); color: var(--gold-light); border-color: rgba(201,168,76, 0.4); }
-        .btn-lyric:hover { background: var(--gold); color: #000; box-shadow: 0 0 20px rgba(201,168,76, 0.4); }
+        .track-btn { display: inline-block; font-size: 0.75rem; font-weight: 600; color: var(--spotify); border: 1px solid var(--spotify); padding: 5px 14px; border-radius: 20px; transition: all 0.3s; }
+        .track-btn:hover { background: var(--spotify); color: #000; }
+        .track-item iframe { width: 350px; height: 80px; border-radius: 12px; flex-shrink: 0; }
 
         footer { text-align: center; padding: 80px 40px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: #555; border-top: 1px solid rgba(255,255,255,0.03); }
 
         @media (max-width: 900px) {
             nav { padding: 0 20px; }
             .nav-links { display: none; }
-            .nav-links.active {
-                display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height));
-                background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 25px;
-                z-index: 1002;
-            }
+            .nav-links.active { display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height)); background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 25px; z-index: 1002; }
             .menu-toggle { display: flex; }
             .page-header { height: 350px; }
-            .featured-albums { grid-template-columns: 1fr; }
-            .track-item { flex-direction: column; text-align: center; gap: 20px; padding: 30px 20px; }
+            .track-item { flex-direction: column; text-align: center; gap: 20px; }
             .track-info { align-items: center; }
             .track-item iframe { width: 100%; }
         }
-
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
@@ -284,7 +153,6 @@
         </div>
     </nav>
 
-    <!-- 공유 모달 팝업 -->
     <div class="modal-overlay" id="shareOverlay" onclick="closeShareModal(event)">
         <div class="share-modal" onclick="event.stopPropagation()">
             <h3>SHARE WORSHIP</h3>
@@ -293,11 +161,10 @@
                 <button class="modal-btn btn-copy" onclick="copyURL()">COPY LINK</button>
                 <button class="modal-btn btn-sns" onclick="shareViaWebAPI()">SNS SHARE</button>
             </div>
-            <button class="modal-btn btn-close" onclick="closeShareModal(null)">Close</button>
+            <button class="btn-close" onclick="closeShareModal(null)">Close</button>
         </div>
     </div>
 
-    <!-- 토스트 메시지 -->
     <div class="toast-msg" id="toast">Link copied!</div>
 
     <header class="page-header">
@@ -344,143 +211,58 @@
     <footer><p>© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
 
     <script>
-        function safeNavigate(url) { if (url && url.trim() !== "") { window.location.assign(url); } }
-
         const menuToggle = document.getElementById('mobile-menu');
         const navLinks = document.getElementById('navLinks');
-        menuToggle.addEventListener('click', () => {
-            menuToggle.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        });
+        menuToggle.addEventListener('click', () => { menuToggle.classList.toggle('active'); navLinks.classList.toggle('active'); });
 
-        // ── 공유 로직 (하이브리드 복사 방식) ──
         const shareOverlay = document.getElementById('shareOverlay');
         const toast = document.getElementById('toast');
-
-        function openShareModal() {
-            shareOverlay.style.display = 'flex';
-            setTimeout(() => shareOverlay.classList.add('active'), 10);
-        }
-
-        function closeShareModal(e) {
-            if (e && e.target !== shareOverlay && e.type !== 'click') return;
-            shareOverlay.classList.remove('active');
-            setTimeout(() => shareOverlay.style.display = 'none', 300);
-        }
+        function openShareModal() { shareOverlay.style.display = 'flex'; setTimeout(() => shareOverlay.classList.add('active'), 10); }
+        function closeShareModal(e) { if (e && e.target !== shareOverlay && e.type !== 'click') return; shareOverlay.classList.remove('active'); setTimeout(() => shareOverlay.style.display = 'none', 300); }
 
         async function copyURL() {
             const currentUrl = window.location.href;
             let success = false;
-
-            // 1. 최신 Clipboard API 시도
-            if (navigator.clipboard && window.isSecureContext) {
-                try {
-                    await navigator.clipboard.writeText(currentUrl);
-                    success = true;
-                } catch (err) {
-                    console.error("Clipboard API failed:", err);
-                }
-            }
-
-            // 2. Fallback: Textarea 생성 방식
+            if (navigator.clipboard && window.isSecureContext) { try { await navigator.clipboard.writeText(currentUrl); success = true; } catch (err) {} }
             if (!success) {
                 const textArea = document.createElement("textarea");
                 textArea.value = currentUrl;
-                textArea.style.position = "fixed";
-                textArea.style.left = "-9999px";
-                textArea.style.top = "0";
+                textArea.id = "temp-copy-area"; // 고유 ID 부여
+                textArea.style.position = "fixed"; textArea.style.left = "-9999px";
                 document.body.appendChild(textArea);
-                textArea.focus();
-                textArea.select();
-                try {
-                    success = document.execCommand('copy');
-                } catch (err) {
-                    console.error("execCommand failed:", err);
-                }
+                textArea.focus(); textArea.select();
+                try { success = document.execCommand('copy'); } catch (err) {}
                 document.body.removeChild(textArea);
             }
-
-            if (success) {
-                showToast('Link copied to clipboard!');
-            } else {
-                showToast('Copy failed. Please copy manually.');
-            }
+            if (success) { showToast('Link copied to clipboard!'); }
             closeShareModal();
         }
 
         function shareViaWebAPI() {
-            if (navigator.share) {
-                navigator.share({
-                    title: 'Chris LEE.PAPA - WORSHIP',
-                    text: '영혼을 울리는 찬양과 고백의 기록들',
-                    url: window.location.href
-                }).catch(console.error);
-            } else {
-                showToast('Sharing is not supported on this browser.');
-            }
+            if (navigator.share) { navigator.share({ title: 'Chris LEE.PAPA - WORSHIP', text: '영혼을 울리는 찬양과 고백의 기록들', url: window.location.href }); }
+            else { showToast('Not supported on this browser.'); }
         }
+        function showToast(msg) { toast.textContent = msg; toast.style.display = 'block'; setTimeout(() => { toast.style.display = 'none'; }, 2500); }
 
-        function showToast(msg) {
-            toast.textContent = msg;
-            toast.style.display = 'block';
-            setTimeout(() => {
-                toast.style.display = 'none';
-            }, 2500);
-        }
-
-        // 별빛 배경
         const canvas = document.getElementById('stars-canvas');
         const ctx = canvas.getContext('2d');
         let stars = [];
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = 450;
-            initStars();
-        }
-        function initStars() {
-            stars = [];
-            const count = (canvas.width * canvas.height) / 7000;
-            for (let i = 0; i < count; i++) {
-                stars.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    size: Math.random() * 1.5 + 0.3,
-                    opacity: Math.random(),
-                    speed: Math.random() * 0.015 + 0.005,
-                    color: Math.random() > 0.85 ? '201, 168, 76' : '255, 255, 255'
-                });
-            }
-        }
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            stars.forEach(s => {
-                s.opacity += s.speed;
-                if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed;
-                ctx.beginPath();
-                ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(${s.color}, ${Math.max(0, s.opacity)})`;
-                ctx.fill();
-            });
-            requestAnimationFrame(draw);
-        }
-        window.addEventListener('resize', resize);
-        resize();
-        draw();
+        function resize() { canvas.width = window.innerWidth; canvas.height = 450; initStars(); }
+        function initStars() { stars = []; const count = (canvas.width * canvas.height) / 7000; for (let i = 0; i < count; i++) { stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 1.5 + 0.3, opacity: Math.random(), speed: Math.random() * 0.015 + 0.005, color: Math.random() > 0.85 ? '201, 168, 76' : '255, 255, 255' }); } }
+        function draw() { ctx.clearRect(0, 0, canvas.width, canvas.height); stars.forEach(s => { s.opacity += s.speed; if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed; ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fillStyle = `rgba(${s.color}, ${Math.max(0, s.opacity)})`; ctx.fill(); }); requestAnimationFrame(draw); }
+        window.addEventListener('resize', resize); resize(); draw();
 
-        // ── 보안 스크립트 (조건부 복사 차단) ──
+        // ── 보안 스크립트 (충돌 해결 버전) ──
         document.addEventListener('contextmenu', e => e.preventDefault());
-        
         document.addEventListener('copy', e => {
-            const selection = window.getSelection().toString();
-            if (selection.length > 0) {
+            if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) {
                 e.preventDefault();
             }
         });
-
         document.addEventListener('keydown', e => {
             if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || (e.ctrlKey && e.key === 'U')) e.preventDefault();
             if (e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'p')) {
-                if (window.getSelection().toString().length > 0) e.preventDefault();
+                if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) e.preventDefault();
             }
             if (e.key === 'PrintScreen') navigator.clipboard.writeText('');
         });

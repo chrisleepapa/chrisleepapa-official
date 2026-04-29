@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Chris Lee.Papa – Worship Lyrics Vol.2 | 나의 찬양 2집 가사집">
     <title>LYRICS VOL.2 – Chris LEE.PAPA</title>
-
+    
     <!-- 폰트 통합 호출 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -83,7 +83,7 @@
 
         .header-title {
             font-family: 'Cinzel', serif;
-            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-size: clamp(2.5rem, 8vw, 4rem); 
             font-weight: 700; letter-spacing: 0.15em;
             color: var(--gold-light);
             text-shadow: 0 0 30px rgba(201,168,76,0.3);
@@ -91,7 +91,7 @@
         }
 
         .header-slogan {
-            font-family: 'Noto Serif KR', serif; font-size: clamp(0.9rem, 2vw, 1.1rem);
+            font-family: 'Noto Serif KR', serif; font-size: clamp(0.9rem, 2vw, 1.1rem); 
             letter-spacing: 2px; color: #cdd6f4; font-weight: 300;
         }
 
@@ -144,8 +144,11 @@
 
         .accordion-header:hover { color: var(--gold-light); }
 
+        /* 곡 제목이 길어져도 + 버튼과 겹치지 않고 자연스럽게 줄바꿈되도록 설정 */
+        .accordion-header > span:first-child { flex: 1; word-break: keep-all; line-height: 1.4; padding-right: 15px; }
+
         .track-num { font-family: 'Cinzel', serif; color: var(--gold); font-size: 1rem; margin-right: 15px; font-weight: 700; }
-        .toggle-icon { font-size: 1.4rem; color: var(--gold); transition: transform 0.4s ease; font-weight: 300; }
+        .toggle-icon { font-size: 1.4rem; color: var(--gold); transition: transform 0.4s ease; font-weight: 300; flex-shrink: 0; }
 
         .accordion-item.active {
             border-color: rgba(201,168,76,0.5);
@@ -166,9 +169,11 @@
         }
 
         .lyric-text {
-            font-size: 1.05rem; font-weight: 300; line-height: 2.4;
+            /* 뷰포트(화면 폭)에 따라 폰트 크기가 0.9rem ~ 1.05rem 사이로 유동적으로 변함 */
+            font-size: clamp(0.9rem, 3.5vw, 1.05rem); font-weight: 300; line-height: 2.4;
             color: rgba(240,236,228,0.9); white-space: pre-wrap;
-            letter-spacing: 0.5px;
+            word-break: break-word; overflow-wrap: break-word; /* 화면을 넘어가는 긴 단어 자동 줄바꿈 */
+            letter-spacing: 0.5px; max-width: 100%;
         }
 
         footer { text-align: center; padding: 60px 20px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: #555; border-top: 1px solid rgba(255,255,255,0.03); }
@@ -184,8 +189,10 @@
             }
             .nav-links.active { height: calc(100vh - var(--nav-height)); }
             .page-header { height: 280px; }
-            .accordion-header { font-size: 1.05rem; padding: 18px 15px; }
-            .lyric-text { font-size: 0.95rem; }
+            .accordion-header { font-size: clamp(1rem, 4vw, 1.15rem); padding: 18px 15px; }
+            /* 모바일 화면에서는 패딩을 줄여 텍스트 공간 확보 */
+            .accordion-item.active .accordion-body { padding: 25px 15px; }
+            .lyric-text { line-height: 2.2; }
         }
 
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
@@ -217,7 +224,7 @@
 
     <!-- 3. 메인 콘텐츠 -->
     <main class="container">
-
+        
         <!-- 뒤로가기 버튼 -->
         <a href="worship.html" class="back-link">‹ 예배로 돌아가기</a>
 
@@ -411,12 +418,12 @@
 
 [Final Chorus]
 주를 향해 노래하리 (노래해)
-온 마음 다해 부르리
+온 마음 다해 부르리 
 나의 기쁨 나의 노래 (오직)
 주님 한 분뿐이
 
 주를 향해 기도하리 (영원히)
-내 삶의 모든 순간
+내 삶의 모든 순간 
 내 호흡이 있는 날까지 (오직)
 주 이름 높이리
 
@@ -827,7 +834,7 @@
                 </button>
                 <div class="accordion-body">
                     <p class="lyric-text">[Verse 1]
-예수님 함께 걸어요
+예수님 함께 걸어요 
 예수님 손을 잡아요
 기쁘게 웃으면서
 찬양을 불러요

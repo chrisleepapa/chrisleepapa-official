@@ -15,6 +15,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Chris Lee.Papa – MOVIE | The Creative Archive">
+    
+    <!-- SNS 공유용 OG 태그 (최종 수정본) -->
+    <meta property="og:title" content="MOVIE – Chris Lee.Papa">
+    <meta property="og:description" content="프레임에 담긴 무한한 세계, 크리스리의 영상 아카이브를 감상해보세요.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://chrisleepapa-official.vercel.app/movie.html">
+    <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1">
+
+    <link rel="canonical" href="https://chrisleepapa-official.vercel.app/movie.html">
     <title>MOVIE – Chris Lee.Papa</title>
     
     <!-- 폰트 통합 호출 -->
@@ -24,12 +33,7 @@
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Pretendard', sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Pretendard', sans-serif; }
 
         :root {
             --gold: #c9a84c;
@@ -58,9 +62,7 @@
             user-select: none;
         }
 
-        img {
-            -webkit-user-drag: none; /* 이미지 드래그 방지 */
-        }
+        img { -webkit-user-drag: none; }
 
         /* 아날로그 노이즈 오버레이 최적화 */
         body::before {
@@ -71,7 +73,7 @@
 
         a { text-decoration: none; color: inherit; }
 
-        /* ── 공통 네비게이션 ── */
+        /* ── 네비게이션 ── */
         nav {
             position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px;
             display: flex; justify-content: space-between; align-items: center;
@@ -81,12 +83,49 @@
 
         .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); z-index: 1001; }
 
-        .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
-        .menu-toggle span { width: 22px; height: 1.5px; background-color: var(--gold-light); transition: 0.3s; }
-
+        .nav-right { display: flex; align-items: center; gap: 30px; }
         .nav-links { display: flex; gap: 30px; }
         .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; }
         .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+
+        .share-trigger {
+            cursor: pointer; padding: 6px 14px; border: 1px solid rgba(201,168,76,0.3);
+            border-radius: 20px; font-family: 'Cinzel', serif; font-size: 0.7rem;
+            color: var(--gold-light); transition: 0.3s; letter-spacing: 1px;
+        }
+        .share-trigger:hover { background: rgba(201,168,76,0.1); border-color: var(--gold-light); }
+
+        .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
+        .menu-toggle span { width: 22px; height: 1.5px; background-color: var(--gold-light); transition: 0.3s; }
+
+        /* ── 공유 모달 & 토스트 ── */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+            z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: 0.3s;
+        }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .share-modal {
+            background: #0a0a0f; border: 1px solid var(--gold); border-radius: 24px;
+            width: 90%; max-width: 400px; padding: 45px 30px; text-align: center;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.9);
+        }
+        .share-modal h3 { font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--gold-light); margin-bottom: 15px; }
+        .share-modal p { font-size: 0.9rem; color: #888; margin-bottom: 35px; }
+        .share-buttons { display: flex; flex-direction: column; gap: 14px; }
+        .modal-btn {
+            padding: 16px; border-radius: 12px; border: none; font-family: 'Cinzel', serif;
+            font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: 0.3s;
+        }
+        .btn-copy { background: var(--gold); color: #000; }
+        .btn-sns { background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #fff; }
+        .btn-sns:hover { background: rgba(255,255,255,0.05); }
+        .btn-close-modal { margin-top: 25px; color: #666; background: none; font-size: 0.8rem; text-decoration: underline; }
+
+        .toast-msg {
+            position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%);
+            background: var(--gold); color: #000; padding: 12px 30px; border-radius: 40px;
+            font-size: 0.9rem; font-weight: 700; z-index: 3000; display: none; animation: fadeUp 0.4s ease;
+        }
 
         /* ── 페이지 헤더 ── */
         .page-header {
@@ -94,189 +133,103 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             overflow: hidden; padding-top: var(--nav-height);
         }
-
         #stars-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
-
         .header-content { position: relative; z-index: 3; text-align: center; animation: fadeUp 1.2s ease both; }
-
         .header-title {
-            font-family: 'Cinzel', serif;
-            font-size: clamp(2.5rem, 8vw, 4.5rem); 
-            font-weight: 700; letter-spacing: 0.15em;
-            color: #ffffff; text-shadow: 0 0 20px rgba(255,255,255,0.3);
+            font-family: 'Cinzel', serif; font-size: clamp(2.5rem, 8vw, 4.5rem); 
+            font-weight: 700; letter-spacing: 0.15em; color: #ffffff; text-shadow: 0 0 20px rgba(255,255,255,0.3);
             margin-bottom: 10px;
         }
+        .header-slogan { font-size: clamp(0.85rem, 2vw, 1rem); color: var(--text-dim); letter-spacing: 1px; }
 
-        .header-slogan {
-            font-size: clamp(0.85rem, 2vw, 1rem); color: var(--text-dim); letter-spacing: 1px;
-        }
-
-        /* ── 1. 메인 시네마틱 극장 (Theater) ── */
+        /* ── 메인 시네마틱 극장 ── */
         .theater-wrapper {
-            max-width: 1100px;
-            margin: 0 auto 40px;
-            padding: 0 20px;
-            animation: fadeUp 1s ease 0.2s both;
-            position: relative;
-            z-index: 10;
+            max-width: 1100px; margin: 0 auto 40px; padding: 0 20px;
+            animation: fadeUp 1s ease 0.2s both; position: relative; z-index: 10;
         }
-
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-
         .main-screen {
-            position: relative;
-            width: 100%;
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
-            background: #000;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05);
-            z-index: 10;
+            position: relative; width: 100%; padding-bottom: 56.25%; background: #000;
+            border-radius: 16px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.8); z-index: 10;
         }
-
-        .main-screen iframe {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;
-        }
-
-        /* 영상 정보 패널 (Glassmorphism) */
+        .main-screen iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
         .screen-info {
-            margin-top: -20px;
-            padding: 50px 40px 40px;
-            background: rgba(15, 15, 20, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 0 0 24px 24px;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
-            position: relative;
-            z-index: 5;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            margin-top: -20px; padding: 50px 40px 40px; background: rgba(15, 15, 20, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 0 0 24px 24px;
+            backdrop-filter: blur(20px); box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+            position: relative; z-index: 5; display: flex; flex-direction: column; gap: 10px;
         }
-
-        .video-badge {
-            align-self: flex-start; padding: 6px 16px;
-            background: rgba(74, 144, 226, 0.1); color: #4a90e2;
-            border: 1px solid rgba(74, 144, 226, 0.3); border-radius: 20px;
-            font-size: 0.85rem; font-weight: 700; letter-spacing: 1.5px;
-            text-transform: uppercase;
-        }
-
+        .video-badge { align-self: flex-start; padding: 6px 16px; background: rgba(74, 144, 226, 0.1); color: #4a90e2; border: 1px solid rgba(74, 144, 226, 0.3); border-radius: 20px; font-size: 0.85rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
         .video-title { font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 700; color: #ffffff; line-height: 1.4; }
         .video-desc { font-size: 1.05rem; color: #a0a0b5; font-weight: 300; line-height: 1.8; max-width: 850px; word-break: keep-all; }
 
-        /* ── 2. 회전목마 갤러리 (Carousel) ── */
-        .carousel-section {
-            max-width: 1100px; margin: 0 auto 80px; padding: 0 20px;
-            position: relative; z-index: 10;
-        }
-
-        .carousel-heading {
-            font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--gold);
-            margin-bottom: 20px; font-weight: 600; letter-spacing: 0.15em;
-            border-bottom: 1px solid rgba(201,168,76,0.2); padding-bottom: 15px;
-        }
-
-        .carousel-container {
-            display: flex; gap: 20px; overflow-x: auto; padding-bottom: 20px;
-            scroll-snap-type: x mandatory; scrollbar-width: thin;
-            scrollbar-color: rgba(255,255,255,0.2) transparent;
-        }
-
-        .carousel-container::-webkit-scrollbar { height: 8px; }
-        .carousel-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
-
-        .thumbnail-card {
-            flex: 0 0 280px; scroll-snap-align: start; cursor: pointer;
-            border-radius: 16px; overflow: hidden; position: relative;
-            transition: all 0.3s ease; border: 2px solid transparent;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-        }
-
+        /* ── 회전목마 갤러리 ── */
+        .carousel-section { max-width: 1100px; margin: 0 auto 80px; padding: 0 20px; position: relative; z-index: 10; }
+        .carousel-heading { font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--gold); margin-bottom: 20px; font-weight: 600; letter-spacing: 0.15em; border-bottom: 1px solid rgba(201,168,76,0.2); padding-bottom: 15px; }
+        .carousel-container { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 20px; scroll-snap-type: x mandatory; }
+        .thumbnail-card { flex: 0 0 280px; scroll-snap-align: start; cursor: pointer; border-radius: 16px; overflow: hidden; position: relative; transition: all 0.3s ease; border: 2px solid transparent; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
         .thumbnail-card.active { border-color: #4a90e2; box-shadow: 0 0 25px rgba(74, 144, 226, 0.4); transform: scale(0.98); }
-        .thumbnail-card:hover:not(.active) { transform: translateY(-8px); border-color: rgba(255,255,255,0.3); }
-
-        .thumb-img {
-            width: 100%; height: 158px; background-size: cover; background-position: center; transition: 0.5s ease;
-        }
-        .thumbnail-card:hover .thumb-img { transform: scale(1.05); }
-
-        .thumb-overlay {
-            position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0.1));
-            display: flex; flex-direction: column; justify-content: flex-end; padding: 20px;
-            opacity: 0.8; transition: opacity 0.3s;
-        }
-
-        .thumbnail-card:hover .thumb-overlay, .thumbnail-card.active .thumb-overlay { opacity: 1; }
-
+        .thumb-img { width: 100%; height: 158px; background-size: cover; background-position: center; transition: 0.5s ease; }
+        .thumb-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0.1)); display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; opacity: 0.8; }
         .thumb-title { color: #fff; font-size: 0.95rem; font-weight: 500; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; }
 
-        /* ── 3. 세로형 아카이브 (Shorts) ── */
-        .shorts-section {
-            max-width: 1100px; margin: 0 auto 100px; padding: 50px 30px;
-            background: rgba(255,255,255,0.01); border-radius: 24px;
-            border: 1px solid rgba(255,255,255,0.03); backdrop-filter: blur(10px);
-            position: relative; z-index: 10;
-        }
-
-        .shorts-heading {
-            font-family: 'Cinzel', serif; font-size: 1.4rem; letter-spacing: 2px;
-            color: #e0e0ff; margin-bottom: 40px; text-align: center; font-weight: 700;
-        }
-
+        /* ── 쇼츠 아카이브 ── */
+        .shorts-section { max-width: 1100px; margin: 0 auto 100px; padding: 50px 30px; background: rgba(255,255,255,0.01); border-radius: 24px; border: 1px solid rgba(255,255,255,0.03); backdrop-filter: blur(10px); position: relative; z-index: 10; }
+        .shorts-heading { font-family: 'Cinzel', serif; font-size: 1.4rem; letter-spacing: 2px; color: #e0e0ff; margin-bottom: 40px; text-align: center; font-weight: 700; }
         .shorts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 25px; }
-
-        .shorts-item {
-            position: relative; width: 100%; padding-bottom: 177.78%; /* 9:16 비율 */
-            background: #000; border-radius: 12px; overflow: hidden;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.6); transition: transform 0.4s;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .shorts-item:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.9), 0 0 0 1px rgba(100, 150, 255, 0.4); }
+        .shorts-item { position: relative; width: 100%; padding-bottom: 177.78%; background: #000; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 30px rgba(0,0,0,0.6); transition: transform 0.4s; border: 1px solid rgba(255,255,255,0.05); }
+        .shorts-item:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.9); }
         .shorts-item iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-        /* ── 풋터 ── */
         footer { text-align: center; padding: 60px 40px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: #555; border-top: 1px solid rgba(255,255,255,0.03); }
 
-        /* ── 반응형 ── */
         @media (max-width: 900px) {
             nav { padding: 0 20px; }
-            .menu-toggle { display: flex; }
-            .nav-links {
-                position: fixed; top: var(--nav-height); left: 0; width: 100%; height: 0;
-                background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center;
-                gap: 25px; overflow: hidden; transition: 0.4s ease-in-out;
+            .nav-links { display: none; }
+            .nav-links.active {
+                display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height));
+                background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 25px; z-index: 1002;
             }
-            .nav-links.active { height: calc(100vh - var(--nav-height)); }
+            .menu-toggle { display: flex; }
             .page-header { height: 250px; }
-            .screen-info { padding: 40px 20px 30px; }
-            .thumbnail-card { flex: 0 0 220px; }
-            .thumb-img { height: 124px; }
-            .shorts-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
-            .shorts-section { padding: 40px 20px; }
+            .shorts-grid { grid-template-columns: repeat(2, 1fr); }
         }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <!-- 1. 네비게이션 -->
     <nav>
         <a href="index.html" class="brand-logo">Chris LEE.PAPA</a>
-        <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
-        <div class="nav-links" id="navLinks">
-            <a href="index.html">Home</a>
-            <a href="worship.html">Worship</a>
-            <a href="music.html">Music</a>
-            <a href="book.html">Books</a>
-            <a href="movie.html" class="active">Movies</a>
+        <div class="nav-right">
+            <div class="nav-links" id="navLinks">
+                <a href="index.html">Home</a>
+                <a href="worship.html">Worship</a>
+                <a href="music.html">Music</a>
+                <a href="book.html">Books</a>
+                <a href="movie.html" class="active">Movies</a>
+            </div>
+            <div class="share-trigger" onclick="openShareModal()">SHARE</div>
+            <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
         </div>
     </nav>
 
-    <!-- 2. 헤더 섹션 (별빛 캔버스) -->
+    <!-- 공유 모달 팝업 -->
+    <div class="modal-overlay" id="shareOverlay" onclick="closeShareModal(event)">
+        <div class="share-modal" onclick="event.stopPropagation()">
+            <h3>SHARE MOVIE ARCHIVE</h3>
+            <p>크리스리의 시네마틱 세계관을 소중한 사람들과 나누세요.</p>
+            <div class="share-buttons">
+                <button class="modal-btn btn-copy" onclick="copyURL()">COPY LINK</button>
+                <button class="modal-btn btn-sns" onclick="shareViaWebAPI()">SNS SHARE</button>
+            </div>
+            <button class="modal-btn btn-close-modal" onclick="closeShareModal(null)">Close</button>
+        </div>
+    </div>
+
+    <!-- 토스트 메시지 -->
+    <div class="toast-msg" id="toast">Link copied!</div>
+
     <header class="page-header">
         <canvas id="stars-canvas"></canvas>
         <div class="header-content">
@@ -285,12 +238,10 @@
         </div>
     </header>
 
-    <!-- 3. 메인 시네마틱 극장 -->
     <main class="theater-wrapper">
         <div class="main-screen">
             <iframe id="main-video-player" src="https://www.youtube.com/embed/kAkGg2t1Ats?autoplay=0" title="Main Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
-        
         <div class="screen-info">
             <span class="video-badge" id="main-video-badge">FEATURED</span>
             <h2 class="video-title" id="main-video-title">이게 AI 로 되네? 그냥 만들어본 뮤직비디오 'FURIOUS 💥'</h2>
@@ -300,15 +251,11 @@
         </div>
     </main>
 
-    <!-- 4. 회전목마 갤러리 -->
     <section class="carousel-section">
         <h3 class="carousel-heading">UP NEXT</h3>
-        <div class="carousel-container" id="carousel-list">
-            <!-- JS 렌더링 -->
-        </div>
+        <div class="carousel-container" id="carousel-list"></div>
     </section>
 
-    <!-- 5. 쇼츠 아카이브 -->
     <section class="shorts-section">
         <h3 class="shorts-heading">VERTICAL ARCHIVES</h3>
         <div class="shorts-grid">
@@ -323,12 +270,11 @@
         </div>
     </section>
 
-    <footer>
-        <p>&copy; 2026 Chris LEE.PAPA. All rights reserved.</p>
-    </footer>
+    <footer><p>&copy; 2026 Chris LEE.PAPA. All rights reserved.</p></footer>
 
     <script>
-        // 모바일 메뉴 컨트롤
+        function safeNavigate(url) { if (url && url.trim() !== "") { window.location.assign(url); } }
+
         const menuToggle = document.getElementById('mobile-menu');
         const navLinks = document.getElementById('navLinks');
         menuToggle.addEventListener('click', () => {
@@ -336,68 +282,84 @@
             navLinks.classList.toggle('active');
         });
 
-        // ── 고성능 캔버스 별빛 효과 ──
+        // ── 공유 로직 ──
+        const shareOverlay = document.getElementById('shareOverlay');
+        const toast = document.getElementById('toast');
+
+        function openShareModal() {
+            shareOverlay.style.display = 'flex';
+            setTimeout(() => shareOverlay.classList.add('active'), 10);
+        }
+
+        function closeShareModal(e) {
+            if (e && e.target !== shareOverlay && e.type !== 'click') return;
+            shareOverlay.classList.remove('active');
+            setTimeout(() => shareOverlay.style.display = 'none', 300);
+        }
+
+        function copyURL() {
+            const el = document.createElement('textarea');
+            el.value = window.location.href;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            showToast('Link copied to clipboard!');
+            closeShareModal();
+        }
+
+        function shareViaWebAPI() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Chris LEE.PAPA - MOVIE',
+                    text: 'AI로 그려낸 시네마틱 비주얼, 크리스리의 영상 아카이브입니다.',
+                    url: window.location.href
+                }).catch(console.error);
+            } else {
+                showToast('Sharing is not supported on this browser.');
+            }
+        }
+
+        function showToast(msg) {
+            toast.textContent = msg;
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 2500);
+        }
+
+        // ── 별빛 배경 ──
         const canvas = document.getElementById('stars-canvas');
         const ctx = canvas.getContext('2d');
         let stars = [];
-
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = 350;
-            initStars();
-        }
-
+        function resize() { canvas.width = window.innerWidth; canvas.height = 350; initStars(); }
         function initStars() {
             stars = [];
             const count = (canvas.width * canvas.height) / 6000;
             for (let i = 0; i < count; i++) {
                 stars.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    size: Math.random() * 1.5 + 0.2,
-                    opacity: Math.random(),
+                    x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+                    size: Math.random() * 1.5 + 0.2, opacity: Math.random(),
                     speed: Math.random() * 0.02 + 0.005
                 });
             }
         }
-
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             stars.forEach(s => {
                 s.opacity += s.speed;
                 if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed;
-                ctx.beginPath();
-                ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0, s.opacity)})`;
-                ctx.fill();
+                ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0, s.opacity)})`; ctx.fill();
             });
             requestAnimationFrame(draw);
         }
-
         window.addEventListener('resize', resize);
-        resize();
-        draw();
+        resize(); draw();
 
-        // ── 시네마틱 갤러리 비디오 로직 ──
+        // ── 비디오 갤러리 로직 ──
         const videoData = [
-            {
-                id: 'kAkGg2t1Ats',
-                title: "이게 AI 로 되네? 그냥 만들어본 뮤직비디오 'FURIOUS 💥'",
-                badge: 'FEATURED',
-                desc: '직접 제작한 AI 기반 오리지널 뮤직비디오입니다. 역동적인 템포와 생성형 AI 비주얼이 결합된 강렬한 세계를 감상해 보세요.'
-            },
-            {
-                id: 'byxLKvBHULk',
-                title: "Chris LEE.PAPA Cinematic Vision 1",
-                badge: 'CINEMATIC',
-                desc: '끝없는 상상력을 바탕으로 렌더링된 초고화질 시네마틱 아트워크 영상입니다. AI가 그려낸 환상적인 배경과 연출을 확인하세요.'
-            },
-            {
-                id: 'vlt7VfCA8bM',
-                title: "Chris LEE.PAPA Cinematic Vision 2",
-                badge: 'CINEMATIC',
-                desc: '아름다운 빛과 그림자가 교차하는 AI 기반 숏필름 비주얼. 음악의 감동을 시각적으로 배가시키는 아카이브 영상입니다.'
-            }
+            { id: 'kAkGg2t1Ats', title: "이게 AI 로 되네? 그냥 만들어본 뮤직비디오 'FURIOUS 💥'", badge: 'FEATURED', desc: '직접 제작한 AI 기반 오리지널 뮤직비디오입니다. 역동적인 템포와 생성형 AI 비주얼이 결합된 강렬한 세계를 감상해 보세요.' },
+            { id: 'byxLKvBHULk', title: "Chris LEE.PAPA Cinematic Vision 1", badge: 'CINEMATIC', desc: '끝없는 상상력을 바탕으로 렌더링된 초고화질 시네마틱 아트워크 영상입니다. AI가 그려낸 환상적인 배경과 연출을 확인하세요.' },
+            { id: 'vlt7VfCA8bM', title: "Chris LEE.PAPA Cinematic Vision 2", badge: 'CINEMATIC', desc: '아름다운 빛과 그림자가 교차하는 AI 기반 숏필름 비주얼. 음악의 감동을 시각적으로 배가시키는 아카이브 영상입니다.' }
         ];
 
         const carouselList = document.getElementById('carousel-list');
@@ -410,15 +372,7 @@
             videoData.forEach((video, index) => {
                 const card = document.createElement('div');
                 card.className = `thumbnail-card ${index === 0 ? 'active' : ''}`;
-                const thumbUrl = `https://img.youtube.com/vi/${video.id}/hqdefault.jpg`;
-                
-                card.innerHTML = `
-                    <div class="thumb-img" style="background-image: url('${thumbUrl}');"></div>
-                    <div class="thumb-overlay">
-                        <span class="thumb-title">${video.title}</span>
-                    </div>
-                `;
-
+                card.innerHTML = `<div class="thumb-img" style="background-image: url('https://img.youtube.com/vi/${video.id}/hqdefault.jpg');"></div><div class="thumb-overlay"><span class="thumb-title">${video.title}</span></div>`;
                 card.addEventListener('click', () => loadMainVideo(index, card));
                 carouselList.appendChild(card);
             });
@@ -426,56 +380,23 @@
 
         function loadMainVideo(index, cardElement) {
             const video = videoData[index];
-            
-            // 영상 교체 (자동재생)
             mainPlayer.src = `https://www.youtube.com/embed/${video.id}?autoplay=1`;
-            
-            // 정보 패널 교체
             mainTitle.textContent = video.title;
             mainBadge.textContent = video.badge;
             mainDesc.textContent = video.desc;
-
-            // 활성 상태 변경
             document.querySelectorAll('.thumbnail-card').forEach(el => el.classList.remove('active'));
             cardElement.classList.add('active');
-
-            // 부드럽게 스크롤
-            window.scrollTo({
-                top: document.querySelector('.theater-wrapper').offsetTop - 120,
-                behavior: 'smooth'
-            });
+            window.scrollTo({ top: document.querySelector('.theater-wrapper').offsetTop - 120, behavior: 'smooth' });
         }
-
         renderCarousel();
 
-        // ── 우클릭, 복사, 캡처 및 개발자도구 방지 스크립트 ──
-        
-        // 1. 우클릭 방지
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-        });
-
-        // 2. 복사 방지
-        document.addEventListener('copy', function(e) {
-            e.preventDefault();
-        });
-
-        // 3. 단축키 방지 (개발자 도구, 복사, 저장, 인쇄 등)
-        document.addEventListener('keydown', function(e) {
-            // F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U (개발자 도구 및 소스 보기)
-            if (e.key === 'F12' || 
-               (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j')) || 
-               (e.ctrlKey && (e.key === 'U' || e.key === 'u'))) {
-                e.preventDefault();
-            }
-            // Ctrl+C, Ctrl+S, Ctrl+P (복사, 저장, 인쇄)
-            if (e.ctrlKey && (e.key === 'c' || e.key === 'C' || e.key === 's' || e.key === 'S' || e.key === 'p' || e.key === 'P')) {
-                e.preventDefault();
-            }
-            // PrintScreen 키 입력 시 클립보드 비우기 (일부 브라우저 동작)
-            if (e.key === 'PrintScreen') {
-                navigator.clipboard.writeText('');
-            }
+        // 보안
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('copy', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || (e.ctrlKey && e.key === 'U')) e.preventDefault();
+            if (e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'p')) e.preventDefault();
+            if (e.key === 'PrintScreen') navigator.clipboard.writeText('');
         });
     </script>
 </body>

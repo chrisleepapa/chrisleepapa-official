@@ -95,7 +95,7 @@
         .btn-copy { background: var(--cyan); color: #fff; }
         .btn-sns { background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #fff; }
         .btn-sns:hover { background: rgba(255,255,255,0.05); }
-        .btn-close-modal { margin-top: 25px; color: #666; background: none; font-size: 0.8rem; text-decoration: underline; cursor: pointer; border: none; }
+        .btn-close-modal { margin-top: 25px; color: #666; background: none; font-size: 0.8rem; text-decoration: underline; border: none; cursor: pointer; }
 
         .toast-msg {
             position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%);
@@ -226,26 +226,22 @@
                 try {
                     await navigator.clipboard.writeText(currentUrl);
                     success = true;
-                } catch (err) {
-                    console.error("Clipboard API failed:", err);
-                }
+                } catch (err) {}
             }
 
-            // 2. Fallback: Textarea를 생성하여 복사
+            // 2. Fallback: Textarea를 생성하여 복사 (보안 스크립트 충돌 방지용 ID 부여)
             if (!success) {
                 const textArea = document.createElement("textarea");
                 textArea.value = currentUrl;
+                textArea.id = "temp-copy-area"; // 고유 ID 부여
                 textArea.style.position = "fixed";
                 textArea.style.left = "-9999px";
-                textArea.style.top = "0";
                 document.body.appendChild(textArea);
                 textArea.focus();
                 textArea.select();
                 try {
                     success = document.execCommand('copy');
-                } catch (err) {
-                    console.error("execCommand failed:", err);
-                }
+                } catch (err) {}
                 document.body.removeChild(textArea);
             }
 
@@ -275,13 +271,12 @@
             setTimeout(() => { toast.style.display = 'none'; }, 2500);
         }
 
-        // ── 보안 스크립트 (공유 기능 허용을 위해 조건부 차단 적용) ──
+        // ── 보안 스크립트 (충돌 해결 버전) ──
         document.addEventListener('contextmenu', e => e.preventDefault());
         
-        // 사용자가 텍스트를 직접 드래그해서 복사하는 것만 방지
         document.addEventListener('copy', e => {
-            const selection = window.getSelection().toString();
-            if (selection.length > 0) {
+            // 시스템이 생성한 임시 텍스트 영역(temp-copy-area)이 아닐 때만 차단
+            if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) {
                 e.preventDefault();
             }
         });
@@ -289,8 +284,8 @@
         document.addEventListener('keydown', e => {
             if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || (e.ctrlKey && e.key === 'U')) e.preventDefault();
             if (e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'p')) {
-                // 선택된 텍스트가 있을 때만 차단
-                if (window.getSelection().toString().length > 0) e.preventDefault();
+                // 시스템 복사가 아닐 때만 Ctrl+C 차단
+                if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) e.preventDefault();
             }
             if (e.key === 'PrintScreen') navigator.clipboard.writeText('');
         });

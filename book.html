@@ -1,33 +1,22 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <!-- Google tag (gtag.js) -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3207219520058740"
+     crossorigin="anonymous"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-NBGELYQ4TZ"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-NBGELYQ4TZ');
-      gtag('config', 'GT-5MJDBTR2');
-    </script>
-
+    <script>window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-NBGELYQ4TZ'); gtag('config', 'GT-5MJDBTR2');</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Chris Lee.Papa – BOOK | SisterSquad · MiracleShot">
-
-    <!-- SNS 공유용 OG 태그 -->
     <meta property="og:title" content="BOOK – Chris LEE.PAPA">
     <meta property="og:description" content="상상력이 종이에 그려진 순간 일어나는 기적, 도서 및 세계관 아카이브입니다.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://chrisleepapa-official.vercel.app/book.html">
     <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png">
-
     <link rel="canonical" href="https://chrisleepapa-official.vercel.app/book.html">
     <link rel="icon" href="images/favicon.png">
     <title>BOOK – Chris LEE.PAPA</title>
     
-    <!-- 폰트 통합 호출 (index.html 기준 규격 통일) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Cormorant+Garamond:wght@600&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
@@ -35,227 +24,67 @@
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        :root {
-            --gold: #c9a84c;
-            --gold-light: #e8d08a;
-            --cyan: #00d4ff;
-            --bg: #030305;
-            --text: #f0ece4;
-            --text-dim: #9a9490;
-            --nav-height: 70px;
-            --pink-glow: rgba(255, 180, 200, 0.3);
-        }
-
+        :root { --gold: #c9a84c; --gold-light: #e8d08a; --cyan: #00d4ff; --bg: #030305; --text: #f0ece4; --text-dim: #9a9490; --nav-height: 70px; --pink-glow: rgba(255, 180, 200, 0.3); }
         html { scroll-behavior: smooth; background-color: var(--bg); }
-
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Pretendard', 'Noto Serif KR', serif;
-            line-height: 1.6;
-            overflow-x: hidden;
-            background-image: radial-gradient(circle at top right, rgba(20, 20, 40, 0.8), transparent 60%),
-                              radial-gradient(circle at bottom left, rgba(10, 10, 20, 0.9), transparent 60%);
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
+        body { background-color: var(--bg); color: var(--text); font-family: 'Pretendard', 'Noto Serif KR', serif; line-height: 1.6; overflow-x: hidden; background-image: radial-gradient(circle at top right, rgba(20, 20, 40, 0.8), transparent 60%), radial-gradient(circle at bottom left, rgba(10, 10, 20, 0.9), transparent 60%); -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
         img { -webkit-user-drag: none; }
-
-        body::before {
-            content: ''; position: fixed; inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-            pointer-events: none; z-index: 900; opacity: 0.3;
-        }
-
+        body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events: none; z-index: 900; opacity: 0.3; }
         a { text-decoration: none; color: inherit; }
 
-        /* ── 네비게이션 (index.html 규격 적용) ── */
-        nav {
-            position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px;
-            display: flex; justify-content: space-between; align-items: center;
-            z-index: 1000; background: rgba(3, 3, 5, 0.8); backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .brand-logo { 
-            font-family: 'Cinzel', serif; 
-            font-size: 1.3rem; 
-            font-weight: 800; 
-            letter-spacing: 2px; 
-            color: var(--gold-light); 
-            z-index: 1001;
-            text-decoration: none;
-            white-space: nowrap;
-        }
-
+        nav { position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(3, 3, 5, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); z-index: 1001; text-decoration: none; white-space: nowrap; }
         .nav-right { display: flex; align-items: center; gap: 30px; }
         .nav-links { display: flex; gap: 30px; }
         .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; text-decoration: none; }
         .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
-
-        .share-trigger {
-            cursor: pointer; padding: 6px 12px; border: 1px solid rgba(201,168,76,0.3);
-            border-radius: 20px; font-family: 'Cinzel', serif; font-size: 0.7rem;
-            color: var(--gold-light); transition: 0.3s; letter-spacing: 1px;
-        }
+        .share-trigger { cursor: pointer; padding: 6px 12px; border: 1px solid rgba(201,168,76,0.3); border-radius: 20px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: var(--gold-light); transition: 0.3s; letter-spacing: 1px; }
         .share-trigger:hover { background: rgba(201,168,76,0.1); border-color: var(--gold-light); }
-
         .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
         .menu-toggle span { width: 22px; height: 1.5px; background-color: var(--gold-light); transition: 0.3s; }
 
-        /* ── 공유 모달 & 토스트 ── */
-        .modal-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
-            z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: 0.3s;
-        }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; }
         .modal-overlay.active { display: flex; opacity: 1; }
-        .share-modal {
-            background: #0a0a0f; border: 1px solid var(--gold); border-radius: 24px;
-            width: 90%; max-width: 400px; padding: 45px 30px; text-align: center;
-            box-shadow: 0 30px 70px rgba(0,0,0,0.9);
-        }
+        .share-modal { background: #0a0a0f; border: 1px solid var(--gold); border-radius: 24px; width: 90%; max-width: 400px; padding: 45px 30px; text-align: center; box-shadow: 0 30px 70px rgba(0,0,0,0.9); }
         .share-modal h3 { font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--gold-light); margin-bottom: 15px; }
         .share-modal p { font-size: 0.9rem; color: #888; margin-bottom: 35px; }
         .share-buttons { display: flex; flex-direction: column; gap: 14px; }
-        .modal-btn {
-            padding: 16px; border-radius: 12px; border: none; font-family: 'Cinzel', serif;
-            font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: 0.3s;
-        }
+        .modal-btn { padding: 16px; border-radius: 12px; border: none; font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: 0.3s; }
         .btn-copy { background: var(--gold); color: #000; }
         .btn-sns { background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #fff; }
         .btn-close-modal { margin-top: 25px; color: #666; background: none; font-size: 0.8rem; text-decoration: underline; border: none; cursor: pointer; }
+        .toast-msg { position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%); background: var(--gold); color: #000; padding: 12px 30px; border-radius: 40px; font-size: 0.9rem; font-weight: 700; z-index: 3000; display: none; animation: fadeUp 0.4s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 
-        .toast-msg {
-            position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%);
-            background: var(--gold); color: #000; padding: 12px 30px; border-radius: 40px;
-            font-size: 0.9rem; font-weight: 700; z-index: 3000; display: none; animation: fadeUp 0.4s ease;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        /* ── 페이지 헤더 ── */
-        .page-header {
-            position: relative; width: 100%; height: 350px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            overflow: hidden; padding-top: var(--nav-height);
-        }
-
+        .page-header { position: relative; width: 100%; height: 350px; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; padding-top: var(--nav-height); }
         #stars-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
         .header-content { position: relative; z-index: 3; text-align: center; animation: fadeUp 1.2s ease both; }
-        .header-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(2rem, 8vw, 3.5rem); 
-            font-weight: 600; letter-spacing: 0.1em;
-            color: var(--gold-light);
-            text-shadow: 0 0 20px rgba(201,168,76,0.3);
-            margin-bottom: 10px;
-        }
-        .header-slogan {
-            font-family: 'Cinzel', serif; font-size: clamp(0.7rem, 2vw, 0.9rem); 
-            letter-spacing: 0.4em; color: var(--text-dim);
-            text-transform: uppercase;
-        }
+        .header-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 8vw, 3.5rem); font-weight: 600; letter-spacing: 0.1em; color: var(--gold-light); text-shadow: 0 0 20px rgba(201,168,76,0.3); margin-bottom: 10px; }
+        .header-slogan { font-family: 'Cinzel', serif; font-size: clamp(0.7rem, 2vw, 0.9rem); letter-spacing: 0.4em; color: var(--text-dim); text-transform: uppercase; }
 
-        /* ── 콘텐츠 레이아웃 ── */
         .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px 100px; position: relative; z-index: 10; }
 
-        /* SISTER SQUAD */
-        .hero-card.sistersquad {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 180, 200, 0.2);
-            border-radius: 24px; padding: 60px 40px;
-            text-align: center; margin-bottom: 60px;
-            backdrop-filter: blur(10px);
-            transition: transform 0.4s ease, border-color 0.4s, box-shadow 0.4s;
-            animation: fadeUp 1s ease 0.2s both;
-            cursor: pointer;
-        }
-        .hero-card.sistersquad:hover {
-            transform: translateY(-8px);
-            border-color: rgba(255, 180, 200, 0.5);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 40px var(--pink-glow);
-        }
-        .card-image-box {
-            width: 100%; max-width: 500px; height: 300px;
-            margin: 0 auto 35px; border-radius: 16px;
-            background-image: url('images/book.png');
-            background-size: cover; background-position: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .sister-title { 
-            font-family: 'Cinzel', serif; font-size: clamp(2rem, 6vw, 3.2rem); 
-            font-weight: 700; color: #ffb4c8; margin-bottom: 20px; 
-            letter-spacing: 2px; text-shadow: 0 0 15px var(--pink-glow);
-        }
-        .desc-text { 
-            font-size: 1.1rem; color: #cdd6f4; max-width: 750px; 
-            margin: 0 auto 35px; line-height: 1.8; font-weight: 300; word-break: keep-all;
-        }
-        .action-btn {
-            display: inline-block; padding: 12px 45px;
-            background: transparent; color: #fff;
-            border: 1px solid #ffb4c8; border-radius: 30px;
-            font-weight: 600; font-size: 0.95rem; transition: 0.3s;
-            letter-spacing: 1px; text-transform: uppercase;
-        }
+        .hero-card.sistersquad { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 180, 200, 0.2); border-radius: 24px; padding: 60px 40px; text-align: center; margin-bottom: 60px; backdrop-filter: blur(10px); transition: transform 0.4s ease, border-color 0.4s, box-shadow 0.4s; animation: fadeUp 1s ease 0.2s both; cursor: pointer; }
+        .hero-card.sistersquad:hover { transform: translateY(-8px); border-color: rgba(255, 180, 200, 0.5); box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 40px var(--pink-glow); }
+        .card-image-box { width: 100%; max-width: 500px; height: 300px; margin: 0 auto 35px; border-radius: 16px; background-image: url('images/book.png'); background-size: cover; background-position: center; box-shadow: 0 15px 35px rgba(0,0,0,0.5); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .sister-title { font-family: 'Cinzel', serif; font-size: clamp(2rem, 6vw, 3.2rem); font-weight: 700; color: #ffb4c8; margin-bottom: 20px; letter-spacing: 2px; text-shadow: 0 0 15px var(--pink-glow); }
+        .desc-text { font-size: 1.1rem; color: #cdd6f4; max-width: 750px; margin: 0 auto 35px; line-height: 1.8; font-weight: 300; word-break: keep-all; }
+        .action-btn { display: inline-block; padding: 12px 45px; background: transparent; color: #fff; border: 1px solid #ffb4c8; border-radius: 30px; font-weight: 600; font-size: 0.95rem; transition: 0.3s; letter-spacing: 1px; text-transform: uppercase; }
         .hero-card:hover .action-btn { background: #ffb4c8; color: #000; box-shadow: 0 0 20px var(--pink-glow); }
 
-        /* MIRACLE SHOT */
-        .teaser-card {
-            background: rgba(255, 255, 255, 0.01);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 20px; padding: 50px 40px;
-            display: flex; flex-direction: column; align-items: center; gap: 30px;
-            backdrop-filter: blur(5px);
-            animation: fadeUp 1s ease 0.4s both;
-            text-align: center;
-        }
-        .teaser-img-wrap {
-            position: relative; width: 100%; border-radius: 12px; overflow: hidden;
-        }
-        .teaser-img {
-            width: 100%; height: 320px; border-radius: 12px;
-            background-image: url('images/miracleshot1.png');
-            background-size: cover; background-position: center;
-            opacity: 0.8; filter: contrast(1.1);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .teaser-coming-soon {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: rgba(74, 144, 226, 0.85); color: #fff;
-            padding: 12px 36px; border-radius: 30px;
-            font-family: 'Cinzel', serif; font-size: 1rem; font-weight: 700;
-            letter-spacing: 3px; text-transform: uppercase;
-            backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,0.25);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4); white-space: nowrap;
-        }
+        .teaser-card { background: rgba(255, 255, 255, 0.01); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 50px 40px; display: flex; flex-direction: column; align-items: center; gap: 30px; backdrop-filter: blur(5px); animation: fadeUp 1s ease 0.4s both; text-align: center; }
+        .teaser-img-wrap { position: relative; width: 100%; border-radius: 12px; overflow: hidden; }
+        .teaser-img { width: 100%; height: 320px; border-radius: 12px; background-image: url('images/miracleshot1.png'); background-size: cover; background-position: center; opacity: 0.8; filter: contrast(1.1); box-shadow: 0 10px 20px rgba(0,0,0,0.4); border: 1px solid rgba(255, 255, 255, 0.05); }
+        
+        /* ── Pulse Glow 애니메이션 적용 ── */
+        @keyframes pulseGlow { 0% { box-shadow: 0 0 0 0 rgba(74, 144, 226, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(74, 144, 226, 0); } 100% { box-shadow: 0 0 0 0 rgba(74, 144, 226, 0); } }
+        .teaser-coming-soon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(74, 144, 226, 0.85); color: #fff; padding: 12px 36px; border-radius: 30px; font-family: 'Cinzel', serif; font-size: 1rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,0.25); white-space: nowrap; animation: pulseGlow 2s infinite; }
+        
         .teaser-content { width: 100%; }
         .teaser-title { font-size: 2rem; color: #ffffff; margin-bottom: 15px; font-weight: 700; }
         .teaser-desc { color: #8a8a9d; font-size: 1rem; line-height: 1.7; word-break: keep-all; }
 
         footer { text-align: center; padding: 80px 40px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: #555; border-top: 1px solid rgba(255,255,255,0.03); }
 
-        @media (max-width: 900px) {
-            nav { padding: 0 20px; }
-            .brand-logo { font-size: 1.1rem; } /* 모바일 일관성 */
-            .nav-links { display: none; }
-            .nav-links.active {
-                display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height));
-                background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 25px;
-                z-index: 1002;
-            }
-            .menu-toggle { display: flex; }
-            .hero-card.sistersquad { padding: 45px 20px; }
-            .card-image-box { height: 220px; }
-            .teaser-card { padding: 30px 20px; gap: 20px; }
-            .teaser-img { height: 220px; background-size: cover; } /* 모바일에서 이미지 높이 조정 */
-        }
-
+        @media (max-width: 900px) { nav { padding: 0 20px; } .brand-logo { font-size: 1.1rem; } .nav-links { display: none; } .nav-links.active { display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height)); background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 25px; z-index: 1002; } .menu-toggle { display: flex; } .hero-card.sistersquad { padding: 45px 20px; } .card-image-box { height: 220px; } .teaser-card { padding: 30px 20px; gap: 20px; } .teaser-img { height: 220px; background-size: cover; } }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
@@ -299,19 +128,13 @@
     </header>
 
     <div class="container">
-        <!-- SISTER SQUAD -->
         <section class="hero-card sistersquad" onclick="safeNavigate('sistersquad.html')">
             <div class="card-image-box"></div>
             <h2 class="sister-title">SISTER SQUAD</h2>
-            <p class="desc-text">
-                책 속 마법 세계로 들어간 언니와 동생!<br>
-                어둠에 맞서며 진정한 용기와<br> 가족의 사랑을 깨닫는 환상적인 모험.<br>
-                사랑하는 두 딸에게서 영감을 받아<br> 탄생한 따뜻한 판타지 소설 입니다.
-            </p>
+            <p class="desc-text">책 속 마법 세계로 들어간 언니와 동생!<br>어둠에 맞서며 진정한 용기와<br> 가족의 사랑을 깨닫는 환상적인 모험.<br>사랑하는 두 딸에게서 영감을 받아<br> 탄생한 따뜻한 판타지 소설 입니다.</p>
             <a href="sistersquad.html" class="action-btn">Read More</a>
         </section>
 
-        <!-- Miracle Shot -->
         <section class="teaser-card">
             <div class="teaser-img-wrap">
                 <div class="teaser-img"></div>
@@ -319,11 +142,7 @@
             </div>
             <div class="teaser-content">
                 <h2 class="teaser-title">Miracle Shot</h2>
-                <p class="teaser-desc">
-                    개성이 넘치는 아이들과 함께 실패에서<br>기적을 쏘아 올리는 이코치의 이야기.<br>
-                    최강 골레이로 '영', 불꽃슈터 '황'<br> 슈퍼소닉 '길', 패스마스터 '고'<br>
-                    네 소년의 환상의 풋살 판타지를 만나세요.
-                </p>
+                <p class="teaser-desc">개성이 넘치는 아이들과 함께 실패에서<br>기적을 쏘아 올리는 이코치의 이야기.<br>최강 골레이로 '영', 불꽃슈터 '황'<br> 슈퍼소닉 '길', 패스마스터 '고'<br>네 소년의 환상의 풋살 판타지를 만나세요.</p>
             </div>
         </section>
     </div>
@@ -332,106 +151,38 @@
 
     <script>
         function safeNavigate(url) { if (url && url.trim() !== "") { window.location.assign(url); } }
+        const menuToggle = document.getElementById('mobile-menu'); const navLinks = document.getElementById('navLinks');
+        menuToggle.addEventListener('click', () => { menuToggle.classList.toggle('active'); navLinks.classList.toggle('active'); });
 
-        const menuToggle = document.getElementById('mobile-menu');
-        const navLinks = document.getElementById('navLinks');
-        menuToggle.addEventListener('click', () => {
-            menuToggle.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        });
-
-        const shareOverlay = document.getElementById('shareOverlay');
-        const toast = document.getElementById('toast');
-
-        function openShareModal() {
-            shareOverlay.style.display = 'flex';
-            setTimeout(() => shareOverlay.classList.add('active'), 10);
-        }
-
-        function closeShareModal(e) {
-            if (e && e.target !== shareOverlay && e.type !== 'click') return;
-            shareOverlay.classList.remove('active');
-            setTimeout(() => shareOverlay.style.display = 'none', 300);
-        }
+        const shareOverlay = document.getElementById('shareOverlay'); const toast = document.getElementById('toast');
+        function openShareModal() { shareOverlay.style.display = 'flex'; setTimeout(() => shareOverlay.classList.add('active'), 10); }
+        function closeShareModal(e) { if (e && e.target !== shareOverlay && e.type !== 'click') return; shareOverlay.classList.remove('active'); setTimeout(() => shareOverlay.style.display = 'none', 300); }
 
         async function copyURL() {
-            const currentUrl = window.location.href;
-            let success = false;
-            if (navigator.clipboard && window.isSecureContext) {
-                try { await navigator.clipboard.writeText(currentUrl); success = true; } catch (err) { }
-            }
+            const currentUrl = window.location.href; let success = false;
+            if (navigator.clipboard && window.isSecureContext) { try { await navigator.clipboard.writeText(currentUrl); success = true; } catch (err) { } }
             if (!success) {
-                const textArea = document.createElement("textarea");
-                textArea.value = currentUrl;
-                textArea.id = "temp-copy-area";
-                textArea.style.position = "fixed"; textArea.style.left = "-9999px";
-                document.body.appendChild(textArea);
-                textArea.focus(); textArea.select();
-                try { success = document.execCommand('copy'); } catch (err) { }
-                document.body.removeChild(textArea);
+                const textArea = document.createElement("textarea"); textArea.value = currentUrl; textArea.id = "temp-copy-area"; textArea.style.position = "fixed"; textArea.style.left = "-9999px";
+                document.body.appendChild(textArea); textArea.focus(); textArea.select();
+                try { success = document.execCommand('copy'); } catch (err) { } document.body.removeChild(textArea);
             }
-            if (success) { showToast('Link copied to clipboard!'); }
-            closeShareModal();
+            if (success) { showToast('Link copied to clipboard!'); } closeShareModal();
         }
 
-        function shareViaWebAPI() {
-            if (navigator.share) {
-                navigator.share({
-                    title: 'Chris LEE.PAPA - BOOKS',
-                    text: '상상이 현실이 되는 곳, 크리스리의 도서 아카이브입니다.',
-                    url: window.location.href
-                }).catch(console.error);
-            } else { showToast('Sharing is not supported.'); }
-        }
+        function shareViaWebAPI() { if (navigator.share) { navigator.share({ title: 'Chris LEE.PAPA - BOOKS', text: '상상이 현실이 되는 곳, 크리스리의 도서 아카이브입니다.', url: window.location.href }).catch(console.error); } else { showToast('Sharing is not supported.'); } }
+        function showToast(msg) { toast.textContent = msg; toast.style.display = 'block'; setTimeout(() => { toast.style.display = 'none'; }, 2500); }
 
-        function showToast(msg) {
-            toast.textContent = msg;
-            toast.style.display = 'block';
-            setTimeout(() => { toast.style.display = 'none'; }, 2500);
-        }
-
-        const canvas = document.getElementById('stars-canvas');
-        const ctx = canvas.getContext('2d');
-        let stars = [];
+        const canvas = document.getElementById('stars-canvas'); const ctx = canvas.getContext('2d'); let stars = [];
         function resize() { canvas.width = window.innerWidth; canvas.height = 350; initStars(); }
-        function initStars() {
-            stars = [];
-            const count = (canvas.width * canvas.height) / 7500;
-            for (let i = 0; i < count; i++) {
-                stars.push({
-                    x: Math.random() * canvas.width, y: Math.random() * canvas.height,
-                    size: Math.random() * 1.6 + 0.2, opacity: Math.random(),
-                    speed: Math.random() * 0.02 + 0.005
-                });
-            }
-        }
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            stars.forEach(s => {
-                s.opacity += s.speed;
-                if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed;
-                ctx.beginPath();
-                ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0, s.opacity)})`;
-                ctx.fill();
-            });
-            requestAnimationFrame(draw);
-        }
-        window.addEventListener('resize', resize);
-        resize(); draw();
+        function initStars() { stars = []; const count = (canvas.width * canvas.height) / 7500; for (let i = 0; i < count; i++) { stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 1.6 + 0.2, opacity: Math.random(), speed: Math.random() * 0.02 + 0.005 }); } }
+        function draw() { ctx.clearRect(0, 0, canvas.width, canvas.height); stars.forEach(s => { s.opacity += s.speed; if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed; ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0, s.opacity)})`; ctx.fill(); }); requestAnimationFrame(draw); }
+        window.addEventListener('resize', resize); resize(); draw();
 
-        // ── 보안 스크립트 ──
         document.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('copy', e => {
-            if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) {
-                e.preventDefault();
-            }
-        });
+        document.addEventListener('copy', e => { if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) { e.preventDefault(); } });
         document.addEventListener('keydown', e => {
             if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || (e.ctrlKey && e.key === 'U')) e.preventDefault();
-            if (e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'p')) {
-                if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) e.preventDefault();
-            }
+            if (e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'p')) { if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) e.preventDefault(); }
             if (e.key === 'PrintScreen') navigator.clipboard.writeText('');
         });
     </script>

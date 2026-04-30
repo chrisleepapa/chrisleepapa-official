@@ -16,20 +16,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="율이 (Yul) Profile – SisterSquad | Chris LEE.PAPA">
     
-    <!-- SNS 공유용 OG 태그 (최종 수정본) -->
+    <!-- SNS 공유용 OG 태그 -->
     <meta property="og:title" content="율이 (Yul) Profile – SisterSquad">
     <meta property="og:description" content="냉철한 이성의 검, 염력의 마스터 율이의 프로필을 확인해보세요.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://chrisleepapa-official.vercel.app/yul.html">
-    <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1">
+    <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png">
 
     <link rel="canonical" href="https://chrisleepapa-official.vercel.app/yul.html">
     <title>율이 (Yul) Profile – SisterSquad</title>
     
-    <!-- 폰트 통합 호출 -->
+    <!-- 폰트 통합 호출 (index.html 기준 규격 통일) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Cormorant+Garamond:wght@600&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Cormorant+Garamond:wght@600&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
 
     <style>
@@ -55,10 +55,7 @@
             overflow-x: hidden;
             background-image: radial-gradient(circle at top left, rgba(10, 30, 60, 0.8), transparent 60%),
                               radial-gradient(circle at bottom right, rgba(10, 10, 30, 0.9), transparent 60%);
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
+            -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
         }
 
         img { -webkit-user-drag: none; }
@@ -71,23 +68,32 @@
 
         a { text-decoration: none; color: inherit; }
 
-        /* ── 네비게이션 ── */
+        /* ── 네비게이션 (규격 통일) ── */
         nav {
             position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px;
             display: flex; justify-content: space-between; align-items: center;
-            z-index: 1000; background: rgba(3, 3, 5, 0.8); backdrop-filter: blur(15px);
+            z-index: 1000; background: rgba(3, 3, 5, 0.8); backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); }
+        .brand-logo { 
+            font-family: 'Cinzel', serif; 
+            font-size: 1.3rem; 
+            font-weight: 800; 
+            letter-spacing: 2px; 
+            color: var(--gold-light); 
+            z-index: 1001; 
+            text-decoration: none;
+            white-space: nowrap;
+        }
 
         .nav-right { display: flex; align-items: center; gap: 30px; }
         .nav-links { display: flex; gap: 30px; }
-        .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; }
+        .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; text-decoration: none; }
         .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
 
         .share-trigger {
-            cursor: pointer; padding: 6px 14px; border: 1px solid rgba(201,168,76,0.3);
+            cursor: pointer; padding: 6px 12px; border: 1px solid rgba(201,168,76,0.3);
             border-radius: 20px; font-family: 'Cinzel', serif; font-size: 0.7rem;
             color: var(--gold-light); transition: 0.3s; letter-spacing: 1px;
         }
@@ -96,7 +102,7 @@
         .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
         .menu-toggle span { width: 22px; height: 1.5px; background-color: var(--gold-light); transition: 0.3s; }
 
-        /* ── 공유 모달 & 토스트 ── */
+        /* 공유 모달 */
         .modal-overlay-share {
             position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
             z-index: 3000; display: none; align-items: center; justify-content: center; opacity: 0; transition: 0.3s;
@@ -125,7 +131,6 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        /* ── 헤더 섹션 ── */
         .page-header {
             position: relative; width: 100%; height: 400px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -139,12 +144,8 @@
             text-shadow: 0 0 30px var(--char-glow), 0 0 10px var(--char-accent);
             margin-bottom: 10px; text-transform: uppercase;
         }
-        .header-slogan {
-            font-family: 'Cormorant Garamond', serif; font-size: clamp(1rem, 2.5vw, 1.4rem); 
-            letter-spacing: 0.3em; color: var(--char-accent); font-style: italic;
-        }
+        .header-slogan { font-family: 'Cormorant Garamond', serif; font-size: clamp(1rem, 2.5vw, 1.4rem); letter-spacing: 0.3em; color: var(--char-accent); font-style: italic; }
 
-        /* ── 메인 콘텐츠 ── */
         .container { max-width: 1200px; margin: 0 auto; padding: 10px 20px 100px; position: relative; z-index: 10; }
         .back-link {
             display: inline-flex; align-items: center; gap: 8px; font-family: 'Cinzel', serif;
@@ -183,28 +184,14 @@
             font-family: 'Noto Serif KR', serif; font-size: 1.2rem; font-style: italic; color: #fff; line-height: 1.6;
         }
 
-        .section-title {
-            font-family: 'Cinzel', serif; font-size: 1.8rem; color: var(--gold);
-            letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 40px;
-            padding-bottom: 15px; border-bottom: 1px solid rgba(201,168,76,0.2);
-            text-align: center; margin-top: 80px; animation: fadeUp 1s ease 0.6s both;
-        }
+        .section-title { font-family: 'Cinzel', serif; font-size: 1.8rem; color: var(--gold); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 40px; padding-bottom: 15px; border-bottom: 1px solid rgba(201,168,76,0.2); text-align: center; margin-top: 80px; animation: fadeUp 1s ease 0.6s both; }
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; animation: fadeUp 1s ease 0.8s both; }
-        .gallery-item {
-            position: relative; border-radius: 16px; overflow: hidden; aspect-ratio: 16/9; background: #000;
-            border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-            cursor: pointer; transition: all 0.4s ease;
-        }
+        .gallery-item { position: relative; border-radius: 16px; overflow: hidden; aspect-ratio: 16/9; background: #000; border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 15px 35px rgba(0,0,0,0.5); cursor: pointer; transition: all 0.4s ease; }
         .gallery-item:hover { transform: translateY(-8px); border-color: var(--char-accent); box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2); }
         .gallery-img { width: 100%; height: 100%; background-size: cover; background-position: center; filter: brightness(0.8) grayscale(20%); transition: all 0.5s ease; }
         .gallery-item:hover .gallery-img { filter: brightness(1.1) grayscale(0%); transform: scale(1.08); }
 
-        /* 라이트박스 모달 */
-        .modal-gallery {
-            display: none; position: fixed; z-index: 2000; inset: 0;
-            background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px);
-            align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;
-        }
+        .modal-gallery { display: none; position: fixed; z-index: 2000; inset: 0; background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px); align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; }
         .modal-gallery.show { display: flex; opacity: 1; }
         .modal-content { max-width: 90vw; max-height: 90vh; border-radius: 12px; box-shadow: 0 15px 40px rgba(0,0,0,0.6); transform: scale(0.95); transition: transform 0.3s ease; object-fit: contain; }
         .modal-gallery.show .modal-content { transform: scale(1); }
@@ -215,18 +202,15 @@
 
         @media (max-width: 900px) {
             nav { padding: 0 20px; }
+            .brand-logo { font-size: 1.1rem; }
             .nav-links { display: none; }
-            .nav-links.active {
-                display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height));
-                background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 25px; z-index: 1002;
-            }
+            .nav-links.active { display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height)); background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 25px; z-index: 1002; }
             .menu-toggle { display: flex; }
             .profile-layout { grid-template-columns: 1fr; gap: 40px; }
             .profile-visual { max-width: 500px; margin: 0 auto; }
             .data-header { text-align: center; }
             .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
         }
-
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
@@ -247,7 +231,6 @@
         </div>
     </nav>
 
-    <!-- 공유 모달 팝업 -->
     <div class="modal-overlay-share" id="shareOverlay" onclick="closeShareModal(event)">
         <div class="share-modal" onclick="event.stopPropagation()">
             <h3>SHARE YUL'S PROFILE</h3>
@@ -260,7 +243,6 @@
         </div>
     </div>
 
-    <!-- 토스트 메시지 -->
     <div class="toast-msg" id="toast">Link copied!</div>
 
     <header class="page-header">
@@ -272,7 +254,7 @@
     </header>
 
     <main class="container">
-        <a href="sistersquad.html" class="back-link" onclick="location.assign('sistersquad.html'); return false;">‹ Back to SisterSquad</a>
+        <a href="sistersquad.html" class="back-link" onclick="safeNavigate('sistersquad.html'); return false;">‹ Back to SisterSquad</a>
 
         <div class="profile-layout">
             <div class="profile-visual">
@@ -305,7 +287,7 @@
             <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/yul01.png');"></div></div>
             <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/yul02.jpg');"></div></div>
             <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/yul03.png');"></div></div>
-            <div class="gallery-item"><div class="gallery-item"><div class="gallery-img" style="background-image: url('images/yul04.jpg');"></div></div></div>
+            <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/yul04.jpg');"></div></div>
             <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/yul05.jpg');"></div></div>
             <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/yul06.jpg');"></div></div>
             <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/yul07.jpg');"></div></div>
@@ -327,75 +309,39 @@
 
     <script>
         function safeNavigate(url) { if (url && url.trim() !== "") { window.location.assign(url); } }
-
         const menuToggle = document.getElementById('mobile-menu');
         const navLinks = document.getElementById('navLinks');
-        menuToggle.addEventListener('click', () => {
-            menuToggle.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        });
+        menuToggle.addEventListener('click', () => { menuToggle.classList.toggle('active'); navLinks.classList.toggle('active'); });
 
-        // ── 공유 로직 (보안 우회 및 하이브리드 로직) ──
         const shareOverlay = document.getElementById('shareOverlay');
         const toast = document.getElementById('toast');
-
-        function openShareModal() {
-            shareOverlay.style.display = 'flex';
-            setTimeout(() => shareOverlay.classList.add('active'), 10);
-        }
-
-        function closeShareModal(e) {
-            if (e && e.target !== shareOverlay && e.type !== 'click') return;
-            shareOverlay.classList.remove('active');
-            setTimeout(() => shareOverlay.style.display = 'none', 300);
-        }
+        function openShareModal() { shareOverlay.style.display = 'flex'; setTimeout(() => shareOverlay.classList.add('active'), 10); }
+        function closeShareModal(e) { if (e && e.target !== shareOverlay && e.type !== 'click') return; shareOverlay.classList.remove('active'); setTimeout(() => shareOverlay.style.display = 'none', 300); }
 
         async function copyURL() {
             const currentUrl = window.location.href;
             let success = false;
-
-            if (navigator.clipboard && window.isSecureContext) {
-                try {
-                    await navigator.clipboard.writeText(currentUrl);
-                    success = true;
-                } catch (err) {}
-            }
-
+            if (navigator.clipboard && window.isSecureContext) { try { await navigator.clipboard.writeText(currentUrl); success = true; } catch (err) {} }
             if (!success) {
                 const textArea = document.createElement("textarea");
                 textArea.value = currentUrl;
-                textArea.id = "temp-copy-area"; // 고유 ID 부여
-                textArea.style.position = "fixed";
-                textArea.style.left = "-9999px";
+                textArea.id = "temp-copy-area";
+                textArea.style.position = "fixed"; textArea.style.left = "-9999px";
                 document.body.appendChild(textArea);
-                textArea.focus();
-                textArea.select();
-                try {
-                    success = document.execCommand('copy');
-                } catch (err) {}
+                textArea.focus(); textArea.select();
+                try { success = document.execCommand('copy'); } catch (err) {}
                 document.body.removeChild(textArea);
             }
-
-            if (success) {
-                showToast('Link copied to clipboard!');
-            } else {
-                showToast('Copy failed. Please copy manually.');
-            }
+            if (success) { showToast('Link copied to clipboard!'); }
             closeShareModal();
         }
 
         function shareViaWebAPI() {
-            if (navigator.share) {
-                navigator.share({ title: 'Yul (SisterSquad) Profile', url: window.location.href }).catch(console.error);
-            } else { showToast('Sharing is not supported.'); }
+            if (navigator.share) { navigator.share({ title: 'Yul (SisterSquad) Profile', url: window.location.href }).catch(console.error); }
+            else { showToast('Sharing is not supported.'); }
         }
+        function showToast(msg) { toast.textContent = msg; toast.style.display = 'block'; setTimeout(() => { toast.style.display = 'none'; }, 2500); }
 
-        function showToast(msg) {
-            toast.textContent = msg; toast.style.display = 'block';
-            setTimeout(() => { toast.style.display = 'none'; }, 2500);
-        }
-
-        // ── 캔버스 별빛 ──
         const canvas = document.getElementById('stars-canvas');
         const ctx = canvas.getContext('2d');
         let stars = [];
@@ -404,28 +350,16 @@
             stars = [];
             const count = (canvas.width * canvas.height) / 7000;
             for (let i = 0; i < count; i++) {
-                stars.push({
-                    x: Math.random() * canvas.width, y: Math.random() * canvas.height,
-                    size: Math.random() * 1.5 + 0.2, opacity: Math.random(),
-                    speed: Math.random() * 0.015 + 0.005,
-                    color: Math.random() > 0.75 ? '0, 212, 255' : '255, 255, 255'
-                });
+                stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 1.5 + 0.2, opacity: Math.random(), speed: Math.random() * 0.015 + 0.005, color: Math.random() > 0.75 ? '0, 212, 255' : '255, 255, 255' });
             }
         }
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            stars.forEach(s => {
-                s.opacity += s.speed;
-                if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed;
-                ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(${s.color}, ${Math.max(0, s.opacity)})`; ctx.fill();
-            });
+            stars.forEach(s => { s.opacity += s.speed; if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed; ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fillStyle = `rgba(${s.color}, ${Math.max(0, s.opacity)})`; ctx.fill(); });
             requestAnimationFrame(draw);
         }
-        window.addEventListener('resize', resize);
-        resize(); draw();
+        window.addEventListener('resize', resize); resize(); draw();
 
-        // ── 갤러리 ──
         const galleryModal = document.getElementById('imageModal');
         const modalImg = document.getElementById('modalImg');
         const closeGallery = document.getElementById('closeGallery');
@@ -440,7 +374,6 @@
         closeGallery.addEventListener('click', closeLightBox);
         galleryModal.addEventListener('click', (e) => { if (e.target === galleryModal) closeLightBox(); });
 
-        // ── 보안 스크립트 (충돌 해결 버전) ──
         document.addEventListener('contextmenu', e => e.preventDefault());
         document.addEventListener('copy', e => {
             if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) {

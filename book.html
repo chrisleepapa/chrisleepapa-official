@@ -26,10 +26,10 @@
     <link rel="canonical" href="https://chrisleepapa-official.vercel.app/book.html">
     <title>BOOK – Chris LEE.PAPA</title>
     
-    <!-- 폰트 통합 호출 -->
+    <!-- 폰트 통합 호출 (worship.html 기준 최적화) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Cormorant+Garamond:wght@600&family=Noto+Serif+KR:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Cormorant+Garamond:wght@300;600&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
 
     <style>
@@ -72,11 +72,11 @@
 
         a { text-decoration: none; color: inherit; }
 
-        /* ── 네비게이션 ── */
+        /* ── 네비게이션 (worship.html 기준 통일) ── */
         nav {
             position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px;
             display: flex; justify-content: space-between; align-items: center;
-            z-index: 1000; background: rgba(3, 3, 5, 0.8); backdrop-filter: blur(15px);
+            z-index: 1000; background: rgba(3, 3, 5, 0.7); backdrop-filter: blur(15px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
@@ -135,9 +135,7 @@
         }
 
         #stars-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
-
         .header-content { position: relative; z-index: 3; text-align: center; animation: fadeUp 1.2s ease both; }
-
         .header-title {
             font-family: 'Cormorant Garamond', serif;
             font-size: clamp(2rem, 8vw, 3.5rem); 
@@ -146,7 +144,6 @@
             text-shadow: 0 0 20px rgba(201,168,76,0.3);
             margin-bottom: 10px;
         }
-
         .header-slogan {
             font-family: 'Cinzel', serif; font-size: clamp(0.7rem, 2vw, 0.9rem); 
             letter-spacing: 0.4em; color: var(--text-dim);
@@ -156,6 +153,7 @@
         /* ── 콘텐츠 레이아웃 ── */
         .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px 100px; position: relative; z-index: 10; }
 
+        /* SISTER SQUAD */
         .hero-card.sistersquad {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 180, 200, 0.2);
@@ -166,13 +164,11 @@
             animation: fadeUp 1s ease 0.2s both;
             cursor: pointer;
         }
-        
         .hero-card.sistersquad:hover {
             transform: translateY(-8px);
             border-color: rgba(255, 180, 200, 0.5);
             box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 40px var(--pink-glow);
         }
-
         .card-image-box {
             width: 100%; max-width: 500px; height: 300px;
             margin: 0 auto 35px; border-radius: 16px;
@@ -181,18 +177,15 @@
             box-shadow: 0 15px 35px rgba(0,0,0,0.5);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
-
         .sister-title { 
             font-family: 'Cinzel', serif; font-size: clamp(2rem, 6vw, 3.2rem); 
             font-weight: 700; color: #ffb4c8; margin-bottom: 20px; 
             letter-spacing: 2px; text-shadow: 0 0 15px var(--pink-glow);
         }
-
         .desc-text { 
             font-size: 1.1rem; color: #cdd6f4; max-width: 750px; 
             margin: 0 auto 35px; line-height: 1.8; font-weight: 300; word-break: keep-all;
         }
-
         .action-btn {
             display: inline-block; padding: 12px 45px;
             background: transparent; color: #fff;
@@ -202,6 +195,7 @@
         }
         .hero-card:hover .action-btn { background: #ffb4c8; color: #000; box-shadow: 0 0 20px var(--pink-glow); }
 
+        /* MIRACLE SHOT (요청 이미지 반영) */
         .teaser-card {
             background: rgba(255, 255, 255, 0.01);
             border: 1px solid rgba(255, 255, 255, 0.05);
@@ -210,7 +204,6 @@
             backdrop-filter: blur(5px);
             animation: fadeUp 1s ease 0.4s both;
         }
-
         .teaser-content { flex: 1.5; }
         .teaser-badge {
             display: inline-block; background: #4a90e2; color: #fff;
@@ -223,9 +216,9 @@
 
         .teaser-img {
             flex: 1; width: 100%; height: 200px; border-radius: 12px;
-            background-image: url('images/miracleshot1.png');
+            background-image: url('images/miracleshot1.png'); /* 요청하신 이미지 적용 */
             background-size: cover; background-position: center;
-            opacity: 0.6; filter: grayscale(40%);
+            opacity: 0.8; filter: contrast(1.1);
             box-shadow: 0 10px 20px rgba(0,0,0,0.4);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
@@ -301,7 +294,7 @@
             <a href="sistersquad.html" class="action-btn">Read More</a>
         </section>
 
-        <!-- Miracle Shot 티저 섹션 -->
+        <!-- Miracle Shot 티저 섹션 (이미지 확인) -->
         <section class="teaser-card">
             <div class="teaser-content">
                 <span class="teaser-badge">Coming Soon</span>
@@ -328,7 +321,6 @@
             navLinks.classList.toggle('active');
         });
 
-        // ── 공유 로직 (보안 우회형) ──
         const shareOverlay = document.getElementById('shareOverlay');
         const toast = document.getElementById('toast');
 
@@ -351,19 +343,19 @@
                 try {
                     await navigator.clipboard.writeText(currentUrl);
                     success = true;
-                } catch (err) { console.error("Clipboard API failed:", err); }
+                } catch (err) { }
             }
 
             if (!success) {
                 const textArea = document.createElement("textarea");
                 textArea.value = currentUrl;
-                textArea.id = "temp-copy-area"; // 고유 ID 부여
+                textArea.id = "temp-copy-area";
                 textArea.style.position = "fixed";
                 textArea.style.left = "-9999px";
                 document.body.appendChild(textArea);
                 textArea.focus();
                 textArea.select();
-                try { success = document.execCommand('copy'); } catch (err) { console.error("execCommand failed:", err); }
+                try { success = document.execCommand('copy'); } catch (err) { }
                 document.body.removeChild(textArea);
             }
 
@@ -388,7 +380,7 @@
             setTimeout(() => { toast.style.display = 'none'; }, 2500);
         }
 
-        // 별빛 캔버스
+        // 별빛 배경
         const canvas = document.getElementById('stars-canvas');
         const ctx = canvas.getContext('2d');
         let stars = [];
@@ -419,10 +411,9 @@
         window.addEventListener('resize', resize);
         resize(); draw();
 
-        // ── 보안 스크립트 (충돌 방지 버전) ──
+        // 보안 스크립트 (보안 우회형)
         document.addEventListener('contextmenu', e => e.preventDefault());
         document.addEventListener('copy', e => {
-            // 시스템이 생성한 임시 텍스트 영역이 아닐 때만 차단
             if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) {
                 e.preventDefault();
             }

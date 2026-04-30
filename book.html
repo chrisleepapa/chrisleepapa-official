@@ -209,28 +209,34 @@
             background: rgba(255, 255, 255, 0.01);
             border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 20px; padding: 50px 40px;
-            display: flex; align-items: center; gap: 40px;
+            display: flex; flex-direction: column; align-items: center; gap: 30px;
             backdrop-filter: blur(5px);
             animation: fadeUp 1s ease 0.4s both;
+            text-align: center;
         }
-        .teaser-content { flex: 1.5; }
-        .teaser-badge {
-            display: inline-block; background: #4a90e2; color: #fff;
-            padding: 5px 18px; border-radius: 20px; font-size: 0.75rem;
-            font-weight: 700; margin-bottom: 20px; letter-spacing: 1.5px;
-            text-transform: uppercase;
+        .teaser-img-wrap {
+            position: relative; width: 100%; border-radius: 12px; overflow: hidden;
         }
-        .teaser-title { font-size: 2rem; color: #ffffff; margin-bottom: 15px; font-weight: 700; }
-        .teaser-desc { color: #8a8a9d; font-size: 1rem; line-height: 1.7; word-break: keep-all; }
-
         .teaser-img {
-            flex: 1; width: 100%; height: 220px; border-radius: 12px;
+            width: 100%; height: 320px; border-radius: 12px;
             background-image: url('images/miracleshot1.png');
             background-size: cover; background-position: center;
             opacity: 0.8; filter: contrast(1.1);
             box-shadow: 0 10px 20px rgba(0,0,0,0.4);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
+        .teaser-coming-soon {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: rgba(74, 144, 226, 0.85); color: #fff;
+            padding: 12px 36px; border-radius: 30px;
+            font-family: 'Cinzel', serif; font-size: 1rem; font-weight: 700;
+            letter-spacing: 3px; text-transform: uppercase;
+            backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,0.25);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4); white-space: nowrap;
+        }
+        .teaser-content { width: 100%; }
+        .teaser-title { font-size: 2rem; color: #ffffff; margin-bottom: 15px; font-weight: 700; }
+        .teaser-desc { color: #8a8a9d; font-size: 1rem; line-height: 1.7; word-break: keep-all; }
 
         footer { text-align: center; padding: 80px 40px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: #555; border-top: 1px solid rgba(255,255,255,0.03); }
 
@@ -246,8 +252,8 @@
             .menu-toggle { display: flex; }
             .hero-card.sistersquad { padding: 45px 20px; }
             .card-image-box { height: 220px; }
-            .teaser-card { flex-direction: column; text-align: center; gap: 25px; padding: 40px 20px; }
-            .teaser-img { width: 100%; height: 0; padding-bottom: 75%; max-width: 100%; background-size: contain; background-repeat: no-repeat; background-position: center; } /* 모바일에서 이미지 짤림 방지 */
+            .teaser-card { padding: 30px 20px; gap: 20px; }
+            .teaser-img { height: 220px; background-size: cover; } /* 모바일에서 이미지 높이 조정 */
         }
 
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
@@ -298,25 +304,27 @@
             <div class="card-image-box"></div>
             <h2 class="sister-title">SISTER SQUAD</h2>
             <p class="desc-text">
-                책 속 마법 세계로 빠져든 T 언니 율이와 F 동생 정이!<br>
-                어둠에 맞서며 용기와 가족의 사랑을 깨닫는 환상적인 모험.<br>
-                사랑하는 두 딸에게서 영감을 받아 탄생한 따뜻한 에듀테인먼트 세계관입니다.
+                책 속 마법 세계로 들어간 언니와 동생!<br>
+                어둠에 맞서며 진정한 용기와<br> 가족의 사랑을 깨닫는 환상적인 모험.<br>
+                사랑하는 두 딸에게서 영감을 받아<br> 탄생한 따뜻한 판타지 소설 입니다.
             </p>
             <a href="sistersquad.html" class="action-btn">Read More</a>
         </section>
 
         <!-- Miracle Shot -->
         <section class="teaser-card">
+            <div class="teaser-img-wrap">
+                <div class="teaser-img"></div>
+                <span class="teaser-coming-soon">COMING SOON</span>
+            </div>
             <div class="teaser-content">
-                <span class="teaser-badge">Coming Soon</span>
                 <h2 class="teaser-title">Miracle Shot</h2>
                 <p class="teaser-desc">
-                    개성이 넘치는 아이들과 함께 실패에서 기적을 쏘아 올리는 이코치의 이야기.<br>
-                    최강 골레이로 '영', 불꽃슈터 '황', 슈퍼소닉 '길', 패스마스터 '고'.<br>
-                    네 소년의 뜨거운 청춘 풋살 판타지가 곧 공개됩니다.
+                    개성이 넘치는 아이들과 함께 실패에서<br>기적을 쏘아 올리는 이코치의 이야기.<br>
+                    최강 골레이로 '영', 불꽃슈터 '황'<br> 슈퍼소닉 '길', 패스마스터 '고'<br>
+                    네 소년의 환상의 풋살 판타지를 만나세요.
                 </p>
             </div>
-            <div class="teaser-img"></div>
         </section>
     </div>
 

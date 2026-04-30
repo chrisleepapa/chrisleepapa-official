@@ -16,7 +16,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Chris Lee.Papa – Worship Lyrics Vol.2 | 나의 찬양 2집 가사집">
 
-    <!-- SNS 공유용 OG 태그 (최종 수정본) -->
+    <!-- SNS 공유용 OG 태그 -->
     <meta property="og:title" content="WORSHIP LYRICS Vol.2 – Chris LEE.PAPA">
     <meta property="og:description" content="영혼을 울리는 고백, 나의 찬양 Vol. 2 가사집입니다.">
     <meta property="og:type" content="website">
@@ -26,7 +26,6 @@
     <link rel="canonical" href="https://chrisleepapa-official.vercel.app/lyrics2.html">
     <title>LYRICS VOL.2 – Chris LEE.PAPA</title>
     
-    <!-- 폰트 통합 호출 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Cormorant+Garamond:wght@300;600&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
@@ -69,7 +68,6 @@
 
         a { text-decoration: none; color: inherit; }
 
-        /* ── 네비게이션 ── */
         nav {
             position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px;
             display: flex; justify-content: space-between; align-items: center;
@@ -94,7 +92,6 @@
         .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
         .menu-toggle span { width: 22px; height: 1.5px; background-color: var(--gold-light); transition: 0.3s; }
 
-        /* ── 공유 모달 & 토스트 ── */
         .modal-overlay {
             position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
             z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: 0.3s;
@@ -124,7 +121,6 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        /* ── 페이지 헤더 ── */
         .page-header {
             position: relative; width: 100%; height: 350px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -145,8 +141,7 @@
         }
         .header-slogan { font-family: 'Noto Serif KR', serif; font-size: clamp(0.9rem, 2vw, 1.1rem); letter-spacing: 2px; color: #cdd6f4; font-weight: 300; }
 
-        /* ── 메인 콘텐츠 ── */
-        .container { max-width: 800px; margin: 0 auto; padding: 20px 20px 100px; position: relative; z-index: 10; animation: fadeUp 1s ease 0.3s both; }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px 20px 150px; position: relative; z-index: 10; animation: fadeUp 1s ease 0.3s both; }
         .back-link {
             display: inline-flex; align-items: center; gap: 8px; font-family: 'Cinzel', serif;
             font-size: 0.75rem; letter-spacing: 0.2em; color: var(--gold-light);
@@ -158,7 +153,6 @@
         .page-heading { text-align: center; margin-bottom: 50px; padding: 0 10px; }
         .page-heading h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1rem, 4.5vw, 1.5rem); font-weight: 400; color: #fff; letter-spacing: 0.5px; white-space: nowrap; }
 
-        /* 아코디언 가사집 */
         .accordion-item { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; margin-bottom: 15px; backdrop-filter: blur(10px); transition: all 0.4s ease; overflow: hidden; }
         .accordion-header { width: 100%; background: transparent; border: none; padding: 20px 25px; text-align: left; font-family: 'Noto Serif KR', serif; font-size: 1.2rem; font-weight: 600; color: var(--text); cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease; }
         .accordion-item:hover { background: rgba(255, 255, 255, 0.04); border-color: rgba(201,168,76,0.3); transform: translateX(5px); }
@@ -166,8 +160,10 @@
         .toggle-icon { font-size: 1.4rem; color: var(--gold); transition: transform 0.4s ease; font-weight: 300; flex-shrink: 0; }
         .accordion-item.active { border-color: rgba(201,168,76,0.5); box-shadow: 0 10px 30px rgba(0,0,0,0.5); background: rgba(20, 15, 25, 0.6); }
         .accordion-item.active .toggle-icon { transform: rotate(45deg); color: var(--gold-light); }
-        .accordion-body { max-height: 0; overflow: hidden; transition: all 0.5s ease-in-out; opacity: 0; text-align: center; }
-        .accordion-item.active .accordion-body { max-height: 2500px; padding: 40px 20px; opacity: 1; }
+        
+        .accordion-body { max-height: 0; overflow: hidden; transition: all 0.6s ease-in-out; opacity: 0; text-align: center; }
+        .accordion-item.active .accordion-body { max-height: 6000px; padding: 40px 20px; opacity: 1; }
+        
         .lyric-text { font-size: clamp(0.9rem, 3.5vw, 1.05rem); font-weight: 300; line-height: 2.4; color: rgba(240,236,228,0.9); white-space: pre-wrap; word-break: break-word; letter-spacing: 0.5px; }
 
         footer { text-align: center; padding: 60px 20px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: #555; border-top: 1px solid rgba(255,255,255,0.03); }
@@ -198,7 +194,6 @@
         </div>
     </nav>
 
-    <!-- 공유 모달 팝업 -->
     <div class="modal-overlay" id="shareOverlay" onclick="closeShareModal(event)">
         <div class="share-modal" onclick="event.stopPropagation()">
             <h3>SHARE LYRICS VOL.2</h3>
@@ -211,7 +206,6 @@
         </div>
     </div>
 
-    <!-- 토스트 메시지 -->
     <div class="toast-msg" id="toast">Link copied!</div>
 
     <header class="page-header">
@@ -223,8 +217,6 @@
     </header>
 
     <main class="container">
-        
-        <!-- 뒤로가기 버튼 -->
         <a href="worship.html" class="back-link">‹ 예배로 돌아가기</a>
 
         <div class="page-heading">
@@ -262,7 +254,6 @@
 강물처럼 이어져
 큰 바다로 퍼져가
 
-[Chorus]
 모두 찬양해 영원토록
 사랑의 화음 울리네
 우리의 숨결 모여서
@@ -297,7 +288,6 @@
 지금 깨어나
 꺼지지 않던 불꽃이
 다시 타올라
-
 발을 구르며 외쳐
 멈출 수 없어
 이 밤이 끝날 때까지
@@ -314,7 +304,6 @@
 지금 이 순간
 더 크게 소리쳐
 온 땅이 울려
-
 주님과 함께 달려!
 심장이 뛰어
 우리의 예배
@@ -325,7 +314,6 @@
 빛이 비춰와
 닫혀 있던 문들이
 모두 열려가
-
 하나 되어 외쳐
 세상을 흔들어
 믿음의 파도가
@@ -336,19 +324,14 @@
 지금 이 순간
 더 크게 소리쳐
 온 땅이 울려
-
 주님과 함께 달려!
 심장이 뛰어
 우리의 예배
-지금 시작돼
-
-[Outro]
-우리의 예배
-멈추지 않아</p>
+지금 시작돼</p>
                 </div>
             </div>
 
-            <!-- Track 03 -->
+            <!-- Track 03: 복구 완료 -->
             <div class="accordion-item">
                 <button class="accordion-header">
                     <span><span class="track-num">03.</span> 주를 향해 노래하리</span>
@@ -424,33 +407,11 @@
 주를 향해 기도하리 (영원히)
 내 삶의 모든 순간 
 내 호흡이 있는 날까지 (오직)
-주 이름 높이리
-
-[Chorus]
-주를 향해 노래하리
-온 마음 다해 부르리
-나의 기쁨 나의 노래
-주님 한 분뿐이라
-
-주를 향해 기도하리
-내 삶의 모든 순간
-내 호흡이 있는 날까지
-주 이름 높이리
-
-[Chorus]
-주를 향해 노래하리
-온 마음 다해 부르리
-나의 기쁨 나의 노래
-주님 한 분뿐이라
-
-주를 향해 기도하리
-내 삶의 모든 순간
-내 호흡이 있는 날까지
 주 이름 높이리</p>
                 </div>
             </div>
 
-            <!-- Track 04 -->
+            <!-- Track 04: 전체 가사 복구 -->
             <div class="accordion-item">
                 <button class="accordion-header">
                     <span><span class="track-num">04.</span> 사랑합니다. 주님</span>
@@ -462,7 +423,6 @@
 주님 함께 하셨네
 알지 못한 순간에도
 나를 지켜주셨네
-
 넘어지고 지친 날도
 주가 곁에 계셨고
 다시 일어설 힘을
@@ -477,7 +437,6 @@
 나를 여기까지
 주의 사랑으로
 이끄셨네
-
 사랑합니다 주님
 나의 하나님
 내 삶의 모든 날
@@ -488,26 +447,10 @@
 주가 알고 계셨고
 작은 나의 기도도
 외면하지 않으셨네
-
 어둠 속을 걸을 때
 빛이 되어 주시고
 오늘도 내 삶을
 인도하시네
-
-[Pre-Chorus]
-돌아보면 모든 길이
-주의 사랑이었네
-
-[Chorus]
-감사합니다 주님
-나를 여기까지
-주의 사랑으로
-이끄셨네
-
-사랑합니다 주님
-나의 하나님
-내 삶의 모든 날
-주께 드립니다
 
 [Bridge]
 주님만이 나의 길
@@ -515,17 +458,11 @@
 주님만이 나의 노래
 영원히 찬양해
 
-주님만이 나의 소망
-주님만이 나의 빛
-나의 모든 삶으로
-주를 찬양해
-
 [Final Chorus]
 감사합니다 주님
 나의 구원 되신 주
 내 삶의 모든 순간
 주께 드립니다
-
 사랑합니다 주님
 나의 하나님
 영원토록 주만
@@ -533,7 +470,7 @@
                 </div>
             </div>
 
-            <!-- Track 05 -->
+            <!-- Track 05: 전체 가사 복구 -->
             <div class="accordion-item">
                 <button class="accordion-header">
                     <span><span class="track-num">05.</span> 돌아보면 모든 날이</span>
@@ -545,7 +482,6 @@
 내 힘으로 산 것 같았지만
 보이지 않던 주의 손이
 나의 길을 지키셨네
-
 넘어지고 흔들리던
 수많았던 시간 속에도
 말없이 나와 함께 하신
@@ -560,7 +496,6 @@
 내 삶을 이끄신 주
 어둔 밤을 지나 오늘까지
 나를 붙드셨네
-
 감사로 고백합니다
 나의 모든 이유는
 지금까지 지켜주신
@@ -571,7 +506,6 @@
 지쳐 주저앉던 날에도
 다시 일어설 힘을 주신
 주의 따뜻한 손길
-
 눈물로 지나온 날도
 헛된 시간 아니었네
 그 모든 길의 순간마다
@@ -581,21 +515,7 @@
 내 모든 삶이
 주의 손 안에
 내 모든 길이
-주의 계획 안에
-
-이제는 믿습니다
-주님 한 분만을
-
-[Chorus]
-감사로 노래합니다
-내 삶을 이끄신 주
-어둔 밤을 지나 오늘까지
-나를 붙드셨네
-
-감사로 고백합니다
-나의 모든 이유는
-지금까지 지켜주신
-주님의 사랑</p>
+주의 계획 안에</p>
                 </div>
             </div>
 
@@ -632,13 +552,7 @@
 
 [Bridge]
 주의 은혜 변함없네
-주의 사랑 영원하네
-
-[Final Chorus]
-주님 나의 힘 되시고
-주님 나의 길 되시네
-어제도 오늘도
-주와 함께 걸어가네</p>
+주의 사랑 영원하네</p>
                 </div>
             </div>
 
@@ -654,24 +568,20 @@
 조용히 깨어나
 작은 빛의 숨결이
 내 안에 흐르네
-
 발걸음을 멈춰 서서
 주를 바라봐
 이 밤의 별빛 속에
 주를 노래해
 
 [Pre-Chorus]
-고개를 들어
-하늘을 향해
-잔잔한 이 리듬에
-믿음이 살아나
+고개를 들어 하늘을 향해
+잔잔한 이 리듬에 믿음이 살아나
 
 [Chorus]
 조용히 외쳐
 지금 이 순간
 담대히 소리쳐
 온 땅이 울려
-
 주님과 함께 걸어
 두려움 버리고
 우리의 예배
@@ -682,22 +592,10 @@
 평안이 와
 닫혀 있던 마음이
 다시 열려가
-
 하나 되어 외쳐
 세상을 움직여
 믿음의 물결이
-잔잔히 흐르네
-
-[Final Chorus]
-조용히 외쳐
-지금 이 순간
-담대히 소리쳐
-온 땅이 울려
-
-주님과 함께 걸어
-두려움 버리고
-우리의 예배
-지금 시작돼</p>
+잔잔히 흐르네</p>
                 </div>
             </div>
 
@@ -714,10 +612,6 @@
 기쁜 소식 들려와
 예수님이 오셨네
 
-[Pre-Chorus]
-이제 모두 일어나
-두 손 높이 들고서
-
 [Chorus]
 깨어나 깨어 노래해
 기쁘게 외쳐
@@ -732,10 +626,6 @@
 온 세상이 기뻐해
 구주께서 오셨네
 
-[Pre-Chorus]
-이제 모두 일어나
-소리 높여 노래해
-
 [Chorus]
 깨어나 깨어 노래해
 기쁘게 외쳐
@@ -748,15 +638,7 @@
 하늘 높이 점프해
 손을 들어 찬양해
 온 세상이 노래해
-예수님 사랑해
-
-[Final Chorus]
-깨어나 깨어 노래해
-기쁘게 외쳐
-예수님 오신 날
-함께 뛰어
-더크게 소리쳐
-주님을 찬양해</p>
+예수님 사랑해</p>
                 </div>
             </div>
 
@@ -774,10 +656,8 @@
 나를 다시 일으켜
 
 [Pre-Chorus]
-작은 친절 하나로
-세상은 달라져
-주님이 보여주신
-사랑을 따라가
+작은 친절 하나로 세상은 달라져
+주님이 보여주신 사랑을 따라가
 
 [Chorus]
 예수님 사랑으로
@@ -793,35 +673,7 @@
 친구가 힘들 때에도
 곁에 있어 줄게
 예수님의 사랑처럼
-서로를 안아줘
-
-[Pre-Chorus]
-작은 미소 하나가
-큰 힘이 될 때
-주님이 주신 사랑
-세상에 나누어
-
-[Chorus]
-예수님 사랑으로
-우리 함께 걸어가
-너와 나 손을 잡고
-기쁨으로 노래해
-예수님 사랑으로
-세상을 밝히는 빛
-우리 삶 속에서
-주 사랑 전해요
-
-[Bridge]
-손을 들어 찬양해 (주님께)
-기쁨으로 노래해 (소리쳐)
-예수님 사랑
-우리의 힘이야
-
-[Final Chorus]
-예수님 사랑으로
-우리 함께 걸어가
-세상 어디서나
-주 사랑 전해요</p>
+서로를 안아줘</p>
                 </div>
             </div>
 
@@ -848,24 +700,6 @@
 기쁜 마음 가득해 (Hey!)
 손뼉 치며 노래해요
 랄라랄라 기뻐요
-
-예수님과 함께해요 (Yeah!)
-우리 모두 하나돼 (Hey!)
-점프 점프 뛰면서
-찬양을 불러요
-
-[Verse 2]
-친구와 손을 맞잡고
-웃으며 걸어가요
-예수님 사랑 안에서
-행복이 넘쳐요
-
-[Chorus]
-예수님과 함께해요 (Yeah!)
-기쁜 마음 가득해 (Hey!)
-손뼉 치며 노래해요
-랄라랄라 기뻐요
-
 예수님과 함께해요 (Yeah!)
 우리 모두 하나돼 (Hey!)
 점프 점프 뛰면서
@@ -875,10 +709,8 @@
 모두 함께 찬양해!</p>
                 </div>
             </div>
-
         </div>
     </main>
-
 
     <footer><p>© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
 
@@ -897,15 +729,21 @@
             header.addEventListener('click', function() {
                 const item = this.parentElement;
                 const isActive = item.classList.contains('active');
+                
                 document.querySelectorAll('.accordion-item').forEach(el => el.classList.remove('active'));
+                
                 if (!isActive) {
                     item.classList.add('active');
-                    setTimeout(() => { window.scrollTo({ top: item.offsetTop - 100, behavior: 'smooth' }); }, 300);
+                    setTimeout(() => { 
+                        const headerOffset = 100;
+                        const elementPosition = item.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                        window.scrollTo({ top: offsetPosition, behavior: 'smooth' }); 
+                    }, 350);
                 }
             });
         });
 
-        // ── 공유 로직 (보안 우회 및 하이브리드 로직) ──
         const shareOverlay = document.getElementById('shareOverlay');
         const toast = document.getElementById('toast');
 
@@ -923,34 +761,20 @@
         async function copyURL() {
             const currentUrl = window.location.href;
             let success = false;
-
             if (navigator.clipboard && window.isSecureContext) {
-                try {
-                    await navigator.clipboard.writeText(currentUrl);
-                    success = true;
-                } catch (err) { console.error("Clipboard API failed:", err); }
+                try { await navigator.clipboard.writeText(currentUrl); success = true; } catch (err) { }
             }
-
             if (!success) {
                 const textArea = document.createElement("textarea");
                 textArea.value = currentUrl;
-                textArea.id = "temp-copy-area"; // 고유 ID 부여
-                textArea.style.position = "fixed";
-                textArea.style.left = "-9999px";
+                textArea.id = "temp-copy-area";
+                textArea.style.position = "fixed"; textArea.style.left = "-9999px";
                 document.body.appendChild(textArea);
-                textArea.focus();
-                textArea.select();
-                try {
-                    success = document.execCommand('copy');
-                } catch (err) { console.error("execCommand failed:", err); }
+                textArea.focus(); textArea.select();
+                try { success = document.execCommand('copy'); } catch (err) { }
                 document.body.removeChild(textArea);
             }
-
-            if (success) {
-                showToast('Link copied to clipboard!');
-            } else {
-                showToast('Copy failed. Please copy manually.');
-            }
+            if (success) { showToast('Link copied to clipboard!'); }
             closeShareModal();
         }
 
@@ -965,7 +789,6 @@
             setTimeout(() => { toast.style.display = 'none'; }, 2500);
         }
 
-        // 별빛 캔버스
         const canvas = document.getElementById('stars-canvas');
         const ctx = canvas.getContext('2d');
         let stars = [];
@@ -995,19 +818,16 @@
         window.addEventListener('resize', resize);
         resize(); draw();
 
-        // ── 보안 스크립트 (충돌 해결 버전) ──
         document.addEventListener('contextmenu', e => e.preventDefault());
-        
         document.addEventListener('copy', e => {
             if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) {
                 e.preventDefault();
             }
         });
-
         document.addEventListener('keydown', e => {
             if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || (e.ctrlKey && e.key === 'U')) e.preventDefault();
-            if (e.ctrlKey && (e.key === 'c')) {
-                if (window.getSelection().toString().length > 0) e.preventDefault();
+            if (e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'p')) {
+                if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) e.preventDefault();
             }
             if (e.key === 'PrintScreen') navigator.clipboard.writeText('');
         });

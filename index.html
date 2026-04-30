@@ -12,24 +12,15 @@
       gtag('config', 'GT-5MJDBTR2');
     </script>
 
-    <!-- [AD] 구글 애드센스 코드 (코드를 받으시면 아래 줄에 붙여넣으세요) -->
-    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXX" crossorigin="anonymous"></script> -->
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- ✅ 파비콘(Favicon) 적용 -->
     <link rel="icon" href="images/favicon.png" type="image/png">
-
     <meta name="description" content="Chris Lee.Papa – The Creative Archive. 나를 살린 찬양과 믿음, 그리고 상상력으로 빚어낸 기록들.">
-
-    <!-- SNS 공유용 OG 태그 -->
     <meta property="og:title" content="Chris Lee.Papa – The Creative Archive">
     <meta property="og:description" content="나를 살린 찬양과 믿음, 그리고 상상력으로 빚어낸 기록들.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://chrisleepapa-official.vercel.app/">
     <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png">
-
     <link rel="canonical" href="https://chrisleepapa-official.vercel.app/">
     <title>Chris LEE.PAPA - The Creative Archive</title>
     
@@ -40,130 +31,72 @@
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         :root {
             --gold: #c9a84c;
             --gold-light: #e8d08a;
-            --cyan: #00d4ff;
             --bg: #030305;
             --text: #f0ece4;
-            --text-dim: #9a9490;
             --nav-height: 70px;
         }
-
         html { scroll-behavior: smooth; background-color: var(--bg); }
-
         body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Pretendard', 'Noto Serif KR', serif;
-            line-height: 1.6;
-            overflow-x: hidden;
-            background-image: radial-gradient(circle at top right, rgba(20, 20, 40, 0.8), transparent 60%),
-                              radial-gradient(circle at bottom left, rgba(10, 10, 20, 0.9), transparent 60%);
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
+            background-color: var(--bg); color: var(--text);
+            font-family: 'Pretendard', 'Noto Serif KR', serif; line-height: 1.6; overflow-x: hidden;
+            background-image: radial-gradient(circle at top right, rgba(20, 20, 40, 0.8), transparent 60%), radial-gradient(circle at bottom left, rgba(10, 10, 20, 0.9), transparent 60%);
+            -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
         }
-
         img { -webkit-user-drag: none; }
-
         body::before {
             content: ''; position: fixed; inset: 0;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
             pointer-events: none; z-index: 900; opacity: 0.3;
         }
-
         a { text-decoration: none; color: inherit; }
 
-        /* ── 네비게이션 ── */
         nav {
             position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px;
             display: flex; justify-content: space-between; align-items: center;
             z-index: 1000; background: rgba(3, 3, 5, 0.8); backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-
         .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); z-index: 1001; white-space: nowrap; }
-
         .nav-right { display: flex; align-items: center; gap: 30px; }
         .nav-links { display: flex; gap: 30px; }
         .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; }
         .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
-
         .share-trigger {
-            cursor: pointer; padding: 6px 12px; border: 1px solid rgba(201,168,76,0.3);
-            border-radius: 20px; font-family: 'Cinzel', serif; font-size: 0.7rem;
-            color: var(--gold-light); transition: 0.3s; letter-spacing: 1px;
+            cursor: pointer; padding: 6px 12px; border: 1px solid rgba(201,168,76,0.3); border-radius: 20px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: var(--gold-light); transition: 0.3s; letter-spacing: 1px;
         }
         .share-trigger:hover { background: rgba(201,168,76,0.1); border-color: var(--gold-light); }
-
         .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
         .menu-toggle span { width: 22px; height: 1.5px; background-color: var(--gold-light); transition: 0.3s; }
 
-        /* ── 공유 모달 & 토스트 ── */
-        .modal-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
-            z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: 0.3s;
-        }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; }
         .modal-overlay.active { display: flex; opacity: 1; }
-        .share-modal {
-            background: #0a0a0f; border: 1px solid var(--gold); border-radius: 20px;
-            width: 90%; max-width: 400px; padding: 40px 30px; text-align: center;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 20px rgba(201,168,76,0.1);
-        }
+        .share-modal { background: #0a0a0f; border: 1px solid var(--gold); border-radius: 20px; width: 90%; max-width: 400px; padding: 40px 30px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 20px rgba(201,168,76,0.1); }
         .share-modal h3 { font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--gold-light); margin-bottom: 15px; }
         .share-modal p { font-size: 0.9rem; color: #a0a0b5; margin-bottom: 30px; }
         .share-buttons { display: flex; flex-direction: column; gap: 12px; }
-        .modal-btn {
-            padding: 14px; border-radius: 12px; border: none; font-family: 'Cinzel', serif;
-            font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.3s;
-        }
+        .modal-btn { padding: 14px; border-radius: 12px; border: none; font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.3s; }
         .btn-copy { background: var(--gold); color: #000; }
         .btn-sns { background: transparent; border: 1px solid rgba(255,255,255,0.1); color: #fff; }
         .btn-close { margin-top: 20px; color: #555; background: none; font-size: 0.75rem; text-decoration: underline; cursor: pointer; border: none; }
+        .toast-msg { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); background: var(--gold); color: #000; padding: 12px 30px; border-radius: 30px; font-size: 0.85rem; font-weight: 700; z-index: 3000; display: none; animation: fadeUp 0.4s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 
-        .toast-msg {
-            position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
-            background: var(--gold); color: #000; padding: 12px 30px; border-radius: 30px;
-            font-size: 0.85rem; font-weight: 700; z-index: 3000; display: none; animation: fadeUp 0.4s ease;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        /* ── 히어로 섹션 ── */
-        .hero-section {
-            position: relative; width: 100vw; height: 100vh;
-            background-color: #000; display: flex; align-items: center; justify-content: center; overflow: hidden;
-        }
+        .hero-section { position: relative; width: 100vw; height: 100vh; background-color: #000; display: flex; align-items: center; justify-content: center; overflow: hidden; }
         #stars-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
-        .hero-overlay {
-            position: absolute; inset: 0; z-index: 2;
-            background: radial-gradient(circle at center, transparent 0%, rgba(3,3,5,0.8) 100%);
-        }
+        .hero-overlay { position: absolute; inset: 0; z-index: 2; background: radial-gradient(circle at center, transparent 0%, rgba(3,3,5,0.8) 100%); }
         .hero-content { position: relative; z-index: 3; text-align: center; width: 90%; animation: fadeUp 1.2s ease both; }
         .hero-title {
-            font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 10vw, 5rem); 
-            font-weight: 600; letter-spacing: 0.05em;
+            font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 10vw, 5rem); font-weight: 600; letter-spacing: 0.05em;
             background: linear-gradient(108deg, #b8922a 0%, #e8d08a 20%, #fffbe8 38%, #c9a84c 52%, #fff0b0 68%, #c9a84c 80%, #e8d08a 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-            filter: drop-shadow(0 0 20px rgba(201,168,76,0.3));
-            animation: shimmer 8s linear infinite; background-size: 200% auto;
-            margin-bottom: 10px; line-height: 1.1;
+            filter: drop-shadow(0 0 20px rgba(201,168,76,0.3)); animation: shimmer 8s linear infinite; background-size: 200% auto; margin-bottom: 10px; line-height: 1.1;
         }
-        .hero-slogan {
-            font-family: 'Cinzel', serif; font-size: clamp(0.7rem, 2vw, 1rem); 
-            letter-spacing: 0.5em; color: rgba(201,168,76,0.7); text-transform: uppercase;
-        }
+        .hero-slogan { font-family: 'Cinzel', serif; font-size: clamp(0.7rem, 2vw, 1rem); letter-spacing: 0.5em; color: rgba(201,168,76,0.7); text-transform: uppercase; }
 
-        /* ── CREATOR'S NOTE ── */
         .creator-note { display: flex; justify-content: center; padding: 4rem 1.5rem; position: relative; z-index: 10; margin-top: -80px; }
-        .note-container {
-            max-width: 800px; width: 100%; text-align: center;
-            border: 1px solid rgba(201,168,76,0.15); border-radius: 20px;
-            background: rgba(15, 15, 20, 0.5); backdrop-filter: blur(10px);
-            overflow: hidden; transition: 0.4s;
-        }
+        .note-container { max-width: 800px; width: 100%; text-align: center; border: 1px solid rgba(201,168,76,0.15); border-radius: 20px; background: rgba(15, 15, 20, 0.5); backdrop-filter: blur(10px); overflow: hidden; transition: 0.4s; }
         .note-trigger { padding: 2.5rem 2rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; }
         .section-tag { color: var(--gold); font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 0.8rem; }
         .note-title { color: #ffffff; font-size: clamp(1.1rem, 3.5vw, 1.4rem); font-family: 'Noto Serif KR', serif; }
@@ -173,24 +106,29 @@
         .note-container.active .note-content { max-height: 1200px; }
         .note-container.active .toggle-symbol { transform: rotate(45deg); }
 
-        /* ── 포트폴리오 카드 그리드 ── */
-        .portfolio-grid {
-            padding: 40px 30px 100px; max-width: 1300px; margin: 0 auto;
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px;
-        }
-        .card {
-            position: relative; height: 350px; border-radius: 16px; overflow: hidden;
-            cursor: pointer; background: #111; border: 1px solid rgba(255,255,255,0.05);
-            transition: border-color 0.4s, box-shadow 0.4s;
-        }
-        .card:hover { border-color: rgba(201,168,76,0.4); box-shadow: 0 15px 40px rgba(0,0,0,0.6); }
+        .portfolio-grid { padding: 40px 30px 100px; max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+        .card { position: relative; height: 350px; border-radius: 16px; overflow: hidden; cursor: pointer; background: #111; border: 1px solid rgba(255,255,255,0.05); transition: border-color 0.4s, box-shadow 0.4s; }
         
-        .card-bg {
-            position: absolute; inset: 0; z-index: 1;
-            background-size: cover; background-position: center;
-            filter: brightness(0.5) contrast(1.1); transition: transform 0.6s cubic-bezier(0.2, 0, 0.2, 1);
-        }
+        /* 카드 고유 Glow 애니메이션 적용 */
+        .card-worship:hover { box-shadow: 0 15px 40px rgba(150, 0, 255, 0.4); border-color: rgba(150, 0, 255, 0.6); }
+        .card-worship:hover .card-label { color: #d4a5ff; }
         
+        .card-book:hover { box-shadow: 0 15px 40px rgba(255, 180, 200, 0.4); border-color: rgba(255, 180, 200, 0.6); }
+        .card-book:hover .card-label { color: #ffb4c8; }
+        
+        .card-music:hover { box-shadow: 0 15px 40px rgba(0, 212, 255, 0.4); border-color: rgba(0, 212, 255, 0.6); }
+        .card-music:hover .card-label { color: #00d4ff; }
+        
+        .card-movie:hover { box-shadow: 0 15px 40px rgba(201, 168, 76, 0.4); border-color: rgba(201, 168, 76, 0.6); }
+        .card-movie:hover .card-label { color: var(--gold-light); }
+        
+        .card-about:hover { box-shadow: 0 15px 40px rgba(255, 255, 255, 0.3); border-color: rgba(255, 255, 255, 0.5); }
+        .card-about:hover .card-label { color: #ffffff; }
+        
+        .card-contact:hover { box-shadow: 0 15px 40px rgba(74, 144, 226, 0.4); border-color: rgba(74, 144, 226, 0.6); }
+        .card-contact:hover .card-label { color: #4a90e2; }
+
+        .card-bg { position: absolute; inset: 0; z-index: 1; background-size: cover; background-position: center; filter: brightness(0.5) contrast(1.1); transition: transform 0.6s cubic-bezier(0.2, 0, 0.2, 1), filter 0.6s; }
         .card-worship .card-bg { background-image: url('images/worship.png'); }
         .card-book .card-bg    { background-image: url('images/book.png'); }
         .card-music .card-bg   { background-image: url('images/music.jpg'); }
@@ -198,16 +136,11 @@
         .card-about .card-bg   { background-image: url('images/chris01.png'); }
         .card-contact .card-bg { background-image: url('images/chris02.png'); }
 
-        .card-body {
-            position: absolute; inset: 0; z-index: 3;
-            padding: 30px; display: flex; flex-direction: column; justify-content: flex-end;
-            background: linear-gradient(to top, rgba(3,3,5,0.95) 0%, transparent 60%);
-        }
+        .card-body { position: absolute; inset: 0; z-index: 3; padding: 30px; display: flex; flex-direction: column; justify-content: flex-end; background: linear-gradient(to top, rgba(3,3,5,0.95) 0%, transparent 60%); }
         .card-sub { font-size: 0.85rem; color: #a0a0b5; margin-bottom: 5px; opacity: 0.8; }
         .card-label { font-family: 'Cinzel', serif; font-size: 2.2rem; font-weight: 700; letter-spacing: 0.1em; color: #ffffff; transition: 0.3s; }
 
         .card:hover .card-bg { transform: scale(1.08); filter: brightness(0.7); }
-        .card:hover .card-label { color: var(--gold-light); }
 
         footer { text-align: center; padding: 40px; font-family: 'Cinzel', serif; font-size: 0.65rem; color: #555; border-top: 1px solid rgba(255,255,255,0.03); }
 
@@ -215,11 +148,7 @@
             nav { padding: 0 20px; }
             .brand-logo { font-size: 1.1rem; }
             .nav-links { display: none; }
-            .nav-links.active {
-                display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height));
-                background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 25px;
-                z-index: 1002;
-            }
+            .nav-links.active { display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height)); background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 25px; z-index: 1002; }
             .menu-toggle { display: flex; }
             .portfolio-grid { grid-template-columns: 1fr; padding: 15px; }
             .card { height: 280px; }
@@ -301,7 +230,7 @@
         <div class="card card-book" onclick="safeNavigate('book.html')">
             <div class="card-bg"></div>
             <div class="card-body">
-                <p class="card-sub">상상이 종이에 그려진 순간 놀라운 기적이 일어난다.</p>
+                <p class="card-sub">상상이 종이에 그려진 순간 일어나는 기적</p>
                 <h2 class="card-label">BOOK</h2>
             </div>
         </div>
@@ -343,146 +272,52 @@
 
         const menuToggle = document.getElementById('mobile-menu');
         const navLinks = document.getElementById('navLinks');
-        menuToggle.addEventListener('click', () => {
-            menuToggle.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        });
+        menuToggle.addEventListener('click', () => { menuToggle.classList.toggle('active'); navLinks.classList.toggle('active'); });
 
-        // ── 공유 로직 ──
         const shareOverlay = document.getElementById('shareOverlay');
         const toast = document.getElementById('toast');
-
-        function openShareModal() {
-            shareOverlay.style.display = 'flex';
-            setTimeout(() => shareOverlay.classList.add('active'), 10);
-        }
-
-        function closeShareModal(e) {
-            if (e && e.target !== shareOverlay && e.type !== 'click') return;
-            shareOverlay.classList.remove('active');
-            setTimeout(() => shareOverlay.style.display = 'none', 300);
-        }
+        function openShareModal() { shareOverlay.style.display = 'flex'; setTimeout(() => shareOverlay.classList.add('active'), 10); }
+        function closeShareModal(e) { if (e && e.target !== shareOverlay && e.type !== 'click') return; shareOverlay.classList.remove('active'); setTimeout(() => shareOverlay.style.display = 'none', 300); }
 
         async function copyURL() {
             const currentUrl = window.location.href;
             let success = false;
-
-            if (navigator.clipboard && window.isSecureContext) {
-                try {
-                    await navigator.clipboard.writeText(currentUrl);
-                    success = true;
-                } catch (err) {}
-            }
-
+            if (navigator.clipboard && window.isSecureContext) { try { await navigator.clipboard.writeText(currentUrl); success = true; } catch (err) {} }
             if (!success) {
-                const textArea = document.createElement("textarea");
-                textArea.value = currentUrl;
-                textArea.id = "temp-copy-area"; 
-                textArea.style.position = "fixed";
-                textArea.style.left = "-9999px";
-                textArea.style.top = "0";
-                document.body.appendChild(textArea);
-                textArea.focus();
-                textArea.select();
-                try { success = document.execCommand('copy'); } catch (err) {}
-                document.body.removeChild(textArea);
+                const textArea = document.createElement("textarea"); textArea.value = currentUrl; textArea.id = "temp-copy-area"; textArea.style.position = "fixed"; textArea.style.left = "-9999px";
+                document.body.appendChild(textArea); textArea.focus(); textArea.select();
+                try { success = document.execCommand('copy'); } catch (err) {} document.body.removeChild(textArea);
             }
-
             if (success) { showToast('Link copied to clipboard!'); }
             closeShareModal();
         }
 
-        function shareViaWebAPI() {
-            if (navigator.share) {
-                navigator.share({ title: 'Chris LEE.PAPA', url: window.location.href });
-            } else { showToast('Not supported on this browser.'); }
-        }
+        function shareViaWebAPI() { if (navigator.share) { navigator.share({ title: 'Chris LEE.PAPA', url: window.location.href }); } else { showToast('Not supported on this browser.'); } }
+        function showToast(msg) { toast.textContent = msg; toast.style.display = 'block'; setTimeout(() => { toast.style.display = 'none'; }, 2500); }
 
-        function showToast(msg) {
-            toast.textContent = msg;
-            toast.style.display = 'block';
-            setTimeout(() => { toast.style.display = 'none'; }, 2500);
-        }
-
-        // 별빛 배경
         const canvas = document.getElementById('stars-canvas');
         const ctx = canvas.getContext('2d');
-        let stars = [];
-        let shootingStars = [];
-
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            initStars();
-        }
-
-        function initStars() {
-            stars = [];
-            const count = (canvas.width * canvas.height) / 8000;
-            for (let i = 0; i < count; i++) {
-                stars.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    size: Math.random() * 1.8 + 0.2,
-                    opacity: Math.random(),
-                    speed: Math.random() * 0.02 + 0.005
-                });
-            }
-        }
-
+        let stars = [], shootingStars = [];
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; initStars(); }
+        function initStars() { stars = []; const count = (canvas.width * canvas.height) / 8000; for (let i = 0; i < count; i++) { stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 1.8 + 0.2, opacity: Math.random(), speed: Math.random() * 0.02 + 0.005 }); } }
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            stars.forEach(s => {
-                s.opacity += s.speed;
-                if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed;
-                ctx.beginPath();
-                ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0, s.opacity)})`;
-                ctx.fill();
-            });
-
-            if (Math.random() < 0.015) {
-                shootingStars.push({
-                    x: Math.random() * canvas.width + canvas.width * 0.2,
-                    y: Math.random() * canvas.height * 0.4,
-                    len: Math.random() * 80 + 50,
-                    speed: Math.random() * 10 + 5
-                });
-            }
-
+            stars.forEach(s => { s.opacity += s.speed; if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed; ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0, s.opacity)})`; ctx.fill(); });
+            if (Math.random() < 0.015) { shootingStars.push({ x: Math.random() * canvas.width + canvas.width * 0.2, y: Math.random() * canvas.height * 0.4, len: Math.random() * 80 + 50, speed: Math.random() * 10 + 5 }); }
             shootingStars.forEach((ss, i) => {
-                ss.x -= ss.speed;
-                ss.y += ss.speed;
-                ctx.beginPath();
-                const grad = ctx.createLinearGradient(ss.x, ss.y, ss.x + ss.len, ss.y - ss.len);
-                grad.addColorStop(0, 'white');
-                grad.addColorStop(1, 'transparent');
-                ctx.strokeStyle = grad;
-                ctx.lineWidth = 1.5;
-                ctx.moveTo(ss.x, ss.y);
-                ctx.lineTo(ss.x + ss.len, ss.y - ss.len);
-                ctx.stroke();
+                ss.x -= ss.speed; ss.y += ss.speed; ctx.beginPath(); const grad = ctx.createLinearGradient(ss.x, ss.y, ss.x + ss.len, ss.y - ss.len);
+                grad.addColorStop(0, 'white'); grad.addColorStop(1, 'transparent'); ctx.strokeStyle = grad; ctx.lineWidth = 1.5; ctx.moveTo(ss.x, ss.y); ctx.lineTo(ss.x + ss.len, ss.y - ss.len); ctx.stroke();
                 if (ss.x < -ss.len || ss.y > canvas.height + ss.len) shootingStars.splice(i, 1);
             });
             requestAnimationFrame(draw);
         }
+        window.addEventListener('resize', resize); resize(); draw();
 
-        window.addEventListener('resize', resize);
-        resize();
-        draw();
-
-        // ── 보안 스크립트 (충돌 해결 버전) ──
         document.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('copy', e => {
-            if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) {
-                e.preventDefault();
-            }
-        });
+        document.addEventListener('copy', e => { if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) e.preventDefault(); });
         document.addEventListener('keydown', e => {
             if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || (e.ctrlKey && e.key === 'U')) e.preventDefault();
-            if (e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'p')) {
-                if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) e.preventDefault();
-            }
+            if (e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'p')) { if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) e.preventDefault(); }
             if (e.key === 'PrintScreen') navigator.clipboard.writeText('');
         });
     </script>

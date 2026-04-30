@@ -1,36 +1,22 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <!-- Google tag (gtag.js) -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3207219520058740"
+     crossorigin="anonymous"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-NBGELYQ4TZ"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-NBGELYQ4TZ');
-      gtag('config', 'GT-5MJDBTR2');
-    </script>
-
+    <script>window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-NBGELYQ4TZ'); gtag('config', 'GT-5MJDBTR2');</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- ✅ 파비콘(Favicon) 적용 -->
     <link rel="icon" href="images/favicon.png" type="image/png">
-
     <meta name="description" content="Chris Lee.Papa – MOVIE | The Creative Archive">
-    
-    <!-- SNS 공유용 OG 태그 -->
     <meta property="og:title" content="MOVIE – Chris LEE.PAPA">
     <meta property="og:description" content="프레임에 담긴 무한한 세계, 크리스리의 영상 아카이브를 감상해보세요.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://chrisleepapa-official.vercel.app/movie.html">
     <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png">
-
     <link rel="canonical" href="https://chrisleepapa-official.vercel.app/movie.html">
     <title>MOVIE – Chris LEE.PAPA</title>
     
-    <!-- 폰트 통합 호출 (index.html 기준 규격 통일) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Cormorant+Garamond:wght@600&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
@@ -38,71 +24,23 @@
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Pretendard', sans-serif; }
-        :root {
-            --gold: #c9a84c;
-            --gold-light: #e8d08a;
-            --cyan: #4a90e2;
-            --bg: #030305;
-            --text: #f0ece4;
-            --text-dim: #9a9490;
-            --nav-height: 70px;
-        }
+        :root { --gold: #c9a84c; --gold-light: #e8d08a; --cyan: #4a90e2; --bg: #030305; --text: #f0ece4; --text-dim: #9a9490; --nav-height: 70px; }
         html { scroll-behavior: smooth; background-color: var(--bg); }
-        body {
-            background-color: var(--bg); color: var(--text);
-            font-family: 'Pretendard', 'Noto Serif KR', serif;
-            line-height: 1.6; overflow-x: hidden;
-            background-image: radial-gradient(circle at top left, rgba(20, 20, 40, 0.8), transparent 60%),
-                              radial-gradient(circle at bottom right, rgba(10, 10, 25, 0.9), transparent 60%);
-            -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
-        }
+        body { background-color: var(--bg); color: var(--text); font-family: 'Pretendard', 'Noto Serif KR', serif; line-height: 1.6; overflow-x: hidden; background-image: radial-gradient(circle at top left, rgba(20, 20, 40, 0.8), transparent 60%), radial-gradient(circle at bottom right, rgba(10, 10, 25, 0.9), transparent 60%); -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
         img { -webkit-user-drag: none; }
-        body::before {
-            content: ''; position: fixed; inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-            pointer-events: none; z-index: 900; opacity: 0.3;
-        }
+        body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events: none; z-index: 900; opacity: 0.3; }
 
-        /* ── 네비게이션 (규격 통일) ── */
-        nav {
-            position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px;
-            display: flex; justify-content: space-between; align-items: center;
-            z-index: 1000; background: rgba(3, 3, 5, 0.8); backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .brand-logo { 
-            font-family: 'Cinzel', serif; 
-            font-size: 1.3rem; 
-            font-weight: 800; 
-            letter-spacing: 2px; 
-            color: var(--gold-light); 
-            z-index: 1001;
-            text-decoration: none;
-            white-space: nowrap; /* 줄바꿈 방지 */
-        }
-        
+        nav { position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(3, 3, 5, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); z-index: 1001; text-decoration: none; white-space: nowrap; }
         .nav-right { display: flex; align-items: center; gap: 30px; }
         .nav-links { display: flex; gap: 30px; }
         .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; text-decoration: none; }
         .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
-        
-        .share-trigger { 
-            cursor: pointer; 
-            padding: 6px 12px; 
-            border: 1px solid rgba(201,168,76,0.3); 
-            border-radius: 20px; 
-            font-family: 'Cinzel', serif; 
-            font-size: 0.7rem; 
-            color: var(--gold-light); 
-            transition: 0.3s; 
-            letter-spacing: 1px; 
-        }
+        .share-trigger { cursor: pointer; padding: 6px 12px; border: 1px solid rgba(201,168,76,0.3); border-radius: 20px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: var(--gold-light); transition: 0.3s; letter-spacing: 1px; }
         .share-trigger:hover { background: rgba(201,168,76,0.1); border-color: var(--gold-light); }
-        
         .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
         .menu-toggle span { width: 22px; height: 1.5px; background-color: var(--gold-light); transition: 0.3s; }
 
-        /* 공유 모달 */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; }
         .modal-overlay.active { display: flex; opacity: 1; }
         .share-modal { background: #0a0a0f; border: 1px solid var(--gold); border-radius: 24px; width: 90%; max-width: 400px; padding: 45px 30px; text-align: center; box-shadow: 0 30px 70px rgba(0,0,0,0.9); }
@@ -145,26 +83,18 @@
         .shorts-heading { font-family: 'Cinzel', serif; font-size: 1.4rem; letter-spacing: 2px; color: #e0e0ff; margin-bottom: 40px; text-align: center; font-weight: 700; }
         .shorts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 25px; }
         
-        .shorts-link { position: relative; width: 100%; padding-bottom: 177.78%; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 30px rgba(0,0,0,0.6); transition: transform 0.4s, border-color 0.4s; border: 1px solid rgba(255,255,255,0.05); display: block; text-decoration: none; }
-        .shorts-link:hover { transform: translateY(-10px) scale(1.02); border-color: var(--gold); }
-        .shorts-thumb { position: absolute; inset: 0; background-size: cover; background-position: center; filter: brightness(0.8); transition: 0.5s; }
-        .shorts-link:hover .shorts-thumb { filter: brightness(1.1); }
+        /* ── 향상된 쇼츠 카드 UI 디자인 ── */
+        .shorts-link { position: relative; width: 100%; padding-bottom: 177.78%; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 30px rgba(0,0,0,0.6); transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease; border: 1px solid rgba(255,255,255,0.1); display: block; text-decoration: none; }
+        .shorts-link:hover { transform: translateY(-10px) scale(1.02); border-color: #dc2626; box-shadow: 0 20px 40px rgba(220, 38, 38, 0.4); }
+        .shorts-thumb { position: absolute; inset: 0; background-size: cover; background-position: center; filter: brightness(0.8); transition: transform 0.6s ease, filter 0.4s ease; }
+        .shorts-link:hover .shorts-thumb { filter: brightness(1.1); transform: scale(1.08); }
         .shorts-play-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.2); transition: 0.3s; }
-        .shorts-play-overlay span { width: 50px; height: 50px; background: rgba(255,255,255,0.2); backdrop-filter: blur(5px); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.2rem; border: 1px solid rgba(255,255,255,0.3); transition: 0.3s; }
-        .shorts-link:hover .shorts-play-overlay span { transform: scale(1.2); background: var(--gold); color: #000; border-color: var(--gold); }
+        .shorts-play-overlay span { width: 50px; height: 50px; background: rgba(220, 38, 38, 0.85); backdrop-filter: blur(5px); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.2rem; border: none; transition: 0.3s; }
+        .shorts-link:hover .shorts-play-overlay span { transform: scale(1.2); background: #ff0000; box-shadow: 0 0 15px rgba(255, 0, 0, 0.6); }
 
         footer { text-align: center; padding: 60px 40px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: #555; border-top: 1px solid rgba(255,255,255,0.03); }
 
-        @media (max-width: 900px) {
-            nav { padding: 0 20px; }
-            .brand-logo { font-size: 1.1rem; } /* 모바일에서 한 줄 유지를 위해 폰트 크기 살짝 축소 */
-            .nav-links { display: none; }
-            .nav-links.active { display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height)); background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 25px; z-index: 1002; }
-            .menu-toggle { display: flex; }
-            .page-header { height: 250px; }
-            .shorts-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
-            .shorts-section { padding: 40px 15px; }
-        }
+        @media (max-width: 900px) { nav { padding: 0 20px; } .brand-logo { font-size: 1.1rem; } .nav-links { display: none; } .nav-links.active { display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height)); background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 25px; z-index: 1002; } .menu-toggle { display: flex; } .page-header { height: 250px; } .shorts-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; } .shorts-section { padding: 40px 15px; } }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
@@ -214,9 +144,7 @@
         <div class="screen-info">
             <span class="video-badge" id="main-video-badge">FEATURED</span>
             <h2 class="video-title" id="main-video-title">이게 AI 로 되네? 그냥 만들어본 뮤직비디오 'FURIOUS 💥'</h2>
-            <p class="video-desc" id="main-video-desc">
-                직접 제작한 AI 기반 오리지널 뮤직비디오입니다. 역동적인 템포와 생성형 AI 비주얼이 결합된 강렬한 세계를 감상해 보세요.
-            </p>
+            <p class="video-desc" id="main-video-desc">직접 제작한 AI 기반 오리지널 뮤직비디오입니다. 역동적인 템포와 생성형 AI 비주얼이 결합된 강렬한 세계를 감상해 보세요.</p>
         </div>
     </main>
 
@@ -228,38 +156,14 @@
     <section class="shorts-section">
         <h3 class="shorts-heading">VERTICAL ARCHIVES</h3>
         <div class="shorts-grid">
-            <a href="https://www.youtube.com/shorts/gQ4Ip6cyr1U" target="_blank" rel="noopener" class="shorts-link">
-                <div class="shorts-thumb" style="background-image: url('https://img.youtube.com/vi/gQ4Ip6cyr1U/maxresdefault.jpg');"></div>
-                <div class="shorts-play-overlay"><span>▶</span></div>
-            </a>
-            <a href="https://www.youtube.com/shorts/z-2LOBuWos8" target="_blank" rel="noopener" class="shorts-link">
-                <div class="shorts-thumb" style="background-image: url('https://img.youtube.com/vi/z-2LOBuWos8/maxresdefault.jpg');"></div>
-                <div class="shorts-play-overlay"><span>▶</span></div>
-            </a>
-            <a href="https://www.youtube.com/shorts/pGibrT9Pp3I" target="_blank" rel="noopener" class="shorts-link">
-                <div class="shorts-thumb" style="background-image: url('https://img.youtube.com/vi/pGibrT9Pp3I/maxresdefault.jpg');"></div>
-                <div class="shorts-play-overlay"><span>▶</span></div>
-            </a>
-            <a href="https://www.youtube.com/shorts/VXWdSOXGwKQ" target="_blank" rel="noopener" class="shorts-link">
-                <div class="shorts-thumb" style="background-image: url('https://img.youtube.com/vi/VXWdSOXGwKQ/maxresdefault.jpg');"></div>
-                <div class="shorts-play-overlay"><span>▶</span></div>
-            </a>
-            <a href="https://www.youtube.com/shorts/XjSUJRduAzI" target="_blank" rel="noopener" class="shorts-link">
-                <div class="shorts-thumb" style="background-image: url('https://img.youtube.com/vi/XjSUJRduAzI/maxresdefault.jpg');"></div>
-                <div class="shorts-play-overlay"><span>▶</span></div>
-            </a>
-            <a href="https://www.youtube.com/shorts/MYlAYewAdu4" target="_blank" rel="noopener" class="shorts-link">
-                <div class="shorts-thumb" style="background-image: url('https://img.youtube.com/vi/MYlAYewAdu4/maxresdefault.jpg');"></div>
-                <div class="shorts-play-overlay"><span>▶</span></div>
-            </a>
-            <a href="https://www.youtube.com/shorts/0d-rUizVukQ" target="_blank" rel="noopener" class="shorts-link">
-                <div class="shorts-thumb" style="background-image: url('https://img.youtube.com/vi/0d-rUizVukQ/maxresdefault.jpg');"></div>
-                <div class="shorts-play-overlay"><span>▶</span></div>
-            </a>
-            <a href="https://www.youtube.com/shorts/tgR1Kq3fGWE" target="_blank" rel="noopener" class="shorts-link">
-                <div class="shorts-thumb" style="background-image: url('https://img.youtube.com/vi/tgR1Kq3fGWE/maxresdefault.jpg');"></div>
-                <div class="shorts-play-overlay"><span>▶</span></div>
-            </a>
+            <a href="https://www.youtube.com/shorts/gQ4Ip6cyr1U" target="_blank" rel="noopener" class="shorts-link"><div class="shorts-thumb" style="background-image: url('https://img.youtube.com/vi/gQ4Ip6cyr1U/maxresdefault.jpg');"></div><div class="shorts-play-overlay"><span>▶</span></div></a>
+            <a href="https://www.youtube.com/shorts/z-2LOBuWos8" target="_blank" rel="noopener" class="shorts-link"><div class="shorts-thumb" style="background-image: url('https://img.youtube.com/vi/z-2LOBuWos8/maxresdefault.jpg');"></div><div class="shorts-play-overlay"><span>▶</span></div></a>
+            <a href="https://www.youtube.com/shorts/pGibrT9Pp3I" target="_blank" rel="noopener" class="shorts-link"><div class="shorts-thumb" style="background-image: url('https://img.youtube.com/vi/pGibrT9Pp3I/maxresdefault.jpg');"></div><div class="shorts-play-overlay"><span>▶</span></div></a>
+            <a href="https://www.youtube.com/shorts/VXWdSOXGwKQ" target="_blank" rel="noopener" class="shorts-link"><div class="shorts-thumb" style="background-image: url('https://img.youtube.com/vi/VXWdSOXGwKQ/maxresdefault.jpg');"></div><div class="shorts-play-overlay"><span>▶</span></div></a>
+            <a href="https://www.youtube.com/shorts/XjSUJRduAzI" target="_blank" rel="noopener" class="shorts-link"><div class="shorts-thumb" style="background-image: url('https://img.youtube.com/vi/XjSUJRduAzI/maxresdefault.jpg');"></div><div class="shorts-play-overlay"><span>▶</span></div></a>
+            <a href="https://www.youtube.com/shorts/MYlAYewAdu4" target="_blank" rel="noopener" class="shorts-link"><div class="shorts-thumb" style="background-image: url('https://img.youtube.com/vi/MYlAYewAdu4/maxresdefault.jpg');"></div><div class="shorts-play-overlay"><span>▶</span></div></a>
+            <a href="https://www.youtube.com/shorts/0d-rUizVukQ" target="_blank" rel="noopener" class="shorts-link"><div class="shorts-thumb" style="background-image: url('https://img.youtube.com/vi/0d-rUizVukQ/maxresdefault.jpg');"></div><div class="shorts-play-overlay"><span>▶</span></div></a>
+            <a href="https://www.youtube.com/shorts/tgR1Kq3fGWE" target="_blank" rel="noopener" class="shorts-link"><div class="shorts-thumb" style="background-image: url('https://img.youtube.com/vi/tgR1Kq3fGWE/maxresdefault.jpg');"></div><div class="shorts-play-overlay"><span>▶</span></div></a>
         </div>
     </section>
 
@@ -267,45 +171,27 @@
 
     <script>
         function safeNavigate(url) { if (url && url.trim() !== "") { window.location.assign(url); } }
-
-        const menuToggle = document.getElementById('mobile-menu');
-        const navLinks = document.getElementById('navLinks');
+        const menuToggle = document.getElementById('mobile-menu'); const navLinks = document.getElementById('navLinks');
         menuToggle.addEventListener('click', () => { menuToggle.classList.toggle('active'); navLinks.classList.toggle('active'); });
 
-        const shareOverlay = document.getElementById('shareOverlay');
-        const toast = document.getElementById('toast');
+        const shareOverlay = document.getElementById('shareOverlay'); const toast = document.getElementById('toast');
         function openShareModal() { shareOverlay.style.display = 'flex'; setTimeout(() => shareOverlay.classList.add('active'), 10); }
         function closeShareModal(e) { if (e && e.target !== shareOverlay && e.type !== 'click') return; shareOverlay.classList.remove('active'); setTimeout(() => shareOverlay.style.display = 'none', 300); }
 
         async function copyURL() {
-            const currentUrl = window.location.href;
-            let success = false;
-            if (navigator.clipboard && window.isSecureContext) {
-                try { await navigator.clipboard.writeText(currentUrl); success = true; } catch (err) {}
-            }
+            const currentUrl = window.location.href; let success = false;
+            if (navigator.clipboard && window.isSecureContext) { try { await navigator.clipboard.writeText(currentUrl); success = true; } catch (err) {} }
             if (!success) {
-                const textArea = document.createElement("textarea");
-                textArea.value = currentUrl;
-                textArea.id = "temp-copy-area"; 
-                textArea.style.position = "fixed"; textArea.style.left = "-9999px";
-                document.body.appendChild(textArea);
-                textArea.focus(); textArea.select();
-                try { success = document.execCommand('copy'); } catch (err) {}
-                document.body.removeChild(textArea);
+                const textArea = document.createElement("textarea"); textArea.value = currentUrl; textArea.id = "temp-copy-area"; textArea.style.position = "fixed"; textArea.style.left = "-9999px";
+                document.body.appendChild(textArea); textArea.focus(); textArea.select(); try { success = document.execCommand('copy'); } catch (err) {} document.body.removeChild(textArea);
             }
-            if (success) { showToast('Link copied to clipboard!'); }
-            closeShareModal();
+            if (success) { showToast('Link copied to clipboard!'); } closeShareModal();
         }
 
-        function shareViaWebAPI() {
-            if (navigator.share) { navigator.share({ title: 'Chris LEE.PAPA - MOVIE', text: 'AI로 그려낸 시네마틱 비주얼 아카이브입니다.', url: window.location.href }); }
-            else { showToast('Sharing is not supported.'); }
-        }
+        function shareViaWebAPI() { if (navigator.share) { navigator.share({ title: 'Chris LEE.PAPA - MOVIE', text: 'AI로 그려낸 시네마틱 비주얼 아카이브입니다.', url: window.location.href }); } else { showToast('Sharing is not supported.'); } }
         function showToast(msg) { toast.textContent = msg; toast.style.display = 'block'; setTimeout(() => { toast.style.display = 'none'; }, 2500); }
 
-        const canvas = document.getElementById('stars-canvas');
-        const ctx = canvas.getContext('2d');
-        let stars = [];
+        const canvas = document.getElementById('stars-canvas'); const ctx = canvas.getContext('2d'); let stars = [];
         function resize() { canvas.width = window.innerWidth; canvas.height = 350; initStars(); }
         function initStars() { stars = []; const count = (canvas.width * canvas.height) / 6000; for (let i = 0; i < count; i++) { stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 1.5 + 0.2, opacity: Math.random(), speed: Math.random() * 0.02 + 0.005 }); } }
         function draw() { ctx.clearRect(0, 0, canvas.width, canvas.height); stars.forEach(s => { s.opacity += s.speed; if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed; ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0, s.opacity)})`; ctx.fill(); }); requestAnimationFrame(draw); }
@@ -316,45 +202,17 @@
             { id: 'byxLKvBHULk', title: "Chris LEE.PAPA Cinematic Vision 1", badge: 'CINEMATIC', desc: '끝없는 상상력을 바탕으로 렌더링된 초고화질 시네마틱 아트워크 영상입니다.' },
             { id: 'vlt7VfCA8bM', title: "Chris LEE.PAPA Cinematic Vision 2", badge: 'CINEMATIC', desc: '아름다운 빛과 그림자가 교차하는 AI 기반 숏필름 비주얼.' }
         ];
-        const carouselList = document.getElementById('carousel-list');
-        const mainPlayer = document.getElementById('main-video-player');
-        const mainTitle = document.getElementById('main-video-title');
-        const mainBadge = document.getElementById('main-video-badge');
-        const mainDesc = document.getElementById('main-video-desc');
+        const carouselList = document.getElementById('carousel-list'); const mainPlayer = document.getElementById('main-video-player'); const mainTitle = document.getElementById('main-video-title'); const mainBadge = document.getElementById('main-video-badge'); const mainDesc = document.getElementById('main-video-desc');
 
-        function renderCarousel() {
-            videoData.forEach((video, index) => {
-                const card = document.createElement('div');
-                card.className = `thumbnail-card ${index === 0 ? 'active' : ''}`;
-                card.innerHTML = `<div class="thumb-img" style="background-image: url('https://img.youtube.com/vi/${video.id}/hqdefault.jpg');"></div><div class="thumb-overlay"><span class="thumb-title">${video.title}</span></div>`;
-                card.addEventListener('click', () => loadMainVideo(index, card));
-                carouselList.appendChild(card);
-            });
-        }
-        function loadMainVideo(index, cardElement) {
-            const video = videoData[index];
-            mainPlayer.src = `https://www.youtube.com/embed/${video.id}?autoplay=1`;
-            mainTitle.textContent = video.title;
-            mainBadge.textContent = video.badge;
-            mainDesc.textContent = video.desc;
-            document.querySelectorAll('.thumbnail-card').forEach(el => el.classList.remove('active'));
-            cardElement.classList.add('active');
-            window.scrollTo({ top: document.querySelector('.theater-wrapper').offsetTop - 120, behavior: 'smooth' });
-        }
+        function renderCarousel() { videoData.forEach((video, index) => { const card = document.createElement('div'); card.className = `thumbnail-card ${index === 0 ? 'active' : ''}`; card.innerHTML = `<div class="thumb-img" style="background-image: url('https://img.youtube.com/vi/${video.id}/hqdefault.jpg');"></div><div class="thumb-overlay"><span class="thumb-title">${video.title}</span></div>`; card.addEventListener('click', () => loadMainVideo(index, card)); carouselList.appendChild(card); }); }
+        function loadMainVideo(index, cardElement) { const video = videoData[index]; mainPlayer.src = `https://www.youtube.com/embed/${video.id}?autoplay=1`; mainTitle.textContent = video.title; mainBadge.textContent = video.badge; mainDesc.textContent = video.desc; document.querySelectorAll('.thumbnail-card').forEach(el => el.classList.remove('active')); cardElement.classList.add('active'); window.scrollTo({ top: document.querySelector('.theater-wrapper').offsetTop - 120, behavior: 'smooth' }); }
         renderCarousel();
 
-        // ── 보안 스크립트 (충돌 해결 버전) ──
         document.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('copy', e => {
-            if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) {
-                e.preventDefault();
-            }
-        });
+        document.addEventListener('copy', e => { if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) { e.preventDefault(); } });
         document.addEventListener('keydown', e => {
             if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || (e.ctrlKey && e.key === 'U')) e.preventDefault();
-            if (e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'p')) {
-                if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) e.preventDefault();
-            }
+            if (e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'p')) { if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) e.preventDefault(); }
             if (e.key === 'PrintScreen') navigator.clipboard.writeText('');
         });
     </script>

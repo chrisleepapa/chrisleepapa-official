@@ -1,33 +1,22 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <!-- Google tag (gtag.js) -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3207219520058740"
+     crossorigin="anonymous"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-NBGELYQ4TZ"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-NBGELYQ4TZ');
-      gtag('config', 'GT-5MJDBTR2');
-    </script>
-
+    <script>window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-NBGELYQ4TZ'); gtag('config', 'GT-5MJDBTR2');</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="율이 (Yul) Profile – SisterSquad | Chris LEE.PAPA">
-    
-    <!-- SNS 공유용 OG 태그 -->
     <meta property="og:title" content="율이 (Yul) Profile – SisterSquad">
     <meta property="og:description" content="냉철한 이성의 검, 염력의 마스터 율이의 프로필을 확인해보세요.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://chrisleepapa-official.vercel.app/yul.html">
     <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png">
-
     <link rel="canonical" href="https://chrisleepapa-official.vercel.app/yul.html">
     <link rel="icon" href="images/favicon.png">
     <title>율이 (Yul) Profile – SisterSquad</title>
     
-    <!-- 폰트 통합 호출 (index.html 기준 규격 통일) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Cormorant+Garamond:wght@600&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
@@ -35,133 +24,48 @@
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        :root {
-            --gold: #c9a84c;
-            --gold-light: #e8d08a;
-            --bg: #030305;
-            --text: #f0ece4;
-            --nav-height: 70px;
-            --char-accent: #00d4ff; 
-            --char-glow: rgba(0, 212, 255, 0.4);
-        }
-
+        :root { --gold: #c9a84c; --gold-light: #e8d08a; --bg: #030305; --text: #f0ece4; --nav-height: 70px; --char-accent: #00d4ff; --char-glow: rgba(0, 212, 255, 0.4); }
         html { scroll-behavior: smooth; background-color: var(--bg); }
-
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Pretendard', 'Noto Serif KR', serif;
-            line-height: 1.7;
-            overflow-x: hidden;
-            background-image: radial-gradient(circle at top left, rgba(10, 30, 60, 0.8), transparent 60%),
-                              radial-gradient(circle at bottom right, rgba(10, 10, 30, 0.9), transparent 60%);
-            -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
-        }
-
+        body { background-color: var(--bg); color: var(--text); font-family: 'Pretendard', 'Noto Serif KR', serif; line-height: 1.7; overflow-x: hidden; background-image: radial-gradient(circle at top left, rgba(10, 30, 60, 0.8), transparent 60%), radial-gradient(circle at bottom right, rgba(10, 10, 30, 0.9), transparent 60%); -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
         img { -webkit-user-drag: none; }
-
-        body::before {
-            content: ''; position: fixed; inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
-            pointer-events: none; z-index: 900; opacity: 0.3;
-        }
-
+        body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E"); pointer-events: none; z-index: 900; opacity: 0.3; }
         a { text-decoration: none; color: inherit; }
 
-        /* ── 네비게이션 (규격 통일) ── */
-        nav {
-            position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px;
-            display: flex; justify-content: space-between; align-items: center;
-            z-index: 1000; background: rgba(3, 3, 5, 0.8); backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .brand-logo { 
-            font-family: 'Cinzel', serif; 
-            font-size: 1.3rem; 
-            font-weight: 800; 
-            letter-spacing: 2px; 
-            color: var(--gold-light); 
-            z-index: 1001; 
-            text-decoration: none;
-            white-space: nowrap;
-        }
-
+        nav { position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(3, 3, 5, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); z-index: 1001; text-decoration: none; white-space: nowrap; }
         .nav-right { display: flex; align-items: center; gap: 30px; }
         .nav-links { display: flex; gap: 30px; }
         .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; text-decoration: none; }
         .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
-
-        .share-trigger {
-            cursor: pointer; padding: 6px 12px; border: 1px solid rgba(201,168,76,0.3);
-            border-radius: 20px; font-family: 'Cinzel', serif; font-size: 0.7rem;
-            color: var(--gold-light); transition: 0.3s; letter-spacing: 1px;
-        }
+        .share-trigger { cursor: pointer; padding: 6px 12px; border: 1px solid rgba(201,168,76,0.3); border-radius: 20px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: var(--gold-light); transition: 0.3s; letter-spacing: 1px; }
         .share-trigger:hover { background: rgba(201,168,76,0.1); border-color: var(--gold-light); }
-
         .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
         .menu-toggle span { width: 22px; height: 1.5px; background-color: var(--gold-light); transition: 0.3s; }
 
-        /* 공유 모달 */
-        .modal-overlay-share {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
-            z-index: 3000; display: none; align-items: center; justify-content: center; opacity: 0; transition: 0.3s;
-        }
+        .modal-overlay-share { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 3000; display: none; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; }
         .modal-overlay-share.active { display: flex; opacity: 1; }
-        .share-modal {
-            background: #0a0a0f; border: 1px solid var(--gold); border-radius: 24px;
-            width: 90%; max-width: 400px; padding: 45px 30px; text-align: center;
-            box-shadow: 0 30px 70px rgba(0,0,0,0.9);
-        }
+        .share-modal { background: #0a0a0f; border: 1px solid var(--gold); border-radius: 24px; width: 90%; max-width: 400px; padding: 45px 30px; text-align: center; box-shadow: 0 30px 70px rgba(0,0,0,0.9); }
         .share-modal h3 { font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--gold-light); margin-bottom: 15px; }
         .share-modal p { font-size: 0.9rem; color: #888; margin-bottom: 35px; }
         .share-buttons { display: flex; flex-direction: column; gap: 14px; }
-        .modal-btn {
-            padding: 16px; border-radius: 12px; border: none; font-family: 'Cinzel', serif;
-            font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: 0.3s;
-        }
+        .modal-btn { padding: 16px; border-radius: 12px; border: none; font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: 0.3s; }
         .btn-copy { background: var(--gold); color: #000; }
         .btn-sns { background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #fff; }
         .btn-close-share { margin-top: 25px; color: #666; background: none; font-size: 0.8rem; text-decoration: underline; border: none; cursor: pointer; }
+        .toast-msg { position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%); background: var(--gold); color: #000; padding: 12px 30px; border-radius: 40px; font-size: 0.9rem; font-weight: 700; z-index: 4000; display: none; animation: fadeUp 0.4s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 
-        .toast-msg {
-            position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%);
-            background: var(--gold); color: #000; padding: 12px 30px; border-radius: 40px;
-            font-size: 0.9rem; font-weight: 700; z-index: 4000; display: none; animation: fadeUp 0.4s ease;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .page-header {
-            position: relative; width: 100%; height: 400px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            overflow: hidden; padding-top: var(--nav-height);
-        }
+        .page-header { position: relative; width: 100%; height: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; padding-top: var(--nav-height); }
         #stars-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
         .header-content { position: relative; z-index: 3; text-align: center; animation: fadeUp 1.2s ease both; }
-        .header-title {
-            font-family: 'Cinzel', serif; font-size: clamp(3rem, 8vw, 5rem); 
-            font-weight: 700; letter-spacing: 0.2em; color: #ffffff;
-            text-shadow: 0 0 30px var(--char-glow), 0 0 10px var(--char-accent);
-            margin-bottom: 10px; text-transform: uppercase;
-        }
+        .header-title { font-family: 'Cinzel', serif; font-size: clamp(3rem, 8vw, 5rem); font-weight: 700; letter-spacing: 0.2em; color: #ffffff; text-shadow: 0 0 30px var(--char-glow), 0 0 10px var(--char-accent); margin-bottom: 10px; text-transform: uppercase; }
         .header-slogan { font-family: 'Cormorant Garamond', serif; font-size: clamp(1rem, 2.5vw, 1.4rem); letter-spacing: 0.3em; color: var(--char-accent); font-style: italic; }
 
         .container { max-width: 1200px; margin: 0 auto; padding: 10px 20px 100px; position: relative; z-index: 10; }
-        .back-link {
-            display: inline-flex; align-items: center; gap: 8px; font-family: 'Cinzel', serif;
-            font-size: 0.75rem; letter-spacing: 0.2em; color: var(--gold-light);
-            margin-bottom: 40px; transition: 0.3s; text-transform: uppercase; cursor: pointer;
-        }
+        .back-link { display: inline-flex; align-items: center; gap: 8px; font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 0.2em; color: var(--gold-light); margin-bottom: 40px; transition: 0.3s; text-transform: uppercase; cursor: pointer; }
         .back-link:hover { text-shadow: 0 0 10px var(--gold-light); transform: translateX(-5px); }
 
         .profile-layout { display: grid; grid-template-columns: 400px 1fr; gap: 50px; margin-bottom: 80px; align-items: stretch; }
-        .profile-visual {
-            position: relative; background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(0, 212, 255, 0.2); border-radius: 24px; padding: 20px;
-            backdrop-filter: blur(10px); box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-            animation: fadeUp 1s ease 0.2s both;
-        }
+        .profile-visual { position: relative; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(0, 212, 255, 0.2); border-radius: 24px; padding: 20px; backdrop-filter: blur(10px); box-shadow: 0 20px 50px rgba(0,0,0,0.6); animation: fadeUp 1s ease 0.2s both; }
         .profile-img-wrap { border-radius: 16px; overflow: hidden; width: 100%; height: 100%; border: 1px solid rgba(255,255,255,0.05); position: relative; }
         .profile-img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.9); transition: 0.5s; }
         .profile-visual:hover .profile-img { transform: scale(1.03); filter: brightness(1.1); }
@@ -170,24 +74,19 @@
         .data-header { margin-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 30px; }
         .name-ko { font-family: 'Noto Serif KR', serif; font-size: 2.8rem; font-weight: 600; color: #fff; margin-bottom: 5px; }
         .age { font-family: 'Cinzel', serif; font-size: 1rem; color: #a0a0b5; letter-spacing: 2px; display: block; margin-bottom: 20px; }
-        .role-tag {
-            display: inline-block; padding: 6px 18px; border-radius: 30px;
-            background: rgba(0, 212, 255, 0.1); border: 1px solid var(--char-accent);
-            color: var(--char-accent); font-size: 0.9rem; font-weight: 600; letter-spacing: 1px;
-            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
-        }
+        .role-tag { display: inline-block; padding: 6px 18px; border-radius: 30px; background: rgba(0, 212, 255, 0.1); border: 1px solid var(--char-accent); color: var(--char-accent); font-size: 0.9rem; font-weight: 600; letter-spacing: 1px; box-shadow: 0 0 15px rgba(0, 212, 255, 0.2); }
         .bio-block { margin-bottom: 40px; }
         .bio-block h3 { font-family: 'Cinzel', serif; font-size: 1.1rem; color: var(--gold-light); margin-bottom: 15px; letter-spacing: 2px; text-transform: uppercase; }
         .bio-block p { font-size: 1.05rem; color: #cdd6f4; line-height: 1.9; font-weight: 300; word-break: keep-all; margin-bottom: 15px; }
-        .quote-box {
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05) 0%, rgba(0, 0, 0, 0) 100%);
-            border-left: 3px solid var(--char-accent); padding: 25px 30px; border-radius: 0 16px 16px 0;
-            font-family: 'Noto Serif KR', serif; font-size: 1.2rem; font-style: italic; color: #fff; line-height: 1.6;
-        }
+        .quote-box { background: linear-gradient(135deg, rgba(0, 212, 255, 0.05) 0%, rgba(0, 0, 0, 0) 100%); border-left: 3px solid var(--char-accent); padding: 25px 30px; border-radius: 0 16px 16px 0; font-family: 'Noto Serif KR', serif; font-size: 1.2rem; font-style: italic; color: #fff; line-height: 1.6; }
 
         .section-title { font-family: 'Cinzel', serif; font-size: 1.8rem; color: var(--gold); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 40px; padding-bottom: 15px; border-bottom: 1px solid rgba(201,168,76,0.2); text-align: center; margin-top: 80px; animation: fadeUp 1s ease 0.6s both; }
-        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; animation: fadeUp 1s ease 0.8s both; }
+        
+        /* ── 매거진형 그리드 레이아웃 적용 ── */
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); grid-auto-flow: dense; gap: 25px; animation: fadeUp 1s ease 0.8s both; }
         .gallery-item { position: relative; border-radius: 16px; overflow: hidden; aspect-ratio: 16/9; background: #000; border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 15px 35px rgba(0,0,0,0.5); cursor: pointer; transition: all 0.4s ease; }
+        .gallery-item:first-child { grid-column: span 2; grid-row: span 2; aspect-ratio: auto; } /* 첫 이미지 크게 */
+        
         .gallery-item:hover { transform: translateY(-8px); border-color: var(--char-accent); box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2); }
         .gallery-img { width: 100%; height: 100%; background-size: cover; background-position: center; filter: brightness(0.8) grayscale(20%); transition: all 0.5s ease; }
         .gallery-item:hover .gallery-img { filter: brightness(1.1) grayscale(0%); transform: scale(1.08); }
@@ -201,18 +100,7 @@
 
         footer { text-align: center; padding: 80px 40px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: #555; border-top: 1px solid rgba(255,255,255,0.03); }
 
-        @media (max-width: 900px) {
-            nav { padding: 0 20px; }
-            .brand-logo { font-size: 1.1rem; }
-            .nav-links { display: none; }
-            .nav-links.active { display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height)); background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 25px; z-index: 1002; }
-            .menu-toggle { display: flex; }
-            .profile-layout { grid-template-columns: 1fr; gap: 40px; }
-            .profile-visual { max-width: 500px; margin: 0 auto; }
-            .data-header { text-align: center; }
-            .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
-            .quote-box { font-size: clamp(0.8rem, 4vw, 1.2rem); padding: 20px; }
-        }
+        @media (max-width: 900px) { nav { padding: 0 20px; } .brand-logo { font-size: 1.1rem; } .nav-links { display: none; } .nav-links.active { display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height)); background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 25px; z-index: 1002; } .menu-toggle { display: flex; } .profile-layout { grid-template-columns: 1fr; gap: 40px; } .profile-visual { max-width: 500px; margin: 0 auto; } .data-header { text-align: center; } .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; } .gallery-item:first-child { grid-column: span 1; grid-row: span 1; aspect-ratio: 16/9; } .quote-box { font-size: clamp(0.8rem, 4vw, 1.2rem); padding: 20px; } }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
@@ -260,11 +148,8 @@
 
         <div class="profile-layout">
             <div class="profile-visual">
-                <div class="profile-img-wrap">
-                    <img src="images/yul01.png" alt="율이 프로필" class="profile-img" onerror="this.src='https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=800&auto=format&fit=crop'">
-                </div>
+                <div class="profile-img-wrap"><img src="images/yul01.png" alt="율이 프로필" class="profile-img" onerror="this.src='https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=800&auto=format&fit=crop'"></div>
             </div>
-
             <div class="profile-data">
                 <div class="data-header">
                     <h2 class="name-ko">율 (Yul)</h2>
@@ -311,82 +196,42 @@
 
     <script>
         function safeNavigate(url) { if (url && url.trim() !== "") { window.location.assign(url); } }
-        const menuToggle = document.getElementById('mobile-menu');
-        const navLinks = document.getElementById('navLinks');
+        const menuToggle = document.getElementById('mobile-menu'); const navLinks = document.getElementById('navLinks');
         menuToggle.addEventListener('click', () => { menuToggle.classList.toggle('active'); navLinks.classList.toggle('active'); });
 
-        const shareOverlay = document.getElementById('shareOverlay');
-        const toast = document.getElementById('toast');
+        const shareOverlay = document.getElementById('shareOverlay'); const toast = document.getElementById('toast');
         function openShareModal() { shareOverlay.style.display = 'flex'; setTimeout(() => shareOverlay.classList.add('active'), 10); }
         function closeShareModal(e) { if (e && e.target !== shareOverlay && e.type !== 'click') return; shareOverlay.classList.remove('active'); setTimeout(() => shareOverlay.style.display = 'none', 300); }
 
         async function copyURL() {
-            const currentUrl = window.location.href;
-            let success = false;
+            const currentUrl = window.location.href; let success = false;
             if (navigator.clipboard && window.isSecureContext) { try { await navigator.clipboard.writeText(currentUrl); success = true; } catch (err) {} }
             if (!success) {
-                const textArea = document.createElement("textarea");
-                textArea.value = currentUrl;
-                textArea.id = "temp-copy-area";
-                textArea.style.position = "fixed"; textArea.style.left = "-9999px";
-                document.body.appendChild(textArea);
-                textArea.focus(); textArea.select();
-                try { success = document.execCommand('copy'); } catch (err) {}
-                document.body.removeChild(textArea);
+                const textArea = document.createElement("textarea"); textArea.value = currentUrl; textArea.id = "temp-copy-area"; textArea.style.position = "fixed"; textArea.style.left = "-9999px";
+                document.body.appendChild(textArea); textArea.focus(); textArea.select(); try { success = document.execCommand('copy'); } catch (err) {} document.body.removeChild(textArea);
             }
-            if (success) { showToast('Link copied to clipboard!'); }
-            closeShareModal();
+            if (success) { showToast('Link copied to clipboard!'); } else { showToast('Copy failed. Please copy manually.'); } closeShareModal();
         }
 
-        function shareViaWebAPI() {
-            if (navigator.share) { navigator.share({ title: 'Yul (SisterSquad) Profile', url: window.location.href }).catch(console.error); }
-            else { showToast('Sharing is not supported.'); }
-        }
+        function shareViaWebAPI() { if (navigator.share) { navigator.share({ title: 'Yul (SisterSquad) Profile', url: window.location.href }).catch(console.error); } else { showToast('Sharing is not supported.'); } }
         function showToast(msg) { toast.textContent = msg; toast.style.display = 'block'; setTimeout(() => { toast.style.display = 'none'; }, 2500); }
 
-        const canvas = document.getElementById('stars-canvas');
-        const ctx = canvas.getContext('2d');
-        let stars = [];
+        const canvas = document.getElementById('stars-canvas'); const ctx = canvas.getContext('2d'); let stars = [];
         function resize() { canvas.width = window.innerWidth; canvas.height = 400; initStars(); }
-        function initStars() {
-            stars = [];
-            const count = (canvas.width * canvas.height) / 7000;
-            for (let i = 0; i < count; i++) {
-                stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 1.5 + 0.2, opacity: Math.random(), speed: Math.random() * 0.015 + 0.005, color: Math.random() > 0.75 ? '0, 212, 255' : '255, 255, 255' });
-            }
-        }
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            stars.forEach(s => { s.opacity += s.speed; if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed; ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fillStyle = `rgba(${s.color}, ${Math.max(0, s.opacity)})`; ctx.fill(); });
-            requestAnimationFrame(draw);
-        }
+        function initStars() { stars = []; const count = (canvas.width * canvas.height) / 7000; for (let i = 0; i < count; i++) { stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 1.5 + 0.2, opacity: Math.random(), speed: Math.random() * 0.015 + 0.005, color: Math.random() > 0.75 ? '0, 212, 255' : '255, 255, 255' }); } }
+        function draw() { ctx.clearRect(0, 0, canvas.width, canvas.height); stars.forEach(s => { s.opacity += s.speed; if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed; ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fillStyle = `rgba(${s.color}, ${Math.max(0, s.opacity)})`; ctx.fill(); }); requestAnimationFrame(draw); }
         window.addEventListener('resize', resize); resize(); draw();
 
-        const galleryModal = document.getElementById('imageModal');
-        const modalImg = document.getElementById('modalImg');
-        const closeGallery = document.getElementById('closeGallery');
-        document.querySelectorAll('.gallery-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const bgImage = window.getComputedStyle(item.querySelector('.gallery-img')).backgroundImage;
-                modalImg.src = bgImage.replace(/(url\(|\)|"|')/g, '');
-                galleryModal.classList.add('show');
-            });
-        });
+        const galleryModal = document.getElementById('imageModal'); const modalImg = document.getElementById('modalImg'); const closeGallery = document.getElementById('closeGallery');
+        document.querySelectorAll('.gallery-item').forEach(item => { item.addEventListener('click', () => { const bgImage = window.getComputedStyle(item.querySelector('.gallery-img')).backgroundImage; modalImg.src = bgImage.replace(/(url\(|\)|"|')/g, ''); galleryModal.classList.add('show'); }); });
         function closeLightBox() { galleryModal.classList.remove('show'); setTimeout(() => { modalImg.src = ''; }, 300); }
-        closeGallery.addEventListener('click', closeLightBox);
-        galleryModal.addEventListener('click', (e) => { if (e.target === galleryModal) closeLightBox(); });
+        closeGallery.addEventListener('click', closeLightBox); galleryModal.addEventListener('click', (e) => { if (e.target === galleryModal) closeLightBox(); });
 
         document.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('copy', e => {
-            if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) {
-                e.preventDefault();
-            }
-        });
+        document.addEventListener('copy', e => { if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) { e.preventDefault(); } });
         document.addEventListener('keydown', e => {
             if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || (e.ctrlKey && e.key === 'U')) e.preventDefault();
-            if (e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'p')) {
-                if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) e.preventDefault();
-            }
+            if (e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'p')) { if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) e.preventDefault(); }
             if (e.key === 'PrintScreen') navigator.clipboard.writeText('');
         });
     </script>

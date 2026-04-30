@@ -21,14 +21,15 @@
     <meta property="og:description" content="영혼 깊은 곳에서 올려드리는 고백과 찬양의 기록들.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://chrisleepapa-official.vercel.app/worship.html">
-    <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1">
+    <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png">
 
     <link rel="canonical" href="https://chrisleepapa-official.vercel.app/worship.html">
     <title>WORSHIP – Chris LEE.PAPA</title>
     
+    <!-- 폰트 통합 호출 (index.html 기준 규격 통일) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Cormorant+Garamond:wght@300;600&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Cormorant+Garamond:wght@300;600&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
 
     <style>
@@ -56,22 +57,47 @@
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
             pointer-events: none; z-index: 900; opacity: 0.4;
         }
+
+        /* ── 네비게이션 (index.html 규격 통일) ── */
         nav {
             position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px;
             display: flex; justify-content: space-between; align-items: center;
-            z-index: 1000; background: rgba(3, 3, 5, 0.7); backdrop-filter: blur(15px);
+            z-index: 1000; background: rgba(3, 3, 5, 0.8); backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-        .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); z-index: 1001; }
+        .brand-logo { 
+            font-family: 'Cinzel', serif; 
+            font-size: 1.3rem; 
+            font-weight: 800; 
+            letter-spacing: 2px; 
+            color: var(--gold-light); 
+            z-index: 1001; 
+            text-decoration: none;
+            white-space: nowrap; /* 줄바꿈 방지 */
+        }
+        
         .nav-right { display: flex; align-items: center; gap: 30px; }
         .nav-links { display: flex; gap: 30px; }
-        .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; }
+        .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; text-decoration: none; }
         .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
-        .share-trigger { cursor: pointer; padding: 6px 14px; border: 1px solid rgba(201,168,76,0.3); border-radius: 20px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: var(--gold-light); transition: 0.3s; letter-spacing: 1px; }
+        
+        .share-trigger { 
+            cursor: pointer; 
+            padding: 6px 12px; 
+            border: 1px solid rgba(201,168,76,0.3); 
+            border-radius: 20px; 
+            font-family: 'Cinzel', serif; 
+            font-size: 0.7rem; 
+            color: var(--gold-light); 
+            transition: 0.3s; 
+            letter-spacing: 1px; 
+        }
         .share-trigger:hover { background: rgba(201,168,76,0.1); border-color: var(--gold-light); }
+        
         .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
         .menu-toggle span { width: 22px; height: 1.5px; background-color: var(--gold-light); transition: 0.3s; }
 
+        /* 공유 모달 */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; }
         .modal-overlay.active { display: flex; opacity: 1; }
         .share-modal { background: #0a0a0f; border: 1px solid var(--gold); border-radius: 24px; width: 90%; max-width: 400px; padding: 45px 30px; text-align: center; box-shadow: 0 30px 70px rgba(0,0,0,0.9); }
@@ -81,17 +107,20 @@
         .modal-btn { padding: 16px; border-radius: 12px; border: none; font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: 0.3s; }
         .btn-copy { background: var(--gold); color: #000; }
         .btn-sns { background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #fff; }
-        .btn-close { margin-top: 25px; color: #666; background: none; font-size: 0.75rem; text-decoration: underline; cursor: pointer; border: none; }
+        .btn-close-modal { margin-top: 25px; color: #666; background: none; font-size: 0.8rem; text-decoration: underline; border: none; cursor: pointer; }
         .toast-msg { position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%); background: var(--gold); color: #000; padding: 12px 30px; border-radius: 40px; font-size: 0.9rem; font-weight: 700; z-index: 3000; display: none; animation: fadeUp 0.4s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 
+        /* 페이지 헤더 */
         .page-header { position: relative; width: 100%; height: 450px; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; padding-top: var(--nav-height); }
-        .page-header::after { content: ''; display: block; width: 1px; height: 80px; background: linear-gradient(to bottom, rgba(201,168,76,0.8), transparent); margin: 40px auto 0; position: relative; z-index: 3; animation: fadeUp 1.5s ease both; }
+        .page-header::after { content: ''; display: block; width: 1px; height: 80px; background: linear-gradient(to bottom, rgba(201,168,76,0.8), transparent); margin: 30px auto 0; position: relative; z-index: 3; animation: fadeUp 1.5s ease both; }
         #stars-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
         .header-content { position: relative; z-index: 3; text-align: center; animation: fadeUp 1.2s ease both; }
         .header-title { font-family: 'Cinzel', serif; font-size: clamp(3rem, 10vw, 5rem); font-weight: 700; letter-spacing: 0.15em; color: var(--gold-light); text-shadow: 0 0 30px rgba(201,168,76,0.3); margin-bottom: 15px; }
         .header-slogan { font-family: 'Noto Serif KR', serif; font-size: clamp(1rem, 2.5vw, 1.2rem); letter-spacing: 2px; color: #cdd6f4; font-weight: 300; }
 
         .container { max-width: 1200px; margin: 0 auto; padding: 20px 20px 100px; position: relative; z-index: 10; }
+        
+        /* 앨범 카드 섹션 */
         .featured-albums { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; margin-bottom: 120px; }
         .featured-card { position: relative; overflow: hidden; border: 1px solid rgba(201,168,76,0.3); border-radius: 24px; padding: 40px 30px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.6); transition: all 0.4s ease; animation: fadeUp 1s ease 0.2s both; }
         .featured-card::before { content: ''; position: absolute; inset: -5px; z-index: 0; background-size: cover; background-position: center; filter: blur(1.5px) brightness(0.4); transition: all 0.5s ease; }
@@ -100,9 +129,11 @@
         .featured-card > * { position: relative; z-index: 1; }
         .card-vol1::before { background-image: url('https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=800&auto=format&fit=crop'); }
         .card-vol2::before { background-image: url('https://images.unsplash.com/photo-1504052434569-70ad5836ab65?q=80&w=800&auto=format&fit=crop'); }
+        
         .featured-card iframe { border-radius: 12px; width: 100%; margin-bottom: 30px; box-shadow: 0 15px 30px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.1); background: transparent; }
         .featured-card h3 { font-family: 'Noto Serif KR', serif; font-size: 1.8rem; font-weight: 600; color: var(--gold-light); margin-bottom: 5px; }
         .featured-card p { font-family: 'Cinzel', serif; font-size: 0.9rem; letter-spacing: 2px; color: #e0e0ff; margin-bottom: 30px; text-transform: uppercase; }
+        
         .btn-group { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
         .action-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.95rem; font-weight: 600; padding: 12px 28px; border-radius: 30px; text-decoration: none; transition: all 0.3s; border: 1px solid; letter-spacing: 0.5px; }
         .btn-spotify { background: rgba(29, 185, 84, 0.08); color: var(--spotify); border-color: rgba(29, 185, 84, 0.4); }
@@ -110,6 +141,7 @@
         .btn-lyric { background: rgba(201,168,76, 0.05); color: var(--gold-light); border-color: rgba(201,168,76, 0.4); }
         .btn-lyric:hover { background: var(--gold); color: #000; }
 
+        /* 트랙 리스트 섹션 */
         .track-list-section { max-width: 900px; margin: 0 auto; animation: fadeUp 1s ease 0.4s both; }
         .section-title { text-align: center; font-family: 'Cinzel', serif; font-size: 1.5rem; color: var(--gold); margin-bottom: 50px; letter-spacing: 0.2em; text-transform: uppercase; border-bottom: 1px solid rgba(201,168,76,0.2); padding-bottom: 20px; }
         .track-item { display: flex; align-items: center; justify-content: space-between; gap: 30px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 25px 30px; margin-bottom: 20px; transition: all 0.3s ease; backdrop-filter: blur(5px); }
@@ -125,6 +157,7 @@
 
         @media (max-width: 900px) {
             nav { padding: 0 20px; }
+            .brand-logo { font-size: 1.1rem; }
             .nav-links { display: none; }
             .nav-links.active { display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height)); background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 25px; z-index: 1002; }
             .menu-toggle { display: flex; }
@@ -161,7 +194,7 @@
                 <button class="modal-btn btn-copy" onclick="copyURL()">COPY LINK</button>
                 <button class="modal-btn btn-sns" onclick="shareViaWebAPI()">SNS SHARE</button>
             </div>
-            <button class="btn-close" onclick="closeShareModal(null)">Close</button>
+            <button class="modal-btn btn-close-modal" onclick="closeShareModal(null)">Close</button>
         </div>
     </div>
 
@@ -177,22 +210,24 @@
 
     <div class="container">
         <section class="featured-albums">
+            <!-- Vol. 1 카드 -->
             <div class="featured-card card-vol1">
                 <iframe src="https://open.spotify.com/embed/album/0ctoLQNWCmiPEkySv05PAM?utm_source=generator" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
                 <h3>나의 찬양 Vol. 1</h3>
                 <p>The First Confession</p>
                 <div class="btn-group">
                     <a href="https://open.spotify.com/album/0ctoLQNWCmiPEkySv05PAM" target="_blank" rel="noopener" class="action-btn btn-spotify">Spotify 전곡 듣기</a>
-                    <a href="lyrics.html" onclick="window.open(this.href, 'lyricsPopup', 'width=450,height=750,scrollbars=yes,resizable=yes'); return false;" class="action-btn btn-lyric">가사 보기</a>
+                    <a href="lyrics.html" class="action-btn btn-lyric">가사 보기</a>
                 </div>
             </div>
+            <!-- Vol. 2 카드 -->
             <div class="featured-card card-vol2">
                 <iframe src="https://open.spotify.com/embed/album/0yhn8oEojOqsI864an6Qki?utm_source=generator" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
                 <h3>나의 찬양 Vol. 2</h3>
                 <p>2nd Confession</p>
                 <div class="btn-group">
                     <a href="https://open.spotify.com/album/0yhn8oEojOqsI864an6Qki" target="_blank" rel="noopener" class="action-btn btn-spotify">Spotify 전곡 듣기</a>
-                    <a href="lyrics2.html" onclick="window.open(this.href, 'lyricsPopup2', 'width=450,height=750,scrollbars=yes,resizable=yes'); return false;" class="action-btn btn-lyric">가사 보기</a>
+                    <a href="lyrics2.html" class="action-btn btn-lyric">가사 보기</a>
                 </div>
             </div>
         </section>
@@ -211,6 +246,8 @@
     <footer><p>© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
 
     <script>
+        function safeNavigate(url) { if (url && url.trim() !== "") { window.location.assign(url); } }
+
         const menuToggle = document.getElementById('mobile-menu');
         const navLinks = document.getElementById('navLinks');
         menuToggle.addEventListener('click', () => { menuToggle.classList.toggle('active'); navLinks.classList.toggle('active'); });
@@ -227,7 +264,7 @@
             if (!success) {
                 const textArea = document.createElement("textarea");
                 textArea.value = currentUrl;
-                textArea.id = "temp-copy-area"; // 고유 ID 부여
+                textArea.id = "temp-copy-area"; 
                 textArea.style.position = "fixed"; textArea.style.left = "-9999px";
                 document.body.appendChild(textArea);
                 textArea.focus(); textArea.select();

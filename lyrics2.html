@@ -26,9 +26,10 @@
     <link rel="canonical" href="https://chrisleepapa-official.vercel.app/lyrics2.html">
     <title>LYRICS VOL.2 – Chris LEE.PAPA</title>
     
+    <!-- 폰트 통합 호출 (index.html 기준 규격 통일) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Cormorant+Garamond:wght@300;600&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Cormorant+Garamond:wght@300;600&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
 
     <style>
@@ -52,10 +53,7 @@
             overflow-x: hidden;
             background-image: radial-gradient(circle at top center, rgba(60, 30, 80, 0.4), transparent 60%),
                               radial-gradient(circle at bottom, rgba(40, 30, 10, 0.6), transparent 70%);
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
+            -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
         }
 
         img { -webkit-user-drag: none; }
@@ -68,6 +66,7 @@
 
         a { text-decoration: none; color: inherit; }
 
+        /* ── 네비게이션 (규격 통일) ── */
         nav {
             position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px;
             display: flex; justify-content: space-between; align-items: center;
@@ -75,15 +74,24 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); z-index: 1001; }
+        .brand-logo { 
+            font-family: 'Cinzel', serif; 
+            font-size: 1.3rem; 
+            font-weight: 800; 
+            letter-spacing: 2px; 
+            color: var(--gold-light); 
+            z-index: 1001;
+            text-decoration: none;
+            white-space: nowrap;
+        }
 
         .nav-right { display: flex; align-items: center; gap: 30px; }
         .nav-links { display: flex; gap: 30px; }
-        .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; }
+        .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; text-decoration: none; }
         .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
 
         .share-trigger {
-            cursor: pointer; padding: 6px 14px; border: 1px solid rgba(201,168,76,0.3);
+            cursor: pointer; padding: 6px 12px; border: 1px solid rgba(201,168,76,0.3);
             border-radius: 20px; font-family: 'Cinzel', serif; font-size: 0.7rem;
             color: var(--gold-light); transition: 0.3s; letter-spacing: 1px;
         }
@@ -92,6 +100,7 @@
         .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
         .menu-toggle span { width: 22px; height: 1.5px; background-color: var(--gold-light); transition: 0.3s; }
 
+        /* 공유 모달 */
         .modal-overlay {
             position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
             z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: 0.3s;
@@ -121,6 +130,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
+        /* 헤더 */
         .page-header {
             position: relative; width: 100%; height: 350px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -141,6 +151,7 @@
         }
         .header-slogan { font-family: 'Noto Serif KR', serif; font-size: clamp(0.9rem, 2vw, 1.1rem); letter-spacing: 2px; color: #cdd6f4; font-weight: 300; }
 
+        /* 콘텐츠 */
         .container { max-width: 800px; margin: 0 auto; padding: 20px 20px 150px; position: relative; z-index: 10; animation: fadeUp 1s ease 0.3s both; }
         .back-link {
             display: inline-flex; align-items: center; gap: 8px; font-family: 'Cinzel', serif;
@@ -151,8 +162,9 @@
 
         .section-tag { font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.4em; color: var(--gold); text-transform: uppercase; display: block; margin-bottom: 15px; text-align: center; }
         .page-heading { text-align: center; margin-bottom: 50px; padding: 0 10px; }
-        .page-heading h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1rem, 4.5vw, 1.5rem); font-weight: 400; color: #fff; letter-spacing: 0.5px; white-space: nowrap; }
+        .page-heading h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.1rem, 4.5vw, 1.5rem); font-weight: 400; color: #fff; letter-spacing: 0.5px; word-break: keep-all; }
 
+        /* 아코디언 */
         .accordion-item { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; margin-bottom: 15px; backdrop-filter: blur(10px); transition: all 0.4s ease; overflow: hidden; }
         .accordion-header { width: 100%; background: transparent; border: none; padding: 20px 25px; text-align: left; font-family: 'Noto Serif KR', serif; font-size: 1.2rem; font-weight: 600; color: var(--text); cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease; }
         .accordion-item:hover { background: rgba(255, 255, 255, 0.04); border-color: rgba(201,168,76,0.3); transform: translateX(5px); }
@@ -160,16 +172,15 @@
         .toggle-icon { font-size: 1.4rem; color: var(--gold); transition: transform 0.4s ease; font-weight: 300; flex-shrink: 0; }
         .accordion-item.active { border-color: rgba(201,168,76,0.5); box-shadow: 0 10px 30px rgba(0,0,0,0.5); background: rgba(20, 15, 25, 0.6); }
         .accordion-item.active .toggle-icon { transform: rotate(45deg); color: var(--gold-light); }
-        
         .accordion-body { max-height: 0; overflow: hidden; transition: all 0.6s ease-in-out; opacity: 0; text-align: center; }
-        .accordion-item.active .accordion-body { max-height: 6000px; padding: 40px 20px; opacity: 1; }
-        
+        .accordion-item.active .accordion-body { max-height: 5000px; padding: 40px 20px; opacity: 1; }
         .lyric-text { font-size: clamp(0.9rem, 3.5vw, 1.05rem); font-weight: 300; line-height: 2.4; color: rgba(240,236,228,0.9); white-space: pre-wrap; word-break: break-word; letter-spacing: 0.5px; }
 
         footer { text-align: center; padding: 60px 20px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: #555; border-top: 1px solid rgba(255,255,255,0.03); }
 
         @media (max-width: 900px) {
             nav { padding: 0 20px; }
+            .brand-logo { font-size: 1.1rem; }
             .nav-links { display: none; }
             .nav-links.active { display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height)); background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 25px; z-index: 1002; }
             .menu-toggle { display: flex; }
@@ -327,11 +338,15 @@
 주님과 함께 달려!
 심장이 뛰어
 우리의 예배
-지금 시작돼</p>
+지금 시작돼
+
+[Outro]
+우리의 예배
+멈추지 않아</p>
                 </div>
             </div>
 
-            <!-- Track 03: 복구 완료 -->
+            <!-- Track 03 -->
             <div class="accordion-item">
                 <button class="accordion-header">
                     <span><span class="track-num">03.</span> 주를 향해 노래하리</span>
@@ -411,7 +426,7 @@
                 </div>
             </div>
 
-            <!-- Track 04: 전체 가사 복구 -->
+            <!-- Track 04 -->
             <div class="accordion-item">
                 <button class="accordion-header">
                     <span><span class="track-num">04.</span> 사랑합니다. 주님</span>
@@ -470,7 +485,7 @@
                 </div>
             </div>
 
-            <!-- Track 05: 전체 가사 복구 -->
+            <!-- Track 05 -->
             <div class="accordion-item">
                 <button class="accordion-header">
                     <span><span class="track-num">05.</span> 돌아보면 모든 날이</span>

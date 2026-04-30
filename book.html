@@ -80,7 +80,15 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); z-index: 1001; }
+        .brand-logo { 
+            font-family: 'Cinzel', serif; 
+            font-size: 1.3rem; 
+            font-weight: 800; 
+            letter-spacing: 2px; 
+            color: var(--gold-light); 
+            z-index: 1001;
+            white-space: nowrap; /* 모바일 줄바꿈 방지 */
+        }
 
         .nav-right { display: flex; align-items: center; gap: 30px; }
         .nav-links { display: flex; gap: 30px; }
@@ -195,7 +203,7 @@
         }
         .hero-card:hover .action-btn { background: #ffb4c8; color: #000; box-shadow: 0 0 20px var(--pink-glow); }
 
-        /* MIRACLE SHOT (요청 이미지 반영) */
+        /* MIRACLE SHOT */
         .teaser-card {
             background: rgba(255, 255, 255, 0.01);
             border: 1px solid rgba(255, 255, 255, 0.05);
@@ -215,8 +223,8 @@
         .teaser-desc { color: #8a8a9d; font-size: 1rem; line-height: 1.7; word-break: keep-all; }
 
         .teaser-img {
-            flex: 1; width: 100%; height: 200px; border-radius: 12px;
-            background-image: url('images/miracleshot1.png'); /* 요청하신 이미지 적용 */
+            flex: 1; width: 100%; height: 220px; border-radius: 12px;
+            background-image: url('images/miracleshot1.png');
             background-size: cover; background-position: center;
             opacity: 0.8; filter: contrast(1.1);
             box-shadow: 0 10px 20px rgba(0,0,0,0.4);
@@ -227,6 +235,7 @@
 
         @media (max-width: 900px) {
             nav { padding: 0 20px; }
+            .brand-logo { font-size: 1.1rem; } /* 모바일에서 로고 크기 살짝 조정하여 한 줄 유지 */
             .nav-links { display: none; }
             .nav-links.active {
                 display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height));
@@ -235,8 +244,9 @@
             }
             .menu-toggle { display: flex; }
             .hero-card.sistersquad { padding: 45px 20px; }
+            .card-image-box { height: 220px; }
             .teaser-card { flex-direction: column; text-align: center; gap: 25px; padding: 40px 20px; }
-            .teaser-img { height: 180px; max-width: 100%; }
+            .teaser-img { height: 250px; max-width: 100%; } /* 모바일에서 잘림 방지를 위해 높이 상향 */
         }
 
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
@@ -282,19 +292,19 @@
     </header>
 
     <div class="container">
-        <!-- SISTER SQUAD 메인 섹션 -->
+        <!-- SISTER SQUAD -->
         <section class="hero-card sistersquad" onclick="safeNavigate('sistersquad.html')">
             <div class="card-image-box"></div>
             <h2 class="sister-title">SISTER SQUAD</h2>
             <p class="desc-text">
                 책 속 마법 세계로 빠져든 T 언니 율이와 F 동생 정이!<br>
                 어둠에 맞서며 용기와 가족의 사랑을 깨닫는 환상적인 모험.<br>
-                사랑하는 두 딸에게서 영감을 받아 탄생한 따뜻한 에듀테인먼트 세계관입니다.
+                사랑하는 두 딸에게서 영감을 받아 탄생한 에듀테인먼트 세계관입니다.
             </p>
             <a href="sistersquad.html" class="action-btn">Read More</a>
         </section>
 
-        <!-- Miracle Shot 티저 섹션 (이미지 확인) -->
+        <!-- Miracle Shot -->
         <section class="teaser-card">
             <div class="teaser-content">
                 <span class="teaser-badge">Coming Soon</span>
@@ -338,29 +348,20 @@
         async function copyURL() {
             const currentUrl = window.location.href;
             let success = false;
-
             if (navigator.clipboard && window.isSecureContext) {
-                try {
-                    await navigator.clipboard.writeText(currentUrl);
-                    success = true;
-                } catch (err) { }
+                try { await navigator.clipboard.writeText(currentUrl); success = true; } catch (err) { }
             }
-
             if (!success) {
                 const textArea = document.createElement("textarea");
                 textArea.value = currentUrl;
                 textArea.id = "temp-copy-area";
-                textArea.style.position = "fixed";
-                textArea.style.left = "-9999px";
+                textArea.style.position = "fixed"; textArea.style.left = "-9999px";
                 document.body.appendChild(textArea);
-                textArea.focus();
-                textArea.select();
+                textArea.focus(); textArea.select();
                 try { success = document.execCommand('copy'); } catch (err) { }
                 document.body.removeChild(textArea);
             }
-
             if (success) { showToast('Link copied to clipboard!'); }
-            else { showToast('Copy failed. Please copy manually.'); }
             closeShareModal();
         }
 
@@ -380,7 +381,6 @@
             setTimeout(() => { toast.style.display = 'none'; }, 2500);
         }
 
-        // 별빛 배경
         const canvas = document.getElementById('stars-canvas');
         const ctx = canvas.getContext('2d');
         let stars = [];
@@ -411,7 +411,6 @@
         window.addEventListener('resize', resize);
         resize(); draw();
 
-        // 보안 스크립트 (보안 우회형)
         document.addEventListener('contextmenu', e => e.preventDefault());
         document.addEventListener('copy', e => {
             if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) {

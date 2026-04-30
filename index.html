@@ -17,6 +17,10 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- ✅ 파비콘(Favicon) 적용 -->
+    <link rel="icon" href="images/favicon.png" type="image/png">
+
     <meta name="description" content="Chris Lee.Papa – The Creative Archive. 나를 살린 찬양과 믿음, 그리고 상상력으로 빚어낸 기록들.">
 
     <!-- SNS 공유용 OG 태그 -->
@@ -31,7 +35,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Cormorant+Garamond:wght@600&family=Noto+Serif+KR:wght@300;400&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Cormorant+Garamond:wght@600&family=Noto+Serif+KR:wght@300;400;600&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
 
     <style>
@@ -81,7 +85,7 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); z-index: 1001; }
+        .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); z-index: 1001; white-space: nowrap; }
 
         .nav-right { display: flex; align-items: center; gap: 30px; }
         .nav-links { display: flex; gap: 30px; }
@@ -169,7 +173,7 @@
         .note-container.active .note-content { max-height: 1200px; }
         .note-container.active .toggle-symbol { transform: rotate(45deg); }
 
-        /* ── 포트폴리오 카드 그리드 (이미지 지정) ── */
+        /* ── 포트폴리오 카드 그리드 ── */
         .portfolio-grid {
             padding: 40px 30px 100px; max-width: 1300px; margin: 0 auto;
             display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px;
@@ -187,7 +191,6 @@
             filter: brightness(0.5) contrast(1.1); transition: transform 0.6s cubic-bezier(0.2, 0, 0.2, 1);
         }
         
-        /* 메뉴 카드별 배경 이미지 경로 매칭 */
         .card-worship .card-bg { background-image: url('images/worship.png'); }
         .card-book .card-bg    { background-image: url('images/book.png'); }
         .card-music .card-bg   { background-image: url('images/music.jpg'); }
@@ -210,6 +213,7 @@
 
         @media (max-width: 900px) {
             nav { padding: 0 20px; }
+            .brand-logo { font-size: 1.1rem; }
             .nav-links { display: none; }
             .nav-links.active {
                 display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height));
@@ -242,7 +246,6 @@
         </div>
     </nav>
 
-    <!-- 공유 모달 팝업 -->
     <div class="modal-overlay" id="shareOverlay" onclick="closeShareModal(event)">
         <div class="share-modal" onclick="event.stopPropagation()">
             <h3>SHARE ARCHIVE</h3>
@@ -255,7 +258,6 @@
         </div>
     </div>
 
-    <!-- 토스트 메시지 -->
     <div class="toast-msg" id="toast">Link copied to clipboard!</div>
 
     <header class="hero-section">
@@ -277,7 +279,7 @@
             <div class="note-content">
                 <p class="note-text">
                    이곳은 상상력으로 빚어낸 이야기들과 제 삶의 중심이 되는 신앙이 함께 공존하는 공간입니다.<br>
-                   몇개월 전부터 AI와 기술을 통해 새로운 세계와 만나고 아름다운 창작물들을 만들고 있습니다.<br><br>
+                   몇개월 전부터 AI와 기술을 통해 새로운 세계과 만나고 아름다운 창작물들을 만들고 있습니다.<br><br>
                    <strong style="color:var(--gold-light)">어두운 시간 속에서 하늘의 무수히 많은 별빛을 보게 해주시고<br>
                    다시 일어날 용기를 주신 주님께 모든 영광을 올립니다.</strong><br><br>
                    저의 열정과 진실한 고백이 담긴 이 곳에 오신 것을 환영합니다.<br>
@@ -289,7 +291,6 @@
     </section>
 
     <main class="portfolio-grid">
-        <!-- 각 카드의 class에 'card-worship', 'card-book' 등을 지정하여 CSS 배경 이미지가 출력되도록 함 -->
         <div class="card card-worship" onclick="safeNavigate('worship.html')">
             <div class="card-bg"></div>
             <div class="card-body">
@@ -376,7 +377,7 @@
             if (!success) {
                 const textArea = document.createElement("textarea");
                 textArea.value = currentUrl;
-                textArea.id = "temp-copy-area"; // 고유 ID 부여
+                textArea.id = "temp-copy-area"; 
                 textArea.style.position = "fixed";
                 textArea.style.left = "-9999px";
                 textArea.style.top = "0";

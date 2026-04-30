@@ -26,10 +26,10 @@
     <link rel="canonical" href="https://chrisleepapa-official.vercel.app/lyrics.html">
     <title>LYRICS VOL.1 – Chris LEE.PAPA</title>
     
-    <!-- 폰트 통합 호출 -->
+    <!-- 폰트 통합 호출 (index.html 기준 규격 통일) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Cormorant+Garamond:wght@300;600&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Cormorant+Garamond:wght@300;600&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
 
     <style>
@@ -66,7 +66,7 @@
 
         a { text-decoration: none; color: inherit; }
 
-        /* ── 네비게이션 ── */
+        /* ── 네비게이션 (규격 통일) ── */
         nav {
             position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px;
             display: flex; justify-content: space-between; align-items: center;
@@ -74,15 +74,24 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); z-index: 1001; }
+        .brand-logo { 
+            font-family: 'Cinzel', serif; 
+            font-size: 1.3rem; 
+            font-weight: 800; 
+            letter-spacing: 2px; 
+            color: var(--gold-light); 
+            z-index: 1001;
+            text-decoration: none;
+            white-space: nowrap;
+        }
 
         .nav-right { display: flex; align-items: center; gap: 30px; }
         .nav-links { display: flex; gap: 30px; }
-        .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; }
+        .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; text-decoration: none; }
         .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
 
         .share-trigger {
-            cursor: pointer; padding: 6px 14px; border: 1px solid rgba(201,168,76,0.3);
+            cursor: pointer; padding: 6px 12px; border: 1px solid rgba(201,168,76,0.3);
             border-radius: 20px; font-family: 'Cinzel', serif; font-size: 0.7rem;
             color: var(--gold-light); transition: 0.3s; letter-spacing: 1px;
         }
@@ -91,7 +100,7 @@
         .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
         .menu-toggle span { width: 22px; height: 1.5px; background-color: var(--gold-light); transition: 0.3s; }
 
-        /* ── 공유 모달 & 토스트 ── */
+        /* 공유 모달 */
         .modal-overlay {
             position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
             z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: 0.3s;
@@ -121,7 +130,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        /* ── 페이지 헤더 ── */
+        /* 헤더 */
         .page-header {
             position: relative; width: 100%; height: 350px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -142,7 +151,7 @@
         }
         .header-slogan { font-family: 'Noto Serif KR', serif; font-size: clamp(0.9rem, 2vw, 1.1rem); letter-spacing: 2px; color: #cdd6f4; font-weight: 300; }
 
-        /* ── 메인 콘텐츠 ── */
+        /* 콘텐츠 */
         .container { max-width: 800px; margin: 0 auto; padding: 20px 20px 150px; position: relative; z-index: 10; animation: fadeUp 1s ease 0.3s both; }
         .back-link {
             display: inline-flex; align-items: center; gap: 8px; font-family: 'Cinzel', serif;
@@ -153,9 +162,9 @@
 
         .section-tag { font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.4em; color: var(--gold); text-transform: uppercase; display: block; margin-bottom: 15px; text-align: center; }
         .page-heading { text-align: center; margin-bottom: 50px; padding: 0 10px; }
-        .page-heading h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1rem, 4.5vw, 1.5rem); font-weight: 400; color: #fff; letter-spacing: 0.5px; white-space: nowrap; }
+        .page-heading h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.1rem, 4.5vw, 1.5rem); font-weight: 400; color: #fff; letter-spacing: 0.5px; word-break: keep-all; }
 
-        /* 아코디언 가사집 */
+        /* 아코디언 */
         .accordion-item { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; margin-bottom: 15px; backdrop-filter: blur(10px); transition: all 0.4s ease; overflow: hidden; }
         .accordion-header { width: 100%; background: transparent; border: none; padding: 20px 25px; text-align: left; font-family: 'Noto Serif KR', serif; font-size: 1.2rem; font-weight: 600; color: var(--text); cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease; }
         .accordion-item:hover { background: rgba(255, 255, 255, 0.04); border-color: rgba(201,168,76,0.3); transform: translateX(5px); }
@@ -163,17 +172,15 @@
         .toggle-icon { font-size: 1.4rem; color: var(--gold); transition: transform 0.4s ease; font-weight: 300; flex-shrink: 0; }
         .accordion-item.active { border-color: rgba(201,168,76,0.5); box-shadow: 0 10px 30px rgba(0,0,0,0.5); background: rgba(20, 15, 25, 0.6); }
         .accordion-item.active .toggle-icon { transform: rotate(45deg); color: var(--gold-light); }
-        
-        /* 높이 제한 해제 */
         .accordion-body { max-height: 0; overflow: hidden; transition: all 0.6s ease-in-out; opacity: 0; text-align: center; }
         .accordion-item.active .accordion-body { max-height: 5000px; padding: 40px 20px; opacity: 1; }
-        
         .lyric-text { font-size: clamp(0.9rem, 3.5vw, 1.05rem); font-weight: 300; line-height: 2.4; color: rgba(240,236,228,0.9); white-space: pre-wrap; word-break: break-word; letter-spacing: 0.5px; }
 
         footer { text-align: center; padding: 60px 20px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: #555; border-top: 1px solid rgba(255,255,255,0.03); }
 
         @media (max-width: 900px) {
             nav { padding: 0 20px; }
+            .brand-logo { font-size: 1.1rem; }
             .nav-links { display: none; }
             .nav-links.active { display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height)); background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 25px; z-index: 1002; }
             .menu-toggle { display: flex; }
@@ -266,11 +273,27 @@
 흔들릴 것 같던 나의 목소리
 다시 소리칠 힘을 얻습니다
 
+[Chorus]
+오늘도 걷는 이 길 위에서
+한없이 부족한 나를 위해서
+조용히 다가와 손 잡아주신
+그 인자한 손 잡고 나아갑니다
+
 [Bridge]
 화려한 믿음은 아닐지라도
 소박한 진심을 아시는 주님
 매일 마주하는 나의 일상에
-주의 은혜가 스며듭니다</p>
+주의 은혜가 스며듭니다
+
+[Final Chorus]
+오늘도 걷는 이 길 위에서 (걸어가)
+한없이 부족한 나를 위해서 (나를 위해)
+말없이 다가와 손 잡아주신 (나의 주님)
+그 따뜻한 품에 기대어 갑니다
+
+[Outro]
+이 길 위에서...
+나를 위해서...</p>
                 </div>
             </div>
 
@@ -304,6 +327,12 @@
 걸음이 느려질 때도
 기다림 속에 흐르던
 신실한 그 약속
+
+[Pre-Chorus]
+돌아서려 했던 마음
+수없이 흔들릴 때
+말없이 나를 안아
+다시 걷게 하셨네
 
 [Bridge]
 말로 다 못한 기도
@@ -353,7 +382,13 @@
 언제나 그 자리에
 나를 기다린 사랑
 나의 노래 됩니다
-내 믿음 소망이 되네</p>
+내 믿음 소망이 되네
+
+[Final Chorus]
+사랑합니다 나의 주님 (나의 주)
+영원히 찬양합니다 (찬양해요)
+위대하신 그 이름 전해 (소리높여)
+사랑을 나눠요</p>
                 </div>
             </div>
 
@@ -387,7 +422,14 @@
 눈을 들어 온 세상을 보니
 주의 사랑이 느껴지네요
 들판에 풀과 하늘의 별까지
-보잘것없는 나도 사랑하시네</p>
+보잘것없는 나도 사랑하시네
+
+[Final Chorus]
+기적입니다 온 땅과 만물 (찬양해)
+주님이 만드신 아름다운 세상
+기적입니다 (기적이죠) 주를 믿는 것
+주의 사랑 아니면 안 되는 일들
+참 감사한 오늘 사랑입니다</p>
                 </div>
             </div>
 
@@ -417,6 +459,19 @@
 고개 들어, 하늘 보네
 
 [Chorus]
+파레시아, 주 앞에 가리라
+파레시아, 나의 승리야
+험한 세상도, 두렵지 않네
+주의 강한 손, 날 붙드니까
+당당하게, 한 걸음 더
+
+[Bridge]
+세상이 줄 수 없는 평안
+주님이 약속하신 평화
+우리는 결코 혼자가 아냐
+주와 함께 걷는 이 길
+
+[Final Chorus]
 파레시아, 주 앞에 가리라
 파레시아, 나의 승리야
 험한 세상도, 두렵지 않네
@@ -471,6 +526,12 @@
 어린 아이, 할아버지
 모두 함께, 춤을 춰요
 
+[Pre-Chorus]
+가슴 펴고, 하늘 봐요
+우리 소리, 하나 되어
+주를 향해, 고백해요
+지금 바로, 시작해요!
+
 [Chorus]
 오 기쁜 날! 주 찬양해!
 온 세상에, 울려라!
@@ -505,7 +566,13 @@
 우리의 예배를 받아주세요
 가장 귀한 노래로 주님만 높여요
 하늘의 은혜가 가득 내려와
-우리를 기쁨으로 채워주시네</p>
+우리를 기쁨으로 채워주시네
+
+[Final Chorus]
+사랑의 주님만 바라봅니다
+온 맘 다해 정성을 모두 드려요
+언제나 우리와 함께하시는
+하나님만 높여 예배해요</p>
                 </div>
             </div>
 

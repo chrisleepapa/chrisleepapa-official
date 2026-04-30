@@ -37,7 +37,7 @@
         :root {
             --gold: #c9a84c;
             --gold-light: #e8d08a;
-            --cyan: #00d4ff;
+            --cyan: #4a90e2;
             --bg: #030305;
             --text: #f0ece4;
             --text-dim: #9a9490;
@@ -101,20 +101,35 @@
         .video-title { font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 700; color: #ffffff; line-height: 1.4; }
         .video-desc { font-size: 1.05rem; color: #a0a0b5; font-weight: 300; line-height: 1.8; max-width: 850px; word-break: keep-all; }
 
+        /* UP NEXT 캐러셀 */
         .carousel-section { max-width: 1100px; margin: 0 auto 80px; padding: 0 20px; position: relative; z-index: 10; }
         .carousel-heading { font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--gold); margin-bottom: 20px; font-weight: 600; letter-spacing: 0.15em; border-bottom: 1px solid rgba(201,168,76,0.2); padding-bottom: 15px; }
         .carousel-container { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 20px; scroll-snap-type: x mandatory; }
+        .carousel-container::-webkit-scrollbar { height: 4px; }
+        .carousel-container::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
+
         .thumbnail-card { flex: 0 0 280px; scroll-snap-align: start; cursor: pointer; border-radius: 16px; overflow: hidden; position: relative; transition: all 0.3s ease; border: 2px solid transparent; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
         .thumbnail-card.active { border-color: #4a90e2; box-shadow: 0 0 25px rgba(74, 144, 226, 0.4); transform: scale(0.98); }
         .thumb-img { width: 100%; height: 158px; background-size: cover; background-position: center; transition: 0.5s ease; }
         .thumb-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0.1)); display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; opacity: 0.8; }
         .thumb-title { color: #fff; font-size: 0.95rem; font-weight: 500; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; }
 
+        /* 세로형 쇼츠 섹션 (새창 연결 버전) */
         .shorts-section { max-width: 1100px; margin: 0 auto 100px; padding: 50px 30px; background: rgba(255,255,255,0.01); border-radius: 24px; border: 1px solid rgba(255,255,255,0.03); backdrop-filter: blur(10px); position: relative; z-index: 10; }
         .shorts-heading { font-family: 'Cinzel', serif; font-size: 1.4rem; letter-spacing: 2px; color: #e0e0ff; margin-bottom: 40px; text-align: center; font-weight: 700; }
         .shorts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 25px; }
-        .shorts-item { position: relative; width: 100%; padding-bottom: 177.78%; background: #000; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 30px rgba(0,0,0,0.6); transition: transform 0.4s; border: 1px solid rgba(255,255,255,0.05); }
-        .shorts-item iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        
+        .shorts-link { position: relative; width: 100%; padding-bottom: 177.78%; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 30px rgba(0,0,0,0.6); transition: transform 0.4s, border-color 0.4s; border: 1px solid rgba(255,255,255,0.05); display: block; text-decoration: none; }
+        .shorts-link:hover { transform: translateY(-10px) scale(1.02); border-color: var(--gold); }
+        
+        .shorts-thumb { position: absolute; inset: 0; background-size: cover; background-position: center; filter: brightness(0.8); transition: 0.5s; }
+        .shorts-link:hover .shorts-thumb { filter: brightness(1.1); }
+        
+        /* 쇼츠 플레이 아이콘 오버레이 */
+        .shorts-play-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.2); transition: 0.3s; }
+        .shorts-play-overlay span { width: 50px; height: 50px; background: rgba(255,255,255,0.2); backdrop-filter: blur(5px); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.2rem; border: 1px solid rgba(255,255,255,0.3); transition: 0.3s; }
+        .shorts-link:hover .shorts-play-overlay { background: rgba(0,0,0,0); }
+        .shorts-link:hover .shorts-play-overlay span { transform: scale(1.2); background: var(--gold); color: #000; border-color: var(--gold); }
 
         footer { text-align: center; padding: 60px 40px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: #555; border-top: 1px solid rgba(255,255,255,0.03); }
 
@@ -124,7 +139,8 @@
             .nav-links.active { display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height)); background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 25px; z-index: 1002; }
             .menu-toggle { display: flex; }
             .page-header { height: 250px; }
-            .shorts-grid { grid-template-columns: repeat(2, 1fr); }
+            .shorts-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+            .shorts-section { padding: 40px 15px; }
         }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -154,7 +170,7 @@
                 <button class="modal-btn btn-copy" onclick="copyURL()">COPY LINK</button>
                 <button class="modal-btn btn-sns" onclick="shareViaWebAPI()">SNS SHARE</button>
             </div>
-            <button class="btn-close-modal" onclick="closeShareModal(null)">Close</button>
+            <button class="modal-btn btn-close-modal" onclick="closeShareModal(null)">Close</button>
         </div>
     </div>
 
@@ -186,17 +202,42 @@
         <div class="carousel-container" id="carousel-list"></div>
     </section>
 
+    <!-- 세로형 쇼츠 섹션: 클릭 시 유튜브 앱/웹으로 직접 연결 -->
     <section class="shorts-section">
         <h3 class="shorts-heading">VERTICAL ARCHIVES</h3>
         <div class="shorts-grid">
-            <div class="shorts-item"><iframe src="https://www.youtube.com/embed/gQ4Ip6cyr1U" frameborder="0" allowfullscreen loading="lazy"></iframe></div>
-            <div class="shorts-item"><iframe src="https://www.youtube.com/embed/z-2LOBuWos8" frameborder="0" allowfullscreen loading="lazy"></iframe></div>
-            <div class="shorts-item"><iframe src="https://www.youtube.com/embed/pGibrT9Pp3I" frameborder="0" allowfullscreen loading="lazy"></iframe></div>
-            <div class="shorts-item"><iframe src="https://www.youtube.com/embed/VXWdSOXGwKQ" frameborder="0" allowfullscreen loading="lazy"></iframe></div>
-            <div class="shorts-item"><iframe src="https://www.youtube.com/embed/XjSUJRduAzI" frameborder="0" allowfullscreen loading="lazy"></iframe></div>
-            <div class="shorts-item"><iframe src="https://www.youtube.com/embed/MYlAYewAdu4" frameborder="0" allowfullscreen loading="lazy"></iframe></div>
-            <div class="shorts-item"><iframe src="https://www.youtube.com/embed/0d-rUizVukQ" frameborder="0" allowfullscreen loading="lazy"></iframe></div>
-            <div class="shorts-item"><iframe src="https://www.youtube.com/embed/tgR1Kq3fGWE" frameborder="0" allowfullscreen loading="lazy"></iframe></div>
+            <a href="https://www.youtube.com/shorts/gQ4Ip6cyr1U" target="_blank" rel="noopener" class="shorts-link">
+                <div class="shorts-thumb" style="background-image: url('https://img.youtube.com/vi/gQ4Ip6cyr1U/maxresdefault.jpg');"></div>
+                <div class="shorts-play-overlay"><span>▶</span></div>
+            </a>
+            <a href="https://www.youtube.com/shorts/z-2LOBuWos8" target="_blank" rel="noopener" class="shorts-link">
+                <div class="shorts-thumb" style="background-image: url('https://img.youtube.com/vi/z-2LOBuWos8/maxresdefault.jpg');"></div>
+                <div class="shorts-play-overlay"><span>▶</span></div>
+            </a>
+            <a href="https://www.youtube.com/shorts/pGibrT9Pp3I" target="_blank" rel="noopener" class="shorts-link">
+                <div class="shorts-thumb" style="background-image: url('https://img.youtube.com/vi/pGibrT9Pp3I/maxresdefault.jpg');"></div>
+                <div class="shorts-play-overlay"><span>▶</span></div>
+            </a>
+            <a href="https://www.youtube.com/shorts/VXWdSOXGwKQ" target="_blank" rel="noopener" class="shorts-link">
+                <div class="shorts-thumb" style="background-image: url('https://img.youtube.com/vi/VXWdSOXGwKQ/maxresdefault.jpg');"></div>
+                <div class="shorts-play-overlay"><span>▶</span></div>
+            </a>
+            <a href="https://www.youtube.com/shorts/XjSUJRduAzI" target="_blank" rel="noopener" class="shorts-link">
+                <div class="shorts-thumb" style="background-image: url('https://img.youtube.com/vi/XjSUJRduAzI/maxresdefault.jpg');"></div>
+                <div class="shorts-play-overlay"><span>▶</span></div>
+            </a>
+            <a href="https://www.youtube.com/shorts/MYlAYewAdu4" target="_blank" rel="noopener" class="shorts-link">
+                <div class="shorts-thumb" style="background-image: url('https://img.youtube.com/vi/MYlAYewAdu4/maxresdefault.jpg');"></div>
+                <div class="shorts-play-overlay"><span>▶</span></div>
+            </a>
+            <a href="https://www.youtube.com/shorts/0d-rUizVukQ" target="_blank" rel="noopener" class="shorts-link">
+                <div class="shorts-thumb" style="background-image: url('https://img.youtube.com/vi/0d-rUizVukQ/maxresdefault.jpg');"></div>
+                <div class="shorts-play-overlay"><span>▶</span></div>
+            </a>
+            <a href="https://www.youtube.com/shorts/tgR1Kq3fGWE" target="_blank" rel="noopener" class="shorts-link">
+                <div class="shorts-thumb" style="background-image: url('https://img.youtube.com/vi/tgR1Kq3fGWE/maxresdefault.jpg');"></div>
+                <div class="shorts-play-overlay"><span>▶</span></div>
+            </a>
         </div>
     </section>
 
@@ -221,7 +262,7 @@
             if (!success) {
                 const textArea = document.createElement("textarea");
                 textArea.value = currentUrl;
-                textArea.id = "temp-copy-area"; // 고유 ID 부여
+                textArea.id = "temp-copy-area"; 
                 textArea.style.position = "fixed"; textArea.style.left = "-9999px";
                 document.body.appendChild(textArea);
                 textArea.focus(); textArea.select();

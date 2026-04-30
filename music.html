@@ -14,6 +14,10 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- ✅ 파비콘(Favicon) 적용 -->
+    <link rel="icon" href="images/favicon.png" type="image/png">
+
     <meta name="description" content="Chris Lee.Papa – MUSIC | The Creative Archive">
     
     <!-- SNS 공유용 OG 태그 -->
@@ -29,7 +33,7 @@
     <!-- 폰트 통합 호출 (index.html 기준 규격 통일) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Cormorant+Garamond:wght@600&family=Noto+Serif+KR:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Cormorant+Garamond:wght@600&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
 
     <style>
@@ -75,6 +79,7 @@
             color: var(--gold-light); 
             z-index: 1001;
             text-decoration: none;
+            white-space: nowrap;
         }
         
         .nav-right { display: flex; align-items: center; gap: 30px; }
@@ -310,7 +315,7 @@
         }
         fetchSpotifyCovers();
 
-        // ── 보안 스크립트 ──
+        // ── 보안 스크립트 (충돌 해결 버전) ──
         document.addEventListener('contextmenu', e => e.preventDefault());
         document.addEventListener('copy', e => {
             if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) {

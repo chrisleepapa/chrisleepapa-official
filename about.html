@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3207219520058740"
-     crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3207219520058740" crossorigin="anonymous"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-NBGELYQ4TZ"></script>
-    <script>window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-NBGELYQ4TZ'); gtag('config', 'GT-5MJDBTR2');</script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-NBGELYQ4TZ');gtag('config','GT-5MJDBTR2');</script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Chris Lee.Papa – ABOUT | 새로운 도전과 창조의 기록들">
@@ -16,65 +16,308 @@
     <link rel="canonical" href="https://chrisleepapa-official.vercel.app/about.html">
     <link rel="icon" href="images/favicon.png">
     <title>ABOUT - Chris LEE.PAPA</title>
-    
+
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Cormorant+Garamond:wght@300;600&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root { --gold: #c9a84c; --gold-light: #e8d08a; --bg: #030305; --text: #f0ece4; --nav-height: 70px; }
-        body { background-color: var(--bg); color: var(--text); font-family: 'Pretendard', sans-serif; background-image: radial-gradient(circle at top right, rgba(20, 20, 40, 0.8), transparent 60%), radial-gradient(circle at bottom left, rgba(10, 10, 20, 0.9), transparent 60%); min-height: 100vh; display: flex; flex-direction: column; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
-        img { -webkit-user-drag: none; }
+        :root {
+            --gold: #c9a84c;
+            --gold-light: #e8d08a;
+            --bg: #030305;
+            --text: #f0ece4;
+            --nav-height: 70px;
+        }
 
-        nav { position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(3, 3, 5, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
-        .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); text-decoration: none; white-space: nowrap; }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Pretendard', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        img { -webkit-user-drag: none; }
+        a { text-decoration: none; color: inherit; }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 900;
+            opacity: 0.35;
+        }
+
+        /* ── Scroll progress ── */
+        #scroll-progress {
+            position: fixed; top: 0; left: 0; height: 2px; width: 0%;
+            background: linear-gradient(90deg, var(--gold), var(--gold-light), #fff8e0, var(--gold));
+            background-size: 200% auto;
+            z-index: 2000;
+            animation: shimmer-bar 3s linear infinite;
+        }
+        @keyframes shimmer-bar { 0%{background-position:0% center} 100%{background-position:200% center} }
+
+        /* ── Nav ── */
+        nav {
+            position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; background: rgba(3,3,5,0.88); backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); white-space: nowrap; }
         .nav-right { display: flex; align-items: center; gap: 30px; }
         .nav-links { display: flex; gap: 30px; }
-        .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; color: #a0a0b5; text-decoration: none; transition: 0.3s; letter-spacing: 1px; text-transform: uppercase; }
-        .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
-        .share-trigger { cursor: pointer; padding: 6px 12px; border: 1px solid rgba(201,168,76,0.3); border-radius: 20px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: var(--gold-light); transition: 0.3s; letter-spacing: 1px; }
-        .share-trigger:hover { background: rgba(201,168,76,0.1); border-color: var(--gold-light); }
-        .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
-        .menu-toggle span { width: 22px; height: 1.5px; background-color: var(--gold-light); transition: 0.3s; }
+        .nav-links a {
+            font-family: 'Cinzel', serif; font-size: 0.8rem; color: #a0a0b5;
+            transition: 0.3s; letter-spacing: 1px; text-transform: uppercase; position: relative;
+        }
+        .nav-links a::after { content:''; position:absolute; bottom:-4px; left:0; width:0%; height:1px; background:var(--gold-light); transition:width 0.3s; }
+        .nav-links a:hover::after, .nav-links a.active::after { width:100%; }
+        .nav-links a:hover, .nav-links a.active { color:#fff; text-shadow:0 0 10px rgba(255,255,255,0.5); }
+        .share-trigger { cursor:pointer; padding:6px 12px; border:1px solid rgba(201,168,76,0.3); border-radius:20px; font-family:'Cinzel',serif; font-size:0.7rem; color:var(--gold-light); transition:0.3s; letter-spacing:1px; }
+        .share-trigger:hover { background:rgba(201,168,76,0.1); border-color:var(--gold-light); }
+        .menu-toggle { display:none; flex-direction:column; gap:5px; cursor:pointer; z-index:1001; }
+        .menu-toggle span { width:22px; height:1.5px; background-color:var(--gold-light); transition:0.3s; }
+        .menu-toggle.active span:nth-child(1) { transform:translateY(6.5px) rotate(45deg); }
+        .menu-toggle.active span:nth-child(2) { opacity:0; transform:scaleX(0); }
+        .menu-toggle.active span:nth-child(3) { transform:translateY(-6.5px) rotate(-45deg); }
 
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; }
-        .modal-overlay.active { display: flex; opacity: 1; }
-        .share-modal { background: #0a0a0f; border: 1px solid var(--gold); border-radius: 24px; width: 90%; max-width: 400px; padding: 45px 30px; text-align: center; box-shadow: 0 30px 70px rgba(0,0,0,0.9); }
-        .share-modal h3 { font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--gold-light); margin-bottom: 15px; }
-        .share-modal p { font-size: 0.9rem; color: #888; margin-bottom: 35px; }
-        .share-buttons { display: flex; flex-direction: column; gap: 14px; }
-        .modal-btn { padding: 16px; border-radius: 12px; border: none; font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: 0.3s; }
-        .btn-copy { background: var(--gold); color: #000; }
-        .btn-sns { background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #fff; }
-        .btn-sns:hover { background: rgba(255,255,255,0.05); }
-        .btn-close-modal { margin-top: 25px; color: #666; background: none; font-size: 0.8rem; text-decoration: underline; border: none; cursor: pointer; }
-        .toast-msg { position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%); background: var(--gold); color: #000; padding: 12px 30px; border-radius: 40px; font-size: 0.9rem; font-weight: 700; z-index: 3000; display: none; animation: fadeUp 0.4s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        /* ── Modal ── */
+        .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px); z-index:2000; display:none; align-items:center; justify-content:center; opacity:0; transition:opacity 0.3s; }
+        .modal-overlay.active { display:flex; opacity:1; }
+        .share-modal { background:#0a0a0f; border:1px solid var(--gold); border-radius:20px; width:90%; max-width:400px; padding:40px 30px; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,0.8); transform:translateY(20px); transition:transform 0.3s; }
+        .modal-overlay.active .share-modal { transform:translateY(0); }
+        .share-modal h3 { font-family:'Cinzel',serif; font-size:1.2rem; color:var(--gold-light); margin-bottom:15px; }
+        .share-modal p { font-size:0.9rem; color:#a0a0b5; margin-bottom:30px; }
+        .share-buttons { display:flex; flex-direction:column; gap:12px; }
+        .modal-btn { padding:14px; border-radius:12px; border:none; font-family:'Cinzel',serif; font-size:0.85rem; font-weight:600; cursor:pointer; transition:0.3s; }
+        .btn-copy { background:var(--gold); color:#000; }
+        .btn-copy:hover { background:var(--gold-light); }
+        .btn-sns { background:transparent; border:1px solid rgba(255,255,255,0.1); color:#fff; }
+        .btn-close { margin-top:20px; color:#555; background:none; font-size:0.75rem; text-decoration:underline; cursor:pointer; border:none; }
+        .toast-msg { position:fixed; bottom:40px; left:50%; transform:translateX(-50%); background:var(--gold); color:#000; padding:12px 30px; border-radius:30px; font-size:0.85rem; font-weight:700; z-index:3000; display:none; box-shadow:0 10px 30px rgba(0,0,0,0.5); }
 
-        .page-wrapper { flex: 1; display: flex; align-items: center; justify-content: center; padding: 120px 20px; position: relative; }
-        .glass-card { background: rgba(15, 15, 20, 0.4); border: 1px solid rgba(201,168,76,0.3); border-radius: 24px; padding: 60px 50px; text-align: center; max-width: 700px; width: 100%; backdrop-filter: blur(20px); box-shadow: 0 20px 50px rgba(0,0,0,0.6), inset 0 0 30px rgba(201,168,76,0.05); animation: fadeUp 1s ease both; }
+        /* ── Page content ── */
+        .page-wrapper {
+            flex: 1;
+            padding: calc(var(--nav-height) + 60px) 20px 80px;
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
+        }
 
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        /* ── Page header ── */
+        .page-header {
+            text-align: center;
+            margin-bottom: 60px;
+            opacity: 0;
+            transform: translateY(24px);
+            animation: fadeUp 0.9s ease 0.2s forwards;
+        }
+        .page-header-tag {
+            font-family: 'Cinzel', serif;
+            font-size: 0.7rem;
+            letter-spacing: 4px;
+            color: rgba(201,168,76,0.5);
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 12px;
+        }
+        .page-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            background: linear-gradient(108deg, #b8922a 0%, #e8d08a 30%, #fffbe8 50%, #c9a84c 70%, #e8d08a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 8s linear infinite;
+            background-size: 200% auto;
+            margin-bottom: 20px;
+        }
+        .page-header-divider {
+            width: 80px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 0 auto;
+        }
 
-        .title { font-family: 'Cinzel', serif; font-size: 3rem; font-weight: 600; letter-spacing: 0.2em; color: var(--gold-light); margin-bottom: 20px; }
-        
-        /* ── 타임라인 태그 디자인 ── */
-        .timeline-tag { display: inline-block; padding: 6px 16px; border: 1px solid rgba(201,168,76,0.3); border-radius: 20px; color: var(--gold-light); font-size: 0.85rem; font-weight: 600; letter-spacing: 1px; margin-bottom: 25px; background: rgba(201,168,76,0.05); }
-        
-        .content-text { font-size: 1.1rem; line-height: 2; color: rgba(240,236,228,0.9); margin-bottom: 40px; word-break: keep-all; font-weight: 300; }
-        .highlight { color: #ffffff; font-weight: 600; }
+        /* ── Identity block ── */
+        .identity-block {
+            background: rgba(12, 12, 18, 0.6);
+            border: 1px solid rgba(201,168,76,0.2);
+            border-radius: 24px;
+            padding: 50px 45px;
+            margin-bottom: 32px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4), inset 0 0 40px rgba(201,168,76,0.03);
+            opacity: 0;
+            transform: translateY(28px);
+            animation: fadeUp 0.9s ease 0.4s forwards;
+        }
+        .identity-label {
+            font-family: 'Cinzel', serif;
+            font-size: 0.65rem;
+            letter-spacing: 3px;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+        .identity-text {
+            font-family: 'Noto Serif KR', serif;
+            font-size: clamp(1rem, 2.5vw, 1.15rem);
+            line-height: 2.1;
+            color: rgba(240,236,228,0.85);
+            font-weight: 300;
+            word-break: keep-all;
+        }
+        .identity-text .hl { color: #fff; font-weight: 600; }
+        .identity-text .gold { color: var(--gold-light); font-weight: 600; }
 
-        .link-container { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
-        .action-btn { font-family: 'Cinzel', serif; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; padding: 12px 30px; border-radius: 30px; text-decoration: none; transition: 0.3s; border: 1px solid rgba(201,168,76,0.4); color: var(--gold-light); background: rgba(201,168,76,0.05); }
-        .action-btn:hover { background: var(--gold); color: #000; box-shadow: 0 0 20px rgba(201,168,76,0.4); }
+        /* ── Timeline ── */
+        .timeline-block {
+            margin-bottom: 32px;
+            opacity: 0;
+            transform: translateY(28px);
+            animation: fadeUp 0.9s ease 0.6s forwards;
+        }
+        .timeline-label {
+            font-family: 'Cinzel', serif;
+            font-size: 0.65rem;
+            letter-spacing: 3px;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            padding-left: 4px;
+        }
+        .timeline-items { display: flex; flex-direction: column; gap: 0; }
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 20px;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: background 0.3s;
+        }
+        .timeline-item:last-child { border-bottom: none; }
+        .timeline-year {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.85rem;
+            font-style: italic;
+            color: var(--gold);
+            letter-spacing: 1px;
+            padding-top: 3px;
+            text-align: right;
+        }
+        .timeline-content strong {
+            display: block;
+            font-family: 'Cinzel', serif;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+        .timeline-content p {
+            font-size: 0.88rem;
+            color: rgba(200,196,188,0.7);
+            line-height: 1.6;
+        }
 
-        footer { text-align: center; padding: 30px; font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 2px; color: #555; border-top: 1px solid rgba(255,255,255,0.05); }
+        /* ── Links block ── */
+        .links-block {
+            opacity: 0;
+            transform: translateY(28px);
+            animation: fadeUp 0.9s ease 0.8s forwards;
+        }
+        .links-label {
+            font-family: 'Cinzel', serif;
+            font-size: 0.65rem;
+            letter-spacing: 3px;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            padding-left: 4px;
+        }
+        .link-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 14px;
+        }
+        .link-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 20px 16px;
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 16px;
+            background: rgba(12,12,18,0.5);
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .link-card:hover {
+            border-color: rgba(201,168,76,0.3);
+            background: rgba(20,18,30,0.7);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        }
+        .link-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(201,168,76,0.1);
+            border: 1px solid rgba(201,168,76,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+        .link-name {
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            color: var(--gold-light);
+        }
+        .link-desc {
+            font-size: 0.7rem;
+            color: rgba(160,160,180,0.6);
+            text-align: center;
+        }
 
-        @media (max-width: 900px) { nav { padding: 0 20px; } .brand-logo { font-size: 1.1rem; } .nav-links { display: none; } .nav-links.active { display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height)); background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 25px; z-index: 1002; } .menu-toggle { display: flex; } .glass-card { padding: 40px 20px; } .title { font-size: 2.2rem; } }
+        footer { text-align:center; padding:40px; font-family:'Cinzel',serif; font-size:0.65rem; color:#444; border-top:1px solid rgba(255,255,255,0.04); letter-spacing:2px; margin-top:auto; }
+
+        @keyframes shimmer { 0%{background-position:0% center} 100%{background-position:200% center} }
+        @keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+
+        @media (max-width: 900px) {
+            nav { padding: 0 20px; }
+            .brand-logo { font-size: 1.1rem; }
+            .nav-links { display: none; }
+            .nav-links.active {
+                display:flex; position:fixed; top:var(--nav-height); left:0; width:100%;
+                height:calc(100vh - var(--nav-height)); background:rgba(3,3,5,0.98);
+                flex-direction:column; align-items:center; justify-content:center; gap:28px; z-index:1002;
+            }
+            .menu-toggle { display: flex; }
+            .identity-block { padding: 30px 24px; }
+            .timeline-item { grid-template-columns: 70px 1fr; gap: 12px; }
+        }
     </style>
 </head>
 <body>
+    <div id="scroll-progress"></div>
+
     <nav>
         <a href="index.html" class="brand-logo">Chris LEE.PAPA</a>
         <div class="nav-right">
@@ -98,59 +341,126 @@
                 <button class="modal-btn btn-copy" onclick="copyURL()">COPY LINK</button>
                 <button class="modal-btn btn-sns" onclick="shareViaWebAPI()">SNS SHARE</button>
             </div>
-            <button class="modal-btn btn-close-modal" onclick="closeShareModal(null)">Close</button>
+            <button class="btn-close" onclick="closeShareModal(null)">Close</button>
         </div>
     </div>
-
-    <div class="toast-msg" id="toast">Link copied to clipboard!</div>
+    <div class="toast-msg" id="toast"></div>
 
     <div class="page-wrapper">
-        <div class="glass-card">
-            <h1 class="title">ABOUT</h1>
-            <div class="timeline-tag">2025.09 — 새로운 여정의 시작</div>
-            <p class="content-text">
-                저는 평범한 아빠였습니다. 2025년 9월까지는..<br>
-                새로운 도전 이후 저는 <span class="highlight">크리에이터, 프로듀서, 작가</span>가 되었습니다.<br><br>
-                여러분도 함께 도전하시죠.
+
+        <!-- Header -->
+        <div class="page-header">
+            <span class="page-header-tag">✦ &nbsp; The Story &nbsp; ✦</span>
+            <h1 class="page-title">ABOUT</h1>
+            <div class="page-header-divider"></div>
+        </div>
+
+        <!-- Identity -->
+        <div class="identity-block">
+            <div class="identity-label">✦ &nbsp; Who I Am</div>
+            <p class="identity-text">
+                저는 <span class="hl">평범한 아빠</span>였습니다. 2025년 9월까지는.<br><br>
+                그 이후, AI와 기술이라는 새로운 도구를 손에 쥐고<br>
+                <span class="gold">크리에이터 · 프로듀서 · 작가</span>로 다시 태어났습니다.<br><br>
+                찬양으로 살아남았고, 상상력으로 세계를 만들었습니다.<br>
+                어두운 시간이 지나고 별빛이 보였을 때, 저는 멈추지 않기로 했습니다.
             </p>
-            <div class="link-container">
-                <a href="https://open.spotify.com/artist/6zhb0e3KvoFY5pcefQUHA6" target="_blank" rel="noopener" class="action-btn">Spotify</a>
-                <a href="https://www.youtube.com/@chrisleepapaofficial" target="_blank" rel="noopener" class="action-btn">YouTube</a>
-<a href="https://x.com/chrisleepapa" target="_blank" rel="noopener" class="action-btn">X</a>
+        </div>
+
+        <!-- Timeline -->
+        <div class="timeline-block">
+            <div class="timeline-label">✦ &nbsp; Journey</div>
+            <div class="timeline-items">
+                <div class="timeline-item">
+                    <div class="timeline-year">2025.09</div>
+                    <div class="timeline-content">
+                        <strong>THE BEGINNING</strong>
+                        <p>새로운 여정의 시작. 평범한 아빠에서 크리에이터로의 전환점</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2025.10</div>
+                    <div class="timeline-content">
+                        <strong>FIRST MUSIC</strong>
+                        <p>AI를 통한 첫 음악 프로덕션. Spotify 아티스트 등록 완료</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2025.11</div>
+                    <div class="timeline-content">
+                        <strong>WORSHIP PROJECT</strong>
+                        <p>찬양 창작 프로젝트 본격 시작. 신앙과 창의성의 교차점</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2026</div>
+                    <div class="timeline-content">
+                        <strong>THE CREATIVE ARCHIVE</strong>
+                        <p>개인 브랜드 아카이브 론칭. 음악 · 문학 · 영상의 통합</p>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <!-- Links -->
+        <div class="links-block">
+            <div class="links-label">✦ &nbsp; Find Me</div>
+            <div class="link-grid">
+                <a href="https://open.spotify.com/artist/6zhb0e3KvoFY5pcefQUHA6" target="_blank" rel="noopener" class="link-card">
+                    <div class="link-icon">🎵</div>
+                    <span class="link-name">SPOTIFY</span>
+                    <span class="link-desc">음악 스트리밍</span>
+                </a>
+                <a href="https://www.youtube.com/@chrisleepapaofficial" target="_blank" rel="noopener" class="link-card">
+                    <div class="link-icon">▶</div>
+                    <span class="link-name">YOUTUBE</span>
+                    <span class="link-desc">영상 아카이브</span>
+                </a>
+                <a href="https://x.com/chrisleepapa" target="_blank" rel="noopener" class="link-card">
+                    <div class="link-icon">✕</div>
+                    <span class="link-name">X / TWITTER</span>
+                    <span class="link-desc">일상과 생각들</span>
+                </a>
+                <a href="contact.html" class="link-card">
+                    <div class="link-icon">✉</div>
+                    <span class="link-name">CONTACT</span>
+                    <span class="link-desc">비즈니스 제안</span>
+                </a>
+            </div>
+        </div>
+
     </div>
 
     <footer><p>© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
 
     <script>
-        const menuToggle = document.getElementById('mobile-menu'); const navLinks = document.getElementById('navLinks');
-        menuToggle.addEventListener('click', () => { menuToggle.classList.toggle('active'); navLinks.classList.toggle('active'); });
-
-        const shareOverlay = document.getElementById('shareOverlay'); const toast = document.getElementById('toast');
-        function openShareModal() { shareOverlay.style.display = 'flex'; setTimeout(() => shareOverlay.classList.add('active'), 10); }
-        function closeShareModal(e) { if (e && e.target !== shareOverlay && e.type !== 'click') return; shareOverlay.classList.remove('active'); setTimeout(() => shareOverlay.style.display = 'none', 300); }
-
-        async function copyURL() {
-            const currentUrl = window.location.href; let success = false;
-            if (navigator.clipboard && window.isSecureContext) { try { await navigator.clipboard.writeText(currentUrl); success = true; } catch (err) {} }
-            if (!success) {
-                const textArea = document.createElement("textarea"); textArea.value = currentUrl; textArea.id = "temp-copy-area"; textArea.style.position = "fixed"; textArea.style.left = "-9999px";
-                document.body.appendChild(textArea); textArea.focus(); textArea.select(); try { success = document.execCommand('copy'); } catch (err) {} document.body.removeChild(textArea);
-            }
-            if (success) { showToast('Link copied to clipboard!'); } else { showToast('Copy failed. Please copy manually.'); } closeShareModal();
-        }
-
-        function shareViaWebAPI() { if (navigator.share) { navigator.share({ title: 'ABOUT Chris LEE.PAPA', text: '크리스리의 새로운 도전과 창조의 기록들을 만나보세요.', url: window.location.href }).catch(console.error); } else { showToast('Sharing is not supported.'); } }
-        function showToast(msg) { toast.textContent = msg; toast.style.display = 'block'; setTimeout(() => { toast.style.display = 'none'; }, 2500); }
-
-        document.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('copy', e => { if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) { e.preventDefault(); } });
-        document.addEventListener('keydown', e => {
-            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || (e.ctrlKey && e.key === 'U')) e.preventDefault();
-            if (e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'p')) { if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) e.preventDefault(); }
-            if (e.key === 'PrintScreen') navigator.clipboard.writeText('');
+        const menuToggle = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('navLinks');
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
         });
+
+        const shareOverlay = document.getElementById('shareOverlay');
+        const toast = document.getElementById('toast');
+        function openShareModal() { shareOverlay.style.display='flex'; setTimeout(()=>shareOverlay.classList.add('active'),10); }
+        function closeShareModal(e) { if(e&&e.target!==shareOverlay)return; shareOverlay.classList.remove('active'); setTimeout(()=>shareOverlay.style.display='none',300); }
+        async function copyURL() {
+            let ok=false;
+            if(navigator.clipboard&&window.isSecureContext){try{await navigator.clipboard.writeText(location.href);ok=true;}catch(e){}}
+            if(!ok){const ta=document.createElement('textarea');ta.value=location.href;ta.style.cssText='position:fixed;left:-9999px';document.body.appendChild(ta);ta.focus();ta.select();try{ok=document.execCommand('copy');}catch(e){}document.body.removeChild(ta);}
+            showToast(ok?'링크가 복사되었습니다 ✓':'복사 실패');
+            closeShareModal({target:shareOverlay});
+        }
+        function shareViaWebAPI(){if(navigator.share){navigator.share({title:'ABOUT Chris LEE.PAPA',url:location.href});}else showToast('지원하지 않는 브라우저입니다.');}
+        function showToast(msg){toast.textContent=msg;toast.style.display='block';setTimeout(()=>toast.style.display='none',2500);}
+
+        // Scroll progress
+        const bar=document.getElementById('scroll-progress');
+        window.addEventListener('scroll',()=>{const s=window.scrollY,d=document.body.scrollHeight-window.innerHeight;bar.style.width=(s/d*100)+'%';},{passive:true});
+
+        document.addEventListener('contextmenu',e=>e.preventDefault());
+        document.addEventListener('keydown',e=>{if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&['I','J'].includes(e.key))||(e.ctrlKey&&e.key==='U'))e.preventDefault();});
     </script>
 </body>
 </html>

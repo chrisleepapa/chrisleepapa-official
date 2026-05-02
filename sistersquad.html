@@ -33,10 +33,17 @@
 
         nav { position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(3, 3, 5, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
         .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); z-index: 1001; text-decoration: none; white-space: nowrap; }
-        .nav-right { display: flex; align-items: center; gap: 30px; }
+        .nav-right { display: flex; align-items: center; gap: 24px; }
         .nav-links { display: flex; gap: 30px; }
         .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; text-decoration: none; }
         .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+        
+        /* ── Language Switcher ── */
+        .lang-switcher { display: flex; align-items: center; gap: 8px; font-family: 'Cinzel', serif; font-size: 0.75rem; color: #a0a0b5; z-index: 1001; }
+        .lang-btn { cursor: pointer; transition: 0.3s; letter-spacing: 1px; padding: 4px; }
+        .lang-btn:hover, .lang-btn.active { color: var(--gold-light); text-shadow: 0 0 8px rgba(201,168,76,0.5); }
+        .lang-sep { color: rgba(255,255,255,0.2); user-select: none; }
+
         .share-trigger { cursor: pointer; padding: 6px 12px; border: 1px solid rgba(201,168,76,0.3); border-radius: 20px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: var(--gold-light); transition: 0.3s; letter-spacing: 1px; }
         .share-trigger:hover { background: rgba(201,168,76,0.1); border-color: var(--gold-light); }
         .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
@@ -123,90 +130,204 @@
         <a href="index.html" class="brand-logo">Chris LEE.PAPA</a>
         <div class="nav-right">
             <div class="nav-links" id="navLinks">
-                <a href="index.html">Home</a>
-                <a href="worship.html">Worship</a>
-                <a href="music.html">Music</a>
-                <a href="book.html" class="active">Books</a>
-                <a href="movie.html">Movies</a>
+                <a href="index.html" data-i18n="nav_home">Home</a>
+                <a href="worship.html" data-i18n="nav_worship">Worship</a>
+                <a href="music.html" data-i18n="nav_music">Music</a>
+                <a href="book.html" class="active" data-i18n="nav_book">Books</a>
+                <a href="movie.html" data-i18n="nav_movie">Movies</a>
             </div>
-            <div class="share-trigger" onclick="openShareModal()">SHARE</div>
+
+            <!-- Language Switcher -->
+            <div class="lang-switcher">
+                <span class="lang-btn active" data-lang="ko" onclick="setLanguage('ko')">KOR</span>
+                <span class="lang-sep">|</span>
+                <span class="lang-btn" data-lang="en" onclick="setLanguage('en')">ENG</span>
+            </div>
+
+            <div class="share-trigger" onclick="openShareModal()" data-i18n="nav_share">SHARE</div>
             <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
         </div>
     </nav>
 
     <div class="modal-overlay" id="shareOverlay" onclick="closeShareModal(event)">
         <div class="share-modal" onclick="event.stopPropagation()">
-            <h3>SHARE SISTER SQUAD</h3>
-            <p>두 자매의 마법 같은 모험을 소중한 사람들에게 전하세요.</p>
+            <h3 data-i18n="share_title">SHARE SISTER SQUAD</h3>
+            <p data-i18n="share_desc">두 자매의 마법 같은 모험을 소중한 사람들에게 전하세요.</p>
             <div class="share-buttons">
-                <button class="modal-btn btn-copy" onclick="copyURL()">COPY LINK</button>
-                <button class="modal-btn btn-sns" onclick="shareViaWebAPI()">SNS SHARE</button>
+                <button class="modal-btn btn-copy" onclick="copyURL()" data-i18n="share_copy">COPY LINK</button>
+                <button class="modal-btn btn-sns" onclick="shareViaWebAPI()" data-i18n="share_sns">SNS SHARE</button>
             </div>
-            <button class="modal-btn btn-close-modal" onclick="closeShareModal(null)">Close</button>
+            <button class="modal-btn btn-close-modal" onclick="closeShareModal(null)" data-i18n="share_close">Close</button>
         </div>
     </div>
 
-    <div class="toast-msg" id="toast">Link copied!</div>
+    <div class="toast-msg" id="toast"></div>
 
     <header class="page-header">
         <canvas id="stars-canvas"></canvas>
         <div class="header-content">
-            <h1 class="header-title">SISTER SQUAD</h1>
-            <p class="header-slogan">Two Sisters, One Magical Destiny</p>
+            <h1 class="header-title" data-i18n="header_title">SISTER SQUAD</h1>
+            <p class="header-slogan" data-i18n="header_slogan">Two Sisters, One Magical Destiny</p>
         </div>
     </header>
 
     <div class="container">
-        <a href="book.html" class="back-link" onclick="safeNavigate('book.html'); return false;">‹ Back to Library</a>
+        <a href="book.html" class="back-link" onclick="safeNavigate('book.html'); return false;" data-i18n="back_link">‹ 라이브러리로 돌아가기</a>
         
         <div class="video-wrapper">
             <iframe src="https://www.youtube.com/embed/C0lluI-l0gc?si=ge1zqQo_NiVpHfcc" title="SISTER SQUAD Cinematic Trailer" allowfullscreen></iframe>
         </div>
 
         <section class="synopsis-section">
-            <span class="section-label">THE STORY</span>
-            <p class="synopsis-text">어느 날 갑자기 펼쳐진 신비로운 책 속의 세계.<br>이성적이고 용감한 <b>T 언니 '율'</b>과 <br>따뜻하고  공감 능력이 뛰어난 <b>F 동생 '정'</b>은<br>우연히 환상적인 모험을 시작합니다.<br><br>어둠의 그림자가 덮쳐오는 위기의 순간마다,<br>서로 다른 성격의 두 자매는 서로를 채워주며<br><b>가족의 사랑과 진정한 용기</b>를 깨달아갑니다.</p>
+            <span class="section-label" data-i18n="story_label">THE STORY</span>
+            <p class="synopsis-text" data-i18n="story_desc">어느 날 갑자기 펼쳐진 신비로운 책 속의 세계.<br>이성적이고 용감한 <b>T 언니 '율'</b>과 <br>따뜻하고  공감 능력이 뛰어난 <b>F 동생 '정'</b>은<br>우연히 환상적인 모험을 시작합니다.<br><br>어둠의 그림자가 덮쳐오는 위기의 순간마다,<br>서로 다른 성격의 두 자매는 서로를 채워주며<br><b>가족의 사랑과 진정한 용기</b>를 깨달아갑니다.</p>
         </section>
 
-        <h2 class="section-title">Character Introduction</h2>
+        <h2 class="section-title" data-i18n="char_sec_title">Character Introduction</h2>
         <div class="character-grid">
             <div class="char-card" onclick="safeNavigate('yul.html')">
                 <div class="char-img-area" style="background-image: url('images/yul01.png');"></div>
                 <div class="char-content">
-                    <span class="char-tag">The Brave Leader</span>
-                    <h3 class="char-name">Yul (율)</h3>
-                    <p class="char-desc">냉철한 이성과 분석력을 가진 11세 소녀 율이<br>동생을 지키기 위해 강력한 염력의 힘을 각성시킵니다.</p>
+                    <span class="char-tag" data-i18n="char_yul_tag">The Brave Leader</span>
+                    <h3 class="char-name" data-i18n="char_yul_name">Yul (율)</h3>
+                    <p class="char-desc" data-i18n="char_yul_desc">냉철한 이성과 분석력을 가진 11세 소녀 율이<br>동생을 지키기 위해 강력한 염력의 힘을 각성시킵니다.</p>
                 </div>
             </div>
             <div class="char-card" onclick="safeNavigate('jung.html')">
                 <div class="char-img-area" style="background-image: url('images/jung01.png');"></div>
                 <div class="char-content">
-                    <span class="char-tag">The Heart Weaver</span>
-                    <h3 class="char-name">Jung (정)</h3>
-                    <p class="char-desc">풍부한 감성과 따뜻한 마음을 가진 7세 동생 정이<br>살아 숨 쉬는 모든 것과 교감하며 기적을 만들어냅니다.</p>
+                    <span class="char-tag" data-i18n="char_jung_tag">The Heart Weaver</span>
+                    <h3 class="char-name" data-i18n="char_jung_name">Jung (정)</h3>
+                    <p class="char-desc" data-i18n="char_jung_desc">풍부한 감성과 따뜻한 마음을 가진 7세 동생 정이<br>살아 숨 쉬는 모든 것과 교감하며 기적을 만들어냅니다.</p>
                 </div>
             </div>
         </div>
 
-        <h2 class="section-title">Original Soundtrack</h2>
+        <h2 class="section-title" data-i18n="ost_sec_title">Original Soundtrack</h2>
         <div class="ost-grid">
-            <div class="ost-item"><div class="album-header"><h3 class="album-title">EP.01 Main</h3><span class="album-type">OST</span></div><iframe src="https://open.spotify.com/embed/album/4UbsRkUcH0QJQGS6SUbtN1?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe><a href="https://open.spotify.com/album/4UbsRkUcH0QJQGS6SUbtN1" target="_blank" class="ost-btn">Listen Full Album ›</a></div>
-            <div class="ost-item"><div class="album-header"><h3 class="album-title">EP.01 Inst</h3><span class="album-type">OST</span></div><iframe src="https://open.spotify.com/embed/album/0UsOZREU7OJeNC4MFRt0Og?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe><a href="https://open.spotify.com/album/0UsOZREU7OJeNC4MFRt0Og" target="_blank" class="ost-btn">Listen Full Album ›</a></div>
-            <div class="ost-item"><div class="album-header"><h3 class="album-title">EP.01 Eng</h3><span class="album-type">OST</span></div><iframe src="https://open.spotify.com/embed/album/22frEKSV9Ano8LoWaOLsnT?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe><a href="https://open.spotify.com/album/22frEKSV9Ano8LoWaOLsnT" target="_blank" class="ost-btn">Listen Full Album ›</a></div>
+            <div class="ost-item"><div class="album-header"><h3 class="album-title">EP.01 Main</h3><span class="album-type">OST</span></div><iframe src="https://open.spotify.com/embed/album/4UbsRkUcH0QJQGS6SUbtN1?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe><a href="https://open.spotify.com/album/4UbsRkUcH0QJQGS6SUbtN1" target="_blank" class="ost-btn" data-i18n="ost_btn">전체 앨범 듣기 ›</a></div>
+            <div class="ost-item"><div class="album-header"><h3 class="album-title">EP.01 Inst</h3><span class="album-type">OST</span></div><iframe src="https://open.spotify.com/embed/album/0UsOZREU7OJeNC4MFRt0Og?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe><a href="https://open.spotify.com/album/0UsOZREU7OJeNC4MFRt0Og" target="_blank" class="ost-btn" data-i18n="ost_btn">전체 앨범 듣기 ›</a></div>
+            <div class="ost-item"><div class="album-header"><h3 class="album-title">EP.01 Eng</h3><span class="album-type">OST</span></div><iframe src="https://open.spotify.com/embed/album/22frEKSV9Ano8LoWaOLsnT?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe><a href="https://open.spotify.com/album/22frEKSV9Ano8LoWaOLsnT" target="_blank" class="ost-btn" data-i18n="ost_btn">전체 앨범 듣기 ›</a></div>
         </div>
 
-        <h2 class="section-title">Get the Book</h2>
+        <h2 class="section-title" data-i18n="buy_sec_title">Get the Book</h2>
         <div class="buy-grid">
-            <div class="buy-card"><div class="book-img-wrap"><img src="images/sister01.png" alt="Paperback" class="book-img"></div><span class="book-type-label">Paperback</span><a href="https://www.yes24.com/product/goods/155292789" target="_blank" class="buy-btn btn-paper">종이책 구매 (YES24)</a></div>
-            <div class="buy-card"><div class="book-img-wrap"><img src="images/sister02.png" alt="E-Book" class="book-img"></div><span class="book-type-label">E-Book</span><a href="https://www.yes24.com/product/goods/154234770" target="_blank" class="buy-btn btn-ebook">전자책 구매 (YES24)</a></div>
-            <div class="buy-card"><div class="book-img-wrap"><img src="images/sister03.png" alt="Coloring Book" class="book-img"></div><span class="book-type-label">Coloring Book</span><a href="https://www.yes24.com/product/goods/165140479" target="_blank" class="buy-btn btn-coloring">컬러링북 구매 (YES24)</a></div>
+            <div class="buy-card"><div class="book-img-wrap"><img src="images/sister01.png" alt="Paperback" class="book-img"></div><span class="book-type-label">Paperback</span><a href="https://www.yes24.com/product/goods/155292789" target="_blank" class="buy-btn btn-paper" data-i18n="buy_paper">종이책 구매 (YES24)</a></div>
+            <div class="buy-card"><div class="book-img-wrap"><img src="images/sister02.png" alt="E-Book" class="book-img"></div><span class="book-type-label">E-Book</span><a href="https://www.yes24.com/product/goods/154234770" target="_blank" class="buy-btn btn-ebook" data-i18n="buy_ebook">전자책 구매 (YES24)</a></div>
+            <div class="buy-card"><div class="book-img-wrap"><img src="images/sister03.png" alt="Coloring Book" class="book-img"></div><span class="book-type-label">Coloring Book</span><a href="https://www.yes24.com/product/goods/165140479" target="_blank" class="buy-btn btn-coloring" data-i18n="buy_coloring">컬러링북 구매 (YES24)</a></div>
         </div>
 
     </div>
 
-    <footer><p>© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
+    <footer><p data-i18n="footer_text">© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
 
     <script>
+        // ── Multilingual System ──
+        const i18n = {
+            ko: {
+                nav_home: "Home",
+                nav_worship: "Worship",
+                nav_music: "Music",
+                nav_book: "Books",
+                nav_movie: "Movies",
+                nav_share: "SHARE",
+                share_title: "SHARE SISTER SQUAD",
+                share_desc: "두 자매의 마법 같은 모험을 소중한 사람들에게 전하세요.",
+                share_copy: "COPY LINK",
+                share_sns: "SNS SHARE",
+                share_close: "Close",
+                header_title: "SISTER SQUAD",
+                header_slogan: "Two Sisters, One Magical Destiny",
+                back_link: "‹ 라이브러리로 돌아가기",
+                story_label: "THE STORY",
+                story_desc: "어느 날 갑자기 펼쳐진 신비로운 책 속의 세계.<br>이성적이고 용감한 <b>T 언니 '율'</b>과 <br>따뜻하고  공감 능력이 뛰어난 <b>F 동생 '정'</b>은<br>우연히 환상적인 모험을 시작합니다.<br><br>어둠의 그림자가 덮쳐오는 위기의 순간마다,<br>서로 다른 성격의 두 자매는 서로를 채워주며<br><b>가족의 사랑과 진정한 용기</b>를 깨달아갑니다.",
+                char_sec_title: "캐릭터 소개",
+                char_yul_tag: "The Brave Leader",
+                char_yul_name: "Yul (율)",
+                char_yul_desc: "냉철한 이성과 분석력을 가진 11세 소녀 율이<br>동생을 지키기 위해 강력한 염력의 힘을 각성시킵니다.",
+                char_jung_tag: "The Heart Weaver",
+                char_jung_name: "Jung (정)",
+                char_jung_desc: "풍부한 감성과 따뜻한 마음을 가진 7세 동생 정이<br>살아 숨 쉬는 모든 것과 교감하며 기적을 만들어냅니다.",
+                ost_sec_title: "오리지널 사운드트랙",
+                ost_btn: "전체 앨범 듣기 ›",
+                buy_sec_title: "도서 구매",
+                buy_paper: "종이책 구매 (YES24)",
+                buy_ebook: "전자책 구매 (YES24)",
+                buy_coloring: "컬러링북 구매 (YES24)",
+                footer_text: "© 2026 Chris LEE.PAPA — The Creative Archive",
+                toast_copy: "링크가 복사되었습니다 ✓",
+                toast_error: "지원하지 않는 브라우저입니다."
+            },
+            en: {
+                nav_home: "Home",
+                nav_worship: "Worship",
+                nav_music: "Music",
+                nav_book: "Books",
+                nav_movie: "Movies",
+                nav_share: "SHARE",
+                share_title: "SHARE SISTER SQUAD",
+                share_desc: "Share the magical adventure of two sisters with your loved ones.",
+                share_copy: "COPY LINK",
+                share_sns: "SNS SHARE",
+                share_close: "Close",
+                header_title: "SISTER SQUAD",
+                header_slogan: "Two Sisters, One Magical Destiny",
+                back_link: "‹ Back to Library",
+                story_label: "THE STORY",
+                story_desc: "A mysterious world within a book suddenly unfolds one day.<br>The rational and brave <b>'T' older sister, Yul</b>, and <br>the warm and empathetic <b>'F' younger sister, Jung</b>,<br>accidentally embark on a fantastic adventure.<br><br>Whenever the shadow of darkness strikes,<br>the two sisters with different personalities complement each other,<br>realizing <b>family love and true courage</b>.",
+                char_sec_title: "Character Introduction",
+                char_yul_tag: "The Brave Leader",
+                char_yul_name: "Yul",
+                char_yul_desc: "Yul, an 11-year-old girl with cool reason and analytical skills,<br>awakens a powerful telekinetic force to protect her sister.",
+                char_jung_tag: "The Heart Weaver",
+                char_jung_name: "Jung",
+                char_jung_desc: "Jung, a 7-year-old younger sister with rich emotions and a warm heart,<br>communicates with all living things to create miracles.",
+                ost_sec_title: "Original Soundtrack",
+                ost_btn: "Listen Full Album ›",
+                buy_sec_title: "Get the Book",
+                buy_paper: "Buy Paperback (YES24)",
+                buy_ebook: "Buy E-Book (YES24)",
+                buy_coloring: "Buy Coloring Book (YES24)",
+                footer_text: "© 2026 Chris LEE.PAPA — The Creative Archive",
+                toast_copy: "Link copied to clipboard ✓",
+                toast_error: "Browser not supported."
+            }
+        };
+
+        let currentLang = 'ko';
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+            
+            // Save preference
+            try { localStorage.setItem('pref-lang', lang); } catch(e) {}
+
+            // Update UI texts (inner HTML to preserve html tags like <br> and <b>)
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (i18n[lang][key]) {
+                    el.innerHTML = i18n[lang][key];
+                }
+            });
+
+            // Update active state on language buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                if (btn.getAttribute('data-lang') === lang) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        // Initialize language
+        document.addEventListener('DOMContentLoaded', () => {
+            let savedLang = 'ko';
+            try { savedLang = localStorage.getItem('pref-lang') || 'ko'; } catch(e) {}
+            setLanguage(savedLang);
+        });
+
         function safeNavigate(url) { if (url && url.trim() !== "") { window.location.assign(url); } }
         const menuToggle = document.getElementById('mobile-menu'); const navLinks = document.getElementById('navLinks');
         menuToggle.addEventListener('click', () => { menuToggle.classList.toggle('active'); navLinks.classList.toggle('active'); });
@@ -223,11 +344,11 @@
                 document.body.appendChild(textArea); textArea.focus(); textArea.select();
                 try { success = document.execCommand('copy'); } catch (err) {} document.body.removeChild(textArea);
             }
-            if (success) { showToast('Link copied to clipboard!'); } else { showToast('Copy failed. Please copy manually.'); }
+            if (success) { showToast(i18n[currentLang].toast_copy); } else { showToast(i18n[currentLang].toast_error); }
             closeShareModal();
         }
 
-        function shareViaWebAPI() { if (navigator.share) { navigator.share({ title: 'Chris LEE.PAPA - SISTER SQUAD', text: '두 자매의 마법 같은 모험 이야기', url: window.location.href }).catch(console.error); } else { showToast('Sharing is not supported.'); } }
+        function shareViaWebAPI() { if (navigator.share) { navigator.share({ title: 'Chris LEE.PAPA - SISTER SQUAD', text: '두 자매의 마법 같은 모험 이야기', url: window.location.href }).catch(console.error); } else { showToast(i18n[currentLang].toast_error); } }
         function showToast(msg) { toast.textContent = msg; toast.style.display = 'block'; setTimeout(() => { toast.style.display = 'none'; }, 2500); }
 
         const canvas = document.getElementById('stars-canvas'); const ctx = canvas.getContext('2d'); let stars = [];

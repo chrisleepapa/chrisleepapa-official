@@ -94,7 +94,6 @@
         .card-vol1::before { background-image: url('https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=800&auto=format&fit=crop'); }
         .card-vol2::before { background-image: url('https://images.unsplash.com/photo-1504052434569-70ad5836ab65?q=80&w=800&auto=format&fit=crop'); }
 
-        .featured-card iframe { border-radius: 12px; width: 100%; margin-bottom: 30px; box-shadow: 0 15px 30px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.1); background: transparent; }
         .featured-card h3 { font-family: 'Noto Serif KR', serif; font-size: 1.8rem; font-weight: 600; color: var(--gold-light); margin-bottom: 5px; }
         .featured-card p { font-family: 'Cinzel', serif; font-size: 0.9rem; letter-spacing: 2px; color: #e0e0ff; margin-bottom: 30px; text-transform: uppercase; }
 
@@ -104,6 +103,32 @@
         .btn-spotify:hover { background: var(--spotify); color: #000; }
         .btn-lyric { background: rgba(201,168,76, 0.05); color: var(--gold-light); border-color: rgba(201,168,76, 0.4); }
         .btn-lyric:hover { background: var(--gold); color: #000; }
+
+        /* ── Iframe Placeholder ── */
+        .spotify-container-album {
+            border-radius: 12px; overflow: hidden; box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05); background: rgba(10, 10, 15, 0.8);
+            width: 100%; height: 352px; margin-bottom: 30px; position: relative;
+        }
+        .spotify-container-track {
+            border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05); background: rgba(10, 10, 15, 0.8);
+            width: 350px; height: 80px; flex-shrink: 0; position: relative;
+        }
+        .player-placeholder {
+            width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            cursor: pointer; transition: 0.3s;
+        }
+        .player-placeholder:hover { background: rgba(29, 185, 84, 0.1); }
+        .play-btn-circle {
+            width: 45px; height: 45px; border-radius: 50%; background: var(--spotify); color: #000;
+            display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+            margin-bottom: 8px; transition: transform 0.3s; padding-left: 3px;
+        }
+        .spotify-container-track .play-btn-circle { width: 35px; height: 35px; font-size: 0.9rem; margin-bottom: 0; }
+        .spotify-container-track .player-placeholder { flex-direction: row; gap: 10px; }
+        .player-placeholder:hover .play-btn-circle { transform: scale(1.1); box-shadow: 0 0 15px rgba(29, 185, 84, 0.4); }
+        .placeholder-text { font-size: 0.85rem; color: #a0a0b5; font-weight: 600; letter-spacing: 1px; font-family: 'Pretendard', sans-serif; }
 
         .track-list-section { max-width: 900px; margin: 0 auto; animation: fadeUp 1s ease 0.4s both; }
         .section-title { text-align: center; font-family: 'Cinzel', serif; font-size: 1.5rem; color: var(--gold); margin-bottom: 50px; letter-spacing: 0.2em; text-transform: uppercase; border-bottom: 1px solid rgba(201,168,76,0.2); padding-bottom: 20px; }
@@ -126,7 +151,6 @@
         .track-badge { font-family: 'Cinzel', serif; font-size: 0.75rem; color: var(--gold-light); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
         .track-btn { display: inline-block; font-size: 0.75rem; font-weight: 600; color: var(--spotify); border: 1px solid var(--spotify); padding: 5px 14px; border-radius: 20px; transition: all 0.3s; text-decoration: none; }
         .track-btn:hover { background: var(--spotify); color: #000; }
-        .track-item iframe { width: 350px; height: 80px; border-radius: 12px; flex-shrink: 0; }
 
         footer { text-align: center; padding: 80px 40px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: #555; border-top: 1px solid rgba(255,255,255,0.03); }
 
@@ -140,7 +164,7 @@
             .page-header { height: 350px; }
             .track-item { flex-direction: column; text-align: center; gap: 20px; }
             .track-info { align-items: center; }
-            .track-item iframe { width: 100%; }
+            .spotify-container-track { width: 100%; }
         }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -210,7 +234,14 @@
     <div class="container">
         <section class="featured-albums">
             <div class="featured-card card-vol1">
-                <iframe src="https://open.spotify.com/embed/album/0ctoLQNWCmiPEkySv05PAM?utm_source=generator" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                <!-- Album 1 Placeholder -->
+                <div class="spotify-container-album">
+                    <div class="player-placeholder" onclick="injectIframe(this, 'https://open.spotify.com/embed/album/0ctoLQNWCmiPEkySv05PAM?utm_source=generator')">
+                        <div class="play-btn-circle">▶</div>
+                        <div class="placeholder-text" data-i18n="placeholder_text">음악 재생하기</div>
+                    </div>
+                </div>
+
                 <h3 data-i18n="album1_title">나의 찬양 Vol. 1</h3>
                 <p data-i18n="album1_sub">The First Confession</p>
                 <div class="btn-group">
@@ -219,7 +250,14 @@
                 </div>
             </div>
             <div class="featured-card card-vol2">
-                <iframe src="https://open.spotify.com/embed/album/0yhn8oEojOqsI864an6Qki?utm_source=generator" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                <!-- Album 2 Placeholder -->
+                <div class="spotify-container-album">
+                    <div class="player-placeholder" onclick="injectIframe(this, 'https://open.spotify.com/embed/album/0yhn8oEojOqsI864an6Qki?utm_source=generator')">
+                        <div class="play-btn-circle">▶</div>
+                        <div class="placeholder-text" data-i18n="placeholder_text">음악 재생하기</div>
+                    </div>
+                </div>
+
                 <h3 data-i18n="album2_title">나의 찬양 Vol. 2</h3>
                 <p data-i18n="album2_sub">2nd Confession</p>
                 <div class="btn-group">
@@ -232,17 +270,96 @@
         <section class="track-list-section">
             <h2 class="section-title" data-i18n="track_list_title">Worship Tracks</h2>
 
-            <div class="track-item"><div class="track-info"><div class="track-title"><span data-i18n="track1">파레시아</span> <div class="equalizer"><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div></div></div><div class="track-badge" data-i18n="track_badge">Vocal Track</div><a href="https://open.spotify.com/album/0QGLxuT24EuccIuk0oX0o8" target="_blank" class="track-btn" data-i18n="btn_listen">Spotify 듣기 ›</a></div><iframe src="https://open.spotify.com/embed/album/0QGLxuT24EuccIuk0oX0o8?utm_source=generator" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></div>
+            <div class="track-item">
+                <div class="track-info">
+                    <div class="track-title"><span data-i18n="track1">파레시아</span> <div class="equalizer"><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div></div></div>
+                    <div class="track-badge" data-i18n="track_badge">Vocal Track</div>
+                    <a href="https://open.spotify.com/album/0QGLxuT24EuccIuk0oX0o8" target="_blank" class="track-btn" data-i18n="btn_listen">Spotify 듣기 ›</a>
+                </div>
+                <!-- Track 1 Placeholder -->
+                <div class="spotify-container-track">
+                    <div class="player-placeholder" onclick="injectIframe(this, 'https://open.spotify.com/embed/album/0QGLxuT24EuccIuk0oX0o8?utm_source=generator')">
+                        <div class="play-btn-circle">▶</div>
+                        <div class="placeholder-text" data-i18n="placeholder_text">음악 재생하기</div>
+                    </div>
+                </div>
+            </div>
 
-            <div class="track-item"><div class="track-info"><div class="track-title"><span data-i18n="track2">주를 향해 노래하리</span> <div class="equalizer"><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div></div></div><div class="track-badge" data-i18n="track_badge">Vocal Track</div><a href="https://open.spotify.com/album/1L5Ee2OArmJDbHn3dl1137" target="_blank" class="track-btn" data-i18n="btn_listen">Spotify 듣기 ›</a></div><iframe src="https://open.spotify.com/embed/album/1L5Ee2OArmJDbHn3dl1137?utm_source=generator" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></div>
+            <div class="track-item">
+                <div class="track-info">
+                    <div class="track-title"><span data-i18n="track2">주를 향해 노래하리</span> <div class="equalizer"><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div></div></div>
+                    <div class="track-badge" data-i18n="track_badge">Vocal Track</div>
+                    <a href="https://open.spotify.com/album/1L5Ee2OArmJDbHn3dl1137" target="_blank" class="track-btn" data-i18n="btn_listen">Spotify 듣기 ›</a>
+                </div>
+                <!-- Track 2 Placeholder -->
+                <div class="spotify-container-track">
+                    <div class="player-placeholder" onclick="injectIframe(this, 'https://open.spotify.com/embed/album/1L5Ee2OArmJDbHn3dl1137?utm_source=generator')">
+                        <div class="play-btn-circle">▶</div>
+                        <div class="placeholder-text" data-i18n="placeholder_text">음악 재생하기</div>
+                    </div>
+                </div>
+            </div>
 
-            <div class="track-item"><div class="track-info"><div class="track-title"><span data-i18n="track3">기적입니다</span> <div class="equalizer"><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div></div></div><div class="track-badge" data-i18n="track_badge">Vocal Track</div><a href="https://open.spotify.com/album/53arzUULOmohQPo1njoNgl" target="_blank" class="track-btn" data-i18n="btn_listen">Spotify 듣기 ›</a></div><iframe src="https://open.spotify.com/embed/album/53arzUULOmohQPo1njoNgl?utm_source=generator" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></div>
+            <div class="track-item">
+                <div class="track-info">
+                    <div class="track-title"><span data-i18n="track3">기적입니다</span> <div class="equalizer"><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div></div></div>
+                    <div class="track-badge" data-i18n="track_badge">Vocal Track</div>
+                    <a href="https://open.spotify.com/album/53arzUULOmohQPo1njoNgl" target="_blank" class="track-btn" data-i18n="btn_listen">Spotify 듣기 ›</a>
+                </div>
+                <!-- Track 3 Placeholder -->
+                <div class="spotify-container-track">
+                    <div class="player-placeholder" onclick="injectIframe(this, 'https://open.spotify.com/embed/album/53arzUULOmohQPo1njoNgl?utm_source=generator')">
+                        <div class="play-btn-circle">▶</div>
+                        <div class="placeholder-text" data-i18n="placeholder_text">음악 재생하기</div>
+                    </div>
+                </div>
+            </div>
 
-            <div class="track-item"><div class="track-info"><div class="track-title"><span data-i18n="track4">일어나 외쳐</span> <div class="equalizer"><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div></div></div><div class="track-badge" data-i18n="track_badge">Vocal Track</div><a href="https://open.spotify.com/album/2wEUPNTnhYRMPjyTDXbzME" target="_blank" class="track-btn" data-i18n="btn_listen">Spotify 듣기 ›</a></div><iframe src="https://open.spotify.com/embed/album/2wEUPNTnhYRMPjyTDXbzME?utm_source=generator" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></div>
+            <div class="track-item">
+                <div class="track-info">
+                    <div class="track-title"><span data-i18n="track4">일어나 외쳐</span> <div class="equalizer"><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div></div></div>
+                    <div class="track-badge" data-i18n="track_badge">Vocal Track</div>
+                    <a href="https://open.spotify.com/album/2wEUPNTnhYRMPjyTDXbzME" target="_blank" class="track-btn" data-i18n="btn_listen">Spotify 듣기 ›</a>
+                </div>
+                <!-- Track 4 Placeholder -->
+                <div class="spotify-container-track">
+                    <div class="player-placeholder" onclick="injectIframe(this, 'https://open.spotify.com/embed/album/2wEUPNTnhYRMPjyTDXbzME?utm_source=generator')">
+                        <div class="play-btn-circle">▶</div>
+                        <div class="placeholder-text" data-i18n="placeholder_text">음악 재생하기</div>
+                    </div>
+                </div>
+            </div>
 
-            <div class="track-item"><div class="track-info"><div class="track-title"><span data-i18n="track5">사랑으로</span> <div class="equalizer"><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div></div></div><div class="track-badge" data-i18n="track_badge">Vocal Track</div><a href="https://open.spotify.com/album/0mdTNiRQD6GNa8vsLGpGhl" target="_blank" class="track-btn" data-i18n="btn_listen">Spotify 듣기 ›</a></div><iframe src="https://open.spotify.com/embed/album/0mdTNiRQD6GNa8vsLGpGhl?utm_source=generator" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></div>
+            <div class="track-item">
+                <div class="track-info">
+                    <div class="track-title"><span data-i18n="track5">사랑으로</span> <div class="equalizer"><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div></div></div>
+                    <div class="track-badge" data-i18n="track_badge">Vocal Track</div>
+                    <a href="https://open.spotify.com/album/0mdTNiRQD6GNa8vsLGpGhl" target="_blank" class="track-btn" data-i18n="btn_listen">Spotify 듣기 ›</a>
+                </div>
+                <!-- Track 5 Placeholder -->
+                <div class="spotify-container-track">
+                    <div class="player-placeholder" onclick="injectIframe(this, 'https://open.spotify.com/embed/album/0mdTNiRQD6GNa8vsLGpGhl?utm_source=generator')">
+                        <div class="play-btn-circle">▶</div>
+                        <div class="placeholder-text" data-i18n="placeholder_text">음악 재생하기</div>
+                    </div>
+                </div>
+            </div>
 
-            <div class="track-item"><div class="track-info"><div class="track-title"><span data-i18n="track6">우리의 예배</span> <div class="equalizer"><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div></div></div><div class="track-badge" data-i18n="track_badge">Vocal Track</div><a href="https://open.spotify.com/album/6lPERr8sZxJIntiFNwN3Vg" target="_blank" class="track-btn" data-i18n="btn_listen">Spotify 듣기 ›</a></div><iframe src="https://open.spotify.com/embed/album/6lPERr8sZxJIntiFNwN3Vg?utm_source=generator" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></div>
+            <div class="track-item">
+                <div class="track-info">
+                    <div class="track-title"><span data-i18n="track6">우리의 예배</span> <div class="equalizer"><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div></div></div>
+                    <div class="track-badge" data-i18n="track_badge">Vocal Track</div>
+                    <a href="https://open.spotify.com/album/6lPERr8sZxJIntiFNwN3Vg" target="_blank" class="track-btn" data-i18n="btn_listen">Spotify 듣기 ›</a>
+                </div>
+                <!-- Track 6 Placeholder -->
+                <div class="spotify-container-track">
+                    <div class="player-placeholder" onclick="injectIframe(this, 'https://open.spotify.com/embed/album/6lPERr8sZxJIntiFNwN3Vg?utm_source=generator')">
+                        <div class="play-btn-circle">▶</div>
+                        <div class="placeholder-text" data-i18n="placeholder_text">음악 재생하기</div>
+                    </div>
+                </div>
+            </div>
+
         </section>
     </div>
 
@@ -270,6 +387,7 @@
                 album2_sub: "2nd Confession",
                 btn_listen_all: "Spotify 전곡 듣기",
                 btn_lyrics: "가사 보기",
+                placeholder_text: "음악 재생하기",
                 track_list_title: "Worship Tracks",
                 track1: "파레시아",
                 track2: "주를 향해 노래하리",
@@ -302,6 +420,7 @@
                 album2_sub: "2nd Confession",
                 btn_listen_all: "Listen all on Spotify",
                 btn_lyrics: "View Lyrics",
+                placeholder_text: "Click to Play",
                 track_list_title: "Worship Tracks",
                 track1: "Parrhesia",
                 track2: "I Will Sing to the Lord",
@@ -374,6 +493,24 @@
         const menuToggle = document.getElementById('mobile-menu');
         const navLinks = document.getElementById('navLinks');
         menuToggle.addEventListener('click', () => { menuToggle.classList.toggle('active'); navLinks.classList.toggle('active'); });
+
+        // ✅ 클릭 시 iframe을 생성하고 DOM에 주입하는 함수
+        function injectIframe(element, url) {
+            const container = element.parentElement;
+            const isTrack = container.classList.contains('spotify-container-track');
+            const height = isTrack ? '80' : '352';
+            
+            const iframe = document.createElement('iframe');
+            iframe.src = url;
+            iframe.width = '100%';
+            iframe.height = height;
+            iframe.frameBorder = '0';
+            iframe.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
+            iframe.loading = 'lazy';
+            
+            container.innerHTML = '';
+            container.appendChild(iframe);
+        }
 
         const shareOverlay = document.getElementById('shareOverlay');
         const toast = document.getElementById('toast');

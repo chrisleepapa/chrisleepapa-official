@@ -33,10 +33,17 @@
 
         nav { position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(3, 3, 5, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
         .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); z-index: 1001; text-decoration: none; white-space: nowrap; }
-        .nav-right { display: flex; align-items: center; gap: 30px; }
+        .nav-right { display: flex; align-items: center; gap: 24px; }
         .nav-links { display: flex; gap: 30px; }
         .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; text-decoration: none; }
         .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+        
+        /* ── Language Switcher ── */
+        .lang-switcher { display: flex; align-items: center; gap: 8px; font-family: 'Cinzel', serif; font-size: 0.75rem; color: #a0a0b5; z-index: 1001; }
+        .lang-btn { cursor: pointer; transition: 0.3s; letter-spacing: 1px; padding: 4px; }
+        .lang-btn:hover, .lang-btn.active { color: var(--gold-light); text-shadow: 0 0 8px rgba(201,168,76,0.5); }
+        .lang-sep { color: rgba(255,255,255,0.2); user-select: none; }
+
         .share-trigger { cursor: pointer; padding: 6px 12px; border: 1px solid rgba(201,168,76,0.3); border-radius: 20px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: var(--gold-light); transition: 0.3s; letter-spacing: 1px; }
         .share-trigger:hover { background: rgba(201,168,76,0.1); border-color: var(--gold-light); }
         .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
@@ -85,14 +92,9 @@
         /* ── 매거진형 그리드 레이아웃 적용 ── */
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); grid-auto-flow: dense; gap: 25px; animation: fadeUp 1s ease 0.8s both; }
         .gallery-item { position: relative; border-radius: 16px; overflow: hidden; aspect-ratio: 16/9; background: #000; border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 15px 35px rgba(0,0,0,0.5); cursor: pointer; transition: all 0.4s ease; }
+        .gallery-item:first-child { grid-column: span 2; grid-row: span 2; aspect-ratio: auto; } /* 첫 이미지 크게 */
         
-        @media (min-width: 901px) {
-            .gallery-item:hover { grid-column: span 2; grid-row: span 2; transform: translateY(-8px); border-color: var(--char-accent); box-shadow: 0 20px 40px rgba(255, 143, 177, 0.2); z-index: 10; }
-        }
-        @media (max-width: 900px) {
-            .gallery-item:hover { transform: translateY(-8px); border-color: var(--char-accent); box-shadow: 0 20px 40px rgba(255, 143, 177, 0.2); }
-        }
-        
+        .gallery-item:hover { transform: translateY(-8px); border-color: var(--char-accent); box-shadow: 0 20px 40px rgba(255, 143, 177, 0.2); }
         .gallery-img { width: 100%; height: 100%; background-size: cover; background-position: center; filter: brightness(0.8) grayscale(20%); transition: all 0.5s ease; }
         .gallery-item:hover .gallery-img { filter: brightness(1.1) grayscale(0%); transform: scale(1.08); }
 
@@ -105,7 +107,7 @@
 
         footer { text-align: center; padding: 80px 40px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: #555; border-top: 1px solid rgba(255,255,255,0.03); }
 
-        @media (max-width: 900px) { nav { padding: 0 20px; } .brand-logo { font-size: 1.1rem; } .nav-links { display: none; } .nav-links.active { display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height)); background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 25px; z-index: 1002; } .menu-toggle { display: flex; } .profile-layout { grid-template-columns: 1fr; gap: 40px; } .profile-visual { max-width: 500px; margin: 0 auto; } .data-header { text-align: center; } .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; } .quote-box { font-size: clamp(0.8rem, 4vw, 1.2rem); padding: 20px; } }
+        @media (max-width: 900px) { nav { padding: 0 20px; } .brand-logo { font-size: 1.1rem; } .nav-links { display: none; } .nav-links.active { display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height)); background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 25px; z-index: 1002; } .menu-toggle { display: flex; } .profile-layout { grid-template-columns: 1fr; gap: 40px; } .profile-visual { max-width: 500px; margin: 0 auto; } .data-header { text-align: center; } .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; } .gallery-item:first-child { grid-column: span 1; grid-row: span 1; aspect-ratio: 16/9; } .quote-box { font-size: clamp(0.8rem, 4vw, 1.2rem); padding: 20px; } }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
@@ -115,66 +117,74 @@
         <a href="index.html" class="brand-logo">Chris LEE.PAPA</a>
         <div class="nav-right">
             <div class="nav-links" id="navLinks">
-                <a href="index.html">Home</a>
-                <a href="worship.html">Worship</a>
-                <a href="music.html">Music</a>
-                <a href="book.html" class="active">Books</a>
-                <a href="movie.html">Movies</a>
+                <a href="index.html" data-i18n="nav_home">Home</a>
+                <a href="worship.html" data-i18n="nav_worship">Worship</a>
+                <a href="music.html" data-i18n="nav_music">Music</a>
+                <a href="book.html" class="active" data-i18n="nav_book">Books</a>
+                <a href="movie.html" data-i18n="nav_movie">Movies</a>
             </div>
-            <div class="share-trigger" onclick="openShareModal()">SHARE</div>
+
+            <!-- Language Switcher -->
+            <div class="lang-switcher">
+                <span class="lang-btn active" data-lang="ko" onclick="setLanguage('ko')">KOR</span>
+                <span class="lang-sep">|</span>
+                <span class="lang-btn" data-lang="en" onclick="setLanguage('en')">ENG</span>
+            </div>
+
+            <div class="share-trigger" onclick="openShareModal()" data-i18n="nav_share">SHARE</div>
             <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
         </div>
     </nav>
 
     <div class="modal-overlay-share" id="shareOverlay" onclick="closeShareModal(event)">
         <div class="share-modal" onclick="event.stopPropagation()">
-            <h3>SHARE JUNG'S PROFILE</h3>
-            <p>따뜻한 감성과 교감의 마스터, 정이를 소개해보세요.</p>
+            <h3 data-i18n="share_title">SHARE JUNG'S PROFILE</h3>
+            <p data-i18n="share_desc">따뜻한 감성과 교감의 마스터, 정이를 소개해보세요.</p>
             <div class="share-buttons">
-                <button class="modal-btn btn-copy" onclick="copyURL()">COPY LINK</button>
-                <button class="modal-btn btn-sns" onclick="shareViaWebAPI()">SNS SHARE</button>
+                <button class="modal-btn btn-copy" onclick="copyURL()" data-i18n="share_copy">COPY LINK</button>
+                <button class="modal-btn btn-sns" onclick="shareViaWebAPI()" data-i18n="share_sns">SNS SHARE</button>
             </div>
-            <button class="modal-btn btn-close-share" onclick="closeShareModal(null)">Close</button>
+            <button class="modal-btn btn-close-share" onclick="closeShareModal(null)" data-i18n="share_close">Close</button>
         </div>
     </div>
 
-    <div class="toast-msg" id="toast">Link copied!</div>
+    <div class="toast-msg" id="toast"></div>
 
     <header class="page-header">
         <canvas id="stars-canvas"></canvas>
         <div class="header-content">
-            <h1 class="header-title">JUNG</h1>
-            <p class="header-slogan">The Heart Weaver</p>
+            <h1 class="header-title" data-i18n="header_title">JUNG</h1>
+            <p class="header-slogan" data-i18n="header_slogan">The Heart Weaver</p>
         </div>
     </header>
 
     <main class="container">
-        <a href="sistersquad.html" class="back-link" onclick="location.assign('sistersquad.html'); return false;">‹ Back to SisterSquad</a>
+        <a href="sistersquad.html" class="back-link" onclick="safeNavigate('sistersquad.html'); return false;" data-i18n="back_link">‹ SisterSquad로 돌아가기</a>
 
         <div class="profile-layout">
             <div class="profile-visual">
-                <div class="profile-img-wrap"><img src="images/jung01.png" alt="정이 프로필" class="profile-img" onerror="this.src='https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&auto=format&fit=crop'"></div>
+                <div class="profile-img-wrap"><img src="images/jung01.png" alt="Jung Profile" class="profile-img" onerror="this.src='https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&auto=format&fit=crop'"></div>
             </div>
             <div class="profile-data">
                 <div class="data-header">
-                    <h2 class="name-ko">정 (Jung)</h2>
-                    <span class="age">7 YEARS OLD</span>
-                    <span class="role-tag">순수의 활, 교감의 마스터</span>
+                    <h2 class="name-ko" data-i18n="name_ko">정 (Jung)</h2>
+                    <span class="age" data-i18n="age">7 YEARS OLD</span>
+                    <span class="role-tag" data-i18n="role_tag">순수의 활, 교감의 마스터</span>
                 </div>
                 <div class="bio-block">
-                    <h3>Character Profile</h3>
-                    <p>세상 모든 것에 호기심을 느끼고 소통하는 순수한 영혼의 소유자. 언니 율이가 세상을 머리로 이해한다면, 정이는 가슴으로 느낍니다. 겁이 많지만 새로운 것에 대한 호기심이 두려움을 이겨내며, 자매를 모험으로 이끄는 데 큰 역할을 합니다.</p>
-                    <p>요정 마을의 아름다움에 누구보다 감동하고, 요정들의 슬픔에 진심으로 공감합니다. 그녀는 팀 내에서 차가운 이성에 따뜻한 생명력을 불어넣는 소중한 존재입니다.</p>
+                    <h3 data-i18n="bio_title">Character Profile</h3>
+                    <p data-i18n="bio_desc1">세상 모든 것에 호기심을 느끼고 소통하는 순수한 영혼의 소유자. 언니 율이가 세상을 머리로 이해한다면, 정이는 가슴으로 느낍니다. 겁이 많지만 새로운 것에 대한 호기심이 두려움을 이겨내며, 자매를 모험으로 이끄는 데 큰 역할을 합니다.</p>
+                    <p data-i18n="bio_desc2">요정 마을의 아름다움에 누구보다 감동하고, 요정들의 슬픔에 진심으로 공감합니다. 그녀는 팀 내에서 차가운 이성에 따뜻한 생명력을 불어넣는 소중한 존재입니다.</p>
                 </div>
                 <div class="bio-block">
-                    <h3>Special Abilities</h3>
-                    <p><strong>Taming & Empathy (테이밍 & 교감):</strong> 그녀의 잠재 능력인 테이밍은 모든 살아 숨 쉬는 것들과 친구가 되고 싶어 하는 순수한 마음에서 비롯되었습니다. 노래하는 나비, 흉포한 숲의 괴수, 심지어 어둠의 공간까지, 그녀는 진심 어린 교감을 통해 그들의 마음을 열고 친구로 만듭니다. 전투 상황에서는 파괴력보다 평화적인 해결책을 제시합니다.</p>
+                    <h3 data-i18n="special_title">Special Abilities</h3>
+                    <p data-i18n="special_desc"><strong>Taming & Empathy (테이밍 & 교감):</strong> 그녀의 잠재 능력인 테이밍은 모든 살아 숨 쉬는 것들과 친구가 되고 싶어 하는 순수한 마음에서 비롯되었습니다. 노래하는 나비, 흉포한 숲의 괴수, 심지어 어둠의 공간까지, 그녀는 진심 어린 교감을 통해 그들의 마음을 열고 친구로 만듭니다. 전투 상황에서는 파괴력보다 평화적인 해결책을 제시합니다.</p>
                 </div>
-                <div class="quote-box">"괜찮아, 무섭지 않아<br> 너도 사실은 외로웠구나.<br>우리 친구 할까?"</div>
+                <div class="quote-box" data-i18n="quote">"괜찮아, 무섭지 않아<br> 너도 사실은 외로웠구나.<br>우리 친구 할까?"</div>
             </div>
         </div>
 
-        <h2 class="section-title">Visual Archives</h2>
+        <h2 class="section-title" data-i18n="gallery_title">Visual Archives</h2>
         <div class="gallery-grid">
             <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/jung01.png');"></div></div>
             <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/jung02.jpg');"></div></div>
@@ -197,9 +207,105 @@
         <img class="modal-content" id="modalImg" alt="확대된 이미지">
     </div>
 
-    <footer><p>© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
+    <footer><p data-i18n="footer_text">© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
 
     <script>
+        // ── Multilingual System ──
+        const i18n = {
+            ko: {
+                nav_home: "Home",
+                nav_worship: "Worship",
+                nav_music: "Music",
+                nav_book: "Books",
+                nav_movie: "Movies",
+                nav_share: "SHARE",
+                share_title: "SHARE JUNG'S PROFILE",
+                share_desc: "따뜻한 감성과 교감의 마스터, 정이를 소개해보세요.",
+                share_copy: "COPY LINK",
+                share_sns: "SNS SHARE",
+                share_close: "Close",
+                header_title: "JUNG",
+                header_slogan: "The Heart Weaver",
+                back_link: "‹ SisterSquad로 돌아가기",
+                name_ko: "정 (Jung)",
+                age: "7 YEARS OLD",
+                role_tag: "순수의 활, 교감의 마스터",
+                bio_title: "Character Profile",
+                bio_desc1: "세상 모든 것에 호기심을 느끼고 소통하는 순수한 영혼의 소유자. 언니 율이가 세상을 머리로 이해한다면, 정이는 가슴으로 느낍니다. 겁이 많지만 새로운 것에 대한 호기심이 두려움을 이겨내며, 자매를 모험으로 이끄는 데 큰 역할을 합니다.",
+                bio_desc2: "요정 마을의 아름다움에 누구보다 감동하고, 요정들의 슬픔에 진심으로 공감합니다. 그녀는 팀 내에서 차가운 이성에 따뜻한 생명력을 불어넣는 소중한 존재입니다.",
+                special_title: "Special Abilities",
+                special_desc: "<strong>Taming & Empathy (테이밍 & 교감):</strong> 그녀의 잠재 능력인 테이밍은 모든 살아 숨 쉬는 것들과 친구가 되고 싶어 하는 순수한 마음에서 비롯되었습니다. 노래하는 나비, 흉포한 숲의 괴수, 심지어 어둠의 공간까지, 그녀는 진심 어린 교감을 통해 그들의 마음을 열고 친구로 만듭니다. 전투 상황에서는 파괴력보다 평화적인 해결책을 제시합니다.",
+                quote: "\"괜찮아, 무섭지 않아<br> 너도 사실은 외로웠구나.<br>우리 친구 할까?\"",
+                gallery_title: "Visual Archives",
+                footer_text: "© 2026 Chris LEE.PAPA — The Creative Archive",
+                toast_copy: "링크가 복사되었습니다 ✓",
+                toast_error: "지원하지 않는 브라우저입니다."
+            },
+            en: {
+                nav_home: "Home",
+                nav_worship: "Worship",
+                nav_music: "Music",
+                nav_book: "Books",
+                nav_movie: "Movies",
+                nav_share: "SHARE",
+                share_title: "SHARE JUNG'S PROFILE",
+                share_desc: "Introduce Jung, the master of warm emotion and empathy.",
+                share_copy: "COPY LINK",
+                share_sns: "SNS SHARE",
+                share_close: "Close",
+                header_title: "JUNG",
+                header_slogan: "The Heart Weaver",
+                back_link: "‹ Back to SisterSquad",
+                name_ko: "Jung",
+                age: "7 YEARS OLD",
+                role_tag: "Bow of Purity, Master of Empathy",
+                bio_title: "Character Profile",
+                bio_desc1: "An owner of a pure soul who feels curious and communicates with everything in the world. If her older sister Yul understands the world with her head, Jung feels it with her heart. She is easily scared, but her curiosity for new things overcomes her fear, playing a big role in leading the sisters into adventures.",
+                bio_desc2: "She is more touched by the beauty of the fairy village than anyone else, and sincerely sympathizes with the fairies' sorrow. She is a precious existence who breathes warm vitality into cold reason within the team.",
+                special_title: "Special Abilities",
+                special_desc: "<strong>Taming & Empathy:</strong> Her potential ability, taming, comes from a pure desire to become friends with all living and breathing things. From singing butterflies to ferocious forest monsters, and even dark spaces, she opens their hearts and makes them friends through sincere empathy. In combat situations, she presents peaceful solutions rather than destructive power.",
+                quote: "\"It's okay, don't be scared.<br> You were actually lonely too.<br>Shall we be friends?\"",
+                gallery_title: "Visual Archives",
+                footer_text: "© 2026 Chris LEE.PAPA — The Creative Archive",
+                toast_copy: "Link copied to clipboard ✓",
+                toast_error: "Browser not supported."
+            }
+        };
+
+        let currentLang = 'ko';
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+            
+            // Save preference
+            try { localStorage.setItem('pref-lang', lang); } catch(e) {}
+
+            // Update UI texts (inner HTML to preserve html tags like <br> and <strong>)
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (i18n[lang][key]) {
+                    el.innerHTML = i18n[lang][key];
+                }
+            });
+
+            // Update active state on language buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                if (btn.getAttribute('data-lang') === lang) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        // Initialize language
+        document.addEventListener('DOMContentLoaded', () => {
+            let savedLang = 'ko';
+            try { savedLang = localStorage.getItem('pref-lang') || 'ko'; } catch(e) {}
+            setLanguage(savedLang);
+        });
+
         function safeNavigate(url) { if (url && url.trim() !== "") { window.location.assign(url); } }
         const menuToggle = document.getElementById('mobile-menu'); const navLinks = document.getElementById('navLinks');
         menuToggle.addEventListener('click', () => { menuToggle.classList.toggle('active'); navLinks.classList.toggle('active'); });
@@ -215,10 +321,10 @@
                 const textArea = document.createElement("textarea"); textArea.value = currentUrl; textArea.id = "temp-copy-area"; textArea.style.position = "fixed"; textArea.style.left = "-9999px";
                 document.body.appendChild(textArea); textArea.focus(); textArea.select(); try { success = document.execCommand('copy'); } catch (err) {} document.body.removeChild(textArea);
             }
-            if (success) { showToast('Link copied to clipboard!'); } else { showToast('Copy failed. Please copy manually.'); } closeShareModal();
+            if (success) { showToast(i18n[currentLang].toast_copy); } else { showToast(i18n[currentLang].toast_error); } closeShareModal();
         }
 
-        function shareViaWebAPI() { if (navigator.share) { navigator.share({ title: 'Jung (SisterSquad) Profile', url: window.location.href }).catch(console.error); } else { showToast('Sharing is not supported.'); } }
+        function shareViaWebAPI() { if (navigator.share) { navigator.share({ title: 'Jung (SisterSquad) Profile', url: window.location.href }).catch(console.error); } else { showToast(i18n[currentLang].toast_error); } }
         function showToast(msg) { toast.textContent = msg; toast.style.display = 'block'; setTimeout(() => { toast.style.display = 'none'; }, 2500); }
 
         const canvas = document.getElementById('stars-canvas'); const ctx = canvas.getContext('2d'); let stars = [];

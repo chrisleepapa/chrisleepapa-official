@@ -86,10 +86,16 @@
             white-space: nowrap;
         }
 
-        .nav-right { display: flex; align-items: center; gap: 30px; }
+        .nav-right { display: flex; align-items: center; gap: 24px; }
         .nav-links { display: flex; gap: 30px; }
         .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; text-decoration: none; }
         .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+
+        /* ── Language Switcher ── */
+        .lang-switcher { display: flex; align-items: center; gap: 8px; font-family: 'Cinzel', serif; font-size: 0.75rem; color: #a0a0b5; z-index: 1001; }
+        .lang-btn { cursor: pointer; transition: 0.3s; letter-spacing: 1px; padding: 4px; }
+        .lang-btn:hover, .lang-btn.active { color: var(--gold-light); text-shadow: 0 0 8px rgba(201,168,76,0.5); }
+        .lang-sep { color: rgba(255,255,255,0.2); user-select: none; }
 
         .share-trigger {
             cursor: pointer; padding: 6px 12px; border: 1px solid rgba(201,168,76,0.3);
@@ -195,56 +201,64 @@
         <a href="index.html" class="brand-logo">Chris LEE.PAPA</a>
         <div class="nav-right">
             <div class="nav-links" id="navLinks">
-                <a href="index.html">Home</a>
-                <a href="worship.html">Worship</a>
-                <a href="music.html">Music</a>
-                <a href="book.html">Books</a>
-                <a href="movie.html">Movies</a>
+                <a href="index.html" data-i18n="nav_home">Home</a>
+                <a href="worship.html" data-i18n="nav_worship">Worship</a>
+                <a href="music.html" data-i18n="nav_music">Music</a>
+                <a href="book.html" data-i18n="nav_book">Books</a>
+                <a href="movie.html" data-i18n="nav_movie">Movies</a>
             </div>
-            <div class="share-trigger" onclick="openShareModal()">SHARE</div>
+
+            <!-- Language Switcher -->
+            <div class="lang-switcher">
+                <span class="lang-btn active" data-lang="ko" onclick="setLanguage('ko')">KOR</span>
+                <span class="lang-sep">|</span>
+                <span class="lang-btn" data-lang="en" onclick="setLanguage('en')">ENG</span>
+            </div>
+
+            <div class="share-trigger" onclick="openShareModal()" data-i18n="nav_share">SHARE</div>
             <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
         </div>
     </nav>
 
     <div class="modal-overlay" id="shareOverlay" onclick="closeShareModal(event)">
         <div class="share-modal" onclick="event.stopPropagation()">
-            <h3>SHARE LYRICS VOL.2</h3>
-            <p>이곳의 고백이 누군가의 마음에 별빛이 되길.</p>
+            <h3 data-i18n="share_title">SHARE LYRICS VOL.2</h3>
+            <p data-i18n="share_desc">이곳의 고백이 누군가의 마음에 별빛이 되길.</p>
             <div class="share-buttons">
-                <button class="modal-btn btn-copy" onclick="copyURL()">COPY LINK</button>
-                <button class="modal-btn btn-sns" onclick="shareViaWebAPI()">SNS SHARE</button>
+                <button class="modal-btn btn-copy" onclick="copyURL()" data-i18n="share_copy">COPY LINK</button>
+                <button class="modal-btn btn-sns" onclick="shareViaWebAPI()" data-i18n="share_sns">SNS SHARE</button>
             </div>
-            <button class="modal-btn btn-close-modal" onclick="closeShareModal(null)">Close</button>
+            <button class="modal-btn btn-close-modal" onclick="closeShareModal(null)" data-i18n="share_close">Close</button>
         </div>
     </div>
 
-    <div class="toast-msg" id="toast">Link copied!</div>
+    <div class="toast-msg" id="toast"></div>
 
     <header class="page-header">
         <canvas id="stars-canvas"></canvas>
         <div class="header-content">
-            <h1 class="header-title">LYRICS</h1>
-            <p class="header-slogan">나의 찬양 Vol. 2 가사집</p>
+            <h1 class="header-title" data-i18n="header_title">LYRICS</h1>
+            <p class="header-slogan" data-i18n="header_slogan">나의 찬양 Vol. 2 가사집</p>
         </div>
     </header>
 
     <main class="container">
-        <a href="worship.html" class="back-link">‹ 예배로 돌아가기</a>
+        <a href="worship.html" class="back-link" data-i18n="back_link">‹ 예배로 돌아가기</a>
 
         <div class="page-heading">
-            <span class="section-tag">✦ &nbsp; 2nd Confession &nbsp; ✦</span>
-            <h2>영혼을 울리는 고백, 찬양 가사집</h2>
+            <span class="section-tag" data-i18n="heading_tag">✦ &nbsp; 2nd Confession &nbsp; ✦</span>
+            <h2 data-i18n="heading_title">영혼을 울리는 고백, 찬양 가사집</h2>
         </div>
 
         <div class="lyrics-wrapper">
             <!-- Track 01 -->
             <div class="accordion-item">
                 <button class="accordion-header">
-                    <span><span class="track-num">01.</span> 모두 찬양해</span>
+                    <span><span class="track-num">01.</span> <span data-i18n="track1_title">모두 찬양해</span></span>
                     <span class="toggle-icon">+</span>
                 </button>
                 <div class="accordion-body">
-                    <p class="lyric-text">[Verse 1]
+                    <p class="lyric-text" data-i18n="track1_lyric">[Verse 1]
 주의 말씀 귀에 들려
 내 마음 깊이 흐르네
 낮은 곳에서 부르시는
@@ -291,11 +305,11 @@
             <!-- Track 02 -->
             <div class="accordion-item">
                 <button class="accordion-header">
-                    <span><span class="track-num">02.</span> 일어나 외쳐</span>
+                    <span><span class="track-num">02.</span> <span data-i18n="track2_title">일어나 외쳐</span></span>
                     <span class="toggle-icon">+</span>
                 </button>
                 <div class="accordion-body">
-                    <p class="lyric-text">[Verse 1]
+                    <p class="lyric-text" data-i18n="track2_lyric">[Verse 1]
 잠들어 있던 심장이
 지금 깨어나
 꺼지지 않던 불꽃이
@@ -350,11 +364,11 @@
             <!-- Track 03 -->
             <div class="accordion-item">
                 <button class="accordion-header">
-                    <span><span class="track-num">03.</span> 주를 향해 노래하리</span>
+                    <span><span class="track-num">03.</span> <span data-i18n="track3_title">주를 향해 노래하리</span></span>
                     <span class="toggle-icon">+</span>
                 </button>
                 <div class="accordion-body">
-                    <p class="lyric-text">[Verse 1]
+                    <p class="lyric-text" data-i18n="track3_lyric">[Verse 1]
 주 앞에 서 있는 이 시간
 내 마음 열어 드립니다
 조용히 들려오는 음성
@@ -430,11 +444,11 @@
             <!-- Track 04 -->
             <div class="accordion-item">
                 <button class="accordion-header">
-                    <span><span class="track-num">04.</span> 사랑합니다. 주님</span>
+                    <span><span class="track-num">04.</span> <span data-i18n="track4_title">사랑합니다. 주님</span></span>
                     <span class="toggle-icon">+</span>
                 </button>
                 <div class="accordion-body">
-                    <p class="lyric-text">[Verse 1]
+                    <p class="lyric-text" data-i18n="track4_lyric">[Verse 1]
 쉽지않던 나의 삶에
 주님 함께 하셨네
 알지 못한 순간에도
@@ -489,11 +503,11 @@
             <!-- Track 05 -->
             <div class="accordion-item">
                 <button class="accordion-header">
-                    <span><span class="track-num">05.</span> 돌아보면 모든 날이</span>
+                    <span><span class="track-num">05.</span> <span data-i18n="track5_title">돌아보면 모든 날이</span></span>
                     <span class="toggle-icon">+</span>
                 </button>
                 <div class="accordion-body">
-                    <p class="lyric-text">[Verse 1]
+                    <p class="lyric-text" data-i18n="track5_lyric">[Verse 1]
 돌아보면 모든 날이
 내 힘으로 산 것 같았지만
 보이지 않던 주의 손이
@@ -538,11 +552,11 @@
             <!-- Track 06 -->
             <div class="accordion-item">
                 <button class="accordion-header">
-                    <span><span class="track-num">06.</span> 주님 나의 힘</span>
+                    <span><span class="track-num">06.</span> <span data-i18n="track6_title">주님 나의 힘</span></span>
                     <span class="toggle-icon">+</span>
                 </button>
                 <div class="accordion-body">
-                    <p class="lyric-text">[Verse 1]
+                    <p class="lyric-text" data-i18n="track6_lyric">[Verse 1]
 조용한 이 새벽에
 주님 앞에 나옵니다
 작은 믿음 이 마음
@@ -575,11 +589,11 @@
             <!-- Track 07 -->
             <div class="accordion-item">
                 <button class="accordion-header">
-                    <span><span class="track-num">07.</span> 조용히 외쳐</span>
+                    <span><span class="track-num">07.</span> <span data-i18n="track7_title">조용히 외쳐</span></span>
                     <span class="toggle-icon">+</span>
                 </button>
                 <div class="accordion-body">
-                    <p class="lyric-text">[Verse 1]
+                    <p class="lyric-text" data-i18n="track7_lyric">[Verse 1]
 잠들어 있던 심장이
 조용히 깨어나
 작은 빛의 숨결이
@@ -618,11 +632,11 @@
             <!-- Track 08 -->
             <div class="accordion-item">
                 <button class="accordion-header">
-                    <span><span class="track-num">08.</span> 깨어 노래해</span>
+                    <span><span class="track-num">08.</span> <span data-i18n="track8_title">깨어 노래해</span></span>
                     <span class="toggle-icon">+</span>
                 </button>
                 <div class="accordion-body">
-                    <p class="lyric-text">[Verse 1]
+                    <p class="lyric-text" data-i18n="track8_lyric">[Verse 1]
 어둠 속에 빛이 와
 온 세상을 비추네
 기쁜 소식 들려와
@@ -661,11 +675,11 @@
             <!-- Track 09 -->
             <div class="accordion-item">
                 <button class="accordion-header">
-                    <span><span class="track-num">09.</span> 예수님 사랑</span>
+                    <span><span class="track-num">09.</span> <span data-i18n="track9_title">예수님 사랑</span></span>
                     <span class="toggle-icon">+</span>
                 </button>
                 <div class="accordion-body">
-                    <p class="lyric-text">[Verse 1]
+                    <p class="lyric-text" data-i18n="track9_lyric">[Verse 1]
 밝은 아침 햇살처럼
 내 마음 비추는 빛
 예수님의 따뜻한 사랑
@@ -696,11 +710,11 @@
             <!-- Track 10 -->
             <div class="accordion-item">
                 <button class="accordion-header">
-                    <span><span class="track-num">10.</span> 예수님 최고</span>
+                    <span><span class="track-num">10.</span> <span data-i18n="track10_title">예수님 최고</span></span>
                     <span class="toggle-icon">+</span>
                 </button>
                 <div class="accordion-body">
-                    <p class="lyric-text">[Verse 1]
+                    <p class="lyric-text" data-i18n="track10_lyric">[Verse 1]
 예수님 함께 걸어요 
 예수님 손을 잡아요
 기쁘게 웃으면서
@@ -728,9 +742,904 @@
         </div>
     </main>
 
-    <footer><p>© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
+    <footer><p data-i18n="footer_text">© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
 
     <script>
+        // ── Multilingual System ──
+        const i18n = {
+            ko: {
+                nav_home: "Home",
+                nav_worship: "Worship",
+                nav_music: "Music",
+                nav_book: "Books",
+                nav_movie: "Movies",
+                nav_share: "SHARE",
+                share_title: "SHARE LYRICS VOL.2",
+                share_desc: "이곳의 고백이 누군가의 마음에 별빛이 되길.",
+                share_copy: "COPY LINK",
+                share_sns: "SNS SHARE",
+                share_close: "Close",
+                header_title: "LYRICS",
+                header_slogan: "나의 찬양 Vol. 2 가사집",
+                back_link: "‹ 예배로 돌아가기",
+                heading_tag: "✦ &nbsp; 2nd Confession &nbsp; ✦",
+                heading_title: "영혼을 울리는 고백, 찬양 가사집",
+
+                track1_title: "모두 찬양해",
+                track1_lyric: `[Verse 1]
+주의 말씀 귀에 들려
+내 마음 깊이 흐르네
+낮은 곳에서 부르시는
+그 사랑 나를 이끄네
+
+[Verse 2]
+흔들리는 길 위에서도
+주 손 잡고 걸어가
+어둠 속에서도 빛 되신
+그 사랑 노래하리
+
+[Pre-Chorus]
+모든 음이 하나 되어
+두팔 벌려 찬양해
+
+[Chorus]
+모두 찬양해 온 맘 다해
+하늘과 땅이 노래하네
+강물처럼 이어져
+큰 바다로 퍼져가
+
+모두 찬양해 영원토록
+사랑의 화음 울리네
+우리의 숨결 모여서
+주의 이름 높이네
+
+[Bridge]
+주 사랑 넘쳐 흐르고
+우리의 노래 하늘에 닿네
+
+[Final Chorus]
+모두 찬양해 온 맘 다해
+온 세상이 화답하네
+강물처럼 이어져
+큰 바다로 퍼져가
+
+모두 찬양해 영원토록
+영광의 화음 울리네
+두팔 벌려 찬양해
+주의 이름 높이네`,
+
+                track2_title: "일어나 외쳐",
+                track2_lyric: `[Verse 1]
+잠들어 있던 심장이
+지금 깨어나
+꺼지지 않던 불꽃이
+다시 타올라
+발을 구르며 외쳐
+멈출 수 없어
+이 밤이 끝날 때까지
+우린 달려가
+
+[Pre-Chorus]
+고개를 들어
+하늘을 향해
+이 리듬 위에
+믿음이 살아나
+
+[Chorus]
+일어나 외쳐
+지금 이 순간
+더 크게 소리쳐
+온 땅이 울려
+주님과 함께 달려!
+심장이 뛰어
+우리의 예배
+지금 시작돼
+
+[Verse 2]
+두려움은 사라져
+빛이 비춰와
+닫혀 있던 문들이
+모두 열려가
+하나 되어 외쳐
+세상을 흔들어
+믿음의 파도가
+지금 일어나
+
+[Final Chorus]
+일어나 외쳐
+지금 이 순간
+더 크게 소리쳐
+온 땅이 울려
+주님과 함께 달려!
+심장이 뛰어
+우리의 예배
+지금 시작돼
+
+[Outro]
+우리의 예배
+멈추지 않아`,
+
+                track3_title: "주를 향해 노래하리",
+                track3_lyric: `[Verse 1]
+주 앞에 서 있는 이 시간
+내 마음 열어 드립니다
+조용히 들려오는 음성
+나를 부르십니다
+
+[Pre-Chorus]
+내 안에 잠들던 노래가
+이제 주께 향하네
+
+[Chorus]
+주를 향해 노래하리
+온 마음 다해 부르리
+나의 기쁨 나의 노래
+주님 한 분뿐이라
+주를 향해 기도하리
+내 삶의 모든 순간
+내 호흡이 있는 날까지
+주 이름 높이리
+
+[Verse 2]
+걸어온 시간을 돌아보면
+은혜가 가득했고
+무거운 마음 내려놓을 때
+평안을 주셨네
+
+[Pre-Chorus]
+내 안에 다시 피어나는
+감사의 멜로디
+
+[Chorus]
+주를 향해 노래하리
+온 마음 다해 부르리
+나의 기쁨 나의 노래
+주님 한 분뿐이라
+주를 향해 기도하리
+내 삶의 모든 순간
+내 호흡이 있는 날까지
+주 이름 높이리
+
+[Verse 3]
+흐르는 세월 속에서
+주 사랑 변함없고
+오늘의 걸음 위에
+은혜를 더하시네
+
+[Pre-Chorus]
+내 영혼 깊은 곳에서
+찬양이 울려 퍼져
+
+[Chorus]
+주를 향해 노래하리
+온 마음 다해 부르리
+나의 기쁨 나의 노래
+주님 한 분뿐이라
+주를 향해 기도하리
+내 삶의 모든 순간
+내 호흡이 있는 날까지
+주 이름 높이리
+
+[Final Chorus]
+주를 향해 노래하리 (노래해)
+온 마음 다해 부르리 
+나의 기쁨 나의 노래 (오직)
+주님 한 분뿐이
+
+주를 향해 기도하리 (영원히)
+내 삶의 모든 순간 
+내 호흡이 있는 날까지 (오직)
+주 이름 높이리`,
+
+                track4_title: "사랑합니다. 주님",
+                track4_lyric: `[Verse 1]
+쉽지않던 나의 삶에
+주님 함께 하셨네
+알지 못한 순간에도
+나를 지켜주셨네
+넘어지고 지친 날도
+주가 곁에 계셨고
+다시 일어설 힘을
+내게 주셨네
+
+[Pre-Chorus]
+지금까지 걸어온 길
+주가 인도하셨네
+
+[Chorus]
+감사합니다 주님
+나를 여기까지
+주의 사랑으로
+이끄셨네
+사랑합니다 주님
+나의 하나님
+내 삶의 모든 날
+주께 드립니다
+
+[Verse 2]
+눈물 많던 시간도
+주가 알고 계셨고
+작은 나의 기도도
+외면하지 않으셨네
+어둠 속을 걸을 때
+빛이 되어 주시고
+오늘도 내 삶을
+인도하시네
+
+[Bridge]
+주님만이 나의 길
+주님만이 나의 힘
+주님만이 나의 노래
+영원히 찬양해
+
+[Final Chorus]
+감사합니다 주님
+나의 구원 되신 주
+내 삶의 모든 순간
+주께 드립니다
+사랑합니다 주님
+나의 하나님
+영원토록 주만
+찬양합니다`,
+
+                track5_title: "돌아보면 모든 날이",
+                track5_lyric: `[Verse 1]
+돌아보면 모든 날이
+내 힘으로 산 것 같았지만
+보이지 않던 주의 손이
+나의 길을 지키셨네
+넘어지고 흔들리던
+수많았던 시간 속에도
+말없이 나와 함께 하신
+주의 사랑 있었네
+
+[Pre-Chorus]
+지금 여기 서 있는 건
+주님의 인도하심
+
+[Chorus]
+감사로 노래합니다
+내 삶을 이끄신 주
+어둔 밤을 지나 오늘까지
+나를 붙드셨네
+감사로 고백합니다
+나의 모든 이유는
+지금까지 지켜주신
+주님의 사랑
+
+[Verse 2]
+멀고 험한 길 위에서
+지쳐 주저앉던 날에도
+다시 일어설 힘을 주신
+주의 따뜻한 손길
+눈물로 지나온 날도
+헛된 시간 아니었네
+그 모든 길의 순간마다
+주가 함께 하셨네
+
+[Bridge]
+내 모든 삶이
+주의 손 안에
+내 모든 길이
+주의 계획 안에`,
+
+                track6_title: "주님 나의 힘",
+                track6_lyric: `[Verse 1]
+조용한 이 새벽에
+주님 앞에 나옵니다
+작은 믿음 이 마음
+주님께 드립니다
+
+[Chorus]
+주님 나의 힘 되시고
+주님 나의 길 되시네
+어제도 오늘도
+주와 함께 걸어가네
+
+[Verse 2]
+지친 마음 안고서
+주님 이름 부릅니다
+눈물 속의 기도도
+주님께서 들으시네
+
+[Chorus]
+주님 나의 힘 되시고
+주님 나의 길 되시네
+어제도 오늘도
+주와 함께 걸어가네
+
+[Bridge]
+주의 은혜 변함없네
+주의 사랑 영원하네`,
+
+                track7_title: "조용히 외쳐",
+                track7_lyric: `[Verse 1]
+잠들어 있던 심장이
+조용히 깨어나
+작은 빛의 숨결이
+내 안에 흐르네
+발걸음을 멈춰 서서
+주를 바라봐
+이 밤의 별빛 속에
+주를 노래해
+
+[Pre-Chorus]
+고개를 들어 하늘을 향해
+잔잔한 이 리듬에 믿음이 살아나
+
+[Chorus]
+조용히 외쳐
+지금 이 순간
+담대히 소리쳐
+온 땅이 울려
+주님과 함께 걸어
+두려움 버리고
+우리의 예배
+지금 시작돼
+
+[Verse 2]
+두려움은 사라져
+평안이 와
+닫혀 있던 마음이
+다시 열려가
+하나 되어 외쳐
+세상을 움직여
+믿음의 물결이
+잔잔히 흐르네`,
+
+                track8_title: "깨어 노래해",
+                track8_lyric: `[Verse 1]
+어둠 속에 빛이 와
+온 세상을 비추네
+기쁜 소식 들려와
+예수님이 오셨네
+
+[Chorus]
+깨어나 깨어 노래해
+기쁘게 외쳐
+예수님 오신 날
+함께 뛰어
+더크게 소리쳐
+주님을 찬양해
+
+[Verse 2]
+별이 비춘 그 밤에
+천사 노래 울리고
+온 세상이 기뻐해
+구주께서 오셨네
+
+[Chorus]
+깨어나 깨어 노래해
+기쁘게 외쳐
+예수님 오신 날
+함께 뛰어
+더크게 소리쳐
+주님을 찬양해
+
+[Bridge]
+하늘 높이 점프해
+손을 들어 찬양해
+온 세상이 노래해
+예수님 사랑해`,
+
+                track9_title: "예수님 사랑",
+                track9_lyric: `[Verse 1]
+밝은 아침 햇살처럼
+내 마음 비추는 빛
+예수님의 따뜻한 사랑
+나를 다시 일으켜
+
+[Pre-Chorus]
+작은 친절 하나로 세상은 달라져
+주님이 보여주신 사랑을 따라가
+
+[Chorus]
+예수님 사랑으로
+우리 함께 걸어가
+너와 나 손을 잡고
+기쁨으로 노래해
+예수님 사랑으로
+세상을 밝히는 빛
+우리 삶 속에서
+주 사랑 전해요
+
+[Verse 2]
+친구가 힘들 때에도
+곁에 있어 줄게
+예수님의 사랑처럼
+서로를 안아줘`,
+
+                track10_title: "예수님 최고",
+                track10_lyric: `[Verse 1]
+예수님 함께 걸어요 
+예수님 손을 잡아요
+기쁘게 웃으면서
+찬양을 불러요
+
+[Pre-Chorus]
+왼쪽으로 한 걸음
+오른쪽으로 한 걸음
+빙글빙글 돌아요
+
+[Chorus]
+예수님과 함께해요 (Yeah!)
+기쁜 마음 가득해 (Hey!)
+손뼉 치며 노래해요
+랄라랄라 기뻐요
+예수님과 함께해요 (Yeah!)
+우리 모두 하나돼 (Hey!)
+점프 점프 뛰면서
+찬양을 불러요
+
+[Outro]
+모두 함께 찬양해!`,
+
+                footer_text: "© 2026 Chris LEE.PAPA — The Creative Archive",
+                toast_copy: "링크가 복사되었습니다 ✓",
+                toast_error: "지원하지 않는 브라우저입니다."
+            },
+            en: {
+                nav_home: "Home",
+                nav_worship: "Worship",
+                nav_music: "Music",
+                nav_book: "Books",
+                nav_movie: "Movies",
+                nav_share: "SHARE",
+                share_title: "SHARE LYRICS VOL.2",
+                share_desc: "May the confessions here be a starlight in someone's heart.",
+                share_copy: "COPY LINK",
+                share_sns: "SNS SHARE",
+                share_close: "Close",
+                header_title: "LYRICS",
+                header_slogan: "My Worship Vol. 2 Lyrics",
+                back_link: "‹ Back to Worship",
+                heading_tag: "✦ &nbsp; 2nd Confession &nbsp; ✦",
+                heading_title: "Soul-stirring confessions, praise lyrics",
+
+                track1_title: "Praise Everyone",
+                track1_lyric: `[Verse 1]
+The Lord's word hits my ears
+Flows deep into my heart
+Calling from a low place
+That love leads me
+
+[Verse 2]
+Even on a shaking road
+Holding the Lord's hand I walk
+Even in darkness, the light
+I will sing of that love
+
+[Pre-Chorus]
+All notes become one
+With open arms, praise
+
+[Chorus]
+Let everyone praise with all their heart
+Heaven and earth sing
+Connected like a river
+Spreading to the great ocean
+
+Let everyone praise forever
+The harmony of love rings
+Our breaths gather
+Exalting the Lord's name
+
+[Bridge]
+The Lord's love overflows
+Our song reaches heaven
+
+[Final Chorus]
+Let everyone praise with all their heart
+The whole world responds
+Connected like a river
+Spreading to the great ocean
+
+Let everyone praise forever
+The harmony of glory rings
+With open arms, praise
+Exalting the Lord's name`,
+
+                track2_title: "Arise and Shout",
+                track2_lyric: `[Verse 1]
+The sleeping heart
+Wakes up now
+The unextinguished flame
+Burns again
+Stomp your feet and shout
+Can't stop
+Until this night ends
+We run
+
+[Pre-Chorus]
+Lift your head
+Toward the sky
+On this rhythm
+Faith comes alive
+
+[Chorus]
+Arise and shout
+Right at this moment
+Shout louder
+The whole earth rings
+Run with the Lord!
+The heart beats
+Our worship
+Starts now
+
+[Verse 2]
+Fear disappears
+Light shines
+The closed doors
+All open up
+Shout as one
+Shake the world
+The wave of faith
+Rises now
+
+[Final Chorus]
+Arise and shout
+Right at this moment
+Shout louder
+The whole earth rings
+Run with the Lord!
+The heart beats
+Our worship
+Starts now
+
+[Outro]
+Our worship
+Doesn't stop`,
+
+                track3_title: "I Will Sing Toward the Lord",
+                track3_lyric: `[Verse 1]
+This time standing before the Lord
+I open my heart and give it
+The voice heard quietly
+Calls me
+
+[Pre-Chorus]
+The song that slept inside me
+Now turns toward the Lord
+
+[Chorus]
+I will sing toward the Lord
+I will call with all my heart
+My joy, my song
+Only the Lord alone
+I will pray toward the Lord
+Every moment of my life
+As long as I have breath
+I will exalt the Lord's name
+
+[Verse 2]
+Looking back at the time I've walked
+It was full of grace
+When I laid down my heavy heart
+You gave me peace
+
+[Pre-Chorus]
+Blooming again inside me
+The melody of gratitude
+
+[Chorus]
+I will sing toward the Lord
+I will call with all my heart
+My joy, my song
+Only the Lord alone
+I will pray toward the Lord
+Every moment of my life
+As long as I have breath
+I will exalt the Lord's name
+
+[Verse 3]
+In the passing years
+The Lord's love is unchanging
+On today's steps
+You add grace
+
+[Pre-Chorus]
+Deep in my soul
+Praise rings out
+
+[Chorus]
+I will sing toward the Lord
+I will call with all my heart
+My joy, my song
+Only the Lord alone
+I will pray toward the Lord
+Every moment of my life
+As long as I have breath
+I will exalt the Lord's name
+
+[Final Chorus]
+I will sing toward the Lord (Sing)
+I will call with all my heart
+My joy, my song (Only)
+Only the Lord alone
+
+I will pray toward the Lord (Forever)
+Every moment of my life
+As long as I have breath (Only)
+I will exalt the Lord's name`,
+
+                track4_title: "I Love You, Lord",
+                track4_lyric: `[Verse 1]
+In my life that wasn't easy
+The Lord was with me
+Even in moments I didn't know
+You protected me
+Even on days I fell and was tired
+The Lord was by my side
+You gave me the strength
+To rise again
+
+[Pre-Chorus]
+The path I've walked so far
+The Lord guided
+
+[Chorus]
+Thank You, Lord
+For leading me
+Here by Your love
+I love You, Lord
+My God
+All the days of my life
+I give to You
+
+[Verse 2]
+The times full of tears
+The Lord knew
+Even my small prayers
+You did not turn away
+When walking in the dark
+You became my light
+And today You guide
+My life
+
+[Bridge]
+Only the Lord is my path
+Only the Lord is my strength
+Only the Lord is my song
+I praise forever
+
+[Final Chorus]
+Thank You, Lord
+The Lord who became my salvation
+Every moment of my life
+I give to You
+I love You, Lord
+My God
+Forever only the Lord
+I praise`,
+
+                track5_title: "Looking Back, Every Day",
+                track5_lyric: `[Verse 1]
+Looking back, every day
+Seemed lived by my own strength
+But the unseen hand of the Lord
+Protected my path
+Even in the countless times
+I fell and wavered
+The Lord's love that silently
+Was with me
+
+[Pre-Chorus]
+Standing here right now
+Is the Lord's guidance
+
+[Chorus]
+I sing with gratitude
+The Lord who led my life
+Passing the dark night until today
+You held me
+I confess with gratitude
+My every reason is
+The Lord's love
+That protected me until now
+
+[Verse 2]
+On the far and rough road
+Even on days I collapsed in exhaustion
+The warm touch of the Lord
+That gave strength to rise again
+The days passed with tears
+Were not in vain
+In every moment of that road
+The Lord was with me
+
+[Bridge]
+All my life
+Is in the Lord's hands
+All my paths
+Are in the Lord's plan`,
+
+                track6_title: "Lord My Strength",
+                track6_lyric: `[Verse 1]
+In this quiet dawn
+I come before the Lord
+This small faith, this heart
+I give to the Lord
+
+[Chorus]
+The Lord is my strength
+The Lord is my path
+Yesterday and today
+I walk with the Lord
+
+[Verse 2]
+Holding a weary heart
+I call the Lord's name
+The prayer in tears
+The Lord hears
+
+[Chorus]
+The Lord is my strength
+The Lord is my path
+Yesterday and today
+I walk with the Lord
+
+[Bridge]
+The Lord's grace is unchanging
+The Lord's love is eternal`,
+
+                track7_title: "Shout Quietly",
+                track7_lyric: `[Verse 1]
+The sleeping heart
+Quietly wakes up
+The breath of a small light
+Flows in me
+Stopping my steps
+I look at the Lord
+In the starlight of this night
+I sing of the Lord
+
+[Pre-Chorus]
+Lift your head toward the sky
+On this calm rhythm, faith comes alive
+
+[Chorus]
+Shout quietly
+Right at this moment
+Shout boldly
+The whole earth rings
+Walk with the Lord
+Cast away fear
+Our worship
+Starts now
+
+[Verse 2]
+Fear disappears
+Peace comes
+The closed heart
+Opens again
+Shout as one
+Move the world
+The wave of faith
+Flows calmly`,
+
+                track8_title: "Awake and Sing",
+                track8_lyric: `[Verse 1]
+Light comes into the darkness
+Shining on the whole world
+Good news is heard
+Jesus has come
+
+[Chorus]
+Awake, awake and sing
+Shout joyfully
+The day Jesus came
+Jump together
+Shout louder
+Praise the Lord
+
+[Verse 2]
+On that night the star shone
+Angels' song rings
+The whole world rejoices
+The Savior has come
+
+[Chorus]
+Awake, awake and sing
+Shout joyfully
+The day Jesus came
+Jump together
+Shout louder
+Praise the Lord
+
+[Bridge]
+Jump high to the sky
+Raise your hands and praise
+The whole world sings
+Love you, Jesus`,
+
+                track9_title: "Jesus' Love",
+                track9_lyric: `[Verse 1]
+Like the bright morning sunshine
+The light shining on my heart
+Jesus' warm love
+Raises me up again
+
+[Pre-Chorus]
+With one small kindness the world changes
+Follow the love the Lord showed
+
+[Chorus]
+With Jesus' love
+We walk together
+You and I holding hands
+Sing with joy
+With Jesus' love
+The light that brightens the world
+In our lives
+Share the Lord's love
+
+[Verse 2]
+Even when a friend is struggling
+I'll be by your side
+Like Jesus' love
+Embrace each other`,
+
+                track10_title: "Jesus is the Best",
+                track10_lyric: `[Verse 1]
+Walk together with Jesus
+Hold hands with Jesus
+Smiling joyfully
+Let's sing praises
+
+[Pre-Chorus]
+One step to the left
+One step to the right
+Spin round and round
+
+[Chorus]
+Together with Jesus (Yeah!)
+Full of a joyful heart (Hey!)
+Clapping hands and singing
+La la la la, so happy
+Together with Jesus (Yeah!)
+We all become one (Hey!)
+Jumping, jumping up
+Let's sing praises
+
+[Outro]
+Let's all praise together!`
+            }
+        };
+
+        let currentLang = 'ko';
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+            
+            // Save preference
+            try { localStorage.setItem('pref-lang', lang); } catch(e) {}
+
+            // Update UI texts (inner HTML to preserve line breaks and html tags like <br>)
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (i18n[lang][key]) {
+                    el.innerHTML = i18n[lang][key];
+                }
+            });
+
+            // Update active state on language buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                if (btn.getAttribute('data-lang') === lang) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        // Initialize language
+        document.addEventListener('DOMContentLoaded', () => {
+            let savedLang = 'ko';
+            try { savedLang = localStorage.getItem('pref-lang') || 'ko'; } catch(e) {}
+            setLanguage(savedLang);
+        });
+
         function safeNavigate(url) { if (url && url.trim() !== "") { window.location.assign(url); } }
 
         const menuToggle = document.getElementById('mobile-menu');
@@ -790,14 +1699,14 @@
                 try { success = document.execCommand('copy'); } catch (err) { }
                 document.body.removeChild(textArea);
             }
-            if (success) { showToast('Link copied to clipboard!'); }
+            if (success) { showToast(i18n[currentLang].toast_copy); }
             closeShareModal();
         }
 
         function shareViaWebAPI() {
             if (navigator.share) {
                 navigator.share({ title: 'Chris LEE.PAPA - LYRICS Vol.2', url: window.location.href }).catch(console.error);
-            } else { showToast('Sharing is not supported.'); }
+            } else { showToast(i18n[currentLang].toast_error); }
         }
 
         function showToast(msg) {

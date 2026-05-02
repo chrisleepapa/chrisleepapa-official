@@ -40,10 +40,17 @@
 
         nav { position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(3, 3, 5, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
         .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); z-index: 1001; text-decoration: none; white-space: nowrap; }
-        .nav-right { display: flex; align-items: center; gap: 30px; }
+        .nav-right { display: flex; align-items: center; gap: 24px; }
         .nav-links { display: flex; gap: 30px; }
         .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; text-decoration: none; }
         .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+        
+        /* ── Language Switcher ── */
+        .lang-switcher { display: flex; align-items: center; gap: 8px; font-family: 'Cinzel', serif; font-size: 0.75rem; color: #a0a0b5; z-index: 1001; }
+        .lang-btn { cursor: pointer; transition: 0.3s; letter-spacing: 1px; padding: 4px; }
+        .lang-btn:hover, .lang-btn.active { color: var(--gold-light); text-shadow: 0 0 8px rgba(201,168,76,0.5); }
+        .lang-sep { color: rgba(255,255,255,0.2); user-select: none; }
+
         .share-trigger { cursor: pointer; padding: 6px 12px; border: 1px solid rgba(201,168,76,0.3); border-radius: 20px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: var(--gold-light); transition: 0.3s; letter-spacing: 1px; }
         .share-trigger:hover { background: rgba(201,168,76,0.1); border-color: var(--gold-light); }
         .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
@@ -117,13 +124,21 @@
         <a href="index.html" class="brand-logo">Chris LEE.PAPA</a>
         <div class="nav-right">
             <div class="nav-links" id="navLinks">
-                <a href="index.html">Home</a>
-                <a href="worship.html">Worship</a>
-                <a href="music.html">Music</a>
-                <a href="book.html">Books</a>
-                <a href="movie.html" class="active">Movies</a>
+                <a href="index.html" data-i18n="nav_home">Home</a>
+                <a href="worship.html" data-i18n="nav_worship">Worship</a>
+                <a href="music.html" data-i18n="nav_music">Music</a>
+                <a href="book.html" data-i18n="nav_book">Books</a>
+                <a href="movie.html" class="active" data-i18n="nav_movie">Movies</a>
             </div>
-            <div class="share-trigger" onclick="openShareModal()">SHARE</div>
+
+            <!-- Language Switcher -->
+            <div class="lang-switcher">
+                <span class="lang-btn active" data-lang="ko" onclick="setLanguage('ko')">KOR</span>
+                <span class="lang-sep">|</span>
+                <span class="lang-btn" data-lang="en" onclick="setLanguage('en')">ENG</span>
+            </div>
+
+            <div class="share-trigger" onclick="openShareModal()" data-i18n="nav_share">SHARE</div>
             <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
         </div>
     </nav>
@@ -131,22 +146,22 @@
     <!-- SNS 공유 모달 -->
     <div class="modal-overlay" id="shareOverlay" onclick="closeShareModal(event)">
         <div class="share-modal" onclick="event.stopPropagation()">
-            <h3>SHARE MOVIE ARCHIVE</h3>
-            <p>크리스리의 시네마틱 세계관을 소중한 사람들과 나누세요.</p>
+            <h3 data-i18n="share_title">SHARE MOVIE ARCHIVE</h3>
+            <p data-i18n="share_desc">크리스리의 시네마틱 세계관을 소중한 사람들과 나누세요.</p>
             <div class="share-buttons">
-                <button class="modal-btn btn-copy" onclick="copyURL()">COPY LINK</button>
-                <button class="modal-btn btn-sns" onclick="shareViaWebAPI()">SNS SHARE</button>
+                <button class="modal-btn btn-copy" onclick="copyURL()" data-i18n="share_copy">COPY LINK</button>
+                <button class="modal-btn btn-sns" onclick="shareViaWebAPI()" data-i18n="share_sns">SNS SHARE</button>
             </div>
-            <button class="modal-btn btn-close-modal" onclick="closeShareModal(null)">Close</button>
+            <button class="modal-btn btn-close-modal" onclick="closeShareModal(null)" data-i18n="share_close">Close</button>
         </div>
     </div>
-    <div class="toast-msg" id="toast">Link copied!</div>
+    <div class="toast-msg" id="toast"></div>
 
     <header class="page-header">
         <canvas id="stars-canvas"></canvas>
         <div class="header-content">
-            <h1 class="header-title">MOVIE ARCHIVE</h1>
-            <p class="header-slogan">프레임에 담긴 무한한 세계</p>
+            <h1 class="header-title" data-i18n="header_title">MOVIE ARCHIVE</h1>
+            <p class="header-slogan" data-i18n="header_slogan">프레임에 담긴 무한한 세계</p>
         </div>
     </header>
 
@@ -154,7 +169,7 @@
         <div class="main-screen" id="main-video-container">
             <iframe id="main-video-player" src="https://www.youtube.com/embed/kAkGg2t1Ats?autoplay=0&enablejsapi=1" title="Main Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             <!-- ⛶ 확대 시 자동으로 가로 전환을 위한 커스텀 버튼 -->
-            <button class="expand-landscape-btn" onclick="expandToLandscape()">⛶ 전체화면 (가로)</button>
+            <button class="expand-landscape-btn" onclick="expandToLandscape()" data-i18n="expand_btn">⛶ 전체화면 (가로)</button>
         </div>
         <div class="screen-info">
             <span class="video-badge" id="main-video-badge">FEATURED</span>
@@ -164,12 +179,12 @@
     </main>
 
     <section class="carousel-section">
-        <h3 class="carousel-heading">UP NEXT</h3>
+        <h3 class="carousel-heading" data-i18n="carousel_heading">UP NEXT</h3>
         <div class="carousel-container" id="carousel-list"></div>
     </section>
 
     <section class="shorts-section">
-        <h3 class="shorts-heading">VERTICAL ARCHIVES</h3>
+        <h3 class="shorts-heading" data-i18n="shorts_heading">VERTICAL ARCHIVES</h3>
         <!-- 쇼츠 영상: 클릭 시 바로 유튜브 새 창(앱)으로 넘어갑니다 -->
         <div class="shorts-grid">
             <a href="https://www.youtube.com/shorts/gQ4Ip6cyr1U" target="_blank" rel="noopener" class="shorts-link">
@@ -207,9 +222,125 @@
         </div>
     </section>
 
-    <footer><p>© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
+    <footer><p data-i18n="footer_text">© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
 
     <script>
+        // ── Multilingual System ──
+        const i18n = {
+            ko: {
+                nav_home: "Home",
+                nav_worship: "Worship",
+                nav_music: "Music",
+                nav_book: "Books",
+                nav_movie: "Movies",
+                nav_share: "SHARE",
+                share_title: "SHARE MOVIE ARCHIVE",
+                share_desc: "크리스리의 시네마틱 세계관을 소중한 사람들과 나누세요.",
+                share_copy: "COPY LINK",
+                share_sns: "SNS SHARE",
+                share_close: "Close",
+                header_title: "MOVIE ARCHIVE",
+                header_slogan: "프레임에 담긴 무한한 세계",
+                expand_btn: "⛶ 전체화면 (가로)",
+                carousel_heading: "UP NEXT",
+                shorts_heading: "VERTICAL ARCHIVES",
+                footer_text: "© 2026 Chris LEE.PAPA — The Creative Archive",
+                toast_copy: "링크가 복사되었습니다 ✓",
+                toast_error: "지원하지 않는 브라우저입니다."
+            },
+            en: {
+                nav_home: "Home",
+                nav_worship: "Worship",
+                nav_music: "Music",
+                nav_book: "Books",
+                nav_movie: "Movies",
+                nav_share: "SHARE",
+                share_title: "SHARE MOVIE ARCHIVE",
+                share_desc: "Share Chris Lee's cinematic universe with your loved ones.",
+                share_copy: "COPY LINK",
+                share_sns: "SNS SHARE",
+                share_close: "Close",
+                header_title: "MOVIE ARCHIVE",
+                header_slogan: "An infinite world captured in a frame",
+                expand_btn: "⛶ Fullscreen (Landscape)",
+                carousel_heading: "UP NEXT",
+                shorts_heading: "VERTICAL ARCHIVES",
+                footer_text: "© 2026 Chris LEE.PAPA — The Creative Archive",
+                toast_copy: "Link copied to clipboard ✓",
+                toast_error: "Browser not supported."
+            }
+        };
+
+        // ── Dynamic Video Data with Translations ──
+        const videoData = [
+            { 
+                id: 'kAkGg2t1Ats', 
+                title_ko: "이게 AI 로 되네? 그냥 만들어본 뮤직비디오 'FURIOUS 💥'", 
+                title_en: "Is this AI? Music Video 'FURIOUS 💥'", 
+                badge_ko: 'FEATURED', 
+                badge_en: 'FEATURED', 
+                desc_ko: '직접 제작한 AI 기반 오리지널 뮤직비디오입니다. 역동적인 템포와 생성형 AI 비주얼이 결합된 강렬한 세계를 감상해 보세요.', 
+                desc_en: 'An original AI-based music video. Enjoy a powerful world where dynamic tempo meets generative AI visuals.' 
+            },
+            { 
+                id: 'byxLKvBHULk', 
+                title_ko: "Chris LEE.PAPA Cinematic Vision 1", 
+                title_en: "Chris LEE.PAPA Cinematic Vision 1", 
+                badge_ko: 'CINEMATIC', 
+                badge_en: 'CINEMATIC', 
+                desc_ko: '끝없는 상상력을 바탕으로 렌더링된 초고화질 시네마틱 아트워크 영상입니다.', 
+                desc_en: 'Ultra-high-definition cinematic artwork rendered with endless imagination.' 
+            },
+            { 
+                id: 'vlt7VfCA8bM', 
+                title_ko: "Chris LEE.PAPA Cinematic Vision 2", 
+                title_en: "Chris LEE.PAPA Cinematic Vision 2", 
+                badge_ko: 'CINEMATIC', 
+                badge_en: 'CINEMATIC', 
+                desc_ko: '아름다운 빛과 그림자가 교차하는 AI 기반 숏필름 비주얼.', 
+                desc_en: 'An AI-based short film visual where beautiful light and shadow intersect.' 
+            }
+        ];
+
+        let currentLang = 'ko';
+        let activeVideoIndex = 0;
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+            
+            // Save preference
+            try { localStorage.setItem('pref-lang', lang); } catch(e) {}
+
+            // Update UI texts
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (i18n[lang][key]) {
+                    el.innerHTML = i18n[lang][key];
+                }
+            });
+
+            // Update active state on language buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                if (btn.getAttribute('data-lang') === lang) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            // Update main video info & carousel immediately
+            updateMainVideoInfo();
+            renderCarousel();
+        }
+
+        // Initialize language
+        document.addEventListener('DOMContentLoaded', () => {
+            let savedLang = 'ko';
+            try { savedLang = localStorage.getItem('pref-lang') || 'ko'; } catch(e) {}
+            setLanguage(savedLang);
+        });
+
         const menuToggle = document.getElementById('mobile-menu'); const navLinks = document.getElementById('navLinks');
         menuToggle.addEventListener('click', () => { menuToggle.classList.toggle('active'); navLinks.classList.toggle('active'); });
 
@@ -224,10 +355,10 @@
                 const textArea = document.createElement("textarea"); textArea.value = currentUrl; textArea.id = "temp-copy-area"; textArea.style.position = "fixed"; textArea.style.left = "-9999px";
                 document.body.appendChild(textArea); textArea.focus(); textArea.select(); try { success = document.execCommand('copy'); } catch (err) {} document.body.removeChild(textArea);
             }
-            if (success) { showToast('Link copied to clipboard!'); } closeShareModal();
+            if (success) { showToast(i18n[currentLang].toast_copy); } closeShareModal();
         }
 
-        function shareViaWebAPI() { if (navigator.share) { navigator.share({ title: 'Chris LEE.PAPA - MOVIE', text: 'AI로 그려낸 시네마틱 비주얼 아카이브입니다.', url: window.location.href }); } else { showToast('Sharing is not supported.'); } }
+        function shareViaWebAPI() { if (navigator.share) { navigator.share({ title: 'Chris LEE.PAPA - MOVIE', text: 'AI로 그려낸 시네마틱 비주얼 아카이브입니다.', url: window.location.href }); } else { showToast(i18n[currentLang].toast_error); } }
         function showToast(msg) { toast.textContent = msg; toast.style.display = 'block'; setTimeout(() => { toast.style.display = 'none'; }, 2500); }
 
         const canvas = document.getElementById('stars-canvas'); const ctx = canvas.getContext('2d'); let stars = [];
@@ -255,7 +386,6 @@
             }
         }
 
-        // 화면 방향을 강제로 가로로 고정하는 함수 (모바일 브라우저 지원 시)
         function lockLandscape() {
             try {
                 if (screen.orientation && screen.orientation.lock) {
@@ -266,15 +396,13 @@
             }
         }
 
-        // 사용자가 유튜브 자체 전체화면 버튼을 누를 때를 대비한 이벤트 리스너
         document.addEventListener('fullscreenchange', handleFullscreenChange);
         document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
 
         function handleFullscreenChange() {
             if (document.fullscreenElement || document.webkitFullscreenElement) {
-                lockLandscape(); // 전체화면 진입 시 가로 고정
+                lockLandscape();
             } else {
-                // 전체화면 해제 시 가로 고정 해제 (세로로 돌릴 수 있게 함)
                 try {
                     if (screen.orientation && screen.orientation.unlock) {
                         screen.orientation.unlock();
@@ -283,41 +411,51 @@
             }
         }
 
-        // 영상 데이터 및 캐러셀 스크립트
-        const videoData = [
-            { id: 'kAkGg2t1Ats', title: "이게 AI 로 되네? 그냥 만들어본 뮤직비디오 'FURIOUS 💥'", badge: 'FEATURED', desc: '직접 제작한 AI 기반 오리지널 뮤직비디오입니다. 역동적인 템포와 생성형 AI 비주얼이 결합된 강렬한 세계를 감상해 보세요.' },
-            { id: 'byxLKvBHULk', title: "Chris LEE.PAPA Cinematic Vision 1", badge: 'CINEMATIC', desc: '끝없는 상상력을 바탕으로 렌더링된 초고화질 시네마틱 아트워크 영상입니다.' },
-            { id: 'vlt7VfCA8bM', title: "Chris LEE.PAPA Cinematic Vision 2", badge: 'CINEMATIC', desc: '아름다운 빛과 그림자가 교차하는 AI 기반 숏필름 비주얼.' }
-        ];
-        
+        // ── Carousel & Main Video Logic ──
         const carouselList = document.getElementById('carousel-list'); 
         const mainPlayer = document.getElementById('main-video-player'); 
         const mainTitle = document.getElementById('main-video-title'); 
         const mainBadge = document.getElementById('main-video-badge'); 
         const mainDesc = document.getElementById('main-video-desc');
 
+        function updateMainVideoInfo() {
+            const video = videoData[activeVideoIndex];
+            mainTitle.textContent = video[`title_${currentLang}`]; 
+            mainBadge.textContent = video[`badge_${currentLang}`]; 
+            mainDesc.textContent = video[`desc_${currentLang}`]; 
+        }
+
         function renderCarousel() { 
+            carouselList.innerHTML = '';
             videoData.forEach((video, index) => { 
                 const card = document.createElement('div'); 
-                card.className = `thumbnail-card ${index === 0 ? 'active' : ''}`; 
-                card.innerHTML = `<div class="thumb-img" style="background-image: url('https://img.youtube.com/vi/${video.id}/hqdefault.jpg');"></div><div class="thumb-overlay"><span class="thumb-title">${video.title}</span></div>`; 
+                card.className = `thumbnail-card ${index === activeVideoIndex ? 'active' : ''}`; 
+                
+                const displayTitle = video[`title_${currentLang}`];
+
+                card.innerHTML = `<div class="thumb-img" style="background-image: url('https://img.youtube.com/vi/${video.id}/hqdefault.jpg');"></div><div class="thumb-overlay"><span class="thumb-title">${displayTitle}</span></div>`; 
                 card.addEventListener('click', () => loadMainVideo(index, card)); 
                 carouselList.appendChild(card); 
             }); 
         }
 
         function loadMainVideo(index, cardElement) { 
+            activeVideoIndex = index;
             const video = videoData[index]; 
-            mainPlayer.src = `https://www.youtube.com/embed/${video.id}?autoplay=1&enablejsapi=1`; 
-            mainTitle.textContent = video.title; 
-            mainBadge.textContent = video.badge; 
-            mainDesc.textContent = video.desc; 
+            
+            // iframe 갱신
+            if(mainPlayer.src.indexOf(video.id) === -1) {
+                mainPlayer.src = `https://www.youtube.com/embed/${video.id}?autoplay=1&enablejsapi=1`; 
+            }
+            
+            updateMainVideoInfo();
+
             document.querySelectorAll('.thumbnail-card').forEach(el => el.classList.remove('active')); 
             cardElement.classList.add('active'); 
             window.scrollTo({ top: document.querySelector('.theater-wrapper').offsetTop - 120, behavior: 'smooth' }); 
         }
         
-        renderCarousel();
+        // Initial setup handled by setLanguage() on DOMContentLoaded
 
         // ── 보안 스크립트 ──
         document.addEventListener('contextmenu', e => e.preventDefault());

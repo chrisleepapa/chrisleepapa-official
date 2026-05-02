@@ -74,7 +74,7 @@
             border-bottom: 1px solid rgba(255,255,255,0.05);
         }
         .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); white-space: nowrap; }
-        .nav-right { display: flex; align-items: center; gap: 30px; }
+        .nav-right { display: flex; align-items: center; gap: 24px; }
         .nav-links { display: flex; gap: 30px; }
         .nav-links a {
             font-family: 'Cinzel', serif; font-size: 0.8rem; color: #a0a0b5;
@@ -83,8 +83,16 @@
         .nav-links a::after { content:''; position:absolute; bottom:-4px; left:0; width:0%; height:1px; background:var(--gold-light); transition:width 0.3s; }
         .nav-links a:hover::after, .nav-links a.active::after { width:100%; }
         .nav-links a:hover, .nav-links a.active { color:#fff; text-shadow:0 0 10px rgba(255,255,255,0.5); }
+        
+        /* ── Language Switcher ── */
+        .lang-switcher { display: flex; align-items: center; gap: 8px; font-family: 'Cinzel', serif; font-size: 0.75rem; color: #a0a0b5; z-index: 1001; }
+        .lang-btn { cursor: pointer; transition: 0.3s; letter-spacing: 1px; padding: 4px; }
+        .lang-btn:hover, .lang-btn.active { color: var(--gold-light); text-shadow: 0 0 8px rgba(201,168,76,0.5); }
+        .lang-sep { color: rgba(255,255,255,0.2); user-select: none; }
+
         .share-trigger { cursor:pointer; padding:6px 12px; border:1px solid rgba(201,168,76,0.3); border-radius:20px; font-family:'Cinzel',serif; font-size:0.7rem; color:var(--gold-light); transition:0.3s; letter-spacing:1px; }
         .share-trigger:hover { background:rgba(201,168,76,0.1); border-color:var(--gold-light); }
+        
         .menu-toggle { display:none; flex-direction:column; gap:5px; cursor:pointer; z-index:1001; }
         .menu-toggle span { width:22px; height:1.5px; background-color:var(--gold-light); transition:0.3s; }
         .menu-toggle.active span:nth-child(1) { transform:translateY(6.5px) rotate(45deg); }
@@ -322,26 +330,34 @@
         <a href="index.html" class="brand-logo">Chris LEE.PAPA</a>
         <div class="nav-right">
             <div class="nav-links" id="navLinks">
-                <a href="index.html">Home</a>
-                <a href="worship.html">Worship</a>
-                <a href="music.html">Music</a>
-                <a href="book.html">Books</a>
-                <a href="movie.html">Movies</a>
+                <a href="index.html" data-i18n="nav_home">Home</a>
+                <a href="worship.html" data-i18n="nav_worship">Worship</a>
+                <a href="music.html" data-i18n="nav_music">Music</a>
+                <a href="book.html" data-i18n="nav_book">Books</a>
+                <a href="movie.html" data-i18n="nav_movie">Movies</a>
             </div>
-            <div class="share-trigger" onclick="openShareModal()">SHARE</div>
+            
+            <!-- Language Switcher -->
+            <div class="lang-switcher">
+                <span class="lang-btn active" data-lang="ko" onclick="setLanguage('ko')">KOR</span>
+                <span class="lang-sep">|</span>
+                <span class="lang-btn" data-lang="en" onclick="setLanguage('en')">ENG</span>
+            </div>
+
+            <div class="share-trigger" onclick="openShareModal()" data-i18n="nav_share">SHARE</div>
             <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
         </div>
     </nav>
 
     <div class="modal-overlay" id="shareOverlay" onclick="closeShareModal(event)">
         <div class="share-modal" onclick="event.stopPropagation()">
-            <h3>SHARE ABOUT</h3>
-            <p>크리스리의 도전을 주변에 공유해보세요.</p>
+            <h3 data-i18n="share_title">SHARE ABOUT</h3>
+            <p data-i18n="share_desc">크리스리의 도전을 주변에 공유해보세요.</p>
             <div class="share-buttons">
-                <button class="modal-btn btn-copy" onclick="copyURL()">COPY LINK</button>
-                <button class="modal-btn btn-sns" onclick="shareViaWebAPI()">SNS SHARE</button>
+                <button class="modal-btn btn-copy" onclick="copyURL()" data-i18n="share_copy">COPY LINK</button>
+                <button class="modal-btn btn-sns" onclick="shareViaWebAPI()" data-i18n="share_sns">SNS SHARE</button>
             </div>
-            <button class="btn-close" onclick="closeShareModal(null)">Close</button>
+            <button class="btn-close" onclick="closeShareModal(null)" data-i18n="share_close">Close</button>
         </div>
     </div>
     <div class="toast-msg" id="toast"></div>
@@ -350,15 +366,15 @@
 
         <!-- Header -->
         <div class="page-header">
-            <span class="page-header-tag">✦ &nbsp; The Story &nbsp; ✦</span>
-            <h1 class="page-title">ABOUT</h1>
+            <span class="page-header-tag" data-i18n="header_tag">✦ &nbsp; The Story &nbsp; ✦</span>
+            <h1 class="page-title" data-i18n="header_title">ABOUT</h1>
             <div class="page-header-divider"></div>
         </div>
 
         <!-- Identity -->
         <div class="identity-block">
-            <div class="identity-label">✦ &nbsp; Who I Am</div>
-            <p class="identity-text">
+            <div class="identity-label" data-i18n="identity_label">✦ &nbsp; Who I Am</div>
+            <p class="identity-text" data-i18n="identity_text">
                 저는 <span class="hl">평범한 아빠</span>였습니다. 2025년 9월까지는.<br><br>
                 그 이후, AI와 기술이라는 새로운 도구를 손에 쥐고<br>
                 <span class="gold">크리에이터 · 프로듀서 · 작가</span>로 다시 태어났습니다.<br><br>
@@ -369,34 +385,34 @@
 
         <!-- Timeline -->
         <div class="timeline-block">
-            <div class="timeline-label">✦ &nbsp; Journey</div>
+            <div class="timeline-label" data-i18n="timeline_label">✦ &nbsp; Journey</div>
             <div class="timeline-items">
                 <div class="timeline-item">
                     <div class="timeline-year">2025.09</div>
                     <div class="timeline-content">
-                        <strong>THE BEGINNING</strong>
-                        <p>새로운 여정의 시작. 평범한 아빠에서 크리에이터로의 전환점</p>
+                        <strong data-i18n="time1_title">THE BEGINNING</strong>
+                        <p data-i18n="time1_desc">새로운 여정의 시작. 평범한 아빠에서 크리에이터로의 전환점</p>
                     </div>
                 </div>
                 <div class="timeline-item">
                     <div class="timeline-year">2025.10</div>
                     <div class="timeline-content">
-                        <strong>FIRST MUSIC</strong>
-                        <p>AI를 통한 첫 음악 프로덕션. Spotify 아티스트 등록 완료</p>
+                        <strong data-i18n="time2_title">FIRST MUSIC</strong>
+                        <p data-i18n="time2_desc">AI를 통한 첫 음악 프로덕션. Spotify 아티스트 등록 완료</p>
                     </div>
                 </div>
                 <div class="timeline-item">
                     <div class="timeline-year">2025.11</div>
                     <div class="timeline-content">
-                        <strong>WORSHIP PROJECT</strong>
-                        <p>찬양 창작 프로젝트 본격 시작. 신앙과 창의성의 교차점</p>
+                        <strong data-i18n="time3_title">WORSHIP PROJECT</strong>
+                        <p data-i18n="time3_desc">찬양 창작 프로젝트 본격 시작. 신앙과 창의성의 교차점</p>
                     </div>
                 </div>
                 <div class="timeline-item">
                     <div class="timeline-year">2026</div>
                     <div class="timeline-content">
-                        <strong>THE CREATIVE ARCHIVE</strong>
-                        <p>개인 브랜드 아카이브 론칭. 음악 · 문학 · 영상의 통합</p>
+                        <strong data-i18n="time4_title">THE CREATIVE ARCHIVE</strong>
+                        <p data-i18n="time4_desc">개인 브랜드 아카이브 론칭. 음악 · 문학 · 영상의 통합</p>
                     </div>
                 </div>
             </div>
@@ -404,36 +420,144 @@
 
         <!-- Links -->
         <div class="links-block">
-            <div class="links-label">✦ &nbsp; Find Me</div>
+            <div class="links-label" data-i18n="links_label">✦ &nbsp; Find Me</div>
             <div class="link-grid">
                 <a href="https://open.spotify.com/artist/6zhb0e3KvoFY5pcefQUHA6" target="_blank" rel="noopener" class="link-card">
                     <div class="link-icon">🎵</div>
                     <span class="link-name">SPOTIFY</span>
-                    <span class="link-desc">음악 스트리밍</span>
+                    <span class="link-desc" data-i18n="link_spot_desc">음악 스트리밍</span>
                 </a>
                 <a href="https://www.youtube.com/@chrisleepapaofficial" target="_blank" rel="noopener" class="link-card">
                     <div class="link-icon">▶</div>
                     <span class="link-name">YOUTUBE</span>
-                    <span class="link-desc">영상 아카이브</span>
+                    <span class="link-desc" data-i18n="link_yt_desc">영상 아카이브</span>
                 </a>
                 <a href="https://x.com/chrisleepapa" target="_blank" rel="noopener" class="link-card">
                     <div class="link-icon">✕</div>
                     <span class="link-name">X / TWITTER</span>
-                    <span class="link-desc">일상과 생각들</span>
+                    <span class="link-desc" data-i18n="link_x_desc">일상과 생각들</span>
                 </a>
                 <a href="contact.html" class="link-card">
                     <div class="link-icon">✉</div>
                     <span class="link-name">CONTACT</span>
-                    <span class="link-desc">비즈니스 제안</span>
+                    <span class="link-desc" data-i18n="link_contact_desc">비즈니스 제안</span>
                 </a>
             </div>
         </div>
 
     </div>
 
-    <footer><p>© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
+    <footer><p data-i18n="footer_text">© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
 
     <script>
+        // ── Multilingual System ──
+        const i18n = {
+            ko: {
+                nav_home: "Home",
+                nav_worship: "Worship",
+                nav_music: "Music",
+                nav_book: "Books",
+                nav_movie: "Movies",
+                nav_share: "SHARE",
+                share_title: "SHARE ABOUT",
+                share_desc: "크리스리의 도전을 주변에 공유해보세요.",
+                share_copy: "COPY LINK",
+                share_sns: "SNS SHARE",
+                share_close: "Close",
+                header_tag: "✦ &nbsp; The Story &nbsp; ✦",
+                header_title: "ABOUT",
+                identity_label: "✦ &nbsp; Who I Am",
+                identity_text: "저는 <span class=\"hl\">평범한 아빠</span>였습니다. 2025년 9월까지는.<br><br>그 이후, AI와 기술이라는 새로운 도구를 손에 쥐고<br><span class=\"gold\">크리에이터 · 프로듀서 · 작가</span>로 다시 태어났습니다.<br><br>찬양으로 살아남았고, 상상력으로 세계를 만들었습니다.<br>어두운 시간이 지나고 별빛이 보였을 때, 저는 멈추지 않기로 했습니다.",
+                timeline_label: "✦ &nbsp; Journey",
+                time1_title: "THE BEGINNING",
+                time1_desc: "새로운 여정의 시작. 평범한 아빠에서 크리에이터로의 전환점",
+                time2_title: "FIRST MUSIC",
+                time2_desc: "AI를 통한 첫 음악 프로덕션. Spotify 아티스트 등록 완료",
+                time3_title: "WORSHIP PROJECT",
+                time3_desc: "찬양 창작 프로젝트 본격 시작. 신앙과 창의성의 교차점",
+                time4_title: "THE CREATIVE ARCHIVE",
+                time4_desc: "개인 브랜드 아카이브 론칭. 음악 · 문학 · 영상의 통합",
+                links_label: "✦ &nbsp; Find Me",
+                link_spot_desc: "음악 스트리밍",
+                link_yt_desc: "영상 아카이브",
+                link_x_desc: "일상과 생각들",
+                link_contact_desc: "비즈니스 제안",
+                footer_text: "© 2026 Chris LEE.PAPA — The Creative Archive",
+                toast_copy: "링크가 복사되었습니다 ✓",
+                toast_fail: "복사 실패",
+                toast_error: "지원하지 않는 브라우저입니다."
+            },
+            en: {
+                nav_home: "Home",
+                nav_worship: "Worship",
+                nav_music: "Music",
+                nav_book: "Books",
+                nav_movie: "Movies",
+                nav_share: "SHARE",
+                share_title: "SHARE ABOUT",
+                share_desc: "Share Chris Lee's challenge with others.",
+                share_copy: "COPY LINK",
+                share_sns: "SNS SHARE",
+                share_close: "Close",
+                header_tag: "✦ &nbsp; The Story &nbsp; ✦",
+                header_title: "ABOUT",
+                identity_label: "✦ &nbsp; Who I Am",
+                identity_text: "I was an <span class=\"hl\">ordinary father</span> until September 2025.<br><br>Since then, holding the new tools of AI and technology,<br>I have been reborn as a <span class=\"gold\">Creator · Producer · Writer</span>.<br><br>I survived through worship and created worlds with imagination.<br>When the dark times passed and I saw the starlight, I decided not to stop.",
+                timeline_label: "✦ &nbsp; Journey",
+                time1_title: "THE BEGINNING",
+                time1_desc: "The start of a new journey. The turning point from an ordinary father to a creator.",
+                time2_title: "FIRST MUSIC",
+                time2_desc: "First music production using AI. Registered as a Spotify Artist.",
+                time3_title: "WORSHIP PROJECT",
+                time3_desc: "Full-scale start of the worship creation project. The intersection of faith and creativity.",
+                time4_title: "THE CREATIVE ARCHIVE",
+                time4_desc: "Launch of the personal brand archive. Integration of music, literature, and video.",
+                links_label: "✦ &nbsp; Find Me",
+                link_spot_desc: "Music Streaming",
+                link_yt_desc: "Video Archive",
+                link_x_desc: "Daily Life & Thoughts",
+                link_contact_desc: "Business Proposals",
+                footer_text: "© 2026 Chris LEE.PAPA — The Creative Archive",
+                toast_copy: "Link copied to clipboard ✓",
+                toast_fail: "Copy failed",
+                toast_error: "Browser not supported."
+            }
+        };
+
+        let currentLang = 'ko';
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+            
+            // Save preference
+            try { localStorage.setItem('pref-lang', lang); } catch(e) {}
+
+            // Update UI texts
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (i18n[lang][key]) {
+                    el.innerHTML = i18n[lang][key];
+                }
+            });
+
+            // Update active state on language buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                if (btn.getAttribute('data-lang') === lang) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        // Initialize language
+        document.addEventListener('DOMContentLoaded', () => {
+            let savedLang = 'ko';
+            try { savedLang = localStorage.getItem('pref-lang') || 'ko'; } catch(e) {}
+            setLanguage(savedLang);
+        });
+
         const menuToggle = document.getElementById('mobile-menu');
         const navLinks = document.getElementById('navLinks');
         menuToggle.addEventListener('click', () => {
@@ -444,15 +568,22 @@
         const shareOverlay = document.getElementById('shareOverlay');
         const toast = document.getElementById('toast');
         function openShareModal() { shareOverlay.style.display='flex'; setTimeout(()=>shareOverlay.classList.add('active'),10); }
-        function closeShareModal(e) { if(e&&e.target!==shareOverlay)return; shareOverlay.classList.remove('active'); setTimeout(()=>shareOverlay.style.display='none',300); }
+        function closeShareModal(e) { if(e&&e.target!==shareOverlay && e.type !== 'click')return; shareOverlay.classList.remove('active'); setTimeout(()=>shareOverlay.style.display='none',300); }
+        
         async function copyURL() {
             let ok=false;
             if(navigator.clipboard&&window.isSecureContext){try{await navigator.clipboard.writeText(location.href);ok=true;}catch(e){}}
             if(!ok){const ta=document.createElement('textarea');ta.value=location.href;ta.style.cssText='position:fixed;left:-9999px';document.body.appendChild(ta);ta.focus();ta.select();try{ok=document.execCommand('copy');}catch(e){}document.body.removeChild(ta);}
-            showToast(ok?'링크가 복사되었습니다 ✓':'복사 실패');
+            showToast(ok ? i18n[currentLang].toast_copy : i18n[currentLang].toast_fail);
             closeShareModal({target:shareOverlay});
         }
-        function shareViaWebAPI(){if(navigator.share){navigator.share({title:'ABOUT Chris LEE.PAPA',url:location.href});}else showToast('지원하지 않는 브라우저입니다.');}
+        function shareViaWebAPI(){
+            if(navigator.share){
+                navigator.share({title:'ABOUT Chris LEE.PAPA',url:location.href});
+            } else {
+                showToast(i18n[currentLang].toast_error);
+            }
+        }
         function showToast(msg){toast.textContent=msg;toast.style.display='block';setTimeout(()=>toast.style.display='none',2500);}
 
         // Scroll progress

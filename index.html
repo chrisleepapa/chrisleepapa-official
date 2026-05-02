@@ -117,7 +117,7 @@
             z-index: 1001;
             white-space: nowrap;
         }
-        .nav-right { display: flex; align-items: center; gap: 30px; }
+        .nav-right { display: flex; align-items: center; gap: 24px; }
         .nav-links { display: flex; gap: 30px; }
         .nav-links a {
             font-family: 'Cinzel', serif;
@@ -145,6 +145,32 @@
             color: #ffffff;
             text-shadow: 0 0 10px rgba(255,255,255,0.5);
         }
+        
+        /* ── Language Switcher ── */
+        .lang-switcher {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            color: #a0a0b5;
+            z-index: 1001;
+        }
+        .lang-btn {
+            cursor: pointer;
+            transition: 0.3s;
+            letter-spacing: 1px;
+            padding: 4px;
+        }
+        .lang-btn:hover, .lang-btn.active {
+            color: var(--gold-light);
+            text-shadow: 0 0 8px rgba(201,168,76,0.5);
+        }
+        .lang-sep {
+            color: rgba(255,255,255,0.2);
+            user-select: none;
+        }
+
         .share-trigger {
             cursor: pointer;
             padding: 6px 12px;
@@ -653,6 +679,7 @@
             }
             .nav-links.active a { font-size: 1rem; }
             .menu-toggle { display: flex; }
+            .nav-right { gap: 15px; }
             .portfolio-grid { grid-template-columns: 1fr; padding: 15px 15px 80px; gap: 18px; }
             .card { height: 280px; }
             #mouse-orb { display: none; }
@@ -677,13 +704,21 @@
         <a href="index.html" class="brand-logo">Chris LEE.PAPA</a>
         <div class="nav-right">
             <div class="nav-links" id="navLinks">
-                <a href="index.html" class="active">Home</a>
-                <a href="worship.html">Worship</a>
-                <a href="music.html">Music</a>
-                <a href="book.html">Books</a>
-                <a href="movie.html">Movies</a>
+                <a href="index.html" class="active" data-i18n="nav_home">Home</a>
+                <a href="worship.html" data-i18n="nav_worship">Worship</a>
+                <a href="music.html" data-i18n="nav_music">Music</a>
+                <a href="book.html" data-i18n="nav_book">Books</a>
+                <a href="movie.html" data-i18n="nav_movie">Movies</a>
             </div>
-            <div class="share-trigger" onclick="openShareModal()">SHARE</div>
+            
+            <!-- Language Switcher -->
+            <div class="lang-switcher">
+                <span class="lang-btn active" data-lang="ko" onclick="setLanguage('ko')">KOR</span>
+                <span class="lang-sep">|</span>
+                <span class="lang-btn" data-lang="en" onclick="setLanguage('en')">ENG</span>
+            </div>
+
+            <div class="share-trigger" onclick="openShareModal()" data-i18n="nav_share">SHARE</div>
             <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
         </div>
     </nav>
@@ -691,17 +726,17 @@
     <!-- Share Modal -->
     <div class="modal-overlay" id="shareOverlay" onclick="closeShareModal(event)">
         <div class="share-modal" onclick="event.stopPropagation()">
-            <h3>SHARE ARCHIVE</h3>
-            <p>이곳의 기록과 영감을 소중한 사람들에게 전하세요.</p>
+            <h3 data-i18n="share_title">SHARE ARCHIVE</h3>
+            <p data-i18n="share_desc">이곳의 기록과 영감을 소중한 사람들에게 전하세요.</p>
             <div class="share-buttons">
-                <button class="modal-btn btn-copy" onclick="copyURL()">COPY LINK</button>
-                <button class="modal-btn btn-sns" onclick="shareViaWebAPI()">SNS SHARE</button>
+                <button class="modal-btn btn-copy" onclick="copyURL()" data-i18n="share_copy">COPY LINK</button>
+                <button class="modal-btn btn-sns" onclick="shareViaWebAPI()" data-i18n="share_sns">SNS SHARE</button>
             </div>
-            <button class="btn-close" onclick="closeShareModal(null)">Close</button>
+            <button class="btn-close" onclick="closeShareModal(null)" data-i18n="share_close">Close</button>
         </div>
     </div>
 
-    <div class="toast-msg" id="toast">Link copied to clipboard!</div>
+    <div class="toast-msg" id="toast"></div>
 
     <!-- Hero -->
     <header class="hero-section">
@@ -710,12 +745,12 @@
         <div class="hero-content">
             <h1 class="hero-title" id="heroTitle">Chris LEE.PAPA</h1>
             <div class="hero-divider" id="heroDivider"></div>
-            <p class="hero-slogan" id="heroSlogan">The Creative Archive</p>
-            <p class="hero-sub" id="heroSub">찬양 · 음악 · 문학 · 영상</p>
+            <p class="hero-slogan" id="heroSlogan" data-i18n="hero_slogan">The Creative Archive</p>
+            <p class="hero-sub" id="heroSub" data-i18n="hero_sub">찬양 · 음악 · 문학 · 영상</p>
         </div>
         <div class="scroll-hint">
             <div class="scroll-hint-line"></div>
-            <span>SCROLL</span>
+            <span data-i18n="hero_scroll">SCROLL</span>
         </div>
     </header>
 
@@ -723,19 +758,15 @@
     <section class="creator-note">
         <div class="note-container" id="noteAccordion">
             <div class="note-trigger" onclick="toggleNote()">
-                <span class="section-tag">✦ &nbsp; Creator's Note &nbsp; ✦</span>
-                <h3 class="note-title">나를 살게 한 것, 그리고 내가 만들어가는 것</h3>
+                <span class="section-tag" data-i18n="note_tag">✦ &nbsp; Creator's Note &nbsp; ✦</span>
+                <h3 class="note-title" data-i18n="note_title">나를 살게 한 것, 그리고 내가 만들어가는 것</h3>
                 <div class="toggle-symbol">+</div>
             </div>
             <div class="note-content">
                 <p class="note-text">
-                   이곳은 상상력으로 빚어낸 이야기들과 제 삶의 중심이 되는 신앙이 함께 공존하는 공간입니다.<br>
-                   몇개월 전부터 AI와 기술을 통해 새로운 세계과 만나고 아름다운 창작물들을 만들고 있습니다.<br><br>
-                   <strong style="color:var(--gold-light)">어두운 시간 속에서 하늘의 무수히 많은 별빛을 보게 해주시고<br>
-                   다시 일어날 용기를 주신 주님께 모든 영광을 올립니다.</strong><br><br>
-                   저의 열정과 진실한 고백이 담긴 이 곳에 오신 것을 환영합니다.<br>
-                   여러분의 삶 속에서 시련을 만나고 넘어지고 쓰러져도<br>
-                   포기하지 않고 다시 일어날 수 있는 용기와 기적이 가득하길 기도합니다.
+                   <span data-i18n="note_desc1">이곳은 상상력으로 빚어낸 이야기들과 제 삶의 중심이 되는 신앙이 함께 공존하는 공간입니다.<br>몇개월 전부터 AI와 기술을 통해 새로운 세계과 만나고 아름다운 창작물들을 만들고 있습니다.</span><br><br>
+                   <strong style="color:var(--gold-light)" data-i18n="note_desc2">어두운 시간 속에서 하늘의 무수히 많은 별빛을 보게 해주시고<br>다시 일어날 용기를 주신 주님께 모든 영광을 올립니다.</strong><br><br>
+                   <span data-i18n="note_desc3">저의 열정과 진실한 고백이 담긴 이 곳에 오신 것을 환영합니다.<br>여러분의 삶 속에서 시련을 만나고 넘어지고 쓰러져도<br>포기하지 않고 다시 일어날 수 있는 용기와 기적이 가득하길 기도합니다.</span>
                 </p>
             </div>
         </div>
@@ -743,8 +774,8 @@
 
     <!-- Section header -->
     <div class="section-heading">
-        <span class="section-heading-tag">✦ &nbsp; Portfolio &nbsp; ✦</span>
-        <h2 class="section-heading-title">The Archive</h2>
+        <span class="section-heading-tag" data-i18n="heading_tag">✦ &nbsp; Portfolio &nbsp; ✦</span>
+        <h2 class="section-heading-title" data-i18n="heading_title">The Archive</h2>
     </div>
 
     <!-- Cards Grid -->
@@ -755,8 +786,8 @@
                 <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
             <div class="card-body">
-                <p class="card-sub">영혼 깊은 곳에서 올려드리는 고백</p>
-                <h2 class="card-label">WORSHIP</h2>
+                <p class="card-sub" data-i18n="card_worship_sub">영혼 깊은 곳에서 올려드리는 고백</p>
+                <h2 class="card-label" data-i18n="card_worship_title">WORSHIP</h2>
             </div>
         </div>
 
@@ -766,8 +797,8 @@
                 <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
             <div class="card-body">
-                <p class="card-sub">상상이 종이에 그려진 순간 일어나는 기적</p>
-                <h2 class="card-label">BOOK</h2>
+                <p class="card-sub" data-i18n="card_book_sub">상상이 종이에 그려진 순간 일어나는 기적</p>
+                <h2 class="card-label" data-i18n="card_book_title">BOOK</h2>
             </div>
         </div>
 
@@ -777,8 +808,8 @@
                 <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
             <div class="card-body">
-                <p class="card-sub">AI가 만들어낸 선율, 영혼을 울리는 멜로디</p>
-                <h2 class="card-label">MUSIC</h2>
+                <p class="card-sub" data-i18n="card_music_sub">AI가 만들어낸 선율, 영혼을 울리는 멜로디</p>
+                <h2 class="card-label" data-i18n="card_music_title">MUSIC</h2>
             </div>
         </div>
 
@@ -788,8 +819,8 @@
                 <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
             <div class="card-body">
-                <p class="card-sub">프레임에 담긴 무한한 세계</p>
-                <h2 class="card-label">MOVIE</h2>
+                <p class="card-sub" data-i18n="card_movie_sub">프레임에 담긴 무한한 세계</p>
+                <h2 class="card-label" data-i18n="card_movie_title">MOVIE</h2>
             </div>
         </div>
 
@@ -799,8 +830,8 @@
                 <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
             <div class="card-body">
-                <p class="card-sub">나를 살게 한 것, 그리고 내가 만들어가는 것</p>
-                <h2 class="card-label">ABOUT</h2>
+                <p class="card-sub" data-i18n="card_about_sub">나를 살게 한 것, 그리고 내가 만들어가는 것</p>
+                <h2 class="card-label" data-i18n="card_about_title">ABOUT</h2>
             </div>
         </div>
 
@@ -810,15 +841,129 @@
                 <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
             <div class="card-body">
-                <p class="card-sub">새로운 영감과 비즈니스 제안</p>
-                <h2 class="card-label">CONTACT</h2>
+                <p class="card-sub" data-i18n="card_contact_sub">새로운 영감과 비즈니스 제안</p>
+                <h2 class="card-label" data-i18n="card_contact_title">CONTACT</h2>
             </div>
         </div>
     </main>
 
-    <footer><p>© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
+    <footer><p data-i18n="footer_text">© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
 
     <script>
+        // ── Multilingual System ──
+        const i18n = {
+            ko: {
+                nav_home: "Home",
+                nav_worship: "Worship",
+                nav_music: "Music",
+                nav_book: "Books",
+                nav_movie: "Movies",
+                nav_share: "SHARE",
+                share_title: "SHARE ARCHIVE",
+                share_desc: "이곳의 기록과 영감을 소중한 사람들에게 전하세요.",
+                share_copy: "COPY LINK",
+                share_sns: "SNS SHARE",
+                share_close: "Close",
+                hero_slogan: "The Creative Archive",
+                hero_sub: "찬양 · 음악 · 문학 · 영상",
+                hero_scroll: "SCROLL",
+                note_tag: "✦ &nbsp; Creator's Note &nbsp; ✦",
+                note_title: "나를 살게 한 것, 그리고 내가 만들어가는 것",
+                note_desc1: "이곳은 상상력으로 빚어낸 이야기들과 제 삶의 중심이 되는 신앙이 함께 공존하는 공간입니다.<br>몇개월 전부터 AI와 기술을 통해 새로운 세계과 만나고 아름다운 창작물들을 만들고 있습니다.",
+                note_desc2: "어두운 시간 속에서 하늘의 무수히 많은 별빛을 보게 해주시고<br>다시 일어날 용기를 주신 주님께 모든 영광을 올립니다.",
+                note_desc3: "저의 열정과 진실한 고백이 담긴 이 곳에 오신 것을 환영합니다.<br>여러분의 삶 속에서 시련을 만나고 넘어지고 쓰러져도<br>포기하지 않고 다시 일어날 수 있는 용기와 기적이 가득하길 기도합니다.",
+                heading_tag: "✦ &nbsp; Portfolio &nbsp; ✦",
+                heading_title: "The Archive",
+                card_worship_sub: "영혼 깊은 곳에서 올려드리는 고백",
+                card_worship_title: "WORSHIP",
+                card_book_sub: "상상이 종이에 그려진 순간 일어나는 기적",
+                card_book_title: "BOOK",
+                card_music_sub: "AI가 만들어낸 선율, 영혼을 울리는 멜로디",
+                card_music_title: "MUSIC",
+                card_movie_sub: "프레임에 담긴 무한한 세계",
+                card_movie_title: "MOVIE",
+                card_about_sub: "나를 살게 한 것, 그리고 내가 만들어가는 것",
+                card_about_title: "ABOUT",
+                card_contact_sub: "새로운 영감과 비즈니스 제안",
+                card_contact_title: "CONTACT",
+                footer_text: "© 2026 Chris LEE.PAPA — The Creative Archive",
+                toast_copy: "링크가 복사되었습니다 ✓",
+                toast_error: "지원하지 않는 브라우저입니다."
+            },
+            en: {
+                nav_home: "Home",
+                nav_worship: "Worship",
+                nav_music: "Music",
+                nav_book: "Books",
+                nav_movie: "Movies",
+                nav_share: "SHARE",
+                share_title: "SHARE ARCHIVE",
+                share_desc: "Share the records and inspiration here with your loved ones.",
+                share_copy: "COPY LINK",
+                share_sns: "SNS SHARE",
+                share_close: "Close",
+                hero_slogan: "The Creative Archive",
+                hero_sub: "Worship · Music · Literature · Film",
+                hero_scroll: "SCROLL",
+                note_tag: "✦ &nbsp; Creator's Note &nbsp; ✦",
+                note_title: "What kept me alive, and what I am creating",
+                note_desc1: "This is a space where stories shaped by imagination coexist with the faith that centers my life.<br>For the past few months, I have been encountering new worlds and creating beautiful works through AI and technology.",
+                note_desc2: "I give all the glory to the Lord, who allowed me to see the countless stars in the dark times<br>and gave me the courage to rise again.",
+                note_desc3: "Welcome to this place filled with my passion and sincere confessions.<br>I pray that even when you face trials, stumble, and fall in your life,<br>it will be filled with the courage and miracles to rise again without giving up.",
+                heading_tag: "✦ &nbsp; Portfolio &nbsp; ✦",
+                heading_title: "The Archive",
+                card_worship_sub: "Confessions offered from the depths of the soul",
+                card_worship_title: "WORSHIP",
+                card_book_sub: "Miracles that happen the moment imagination is drawn on paper",
+                card_book_title: "BOOK",
+                card_music_sub: "Melodies created by AI, touching the soul",
+                card_music_title: "MUSIC",
+                card_movie_sub: "An infinite world captured in a frame",
+                card_movie_title: "MOVIE",
+                card_about_sub: "What kept me alive, and what I am creating",
+                card_about_title: "ABOUT",
+                card_contact_sub: "New inspiration and business proposals",
+                card_contact_title: "CONTACT",
+                footer_text: "© 2026 Chris LEE.PAPA — The Creative Archive",
+                toast_copy: "Link copied to clipboard ✓",
+                toast_error: "Browser not supported."
+            }
+        };
+
+        let currentLang = 'ko';
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+            
+            // Save preference
+            try { localStorage.setItem('pref-lang', lang); } catch(e) {}
+
+            // Update UI texts
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (i18n[lang][key]) {
+                    el.innerHTML = i18n[lang][key];
+                }
+            });
+
+            // Update active state on language buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                if (btn.getAttribute('data-lang') === lang) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        // Initialize language
+        document.addEventListener('DOMContentLoaded', () => {
+            let savedLang = 'ko';
+            try { savedLang = localStorage.getItem('pref-lang') || 'ko'; } catch(e) {}
+            setLanguage(savedLang);
+        });
+
         // ── Safe Navigate ──
         function safeNavigate(url) { if(url) window.location.assign(url); }
 
@@ -859,12 +1004,12 @@
                 try { ok = document.execCommand('copy'); } catch(e) {}
                 document.body.removeChild(ta);
             }
-            if (ok) showToast('링크가 복사되었습니다 ✓');
+            if (ok) showToast(i18n[currentLang].toast_copy);
             closeShareModal({ target: shareOverlay });
         }
         function shareViaWebAPI() {
             if (navigator.share) { navigator.share({ title: 'Chris LEE.PAPA', url: window.location.href }); }
-            else showToast('지원하지 않는 브라우저입니다.');
+            else showToast(i18n[currentLang].toast_error);
         }
         function showToast(msg) {
             toast.textContent = msg;

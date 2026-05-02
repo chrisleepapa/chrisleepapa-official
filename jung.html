@@ -89,12 +89,11 @@
 
         .section-title { font-family: 'Cinzel', serif; font-size: 1.8rem; color: var(--gold); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 40px; padding-bottom: 15px; border-bottom: 1px solid rgba(201,168,76,0.2); text-align: center; margin-top: 80px; animation: fadeUp 1s ease 0.6s both; }
         
-        /* ── 매거진형 그리드 레이아웃 적용 ── */
-        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); grid-auto-flow: dense; gap: 25px; animation: fadeUp 1s ease 0.8s both; }
+        /* ── 정갈한 1칸씩 (Uniform Grid) 레이아웃 적용 ── */
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; animation: fadeUp 1s ease 0.8s both; }
         .gallery-item { position: relative; border-radius: 16px; overflow: hidden; aspect-ratio: 16/9; background: #000; border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 15px 35px rgba(0,0,0,0.5); cursor: pointer; transition: all 0.4s ease; }
-        .gallery-item:first-child { grid-column: span 2; grid-row: span 2; aspect-ratio: auto; } /* 첫 이미지 크게 */
         
-        .gallery-item:hover { transform: translateY(-8px); border-color: var(--char-accent); box-shadow: 0 20px 40px rgba(255, 143, 177, 0.2); }
+        .gallery-item:hover { transform: translateY(-8px); border-color: var(--char-accent); box-shadow: 0 20px 40px var(--char-glow); }
         .gallery-img { width: 100%; height: 100%; background-size: cover; background-position: center; filter: brightness(0.8) grayscale(20%); transition: all 0.5s ease; }
         .gallery-item:hover .gallery-img { filter: brightness(1.1) grayscale(0%); transform: scale(1.08); }
 
@@ -107,7 +106,18 @@
 
         footer { text-align: center; padding: 80px 40px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: #555; border-top: 1px solid rgba(255,255,255,0.03); }
 
-        @media (max-width: 900px) { nav { padding: 0 20px; } .brand-logo { font-size: 1.1rem; } .nav-links { display: none; } .nav-links.active { display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height)); background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 25px; z-index: 1002; } .menu-toggle { display: flex; } .profile-layout { grid-template-columns: 1fr; gap: 40px; } .profile-visual { max-width: 500px; margin: 0 auto; } .data-header { text-align: center; } .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; } .gallery-item:first-child { grid-column: span 1; grid-row: span 1; aspect-ratio: 16/9; } .quote-box { font-size: clamp(0.8rem, 4vw, 1.2rem); padding: 20px; } }
+        @media (max-width: 900px) { 
+            nav { padding: 0 20px; } 
+            .brand-logo { font-size: 1.1rem; } 
+            .nav-links { display: none; } 
+            .nav-links.active { display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height)); background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 25px; z-index: 1002; } 
+            .menu-toggle { display: flex; } 
+            .profile-layout { grid-template-columns: 1fr; gap: 40px; } 
+            .profile-visual { max-width: 500px; margin: 0 auto; } 
+            .data-header { text-align: center; } 
+            .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; } 
+            .quote-box { font-size: clamp(0.8rem, 4vw, 1.2rem); padding: 20px; } 
+        }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>

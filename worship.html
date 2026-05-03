@@ -40,7 +40,6 @@
         .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
         .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
 
-        /* ── Language Switcher (Dropdown) ── */
         .lang-dropdown-wrapper { position: relative; font-family: 'Cinzel', serif; font-size: 0.8rem; color: #a0a0b5; z-index: 1001; }
         .lang-current { cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 6px; transition: color 0.3s; font-weight: 600; letter-spacing: 1px; }
         .lang-current:hover, .lang-dropdown-wrapper.active .lang-current { color: var(--gold-light); text-shadow: 0 0 8px rgba(201,168,76,0.5); }
@@ -52,12 +51,10 @@
         .lang-btn:not(:last-child) { border-bottom: 1px solid rgba(255,255,255,0.05); }
         .lang-btn:hover, .lang-btn.active { color: var(--gold-light); background: rgba(201,168,76,0.1); }
 
-        /* ── Share Icon Button ── */
         .share-trigger { cursor: pointer; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; border: 1px solid rgba(201,168,76,0.3); border-radius: 50%; color: var(--gold-light); transition: 0.3s; z-index: 1001; }
         .share-trigger svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
         .share-trigger:hover { background: rgba(201,168,76,0.1); border-color: var(--gold-light); box-shadow: 0 0 12px rgba(201,168,76,0.2); transform: translateY(-2px); }
 
-        /* ── Menu Toggle (Hamburger) ── */
         .menu-toggle { display: none; flex-direction: column; justify-content: space-between; width: 26px; height: 18px; cursor: pointer; z-index: 1001; }
         .menu-toggle span { width: 100%; height: 2px; background-color: var(--gold-light); transition: 0.3s; border-radius: 2px; }
         .menu-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
@@ -104,7 +101,6 @@
         .btn-lyric { background: rgba(201,168,76, 0.05); color: var(--gold-light); border-color: rgba(201,168,76, 0.4); }
         .btn-lyric:hover { background: var(--gold); color: #000; }
 
-        /* ── Iframe Placeholder 고급 디자인 (Album & Track) ── */
         .spotify-container-album {
             border-radius: 16px; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.6);
             border: 1px solid rgba(255, 255, 255, 0.08); background: #0a0a0f;
@@ -153,7 +149,6 @@
             font-family: 'Cinzel', 'Pretendard', sans-serif; text-shadow: 0 4px 10px rgba(0,0,0,0.8);
         }
 
-        /* ── Track 특화 (작은 플레이어) ── */
         .spotify-container-track .play-btn-circle { 
             width: 40px; height: 40px; font-size: 1rem; margin-bottom: 0; 
             animation: pulseGreenSmall 2s infinite; border-width: 1px;
@@ -174,7 +169,6 @@
 
         .track-title { font-family: 'Noto Serif KR', serif; font-size: 1.3rem; font-weight: 600; color: #ffffff; margin-bottom: 5px; display: flex; align-items: center; }
 
-        /* ── 이퀄라이저 아이콘 애니메이션 ── */
         .equalizer { display: inline-flex; align-items: flex-end; gap: 3px; height: 14px; margin-left: 12px; opacity: 0.7; }
         .eq-bar { width: 3px; background-color: var(--gold-light); border-radius: 2px; animation: eq-bounce 1s infinite ease-in-out; }
         .eq-bar:nth-child(1) { animation-delay: -0.2s; height: 60%; }
@@ -187,6 +181,190 @@
         .track-badge { font-family: 'Cinzel', serif; font-size: 0.75rem; color: var(--gold-light); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
         .track-btn { display: inline-block; font-size: 0.75rem; font-weight: 600; color: var(--spotify); border: 1px solid var(--spotify); padding: 5px 14px; border-radius: 20px; transition: all 0.3s; text-decoration: none; }
         .track-btn:hover { background: var(--spotify); color: #000; }
+
+        /* ── 댓글 섹션 ── */
+        .comments-section {
+            max-width: 800px;
+            margin: 80px auto 0;
+            padding: 0 20px 100px;
+            position: relative;
+            z-index: 10;
+            animation: fadeUp 1s ease 0.6s both;
+        }
+        .comments-divider {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+        .comments-divider::before,
+        .comments-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(201,168,76,0.3), transparent);
+        }
+        .comments-divider-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            letter-spacing: 0.3em;
+            color: var(--gold);
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .comment-form {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(201,168,76,0.2);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(5px);
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            user-select: text;
+        }
+        .comment-form-label {
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            color: var(--gold-light);
+            text-transform: uppercase;
+            margin-bottom: 18px;
+            display: block;
+        }
+        .comment-input-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .cm-input {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 12px 16px;
+            color: #f0ece4;
+            font-family: 'Pretendard', sans-serif;
+            font-size: 0.9rem;
+            transition: border-color 0.3s;
+            outline: none;
+            width: 100%;
+            -webkit-user-select: text;
+            user-select: text;
+        }
+        .cm-input:focus {
+            border-color: rgba(201,168,76,0.5);
+            background: rgba(255,255,255,0.06);
+        }
+        .cm-input::placeholder { color: #555; }
+        #cm-name { max-width: 200px; flex-shrink: 0; }
+        #cm-body {
+            resize: none;
+            height: 80px;
+            line-height: 1.6;
+        }
+        .cm-submit-row {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 12px;
+        }
+        .cm-submit-btn {
+            font-family: 'Cinzel', serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            padding: 12px 28px;
+            background: linear-gradient(135deg, var(--gold), #a07830);
+            color: #000;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+        .cm-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(201,168,76,0.3);
+        }
+        .cm-submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .comment-list { display: flex; flex-direction: column; gap: 16px; }
+
+        .comment-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            padding: 20px 24px;
+            transition: border-color 0.3s;
+            animation: fadeUp 0.4s ease both;
+        }
+        .comment-card:hover { border-color: rgba(201,168,76,0.2); }
+        .comment-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        .comment-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(201,168,76,0.4), rgba(100,60,200,0.4));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Cinzel', serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--gold-light);
+            border: 1px solid rgba(201,168,76,0.3);
+            flex-shrink: 0;
+        }
+        .comment-nickname {
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--gold-light);
+            letter-spacing: 1px;
+        }
+        .comment-date {
+            font-size: 0.75rem;
+            color: #444;
+            margin-left: auto;
+            font-family: 'Pretendard', sans-serif;
+        }
+        .comment-content {
+            font-family: 'Pretendard', 'Noto Serif KR', sans-serif;
+            font-size: 0.95rem;
+            color: #c8c4bc;
+            line-height: 1.7;
+            padding-left: 44px;
+            -webkit-user-select: text;
+            user-select: text;
+        }
+
+        .cm-empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: #444;
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+        }
+        .cm-empty span { display: block; font-size: 1.5rem; margin-bottom: 10px; opacity: 0.5; }
+
+        .cm-loading {
+            text-align: center;
+            padding: 30px;
+            color: #555;
+            font-family: 'Cinzel', serif;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+        }
 
         footer { text-align: center; padding: 80px 40px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: #555; border-top: 1px solid rgba(255,255,255,0.03); }
 
@@ -201,6 +379,8 @@
             .track-item { flex-direction: column; text-align: center; gap: 20px; }
             .track-info { align-items: center; }
             .spotify-container-track { width: 100%; }
+            .comment-input-row { flex-direction: column; }
+            #cm-name { max-width: 100%; }
         }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -218,7 +398,6 @@
                 <a href="movie.html" data-i18n="nav_movie">Movies</a>
             </div>
 
-            <!-- Language Switcher Dropdown -->
             <div class="lang-dropdown-wrapper" id="langWrapper">
                 <div class="lang-current" onclick="toggleLangDropdown()">
                     <span id="currentLangText">KOR</span>
@@ -230,7 +409,6 @@
                 </div>
             </div>
 
-            <!-- Share Icon Button -->
             <div class="share-trigger" onclick="openShareModal()" title="Share">
                 <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                     <circle cx="18" cy="5" r="3"></circle>
@@ -270,7 +448,6 @@
     <div class="container">
         <section class="featured-albums">
             <div class="featured-card card-vol1">
-                <!-- Album 1 Placeholder -->
                 <div class="spotify-container-album">
                     <div class="player-placeholder" onclick="injectIframe(this, 'https://open.spotify.com/embed/album/0ctoLQNWCmiPEkySv05PAM?utm_source=generator')">
                         <div class="placeholder-bg" style="background-image: url('https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=800&auto=format&fit=crop');"></div>
@@ -280,7 +457,6 @@
                         </div>
                     </div>
                 </div>
-
                 <h3 data-i18n="album1_title">나의 찬양 Vol. 1</h3>
                 <p data-i18n="album1_sub">The First Confession</p>
                 <div class="btn-group">
@@ -289,7 +465,6 @@
                 </div>
             </div>
             <div class="featured-card card-vol2">
-                <!-- Album 2 Placeholder -->
                 <div class="spotify-container-album">
                     <div class="player-placeholder" onclick="injectIframe(this, 'https://open.spotify.com/embed/album/0yhn8oEojOqsI864an6Qki?utm_source=generator')">
                         <div class="placeholder-bg" style="background-image: url('https://images.unsplash.com/photo-1504052434569-70ad5836ab65?q=80&w=800&auto=format&fit=crop');"></div>
@@ -299,7 +474,6 @@
                         </div>
                     </div>
                 </div>
-
                 <h3 data-i18n="album2_title">나의 찬양 Vol. 2</h3>
                 <p data-i18n="album2_sub">2nd Confession</p>
                 <div class="btn-group">
@@ -312,7 +486,6 @@
         <section class="track-list-section">
             <h2 class="section-title" data-i18n="track_list_title">Worship Tracks</h2>
 
-            <!-- Track 1 -->
             <div class="track-item">
                 <div class="track-info">
                     <div class="track-title"><span data-i18n="track1">파레시아</span> <div class="equalizer"><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div></div></div>
@@ -330,7 +503,6 @@
                 </div>
             </div>
 
-            <!-- Track 2 -->
             <div class="track-item">
                 <div class="track-info">
                     <div class="track-title"><span data-i18n="track2">주를 향해 노래하리</span> <div class="equalizer"><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div></div></div>
@@ -348,7 +520,6 @@
                 </div>
             </div>
 
-            <!-- Track 3 -->
             <div class="track-item">
                 <div class="track-info">
                     <div class="track-title"><span data-i18n="track3">기적입니다</span> <div class="equalizer"><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div></div></div>
@@ -366,7 +537,6 @@
                 </div>
             </div>
 
-            <!-- Track 4 -->
             <div class="track-item">
                 <div class="track-info">
                     <div class="track-title"><span data-i18n="track4">일어나 외쳐</span> <div class="equalizer"><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div></div></div>
@@ -384,7 +554,6 @@
                 </div>
             </div>
 
-            <!-- Track 5 -->
             <div class="track-item">
                 <div class="track-info">
                     <div class="track-title"><span data-i18n="track5">사랑으로</span> <div class="equalizer"><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div></div></div>
@@ -402,7 +571,6 @@
                 </div>
             </div>
 
-            <!-- Track 6 -->
             <div class="track-item">
                 <div class="track-info">
                     <div class="track-title"><span data-i18n="track6">우리의 예배</span> <div class="equalizer"><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div></div></div>
@@ -423,76 +591,154 @@
         </section>
     </div>
 
+    <!-- ── 댓글 섹션 ── -->
+    <section class="comments-section">
+        <div class="comments-divider">
+            <span class="comments-divider-title" data-i18n="comments_title">Guestbook</span>
+        </div>
+
+        <div class="comment-form">
+            <span class="comment-form-label" data-i18n="comments_leave">✦ 한마디 남겨주세요</span>
+            <div class="comment-input-row">
+                <input id="cm-name" class="cm-input" type="text" placeholder="닉네임" maxlength="20" autocomplete="off">
+                <textarea id="cm-body" class="cm-input" placeholder="찬양을 들으며 느낀 점, 위로의 한마디를 남겨주세요 🙏" maxlength="300"></textarea>
+            </div>
+            <div class="cm-submit-row">
+                <button class="cm-submit-btn" onclick="submitComment()" data-i18n="comments_submit">남기기</button>
+            </div>
+        </div>
+
+        <div id="cm-list" class="comment-list">
+            <div class="cm-loading" data-i18n="comments_loading">· · ·</div>
+        </div>
+    </section>
+
     <footer><p data-i18n="footer_text">© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
 
     <script>
+        // ── Supabase 설정 ──
+        const SUPA_URL = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
+        const SUPA_KEY = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
+        const PAGE_ID  = '/worship';
+
+        // ── 댓글 불러오기 ──
+        async function fetchComments() {
+            const list = document.getElementById('cm-list');
+            try {
+                const res = await fetch(
+                    `${SUPA_URL}/rest/v1/comments?page=eq.${encodeURIComponent(PAGE_ID)}&order=created_at.desc`,
+                    { headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` } }
+                );
+                const data = await res.json();
+                if (!Array.isArray(data) || data.length === 0) {
+                    list.innerHTML = `<div class="cm-empty"><span>✦</span><span data-i18n="comments_empty">첫 번째 기록을 남겨주세요</span></div>`;
+                    return;
+                }
+                list.innerHTML = data.map((c, i) => {
+                    const initial = c.nickname.charAt(0).toUpperCase();
+                    const date = c.created_at ? c.created_at.slice(0,10) : '';
+                    const escaped = c.content.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+                    return `
+                    <div class="comment-card" style="animation-delay:${i * 0.05}s">
+                        <div class="comment-meta">
+                            <div class="comment-avatar">${initial}</div>
+                            <span class="comment-nickname">${c.nickname}</span>
+                            <span class="comment-date">${date}</span>
+                        </div>
+                        <div class="comment-content">${escaped}</div>
+                    </div>`;
+                }).join('');
+            } catch(e) {
+                list.innerHTML = `<div class="cm-empty"><span>✦</span>잠시 후 다시 시도해주세요.</div>`;
+            }
+        }
+
+        // ── 댓글 제출 ──
+        async function submitComment() {
+            const nickname = document.getElementById('cm-name').value.trim();
+            const content  = document.getElementById('cm-body').value.trim();
+            const btn = document.querySelector('.cm-submit-btn');
+
+            if (!nickname || !content) {
+                showToast('닉네임과 내용을 입력해주세요.');
+                return;
+            }
+            if (content.length < 2) {
+                showToast('내용을 좀 더 입력해주세요.');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = '...';
+
+            try {
+                const res = await fetch(`${SUPA_URL}/rest/v1/comments`, {
+                    method: 'POST',
+                    headers: {
+                        apikey: SUPA_KEY,
+                        Authorization: `Bearer ${SUPA_KEY}`,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=minimal'
+                    },
+                    body: JSON.stringify({ page: PAGE_ID, nickname, content })
+                });
+                if (res.ok || res.status === 201) {
+                    document.getElementById('cm-name').value = '';
+                    document.getElementById('cm-body').value = '';
+                    showToast('소중한 한마디 감사합니다 🙏');
+                    fetchComments();
+                } else {
+                    const err = await res.text();
+                    showToast('오류가 발생했습니다. 다시 시도해주세요.');
+                    console.error('Supabase error:', err);
+                }
+            } catch(e) {
+                showToast('네트워크 오류입니다.');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = i18n[currentLang]?.comments_submit || '남기기';
+            }
+        }
+
+        fetchComments();
+
         // ── Multilingual System ──
         const i18n = {
             ko: {
-                nav_home: "Home",
-                nav_worship: "Worship",
-                nav_music: "Music",
-                nav_book: "Books",
-                nav_movie: "Movies",
-                share_title: "SHARE WORSHIP",
-                share_desc: "이곳의 고백과 찬양이 누군가에게 위로가 되길 바랍니다.",
-                share_copy: "COPY LINK",
-                share_sns: "SNS SHARE",
-                share_close: "Close",
-                header_title: "WORSHIP",
-                header_slogan: "영혼 깊은 곳에서 올려드리는 고백",
-                album1_title: "나의 찬양 Vol. 1",
-                album1_sub: "The First Confession",
-                album2_title: "나의 찬양 Vol. 2",
-                album2_sub: "2nd Confession",
-                btn_listen_all: "Spotify 전곡 듣기",
-                btn_lyrics: "가사 보기",
-                placeholder_text: "음악 재생하기",
-                track_list_title: "Worship Tracks",
-                track1: "파레시아",
-                track2: "주를 향해 노래하리",
-                track3: "기적입니다",
-                track4: "일어나 외쳐",
-                track5: "사랑으로",
-                track6: "우리의 예배",
-                track_badge: "Vocal Track",
-                btn_listen: "Spotify 듣기 ›",
+                nav_home: "Home", nav_worship: "Worship", nav_music: "Music", nav_book: "Books", nav_movie: "Movies",
+                share_title: "SHARE WORSHIP", share_desc: "이곳의 고백과 찬양이 누군가에게 위로가 되길 바랍니다.",
+                share_copy: "COPY LINK", share_sns: "SNS SHARE", share_close: "Close",
+                header_title: "WORSHIP", header_slogan: "영혼 깊은 곳에서 올려드리는 고백",
+                album1_title: "나의 찬양 Vol. 1", album1_sub: "The First Confession",
+                album2_title: "나의 찬양 Vol. 2", album2_sub: "2nd Confession",
+                btn_listen_all: "Spotify 전곡 듣기", btn_lyrics: "가사 보기",
+                placeholder_text: "음악 재생하기", track_list_title: "Worship Tracks",
+                track1: "파레시아", track2: "주를 향해 노래하리", track3: "기적입니다",
+                track4: "일어나 외쳐", track5: "사랑으로", track6: "우리의 예배",
+                track_badge: "Vocal Track", btn_listen: "Spotify 듣기 ›",
                 footer_text: "© 2026 Chris LEE.PAPA — The Creative Archive",
-                toast_copy: "링크가 복사되었습니다 ✓",
-                toast_error: "지원하지 않는 브라우저입니다."
+                toast_copy: "링크가 복사되었습니다 ✓", toast_error: "지원하지 않는 브라우저입니다.",
+                comments_title: "Guestbook", comments_leave: "✦ 한마디 남겨주세요",
+                comments_submit: "남기기", comments_loading: "· · ·",
+                comments_empty: "첫 번째 기록을 남겨주세요"
             },
             en: {
-                nav_home: "Home",
-                nav_worship: "Worship",
-                nav_music: "Music",
-                nav_book: "Books",
-                nav_movie: "Movies",
-                share_title: "SHARE WORSHIP",
-                share_desc: "May the confessions and worship here bring comfort to someone.",
-                share_copy: "COPY LINK",
-                share_sns: "SNS SHARE",
-                share_close: "Close",
-                header_title: "WORSHIP",
-                header_slogan: "Confessions offered from the depths of the soul",
-                album1_title: "My Worship Vol. 1",
-                album1_sub: "The First Confession",
-                album2_title: "My Worship Vol. 2",
-                album2_sub: "2nd Confession",
-                btn_listen_all: "Listen all on Spotify",
-                btn_lyrics: "View Lyrics",
-                placeholder_text: "CLICK TO PLAY",
-                track_list_title: "Worship Tracks",
-                track1: "Parrhesia",
-                track2: "I Will Sing to the Lord",
-                track3: "It is a Miracle",
-                track4: "Arise and Shout",
-                track5: "With Love",
-                track6: "Our Worship",
-                track_badge: "Vocal Track",
-                btn_listen: "Listen on Spotify ›",
+                nav_home: "Home", nav_worship: "Worship", nav_music: "Music", nav_book: "Books", nav_movie: "Movies",
+                share_title: "SHARE WORSHIP", share_desc: "May the confessions and worship here bring comfort to someone.",
+                share_copy: "COPY LINK", share_sns: "SNS SHARE", share_close: "Close",
+                header_title: "WORSHIP", header_slogan: "Confessions offered from the depths of the soul",
+                album1_title: "My Worship Vol. 1", album1_sub: "The First Confession",
+                album2_title: "My Worship Vol. 2", album2_sub: "2nd Confession",
+                btn_listen_all: "Listen all on Spotify", btn_lyrics: "View Lyrics",
+                placeholder_text: "CLICK TO PLAY", track_list_title: "Worship Tracks",
+                track1: "Parrhesia", track2: "I Will Sing to the Lord", track3: "It is a Miracle",
+                track4: "Arise and Shout", track5: "With Love", track6: "Our Worship",
+                track_badge: "Vocal Track", btn_listen: "Listen on Spotify ›",
                 footer_text: "© 2026 Chris LEE.PAPA — The Creative Archive",
-                toast_copy: "Link copied to clipboard ✓",
-                toast_error: "Browser not supported."
+                toast_copy: "Link copied to clipboard ✓", toast_error: "Browser not supported.",
+                comments_title: "Guestbook", comments_leave: "✦ Leave a message",
+                comments_submit: "Submit", comments_loading: "· · ·",
+                comments_empty: "Be the first to leave a message"
             }
         };
 
@@ -501,52 +747,30 @@
         function setLanguage(lang) {
             currentLang = lang;
             document.documentElement.lang = lang;
-
-            // Save preference
             try { localStorage.setItem('pref-lang', lang); } catch(e) {}
-
-            // Update UI texts
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
-                if (i18n[lang][key]) {
-                    el.innerHTML = i18n[lang][key];
-                }
+                if (i18n[lang][key]) el.innerHTML = i18n[lang][key];
             });
-
-            // Update active state on language buttons
             document.querySelectorAll('.lang-btn').forEach(btn => {
-                if (btn.getAttribute('data-lang') === lang) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
+                btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
             });
-
-            // Update dropdown display text and close
             const langTextObj = document.getElementById('currentLangText');
             if (langTextObj) langTextObj.textContent = lang === 'ko' ? 'KOR' : 'ENG';
             const langWrapper = document.getElementById('langWrapper');
             if (langWrapper) langWrapper.classList.remove('active');
         }
 
-        // Initialize language
         document.addEventListener('DOMContentLoaded', () => {
             let savedLang = 'ko';
             try { savedLang = localStorage.getItem('pref-lang') || 'ko'; } catch(e) {}
             setLanguage(savedLang);
         });
 
-        // ── Dropdown Toggle ──
-        function toggleLangDropdown() {
-            document.getElementById('langWrapper').classList.toggle('active');
-        }
-
-        // Close dropdown when clicking outside
+        function toggleLangDropdown() { document.getElementById('langWrapper').classList.toggle('active'); }
         document.addEventListener('click', function(e) {
             const wrapper = document.getElementById('langWrapper');
-            if (wrapper && !wrapper.contains(e.target)) {
-                wrapper.classList.remove('active');
-            }
+            if (wrapper && !wrapper.contains(e.target)) wrapper.classList.remove('active');
         });
 
         function safeNavigate(url) { if (url && url.trim() !== "") { window.location.assign(url); } }
@@ -554,12 +778,10 @@
         const navLinks = document.getElementById('navLinks');
         menuToggle.addEventListener('click', () => { menuToggle.classList.toggle('active'); navLinks.classList.toggle('active'); });
 
-        // ✅ 클릭 시 iframe을 생성하고 DOM에 주입하는 함수
         function injectIframe(element, url) {
             const container = element.parentElement;
             const isTrack = container.classList.contains('spotify-container-track');
             const height = isTrack ? '80' : '352';
-            
             const iframe = document.createElement('iframe');
             iframe.src = url;
             iframe.width = '100%';
@@ -567,7 +789,6 @@
             iframe.frameBorder = '0';
             iframe.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
             iframe.loading = 'lazy';
-            
             container.innerHTML = '';
             container.appendChild(iframe);
         }

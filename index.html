@@ -310,6 +310,7 @@
             transition: left 0.15s ease, top 0.15s ease;
         }
 
+        /* ── HERO ── */
         .hero-section {
             position: relative;
             width: 100vw;
@@ -402,40 +403,233 @@
         }
         @keyframes fadeIn { to { opacity: 1; } }
 
+        /* ══════════════════════════════════════
+           CREATOR'S NOTE — Enhanced Storytelling
+        ══════════════════════════════════════ */
         .creator-note {
             display: flex;
             justify-content: center;
-            padding: 5rem 1.5rem;
+            padding: 5rem 1.5rem 4rem;
             position: relative;
             z-index: 10;
             margin-top: -60px;
         }
         .note-container {
-            max-width: 800px;
+            max-width: 900px;
             width: 100%;
-            text-align: center;
-            border: 1px solid rgba(201,168,76,0.15);
-            border-radius: 24px;
-            background: rgba(12, 12, 18, 0.6);
-            backdrop-filter: blur(15px);
+            border: 1px solid rgba(201,168,76,0.18);
+            border-radius: 28px;
+            background: rgba(10, 10, 16, 0.7);
+            backdrop-filter: blur(20px);
             overflow: hidden;
-            transition: 0.4s, box-shadow 0.4s;
+            transition: border-color 0.4s, box-shadow 0.4s;
             box-shadow: 0 0 0 rgba(201,168,76,0);
         }
-        .note-container:hover { border-color: rgba(201,168,76,0.25); box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
-        .note-trigger { padding: 2.5rem 2rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; }
-        .section-tag { color: var(--gold); font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 0.8rem; }
-        .note-title { color: #ffffff; font-size: clamp(1.1rem, 3.5vw, 1.4rem); font-family: 'Noto Serif KR', serif; font-weight: 400; }
-        .toggle-symbol { margin-top: 1rem; font-size: 1.2rem; color: var(--gold); transition: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
-        .note-content { max-height: 0; overflow: hidden; transition: max-height 0.8s ease; padding: 0 2rem; }
-        .note-text { color: rgba(240,236,228,0.8); font-size: 1rem; line-height: 2; border-top: 1px solid rgba(255,255,255,0.05); padding: 2.5rem 0; word-break: keep-all; }
-        .note-container.active .note-content { max-height: 1200px; }
+        .note-container:hover {
+            border-color: rgba(201,168,76,0.3);
+            box-shadow: 0 16px 50px rgba(0,0,0,0.4);
+        }
+        .note-trigger {
+            padding: 2.5rem 2.5rem 2rem;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .section-tag {
+            color: var(--gold);
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 0.8rem;
+        }
+        .note-title {
+            color: #ffffff;
+            font-size: clamp(1.1rem, 3.5vw, 1.4rem);
+            font-family: 'Noto Serif KR', serif;
+            font-weight: 400;
+            text-align: center;
+        }
+        .toggle-symbol {
+            margin-top: 1rem;
+            font-size: 1.2rem;
+            color: var(--gold);
+            transition: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .note-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 1s ease;
+        }
+        .note-container.active .note-content { max-height: 1600px; }
         .note-container.active .toggle-symbol { transform: rotate(45deg); }
 
+        /* 스토리 2단 레이아웃 */
+        .note-story-wrap {
+            display: grid;
+            grid-template-columns: 210px 1fr;
+            gap: 0;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* 캐릭터 컬럼 */
+        .note-char-col {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            background: linear-gradient(180deg, rgba(201,168,76,0.04) 0%, rgba(10,10,16,0) 100%);
+            border-right: 1px solid rgba(201,168,76,0.1);
+            overflow: hidden;
+            min-height: 340px;
+        }
+        .note-char-glow {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(201,168,76,0.14) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .note-char-img {
+            position: relative;
+            z-index: 2;
+            width: 175px;
+            display: block;
+            margin: 0 auto;
+            filter: drop-shadow(0 6px 28px rgba(201,168,76,0.2));
+            animation: charFloat 5s ease-in-out infinite;
+            object-fit: contain;
+        }
+        @keyframes charFloat {
+            0%, 100% { transform: translateY(0px); }
+            50%       { transform: translateY(-9px); }
+        }
+        .note-char-name {
+            font-family: 'Cinzel', serif;
+            font-size: 0.6rem;
+            letter-spacing: 3px;
+            color: rgba(201,168,76,0.5);
+            text-align: center;
+            padding: 12px 0 20px;
+        }
+
+        /* 스토리 텍스트 컬럼 */
+        .note-story-col {
+            padding: 2.5rem 2.5rem 2.5rem 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        /* 챕터 블록 */
+        .story-chapter {
+            position: relative;
+            padding-left: 20px;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .note-container.active .story-chapter:nth-child(1) { opacity: 1; transform: none; transition-delay: 0.25s; }
+        .note-container.active .story-chapter:nth-child(2) { opacity: 1; transform: none; transition-delay: 0.45s; }
+        .note-container.active .story-chapter:nth-child(3) { opacity: 1; transform: none; transition-delay: 0.65s; }
+
+        .story-chapter::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 6px;
+            width: 2px;
+            height: calc(100% - 6px);
+            background: linear-gradient(to bottom, var(--gold), transparent);
+            border-radius: 2px;
+        }
+
+        .story-chapter-label {
+            font-family: 'Cinzel', serif;
+            font-size: 0.6rem;
+            letter-spacing: 3px;
+            color: rgba(201,168,76,0.6);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .story-chapter-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(201,168,76,0.25), transparent);
+        }
+
+        .story-chapter p {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 0.92rem;
+            line-height: 2;
+            color: rgba(240,236,228,0.82);
+            word-break: keep-all;
+        }
+        .story-chapter p strong {
+            color: var(--gold-light);
+            font-weight: 600;
+        }
+
+        /* 서명 라인 */
+        .story-signature {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            opacity: 0;
+            transition: opacity 0.7s ease 0.85s;
+        }
+        .note-container.active .story-signature { opacity: 1; }
+        .story-signature-line {
+            width: 30px;
+            height: 1px;
+            background: var(--gold);
+        }
+        .story-signature span {
+            font-family: 'Cinzel', serif;
+            font-size: 0.72rem;
+            letter-spacing: 2px;
+            color: rgba(201,168,76,0.65);
+        }
+
+        /* 모바일 대응 */
+        @media (max-width: 680px) {
+            .note-story-wrap {
+                grid-template-columns: 1fr;
+            }
+            .note-char-col {
+                border-right: none;
+                border-bottom: 1px solid rgba(201,168,76,0.1);
+                flex-direction: row;
+                justify-content: center;
+                align-items: flex-end;
+                gap: 16px;
+                min-height: auto;
+                padding: 2rem 0 0;
+            }
+            .note-char-img { width: 115px; }
+            .note-char-name { padding: 0 0 14px; }
+            .note-char-glow { display: none; }
+            .note-story-col { padding: 1.8rem 1.5rem; }
+        }
+
+        /* ── SECTION HEADING ── */
         .section-heading { text-align: center; padding: 20px 30px 0; max-width: 1300px; margin: 0 auto; }
         .section-heading-tag { font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 4px; color: rgba(201,168,76,0.5); text-transform: uppercase; display: block; margin-bottom: 8px; }
         .section-heading-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.6rem, 4vw, 2.5rem); font-weight: 300; color: rgba(240,236,228,0.7); letter-spacing: 0.1em; }
 
+        /* ── PORTFOLIO GRID ── */
         .portfolio-grid {
             padding: 40px 30px 100px;
             max-width: 1300px;
@@ -445,7 +639,6 @@
             gap: 28px;
         }
 
-        /* ── 카드 기본 ── */
         .card {
             position: relative;
             height: 380px;
@@ -461,7 +654,7 @@
         .card.visible { animation: cardReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes cardReveal {
             from { opacity: 0; transform: translateY(40px) scale(0.97); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
         }
         .card:nth-child(1) { animation-delay: 0s; }
         .card:nth-child(2) { animation-delay: 0.08s; }
@@ -523,7 +716,6 @@
             background: linear-gradient(to top, rgba(3,3,5,0.97) 0%, rgba(3,3,5,0.3) 55%, transparent 100%);
         }
 
-        /* ── 미리보기 태그 ── */
         .card-preview {
             display: flex;
             flex-wrap: wrap;
@@ -545,8 +737,6 @@
             backdrop-filter: blur(6px);
             white-space: nowrap;
         }
-
-        /* 카드별 태그 색상 */
         .card-worship .preview-tag { background: rgba(160,80,255,0.18); border: 1px solid rgba(160,80,255,0.35); color: #d4a5ff; }
         .card-book    .preview-tag { background: rgba(255,150,180,0.15); border: 1px solid rgba(255,150,180,0.3); color: #ffb4c8; }
         .card-music   .preview-tag { background: rgba(0,180,255,0.12); border: 1px solid rgba(0,200,255,0.3); color: #7ee8ff; }
@@ -554,19 +744,8 @@
         .card-about   .preview-tag { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.18); color: #ccc; }
         .card-contact .preview-tag { background: rgba(74,144,226,0.12); border: 1px solid rgba(74,144,226,0.3); color: #6db3f2; }
 
-        /* 상시 노출 미리보기 (항상 보이는 작은 정보) */
-        .card-meta {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-        .card-meta-dot {
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
+        .card-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .card-meta-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
         .card-worship .card-meta-dot { background: rgba(180,100,255,0.7); }
         .card-book    .card-meta-dot { background: rgba(255,150,180,0.7); }
         .card-music   .card-meta-dot { background: rgba(0,200,255,0.7); }
@@ -574,56 +753,32 @@
         .card-about   .card-meta-dot { background: rgba(255,255,255,0.5); }
         .card-contact .card-meta-dot { background: rgba(74,144,226,0.7); }
 
-        .card-meta-text {
-            font-family: 'Pretendard', sans-serif;
-            font-size: 0.75rem;
-            color: rgba(200,196,190,0.6);
-            letter-spacing: 0.5px;
-        }
+        .card-meta-text { font-family: 'Pretendard', sans-serif; font-size: 0.75rem; color: rgba(200,196,190,0.6); letter-spacing: 0.5px; }
 
-        .card-sub {
-            font-size: 0.82rem;
-            color: rgba(180,176,168,0.7);
-            margin-bottom: 6px;
-            transition: color 0.3s;
-        }
+        .card-sub { font-size: 0.82rem; color: rgba(180,176,168,0.7); margin-bottom: 6px; transition: color 0.3s; }
         .card:hover .card-sub { color: rgba(220,216,208,0.85); }
-        .card-label {
-            font-family: 'Cinzel', serif;
-            font-size: 2.2rem;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            color: #ffffff;
-            transition: color 0.3s, text-shadow 0.3s;
-        }
+        .card-label { font-family: 'Cinzel', serif; font-size: 2.2rem; font-weight: 700; letter-spacing: 0.1em; color: #ffffff; transition: color 0.3s, text-shadow 0.3s; }
+
         .card-arrow {
             position: absolute;
-            top: 24px;
-            right: 24px;
-            width: 36px;
-            height: 36px;
+            top: 24px; right: 24px;
+            width: 36px; height: 36px;
             border: 1px solid rgba(255,255,255,0.15);
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transform: translateX(-6px);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; transform: translateX(-6px);
             transition: opacity 0.3s, transform 0.3s;
             z-index: 4;
         }
         .card-arrow svg { width: 14px; height: 14px; fill: none; stroke: rgba(255,255,255,0.6); stroke-width: 1.5; }
         .card:hover .card-arrow { opacity: 1; transform: translateX(0); }
 
-        /* 카드 상단 배지 (항상 노출) */
         .card-badge {
             position: absolute;
-            top: 20px;
-            left: 20px;
+            top: 20px; left: 20px;
             z-index: 5;
             font-family: 'Cinzel', serif;
-            font-size: 0.6rem;
-            font-weight: 700;
+            font-size: 0.6rem; font-weight: 700;
             letter-spacing: 2px;
             padding: 5px 12px;
             border-radius: 20px;
@@ -662,13 +817,12 @@
             .nav-right { gap: 14px; }
             .portfolio-grid { grid-template-columns: 1fr; padding: 15px 15px 80px; gap: 18px; }
             .card { height: 300px; }
-            /* 모바일에서는 태그 항상 보이게 */
             .card-preview { opacity: 1; transform: translateY(0); }
             #mouse-orb { display: none; }
         }
 
         @keyframes shimmer {
-            0% { background-position: 0% center; }
+            0%   { background-position: 0% center; }
             100% { background-position: 200% center; }
         }
     </style>
@@ -737,20 +891,57 @@
         </div>
     </header>
 
+    <!-- ══ CREATOR'S NOTE (Enhanced) ══ -->
     <section class="creator-note">
         <div class="note-container" id="noteAccordion">
+
+            <!-- 헤더 트리거 -->
             <div class="note-trigger" onclick="toggleNote()">
                 <span class="section-tag" data-i18n="note_tag">✦ &nbsp; Creator's Note &nbsp; ✦</span>
                 <h3 class="note-title" data-i18n="note_title">나를 살게 한 것, 그리고 내가 만들어가는 것</h3>
                 <div class="toggle-symbol">+</div>
             </div>
+
+            <!-- 펼쳐지는 스토리 본문 -->
             <div class="note-content">
-                <p class="note-text">
-                   <span data-i18n="note_desc1">이곳은 상상력으로 빚어낸 이야기들과 제 삶의 중심이 되는 신앙이 함께 공존하는 공간입니다.<br>몇개월 전부터 AI와 기술을 통해 새로운 세계과 만나고 아름다운 창작물들을 만들고 있습니다.</span><br><br>
-                   <strong style="color:var(--gold-light)" data-i18n="note_desc2">어두운 시간 속에서 하늘의 무수히 많은 별빛을 보게 해주시고<br>다시 일어날 용기를 주신 주님께 모든 영광을 올립니다.</strong><br><br>
-                   <span data-i18n="note_desc3">저의 열정과 진실한 고백이 담긴 이 곳에 오신 것을 환영합니다.<br>여러분의 삶 속에서 시련을 만나고 넘어지고 쓰러져도<br>포기하지 않고 다시 일어날 수 있는 용기와 기적이 가득하길 기도합니다.</span>
-                </p>
-            </div>
+                <div class="note-story-wrap">
+
+                    <!-- 캐릭터 컬럼 -->
+                    <div class="note-char-col">
+                        <div class="note-char-glow"></div>
+                        <img class="note-char-img"
+                             src="images/creator_char.png"
+                             alt="Chris LEE.PAPA"
+                             draggable="false">
+                        <p class="note-char-name">CHRIS LEE.PAPA</p>
+                    </div>
+
+                    <!-- 스토리 텍스트 컬럼 -->
+                    <div class="note-story-col">
+
+                        <div class="story-chapter">
+                            <div class="story-chapter-label">Chapter 01 &nbsp;·&nbsp; 만남</div>
+                            <p data-i18n="note_desc1">이곳은 상상력으로 빚어낸 이야기들과 제 삶의 중심이 되는 신앙이 함께 공존하는 공간입니다.<br>몇개월 전부터 AI와 기술을 통해 새로운 세계과 만나고 아름다운 창작물들을 만들고 있습니다.</p>
+                        </div>
+
+                        <div class="story-chapter">
+                            <div class="story-chapter-label">Chapter 02 &nbsp;·&nbsp; 고백</div>
+                            <p><strong data-i18n="note_desc2">어두운 시간 속에서 하늘의 무수히 많은 별빛을 보게 해주시고<br>다시 일어날 용기를 주신 주님께 모든 영광을 올립니다.</strong></p>
+                        </div>
+
+                        <div class="story-chapter">
+                            <div class="story-chapter-label">Chapter 03 &nbsp;·&nbsp; 초대</div>
+                            <p data-i18n="note_desc3">저의 열정과 진실한 고백이 담긴 이 곳에 오신 것을 환영합니다.<br>여러분의 삶 속에서 시련을 만나고 넘어지고 쓰러져도<br>포기하지 않고 다시 일어날 수 있는 <strong>용기와 기적이 가득하길 기도합니다.</strong></p>
+                        </div>
+
+                        <div class="story-signature">
+                            <div class="story-signature-line"></div>
+                            <span>The Creative Archive &nbsp;·&nbsp; 2026</span>
+                        </div>
+
+                    </div><!-- /note-story-col -->
+                </div><!-- /note-story-wrap -->
+            </div><!-- /note-content -->
         </div>
     </section>
 
@@ -912,7 +1103,8 @@
                 share_title:"SHARE ARCHIVE", share_desc:"이곳의 기록과 영감을 소중한 사람들에게 전하세요.",
                 share_copy:"COPY LINK", share_sns:"SNS SHARE", share_close:"Close",
                 hero_slogan:"The Creative Archive", hero_sub:"찬양 · 음악 · 문학 · 영상", hero_scroll:"SCROLL",
-                note_tag:"✦ &nbsp; Creator's Note &nbsp; ✦", note_title:"나를 살게 한 것, 그리고 내가 만들어가는 것",
+                note_tag:"✦ &nbsp; Creator's Note &nbsp; ✦",
+                note_title:"나를 살게 한 것, 그리고 내가 만들어가는 것",
                 note_desc1:"이곳은 상상력으로 빚어낸 이야기들과 제 삶의 중심이 되는 신앙이 함께 공존하는 공간입니다.<br>몇개월 전부터 AI와 기술을 통해 새로운 세계과 만나고 아름다운 창작물들을 만들고 있습니다.",
                 note_desc2:"어두운 시간 속에서 하늘의 무수히 많은 별빛을 보게 해주시고<br>다시 일어날 용기를 주신 주님께 모든 영광을 올립니다.",
                 note_desc3:"저의 열정과 진실한 고백이 담긴 이 곳에 오신 것을 환영합니다.<br>여러분의 삶 속에서 시련을 만나고 넘어지고 쓰러져도<br>포기하지 않고 다시 일어날 수 있는 용기와 기적이 가득하길 기도합니다.",
@@ -942,7 +1134,8 @@
                 share_title:"SHARE ARCHIVE", share_desc:"Share the records and inspiration here with your loved ones.",
                 share_copy:"COPY LINK", share_sns:"SNS SHARE", share_close:"Close",
                 hero_slogan:"The Creative Archive", hero_sub:"Worship · Music · Literature · Film", hero_scroll:"SCROLL",
-                note_tag:"✦ &nbsp; Creator's Note &nbsp; ✦", note_title:"What kept me alive, and what I am creating",
+                note_tag:"✦ &nbsp; Creator's Note &nbsp; ✦",
+                note_title:"What kept me alive, and what I am creating",
                 note_desc1:"This is a space where stories shaped by imagination coexist with the faith that centers my life.<br>For the past few months, I have been encountering new worlds and creating beautiful works through AI and technology.",
                 note_desc2:"I give all the glory to the Lord, who allowed me to see the countless stars in the dark times<br>and gave me the courage to rise again.",
                 note_desc3:"Welcome to this place filled with my passion and sincere confessions.<br>I pray that even when you face trials, stumble, and fall in your life,<br>it will be filled with the courage and miracles to rise again without giving up.",

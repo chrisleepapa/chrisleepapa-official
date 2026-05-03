@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#030305">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="images/favicon.png">
+
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3207219520058740"
      crossorigin="anonymous"></script>
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-NBGELYQ4TZ"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -56,7 +61,6 @@
 
         img { -webkit-user-drag: none; }
 
-        /* ── Noise texture overlay ── */
         body::before {
             content: '';
             position: fixed;
@@ -69,7 +73,6 @@
 
         a { text-decoration: none; color: inherit; }
 
-        /* ── Scroll progress bar ── */
         #scroll-progress {
             position: fixed;
             top: 0;
@@ -87,7 +90,6 @@
             100% { background-position: 200% center; }
         }
 
-        /* ── Navigation ── */
         nav {
             position: fixed;
             top: 0;
@@ -146,7 +148,6 @@
             text-shadow: 0 0 10px rgba(255,255,255,0.5);
         }
         
-        /* ── Language Switcher (Dropdown) ── */
         .lang-dropdown-wrapper {
             position: relative;
             font-family: 'Cinzel', serif;
@@ -218,7 +219,6 @@
             background: rgba(201,168,76,0.1);
         }
 
-        /* ── Share Icon Button ── */
         .share-trigger {
             cursor: pointer;
             display: flex;
@@ -245,7 +245,6 @@
             transform: translateY(-2px);
         }
 
-        /* ── Menu Toggle (Hamburger) ── */
         .menu-toggle {
             display: none;
             flex-direction: column;
@@ -266,7 +265,6 @@
         .menu-toggle.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
         .menu-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
-        /* ── Share Modal ── */
         .modal-overlay {
             position: fixed; inset: 0;
             background: rgba(0,0,0,0.85);
@@ -331,7 +329,6 @@
             to { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
 
-        /* ── Mouse glow orb ── */
         #mouse-orb {
             position: fixed;
             pointer-events: none;
@@ -344,7 +341,6 @@
             transition: left 0.15s ease, top 0.15s ease;
         }
 
-        /* ── Hero Section ── */
         .hero-section {
             position: relative;
             width: 100vw;
@@ -375,7 +371,6 @@
             width: 90%;
         }
 
-        /* ── Hero Title character reveal ── */
         .hero-title {
             font-family: 'Cormorant Garamond', serif;
             font-size: clamp(2.5rem, 10vw, 5rem);
@@ -463,7 +458,6 @@
             to { opacity: 1; }
         }
 
-        /* ── Creator Note ── */
         .creator-note {
             display: flex;
             justify-content: center;
@@ -532,7 +526,6 @@
         .note-container.active .note-content { max-height: 1200px; }
         .note-container.active .toggle-symbol { transform: rotate(45deg); }
 
-        /* ── Section heading above cards ── */
         .section-heading {
             text-align: center;
             padding: 20px 30px 0;
@@ -556,7 +549,6 @@
             letter-spacing: 0.1em;
         }
 
-        /* ── Portfolio Grid ── */
         .portfolio-grid {
             padding: 40px 30px 100px;
             max-width: 1300px;
@@ -566,7 +558,6 @@
             gap: 28px;
         }
 
-        /* ── Card base ── */
         .card {
             position: relative;
             height: 360px;
@@ -576,7 +567,6 @@
             background: #0a0a10;
             border: 1px solid rgba(255,255,255,0.06);
             transition: border-color 0.4s, box-shadow 0.4s, transform 0.4s;
-            /* Scroll entrance */
             opacity: 0;
             transform: translateY(40px);
         }
@@ -588,7 +578,6 @@
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* Staggered delays */
         .card:nth-child(1) { animation-delay: 0s; }
         .card:nth-child(2) { animation-delay: 0.08s; }
         .card:nth-child(3) { animation-delay: 0.16s; }
@@ -596,7 +585,6 @@
         .card:nth-child(5) { animation-delay: 0.32s; }
         .card:nth-child(6) { animation-delay: 0.40s; }
 
-        /* Individual card glow on hover */
         .card-worship:hover { box-shadow: 0 20px 50px rgba(140, 0, 255, 0.35); border-color: rgba(150, 0, 255, 0.5); transform: translateY(-5px); }
         .card-worship:hover .card-label { color: #d4a5ff; }
 
@@ -615,7 +603,6 @@
         .card-contact:hover { box-shadow: 0 20px 50px rgba(74, 144, 226, 0.3); border-color: rgba(74, 144, 226, 0.5); transform: translateY(-5px); }
         .card-contact:hover .card-label { color: #6db3f2; }
 
-        /* Card backgrounds */
         .card-bg {
             position: absolute;
             inset: 0;
@@ -637,7 +624,6 @@
             filter: brightness(0.65) contrast(1.05) saturate(1.05);
         }
 
-        /* Card glint effect */
         .card::after {
             content: '';
             position: absolute;
@@ -654,7 +640,6 @@
             transform: translateX(100%);
         }
 
-        /* Card body */
         .card-body {
             position: absolute;
             inset: 0;
@@ -680,7 +665,6 @@
             color: #ffffff;
             transition: color 0.3s, text-shadow 0.3s;
         }
-        /* Arrow indicator */
         .card-arrow {
             position: absolute;
             top: 24px;
@@ -709,7 +693,6 @@
             transform: translateX(0);
         }
 
-        /* ── Footer ── */
         footer {
             text-align: center;
             padding: 40px;
@@ -720,7 +703,6 @@
             letter-spacing: 2px;
         }
 
-        /* ── Responsive ── */
         @media (max-width: 900px) {
             nav { padding: 0 20px; }
             .brand-logo { font-size: 1.1rem; }
@@ -741,7 +723,7 @@
             }
             .nav-links.active a { font-size: 1rem; }
             .menu-toggle { display: flex; }
-            .nav-right { gap: 14px; } /* 간격 살짝 조절 */
+            .nav-right { gap: 14px; }
             .portfolio-grid { grid-template-columns: 1fr; padding: 15px 15px 80px; gap: 18px; }
             .card { height: 280px; }
             #mouse-orb { display: none; }
@@ -755,13 +737,9 @@
 </head>
 <body>
 
-    <!-- Scroll progress -->
     <div id="scroll-progress"></div>
-
-    <!-- Mouse orb -->
     <div id="mouse-orb"></div>
 
-    <!-- Navigation -->
     <nav id="main-nav">
         <a href="index.html" class="brand-logo">Chris LEE.PAPA</a>
         <div class="nav-right">
@@ -773,7 +751,6 @@
                 <a href="movie.html" data-i18n="nav_movie">Movies</a>
             </div>
             
-            <!-- Language Switcher Dropdown -->
             <div class="lang-dropdown-wrapper" id="langWrapper">
                 <div class="lang-current" onclick="toggleLangDropdown()">
                     <span id="currentLangText">KOR</span>
@@ -785,7 +762,6 @@
                 </div>
             </div>
 
-            <!-- Share Icon Button -->
             <div class="share-trigger" onclick="openShareModal()" title="Share">
                 <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                     <circle cx="18" cy="5" r="3"></circle>
@@ -800,7 +776,6 @@
         </div>
     </nav>
 
-    <!-- Share Modal -->
     <div class="modal-overlay" id="shareOverlay" onclick="closeShareModal(event)">
         <div class="share-modal" onclick="event.stopPropagation()">
             <h3 data-i18n="share_title">SHARE ARCHIVE</h3>
@@ -815,7 +790,6 @@
 
     <div class="toast-msg" id="toast"></div>
 
-    <!-- Hero -->
     <header class="hero-section">
         <canvas id="stars-canvas"></canvas>
         <div class="hero-overlay"></div>
@@ -831,7 +805,6 @@
         </div>
     </header>
 
-    <!-- Creator Note -->
     <section class="creator-note">
         <div class="note-container" id="noteAccordion">
             <div class="note-trigger" onclick="toggleNote()">
@@ -849,13 +822,11 @@
         </div>
     </section>
 
-    <!-- Section header -->
     <div class="section-heading">
         <span class="section-heading-tag" data-i18n="heading_tag">✦ &nbsp; Portfolio &nbsp; ✦</span>
         <h2 class="section-heading-title" data-i18n="heading_title">The Archive</h2>
     </div>
 
-    <!-- Cards Grid -->
     <main class="portfolio-grid">
         <div class="card card-worship" onclick="safeNavigate('worship.html')">
             <div class="card-bg"></div>
@@ -927,6 +898,15 @@
     <footer><p data-i18n="footer_text">© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
 
     <script>
+        // [PWA 서비스 워커 등록]
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('ServiceWorker registered'))
+                    .catch(err => console.log('ServiceWorker failed', err));
+            });
+        }
+
         // ── Multilingual System ──
         const i18n = {
             ko: {
@@ -1010,59 +990,33 @@
         function setLanguage(lang) {
             currentLang = lang;
             document.documentElement.lang = lang;
-            
-            // Save preference
             try { localStorage.setItem('pref-lang', lang); } catch(e) {}
-
-            // Update UI texts
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
-                if (i18n[lang][key]) {
-                    el.innerHTML = i18n[lang][key];
-                }
+                if (i18n[lang][key]) { el.innerHTML = i18n[lang][key]; }
             });
-
-            // Update active state on language buttons
             document.querySelectorAll('.lang-btn').forEach(btn => {
-                if (btn.getAttribute('data-lang') === lang) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
+                btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
             });
-
-            // Update dropdown display text and close
             document.getElementById('currentLangText').textContent = lang === 'ko' ? 'KOR' : 'ENG';
             document.getElementById('langWrapper').classList.remove('active');
         }
 
-        // Initialize language
         document.addEventListener('DOMContentLoaded', () => {
             let savedLang = 'ko';
             try { savedLang = localStorage.getItem('pref-lang') || 'ko'; } catch(e) {}
             setLanguage(savedLang);
         });
 
-        // ── Dropdown Toggle ──
-        function toggleLangDropdown() {
-            document.getElementById('langWrapper').classList.toggle('active');
-        }
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function(e) {
+        function toggleLangDropdown() { document.getElementById('langWrapper').classList.toggle('active'); }
+        document.addEventListener('click', (e) => {
             const wrapper = document.getElementById('langWrapper');
-            if (!wrapper.contains(e.target)) {
-                wrapper.classList.remove('active');
-            }
+            if (!wrapper.contains(e.target)) wrapper.classList.remove('active');
         });
 
-        // ── Safe Navigate ──
         function safeNavigate(url) { if(url) window.location.assign(url); }
-
-        // ── Accordion ──
         function toggleNote() { document.getElementById('noteAccordion').classList.toggle('active'); }
 
-        // ── Mobile Menu ──
         const menuToggle = document.getElementById('mobile-menu');
         const navLinks = document.getElementById('navLinks');
         menuToggle.addEventListener('click', () => {
@@ -1070,7 +1024,6 @@
             navLinks.classList.toggle('active');
         });
 
-        // ── Share Modal ──
         const shareOverlay = document.getElementById('shareOverlay');
         const toast = document.getElementById('toast');
         function openShareModal() {
@@ -1109,17 +1062,15 @@
             setTimeout(() => { toast.style.display = 'none'; }, 2500);
         }
 
-        // ── Scroll: progress bar + nav state ──
         const progressBar = document.getElementById('scroll-progress');
         const mainNav = document.getElementById('main-nav');
         window.addEventListener('scroll', () => {
             const scrollTop = window.scrollY;
             const docHeight = document.body.scrollHeight - window.innerHeight;
-            progressBar.style.width = (scrollTop / docHeight * 100) + '%';
+            progressBar.style.width = (scrollTop / (docHeight || 1) * 100) + '%';
             mainNav.classList.toggle('scrolled', scrollTop > 40);
         }, { passive: true });
 
-        // ── Hero entrance ──
         setTimeout(() => {
             document.getElementById('heroTitle').classList.add('visible');
             document.getElementById('heroDivider').classList.add('visible');
@@ -1127,7 +1078,6 @@
             document.getElementById('heroSub').classList.add('visible');
         }, 100);
 
-        // ── Card scroll reveal (IntersectionObserver) ──
         const cards = document.querySelectorAll('.card');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -1139,14 +1089,12 @@
         }, { threshold: 0.12 });
         cards.forEach(card => observer.observe(card));
 
-        // ── Mouse orb ──
         const orb = document.getElementById('mouse-orb');
         document.addEventListener('mousemove', e => {
             orb.style.left = e.clientX + 'px';
             orb.style.top = e.clientY + 'px';
         }, { passive: true });
 
-        // ── Stars Canvas ──
         const canvas = document.getElementById('stars-canvas');
         const ctx = canvas.getContext('2d');
         let stars = [], shootingStars = [];
@@ -1171,16 +1119,12 @@
         }
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            // Stars
             stars.forEach(s => {
                 s.opacity += s.speed;
                 if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed;
-                ctx.beginPath();
-                ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255,255,255,${Math.max(0, s.opacity)})`;
-                ctx.fill();
+                ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255,255,255,${Math.max(0, s.opacity)})`; ctx.fill();
             });
-            // Shooting stars
             if (Math.random() < 0.012) {
                 shootingStars.push({
                     x: Math.random() * canvas.width * 0.8 + canvas.width * 0.1,
@@ -1191,41 +1135,27 @@
                 });
             }
             shootingStars.forEach((ss, i) => {
-                ss.x -= ss.speed * 0.8;
-                ss.y += ss.speed * 0.5;
-                ss.opacity -= 0.015;
+                ss.x -= ss.speed * 0.8; ss.y += ss.speed * 0.5; ss.opacity -= 0.015;
                 const grad = ctx.createLinearGradient(ss.x, ss.y, ss.x + ss.len, ss.y - ss.len * 0.6);
-                grad.addColorStop(0, `rgba(255,255,255,${ss.opacity})`);
-                grad.addColorStop(1, 'transparent');
-                ctx.beginPath();
-                ctx.strokeStyle = grad;
-                ctx.lineWidth = 1.5;
-                ctx.moveTo(ss.x, ss.y);
-                ctx.lineTo(ss.x + ss.len, ss.y - ss.len * 0.6);
-                ctx.stroke();
-                if (ss.opacity <= 0 || ss.x < -ss.len || ss.y > canvas.height + ss.len)
-                    shootingStars.splice(i, 1);
+                grad.addColorStop(0, `rgba(255,255,255,${ss.opacity})`); grad.addColorStop(1, 'transparent');
+                ctx.beginPath(); ctx.strokeStyle = grad; ctx.lineWidth = 1.5;
+                ctx.moveTo(ss.x, ss.y); ctx.lineTo(ss.x + ss.len, ss.y - ss.len * 0.6); ctx.stroke();
+                if (ss.opacity <= 0 || ss.x < -ss.len || ss.y > canvas.height + ss.len) shootingStars.splice(i, 1);
             });
             requestAnimationFrame(draw);
         }
         window.addEventListener('resize', resize);
-        resize();
-        draw();
+        resize(); draw();
 
-        // ── Security ──
         document.addEventListener('contextmenu', e => e.preventDefault());
         document.addEventListener('copy', e => {
-            if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0)
-                e.preventDefault();
+            if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) e.preventDefault();
         });
         document.addEventListener('keydown', e => {
-            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && ['I','J'].includes(e.key)) || (e.ctrlKey && e.key === 'U'))
-                e.preventDefault();
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && ['I','J'].includes(e.key)) || (e.ctrlKey && e.key === 'U')) e.preventDefault();
             if (e.ctrlKey && ['c','s','p'].includes(e.key)) {
-                if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0)
-                    e.preventDefault();
+                if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) e.preventDefault();
             }
-            if (e.key === 'PrintScreen') navigator.clipboard?.writeText('');
         });
     </script>
 </body>

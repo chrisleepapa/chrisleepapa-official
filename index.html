@@ -404,7 +404,7 @@
         @keyframes fadeIn { to { opacity: 1; } }
 
         /* ══════════════════════════════════════
-           CREATOR'S NOTE — Enhanced Storytelling
+           CREATOR'S NOTE — Redesigned Photo Col
         ══════════════════════════════════════ */
         .creator-note {
             display: flex;
@@ -468,55 +468,215 @@
         /* 스토리 2단 레이아웃 */
         .note-story-wrap {
             display: grid;
-            grid-template-columns: 210px 1fr;
+            grid-template-columns: 230px 1fr;
             gap: 0;
             border-top: 1px solid rgba(255,255,255,0.05);
         }
 
-        /* 캐릭터 컬럼 */
+        /* ─────────────────────────────────────
+           캐릭터 컬럼 — 리디자인 (에디토리얼 포트레이트)
+        ───────────────────────────────────── */
         .note-char-col {
             position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-end;
-            background: linear-gradient(180deg, rgba(201,168,76,0.04) 0%, rgba(10,10,16,0) 100%);
+            background: linear-gradient(160deg, rgba(8,6,14,0.9) 0%, rgba(18,14,8,0.95) 100%);
             border-right: 1px solid rgba(201,168,76,0.1);
             overflow: hidden;
-            min-height: 340px;
+            min-height: 360px;
+            padding: 28px 20px 0;
         }
-        .note-char-glow {
+
+        /* 배경 앰비언트 광원 */
+        .note-char-col::before {
+            content: '';
             position: absolute;
-            bottom: -30px;
-            left: 50%;
+            top: 0; left: 50%;
             transform: translateX(-50%);
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(201,168,76,0.14) 0%, transparent 70%);
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(ellipse, rgba(201,168,76,0.07) 0%, transparent 70%);
             pointer-events: none;
         }
+
+        /* 세로 장식 텍스트 */
+        .char-vertical-label {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%) rotate(-90deg);
+            transform-origin: center center;
+            font-family: 'Cinzel', serif;
+            font-size: 0.42rem;
+            letter-spacing: 4px;
+            color: rgba(201,168,76,0.22);
+            text-transform: uppercase;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        /* 포토 프레임 래퍼 */
+        .photo-frame-wrap {
+            position: relative;
+            width: 162px;
+            flex-shrink: 0;
+        }
+
+        /* 코너 마커 */
+        .photo-frame-wrap::before,
+        .photo-frame-wrap::after {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            border-color: rgba(201,168,76,0.5);
+            border-style: solid;
+            z-index: 5;
+            transition: border-color 0.4s;
+        }
+        .photo-frame-wrap::before {
+            top: -4px; left: -4px;
+            border-width: 1.5px 0 0 1.5px;
+        }
+        .photo-frame-wrap::after {
+            bottom: -4px; right: -4px;
+            border-width: 0 1.5px 1.5px 0;
+        }
+        .note-container:hover .photo-frame-wrap::before,
+        .note-container:hover .photo-frame-wrap::after {
+            border-color: rgba(201,168,76,0.85);
+        }
+
+        /* 코너 마커 — 반대쪽 */
+        .photo-corner-tr,
+        .photo-corner-bl {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            border-color: rgba(201,168,76,0.5);
+            border-style: solid;
+            z-index: 5;
+            transition: border-color 0.4s;
+        }
+        .photo-corner-tr { top: -4px; right: -4px; border-width: 1.5px 1.5px 0 0; }
+        .photo-corner-bl { bottom: -4px; left: -4px; border-width: 0 0 1.5px 1.5px; }
+        .note-container:hover .photo-corner-tr,
+        .note-container:hover .photo-corner-bl {
+            border-color: rgba(201,168,76,0.85);
+        }
+
+        /* 이미지 컨테이너 */
+        .photo-inner {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 3px;
+        }
+
+        /* 그레인 오버레이 */
+        .photo-inner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23g)' opacity='0.06'/%3E%3C/svg%3E");
+            z-index: 3;
+            pointer-events: none;
+            mix-blend-mode: overlay;
+        }
+
+        /* 비네트 오버레이 */
+        .photo-inner::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center,
+                transparent 40%,
+                rgba(5,3,10,0.55) 100%);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* 하단 색 보정 그라데이션 */
+        .photo-tone-overlay {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 55%;
+            background: linear-gradient(to top,
+                rgba(8,5,18,0.82) 0%,
+                rgba(12,8,20,0.3) 60%,
+                transparent 100%);
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        /* 실제 이미지 */
         .note-char-img {
             position: relative;
-            z-index: 2;
-            width: 175px;
+            z-index: 1;
+            width: 100%;
             display: block;
-            margin: 0 auto;
-            filter: drop-shadow(0 6px 28px rgba(201,168,76,0.2));
-            animation: charFloat 5s ease-in-out infinite;
             object-fit: contain;
+            filter:
+                brightness(0.95)
+                contrast(1.06)
+                saturate(0.88)
+                sepia(0.08);
+            animation: portraitDrift 9s ease-in-out infinite;
+            transform-origin: bottom center;
         }
-        @keyframes charFloat {
-            0%, 100% { transform: translateY(0px); }
-            50%       { transform: translateY(-9px); }
+
+        @keyframes portraitDrift {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50%       { transform: translateY(-6px) scale(1.012); }
         }
-        .note-char-name {
+
+        /* 캡션 영역 */
+        .photo-caption {
+            width: 100%;
+            padding: 14px 4px 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            position: relative;
+            z-index: 4;
+        }
+
+        .photo-caption-rule {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(201,168,76,0.4), transparent);
+            margin-bottom: 6px;
+        }
+
+        .photo-caption-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .photo-caption-name {
             font-family: 'Cinzel', serif;
+            font-size: 0.58rem;
+            letter-spacing: 2.5px;
+            color: rgba(232,208,138,0.75);
+            text-transform: uppercase;
+        }
+
+        .photo-caption-year {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.7rem;
+            color: rgba(201,168,76,0.35);
+            letter-spacing: 1px;
+            font-style: italic;
+        }
+
+        .photo-caption-role {
+            font-family: 'Noto Serif KR', serif;
             font-size: 0.6rem;
-            letter-spacing: 3px;
-            color: rgba(201,168,76,0.5);
-            text-align: center;
-            padding: 12px 0 20px;
+            color: rgba(180,176,168,0.38);
+            letter-spacing: 0.5px;
         }
 
         /* 스토리 텍스트 컬럼 */
@@ -614,14 +774,18 @@
                 flex-direction: row;
                 justify-content: center;
                 align-items: flex-end;
-                gap: 16px;
+                gap: 20px;
                 min-height: auto;
-                padding: 2rem 0 0;
+                padding: 2rem 1.5rem 0;
             }
-            .note-char-img { width: 115px; }
-            .note-char-name { padding: 0 0 14px; }
-            .note-char-glow { display: none; }
-            .note-story-col { padding: 1.8rem 1.5rem; }
+            .char-vertical-label { display: none; }
+            .photo-frame-wrap { width: 120px; }
+            .photo-caption {
+                padding: 12px 0 18px;
+                flex: 1;
+                justify-content: flex-end;
+            }
+            .photo-caption-rule { display: none; }
         }
 
         /* ── SECTION HEADING ── */
@@ -903,15 +1067,38 @@
             <div class="note-content">
                 <div class="note-story-wrap">
 
+                    <!-- ── 캐릭터 컬럼 (리디자인) ── -->
                     <div class="note-char-col">
-                        <div class="note-char-glow"></div>
-                        <img class="note-char-img"
-                             src="images/creator_char.png"
-                             alt="Chris LEE.PAPA"
-                             draggable="false">
-                        <p class="note-char-name">CHRIS LEE.PAPA</p>
+                        <!-- 세로 레이블 -->
+                        <div class="char-vertical-label">The Creative Archive · 2026</div>
+
+                        <!-- 포토 프레임 -->
+                        <div class="photo-frame-wrap">
+                            <!-- 코너 마커 (::before, ::after → TL, BR) -->
+                            <div class="photo-corner-tr"></div>
+                            <div class="photo-corner-bl"></div>
+
+                            <div class="photo-inner">
+                                <div class="photo-tone-overlay"></div>
+                                <img class="note-char-img"
+                                     src="images/creator_char.png"
+                                     alt="Chris LEE.PAPA"
+                                     draggable="false">
+                            </div>
+                        </div>
+
+                        <!-- 캡션 -->
+                        <div class="photo-caption">
+                            <div class="photo-caption-rule"></div>
+                            <div class="photo-caption-top">
+                                <span class="photo-caption-name">Chris LEE.PAPA</span>
+                                <span class="photo-caption-year">2026</span>
+                            </div>
+                            <span class="photo-caption-role">Creator · Faith · Music · Film</span>
+                        </div>
                     </div>
 
+                    <!-- ── 스토리 텍스트 컬럼 ── -->
                     <div class="note-story-col">
 
                         <div class="story-chapter">
@@ -934,7 +1121,10 @@
                             <span>The Creative Archive &nbsp;·&nbsp; 2026</span>
                         </div>
 
-                    </div></div></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <div class="section-heading">
@@ -1296,54 +1486,38 @@
             if (e.ctrlKey && ['c','s','p'].includes(e.key)) { if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) e.preventDefault(); }
         });
 
-        // PWA 설치 프롬프트 (안정성 강화)
         let deferredPrompt;
         const pwaBanner = document.getElementById('pwa-banner');
         const pwaInstallBtn = document.getElementById('pwa-install-btn');
         const pwaCloseBtn = document.getElementById('pwa-close-btn');
-
-        // 모바일 기기 접속 여부 확인
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
         window.addEventListener('beforeinstallprompt', (e) => {
-            // Chrome 최신 버전에서 기본으로 뜨는 미니 인포바를 방지
             e.preventDefault();
             deferredPrompt = e;
-            
-            // 모바일 기기에서만, 이미 설치된 상태가 아니라면 배너 노출
             if (isMobile && !window.matchMedia('(display-mode: standalone)').matches) {
-                // 즉시 띄우지 않고, 사용자가 사이트를 조금 둘러본 후(2초 뒤) 자연스럽게 띄움
-                setTimeout(() => {
-                    if(pwaBanner) pwaBanner.style.display = 'flex';
-                }, 2000); 
+                setTimeout(() => { if(pwaBanner) pwaBanner.style.display = 'flex'; }, 2000);
             }
         });
 
         if(pwaInstallBtn) {
             pwaInstallBtn.addEventListener('click', async () => {
                 if (!deferredPrompt) return;
-                // 커스텀 배너 숨기기
                 pwaBanner.style.display = 'none';
-                // 브라우저의 실제 설치 팝업 띄우기
                 deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
-                console.log(`User response to the install prompt: ${outcome}`);
                 deferredPrompt = null;
             });
         }
 
         if(pwaCloseBtn) {
-            pwaCloseBtn.addEventListener('click', () => {
-                pwaBanner.style.display = 'none';
-            });
+            pwaCloseBtn.addEventListener('click', () => { pwaBanner.style.display = 'none'; });
         }
 
         window.addEventListener('appinstalled', () => {
-            console.log('PWA was installed');
             if(pwaBanner) pwaBanner.style.display = 'none';
             deferredPrompt = null;
         });
-
     </script>
 
 </body>

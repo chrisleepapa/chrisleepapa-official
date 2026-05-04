@@ -891,22 +891,18 @@
         </div>
     </header>
 
-    <!-- ══ CREATOR'S NOTE (Enhanced) ══ -->
     <section class="creator-note">
         <div class="note-container" id="noteAccordion">
 
-            <!-- 헤더 트리거 -->
             <div class="note-trigger" onclick="toggleNote()">
                 <span class="section-tag" data-i18n="note_tag">✦ &nbsp; Creator's Note &nbsp; ✦</span>
                 <h3 class="note-title" data-i18n="note_title">나를 살게 한 것, 그리고 내가 만들어가는 것</h3>
                 <div class="toggle-symbol">+</div>
             </div>
 
-            <!-- 펼쳐지는 스토리 본문 -->
             <div class="note-content">
                 <div class="note-story-wrap">
 
-                    <!-- 캐릭터 컬럼 -->
                     <div class="note-char-col">
                         <div class="note-char-glow"></div>
                         <img class="note-char-img"
@@ -916,7 +912,6 @@
                         <p class="note-char-name">CHRIS LEE.PAPA</p>
                     </div>
 
-                    <!-- 스토리 텍스트 컬럼 -->
                     <div class="note-story-col">
 
                         <div class="story-chapter">
@@ -939,10 +934,7 @@
                             <span>The Creative Archive &nbsp;·&nbsp; 2026</span>
                         </div>
 
-                    </div><!-- /note-story-col -->
-                </div><!-- /note-story-wrap -->
-            </div><!-- /note-content -->
-        </div>
+                    </div></div></div></div>
     </section>
 
     <div class="section-heading">
@@ -952,7 +944,6 @@
 
     <main class="portfolio-grid">
 
-        <!-- WORSHIP -->
         <div class="card card-worship" onclick="safeNavigate('worship.html')">
             <div class="card-bg"></div>
             <div class="card-badge" data-i18n="badge_worship">2 Albums</div>
@@ -974,7 +965,6 @@
             </div>
         </div>
 
-        <!-- BOOK -->
         <div class="card card-book" onclick="safeNavigate('book.html')">
             <div class="card-bg"></div>
             <div class="card-badge" data-i18n="badge_book">AI Generated</div>
@@ -996,7 +986,6 @@
             </div>
         </div>
 
-        <!-- MUSIC -->
         <div class="card card-music" onclick="safeNavigate('music.html')">
             <div class="card-bg"></div>
             <div class="card-badge" data-i18n="badge_music">New Release</div>
@@ -1018,7 +1007,6 @@
             </div>
         </div>
 
-        <!-- MOVIE -->
         <div class="card card-movie" onclick="safeNavigate('movie.html')">
             <div class="card-bg"></div>
             <div class="card-badge" data-i18n="badge_movie">AI Film</div>
@@ -1040,7 +1028,6 @@
             </div>
         </div>
 
-        <!-- ABOUT -->
         <div class="card card-about" onclick="safeNavigate('about.html')">
             <div class="card-bg"></div>
             <div class="card-badge" data-i18n="badge_about">Creator</div>
@@ -1062,7 +1049,6 @@
             </div>
         </div>
 
-        <!-- CONTACT -->
         <div class="card card-contact" onclick="safeNavigate('contact.html')">
             <div class="card-bg"></div>
             <div class="card-badge" data-i18n="badge_contact">Open to Collab</div>
@@ -1296,47 +1282,63 @@
             if (e.ctrlKey && ['c','s','p'].includes(e.key)) { if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) e.preventDefault(); }
         });
 
-// PWA 설치 프롬프트
-let deferredPrompt;
-const pwaBanner = document.getElementById('pwa-banner');
-const pwaInstallBtn = document.getElementById('pwa-install-btn');
-const pwaCloseBtn = document.getElementById('pwa-close-btn');
+        // PWA 설치 프롬프트 (안정성 강화)
+        let deferredPrompt;
+        const pwaBanner = document.getElementById('pwa-banner');
+        const pwaInstallBtn = document.getElementById('pwa-install-btn');
+        const pwaCloseBtn = document.getElementById('pwa-close-btn');
 
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    setTimeout(() => {
-        pwaBanner.style.display = 'flex';
-    }, 3000); // 3초 후 배너 표시
-});
+        // 모바일 기기 접속 여부 확인
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-pwaInstallBtn.addEventListener('click', async () => {
-    if (!deferredPrompt) return;
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    deferredPrompt = null;
-    pwaBanner.style.display = 'none';
-});
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Chrome 최신 버전에서 기본으로 뜨는 미니 인포바를 방지
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // 모바일 기기에서만, 이미 설치된 상태가 아니라면 배너 노출
+            if (isMobile && !window.matchMedia('(display-mode: standalone)').matches) {
+                // 즉시 띄우지 않고, 사용자가 사이트를 조금 둘러본 후(2초 뒤) 자연스럽게 띄움
+                setTimeout(() => {
+                    if(pwaBanner) pwaBanner.style.display = 'flex';
+                }, 2000); 
+            }
+        });
 
-pwaCloseBtn.addEventListener('click', () => {
-    pwaBanner.style.display = 'none';
-});
+        if(pwaInstallBtn) {
+            pwaInstallBtn.addEventListener('click', async () => {
+                if (!deferredPrompt) return;
+                // 커스텀 배너 숨기기
+                pwaBanner.style.display = 'none';
+                // 브라우저의 실제 설치 팝업 띄우기
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User response to the install prompt: ${outcome}`);
+                deferredPrompt = null;
+            });
+        }
 
-window.addEventListener('appinstalled', () => {
-    pwaBanner.style.display = 'none';
-    deferredPrompt = null;
-});
+        if(pwaCloseBtn) {
+            pwaCloseBtn.addEventListener('click', () => {
+                pwaBanner.style.display = 'none';
+            });
+        }
+
+        window.addEventListener('appinstalled', () => {
+            console.log('PWA was installed');
+            if(pwaBanner) pwaBanner.style.display = 'none';
+            deferredPrompt = null;
+        });
 
     </script>
 
-<!-- PWA 설치 배너 -->
 <div id="pwa-banner" style="
     display:none; position:fixed; bottom:24px; left:50%;
     transform:translateX(-50%);
     background:linear-gradient(135deg,#1a1a22,#0d0d14);
     border:1px solid rgba(201,168,76,0.4);
     border-radius:18px; padding:14px 20px;
-    display:none; align-items:center; gap:14px;
+    align-items:center; gap:14px;
     box-shadow:0 8px 32px rgba(0,0,0,0.6);
     z-index:9999; width:90%; max-width:380px;
     backdrop-filter:blur(12px);">

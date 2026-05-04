@@ -474,166 +474,320 @@
         }
 
         /* ─────────────────────────────────────
-           캐릭터 컬럼 — 풀하이트 매거진 포트레이트
-        ─────────────────────────────────────  */
-
-        /* 래퍼들 투명화 (기존 HTML 구조 유지) */
-        .photo-frame-wrap  { display: contents; }
-        .photo-inner       { display: contents; }
-        .photo-tone-overlay,
-        .photo-corner-tr,
-        .photo-corner-bl   { display: none; }
-
+           캐릭터 컬럼 — 리디자인 (에디토리얼 포트레이트)
+        ───────────────────────────────────── */
         .note-char-col {
             position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            background: linear-gradient(160deg, rgba(8,6,14,0.9) 0%, rgba(18,14,8,0.95) 100%);
+            border-right: 1px solid rgba(201,168,76,0.1);
             overflow: hidden;
-            border-right: 1px solid rgba(201,168,76,0.12);
-            min-height: 440px;
+            min-height: 360px;
+            padding: 28px 20px 0;
         }
 
-        /* 이미지: 컬럼 전체 채움 */
-        .note-char-img {
+        /* 배경 앰비언트 광원 */
+        .note-char-col::before {
+            content: '';
             position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: top center;
-            display: block;
-            filter: brightness(0.78) contrast(1.1) saturate(0.82) sepia(0.07);
-            animation: portraitBreath 10s ease-in-out infinite;
-        }
-        @keyframes portraitBreath {
-            0%, 100% { transform: scale(1.04) translateY(0px); }
-            50%       { transform: scale(1.07) translateY(-10px); }
-        }
-        .note-container:hover .note-char-img {
-            filter: brightness(0.86) contrast(1.07) saturate(0.88) sepia(0.05);
-        }
-
-        /* 오른쪽 페이드 → 텍스트 컬럼과 자연스럽게 연결 */
-        .char-fade-right {
-            position: absolute;
-            top: 0; right: 0;
-            width: 55px; height: 100%;
-            background: linear-gradient(to right, transparent, rgba(10,10,16,0.97));
-            z-index: 3;
+            top: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(ellipse, rgba(201,168,76,0.07) 0%, transparent 70%);
             pointer-events: none;
         }
 
-        /* 하단 그라데이션 (캡션 가독성) */
-        .char-fade-bottom {
+        /* 세로 장식 텍스트 */
+        .char-vertical-label {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%) rotate(-90deg);
+            transform-origin: center center;
+            font-family: 'Cinzel', serif;
+            font-size: 0.42rem;
+            letter-spacing: 4px;
+            color: rgba(201,168,76,0.22);
+            text-transform: uppercase;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        /* 포토 프레임 래퍼 */
+        .photo-frame-wrap {
+            position: relative;
+            width: 162px;
+            flex-shrink: 0;
+        }
+
+        /* 코너 마커 */
+        .photo-frame-wrap::before,
+        .photo-frame-wrap::after {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            border-color: rgba(201,168,76,0.5);
+            border-style: solid;
+            z-index: 5;
+            transition: border-color 0.4s;
+        }
+        .photo-frame-wrap::before {
+            top: -4px; left: -4px;
+            border-width: 1.5px 0 0 1.5px;
+        }
+        .photo-frame-wrap::after {
+            bottom: -4px; right: -4px;
+            border-width: 0 1.5px 1.5px 0;
+        }
+        .note-container:hover .photo-frame-wrap::before,
+        .note-container:hover .photo-frame-wrap::after {
+            border-color: rgba(201,168,76,0.85);
+        }
+
+        /* 코너 마커 — 반대쪽 */
+        .photo-corner-tr,
+        .photo-corner-bl {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            border-color: rgba(201,168,76,0.5);
+            border-style: solid;
+            z-index: 5;
+            transition: border-color 0.4s;
+        }
+        .photo-corner-tr { top: -4px; right: -4px; border-width: 1.5px 1.5px 0 0; }
+        .photo-corner-bl { bottom: -4px; left: -4px; border-width: 0 0 1.5px 1.5px; }
+        .note-container:hover .photo-corner-tr,
+        .note-container:hover .photo-corner-bl {
+            border-color: rgba(201,168,76,0.85);
+        }
+
+        /* 이미지 컨테이너 */
+        .photo-inner {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 3px;
+        }
+
+        /* 그레인 오버레이 */
+        .photo-inner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23g)' opacity='0.06'/%3E%3C/svg%3E");
+            z-index: 3;
+            pointer-events: none;
+            mix-blend-mode: overlay;
+        }
+
+        /* 비네트 오버레이 */
+        .photo-inner::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center,
+                transparent 40%,
+                rgba(5,3,10,0.55) 100%);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* 하단 색 보정 그라데이션 */
+        .photo-tone-overlay {
             position: absolute;
             bottom: 0; left: 0; right: 0;
-            height: 42%;
+            height: 55%;
             background: linear-gradient(to top,
-                rgba(4,3,10,0.97) 0%,
-                rgba(4,3,10,0.55) 50%,
+                rgba(8,5,18,0.82) 0%,
+                rgba(12,8,20,0.3) 60%,
                 transparent 100%);
             z-index: 3;
             pointer-events: none;
         }
 
-        /* 상단 그라데이션 */
-        .char-fade-top {
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 70px;
-            background: linear-gradient(to bottom, rgba(4,3,10,0.6), transparent);
-            z-index: 3;
-            pointer-events: none;
+        /* 실제 이미지 */
+        .note-char-img {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            display: block;
+            object-fit: contain;
+            filter:
+                brightness(0.95)
+                contrast(1.06)
+                saturate(0.88)
+                sepia(0.08);
+            animation: portraitDrift 9s ease-in-out infinite;
+            transform-origin: bottom center;
         }
 
-        /* 필름 그레인 */
-        .char-grain {
-            position: absolute;
-            inset: 0;
-            z-index: 4;
-            opacity: 0.35;
-            pointer-events: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23g)' opacity='0.07'/%3E%3C/svg%3E");
-            mix-blend-mode: overlay;
+        @keyframes portraitDrift {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50%       { transform: translateY(-6px) scale(1.012); }
         }
 
-        /* 세로 타이포 레이블 */
-        .char-vertical-label {
-            position: absolute;
-            right: 18px;
-            top: 50%;
-            transform: translateY(-50%) rotate(90deg);
-            transform-origin: center center;
-            font-family: 'Cinzel', serif;
-            font-size: 0.37rem;
-            letter-spacing: 4px;
-            color: rgba(201,168,76,0.2);
-            text-transform: uppercase;
-            white-space: nowrap;
-            pointer-events: none;
-            z-index: 5;
-        }
-
-        /* 캡션 — 이미지 위 절대 오버레이 */
+        /* 캡션 영역 */
         .photo-caption {
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            padding: 18px 22px 22px;
-            z-index: 6;
+            width: 100%;
+            padding: 14px 4px 22px;
             display: flex;
             flex-direction: column;
             gap: 5px;
+            position: relative;
+            z-index: 4;
         }
 
         .photo-caption-rule {
-            width: 28px;
-            height: 1.5px;
-            background: linear-gradient(90deg, var(--gold), rgba(201,168,76,0.3));
-            margin-bottom: 7px;
-            border-radius: 2px;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(201,168,76,0.4), transparent);
+            margin-bottom: 6px;
         }
 
         .photo-caption-top {
             display: flex;
-            align-items: baseline;
+            align-items: center;
             justify-content: space-between;
-            gap: 8px;
         }
 
         .photo-caption-name {
             font-family: 'Cinzel', serif;
-            font-size: 0.6rem;
-            letter-spacing: 2px;
-            color: rgba(232,208,138,0.88);
+            font-size: 0.58rem;
+            letter-spacing: 2.5px;
+            color: rgba(232,208,138,0.75);
             text-transform: uppercase;
         }
 
         .photo-caption-year {
             font-family: 'Cormorant Garamond', serif;
             font-size: 0.7rem;
-            color: rgba(201,168,76,0.4);
+            color: rgba(201,168,76,0.35);
             letter-spacing: 1px;
             font-style: italic;
-            flex-shrink: 0;
         }
 
         .photo-caption-role {
-            font-family: 'Pretendard', sans-serif;
-            font-size: 0.57rem;
-            color: rgba(180,176,168,0.42);
-            letter-spacing: 0.6px;
+            font-family: 'Noto Serif KR', serif;
+            font-size: 0.6rem;
+            color: rgba(180,176,168,0.38);
+            letter-spacing: 0.5px;
         }
 
-        /* 모바일 */
+        /* 스토리 텍스트 컬럼 */
+        .note-story-col {
+            padding: 2.5rem 2.5rem 2.5rem 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        /* 챕터 블록 */
+        .story-chapter {
+            position: relative;
+            padding-left: 20px;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .note-container.active .story-chapter:nth-child(1) { opacity: 1; transform: none; transition-delay: 0.25s; }
+        .note-container.active .story-chapter:nth-child(2) { opacity: 1; transform: none; transition-delay: 0.45s; }
+        .note-container.active .story-chapter:nth-child(3) { opacity: 1; transform: none; transition-delay: 0.65s; }
+
+        .story-chapter::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 6px;
+            width: 2px;
+            height: calc(100% - 6px);
+            background: linear-gradient(to bottom, var(--gold), transparent);
+            border-radius: 2px;
+        }
+
+        .story-chapter-label {
+            font-family: 'Cinzel', serif;
+            font-size: 0.6rem;
+            letter-spacing: 3px;
+            color: rgba(201,168,76,0.6);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .story-chapter-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(201,168,76,0.25), transparent);
+        }
+
+        .story-chapter p {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 0.92rem;
+            line-height: 2;
+            color: rgba(240,236,228,0.82);
+            word-break: keep-all;
+        }
+        .story-chapter p strong {
+            color: var(--gold-light);
+            font-weight: 600;
+        }
+
+        /* 서명 라인 */
+        .story-signature {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            opacity: 0;
+            transition: opacity 0.7s ease 0.85s;
+        }
+        .note-container.active .story-signature { opacity: 1; }
+        .story-signature-line {
+            width: 30px;
+            height: 1px;
+            background: var(--gold);
+        }
+        .story-signature span {
+            font-family: 'Cinzel', serif;
+            font-size: 0.72rem;
+            letter-spacing: 2px;
+            color: rgba(201,168,76,0.65);
+        }
+
+        /* 모바일 대응 */
         @media (max-width: 680px) {
-            .note-story-wrap { grid-template-columns: 1fr; }
+            .note-story-wrap {
+                grid-template-columns: 1fr;
+            }
             .note-char-col {
                 border-right: none;
                 border-bottom: 1px solid rgba(201,168,76,0.1);
-                min-height: 280px;
+                flex-direction: row;
+                justify-content: center;
+                align-items: flex-end;
+                gap: 20px;
+                min-height: auto;
+                padding: 2rem 1.5rem 0;
             }
-            .char-fade-right { display: none; }
             .char-vertical-label { display: none; }
-            .photo-caption { padding: 14px 18px 18px; }
+            .photo-frame-wrap { width: 120px; }
+            .photo-caption {
+                padding: 12px 0 18px;
+                flex: 1;
+                justify-content: flex-end;
+            }
+            .photo-caption-rule { display: none; }
         }
+
         /* ── SECTION HEADING ── */
         .section-heading { text-align: center; padding: 20px 30px 0; max-width: 1300px; margin: 0 auto; }
         .section-heading-tag { font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 4px; color: rgba(201,168,76,0.5); text-transform: uppercase; display: block; margin-bottom: 8px; }
@@ -913,25 +1067,27 @@
             <div class="note-content">
                 <div class="note-story-wrap">
 
-                    <!-- ── 캐릭터 컬럼 — 풀하이트 포트레이트 ── -->
+                    <!-- ── 캐릭터 컬럼 (리디자인) ── -->
                     <div class="note-char-col">
-
-                        <!-- 배경 이미지 (절대 위치로 전체 채움) -->
-                        <img class="note-char-img"
-                             src="images/creator_char.png"
-                             alt="Chris LEE.PAPA"
-                             draggable="false">
-
-                        <!-- 레이어 오버레이들 -->
-                        <div class="char-fade-top"></div>
-                        <div class="char-fade-right"></div>
-                        <div class="char-fade-bottom"></div>
-                        <div class="char-grain"></div>
-
                         <!-- 세로 레이블 -->
                         <div class="char-vertical-label">The Creative Archive · 2026</div>
 
-                        <!-- 캡션 (이미지 위 절대 위치) -->
+                        <!-- 포토 프레임 -->
+                        <div class="photo-frame-wrap">
+                            <!-- 코너 마커 (::before, ::after → TL, BR) -->
+                            <div class="photo-corner-tr"></div>
+                            <div class="photo-corner-bl"></div>
+
+                            <div class="photo-inner">
+                                <div class="photo-tone-overlay"></div>
+                                <img class="note-char-img"
+                                     src="images/creator_char.png"
+                                     alt="Chris LEE.PAPA"
+                                     draggable="false">
+                            </div>
+                        </div>
+
+                        <!-- 캡션 -->
                         <div class="photo-caption">
                             <div class="photo-caption-rule"></div>
                             <div class="photo-caption-top">
@@ -940,7 +1096,6 @@
                             </div>
                             <span class="photo-caption-role">Creator · Faith · Music · Film</span>
                         </div>
-
                     </div>
 
                     <!-- ── 스토리 텍스트 컬럼 ── -->

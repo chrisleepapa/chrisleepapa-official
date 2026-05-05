@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3207219520058740"
+     crossorigin="anonymous"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-NBGELYQ4TZ"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -537,7 +539,7 @@
                 list.innerHTML = data.map((c, i) => {
                     const initial = c.nickname.charAt(0).toUpperCase();
                     const date = c.created_at ? c.created_at.slice(0,10) : '';
-                    const escaped = c.content.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+                    const escaped = c.content.replace(/</g,'<').replace(/>/g,'>');
                     return `
                     <div class="comment-card" style="animation-delay:${i * 0.05}s">
                         <div class="comment-meta">

@@ -31,7 +31,7 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 .cem{font-size:clamp(10px,2vw,20px);line-height:1;filter:drop-shadow(0 1px 2px rgba(0,0,0,.4));}
 .cnm{font-size:clamp(5px,.82vw,7.5px);font-weight:800;color:#1a1a1a;text-align:center;line-height:1.15;word-break:keep-all;}
 .ctk{position:absolute;top:2px;right:2px;display:flex;flex-direction:column;gap:1px;}
-.tok{font-size:clamp(9px,1.5vw,14px);line-height:1;display:block;transition:filter .3s;}
+.tok{display:block;transition:filter .3s; z-index: 5;}
 .tok.a0{filter:drop-shadow(0 0 5px #4A90D9) drop-shadow(0 0 10px #4A90D9);animation:tbounce .6s ease-in-out infinite;}
 .tok.a1{filter:drop-shadow(0 0 5px #FF69B4) drop-shadow(0 0 10px #FF69B4);animation:tbounce .6s ease-in-out .3s infinite;}
 @keyframes tbounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-3px);}}
@@ -48,9 +48,9 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 .scs{display:flex;gap:7px;}
 .sc{background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;padding:6px 9px;text-align:center;transition:all .3s;min-width:56px;}
 .sc.cur{background:rgba(255,215,0,.14);border-color:rgba(255,215,0,.55);box-shadow:0 0 14px rgba(255,215,0,.22);}
-.spi{font-size:clamp(13px,2.3vw,22px);display:block;transition:transform .3s;}
+.spi{display:block;transition:transform .3s;}
 .sc.cur .spi{transform:scale(1.18);}
-.spn{color:#fff;font-size:clamp(7px,1vw,10px);font-weight:800;}
+.spn{color:#fff;font-size:clamp(7px,1vw,10px);font-weight:800; margin-top:2px;}
 .sps{color:var(--gold);font-size:clamp(9px,1.5vw,14px);font-weight:900;}
 .spsk{color:#FF6B6B;font-size:6.5px;font-weight:800;}
 .pbs{width:82%;display:flex;flex-direction:column;gap:4px;}
@@ -141,7 +141,6 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 .icc{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.14);border-radius:20px;padding:14px 10px 12px;text-align:center;width:108px;transition:transform .3s,border-color .3s,box-shadow .3s;animation:fl 3s ease-in-out infinite;}
 .icc:nth-child(2){animation-delay:.5s;}
 .icc:hover{transform:translateY(-7px) scale(1.06);border-color:rgba(255,215,0,.5);box-shadow:0 0 22px rgba(255,215,0,.22);}
-.icc svg{width:80px;height:94px;display:block;margin:0 auto 7px;}
 .icn{color:var(--gold);font-size:13px;font-weight:900;font-family:'Fredoka One',cursive;}
 .icr{color:rgba(255,255,255,.45);font-size:9.5px;font-weight:600;margin-top:2px;}
 .stbtn{padding:16px 56px;background:linear-gradient(135deg,#FF69B4,#9B59B6,#4A90D9);border:none;border-radius:18px;color:#fff;font-size:clamp(14px,3vw,20px);font-weight:900;font-family:'Nunito',sans-serif;cursor:pointer;box-shadow:0 6px 36px rgba(233,30,99,.5);transition:transform .25s,box-shadow .25s;letter-spacing:1px;}
@@ -149,6 +148,56 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 .starpop{position:fixed;font-family:'Fredoka One',cursive;font-size:22px;color:var(--gold);pointer-events:none;z-index:300;animation:stup .9s ease-out forwards;text-shadow:0 0 12px rgba(255,215,0,.8);}
 @keyframes stup{0%{opacity:1;transform:translateY(0) scale(1);}100%{opacity:0;transform:translateY(-60px) scale(1.5);}}
 @media(max-width:600px){.gl{flex-direction:column;align-items:center;}.sb{width:min(510px,92vw);flex-direction:row;flex-wrap:wrap;}.sb .sp{flex:1;min-width:140px;}.lgp,.lgd{min-width:100%;}}
+
+/* =========================================
+   스프라이트 애니메이션 및 클래스
+========================================= */
+.sprite-char {
+  width: 100%;
+  height: 100%;
+  background-size: 500% 200%;
+  background-position: 0% 0%;
+  background-repeat: no-repeat;
+}
+.sprite-yul { background-image: url('yul_spritesheet.png'); }
+.sprite-jeong { background-image: url('jeong_spritesheet.png'); }
+
+.sprite-anim {
+  animation: sprite-run 0.8s infinite;
+}
+
+@keyframes sprite-run {
+  0%     { background-position: 0% 0%; }
+  19.99% { background-position: 0% 0%; }
+  20%    { background-position: 25% 0%; }
+  39.99% { background-position: 25% 0%; }
+  40%    { background-position: 50% 0%; }
+  59.99% { background-position: 50% 0%; }
+  60%    { background-position: 75% 0%; }
+  79.99% { background-position: 75% 0%; }
+  80%    { background-position: 100% 0%; }
+  100%   { background-position: 100% 0%; }
+}
+
+.tok-img-wrap {
+  width: clamp(24px, 4vw, 36px);
+  height: clamp(24px, 4vw, 36px);
+  border-radius: 50%;
+  border: 1.5px solid white;
+  box-shadow: 0 0 6px rgba(0,0,0,0.6);
+  overflow: hidden;
+  background: rgba(255,255,255,0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.tok-img-wrap .sprite-char {
+  width: 130%;
+  height: 130%;
+  transform: translateY(-5%); /* 얼굴 중심 맞추기 */
+}
 </style>
 </head>
 <body>
@@ -161,8 +210,8 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
   <div class="it1">✨ SISTER SQUAD ✨</div>
   <div class="it2">놀라운 자매들의 대모험 — 별 10개를 먼저 모으면 승리! 🌟</div>
   <div class="icp">
-    <div class="icc"><svg id="isvg0"></svg><div class="icn">율이</div><div class="icr">언니 · 탐험가</div></div>
-    <div class="icc"><svg id="isvg1"></svg><div class="icn">정이</div><div class="icr">동생 · 마법사</div></div>
+    <div class="icc"><div id="isvg0" style="width:80px;height:94px;margin:0 auto 7px;"></div><div class="icn">율이</div><div class="icr">언니 · 탐험가</div></div>
+    <div class="icc"><div id="isvg1" style="width:80px;height:94px;margin:0 auto 7px;"></div><div class="icn">정이</div><div class="icr">동생 · 마법사</div></div>
   </div>
   <button class="stbtn" onclick="startGame()">🌟 모험 시작!</button>
 </div>
@@ -180,12 +229,30 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
         <div class="ctit">SISTER SQUAD</div>
         <div class="csub">놀라운 자매들의 대모험</div>
         <div class="scs">
-          <div class="sc cur" id="sc0"><span class="spi">🧒</span><div class="spn">율이</div><div class="sps" id="ss0">⭐0</div><div class="spsk" id="ssk0" style="display:none">😴쉬는중</div></div>
-          <div class="sc" id="sc1"><span class="spi">👧</span><div class="spn">정이</div><div class="sps" id="ss1">⭐0</div><div class="spsk" id="ssk1" style="display:none">😴쉬는중</div></div>
+          <div class="sc cur" id="sc0">
+            <div class="spi"><div class="tok-img-wrap" style="border-color:#4A90D9; width:28px; height:28px;"><div class="sprite-char sprite-yul sprite-anim"></div></div></div>
+            <div class="spn">율이</div>
+            <div class="sps" id="ss0">⭐0</div>
+            <div class="spsk" id="ssk0" style="display:none">😴쉬는중</div>
+          </div>
+          <div class="sc" id="sc1">
+            <div class="spi"><div class="tok-img-wrap" style="border-color:#FF69B4; width:28px; height:28px;"><div class="sprite-char sprite-jeong sprite-anim"></div></div></div>
+            <div class="spn">정이</div>
+            <div class="sps" id="ss1">⭐0</div>
+            <div class="spsk" id="ssk1" style="display:none">😴쉬는중</div>
+          </div>
         </div>
         <div class="pbs">
-          <div class="pbr"><span style="font-size:9px">🧒</span><div class="pbt"><div class="pbf" id="pb0" style="width:0%;background:linear-gradient(90deg,#4A90D9,#C9A6FF)"></div></div><span class="pbl" id="pl0">0/10</span></div>
-          <div class="pbr"><span style="font-size:9px">👧</span><div class="pbt"><div class="pbf" id="pb1" style="width:0%;background:linear-gradient(90deg,#E91E63,#FF69B4)"></div></div><span class="pbl" id="pl1">0/10</span></div>
+          <div class="pbr">
+            <div class="tok-img-wrap" style="width:14px;height:14px;border-width:1px"><div class="sprite-char sprite-yul" style="width:150%;height:150%;transform:translateY(-10%)"></div></div>
+            <div class="pbt"><div class="pbf" id="pb0" style="width:0%;background:linear-gradient(90deg,#4A90D9,#C9A6FF)"></div></div>
+            <span class="pbl" id="pl0">0/10</span>
+          </div>
+          <div class="pbr">
+            <div class="tok-img-wrap" style="width:14px;height:14px;border-width:1px"><div class="sprite-char sprite-jeong" style="width:150%;height:150%;transform:translateY(-10%)"></div></div>
+            <div class="pbt"><div class="pbf" id="pb1" style="width:0%;background:linear-gradient(90deg,#E91E63,#FF69B4)"></div></div>
+            <span class="pbl" id="pl1">0/10</span>
+          </div>
         </div>
       </div>
     </div>
@@ -326,11 +393,10 @@ function sTrap(){[280,200,140].forEach(function(f,i){setTimeout(function(){tone(
 function sStep(){tone(350+Math.random()*200,0.04,'sine',0.07);}
 function sWin(){[523,587,659,698,784,880,988,1047].forEach(function(f,i){setTimeout(function(){tone(f,0.14,'sine',0.14);},i*90);});}
 
-/* ══ CHARACTER SVGs ══ */
+/* ══ CHARACTER SVGs & SPRITES ══ */
 var SV={
-sora:'<svg viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="gs" cx="50%" cy="60%"><stop offset="0%" stop-color="#4A90D9" stop-opacity=".3"/><stop offset="100%" stop-color="#4A90D9" stop-opacity="0"/></radialGradient></defs><circle cx="100" cy="130" r="105" fill="url(#gs)"/><ellipse cx="100" cy="240" rx="80" ry="24" fill="#3068B8"/><path d="M22 222Q100 186 178 222L178 250H22Z" fill="#4A90D9"/><rect x="74" y="200" width="52" height="30" rx="10" fill="#2F60B0"/><rect x="84" y="160" width="32" height="26" rx="10" fill="#F4C090"/><ellipse cx="100" cy="94" rx="56" ry="60" fill="#1C1C40"/><path d="M148 92Q164 128 160 168Q157 188 150 198" stroke="#1C1C40" stroke-width="15" fill="none" stroke-linecap="round"/><path d="M150 104Q158 115 152 126" stroke="#2C2C55" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M153 127Q161 138 155 150" stroke="#2C2C55" stroke-width="2.5" fill="none" stroke-linecap="round"/><circle cx="150" cy="86" r="7" fill="#FF9ECD"/><ellipse cx="100" cy="112" rx="50" ry="55" fill="#F4C090"/><path d="M50 86Q58 51 100 47Q142 51 150 86" fill="#1C1C40"/><ellipse cx="52" cy="100" rx="10" ry="22" fill="#1C1C40"/><ellipse cx="148" cy="100" rx="10" ry="22" fill="#1C1C40"/><circle cx="80" cy="110" r="18" fill="rgba(210,235,255,.22)" stroke="#7B4E2C" stroke-width="3"/><circle cx="120" cy="110" r="18" fill="rgba(210,235,255,.22)" stroke="#7B4E2C" stroke-width="3"/><line x1="98" y1="109" x2="102" y2="109" stroke="#7B4E2C" stroke-width="3"/><line x1="62" y1="104" x2="50" y2="99" stroke="#7B4E2C" stroke-width="2.2"/><line x1="138" y1="104" x2="150" y2="99" stroke="#7B4E2C" stroke-width="2.2"/><ellipse cx="80" cy="111" rx="8" ry="9" fill="#2D1B0E"/><ellipse cx="120" cy="111" rx="8" ry="9" fill="#2D1B0E"/><circle cx="83" cy="108" r="3" fill="white"/><circle cx="123" cy="108" r="3" fill="white"/><path d="M65 94Q78 88 91 94" stroke="#1C1C40" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M109 94Q122 88 135 94" stroke="#1C1C40" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M97 126Q100 131 103 126" stroke="#C4906A" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M88 140Q100 152 112 140" stroke="#B06030" stroke-width="2.5" fill="none" stroke-linecap="round"/><ellipse cx="67" cy="124" rx="13" ry="7" fill="#FFB0B0" fill-opacity=".32"/><ellipse cx="133" cy="124" rx="13" ry="7" fill="#FFB0B0" fill-opacity=".32"/></svg>',
-
-mia:'<svg viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="gm" cx="50%" cy="60%"><stop offset="0%" stop-color="#E91E63" stop-opacity=".3"/><stop offset="100%" stop-color="#E91E63" stop-opacity="0"/></radialGradient></defs><circle cx="100" cy="130" r="105" fill="url(#gm)"/><ellipse cx="100" cy="240" rx="78" ry="24" fill="#C81456"/><path d="M25 218Q100 182 175 218L175 250H25Z" fill="#E91E63"/><path d="M25 218Q100 200 175 218" fill="#FF69B4" opacity=".6"/><rect x="84" y="158" width="32" height="24" rx="10" fill="#F0C090"/><ellipse cx="100" cy="92" rx="55" ry="58" fill="#5C3A1E"/><path d="M52 104Q38 134 42 174Q44 198 52 204" stroke="#5C3A1E" stroke-width="20" fill="none" stroke-linecap="round"/><path d="M148 104Q162 134 158 174Q156 198 148 204" stroke="#5C3A1E" stroke-width="20" fill="none" stroke-linecap="round"/><ellipse cx="100" cy="108" rx="50" ry="56" fill="#F0C090"/><path d="M50 82Q60 50 100 46Q140 50 150 82" fill="#5C3A1E"/><ellipse cx="52" cy="93" rx="11" ry="20" fill="#5C3A1E"/><ellipse cx="148" cy="93" rx="11" ry="20" fill="#5C3A1E"/><path d="M44 76Q100 60 156 76" stroke="#FF69B4" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M148 68Q162 58 174 68Q162 75 148 70Z" fill="#FF69B4"/><path d="M174 68Q186 62 188 72Q180 78 174 74Z" fill="#FF69B4"/><circle cx="174" cy="70" r="5" fill="#E01878"/><path d="M65 93Q78 87 91 93" stroke="#3A2010" stroke-width="2.8" fill="none" stroke-linecap="round"/><path d="M109 93Q122 87 135 93" stroke="#3A2010" stroke-width="2.8" fill="none" stroke-linecap="round"/><ellipse cx="80" cy="112" rx="10" ry="11" fill="#5C3A1E"/><ellipse cx="120" cy="112" rx="10" ry="11" fill="#5C3A1E"/><ellipse cx="80" cy="112" rx="6" ry="7" fill="#0A0500"/><ellipse cx="120" cy="112" rx="6" ry="7" fill="#0A0500"/><circle cx="84" cy="107" r="4" fill="white"/><circle cx="124" cy="107" r="4" fill="white"/><circle cx="77" cy="115" r="2" fill="white" opacity=".6"/><circle cx="117" cy="115" r="2" fill="white" opacity=".6"/><circle cx="72" cy="120" r="2.5" fill="#B06040" opacity=".38"/><circle cx="112" cy="120" r="2.5" fill="#B06040" opacity=".38"/><path d="M97 126Q100 130 103 126" stroke="#C4906A" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M85 140Q100 153 115 140" stroke="#B06030" stroke-width="2.5" fill="none" stroke-linecap="round"/><ellipse cx="66" cy="124" rx="14" ry="8" fill="#FFB0B0" fill-opacity=".38"/><ellipse cx="134" cy="124" rx="14" ry="8" fill="#FFB0B0" fill-opacity=".38"/></svg>',
+sora:'<div class="sprite-char sprite-yul sprite-anim"></div>',
+mia:'<div class="sprite-char sprite-jeong sprite-anim"></div>',
 
 luna:'<svg viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="gl" cx="50%" cy="60%"><stop offset="0%" stop-color="#27AE60" stop-opacity=".3"/><stop offset="100%" stop-color="#27AE60" stop-opacity="0"/></radialGradient></defs><circle cx="100" cy="130" r="105" fill="url(#gl)"/><ellipse cx="38" cy="132" rx="32" ry="50" fill="rgba(180,255,210,.16)" stroke="rgba(140,255,180,.38)" stroke-width="1.5" transform="rotate(-18 38 132)"/><ellipse cx="162" cy="132" rx="32" ry="50" fill="rgba(180,255,210,.16)" stroke="rgba(140,255,180,.38)" stroke-width="1.5" transform="rotate(18 162 132)"/><ellipse cx="100" cy="240" rx="68" ry="22" fill="#246E34"/><path d="M32 220Q100 184 168 220L168 250H32Z" fill="#2D8C44"/><rect x="86" y="158" width="28" height="22" rx="8" fill="#E8C090"/><polygon points="100,174 108,184 100,192 92,184" fill="#00CED1" opacity=".9"/><ellipse cx="100" cy="108" rx="47" ry="52" fill="#E8C090"/><path d="M53 85Q62 52 100 48Q138 52 147 85" fill="#1A1A30"/><path d="M100 48Q111 30 122 37Q116 52 100 48Z" fill="#2D8C44"/><path d="M100 48Q89 30 78 37Q84 52 100 48Z" fill="#2D8C44"/><path d="M100 46Q116 24 127 32Q120 48 100 46Z" fill="#3AAD57"/><path d="M100 46Q84 24 73 32Q80 48 100 46Z" fill="#3AAD57"/><polygon points="100,38 106,46 100,52 94,46" fill="#00FF7F" opacity=".88"/><circle cx="100" cy="86" r="5" fill="#00CED1"/><path d="M70 96Q82 90 92 95" stroke="#1A1A30" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M108 95Q118 90 130 96" stroke="#1A1A30" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M68 109Q80 99 92 109Q80 118 68 109Z" fill="#1A2A10"/><path d="M108 109Q120 99 132 109Q120 118 108 109Z" fill="#1A2A10"/><circle cx="80" cy="109" r="4.5" fill="#0A1A05"/><circle cx="120" cy="109" r="4.5" fill="#0A1A05"/><circle cx="83" cy="106" r="2.5" fill="white"/><circle cx="123" cy="106" r="2.5" fill="white"/><path d="M52 110Q42 100 46 90Q54 98 58 110Z" fill="#E8C090"/><path d="M148 110Q158 100 154 90Q146 98 142 110Z" fill="#E8C090"/><path d="M97 122Q100 126 103 122" stroke="#C4956A" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M88 136Q100 146 112 136" stroke="#A06840" stroke-width="2" fill="none" stroke-linecap="round"/><ellipse cx="66" cy="120" rx="12" ry="7" fill="#FFB0B0" fill-opacity=".22"/><ellipse cx="134" cy="120" rx="12" ry="7" fill="#FFB0B0" fill-opacity=".22"/></svg>',
 
@@ -415,8 +481,18 @@ function renderAll(){
     var tk=document.getElementById('tk'+sp.id);
     if(!tk)return;
     tk.innerHTML='';
-    if(pos[0]===sp.id){var s=document.createElement('span');s.className='tok'+(cur===0&&!moving?' a0':'');s.textContent='🧒';tk.appendChild(s);}
-    if(pos[1]===sp.id){var s2=document.createElement('span');s2.className='tok'+(cur===1&&!moving?' a1':'');s2.textContent='👧';tk.appendChild(s2);}
+    if(pos[0]===sp.id){
+      var s=document.createElement('div');
+      s.className='tok'+(cur===0&&!moving?' a0':'');
+      s.innerHTML='<div class="tok-img-wrap"><div class="sprite-char sprite-yul sprite-anim"></div></div>';
+      tk.appendChild(s);
+    }
+    if(pos[1]===sp.id){
+      var s2=document.createElement('div');
+      s2.className='tok'+(cur===1&&!moving?' a1':'');
+      s2.innerHTML='<div class="tok-img-wrap"><div class="sprite-char sprite-jeong sprite-anim"></div></div>';
+      tk.appendChild(s2);
+    }
   });
   [0,1].forEach(function(i){
     document.getElementById('sc'+i).className='sc'+(i===cur?' cur':'');

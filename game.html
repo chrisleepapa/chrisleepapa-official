@@ -8,7 +8,7 @@
         body {
             margin: 0;
             padding: 0;
-            background-color: #1e293b;
+            background-color: #0f172a;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -16,61 +16,72 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: white;
             overflow: hidden;
-            touch-action: none; /* 모바일에서 화면 스크롤 방지 */
+            touch-action: none; /* 모바일 새로고침 방지 */
         }
-        #game-container {
+        #game-wrapper {
             position: relative;
-            width: 800px;
-            max-width: 100%;
-            height: 400px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            background: linear-gradient(to bottom, #87CEEB, #E0F6FF);
-            border-radius: 12px;
+            width: 100%;
+            max-width: 800px;
+            aspect-ratio: 2 / 1;
+            background: linear-gradient(to bottom, #1e3a8a, #38bdf8);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
             overflow: hidden;
+        }
+        /* 데스크탑에서 너무 커지지 않도록 최대 높이 지정 */
+        @media (min-height: 500px) {
+            #game-wrapper {
+                border-radius: 12px;
+            }
         }
         canvas {
             display: block;
             width: 100%;
             height: 100%;
+            object-fit: cover;
         }
+        
+        /* UI 스크린 (시작, 게임오버) */
         .ui-screen {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(15, 23, 42, 0.85);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 10;
+            z-index: 20;
             text-align: center;
         }
         h1 {
             color: #FFB7D5;
-            font-size: clamp(32px, 5vw, 48px);
+            font-size: clamp(28px, 6vw, 48px);
+            margin-top: 0;
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            text-shadow: 0 4px 6px rgba(0,0,0,0.5);
         }
         p {
             font-size: clamp(14px, 3vw, 18px);
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             padding: 0 20px;
+            color: #cbd5e1;
         }
         .character-select {
             display: flex;
-            gap: 20px;
+            gap: 15px;
             flex-wrap: wrap;
             justify-content: center;
         }
         .char-btn {
             background: #ffffff;
             border: 4px solid #B8E4FF;
-            padding: 15px 30px;
+            padding: 12px 24px;
             border-radius: 12px;
-            font-size: clamp(16px, 3vw, 20px);
+            font-size: clamp(16px, 4vw, 20px);
             font-weight: bold;
             color: #1e293b;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
         .char-btn:active {
             transform: scale(0.95);
@@ -79,112 +90,125 @@
         #btn-jeongi { border-color: #ef4444; }
         .hidden { display: none !important; }
         
-        /* 상단 UI (점수, 쿨다운) */
+        /* 인게임 정보 (상단 UI) */
         #hud {
             position: absolute;
             top: 10px;
-            left: 20px;
-            right: 20px;
+            left: 15px;
+            right: 15px;
             display: flex;
             justify-content: space-between;
-            font-size: clamp(16px, 3vw, 24px);
+            font-size: clamp(14px, 3vw, 20px);
             font-weight: bold;
-            color: #333;
-            z-index: 5;
+            color: #ffffff;
+            text-shadow: 1px 1px 2px black;
+            z-index: 10;
             pointer-events: none;
         }
 
-        /* 모바일 터치 버튼 UI */
+        /* 모바일 터치 컨트롤 (하단 UI) */
         #mobile-controls {
             position: absolute;
-            bottom: 20px;
+            bottom: 15px;
             left: 0;
             width: 100%;
             display: flex;
             justify-content: space-between;
-            padding: 0 30px;
+            padding: 0 20px;
             box-sizing: border-box;
-            z-index: 5;
-            pointer-events: none; /* 빈 공간 터치 무시 */
+            z-index: 15;
+            pointer-events: none;
         }
         .control-btn {
-            width: 70px;
-            height: 70px;
-            background: rgba(255, 255, 255, 0.4);
+            width: clamp(60px, 15vw, 80px);
+            height: clamp(60px, 15vw, 80px);
+            background: rgba(255, 255, 255, 0.3);
             border: 3px solid rgba(255, 255, 255, 0.8);
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 18px;
+            font-size: clamp(14px, 3vw, 18px);
             font-weight: bold;
-            color: #333;
+            color: white;
+            text-shadow: 1px 1px 2px black;
             user-select: none;
-            pointer-events: auto; /* 버튼 부분만 터치 활성화 */
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            pointer-events: auto; /* 버튼만 터치 가능하게 */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
         .control-btn:active {
-            background: rgba(255, 255, 255, 0.7);
-            transform: scale(0.95);
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(0.9);
         }
+        
+        #btn-skill { border-color: #fca5a5; }
+        #btn-jump { border-color: #93c5fd; }
     </style>
 </head>
 <body>
 
-<div id="game-container">
+<div id="game-wrapper">
     <canvas id="gameCanvas" width="800" height="400"></canvas>
 
+    <!-- 인게임 HUD -->
     <div id="hud" class="hidden">
         <div id="scoreDisplay">점수: 0</div>
         <div id="skillDisplay">스킬: 준비완료</div>
     </div>
 
+    <!-- 터치 버튼 -->
     <div id="mobile-controls" class="hidden">
-        <div id="btn-skill" class="control-btn">스킬</div>
-        <div id="btn-jump" class="control-btn">점프</div>
+        <div id="btn-skill" class="control-btn">스킬<br>(Z)</div>
+        <div id="btn-jump" class="control-btn">점프<br>(Space)</div>
     </div>
 
+    <!-- 시작 화면 -->
     <div id="start-screen" class="ui-screen">
         <h1>SisterSquad Run</h1>
-        <p>캐릭터를 선택하세요! (모바일: 화면 버튼 터치 / PC: Space점프, Z스킬)</p>
+        <p>캐릭터를 선택하고 어둠의 기사를 피하세요!</p>
         <div class="character-select">
-            <button id="btn-yuli" class="char-btn">언니 율이 💙<br><span style="font-size:14px;font-weight:normal;">스킬: 보호막 (1회 방어)</span></button>
-            <button id="btn-jeongi" class="char-btn">동생 정이 🔥<br><span style="font-size:14px;font-weight:normal;">스킬: 돌진 (적 파괴)</span></button>
+            <button id="btn-yuli" class="char-btn">언니 율이 💙<br><span style="font-size:14px;font-weight:normal;">보호막 (1회 방어)</span></button>
+            <button id="btn-jeongi" class="char-btn">동생 정이 🔥<br><span style="font-size:14px;font-weight:normal;">돌진 (적 돌파)</span></button>
         </div>
     </div>
 
+    <!-- 게임 오버 화면 -->
     <div id="gameover-screen" class="ui-screen hidden">
         <h1 style="color: #ef4444;">Game Over</h1>
-        <p>최종 점수: <span id="finalScore">0</span></p>
+        <p>최종 점수: <span id="finalScore" style="color:#fde047; font-weight:bold; font-size:24px;">0</span></p>
         <button id="btn-restart" class="char-btn">다시 하기</button>
     </div>
 </div>
 
 <script>
     // ==========================================
-    // 🎨 이미지 세팅 (요청하신 경로 반영)
+    // 🎨 이미지 경로 설정 (실제 웹 서버 경로로 맞춰주세요)
     // ==========================================
     const IMAGE_URLS = {
         yuli: "images/game_yul.jpg",
         jeongi: "images/game_jung.jpg",
-        enemy: "", // 적이나 요정 이미지도 나중에 images/ 폴더에 넣고 경로를 적어주세요!
-        fairy: ""  
+        enemy: "images/enemy.png",
+        fairy: "images/fairy.png"
     };
 
+    // 이미지 로딩 상태 추적 (이미지가 없어도 게임이 멈추지 않도록 처리)
     const images = {};
+    const imgLoaded = {};
+
     for (let key in IMAGE_URLS) {
-        if(IMAGE_URLS[key]) {
-            images[key] = new Image();
-            images[key].src = IMAGE_URLS[key];
-        }
+        images[key] = new Image();
+        images[key].src = IMAGE_URLS[key];
+        images[key].onload = () => { imgLoaded[key] = true; };
+        images[key].onerror = () => { imgLoaded[key] = false; }; // 로드 실패 시 대체 그래픽 사용
     }
 
     // ==========================================
-    // 게임 로직
+    // ⚙️ 게임 엔진 및 변수 세팅
     // ==========================================
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
     
+    // UI 요소들
     const startScreen = document.getElementById('start-screen');
     const gameoverScreen = document.getElementById('gameover-screen');
     const hud = document.getElementById('hud');
@@ -197,49 +221,60 @@
     let isPlaying = false;
     let score = 0;
     let frame = 0;
-    let gameSpeed = 5;
+    let gameSpeed = 6;
 
+    // 플레이어 객체
     const player = {
-        x: 50,
+        x: 80,
         y: 300,
         width: 50,
         height: 60,
         dy: 0,
-        jumpForce: -12,
+        jumpForce: -13,
         originalY: 300,
-        grounded: false,
+        grounded: true,
         character: 'yuli',
         shieldActive: false,
         dashActive: false,
         skillCooldown: 0,
+        maxCooldown: 240, // 4초 (60FPS 기준)
         
         draw: function() {
-            if (images[this.character] && images[this.character].complete) {
+            // 1. 캐릭터 그리기 (이미지 우선, 실패 시 이모지/도형)
+            if (imgLoaded[this.character]) {
                 ctx.drawImage(images[this.character], this.x, this.y, this.width, this.height);
             } else {
                 ctx.fillStyle = this.character === 'yuli' ? '#3b82f6' : '#ef4444';
                 ctx.fillRect(this.x, this.y, this.width, this.height);
+                ctx.fillStyle = 'white';
+                ctx.font = '24px Arial';
+                ctx.fillText(this.character === 'yuli' ? '👧💙' : '👧🔥', this.x, this.y + 35);
             }
 
-            // 보호막 이펙트
+            // 2. 스킬 이펙트: 율이(보호막)
             if (this.shieldActive) {
                 ctx.beginPath();
-                ctx.arc(this.x + this.width/2, this.y + this.height/2, 40, 0, Math.PI * 2);
-                ctx.strokeStyle = '#3b82f6';
-                ctx.lineWidth = 4;
+                ctx.arc(this.x + this.width/2, this.y + this.height/2, 45, 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(59, 130, 246, 0.8)';
+                ctx.lineWidth = 5;
                 ctx.stroke();
+                ctx.fillStyle = 'rgba(59, 130, 246, 0.2)';
+                ctx.fill();
             }
-            // 돌진 이펙트
+            
+            // 3. 스킬 이펙트: 정이(돌진 잔상)
             if (this.dashActive) {
-                ctx.fillStyle = 'rgba(239, 68, 68, 0.5)';
-                ctx.fillRect(this.x - 50, this.y, 50, this.height);
+                ctx.fillStyle = 'rgba(239, 68, 68, 0.4)';
+                ctx.fillRect(this.x - 40, this.y, this.width, this.height);
+                ctx.fillRect(this.x - 80, this.y, this.width, this.height);
             }
         },
         
         update: function() {
+            // 중력 적용
             this.y += this.dy;
             if (this.y < this.originalY) {
-                this.dy += 0.6;
+                this.dy += 0.6; // 중력값
                 this.grounded = false;
             } else {
                 this.dy = 0;
@@ -247,11 +282,12 @@
                 this.grounded = true;
             }
 
-            if (this.dashActive) {
+            // 돌진 시간 감소
+            if (this.dashActive > 0) {
                 this.dashActive--;
-                if(this.dashActive <= 0) this.dashActive = false;
             }
 
+            // 쿨다운 관리
             if (this.skillCooldown > 0) {
                 this.skillCooldown--;
                 if (this.skillCooldown === 0) skillDisplay.innerText = "스킬: 준비완료!";
@@ -270,70 +306,92 @@
 
             if (this.character === 'yuli') {
                 this.shieldActive = true;
-                skillDisplay.innerText = "상태: 보호막 켜짐!";
-                this.skillCooldown = 300; 
+                skillDisplay.innerText = "상태: 보호막 ON";
+                this.skillCooldown = this.maxCooldown; 
             } else if (this.character === 'jeongi') {
-                this.dashActive = 60; 
-                skillDisplay.innerText = "상태: 무적 돌진!";
-                this.skillCooldown = 300;
+                this.dashActive = 45; // 0.75초 돌진
+                skillDisplay.innerText = "상태: 돌진 무적!";
+                this.skillCooldown = this.maxCooldown;
             }
         }
     };
 
+    // 적과 아이템 리스트
     let obstacles = [];
     let fairies = [];
 
+    // 적(어둠의 기사단) 클래스
     class Obstacle {
         constructor() {
             this.width = 40;
             this.height = 50;
             this.x = canvas.width;
             this.y = 360 - this.height;
+            this.passed = false;
         }
         draw() {
-            ctx.fillStyle = '#1e293b';
-            ctx.fillRect(this.x, this.y, this.width, this.height);
-            ctx.fillStyle = 'white';
-            ctx.font = '25px Arial';
-            ctx.fillText('🗡️', this.x + 5, this.y + 35);
+            if (imgLoaded['enemy']) {
+                ctx.drawImage(images['enemy'], this.x, this.y, this.width, this.height);
+            } else {
+                ctx.fillStyle = '#334155';
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+                ctx.fillStyle = 'white';
+                ctx.font = '24px Arial';
+                ctx.fillText('🗡️', this.x + 5, this.y + 35);
+            }
         }
-        update() { this.x -= gameSpeed; }
+        update() { 
+            // 정이 돌진 중에는 게임이 더 빨리 스크롤됨
+            let speedMulti = player.dashActive > 0 ? 2 : 1;
+            this.x -= gameSpeed * speedMulti; 
+        }
     }
 
+    // 요정(점수 아이템) 클래스
     class Fairy {
         constructor() {
             this.width = 30;
             this.height = 30;
             this.x = canvas.width;
-            this.y = Math.random() * 150 + 100; 
+            this.y = Math.random() * 120 + 100; // 공중 랜덤 높이
         }
         draw() {
-            ctx.fillStyle = '#ffb7d5';
-            ctx.beginPath();
-            ctx.arc(this.x + 15, this.y + 15, 15, 0, Math.PI*2);
-            ctx.fill();
-            ctx.fillStyle = 'black';
-            ctx.font = '20px Arial';
-            ctx.fillText('🧚', this.x + 2, this.y + 22);
+            if (imgLoaded['fairy']) {
+                ctx.drawImage(images['fairy'], this.x, this.y, this.width, this.height);
+            } else {
+                ctx.fillStyle = '#fbcfe8';
+                ctx.beginPath();
+                ctx.arc(this.x + 15, this.y + 15, 15, 0, Math.PI*2);
+                ctx.fill();
+                ctx.fillStyle = 'black';
+                ctx.font = '18px Arial';
+                ctx.fillText('🧚', this.x + 4, this.y + 22);
+            }
         }
-        update() { this.x -= gameSpeed; }
+        update() { 
+            let speedMulti = player.dashActive > 0 ? 2 : 1;
+            this.x -= gameSpeed * speedMulti; 
+        }
     }
 
     // ==========================================
-    // 컨트롤 (PC & 모바일)
+    // 🎮 입력 컨트롤 (PC & 모바일)
     // ==========================================
-    // PC 키보드
     window.addEventListener('keydown', (e) => {
         if (!isPlaying) return;
-        if (e.code === 'Space' || e.code === 'ArrowUp') player.jump();
-        if (e.code === 'KeyZ') player.useSkill();
+        if (e.code === 'Space' || e.code === 'ArrowUp') {
+            e.preventDefault(); // 스크롤 방지
+            player.jump();
+        }
+        if (e.code === 'KeyZ') {
+            player.useSkill();
+        }
     });
 
-    // 모바일 터치 버튼
     const btnJump = document.getElementById('btn-jump');
     const btnSkill = document.getElementById('btn-skill');
 
-    // 마우스 및 터치 이벤트 동시 바인딩
+    // 터치와 마우스 클릭 모두 지원
     ['touchstart', 'mousedown'].forEach(evt => {
         btnJump.addEventListener(evt, (e) => {
             e.preventDefault(); 
@@ -345,13 +403,17 @@
         });
     });
 
+    // ==========================================
+    // 🔄 게임 루프 및 충돌 처리
+    // ==========================================
     function initGame(characterChoice) {
         player.character = characterChoice;
         player.y = player.originalY;
         player.dy = 0;
         player.shieldActive = false;
-        player.dashActive = false;
+        player.dashActive = 0;
         player.skillCooldown = 0;
+        
         obstacles = [];
         fairies = [];
         score = 0;
@@ -362,9 +424,11 @@
         startScreen.classList.add('hidden');
         gameoverScreen.classList.add('hidden');
         hud.classList.remove('hidden');
-        mobileControls.classList.remove('hidden'); // 모바일 버튼 표시
+        mobileControls.classList.remove('hidden');
         skillDisplay.innerText = "스킬: 준비완료!";
         
+        // 이전 루프 취소
+        if(gameLoop) cancelAnimationFrame(gameLoop);
         animate();
     }
 
@@ -374,15 +438,17 @@
         finalScoreDisplay.innerText = Math.floor(score);
         gameoverScreen.classList.remove('hidden');
         hud.classList.add('hidden');
-        mobileControls.classList.add('hidden'); // 모바일 버튼 숨김
+        mobileControls.classList.add('hidden');
     }
 
-    function checkCollision(rect1, rect2) {
+    function checkCollision(r1, r2) {
+        // 충돌 박스를 약간 작게 만들어 억울한 죽음 방지 (Hitbox 조정)
+        let margin = 10;
         return (
-            rect1.x < rect2.x + rect2.width &&
-            rect1.x + rect1.width > rect2.x &&
-            rect1.y < rect2.y + rect2.height &&
-            rect1.y + rect1.height > rect2.y
+            r1.x + margin < r2.x + r2.width &&
+            r1.x + r1.width - margin > r2.x &&
+            r1.y + margin < r2.y + r2.height &&
+            r1.y + r1.height - margin > r2.y
         );
     }
 
@@ -390,14 +456,17 @@
         if (!isPlaying) return;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
-        // 바닥 그리기
-        ctx.fillStyle = '#65a30d';
-        ctx.fillRect(0, 360, canvas.width, 40);
+        // 배경 요소 (산, 숲 등 간단한 표현)
+        ctx.fillStyle = '#064e3b';
+        ctx.fillRect(0, 360, canvas.width, 40); // 바닥
 
         player.update();
         player.draw();
 
-        if (frame % Math.max(60, 120 - Math.floor(gameSpeed * 5)) === 0) {
+        // 1. 적(장애물) 생성 및 로직
+        // 정이의 돌진 중에는 장애물이 더 빨리 다가오도록 프레임 간격 조절
+        let spawnRate = Math.max(50, 100 - Math.floor(gameSpeed * 4));
+        if (frame % spawnRate === 0) {
             obstacles.push(new Obstacle());
         }
 
@@ -406,28 +475,37 @@
             obs.update();
             obs.draw();
 
+            // 플레이어와 충돌 확인
             if (checkCollision(player, obs)) {
-                if (player.dashActive) {
+                if (player.dashActive > 0) {
+                    // 정이 스킬: 적 파괴 후 점수 획득
                     obstacles.splice(i, 1);
                     score += 50;
                     i--;
+                    continue;
                 } else if (player.shieldActive) {
+                    // 율이 스킬: 보호막 깨짐 + 무적 생존
                     player.shieldActive = false;
                     obstacles.splice(i, 1);
                     i--;
+                    continue;
                 } else {
                     gameOver();
                     return;
                 }
             }
 
+            // 화면 밖으로 나간 적 삭제
             if (obs.x + obs.width < 0) {
                 obstacles.splice(i, 1);
                 i--;
             }
         }
 
-        if (frame % 150 === 0) fairies.push(new Fairy());
+        // 2. 요정(아이템) 생성 및 로직
+        if (frame % 130 === 0) {
+            fairies.push(new Fairy());
+        }
 
         for (let i = 0; i < fairies.length; i++) {
             let f = fairies[i];
@@ -435,7 +513,7 @@
             f.draw();
 
             if (checkCollision(player, f)) {
-                score += 100; 
+                score += 100; // 요정 획득
                 fairies.splice(i, 1);
                 i--;
             } else if (f.x + f.width < 0) {
@@ -444,17 +522,23 @@
             }
         }
 
+        // 3. 점수 및 상태 업데이트
         score += 0.1;
         scoreDisplay.innerText = `점수: ${Math.floor(score)}`;
-        if (frame % 300 === 0) gameSpeed += 0.2; 
-        if (!player.shieldActive && !player.dashActive && player.skillCooldown > 0) {
+        
+        // 쿨다운 UI 텍스트 갱신
+        if (!player.shieldActive && player.dashActive === 0 && player.skillCooldown > 0) {
              skillDisplay.innerText = `쿨다운: ${Math.ceil(player.skillCooldown/60)}초`;
         }
+
+        // 난이도 증가
+        if (frame % 300 === 0) gameSpeed += 0.3;
 
         frame++;
         gameLoop = requestAnimationFrame(animate);
     }
 
+    // 메뉴 버튼 이벤트 바인딩
     document.getElementById('btn-yuli').addEventListener('click', () => initGame('yuli'));
     document.getElementById('btn-jeongi').addEventListener('click', () => initGame('jeongi'));
     document.getElementById('btn-restart').addEventListener('click', () => {

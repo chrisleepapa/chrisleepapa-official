@@ -7,6 +7,7 @@ self.addEventListener('install', (event) => {
 // 서비스 워커 활성화 이벤트
 self.addEventListener('activate', (event) => {
   console.log('ChrisPapa Service Worker: Activated');
+  event.waitUntil(clients.claim());
 });
 
 // 웹 페이지 요청 시 처리 (네트워크 우선 전략)

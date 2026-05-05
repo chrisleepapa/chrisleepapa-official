@@ -1,318 +1,338 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SisterSquad 2.5D Run</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <style>
-        body { margin: 0; overflow: hidden; background-color: #0f172a; font-family: sans-serif; touch-action: none; }
-        #game-container { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; }
-        
-        #ui-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10; }
-        .screen {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.85); display: flex; flex-direction: column;
-            justify-content: center; align-items: center; pointer-events: auto; color: white; text-align: center;
-        }
-        h1 { color: #FFB7D5; font-size: 40px; margin-bottom: 10px; text-shadow: 0 4px 10px rgba(0,0,0,0.8); }
-        p { font-size: 18px; margin-bottom: 30px; color: #cbd5e1; }
-        .char-select { display: flex; gap: 20px; }
-        .btn {
-            background: rgba(255,255,255,0.1); border: 2px solid #fff; padding: 15px 30px;
-            border-radius: 12px; font-size: 20px; font-weight: bold; color: white; cursor: pointer; transition: 0.2s;
-        }
-        .btn:active { transform: scale(0.95); }
-        #btn-yuli { border-color: #3b82f6; color: #60a5fa; }
-        #btn-jeongi { border-color: #ef4444; color: #f87171; }
-        
-        #hud { position: absolute; top: 20px; left: 20px; right: 20px; display: flex; justify-content: space-between; font-size: 24px; font-weight: bold; color: #fff; text-shadow: 2px 2px 4px #000; }
-        .hidden { display: none !important; }
-        
-        #touch-zones { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; display: flex; pointer-events: auto; z-index: 5; }
-        .zone { flex: 1; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>SisterSquad</title>
+
+<script src="https://cdn.jsdelivr.net/npm/phaser@3.70.0/dist/phaser.min.js"></script>
+
+<style>
+body {
+  margin:0;
+  background:#000;
+  overflow:hidden;
+}
+
+/* UI */
+#ui {
+  position:absolute;
+  bottom:20px;
+  width:100%;
+  display:flex;
+  justify-content:space-around;
+}
+
+button {
+  width:70px;
+  height:70px;
+  border-radius:50%;
+  border:none;
+  background:#222;
+  color:white;
+  font-size:14px;
+}
+
+#switchBtn {
+  position:absolute;
+  top:10px;
+  right:10px;
+}
+</style>
 </head>
+
 <body>
 
-<div id="game-container"></div>
+<button id="switchBtn">전환</button>
 
-<div id="ui-layer">
-    <div id="hud" class="hidden">
-        <div id="score">점수: 0</div>
-        <div id="multiplier" style="color: #FFB7D5;">요정: 0</div>
-    </div>
-
-    <div id="touch-zones" class="hidden">
-        <div id="zone-left" class="zone"></div>
-        <div id="zone-right" class="zone"></div>
-    </div>
-
-    <div id="start-screen" class="screen">
-        <h1>SisterSquad 2.5D</h1>
-        <p>2D 캐릭터와 3D 공간의 만남!<br>방향키 ◀ ▶ 또는 화면 좌/우 터치로 이동하세요.</p>
-        <div class="char-select">
-            <button id="btn-yuli" class="btn">언니 율이 💙</button>
-            <button id="btn-jeongi" class="btn">동생 정이 🔥</button>
-        </div>
-    </div>
-
-    <div id="gameover-screen" class="screen hidden">
-        <h1 style="color: #ef4444;">Game Over</h1>
-        <p>최종 점수: <span id="finalScore" style="color:#fde047; font-size:30px;">0</span></p>
-        <button id="btn-restart" class="btn">다시 달리기</button>
-    </div>
+<div id="ui">
+  <button onclick="skill1()">S1</button>
+  <button onclick="skill2()">S2</button>
 </div>
 
 <script>
-    // ==========================================
-    // 🎨 2D 이미지 에셋 경로 설정 (배경이 투명한 PNG 추천)
-    // ==========================================
-    const ASSETS = {
-        yuli: "images/game_yul.png",   // 율이 뛰는 모습
-        jeongi: "images/game_jung.png", // 정이 뛰는 모습
-        fairy: "images/fairy.png"       // 요정
-    };
+let scene;
 
-    // 이미지 로드 실패 시 보여줄 임시 텍스처 (에러 방지용)
-    function createFallbackTexture(colorText) {
-        const canvas = document.createElement('canvas');
-        canvas.width = 256; canvas.height = 256;
-        const context = canvas.getContext('2d');
-        context.fillStyle = colorText;
-        context.fillRect(0, 0, 256, 256);
-        context.fillStyle = "white";
-        context.font = "40px Arial";
-        context.textAlign = "center";
-        context.fillText("이미지", 128, 128);
-        return new THREE.CanvasTexture(canvas);
-    }
+class Game extends Phaser.Scene {
 
-    const textureLoader = new THREE.TextureLoader();
-    const textures = {
-        yuli: textureLoader.load(ASSETS.yuli, undefined, undefined, () => { textures.yuli = createFallbackTexture('#3b82f6'); }),
-        jeongi: textureLoader.load(ASSETS.jeongi, undefined, undefined, () => { textures.jeongi = createFallbackTexture('#ef4444'); }),
-        fairy: textureLoader.load(ASSETS.fairy, undefined, undefined, () => { textures.fairy = createFallbackTexture('#ffb7d5'); })
-    };
+constructor(){ super("game"); }
 
-    // ==========================================
-    // 🌍 3D 씬(Scene) 세팅
-    // ==========================================
-    const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x87CEEB, 0.015);
-    scene.background = new THREE.Color(0x87CEEB);
+preload(){
 
-    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.set(0, 4, 8); // 약간 위에서 내려다보는 시점
+// ✅ 네 구조 기준 (images 폴더)
+this.load.spritesheet("yul","images/yul_spritesheet.png",{frameWidth:256,frameHeight:256});
+this.load.spritesheet("jeong","images/jeong_spritesheet.png",{frameWidth:256,frameHeight:256});
+this.load.spritesheet("fairy","images/fairy.png",{frameWidth:128,frameHeight:128});
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.shadowMap.enabled = true;
-    document.getElementById('game-container').appendChild(renderer.domElement);
+// 기본 리소스
+this.load.image("bullet","https://labs.phaser.io/assets/sprites/bullets/bullet7.png");
+this.load.image("bane","https://labs.phaser.io/assets/sprites/robot.png");
+this.load.image("crown","https://labs.phaser.io/assets/sprites/space-baddie.png");
 
-    // 조명
-    scene.add(new THREE.AmbientLight(0xffffff, 0.7));
-    const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    dirLight.position.set(-10, 20, 10);
-    dirLight.castShadow = true;
-    scene.add(dirLight);
+}
 
-    // 바닥 (초원)
-    const groundMat = new THREE.MeshStandardMaterial({ color: 0x4ade80 });
-    const ground = new THREE.Mesh(new THREE.PlaneGeometry(50, 200), groundMat);
-    ground.rotation.x = -Math.PI / 2;
-    ground.position.z = -50;
-    ground.receiveShadow = true;
-    scene.add(ground);
+create(){
 
-    // 3차선 도로 (흙길 느낌)
-    const roadMat = new THREE.MeshStandardMaterial({ color: 0xd97706 });
-    const road = new THREE.Mesh(new THREE.PlaneGeometry(9, 200), roadMat);
-    road.rotation.x = -Math.PI / 2;
-    road.position.z = -50;
-    road.position.y = 0.01;
-    road.receiveShadow = true;
-    scene.add(road);
+scene = this;
 
-    // ==========================================
-    // 👧 2.5D 캐릭터(스프라이트) 생성
-    // ==========================================
-    let playerGroup = new THREE.Group();
-    let playerSprite;
-    scene.add(playerGroup);
+this.current = "yul";
 
-    function createCharacter(type) {
-        while(playerGroup.children.length > 0) playerGroup.remove(playerGroup.children[0]);
+/* 플레이어 */
+this.player = this.physics.add.sprite(180,500,"yul").setScale(0.7);
 
-        // 1. 2D 이미지 스프라이트 생성 (항상 카메라를 바라봄)
-        const spriteMat = new THREE.SpriteMaterial({ 
-            map: textures[type], 
-            color: 0xffffff, 
-            transparent: true // PNG 투명도 적용
-        });
-        playerSprite = new THREE.Sprite(spriteMat);
-        
-        // 이미지 비율에 맞게 스케일 조정 (가로 2, 세로 3 정도의 직사각형)
-        playerSprite.scale.set(2, 3, 1);
-        playerSprite.position.set(0, 1.5, 0); // 캐릭터 중심점 올리기
-        
-        // 2. 투명한 투명 박스를 추가해서 '그림자'만 생성하게 하는 고급 트릭!
-        // (Sprite는 기본적으로 그림자를 만들지 못함)
-        const shadowBox = new THREE.Mesh(
-            new THREE.BoxGeometry(1.5, 3, 0.5),
-            new THREE.MeshBasicMaterial({ visible: false }) // 보이지 않지만
-        );
-        shadowBox.position.set(0, 1.5, 0);
-        shadowBox.castShadow = true; // 그림자는 던짐
+/* 그룹 */
+this.bullets = this.physics.add.group();
+this.enemyBullets = this.physics.add.group();
 
-        playerGroup.add(playerSprite);
-        playerGroup.add(shadowBox);
-        playerGroup.position.set(0, 0, 0);
-    }
+/* 상태 */
+this.hp = 100;
+this.score = 0;
+this.baneDead = false;
 
-    // ==========================================
-    // 🎮 게임 로직 & 오브젝트 생성
-    // ==========================================
-    let isPlaying = false, score = 0, fairiesCount = 0, speed = 0.3;
-    const LANES = [-3, 0, 3];
-    let currentLaneIndex = 1, targetX = LANES[currentLaneIndex];
-    let objects = [], spawnTimer;
+/* 애니메이션 */
+this.createAnim();
+this.player.play("yul_run");
 
-    // 3D 장애물 (어둠의 기사단은 3D 상자로 유지하여 입체감 부여)
-    const obsGeo = new THREE.BoxGeometry(1.5, 2, 1.5);
-    const obsMat = new THREE.MeshStandardMaterial({ color: 0x1e293b });
+/* 요정 */
+this.fairy = this.add.sprite(0,0,"fairy").play("fairy_fly");
+this.angle = 0;
 
-    function spawnObject() {
-        if (!isPlaying) return;
-        const laneIdx = Math.floor(Math.random() * 3);
-        const zPos = -100;
-        const isFairy = Math.random() < 0.3; // 요정 등장 확률 30%
+/* 입력 */
+this.input.on("pointerdown", ()=> this.player.setVelocityY(-400));
 
-        let obj;
-        if (isFairy) {
-            // 요정도 2.5D 스프라이트로 적용
-            const fairyMat = new THREE.SpriteMaterial({ map: textures.fairy, transparent: true });
-            obj = new THREE.Sprite(fairyMat);
-            obj.scale.set(1.5, 1.5, 1);
-            obj.position.set(LANES[laneIdx], 1, zPos);
-            obj.userData = { type: 'fairy' };
-        } else {
-            // 장애물은 3D 유지
-            obj = new THREE.Mesh(obsGeo, obsMat);
-            obj.position.set(LANES[laneIdx], 1, zPos);
-            obj.castShadow = true;
-            obj.userData = { type: 'obstacle' };
-        }
+/* 자동 공격 */
+this.time.addEvent({
+  delay:600,
+  loop:true,
+  callback:()=>this.attack()
+});
 
-        scene.add(obj);
-        objects.push(obj);
-    }
+/* 캐릭터 전환 */
+document.getElementById("switchBtn").onclick = ()=>this.switchChar();
 
-    // ==========================================
-    // 🕹️ 조작 컨트롤
-    // ==========================================
-    function moveLeft() { if (currentLaneIndex > 0) targetX = LANES[--currentLaneIndex]; }
-    function moveRight() { if (currentLaneIndex < 2) targetX = LANES[++currentLaneIndex]; }
+}
 
-    window.addEventListener('keydown', (e) => {
-        if (!isPlaying) return;
-        if (e.key === 'ArrowLeft' || e.key === 'a') moveLeft();
-        if (e.key === 'ArrowRight' || e.key === 'd') moveRight();
-    });
+update(){
 
-    document.getElementById('zone-left').addEventListener('touchstart', (e) => { e.preventDefault(); if(isPlaying) moveLeft(); });
-    document.getElementById('zone-right').addEventListener('touchstart', (e) => { e.preventDefault(); if(isPlaying) moveRight(); });
+this.player.x = 180;
 
-    window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    });
+/* 요정 orbit */
+this.angle += 0.05;
+this.fairy.x = this.player.x + Math.cos(this.angle)*40;
+this.fairy.y = this.player.y + Math.sin(this.angle)*20;
 
-    // ==========================================
-    // 🔄 게임 루프 (애니메이션)
-    // ==========================================
-    function startGame(charType) {
-        createCharacter(charType);
-        score = 0; fairiesCount = 0; speed = 0.3;
-        currentLaneIndex = 1; targetX = LANES[currentLaneIndex];
-        objects.forEach(obj => scene.remove(obj)); objects = [];
-        isPlaying = true;
+/* 총알 이동 */
+this.bullets.children.iterate(b=> b && (b.x+=8));
+this.enemyBullets.children.iterate(b=> b && (b.y+=4));
 
-        document.getElementById('start-screen').classList.add('hidden');
-        document.getElementById('gameover-screen').classList.add('hidden');
-        document.getElementById('hud').classList.remove('hidden');
-        document.getElementById('touch-zones').classList.remove('hidden');
+/* 보스 등장 */
+if(this.score>50 && !this.bane) this.spawnBane();
+if(this.score>150 && this.baneDead && !this.crown) this.spawnCrown();
 
-        if(spawnTimer) clearInterval(spawnTimer);
-        spawnTimer = setInterval(spawnObject, 800);
-    }
+}
 
-    function animate() {
-        requestAnimationFrame(animate);
+/* 애니메이션 */
+createAnim(){
 
-        if (isPlaying) {
-            // 1. 부드러운 차선 이동
-            playerGroup.position.x += (targetX - playerGroup.position.x) * 0.15;
-            camera.position.x = playerGroup.position.x * 0.4;
+this.anims.create({
+  key:"yul_run",
+  frames:this.anims.generateFrameNumbers("yul",{start:0,end:3}),
+  frameRate:8, repeat:-1
+});
 
-            // 2. 스프라이트 달리기 애니메이션 효과 (위아래로 들썩임)
-            const time = Date.now() * 0.01;
-            if(playerSprite) {
-                // 달리는 속도(speed)에 비례해서 더 빨리 들썩거리도록 계산
-                playerSprite.position.y = 1.5 + Math.abs(Math.sin(time * speed * 20)) * 0.3;
-            }
+this.anims.create({
+  key:"yul_attack",
+  frames:this.anims.generateFrameNumbers("yul",{start:1,end:2}),
+  frameRate:12
+});
 
-            score += 0.5; speed += 0.0001;
-            document.getElementById('score').innerText = `점수: ${Math.floor(score)}`;
-            document.getElementById('multiplier').innerText = `요정: ${fairiesCount}`;
+this.anims.create({
+  key:"jeong_run",
+  frames:this.anims.generateFrameNumbers("jeong",{start:0,end:3}),
+  frameRate:8, repeat:-1
+});
 
-            // 3. 장애물 처리
-            for (let i = objects.length - 1; i >= 0; i--) {
-                let obj = objects[i];
-                obj.position.z += speed;
+this.anims.create({
+  key:"jeong_attack",
+  frames:this.anims.generateFrameNumbers("jeong",{start:1,end:2}),
+  frameRate:12
+});
 
-                // 요정 둥실둥실 효과
-                if (obj.userData.type === 'fairy') {
-                    obj.position.y = 1.5 + Math.sin(time * 0.5) * 0.5;
-                }
+this.anims.create({
+  key:"fairy_fly",
+  frames:this.anims.generateFrameNumbers("fairy",{start:0,end:1}),
+  frameRate:6, repeat:-1
+});
 
-                // 충돌 판정
-                const distZ = Math.abs(obj.position.z - playerGroup.position.z);
-                const distX = Math.abs(obj.position.x - playerGroup.position.x);
+}
 
-                if (distZ < 1.0 && distX < 1.0) {
-                    if (obj.userData.type === 'obstacle') {
-                        isPlaying = false; clearInterval(spawnTimer);
-                        document.getElementById('finalScore').innerText = Math.floor(score);
-                        document.getElementById('gameover-screen').classList.remove('hidden');
-                        document.getElementById('hud').classList.add('hidden');
-                        document.getElementById('touch-zones').classList.add('hidden');
-                    } else if (obj.userData.type === 'fairy') {
-                        fairiesCount++; score += 100;
-                        scene.remove(obj); objects.splice(i, 1);
-                        continue;
-                    }
-                }
+/* 공격 */
+attack(){
 
-                if (obj.position.z > 10) {
-                    scene.remove(obj); objects.splice(i, 1);
-                }
-            }
-        }
-        renderer.render(scene, camera);
-    }
+if(this.current==="yul"){
+  this.player.play("yul_attack",true);
+}else{
+  this.player.play("jeong_attack",true);
+}
 
-    // 버튼 이벤트
-    document.getElementById('btn-yuli').addEventListener('click', () => startGame('yuli'));
-    document.getElementById('btn-jeongi').addEventListener('click', () => startGame('jeongi'));
-    document.getElementById('btn-restart').addEventListener('click', () => {
-        document.getElementById('start-screen').classList.remove('hidden');
-        document.getElementById('gameover-screen').classList.add('hidden');
-    });
+let b = this.bullets.create(this.player.x+20,this.player.y,"bullet");
 
-    // 시작
-    window.onload = animate;
+/* 이펙트 */
+this.hitEffect(this.player.x+20,this.player.y);
+
+/* 복귀 */
+this.time.delayedCall(200,()=>{
+  this.player.play(this.current+"_run");
+});
+
+this.score += 1;
+
+}
+
+/* 스킬 */
+useSkill1(){
+if(this.current==="yul"){
+  this.cameras.main.setTint(0x9999ff);
+  this.time.delayedCall(800,()=>this.cameras.main.clearTint());
+}else{
+  this.player.setVelocityX(300);
+}
+}
+
+useSkill2(){
+if(this.current==="yul"){
+  let s=this.add.circle(this.player.x,this.player.y,40,0x00ffff,0.3);
+  this.tweens.add({targets:s,scale:1.5,alpha:0,duration:500,onComplete:()=>s.destroy()});
+}else{
+  this.enemyBullets.clear(true,true);
+}
+}
+
+/* 캐릭터 전환 */
+switchChar(){
+if(this.current==="yul"){
+  this.current="jeong";
+  this.player.setTexture("jeong");
+  this.player.play("jeong_run");
+}else{
+  this.current="yul";
+  this.player.setTexture("yul");
+  this.player.play("yul_run");
+}
+}
+
+/* -------- 베인 -------- */
+spawnBane(){
+
+this.bane = this.physics.add.sprite(300,200,"bane").setScale(2);
+this.baneHP = 100;
+
+this.time.addEvent({
+  delay:1200,
+  loop:true,
+  callback:()=>{
+
+    let b=this.enemyBullets.create(this.bane.x,this.bane.y,"bullet");
+    this.physics.moveToObject(b,this.player,200);
+
+    this.cameras.main.shake(100,0.01);
+  }
+});
+
+this.physics.add.overlap(this.bullets,this.bane,(b,e)=>{
+  b.destroy();
+  this.hitEffect(e.x,e.y);
+  this.baneHP -= 5;
+
+  if(this.baneHP<=0){
+    this.bane.destroy();
+    this.baneDead = true;
+  }
+});
+
+}
+
+/* -------- 크라운 -------- */
+spawnCrown(){
+
+this.crown = this.physics.add.sprite(180,150,"crown").setScale(2);
+this.crownHP = 200;
+this.phase = 1;
+
+this.cameras.main.shake(300,0.02);
+
+this.time.addEvent({
+  delay:1000,
+  loop:true,
+  callback:()=>this.crownPattern()
+});
+
+this.physics.add.overlap(this.bullets,this.crown,(b,c)=>{
+  b.destroy();
+  this.hitEffect(c.x,c.y);
+  this.crownHP -= 5;
+
+  if(this.crownHP<100 && this.phase===1){
+    this.phase = 2;
+    this.cameras.main.flash(300);
+  }
+
+  if(this.crownHP<=0){
+    this.victory();
+  }
+});
+
+}
+
+crownPattern(){
+
+/* 낙하 공격 */
+for(let i=0;i<4;i++){
+  let b=this.enemyBullets.create(Phaser.Math.Between(0,360),0,"bullet");
+  b.setVelocityY(this.phase===1?200:300);
+}
+
+/* 추적 */
+let b=this.enemyBullets.create(this.crown.x,this.crown.y,"bullet");
+this.physics.moveToObject(b,this.player,this.phase===1?200:300);
+
+}
+
+/* 이펙트 */
+hitEffect(x,y){
+let c=this.add.circle(x,y,8,0xffff00);
+this.tweens.add({
+  targets:c,
+  scale:2,
+  alpha:0,
+  duration:200,
+  onComplete:()=>c.destroy()
+});
+}
+
+/* 엔딩 */
+victory(){
+this.scene.pause();
+this.add.text(80,300,"🎉 VICTORY",{fontSize:"28px",fill:"#00ffcc"});
+}
+
+}
+
+/* Phaser 실행 */
+new Phaser.Game({
+type:Phaser.AUTO,
+width:360,
+height:640,
+backgroundColor:"#0f172a",
+physics:{default:"arcade",arcade:{gravity:{y:900}}},
+scene:Game
+});
+
+/* UI 연결 */
+function skill1(){ scene.useSkill1(); }
+function skill2(){ scene.useSkill2(); }
+
 </script>
+
 </body>
 </html>

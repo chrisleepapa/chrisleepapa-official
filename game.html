@@ -531,7 +531,7 @@ var PL=[
 ];
 
 /* ══ STATE ══ */
-var pos=[0,12],stars=[0,0],cur=0,dice=[1,2],skip=[false,false],powerUp=[false,false];
+var pos=[0,0],stars=[0,0],cur=0,dice=[1,2],skip=[false,false],powerUp=[false,false];
 var rolling=false,ev=null,over=false,moving=false;
 
 /* ══ BUILD BOARD ══ */
@@ -722,7 +722,8 @@ function cineDismiss(){
 }
 
 function checkAndTriggerEvent(sid, fromMove) {
-    var isAwake = (cur === 0 && sid === 0) || (cur === 1 && sid === 12);
+    // 율이와 정이 모두 0번 칸(출발점)에 도착했을 때 각성하도록 통합
+    var isAwake = (sid === 0);
     if(isAwake){
        powerUp[cur] = true;
        var cdata = {
@@ -837,7 +838,7 @@ function showWin(){
 }
 
 function resetGame(){
-  pos=[0,12];stars=[0,0];cur=0;dice=[1,2];skip=[false,false];powerUp=[false,false];
+  pos=[0,0];stars=[0,0];cur=0;dice=[1,2];skip=[false,false];powerUp=[false,false];
   rolling=false;ev=null;over=false;moving=false;
   document.getElementById('gov').classList.remove('vis');
   document.getElementById('eov').classList.remove('vis');

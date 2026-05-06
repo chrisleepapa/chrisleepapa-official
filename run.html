@@ -2,243 +2,228 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>🏃 Sistersquad: 2D 사이드 런 🏃</title>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+<title>SisterSquad Runner</title>
 <style>
-  :root { --gold: #FFD700; --pink: #FF69B4; }
-  body { margin: 0; overflow: hidden; background: #87CEEB; font-family: sans-serif; user-select: none; touch-action: none; }
-  
-  /* 게임 배경 (스크롤 애니메이션) */
-  #game-container {
-    position: relative; width: 100vw; height: 100vh;
-    background: linear-gradient(to bottom, #87CEEB 0%, #E0F7FA 100%);
-    overflow: hidden;
-  }
-  
-  /* 바닥 */
-  #ground {
-    position: absolute; bottom: 0; width: 200%; height: 20%;
-    background: repeating-linear-gradient(90deg, #4CAF50, #4CAF50 50px, #388E3C 50px, #388E3C 100px);
-    animation: scroll-ground 2s linear infinite;
-  }
-  @keyframes scroll-ground { from { left: 0; } to { left: -100px; } }
+body {
+  margin: 0;
+  overflow: hidden;
+  background: linear-gradient(#87CEEB, #fff);
+}
+canvas { display: block; }
 
-  /* 캐릭터 스프라이트 */
-  #player {
-    position: absolute; bottom: 20%; left: 100px;
-    width: 120px; height: 120px;
-    background-size: 500% 100%; background-repeat: no-repeat;
-    z-index: 10; transition: transform 0.1s;
-  }
-  .sprite-yul { background-image: url('/images/yul_spritesheet.png'); }
-  .sprite-jung { background-image: url('/images/jeong_spritesheet.png'); }
+#ui {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
 
-  /* 장애물 및 아이템 */
-  .obstacle { position: absolute; background: #5D4037; border-radius: 8px; z-index: 5; }
-  .key { position: absolute; width: 40px; height: 40px; background: var(--gold); border-radius: 50%; border: 3px solid #fff; z-index: 5; line-height: 40px; text-align: center; font-weight: bold; }
-
-  /* 컨트롤러 */
-  #controls {
-    position: absolute; bottom: 30px; width: 100%;
-    display: flex; justify-content: space-between; padding: 0 40px; box-sizing: border-box; z-index: 100;
-  }
-  .btn {
-    width: 100px; height: 100px; background: rgba(0,0,0,0.4); color: white;
-    border: 3px solid white; border-radius: 50%; font-size: 20px; font-weight: 900;
-    display: flex; align-items: center; justify-content: center; pointer-events: auto;
-  }
-  .btn:active { transform: scale(0.9); background: rgba(255,105,180,0.6); }
-
-  /* HUD */
-  #hud {
-    position: absolute; top: 20px; left: 20px; right: 20px;
-    display: flex; justify-content: space-between; z-index: 100;
-  }
-  .hud-item { background: rgba(0,0,0,0.6); color: white; padding: 10px 20px; border-radius: 20px; border: 2px solid var(--gold); font-weight: bold; }
-
-  .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 200; color: white; text-align: center; }
+/* 모바일 버튼 */
+.controls {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+.btn {
+  width: 70px;
+  height: 70px;
+  background: rgba(0,0,0,0.4);
+  color: white;
+  font-size: 24px;
+  border-radius: 50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
 </style>
 </head>
 <body>
 
-<div id="game-container">
-  <div id="ground"></div>
-  <div id="player" class="sprite-yul"></div>
-  
-  <div id="hud" style="display:none;">
-    <div class="hud-item">HP: <span id="hp-val">❤️❤️❤️</span></div>
-    <div class="hud-item">🔑 <span id="score-val">0 / 10</span></div>
-  </div>
+<canvas id="game"></canvas>
+<div id="ui"></div>
 
-  <div id="controls" style="display:none;">
-    <div id="btn-jump" class="btn">JUMP</div>
-    <div id="btn-slide" class="btn">SLIDE</div>
-  </div>
-</div>
-
-<div id="start-modal" class="modal">
-  <div style="background: #333; padding: 40px; border-radius: 20px; border: 3px solid var(--gold);">
-    <h1 style="font-family:'Fredoka One';">SISTERS SIDE-RUN!</h1>
-    <p>점프(2단 점프 가능)와 슬라이딩으로 열쇠를 모으세요!</p>
-    <div style="margin: 20px 0;">
-      <button onclick="selectChar('yul')" id="sel-yul" style="padding:10px 20px; background:var(--pink); border:none; color:white; font-weight:bold;">율이</button>
-      <button onclick="selectChar('jung')" id="sel-jung" style="padding:10px 20px; background:#555; border:none; color:white; font-weight:bold;">정이</button>
-    </div>
-    <button onclick="startGame()" style="background:var(--gold); border:none; padding:15px 40px; font-size:20px; font-weight:900; border-radius:10px;">START</button>
-  </div>
+<div class="controls">
+  <div class="btn" id="jump">⤴</div>
 </div>
 
 <script>
-let isPlaying = false;
-let score = 0, hp = 3;
-let selectedChar = 'yul';
-let jumpCount = 0;
-let isSliding = false;
-let playerY = 0;
-let playerVelocityY = 0;
-const gravity = 0.8;
-const jumpStrength = -16;
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+canvas.width = innerWidth;
+canvas.height = innerHeight;
 
-const player = document.getElementById('player');
-const scoreDisplay = document.getElementById('score-val');
-const hpDisplay = document.getElementById('hp-val');
+// ✅ 스프라이트 로드
+const yulImg = new Image();
+yulImg.src = "/images/yul_spritesheet.png";
 
-function selectChar(char) {
-  selectedChar = char;
-  player.className = 'sprite-' + char;
-  document.getElementById('sel-yul').style.background = char === 'yul' ? '#FF69B4' : '#555';
-  document.getElementById('sel-jung').style.background = char === 'jung' ? '#FF69B4' : '#555';
-}
+const jeongImg = new Image();
+jeongImg.src = "/images/jeong_spritesheet.png";
 
-function startGame() {
-  document.getElementById('start-modal').style.display = 'none';
-  document.getElementById('hud').style.display = 'flex';
-  document.getElementById('controls').style.display = 'flex';
-  isPlaying = true;
-  gameLoop();
-  spawnManager();
-}
+let currentCharacter = "yul";
 
-function handleJump() {
-  if (jumpCount < 2) { // 2단 점프
-    playerVelocityY = jumpStrength;
-    jumpCount++;
-    isSliding = false;
-  }
-}
+// 🎞️ 스프라이트 설정
+const FRAME_COUNT = 6;   // 👈 너 이미지에 맞게 수정
+let frameIndex = 0;
+let frameTick = 0;
 
-function handleSlide(active) {
-  if (playerY === 0) { // 바닥일 때만 슬라이딩 가능
-    isSliding = active;
-    if (active) {
-      player.style.height = "60px";
-      player.style.transform = "translateY(60px)";
-    } else {
-      player.style.height = "120px";
-      player.style.transform = "translateY(0)";
-    }
-  }
-}
-
-// 터치 및 키보드 이벤트
-document.getElementById('btn-jump').onpointerdown = (e) => { e.preventDefault(); handleJump(); };
-document.getElementById('btn-slide').onpointerdown = (e) => { e.preventDefault(); handleSlide(true); };
-document.getElementById('btn-slide').onpointerup = (e) => { e.preventDefault(); handleSlide(false); };
-
-window.onkeydown = (e) => {
-  if (e.code === 'ArrowUp' || e.code === 'Space') handleJump();
-  if (e.code === 'ArrowDown') handleSlide(true);
-};
-window.onkeyup = (e) => {
-  if (e.code === 'ArrowDown') handleSlide(false);
+// 플레이어
+let player = {
+  x: 150,
+  y: 300,
+  w: 100,
+  h: 100,
+  dy: 0,
+  jumping: false,
+  fairies: 0,
+  score: 0
 };
 
-function gameLoop() {
-  if (!isPlaying) return;
+let gravity = 0.7;
+let speed = 8;
+let objects = [];
+let gameOver = false;
 
-  // 중력 및 점프 처리
-  playerVelocityY += gravity;
-  playerY += playerVelocityY;
+// 점프
+function jump(){
+  if(!player.jumping){
+    player.dy = -15;
+    player.jumping = true;
+  }
+}
 
-  if (playerY > 0) {
-    playerY = 0;
-    playerVelocityY = 0;
-    jumpCount = 0;
+jumpBtn = document.getElementById("jump");
+jumpBtn.ontouchstart = jump;
+document.addEventListener("keydown", e=>{
+  if(e.key===" ") jump();
+  if(e.key==="1") currentCharacter="yul";
+  if(e.key==="2") currentCharacter="jeong";
+});
+
+// 오브젝트 생성 (오른쪽에서 등장 → 왼쪽으로 이동)
+function spawnObject(){
+  let types=["enemy","fairy","food","obstacle"];
+  let type=types[Math.floor(Math.random()*types.length)];
+
+  objects.push({
+    x: canvas.width + 50,
+    y: 300,
+    w: 60,
+    h: 60,
+    type
+  });
+}
+
+// 충돌
+function collide(a,b){
+  return a.x < b.x + b.w &&
+         a.x + a.w > b.x &&
+         a.y < b.y + b.h &&
+         a.y + a.h > b.y;
+}
+
+// 업데이트
+let frame=0;
+function update(){
+  if(gameOver) return;
+
+  frame++;
+
+  // 속도 증가
+  if(frame % 300 === 0) speed += 0.5;
+
+  // 점프 물리
+  player.dy += gravity;
+  player.y += player.dy;
+
+  if(player.y > 300){
+    player.y = 300;
+    player.jumping = false;
   }
 
-  player.style.bottom = (20 - (playerY / 5)) + "%";
+  // 생성
+  if(frame % 70 === 0) spawnObject();
 
-  // 스프라이트 애니메이션
-  const frame = Math.floor(Date.now() / 100) % 5;
-  player.style.backgroundPosition = `${frame * 25}% 0`;
+  // 이동 (횡스크롤 핵심)
+  objects.forEach(o => o.x -= speed);
 
-  // 오브젝트 이동 및 충돌
-  const obstacles = document.querySelectorAll('.obstacle, .key');
-  obstacles.forEach(obj => {
-    let x = parseFloat(obj.style.left);
-    x -= 8; // 속도
-    obj.style.left = x + 'px';
+  // 충돌
+  objects.forEach((o,i)=>{
+    if(collide(player,o)){
+      if(o.type==="fairy"){ player.fairies++; player.score+=50; }
+      else if(o.type==="food"){ player.score+=100; }
+      else if(o.type==="enemy"){ player.fairies=Math.max(0,player.fairies-1); }
+      else if(o.type==="obstacle"){ gameOver=true; }
 
-    // 충돌 체크
-    const pRect = player.getBoundingClientRect();
-    const oRect = obj.getBoundingClientRect();
-
-    if (pRect.right - 20 > oRect.left && pRect.left + 20 < oRect.right &&
-        pRect.bottom - 10 > oRect.top && pRect.top + 10 < oRect.bottom) {
-      if (obj.classList.contains('key')) {
-        score++;
-        scoreDisplay.innerText = score + " / 10";
-        obj.remove();
-        if (score >= 10) { alert("열쇠를 모두 모았습니다! 탈출 성공!"); location.reload(); }
-      } else {
-        hp--;
-        hpDisplay.innerText = "❤️".repeat(hp) + "🖤".repeat(3-hp);
-        obj.remove();
-        if (hp <= 0) { isPlaying = false; alert("게임 오버!"); location.reload(); }
-      }
+      objects.splice(i,1);
     }
-
-    if (x < -100) obj.remove();
   });
 
-  requestAnimationFrame(gameLoop);
-}
+  objects = objects.filter(o=>o.x>-100);
 
-function spawnManager() {
-  if (!isPlaying) return;
-  const rand = Math.random();
-  const container = document.getElementById('game-container');
-
-  if (rand > 0.97) { // 장애물 혹은 키 생성
-    const type = Math.random();
-    if (type > 0.4) { // 지상 장애물 (점프 필요)
-      const obs = document.createElement('div');
-      obs.className = 'obstacle';
-      obs.style.width = '50px';
-      obs.style.height = '60px';
-      obs.style.bottom = '20%';
-      obs.style.left = '110vw';
-      container.appendChild(obs);
-    } else if (type > 0.2) { // 공중 장애물 (슬라이딩 필요)
-      const obs = document.createElement('div');
-      obs.className = 'obstacle';
-      obs.style.width = '80px';
-      obs.style.height = '50px';
-      obs.style.bottom = '35%';
-      obs.style.left = '110vw';
-      container.appendChild(obs);
-    } else { // 열쇠
-      const key = document.createElement('div');
-      key.className = 'key';
-      key.innerText = '🔑';
-      key.style.bottom = (Math.random() > 0.5 ? '40%' : '25%');
-      key.style.left = '110vw';
-      container.appendChild(key);
-    }
+  // 애니메이션 프레임
+  frameTick++;
+  if(frameTick > 5){
+    frameIndex = (frameIndex + 1) % FRAME_COUNT;
+    frameTick = 0;
   }
-  setTimeout(spawnManager, 100);
+
+  player.score++;
 }
+
+// 그리기
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  // 바닥
+  ctx.fillStyle="#444";
+  ctx.fillRect(0,380,canvas.width,10);
+
+  // 캐릭터 이미지 선택
+  let img = currentCharacter==="yul" ? yulImg : jeongImg;
+
+  // 프레임 계산
+  let frameWidth = img.width / FRAME_COUNT;
+  let frameHeight = img.height;
+
+  ctx.drawImage(
+    img,
+    frameIndex * frameWidth, 0,
+    frameWidth, frameHeight,
+    player.x, player.y,
+    player.w, player.h
+  );
+
+  // 오브젝트
+  objects.forEach(o=>{
+    if(o.type==="enemy") ctx.fillStyle="black";
+    if(o.type==="fairy") ctx.fillStyle="yellow";
+    if(o.type==="food") ctx.fillStyle="green";
+    if(o.type==="obstacle") ctx.fillStyle="brown";
+
+    ctx.fillRect(o.x, o.y, o.w, o.h);
+  });
+
+  // UI
+  document.getElementById("ui").innerHTML =
+    `Score: ${player.score}<br>Fairies: ${player.fairies}<br>${currentCharacter}`;
+
+  if(gameOver){
+    ctx.fillStyle="black";
+    ctx.font="50px sans-serif";
+    ctx.fillText("GAME OVER", canvas.width/2-150, canvas.height/2);
+  }
+}
+
+// 루프
+function loop(){
+  update();
+  draw();
+  requestAnimationFrame(loop);
+}
+loop();
 </script>
+
 </body>
 </html>

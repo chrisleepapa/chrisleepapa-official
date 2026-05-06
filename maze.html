@@ -3,284 +3,241 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>🏃 Sistersquad: 뒤태 질주! 🏃</title>
+<title>🏃 Sistersquad: 2D 사이드 런 🏃</title>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <style>
-  :root { --gold: #FFD700; --pink: #FF69B4; --blue: #4A90E2; }
-  body { margin: 0; overflow: hidden; background: #87CEEB; font-family: 'Nunito', sans-serif; user-select: none; touch-action: none; }
+  :root { --gold: #FFD700; --pink: #FF69B4; }
+  body { margin: 0; overflow: hidden; background: #87CEEB; font-family: sans-serif; user-select: none; touch-action: none; }
   
-  #game-canvas { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; }
+  /* 게임 배경 (스크롤 애니메이션) */
+  #game-container {
+    position: relative; width: 100vw; height: 100vh;
+    background: linear-gradient(to bottom, #87CEEB 0%, #E0F7FA 100%);
+    overflow: hidden;
+  }
   
-  /* 캐릭터 스프라이트 - 뒷모습 느낌을 위해 필터 및 크기 조정 */
-  #player-sprite {
-    position: absolute; bottom: 15%; left: 50%;
-    width: 160px; height: 160px; transform: translateX(-50%);
-    background-size: 500% 100%; background-position: 0% 0%;
-    z-index: 15; pointer-events: none; display: none;
-    filter: drop-shadow(0 15px 10px rgba(0,0,0,0.4));
-    transition: bottom 0.3s, transform 0.2s, width 0.2s, height 0.2s;
+  /* 바닥 */
+  #ground {
+    position: absolute; bottom: 0; width: 200%; height: 20%;
+    background: repeating-linear-gradient(90deg, #4CAF50, #4CAF50 50px, #388E3C 50px, #388E3C 100px);
+    animation: scroll-ground 2s linear infinite;
+  }
+  @keyframes scroll-ground { from { left: 0; } to { left: -100px; } }
+
+  /* 캐릭터 스프라이트 */
+  #player {
+    position: absolute; bottom: 20%; left: 100px;
+    width: 120px; height: 120px;
+    background-size: 500% 100%; background-repeat: no-repeat;
+    z-index: 10; transition: transform 0.1s;
   }
   .sprite-yul { background-image: url('/images/yul_spritesheet.png'); }
   .sprite-jung { background-image: url('/images/jeong_spritesheet.png'); }
 
-  /* 모바일 조작패드 */
+  /* 장애물 및 아이템 */
+  .obstacle { position: absolute; background: #5D4037; border-radius: 8px; z-index: 5; }
+  .key { position: absolute; width: 40px; height: 40px; background: var(--gold); border-radius: 50%; border: 3px solid #fff; z-index: 5; line-height: 40px; text-align: center; font-weight: bold; }
+
+  /* 컨트롤러 */
   #controls {
-    position: absolute; bottom: 30px; left: 0; width: 100%;
-    display: grid; grid-template-areas: ". up ." "left attack right" ". down .";
-    justify-content: center; gap: 15px; z-index: 30; pointer-events: none;
+    position: absolute; bottom: 30px; width: 100%;
+    display: flex; justify-content: space-between; padding: 0 40px; box-sizing: border-box; z-index: 100;
   }
   .btn {
-    width: 70px; height: 70px; background: rgba(255,255,255,0.25);
-    border-radius: 20px; display: flex; align-items: center; justify-content: center;
-    color: white; font-size: 24px; border: 2px solid white; backdrop-filter: blur(5px);
-    pointer-events: auto; font-weight: bold;
+    width: 100px; height: 100px; background: rgba(0,0,0,0.4); color: white;
+    border: 3px solid white; border-radius: 50%; font-size: 20px; font-weight: 900;
+    display: flex; align-items: center; justify-content: center; pointer-events: auto;
   }
-  .btn:active { background: rgba(255,255,255,0.5); transform: scale(0.9); }
-  #attack-btn { grid-area: attack; background: var(--pink); border-radius: 50%; width: 85px; height: 85px; }
+  .btn:active { transform: scale(0.9); background: rgba(255,105,180,0.6); }
 
   /* HUD */
   #hud {
-    position: absolute; top: 20px; width: 100%; display: flex;
-    justify-content: space-around; z-index: 20; pointer-events: none;
+    position: absolute; top: 20px; left: 20px; right: 20px;
+    display: flex; justify-content: space-between; z-index: 100;
   }
-  .info { background: rgba(0,0,0,0.6); color: white; padding: 10px 20px; border-radius: 15px; border: 2px solid var(--gold); }
+  .hud-item { background: rgba(0,0,0,0.6); color: white; padding: 10px 20px; border-radius: 20px; border: 2px solid var(--gold); font-weight: bold; }
 
-  .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; z-index: 100; color: white; }
-  .char-btn { padding: 15px 30px; border: 2px solid var(--gold); background: transparent; color: white; cursor: pointer; border-radius: 10px; }
-  .char-btn.active { background: var(--gold); color: black; }
+  .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 200; color: white; text-align: center; }
 </style>
 </head>
 <body>
 
-<div id="game-canvas"></div>
-<div id="player-sprite"></div>
+<div id="game-container">
+  <div id="ground"></div>
+  <div id="player" class="sprite-yul"></div>
+  
+  <div id="hud" style="display:none;">
+    <div class="hud-item">HP: <span id="hp-val">❤️❤️❤️</span></div>
+    <div class="hud-item">🔑 <span id="score-val">0 / 10</span></div>
+  </div>
 
-<div id="hud" style="display: none;">
-  <div class="info">LIFE: <span id="hp">❤️❤️❤️</span></div>
-  <div class="info">🔑 <span id="score">0 / 10</span></div>
-</div>
-
-<div id="controls" style="display: none;">
-  <div class="btn" style="grid-area: up;" onpointerdown="jump()">JUMP</div>
-  <div class="btn" style="grid-area: left;" onpointerdown="moveLane(-1)">◀</div>
-  <div id="attack-btn" class="btn" onpointerdown="attack()">HIT</div>
-  <div class="btn" style="grid-area: right;" onpointerdown="moveLane(1)">▶</div>
-  <div class="btn" style="grid-area: down;" onpointerdown="roll()">ROLL</div>
+  <div id="controls" style="display:none;">
+    <div id="btn-jump" class="btn">JUMP</div>
+    <div id="btn-slide" class="btn">SLIDE</div>
+  </div>
 </div>
 
 <div id="start-modal" class="modal">
-  <div style="text-align: center;">
-    <h1 style="font-family:'Fredoka One';">SISTERS QUAD RUN</h1>
-    <p>점프(위), 숙이기(아래)를 활용해 열쇠를 모으세요!</p>
-    <div style="display: flex; gap: 15px; justify-content: center; margin: 25px 0;">
-      <button id="btn-yul" class="char-btn active" onclick="selectChar('yul')">율이 (불)</button>
-      <button id="btn-jung" class="char-btn" onclick="selectChar('jung')">정이 (빛)</button>
+  <div style="background: #333; padding: 40px; border-radius: 20px; border: 3px solid var(--gold);">
+    <h1 style="font-family:'Fredoka One';">SISTERS SIDE-RUN!</h1>
+    <p>점프(2단 점프 가능)와 슬라이딩으로 열쇠를 모으세요!</p>
+    <div style="margin: 20px 0;">
+      <button onclick="selectChar('yul')" id="sel-yul" style="padding:10px 20px; background:var(--pink); border:none; color:white; font-weight:bold;">율이</button>
+      <button onclick="selectChar('jung')" id="sel-jung" style="padding:10px 20px; background:#555; border:none; color:white; font-weight:bold;">정이</button>
     </div>
-    <button onclick="startGame()" style="background:var(--pink); border:none; padding:15px 50px; border-radius:15px; font-size:22px; font-weight:bold; color:white;">RUN!!</button>
+    <button onclick="startGame()" style="background:var(--gold); border:none; padding:15px 40px; font-size:20px; font-weight:900; border-radius:10px;">START</button>
   </div>
 </div>
 
 <script>
-let scene, camera, renderer, clock, isPlaying = false;
-let playerHealth = 3, score = 0, currentLane = 0; // -1, 0, 1
+let isPlaying = false;
+let score = 0, hp = 3;
 let selectedChar = 'yul';
-let objects = [], projectiles = [];
-let gameSpeed = 50;
-let isJumping = false, isRolling = false;
-const LANE_WIDTH = 5;
+let jumpCount = 0;
+let isSliding = false;
+let playerY = 0;
+let playerVelocityY = 0;
+const gravity = 0.8;
+const jumpStrength = -16;
+
+const player = document.getElementById('player');
+const scoreDisplay = document.getElementById('score-val');
+const hpDisplay = document.getElementById('hp-val');
 
 function selectChar(char) {
   selectedChar = char;
-  document.getElementById('btn-yul').className = char === 'yul' ? 'char-btn active' : 'char-btn';
-  document.getElementById('btn-jung').className = char === 'jung' ? 'char-btn active' : 'char-btn';
+  player.className = 'sprite-' + char;
+  document.getElementById('sel-yul').style.background = char === 'yul' ? '#FF69B4' : '#555';
+  document.getElementById('sel-jung').style.background = char === 'jung' ? '#FF69B4' : '#555';
 }
 
 function startGame() {
   document.getElementById('start-modal').style.display = 'none';
   document.getElementById('hud').style.display = 'flex';
-  document.getElementById('controls').style.display = 'grid';
-  document.getElementById('player-sprite').style.display = 'block';
-  document.getElementById('player-sprite').className = 'sprite-' + selectedChar;
-  
-  initThree();
+  document.getElementById('controls').style.display = 'flex';
   isPlaying = true;
-  animate();
+  gameLoop();
+  spawnManager();
 }
 
-function initThree() {
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x87CEEB);
-  scene.fog = new THREE.Fog(0x87CEEB, 30, 120);
-  
-  camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 1000);
-  // 캐릭터의 뒷모습을 보는 시점으로 카메라 위치 조정
-  camera.position.set(0, 6, 15);
-  camera.lookAt(0, 3, -10);
-
-  renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  document.getElementById('game-canvas').appendChild(renderer.domElement);
-
-  const light = new THREE.DirectionalLight(0xffffff, 1.2);
-  light.position.set(5, 20, 10);
-  scene.add(light, new THREE.AmbientLight(0xffffff, 0.5));
-
-  // 바닥 (격자 무늬 도로)
-  const ground = new THREE.Mesh(new THREE.PlaneGeometry(20, 5000), new THREE.MeshStandardMaterial({ color: 0x333333 }));
-  ground.rotation.x = -Math.PI / 2;
-  scene.add(ground);
-  
-  const grid = new THREE.GridHelper(5000, 500, 0xffffff, 0x444444);
-  grid.position.y = 0.05;
-  scene.add(grid);
-
-  clock = new THREE.Clock();
-
-  window.addEventListener('keydown', e => {
-    if(e.key === 'ArrowLeft' || e.key === 'a') moveLane(-1);
-    if(e.key === 'ArrowRight' || e.key === 'd') moveLane(1);
-    if(e.key === 'ArrowUp' || e.key === 'w') jump();
-    if(e.key === 'ArrowDown' || e.key === 's') roll();
-    if(e.key === ' ') attack();
-  });
-}
-
-function moveLane(dir) {
-  currentLane = Math.max(-1, Math.min(1, currentLane + dir));
-}
-
-function jump() {
-  if (isJumping || isRolling) return;
-  isJumping = true;
-  const sprite = document.getElementById('player-sprite');
-  sprite.style.bottom = "30%"; // 시각적 점프
-  setTimeout(() => {
-    sprite.style.bottom = "15%";
-    isJumping = false;
-  }, 500);
-}
-
-function roll() {
-  if (isJumping || isRolling) return;
-  isRolling = true;
-  const sprite = document.getElementById('player-sprite');
-  sprite.style.height = "80px"; // 시각적 숙이기
-  sprite.style.width = "200px";
-  setTimeout(() => {
-    sprite.style.height = "160px";
-    sprite.style.width = "160px";
-    isRolling = false;
-  }, 600);
-}
-
-function attack() {
-  const p = new THREE.Mesh(new THREE.SphereGeometry(0.6), new THREE.MeshBasicMaterial({ color: selectedChar === 'yul' ? 0xff4500 : 0x00ffff }));
-  p.position.set(currentLane * LANE_WIDTH, 2, 0);
-  scene.add(p);
-  projectiles.push(p);
-}
-
-function spawnObject() {
-  if (Math.random() > 0.94) {
-    const lane = Math.floor(Math.random() * 3) - 1;
-    const rand = Math.random();
-    let obj, type;
-
-    if (rand < 0.2) { // 아이템 (열쇠)
-      obj = new THREE.Mesh(new THREE.TorusGeometry(0.6, 0.2), new THREE.MeshStandardMaterial({ color: 0xFFD700 }));
-      type = 'key';
-      obj.position.y = 2;
-    } else if (rand < 0.5) { // 점프해야 하는 장애물 (낮은 허들)
-      obj = new THREE.Mesh(new THREE.BoxGeometry(4, 1.5, 1), new THREE.MeshStandardMaterial({ color: 0xff4400 }));
-      type = 'jump_obs';
-      obj.position.y = 0.75;
-    } else if (rand < 0.7) { // 숙여야 하는 장애물 (높은 천장)
-      obj = new THREE.Mesh(new THREE.BoxGeometry(5, 2, 1), new THREE.MeshStandardMaterial({ color: 0x444444 }));
-      type = 'roll_obs';
-      obj.position.y = 4.5;
-    } else { // 공격해서 없애야 하는 적
-      obj = new THREE.Mesh(new THREE.SphereGeometry(1.5), new THREE.MeshStandardMaterial({ color: 0x330066 }));
-      type = 'enemy';
-      obj.position.y = 1.5;
-    }
-
-    obj.position.x = lane * LANE_WIDTH;
-    obj.position.z = -150;
-    obj.userData = { type };
-    scene.add(obj);
-    objects.push(obj);
+function handleJump() {
+  if (jumpCount < 2) { // 2단 점프
+    playerVelocityY = jumpStrength;
+    jumpCount++;
+    isSliding = false;
   }
 }
 
-function animate() {
+function handleSlide(active) {
+  if (playerY === 0) { // 바닥일 때만 슬라이딩 가능
+    isSliding = active;
+    if (active) {
+      player.style.height = "60px";
+      player.style.transform = "translateY(60px)";
+    } else {
+      player.style.height = "120px";
+      player.style.transform = "translateY(0)";
+    }
+  }
+}
+
+// 터치 및 키보드 이벤트
+document.getElementById('btn-jump').onpointerdown = (e) => { e.preventDefault(); handleJump(); };
+document.getElementById('btn-slide').onpointerdown = (e) => { e.preventDefault(); handleSlide(true); };
+document.getElementById('btn-slide').onpointerup = (e) => { e.preventDefault(); handleSlide(false); };
+
+window.onkeydown = (e) => {
+  if (e.code === 'ArrowUp' || e.code === 'Space') handleJump();
+  if (e.code === 'ArrowDown') handleSlide(true);
+};
+window.onkeyup = (e) => {
+  if (e.code === 'ArrowDown') handleSlide(false);
+};
+
+function gameLoop() {
   if (!isPlaying) return;
-  requestAnimationFrame(animate);
-  const delta = clock.getDelta();
-  
-  spawnObject();
 
-  for (let i = objects.length - 1; i >= 0; i--) {
-    const obj = objects[i];
-    obj.position.z += gameSpeed * delta;
+  // 중력 및 점프 처리
+  playerVelocityY += gravity;
+  playerY += playerVelocityY;
 
-    // 충돌 체크 (z=0 근처)
-    if (obj.position.z > -1 && obj.position.z < 2) {
-      if (Math.abs(obj.position.x - (currentLane * LANE_WIDTH)) < 2.5) {
-        let hit = false;
-        const type = obj.userData.type;
+  if (playerY > 0) {
+    playerY = 0;
+    playerVelocityY = 0;
+    jumpCount = 0;
+  }
 
-        if (type === 'key') {
-          score++;
-          document.getElementById('score').innerText = `${score} / 10`;
-          if (score >= 10) { alert("탈출 성공! 축하합니다."); location.reload(); }
-          hit = true;
-        } else if (type === 'jump_obs' && !isJumping) {
-          hit = true; playerHealth--;
-        } else if (type === 'roll_obs' && !isRolling) {
-          hit = true; playerHealth--;
-        } else if (type === 'enemy') {
-          hit = true; playerHealth--;
-        }
+  player.style.bottom = (20 - (playerY / 5)) + "%";
 
-        if (hit) {
-          if (type !== 'key') {
-             document.getElementById('hp').innerText = "❤️".repeat(Math.max(0, playerHealth)) + "🖤".repeat(3 - playerHealth);
-             if (playerHealth <= 0) { isPlaying = false; alert("게임 오버!"); location.reload(); }
-          }
-          scene.remove(obj);
-          objects.splice(i, 1);
-          continue;
-        }
+  // 스프라이트 애니메이션
+  const frame = Math.floor(Date.now() / 100) % 5;
+  player.style.backgroundPosition = `${frame * 25}% 0`;
+
+  // 오브젝트 이동 및 충돌
+  const obstacles = document.querySelectorAll('.obstacle, .key');
+  obstacles.forEach(obj => {
+    let x = parseFloat(obj.style.left);
+    x -= 8; // 속도
+    obj.style.left = x + 'px';
+
+    // 충돌 체크
+    const pRect = player.getBoundingClientRect();
+    const oRect = obj.getBoundingClientRect();
+
+    if (pRect.right - 20 > oRect.left && pRect.left + 20 < oRect.right &&
+        pRect.bottom - 10 > oRect.top && pRect.top + 10 < oRect.bottom) {
+      if (obj.classList.contains('key')) {
+        score++;
+        scoreDisplay.innerText = score + " / 10";
+        obj.remove();
+        if (score >= 10) { alert("열쇠를 모두 모았습니다! 탈출 성공!"); location.reload(); }
+      } else {
+        hp--;
+        hpDisplay.innerText = "❤️".repeat(hp) + "🖤".repeat(3-hp);
+        obj.remove();
+        if (hp <= 0) { isPlaying = false; alert("게임 오버!"); location.reload(); }
       }
     }
 
-    if (obj.position.z > 20) { scene.remove(obj); objects.splice(i, 1); }
+    if (x < -100) obj.remove();
+  });
+
+  requestAnimationFrame(gameLoop);
+}
+
+function spawnManager() {
+  if (!isPlaying) return;
+  const rand = Math.random();
+  const container = document.getElementById('game-container');
+
+  if (rand > 0.97) { // 장애물 혹은 키 생성
+    const type = Math.random();
+    if (type > 0.4) { // 지상 장애물 (점프 필요)
+      const obs = document.createElement('div');
+      obs.className = 'obstacle';
+      obs.style.width = '50px';
+      obs.style.height = '60px';
+      obs.style.bottom = '20%';
+      obs.style.left = '110vw';
+      container.appendChild(obs);
+    } else if (type > 0.2) { // 공중 장애물 (슬라이딩 필요)
+      const obs = document.createElement('div');
+      obs.className = 'obstacle';
+      obs.style.width = '80px';
+      obs.style.height = '50px';
+      obs.style.bottom = '35%';
+      obs.style.left = '110vw';
+      container.appendChild(obs);
+    } else { // 열쇠
+      const key = document.createElement('div');
+      key.className = 'key';
+      key.innerText = '🔑';
+      key.style.bottom = (Math.random() > 0.5 ? '40%' : '25%');
+      key.style.left = '110vw';
+      container.appendChild(key);
+    }
   }
-
-  // 투사체 처리
-  for (let i = projectiles.length - 1; i >= 0; i--) {
-    const p = projectiles[i];
-    p.position.z -= 80 * delta;
-    objects.forEach((obj, objIdx) => {
-      if (obj.userData.type === 'enemy' && p.position.distanceTo(obj.position) < 3) {
-        scene.remove(obj);
-        objects.splice(objIdx, 1);
-        p.position.z = -1000;
-      }
-    });
-    if (p.position.z < -150) { scene.remove(p); projectiles.splice(i, 1); }
-  }
-
-  // 화면상 스프라이트 위치 업데이트
-  const targetX = (window.innerWidth / 2) + (currentLane * 70);
-  const currentX = parseFloat(document.getElementById('player-sprite').style.left || targetX);
-  document.getElementById('player-sprite').style.left = (currentX + (targetX - currentX) * 0.2) + 'px';
-  
-  const frame = Math.floor(Date.now() / 100) % 5;
-  document.getElementById('player-sprite').style.backgroundPosition = `${frame * 25}% 0`;
-
-  renderer.render(scene, camera);
+  setTimeout(spawnManager, 100);
 }
 </script>
 </body>

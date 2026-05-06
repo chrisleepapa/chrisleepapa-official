@@ -377,6 +377,95 @@
         }
         .hero-sub.visible { opacity: 1; transform: translateY(0); }
 
+        /* ── MAGIC GAME LINKS (NEW) ── */
+        .magic-game-links {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+            margin-top: 45px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease 1.8s, transform 1s ease 1.8s;
+        }
+        .magic-game-links.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .play-game-box {
+            background: rgba(17, 8, 40, 0.5);
+            border: 2px solid;
+            border-radius: 16px;
+            padding: 12px 28px;
+            text-align: center;
+            text-decoration: none;
+            backdrop-filter: blur(8px);
+            transition: transform 0.3s ease, filter 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .play-game-box.board-game {
+            border-color: rgba(255, 215, 0, 0.6);
+            animation: starTwinkleBoard 2.5s infinite ease-in-out alternate;
+        }
+
+        .play-game-box.runner-game {
+            border-color: rgba(74, 144, 217, 0.6);
+            animation: starTwinkleRunner 2.5s infinite ease-in-out alternate;
+            animation-delay: 1.25s;
+        }
+
+        .play-game-box:hover {
+            transform: scale(1.08) translateY(-5px) !important;
+            animation-play-state: paused;
+            filter: brightness(1.2);
+        }
+
+        .play-game-box.board-game:hover {
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.8), inset 0 0 15px rgba(255, 215, 0, 0.4) !important;
+            border-color: #FFD700;
+        }
+
+        .play-game-box.runner-game:hover {
+            box-shadow: 0 0 40px rgba(74, 144, 217, 0.8), inset 0 0 15px rgba(74, 144, 217, 0.4) !important;
+            border-color: #4A90D9;
+        }
+
+        .game-icon {
+            font-size: 26px;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6));
+        }
+
+        .game-title {
+            font-family: 'Pretendard', 'Noto Serif KR', serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .board-game .game-title {
+            color: #FFD700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .runner-game .game-title {
+            color: #4A90D9;
+            text-shadow: 0 0 10px rgba(74, 144, 217, 0.5);
+        }
+
+        @keyframes starTwinkleBoard {
+            0% { transform: translateY(4px); box-shadow: 0 0 10px rgba(255, 215, 0, 0.2), inset 0 0 5px rgba(255, 255, 255, 0.1); }
+            100% { transform: translateY(-8px); box-shadow: 0 0 30px rgba(255, 215, 0, 0.7), inset 0 0 12px rgba(255, 255, 255, 0.4); }
+        }
+
+        @keyframes starTwinkleRunner {
+            0% { transform: translateY(4px); box-shadow: 0 0 10px rgba(74, 144, 217, 0.2), inset 0 0 5px rgba(255, 255, 255, 0.1); }
+            100% { transform: translateY(-8px); box-shadow: 0 0 30px rgba(74, 144, 217, 0.7), inset 0 0 12px rgba(255, 255, 255, 0.4); }
+        }
+
         .scroll-hint {
             position: absolute;
             bottom: 40px;
@@ -703,6 +792,17 @@
                 font-size: 0.65rem;
                 padding: 6px 10px;
             }
+
+            .magic-game-links {
+                flex-direction: column;
+                gap: 15px;
+                margin-top: 35px;
+            }
+            .play-game-box {
+                padding: 12px 25px;
+                width: 240px;
+                justify-content: center;
+            }
         }
         @media (max-width: 480px) {
             .gallery-grid { height: 260px; }
@@ -981,12 +1081,23 @@
             <div class="hero-divider" id="heroDivider"></div>
             <p class="hero-slogan" id="heroSlogan" data-i18n="hero_slogan">The Creative Archive</p>
             <p class="hero-sub" id="heroSub" data-i18n="hero_sub">찬양 · 음악 · 문학 · 영상</p>
+
+            <div class="magic-game-links" id="magicGameLinks">
+                <a href="game.html" class="play-game-box board-game">
+                    <span class="game-icon">🎲</span>
+                    <span class="game-title">보드게임 하러가기</span>
+                </a>
+                <a href="game.html" class="play-game-box runner-game">
+                    <span class="game-icon">🏃‍♀️</span>
+                    <span class="game-title">러너게임 하러가기</span>
+                </a>
+            </div>
+
         </div>
         <div class="scroll-hint">
             <div class="scroll-hint-line"></div>
             <span data-i18n="hero_scroll">SCROLL</span>
         </div>
-        <!-- 🎮 초기화면 우측 하단 게임 링크 🎮 -->
         <a href="game.html" class="hero-game-link">🎮 PLAY GAME</a>
     </header>
 
@@ -1002,7 +1113,6 @@
             <div class="note-content">
                 <div class="note-story-wrap">
 
-                    <!-- ── 갤러리 컬럼 (리디자인: 모자이크 콜라주) ── -->
                     <div class="note-gallery-col">
                         <div class="gallery-grid">
                             <div class="gallery-item item-1">
@@ -1025,7 +1135,6 @@
                         </div>
                     </div>
 
-                    <!-- ── 스토리 텍스트 컬럼 ── -->
                     <div class="note-story-col">
 
                         <div class="story-chapter">
@@ -1374,6 +1483,9 @@
             document.getElementById('heroDivider').classList.add('visible');
             document.getElementById('heroSlogan').classList.add('visible');
             document.getElementById('heroSub').classList.add('visible');
+            if(document.getElementById('magicGameLinks')) {
+                document.getElementById('magicGameLinks').classList.add('visible');
+            }
         }, 100);
 
         const cards = document.querySelectorAll('.card');

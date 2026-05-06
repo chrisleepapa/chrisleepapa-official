@@ -209,6 +209,20 @@
             box-shadow: 0 20px 50px rgba(201,168,76,0.15);
         }
 
+        /* Coming Soon 카드 특수 스타일 */
+        .game-card.coming-soon {
+            cursor: default;
+            opacity: 0.6;
+        }
+        .game-card.coming-soon:hover {
+            transform: none;
+            border-color: rgba(201,168,76,0.2);
+            box-shadow: none;
+        }
+        .game-card.coming-soon:hover .game-icon-large {
+            transform: none;
+        }
+
         .game-card:hover::before {
             left: 200%;
         }
@@ -241,6 +255,16 @@
             word-break: keep-all;
         }
 
+        /* Coming Soon 텍스트 스타일 */
+        .coming-soon-text {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            color: var(--gold-light);
+            margin-top: 10px;
+            opacity: 0.8;
+        }
+
         .game-tag {
             position: absolute;
             top: 25px;
@@ -255,7 +279,7 @@
         }
 
         .tag-blue-marble { background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.4); color: var(--gold-light); }
-        .tag-maze { background: rgba(74,144,226,0.15); border: 1px solid rgba(74,144,226,0.4); color: #6db3f2; }
+        .tag-maze { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #888; }
 
         @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
         @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
@@ -306,7 +330,6 @@
         <h2 class="section-heading-title">Choose Your Game</h2>
 
         <div class="game-cards">
-            <!-- 브루마블 게임 카드 (game.html 링크) -->
             <a href="game.html" class="game-card">
                 <div class="game-tag tag-blue-marble">Board Game</div>
                 <div class="game-icon-large">🎲</div>
@@ -314,13 +337,11 @@
                 <p class="game-card-desc">주사위를 굴려 우주와 아카이브의 세계를 여행하는 전략 보드게임입니다. 당신만의 기록을 개척하세요.</p>
             </a>
 
-            <!-- 미로찾기 게임 카드 (run.html 등 링크) -->
-            <a href="run.html" class="game-card">
-                <div class="game-tag tag-maze">Puzzle Game</div>
-                <div class="game-icon-large">🧩</div>
-                <h3 class="game-card-title">미로찾기 게임</h3>
-                <p class="game-card-desc">복잡하게 얽힌 길을 따라 출구를 찾아내는 두뇌 퍼즐 게임입니다. 숨겨진 길을 발견하세요.</p>
-            </a>
+            <div class="game-card coming-soon">
+                <div class="game-tag tag-maze">Archive</div>
+                <div class="game-icon-large" style="opacity: 0.3;">⏳</div>
+                <div class="coming-soon-text">COMING SOON</div>
+            </div>
         </div>
     </main>
 

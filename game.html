@@ -290,7 +290,7 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 
 <div class="wr">
   <div class="gtitle">
-    <h1>✨ Sister Squad Board Game ✨</h1>
+    <h1>✨ Sistersquad Blue Marble ✨</h1>
     <p>놀라운 자매들의 대모험 — 별 10개를 먼저 모으면 승리! 🌟</p>
   </div>
   <div class="gl">
@@ -526,7 +526,7 @@ var TC={c:'tc',e:'te',t:'tt',b:'tb'};
 var DICE=['','⚀','⚁','⚂','⚃','⚄','⚅'];
 var WIN=10;
 var PL=[
-  {nm:'율이',ic:'🧒',ds:'언니 · 탐험가',char:'yul'},
+  {nm:'율이',ic:'👩',ds:'언니 · 탐험가',char:'yul'},
   {nm:'정이',ic:'👧',ds:'동생 · 마법사', char:'jung'}
 ];
 
@@ -831,7 +831,8 @@ function showWin(){
   document.getElementById('wnm').textContent=PL[w].nm+' 승리! 🎉';
   document.getElementById('wdc').textContent='별 '+stars[w]+'개를 모아서 이겼어요!';
   document.getElementById('fsr').innerHTML=PL.map(function(p,i){
-    return '<div class="fc'+(i===w?' wc':'')+'"><span class="fpi">'+p.ic+'</span><div class="fpn">'+p.nm+'</div><div class="fps">⭐'+stars[i]+'</div>'+(i===w?'<div class="fpc">👑 우승!</div>':'')+'</div>';
+    var charHtml = '<div class="tok-img-wrap" style="width:44px;height:44px;margin-bottom:6px;border-width:2px;border-color:'+(i===0?'#4A90D9':'#FF69B4')+';">' + SV[p.char] + '</div>';
+    return '<div class="fc'+(i===w?' wc':'')+'">'+charHtml+'<div class="fpn">'+p.nm+'</div><div class="fps">⭐'+stars[i]+'</div>'+(i===w?'<div class="fpc">👑 우승!</div>':'')+'</div>';
   }).join('');
   document.getElementById('gov').classList.add('vis');
   setTimeout(spawnConfetti,800);setTimeout(spawnConfetti,1600);

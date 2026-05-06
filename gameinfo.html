@@ -207,7 +207,82 @@
         .game-card:nth-child(1) { animation-delay: 0.6s; }
         .game-card:nth-child(2) { animation-delay: 0.8s; }
 
-        .game-card::before {
+        /* 브루마블 게임 카드 세련된 스타일 */
+        .game-card-bluemarble {
+            justify-content: flex-end;
+            padding: 30px;
+            text-align: left;
+            background: none;
+            border-color: rgba(201,168,76,0.5);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        /* 배경 이미지 레이어 */
+        .game-card-bluemarble .card-image-bg {
+            position: absolute;
+            inset: 0;
+            background-image: url('images/bluemarblegame.png');
+            background-size: cover;
+            background-position: center;
+            z-index: -2;
+            transition: transform 0.6s cubic-bezier(0.2, 0, 0.2, 1);
+        }
+
+        /* 어두운 오버레이 레이어 (가독성 확보) */
+        .game-card-bluemarble .card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(3, 3, 5, 0.1) 0%, rgba(3, 3, 5, 0.95) 85%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* 호버 시 이미지 확대 및 글로우 효과 */
+        .game-card-bluemarble:hover {
+            transform: translateY(-12px) scale(1.02);
+            border-color: var(--gold-light);
+            box-shadow: 0 20px 60px rgba(201,168,76,0.25);
+        }
+
+        .game-card-bluemarble:hover .card-image-bg {
+            transform: scale(1.08);
+        }
+
+        /* 콘텐츠 래퍼 */
+        .game-card-content-wrap {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+        }
+
+        .game-card-bluemarble .game-card-title {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            word-break: keep-all;
+        }
+
+        .game-card-bluemarble .game-card-desc {
+            color: rgba(240, 236, 228, 0.85);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 5px;
+        }
+
+        /* 기존 game-icon-large 스타일은 두 번째 카드에만 적용 */
+        .game-card:not(.game-card-bluemarble) .game-icon-large {
+            display: block;
+            font-size: 80px;
+            margin-bottom: 25px;
+            filter: drop-shadow(0 0 20px rgba(201,168,76,0.3));
+            transition: transform 0.4s;
+        }
+
+        .game-card:not(.game-card-bluemarble):hover .game-icon-large {
+            transform: scale(1.15) rotate(5deg);
+        }
+
+        /* 기존 game-card ::before 스큐 효과는 두 번째 카드에만 적용 */
+        .game-card:not(.game-card-bluemarble)::before {
             content: '';
             position: absolute;
             top: 0; left: -100%; width: 50%; height: 100%;
@@ -216,42 +291,8 @@
             transition: 0.6s;
         }
 
-        .game-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--gold-light);
-            box-shadow: 0 20px 50px rgba(201,168,76,0.15);
-        }
-
-        .game-card:hover::before {
+        .game-card:not(.game-card-bluemarble):hover::before {
             left: 200%;
-        }
-
-        .game-icon-large {
-            font-size: 80px;
-            margin-bottom: 25px;
-            filter: drop-shadow(0 0 20px rgba(201,168,76,0.3));
-            transition: transform 0.4s;
-        }
-
-        .game-card:hover .game-icon-large {
-            transform: scale(1.15) rotate(5deg);
-        }
-
-        .game-card-title {
-            font-family: 'Pretendard', sans-serif;
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 12px;
-            letter-spacing: 1px;
-        }
-
-        .game-card-desc {
-            font-family: 'Noto Serif KR', serif;
-            font-size: 0.95rem;
-            color: #a0a0b5;
-            line-height: 1.6;
-            word-break: keep-all;
         }
 
         .game-tag {
@@ -265,6 +306,13 @@
             padding: 6px 14px;
             border-radius: 20px;
             text-transform: uppercase;
+        }
+
+        /* 브루마블 태그 위치 조정 */
+        .game-card-bluemarble .game-tag {
+            top: 20px;
+            left: 20px;
+            z-index: 2;
         }
 
         .tag-blue-marble { background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.4); color: var(--gold-light); }
@@ -319,14 +367,15 @@
         <h2 class="section-heading-title">Choose Your Game</h2>
 
         <div class="game-cards">
-            <a href="game.html" class="game-card">
-                <div class="game-tag tag-blue-marble">Board Game</div>
-                <div class="game-icon-large">🎲</div>
-                <h3 class="game-card-title">브루마블 게임</h3>
-                <p class="game-card-desc">주사위를 굴려 우주와 아카이브의 세계를 여행하는 전략 보드게임입니다. 당신만의 기록을 개척하세요.</p>
+            <a href="game.html" class="game-card game-card-bluemarble">
+                <div class="card-image-bg"></div> <div class="card-overlay"></div> <div class="game-tag tag-blue-marble">Board Game</div>
+                
+                <div class="game-card-content-wrap">
+                    <h3 class="game-card-title">브루마블 게임</h3>
+                    <p class="game-card-desc">주사위를 굴려 우주와 아카이브의 세계를 여행하는 전략 보드게임입니다. 당신만의 기록을 개척하세요.</p>
+                </div>
             </a>
 
-            <!-- 책 쌓기 게임으로 변경된 두 번째 게임 카드 -->
             <a href="booktop.html" class="game-card">
                 <div class="game-tag tag-maze">Physics</div>
                 <div class="game-icon-large">📚</div>

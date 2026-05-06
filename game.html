@@ -526,7 +526,7 @@ var TC={c:'tc',e:'te',t:'tt',b:'tb'};
 var DICE=['','⚀','⚁','⚂','⚃','⚄','⚅'];
 var WIN=10;
 var PL=[
-  {nm:'율이',ic:'🧒',ds:'언니 · 탐험가',char:'yul'},
+  {nm:'율이',ic:'👓👧',ds:'언니 · 탐험가',char:'yul'},
   {nm:'정이',ic:'👧',ds:'동생 · 마법사', char:'jung'}
 ];
 
@@ -829,9 +829,12 @@ function showWin(){
   document.getElementById('wpr').innerHTML=SV[PL[w].char];
   document.getElementById('wnm').textContent=PL[w].nm+' 승리! 🎉';
   document.getElementById('wdc').textContent='별 '+stars[w]+'개를 모아서 이겼어요!';
+  
   document.getElementById('fsr').innerHTML=PL.map(function(p,i){
-    return '<div class="fc'+(i===w?' wc':'')+'"><span class="fpi">'+p.ic+'</span><div class="fpn">'+p.nm+'</div><div class="fps">⭐'+stars[i]+'</div>'+(i===w?'<div class="fpc">👑 우승!</div>':'')+'</div>';
+    var charHtml = '<div class="tok-img-wrap" style="border-color:' + (i === 0 ? '#4A90D9' : '#FF69B4') + '; width:40px; height:40px; margin: 0 auto 5px auto;">' + SV[p.char] + '</div>';
+    return '<div class="fc'+(i===w?' wc':'')+'">'+charHtml+'<div class="fpn">'+p.nm+'</div><div class="fps">⭐'+stars[i]+'</div>'+(i===w?'<div class="fpc">👑 우승!</div>':'')+'</div>';
   }).join('');
+  
   document.getElementById('gov').classList.add('vis');
   setTimeout(spawnConfetti,800);setTimeout(spawnConfetti,1600);
 }
@@ -842,14 +845,14 @@ function resetGame(){
   document.getElementById('gov').classList.remove('vis');
   document.getElementById('eov').classList.remove('vis');
   Array.from(document.getElementById('lgp').querySelectorAll('.lge')).forEach(function(e){e.remove();});
-  addLog('✨ 새 게임 시작! 율이🧒 차례입니다.');
+  addLog('✨ 새 게임 시작! '+PL[0].nm+PL[0].ic+' 차례입니다.');
   renderAll();
 }
 
 function startGame(){
   document.getElementById('is').classList.add('hd');
   setTimeout(function(){document.getElementById('is').style.display='none';},520);
-  addLog('✨ 모험 시작! 율이🧒 차례입니다.');
+  addLog('✨ 모험 시작! '+PL[0].nm+PL[0].ic+' 차례입니다.');
 }
 
 buildBoard();

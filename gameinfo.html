@@ -222,20 +222,6 @@
             box-shadow: 0 20px 50px rgba(201,168,76,0.15);
         }
 
-        /* Coming Soon 카드 특수 스타일 */
-        .game-card.coming-soon {
-            cursor: default;
-            opacity: 0.6;
-        }
-        .game-card.coming-soon:hover {
-            transform: none;
-            border-color: rgba(201,168,76,0.2);
-            box-shadow: none;
-        }
-        .game-card.coming-soon:hover .game-icon-large {
-            transform: none;
-        }
-
         .game-card:hover::before {
             left: 200%;
         }
@@ -266,16 +252,6 @@
             color: #a0a0b5;
             line-height: 1.6;
             word-break: keep-all;
-        }
-
-        /* Coming Soon 텍스트 스타일 */
-        .coming-soon-text {
-            font-family: 'Cinzel', serif;
-            font-size: 1.2rem;
-            letter-spacing: 4px;
-            color: var(--gold-light);
-            margin-top: 10px;
-            opacity: 0.8;
         }
 
         .game-tag {
@@ -350,11 +326,13 @@
                 <p class="game-card-desc">주사위를 굴려 우주와 아카이브의 세계를 여행하는 전략 보드게임입니다. 당신만의 기록을 개척하세요.</p>
             </a>
 
-            <div class="game-card coming-soon">
+            <!-- 수정된 두 번째 게임 카드 (run.html 연결) -->
+            <a href="run.html" class="game-card">
                 <div class="game-tag tag-maze">Archive</div>
-                <div class="game-icon-large" style="opacity: 0.3;">⏳</div>
-                <div class="coming-soon-text">COMING SOON</div>
-            </div>
+                <div class="game-icon-large">🏃‍♂️</div>
+                <h3 class="game-card-title">아카이브 런</h3>
+                <p class="game-card-desc">끝없는 아카이브의 공간을 질주하세요. 다가오는 장애물을 피하고 새로운 기록을 경신해보세요.</p>
+            </a>
         </div>
     </main>
 

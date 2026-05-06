@@ -412,12 +412,6 @@
             animation: starTwinkleBoard 2.5s infinite ease-in-out alternate;
         }
 
-        .play-game-box.runner-game {
-            border-color: rgba(74, 144, 217, 0.6);
-            animation: starTwinkleRunner 2.5s infinite ease-in-out alternate;
-            animation-delay: 1.25s;
-        }
-
         .play-game-box:hover {
             transform: scale(1.08) translateY(-5px) !important;
             animation-play-state: paused;
@@ -429,21 +423,16 @@
             border-color: #FFD700;
         }
 
-        .play-game-box.runner-game:hover {
-            box-shadow: 0 0 40px rgba(74, 144, 217, 0.8), inset 0 0 15px rgba(74, 144, 217, 0.4) !important;
-            border-color: #4A90D9;
-        }
-
         .game-icon {
             font-size: 26px;
             filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6));
         }
 
         .game-title {
-            font-family: 'Pretendard', 'Noto Serif KR', serif;
-            font-size: 0.9rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
+            font-family: 'Cinzel', 'Pretendard', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 800;
+            letter-spacing: 1px;
         }
 
         .board-game .game-title {
@@ -451,19 +440,9 @@
             text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
         }
 
-        .runner-game .game-title {
-            color: #4A90D9;
-            text-shadow: 0 0 10px rgba(74, 144, 217, 0.5);
-        }
-
         @keyframes starTwinkleBoard {
             0% { transform: translateY(4px); box-shadow: 0 0 10px rgba(255, 215, 0, 0.2), inset 0 0 5px rgba(255, 255, 255, 0.1); }
             100% { transform: translateY(-8px); box-shadow: 0 0 30px rgba(255, 215, 0, 0.7), inset 0 0 12px rgba(255, 255, 255, 0.4); }
-        }
-
-        @keyframes starTwinkleRunner {
-            0% { transform: translateY(4px); box-shadow: 0 0 10px rgba(74, 144, 217, 0.2), inset 0 0 5px rgba(255, 255, 255, 0.1); }
-            100% { transform: translateY(-8px); box-shadow: 0 0 30px rgba(74, 144, 217, 0.7), inset 0 0 12px rgba(255, 255, 255, 0.4); }
         }
 
         .scroll-hint {
@@ -1085,11 +1064,7 @@
             <div class="magic-game-links" id="magicGameLinks">
                 <a href="game.html" class="play-game-box board-game">
                     <span class="game-icon">🎲</span>
-                    <span class="game-title">보드게임 하러가기</span>
-                </a>
-                <a href="game.html" class="play-game-box runner-game">
-                    <span class="game-icon">🏃‍♀️</span>
-                    <span class="game-title">러너게임 하러가기</span>
+                    <span class="game-title">Play Game</span>
                 </a>
             </div>
 

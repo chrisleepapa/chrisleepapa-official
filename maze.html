@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>✨ Sistersquad 1인칭 대모험 ✨</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+  :root { --gold: #FFD700; --dark: #110828; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { overflow: hidden; background: var(--dark); font-family: 'Nunito', sans-serif; user-select: none; }
+  
+  #game-canvas { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; }
+  
+  /* 조준점 (크로스헤어) */
+  #crosshair {
+    position: absolute; top: 50%; left: 50%; width: 10px; height: 10px;
+    background: white; border-radius: 50%; transform: translate(-50%, -50%);
+    z-index: 10; pointer-events: none; mix-blend-mode: difference;
+    display: none;
+  }
+  
+  /* 1인칭 캐릭터 스프라이트 오버레이 */
+  #player-sprite {
+    position: absolute; bottom: -20px; right: 15%; width: 400px; height: 400px;
+    background-size: 500% 100%; background-position: 0% 0%; background-repeat: no-repeat;
+    z-index: 15; pointer-events: none; display: none;
+    filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));
+  }
+
+  /* 캐릭터별 스프라이트 이미지 매핑 */
+  .sprite-yul { background-image: url('yul_spritesheet.png'); }
+  .sprite-jung { background-image: url('jeong_spritesheet.png'); }
+
+  /* UI 오버레이 */
+  #ui-layer {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 20; pointer-events: none; padding: 20px; display: none;
+  }
+  .hud-top { display: flex; justify-content: space-between; align-items: flex-start; }
+  .score-box, .health-box {
+    background: rgba(17, 8, 40, 0.85); border: 2px solid rgba(255, 215, 0, 0.5);
+    border-radius: 16px; padding: 12px 24px; text-align: center; color: white;
+  }
+  .score-text { font-family: 'Fredoka One', cursive; font-size: 24px; color: var(--gold); }
+  
+  /* 화면 데미지 이펙트 */
+  #damage-overlay {
+    position: absolute; inset: 0; background: red; opacity: 0;
+    pointer-events: none; z-index: 50; transition: opacity 0.2s;
+  }
+  
+  /* 모달 (팝업창) */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 100;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .modal {
+    background: linear-gradient(160deg, #1E0B4E, #0A1F55);
+    border: 3px solid rgba(255, 215, 0, 0.5); border-radius: 24px;
+    padding: 40px; text-align: center; max-width: 500px; width: 90%;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+  }
+  .modal h2 { font-family: 'Fredoka One', cursive; font-size: 32px; color: #FFD700; margin-bottom: 20px; }
+  .modal p { color: #E8D5FF; font-size: 16px; line-height: 1.6; margin-bottom: 30px; }
+  
+  .char-select { display: flex; justify-content: center; gap: 20px; margin-bottom: 30px; }
+  .char-card {
+    background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 16px; padding: 20px; cursor: pointer; transition: all 0.3s;
+    width: 140px; color: white;
+  }
+  .char-card:hover, .char-card.selected {
+    transform: translateY(-5px); border-color: #FFD700; background: rgba(255,215,0,0.2);
+  }
+  .char-card img { width: 100%; height: 80px; object-fit: contain; margin-bottom: 10px; }
+  
+  button.action-btn {
+    background: linear-gradient(135deg, #FF69B4, #9B59B6); border: none; border-radius: 12px;
+    color: white; font-size: 18px; font-weight: 900; padding: 14px 40px; cursor: pointer;
+    box-shadow: 0 5px 20px rgba(233, 30, 99, 0.4);
+  }
+  button.action-btn:hover { transform: translateY(-3px) scale(1.05); }
+
+  #pause-screen, #game-over-screen, #win-screen { display: none; }
+</style>
+</head>
+<body>
+
+<div id="game-canvas"></div>
+<div id="crosshair"></div>
+<div id="player-sprite"></div>
+<div id="damage-overlay"></div>
+
+<div id="ui-layer">
+  <div class="hud-top">
+    <div class="health-box">
+      <div style="font-size: 12px; color: #FF9999;">체력 (HP)</div>
+      <div class="score-text" id="hp-display">❤️❤️❤️</div>
+    </div>
+    <div class="score-box">
+      <div style="font-size: 12px; color: #C9A6FF;">수집한 별</div>
+      <div class="score-text" id="score-display">⭐ 0 / 5</div>
+    </div>
+  </div>
+</div>
+
+<!-- 시작 / 캐릭터 선택 화면 -->
+<div class="modal-overlay" id="start-screen">
+  <div class="modal">
+    <h2>✨ Sistersquad 1인칭 대모험 ✨</h2>
+    <p>미로 속에서 적들을 물리치고 5개의 별을 모아 탈출하세요!<br>
+       [W, A, S, D] 이동 | [마우스] 시점 전환 | [클릭] 마법 공격
+    </p>
+    <div class="char-select">
+      <div class="char-card selected" id="card-yul" onclick="selectChar('yul')">
+        <div style="font-size:40px;">👩</div>
+        <h3>율이</h3>
+        <p style="font-size:12px; margin-top:5px; color:#aaa;">불의 마법</p>
+      </div>
+      <div class="char-card" id="card-jung" onclick="selectChar('jung')">
+        <div style="font-size:40px;">👧</div>
+        <h3>정이</h3>
+        <p style="font-size:12px; margin-top:5px; color:#aaa;">빛의 방패/구체</p>
+      </div>
+    </div>
+    <button class="action-btn" onclick="initGame()">게임 시작 (클릭하여 화면 고정)</button>
+  </div>
+</div>
+
+<!-- 일시정지 화면 -->
+<div class="modal-overlay" id="pause-screen">
+  <div class="modal">
+    <h2>⏸ 일시 정지</h2>
+    <p>화면을 클릭하면 게임으로 돌아갑니다.</p>
+  </div>
+</div>
+
+<!-- 게임 오버 화면 -->
+<div class="modal-overlay" id="game-over-screen">
+  <div class="modal">
+    <h2 style="color: #FF416C;">💀 게임 오버 💀</h2>
+    <p>적의 공격에 쓰러졌습니다...</p>
+    <button class="action-btn" onclick="location.reload()">다시 시작</button>
+  </div>
+</div>
+
+<!-- 승리 화면 -->
+<div class="modal-overlay" id="win-screen">
+  <div class="modal">
+    <h2 style="color: #00B4DB;">🏆 탈출 성공! 🏆</h2>
+    <p>놀라운 자매들의 완벽한 승리입니다!<br>모든 별을 찾고 포털을 통과했습니다!</p>
+    <button class="action-btn" onclick="location.reload()">다시 플레이하기</button>
+  </div>
+</div>
+
+<script>
+// --- 전역 상태 ---
+let scene, camera, renderer, clock;
+let isPlaying = false;
+let playerHealth = 3;
+let collectedStars = 0;
+const MAX_STARS = 5;
+
+// 캐릭터 설정
+let selectedChar = 'yul';
+const spriteColors = { yul: 0xFF6900, jung: 0xFFDD00 }; // 투사체 색상 (율: 불꽃, 정: 빛)
+
+// 맵 & 물리
+const TILE_SIZE = 4;
+const WALL_HEIGHT = 4;
+let mapGrid = [];
+let walls = [];
+let stars = [];
+let enemies = [];
+let projectiles = [];
+let portal = null;
+
+// 입력 상태
+const keys = { w: false, a: false, s: false, d: false };
+let yaw = 0; 
+let pitch = 0;
+let isAttacking = false;
+
+// 1: 벽, 0: 통로, S: 별, E: 적, P: 포털, @: 플레이어 시작점
+const levelData = [
+  "111111111111111",
+  "1@000100S000001",
+  "101101011111101",
+  "101000000E00101",
+  "101011111110101",
+  "1000E000S010001",
+  "111111011011101",
+  "100000010000001",
+  "101111010111101",
+  "10S0010001E0S01",
+  "101101111101111",
+  "1010000E00000P1",
+  "111111111111111"
+];
+
+// --- 캐릭터 선택 UI ---
+function selectChar(char) {
+  selectedChar = char;
+  document.getElementById('card-yul').classList.remove('selected');
+  document.getElementById('card-jung').classList.remove('selected');
+  document.getElementById('card-' + char).classList.add('selected');
+}
+
+// --- 게임 초기화 ---
+function initGame() {
+  document.getElementById('start-screen').style.display = 'none';
+  document.getElementById('crosshair').style.display = 'block';
+  document.getElementById('ui-layer').style.display = 'block';
+  
+  const spriteEl = document.getElementById('player-sprite');
+  spriteEl.style.display = 'block';
+  spriteEl.className = selectedChar === 'yul' ? 'sprite-yul' : 'sprite-jung';
+
+  // Three.js 씬 구성
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x050510);
+  scene.fog = new THREE.Fog(0x050510, 2, 30);
+  
+  clock = new THREE.Clock();
+  
+  camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 100);
+  
+  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.shadowMap.enabled = true;
+  document.getElementById('game-canvas').appendChild(renderer.domElement);
+
+  // 조명
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+  scene.add(ambientLight);
+  const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+  dirLight.position.set(20, 40, 20);
+  dirLight.castShadow = true;
+  scene.add(dirLight);
+
+  buildLevel();
+
+  // 이벤트 리스너 (입력)
+  document.addEventListener('keydown', e => { if(keys.hasOwnProperty(e.key.toLowerCase())) keys[e.key.toLowerCase()] = true; });
+  document.addEventListener('keyup', e => { if(keys.hasOwnProperty(e.key.toLowerCase())) keys[e.key.toLowerCase()] = false; });
+  
+  // 마우스 이동 (시점 전환)
+  document.body.addEventListener('mousemove', e => {
+    if (document.pointerLockElement === document.body) {
+      yaw -= e.movementX * 0.002;
+      pitch -= e.movementY * 0.002;
+      pitch = Math.max(-Math.PI/2 + 0.1, Math.min(Math.PI/2 - 0.1, pitch));
+      camera.rotation.set(pitch, yaw, 0, 'YXZ');
+    }
+  });
+
+  // 클릭 (공격)
+  document.body.addEventListener('mousedown', () => {
+    if (document.pointerLockElement === document.body) {
+      playerAttack();
+    } else if (isPlaying) {
+      document.body.requestPointerLock(); // 게임 화면 복귀
+    }
+  });
+
+  // 포인터 락(화면 고정) 이벤트 감지
+  document.addEventListener('pointerlockchange', () => {
+    if (document.pointerLockElement === document.body) {
+      isPlaying = true;
+      document.getElementById('pause-screen').style.display = 'none';
+    } else {
+      isPlaying = false;
+      if (playerHealth > 0 && collectedStars < MAX_STARS) {
+        document.getElementById('pause-screen').style.display = 'flex';
+      }
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+
+  // 시작!
+  document.body.requestPointerLock();
+  animate();
+}
+
+// --- 레벨 빌드 ---
+function buildLevel() {
+  const floorGeo = new THREE.PlaneGeometry(levelData[0].length * TILE_SIZE, levelData.length * TILE_SIZE);
+  const floorMat = new THREE.MeshStandardMaterial({ color: 0x1A2530, roughness: 0.8 });
+  const floor = new THREE.Mesh(floorGeo, floorMat);
+  floor.rotation.x = -Math.PI / 2;
+  floor.position.set((levelData[0].length * TILE_SIZE)/2, 0, (levelData.length * TILE_SIZE)/2);
+  floor.receiveShadow = true;
+  scene.add(floor);
+
+  const wallGeo = new THREE.BoxGeometry(TILE_SIZE, WALL_HEIGHT, TILE_SIZE);
+  const wallMat = new THREE.MeshStandardMaterial({ color: 0x34495E, roughness: 0.9 });
+  const starGeo = new THREE.TorusKnotGeometry(0.5, 0.2, 64, 8);
+  const starMat = new THREE.MeshStandardMaterial({ color: 0xFFD700, emissive: 0xAA8800 });
+  const enemyGeo = new THREE.SphereGeometry(1.2, 16, 16);
+  const enemyMat = new THREE.MeshStandardMaterial({ color: 0xE74C3C, emissive: 0x550000 });
+
+  for(let z=0; z<levelData.length; z++) {
+    mapGrid[z] = [];
+    for(let x=0; x<levelData[z].length; x++) {
+      const char = levelData[z][x];
+      mapGrid[z][x] = char === '1' ? 1 : 0;
+      
+      const px = x * TILE_SIZE + TILE_SIZE/2;
+      const pz = z * TILE_SIZE + TILE_SIZE/2;
+
+      if(char === '1') {
+        const wall = new THREE.Mesh(wallGeo, wallMat);
+        wall.position.set(px, WALL_HEIGHT/2, pz);
+        wall.castShadow = true; wall.receiveShadow = true;
+        scene.add(wall);
+        walls.push(new THREE.Box3().setFromObject(wall));
+      } else if(char === '@') {
+        camera.position.set(px, WALL_HEIGHT/2, pz);
+      } else if(char === 'S') {
+        const star = new THREE.Mesh(starGeo, starMat);
+        star.position.set(px, 1.5, pz);
+        scene.add(star);
+        stars.push({ mesh: star, active: true });
+      } else if(char === 'E') {
+        const enemy = new THREE.Mesh(enemyGeo, enemyMat);
+        enemy.position.set(px, 1.5, pz);
+        scene.add(enemy);
+        // 적 객체 데이터 (체력 2, 속도 등)
+        enemies.push({ mesh: enemy, health: 2, speed: 2.5, box: new THREE.Box3(), state: 'idle' });
+      } else if(char === 'P') {
+        const portalGeo = new THREE.TorusGeometry(1.5, 0.3, 16, 64);
+        const portalMat = new THREE.MeshBasicMaterial({ color: 0x555555, transparent: true, opacity: 0.3 });
+        portal = new THREE.Mesh(portalGeo, portalMat);
+        portal.position.set(px, 2, pz);
+        portal.userData = { isOpen: false };
+        scene.add(portal);
+      }
+    }
+  }
+}
+
+// --- 공격 및 스프라이트 애니메이션 ---
+function playerAttack() {
+  if (isAttacking) return;
+  isAttacking = true;
+  
+  const spriteEl = document.getElementById('player-sprite');
+  let frame = 0;
+  
+  // 스프라이트: 5개의 프레임 (0%, 25%, 50%, 75%, 100%)
+  const animInterval = setInterval(() => {
+    frame++;
+    if (frame >= 5) {
+      clearInterval(animInterval);
+      spriteEl.style.backgroundPosition = "0% 0%"; // Idle 상태로 복귀
+      isAttacking = false;
+    } else {
+      spriteEl.style.backgroundPosition = `${frame * 25}% 0%`;
+      // 프레임 2에서 투사체 발사 (손을 뻗는 모션)
+      if (frame === 2) spawnProjectile();
+    }
+  }, 80); // 애니메이션 속도
+}
+
+function spawnProjectile() {
+  const geo = new THREE.SphereGeometry(0.3, 8, 8);
+  const mat = new THREE.MeshBasicMaterial({ color: spriteColors[selectedChar] });
+  const mesh = new THREE.Mesh(geo, mat);
+  
+  // 카메라 위치와 방향을 기반으로 발사
+  const dir = new THREE.Vector3();
+  camera.getWorldDirection(dir);
+  
+  mesh.position.copy(camera.position).add(dir.clone().multiplyScalar(1.5));
+  mesh.position.y -= 0.3; // 화면 중앙보다 살짝 아래(손 위치)에서 발사
+  scene.add(mesh);
+  
+  projectiles.push({ mesh: mesh, velocity: dir.multiplyScalar(20), life: 2.0 });
+}
+
+// --- 충돌 감지 (벽) ---
+function checkWallCollision(newPos) {
+  const playerBox = new THREE.Box3(
+    new THREE.Vector3(newPos.x - 0.4, 0, newPos.z - 0.4),
+    new THREE.Vector3(newPos.x + 0.4, WALL_HEIGHT, newPos.z + 0.4)
+  );
+  for (let box of walls) {
+    if (playerBox.intersectsBox(box)) return true;
+  }
+  return false;
+}
+
+// --- 메인 게임 루프 ---
+function animate() {
+  requestAnimationFrame(animate);
+  const delta = clock.getDelta();
+
+  if (isPlaying) {
+    // 1. 플레이어 이동
+    const moveSpeed = 8.0 * delta;
+    const forward = new THREE.Vector3(Math.sin(yaw), 0, Math.cos(yaw)).normalize();
+    const right = new THREE.Vector3(Math.sin(yaw - Math.PI/2), 0, Math.cos(yaw - Math.PI/2)).normalize();
+    
+    let moveDir = new THREE.Vector3(0,0,0);
+    if (keys.w) moveDir.sub(forward);
+    if (keys.s) moveDir.add(forward);
+    if (keys.a) moveDir.sub(right);
+    if (keys.d) moveDir.add(right);
+    
+    if (moveDir.lengthSq() > 0) {
+      moveDir.normalize().multiplyScalar(moveSpeed);
+      const newPos = camera.position.clone().add(moveDir);
+      
+      // X축, Z축 분리 충돌 처리 (미끄러짐 효과)
+      if (!checkWallCollision(new THREE.Vector3(newPos.x, camera.position.y, camera.position.z))) {
+        camera.position.x = newPos.x;
+      }
+      if (!checkWallCollision(new THREE.Vector3(camera.position.x, camera.position.y, newPos.z))) {
+        camera.position.z = newPos.z;
+      }
+      
+      // 걷는 덜썩임(Bobbing) 효과
+      camera.position.y = (WALL_HEIGHT/2) + Math.sin(clock.getElapsedTime() * 10) * 0.15;
+    }
+
+    // 2. 투사체 업데이트
+    for (let i = projectiles.length - 1; i >= 0; i--) {
+      let p = projectiles[i];
+      p.mesh.position.add(p.velocity.clone().multiplyScalar(delta));
+      p.life -= delta;
+      
+      // 적 타격 확인
+      let hit = false;
+      for (let e of enemies) {
+        if (e.health > 0 && p.mesh.position.distanceTo(e.mesh.position) < 1.5) {
+          e.health -= 1;
+          e.mesh.material.emissive.setHex(0xFFFFFF); // 피격 번쩍임
+          setTimeout(() => { if(e.mesh) e.mesh.material.emissive.setHex(0x550000); }, 100);
+          hit = true;
+          break;
+        }
+      }
+
+      if (hit || p.life <= 0) {
+        scene.remove(p.mesh);
+        projectiles.splice(i, 1);
+      }
+    }
+
+    // 3. 적 업데이트 (플레이어 쫓아가기)
+    for (let e of enemies) {
+      if (e.health <= 0) {
+        scene.remove(e.mesh);
+        e.mesh.position.y = -100; // 화면 밖으로 치움
+        continue;
+      }
+      
+      const distToPlayer = e.mesh.position.distanceTo(camera.position);
+      // 가까워지면 추적
+      if (distToPlayer < 12) {
+        const dir = new THREE.Vector3().subVectors(camera.position, e.mesh.position).normalize();
+        dir.y = 0;
+        e.mesh.position.add(dir.multiplyScalar(e.speed * delta));
+        e.mesh.position.y = 1.5 + Math.sin(clock.getElapsedTime() * 5 + e.mesh.position.x) * 0.3; // 둥둥
+        
+        // 플레이어 타격
+        if (distToPlayer < 1.5 && e.state === 'idle') {
+          takeDamage();
+          e.state = 'cooldown';
+          setTimeout(() => e.state = 'idle', 1000); // 1초 쿨타임
+        }
+      }
+    }
+
+    // 4. 아이템(별) 획득
+    stars.forEach(s => {
+      if (s.active) {
+        s.mesh.rotation.y += 2 * delta;
+        if (camera.position.distanceTo(s.mesh.position) < 2.0) {
+          s.active = false;
+          scene.remove(s.mesh);
+          collectedStars++;
+          document.getElementById('score-display').innerText = `⭐ ${collectedStars} / ${MAX_STARS}`;
+          
+          if (collectedStars >= MAX_STARS) {
+            portal.userData.isOpen = true;
+            portal.material.color.setHex(0x9B59B6);
+            portal.material.opacity = 0.9;
+          }
+        }
+      }
+    });
+
+    // 5. 포털 업데이트
+    if (portal && portal.userData.isOpen) {
+      portal.rotation.y += 3 * delta;
+      portal.rotation.z += 1 * delta;
+      const sc = 1 + Math.sin(clock.getElapsedTime() * 5) * 0.1;
+      portal.scale.set(sc, sc, sc);
+      
+      if (camera.position.distanceTo(portal.position) < 2.0) {
+        isPlaying = false;
+        document.exitPointerLock();
+        document.getElementById('win-screen').style.display = 'flex';
+      }
+    }
+  }
+
+  renderer.render(scene, camera);
+}
+
+// --- 데미지 처리 ---
+function takeDamage() {
+  playerHealth--;
+  let hpStr = "";
+  for(let i=0; i<playerHealth; i++) hpStr += "❤️";
+  for(let i=playerHealth; i<3; i++) hpStr += "🖤";
+  document.getElementById('hp-display').innerText = hpStr;
+
+  const dmgOverlay = document.getElementById('damage-overlay');
+  dmgOverlay.style.opacity = '0.4';
+  setTimeout(() => { dmgOverlay.style.opacity = '0'; }, 200);
+
+  if (playerHealth <= 0) {
+    isPlaying = false;
+    document.exitPointerLock();
+    document.getElementById('game-over-screen').style.display = 'flex';
+  }
+}
+</script>
+</body>
+</html>

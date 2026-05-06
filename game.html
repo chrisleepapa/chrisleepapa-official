@@ -34,7 +34,7 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 .gtitle h1{font-family:'Fredoka One',cursive;font-size:clamp(20px,5vw,38px);background:linear-gradient(135deg,#FFD700,#FF69B4,#C9A6FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 18px rgba(255,215,0,.45));letter-spacing:2px;}
 .gtitle p{color:#C9A6FF;font-size:12px;font-weight:700;}
 .gl{display:flex;gap:14px;align-items:flex-start;width:100%;max-width:960px;flex-wrap:wrap;justify-content:center;}
-.board{display:grid;grid-template-columns:repeat(7,1fr);grid-template-rows:repeat(7,1fr);gap:5px;width:min(510px,92vw);aspect-ratio:1;background:rgba(8,4,22,.85);border-radius:20px;padding:6px;border:2px solid rgba(255,215,0,.2);box-shadow:0 0 60px rgba(155,89,182,.4),inset 0 0 40px rgba(0,0,0,.5);}
+.board{display:grid;grid-template-columns:repeat(7,1fr);grid-template-rows:repeat(7,1fr);gap:5px;width:min(510px,92vw);aspect-ratio:1;background:rgba(8,4,22,.85);border-radius:20px;padding:6px;border:2px solid rgba(255,215,0,.2);box-shadow:0 0 60px rgba(155,89,182,.4),inset 0 0 40px rgba(0,0,0,.5); transition: transform 0.3s;}
 .cell{border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2px;position:relative;overflow:hidden;border:1.5px solid transparent;transition:transform .15s,box-shadow .15s;}
 .cell:hover{transform:scale(1.07);z-index:10;box-shadow:0 0 14px rgba(255,255,255,.25);}
 .cell.corner{border-radius:12px;border-width:2px;}
@@ -53,6 +53,7 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.12);}}
 .cell.shk{animation:shake .5s;}
 .cell.lnd{animation:pulse .4s;}
+.board.shk{animation:shake .6s;}
 .cp{grid-column:2/7;grid-row:2/7;background:linear-gradient(160deg,rgba(18,6,46,.97),rgba(6,22,52,.97));border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px;gap:7px;border:1px solid rgba(255,215,0,.18);overflow:hidden;position:relative;}
 .cp::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(155,89,182,.1),transparent 70%);pointer-events:none;}
 .cbk{font-size:clamp(20px,3.5vw,34px);filter:drop-shadow(0 0 14px rgba(255,215,0,.7));animation:fl 3s ease-in-out infinite;}
@@ -507,25 +508,25 @@ var SP=[
   {id:0, t:'c',nm:'출발!',      em:'🏠',bg:'linear-gradient(135deg,#FFF9C4,#D4A000)',char:'yul',     cn:'율이',           cd:'새로운 모험이 시작됐어요! 오늘은 무슨 일이 생길까요?',   st:1},
   {id:1, t:'e',nm:'버섯숲',     em:'🍄',bg:'linear-gradient(135deg,#1A6B3A,#2ECC71)',char:'town',     cn:'루미나 (요정여왕)',  cd:'이 버섯은 특별한 마법이 있어요! 별 하나를 드릴게요!',      st:1},
   {id:2, t:'e',nm:'요정여왕',   em:'👸',bg:'linear-gradient(135deg,#3A0A6A,#9B59B6)',char:'fairytail',cn:'루미나 (요정여왕)',  cd:'용감한 여행자여, 내 영역에 오신 것을 환영해요! 두 별을 드릴게요.', st:2},
-  {id:3, t:'t',nm:'어둠의 기사단', em:'⚡',bg:'linear-gradient(135deg,#3A0A0A,#E74C3C)',char:'darkknight',cn:'어둠의기사단',       cd:'어둠의 힘이 너를 가둔다! 다음 턴은 움직일 수 없어!',    sk:true},
+  {id:3, t:'t',nm:'어둠의 기사단1', em:'⚡',bg:'linear-gradient(135deg,#3A0A0A,#E74C3C)',char:'darkknight',cn:'어둠의기사단',       cd:'어둠의 힘이 너를 가둔다! 다음 턴은 움직일 수 없어!',    sk:true},
   {id:4, t:'b',nm:'대장장이',   em:'🔨',bg:'linear-gradient(135deg,#5C3A00,#E67E22)',char:'brook',    cn:'브룩 (대장장이)', cd:'이 날개로 날아서 왔어요! 빨리 다시 한번 굴려요!',        xr:true},
   {id:5, t:'e',nm:'나비정원',   em:'🦋',bg:'linear-gradient(135deg,#0A3A6A,#3498DB)',char:'jung',      cn:'정이',           cd:'언니! 나비가 너무 예뻐! 나비가 별을 가져다줬어!',        st:1},
   {id:6, t:'c',nm:'요정마을',   em:'🌸',bg:'linear-gradient(135deg,#6A0A3A,#FF69B4)',char:'fairytown',     cn:'루미나 (요정여왕)',  cd:'요정마을에 오신 것을 환영해요! 특별히 별 두 개를 드릴게요!', st:2},
   {id:7, t:'e',nm:'달빛숲',     em:'🌙',bg:'linear-gradient(135deg,#2A2A50,#5D6D7E)',char:'town',    cn:'엘리온 (현자)',     cd:'달이 빛나는 밤이군요. 이 별은 달이 주는 선물입니다.',    st:1},
-  {id:8, t:'t',nm:'어둠의 기사단', em:'⚔️',bg:'linear-gradient(135deg,#1A1A2A,#566573)',char:'darkknight',cn:'어둠의기사단',      cd:'크하하! 감히 내 영역에! 별을 내놓아라!',               st:-1},
+  {id:8, t:'t',nm:'어둠의 기사단2', em:'⚔️',bg:'linear-gradient(135deg,#1A1A2A,#566573)',char:'darkknight',cn:'어둠의기사단',      cd:'크하하! 감히 내 영역에! 별을 내놓아라!',               st:-1},
   {id:9, t:'b',nm:'현자 지름길',em:'🧙',bg:'linear-gradient(135deg,#3A006A,#8E44AD)',char:'grandmagic',cn:'엘리온 (현자)',     cd:'나를 따르라, 지름길을 알려주지. 앞으로 3칸!',           mv:3},
   {id:10,t:'e',nm:'꽃밭',       em:'🌺',bg:'linear-gradient(135deg,#6A0A2A,#E91E63)',char:'jung',      cn:'정이',           cd:'언니! 꽃이 너무 많아! 예쁜 별도 있어!',                st:1},
   {id:11,t:'t',nm:'어둠의 마왕 크라운',em:'🌪️',bg:'linear-gradient(135deg,#2A2A2A,#95A5A6)',char:'crown',     cn:'어둠왕',         cd:'크하하! 나의 폭풍이 너를 날려버리겠다! 3칸 뒤로!',      mv:-3},
   {id:12,t:'c',nm:'어둠의 검신 베인',  em:'🏰',bg:'linear-gradient(135deg,#0A0A1A,#2C3E50)',char:'bain',      cn:'어둠왕',         cd:'감히 내 성에 들어오다니! 별 하나를 내놓아라!',          st:-1},
   {id:13,t:'e',nm:'별자리',     em:'⭐',bg:'linear-gradient(135deg,#4A3A00,#F39C12)',char:'yul',     cn:'율이',           cd:'와! 이 별자리... 마법책에서 본 것이에요! 별 2개다!',     st:2},
-  {id:14,t:'t',nm:'어둠의 기사단', em:'🧊',bg:'linear-gradient(135deg,#0A2A4A,#5DADE2)',char:'darkknight',cn:'어둠의기사단',      cd:'얼음 감옥에 갇혀봐라! 다음 턴은 꼼짝 마!',             sk:true},
+  {id:14,t:'t',nm:'어둠의 기사단3', em:'🧊',bg:'linear-gradient(135deg,#0A2A4A,#5DADE2)',char:'darkknight',cn:'어둠의기사단',      cd:'얼음 감옥에 갇혀봐라! 다음 턴은 꼼짝 마!',             sk:true},
   {id:15,t:'e',nm:'요정 파티',  em:'🎉',bg:'linear-gradient(135deg,#6A0A3A,#E91E63)',char:'team',     cn:'루미나 (요정여왕)',  cd:'파티에 초대해요! 와줘서 기뻐요, 선물로 별 하나!',        st:1},
   {id:16,t:'e',nm:'마법 크리스탈',em:'💎',bg:'linear-gradient(135deg,#0A4A3A,#1ABC9C)',char:'angel',   cn:'엘리온 (현자)',     cd:'이 크리스탈은 두 별의 에너지를 담고 있소. 가져가시오.',  st:2},
   {id:17,t:'b',nm:'별똥별',     em:'🌠',bg:'linear-gradient(135deg,#4A4A00,#F1C40F)',char:'yul',     cn:'율이',           cd:'별똥별이다! 얼른 소원 빌어! 한 번 더 기회가 생겼어!',   xr:true},
   {id:18,t:'c',nm:'마법도서관', em:'📚',bg:'linear-gradient(135deg,#3A2A00,#8B6914)',char:'dad',      cn:'아빠',           cd:'이 책들 속에 세상의 비밀이 숨어있어. 별을 두 개 드릴게.',st:2},
   {id:19,t:'e',nm:'엄마 부엌',  em:'🍪',bg:'linear-gradient(135deg,#4A2A00,#E67E22)',char:'mom',      cn:'엄마',           cd:'우리 아이들 왔어? 갓 구운 쿠키야! 기운내라고 별도 줄게!',st:1},
   {id:20,t:'b',nm:'아빠 서재',  em:'📖',bg:'linear-gradient(135deg,#0A2A4A,#2980B9)',char:'dad',      cn:'아빠',           cd:'아빠 책 읽다가 또 왔어? 특별히 한 번 더 기회를 줄게!',  xr:true},
-  {id:21,t:'t',nm:'어둠의 기사단', em:'🧪',bg:'linear-gradient(135deg,#0A3A1A,#27AE60)',char:'darkknight',cn:'어둠의기사단',      cd:'크크! 이 물약을 마셔봐! 2칸 뒤로 가는 맛이야!',         mv:-2},
+  {id:21,t:'t',nm:'어둠의 기사단4', em:'🧪',bg:'linear-gradient(135deg,#0A3A1A,#27AE60)',char:'darkknight',cn:'어둠의기사단',      cd:'크크! 이 물약을 마셔봐! 2칸 뒤로 가는 맛이야!',         mv:-2},
   {id:22,t:'e',nm:'요정 친구',  em:'✨',bg:'linear-gradient(135deg,#4A3A00,#F39C12)',char:'jung',      cn:'정이',           cd:'언니 언니! 내 새 친구야! 같이 별을 찾았어!',            st:1},
   {id:23,t:'b',nm:'마법의 문',  em:'🚪',bg:'linear-gradient(135deg,#3A0A6A,#9B59B6)',char:'magicbook',cn:'엘리온 (현자)',     cd:'이 문은 마법의 지름길오. 앞으로 3칸 순간이동!',        mv:3}
 ];
@@ -547,18 +548,54 @@ var PL=[
 /* ══ STATE ══ */
 var pos=[0,0],stars=[0,0],cur=0,dice=[1,2],skip=[false,false],powerUp=[false,false];
 var rolling=false,ev=null,over=false,moving=false;
+var totalTurns = 1;
+
+/* ══ SHUFFLE BOARD ══ */
+function shuffleBoard() {
+  var startSpace = SP[0];
+  var restSpaces = SP.slice(1);
+  for (var i = restSpaces.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = restSpaces[i];
+    restSpaces[i] = restSpaces[j];
+    restSpaces[j] = temp;
+  }
+  SP = [startSpace].concat(restSpaces);
+  SP.forEach(function(sp, idx) { sp.id = idx; });
+}
+
+function rebuildBoardDOM() {
+  var b = document.getElementById('board');
+  var cells = b.querySelectorAll('.cell');
+  for (var i = 0; i < cells.length; i++) cells[i].remove();
+  
+  SP.forEach(function(sp) {
+    var g = GR[sp.id], d = document.createElement('div');
+    d.className = 'cell ' + TC[sp.t] + (sp.t === 'c' ? ' corner' : '');
+    d.id = 'c' + sp.id;
+    d.style.cssText = 'grid-column:' + g.c + ';grid-row:' + g.r + ';';
+    d.innerHTML = '<div class="cem">' + sp.em + '</div><div class="cnm">' + sp.nm + '</div><div class="ctk" id="tk' + sp.id + '"></div>';
+    b.insertBefore(d, b.querySelector('.cp'));
+  });
+  renderAll();
+}
+
+function advanceTurn() {
+  totalTurns++;
+  if (totalTurns % 10 === 0) { // 10번째 차례마다 발동
+    addLog('🌪️ 10번째 턴! 마법의 바람이 불어 보드가 섞입니다!');
+    shuffleBoard();
+    rebuildBoardDOM();
+    var b = document.getElementById('board');
+    b.classList.add('shk');
+    setTimeout(function() { b.classList.remove('shk'); }, 600);
+    sTrap();
+  }
+}
 
 /* ══ BUILD BOARD ══ */
 function buildBoard(){
-  var b=document.getElementById('board');
-  SP.forEach(function(sp){
-    var g=GR[sp.id],d=document.createElement('div');
-    d.className='cell '+TC[sp.t]+(sp.t==='c'?' corner':'');
-    d.id='c'+sp.id;
-    d.style.cssText='grid-column:'+g.c+';grid-row:'+g.r+';';
-    d.innerHTML='<div class="cem">'+sp.em+'</div><div class="cnm">'+sp.nm+'</div><div class="ctk" id="tk'+sp.id+'"></div>';
-    b.insertBefore(d,b.querySelector('.cp'));
-  });
+  rebuildBoardDOM();
   document.getElementById('isvg0').innerHTML=SV.yul;
   document.getElementById('isvg1').innerHTML=SV.jung;
   renderAll();
@@ -623,7 +660,9 @@ function handleRoll(){
     skip[cur]=false;
     var nx=1-cur;
     addLog(PL[cur].ic+' '+PL[cur].nm+' 쉬는 중... → '+PL[nx].ic+' '+PL[nx].nm+' 차례!');
-    cur=nx;renderAll();return;
+    cur=nx;
+    advanceTurn();
+    renderAll();return;
   }
   rolling=true;renderAll();sDice();
   var t=0;
@@ -661,10 +700,10 @@ function movePlayer(from, steps, isPwr){
 /* ══ EVENTS ══ */
 /* ══ CINEMATIC ══ */
 var CINE_DATA={
-  19:{type:'good', img:'./images/mom.jpeg',    tag:'💝 SPECIAL ENCOUNTER 💝', name:'엄마', sub:'우리 율이 정이 왔어? 😊\n엄마가 제일 사랑하는 우리 딸들~!\n갓 구운 쿠키랑 사랑을 듬뿍 드릴게! 💕'},
-  20:{type:'good', img:'./images/chris05.jpg', tag:'📖 SPECIAL ENCOUNTER 📖', name:'아빠', sub:'오! 우리 딸들이 대모험 중이구나! 🌟\n아빠가 항상 응원해줄게 — 파이팅! ✨'},
-  11:{type:'evil', img:'./images/crown.jpg',   tag:'☠ BOSS ENCOUNTER ☠',     name:'어둠의 마왕 크라운', sub:'크하하하! 감히 내 영역을 침범하다니!\n그 대가를 치르게 될 것이다...! 💀'},
-  12:{type:'evil', img:'./images/bain.jpg',    tag:'⚔ BOSS ENCOUNTER ⚔',     name:'어둠의 검신 베인',   sub:'어둠의 검이 빛을 집어삼키리라...\n이제 네 별은 내 것이다! ⚔️'}
+  '엄마 부엌':{type:'good', img:'./images/mom.jpeg',    tag:'💝 SPECIAL ENCOUNTER 💝', name:'엄마', sub:'우리 율이 정이 왔어? 😊\n엄마가 제일 사랑하는 우리 딸들~!\n갓 구운 쿠키랑 사랑을 듬뿍 드릴게! 💕'},
+  '아빠 서재':{type:'good', img:'./images/chris05.jpg', tag:'📖 SPECIAL ENCOUNTER 📖', name:'아빠', sub:'오! 우리 딸들이 대모험 중이구나! 🌟\n아빠가 항상 응원해줄게 — 파이팅! ✨'},
+  '어둠의 마왕 크라운':{type:'evil', img:'./images/crown.jpg',   tag:'☠ BOSS ENCOUNTER ☠',     name:'어둠의 마왕 크라운', sub:'크하하하! 감히 내 영역을 침범하다니!\n그 대가를 치르게 될 것이다...! 💀'},
+  '어둠의 검신 베인':{type:'evil', img:'./images/bain.jpg',    tag:'⚔ BOSS ENCOUNTER ⚔',     name:'어둠의 검신 베인',   sub:'어둠의 검이 빛을 집어삼키리라...\n이제 네 별은 내 것이다! ⚔️'}
 };
 
 var cfxCanvas,cfxCtx,cfxParts=[],cfxRunning=false,cineNext=null;
@@ -758,8 +797,9 @@ function triggerEvent(sid,fromMove){
   var sp=SP[sid];
   if(!fromMove)addLog(PL[cur].ic+' → '+sp.em+' '+sp.nm);
   ev={sid:sid};
-  if(CINE_DATA[sid]){
-    cineShow(sid,function(){openEventCard(sid);});
+  var cData = CINE_DATA[sp.nm]; // 칸 이름을 기준으로 시네마틱 데이터 매칭
+  if(cData){
+    cineShow(cData,function(){openEventCard(sid);});
     return;
   }
   openEventCard(sid);
@@ -826,7 +866,12 @@ function confirmEvent(){
     },300);
   }
   if(stars[cur]>=WIN){renderAll();setTimeout(showWin,400);return;}
-  if(!extraRoll&&!hasMoved){var nx=1-cur;addLog(PL[nx].ic+' '+PL[nx].nm+' 차례!');cur=nx;}
+  if(!extraRoll&&!hasMoved){
+    var nx=1-cur;
+    addLog(PL[nx].ic+' '+PL[nx].nm+' 차례!');
+    cur=nx;
+    advanceTurn();
+  }
   renderAll();
 }
 
@@ -855,11 +900,13 @@ function showWin(){
 function resetGame(){
   pos=[0,0];stars=[0,0];cur=0;dice=[1,2];skip=[false,false];powerUp=[false,false];
   rolling=false;ev=null;over=false;moving=false;
+  totalTurns=1;
   document.getElementById('gov').classList.remove('vis');
   document.getElementById('eov').classList.remove('vis');
   Array.from(document.getElementById('lgp').querySelectorAll('.lge')).forEach(function(e){e.remove();});
   addLog('✨ 새 게임 시작! 율이🧒 차례입니다.');
-  renderAll();
+  shuffleBoard();
+  rebuildBoardDOM();
 }
 
 function startGame(){
@@ -868,6 +915,8 @@ function startGame(){
   addLog('✨ 모험 시작! 율이🧒 차례입니다.');
 }
 
+// 처음 실행 시 보드판을 무작위로 한 번 섞은 후 구성합니다.
+shuffleBoard();
 buildBoard();
 </script>
 </body>

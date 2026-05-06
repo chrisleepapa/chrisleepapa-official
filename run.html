@@ -1,229 +1,646 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>SisterSquad Runner</title>
-<style>
-body {
-  margin: 0;
-  overflow: hidden;
-  background: linear-gradient(#87CEEB, #fff);
-}
-canvas { display: block; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>아빠의 서재 - 책 쌓기</title>
+    <!-- Matter.js 물리 엔진 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap');
 
-#ui {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-}
+        body {
+            font-family: 'Noto Serif KR', serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            touch-action: none;
+            background-color: #1a1a1a;
+        }
 
-/* 모바일 버튼 */
-.controls {
-  position: absolute;
-  bottom: 20px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-.btn {
-  width: 70px;
-  height: 70px;
-  background: rgba(0,0,0,0.4);
-  color: white;
-  font-size: 24px;
-  border-radius: 50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-</style>
+        /* --- 아빠의 서재 배경 --- */
+        #room-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            /* 클래식 딥 그린 벽지 + 금박 스트라이프 패턴 */
+            background-color: #1e2b22; 
+            background-image: 
+                repeating-linear-gradient(to right, transparent, transparent 60px, rgba(212, 175, 55, 0.05) 60px, rgba(212, 175, 55, 0.05) 62px),
+                repeating-linear-gradient(to right, transparent, transparent 120px, rgba(0, 0, 0, 0.15) 120px, rgba(0, 0, 0, 0.15) 180px);
+            z-index: -3;
+        }
+
+        /* 하단 나무 벽면 (웨인스코팅) */
+        #wood-panel {
+            position: fixed;
+            left: 0; width: 100%; height: 40vh;
+            background: linear-gradient(to bottom, #3e2211 0%, #241106 15px, #0f0703 100%);
+            border-top: 10px solid #2b1609;
+            box-shadow: inset 0 20px 30px rgba(0,0,0,0.8);
+            z-index: -2;
+            /* JS에서 카메라 이동에 따라 top 위치 제어 */
+        }
+
+        /* 서재 스탠드 조명 (은은하고 따뜻한 광원) */
+        #lamp-glow {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 30%, rgba(255, 190, 90, 0.15) 0%, rgba(0, 0, 0, 0.7) 100%);
+            pointer-events: none;
+            z-index: 5; /* 캔버스 위를 덮어 전체적인 색감을 맞춤 */
+        }
+
+        #game-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0px 20px 20px rgba(0,0,0,0.7));
+        }
+
+        /* UI 오버레이 */
+        #ui-layer {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .hud-panel {
+            background: rgba(20, 15, 10, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 8px;
+            padding: 12px 24px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.8);
+            pointer-events: auto;
+            color: #e5e7eb;
+        }
+
+        .score-text {
+            color: #d4af37; /* 클래식 골드 */
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9);
+        }
+
+        #controls-hint {
+            position: absolute;
+            bottom: 80px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: rgba(255,255,255,0.8);
+            font-size: 1.1rem;
+            animation: pulse 2s infinite;
+            pointer-events: none;
+            text-shadow: 0 2px 5px rgba(0,0,0,1);
+            z-index: 10;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.3; transform: scale(0.98); }
+            50% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0.3; transform: scale(0.98); }
+        }
+
+        /* 모달 창 (가죽 양장본 느낌) */
+        .modal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(145deg, #302018, #1c110b);
+            padding: 40px 30px;
+            border-radius: 6px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9), inset 0 0 0 2px rgba(212, 175, 55, 0.1);
+            text-align: center;
+            pointer-events: auto;
+            display: none;
+            z-index: 100;
+            border: 4px solid #4a2e1b;
+            width: 90%;
+            max-width: 400px;
+            color: #e5e7eb;
+        }
+
+        .btn-gold {
+            background: linear-gradient(to bottom, #c5a059, #8a6c31);
+            border: 1px solid #e8ce8a;
+            color: #1a0f08;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+            transition: all 0.2s;
+            text-shadow: 0 1px 1px rgba(255,255,255,0.4);
+        }
+        .btn-gold:hover {
+            background: linear-gradient(to bottom, #dcb770, #a1803b);
+            transform: translateY(-2px);
+        }
+        .btn-gold:active {
+            transform: translateY(1px);
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            10%, 30%, 50%, 70%, 90% { transform: translate(-3px, -2px) rotate(-1deg); }
+            20%, 40%, 60%, 80% { transform: translate(3px, 2px) rotate(1deg); }
+        }
+    </style>
 </head>
 <body>
 
-<canvas id="game"></canvas>
-<div id="ui"></div>
+    <!-- 서재 배경 요소들 -->
+    <div id="room-bg"></div>
+    <div id="wood-panel"></div>
+    <div id="lamp-glow"></div>
 
-<div class="controls">
-  <div class="btn" id="jump">⤴</div>
-</div>
+    <div id="game-container">
+        <div id="ui-layer" class="p-5 flex justify-between items-start">
+            <div class="hud-panel flex flex-col gap-1">
+                <div class="text-lg font-bold text-gray-300">높이: <span id="score" class="score-text text-3xl">0</span> 권</div>
+                <div class="text-sm text-gray-400 mt-1">최고 기록: <span id="best-score" class="text-gray-200 font-bold">0</span></div>
+            </div>
+            
+            <button id="btn-restart-top" class="hud-panel hover:bg-white hover:bg-opacity-10 text-gray-300 font-bold active:scale-95 transition hidden text-sm">
+                초기화
+            </button>
+        </div>
 
-<script>
-const canvas = document.getElementById("game");
-const ctx = canvas.getContext("2d");
-canvas.width = innerWidth;
-canvas.height = innerHeight;
+        <div id="controls-hint" style="display: none;">
+            👆 화면을 누른 상태로 조준하고<br>
+            <span class="text-yellow-400 font-bold mt-2 inline-block">손을 떼면 책을 내려놓습니다.</span>
+        </div>
 
-// ✅ 스프라이트 로드
-const yulImg = new Image();
-yulImg.src = "/images/yul_spritesheet.png";
+        <!-- 시작 모달 -->
+        <div id="start-modal" class="modal" style="display: block;">
+            <h1 class="text-4xl font-bold text-yellow-500 mb-2" style="text-shadow: 0 2px 4px rgba(0,0,0,1);">아빠의 서재</h1>
+            <p class="text-gray-400 mb-8 text-xs tracking-widest font-sans">BOOK STACKING CHALLENGE</p>
+            
+            <p class="text-gray-300 mb-8 text-lg leading-relaxed">
+                오래된 책상 위에<br>
+                양장본 책들을 조심스럽게<br>
+                쌓아 올려보세요.
+            </p>
+            
+            <button id="btn-start" class="btn-gold w-full font-bold py-4 px-6 rounded shadow-lg text-xl">
+                책 쌓기 시작
+            </button>
+        </div>
 
-const jeongImg = new Image();
-jeongImg.src = "/images/jeong_spritesheet.png";
+        <!-- 게임 오버 모달 -->
+        <div id="gameover-modal" class="modal">
+            <h2 class="text-3xl font-bold text-red-400 mb-2">무너졌습니다!</h2>
+            <p class="text-gray-400 mb-6 text-lg">책상 아래로 책이 떨어졌습니다.</p>
+            
+            <div class="bg-black bg-opacity-60 p-6 rounded mb-8 border border-gray-700 shadow-inner">
+                <p class="text-sm text-gray-400">이번에 쌓은 높이</p>
+                <p class="text-6xl font-bold score-text mt-2"><span id="final-score">0</span></p>
+                <p class="text-sm text-yellow-400 mt-4 font-bold animate-pulse" id="new-record-msg" style="display: none;">🏆 서재 최고 기록 달성 🏆</p>
+            </div>
 
-let currentCharacter = "yul";
+            <button id="btn-restart" class="btn-gold w-full font-bold py-4 px-6 rounded shadow-lg text-xl">
+                다시 쌓기
+            </button>
+        </div>
+    </div>
 
-// 🎞️ 스프라이트 설정
-const FRAME_COUNT = 6;   // 👈 너 이미지에 맞게 수정
-let frameIndex = 0;
-let frameTick = 0;
+    <script>
+        // --- Matter.js 초기화 ---
+        const Engine = Matter.Engine,
+              Render = Matter.Render,
+              Runner = Matter.Runner,
+              Bodies = Matter.Bodies,
+              Composite = Matter.Composite,
+              Events = Matter.Events,
+              Body = Matter.Body;
 
-// 플레이어
-let player = {
-  x: 150,
-  y: 300,
-  w: 100,
-  h: 100,
-  dy: 0,
-  jumping: false,
-  fairies: 0,
-  score: 0
-};
+        let engine, render, runner;
+        let books = [];
+        let currentActiveBook = null; 
+        let score = 0;
+        let bestScore = localStorage.getItem('studyRoomBookBest') || 0;
+        let gameState = 'START';
+        
+        let width = window.innerWidth;
+        let height = window.innerHeight;
+        let ground;
+        
+        let currentBounds = { min: { x: 0, y: 0 }, max: { x: width, y: height } };
 
-let gravity = 0.7;
-let speed = 8;
-let objects = [];
-let gameOver = false;
+        const scoreEl = document.getElementById('score');
+        const bestScoreEl = document.getElementById('best-score');
+        const finalScoreEl = document.getElementById('final-score');
+        const startModal = document.getElementById('start-modal');
+        const gameoverModal = document.getElementById('gameover-modal');
+        const controlsHint = document.getElementById('controls-hint');
+        const newRecordMsg = document.getElementById('new-record-msg');
+        const btnRestartTop = document.getElementById('btn-restart-top');
 
-// 점프
-function jump(){
-  if(!player.jumping){
-    player.dy = -15;
-    player.jumping = true;
-  }
-}
+        const woodPanel = document.getElementById('wood-panel');
+        const roomBg = document.getElementById('room-bg');
 
-jumpBtn = document.getElementById("jump");
-jumpBtn.ontouchstart = jump;
-document.addEventListener("keydown", e=>{
-  if(e.key===" ") jump();
-  if(e.key==="1") currentCharacter="yul";
-  if(e.key==="2") currentCharacter="jeong";
-});
+        bestScoreEl.textContent = bestScore;
 
-// 오브젝트 생성 (오른쪽에서 등장 → 왼쪽으로 이동)
-function spawnObject(){
-  let types=["enemy","fairy","food","obstacle"];
-  let type=types[Math.floor(Math.random()*types.length)];
+        // --- 텍스처 생성기 (Canvas API) ---
+        function createRealisticBookTexture(w, h) {
+            const canvas = document.createElement('canvas');
+            canvas.width = w; canvas.height = h;
+            const ctx = canvas.getContext('2d');
 
-  objects.push({
-    x: canvas.width + 50,
-    y: 300,
-    w: 60,
-    h: 60,
-    type
-  });
-}
+            const isVintage = Math.random() > 0.3; // 양장본 확률 높임
+            const hues = [10, 20, 200, 350, 140, 40]; // 가죽, 버건디, 네이비 등
+            const baseHue = hues[Math.floor(Math.random() * hues.length)];
+            const saturation = isVintage ? (20 + Math.random() * 20) : (40 + Math.random() * 20);
+            const lightness = isVintage ? (15 + Math.random() * 15) : (25 + Math.random() * 15);
+            
+            const coverColor = `hsl(${baseHue}, ${saturation}%, ${lightness}%)`;
+            const pagesColor = isVintage ? '#c2b38e' : '#e6dfd1'; // 빛바랜 종이색
 
-// 충돌
-function collide(a,b){
-  return a.x < b.x + b.w &&
-         a.x + a.w > b.x &&
-         a.y < b.y + b.h &&
-         a.y + a.h > b.y;
-}
+            ctx.fillStyle = coverColor;
+            ctx.fillRect(0, 0, w, h);
 
-// 업데이트
-let frame=0;
-function update(){
-  if(gameOver) return;
+            for(let i=0; i<w*h*0.15; i++) {
+                ctx.fillStyle = `rgba(0,0,0,${Math.random() * 0.2})`;
+                ctx.fillRect(Math.random() * w, Math.random() * h, 1, 1);
+            }
 
-  frame++;
+            const spineWidth = Math.max(14, w * 0.12);
+            const coverThickness = Math.max(5, h * 0.15);
 
-  // 속도 증가
-  if(frame % 300 === 0) speed += 0.5;
+            ctx.fillStyle = pagesColor;
+            ctx.fillRect(spineWidth, coverThickness, w - spineWidth - 4, h - (coverThickness * 2));
 
-  // 점프 물리
-  player.dy += gravity;
-  player.y += player.dy;
+            ctx.strokeStyle = isVintage ? 'rgba(70, 50, 30, 0.4)' : 'rgba(0, 0, 0, 0.2)';
+            ctx.lineWidth = 1;
+            for (let y = coverThickness + 2; y < h - coverThickness; y += 3) {
+                ctx.beginPath();
+                ctx.moveTo(spineWidth, y); ctx.lineTo(w - 4, y);
+                ctx.stroke();
+            }
 
-  if(player.y > 300){
-    player.y = 300;
-    player.jumping = false;
-  }
+            const spineGrad = ctx.createLinearGradient(0, 0, spineWidth, 0);
+            spineGrad.addColorStop(0, 'rgba(0,0,0,0.8)');
+            spineGrad.addColorStop(0.3, 'rgba(255,255,255,0.15)');
+            spineGrad.addColorStop(0.7, 'rgba(0,0,0,0)');
+            spineGrad.addColorStop(1, 'rgba(0,0,0,0.6)');
+            ctx.fillStyle = spineGrad;
+            ctx.fillRect(0, 0, spineWidth, h);
 
-  // 생성
-  if(frame % 70 === 0) spawnObject();
+            ctx.fillStyle = 'rgba(212, 175, 55, 0.8)'; // 금박
+            ctx.fillRect(0, h * 0.15, spineWidth, 2);
+            ctx.fillRect(0, h * 0.25, spineWidth, 4);
+            ctx.fillRect(0, h * 0.8, spineWidth, 2);
 
-  // 이동 (횡스크롤 핵심)
-  objects.forEach(o => o.x -= speed);
+            const volumeGrad = ctx.createLinearGradient(0, 0, 0, h);
+            volumeGrad.addColorStop(0, 'rgba(255,255,255,0.3)'); 
+            volumeGrad.addColorStop(0.1, 'rgba(255,255,255,0.05)');
+            volumeGrad.addColorStop(0.9, 'rgba(0,0,0,0.3)');
+            volumeGrad.addColorStop(1, 'rgba(0,0,0,0.8)'); 
+            ctx.fillStyle = volumeGrad;
+            ctx.fillRect(0, 0, w, h);
 
-  // 충돌
-  objects.forEach((o,i)=>{
-    if(collide(player,o)){
-      if(o.type==="fairy"){ player.fairies++; player.score+=50; }
-      else if(o.type==="food"){ player.score+=100; }
-      else if(o.type==="enemy"){ player.fairies=Math.max(0,player.fairies-1); }
-      else if(o.type==="obstacle"){ gameOver=true; }
+            const rightShadow = ctx.createLinearGradient(w - 6, 0, w, 0);
+            rightShadow.addColorStop(0, 'rgba(0,0,0,0)');
+            rightShadow.addColorStop(1, 'rgba(0,0,0,0.6)');
+            ctx.fillStyle = rightShadow;
+            ctx.fillRect(w - 6, 0, 6, h);
 
-      objects.splice(i,1);
-    }
-  });
+            return canvas.toDataURL('image/png');
+        }
 
-  objects = objects.filter(o=>o.x>-100);
+        // 고풍스러운 책상(바닥) 텍스처
+        function createWoodTexture(w, h) {
+            const canvas = document.createElement('canvas');
+            canvas.width = w; canvas.height = h;
+            const ctx = canvas.getContext('2d');
 
-  // 애니메이션 프레임
-  frameTick++;
-  if(frameTick > 5){
-    frameIndex = (frameIndex + 1) % FRAME_COUNT;
-    frameTick = 0;
-  }
+            ctx.fillStyle = '#2c1508';
+            ctx.fillRect(0, 0, w, h);
 
-  player.score++;
-}
+            ctx.fillStyle = '#1c0c04';
+            for(let i=0; i<400; i++) {
+                const rectW = Math.random() * 100 + 30;
+                const rectH = Math.random() * 4 + 1;
+                ctx.fillRect(Math.random() * w, Math.random() * h, rectW, rectH);
+            }
 
-// 그리기
-function draw(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
+            const lightReflect = ctx.createLinearGradient(0,0,0,h);
+            lightReflect.addColorStop(0, 'rgba(255, 200, 150, 0.15)');
+            lightReflect.addColorStop(0.2, 'rgba(0,0,0,0)');
+            lightReflect.addColorStop(1, 'rgba(0,0,0,0.5)');
+            ctx.fillStyle = lightReflect;
+            ctx.fillRect(0, 0, w, h);
 
-  // 바닥
-  ctx.fillStyle="#444";
-  ctx.fillRect(0,380,canvas.width,10);
+            return canvas.toDataURL('image/png');
+        }
 
-  // 캐릭터 이미지 선택
-  let img = currentCharacter==="yul" ? yulImg : jeongImg;
+        // --- 물리 엔진 & 카메라 로직 ---
+        function initPhysics() {
+            if (engine) {
+                Render.stop(render); Runner.stop(runner);
+                render.canvas.remove(); engine = null;
+            }
 
-  // 프레임 계산
-  let frameWidth = img.width / FRAME_COUNT;
-  let frameHeight = img.height;
+            engine = Engine.create();
+            engine.gravity.y = 1.8; 
+            engine.positionIterations = 8;
+            engine.velocityIterations = 8;
 
-  ctx.drawImage(
-    img,
-    frameIndex * frameWidth, 0,
-    frameWidth, frameHeight,
-    player.x, player.y,
-    player.w, player.h
-  );
+            render = Render.create({
+                element: document.getElementById('game-container'),
+                engine: engine,
+                options: {
+                    width: width, height: height,
+                    wireframes: false, background: 'transparent',
+                    pixelRatio: window.devicePixelRatio,
+                    hasBounds: true
+                }
+            });
 
-  // 오브젝트
-  objects.forEach(o=>{
-    if(o.type==="enemy") ctx.fillStyle="black";
-    if(o.type==="fairy") ctx.fillStyle="yellow";
-    if(o.type==="food") ctx.fillStyle="green";
-    if(o.type==="obstacle") ctx.fillStyle="brown";
+            currentBounds = { min: { x: 0, y: 0 }, max: { x: width, y: height } };
+            Render.lookAt(render, currentBounds);
 
-    ctx.fillRect(o.x, o.y, o.w, o.h);
-  });
+            const deskWidth = Math.min(width * 0.9, 450);
+            const deskHeight = 120;
+            const woodTexture = createWoodTexture(deskWidth, deskHeight);
 
-  // UI
-  document.getElementById("ui").innerHTML =
-    `Score: ${player.score}<br>Fairies: ${player.fairies}<br>${currentCharacter}`;
+            ground = Bodies.rectangle(width / 2, height - (deskHeight/2), deskWidth, deskHeight, { 
+                isStatic: true,
+                render: { sprite: { texture: woodTexture } },
+                friction: 1.0, restitution: 0.0, label: 'ground'
+            });
 
-  if(gameOver){
-    ctx.fillStyle="black";
-    ctx.font="50px sans-serif";
-    ctx.fillText("GAME OVER", canvas.width/2-150, canvas.height/2);
-  }
-}
+            Composite.add(engine.world, [ground]);
 
-// 루프
-function loop(){
-  update();
-  draw();
-  requestAnimationFrame(loop);
-}
-loop();
-</script>
+            Render.run(render);
+            runner = Runner.create();
+            Runner.run(runner, engine);
 
+            Events.on(engine, 'collisionStart', handleCollision);
+            Events.on(engine, 'beforeUpdate', updateCamera);
+            Events.on(render, 'afterRender', drawDropGuide);
+        }
+
+        function drawDropGuide() {
+            if (gameState === 'PLAYING' && currentActiveBook && isDown) {
+                 const ctx = render.context;
+                 const scale = (currentBounds.max.x - currentBounds.min.x) / width;
+                 
+                 ctx.beginPath();
+                 ctx.setLineDash([15 * scale, 10 * scale]);
+                 ctx.moveTo(currentActiveBook.position.x, currentActiveBook.position.y);
+                 ctx.lineTo(currentActiveBook.position.x, ground.position.y);
+                 ctx.strokeStyle = 'rgba(255, 215, 120, 0.4)'; // 스탠드 조명빛 가이드
+                 ctx.lineWidth = Math.max(1, 2 * scale);
+                 ctx.stroke();
+                 ctx.setLineDash([]);
+            }
+        }
+
+        function spawnNewBook() {
+            if (gameState !== 'PLAYING') return;
+
+            const w = Math.floor(Math.random() * 60) + 120; 
+            const h = Math.floor(Math.random() * 20) + 25;
+            const texture = createRealisticBookTexture(w, h);
+            
+            const scale = (currentBounds.max.y - currentBounds.min.y) / height;
+            const spawnY = currentBounds.min.y + (130 * scale);
+            const spawnX = currentBounds.min.x + ((currentBounds.max.x - currentBounds.min.x) / 2);
+
+            currentActiveBook = Bodies.rectangle(spawnX, spawnY, w, h, {
+                isStatic: true, 
+                render: { sprite: { texture: texture } },
+                friction: 0.9, restitution: 0.02, density: 0.02, label: 'book'
+            });
+
+            Composite.add(engine.world, currentActiveBook);
+            books.push(currentActiveBook);
+            
+            if (score === 0) controlsHint.style.display = 'block';
+        }
+
+        function dropBook() {
+            if (!currentActiveBook || gameState !== 'PLAYING') return;
+
+            Body.setStatic(currentActiveBook, false); 
+            
+            const randomAngularVelocity = (Math.random() - 0.5) * 0.03;
+            Body.setAngularVelocity(currentActiveBook, randomAngularVelocity);
+
+            currentActiveBook = null;
+            controlsHint.style.display = 'none';
+
+            score++;
+            scoreEl.textContent = score;
+
+            playWhooshSound();
+            setTimeout(spawnNewBook, 1200);
+        }
+
+        function moveActiveBook(screenX) {
+            if (!currentActiveBook || gameState !== 'PLAYING') return;
+            
+            const scale = (currentBounds.max.x - currentBounds.min.x) / width;
+            const worldX = currentBounds.min.x + (screenX * scale);
+            const bookHalfWidth = (currentActiveBook.bounds.max.x - currentActiveBook.bounds.min.x) / 2;
+            const safeX = Math.max(currentBounds.min.x + bookHalfWidth, Math.min(worldX, currentBounds.max.x - bookHalfWidth));
+            
+            Body.setPosition(currentActiveBook, { x: safeX, y: currentActiveBook.position.y });
+        }
+
+        function handleCollision(event) {
+            if (gameState !== 'PLAYING') return;
+            const pairs = event.pairs;
+            for (let i = 0; i < pairs.length; i++) {
+                const a = pairs[i].bodyA, b = pairs[i].bodyB;
+                if ((a.label === 'book' || a.label === 'ground') && (b.label === 'book' || b.label === 'ground')) {
+                     const velocity = Math.abs(a.velocity.y) + Math.abs(b.velocity.y);
+                     if(velocity > 1.5) playThudSound(velocity);
+                }
+            }
+        }
+
+        // 스마트 카메라 & 패럴랙스 배경 스크롤
+        function updateCamera() {
+            if (gameState !== 'PLAYING') return;
+
+            let highestY = ground.position.y; 
+
+            for (let i = 0; i < books.length; i++) {
+                const book = books[i];
+                if (book === currentActiveBook) continue;
+
+                if (book.position.y > ground.position.y + 300) {
+                    gameOver(); return;
+                }
+                if (book.speed < 2 && book.position.y < highestY) {
+                    highestY = book.position.y;
+                }
+            }
+
+            let targetMinY = highestY - 350;
+            let neededHeight = (ground.position.y + 100) - targetMinY;
+            let targetViewHeight = Math.max(height, neededHeight);
+            
+            const MAX_ZOOM = 2.5; 
+            if (targetViewHeight > height * MAX_ZOOM) {
+                targetViewHeight = height * MAX_ZOOM;
+            } else {
+                targetMinY = (ground.position.y + 100) - targetViewHeight;
+            }
+
+            let targetViewWidth = targetViewHeight * (width / height);
+            let targetMinX = (width - targetViewWidth) / 2;
+
+            currentBounds.min.x += (targetMinX - currentBounds.min.x) * 0.08;
+            currentBounds.min.y += (targetMinY - currentBounds.min.y) * 0.08;
+            currentBounds.max.x = currentBounds.min.x + targetViewWidth;
+            currentBounds.max.y = currentBounds.min.y + targetViewHeight;
+
+            Render.lookAt(render, currentBounds);
+
+            // --- CSS 배경 패럴랙스 처리 ---
+            const scale = height / (currentBounds.max.y - currentBounds.min.y);
+            
+            // 1. 벽지(wallpaper) 상하 스크롤 (조금 천천히 이동시켜 원근감 부여)
+            roomBg.style.backgroundPositionY = `${-currentBounds.min.y * 0.3 * scale}px`;
+
+            // 2. 나무 벽면(wainscoting) 화면 내 위치 동기화 
+            // 데스크(책상 바닥)의 화면상 Y좌표를 계산하여 거기에 나무 벽을 맞춤
+            const deskScreenY = (ground.position.y - currentBounds.min.y) * scale;
+            if (deskScreenY < height + 100) {
+                woodPanel.style.top = `${deskScreenY}px`;
+                woodPanel.style.height = `${Math.max(0, height - deskScreenY)}px`;
+            } else {
+                woodPanel.style.height = `0px`;
+            }
+        }
+
+        function gameOver() {
+            gameState = 'GAMEOVER';
+            controlsHint.style.display = 'none';
+            btnRestartTop.style.display = 'none';
+            
+            playCrashSound();
+            document.body.style.animation = 'shake 0.5s';
+            setTimeout(() => document.body.style.animation = '', 500);
+
+            const finalScore = Math.max(0, score - 1);
+            finalScoreEl.textContent = finalScore;
+
+            if (finalScore > bestScore && finalScore > 0) {
+                bestScore = finalScore;
+                localStorage.setItem('studyRoomBookBest', bestScore);
+                bestScoreEl.textContent = bestScore;
+                newRecordMsg.style.display = 'block';
+            } else {
+                newRecordMsg.style.display = 'none';
+            }
+
+            setTimeout(() => gameoverModal.style.display = 'block', 700);
+        }
+
+        function startGame() {
+            startModal.style.display = 'none';
+            gameoverModal.style.display = 'none';
+            btnRestartTop.style.display = 'block';
+            
+            score = 0; scoreEl.textContent = score;
+            books = [];
+            
+            initPhysics();
+            gameState = 'PLAYING';
+            spawnNewBook();
+        }
+
+        // --- 조작 (마우스/터치) ---
+        let isDown = false;
+        const gameContainer = document.getElementById('game-container');
+
+        gameContainer.addEventListener('pointerdown', (e) => {
+            if (gameState !== 'PLAYING') return;
+            isDown = true;
+            controlsHint.style.display = 'none';
+            moveActiveBook(e.clientX);
+        });
+
+        gameContainer.addEventListener('pointermove', (e) => {
+            if (isDown && gameState === 'PLAYING') moveActiveBook(e.clientX);
+        });
+
+        gameContainer.addEventListener('pointerup', () => {
+            if (isDown && gameState === 'PLAYING') { isDown = false; dropBook(); }
+        });
+
+        gameContainer.addEventListener('pointercancel', () => {
+             if (isDown && gameState === 'PLAYING') { isDown = false; dropBook(); }
+        });
+
+        document.getElementById('btn-start').addEventListener('click', startGame);
+        document.getElementById('btn-restart').addEventListener('click', startGame);
+        btnRestartTop.addEventListener('click', () => {
+            if(confirm('기록을 포기하고 다시 쌓으시겠습니까?')) startGame();
+        });
+
+        window.addEventListener('resize', () => {
+            width = window.innerWidth; height = window.innerHeight;
+            if (render) {
+                render.canvas.width = width; render.canvas.height = height;
+                render.options.width = width; render.options.height = height;
+            }
+            if (ground) Body.setPosition(ground, { x: width / 2, y: ground.position.y });
+            currentBounds.max.x = currentBounds.min.x + (currentBounds.max.y - currentBounds.min.y) * (width/height);
+        });
+
+        // --- 효과음 ---
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        
+        function playWhooshSound() {
+            try {
+                const ctx = new AudioContext();
+                const osc = ctx.createOscillator(); const gain = ctx.createGain();
+                osc.type = 'sine'; osc.frequency.setValueAtTime(180, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.04, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+                osc.connect(gain); gain.connect(ctx.destination);
+                osc.start(); osc.stop(ctx.currentTime + 0.1);
+            } catch(e){}
+        }
+
+        function playThudSound(intensity) {
+            try {
+                const ctx = new AudioContext();
+                const osc = ctx.createOscillator(); const gain = ctx.createGain();
+                osc.type = 'triangle'; osc.frequency.setValueAtTime(80, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(20, ctx.currentTime + 0.12);
+                const volume = Math.min(0.4, intensity * 0.06);
+                gain.gain.setValueAtTime(volume, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+                osc.connect(gain); gain.connect(ctx.destination);
+                osc.start(); osc.stop(ctx.currentTime + 0.12);
+            } catch(e){}
+        }
+
+        function playCrashSound() {
+            try {
+                const ctx = new AudioContext();
+                const osc = ctx.createOscillator(); const gain = ctx.createGain();
+                osc.type = 'sawtooth'; osc.frequency.setValueAtTime(70, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(10, ctx.currentTime + 0.35);
+                gain.gain.setValueAtTime(0.5, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
+                osc.connect(gain); gain.connect(ctx.destination);
+                osc.start(); osc.stop(ctx.currentTime + 0.35);
+            } catch(e){}
+        }
+    </script>
 </body>
 </html>

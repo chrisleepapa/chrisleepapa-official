@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3207219520058740"
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3207219520058740"
      crossorigin="anonymous"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-NBGELYQ4TZ"></script>
     <script>
@@ -17,6 +16,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="images/favicon.png" type="image/png">
+    
+    <meta name="description" content="Chris Lee.Papa – Game Center | The Creative Archive">
+    <meta property="og:title" content="Game Center – Chris LEE.PAPA">
+    <meta property="og:description" content="우주와 아카이브의 세계를 여행하는 보드게임과 미니 게임을 즐겨보세요.">
+    <meta property="og:type" content="website">
+    
     <title>Game Center - Chris LEE.PAPA</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -64,7 +69,7 @@
 
         a { text-decoration: none; color: inherit; }
 
-        /* Navigation */
+        /* ── Navigation ── */
         nav {
             position: fixed;
             top: 0;
@@ -92,6 +97,7 @@
             letter-spacing: 2px;
             color: var(--gold-light);
             z-index: 1001;
+            white-space: nowrap;
         }
         
         .nav-right { display: flex; align-items: center; gap: 24px; }
@@ -115,9 +121,27 @@
             background: var(--gold-light);
             transition: width 0.3s ease;
         }
-        .nav-links a:hover::after { width: 100%; }
-        .nav-links a:hover { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+        .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
 
+        /* ── Language Switcher (Dropdown) ── */
+        .lang-dropdown-wrapper { position: relative; font-family: 'Cinzel', serif; font-size: 0.8rem; color: #a0a0b5; z-index: 1001; }
+        .lang-current { cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 6px; transition: color 0.3s; font-weight: 600; letter-spacing: 1px; }
+        .lang-current:hover, .lang-dropdown-wrapper.active .lang-current { color: var(--gold-light); text-shadow: 0 0 8px rgba(201,168,76,0.5); }
+        .lang-current svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; transition: transform 0.3s; }
+        .lang-dropdown-wrapper.active .lang-current svg { transform: rotate(180deg); }
+        .lang-dropdown-menu { position: absolute; top: calc(100% + 10px); right: -10px; background: rgba(10, 10, 15, 0.95); border: 1px solid rgba(201,168,76,0.3); border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; opacity: 0; pointer-events: none; transform: translateY(-10px); transition: opacity 0.3s, transform 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.8); backdrop-filter: blur(10px); min-width: 100px; }
+        .lang-dropdown-wrapper.active .lang-dropdown-menu { opacity: 1; pointer-events: auto; transform: translateY(0); }
+        .lang-btn { padding: 12px 20px; cursor: pointer; transition: 0.3s; letter-spacing: 1px; text-align: center; color: #a0a0b5; }
+        .lang-btn:not(:last-child) { border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .lang-btn:hover, .lang-btn.active { color: var(--gold-light); background: rgba(201,168,76,0.1); }
+
+        /* ── Share Icon Button ── */
+        .share-trigger { cursor: pointer; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; border: 1px solid rgba(201,168,76,0.3); border-radius: 50%; color: var(--gold-light); transition: 0.3s; z-index: 1001; }
+        .share-trigger svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
+        .share-trigger:hover { background: rgba(201,168,76,0.1); border-color: var(--gold-light); box-shadow: 0 0 12px rgba(201,168,76,0.2); transform: translateY(-2px); }
+
+        /* ── Menu Toggle (Hamburger) ── */
         .menu-toggle {
             display: none;
             flex-direction: column;
@@ -131,6 +155,19 @@
         .menu-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
         .menu-toggle.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
         .menu-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+        /* ── 공유 모달 ── */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .share-modal { background: #0a0a0f; border: 1px solid var(--gold); border-radius: 24px; width: 90%; max-width: 400px; padding: 45px 30px; text-align: center; box-shadow: 0 30px 70px rgba(0,0,0,0.9); }
+        .share-modal h3 { font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--gold-light); margin-bottom: 15px; }
+        .share-modal p { font-size: 0.9rem; color: #888; margin-bottom: 35px; }
+        .share-buttons { display: flex; flex-direction: column; gap: 14px; }
+        .modal-btn { padding: 16px; border-radius: 12px; border: none; font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .btn-copy { background: var(--gold); color: #000; }
+        .btn-sns { background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #fff; }
+        .btn-close-modal { margin-top: 25px; color: #666; background: none; font-size: 0.8rem; text-decoration: underline; border: none; cursor: pointer; }
+        .toast-msg { position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%); background: var(--gold); color: #000; padding: 12px 30px; border-radius: 40px; font-size: 0.9rem; font-weight: 700; z-index: 3000; display: none; animation: fadeUp 0.4s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 
         /* Canvas Background */
         #stars-canvas { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: -1; }
@@ -217,7 +254,6 @@
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
         }
 
-        /* 배경 이미지 레이어 */
         .game-card-bluemarble .card-image-bg {
             position: absolute;
             inset: 0;
@@ -228,7 +264,6 @@
             transition: transform 0.6s cubic-bezier(0.2, 0, 0.2, 1);
         }
 
-        /* 어두운 오버레이 레이어 (가독성 확보) */
         .game-card-bluemarble .card-overlay {
             position: absolute;
             inset: 0;
@@ -237,7 +272,6 @@
             pointer-events: none;
         }
 
-        /* 호버 시 이미지 확대 및 글로우 효과 */
         .game-card-bluemarble:hover {
             transform: translateY(-12px) scale(1.02);
             border-color: var(--gold-light);
@@ -248,7 +282,6 @@
             transform: scale(1.08);
         }
 
-        /* 콘텐츠 래퍼 */
         .game-card-content-wrap {
             position: relative;
             z-index: 1;
@@ -268,7 +301,6 @@
             margin-bottom: 5px;
         }
 
-        /* 기존 game-icon-large 스타일은 두 번째 카드에만 적용 */
         .game-card:not(.game-card-bluemarble) .game-icon-large {
             display: block;
             font-size: 80px;
@@ -281,8 +313,7 @@
             transform: scale(1.15) rotate(5deg);
         }
 
-        /* 기존 game-card ::before 스큐 효과는 두 번째 카드에만 적용 */
-        .game-card:not(.game-card-bluemarble)::before {
+        .game-card:not(.game-card-bluemarble):::before {
             content: '';
             position: absolute;
             top: 0; left: -100%; width: 50%; height: 100%;
@@ -308,7 +339,6 @@
             text-transform: uppercase;
         }
 
-        /* 브루마블 태그 위치 조정 */
         .game-card-bluemarble .game-tag {
             top: 20px;
             left: 20px;
@@ -320,6 +350,7 @@
 
         @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
         @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
         footer { 
             text-align: center; 
@@ -333,11 +364,13 @@
 
         @media (max-width: 900px) {
             nav { padding: 0 20px; }
+            .brand-logo { font-size: 1.1rem; }
             .nav-links { display: none; }
             .nav-links.active {
                 display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height));
                 background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 28px; z-index: 1002;
             }
+            .nav-right { gap: 14px; }
             .menu-toggle { display: flex; }
             .game-cards { flex-direction: column; align-items: center; }
             .game-card { width: 100%; max-width: 340px; height: 380px; }
@@ -352,45 +385,172 @@
         <a href="index.html" class="brand-logo">Chris LEE.PAPA</a>
         <div class="nav-right">
             <div class="nav-links" id="navLinks">
-                <a href="index.html">Home</a>
-                <a href="worship.html">Worship</a>
-                <a href="music.html">Music</a>
-                <a href="book.html">Books</a>
-                <a href="movie.html">Movies</a>
+                <a href="index.html" data-i18n="nav_home">Home</a>
+                <a href="worship.html" data-i18n="nav_worship">Worship</a>
+                <a href="music.html" data-i18n="nav_music">Music</a>
+                <a href="book.html" data-i18n="nav_book">Books</a>
+                <a href="movie.html" data-i18n="nav_movie">Movies</a>
             </div>
+
+            <div class="lang-dropdown-wrapper" id="langWrapper">
+                <div class="lang-current" onclick="toggleLangDropdown()">
+                    <span id="currentLangText">KOR</span>
+                    <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+                <div class="lang-dropdown-menu">
+                    <span class="lang-btn active" data-lang="ko" onclick="setLanguage('ko')">KOR</span>
+                    <span class="lang-btn" data-lang="en" onclick="setLanguage('en')">ENG</span>
+                </div>
+            </div>
+
+            <div class="share-trigger" onclick="openShareModal()" title="Share">
+                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                    <circle cx="18" cy="5" r="3"></circle>
+                    <circle cx="6" cy="12" r="3"></circle>
+                    <circle cx="18" cy="19" r="3"></circle>
+                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                </svg>
+            </div>
+
             <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
         </div>
     </nav>
 
+    <div class="modal-overlay" id="shareOverlay" onclick="closeShareModal(event)">
+        <div class="share-modal" onclick="event.stopPropagation()">
+            <h3 data-i18n="share_title">SHARE GAME CENTER</h3>
+            <p data-i18n="share_desc">이곳의 즐거움을 소중한 사람들에게 전하세요.</p>
+            <div class="share-buttons">
+                <button class="modal-btn btn-copy" onclick="copyURL()" data-i18n="share_copy">COPY LINK</button>
+                <button class="modal-btn btn-sns" onclick="shareViaWebAPI()" data-i18n="share_sns">SNS SHARE</button>
+            </div>
+            <button class="modal-btn btn-close-modal" onclick="closeShareModal(null)" data-i18n="share_close">Close</button>
+        </div>
+    </div>
+    <div class="toast-msg" id="toast"></div>
+
     <main class="game-selection-wrapper">
-        <span class="section-heading-tag">✦ &nbsp; GAME CENTER &nbsp; ✦</span>
-        <h2 class="section-heading-title">Choose Your Game</h2>
+        <span class="section-heading-tag" data-i18n="game_tag">✦ &nbsp; GAME CENTER &nbsp; ✦</span>
+        <h2 class="section-heading-title" data-i18n="game_title">Choose Your Game</h2>
 
         <div class="game-cards">
             <a href="game.html" class="game-card game-card-bluemarble">
-                <div class="card-image-bg"></div> <div class="card-overlay"></div> <div class="game-tag tag-blue-marble">Board Game</div>
+                <div class="card-image-bg"></div> <div class="card-overlay"></div> <div class="game-tag tag-blue-marble" data-i18n="board_tag">Board Game</div>
                 
                 <div class="game-card-content-wrap">
-                    <h3 class="game-card-title">브루마블 게임</h3>
-                    <p class="game-card-desc">주사위를 굴려 우주와 아카이브의 세계를 여행하는 전략 보드게임입니다. 당신만의 기록을 개척하세요.</p>
+                    <h3 class="game-card-title" data-i18n="board_title">브루마블 게임</h3>
+                    <p class="game-card-desc" data-i18n="board_desc">주사위를 굴려 우주와 아카이브의 세계를 여행하는 전략 보드게임입니다. 당신만의 기록을 개척하세요.</p>
                 </div>
             </a>
 
             <a href="booktop.html" class="game-card">
-                <div class="game-tag tag-maze">Physics</div>
+                <div class="game-tag tag-maze" data-i18n="physics_tag">Physics</div>
                 <div class="game-icon-large">📚</div>
-                <h3 class="game-card-title">책 쌓기 마스터</h3>
-                <p class="game-card-desc">아빠의 서재에서 중력과 균형의 법칙에 도전하세요. 조심스럽게 책을 떨어뜨려 가장 높이 쌓아 올리는 마스터가 되어보세요!</p>
+                <h3 class="game-card-title" data-i18n="book_title">책 쌓기 마스터</h3>
+                <p class="game-card-desc" data-i18n="book_desc">아빠의 서재에서 중력과 균형의 법칙에 도전하세요. 조심스럽게 책을 떨어뜨려 가장 높이 쌓아 올리는 마스터가 되어보세요!</p>
             </a>
         </div>
     </main>
 
     <footer>
-        <p>© 2026 Chris LEE.PAPA — The Creative Archive</p>
+        <p data-i18n="footer_text">© 2026 Chris LEE.PAPA — The Creative Archive</p>
     </footer>
 
     <script>
-        // 모바일 메뉴 토글
+        // ── Multilingual System ──
+        const i18n = {
+            ko: {
+                nav_home: "Home",
+                nav_worship: "Worship",
+                nav_music: "Music",
+                nav_book: "Books",
+                nav_movie: "Movies",
+                share_title: "SHARE GAME CENTER",
+                share_desc: "이곳의 즐거움을 소중한 사람들에게 전하세요.",
+                share_copy: "COPY LINK",
+                share_sns: "SNS SHARE",
+                share_close: "Close",
+                game_tag: "✦ &nbsp; GAME CENTER &nbsp; ✦",
+                game_title: "Choose Your Game",
+                board_tag: "Board Game",
+                board_title: "브루마블 게임",
+                board_desc: "주사위를 굴려 우주와 아카이브의 세계를 여행하는 전략 보드게임입니다. 당신만의 기록을 개척하세요.",
+                physics_tag: "Physics",
+                book_title: "책 쌓기 마스터",
+                book_desc: "아빠의 서재에서 중력과 균형의 법칙에 도전하세요. 조심스럽게 책을 떨어뜨려 가장 높이 쌓아 올리는 마스터가 되어보세요!",
+                toast_copy: "링크가 복사되었습니다 ✓",
+                toast_error: "지원하지 않는 브라우저입니다.",
+                footer_text: "© 2026 Chris LEE.PAPA — The Creative Archive"
+            },
+            en: {
+                nav_home: "Home",
+                nav_worship: "Worship",
+                nav_music: "Music",
+                nav_book: "Books",
+                nav_movie: "Movies",
+                share_title: "SHARE GAME CENTER",
+                share_desc: "Share the joy here with your loved ones.",
+                share_copy: "COPY LINK",
+                share_sns: "SNS SHARE",
+                share_close: "Close",
+                game_tag: "✦ &nbsp; GAME CENTER &nbsp; ✦",
+                game_title: "Choose Your Game",
+                board_tag: "Board Game",
+                board_title: "Blue Marble Game",
+                board_desc: "A strategy board game where you roll the dice to travel the universe and the Archive. Pioneer your own records.",
+                physics_tag: "Physics",
+                book_title: "Book Stacking Master",
+                book_desc: "Challenge the laws of gravity and balance in Dad's study. Drop the books carefully to become the ultimate stacking master!",
+                toast_copy: "Link copied to clipboard ✓",
+                toast_error: "Browser not supported.",
+                footer_text: "© 2026 Chris LEE.PAPA — The Creative Archive"
+            }
+        };
+
+        let currentLang = 'ko';
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+            try { localStorage.setItem('pref-lang', lang); } catch(e) {}
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (i18n[lang][key]) {
+                    el.innerHTML = i18n[lang][key];
+                }
+            });
+
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                if (btn.getAttribute('data-lang') === lang) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+
+            const langTextObj = document.getElementById('currentLangText');
+            if (langTextObj) langTextObj.textContent = lang === 'ko' ? 'KOR' : 'ENG';
+            const langWrapper = document.getElementById('langWrapper');
+            if (langWrapper) langWrapper.classList.remove('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            let savedLang = 'ko';
+            try { savedLang = localStorage.getItem('pref-lang') || 'ko'; } catch(e) {}
+            setLanguage(savedLang);
+        });
+
+        function toggleLangDropdown() {
+            document.getElementById('langWrapper').classList.toggle('active');
+        }
+
+        document.addEventListener('click', function(e) {
+            const wrapper = document.getElementById('langWrapper');
+            if (wrapper && !wrapper.contains(e.target)) {
+                wrapper.classList.remove('active');
+            }
+        });
+
+        // ── 모바일 메뉴 토글 ──
         const menuToggle = document.getElementById('mobile-menu');
         const navLinks = document.getElementById('navLinks');
         menuToggle.addEventListener('click', () => {
@@ -398,13 +558,45 @@
             navLinks.classList.toggle('active');
         });
 
-        // 스크롤 시 네비게이션 스타일 변경
+        // ── 스크롤 시 네비게이션 스타일 변경 ──
         const mainNav = document.getElementById('main-nav');
         window.addEventListener('scroll', () => {
             mainNav.classList.toggle('scrolled', window.scrollY > 40);
         }, { passive: true });
 
-        // 우주 배경 캔버스 애니메이션
+        // ── Share & Toast ──
+        const shareOverlay = document.getElementById('shareOverlay');
+        const toast = document.getElementById('toast');
+        function openShareModal() { shareOverlay.style.display = 'flex'; setTimeout(() => shareOverlay.classList.add('active'), 10); }
+        function closeShareModal(e) { if (e && e.target !== shareOverlay && e.type !== 'click') return; shareOverlay.classList.remove('active'); setTimeout(() => shareOverlay.style.display = 'none', 300); }
+
+        async function copyURL() {
+            const currentUrl = window.location.href;
+            let success = false;
+            if (navigator.clipboard && window.isSecureContext) { try { await navigator.clipboard.writeText(currentUrl); success = true; } catch (err) {} }
+            if (!success) {
+                const textArea = document.createElement("textarea");
+                textArea.value = currentUrl;
+                textArea.id = "temp-copy-area";
+                textArea.style.position = "fixed";
+                textArea.style.left = "-9999px";
+                document.body.appendChild(textArea);
+                textArea.focus(); textArea.select();
+                try { success = document.execCommand('copy'); } catch (err) {}
+                document.body.removeChild(textArea);
+            }
+            if (success) { showToast(i18n[currentLang].toast_copy); }
+            closeShareModal();
+        }
+
+        function shareViaWebAPI() {
+            if (navigator.share) { navigator.share({ title: 'Chris LEE.PAPA - GAME CENTER', text: '즐거운 게임과 아카이브의 세계로 초대합니다.', url: window.location.href }); }
+            else { showToast(i18n[currentLang].toast_error); }
+        }
+        function showToast(msg) { toast.textContent = msg; toast.style.display = 'block'; setTimeout(() => { toast.style.display = 'none'; }, 2500); }
+
+
+        // ── 우주 배경 캔버스 애니메이션 ──
         const canvas = document.getElementById('stars-canvas');
         const ctx = canvas.getContext('2d');
         let stars = [], shootingStars = [];

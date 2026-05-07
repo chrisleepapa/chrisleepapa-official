@@ -95,23 +95,23 @@
 
         /* ── Language Switcher (Dropdown) ── */
         .lang-dropdown-wrapper { position: relative; font-family: 'Cinzel', serif; font-size: 0.8rem; color: #a0a0b5; z-index: 1001; }
-        .lang-current { cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 6px; transition: color 0.3s; font-weight: 600; letter-spacing: 1px; }
-        .lang-current:hover, .lang-dropdown-wrapper.active .lang-current { color: var(--gold-light); text-shadow: 0 0 8px rgba(201,168,76,0.5); }
+        .lang-current { cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 6px; transition: color 0.3s; font-weight: 600; letter-spacing: 1px; background: transparent; border: 0; color: inherit; font-family: inherit; font-size: inherit; }        .lang-current:hover, .lang-dropdown-wrapper.active .lang-current { color: var(--gold-light); text-shadow: 0 0 8px rgba(201,168,76,0.5); }
         .lang-current svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; transition: transform 0.3s; }
         .lang-dropdown-wrapper.active .lang-current svg { transform: rotate(180deg); }
         .lang-dropdown-menu { position: absolute; top: calc(100% + 10px); right: -10px; background: rgba(10, 10, 15, 0.95); border: 1px solid rgba(201,168,76,0.3); border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; opacity: 0; pointer-events: none; transform: translateY(-10px); transition: opacity 0.3s, transform 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.8); backdrop-filter: blur(10px); min-width: 100px; }
         .lang-dropdown-wrapper.active .lang-dropdown-menu { opacity: 1; pointer-events: auto; transform: translateY(0); }
-        .lang-btn { padding: 12px 20px; cursor: pointer; transition: 0.3s; letter-spacing: 1px; text-align: center; color: #a0a0b5; }
+        .lang-btn { padding: 12px 20px; cursor: pointer; transition: 0.3s; letter-spacing: 1px; text-align: center; color: #a0a0b5; background: transparent; border: 0; font-family: inherit; font-size: inherit; }        
         .lang-btn:not(:last-child) { border-bottom: 1px solid rgba(255,255,255,0.05); }
         .lang-btn:hover, .lang-btn.active { color: var(--gold-light); background: rgba(201,168,76,0.1); }
 
         /* ── Share Icon Button ── */
-        .share-trigger { cursor: pointer; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; border: 1px solid rgba(201,168,76,0.3); border-radius: 50%; color: var(--gold-light); transition: 0.3s; z-index: 1001; }
+        .share-trigger { cursor: pointer; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; border: 1px solid rgba(201,168,76,0.3); border-radius: 50%; color: var(--gold-light); background: transparent; transition: 0.3s; z-index: 1001; }        
         .share-trigger svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
         .share-trigger:hover { background: rgba(201,168,76,0.1); border-color: var(--gold-light); box-shadow: 0 0 12px rgba(201,168,76,0.2); transform: translateY(-2px); }
 
         /* ── Menu Toggle (Hamburger) ── */
-        .menu-toggle { display: none; flex-direction: column; justify-content: space-between; width: 26px; height: 18px; cursor: pointer; z-index: 1001; }
+        .menu-toggle { display: none; flex-direction: column; justify-content: space-between; width: 26px; height: 18px; padding: 0; cursor: pointer; z-index: 1003; background: transparent; border: 0; }
+        .menu-toggle.active { position: relative; }        
         .menu-toggle span { width: 100%; height: 2px; background-color: var(--gold-light); transition: 0.3s; border-radius: 2px; }
         .menu-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
         .menu-toggle.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
@@ -221,18 +221,18 @@
 
             <!-- Language Switcher Dropdown -->
             <div class="lang-dropdown-wrapper" id="langWrapper">
-                <div class="lang-current" onclick="toggleLangDropdown()">
+                <button class="lang-current" type="button" onclick="toggleLangDropdown()" aria-haspopup="true" aria-expanded="false" aria-controls="langMenu">
                     <span id="currentLangText">KOR</span>
                     <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>
-                <div class="lang-dropdown-menu">
-                    <span class="lang-btn active" data-lang="ko" onclick="setLanguage('ko')">KOR</span>
-                    <span class="lang-btn" data-lang="en" onclick="setLanguage('en')">ENG</span>
+                </button>
+                <div class="lang-dropdown-menu" id="langMenu">
+                    <button class="lang-btn active" type="button" data-lang="ko" onclick="setLanguage('ko')">KOR</button>
+                    <button class="lang-btn" type="button" data-lang="en" onclick="setLanguage('en')">ENG</button>
                 </div>
             </div>
 
             <!-- Share Icon Button -->
-            <div class="share-trigger" onclick="openShareModal()" title="Share">
+            <button class="share-trigger" type="button" onclick="openShareModal()" title="Share" aria-label="Share lyrics">
                 <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                     <circle cx="18" cy="5" r="3"></circle>
                     <circle cx="6" cy="12" r="3"></circle>
@@ -240,22 +240,22 @@
                     <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
                     <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
                 </svg>
-            </div>
-
-            <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
+            </button>
+            
+  <button class="menu-toggle" id="mobile-menu" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
         </div>
     </nav>
 
     <div class="modal-overlay" id="shareOverlay" onclick="closeShareModal(event)">
-        <div class="share-modal" onclick="event.stopPropagation()">
-            <h3 data-i18n="share_title">SHARE LYRICS</h3>
+            <div class="share-modal" role="dialog" aria-modal="true" aria-labelledby="shareTitle" onclick="event.stopPropagation()">
+            <h3 id="shareTitle" data-i18n="share_title">SHARE LYRICS</h3>
             <p data-i18n="share_desc">이곳의 고백이 누군가의 마음에 별빛이 되길.</p>
             <div class="share-buttons">
-                <button class="modal-btn btn-copy" onclick="copyURL()" data-i18n="share_copy">COPY LINK</button>
-                <button class="modal-btn btn-sns" onclick="shareViaWebAPI()" data-i18n="share_sns">SNS SHARE</button>
+      <button class="modal-btn btn-copy" type="button" onclick="copyURL()" data-i18n="share_copy">COPY LINK</button>
+                <button class="modal-btn btn-sns" type="button" onclick="shareViaWebAPI()" data-i18n="share_sns">SNS SHARE</button>
             </div>
-            <button class="modal-btn btn-close-modal" onclick="closeShareModal(null)" data-i18n="share_close">Close</button>
-        </div>
+            <button class="modal-btn btn-close-modal" type="button" onclick="closeShareModal(null)" data-i18n="share_close">Close</button>
+            </div>
     </div>
 
     <div class="toast-msg" id="toast"></div>
@@ -279,7 +279,7 @@
         <div class="lyrics-wrapper">
             <!-- Track 01 -->
             <div class="accordion-item">
-                <button class="accordion-header">
+                <button class="accordion-header" type="button" aria-expanded="false">
                     <span><span class="track-num">01.</span> <span data-i18n="track1_title">이 길 위해서</span></span>
                     <span class="toggle-icon">+</span>
                 </button>
@@ -340,7 +340,7 @@
 
             <!-- Track 02 -->
             <div class="accordion-item">
-                <button class="accordion-header">
+                <button class="accordion-header" type="button" aria-expanded="false">
                     <span><span class="track-num">02.</span> <span data-i18n="track2_title">사랑으로</span></span>
                     <span class="toggle-icon">+</span>
                 </button>
@@ -391,7 +391,7 @@
 
             <!-- Track 03 -->
             <div class="accordion-item">
-                <button class="accordion-header">
+                <button class="accordion-header" type="button" aria-expanded="false">
                     <span><span class="track-num">03.</span> <span data-i18n="track3_title">나의 찬양</span></span>
                     <span class="toggle-icon">+</span>
                 </button>
@@ -435,7 +435,7 @@
 
             <!-- Track 04 -->
             <div class="accordion-item">
-                <button class="accordion-header">
+                <button class="accordion-header" type="button" aria-expanded="false">
                     <span><span class="track-num">04.</span> <span data-i18n="track4_title">기적입니다.</span></span>
                     <span class="toggle-icon">+</span>
                 </button>
@@ -476,7 +476,7 @@
 
             <!-- Track 05 -->
             <div class="accordion-item">
-                <button class="accordion-header">
+                <button class="accordion-header" type="button" aria-expanded="false">
                     <span><span class="track-num">05.</span> <span data-i18n="track5_title">파레시아</span></span>
                     <span class="toggle-icon">+</span>
                 </button>
@@ -523,7 +523,7 @@
 
             <!-- Track 06 -->
             <div class="accordion-item">
-                <button class="accordion-header">
+                <button class="accordion-header" type="button" aria-expanded="false">
                     <span><span class="track-num">06.</span> <span data-i18n="track6_title">나의 목소리</span></span>
                     <span class="toggle-icon">+</span>
                 </button>
@@ -550,7 +550,7 @@
 
             <!-- Track 07 -->
             <div class="accordion-item">
-                <button class="accordion-header">
+                <button class="accordion-header" type="button" aria-expanded="false">
                     <span><span class="track-num">07.</span> <span data-i18n="track7_title">오 기쁜 날</span></span>
                     <span class="toggle-icon">+</span>
                 </button>
@@ -586,7 +586,7 @@
 
             <!-- Track 08 -->
             <div class="accordion-item">
-                <button class="accordion-header">
+                <button class="accordion-header" type="button" aria-expanded="false">
                     <span><span class="track-num">08.</span> <span data-i18n="track8_title">우리의 예배</span></span>
                     <span class="toggle-icon">+</span>
                 </button>
@@ -619,7 +619,7 @@
 
             <!-- Track 09 -->
             <div class="accordion-item">
-                <button class="accordion-header">
+                <button class="accordion-header" type="button" aria-expanded="false">
                     <span><span class="track-num">09.</span> <span data-i18n="track9_title">우리의 마음</span></span>
                     <span class="toggle-icon">+</span>
                 </button>
@@ -646,7 +646,7 @@
 
             <!-- Track 10 -->
             <div class="accordion-item">
-                <button class="accordion-header">
+                <button class="accordion-header" type="button" aria-expanded="false">
                     <span><span class="track-num">10.</span> <span data-i18n="track10_title">나의 모든 날</span></span>
                     <span class="toggle-icon">+</span>
                 </button>
@@ -1370,24 +1370,33 @@ I will sing only of the Lord all my life.`,
 
         let currentLang = 'ko';
 
+        function getSupportedLanguage(lang) {
+            return Object.prototype.hasOwnProperty.call(i18n, lang) ? lang : 'ko';
+        }
+        
         function setLanguage(lang) {
-            currentLang = lang;
-            document.documentElement.lang = lang;
+            currentLang = getSupportedLanguage(lang);
+            document.documentElement.lang = currentLang;
             
             // Save preference
-            try { localStorage.setItem('pref-lang', lang); } catch(e) {}
+            try { localStorage.setItem('pref-lang', currentLang); } catch(e) {}
 
             // Update UI texts (inner HTML to preserve line breaks and html tags like <br>)
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
-                if (i18n[lang][key]) {
-                    el.innerHTML = i18n[lang][key];
+                const translation = i18n[currentLang][key];
+                if (translation) {
+                    if (key === 'heading_tag') {
+                        el.innerHTML = translation;
+                    } else {
+                        el.textContent = translation;
+                    }
                 }
             });
 
             // Update active state on language buttons
             document.querySelectorAll('.lang-btn').forEach(btn => {
-                if (btn.getAttribute('data-lang') === lang) {
+                if (btn.getAttribute('data-lang') === currentLang) {
                     btn.classList.add('active');
                 } else {
                     btn.classList.remove('active');
@@ -1396,9 +1405,10 @@ I will sing only of the Lord all my life.`,
 
             // Update dropdown display text and close
             const langTextObj = document.getElementById('currentLangText');
-            if (langTextObj) langTextObj.textContent = lang === 'ko' ? 'KOR' : 'ENG';
+            if (langTextObj) langTextObj.textContent = currentLang === 'ko' ? 'KOR' : 'ENG';
             const langWrapper = document.getElementById('langWrapper');
             if (langWrapper) langWrapper.classList.remove('active');
+            updateLangDropdownState();
         }
 
         // Initialize language
@@ -1409,8 +1419,20 @@ I will sing only of the Lord all my life.`,
         });
 
         // ── Dropdown Toggle ──
+            function updateLangDropdownState() {
+            const langWrapper = document.getElementById('langWrapper');
+            const langCurrent = document.querySelector('.lang-current');
+            if (langWrapper && langCurrent) {
+                langCurrent.setAttribute('aria-expanded', String(langWrapper.classList.contains('active')));
+            }
+        }
+
         function toggleLangDropdown() {
-            document.getElementById('langWrapper').classList.toggle('active');
+            const langWrapper = document.getElementById('langWrapper');
+            if (langWrapper) {
+                langWrapper.classList.toggle('active');
+                updateLangDropdownState();
+            }
         }
 
         // Close dropdown when clicking outside
@@ -1418,6 +1440,7 @@ I will sing only of the Lord all my life.`,
             const wrapper = document.getElementById('langWrapper');
             if (wrapper && !wrapper.contains(e.target)) {
                 wrapper.classList.remove('active');
+                updateLangDropdownState();
             }
         });
 
@@ -1425,10 +1448,21 @@ I will sing only of the Lord all my life.`,
 
         const menuToggle = document.getElementById('mobile-menu');
         const navLinks = document.getElementById('navLinks');
-        menuToggle.addEventListener('click', () => {
-            menuToggle.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        });
+        function setMobileMenuOpen(isOpen) {
+            if (!menuToggle || !navLinks) return;
+            menuToggle.classList.toggle('active', isOpen);
+            navLinks.classList.toggle('active', isOpen);
+            menuToggle.setAttribute('aria-expanded', String(isOpen));
+            menuToggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
+        }
+        if (menuToggle && navLinks) {
+            menuToggle.addEventListener('click', () => {
+                setMobileMenuOpen(!navLinks.classList.contains('active'));
+            });
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => setMobileMenuOpen(false));
+            });
+        }
 
         const accordionHeaders = document.querySelectorAll('.accordion-header');
         accordionHeaders.forEach(header => {
@@ -1436,10 +1470,15 @@ I will sing only of the Lord all my life.`,
                 const item = this.parentElement;
                 const isActive = item.classList.contains('active');
                 
-                document.querySelectorAll('.accordion-item').forEach(el => el.classList.remove('active'));
+                document.querySelectorAll('.accordion-item').forEach(el => {
+                    el.classList.remove('active');
+                    const button = el.querySelector('.accordion-header');
+                    if (button) button.setAttribute('aria-expanded', 'false');
+                });
                 
                 if (!isActive) {
                     item.classList.add('active');
+                    this.setAttribute('aria-expanded', 'true');
                     setTimeout(() => { 
                         const headerOffset = 100;
                         const elementPosition = item.getBoundingClientRect().top;
@@ -1454,11 +1493,13 @@ I will sing only of the Lord all my life.`,
         const toast = document.getElementById('toast');
 
         function openShareModal() {
+            if (!shareOverlay) return;
             shareOverlay.style.display = 'flex';
             setTimeout(() => shareOverlay.classList.add('active'), 10);
         }
 
         function closeShareModal(e) {
+            if (!shareOverlay) return;
             if (e && e.target !== shareOverlay && e.type !== 'click') return;
             shareOverlay.classList.remove('active');
             setTimeout(() => shareOverlay.style.display = 'none', 300);
@@ -1491,14 +1532,15 @@ I will sing only of the Lord all my life.`,
         }
 
         function showToast(msg) {
+            if (!toast) return;
             toast.textContent = msg; toast.style.display = 'block';
             setTimeout(() => { toast.style.display = 'none'; }, 2500);
         }
 
         const canvas = document.getElementById('stars-canvas');
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas ? canvas.getContext('2d') : null;
         let stars = [];
-        function resize() { canvas.width = window.innerWidth; canvas.height = 350; initStars(); }
+        function resize() { if (!canvas) return; canvas.width = window.innerWidth; canvas.height = 350; initStars(); }
         function initStars() {
             stars = [];
             const count = (canvas.width * canvas.height) / 7000;
@@ -1512,6 +1554,7 @@ I will sing only of the Lord all my life.`,
             }
         }
         function draw() {
+            if (!canvas || !ctx) return;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             stars.forEach(s => {
                 s.opacity += s.speed;
@@ -1521,8 +1564,10 @@ I will sing only of the Lord all my life.`,
             });
             requestAnimationFrame(draw);
         }
-        window.addEventListener('resize', resize);
-        resize(); draw();
+        if (canvas && ctx) {
+            window.addEventListener('resize', resize);
+            resize(); draw();
+        }
 
         document.addEventListener('contextmenu', e => e.preventDefault());
         document.addEventListener('copy', e => {
@@ -1535,7 +1580,9 @@ I will sing only of the Lord all my life.`,
             if (e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'p')) {
                 if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) e.preventDefault();
             }
-            if (e.key === 'PrintScreen') navigator.clipboard.writeText('');
+            if (e.key === 'PrintScreen' && navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText('').catch(() => {});
+            }
         });
     </script>
 </body>

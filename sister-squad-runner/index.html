@@ -1,53 +1,232 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sister Squad Runner</title>
-
-  <link rel="stylesheet" href="/sister-squad-runner/style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SISTER SQUAD 컬러링 게임 (공유 게시판)</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; flex-direction: column; align-items: center; background-color: #f0f2f5; margin: 0; padding: 20px; }
+        h1, h2 { color: #333; }
+        .section { background: white; padding: 15px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; width: 100%; max-width: 800px; box-sizing: border-box; text-align: center; }
+        .image-selector { display: flex; gap: 15px; justify-content: center; overflow-x: auto; padding-bottom: 10px; }
+        .thumb-btn { width: 80px; height: 80px; border: 2px solid #ddd; border-radius: 8px; cursor: pointer; object-fit: cover; transition: 0.2s; }
+        .thumb-btn:hover { border-color: #1e90ff; transform: scale(1.05); }
+        .upload-btn-wrapper { display: flex; flex-direction: column; justify-content: center; align-items: center; width: 80px; height: 80px; border: 2px dashed #aaa; border-radius: 8px; cursor: pointer; font-size: 12px; color: #555; }
+        .upload-btn-wrapper input[type="file"] { display: none; }
+        .toolbar { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; align-items: center; }
+        .color-btn { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #ccc; cursor: pointer; transition: transform 0.1s; }
+        .color-btn.selected { transform: scale(1.2); border-color: #333; box-shadow: 0 0 5px rgba(0,0,0,0.3); }
+        .tool-group { display: flex; gap: 10px; border-left: 2px solid #eee; padding-left: 15px; }
+        button { padding: 8px 15px; border: none; border-radius: 5px; background-color: #333; color: white; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        button:hover { background-color: #555; }
+        .eraser-btn { background-color: #ff9f43; }
+        .eraser-btn:hover { background-color: #ff7f50; }
+        canvas { background-color: white; border: 2px solid #333; border-radius: 5px; cursor: crosshair; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 100%; display: block; margin: 0 auto; }
+        .gallery { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
+        .gallery img { width: 150px; height: 150px; object-fit: contain; border: 1px solid #ccc; border-radius: 5px; background-color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .loading { font-size: 14px; color: #1e90ff; font-weight: bold; display: none; margin-top: 10px; }
+    </style>
 </head>
 <body>
 
-<div id="hud">
-  <div class="hud-pill">SCORE <span id="score">0</span></div>
-  <div class="hud-pill">COMBO <span id="combo">0</span></div>
+    <h1>자매 스쿼드 컬러링 🎨</h1>
 
-  <div id="feverBar">
-    <div id="feverFill"></div>
-  </div>
-
-  <div id="skillUI">Z : SKILL</div>
-</div>
-
-<div id="warning">WARNING</div>
-
-<canvas id="game"></canvas>
-
-<div id="characterSelect" aria-label="캐릭터 선택">
-  <div class="character-panel">
-    <p class="selector-kicker">PLAYER SELECT</p>
-    <h1>캐릭터를 선택하세요</h1>
-    <div class="character-buttons">
-      <button type="button" class="character-card" data-character="jeong">
-        <span class="character-preview preview-jeong" aria-hidden="true"></span>
-        <span>동생 정이</span>
-      </button>
-      <button type="button" class="character-card" data-character="yul">
-        <span class="character-preview preview-yul" aria-hidden="true"></span>
-        <span>언니 율이</span>
-      </button>
+    <div class="section">
+        <h3>1. 색칠할 그림 선택하기</h3>
+        <div class="image-selector">
+            <label class="upload-btn-wrapper">
+                <span>📁 파일 업로드</span>
+                <input type="file" id="imageUpload" accept="image/png, image/jpeg">
+            </label>
+        </div>
     </div>
-    <p class="selector-help">선택한 캐릭터의 스프라이트로 게임이 시작됩니다.</p>
-  </div>
-</div>
 
-<script src="/sister-squad-runner/effects.js"></script>
-<script src="/sister-squad-runner/player.js"></script>
-<script src="/sister-squad-runner/boss.js"></script>
-<script src="/sister-squad-runner/save.js"></script>
-<script src="/sister-squad-runner/game.js"></script>
-<script src="/sister-squad-runner/ui.js"></script>
+    <div class="section">
+        <div class="toolbar">
+            <div class="color-btn selected" style="background-color: #ff4757;" data-color="#ff4757"></div>
+            <div class="color-btn" style="background-color: #ffa502;" data-color="#ffa502"></div>
+            <div class="color-btn" style="background-color: #eccc68;" data-color="#eccc68"></div>
+            <div class="color-btn" style="background-color: #2ed573;" data-color="#2ed573"></div>
+            <div class="color-btn" style="background-color: #1e90ff;" data-color="#1e90ff"></div>
+            <div class="color-btn" style="background-color: #9c88ff;" data-color="#9c88ff"></div>
+            
+            <div style="display: flex; flex-direction: column; align-items: center; font-size: 12px;">
+                <span>자유색상</span>
+                <input type="color" id="customColor" value="#000000" style="cursor: pointer; width: 35px; height: 35px; border:none; padding:0;">
+            </div>
 
+            <div class="tool-group">
+                <button id="eraserBtn" class="eraser-btn">지우개</button>
+                <button id="resetBtn">초기화</button>
+                <button id="saveBoardBtn">온라인 게시판에 공유</button>
+            </div>
+        </div>
+        <div id="loadingIndicator" class="loading">⏳ 서버와 통신 중...</div>
+        <br>
+        <canvas id="coloringCanvas" width="600" height="600"></canvas>
+    </div>
+
+    <div class="section">
+        <h2>🌐 모두의 갤러리</h2>
+        <p style="font-size: 14px; color: #666;">다른 사람들이 그린 멋진 작품들을 구경해보세요!</p>
+        <div class="gallery" id="galleryContainer">
+            </div>
+    </div>
+
+    <script>
+        // 추출해주신 Supabase 연동 정보 적용 완료
+        const SUPABASE_URL = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
+        
+        const { createClient } = supabase;
+        const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        const canvas = document.getElementById('coloringCanvas');
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        let originalImageData = null;
+        let currentColor = { r: 255, g: 71, b: 87, a: 255 };
+
+        function loadImageToCanvas(imgSource) {
+            const img = new Image();
+            img.onload = function() {
+                const scale = Math.min(1, 800 / img.width);
+                canvas.width = img.width * scale;
+                canvas.height = img.height * scale;
+                
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = "white";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                
+                originalImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            }
+            img.src = imgSource;
+        }
+
+        document.getElementById('imageUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(event) { loadImageToCanvas(event.target.result); }
+            reader.readAsDataURL(file);
+        });
+
+        const colorBtns = document.querySelectorAll('.color-btn');
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? { r: parseInt(result[1], 16), g: parseInt(result[2], 16), b: parseInt(result[3], 16), a: 255 } : null;
+        }
+
+        function updateColorSelection(element, colorObj) {
+            colorBtns.forEach(b => b.classList.remove('selected'));
+            document.getElementById('eraserBtn').classList.remove('selected');
+            if(element) element.classList.add('selected');
+            currentColor = colorObj;
+        }
+
+        colorBtns.forEach(btn => btn.addEventListener('click', (e) => updateColorSelection(e.target, hexToRgb(e.target.getAttribute('data-color')))));
+        document.getElementById('customColor').addEventListener('input', (e) => { updateColorSelection(null, hexToRgb(e.target.value)); e.target.classList.add('selected'); });
+        document.getElementById('eraserBtn').addEventListener('click', (e) => { updateColorSelection(e.target, { r: 255, g: 255, b: 255, a: 255 }); });
+        
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            if (originalImageData && confirm("초기화하시겠습니까?")) ctx.putImageData(originalImageData, 0, 0);
+        });
+
+        canvas.addEventListener('click', function(e) {
+            if (!originalImageData) return alert("그림을 먼저 선택하거나 업로드해주세요!");
+            const rect = canvas.getBoundingClientRect();
+            floodFill(Math.floor(e.clientX - rect.left), Math.floor(e.clientY - rect.top), currentColor);
+        });
+
+        function floodFill(startX, startY, fillColor) {
+            const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const data = imgData.data;
+            const targetColor = getPixelColor(data, startX, startY, canvas.width);
+
+            if (colorsMatch(targetColor, fillColor)) return;
+            if (targetColor.r < 50 && targetColor.g < 50 && targetColor.b < 50) return;
+
+            const pixelsToCheck = [startX, startY];
+            while (pixelsToCheck.length > 0) {
+                const y = pixelsToCheck.pop(), x = pixelsToCheck.pop(), pos = (y * canvas.width + x) * 4;
+                if (colorsMatch(getPixelColor(data, x, y, canvas.width), targetColor)) {
+                    data[pos] = fillColor.r; data[pos + 1] = fillColor.g; data[pos + 2] = fillColor.b; data[pos + 3] = fillColor.a;
+                    if (x > 0) pixelsToCheck.push(x - 1, y);
+                    if (x < canvas.width - 1) pixelsToCheck.push(x + 1, y);
+                    if (y > 0) pixelsToCheck.push(x, y - 1);
+                    if (y < canvas.height - 1) pixelsToCheck.push(x, y + 1);
+                }
+            }
+            ctx.putImageData(imgData, 0, 0);
+        }
+
+        function getPixelColor(data, x, y, width) { const pos = (y * width + x) * 4; return { r: data[pos], g: data[pos + 1], b: data[pos + 2], a: data[pos + 3] }; }
+        function colorsMatch(c1, c2) { return Math.abs(c1.r - c2.r) <= 60 && Math.abs(c1.g - c2.g) <= 60 && Math.abs(c1.b - c2.b) <= 60; }
+
+
+        // --- Supabase 게시판 통신 로직 ---
+        const galleryContainer = document.getElementById('galleryContainer');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+
+        async function fetchGallery() {
+            loadingIndicator.style.display = 'block';
+            try {
+                // 해당 프로젝트에 'gallery' 테이블이 생성되어 있어야 합니다.
+                const { data, error } = await supabaseClient
+                    .from('gallery')
+                    .select('image_data')
+                    .order('created_at', { ascending: false })
+                    .limit(20); 
+
+                if (error) throw error;
+
+                galleryContainer.innerHTML = '';
+                if (data.length === 0) {
+                    galleryContainer.innerHTML = '<p>아직 저장된 그림이 없습니다. 첫 번째 작품을 올려보세요!</p>';
+                } else {
+                    data.forEach(row => {
+                        const img = document.createElement('img');
+                        img.src = row.image_data;
+                        galleryContainer.appendChild(img);
+                    });
+                }
+            } catch (err) {
+                console.error("갤러리 로드 실패:", err);
+                galleryContainer.innerHTML = '<p style="color:red;">게시판을 불러오는 데 실패했습니다. Supabase에 gallery 테이블을 생성했는지 확인해주세요.</p>';
+            } finally {
+                loadingIndicator.style.display = 'none';
+            }
+        }
+
+        document.getElementById('saveBoardBtn').addEventListener('click', async () => {
+            if (!originalImageData) { alert("저장할 그림이 없습니다."); return; }
+            
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+            loadingIndicator.style.display = 'block';
+            
+            try {
+                const { error } = await supabaseClient
+                    .from('gallery')
+                    .insert([{ image_data: dataUrl }]);
+
+                if (error) throw error;
+                
+                alert("게시판에 성공적으로 공유되었습니다!");
+                fetchGallery();
+            } catch (err) {
+                console.error("저장 실패:", err);
+                alert("저장 중 오류가 발생했습니다. DB 설정을 확인해주세요.");
+            } finally {
+                loadingIndicator.style.display = 'none';
+            }
+        });
+
+        ctx.fillStyle = "#ccc"; ctx.font = "20px sans-serif"; ctx.textAlign = "center";
+        ctx.fillText("왼쪽 위에서 파일 업로드를 눌러주세요!", canvas.width/2, canvas.height/2);
+        
+        fetchGallery();
+
+    </script>
 </body>
 </html>

@@ -377,7 +377,22 @@
         }
         .hero-sub.visible { opacity: 1; transform: translateY(0); }
 
-        /* ── MAGIC GAME LINKS (MODIFIED) ── */
+        /* ── MAGIC GAME LINKS (MODIFIED - 은은한 반짝임 애니메이션 추가) ── */
+        @keyframes twinkleGlow {
+            0% {
+                box-shadow: 0 0 5px rgba(201, 168, 76, 0.1), inset 0 0 2px rgba(201, 168, 76, 0.05);
+                border-color: rgba(201, 168, 76, 0.2);
+            }
+            50% {
+                box-shadow: 0 0 18px rgba(201, 168, 76, 0.5), inset 0 0 8px rgba(201, 168, 76, 0.2);
+                border-color: rgba(201, 168, 76, 0.6);
+            }
+            100% {
+                box-shadow: 0 0 5px rgba(201, 168, 76, 0.1), inset 0 0 2px rgba(201, 168, 76, 0.05);
+                border-color: rgba(201, 168, 76, 0.2);
+            }
+        }
+
         .magic-game-links {
             display: flex;
             justify-content: center;
@@ -394,55 +409,44 @@
         }
 
         .play-game-box {
-            background: rgba(17, 8, 40, 0.5);
-            border: 2px solid;
-            border-radius: 16px;
-            padding: 12px 28px;
+            background: rgba(10, 10, 15, 0.4);
+            border: 1px solid rgba(201, 168, 76, 0.2);
+            border-radius: 12px;
+            padding: 10px 24px;
             text-align: center;
             text-decoration: none;
-            backdrop-filter: blur(8px);
-            transition: transform 0.3s ease, filter 0.3s ease;
+            backdrop-filter: blur(4px);
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 12px;
-        }
-
-        .play-game-box.board-game {
-            border-color: rgba(255, 215, 0, 0.6);
-            animation: starTwinkleBoard 2.5s infinite ease-in-out alternate;
+            gap: 10px;
+            animation: twinkleGlow 3s infinite ease-in-out;
         }
 
         .play-game-box:hover {
-            transform: scale(1.08) translateY(-5px) !important;
+            border-color: var(--gold-light);
+            background: rgba(201, 168, 76, 0.15);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 20px rgba(201, 168, 76, 0.4);
             animation-play-state: paused;
-            filter: brightness(1.2);
-        }
-
-        .play-game-box.board-game:hover {
-            box-shadow: 0 0 40px rgba(255, 215, 0, 0.8), inset 0 0 15px rgba(255, 215, 0, 0.4) !important;
-            border-color: #FFD700;
         }
 
         .game-icon {
-            font-size: 26px;
-            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6));
+            font-size: 16px;
+            color: rgba(201, 168, 76, 0.8);
         }
 
         .game-title {
             font-family: 'Cinzel', 'Pretendard', sans-serif;
-            font-size: 0.95rem;
-            font-weight: 800;
+            font-size: 0.75rem;
             letter-spacing: 1px;
+            color: rgba(201, 168, 76, 0.7);
+            text-transform: uppercase;
+            transition: color 0.3s;
         }
 
-        .board-game .game-title {
-            color: #FFD700;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-        }
-
-        @keyframes starTwinkleBoard {
-            0% { transform: translateY(4px); box-shadow: 0 0 10px rgba(255, 215, 0, 0.2), inset 0 0 5px rgba(255, 255, 255, 0.1); }
-            100% { transform: translateY(-8px); box-shadow: 0 0 30px rgba(255, 215, 0, 0.7), inset 0 0 12px rgba(255, 255, 255, 0.4); }
+        .play-game-box:hover .game-title {
+            color: var(--gold-light);
         }
 
         .scroll-hint {
@@ -471,33 +475,8 @@
         }
         @keyframes fadeIn { to { opacity: 1; } }
 
-        /* ── HERO GAME LINK ── */
-        .hero-game-link {
-            position: absolute;
-            bottom: 30px;
-            right: 30px;
-            z-index: 20;
-            font-family: 'Cinzel', serif;
-            font-size: 0.7rem;
-            letter-spacing: 1px;
-            color: rgba(201,168,76,0.6);
-            text-decoration: none;
-            padding: 8px 12px;
-            border: 1px solid rgba(201,168,76,0.2);
-            border-radius: 8px;
-            background: rgba(10, 10, 15, 0.5);
-            backdrop-filter: blur(4px);
-            transition: all 0.3s ease;
-        }
-        .hero-game-link:hover {
-            color: var(--gold-light);
-            border-color: rgba(201,168,76,0.5);
-            background: rgba(201,168,76,0.15);
-            transform: scale(1.05);
-        }
-
         /* ══════════════════════════════════════
-           CREATOR'S NOTE — Photo Collage Design
+            CREATOR'S NOTE — Photo Collage Design
         ══════════════════════════════════════ */
         .creator-note {
             display: flex;
@@ -567,7 +546,7 @@
         }
 
         /* ─────────────────────────────────────
-           갤러리 컬럼 — 모자이크 콜라주 레이아웃
+            갤러리 컬럼 — 모자이크 콜라주 레이아웃
         ───────────────────────────────────── */
         .note-gallery-col {
             position: relative;
@@ -668,7 +647,7 @@
         }
 
         /* ─────────────────────────────────────
-           스토리 텍스트 컬럼
+            스토리 텍스트 컬럼
         ───────────────────────────────────── */
         .note-story-col {
             padding: 3rem;
@@ -765,21 +744,14 @@
             .gallery-grid { height: 320px; max-width: 500px; margin: 0 auto; }
             .note-story-col { padding: 2rem 1.5rem; gap: 1.5rem; }
             
-            .hero-game-link {
-                bottom: 20px;
-                right: 20px;
-                font-size: 0.65rem;
-                padding: 6px 10px;
-            }
-
             .magic-game-links {
                 flex-direction: column;
                 gap: 15px;
                 margin-top: 35px;
             }
             .play-game-box {
-                padding: 12px 25px;
-                width: 240px;
+                padding: 10px 20px;
+                width: 180px;
                 justify-content: center;
             }
         }
@@ -1062,9 +1034,8 @@
             <p class="hero-sub" id="heroSub" data-i18n="hero_sub">찬양 · 음악 · 문학 · 영상</p>
 
             <div class="magic-game-links" id="magicGameLinks">
-                <!-- 게임 링크 수정됨: game.html -> gameinfo.html -->
-                <a href="gameinfo.html" class="play-game-box board-game">
-                    <span class="game-icon">🎲</span>
+                <a href="gameinfo.html" class="play-game-box">
+                    <span class="game-icon">🎮</span>
                     <span class="game-title">Play Game</span>
                 </a>
             </div>
@@ -1074,8 +1045,6 @@
             <div class="scroll-hint-line"></div>
             <span data-i18n="hero_scroll">SCROLL</span>
         </div>
-        <!-- 우측 하단 게임 링크 수정됨: game.html -> gameinfo.html -->
-        <a href="gameinfo.html" class="hero-game-link">🎮 PLAY GAME</a>
     </header>
 
     <section class="creator-note">

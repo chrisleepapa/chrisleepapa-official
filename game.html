@@ -774,7 +774,6 @@ function endTurnAfterEventChain(reason) {
   renderAll();
 }
 
-     
 function advanceTurn() {
   resetEventChain();
   totalTurns++;
@@ -918,7 +917,37 @@ var CINE_DATA={
   '어둠의 마왕 크라운':{type:'evil', img:'./images/crown.jpg',   tag:'☠ BOSS ENCOUNTER ☠',     name:'어둠의 마왕 크라운', sub:'크하하하! 감히 내 영역을 침범하다니!\n너희의 소중한 별들을...\n이 거대한 폭풍으로 날려주마! 💀'},
   '어둠의 검신 베인':{type:'evil', img:'./images/bain.jpg',    tag:'⚔ BOSS ENCOUNTER ⚔',     name:'어둠의 검신 베인',   sub:'어둠의 검이 빛을 집어삼키리라...\n어리석은 여행자여,\n이제 네 별은 내 것이다! ⚔️'}
 };
+     
+var PRIORITY_IMAGE_ASSETS=[
+  './images/mom.jpeg','./images/chris05.jpg','./images/crown.jpg','./images/bain.jpg',
+  './images/superyul.jpeg','./images/superjung.jpeg'
+];
+var CARD_IMAGE_ASSETS=[
+  './images/darknight.png','./images/angel.jpeg','./images/magicbook.jpeg','./images/grandmagic.png',
+  './images/town.jpg','./images/fairytail.jpg','./images/brook.png','./images/fairytown.jpeg','./images/team.png',
+  './images/yul_spritesheet.png','./images/jeong_spritesheet.png'
+];
+var preloadedImages={};
 
+function preloadImage(src){
+  if(preloadedImages[src])return preloadedImages[src];
+  var img=new Image();
+  img.decoding='async';
+  img.loading='eager';
+  preloadedImages[src]=img;
+  img.src=src;
+  if(img.decode){img.decode().catch(function(){});}
+  return img;
+}
+
+function preloadGameImages(){
+  PRIORITY_IMAGE_ASSETS.forEach(preloadImage);
+  var rest=CARD_IMAGE_ASSETS.filter(function(src){return !preloadedImages[src];});
+  var loadRest=function(){rest.forEach(preloadImage);};
+  if('requestIdleCallback' in window){requestIdleCallback(loadRest,{timeout:1200});}
+  else{setTimeout(loadRest,250);}
+}
+     
 var cfxCanvas,cfxCtx,cfxParts=[],cfxRunning=false,cineNext=null;
 
 function cfxInit(){
@@ -960,6 +989,7 @@ function cineShow(cfg, callback){
   cineNext=callback;
   var el=document.getElementById('cine');
   el.className=cfg.type;
+  preloadImage(cfg.img);
   document.getElementById('cine-img').style.backgroundImage='url("'+cfg.img+'")';
   document.getElementById('cine-tag').textContent=cfg.tag;
   document.getElementById('cine-name').textContent=cfg.name;
@@ -1066,7 +1096,10 @@ function openEventCard(sid){
   ec.className = baseClass;
   
   document.getElementById('ehbg').style.background=sp.bg;
-  document.getElementById('ech').innerHTML=SV[sp.char]||SV.luna;
+  var charHtml=SV[sp.char]||SV.luna;
+  var imgMatch=charHtml.match(/src=["']([^"']+)/);
+  if(imgMatch)preloadImage(imgMatch[1]);
+  document.getElementById('ech').innerHTML=charHtml;
   document.getElementById('ecnm').textContent=sp.cn;
   document.getElementById('esem').textContent=sp.em;
   document.getElementById('esnm').textContent=sp.nm;
@@ -1275,6 +1308,7 @@ function startGame(){
 }
 
 // 처음 실행 시 보드판을 무작위로 한 번 섞은 후 구성합니다.
+preloadGameImages();
 shuffleBoard();
 buildBoard();
 </script>

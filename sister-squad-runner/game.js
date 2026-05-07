@@ -22,23 +22,53 @@ let COMBO=0;
 let HITSTOP=0;
 
 const enemies=[];
+const OBSTACLE_TYPES=['stone','tree','grass','flower'];
+
+let GAME_STARTED=false;
+let groundOffset=0;
 
 let GAME_STARTED=false;
 let groundOffset=0;
 
 PLAYER.y=H-220;
+if(!GAME_STARTED) return;
 
-function addEnemy(){
-
-let GAME_STARTED=false;
+  const type=OBSTACLE_TYPES[Math.floor(Math.random()*OBSTACLE_TYPES.length)];
+  const sizes={
+    stone:{w:68,h:46},
+    tree:{w:56,h:96},
+    grass:{w:72,h:36},
+    flower:{w:46,h:62}
+  };
+  const size=sizes[type];
   
   enemies.push({
+    type,
     x:W+100,
-    y:H-200,
-    w:70,
-    h:70,
-    hp:100
+    y:H-120-size.h,
+    w:size.w,
+    h:size.h,
+    hp:100,
+    hitBySkill:false
   });
+}
+
+function getPlayerHitbox(){
+
+  return {
+    x:PLAYER.x+22,
+    y:PLAYER.y+38,
+    w:PLAYER.w-38,
+    h:PLAYER.h-48
+  };
+}
+
+function rectsOverlap(a,b){
+
+  return a.x<b.x+b.w &&
+         a.x+a.w>b.x &&
+         a.y<b.y+b.h &&
+         a.y+a.h>b.y;
 }
 
 function startGame(){
@@ -120,30 +150,34 @@ if(!GAME_STARTED) return;
     }
   }
 
+  const playerHitbox=getPlayerHitbox();
+  
   enemies.forEach((e,i)=>{
 
     e.x-=FEVER_MODE ? 12 : 8;
 
-    if(e.x<PLAYER.x+PLAYER.w &&
-       e.x+e.w>PLAYER.x){
+    if(rectsOverlap(playerHitbox,e)){
 
-      HITSTOP=4;
+      HITSTOP=6;
+      
+     CAMERA.shakePower=10;
+     CAMERA.targetZoom=1.1;
 
-      CAMERA.shakePower=10;
-      CAMERA.targetZoom=1.12;
+      COMBO=0;
+      SCORE=Math.max(0,SCORE-25);
 
-      e.hp-=FEVER_MODE ? 30 : 15;
+      enemies.splice(i,1);
+      return;
+    }
 
-      addPart(
-        e.x,
-        e.y,
-        ['#FF5555','#FFFFFF'],
-        24,
-        6,
-        12,
-        1,
-        .06
-      );
+    if(e.x+e.w<0){
+
+      SCORE+=10;
+      COMBO++;
+      FEVER=Math.min(100,FEVER+2);
+
+      enemies.splice(i,1);
+      return;
     }
 
     if(e.hp<=0){
@@ -151,6 +185,18 @@ if(!GAME_STARTED) return;
       SCORE+=100;
       COMBO++;
       FEVER+=8;
+      if(e.hitBySkill){
+        addPart(
+          e.x+e.w/2,
+          e.y+e.h/2,
+          ['#FFD700','#FF8C00','#FFFFFF'],
+          36,
+          10,
+          14,
+          1.2,
+          .05
+        );
+      }
 
       enemies.splice(i,1);
 
@@ -216,7 +262,7 @@ function draw(){
   cx.fillRect(0,H-120,W,120);
 
   cx.fillStyle='rgba(255,255,255,.18)';
-
+  
   for(let x=-groundOffset;x<W;x+=80){
     cx.fillRect(x,H-64,42,6);
   }
@@ -224,16 +270,14 @@ function draw(){
   if(GAME_STARTED){
     drawPlayer(cx);
   }
-  enemies.forEach(e=>{
-
-    cx.fillStyle='#8B2EFF';
-
-    cx.fillRect(
-      e.x,
-      e.y,
-      e.w,
-      e.h
-    );
+  for(let x=-groundOffset;x<W;x+=80){
+    cx.fillRect(x,H-64,42,6);
+  }
+  if(GAME_STARTED){
+    drawPlayer(cx);
+  }
+ enemies.forEach(e=>{
+    drawObstacle(cx,e);
   });
 
   particles.forEach(p=>{
@@ -257,6 +301,79 @@ function draw(){
     cx.arc(b.x,b.y,b.r,0,Math.PI*2);
     cx.fill();
   });
+
+  cx.restore();
+}
+function drawObstacle(cx,e){
+
+  cx.save();
+  cx.translate(e.x,e.y);
+
+  if(e.type==='stone'){
+    cx.fillStyle='#6E6A63';
+    cx.beginPath();
+    cx.ellipse(e.w*.5,e.h*.58,e.w*.48,e.h*.42,0,0,Math.PI*2);
+    cx.fill();
+
+    cx.fillStyle='#9B968D';
+    cx.beginPath();
+    cx.ellipse(e.w*.34,e.h*.38,e.w*.16,e.h*.12,-.4,0,Math.PI*2);
+    cx.fill();
+  }else if(e.type==='tree'){
+    cx.fillStyle='#7B4A22';
+    cx.fillRect(e.w*.42,e.h*.4,e.w*.18,e.h*.58);
+
+    cx.fillStyle='#2FA35A';
+    cx.beginPath();
+    cx.arc(e.w*.5,e.h*.28,e.w*.33,0,Math.PI*2);
+    cx.fill();
+
+    cx.fillStyle='#4BCB72';
+    cx.beginPath();
+    cx.arc(e.w*.36,e.h*.38,e.w*.22,0,Math.PI*2);
+    cx.arc(e.w*.64,e.h*.4,e.w*.24,0,Math.PI*2);
+    cx.fill();
+  }else if(e.type==='grass'){
+    cx.strokeStyle='#57D36E';
+    cx.lineWidth=5;
+
+    for(let i=0;i<6;i++){
+      const x=8+i*11;
+      cx.beginPath();
+      cx.moveTo(x,e.h);
+      cx.quadraticCurveTo(x+4,e.h*.45,x+10,e.h*.12);
+      cx.stroke();
+    }
+  }else{
+    cx.strokeStyle='#50C878';
+    cx.lineWidth=4;
+    cx.beginPath();
+    cx.moveTo(e.w*.5,e.h);
+    cx.lineTo(e.w*.5,e.h*.36);
+    cx.stroke();
+
+    cx.fillStyle='#FF69B4';
+
+    for(let i=0;i<6;i++){
+      const angle=(Math.PI*2/6)*i;
+      cx.beginPath();
+      cx.ellipse(
+        e.w*.5+Math.cos(angle)*10,
+        e.h*.3+Math.sin(angle)*10,
+        8,
+        5,
+        angle,
+        0,
+        Math.PI*2
+      );
+      cx.fill();
+    }
+
+    cx.fillStyle='#FFD700';
+    cx.beginPath();
+    cx.arc(e.w*.5,e.h*.3,7,0,Math.PI*2);
+    cx.fill();
+  }
 
   cx.restore();
 }

@@ -285,6 +285,19 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 @keyframes stup{0%{opacity:1;transform:translateY(0) scale(1);}100%{opacity:0;transform:translateY(-60px) scale(1.5);}}
 @media(max-width:600px){.gl{flex-direction:column;align-items:center;}.sb{width:min(510px,92vw);flex-direction:row;flex-wrap:wrap;}.sb .sp{flex:1;min-width:140px;}.lgp,.lgd{min-width:100%;}}
 
+/* ===== 가위바위보 UI 스타일 ===== */
+#rps-ui { display:none; flex-direction:column; align-items:center; gap:20px; width:100%; max-width:400px; margin-bottom: 20px;}
+.rps-vs { display:flex; justify-content:space-between; width:100%; padding:0 20px; align-items:center; }
+.rps-box { text-align:center; }
+.rps-nm { font-size:clamp(16px, 3vw, 22px); margin-bottom:10px; font-weight:800; }
+.rps-h { font-size:clamp(35px, 6vw, 50px); background:rgba(255,255,255,0.08); width:clamp(60px, 15vw, 80px); height:clamp(60px, 15vw, 80px); border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid rgba(255,255,255,0.2); box-shadow:0 0 15px rgba(0,0,0,0.3); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.rps-h.pop { transform: scale(1.2); }
+.rps-vstxt { font-size:clamp(24px, 5vw, 36px); font-family:'Fredoka One',cursive; color:var(--gold); text-shadow:0 0 10px rgba(255,215,0,.6); }
+#rps-result { font-family:'Fredoka One',cursive; font-size:clamp(16px, 3vw, 22px); height:30px; text-align:center; color:#fff; transition:color 0.3s; }
+#rps-btns { display:flex; gap:12px; flex-wrap:wrap; justify-content:center;}
+.rps-b { padding:12px 18px; font-size:clamp(14px, 3vw, 20px); border:none; border-radius:14px; background:linear-gradient(135deg, #4A90D9, #9B59B6); color:white; font-weight:900; cursor:pointer; box-shadow:0 4px 15px rgba(0,0,0,0.3); transition:transform 0.2s, box-shadow 0.2s; font-family:'Nunito',sans-serif; }
+.rps-b:hover { transform:scale(1.1) translateY(-3px); box-shadow:0 6px 20px rgba(0,0,0,0.5); }
+
 /* =========================================
    스프라이트 애니메이션 및 클래스
 ========================================= */
@@ -415,11 +428,35 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 <div id="is">
   <div class="it1">✨ SISTER SQUAD ✨</div>
   <div class="it2">놀라운 자매들의 대모험 — 별 10개를 먼저 모으면 승리! 🌟</div>
+  
   <div class="icp">
     <div class="icc"><div id="isvg0" style="width:80px;height:94px;margin:0 auto 7px;"></div><div class="icn">율이</div><div class="icr">언니 · 탐험가</div></div>
     <div class="icc"><div id="isvg1" style="width:80px;height:94px;margin:0 auto 7px;"></div><div class="icn">정이</div><div class="icr">동생 · 마법사</div></div>
   </div>
-  <button class="stbtn" onclick="startGame()">🌟 모험 시작!</button>
+  
+  <!-- 가위바위보 게임 UI -->
+  <div id="rps-ui">
+    <div class="rps-vs">
+      <div class="rps-box">
+        <div class="rps-nm">👩 율이</div>
+        <div id="yul-hand" class="rps-h">❔</div>
+      </div>
+      <div class="rps-vstxt">VS</div>
+      <div class="rps-box">
+        <div class="rps-nm">👧 정이</div>
+        <div id="jeong-hand" class="rps-h">❔</div>
+      </div>
+    </div>
+    <div id="rps-result"></div>
+    <div id="rps-btns">
+      <button class="rps-b" onclick="playRPS(0)">✊ 바위</button>
+      <button class="rps-b" onclick="playRPS(1)">✋ 보</button>
+      <button class="rps-b" onclick="playRPS(2)">✌️ 가위</button>
+    </div>
+    <button id="final-start-btn" class="stbtn" style="display:none; margin-top:10px;" onclick="startGame()">🌟 모험 시작!</button>
+  </div>
+
+  <button id="init-btn" class="stbtn" onclick="startRPS()">✌️ 선공 정하기!</button>
 </div>
 
 <div class="wr">
@@ -1081,15 +1118,94 @@ function resetGame(){
   document.getElementById('gov').classList.remove('vis');
   document.getElementById('eov').classList.remove('vis');
   Array.from(document.getElementById('lgp').querySelectorAll('.lge')).forEach(function(e){e.remove();});
-  addLog('✨ 새 게임 시작! 율이🧒 차례입니다.');
+  
   shuffleBoard();
   rebuildBoardDOM();
+
+  // 시작 화면 UI 및 가위바위보 상태 초기화
+  document.querySelector('.icp').style.display = 'flex';
+  document.getElementById('init-btn').style.display = '';
+  document.getElementById('rps-ui').style.display = 'none';
+  document.getElementById('rps-btns').style.display = 'flex';
+  document.getElementById('final-start-btn').style.display = 'none';
+  document.getElementById('yul-hand').innerText = '❔';
+  document.getElementById('jeong-hand').innerText = '❔';
+  document.getElementById('rps-result').innerText = '';
+  document.querySelector('.it2').innerText = '놀라운 자매들의 대모험 — 별 10개를 먼저 모으면 승리! 🌟';
+  
+  var isScreen = document.getElementById('is');
+  isScreen.style.display = 'flex';
+  setTimeout(function(){isScreen.classList.remove('hd');}, 50);
+}
+
+// 가위바위보 로직
+var RPS_EMOJI = ['✊', '✋', '✌️'];
+var isRpsPlaying = false;
+
+function startRPS() {
+  document.querySelector('.icp').style.display = 'none';
+  document.getElementById('init-btn').style.display = 'none';
+  document.getElementById('rps-ui').style.display = 'flex';
+  document.querySelector('.it2').innerText = '누가 먼저 시작할까요? 율이의 가위바위보를 선택하세요!';
+  sStep();
+}
+
+function playRPS(yulChoice) {
+  if(isRpsPlaying) return;
+  isRpsPlaying = true;
+  sDice(); // 주사위 소리 재활용 (경쾌한 효과음)
+  
+  var jeongChoice = Math.floor(Math.random() * 3);
+  
+  var yHand = document.getElementById('yul-hand');
+  var jHand = document.getElementById('jeong-hand');
+  
+  yHand.innerText = RPS_EMOJI[yulChoice];
+  yHand.classList.add('pop');
+  setTimeout(function(){ yHand.classList.remove('pop'); }, 300);
+  
+  jHand.innerText = '🤔';
+  document.getElementById('rps-result').innerText = '결과는...?!';
+  document.getElementById('rps-result').style.color = '#fff';
+  
+  setTimeout(function() {
+    jHand.innerText = RPS_EMOJI[jeongChoice];
+    jHand.classList.add('pop');
+    setTimeout(function(){ jHand.classList.remove('pop'); }, 300);
+    
+    var resEl = document.getElementById('rps-result');
+    var startBtn = document.getElementById('final-start-btn');
+    
+    if (yulChoice === jeongChoice) {
+      resEl.innerText = '비겼습니다! 다시 내주세요!';
+      resEl.style.color = '#C9A6FF';
+      isRpsPlaying = false;
+      sTrap();
+    } else if ((yulChoice === 0 && jeongChoice === 2) || (yulChoice === 1 && jeongChoice === 0) || (yulChoice === 2 && jeongChoice === 1)) {
+      resEl.innerText = '🎉 율이 승리! 율이가 선공합니다!';
+      resEl.style.color = '#FFD700';
+      cur = 0; // 율이 먼저 시작
+      document.getElementById('rps-btns').style.display = 'none';
+      startBtn.style.display = 'block';
+      isRpsPlaying = false;
+      sStar();
+    } else {
+      resEl.innerText = '🎉 정이 승리! 정이가 선공합니다!';
+      resEl.style.color = '#FF69B4';
+      cur = 1; // 정이 먼저 시작
+      document.getElementById('rps-btns').style.display = 'none';
+      startBtn.style.display = 'block';
+      isRpsPlaying = false;
+      sStar();
+    }
+  }, 800);
 }
 
 function startGame(){
   document.getElementById('is').classList.add('hd');
   setTimeout(function(){document.getElementById('is').style.display='none';},520);
-  addLog('✨ 모험 시작! 율이🧒 차례입니다.');
+  addLog('✨ 모험 시작! ' + PL[cur].ic + ' ' + PL[cur].nm + ' 차례입니다.');
+  renderAll(); // 가위바위보 결과에 맞춰 현재 차례 UI 갱신
 }
 
 // 처음 실행 시 보드판을 무작위로 한 번 섞은 후 구성합니다.

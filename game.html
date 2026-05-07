@@ -401,20 +401,20 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 
 /* 파워 업 시 프로필 강조용 클래스 */
 .sc.cur.pwr { border-color: #FF4500; box-shadow: 0 0 20px rgba(255, 69, 0, 0.6); }
+
+/* ===== 가위바위보 UI 스타일 ===== */
+#rps-ui { display:none; flex-direction:column; align-items:center; gap:20px; width:100%; max-width:400px; margin-bottom: 20px;}
+.rps-vs { display:flex; justify-content:space-between; width:100%; padding:0 20px; align-items:center; }
+.rps-box { text-align:center; }
+.rps-nm { font-size:clamp(16px, 3vw, 22px); margin-bottom:10px; font-weight:800; }
+.rps-h { font-size:clamp(35px, 6vw, 50px); background:rgba(255,255,255,0.08); width:clamp(60px, 15vw, 80px); height:clamp(60px, 15vw, 80px); border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid rgba(255,255,255,0.2); box-shadow:0 0 15px rgba(0,0,0,0.3); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.rps-h.pop { transform: scale(1.2); }
+.rps-vstxt { font-size:clamp(24px, 5vw, 36px); font-family:'Fredoka One',cursive; color:var(--gold); text-shadow:0 0 10px rgba(255,215,0,.6); }
+#rps-result { font-family:'Fredoka One',cursive; font-size:clamp(16px, 3vw, 22px); height:30px; text-align:center; color:#fff; transition:color 0.3s; }
 </style>
 </head>
 <body>
-<!-- 각성 및 스페셜 시네마틱 전체화면 (한줄씩 대사 뜨는 효과 포함) -->
-<div id="cine" onclick="cineDismiss()">
-  <div id="cine-img"></div>
-  <div id="cine-vig"></div>
-  <div id="cine-lines"></div>
-  <canvas id="cfx"></canvas>
-  <div class="cc" id="cc1"></div><div class="cc" id="cc2"></div>
-  <div class="cc" id="cc3"></div><div class="cc" id="cc4"></div>
-  <div id="cine-body">
-    <div id="cine-tag"></div>
-    <div id="cine-name"></div>
+<!-- 각성 이벤트 전용 전체화면 시네마틱 -->
     <div class="crl"></div>
     <div id="cine-sub"></div>
     <div id="cine-tap">▶ 화면을 터치하세요</div>
@@ -428,7 +428,6 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 <div id="is">
   <div class="it1">✨ SISTER SQUAD ✨</div>
   <div class="it2">놀라운 자매들의 대모험 — 별 10개를 먼저 모으면 승리! 🌟</div>
-  
   <div class="icp">
     <div class="icc"><div id="isvg0" style="width:80px;height:94px;margin:0 auto 7px;"></div><div class="icn">율이</div><div class="icr">언니 · 탐험가</div></div>
     <div class="icc"><div id="isvg1" style="width:80px;height:94px;margin:0 auto 7px;"></div><div class="icn">정이</div><div class="icr">동생 · 마법사</div></div>
@@ -448,15 +447,10 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
       </div>
     </div>
     <div id="rps-result"></div>
-    <div id="rps-btns">
-      <button class="rps-b" onclick="playRPS(0)">✊ 바위</button>
-      <button class="rps-b" onclick="playRPS(1)">✋ 보</button>
-      <button class="rps-b" onclick="playRPS(2)">✌️ 가위</button>
-    </div>
     <button id="final-start-btn" class="stbtn" style="display:none; margin-top:10px;" onclick="startGame()">🌟 모험 시작!</button>
   </div>
 
-  <button id="init-btn" class="stbtn" onclick="startRPS()">✌️ 선공 정하기!</button>
+  <button id="init-btn" class="stbtn" onclick="startAutoRPS()">✌️ 가위바위보!</button>
 </div>
 
 <div class="wr">
@@ -1122,11 +1116,10 @@ function resetGame(){
   shuffleBoard();
   rebuildBoardDOM();
 
-  // 시작 화면 UI 및 가위바위보 상태 초기화
+  // 초기 시작화면 UI 복원
   document.querySelector('.icp').style.display = 'flex';
   document.getElementById('init-btn').style.display = '';
   document.getElementById('rps-ui').style.display = 'none';
-  document.getElementById('rps-btns').style.display = 'flex';
   document.getElementById('final-start-btn').style.display = 'none';
   document.getElementById('yul-hand').innerText = '❔';
   document.getElementById('jeong-hand').innerText = '❔';
@@ -1138,74 +1131,86 @@ function resetGame(){
   setTimeout(function(){isScreen.classList.remove('hd');}, 50);
 }
 
-// 가위바위보 로직
+// 자동 가위바위보 로직
 var RPS_EMOJI = ['✊', '✋', '✌️'];
 var isRpsPlaying = false;
 
-function startRPS() {
+function startAutoRPS() {
   document.querySelector('.icp').style.display = 'none';
   document.getElementById('init-btn').style.display = 'none';
   document.getElementById('rps-ui').style.display = 'flex';
-  document.querySelector('.it2').innerText = '누가 먼저 시작할까요? 율이의 가위바위보를 선택하세요!';
+  document.querySelector('.it2').innerText = '가위~ 바위~ 보!';
   sStep();
+  playAutoRPS();
 }
 
-function playRPS(yulChoice) {
+function playAutoRPS() {
   if(isRpsPlaying) return;
   isRpsPlaying = true;
-  sDice(); // 주사위 소리 재활용 (경쾌한 효과음)
-  
-  var jeongChoice = Math.floor(Math.random() * 3);
+  sDice();
   
   var yHand = document.getElementById('yul-hand');
   var jHand = document.getElementById('jeong-hand');
+  var resEl = document.getElementById('rps-result');
   
-  yHand.innerText = RPS_EMOJI[yulChoice];
-  yHand.classList.add('pop');
-  setTimeout(function(){ yHand.classList.remove('pop'); }, 300);
-  
+  yHand.innerText = '🤔';
   jHand.innerText = '🤔';
-  document.getElementById('rps-result').innerText = '결과는...?!';
-  document.getElementById('rps-result').style.color = '#fff';
-  
-  setTimeout(function() {
-    jHand.innerText = RPS_EMOJI[jeongChoice];
-    jHand.classList.add('pop');
-    setTimeout(function(){ jHand.classList.remove('pop'); }, 300);
-    
-    var resEl = document.getElementById('rps-result');
-    var startBtn = document.getElementById('final-start-btn');
-    
-    if (yulChoice === jeongChoice) {
-      resEl.innerText = '비겼습니다! 다시 내주세요!';
-      resEl.style.color = '#C9A6FF';
-      isRpsPlaying = false;
-      sTrap();
-    } else if ((yulChoice === 0 && jeongChoice === 2) || (yulChoice === 1 && jeongChoice === 0) || (yulChoice === 2 && jeongChoice === 1)) {
-      resEl.innerText = '🎉 율이 승리! 율이가 선공합니다!';
-      resEl.style.color = '#FFD700';
-      cur = 0; // 율이 먼저 시작
-      document.getElementById('rps-btns').style.display = 'none';
-      startBtn.style.display = 'block';
-      isRpsPlaying = false;
-      sStar();
-    } else {
-      resEl.innerText = '🎉 정이 승리! 정이가 선공합니다!';
-      resEl.style.color = '#FF69B4';
-      cur = 1; // 정이 먼저 시작
-      document.getElementById('rps-btns').style.display = 'none';
-      startBtn.style.display = 'block';
-      isRpsPlaying = false;
-      sStar();
+  resEl.innerText = '결과를 정하는 중...';
+  resEl.style.color = '#fff';
+
+  // 긴장감을 주는 롤링 애니메이션
+  var rollCnt = 0;
+  var rollIv = setInterval(function(){
+    yHand.innerText = RPS_EMOJI[Math.floor(Math.random() * 3)];
+    jHand.innerText = RPS_EMOJI[Math.floor(Math.random() * 3)];
+    rollCnt++;
+    if(rollCnt > 10) {
+      clearInterval(rollIv);
+      var yulChoice = Math.floor(Math.random() * 3);
+      var jeongChoice = Math.floor(Math.random() * 3);
+      finalizeRPS(yulChoice, jeongChoice, yHand, jHand, resEl);
     }
-  }, 800);
+  }, 80);
+}
+
+function finalizeRPS(y, j, yHand, jHand, resEl) {
+  yHand.innerText = RPS_EMOJI[y];
+  yHand.classList.add('pop');
+  jHand.innerText = RPS_EMOJI[j];
+  jHand.classList.add('pop');
+  setTimeout(function(){ 
+    yHand.classList.remove('pop'); 
+    jHand.classList.remove('pop'); 
+  }, 300);
+
+  if (y === j) {
+    resEl.innerText = '비겼습니다! 다시 한 번!';
+    resEl.style.color = '#C9A6FF';
+    isRpsPlaying = false;
+    sTrap();
+    setTimeout(playAutoRPS, 1000); // 자동으로 재경기
+  } else if ((y === 0 && j === 2) || (y === 1 && j === 0) || (y === 2 && j === 1)) {
+    resEl.innerText = '🎉 율이 승리! 율이가 선공합니다!';
+    resEl.style.color = '#FFD700';
+    cur = 0; // 율이 선공
+    isRpsPlaying = false;
+    sStar();
+    document.getElementById('final-start-btn').style.display = 'block';
+  } else {
+    resEl.innerText = '🎉 정이 승리! 정이가 선공합니다!';
+    resEl.style.color = '#FF69B4';
+    cur = 1; // 정이 선공
+    isRpsPlaying = false;
+    sStar();
+    document.getElementById('final-start-btn').style.display = 'block';
+  }
 }
 
 function startGame(){
   document.getElementById('is').classList.add('hd');
   setTimeout(function(){document.getElementById('is').style.display='none';},520);
   addLog('✨ 모험 시작! ' + PL[cur].ic + ' ' + PL[cur].nm + ' 차례입니다.');
-  renderAll(); // 가위바위보 결과에 맞춰 현재 차례 UI 갱신
+  renderAll(); // 선공 플레이어 반영하여 렌더링
 }
 
 // 처음 실행 시 보드판을 무작위로 한 번 섞은 후 구성합니다.

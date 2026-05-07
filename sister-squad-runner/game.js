@@ -27,11 +27,11 @@ const OBSTACLE_TYPES=['stone','tree','grass','flower'];
 let GAME_STARTED=false;
 let groundOffset=0;
 
-let GAME_STARTED=false;
-let groundOffset=0;
-
 PLAYER.y=H-220;
-if(!GAME_STARTED) return;
+
+function addEnemy(){
+
+  if(!GAME_STARTED) return;
 
   const type=OBSTACLE_TYPES[Math.floor(Math.random()*OBSTACLE_TYPES.length)];
   const sizes={
@@ -41,7 +41,7 @@ if(!GAME_STARTED) return;
     flower:{w:46,h:62}
   };
   const size=sizes[type];
-  
+
   enemies.push({
     type,
     x:W+100,
@@ -100,10 +100,10 @@ window.addEventListener('keydown',e=>{
 
 function update(){
 
-if(!GAME_STARTED) return;
+  if(!GAME_STARTED) return;
 
   groundOffset=(groundOffset+(FEVER_MODE ? 12 : 8))%80;
-  
+
   if(HITSTOP>0){
     HITSTOP--;
     return;
@@ -140,7 +140,7 @@ if(!GAME_STARTED) return;
   if(SKILL_CD>0) SKILL_CD--;
 
   if(SKILL_FLASH>0) SKILL_FLASH--;
-  
+
   if(FEVER_MODE){
 
     FEVER-=.4;
@@ -151,7 +151,7 @@ if(!GAME_STARTED) return;
   }
 
   const playerHitbox=getPlayerHitbox();
-  
+
   enemies.forEach((e,i)=>{
 
     e.x-=FEVER_MODE ? 12 : 8;
@@ -159,9 +159,9 @@ if(!GAME_STARTED) return;
     if(rectsOverlap(playerHitbox,e)){
 
       HITSTOP=6;
-      
-     CAMERA.shakePower=10;
-     CAMERA.targetZoom=1.1;
+
+      CAMERA.shakePower=10;
+      CAMERA.targetZoom=1.1;
 
       COMBO=0;
       SCORE=Math.max(0,SCORE-25);
@@ -185,6 +185,7 @@ if(!GAME_STARTED) return;
       SCORE+=100;
       COMBO++;
       FEVER+=8;
+
       if(e.hitBySkill){
         addPart(
           e.x+e.w/2,
@@ -262,7 +263,7 @@ function draw(){
   cx.fillRect(0,H-120,W,120);
 
   cx.fillStyle='rgba(255,255,255,.18)';
-  
+
   for(let x=-groundOffset;x<W;x+=80){
     cx.fillRect(x,H-64,42,6);
   }
@@ -270,13 +271,8 @@ function draw(){
   if(GAME_STARTED){
     drawPlayer(cx);
   }
-  for(let x=-groundOffset;x<W;x+=80){
-    cx.fillRect(x,H-64,42,6);
-  }
-  if(GAME_STARTED){
-    drawPlayer(cx);
-  }
- enemies.forEach(e=>{
+
+  enemies.forEach(e=>{
     drawObstacle(cx,e);
   });
 
@@ -304,6 +300,7 @@ function draw(){
 
   cx.restore();
 }
+
 function drawObstacle(cx,e){
 
   cx.save();
@@ -391,6 +388,7 @@ loop();
 setInterval(()=>{
 
   if(GAME_STARTED) bossPattern(W-300,H-350);
+
 },8000);
 
 setInterval(saveGame,5000);

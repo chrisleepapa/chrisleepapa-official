@@ -3,32 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>럭셔리 오목 - 전략 대전</title>
+    <title>럭셔리 오목 - 캐릭터 대전</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
             --wood-dark: #8b5a2b;
             --wood-light: #dcb35c;
             --bg-color: #e0d7c6;
-            --panel-bg: rgba(255, 255, 255, 0.9);
+            --panel-bg: rgba(255, 255, 255, 0.95);
+            --primary: #2c3e50;
         }
 
         body {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             min-height: 100vh; margin: 0; background-color: var(--bg-color);
             font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-            touch-action: manipulation;
+            touch-action: manipulation; overflow: hidden;
         }
 
-        /* 세련된 상단 정보 UI */
-        .header {
-            text-align: center; margin-bottom: 20px; width: 100%;
+        /* 캐릭터 선택 화면 (Intro) */
+        #intro-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #e0d7c6, #c2b59b);
+            z-index: 100; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; padding: 20px;
+            box-sizing: border-box; transition: opacity 0.5s;
         }
+
+        .intro-title {
+            font-size: 28px; font-weight: 900; color: #333;
+            margin-bottom: 30px; text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .char-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;
+            max-width: 600px; width: 100%;
+        }
+
+        @media (max-width: 500px) {
+            .char-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        .char-card {
+            background: #fff; border-radius: 16px; padding: 15px 10px;
+            text-align: center; cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            transition: all 0.2s; border: 3px solid transparent;
+        }
+        .char-card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(0,0,0,0.15); }
+        .char-card.selected { border-color: var(--wood-dark); background: #fffcf5; transform: scale(1.05); }
+
+        .char-img-wrapper {
+            width: 60px; height: 60px; margin: 0 auto 10px;
+            border-radius: 50%; overflow: hidden; background: #f0f0f0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 35px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .char-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
         
+        .char-name { font-weight: 700; color: #444; font-size: 15px; }
+
+        .start-btn {
+            margin-top: 40px; padding: 15px 50px; background: var(--wood-dark);
+            color: #fff; border: none; border-radius: 50px; font-size: 20px;
+            font-weight: 800; cursor: pointer; box-shadow: 0 10px 20px rgba(139,90,43,0.3);
+            transition: 0.3s; opacity: 0.5; pointer-events: none;
+        }
+        .start-btn.active { opacity: 1; pointer-events: auto; }
+        .start-btn.active:hover { background: #6f4722; transform: scale(1.05); }
+
+        /* 메인 게임 UI */
+        #game-screen {
+            display: none; flex-direction: column; align-items: center;
+            width: 100%; max-width: 500px;
+        }
+
+        .header { text-align: center; margin-bottom: 15px; width: 100%; }
+        
+        .player-info {
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            margin-bottom: 15px; font-weight: 800; font-size: 18px; color: #333;
+        }
+        .player-info .mini-avatar {
+            width: 30px; height: 30px; border-radius: 50%; background: #fff;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-size: 18px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
         .status-panel {
-            display: inline-block; padding: 15px 40px; border-radius: 50px;
-            background: var(--panel-bg); box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            font-size: 20px; font-weight: 800; color: #444; transition: all 0.3s;
+            display: inline-block; padding: 12px 35px; border-radius: 50px;
+            background: var(--panel-bg); box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            font-size: 18px; font-weight: 800; color: #444; transition: all 0.3s;
             border: 2px solid transparent;
         }
         .status-panel.black-turn { border-color: #000; color: #000; }
@@ -36,70 +101,239 @@
 
         .mode-selector { margin-top: 15px; }
         .mode-btn {
-            padding: 10px 20px; margin: 0 5px; border: none; border-radius: 8px;
-            background: #fff; cursor: pointer; font-weight: 600; color: #666;
+            padding: 8px 16px; margin: 0 5px; border: none; border-radius: 8px;
+            background: #fff; cursor: pointer; font-weight: 600; color: #666; font-size: 13px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: 0.2s;
         }
         .mode-btn.active { background: var(--wood-dark); color: #fff; transform: translateY(-2px); }
 
-        /* 바둑판 현실감 강화 */
+        /* 바둑판 */
         #board-wrapper {
-            position: relative; padding: 12px; background: var(--wood-dark);
-            border-radius: 8px; box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            position: relative; padding: 10px; background: var(--wood-dark);
+            border-radius: 8px; box-shadow: 0 15px 40px rgba(0,0,0,0.25);
             background: linear-gradient(145deg, #a67c52, #6f4722);
+            margin-top: 10px;
         }
-
         #board-container {
             position: relative; background: var(--wood-light);
             background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 2px, transparent 2px, transparent 10px);
             line-height: 0; border: 1px solid rgba(0,0,0,0.2);
         }
-
         canvas { cursor: pointer; max-width: 92vw; max-height: 92vw; border-radius: 2px; }
 
-        /* 하단 버튼 */
-        .footer { margin-top: 25px; }
-        .reset-btn {
-            padding: 14px 35px; background: #34495e; color: white;
-            border: none; border-radius: 12px; cursor: pointer; font-size: 16px;
-            font-weight: bold; transition: 0.2s; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        /* 결과 모달 */
+        #result-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(5px);
+            display: none; align-items: center; justify-content: center; z-index: 200;
         }
-        .reset-btn:hover { background: #2c3e50; transform: scale(1.05); }
+        .result-box {
+            background: #fff; padding: 40px; border-radius: 20px; text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3); transform: scale(0.8);
+            opacity: 0; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .result-box.show { transform: scale(1); opacity: 1; }
+        
+        .result-title { font-size: 45px; font-weight: 900; margin: 0 0 10px 0; }
+        .win-text { color: #f1c40f; text-shadow: 2px 2px 0px #d35400; }
+        .lose-text { color: #3498db; text-shadow: 2px 2px 0px #2980b9; }
+        
+        .result-sub { font-size: 18px; color: #666; margin-bottom: 30px; font-weight: 600; }
 
-        /* 승리 팝업 애니메이션 */
-        @keyframes pop {
-            0% { transform: scale(0.8); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
+        .btn-group button {
+            padding: 12px 25px; margin: 0 5px; border: none; border-radius: 12px;
+            cursor: pointer; font-size: 16px; font-weight: bold; transition: 0.2s;
         }
+        .btn-replay { background: var(--primary); color: white; box-shadow: 0 5px 15px rgba(44,62,80,0.3); }
+        .btn-replay:hover { background: #1a252f; transform: translateY(-2px); }
+        .btn-char { background: #e0e0e0; color: #333; }
+        .btn-char:hover { background: #ccc; transform: translateY(-2px); }
+
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <div class="status-panel black-turn" id="statusBox">흑돌 차례</div>
-        <div class="mode-selector">
-            <button class="mode-btn" id="p1btn" onclick="setMode('1vs1')">PLAYER VS PLAYER</button>
-            <button class="mode-btn active" id="p2btn" onclick="setMode('COM')">VS INTELLIGENT AI</button>
+    <!-- 캐릭터 선택 화면 -->
+    <div id="intro-screen">
+        <div class="intro-title">플레이할 캐릭터를 선택하세요</div>
+        <div class="char-grid" id="charGrid">
+            <!-- 자바스크립트로 렌더링 됨 -->
+        </div>
+        <button class="start-btn" id="startBtn" onclick="startGame()">게임 시작</button>
+    </div>
+
+    <!-- 게임 화면 -->
+    <div id="game-screen">
+        <div class="header">
+            <div class="player-info" id="playerInfo">
+                <div class="mini-avatar" id="playerAvatar">👦</div>
+                <span id="playerNameTxt">플레이어</span> VS <span id="oppNameTxt">인공지능</span>
+            </div>
+            <div class="status-panel black-turn" id="statusBox">흑돌 차례</div>
+            <div class="mode-selector">
+                <button class="mode-btn" id="p1btn" onclick="setMode('1vs1')">1 VS 1 대전</button>
+                <button class="mode-btn active" id="p2btn" onclick="setMode('COM')">VS 컴퓨터</button>
+            </div>
+        </div>
+
+        <div id="board-wrapper">
+            <div id="board-container">
+                <canvas id="omokBoard" width="450" height="450"></canvas>
+            </div>
         </div>
     </div>
 
-    <div id="board-wrapper">
-        <div id="board-container">
-            <canvas id="omokBoard" width="450" height="450"></canvas>
+    <!-- 승패 결과 모달 -->
+    <div id="result-modal">
+        <div class="result-box" id="resultBox">
+            <h1 class="result-title win-text" id="resultTitle">You Win!</h1>
+            <p class="result-sub" id="resultSub">멋진 승부였습니다.</p>
+            <div class="btn-group">
+                <button class="btn-replay" onclick="closeResultAndReplay()">다시 하기</button>
+                <button class="btn-char" onclick="goToIntro()">캐릭터 변경</button>
+            </div>
         </div>
-    </div>
-
-    <div class="footer">
-        <button class="reset-btn" onclick="resetGame()">NEW GAME</button>
     </div>
 
     <script>
+        // --- 1. 캐릭터 데이터 및 초기화 ---
+        const characters = [
+            { id: 'yul', name: '율이', icon: '👦', img: 'images/yul.jpg' },
+            { id: 'jung', name: '정이', icon: '👧', img: 'images/jung.jpg' },
+            { id: 'mom', name: '엄마', icon: '👩', img: 'images/mom.jpg' },
+            { id: 'dad', name: '아빠', icon: '👨', img: 'images/dad.jpg' },
+            { id: 'pretty', name: '프리티', icon: '✨', img: 'images/pretty.jpg' },
+            { id: 'cutie', name: '큐티', icon: '🎀', img: 'images/cutie.jpg' },
+            { id: 'brook', name: '브룩', icon: '🐶', img: 'images/brook.jpg' },
+            { id: 'elion', name: '엘리온', icon: '🦁', img: 'images/elion.jpg' }
+        ];
+
+        let selectedChar = null;
+        const charGrid = document.getElementById('charGrid');
+        const startBtn = document.getElementById('startBtn');
+
+        // 캐릭터 카드 생성
+        characters.forEach(c => {
+            const card = document.createElement('div');
+            card.className = 'char-card';
+            card.onclick = () => selectCharacter(c, card);
+            
+            // onerror 이벤트를 통해 이미지가 없으면 icon(이모지)를 띄우도록 처리
+            card.innerHTML = `
+                <div class="char-img-wrapper">
+                    <img src="${c.img}" alt="${c.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+                    <span style="display:none;">${c.icon}</span>
+                </div>
+                <div class="char-name">${c.name}</div>
+            `;
+            charGrid.appendChild(card);
+        });
+
+        function selectCharacter(charData, cardElement) {
+            // 오디오 컨텍스트 초기화 (브라우저 정책 우회용 클릭 이벤트)
+            initAudio(); 
+            
+            document.querySelectorAll('.char-card').forEach(el => el.classList.remove('selected'));
+            cardElement.classList.add('selected');
+            selectedChar = charData;
+            startBtn.classList.add('active');
+        }
+
+        function startGame() {
+            document.getElementById('intro-screen').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('intro-screen').style.display = 'none';
+                document.getElementById('game-screen').style.display = 'flex';
+                
+                // 플레이어 정보 세팅
+                document.getElementById('playerAvatar').innerHTML = `<img src="${selectedChar.img}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.style.display='none'; this.parentElement.innerText='${selectedChar.icon}';">`;
+                document.getElementById('playerNameTxt').innerText = selectedChar.name;
+                resetGame();
+            }, 500);
+        }
+
+        function goToIntro() {
+            document.getElementById('result-modal').style.display = 'none';
+            document.getElementById('game-screen').style.display = 'none';
+            const intro = document.getElementById('intro-screen');
+            intro.style.display = 'flex';
+            setTimeout(() => intro.style.opacity = '1', 50);
+        }
+
+        // --- 2. 사운드 이펙트 (Web Audio API) ---
+        let audioCtx;
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+        }
+
+        function playStoneSound() {
+            if(!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.05);
+            
+            gain.gain.setValueAtTime(1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+            
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.05);
+        }
+
+        function playWinSound() {
+            if(!audioCtx) return;
+            const freqs = [523.25, 659.25, 783.99, 1046.50]; // C Major Arpeggio
+            freqs.forEach((freq, i) => {
+                setTimeout(() => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.value = freq;
+                    gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.4);
+                }, i * 120);
+            });
+        }
+
+        function playLoseSound() {
+            if(!audioCtx) return;
+            const freqs = [349.23, 329.63, 311.13, 293.66]; // 하강음
+            freqs.forEach((freq, i) => {
+                setTimeout(() => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sawtooth';
+                    osc.frequency.value = freq;
+                    gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.4);
+                }, i * 250);
+            });
+        }
+
+
+        // --- 3. 오목 게임 로직 ---
         const canvas = document.getElementById("omokBoard");
         const ctx = canvas.getContext("2d");
         const statusBox = document.getElementById("statusBox");
 
         const size = 15;
-        const padding = 30;
+        const padding = 25;
         const cellSize = (canvas.width - padding * 2) / (size - 1);
         let board = Array.from(Array(size), () => Array(size).fill(0));
         let turn = 1; 
@@ -110,16 +344,16 @@
             gameMode = mode;
             document.getElementById('p1btn').classList.toggle('active', mode === '1vs1');
             document.getElementById('p2btn').classList.toggle('active', mode === 'COM');
+            document.getElementById('oppNameTxt').innerText = mode === 'COM' ? '인공지능' : '플레이어 2';
             resetGame();
         }
 
         function drawBoard() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            // 격자 그리기
             ctx.beginPath();
-            ctx.strokeStyle = "rgba(0,0,0,0.4)";
-            ctx.lineWidth = 1.2;
+            ctx.strokeStyle = "rgba(0,0,0,0.5)";
+            ctx.lineWidth = 1;
             for (let i = 0; i < size; i++) {
                 ctx.moveTo(padding, padding + i * cellSize);
                 ctx.lineTo(canvas.width - padding, padding + i * cellSize);
@@ -128,16 +362,14 @@
             }
             ctx.stroke();
 
-            // 화점(Star points) - 고전 오목 스타일
             const stars = [3, 7, 11];
-            ctx.fillStyle = "rgba(0,0,0,0.6)";
+            ctx.fillStyle = "rgba(0,0,0,0.8)";
             stars.forEach(r => stars.forEach(c => {
                 ctx.beginPath();
                 ctx.arc(padding + c * cellSize, padding + r * cellSize, 4, 0, Math.PI * 2);
                 ctx.fill();
             }));
 
-            // 돌 그리기
             for (let r = 0; r < size; r++) {
                 for (let c = 0; c < size; c++) {
                     if (board[r][c] !== 0) drawStone(r, c, board[r][c]);
@@ -149,34 +381,25 @@
             const x = padding + col * cellSize;
             const y = padding + row * cellSize;
 
-            // 그림자 효과
-            ctx.shadowBlur = 8;
+            ctx.shadowBlur = 6;
             ctx.shadowColor = "rgba(0,0,0,0.4)";
-            ctx.shadowOffsetX = 3;
-            ctx.shadowOffsetY = 3;
+            ctx.shadowOffsetX = 2;
+            ctx.shadowOffsetY = 2;
 
             ctx.beginPath();
-            ctx.arc(x, y, cellSize * 0.43, 0, Math.PI * 2);
+            ctx.arc(x, y, cellSize * 0.44, 0, Math.PI * 2);
             
             const grad = ctx.createRadialGradient(x - cellSize*0.15, y - cellSize*0.15, cellSize*0.05, x, y, cellSize*0.45);
-            if (color === 1) { // 리얼 블랙
-                grad.addColorStop(0, "#444");
-                grad.addColorStop(1, "#000");
-            } else { // 리얼 화이트
-                grad.addColorStop(0, "#fff");
-                grad.addColorStop(1, "#d1d1d1");
+            if (color === 1) { 
+                grad.addColorStop(0, "#555"); grad.addColorStop(1, "#111");
+            } else { 
+                grad.addColorStop(0, "#fff"); grad.addColorStop(1, "#ccc");
             }
             
             ctx.fillStyle = grad;
             ctx.fill();
             
-            // 테두리 미세 효과
-            ctx.shadowBlur = 0;
-            ctx.shadowOffsetX = 0;
-            ctx.shadowOffsetY = 0;
-            ctx.strokeStyle = color === 1 ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)";
-            ctx.lineWidth = 1;
-            ctx.stroke();
+            ctx.shadowBlur = 0; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0;
         }
 
         canvas.addEventListener("click", (e) => {
@@ -189,16 +412,19 @@
             const row = Math.round((y - padding) / cellSize);
 
             if (row >= 0 && row < size && col >= 0 && col < size && board[row][col] === 0) {
+                initAudio(); // 첫 터치 시 오디오 활성화
                 placeStone(row, col);
                 if (!gameOver && gameMode === 'COM' && turn === 2) {
-                    setTimeout(smartAiMove, 600);
+                    setTimeout(smartAiMove, 500);
                 }
             }
         });
 
         function placeStone(row, col) {
             board[row][col] = turn;
+            playStoneSound(); // 돌 놓는 효과음
             drawBoard();
+            
             if (checkWin(row, col, turn)) {
                 triggerWinEffects(turn);
             } else {
@@ -209,33 +435,69 @@
 
         function updateStatusUI() {
             if (turn === 1) {
-                statusBox.innerText = "흑돌 차례";
+                statusBox.innerText = `${selectedChar ? selectedChar.name : '흑돌'} 차례 (흑)`;
                 statusBox.className = "status-panel black-turn";
             } else {
-                statusBox.innerText = "백돌 차례";
+                statusBox.innerText = gameMode === 'COM' ? "인공지능 생각중..." : "백돌 차례 (백)";
                 statusBox.className = "status-panel white-turn";
             }
         }
 
+        // 결과 모달 표시 로직
         function triggerWinEffects(winner) {
             gameOver = true;
-            const winnerName = (winner === 1 ? "흑돌(Black)" : "백돌(White)");
-            statusBox.innerText = winnerName + " 승리! 🎉";
-            statusBox.style.background = "#ffd700";
-            statusBox.style.color = "#000";
+            
+            const modal = document.getElementById('result-modal');
+            const resultBox = document.getElementById('resultBox');
+            const title = document.getElementById('resultTitle');
+            const sub = document.getElementById('resultSub');
 
-            // 폭죽 효과 (Win/Loss 상관없이 승리자 기준)
-            const duration = 3 * 1000;
+            modal.style.display = 'flex';
+            setTimeout(() => resultBox.classList.add('show'), 50);
+
+            if (gameMode === 'COM') {
+                if (winner === 1) { // 플레이어 승리
+                    title.innerText = "You Win!";
+                    title.className = "result-title win-text";
+                    sub.innerText = "대단해요! 컴퓨터를 이겼습니다.";
+                    playWinSound();
+                    fireConfetti();
+                } else { // 컴퓨터 승리
+                    title.innerText = "Lose~";
+                    title.className = "result-title lose-text";
+                    sub.innerText = "아쉽네요. 다시 도전해보세요!";
+                    playLoseSound();
+                }
+            } else { // 1vs1 모드
+                const winnerName = winner === 1 ? (selectedChar ? selectedChar.name : "흑돌") : "백돌(Player 2)";
+                title.innerText = `${winnerName} 승리!`;
+                title.className = "result-title win-text";
+                sub.innerText = "멋진 승부였습니다.";
+                playWinSound();
+                fireConfetti();
+            }
+        }
+
+        function fireConfetti() {
+            const duration = 2.5 * 1000;
             const end = Date.now() + duration;
-
             (function frame() {
-                confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#8b5a2b', '#000000', '#ffffff'] });
-                confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#8b5a2b', '#000000', '#ffffff'] });
+                confetti({ particleCount: 4, angle: 60, spread: 55, origin: { x: 0 }, zIndex: 300 });
+                confetti({ particleCount: 4, angle: 120, spread: 55, origin: { x: 1 }, zIndex: 300 });
                 if (Date.now() < end) requestAnimationFrame(frame);
             }());
         }
 
-        // AI 로직 (고급 가중치)
+        function closeResultAndReplay() {
+            const resultBox = document.getElementById('resultBox');
+            resultBox.classList.remove('show');
+            setTimeout(() => {
+                document.getElementById('result-modal').style.display = 'none';
+                resetGame();
+            }, 400);
+        }
+
+        // AI 로직
         function smartAiMove() {
             let bestScore = -1;
             let moves = [];
@@ -253,8 +515,13 @@
                     }
                 }
             }
+            // 첫 수거나 둘 곳이 마땅치 않으면 중앙 근처에 둠
+            if(bestScore === 0) {
+                moves = [{r:7, c:7}, {r:7, c:8}, {r:8, c:7}];
+                moves = moves.filter(m => board[m.r][m.c] === 0);
+            }
             const move = moves[Math.floor(Math.random() * moves.length)];
-            placeStone(move.r, move.c);
+            if(move) placeStone(move.r, move.c);
         }
 
         function evaluateSpot(r, c, p) {
@@ -262,7 +529,6 @@
             let total = 0;
             for (let [dr, dc] of dirs) {
                 let count = 1, blocked = 0;
-                // 양방향 체크
                 for (let sign of [1, -1]) {
                     for (let i = 1; i < 5; i++) {
                         let nr = r + dr*i*sign, nc = c + dc*i*sign;
@@ -299,11 +565,11 @@
         function resetGame() {
             board = Array.from(Array(size), () => Array(size).fill(0));
             turn = 1; gameOver = false;
-            statusBox.style.background = "var(--panel-bg)";
             updateStatusUI();
             drawBoard();
         }
 
+        // 초기 바둑판 그려두기 (보이지 않지만 준비)
         drawBoard();
     </script>
 </body>

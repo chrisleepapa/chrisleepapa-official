@@ -706,7 +706,9 @@ var PL=[
 var pos=[0,0],stars=[0,0],cur=0,dice=[1,2],skip=[false,false],powerUp=[false,false];
 var rolling=false,ev=null,over=false,moving=false;
 var totalTurns = 1;
-
+var MAX_EVENT_CHAIN = 6;
+var eventChain = null;
+     
 /* ══ SHUFFLE BOARD ══ */
 function shuffleBoard() {
   var startSpace = SP[0];
@@ -737,7 +739,44 @@ function rebuildBoardDOM() {
   renderAll();
 }
 
+function resetEventChain() {
+  eventChain = null;
+}
+
+function registerEventVisit(sid) {
+  if (!eventChain) eventChain = { count: 0, seen: {} };
+  if (eventChain.seen[sid]) {
+    return '같은 카드 지시가 반복되어 연쇄 이동을 멈췄어요.';
+  }
+  eventChain.seen[sid] = true;
+  eventChain.count++;
+  if (eventChain.count > MAX_EVENT_CHAIN) {
+    return '카드 지시가 너무 길게 이어져 안전하게 멈췄어요.';
+  }
+  return '';
+}
+
+function endTurnAfterEventChain(reason) {
+  ev = null;
+  moving = false;
+  rolling = false;
+  resetEventChain();
+  addLog('🌀 ' + reason + ' 현재 칸에 머무르고 다음 차례로 넘어갑니다.');
+  if (stars[cur] >= WIN) {
+    renderAll();
+    setTimeout(showWin, 400);
+    return;
+  }
+  var nx = 1 - cur;
+  addLog(PL[nx].ic + ' ' + PL[nx].nm + ' 차례!');
+  cur = nx;
+  advanceTurn();
+  renderAll();
+}
+
+     
 function advanceTurn() {
+  resetEventChain();
   totalTurns++;
   if (totalTurns % 10 === 0) {
     addLog('🌪️ 10번째 턴! 마법의 바람이 불어 보드가 섞입니다!');
@@ -813,6 +852,7 @@ function addLog(msg){
 /* ══ ROLL ══ */
 function handleRoll(){
   if(rolling||ev||over||moving)return;
+  resetEventChain();
   if(skip[cur]){
     skip[cur]=false;
     var nx=1-cur;
@@ -961,6 +1001,11 @@ function cineDismiss(){
 }
 
 function checkAndTriggerEvent(sid, fromMove) {
+    var stopReason = registerEventVisit(sid);
+    if (stopReason) {
+       endTurnAfterEventChain(stopReason);
+       return;
+    }
     var isAwake = (sid === 0);
     if(isAwake){
        powerUp[cur] = true;
@@ -1089,6 +1134,7 @@ function confirmEvent(){
   }
   if(stars[cur]>=WIN){renderAll();setTimeout(showWin,400);return;}
   if(!extraRoll&&!hasMoved){
+    resetEventChain();
     var nx=1-cur;
     addLog(PL[nx].ic+' '+PL[nx].nm+' 차례!');
     cur=nx;
@@ -1122,6 +1168,7 @@ function showWin(){
 function resetGame(){
   pos=[0,0];stars=[0,0];cur=0;dice=[1,2];skip=[false,false];powerUp=[false,false];
   rolling=false;ev=null;over=false;moving=false;
+  resetEventChain();
   totalTurns=1;
   document.getElementById('gov').classList.remove('vis');
   document.getElementById('eov').classList.remove('vis');

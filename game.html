@@ -48,6 +48,7 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 .tok{display:block;transition:filter .3s; z-index: 5;}
 .tok.a0{filter:drop-shadow(0 0 5px #4A90D9) drop-shadow(0 0 10px #4A90D9);animation:tbounce .6s ease-in-out infinite;}
 .tok.a1{filter:drop-shadow(0 0 5px #FF69B4) drop-shadow(0 0 10px #FF69B4);animation:tbounce .6s ease-in-out .3s infinite;}
+
 @keyframes tbounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-3px);}}
 @keyframes shake{0%,100%{transform:translateX(0);}20%{transform:translateX(-5px) rotate(-3deg);}40%{transform:translateX(5px) rotate(3deg);}60%{transform:translateX(-3px);}80%{transform:translateX(3px);}}
 @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.12);}}
@@ -93,6 +94,7 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 .rbtn:not(:disabled):hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(233,30,99,.55);}
 .rbtn:disabled{background:#3a3a5a;cursor:not-allowed;box-shadow:none;opacity:.65;}
 .lgp{background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:9px;text-align:left;max-height:185px;overflow-y:auto;}
+
 .lgp::-webkit-scrollbar{width:3px;}.lgp::-webkit-scrollbar-thumb{background:rgba(255,255,255,.2);border-radius:2px;}
 .lgt{color:#C9A6FF;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;}
 .lge{font-size:9.5px;line-height:1.5;padding:2px 0;border-bottom:1px solid rgba(255,255,255,.05);}
@@ -110,7 +112,7 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 .ecard.tb2{border-color:rgba(230,126,34,.55);}
 .ecard.tc2{border-color:rgba(255,215,0,.55);}
 
-/* ===== 브루마블 스페셜 3D 사진 카드 연출 (아빠, 엄마, 베인, 크라운) ===== */
+/* ===== 브루마블 스페셜 3D 사진 카드 연출 ===== */
 .ecard.photo-card {
   transform: perspective(1500px) rotateY(90deg) scale(0.2) translateY(200px);
   opacity: 0;
@@ -127,6 +129,10 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
   animation: epicCardRevealEvil 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
   border-color: #E74C3C;
 }
+.ov.vis .ecard.photo-card.photo-green {
+  animation: epicCardRevealGreen 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  border-color: #2ECC71;
+}
 
 @keyframes epicCardReveal {
   0% { transform: perspective(1500px) rotateY(90deg) rotateX(10deg) scale(0.2) translateY(200px); opacity: 0; box-shadow: 0 0 0 transparent; }
@@ -137,6 +143,11 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
   0% { transform: perspective(1500px) rotateY(90deg) rotateX(10deg) scale(0.2) translateY(200px); opacity: 0; box-shadow: 0 0 0 transparent; }
   45% { transform: perspective(1500px) rotateY(-360deg) rotateX(-5deg) scale(1.05) translateY(-20px); opacity: 1; box-shadow: 0 0 100px #E74C3C, 0 0 50px #fff; }
   100% { transform: perspective(1500px) rotateY(0deg) rotateX(0deg) scale(1) translateY(0); opacity: 1; box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 40px rgba(231,76,60,0.5); }
+}
+@keyframes epicCardRevealGreen {
+  0% { transform: perspective(1500px) rotateY(90deg) rotateX(10deg) scale(0.2) translateY(200px); opacity: 0; box-shadow: 0 0 0 transparent; }
+  45% { transform: perspective(1500px) rotateY(-360deg) rotateX(-5deg) scale(1.05) translateY(-20px); opacity: 1; box-shadow: 0 0 100px #2ECC71, 0 0 50px #fff; }
+  100% { transform: perspective(1500px) rotateY(0deg) rotateX(0deg) scale(1) translateY(0); opacity: 1; box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 40px rgba(46,204,113,0.5); }
 }
 
 /* 카드 전면을 덮는 사진 레이아웃 */
@@ -228,7 +239,6 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
   30% { top: 100%; left: 100%; }
   100% { top: 100%; left: 100%; }
 }
-/* ========================================================= */
 
 .ehdg{position:relative;height:175px;display:flex;align-items:flex-end;justify-content:space-between;padding:14px;overflow:hidden;}
 .ehbg{position:absolute;inset:0;opacity:.92;}
@@ -293,14 +303,11 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 .rps-h { font-size:clamp(35px, 6vw, 50px); background:rgba(255,255,255,0.08); width:clamp(60px, 15vw, 80px); height:clamp(60px, 15vw, 80px); border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid rgba(255,255,255,0.2); box-shadow:0 0 15px rgba(0,0,0,0.3); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 .rps-h.pop { transform: scale(1.2); }
 .rps-vstxt { font-size:clamp(24px, 5vw, 36px); font-family:'Fredoka One',cursive; color:var(--gold); text-shadow:0 0 10px rgba(255,215,0,.6); }
-#rps-result { font-family:'Fredoka One',cursive; font-size:clamp(16px, 3vw, 22px); height:30px; text-align:center; color:#fff; transition:color 0.3s; }
+#rps-result { font-family:'Fredoka One',cursive; font-size:clamp(16px, 3vw, 22px); min-height:50px; text-align:center; color:#fff; transition:color 0.3s; padding: 0 15px; word-break: keep-all; line-height: 1.4; }
 #rps-btns { display:flex; gap:12px; flex-wrap:wrap; justify-content:center;}
 .rps-b { padding:12px 18px; font-size:clamp(14px, 3vw, 20px); border:none; border-radius:14px; background:linear-gradient(135deg, #4A90D9, #9B59B6); color:white; font-weight:900; cursor:pointer; box-shadow:0 4px 15px rgba(0,0,0,0.3); transition:transform 0.2s, box-shadow 0.2s; font-family:'Nunito',sans-serif; }
 .rps-b:hover { transform:scale(1.1) translateY(-3px); box-shadow:0 6px 20px rgba(0,0,0,0.5); }
 
-/* =========================================
-   스프라이트 애니메이션 및 클래스
-========================================= */
 .sprite-char {
   width: 100%;
   height: 100%;
@@ -401,20 +408,20 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 
 /* 파워 업 시 프로필 강조용 클래스 */
 .sc.cur.pwr { border-color: #FF4500; box-shadow: 0 0 20px rgba(255, 69, 0, 0.6); }
-
-/* ===== 가위바위보 UI 스타일 ===== */
-#rps-ui { display:none; flex-direction:column; align-items:center; gap:20px; width:100%; max-width:400px; margin-bottom: 20px;}
-.rps-vs { display:flex; justify-content:space-between; width:100%; padding:0 20px; align-items:center; }
-.rps-box { text-align:center; }
-.rps-nm { font-size:clamp(16px, 3vw, 22px); margin-bottom:10px; font-weight:800; }
-.rps-h { font-size:clamp(35px, 6vw, 50px); background:rgba(255,255,255,0.08); width:clamp(60px, 15vw, 80px); height:clamp(60px, 15vw, 80px); border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid rgba(255,255,255,0.2); box-shadow:0 0 15px rgba(0,0,0,0.3); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-.rps-h.pop { transform: scale(1.2); }
-.rps-vstxt { font-size:clamp(24px, 5vw, 36px); font-family:'Fredoka One',cursive; color:var(--gold); text-shadow:0 0 10px rgba(255,215,0,.6); }
-#rps-result { font-family:'Fredoka One',cursive; font-size:clamp(16px, 3vw, 22px); height:30px; text-align:center; color:#fff; transition:color 0.3s; }
 </style>
 </head>
 <body>
-<!-- 각성 이벤트 전용 전체화면 시네마틱 -->
+<!-- 각성 및 스페셜 시네마틱 전체화면 (수정 완료!) -->
+<div id="cine" onclick="cineDismiss()">
+  <div id="cine-img"></div>
+  <div id="cine-vig"></div>
+  <div id="cine-lines"></div>
+  <canvas id="cfx"></canvas>
+  <div class="cc" id="cc1"></div><div class="cc" id="cc2"></div>
+  <div class="cc" id="cc3"></div><div class="cc" id="cc4"></div>
+  <div id="cine-body">
+    <div id="cine-tag"></div>
+    <div id="cine-name"></div>
     <div class="crl"></div>
     <div id="cine-sub"></div>
     <div id="cine-tap">▶ 화면을 터치하세요</div>
@@ -450,7 +457,7 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
     <button id="final-start-btn" class="stbtn" style="display:none; margin-top:10px;" onclick="startGame()">🌟 모험 시작!</button>
   </div>
 
-  <button id="init-btn" class="stbtn" onclick="startAutoRPS()">✌️ 가위바위보!</button>
+  <button id="init-btn" class="stbtn" onclick="startAutoRPS()">✌️ 모험 출발! (선공 정하기)</button>
 </div>
 
 <div class="wr">
@@ -895,6 +902,7 @@ function cfxLoop(){
   });
   requestAnimationFrame(cfxLoop);
 }
+
 function cfxSpawn(type){
   cfxParts=[];
   var W=innerWidth,H=innerHeight;
@@ -996,11 +1004,17 @@ function openEventCard(sid){
   var ec=document.getElementById('ec');
   var baseClass = 'ecard' + (sp.t==='t'?' tt2':sp.t==='b'?' tb2':sp.t==='c'?' tc2':'');
   
-  // 아빠, 엄마, 베인, 크라운일 경우 스페셜 3D 사진 카드로 변경
-  if (['mom', 'dad', 'bain', 'crown'].includes(sp.char)) {
+  // 3D 사진 카드로 변경할 캐릭터들 설정
+  var photoChars = ['mom', 'dad', 'bain', 'crown', 'darkknight', 'town', 'fairytail', 'brook', 'fairytown', 'grandmagic', 'angel', 'magicbook', 'team'];
+  var evilChars = ['bain', 'crown', 'darkknight'];
+  var greenChars = ['town', 'fairytail', 'brook', 'fairytown', 'grandmagic', 'angel', 'magicbook', 'team'];
+
+  if (photoChars.includes(sp.char)) {
     baseClass += ' photo-card';
-    if (['bain', 'crown'].includes(sp.char)) {
+    if (evilChars.includes(sp.char)) {
       baseClass += ' photo-evil';
+    } else if (greenChars.includes(sp.char)) {
+      baseClass += ' photo-green';
     }
   }
   
@@ -1139,7 +1153,7 @@ function startAutoRPS() {
   document.querySelector('.icp').style.display = 'none';
   document.getElementById('init-btn').style.display = 'none';
   document.getElementById('rps-ui').style.display = 'flex';
-  document.querySelector('.it2').innerText = '가위~ 바위~ 보!';
+  document.querySelector('.it2').innerText = '누가 먼저 출발할까요? 가위~ 바위~ 보!';
   sStep();
   playAutoRPS();
 }
@@ -1184,20 +1198,20 @@ function finalizeRPS(y, j, yHand, jHand, resEl) {
   }, 300);
 
   if (y === j) {
-    resEl.innerText = '비겼습니다! 다시 한 번!';
+    resEl.innerText = '⚔️ 앗! 두 자매의 마법이 부딪혀 비겼어요! 다시 한 번!';
     resEl.style.color = '#C9A6FF';
     isRpsPlaying = false;
     sTrap();
     setTimeout(playAutoRPS, 1000); // 자동으로 재경기
   } else if ((y === 0 && j === 2) || (y === 1 && j === 0) || (y === 2 && j === 1)) {
-    resEl.innerText = '🎉 율이 승리! 율이가 선공합니다!';
+    resEl.innerText = '🧭 용감한 탐험가 율이가 길을 찾아내어 선공을 차지했어요!';
     resEl.style.color = '#FFD700';
     cur = 0; // 율이 선공
     isRpsPlaying = false;
     sStar();
     document.getElementById('final-start-btn').style.display = 'block';
   } else {
-    resEl.innerText = '🎉 정이 승리! 정이가 선공합니다!';
+    resEl.innerText = '✨ 신비한 마법사 정이가 주문으로 길을 엽니다! 정이 선공!';
     resEl.style.color = '#FF69B4';
     cur = 1; // 정이 선공
     isRpsPlaying = false;
@@ -1219,7 +1233,3 @@ buildBoard();
 </script>
 </body>
 </html>
-
-어둠의 기사단 1~4번도 카드효과로 사진카드 돌아가면서 나오게 해줄수 있을까? 
-
-그리고 가위바위보할때 이겼다 비겼다 이런 메세지를 좀더 브루마블에 맞게 스토리텔링처럼 나오게 해줘

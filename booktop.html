@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3207219520058740"
+     crossorigin="anonymous"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NBGELYQ4TZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-NBGELYQ4TZ');
+      gtag('config', 'GT-5MJDBTR2');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>아빠의 서재 - 책 쌓기</title>
@@ -37,20 +48,23 @@
             z-index: -3;
         }
 
+        /* 책상 주변을 어둡게 잡아주는 하단 음영 */
         #wood-panel {
             position: fixed;
             left: 0; width: 100%; height: 40vh;
             background: linear-gradient(to bottom, rgba(62, 34, 17, 0.12) 0%, rgba(15, 7, 3, 0.68) 100%);
             box-shadow: inset 0 20px 30px rgba(0,0,0,0.45);
             z-index: -2;
+            /* JS에서 카메라 이동에 따라 top 위치 제어 */
         }
 
+        /* 서재 스탠드 조명 (은은하고 따뜻한 광원) */
         #lamp-glow {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at 50% 30%, rgba(255, 190, 90, 0.15) 0%, rgba(0, 0, 0, 0.7) 100%);
             pointer-events: none;
-            z-index: 5;
+            z-index: 5; /* 캔버스 위를 덮어 전체적인 색감을 맞춤 */
         }
 
         #game-container {
@@ -76,18 +90,18 @@
         }
 
         .hud-panel {
-            background: rgba(20, 15, 10, 0.7);
+            background: rgba(20, 15, 10, 0.6);
             backdrop-filter: blur(8px);
             border: 1px solid rgba(212, 175, 55, 0.2);
             border-radius: 8px;
-            padding: 12px 16px;
+            padding: 12px 24px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.8);
             pointer-events: auto;
             color: #e5e7eb;
         }
 
         .score-text {
-            color: #d4af37;
+            color: #d4af37; /* 클래식 골드 */
             text-shadow: 0 2px 4px rgba(0,0,0,0.9);
         }
 
@@ -111,13 +125,14 @@
             100% { opacity: 0.3; transform: scale(0.98); }
         }
 
+        /* 모달 창 (가죽 양장본 느낌) */
         .modal {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             background: linear-gradient(145deg, #302018, #1c110b);
-            padding: 30px;
+            padding: 40px 30px;
             border-radius: 6px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.9), inset 0 0 0 2px rgba(212, 175, 55, 0.1);
             text-align: center;
@@ -126,7 +141,7 @@
             z-index: 100;
             border: 4px solid #4a2e1b;
             width: 90%;
-            max-width: 380px;
+            max-width: 400px;
             color: #e5e7eb;
         }
 
@@ -138,18 +153,12 @@
             transition: all 0.2s;
             text-shadow: 0 1px 1px rgba(255,255,255,0.4);
         }
-        .btn-gold:hover:not(:disabled) {
+        .btn-gold:hover {
             background: linear-gradient(to bottom, #dcb770, #a1803b);
             transform: translateY(-2px);
         }
-        .btn-gold:active:not(:disabled) {
+        .btn-gold:active {
             transform: translateY(1px);
-        }
-        .btn-gold:disabled {
-            background: linear-gradient(to bottom, #5a4b31, #3a2e1c);
-            color: #888;
-            cursor: not-allowed;
-            border-color: #555;
         }
         
         #celebration-layer {
@@ -250,29 +259,26 @@
     <div id="celebration-layer" aria-live="polite"></div>
 
     <div id="game-container">
-        <!-- 메인 UI 레이어 -->
-        <div id="ui-layer" class="p-3 sm:p-5 flex justify-between items-start pointer-events-none">
+        <!-- 메인 UI 레이어 (좌측: Top5, 우측: 점수/초기화) -->
+        <div id="ui-layer" class="p-5 flex justify-between items-start pointer-events-none">
             
-            <!-- 좌측: Supabase 연동 Top 5 랭킹 -->
-            <div class="hud-panel w-36 sm:w-48 flex flex-col gap-1 text-sm pointer-events-auto shadow-2xl bg-opacity-80">
-                <div class="flex items-center justify-center gap-2 border-b border-yellow-700/50 pb-2 mb-2">
-                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.8)]"></div>
-                    <div class="text-yellow-500 font-bold tracking-widest text-center">GLOBAL TOP 5</div>
-                </div>
-                <ul id="top5-list" class="flex flex-col gap-1.5 text-gray-300">
-                    <li class="text-center text-gray-500 text-xs py-4">랭킹 불러오는 중...</li>
+            <!-- [추가] 좌측 상단 TOP 5 패널 -->
+            <div class="hud-panel flex flex-col gap-1 pointer-events-auto" style="min-width: 140px; padding: 12px 16px;">
+                <div class="text-xs text-yellow-500 font-bold border-b border-yellow-700/50 pb-1 mb-1 text-center tracking-widest">TOP 5</div>
+                <ul id="top5-list" class="flex flex-col gap-1 text-gray-300">
+                    <li class="text-center text-gray-500 text-xs py-2">로딩중...</li>
                 </ul>
             </div>
 
-            <!-- 우측: 현재 상태 및 버튼 -->
-            <div class="flex flex-col items-end gap-3 pointer-events-auto">
-                <div class="hud-panel flex flex-col items-end gap-1 min-w-[100px]">
-                    <div class="text-sm sm:text-base font-bold text-gray-400">현재 높이</div>
-                    <div class="score-text text-3xl sm:text-4xl"><span id="score">0</span><span class="text-base text-gray-300 ml-1">권</span></div>
+            <!-- 우측 상단 현재 점수 패널 -->
+            <div class="flex flex-col items-end gap-2 pointer-events-auto">
+                <div class="hud-panel flex flex-col gap-1 text-right">
+                    <div class="text-lg font-bold text-gray-300">높이: <span id="score" class="score-text text-3xl">0</span> 권</div>
+                    <div class="text-sm text-gray-400 mt-1">최고 기록: <span id="best-score" class="text-gray-200 font-bold">0</span></div>
                 </div>
                 
                 <button id="btn-restart-top" class="hud-panel hover:bg-white hover:bg-opacity-10 text-gray-300 font-bold active:scale-95 transition hidden text-sm w-full text-center">
-                    처음부터
+                    초기화
                 </button>
             </div>
         </div>
@@ -285,17 +291,24 @@
         <!-- 시작 모달 -->
         <div id="start-modal" class="modal" style="display: block;">
             <h1 class="text-4xl font-bold text-yellow-500 mb-2" style="text-shadow: 0 2px 4px rgba(0,0,0,1);">아빠의 서재</h1>
-            <p class="text-gray-400 mb-6 text-xs tracking-widest font-sans">MULTIPLAYER CHALLENGE</p>
+            <p class="text-gray-400 mb-6 text-xs tracking-widest font-sans">BOOK STACKING CHALLENGE</p>
             
-            <div class="bg-black bg-opacity-40 p-4 rounded mb-6 border border-gray-700/50">
-                <label class="block text-gray-300 text-sm mb-2">랭킹에 등록할 이니셜 (영문 3자리)</label>
+            <p class="text-gray-300 mb-6 text-sm leading-relaxed">
+                오래된 책상 위에<br>
+                양장본 책들을 조심스럽게<br>
+                쌓아 올려보세요.
+            </p>
+
+            <!-- [추가] 이니셜 입력 폼 -->
+            <div class="bg-black bg-opacity-40 p-3 rounded mb-6 border border-gray-700/50">
+                <label class="block text-gray-400 text-xs mb-2">랭킹 등록용 이니셜 (영문 3자리)</label>
                 <input type="text" id="player-initial" maxlength="3" 
-                       class="w-full bg-transparent border-b-2 border-yellow-600/50 text-yellow-400 text-center text-4xl py-2 uppercase focus:outline-none focus:border-yellow-400 transition" 
+                       class="w-full bg-transparent border-b border-yellow-600/50 text-yellow-400 text-center text-3xl py-1 uppercase focus:outline-none focus:border-yellow-400 transition" 
                        placeholder="AAA" autocomplete="off">
-                <div id="initial-error" class="text-red-400 text-xs mt-2 hidden">영문 3자리를 정확히 입력해주세요.</div>
+                <div id="initial-error" class="text-red-400 text-xs mt-2" style="display: none;">영문 3자리를 정확히 입력해주세요.</div>
             </div>
             
-            <button id="btn-start" class="btn-gold w-full font-bold py-4 px-6 rounded shadow-lg text-xl flex justify-center items-center gap-2">
+            <button id="btn-start" class="btn-gold w-full font-bold py-4 px-6 rounded shadow-lg text-xl">
                 책 쌓기 시작
             </button>
         </div>
@@ -305,12 +318,10 @@
             <h2 class="text-3xl font-bold text-red-400 mb-2">무너졌습니다!</h2>
             <p class="text-gray-400 mb-6 text-lg">책상 아래로 책이 떨어졌습니다.</p>
             
-            <div class="bg-black bg-opacity-60 p-6 rounded mb-8 border border-gray-700 shadow-inner relative">
-                <p class="text-sm text-gray-400"><span id="final-initial" class="text-yellow-500 font-bold text-lg"></span> 님의 기록</p>
-                <p class="text-6xl font-bold score-text mt-2 mb-2"><span id="final-score">0</span></p>
-                
-                <p class="text-sm text-yellow-400 mt-3 font-bold animate-pulse" id="new-record-msg" style="display: none;">🏆 글로벌 1위 달성! 🏆</p>
-                <p class="text-sm text-blue-300 mt-3 font-bold" id="top5-entry-msg" style="display: none;">⭐ 글로벌 TOP 5 진입! ⭐</p>
+            <div class="bg-black bg-opacity-60 p-6 rounded mb-8 border border-gray-700 shadow-inner">
+                <p class="text-sm text-gray-400">이번에 쌓은 높이</p>
+                <p class="text-6xl font-bold score-text mt-2"><span id="final-score">0</span></p>
+                <p class="text-sm text-yellow-400 mt-4 font-bold animate-pulse" id="new-record-msg" style="display: none;">🏆 서재 최고 기록 달성 🏆</p>
             </div>
 
             <button id="btn-restart" class="btn-gold w-full font-bold py-4 px-6 rounded shadow-lg text-xl">
@@ -319,19 +330,26 @@
         </div>
     </div>
 
-    <!-- 로직 스크립트 (Supabase REST 통신 포함) -->
     <script>
-        // --- Supabase 설정 (방명록과 동일) ---
+        // --- [추가] Supabase Top 5 로직 ---
         const SUPA_URL = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
         const SUPA_KEY = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
-        
         let globalTop5 = [];
-        const listContainer = document.getElementById('top5-list');
+        let currentInitial = "";
 
-        // 1. Supabase에서 Top 5 데이터 가져오기
+        const top5ListEl = document.getElementById('top5-list');
+        const initialInput = document.getElementById('player-initial');
+
+        // 이니셜 영문자만 입력되도록 필터링
+        if(initialInput) {
+            initialInput.addEventListener('input', (e) => {
+                e.target.value = e.target.value.replace(/[^a-zA-Z]/g, '').toUpperCase();
+            });
+        }
+
         async function fetchTop5() {
             try {
-                // booktop_scores 테이블에서 점수 내림차순, 같은 점수일 경우 먼저 기록한 시간 오름차순으로 5개만 가져옵니다.
+                // 점수 내림차순, 같은 점수일 경우 먼저 등록한 순서대로 상위 5개 가져오기
                 const res = await fetch(`${SUPA_URL}/rest/v1/booktop_scores?select=*&order=score.desc,created_at.asc&limit=5`, {
                     headers: {
                         apikey: SUPA_KEY,
@@ -342,17 +360,13 @@
                 if (res.ok) {
                     globalTop5 = await res.json();
                     renderTop5();
-                } else {
-                    console.error("Top 5 로드 실패:", await res.text());
-                    listContainer.innerHTML = '<li class="text-center text-gray-500 text-xs py-2">DB 연결 에러</li>';
                 }
             } catch (e) {
-                console.error("네트워크 에러:", e);
-                listContainer.innerHTML = '<li class="text-center text-gray-500 text-xs py-2">네트워크 오류</li>';
+                console.error("Top 5 로드 실패:", e);
+                top5ListEl.innerHTML = '<li class="text-center text-gray-500 text-xs py-2">연결 오류</li>';
             }
         }
 
-        // 2. Supabase에 새로운 점수 추가하기 (저장 후 fetchTop5 재호출)
         async function saveScoreToDB(initial, score) {
             if (score <= 0) return;
             try {
@@ -371,59 +385,43 @@
                 });
 
                 if (res.ok || res.status === 201) {
-                    // 저장 성공 시 목록 갱신
-                    await fetchTop5();
-                } else {
-                    console.error("점수 저장 실패:", await res.text());
+                    await fetchTop5(); // 기록 후 Top 5 갱신
                 }
             } catch (e) {
-                console.error("점수 저장 에러:", e);
+                console.error("점수 저장 실패:", e);
             }
         }
 
-        // 3. UI 렌더링
         function renderTop5() {
-            listContainer.innerHTML = '';
+            top5ListEl.innerHTML = '';
             
-            if (!globalTop5 || globalTop5.length === 0) {
-                listContainer.innerHTML = '<li class="text-center text-gray-500 text-xs py-2">아직 기록이 없습니다.<br>첫 랭커가 되어보세요!</li>';
+            if (globalTop5.length === 0) {
+                top5ListEl.innerHTML = '<li class="text-center text-gray-500 text-xs py-2">기록 없음</li>';
                 return;
             }
 
             globalTop5.forEach((record, index) => {
                 const li = document.createElement('li');
-                li.className = 'flex justify-between items-center py-1 bg-black bg-opacity-20 px-2 rounded';
+                li.className = 'flex justify-between items-center text-sm py-0.5';
                 
-                let rankIcon = `<span class="inline-block w-5 text-center font-bold text-gray-500">${index + 1}</span>`;
                 let rankStyle = 'text-gray-400';
-                
-                if (index === 0) {
-                    rankIcon = '<span class="inline-block w-5 text-center">🥇</span>';
-                    rankStyle = 'text-yellow-400 font-bold';
-                } else if (index === 1) {
-                    rankIcon = '<span class="inline-block w-5 text-center">🥈</span>';
-                    rankStyle = 'text-gray-300 font-semibold';
-                } else if (index === 2) {
-                    rankIcon = '<span class="inline-block w-5 text-center">🥉</span>';
-                    rankStyle = 'text-orange-300 font-semibold';
-                }
+                if (index === 0) rankStyle = 'text-yellow-400 font-bold';
+                else if (index === 1) rankStyle = 'text-gray-200';
+                else if (index === 2) rankStyle = 'text-orange-300';
                 
                 li.innerHTML = `
-                    <div class="flex items-center gap-2">
-                        ${rankIcon}
-                        <span class="${rankStyle} tracking-widest">${record.initial}</span>
-                    </div>
-                    <span class="${rankStyle} font-bold">${record.score}</span>
+                    <span class="${rankStyle}">${index + 1}. ${record.initial}</span>
+                    <span class="${rankStyle}">${record.score}</span>
                 `;
-                listContainer.appendChild(li);
+                top5ListEl.appendChild(li);
             });
         }
 
-        // 페이지 진입 시 초기 데이터 세팅
+        // 페이지 로드 시 Top 5 불러오기
         fetchTop5();
 
 
-        // --- Matter.js 및 게임 로직 변수 ---
+        // --- Matter.js 초기화 ---
         const Engine = Matter.Engine,
               Render = Matter.Render,
               Runner = Matter.Runner,
@@ -436,48 +434,53 @@
         let books = [];
         let currentActiveBook = null; 
         let score = 0;
-        let currentInitial = "";
+        let bestScore = localStorage.getItem('studyRoomBookBest') || 0;
         let gameState = 'START';
+        
         let width = window.innerWidth;
         let height = window.innerHeight;
         let ground;
+        
         let currentBounds = { min: { x: 0, y: 0 }, max: { x: width, y: height } };
 
         const scoreEl = document.getElementById('score');
+        const bestScoreEl = document.getElementById('best-score');
         const finalScoreEl = document.getElementById('final-score');
         const startModal = document.getElementById('start-modal');
         const gameoverModal = document.getElementById('gameover-modal');
         const controlsHint = document.getElementById('controls-hint');
         const newRecordMsg = document.getElementById('new-record-msg');
-        const top5EntryMsg = document.getElementById('top5-entry-msg');
         const btnRestartTop = document.getElementById('btn-restart-top');
-        const initialInput = document.getElementById('player-initial');
-        const celebrationLayer = document.getElementById('celebration-layer');
+
         const woodPanel = document.getElementById('wood-panel');
         const roomBg = document.getElementById('room-bg');
+        const celebrationLayer = document.getElementById('celebration-layer');
 
         const CELEBRATION_MILESTONES = new Set([1, 10, 15, 20, 25, 30, 35, 40, 45, 50]);
-        const CHEER_MESSAGES = ['완벽한 출발이에요!', '책탑이 반짝반짝 빛나요!', '정말 멋지게 쌓고 있어요!', '아빠의 서재가 환호합니다!', '집중력 최고! 계속 가요!'];
+        const CHEER_MESSAGES = [
+            '완벽한 출발이에요!',
+            '책탑이 반짝반짝 빛나요!',
+            '정말 멋지게 쌓고 있어요!',
+            '아빠의 서재가 환호합니다!',
+            '집중력 최고! 계속 가요!'
+        ];
 
-        // 이니셜 입력 필터링
-        initialInput.addEventListener('input', (e) => {
-            e.target.value = e.target.value.replace(/[^a-zA-Z]/g, '').toUpperCase();
-        });
+        bestScoreEl.textContent = bestScore;
 
-        // --- 텍스처 생성기 ---
+        // --- 텍스처 생성기 (Canvas API) ---
         function createRealisticBookTexture(w, h) {
             const canvas = document.createElement('canvas');
             canvas.width = w; canvas.height = h;
             const ctx = canvas.getContext('2d');
 
-            const isVintage = Math.random() > 0.3;
-            const hues = [10, 20, 200, 350, 140, 40];
+            const isVintage = Math.random() > 0.3; // 양장본 확률 높임
+            const hues = [10, 20, 200, 350, 140, 40]; // 가죽, 버건디, 네이비 등
             const baseHue = hues[Math.floor(Math.random() * hues.length)];
             const saturation = isVintage ? (20 + Math.random() * 20) : (40 + Math.random() * 20);
             const lightness = isVintage ? (15 + Math.random() * 15) : (25 + Math.random() * 15);
             
             const coverColor = `hsl(${baseHue}, ${saturation}%, ${lightness}%)`;
-            const pagesColor = isVintage ? '#c2b38e' : '#e6dfd1';
+            const pagesColor = isVintage ? '#c2b38e' : '#e6dfd1'; // 빛바랜 종이색
 
             ctx.fillStyle = coverColor;
             ctx.fillRect(0, 0, w, h);
@@ -509,7 +512,7 @@
             ctx.fillStyle = spineGrad;
             ctx.fillRect(0, 0, spineWidth, h);
 
-            ctx.fillStyle = 'rgba(212, 175, 55, 0.8)';
+            ctx.fillStyle = 'rgba(212, 175, 55, 0.8)'; // 금박
             ctx.fillRect(0, h * 0.15, spineWidth, 2);
             ctx.fillRect(0, h * 0.25, spineWidth, 4);
             ctx.fillRect(0, h * 0.8, spineWidth, 2);
@@ -531,6 +534,7 @@
             return canvas.toDataURL('image/png');
         }
 
+        // 고풍스러운 책상(바닥) 텍스처
         function createWoodTexture(w, h) {
             const canvas = document.createElement('canvas');
             canvas.width = w; canvas.height = h;
@@ -556,7 +560,7 @@
             return canvas.toDataURL('image/png');
         }
 
-        // --- 물리 엔진 ---
+        // --- 물리 엔진 & 카메라 로직 ---
         function initPhysics() {
             if (engine) {
                 Render.stop(render); Runner.stop(runner);
@@ -612,7 +616,7 @@
                  ctx.setLineDash([15 * scale, 10 * scale]);
                  ctx.moveTo(currentActiveBook.position.x, currentActiveBook.position.y);
                  ctx.lineTo(currentActiveBook.position.x, ground.position.y);
-                 ctx.strokeStyle = 'rgba(255, 215, 120, 0.4)';
+                 ctx.strokeStyle = 'rgba(255, 215, 120, 0.4)'; // 스탠드 조명빛 가이드
                  ctx.lineWidth = Math.max(1, 2 * scale);
                  ctx.stroke();
                  ctx.setLineDash([]);
@@ -646,6 +650,7 @@
             if (!currentActiveBook || gameState !== 'PLAYING') return;
 
             Body.setStatic(currentActiveBook, false); 
+            
             const randomAngularVelocity = (Math.random() - 0.5) * 0.03;
             Body.setAngularVelocity(currentActiveBook, randomAngularVelocity);
 
@@ -686,6 +691,7 @@
             }
         }
 
+        // 스마트 카메라 & 패럴랙스 배경 스크롤
         function updateCamera() {
             if (gameState !== 'PLAYING') return;
 
@@ -724,9 +730,14 @@
 
             Render.lookAt(render, currentBounds);
 
+            // --- CSS 배경 패럴랙스 처리 ---
             const scale = height / (currentBounds.max.y - currentBounds.min.y);
+            
+            // 1. 벽지(wallpaper) 상하 스크롤 (조금 천천히 이동시켜 원근감 부여)
             roomBg.style.backgroundPositionY = `${-currentBounds.min.y * 0.3 * scale}px`;
 
+            // 2. 나무 벽면(wainscoting) 화면 내 위치 동기화 
+            // 데스크(책상 바닥)의 화면상 Y좌표를 계산하여 거기에 나무 벽을 맞춤
             const deskScreenY = (ground.position.y - currentBounds.min.y) * scale;
             if (deskScreenY < height + 100) {
                 woodPanel.style.top = `${deskScreenY}px`;
@@ -748,40 +759,33 @@
 
             const finalScore = Math.max(0, score - 1);
             finalScoreEl.textContent = finalScore;
-            document.getElementById('final-initial').textContent = currentInitial;
 
-            // 로컬 비교를 통한 신기록 달성 체킹
-            let isNewRecord = false;
-            let isTop5Entry = false;
-            
-            if (finalScore > 0) {
-                const previousBest = globalTop5.length > 0 ? globalTop5[0].score : 0;
-                const lowestTop5 = globalTop5.length === 5 ? globalTop5[4].score : 0;
-
-                if (finalScore > previousBest) {
-                    isNewRecord = true;
-                } else if (globalTop5.length < 5 || finalScore > lowestTop5) {
-                    isTop5Entry = true;
-                }
-                
-                // Supabase DB에 점수 저장 실행
-                saveScoreToDB(currentInitial, finalScore);
+            if (finalScore > bestScore && finalScore > 0) {
+                bestScore = finalScore;
+                localStorage.setItem('studyRoomBookBest', bestScore);
+                bestScoreEl.textContent = bestScore;
+                newRecordMsg.style.display = 'block';
+            } else {
+                newRecordMsg.style.display = 'none';
             }
 
-            newRecordMsg.style.display = isNewRecord ? 'block' : 'none';
-            top5EntryMsg.style.display = (!isNewRecord && isTop5Entry) ? 'block' : 'none';
+            // [추가] 글로벌 Top 5 에 기록 저장
+            if (currentInitial) {
+                saveScoreToDB(currentInitial, finalScore);
+            }
 
             setTimeout(() => gameoverModal.style.display = 'block', 700);
         }
 
+        // [변경] 시작 버튼 클릭 시 이니셜 확인 (isFirstStart 플래그 추가)
         function startGame(isFirstStart = false) {
             if (isFirstStart) {
                 const initialVal = initialInput.value;
                 if (initialVal.length !== 3) {
-                    document.getElementById('initial-error').classList.remove('hidden');
+                    document.getElementById('initial-error').style.display = 'block';
                     return; 
                 }
-                document.getElementById('initial-error').classList.add('hidden');
+                document.getElementById('initial-error').style.display = 'none';
                 currentInitial = initialVal;
             }
 
@@ -802,6 +806,7 @@
             if (gameState !== 'PLAYING') return;
 
             celebrationLayer.replaceChildren();
+
             const banner = document.createElement('div');
             const message = CHEER_MESSAGES[Math.floor(Math.random() * CHEER_MESSAGES.length)];
             banner.className = 'cheer-banner';
@@ -838,7 +843,7 @@
             setTimeout(() => celebrationLayer.replaceChildren(), 3200);
         }
         
-        // --- 조작 이벤트 바인딩 ---
+        // --- 조작 (마우스/터치) ---
         let isDown = false;
         const gameContainer = document.getElementById('game-container');
 
@@ -848,19 +853,25 @@
             controlsHint.style.display = 'none';
             moveActiveBook(e.clientX);
         });
+
         gameContainer.addEventListener('pointermove', (e) => {
             if (isDown && gameState === 'PLAYING') moveActiveBook(e.clientX);
         });
+
         gameContainer.addEventListener('pointerup', () => {
             if (isDown && gameState === 'PLAYING') { isDown = false; dropBook(); }
         });
+
         gameContainer.addEventListener('pointercancel', () => {
              if (isDown && gameState === 'PLAYING') { isDown = false; dropBook(); }
         });
 
+        // [변경] 시작 이벤트 바인딩
         document.getElementById('btn-start').addEventListener('click', () => startGame(true));
         document.getElementById('btn-restart').addEventListener('click', () => startGame(false));
-        btnRestartTop.addEventListener('click', () => startGame(false));
+        btnRestartTop.addEventListener('click', () => {
+            if(confirm('기록을 포기하고 다시 쌓으시겠습니까?')) startGame(false);
+        });
 
         window.addEventListener('resize', () => {
             width = window.innerWidth; height = window.innerHeight;
@@ -910,6 +921,7 @@
                     const osc = ctx.createOscillator();
                     const gain = ctx.createGain();
                     const startAt = ctx.currentTime + (index * 0.08);
+
                     osc.type = 'triangle';
                     osc.frequency.setValueAtTime(note, startAt);
                     gain.gain.setValueAtTime(0.001, startAt);

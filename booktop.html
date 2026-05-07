@@ -24,21 +24,22 @@
         #room-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            /* 클래식 딥 그린 벽지 + 금박 스트라이프 패턴 */
-            background-color: #1e2b22; 
-            background-image: 
-                repeating-linear-gradient(to right, transparent, transparent 60px, rgba(212, 175, 55, 0.05) 60px, rgba(212, 175, 55, 0.05) 62px),
-                repeating-linear-gradient(to right, transparent, transparent 120px, rgba(0, 0, 0, 0.15) 120px, rgba(0, 0, 0, 0.15) 180px);
+            background-color: #1e2b22;
+            background-image:
+                linear-gradient(to bottom, rgba(8, 5, 3, 0.18), rgba(8, 5, 3, 0.58)),
+                url('images/bookstore.jpg');
+            background-position: center center;
+            background-size: cover;
+            background-repeat: no-repeat;
             z-index: -3;
         }
 
-        /* 하단 나무 벽면 (웨인스코팅) */
+        /* 책상 주변을 어둡게 잡아주는 하단 음영 */
         #wood-panel {
             position: fixed;
             left: 0; width: 100%; height: 40vh;
-            background: linear-gradient(to bottom, #3e2211 0%, #241106 15px, #0f0703 100%);
-            border-top: 10px solid #2b1609;
-            box-shadow: inset 0 20px 30px rgba(0,0,0,0.8);
+            background: linear-gradient(to bottom, rgba(62, 34, 17, 0.12) 0%, rgba(15, 7, 3, 0.68) 100%);
+            box-shadow: inset 0 20px 30px rgba(0,0,0,0.45);
             z-index: -2;
             /* JS에서 카메라 이동에 따라 top 위치 제어 */
         }
@@ -145,7 +146,89 @@
         .btn-gold:active {
             transform: translateY(1px);
         }
+        
+        #celebration-layer {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 80;
+            overflow: hidden;
+        }
 
+        .cheer-banner {
+            position: absolute;
+            top: 22%;
+            left: 50%;
+            width: min(92vw, 560px);
+            transform: translate(-50%, -50%) scale(0.7);
+            padding: 18px 22px;
+            border: 2px solid rgba(255, 245, 180, 0.9);
+            border-radius: 999px;
+            background: linear-gradient(135deg, rgba(255, 244, 170, 0.95), rgba(255, 151, 91, 0.92), rgba(211, 82, 255, 0.88));
+            box-shadow: 0 0 35px rgba(255, 221, 87, 0.9), 0 0 75px rgba(147, 51, 234, 0.45);
+            color: #2b1106;
+            font-weight: 700;
+            text-align: center;
+            text-shadow: 0 1px 0 rgba(255,255,255,0.55);
+            opacity: 0;
+            animation: cheerPop 1.8s ease-out forwards;
+        }
+
+        .cheer-banner .cheer-count {
+            display: block;
+            font-size: clamp(2.3rem, 9vw, 4.8rem);
+            line-height: 1;
+        }
+
+        .cheer-banner .cheer-message {
+            display: block;
+            margin-top: 6px;
+            font-size: clamp(1rem, 4vw, 1.45rem);
+        }
+
+        .sparkle {
+            position: absolute;
+            width: var(--size);
+            height: var(--size);
+            left: var(--x);
+            top: var(--y);
+            border-radius: 50%;
+            background: hsl(var(--hue), 95%, 62%);
+            box-shadow: 0 0 18px hsl(var(--hue), 95%, 70%);
+            animation: sparkleBurst var(--duration) ease-out forwards;
+        }
+
+        .ribbon {
+            position: absolute;
+            width: 10px;
+            height: 28px;
+            left: var(--x);
+            top: -40px;
+            border-radius: 4px;
+            background: hsl(var(--hue), 95%, 58%);
+            transform: rotate(var(--rotate));
+            animation: ribbonFall var(--duration) cubic-bezier(.17,.67,.31,.99) forwards;
+        }
+
+        @keyframes cheerPop {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.45) rotate(-4deg); }
+            16% { opacity: 1; transform: translate(-50%, -50%) scale(1.08) rotate(2deg); }
+            28% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+            76% { opacity: 1; }
+            100% { opacity: 0; transform: translate(-50%, -70%) scale(0.98); }
+        }
+
+        @keyframes sparkleBurst {
+            0% { opacity: 1; transform: translate(0, 0) scale(0.45); }
+            70% { opacity: 0.95; }
+            100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(1.25); }
+        }
+
+        @keyframes ribbonFall {
+            0% { opacity: 1; transform: translateY(0) rotate(var(--rotate)); }
+            100% { opacity: 0; transform: translateY(110vh) rotate(calc(var(--rotate) + 520deg)); }
+        }
+        
         @keyframes shake {
             0%, 100% { transform: translate(0, 0) rotate(0deg); }
             10%, 30%, 50%, 70%, 90% { transform: translate(-3px, -2px) rotate(-1deg); }
@@ -159,6 +242,7 @@
     <div id="room-bg"></div>
     <div id="wood-panel"></div>
     <div id="lamp-glow"></div>
+    <div id="celebration-layer" aria-live="polite"></div>
 
     <div id="game-container">
         <div id="ui-layer" class="p-5 flex justify-between items-start">
@@ -244,6 +328,16 @@
 
         const woodPanel = document.getElementById('wood-panel');
         const roomBg = document.getElementById('room-bg');
+        const celebrationLayer = document.getElementById('celebration-layer');
+
+        const CELEBRATION_MILESTONES = new Set([1, 10, 15, 20, 25, 30, 35, 40, 45, 50]);
+        const CHEER_MESSAGES = [
+            '완벽한 출발이에요!',
+            '책탑이 반짝반짝 빛나요!',
+            '정말 멋지게 쌓고 있어요!',
+            '아빠의 서재가 환호합니다!',
+            '집중력 최고! 계속 가요!'
+        ];
 
         bestScoreEl.textContent = bestScore;
 
@@ -440,6 +534,10 @@
             score++;
             scoreEl.textContent = score;
 
+            if (CELEBRATION_MILESTONES.has(score)) {
+                setTimeout(() => triggerCelebration(score), 520);
+            }
+            
             playWhooshSound();
             setTimeout(spawnNewBook, 1200);
         }
@@ -527,6 +625,7 @@
             gameState = 'GAMEOVER';
             controlsHint.style.display = 'none';
             btnRestartTop.style.display = 'none';
+            celebrationLayer.replaceChildren();
             
             playCrashSound();
             document.body.style.animation = 'shake 0.5s';
@@ -554,12 +653,54 @@
             
             score = 0; scoreEl.textContent = score;
             books = [];
+            celebrationLayer.replaceChildren();
             
             initPhysics();
             gameState = 'PLAYING';
             spawnNewBook();
         }
 
+        function triggerCelebration(count) {
+            if (gameState !== 'PLAYING') return;
+
+            celebrationLayer.replaceChildren();
+
+            const banner = document.createElement('div');
+            const message = CHEER_MESSAGES[Math.floor(Math.random() * CHEER_MESSAGES.length)];
+            banner.className = 'cheer-banner';
+            banner.innerHTML = `
+                <span class="cheer-count">${count}권 달성!</span>
+                <span class="cheer-message">🎉 ${message} 🎉</span>
+            `;
+            celebrationLayer.appendChild(banner);
+
+            for (let i = 0; i < 36; i++) {
+                const sparkle = document.createElement('span');
+                sparkle.className = 'sparkle';
+                sparkle.style.setProperty('--x', `${42 + Math.random() * 16}%`);
+                sparkle.style.setProperty('--y', `${24 + Math.random() * 22}%`);
+                sparkle.style.setProperty('--dx', `${(Math.random() - 0.5) * 90}vw`);
+                sparkle.style.setProperty('--dy', `${(Math.random() - 0.8) * 70}vh`);
+                sparkle.style.setProperty('--size', `${6 + Math.random() * 14}px`);
+                sparkle.style.setProperty('--hue', Math.floor(Math.random() * 360));
+                sparkle.style.setProperty('--duration', `${0.9 + Math.random() * 0.8}s`);
+                celebrationLayer.appendChild(sparkle);
+            }
+
+            for (let i = 0; i < 42; i++) {
+                const ribbon = document.createElement('span');
+                ribbon.className = 'ribbon';
+                ribbon.style.setProperty('--x', `${Math.random() * 100}%`);
+                ribbon.style.setProperty('--hue', Math.floor(Math.random() * 360));
+                ribbon.style.setProperty('--rotate', `${Math.random() * 360}deg`);
+                ribbon.style.setProperty('--duration', `${1.8 + Math.random() * 1.1}s`);
+                celebrationLayer.appendChild(ribbon);
+            }
+
+            playCelebrationSound();
+            setTimeout(() => celebrationLayer.replaceChildren(), 3200);
+        }
+        
         // --- 조작 (마우스/터치) ---
         let isDown = false;
         const gameContainer = document.getElementById('game-container');
@@ -629,6 +770,26 @@
             } catch(e){}
         }
 
+        function playCelebrationSound() {
+            try {
+                const ctx = new AudioContext();
+                const notes = [523.25, 659.25, 783.99, 1046.5];
+                notes.forEach((note, index) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    const startAt = ctx.currentTime + (index * 0.08);
+
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(note, startAt);
+                    gain.gain.setValueAtTime(0.001, startAt);
+                    gain.gain.exponentialRampToValueAtTime(0.12, startAt + 0.02);
+                    gain.gain.exponentialRampToValueAtTime(0.001, startAt + 0.22);
+                    osc.connect(gain); gain.connect(ctx.destination);
+                    osc.start(startAt); osc.stop(startAt + 0.24);
+                });
+            } catch(e){}
+        }
+        
         function playCrashSound() {
             try {
                 const ctx = new AudioContext();

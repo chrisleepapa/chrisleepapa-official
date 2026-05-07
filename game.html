@@ -109,6 +109,69 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 .ecard.tt2{border-color:rgba(231,76,60,.55);box-shadow:0 0 70px rgba(231,76,60,.25),0 30px 80px rgba(0,0,0,.7);}
 .ecard.tb2{border-color:rgba(230,126,34,.55);}
 .ecard.tc2{border-color:rgba(255,215,0,.55);}
+
+/* ===== 브루마블 사진 카드 (아빠, 엄마, 베인, 크라운) 전용 스타일 ===== */
+.ecard.photo-card {
+  transform: perspective(1200px) rotateY(-180deg) scale(0.5); /* 3D 회전 초기 상태 */
+  transition: none; /* 애니메이션 사용 */
+}
+.ov.vis .ecard.photo-card {
+  animation: cardSpinGlow 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes cardSpinGlow {
+  0% { transform: perspective(1200px) rotateY(-180deg) scale(0.5) translateY(50px); opacity: 0; }
+  60% { transform: perspective(1200px) rotateY(-20deg) scale(1.05) translateY(-10px); opacity: 1; box-shadow: 0 0 80px rgba(255,215,0,0.8); }
+  100% { transform: perspective(1200px) rotateY(0deg) scale(1) translateY(0); opacity: 1; box-shadow: 0 0 60px rgba(255,215,0,0.4), 0 30px 80px rgba(0,0,0,0.7); }
+}
+
+/* 악당 사진 카드 회전 붉은 빛 효과 */
+.ov.vis .ecard.photo-card.tt2 {
+  animation: cardSpinGlowEvil 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+@keyframes cardSpinGlowEvil {
+  0% { transform: perspective(1200px) rotateY(-180deg) scale(0.5) translateY(50px); opacity: 0; }
+  60% { transform: perspective(1200px) rotateY(-20deg) scale(1.05) translateY(-10px); opacity: 1; box-shadow: 0 0 80px rgba(231,76,60,0.8); }
+  100% { transform: perspective(1200px) rotateY(0deg) scale(1) translateY(0); opacity: 1; box-shadow: 0 0 60px rgba(231,76,60,0.4), 0 30px 80px rgba(0,0,0,0.7); }
+}
+
+.ecard.photo-card .ehdg {
+  height: 250px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.ecard.photo-card .echar {
+  width: 150px;
+  height: 150px;
+  border-radius: 20px;
+  border: 4px solid rgba(255,215,0,0.8);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 0 30px rgba(255,215,0,0.4);
+  margin-bottom: 12px;
+  animation: none; /* 둥둥 떠다니는 효과 제거 */
+}
+.ecard.photo-card.tt2 .echar {
+  border-color: rgba(231,76,60,0.8);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 0 30px rgba(231,76,60,0.5);
+}
+.ecard.photo-card .ehdgt {
+  text-align: center;
+  padding-left: 0;
+  width: 100%;
+}
+.ecard.photo-card .esnm {
+  font-size: 28px;
+}
+.ecard.photo-card .esem {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 32px;
+  margin: 0;
+}
+/* ========================================================= */
+
 .ehdg{position:relative;height:175px;display:flex;align-items:flex-end;justify-content:space-between;padding:14px;overflow:hidden;}
 .ehbg{position:absolute;inset:0;opacity:.92;}
 .echar{position:relative;z-index:2;width:125px;height:158px;flex-shrink:0;filter:drop-shadow(0 0 16px rgba(255,255,255,.25));animation:cfl 3s ease-in-out infinite;}
@@ -273,6 +336,7 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 </style>
 </head>
 <body>
+<!-- 각성 이벤트 전용 전체화면 시네마틱 -->
 <div id="cine" onclick="cineDismiss()">
   <div id="cine-img"></div>
   <div id="cine-vig"></div>
@@ -505,7 +569,7 @@ team: '<img src="./images/team.png" style="width:100%; height:100%; object-fit:c
 
 /* ══ SPACES DATA ══ */
 var SP=[
-  {id:0, t:'c',nm:'출발!',      em:'🏠',bg:'linear-gradient(135deg,#FFF9C4,#D4A000)',char:'yul',     cn:'율이',           cd:'새로운 모험이 시작됐어요! 오늘은 무슨 일이 생길까요?',   st:1},
+  {id:0, t:'c',nm:'출발!',     em:'🏠',bg:'linear-gradient(135deg,#FFF9C4,#D4A000)',char:'yul',     cn:'율이',           cd:'새로운 모험이 시작됐어요! 오늘은 무슨 일이 생길까요?',   st:1},
   {id:1, t:'e',nm:'버섯숲',     em:'🍄',bg:'linear-gradient(135deg,#1A6B3A,#2ECC71)',char:'town',     cn:'루미나 (요정여왕)',  cd:'이 버섯은 특별한 마법이 있어요! 별 하나를 드릴게요!',      st:1},
   {id:2, t:'e',nm:'요정여왕',   em:'👸',bg:'linear-gradient(135deg,#3A0A6A,#9B59B6)',char:'fairytail',cn:'루미나 (요정여왕)',  cd:'용감한 여행자여, 내 영역에 오신 것을 환영해요! 두 별을 드릴게요.', st:2},
   {id:3, t:'t',nm:'어둠의 기사단1', em:'⚡',bg:'linear-gradient(135deg,#3A0A0A,#E74C3C)',char:'darkknight',cn:'어둠의기사단',       cd:'어둠의 힘이 너를 가둔다! 다음 턴은 움직일 수 없어!',    sk:true},
@@ -517,17 +581,17 @@ var SP=[
   {id:9, t:'b',nm:'현자 지름길',em:'🧙',bg:'linear-gradient(135deg,#3A006A,#8E44AD)',char:'grandmagic',cn:'엘리온 (현자)',     cd:'나를 따르라, 지름길을 알려주지. 앞으로 3칸!',           mv:3},
   {id:10,t:'e',nm:'꽃밭',       em:'🌺',bg:'linear-gradient(135deg,#6A0A2A,#E91E63)',char:'jung',      cn:'정이',           cd:'언니! 꽃이 너무 많아! 예쁜 별도 있어!',                st:1},
   {id:11,t:'t',nm:'어둠의 마왕 크라운',em:'🌪️',bg:'linear-gradient(135deg,#2A2A2A,#95A5A6)',char:'crown',     cn:'어둠왕',         cd:'크하하! 나의 폭풍이 너를 날려버리겠다! 3칸 뒤로!',      mv:-3},
-  {id:12,t:'c',nm:'어둠의 검신 베인',  em:'🏰',bg:'linear-gradient(135deg,#0A0A1A,#2C3E50)',char:'bain',      cn:'어둠왕',         cd:'감히 내 성에 들어오다니! 별 하나를 내놓아라!',          st:-1},
-  {id:13,t:'e',nm:'별자리',     em:'⭐',bg:'linear-gradient(135deg,#4A3A00,#F39C12)',char:'yul',     cn:'율이',           cd:'와! 이 별자리... 마법책에서 본 것이에요! 별 2개다!',     st:2},
+  {id:12,t:'c',nm:'어둠의 검신 베인',  em:'🏰',bg:'linear-gradient(135deg,#0A0A1A,#2C3E50)',char:'bain',      cn:'어둠왕',         cd:'감히 내 성에 들어오다니! 별 하나를 내놓아라!',         st:-1},
+  {id:13,t:'e',nm:'별자리',     em:'⭐',bg:'linear-gradient(135deg,#4A3A00,#F39C12)',char:'yul',      cn:'율이',           cd:'와! 이 별자리... 마법책에서 본 것이에요! 별 2개다!',     st:2},
   {id:14,t:'t',nm:'어둠의 기사단3', em:'🧊',bg:'linear-gradient(135deg,#0A2A4A,#5DADE2)',char:'darkknight',cn:'어둠의기사단',      cd:'얼음 감옥에 갇혀봐라! 다음 턴은 꼼짝 마!',             sk:true},
-  {id:15,t:'e',nm:'요정 파티',  em:'🎉',bg:'linear-gradient(135deg,#6A0A3A,#E91E63)',char:'team',     cn:'루미나 (요정여왕)',  cd:'파티에 초대해요! 와줘서 기뻐요, 선물로 별 하나!',        st:1},
-  {id:16,t:'e',nm:'마법 크리스탈',em:'💎',bg:'linear-gradient(135deg,#0A4A3A,#1ABC9C)',char:'angel',   cn:'엘리온 (현자)',     cd:'이 크리스탈은 두 별의 에너지를 담고 있소. 가져가시오.',  st:2},
-  {id:17,t:'b',nm:'별똥별',     em:'🌠',bg:'linear-gradient(135deg,#4A4A00,#F1C40F)',char:'yul',     cn:'율이',           cd:'별똥별이다! 얼른 소원 빌어! 한 번 더 기회가 생겼어!',   xr:true},
+  {id:15,t:'e',nm:'요정 파티',  em:'🎉',bg:'linear-gradient(135deg,#6A0A3A,#E91E63)',char:'team',      cn:'루미나 (요정여왕)',  cd:'파티에 초대해요! 와줘서 기뻐요, 선물로 별 하나!',        st:1},
+  {id:16,t:'e',nm:'마법 크리스탈',em:'💎',bg:'linear-gradient(135deg,#0A4A3A,#1ABC9C)',char:'angel',    cn:'엘리온 (현자)',     cd:'이 크리스탈은 두 별의 에너지를 담고 있소. 가져가시오.',  st:2},
+  {id:17,t:'b',nm:'별똥별',     em:'🌠',bg:'linear-gradient(135deg,#4A4A00,#F1C40F)',char:'yul',      cn:'율이',           cd:'별똥별이다! 얼른 소원 빌어! 한 번 더 기회가 생겼어!',   xr:true},
   {id:18,t:'c',nm:'마법도서관', em:'📚',bg:'linear-gradient(135deg,#3A2A00,#8B6914)',char:'dad',      cn:'아빠',           cd:'이 책들 속에 세상의 비밀이 숨어있어. 별을 두 개 드릴게.',st:2},
   {id:19,t:'e',nm:'엄마 부엌',  em:'🍪',bg:'linear-gradient(135deg,#4A2A00,#E67E22)',char:'mom',      cn:'엄마',           cd:'우리 아이들 왔어? 갓 구운 쿠키야! 기운내라고 별도 줄게!',st:1},
   {id:20,t:'b',nm:'아빠 서재',  em:'📖',bg:'linear-gradient(135deg,#0A2A4A,#2980B9)',char:'dad',      cn:'아빠',           cd:'아빠 책 읽다가 또 왔어? 특별히 한 번 더 기회를 줄게!',  xr:true},
   {id:21,t:'t',nm:'어둠의 기사단4', em:'🧪',bg:'linear-gradient(135deg,#0A3A1A,#27AE60)',char:'darkknight',cn:'어둠의기사단',      cd:'크크! 이 물약을 마셔봐! 2칸 뒤로 가는 맛이야!',         mv:-2},
-  {id:22,t:'e',nm:'요정 친구',  em:'✨',bg:'linear-gradient(135deg,#4A3A00,#F39C12)',char:'jung',      cn:'정이',           cd:'언니 언니! 내 새 친구야! 같이 별을 찾았어!',            st:1},
+  {id:22,t:'e',nm:'요정 친구',  em:'✨',bg:'linear-gradient(135deg,#4A3A00,#F39C12)',char:'jung',      cn:'정이',           cd:'언니 언니! 내 새 친구야! 같이 별을 찾았어!',             st:1},
   {id:23,t:'b',nm:'마법의 문',  em:'🚪',bg:'linear-gradient(135deg,#3A0A6A,#9B59B6)',char:'magicbook',cn:'엘리온 (현자)',     cd:'이 문은 마법의 지름길오. 앞으로 3칸 순간이동!',        mv:3}
 ];
 
@@ -699,13 +763,6 @@ function movePlayer(from, steps, isPwr){
 
 /* ══ EVENTS ══ */
 /* ══ CINEMATIC ══ */
-var CINE_DATA={
-  '엄마 부엌':{type:'good', img:'./images/mom.jpeg',    tag:'💝 SPECIAL ENCOUNTER 💝', name:'엄마', sub:'우리 율이 정이 왔어? 😊\n엄마가 제일 사랑하는 우리 딸들~!\n갓 구운 쿠키랑 사랑을 듬뿍 드릴게! 💕'},
-  '아빠 서재':{type:'good', img:'./images/chris05.jpg', tag:'📖 SPECIAL ENCOUNTER 📖', name:'아빠', sub:'오! 우리 딸들이 대모험 중이구나! 🌟\n아빠가 항상 응원해줄게 — 파이팅! ✨'},
-  '어둠의 마왕 크라운':{type:'evil', img:'./images/crown.jpg',   tag:'☠ BOSS ENCOUNTER ☠',     name:'어둠의 마왕 크라운', sub:'크하하하! 감히 내 영역을 침범하다니!\n그 대가를 치르게 될 것이다...! 💀'},
-  '어둠의 검신 베인':{type:'evil', img:'./images/bain.jpg',    tag:'⚔ BOSS ENCOUNTER ⚔',     name:'어둠의 검신 베인',   sub:'어둠의 검이 빛을 집어삼키리라...\n이제 네 별은 내 것이다! ⚔️'}
-};
-
 var cfxCanvas,cfxCtx,cfxParts=[],cfxRunning=false,cineNext=null;
 
 function cfxInit(){
@@ -741,9 +798,7 @@ function cfxSpawn(type){
   }
 }
 
-function cineShow(cfgOrSid, callback){
-  var cfg = typeof cfgOrSid === 'object' ? cfgOrSid : CINE_DATA[cfgOrSid];
-  if(!cfg){callback();return;}
+function cineShow(cfg, callback){
   if(!cfxCanvas)cfxInit();
   cineNext=callback;
   var el=document.getElementById('cine');
@@ -797,11 +852,8 @@ function triggerEvent(sid,fromMove){
   var sp=SP[sid];
   if(!fromMove)addLog(PL[cur].ic+' → '+sp.em+' '+sp.nm);
   ev={sid:sid};
-  var cData = CINE_DATA[sp.nm]; // 칸 이름을 기준으로 시네마틱 데이터 매칭
-  if(cData){
-    cineShow(cData,function(){openEventCard(sid);});
-    return;
-  }
+  
+  // 무조건 카드 팝업 표시 (엄마, 아빠, 베인, 크라운은 카드 자체의 클래스로 회전/사진 애니메이션 처리)
   openEventCard(sid);
 }
 
@@ -812,19 +864,30 @@ function openEventCard(sid){
     if(c){c.classList.add('shk');setTimeout(function(){c.classList.remove('shk');},500);}
     sTrap();
   } else {sStar();}
+  
   var ec=document.getElementById('ec');
-  ec.className='ecard'+(sp.t==='t'?' tt2':sp.t==='b'?' tb2':sp.t==='c'?' tc2':'');
+  var baseClass = 'ecard' + (sp.t==='t'?' tt2':sp.t==='b'?' tb2':sp.t==='c'?' tc2':'');
+  
+  // 아빠, 엄마, 베인, 크라운일 경우 사진 카드로 보여주며 3D 회전 애니메이션 클래스 부여
+  if (['mom', 'dad', 'bain', 'crown'].includes(sp.char)) {
+    baseClass += ' photo-card';
+  }
+  
+  ec.className = baseClass;
+  
   document.getElementById('ehbg').style.background=sp.bg;
   document.getElementById('ech').innerHTML=SV[sp.char]||SV.luna;
   document.getElementById('ecnm').textContent=sp.cn;
   document.getElementById('esem').textContent=sp.em;
   document.getElementById('esnm').textContent=sp.nm;
   document.getElementById('edlg').textContent=sp.cd;
+  
   var efx=document.getElementById('efx');efx.innerHTML='';
   if(sp.st&&sp.st!==0){var b=document.createElement('div');b.className='efb '+(sp.st>0?'sp':'sn');b.textContent='⭐ '+(sp.st>0?'+':'')+sp.st+'개';efx.appendChild(b);}
   if(sp.xr){var b2=document.createElement('div');b2.className='efb ex';b2.textContent='🎲 한 번 더!';efx.appendChild(b2);}
   if(sp.sk){var b3=document.createElement('div');b3.className='efb sk';b3.textContent='⏸️ 1턴 쉬기';efx.appendChild(b3);}
   if(sp.mv){var b4=document.createElement('div');b4.className='efb '+(sp.mv>0?'mp':'mn');b4.textContent=(sp.mv>0?'⬆️':'⬇️')+' '+Math.abs(sp.mv)+'칸 이동';efx.appendChild(b4);}
+  
   document.getElementById('eov').classList.add('vis');
   renderAll();
 }

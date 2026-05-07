@@ -23,10 +23,14 @@ let HITSTOP=0;
 
 const enemies=[];
 
+let GAME_STARTED=false;
+
 PLAYER.y=H-220;
 
 function addEnemy(){
 
+let GAME_STARTED=false;
+  
   enemies.push({
     x:W+100,
     y:H-200,
@@ -53,6 +57,8 @@ window.addEventListener('keydown',e=>{
 
 function update(){
 
+  if(!GAME_STARTED) return;
+  
   if(HITSTOP>0){
     HITSTOP--;
     return;
@@ -88,6 +94,8 @@ function update(){
 
   if(SKILL_CD>0) SKILL_CD--;
 
+  if(SKILL_FLASH>0) SKILL_FLASH--;
+  
   if(FEVER_MODE){
 
     FEVER-=.4;
@@ -243,8 +251,7 @@ loop();
 
 setInterval(()=>{
 
-  bossPattern(W-300,H-350);
-
+  if(GAME_STARTED) bossPattern(W-300,H-350);
 },8000);
 
 setInterval(saveGame,5000);

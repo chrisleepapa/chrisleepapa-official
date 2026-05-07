@@ -2,247 +2,165 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SISTER SQUAD 컬러링 게임 (그림 고르기)</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>모바일 지렁이 게임</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; flex-direction: column; align-items: center; background-color: #f0f2f5; margin: 0; padding: 20px; }
-        h1, h2 { color: #333; }
-        .section { background: white; padding: 15px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; width: 100%; max-width: 800px; box-sizing: border-box; text-align: center; }
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f8f9fa;
+            font-family: sans-serif;
+            touch-action: manipulation; /* 더블탭 확대 방지 */
+        }
+        .ui { text-align: center; margin-bottom: 10px; }
+        .score { font-size: 24px; font-weight: bold; color: #2ecc71; }
         
-        .image-selector { display: flex; gap: 15px; justify-content: center; overflow-x: auto; padding-bottom: 10px; padding-top: 10px; }
-        .thumb-btn { width: 90px; height: 90px; border: 3px solid #ddd; border-radius: 8px; cursor: pointer; object-fit: contain; background: white; transition: 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .thumb-btn:hover { border-color: #1e90ff; transform: scale(1.05); }
-        .thumb-btn.active { border-color: #333; box-shadow: 0 0 10px rgba(0,0,0,0.3); }
+        #game-container {
+            position: relative;
+            border: 5px solid #34495e;
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        canvas { display: block; max-width: 100%; height: auto; }
 
-        .toolbar { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; align-items: center; }
-        .color-btn { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #ccc; cursor: pointer; transition: transform 0.1s; }
-        .color-btn.selected { transform: scale(1.2); border-color: #333; box-shadow: 0 0 5px rgba(0,0,0,0.3); }
-        .tool-group { display: flex; gap: 10px; border-left: 2px solid #eee; padding-left: 15px; }
-        button { padding: 8px 15px; border: none; border-radius: 5px; background-color: #333; color: white; cursor: pointer; font-weight: bold; transition: 0.2s; }
-        button:hover { background-color: #555; }
-        .eraser-btn { background-color: #ff9f43; }
-        .eraser-btn:hover { background-color: #ff7f50; }
-        canvas { background-color: white; border: 2px solid #333; border-radius: 5px; cursor: crosshair; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 100%; display: block; margin: 0 auto; }
-        .gallery { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
-        .gallery img { width: 150px; height: 150px; object-fit: contain; border: 1px solid #ccc; border-radius: 5px; background-color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .loading { font-size: 14px; color: #1e90ff; font-weight: bold; display: none; margin-top: 10px; }
+        /* 모바일 컨트롤러 스타일 */
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(3, 70px);
+            grid-template-rows: repeat(2, 70px);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .btn {
+            width: 70px;
+            height: 70px;
+            background-color: #34495e;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .btn:active { background-color: #2ecc71; transform: scale(0.95); }
+        .btn-up { grid-column: 2; }
+        .btn-left { grid-column: 1; grid-row: 2; }
+        .btn-down { grid-column: 2; grid-row: 2; }
+        .btn-right { grid-column: 3; grid-row: 2; }
     </style>
 </head>
 <body>
 
-    <h1>자매 스쿼드 컬러링 🎨</h1>
-
-    <div class="section">
-        <h3>1. 색칠할 그림 고르기</h3>
-        <p style="font-size:14px; color:#666; margin-top:0;">아래 목록에서 원하는 그림을 클릭하세요.</p>
-        <div class="image-selector" id="coloringSelector">
-            </div>
+    <div class="ui">
+        <div class="score">Score: <span id="scoreVal">0</span></div>
     </div>
 
-    <div class="section">
-        <div class="toolbar">
-            <div class="color-btn selected" style="background-color: #ff4757;" data-color="#ff4757"></div>
-            <div class="color-btn" style="background-color: #ffa502;" data-color="#ffa502"></div>
-            <div class="color-btn" style="background-color: #eccc68;" data-color="#eccc68"></div>
-            <div class="color-btn" style="background-color: #2ed573;" data-color="#2ed573"></div>
-            <div class="color-btn" style="background-color: #1e90ff;" data-color="#1e90ff"></div>
-            <div class="color-btn" style="background-color: #9c88ff;" data-color="#9c88ff"></div>
-            
-            <div style="display: flex; flex-direction: column; align-items: center; font-size: 12px;">
-                <span>자유색상</span>
-                <input type="color" id="customColor" value="#000000" style="cursor: pointer; width: 35px; height: 35px; border:none; padding:0;">
-            </div>
-
-            <div class="tool-group">
-                <button id="eraserBtn" class="eraser-btn">지우개</button>
-                <button id="resetBtn">초기화</button>
-                <button id="saveBoardBtn">온라인 게시판에 공유</button>
-            </div>
-        </div>
-        <div id="loadingIndicator" class="loading">⏳ 서버와 통신 중...</div>
-        <br>
-        <canvas id="coloringCanvas" width="600" height="600"></canvas>
+    <div id="game-container">
+        <canvas id="snakeGame" width="300" height="300"></canvas>
     </div>
 
-    <div class="section">
-        <h2>🌐 모두의 갤러리</h2>
-        <p style="font-size: 14px; color: #666;">다른 사람들이 그린 멋진 작품들을 구경해보세요!</p>
-        <div class="gallery" id="galleryContainer"></div>
+    <div class="controls">
+        <button class="btn btn-up" onclick="changeDir('UP')">▲</button>
+        <button class="btn btn-left" onclick="changeDir('LEFT')">◀</button>
+        <button class="btn btn-down" onclick="changeDir('DOWN')">▼</button>
+        <button class="btn btn-right" onclick="changeDir('RIGHT')">▶</button>
     </div>
 
     <script>
-        const SUPABASE_URL = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
-        
-        const { createClient } = supabase;
-        const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
+        const canvas = document.getElementById("snakeGame");
+        const ctx = canvas.getContext("2d");
+        const scoreElement = document.getElementById("scoreVal");
 
-        const canvas = document.getElementById('coloringCanvas');
-        const ctx = canvas.getContext('2d', { willReadFrequently: true });
-        let originalImageData = null;
-        let currentColor = { r: 255, g: 71, b: 87, a: 255 };
+        const box = 15; // 모바일을 위해 칸 크기 소폭 조정
+        let score = 0;
+        let snake = [{ x: 10 * box, y: 10 * box }];
+        let food = {
+            x: Math.floor(Math.random() * 19) * box,
+            y: Math.floor(Math.random() * 19) * box
+        };
+        let d;
 
-        // --- 1. 그림 고르기 리스트 설정 ---
-        const selectorContainer = document.getElementById('coloringSelector');
-        const IMAGE_BASE_PATH = 'images/';
-        
-        // 확장자가 섞여있으므로 정확한 파일명을 배열로 지정합니다.
-        const imageFiles = [
-            'color01.png',  // png 파일
-            'color02.jpg',  // (임시)
-            'color03.jpg',  // (임시)
-            'color04.jpeg', // jpeg 파일들
-            'color05.jpeg',
-            'color06.jpeg',
-            'color07.jpeg',
-            'color08.jpg',  // (임시)
-            'color09.jpg',  // (임시)
-            'color10.jpg'   // (임시)
-        ];
+        // 방향 전환 함수 (모바일/PC 공용)
+        function changeDir(newDir) {
+            if(newDir == "LEFT" && d != "RIGHT") d = "LEFT";
+            else if(newDir == "UP" && d != "DOWN") d = "UP";
+            else if(newDir == "RIGHT" && d != "LEFT") d = "RIGHT";
+            else if(newDir == "DOWN" && d != "UP") d = "DOWN";
+        }
 
-        // 배열을 돌면서 썸네일 이미지를 만듭니다.
-        imageFiles.forEach((fileName, index) => {
-            const fullPath = IMAGE_BASE_PATH + fileName;
-
-            const thumbImg = document.createElement('img');
-            thumbImg.src = fullPath;
-            thumbImg.className = 'thumb-btn';
-            thumbImg.alt = `그림 ${index + 1}`;
-            thumbImg.title = fileName;
-
-            thumbImg.addEventListener('click', function() {
-                document.querySelectorAll('.thumb-btn').forEach(btn => btn.classList.remove('active'));
-                this.classList.add('active');
-                loadImageToCanvas(fullPath);
-            });
-
-            selectorContainer.appendChild(thumbImg);
+        // 키보드 지원
+        document.addEventListener("keydown", (e) => {
+            if(e.keyCode == 37) changeDir("LEFT");
+            else if(e.keyCode == 38) changeDir("UP");
+            else if(e.keyCode == 39) changeDir("RIGHT");
+            else if(e.keyCode == 40) changeDir("DOWN");
         });
 
-        // --- 2. 캔버스 로드 및 칠하기 로직 ---
-        function loadImageToCanvas(imgSource) {
-            const img = new Image();
-            img.src = imgSource;
-
-            img.onload = function() {
-                const scale = Math.min(1, 800 / img.width);
-                canvas.width = img.width * scale;
-                canvas.height = img.height * scale;
-                
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = "white";
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                
-                originalImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        function collision(head, array) {
+            for(let i = 0; i < array.length; i++) {
+                if(head.x == array[i].x && head.y == array[i].y) return true;
             }
-            
-            img.onerror = function() {
-                alert(`이미지를 찾을 수 없습니다.\n파일명이나 확장자를 확인해주세요: ${imgSource}`);
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = "#ffcccc"; ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = "red"; ctx.font = "20px sans-serif"; ctx.textAlign = "center";
-                ctx.fillText("이미지 로드 실패", canvas.width/2, canvas.height/2);
-                originalImageData = null;
+            return false;
+        }
+
+        function draw() {
+            ctx.fillStyle = "white";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // 지렁이
+            for(let i = 0; i < snake.length; i++) {
+                ctx.fillStyle = (i == 0) ? "#27ae60" : "#2ecc71";
+                ctx.fillRect(snake[i].x, snake[i].y, box, box);
+                ctx.strokeStyle = "white";
+                ctx.strokeRect(snake[i].x, snake[i].y, box, box);
             }
-        }
 
-        const colorBtns = document.querySelectorAll('.color-btn');
-        function hexToRgb(hex) {
-            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-            return result ? { r: parseInt(result[1], 16), g: parseInt(result[2], 16), b: parseInt(result[3], 16), a: 255 } : null;
-        }
+            // 먹이
+            ctx.fillStyle = "#e74c3c";
+            ctx.beginPath();
+            ctx.arc(food.x + box/2, food.y + box/2, box/2 - 1, 0, Math.PI * 2);
+            ctx.fill();
 
-        function updateColorSelection(element, colorObj) {
-            colorBtns.forEach(b => b.classList.remove('selected'));
-            document.getElementById('customColor').classList.remove('selected');
-            document.getElementById('eraserBtn').classList.remove('selected');
-            if(element) element.classList.add('selected');
-            currentColor = colorObj;
-        }
+            let snakeX = snake[0].x;
+            let snakeY = snake[0].y;
 
-        colorBtns.forEach(btn => btn.addEventListener('click', (e) => updateColorSelection(e.target, hexToRgb(e.target.getAttribute('data-color')))));
-        document.getElementById('customColor').addEventListener('input', (e) => { updateColorSelection(null, hexToRgb(e.target.value)); e.target.classList.add('selected'); });
-        document.getElementById('eraserBtn').addEventListener('click', (e) => { updateColorSelection(e.target, { r: 255, g: 255, b: 255, a: 255 }); });
-        
-        document.getElementById('resetBtn').addEventListener('click', () => {
-            if (originalImageData && confirm("초기화하시겠습니까?")) ctx.putImageData(originalImageData, 0, 0);
-        });
+            if( d == "LEFT") snakeX -= box;
+            if( d == "UP") snakeY -= box;
+            if( d == "RIGHT") snakeX += box;
+            if( d == "DOWN") snakeY += box;
 
-        canvas.addEventListener('click', function(e) {
-            if (!originalImageData) return alert("위에서 색칠할 그림을 먼저 골라주세요!");
-            const rect = canvas.getBoundingClientRect();
-            floodFill(Math.floor(e.clientX - rect.left), Math.floor(e.clientY - rect.top), currentColor);
-        });
-
-        function floodFill(startX, startY, fillColor) {
-            const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            const data = imgData.data;
-            const targetColor = getPixelColor(data, startX, startY, canvas.width);
-            if (colorsMatch(targetColor, fillColor)) return;
-            if (targetColor.r < 50 && targetColor.g < 50 && targetColor.b < 50) return;
-            const pixelsToCheck = [startX, startY];
-            while (pixelsToCheck.length > 0) {
-                const y = pixelsToCheck.pop(), x = pixelsToCheck.pop(), pos = (y * canvas.width + x) * 4;
-                if (colorsMatch(getPixelColor(data, x, y, canvas.width), targetColor)) {
-                    data[pos] = fillColor.r; data[pos + 1] = fillColor.g; data[pos + 2] = fillColor.b; data[pos + 3] = fillColor.a;
-                    if (x > 0) pixelsToCheck.push(x - 1, y);
-                    if (x < canvas.width - 1) pixelsToCheck.push(x + 1, y);
-                    if (y > 0) pixelsToCheck.push(x, y - 1);
-                    if (y < canvas.height - 1) pixelsToCheck.push(x, y + 1);
-                }
+            if(snakeX == food.x && snakeY == food.y) {
+                score++;
+                scoreElement.innerHTML = score;
+                food = {
+                    x: Math.floor(Math.random() * 19) * box,
+                    y: Math.floor(Math.random() * 19) * box
+                };
+            } else {
+                snake.pop();
             }
-            ctx.putImageData(imgData, 0, 0);
-        }
-        function getPixelColor(data, x, y, width) { const pos = (y * width + x) * 4; return { r: data[pos], g: data[pos + 1], b: data[pos + 2], a: data[pos + 3] }; }
-        function colorsMatch(c1, c2) { return Math.abs(c1.r - c2.r) <= 60 && Math.abs(c1.g - c2.g) <= 60 && Math.abs(c1.b - c2.b) <= 60; }
 
-        // --- 3. Supabase 통신 로직 ---
-        const galleryContainer = document.getElementById('galleryContainer');
-        const loadingIndicator = document.getElementById('loadingIndicator');
+            let newHead = { x: snakeX, y: snakeY };
 
-        async function fetchGallery() {
-            loadingIndicator.style.display = 'block';
-            try {
-                const { data, error } = await supabaseClient
-                    .from('gallery')
-                    .select('image_data')
-                    .order('created_at', { ascending: false })
-                    .limit(20); 
-                if (error) throw error;
-                galleryContainer.innerHTML = '';
-                if (data.length === 0) {
-                    galleryContainer.innerHTML = '<p>아직 저장된 그림이 없습니다.</p>';
-                } else {
-                    data.forEach(row => {
-                        const img = document.createElement('img');
-                        img.src = row.image_data; galleryContainer.appendChild(img);
-                    });
-                }
-            } catch (err) {
-                console.error("갤러리 로드 실패:", err);
-                galleryContainer.innerHTML = '<p style="color:red;">게시판 로드 실패 (DB 테이블 확인)</p>';
-            } finally { loadingIndicator.style.display = 'none'; }
+            // 벽이나 자기 몸 충돌
+            if(snakeX < 0 || snakeX >= canvas.width || snakeY < 0 || snakeY >= canvas.height || collision(newHead, snake)) {
+                clearInterval(game);
+                alert("게임 오버! 점수: " + score);
+                location.reload();
+            }
+
+            snake.unshift(newHead);
         }
 
-        document.getElementById('saveBoardBtn').addEventListener('click', async () => {
-            if (!originalImageData) { alert("저장할 그림이 없습니다."); return; }
-            const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
-            loadingIndicator.style.display = 'block';
-            try {
-                const { error } = await supabaseClient.from('gallery').insert([{ image_data: dataUrl }]);
-                if (error) throw error;
-                alert("공유 완료!"); fetchGallery();
-            } catch (err) {
-                console.error("저장 실패:", err); alert("저장 오류 (RLS 정책 확인)");
-            } finally { loadingIndicator.style.display = 'none'; }
-        });
-
-        ctx.fillStyle = "#888"; ctx.font = "24px sans-serif"; ctx.textAlign = "center";
-        ctx.fillText("🎨 위에서 그림을 하나 골라주세요!", canvas.width/2, canvas.height/2);
-        
-        fetchGallery();
+        let game = setInterval(draw, 120); // 속도 설정
     </script>
 </body>
 </html>

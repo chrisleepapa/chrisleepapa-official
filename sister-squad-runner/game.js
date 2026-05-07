@@ -24,6 +24,7 @@ let HITSTOP=0;
 const enemies=[];
 
 let GAME_STARTED=false;
+let groundOffset=0;
 
 PLAYER.y=H-220;
 
@@ -38,6 +39,18 @@ let GAME_STARTED=false;
     h:70,
     hp:100
   });
+}
+
+function startGame(){
+
+  GAME_STARTED=true;
+  PLAYER.y=H-220;
+  PLAYER.vy=0;
+  PLAYER.grounded=true;
+
+  if(enemies.length===0){
+    addEnemy();
+  }
 }
 
 setInterval(addEnemy,1800);
@@ -57,7 +70,9 @@ window.addEventListener('keydown',e=>{
 
 function update(){
 
-  if(!GAME_STARTED) return;
+if(!GAME_STARTED) return;
+
+  groundOffset=(groundOffset+(FEVER_MODE ? 12 : 8))%80;
   
   if(HITSTOP>0){
     HITSTOP--;
@@ -200,8 +215,15 @@ function draw(){
   cx.fillStyle='#15152A';
   cx.fillRect(0,H-120,W,120);
 
-  drawPlayer(cx);
+  cx.fillStyle='rgba(255,255,255,.18)';
 
+  for(let x=-groundOffset;x<W;x+=80){
+    cx.fillRect(x,H-64,42,6);
+  }
+
+  if(GAME_STARTED){
+    drawPlayer(cx);
+  }
   enemies.forEach(e=>{
 
     cx.fillStyle='#8B2EFF';

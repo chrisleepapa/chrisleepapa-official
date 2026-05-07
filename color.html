@@ -3,164 +3,207 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>모바일 지렁이 게임</title>
+    <title>전략 오목 - 스마트 AI</title>
     <style>
         body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            background-color: #f8f9fa;
-            font-family: sans-serif;
-            touch-action: manipulation; /* 더블탭 확대 방지 */
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 100vh; margin: 0; background-color: #f0e4d7; font-family: 'Malgun Gothic', sans-serif;
+            touch-action: manipulation;
         }
-        .ui { text-align: center; margin-bottom: 10px; }
-        .score { font-size: 24px; font-weight: bold; color: #2ecc71; }
-        
-        #game-container {
-            position: relative;
-            border: 5px solid #34495e;
-            border-radius: 10px;
-            background-color: white;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        .info { text-align: center; margin-bottom: 15px; }
+        .status {
+            font-size: 18px; font-weight: bold; padding: 10px 20px; border-radius: 20px;
+            background: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 10px;
         }
-        canvas { display: block; max-width: 100%; height: auto; }
-
-        /* 모바일 컨트롤러 스타일 */
-        .controls {
-            display: grid;
-            grid-template-columns: repeat(3, 70px);
-            grid-template-rows: repeat(2, 70px);
-            gap: 10px;
-            margin-top: 20px;
+        .mode-selector { margin-bottom: 15px; }
+        .mode-btn {
+            padding: 8px 15px; margin: 0 5px; border: 2px solid #8b5a2b; border-radius: 5px;
+            background: #fff; cursor: pointer; font-weight: bold;
         }
-        .btn {
-            width: 70px;
-            height: 70px;
-            background-color: #34495e;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            font-size: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
+        .mode-btn.active { background: #8b5a2b; color: #fff; }
+        #board-container {
+            position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            background-color: #dcb35c; border: 2px solid #8b5a2b; line-height: 0;
         }
-        .btn:active { background-color: #2ecc71; transform: scale(0.95); }
-        .btn-up { grid-column: 2; }
-        .btn-left { grid-column: 1; grid-row: 2; }
-        .btn-down { grid-column: 2; grid-row: 2; }
-        .btn-right { grid-column: 3; grid-row: 2; }
+        canvas { cursor: pointer; max-width: 95vw; max-height: 95vw; }
+        .reset-btn {
+            margin-top: 15px; padding: 10px 25px; background-color: #34495e;
+            color: white; border: none; border-radius: 5px; cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
-    <div class="ui">
-        <div class="score">Score: <span id="scoreVal">0</span></div>
+    <div class="info">
+        <div class="status" id="statusText">스마트 AI와 대결해보세요!</div>
+        <div class="mode-selector">
+            <button class="mode-btn" id="p1btn" onclick="setMode('1vs1')">1 vs 1</button>
+            <button class="mode-btn active" id="p2btn" onclick="setMode('COM')">1 vs COM (AI)</button>
+        </div>
     </div>
 
-    <div id="game-container">
-        <canvas id="snakeGame" width="300" height="300"></canvas>
+    <div id="board-container">
+        <canvas id="omokBoard" width="400" height="400"></canvas>
     </div>
 
-    <div class="controls">
-        <button class="btn btn-up" onclick="changeDir('UP')">▲</button>
-        <button class="btn btn-left" onclick="changeDir('LEFT')">◀</button>
-        <button class="btn btn-down" onclick="changeDir('DOWN')">▼</button>
-        <button class="btn btn-right" onclick="changeDir('RIGHT')">▶</button>
-    </div>
+    <button class="reset-btn" onclick="resetGame()">게임 리셋</button>
 
     <script>
-        const canvas = document.getElementById("snakeGame");
+        const canvas = document.getElementById("omokBoard");
         const ctx = canvas.getContext("2d");
-        const scoreElement = document.getElementById("scoreVal");
+        const statusText = document.getElementById("statusText");
 
-        const box = 15; // 모바일을 위해 칸 크기 소폭 조정
-        let score = 0;
-        let snake = [{ x: 10 * box, y: 10 * box }];
-        let food = {
-            x: Math.floor(Math.random() * 19) * box,
-            y: Math.floor(Math.random() * 19) * box
-        };
-        let d;
+        const size = 15;
+        const padding = 25;
+        const cellSize = (canvas.width - padding * 2) / (size - 1);
+        let board = Array.from(Array(size), () => Array(size).fill(0));
+        let turn = 1; // 1: 사용자(흑), 2: AI(백)
+        let gameOver = false;
+        let gameMode = 'COM';
 
-        // 방향 전환 함수 (모바일/PC 공용)
-        function changeDir(newDir) {
-            if(newDir == "LEFT" && d != "RIGHT") d = "LEFT";
-            else if(newDir == "UP" && d != "DOWN") d = "UP";
-            else if(newDir == "RIGHT" && d != "LEFT") d = "RIGHT";
-            else if(newDir == "DOWN" && d != "UP") d = "DOWN";
+        function setMode(mode) {
+            gameMode = mode;
+            document.getElementById('p1btn').classList.toggle('active', mode === '1vs1');
+            document.getElementById('p2btn').classList.toggle('active', mode === 'COM');
+            resetGame();
         }
 
-        // 키보드 지원
-        document.addEventListener("keydown", (e) => {
-            if(e.keyCode == 37) changeDir("LEFT");
-            else if(e.keyCode == 38) changeDir("UP");
-            else if(e.keyCode == 39) changeDir("RIGHT");
-            else if(e.keyCode == 40) changeDir("DOWN");
+        function drawBoard() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = "#4d3319";
+            for (let i = 0; i < size; i++) {
+                ctx.beginPath();
+                ctx.moveTo(padding, padding + i * cellSize);
+                ctx.lineTo(canvas.width - padding, padding + i * cellSize);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(padding + i * cellSize, padding);
+                ctx.lineTo(padding + i * cellSize, canvas.height - padding);
+                ctx.stroke();
+            }
+            for (let r = 0; r < size; r++) {
+                for (let c = 0; c < size; c++) {
+                    if (board[r][c] !== 0) drawStone(r, c, board[r][c]);
+                }
+            }
+        }
+
+        function drawStone(row, col, color) {
+            const x = padding + col * cellSize;
+            const y = padding + row * cellSize;
+            ctx.beginPath();
+            ctx.arc(x, y, cellSize * 0.42, 0, Math.PI * 2);
+            const grad = ctx.createRadialGradient(x-3, y-3, 2, x, y, cellSize*0.45);
+            if (color === 1) { grad.addColorStop(0, "#555"); grad.addColorStop(1, "#000"); }
+            else { grad.addColorStop(0, "#fff"); grad.addColorStop(1, "#ccc"); }
+            ctx.fillStyle = grad; ctx.fill();
+            ctx.strokeStyle = color === 1 ? "#000" : "#999"; ctx.stroke();
+        }
+
+        canvas.addEventListener("click", (e) => {
+            if (gameOver || (gameMode === 'COM' && turn === 2)) return;
+
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX - rect.left) * (canvas.width / rect.width);
+            const y = (e.clientY - rect.top) * (canvas.height / rect.height);
+            const col = Math.round((x - padding) / cellSize);
+            const row = Math.round((y - padding) / cellSize);
+
+            if (row >= 0 && row < size && col >= 0 && col < size && board[row][col] === 0) {
+                placeStone(row, col);
+                if (!gameOver && gameMode === 'COM' && turn === 2) {
+                    statusText.innerText = "AI가 생각 중...";
+                    setTimeout(smartAiMove, 600);
+                }
+            }
         });
 
-        function collision(head, array) {
-            for(let i = 0; i < array.length; i++) {
-                if(head.x == array[i].x && head.y == array[i].y) return true;
+        function placeStone(row, col) {
+            board[row][col] = turn;
+            drawBoard();
+            if (checkWin(row, col, turn)) {
+                statusText.innerText = (turn === 1 ? "흑돌" : "백돌") + " 승리! 🎉";
+                gameOver = true;
+            } else {
+                turn = (turn === 1) ? 2 : 1;
+                statusText.innerText = (turn === 1 ? "흑돌" : "백돌") + " 차례";
+            }
+        }
+
+        // 승리 조건 체크 (재사용 가능하게 수정)
+        function checkWin(r, c, p) {
+            const dirs = [[0,1],[1,0],[1,1],[1,-1]];
+            for (let [dr, dc] of dirs) {
+                let cnt = 1;
+                for (let i=1; i<5; i++) {
+                    let nr=r+dr*i, nc=c+dc*i;
+                    if (nr>=0 && nr<size && nc>=0 && nc<size && board[nr][nc]===p) cnt++; else break;
+                }
+                for (let i=1; i<5; i++) {
+                    let nr=r-dr*i, nc=c-dc*i;
+                    if (nr>=0 && nr<size && nc>=0 && nc<size && board[nr][nc]===p) cnt++; else break;
+                }
+                if (cnt >= 5) return true;
             }
             return false;
         }
 
-        function draw() {
-            ctx.fillStyle = "white";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        // --- 스마트 AI 로직 (가중치 기반 검색) ---
+        function smartAiMove() {
+            let bestScore = -1;
+            let bestMove = null;
 
-            // 지렁이
-            for(let i = 0; i < snake.length; i++) {
-                ctx.fillStyle = (i == 0) ? "#27ae60" : "#2ecc71";
-                ctx.fillRect(snake[i].x, snake[i].y, box, box);
-                ctx.strokeStyle = "white";
-                ctx.strokeRect(snake[i].x, snake[i].y, box, box);
+            for (let r = 0; r < size; r++) {
+                for (let c = 0; c < size; c++) {
+                    if (board[r][c] === 0) {
+                        // AI 점수 (공격) + 플레이어 점수 (방어) 합산
+                        let score = evaluateSpot(r, c, 2) * 1.1 + evaluateSpot(r, c, 1);
+                        if (score > bestScore) {
+                            bestScore = score;
+                            bestMove = {r, c};
+                        }
+                    }
+                }
             }
-
-            // 먹이
-            ctx.fillStyle = "#e74c3c";
-            ctx.beginPath();
-            ctx.arc(food.x + box/2, food.y + box/2, box/2 - 1, 0, Math.PI * 2);
-            ctx.fill();
-
-            let snakeX = snake[0].x;
-            let snakeY = snake[0].y;
-
-            if( d == "LEFT") snakeX -= box;
-            if( d == "UP") snakeY -= box;
-            if( d == "RIGHT") snakeX += box;
-            if( d == "DOWN") snakeY += box;
-
-            if(snakeX == food.x && snakeY == food.y) {
-                score++;
-                scoreElement.innerHTML = score;
-                food = {
-                    x: Math.floor(Math.random() * 19) * box,
-                    y: Math.floor(Math.random() * 19) * box
-                };
-            } else {
-                snake.pop();
-            }
-
-            let newHead = { x: snakeX, y: snakeY };
-
-            // 벽이나 자기 몸 충돌
-            if(snakeX < 0 || snakeX >= canvas.width || snakeY < 0 || snakeY >= canvas.height || collision(newHead, snake)) {
-                clearInterval(game);
-                alert("게임 오버! 점수: " + score);
-                location.reload();
-            }
-
-            snake.unshift(newHead);
+            if (bestMove) placeStone(bestMove.r, bestMove.c);
         }
 
-        let game = setInterval(draw, 120); // 속도 설정
+        function evaluateSpot(r, c, p) {
+            const dirs = [[0,1],[1,0],[1,1],[1,-1]];
+            let totalScore = 0;
+            for (let [dr, dc] of dirs) {
+                let line = 1;
+                // 한 방향
+                for (let i=1; i<5; i++) {
+                    let nr=r+dr*i, nc=c+dc*i;
+                    if (nr>=0 && nr<size && nc>=0 && nc<size && board[nr][nc]===p) line++;
+                    else break;
+                }
+                // 반대 방향
+                for (let i=1; i<5; i++) {
+                    let nr=r-dr*i, nc=c-dc*i;
+                    if (nr>=0 && nr<size && nc>=0 && nc<size && board[nr][nc]===p) line++;
+                    else break;
+                }
+                
+                // 가중치 계산: 5목 완성에 매우 높은 점수, 4목 방어에 높은 점수
+                if (line >= 5) totalScore += 100000;
+                else if (line === 4) totalScore += 10000;
+                else if (line === 3) totalScore += 1000;
+                else if (line === 2) totalScore += 100;
+                else totalScore += 10;
+            }
+            return totalScore;
+        }
+
+        function resetGame() {
+            board = Array.from(Array(size), () => Array(size).fill(0));
+            turn = 1; gameOver = false;
+            statusText.innerText = "흑돌 차례 (게임 시작)";
+            drawBoard();
+        }
+
+        drawBoard();
     </script>
 </body>
 </html>

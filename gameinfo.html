@@ -353,6 +353,190 @@
         .tag-blue-marble { background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.4); color: var(--gold-light); }
         .tag-maze { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #ccc; }
 
+        /* ── 댓글 섹션 스타일 (추가됨) ── */
+        .comments-section {
+            max-width: 800px;
+            margin: 80px auto 0;
+            padding: 0 20px 100px;
+            position: relative;
+            z-index: 10;
+            animation: fadeUp 1s ease 0.6s both;
+        }
+        .comments-divider {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+        .comments-divider::before,
+        .comments-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(201,168,76,0.3), transparent);
+        }
+        .comments-divider-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            letter-spacing: 0.3em;
+            color: var(--gold);
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .comment-form {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(201,168,76,0.2);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(5px);
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            user-select: text;
+        }
+        .comment-form-label {
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            color: var(--gold-light);
+            text-transform: uppercase;
+            margin-bottom: 18px;
+            display: block;
+        }
+        .comment-input-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .cm-input {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 12px 16px;
+            color: #f0ece4;
+            font-family: 'Pretendard', sans-serif;
+            font-size: 0.9rem;
+            transition: border-color 0.3s;
+            outline: none;
+            width: 100%;
+            -webkit-user-select: text;
+            user-select: text;
+        }
+        .cm-input:focus {
+            border-color: rgba(201,168,76,0.5);
+            background: rgba(255,255,255,0.06);
+        }
+        .cm-input::placeholder { color: #555; }
+        #cm-name { max-width: 200px; flex-shrink: 0; }
+        #cm-body {
+            resize: none;
+            height: 80px;
+            line-height: 1.6;
+        }
+        .cm-submit-row {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 12px;
+        }
+        .cm-submit-btn {
+            font-family: 'Cinzel', serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            padding: 12px 28px;
+            background: linear-gradient(135deg, var(--gold), #a07830);
+            color: #000;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+        .cm-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(201,168,76,0.3);
+        }
+        .cm-submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .comment-list { display: flex; flex-direction: column; gap: 16px; }
+
+        .comment-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            padding: 20px 24px;
+            transition: border-color 0.3s;
+            animation: fadeUp 0.4s ease both;
+        }
+        .comment-card:hover { border-color: rgba(201,168,76,0.2); }
+        .comment-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        .comment-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(201,168,76,0.4), rgba(100,60,200,0.4));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Cinzel', serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--gold-light);
+            border: 1px solid rgba(201,168,76,0.3);
+            flex-shrink: 0;
+        }
+        .comment-nickname {
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--gold-light);
+            letter-spacing: 1px;
+        }
+        .comment-date {
+            font-size: 0.75rem;
+            color: #444;
+            margin-left: auto;
+            font-family: 'Pretendard', sans-serif;
+        }
+        .comment-content {
+            font-family: 'Pretendard', 'Noto Serif KR', sans-serif;
+            font-size: 0.95rem;
+            color: #c8c4bc;
+            line-height: 1.7;
+            padding-left: 44px;
+            -webkit-user-select: text;
+            user-select: text;
+        }
+
+        .cm-empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: #444;
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+        }
+        .cm-empty span { display: block; font-size: 1.5rem; margin-bottom: 10px; opacity: 0.5; }
+
+        .cm-loading {
+            text-align: center;
+            padding: 30px;
+            color: #555;
+            font-family: 'Cinzel', serif;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+        }
+
         @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
         @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
@@ -464,6 +648,28 @@
         </div>
     </main>
 
+    <!-- ── 방명록(댓글) 섹션 추가됨 ── -->
+    <section class="comments-section">
+        <div class="comments-divider">
+            <span class="comments-divider-title" data-i18n="comments_title">Guestbook</span>
+        </div>
+
+        <div class="comment-form">
+            <span class="comment-form-label" data-i18n="comments_leave">✦ 한마디 남겨주세요</span>
+            <div class="comment-input-row">
+                <input id="cm-name" class="cm-input" type="text" placeholder="닉네임" maxlength="20" autocomplete="off">
+                <textarea id="cm-body" class="cm-input" placeholder="게임을 즐기고 느낀 점, 응원의 한마디를 남겨주세요 🙏" maxlength="300"></textarea>
+            </div>
+            <div class="cm-submit-row">
+                <button class="cm-submit-btn" onclick="submitComment()" data-i18n="comments_submit">남기기</button>
+            </div>
+        </div>
+
+        <div id="cm-list" class="comment-list">
+            <div class="cm-loading" data-i18n="comments_loading">· · ·</div>
+        </div>
+    </section>
+
     <footer>
         <p data-i18n="footer_text">© 2026 Chris LEE.PAPA — The Creative Archive</p>
     </footer>
@@ -492,7 +698,12 @@
                 book_desc: "아빠의 서재에서 중력과 균형의 법칙에 도전하세요. 조심스럽게 책을 떨어뜨려 가장 높이 쌓아 올리는 마스터가 되어보세요!",
                 toast_copy: "링크가 복사되었습니다 ✓",
                 toast_error: "지원하지 않는 브라우저입니다.",
-                footer_text: "© 2026 Chris LEE.PAPA — The Creative Archive"
+                footer_text: "© 2026 Chris LEE.PAPA — The Creative Archive",
+                comments_title: "Guestbook",
+                comments_leave: "✦ 한마디 남겨주세요",
+                comments_submit: "남기기",
+                comments_loading: "· · ·",
+                comments_empty: "첫 번째 기록을 남겨주세요"
             },
             en: {
                 nav_home: "Home",
@@ -515,7 +726,12 @@
                 book_desc: "Challenge the laws of gravity and balance in Dad's study. Drop the books carefully to become the ultimate stacking master!",
                 toast_copy: "Link copied to clipboard ✓",
                 toast_error: "Browser not supported.",
-                footer_text: "© 2026 Chris LEE.PAPA — The Creative Archive"
+                footer_text: "© 2026 Chris LEE.PAPA — The Creative Archive",
+                comments_title: "Guestbook",
+                comments_leave: "✦ Leave a message",
+                comments_submit: "Submit",
+                comments_loading: "· · ·",
+                comments_empty: "Be the first to leave a message"
             }
         };
 
@@ -605,6 +821,91 @@
             else { showToast(i18n[currentLang].toast_error); }
         }
         function showToast(msg) { toast.textContent = msg; toast.style.display = 'block'; setTimeout(() => { toast.style.display = 'none'; }, 2500); }
+
+        // ── Supabase 설정 및 댓글 기능 (추가됨) ──
+        const SUPA_URL = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
+        const SUPA_KEY = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
+        const PAGE_ID  = '/gameinfo'; // gameinfo 페이지 고유 ID로 변경
+
+        async function fetchComments() {
+            const list = document.getElementById('cm-list');
+            try {
+                const res = await fetch(
+                    `${SUPA_URL}/rest/v1/comments?page=eq.${encodeURIComponent(PAGE_ID)}&order=created_at.desc`,
+                    { headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` } }
+                );
+                const data = await res.json();
+                if (!Array.isArray(data) || data.length === 0) {
+                    list.innerHTML = `<div class="cm-empty"><span>✦</span><span data-i18n="comments_empty">${i18n[currentLang].comments_empty}</span></div>`;
+                    return;
+                }
+                list.innerHTML = data.map((c, i) => {
+                    const initial = c.nickname.charAt(0).toUpperCase();
+                    const date = c.created_at ? c.created_at.slice(0,10) : '';
+                    // 태그가 실행되지 않도록 특수문자 변환
+                    const escaped = c.content.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+                    return `
+                    <div class="comment-card" style="animation-delay:${i * 0.05}s">
+                        <div class="comment-meta">
+                            <div class="comment-avatar">${initial}</div>
+                            <span class="comment-nickname">${c.nickname}</span>
+                            <span class="comment-date">${date}</span>
+                        </div>
+                        <div class="comment-content">${escaped}</div>
+                    </div>`;
+                }).join('');
+            } catch(e) {
+                list.innerHTML = `<div class="cm-empty"><span>✦</span>잠시 후 다시 시도해주세요.</div>`;
+            }
+        }
+
+        async function submitComment() {
+            const nickname = document.getElementById('cm-name').value.trim();
+            const content  = document.getElementById('cm-body').value.trim();
+            const btn = document.querySelector('.cm-submit-btn');
+
+            if (!nickname || !content) {
+                showToast(currentLang === 'ko' ? '닉네임과 내용을 입력해주세요.' : 'Please enter your nickname and message.');
+                return;
+            }
+            if (content.length < 2) {
+                showToast(currentLang === 'ko' ? '내용을 좀 더 입력해주세요.' : 'Please write a bit more.');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = '...';
+
+            try {
+                const res = await fetch(`${SUPA_URL}/rest/v1/comments`, {
+                    method: 'POST',
+                    headers: {
+                        apikey: SUPA_KEY,
+                        Authorization: `Bearer ${SUPA_KEY}`,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=minimal'
+                    },
+                    body: JSON.stringify({ page: PAGE_ID, nickname, content })
+                });
+                if (res.ok || res.status === 201) {
+                    document.getElementById('cm-name').value = '';
+                    document.getElementById('cm-body').value = '';
+                    showToast(currentLang === 'ko' ? '소중한 한마디 감사합니다 🙏' : 'Thank you for your message 🙏');
+                    fetchComments();
+                } else {
+                    const err = await res.text();
+                    showToast(currentLang === 'ko' ? '오류가 발생했습니다. 다시 시도해주세요.' : 'An error occurred. Please try again.');
+                    console.error('Supabase error:', err);
+                }
+            } catch(e) {
+                showToast(currentLang === 'ko' ? '네트워크 오류입니다.' : 'Network error.');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = i18n[currentLang]?.comments_submit || '남기기';
+            }
+        }
+
+        fetchComments();
 
         // ── 우주 배경 캔버스 애니메이션 ──
         const canvas = document.getElementById('stars-canvas');

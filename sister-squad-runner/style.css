@@ -96,6 +96,7 @@ canvas{
 
   transition:.4s;
 }
+
 #characterSelect{
   position:fixed;
   inset:0;
@@ -180,16 +181,27 @@ canvas{
   box-shadow:0 18px 42px rgba(255,215,0,.22);
 }
 
-.character-card img{
+.character-preview{
   display:block;
   width:100%;
   height:170px;
-  object-fit:cover;
-  object-position:left center;
   margin-bottom:14px;
   border-radius:18px;
 
-  background:#050816;
+  background-color:#050816;
+  background-position:0 center;
+  background-repeat:no-repeat;
+  background-size:500% 100%;
+
+  animation:characterPreview 1s steps(5) infinite;
+}
+
+.preview-jeong{
+  background-image:url('/images/jeong_spritesheet.png');
+}
+
+.preview-yul{
+  background-image:url('/images/yul_spritesheet.png');
 }
 
 .selector-help{
@@ -207,7 +219,19 @@ canvas{
     min-height:210px;
   }
 
-  .character-card img{
+  .character-preview{
     height:130px;
+  }
+}
+
+
+@keyframes characterPreview{
+
+  from{
+    background-position:0 center;
+  }
+
+  to{
+    background-position:100% center;
   }
 }

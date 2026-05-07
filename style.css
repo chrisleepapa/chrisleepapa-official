@@ -1,0 +1,98 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  overflow:hidden;
+  background:#050816;
+  font-family:Arial, sans-serif;
+}
+
+canvas{
+  display:block;
+  width:100vw;
+  height:100vh;
+}
+
+#hud{
+  position:fixed;
+  top:20px;
+  left:20px;
+  z-index:100;
+
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.hud-pill{
+  padding:14px 20px;
+  border-radius:18px;
+
+  color:white;
+
+  background:
+  linear-gradient(
+    135deg,
+    rgba(255,255,255,.14),
+    rgba(255,255,255,.05)
+  );
+
+  border:1px solid rgba(255,255,255,.16);
+
+  backdrop-filter:blur(18px);
+}
+
+#score,
+#combo{
+  color:#FFD700;
+  font-weight:bold;
+}
+
+#feverBar{
+  width:220px;
+  height:14px;
+  border-radius:20px;
+  overflow:hidden;
+  background:rgba(255,255,255,.08);
+}
+
+#feverFill{
+  width:0%;
+  height:100%;
+
+  background:
+  linear-gradient(
+    90deg,
+    #FF69B4,
+    #FFD700,
+    #8BE9FF
+  );
+}
+
+#skillUI{
+  color:white;
+  font-weight:bold;
+}
+
+#warning{
+  position:fixed;
+  inset:0;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  font-size:80px;
+  font-weight:900;
+
+  color:#FF3333;
+
+  opacity:0;
+
+  pointer-events:none;
+
+  transition:.4s;
+}

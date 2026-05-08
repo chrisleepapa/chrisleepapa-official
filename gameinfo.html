@@ -610,6 +610,55 @@
                 padding: 12px 30px;
             }
         }
+
+        /* ── 오디오 플레이어 스타일 추가 ── */
+        .audio-widget {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(10, 10, 15, 0.85);
+            border: 1px solid rgba(201,168,76,0.3);
+            border-radius: 30px;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 9999;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            transition: opacity 0.4s, transform 0.4s;
+        }
+        .audio-widget.hidden {
+            opacity: 0;
+            transform: translateY(30px) scale(0.9);
+            pointer-events: none;
+        }
+        .audio-btn {
+            background: none;
+            border: none;
+            color: var(--gold-light);
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.2s, color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .audio-btn:hover {
+            transform: scale(1.15);
+            color: #fff;
+        }
+        #audio-volume {
+            width: 70px;
+            accent-color: var(--gold);
+            cursor: pointer;
+            height: 4px;
+            outline: none;
+        }
+        @media (max-width: 600px) {
+            .audio-widget { bottom: 20px; right: 20px; padding: 8px 15px; gap: 10px; }
+            #audio-volume { width: 50px; }
+        }
     </style>
 </head>
 <body>
@@ -663,7 +712,7 @@
     <div class="toast-msg" id="toast"></div>
 
     <main class="game-selection-wrapper">
-        <span class="section-heading-tag" data-i18n="game_tag">✦ &nbsp; GAME CENTER &nbsp; ✦</span>
+        <span class="section-heading-tag" data-i18n="game_tag">✦   GAME CENTER   ✦</span>
         <h2 class="section-heading-title" data-i18n="game_title">Choose Your Game</h2>
 
         <div class="game-cards">
@@ -702,7 +751,6 @@
         </div>
     </main>
 
-    <!-- ── 방명록(댓글) 섹션 ── -->
     <section class="comments-section">
         <div class="comments-divider">
             <span class="comments-divider-title" data-i18n="comments_title">Guestbook</span>
@@ -728,6 +776,15 @@
         <p data-i18n="footer_text">© 2026 Chris LEE.PAPA — The Creative Archive</p>
     </footer>
 
+    <div id="audio-player-widget" class="audio-widget">
+        <audio id="bg-audio" loop autoplay>
+            <source src="https://open.spotify.com/album/4UbsRkUcH0QJQGS6SUbtN1?si=l16D7H-7RfGCbLt5EzswUQ" type="audio/mpeg">
+        </audio>
+        <button id="audio-play-btn" class="audio-btn" title="Play/Pause">⏸️</button>
+        <input type="range" id="audio-volume" min="0" max="1" step="0.05" value="0.5" title="Volume">
+        <button id="audio-close-btn" class="audio-btn" title="Close">✖</button>
+    </div>
+
     <script>
         // ── Multilingual System ──
         const i18n = {
@@ -742,7 +799,7 @@
                 share_copy: "COPY LINK",
                 share_sns: "SNS SHARE",
                 share_close: "Close",
-                game_tag: "✦ &nbsp; GAME CENTER &nbsp; ✦",
+                game_tag: "✦   GAME CENTER   ✦",
                 game_title: "Choose Your Game",
                 board_tag: "Board Game",
                 board_title: "브루마블 게임",
@@ -773,7 +830,7 @@
                 share_copy: "COPY LINK",
                 share_sns: "SNS SHARE",
                 share_close: "Close",
-                game_tag: "✦ &nbsp; GAME CENTER &nbsp; ✦",
+                game_tag: "✦   GAME CENTER   ✦",
                 game_title: "Choose Your Game",
                 board_tag: "Board Game",
                 board_title: "Blue Marble Game",
@@ -893,11 +950,11 @@
         function showToast(msg) { toast.textContent = msg; toast.style.display = 'block'; setTimeout(() => { toast.style.display = 'none'; }, 2500); }
         function escapeHTML(value) {
             return String(value)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#039;');
+                .replace(/&/g, '&')
+                .replace(/</g, '<')
+                .replace(/>/g, '>')
+                .replace(/"/g, '"')
+                .replace(/'/g, ''');
         }
 
         // ── Supabase 설정 및 댓글 기능 ──
@@ -1021,6 +1078,41 @@
         }
         window.addEventListener('resize', resize);
         resize(); draw();
+
+        // ── 플로팅 오디오 플레이어 로직 추가 ──
+        const bgAudio = document.getElementById('bg-audio');
+        const playBtn = document.getElementById('audio-play-btn');
+        const volSlider = document.getElementById('audio-volume');
+        const closeBtn = document.getElementById('audio-close-btn');
+        const audioWidget = document.getElementById('audio-player-widget');
+
+        bgAudio.volume = 0.5;
+
+        // 브라우저의 자동재생 방지 정책 처리
+        bgAudio.play().catch(() => {
+            // 자동재생이 막힌 경우 아이콘을 '재생(▶️)'으로 변경
+            playBtn.textContent = '▶️';
+        });
+
+        playBtn.addEventListener('click', () => {
+            if (bgAudio.paused) {
+                bgAudio.play();
+                playBtn.textContent = '⏸️';
+            } else {
+                bgAudio.pause();
+                playBtn.textContent = '▶️';
+            }
+        });
+
+        volSlider.addEventListener('input', (e) => {
+            bgAudio.volume = e.target.value;
+        });
+
+        closeBtn.addEventListener('click', () => {
+            bgAudio.pause();
+            audioWidget.classList.add('hidden'); // 위젯을 화면에서 숨김
+        });
+
     </script>
 </body>
 </html>

@@ -30,8 +30,10 @@
         img { -webkit-user-drag: none; }
         body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E"); pointer-events: none; z-index: 900; opacity: 0.3; }
         a { text-decoration: none; color: inherit; }
+        button { appearance: none; background: none; border: 0; padding: 0; font: inherit; color: inherit; }
 
-        nav { position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(3, 3, 5, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        nav { position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(3, 3, 5, 0); backdrop-filter: blur(0px); border-bottom: 1px solid rgba(255, 255, 255, 0); transition: background 0.5s, backdrop-filter 0.5s, border-color 0.5s; }
+        nav.scrolled { background: rgba(3, 3, 5, 0.88); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
         .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); z-index: 1001; text-decoration: none; white-space: nowrap; }
         .nav-right { display: flex; align-items: center; gap: 24px; }
         .nav-links { display: flex; gap: 30px; }
@@ -139,7 +141,7 @@
 </head>
 <body>
 
-    <nav>
+    <nav id="main-nav">
         <a href="index.html" class="brand-logo">Chris LEE.PAPA</a>
         <div class="nav-right">
             <div class="nav-links" id="navLinks">
@@ -150,42 +152,35 @@
                 <a href="movie.html" data-i18n="nav_movie">Movies</a>
             </div>
 
-            <!-- Language Switcher Dropdown -->
             <div class="lang-dropdown-wrapper" id="langWrapper">
-                <div class="lang-current" onclick="toggleLangDropdown()">
+                <button type="button" class="lang-current" onclick="toggleLangDropdown()" aria-expanded="false" aria-controls="langMenu" aria-label="Change language">
                     <span id="currentLangText">KOR</span>
-                    <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>
-                <div class="lang-dropdown-menu">
-                    <span class="lang-btn active" data-lang="ko" onclick="setLanguage('ko')">KOR</span>
-                    <span class="lang-btn" data-lang="en" onclick="setLanguage('en')">ENG</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="lang-dropdown-menu" id="langMenu">
+                    <button type="button" class="lang-btn active" data-lang="ko" onclick="setLanguage('ko')">KOR</button>
+                    <button type="button" class="lang-btn" data-lang="en" onclick="setLanguage('en')">ENG</button>
                 </div>
             </div>
-
-            <!-- Share Icon Button -->
-            <div class="share-trigger" onclick="openShareModal()" title="Share">
-                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                    <circle cx="18" cy="5" r="3"></circle>
-                    <circle cx="6" cy="12" r="3"></circle>
-                    <circle cx="18" cy="19" r="3"></circle>
-                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+            <button type="button" class="share-trigger" onclick="openShareModal()" title="Share" aria-label="Share this page">
+                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true">
+                    <circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle>
+                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
                 </svg>
-            </div>
-
-            <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
+            </button>
+            <button type="button" class="menu-toggle" id="mobile-menu" aria-label="Open navigation menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
         </div>
     </nav>
 
-    <div class="modal-overlay-share" id="shareOverlay" onclick="closeShareModal(event)">
+    <div class="modal-overlay-share" id="shareOverlay" onclick="closeShareModal(event)" aria-hidden="true">
         <div class="share-modal" onclick="event.stopPropagation()">
             <h3 data-i18n="share_title">SHARE JUNG'S PROFILE</h3>
             <p data-i18n="share_desc">따뜻한 감성과 교감의 마스터, 정이를 소개해보세요.</p>
             <div class="share-buttons">
-                <button class="modal-btn btn-copy" onclick="copyURL()" data-i18n="share_copy">COPY LINK</button>
-                <button class="modal-btn btn-sns" onclick="shareViaWebAPI()" data-i18n="share_sns">SNS SHARE</button>
+                <button type="button" class="modal-btn btn-copy" onclick="copyURL()" data-i18n="share_copy">COPY LINK</button>
+                <button type="button" class="modal-btn btn-sns" onclick="shareViaWebAPI()" data-i18n="share_sns">SNS SHARE</button>
             </div>
-            <button class="modal-btn btn-close-share" onclick="closeShareModal(null)" data-i18n="share_close">Close</button>
+            <button type="button" class="modal-btn btn-close-share" onclick="closeShareModal(null)" data-i18n="share_close">Close</button>
         </div>
     </div>
 
@@ -344,6 +339,8 @@
             if (langTextObj) langTextObj.textContent = lang === 'ko' ? 'KOR' : 'ENG';
             const langWrapper = document.getElementById('langWrapper');
             if (langWrapper) langWrapper.classList.remove('active');
+            const langCurrent = document.querySelector('.lang-current');
+            if (langCurrent) langCurrent.setAttribute('aria-expanded', 'false');
         }
 
         // Initialize language
@@ -355,7 +352,11 @@
 
         // ── Dropdown Toggle ──
         function toggleLangDropdown() {
-            document.getElementById('langWrapper').classList.toggle('active');
+            const wrapper = document.getElementById('langWrapper');
+            if (!wrapper) return;
+            const isOpen = wrapper.classList.toggle('active');
+            const langCurrent = document.querySelector('.lang-current');
+            if (langCurrent) langCurrent.setAttribute('aria-expanded', String(isOpen));
         }
 
         // Close dropdown when clicking outside
@@ -363,16 +364,32 @@
             const wrapper = document.getElementById('langWrapper');
             if (wrapper && !wrapper.contains(e.target)) {
                 wrapper.classList.remove('active');
+                const langCurrent = document.querySelector('.lang-current');
+                if (langCurrent) langCurrent.setAttribute('aria-expanded', 'false');
             }
         });
 
         function safeNavigate(url) { if (url && url.trim() !== "") { window.location.assign(url); } }
-        const menuToggle = document.getElementById('mobile-menu'); const navLinks = document.getElementById('navLinks');
-        menuToggle.addEventListener('click', () => { menuToggle.classList.toggle('active'); navLinks.classList.toggle('active'); });
+        const menuToggle = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('navLinks');
+        if (menuToggle && navLinks) {
+            menuToggle.addEventListener('click', () => {
+                const isOpen = menuToggle.classList.toggle('active');
+                navLinks.classList.toggle('active', isOpen);
+                menuToggle.setAttribute('aria-expanded', String(isOpen));
+            });
+        }
+
+        const mainNav = document.getElementById('main-nav');
+        function updateNavState() {
+            if (mainNav) mainNav.classList.toggle('scrolled', window.scrollY > 40);
+        }
+        window.addEventListener('scroll', updateNavState, { passive: true });
+        updateNavState();
 
         const shareOverlay = document.getElementById('shareOverlay'); const toast = document.getElementById('toast');
-        function openShareModal() { shareOverlay.style.display = 'flex'; setTimeout(() => shareOverlay.classList.add('active'), 10); }
-        function closeShareModal(e) { if (e && e.target !== shareOverlay && e.type !== 'click') return; shareOverlay.classList.remove('active'); setTimeout(() => shareOverlay.style.display = 'none', 300); }
+        function openShareModal() { shareOverlay.style.display = 'flex'; shareOverlay.setAttribute('aria-hidden', 'false'); setTimeout(() => shareOverlay.classList.add('active'), 10); }
+        function closeShareModal(e) { if (e && e.target !== shareOverlay) return; shareOverlay.classList.remove('active'); shareOverlay.setAttribute('aria-hidden', 'true'); setTimeout(() => shareOverlay.style.display = 'none', 300); }
 
         async function copyURL() {
             const currentUrl = window.location.href; let success = false;

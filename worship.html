@@ -28,10 +28,13 @@
         html { scroll-behavior: smooth; background-color: var(--bg); }
         body { background-color: var(--bg); color: var(--text); font-family: 'Pretendard', 'Noto Serif KR', serif; line-height: 1.6; overflow-x: hidden; background-image: radial-gradient(circle at top center, rgba(60, 30, 80, 0.4), transparent 60%), radial-gradient(circle at bottom, rgba(40, 30, 10, 0.6), transparent 70%); -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
         img { -webkit-user-drag: none; }
+        a { text-decoration: none; color: inherit; }
+        button { appearance: none; background: none; border: 0; padding: 0; font: inherit; color: inherit; }
         body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E"); pointer-events: none; z-index: 900; opacity: 0.4; }
 
-        nav { position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(3, 3, 5, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
-        .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); z-index: 1001; text-decoration: none; white-space: nowrap; }
+        nav { position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(3, 3, 5, 0); backdrop-filter: blur(0px); border-bottom: 1px solid rgba(255, 255, 255, 0); transition: background 0.5s, backdrop-filter 0.5s, border-color 0.5s; }
+        nav.scrolled { background: rgba(3, 3, 5, 0.88); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); z-index: 1001; white-space: nowrap; }
         
         .nav-right { display: flex; align-items: center; gap: 24px; }
         .nav-links { display: flex; gap: 30px; }
@@ -372,7 +375,8 @@
             nav { padding: 0 20px; }
             .brand-logo { font-size: 1.1rem; }
             .nav-links { display: none; }
-            .nav-links.active { display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height)); background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 25px; z-index: 1002; }
+            .nav-links.active { display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height)); background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 28px; z-index: 1002; }
+            .nav-links.active a { font-size: 1rem; }
             .nav-right { gap: 14px; }
             .menu-toggle { display: flex; }
             .page-header { height: 350px; }
@@ -387,7 +391,7 @@
 </head>
 <body>
 
-    <nav>
+    <nav id="main-nav">
         <a href="index.html" class="brand-logo">Chris LEE.PAPA</a>
         <div class="nav-right">
             <div class="nav-links" id="navLinks">
@@ -399,17 +403,17 @@
             </div>
 
             <div class="lang-dropdown-wrapper" id="langWrapper">
-                <div class="lang-current" onclick="toggleLangDropdown()">
+                <button type="button" class="lang-current" onclick="toggleLangDropdown()" aria-expanded="false" aria-controls="langMenu" aria-label="Change language">
                     <span id="currentLangText">KOR</span>
-                    <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>
-                <div class="lang-dropdown-menu">
-                    <span class="lang-btn active" data-lang="ko" onclick="setLanguage('ko')">KOR</span>
-                    <span class="lang-btn" data-lang="en" onclick="setLanguage('en')">ENG</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="lang-dropdown-menu" id="langMenu">
+                    <button type="button" class="lang-btn active" data-lang="ko" onclick="setLanguage('ko')">KOR</button>
+                    <button type="button" class="lang-btn" data-lang="en" onclick="setLanguage('en')">ENG</button>
                 </div>
             </div>
 
-            <div class="share-trigger" onclick="openShareModal()" title="Share">
+            <button type="button" class="share-trigger" onclick="openShareModal()" title="Share" aria-label="Share this page">
                 <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                     <circle cx="18" cy="5" r="3"></circle>
                     <circle cx="6" cy="12" r="3"></circle>
@@ -417,9 +421,9 @@
                     <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
                     <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
                 </svg>
-            </div>
-
-            <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
+            </button>
+            
+            <button type="button" class="menu-toggle" id="mobile-menu" aria-label="Open navigation menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
         </div>
     </nav>
 
@@ -792,6 +796,7 @@
             if (langTextObj) langTextObj.textContent = lang === 'ko' ? 'KOR' : 'ENG';
             const langWrapper = document.getElementById('langWrapper');
             if (langWrapper) langWrapper.classList.remove('active');
+            document.querySelector('.lang-current').setAttribute('aria-expanded', 'false');
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -801,16 +806,32 @@
             fetchComments();
         });
 
-        function toggleLangDropdown() { document.getElementById('langWrapper').classList.toggle('active'); }
+        function toggleLangDropdown() {
+            const wrapper = document.getElementById('langWrapper');
+            const isOpen = wrapper.classList.toggle('active');
+            document.querySelector('.lang-current').setAttribute('aria-expanded', String(isOpen));
+        }
         document.addEventListener('click', function(e) {
             const wrapper = document.getElementById('langWrapper');
-            if (wrapper && !wrapper.contains(e.target)) wrapper.classList.remove('active');
+            if (wrapper && !wrapper.contains(e.target)) {
+                wrapper.classList.remove('active');
+                document.querySelector('.lang-current').setAttribute('aria-expanded', 'false');
+            }
         });
 
         function safeNavigate(url) { if (url && url.trim() !== "") { window.location.assign(url); } }
         const menuToggle = document.getElementById('mobile-menu');
         const navLinks = document.getElementById('navLinks');
-        menuToggle.addEventListener('click', () => { menuToggle.classList.toggle('active'); navLinks.classList.toggle('active'); });
+        menuToggle.addEventListener('click', () => {
+            const isOpen = menuToggle.classList.toggle('active');
+            navLinks.classList.toggle('active', isOpen);
+            menuToggle.setAttribute('aria-expanded', String(isOpen));
+        });
+
+        const mainNav = document.getElementById('main-nav');
+        window.addEventListener('scroll', () => {
+            mainNav.classList.toggle('scrolled', window.scrollY > 40);
+        }, { passive: true });
 
         function injectIframe(element, url) {
             const container = element.parentElement;

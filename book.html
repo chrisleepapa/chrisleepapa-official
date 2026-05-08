@@ -30,9 +30,11 @@
         img { -webkit-user-drag: none; }
         body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events: none; z-index: 900; opacity: 0.3; }
         a { text-decoration: none; color: inherit; }
-
-        nav { position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(3, 3, 5, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
-        .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); z-index: 1001; text-decoration: none; white-space: nowrap; }
+        button { appearance: none; background: none; border: 0; padding: 0; font: inherit; color: inherit; }
+        
+        nav { position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(3, 3, 5, 0); backdrop-filter: blur(0px); border-bottom: 1px solid rgba(255, 255, 255, 0); transition: background 0.5s, backdrop-filter 0.5s, border-color 0.5s; }
+        nav.scrolled { background: rgba(3, 3, 5, 0.88); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); z-index: 1001; white-space: nowrap; }
         
         .nav-right { display: flex; align-items: center; gap: 24px; }
         .nav-links { display: flex; gap: 30px; }
@@ -141,6 +143,7 @@
             .brand-logo { font-size: 1.1rem; } 
             .nav-links { display: none; } 
             .nav-links.active { display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height)); background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 25px; z-index: 1002; } 
+            .nav-links.active a { font-size: 1rem; }
             .nav-right { gap: 14px; }
             .menu-toggle { display: flex; } 
             .hero-card.sistersquad { padding: 45px 20px; } 
@@ -159,7 +162,7 @@
 </head>
 <body>
 
-    <nav>
+<nav id="main-nav">
         <a href="index.html" class="brand-logo">Chris LEE.PAPA</a>
         <div class="nav-right">
             <div class="nav-links" id="navLinks">
@@ -419,6 +422,14 @@
             }
         }
 
+        const mainNav = document.getElementById('main-nav');
+        function updateNavOnScroll() {
+            if (!mainNav) return;
+            mainNav.classList.toggle('scrolled', window.scrollY > 24);
+        }
+        window.addEventListener('scroll', updateNavOnScroll, { passive: true });
+        updateNavOnScroll();
+        
         const menuToggle = document.getElementById('mobile-menu');
         const navLinks = document.getElementById('navLinks');
         if (menuToggle && navLinks) {

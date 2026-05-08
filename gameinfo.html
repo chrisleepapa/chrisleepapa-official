@@ -1030,41 +1030,22 @@
         }
         window.addEventListener('resize', resize);
         resize(); draw();
-
-        // ── 플로팅 오디오 플레이어 로직 추가 ──
-        const bgAudio = document.getElementById('bg-audio');
-        const playBtn = document.getElementById('audio-play-btn');
-        const volSlider = document.getElementById('audio-volume');
-        const closeBtn = document.getElementById('audio-close-btn');
-        const audioWidget = document.getElementById('audio-player-widget');
-
-        bgAudio.volume = 0.5;
-
-        // 브라우저의 자동재생 방지 정책 처리
-        bgAudio.play().catch(() => {
-            // 자동재생이 막힌 경우 아이콘을 '재생(▶️)'으로 변경
-            playBtn.textContent = '▶️';
-        });
-
-        playBtn.addEventListener('click', () => {
-            if (bgAudio.paused) {
-                bgAudio.play();
-                playBtn.textContent = '⏸️';
-            } else {
-                bgAudio.pause();
-                playBtn.textContent = '▶️';
-            }
-        });
-
-        volSlider.addEventListener('input', (e) => {
-            bgAudio.volume = e.target.value;
-        });
-
-        closeBtn.addEventListener('click', () => {
-            bgAudio.pause();
-            audioWidget.classList.add('hidden'); // 위젯을 화면에서 숨김
-        });
-
     </script>
+
+  <!-- ========================= -->
+    <!-- Spotify Background Music -->
+    <!-- ========================= -->
+
+    <iframe
+        src="https://open.spotify.com/embed/album/4UbsRkUcH0QJQGS6SUbtN1?utm_source=generator"
+        width="0"
+        height="0"
+        frameborder="0"
+        allowfullscreen=""
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy"
+        style="position:absolute; left:-9999px;">
+    </iframe>
+
 </body>
 </html>

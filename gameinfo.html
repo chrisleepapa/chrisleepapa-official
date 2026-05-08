@@ -611,54 +611,6 @@
             }
         }
 
-        /* ── 오디오 플레이어 스타일 추가 ── */
-        .audio-widget {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: rgba(10, 10, 15, 0.85);
-            border: 1px solid rgba(201,168,76,0.3);
-            border-radius: 30px;
-            padding: 10px 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            z-index: 9999;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            transition: opacity 0.4s, transform 0.4s;
-        }
-        .audio-widget.hidden {
-            opacity: 0;
-            transform: translateY(30px) scale(0.9);
-            pointer-events: none;
-        }
-        .audio-btn {
-            background: none;
-            border: none;
-            color: var(--gold-light);
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: transform 0.2s, color 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .audio-btn:hover {
-            transform: scale(1.15);
-            color: #fff;
-        }
-        #audio-volume {
-            width: 70px;
-            accent-color: var(--gold);
-            cursor: pointer;
-            height: 4px;
-            outline: none;
-        }
-        @media (max-width: 600px) {
-            .audio-widget { bottom: 20px; right: 20px; padding: 8px 15px; gap: 10px; }
-            #audio-volume { width: 50px; }
-        }
     </style>
 </head>
 <body>

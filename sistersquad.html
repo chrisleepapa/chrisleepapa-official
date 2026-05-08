@@ -31,13 +31,64 @@
         body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E"); pointer-events: none; z-index: 900; opacity: 0.3; }
         a { text-decoration: none; color: inherit; }
 
-        nav { position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(3, 3, 5, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
-        .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); z-index: 1001; text-decoration: none; white-space: nowrap; }
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            width: 0%;
+            background: linear-gradient(90deg, var(--gold), var(--gold-light), #fff8e0, var(--gold));
+            background-size: 200% auto;
+            z-index: 2000;
+            transition: width 0.1s linear;
+            animation: shimmer-bar 3s linear infinite;
+        }
+        @keyframes shimmer-bar {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: var(--nav-height);
+            padding: 0 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(3, 3, 5, 0);
+            backdrop-filter: blur(0px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0);
+            transition: background 0.5s, backdrop-filter 0.5s, border-color 0.5s;
+        }
+        nav.scrolled {
+            background: rgba(3, 3, 5, 0.88);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .brand-logo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: var(--gold-light);
+            z-index: 1001;
+            white-space: nowrap;
+        }
         
         .nav-right { display: flex; align-items: center; gap: 24px; }
         .nav-links { display: flex; gap: 30px; }
-        .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; text-decoration: none; position: relative; }
-        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0%; height: 1px; background: var(--gold-light); transition: width 0.3s ease; }
+        .nav-links a {
+            font-family: 'Cinzel', serif;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            color: #a0a0b5;
+            transition: 0.3s;
+            text-transform: uppercase;
+            position: relative;
+        }        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0%; height: 1px; background: var(--gold-light); transition: width 0.3s ease; }
         .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
         .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
         
@@ -213,6 +264,7 @@
             .brand-logo { font-size: 1.1rem; } 
             .nav-links { display: none; } 
             .nav-links.active { display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height)); background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 25px; z-index: 1002; } 
+            .nav-links.active a { font-size: 1rem; }
             .nav-right { gap: 14px; }
             .menu-toggle { display: flex; } 
             .character-grid { grid-template-columns: 1fr; } 
@@ -233,7 +285,9 @@
 </head>
 <body>
 
-    <nav>
+ <div id="scroll-progress"></div>
+
+    <nav id="main-nav">
         <a href="index.html" class="brand-logo">Chris LEE.PAPA</a>
         <div class="nav-right">
             <div class="nav-links" id="navLinks">
@@ -246,9 +300,9 @@
 
             <!-- Language Switcher Dropdown -->
             <div class="lang-dropdown-wrapper" id="langWrapper">
-                <button type="button" class="lang-current" onclick="toggleLangDropdown()" aria-haspopup="true" aria-expanded="false" aria-controls="langMenu">
+                <button type="button" class="lang-current" onclick="toggleLangDropdown()" aria-expanded="false" aria-controls="langMenu" aria-label="Change language">
                     <span id="currentLangText">KOR</span>
-                    <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
                 </button>
                 <div class="lang-dropdown-menu" id="langMenu">
                     <button type="button" class="lang-btn active" data-lang="ko" onclick="setLanguage('ko')">KOR</button>
@@ -257,7 +311,7 @@
             </div>
 
             <!-- Share Icon Button -->
-            <button type="button" class="share-trigger" onclick="openShareModal()" aria-label="Share SISTER SQUAD">
+            <button type="button" class="share-trigger" onclick="openShareModal()" title="Share" aria-label="Share this page">
                 <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                     <circle cx="18" cy="5" r="3"></circle>
                     <circle cx="6" cy="12" r="3"></circle>
@@ -267,7 +321,7 @@
                 </svg>
             </button>
             
-            <button type="button" class="menu-toggle" id="mobile-menu" aria-label="Open menu" aria-controls="navLinks" aria-expanded="false"><span></span><span></span><span></span></button>
+            <button type="button" class="menu-toggle" id="mobile-menu" aria-label="Open navigation menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
         </div>
     </nav>
 
@@ -596,7 +650,7 @@
                 menuToggle.classList.toggle('active', isOpen);
                 navLinks.classList.toggle('active', isOpen);
                 menuToggle.setAttribute('aria-expanded', String(isOpen));
-                menuToggle.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+                menuToggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
             });
         }
         // ✅ 클릭 시 iframe을 동적으로 생성
@@ -634,6 +688,14 @@
         function shareViaWebAPI() { if (navigator.share) { navigator.share({ title: 'Chris LEE.PAPA - SISTER SQUAD', text: '두 자매의 마법 같은 모험 이야기', url: window.location.href }).catch(console.error); } else { showToast(i18n[currentLang].toast_error); } }
          function showToast(msg) { if (!toast) return; toast.textContent = msg; toast.style.display = 'block'; setTimeout(() => { toast.style.display = 'none'; }, 2500); }
 
+        const progressBar = document.getElementById('scroll-progress');
+        const mainNav = document.getElementById('main-nav');
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.body.scrollHeight - window.innerHeight;
+            if (progressBar) progressBar.style.width = (scrollTop / (docHeight || 1) * 100) + '%';
+            if (mainNav) mainNav.classList.toggle('scrolled', scrollTop > 40);
+        }, { passive: true });
 
         // ── Guestbook System ──
         const SUPA_URL = 'https://cvfmkcxmxkmemmshfttn.supabase.co';

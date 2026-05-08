@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>럭셔리 오목 - 캐릭터 대전</title>
+    <title>럭셔리 오목 - 캐릭터 대전 (Supabase 랭킹)</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
@@ -18,7 +18,40 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             min-height: 100vh; margin: 0; background-color: var(--bg-color);
             font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-            touch-action: manipulation; overflow: hidden;
+            touch-action: manipulation; overflow-x: hidden;
+            padding: 20px 0; box-sizing: border-box;
+        }
+
+        /* 🏆 랭킹 보드 (투명화 및 간소화) */
+        .leaderboard-wrapper {
+            position: fixed; top: 15px; left: 15px;
+            padding: 10px 15px; background: rgba(0, 0, 0, 0.15); /* 매우 투명하게 */
+            border-radius: 12px; width: 180px; text-align: left;
+            backdrop-filter: blur(3px); z-index: 90;
+            transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .leaderboard-wrapper h3 { margin: 0 0 8px 0; color: #f1c40f; font-size: 13px; font-weight: 900; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+        .leaderboard-list { list-style: none; padding: 0; margin: 0; }
+        .leaderboard-item {
+            display: flex; justify-content: space-between; padding: 4px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: bold; color: #eee; font-size: 12px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        .leaderboard-item:last-child { border-bottom: none; }
+        .leaderboard-item .rank { width: 30px; text-align: left; }
+        .leaderboard-item .ini { flex: 1; text-align: center; color: #fff; font-size: 13px; letter-spacing: 1px; }
+        .leaderboard-item .wins { color: #f1c40f; width: 30px; text-align: right; }
+
+        @media (max-width: 800px) {
+            .leaderboard-wrapper {
+                top: 10px; left: 10px;
+                width: 140px; padding: 8px 10px;
+            }
+            .leaderboard-wrapper h3 { font-size: 11px; margin-bottom: 6px; }
+            .leaderboard-item { font-size: 10px; padding: 3px 0; }
+            .leaderboard-item .rank { width: 25px; }
+            .leaderboard-item .ini { font-size: 11px; }
+            .leaderboard-item .wins { font-size: 11px; width: 25px; }
         }
 
         /* 캐릭터 선택 화면 (Intro) */
@@ -26,32 +59,63 @@
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(135deg, #e0d7c6, #c2b59b);
             z-index: 100; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; padding: 20px;
-            box-sizing: border-box; transition: opacity 0.5s;
+            align-items: center; justify-content: flex-start;
+            padding: 40px 20px; box-sizing: border-box; transition: opacity 0.5s;
+            overflow-y: auto;
+        }
+
+        .intro-inner {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            width: 100%; min-height: 100%; margin: auto 0;
         }
 
         .intro-title {
-            font-size: 28px; font-weight: 900; color: #333;
-            margin-bottom: 30px; text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            font-size: 32px; font-weight: 900; color: #333;
+            margin-bottom: 15px; text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
             text-align: center;
         }
 
+        /* 모드 선택기 */
+        .intro-mode-selector { display: flex; gap: 10px; margin-bottom: 25px; }
+        .intro-mode-btn {
+            padding: 10px 24px; border-radius: 30px; border: 2px solid var(--wood-dark);
+            background: transparent; color: #555; font-weight: 800; font-size: 16px;
+            cursor: pointer; transition: 0.3s;
+        }
+        .intro-mode-btn.active { background: var(--wood-dark); color: #fff; box-shadow: 0 5px 15px rgba(139,90,43,0.4); }
+        .intro-instruction { font-size: 18px; font-weight: bold; color: #555; margin-bottom: 20px; text-align: center; }
+
         .char-grid {
             display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;
-            max-width: 600px; width: 100%;
+            max-width: 500px; width: 100%; margin-bottom: 25px;
         }
 
         @media (max-width: 500px) {
-            .char-grid { grid-template-columns: repeat(3, 1fr); }
+            .char-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .intro-title { font-size: 26px; }
+            .intro-mode-btn { padding: 8px 18px; font-size: 14px; }
         }
 
         .char-card {
-            background: #fff; border-radius: 16px; padding: 15px 10px;
+            background: #fff; border-radius: 16px; padding: 15px 10px; position: relative;
             text-align: center; cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.08);
             transition: all 0.2s; border: 3px solid transparent;
         }
         .char-card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(0,0,0,0.15); }
-        .char-card.selected { border-color: var(--wood-dark); background: #fffcf5; transform: scale(1.05); }
+        
+        .char-badge {
+            position: absolute; top: -10px; padding: 4px 10px; border-radius: 12px;
+            font-size: 12px; font-weight: 900; color: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            display: none; z-index: 5;
+        }
+        .p1-badge { left: -5px; background: #2c3e50; } 
+        .p2-badge { right: -5px; background: #e67e22; } 
+        
+        .char-card.selected-p1 .p1-badge { display: block; }
+        .char-card.selected-p2 .p2-badge { display: block; }
+        .char-card.selected-p1 { border-color: #2c3e50; transform: scale(1.05); background: #f8fbff; }
+        .char-card.selected-p2 { border-color: #e67e22; transform: scale(1.05); background: #fffdf8; }
+        .char-card.selected-p1.selected-p2 { border: 3px dashed #333; } 
 
         .char-img-wrapper {
             width: 60px; height: 60px; margin: 0 auto 10px;
@@ -60,11 +124,24 @@
             font-size: 35px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
         }
         .char-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
-        
         .char-name { font-weight: 700; color: #444; font-size: 15px; }
 
+        .initial-form-container {
+            background: rgba(255, 255, 255, 0.5); padding: 20px; border-radius: 12px; border: 1px solid rgba(139,90,43,0.3);
+            text-align: center; width: 100%; max-width: 300px; transition: 0.3s;
+        }
+        .initial-form-container label { display: block; font-size: 14px; font-weight: bold; color: #555; margin-bottom: 8px; }
+        .initials-input {
+            padding: 12px 0; font-size: 24px; text-align: center; border: none; border-bottom: 3px solid rgba(139,90,43,0.5);
+            background: transparent; width: 100%; text-transform: uppercase; font-weight: 900; outline: none;
+            color: var(--wood-dark); letter-spacing: 4px; transition: 0.3s;
+        }
+        .initials-input:focus { border-color: var(--wood-dark); }
+        .initials-input::placeholder { color: #aaa; font-weight: 500; letter-spacing: normal; font-size: 18px; }
+        .initial-error { color: #e74c3c; font-size: 12px; margin-top: 8px; font-weight: bold; display: none; }
+
         .start-btn {
-            margin-top: 40px; padding: 15px 50px; background: var(--wood-dark);
+            margin-top: 25px; padding: 15px 50px; background: var(--wood-dark);
             color: #fff; border: none; border-radius: 50px; font-size: 20px;
             font-weight: 800; cursor: pointer; box-shadow: 0 10px 20px rgba(139,90,43,0.3);
             transition: 0.3s; opacity: 0.5; pointer-events: none;
@@ -72,107 +149,229 @@
         .start-btn.active { opacity: 1; pointer-events: auto; }
         .start-btn.active:hover { background: #6f4722; transform: scale(1.05); }
 
-        /* 메인 게임 UI */
+        @media (max-height: 750px) {
+            .intro-title { margin-bottom: 10px; font-size: 22px; }
+            .intro-mode-selector { margin-bottom: 15px; }
+            .intro-instruction { margin-bottom: 10px; font-size: 15px; }
+            .char-grid { margin-bottom: 15px; }
+            .char-card { padding: 10px 5px; }
+            .char-img-wrapper { width: 50px; height: 50px; margin-bottom: 8px; }
+            .char-name { font-size: 13px; }
+            .initial-form-container { padding: 15px; margin-bottom: 10px; }
+            .initials-input { padding: 8px 0; font-size: 20px; }
+            .start-btn { margin-top: 10px; padding: 12px 40px; font-size: 18px; }
+        }
+
+        /* 🌟 메인 게임 UI (VS 배너 & 타이머) 🌟 */
         #game-screen {
             display: none; flex-direction: column; align-items: center;
-            width: 100%; max-width: 500px;
+            width: 100%; max-width: 500px; position: relative; z-index: 10;
         }
 
-        .header { text-align: center; margin-bottom: 15px; width: 100%; }
+        .header { text-align: center; margin-bottom: 5px; width: 100%; padding: 0 10px; }
         
-        .player-info {
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            margin-bottom: 15px; font-weight: 800; font-size: 18px; color: #333;
+        .vs-banner {
+            display: flex; align-items: center; justify-content: center; gap: 8px; /* 간격 축소 */
+            margin-bottom: 10px; padding: 10px; background: transparent; /* 투명 배경 */
         }
-        .player-info .mini-avatar {
-            width: 30px; height: 30px; border-radius: 50%; background: #fff;
-            display: inline-flex; align-items: center; justify-content: center;
-            font-size: 18px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        
+        .player-profile { display: flex; flex-direction: column; align-items: center; width: 110px; }
+        
+        /* 흑/백 돌을 상징하는 테두리 및 그림자 강화 */
+        .profile-img-wrap {
+            width: 75px; height: 75px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 40px;
+            overflow: hidden; border: 4px solid;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0.6; filter: grayscale(30%); transform: scale(0.9);
+        }
+        .p1-profile .profile-img-wrap { border-color: #2c3e50; background: #111; box-shadow: inset 0 0 10px rgba(0,0,0,0.8); }
+        .p2-profile .profile-img-wrap { border-color: #f1f2f6; background: #fff; box-shadow: inset 0 0 10px rgba(0,0,0,0.2); }
+        
+        .profile-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* 자신의 차례일 때 팝업 및 발광 효과 */
+        .profile-img-wrap.active-turn {
+            opacity: 1; filter: grayscale(0%); transform: scale(1.3); z-index: 10;
+        }
+        @keyframes pulse-p1 {
+            0% { box-shadow: 0 0 10px rgba(44, 62, 80, 0.8); }
+            50% { box-shadow: 0 0 25px rgba(44, 62, 80, 1); }
+            100% { box-shadow: 0 0 10px rgba(44, 62, 80, 0.8); }
+        }
+        .p1-profile .profile-img-wrap.active-turn { animation: pulse-p1 1.5s infinite; border-color: #000; }
+
+        @keyframes pulse-p2 {
+            0% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.8); }
+            50% { box-shadow: 0 0 25px rgba(255, 255, 255, 1); }
+            100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.8); }
+        }
+        .p2-profile .profile-img-wrap.active-turn { animation: pulse-p2 1.5s infinite; border-color: #fff; }
+        
+        .player-name-lbl { 
+            font-size: 14px; font-weight: 900; color: #555; margin-top: 15px; 
+            text-align: center; line-height: 1.3; text-shadow: 1px 1px 0px rgba(255,255,255,0.8);
+            transition: all 0.3s;
+        }
+        .active-turn ~ .player-name-lbl { color: #000; transform: scale(1.1); text-shadow: 0 0 5px rgba(255,255,255,1); }
+        
+        .vs-text { 
+            font-size: 24px; font-weight: 900; color: #a67c52; font-style: italic; 
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.5); margin: 0 5px;
         }
 
-        .status-panel {
-            display: inline-block; padding: 12px 35px; border-radius: 50px;
-            background: var(--panel-bg); box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-            font-size: 18px; font-weight: 800; color: #444; transition: all 0.3s;
-            border: 2px solid transparent;
+        /* 🌟 타이머 UI 🌟 */
+        .timer-container {
+            width: 100%; max-width: 250px; margin: 0 auto 5px; text-align: center;
         }
-        .status-panel.black-turn { border-color: #000; color: #000; }
-        .status-panel.white-turn { border-color: #fff; color: #666; }
-
-        .mode-selector { margin-top: 15px; }
-        .mode-btn {
-            padding: 8px 16px; margin: 0 5px; border: none; border-radius: 8px;
-            background: #fff; cursor: pointer; font-weight: 600; color: #666; font-size: 13px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: 0.2s;
-        }
-        .mode-btn.active { background: var(--wood-dark); color: #fff; transform: translateY(-2px); }
+        .timer-text { font-size: 18px; font-weight: 900; color: #f1c40f; margin-bottom: 4px; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
+        .timer-bar-bg { width: 100%; height: 8px; background: rgba(0,0,0,0.2); border-radius: 4px; overflow: hidden; border: 1px solid rgba(255,255,255,0.3); }
+        .timer-bar-fill { height: 100%; width: 100%; background: #f1c40f; transition: width 0.1s linear, background-color 0.3s; }
 
         /* 바둑판 */
         #board-wrapper {
             position: relative; padding: 10px; background: var(--wood-dark);
             border-radius: 8px; box-shadow: 0 15px 40px rgba(0,0,0,0.25);
             background: linear-gradient(145deg, #a67c52, #6f4722);
-            margin-top: 10px;
+            margin-top: 5px;
         }
         #board-container {
             position: relative; background: var(--wood-light);
             background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 2px, transparent 2px, transparent 10px);
-            line-height: 0; border: 1px solid rgba(0,0,0,0.2);
+            line-height: 0; border: 1px solid rgba(0,0,0,0.2); overflow: hidden;
         }
         canvas { cursor: pointer; max-width: 92vw; max-height: 92vw; border-radius: 2px; }
+
+        /* 플로팅 멘트 */
+        @keyframes floatChat {
+            0% { opacity: 0; transform: translateY(20px) scale(0.5) rotate(-10deg); }
+            20% { opacity: 1; transform: translateY(0px) scale(1.2) rotate(5deg); }
+            40% { opacity: 1; transform: translateY(-10px) scale(1) rotate(0deg); }
+            80% { opacity: 1; transform: translateY(-20px) scale(1); }
+            100% { opacity: 0; transform: translateY(-40px) scale(0.8); }
+        }
+        .floating-chat {
+            position: absolute; pointer-events: none; z-index: 50;
+            font-size: 26px; font-weight: 900; font-family: 'Comic Sans MS', 'Pretendard', sans-serif;
+            text-shadow: 3px 3px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
+            animation: floatChat 1.8s ease-out forwards; white-space: nowrap;
+        }
+        .chat-player { color: #f1c40f; } 
+        .chat-opp { color: #e74c3c; }
 
         /* 결과 모달 */
         #result-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7); backdrop-filter: blur(5px);
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
             display: none; align-items: center; justify-content: center; z-index: 200;
         }
         .result-box {
-            background: #fff; padding: 40px; border-radius: 20px; text-align: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3); transform: scale(0.8);
-            opacity: 0; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: rgba(255, 255, 255, 0.15); 
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4), inset 0 0 20px rgba(255,255,255,0.1);
+            padding: 40px; border-radius: 20px; text-align: center;
+            transform: scale(0.8); opacity: 0; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            width: 85%; max-width: 400px;
         }
         .result-box.show { transform: scale(1); opacity: 1; }
         
-        .result-title { font-size: 45px; font-weight: 900; margin: 0 0 10px 0; }
-        .win-text { color: #f1c40f; text-shadow: 2px 2px 0px #d35400; }
-        .lose-text { color: #3498db; text-shadow: 2px 2px 0px #2980b9; }
+        .result-title { font-size: 45px; font-weight: 900; margin: 0 0 10px 0; word-break: keep-all; }
+        .win-text { color: #f1c40f; text-shadow: 2px 2px 5px rgba(211, 84, 0, 0.8); }
+        .lose-text { color: #85c1e9; text-shadow: 2px 2px 5px rgba(41, 128, 185, 0.8); }
+        .timeout-text { color: #e74c3c; text-shadow: 2px 2px 5px rgba(192, 57, 43, 0.8); font-size: 38px; }
         
-        .result-sub { font-size: 18px; color: #666; margin-bottom: 30px; font-weight: 600; }
+        .result-sub { font-size: 18px; color: #fff; margin-bottom: 20px; font-weight: 600; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); word-break: keep-all; line-height: 1.4; }
+
+        /* 승수 표시 패널 */
+        .win-count-display {
+            background: rgba(0,0,0,0.3);
+            border-radius: 15px; padding: 15px; margin-bottom: 25px;
+            border: 1px solid rgba(241, 196, 15, 0.4);
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
+        }
+        .win-count-display .label { font-size: 1.1rem; color: #ddd; font-weight: bold; }
+        .win-count-display .number {
+            font-size: 4rem; color: #f1c40f; font-weight: 900; 
+            text-shadow: 0 0 20px rgba(241, 196, 15, 0.7);
+            display: inline-block; margin: 0 10px; line-height: 1;
+        }
 
         .btn-group button {
-            padding: 12px 25px; margin: 0 5px; border: none; border-radius: 12px;
-            cursor: pointer; font-size: 16px; font-weight: bold; transition: 0.2s;
+            padding: 12px 20px; margin: 0 5px; border: none; border-radius: 12px;
+            cursor: pointer; font-size: 15px; font-weight: bold; transition: 0.2s;
         }
-        .btn-replay { background: var(--primary); color: white; box-shadow: 0 5px 15px rgba(44,62,80,0.3); }
-        .btn-replay:hover { background: #1a252f; transform: translateY(-2px); }
-        .btn-char { background: #e0e0e0; color: #333; }
-        .btn-char:hover { background: #ccc; transform: translateY(-2px); }
+        .btn-replay { background: rgba(44, 62, 80, 0.9); color: white; box-shadow: 0 5px 15px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); }
+        .btn-replay:hover { background: rgba(26, 37, 47, 1); transform: translateY(-2px); }
+        .btn-char { background: rgba(255, 255, 255, 0.8); color: #333; border: 1px solid rgba(255,255,255,0.5); }
+        .btn-char:hover { background: #fff; transform: translateY(-2px); }
 
+        #loadingCloud { font-size: 10px; color: #ccc; font-weight: normal; margin-left: 5px; }
     </style>
 </head>
 <body>
 
+    <!-- 🏆 랭킹 보드 (전역 공유) -->
+    <div class="leaderboard-wrapper" style="display:none;" id="leaderboardWrapper">
+        <h3>🏆 TOP 5 <span id="loadingCloud"></span></h3>
+        <ul class="leaderboard-list" id="leaderboardList">
+            <!-- 데이터 렌더링 -->
+        </ul>
+    </div>
+
     <!-- 캐릭터 선택 화면 -->
     <div id="intro-screen">
-        <div class="intro-title">플레이할 캐릭터를 선택하세요</div>
-        <div class="char-grid" id="charGrid">
-            <!-- 자바스크립트로 렌더링 됨 -->
+        <div class="intro-inner">
+            <div class="intro-title">오목 대전 설정</div>
+            
+            <div class="intro-mode-selector">
+                <button id="btnIntroCom" class="intro-mode-btn active" onclick="setIntroMode('COM')">VS 컴퓨터</button>
+                <button id="btnIntro1v1" class="intro-mode-btn" onclick="setIntroMode('1vs1')">1 VS 1 대전</button>
+            </div>
+
+            <div id="introInstruction" class="intro-instruction">내 캐릭터(흑돌)를 선택하세요</div>
+            
+            <div class="char-grid" id="charGrid">
+                <!-- 자바스크립트로 렌더링 됨 -->
+            </div>
+            
+            <div class="initial-form-container" id="initialForm">
+                <label>랭킹 등록용 이니셜 (영문 3자리)</label>
+                <input type="text" id="initialsInput" class="initials-input" placeholder="AAA" maxlength="3" autocomplete="off">
+                <div id="initial-error" class="initial-error">영문 3자리를 정확히 입력해주세요.</div>
+            </div>
+            
+            <button class="start-btn" id="startBtn" onclick="startGame()">게임 시작</button>
         </div>
-        <button class="start-btn" id="startBtn" onclick="startGame()">게임 시작</button>
     </div>
 
     <!-- 게임 화면 -->
     <div id="game-screen">
         <div class="header">
-            <div class="player-info" id="playerInfo">
-                <div class="mini-avatar" id="playerAvatar">👦</div>
-                <span id="playerNameTxt">플레이어</span> VS <span id="oppNameTxt">인공지능</span>
+            <!-- 🌟 VS 대전 배너 UI (중앙 집중 및 흑/백 스타일링) 🌟 -->
+            <div class="vs-banner">
+                <div class="player-profile p1-profile">
+                    <div class="profile-img-wrap active-turn" id="p1AvatarWrap">
+                        <span id="playerAvatar">👧</span>
+                    </div>
+                    <div class="player-name-lbl" id="playerNameTxt">플레이어</div>
+                </div>
+                <div class="vs-text">VS</div>
+                <div class="player-profile p2-profile">
+                    <div class="profile-img-wrap" id="p2AvatarWrap">
+                        <span id="oppAvatar">🤖</span>
+                    </div>
+                    <div class="player-name-lbl" id="oppNameTxt">인공지능</div>
+                </div>
             </div>
-            <div class="status-panel black-turn" id="statusBox">흑돌 차례</div>
-            <div class="mode-selector">
-                <button class="mode-btn" id="p1btn" onclick="setMode('1vs1')">1 VS 1 대전</button>
-                <button class="mode-btn active" id="p2btn" onclick="setMode('COM')">VS 컴퓨터</button>
+
+            <!-- 🌟 다이내믹 제한시간 타이머 🌟 -->
+            <div class="timer-container">
+                <div class="timer-text" id="timerText">30초</div>
+                <div class="timer-bar-bg">
+                    <div class="timer-bar-fill" id="timerBar"></div>
+                </div>
             </div>
         </div>
 
@@ -188,38 +387,159 @@
         <div class="result-box" id="resultBox">
             <h1 class="result-title win-text" id="resultTitle">You Win!</h1>
             <p class="result-sub" id="resultSub">멋진 승부였습니다.</p>
+            
+            <!-- 🌟 누적 승수 표시 패널 -->
+            <div id="winCountContainer" class="win-count-display" style="display: none;">
+                <span class="label">현재까지 총</span><br>
+                <span class="number" id="resultCurrentWins">...</span><span class="label">승 달성!</span>
+            </div>
+
             <div class="btn-group">
                 <button class="btn-replay" onclick="closeResultAndReplay()">다시 하기</button>
-                <button class="btn-char" onclick="goToIntro()">캐릭터 변경</button>
+                <button class="btn-char" onclick="goToIntro()">처음으로</button>
             </div>
         </div>
     </div>
 
     <script>
-        // --- 1. 캐릭터 데이터 및 초기화 ---
-        const characters = [
-            { id: 'yul', name: '율이', icon: '👦', img: 'images/yul.jpg' },
-            { id: 'jung', name: '정이', icon: '👧', img: 'images/jung.jpg' },
-            { id: 'mom', name: '엄마', icon: '👩', img: 'images/mom.jpg' },
-            { id: 'dad', name: '아빠', icon: '👨', img: 'images/dad.jpg' },
-            { id: 'pretty', name: '프리티', icon: '✨', img: 'images/pretty.jpg' },
-            { id: 'cutie', name: '큐티', icon: '🎀', img: 'images/cutie.jpg' },
-            { id: 'brook', name: '브룩', icon: '🐶', img: 'images/brook.jpg' },
-            { id: 'elion', name: '엘리온', icon: '🦁', img: 'images/elion.jpg' }
+        // --- 0. Supabase 환경 설정 ---
+        const SUPA_URL = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
+        const SUPA_KEY = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
+        const TABLE_NAME = 'omok_ranking';
+
+        async function loadLeaderboard() {
+            const listEl = document.getElementById('leaderboardList');
+            document.getElementById('loadingCloud').innerText = "🔄";
+            
+            try {
+                const res = await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?select=*&order=wins.desc&limit=5`, {
+                    headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}` }
+                });
+                
+                if (!res.ok) throw new Error("테이블 정보 없음");
+                
+                const data = await res.json();
+                document.getElementById('loadingCloud').innerText = "";
+                listEl.innerHTML = '';
+                
+                if (!Array.isArray(data) || data.length === 0) {
+                    listEl.innerHTML = '<li class="leaderboard-item" style="justify-content:center;color:#888;">아직 기록이 없습니다.</li>';
+                    return;
+                }
+
+                data.forEach((entry, idx) => {
+                    let medal = `${idx + 1}위`;
+                    if(idx === 0) medal = '🥇';
+                    if(idx === 1) medal = '🥈';
+                    if(idx === 2) medal = '🥉';
+                    
+                    listEl.innerHTML += `
+                        <li class="leaderboard-item">
+                            <span class="rank">${medal}</span>
+                            <span class="ini">${entry.initials}</span>
+                            <span class="wins">${entry.wins}승</span>
+                        </li>
+                    `;
+                });
+            } catch (e) {
+                console.error('랭킹 불러오기 실패:', e);
+                document.getElementById('loadingCloud').innerText = "⚠";
+                listEl.innerHTML = '<li class="leaderboard-item" style="justify-content:center;color:#888;">DB 연결 오류</li>';
+            }
+        }
+
+        window.recordWinToLeaderboard = async function() {
+            if (!playerInitials) return 0;
+            try {
+                const getRes = await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?initials=eq.${playerInitials}`, {
+                    headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}` }
+                });
+                const existingData = await getRes.json();
+                
+                let newWins = 1;
+                if (existingData && existingData.length > 0) {
+                    newWins = existingData[0].wins + 1;
+                    await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?initials=eq.${playerInitials}`, {
+                        method: 'PATCH',
+                        headers: { 
+                            'apikey': SUPA_KEY, 
+                            'Authorization': `Bearer ${SUPA_KEY}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ wins: newWins })
+                    });
+                } else {
+                    await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}`, {
+                        method: 'POST',
+                        headers: { 
+                            'apikey': SUPA_KEY, 
+                            'Authorization': `Bearer ${SUPA_KEY}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ initials: playerInitials, wins: 1 })
+                    });
+                }
+                loadLeaderboard();
+                return newWins; 
+            } catch (err) {
+                console.error("랭킹 업데이트 실패:", err);
+                return 0;
+            }
+        };
+
+        // --- 1. 멘트 데이터 ---
+        const chatterPlayer = ["대박!", "와우!", "언빌리버블!", "나이스~", "이건 몰랐지?", "천재 아냐?", "간닷!", "완벽해!", "우효~"];
+        const chatterOpp = ["오 노우!!", "뭐야~", "안돼~", "헐...", "너무해 ㅠㅠ", "잠깐만!", "이럴수가!", "헉!", "비상사태!"];
+        
+        const winMessages = [
+            "와우! 찢었다! 대박 승리! 🎉",
+            "언빌리버블! 당신은 오목 천재?! 🤩",
+            "폼 미쳤다잉~ 완벽한 승리! 🏆",
+            "이 구역의 오목왕은 바로 나! 😎"
+        ];
+        const loseMessages = [
+            "오 노우!! 패배라니 ㅠㅠ 😭",
+            "안돼~ 한 판 더해!! 😡",
+            "뭐야~ 졌다니 분하다! 🤯",
+            "아깝다 아까워! ㅠ_ㅠ",
+            "방심했다... 다음엔 안 봐줌! 🔥"
         ];
 
-        let selectedChar = null;
+        // --- 2. 캐릭터 데이터 및 AI 설정 ---
+        const characters = [
+            { id: 'yul', name: '언니 율이', icon: '👧', img: 'images/yul.jpg' },
+            { id: 'jung', name: '동생 정이', icon: '👶', img: 'images/jung.jpg' },
+            { id: 'pretty', name: '요정 프리티', icon: '🧚‍♀️', img: 'images/pretty.jpg' },
+            { id: 'cutie', name: '요정 큐티', icon: '🧚', img: 'images/cuty.jpg' }
+        ];
+
+        const aiList = [
+            { id: 'ai1', name: '어둠의기사단', title: '하수', icon: '♟️', level: 1 },
+            { id: 'ai2', name: '어둠의검신베인', title: '중수', icon: '🗡️', level: 2 },
+            { id: 'ai3', name: '어둠의마왕크라운', title: '고수', icon: '👑', level: 3 },
+            { id: 'ai4', name: '요정장로엘리온', title: '초고수', icon: '🧙‍♂️', level: 4 }
+        ];
+
+        let introMode = 'COM'; 
+        let p1Char = null;
+        let p2Char = null;
+        let pickingFor = 1; 
+        
+        let currentAi = null;
+        let playerInitials = "";
+        
         const charGrid = document.getElementById('charGrid');
         const startBtn = document.getElementById('startBtn');
+        const initialsInput = document.getElementById('initialsInput');
 
-        // 캐릭터 카드 생성
         characters.forEach(c => {
             const card = document.createElement('div');
             card.className = 'char-card';
-            card.onclick = () => selectCharacter(c, card);
+            card.onclick = () => handleCharClick(c, card);
             
-            // onerror 이벤트를 통해 이미지가 없으면 icon(이모지)를 띄우도록 처리
             card.innerHTML = `
+                <div class="char-badge p1-badge">1P(흑)</div>
+                <div class="char-badge p2-badge">2P(백)</div>
                 <div class="char-img-wrapper">
                     <img src="${c.img}" alt="${c.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
                     <span style="display:none;">${c.icon}</span>
@@ -229,43 +549,126 @@
             charGrid.appendChild(card);
         });
 
-        function selectCharacter(charData, cardElement) {
-            // 오디오 컨텍스트 초기화 (브라우저 정책 우회용 클릭 이벤트)
-            initAudio(); 
+        window.setIntroMode = function(mode) {
+            introMode = mode;
+            document.getElementById('btnIntroCom').classList.toggle('active', mode === 'COM');
+            document.getElementById('btnIntro1v1').classList.toggle('active', mode === '1vs1');
             
-            document.querySelectorAll('.char-card').forEach(el => el.classList.remove('selected'));
-            cardElement.classList.add('selected');
-            selectedChar = charData;
-            startBtn.classList.add('active');
+            p1Char = null; p2Char = null; pickingFor = 1;
+            document.querySelectorAll('.char-card').forEach(c => {
+                c.classList.remove('selected-p1', 'selected-p2');
+            });
+            
+            if (mode === 'COM') {
+                document.getElementById('initialForm').style.display = 'block';
+                document.getElementById('introInstruction').innerHTML = '내 캐릭터(흑돌)를 선택하세요';
+            } else {
+                document.getElementById('initialForm').style.display = 'none';
+                document.getElementById('introInstruction').innerHTML = '<span style="color:#2c3e50;">Player 1(흑돌)</span> 캐릭터를 선택하세요';
+            }
+            checkStartCondition();
         }
 
-        function startGame() {
+        function handleCharClick(charData, cardEl) {
+            initAudio(); 
+            
+            if (introMode === 'COM') {
+                document.querySelectorAll('.char-card').forEach(c => c.classList.remove('selected-p1'));
+                cardEl.classList.add('selected-p1');
+                p1Char = charData;
+            } else {
+                if (pickingFor === 1) {
+                    if (p2Char === charData) { p2Char = null; cardEl.classList.remove('selected-p2'); }
+                    document.querySelectorAll('.char-card').forEach(c => c.classList.remove('selected-p1'));
+                    cardEl.classList.add('selected-p1');
+                    p1Char = charData;
+                    pickingFor = 2; 
+                    document.getElementById('introInstruction').innerHTML = '<span style="color:#e67e22;">Player 2(백돌)</span> 캐릭터를 선택하세요';
+                } else {
+                    if (p1Char === charData) { p1Char = null; cardEl.classList.remove('selected-p1'); pickingFor = 1; }
+                    document.querySelectorAll('.char-card').forEach(c => c.classList.remove('selected-p2'));
+                    cardEl.classList.add('selected-p2');
+                    p2Char = charData;
+                    pickingFor = 1; 
+                    document.getElementById('introInstruction').innerHTML = '<span style="color:#2c3e50;">Player 1(흑돌)</span>을 다시 고르거나 게임을 시작하세요';
+                }
+            }
+            checkStartCondition();
+        }
+
+        initialsInput.addEventListener('input', (e) => {
+            e.target.value = e.target.value.replace(/[^a-zA-Z]/g, '').toUpperCase();
+            checkStartCondition();
+        });
+
+        function checkStartCondition() {
+            let isValid = false;
+            if (introMode === 'COM') {
+                isValid = p1Char && initialsInput.value.trim().length === 3;
+                document.getElementById('initial-error').style.display = (p1Char && initialsInput.value.trim().length !== 3 && initialsInput.value.length > 0) ? 'block' : 'none';
+            } else {
+                isValid = p1Char && p2Char;
+            }
+            
+            if (isValid) startBtn.classList.add('active');
+            else startBtn.classList.remove('active');
+        }
+
+        window.startGame = function() {
+            if (introMode === 'COM') {
+                const iniVal = initialsInput.value.trim().toUpperCase();
+                if(iniVal.length !== 3 || !p1Char) return;
+                playerInitials = iniVal;
+            } else {
+                if(!p1Char || !p2Char) return;
+            }
+
             document.getElementById('intro-screen').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('intro-screen').style.display = 'none';
                 document.getElementById('game-screen').style.display = 'flex';
                 
-                // 플레이어 정보 세팅
-                document.getElementById('playerAvatar').innerHTML = `<img src="${selectedChar.img}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.style.display='none'; this.parentElement.innerText='${selectedChar.icon}';">`;
-                document.getElementById('playerNameTxt').innerText = selectedChar.name;
+                // 1P 렌더링
+                document.getElementById('playerAvatar').innerHTML = `<img src="${p1Char.img}" alt="${p1Char.name}" onerror="this.style.display='none'; this.parentElement.innerText='${p1Char.icon}';">`;
+                
+                if (introMode === 'COM') {
+                    document.getElementById('playerNameTxt').innerHTML = `${p1Char.name}<br><span style="color:#666;font-size:12px;">(${playerInitials})</span>`;
+                    document.getElementById('leaderboardWrapper').style.display = 'block'; 
+                    loadLeaderboard();
+                    setRandomAi();
+                } else {
+                    document.getElementById('playerNameTxt').innerHTML = `${p1Char.name}<br><span style="color:#666;font-size:12px;">(1P 흑돌)</span>`;
+                    document.getElementById('leaderboardWrapper').style.display = 'none'; 
+                    
+                    document.getElementById('oppNameTxt').innerHTML = `${p2Char.name}<br><span style="color:#666;font-size:12px;">(2P 백돌)</span>`;
+                    document.getElementById('oppAvatar').innerHTML = `<img src="${p2Char.img}" alt="${p2Char.name}" onerror="this.style.display='none'; this.parentElement.innerText='${p2Char.icon}';">`;
+                }
+                
                 resetGame();
             }, 500);
         }
 
-        function goToIntro() {
+        function setRandomAi() {
+            currentAi = aiList[Math.floor(Math.random() * aiList.length)];
+            document.getElementById('oppNameTxt').innerHTML = `${currentAi.name}<br><span style="color:#666;font-size:12px;">(${currentAi.title})</span>`;
+            document.getElementById('oppAvatar').innerHTML = `<span style="font-size:40px;">${currentAi.icon}</span>`;
+        }
+
+        window.goToIntro = function() {
             document.getElementById('result-modal').style.display = 'none';
             document.getElementById('game-screen').style.display = 'none';
+            document.getElementById('leaderboardWrapper').style.display = 'none';
+            
+            stopTimer(); // 타이머 완전 정지
+
             const intro = document.getElementById('intro-screen');
             intro.style.display = 'flex';
             setTimeout(() => intro.style.opacity = '1', 50);
         }
 
-        // --- 2. 사운드 이펙트 (Web Audio API) ---
         let audioCtx;
         function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             if (audioCtx.state === 'suspended') audioCtx.resume();
         }
 
@@ -273,24 +676,20 @@
             if(!audioCtx) return;
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
-            
             osc.type = 'sine';
             osc.frequency.setValueAtTime(600, audioCtx.currentTime);
             osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.05);
-            
             gain.gain.setValueAtTime(1, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
-            
             osc.connect(gain);
             gain.connect(audioCtx.destination);
-            
             osc.start();
             osc.stop(audioCtx.currentTime + 0.05);
         }
 
         function playWinSound() {
             if(!audioCtx) return;
-            const freqs = [523.25, 659.25, 783.99, 1046.50]; // C Major Arpeggio
+            const freqs = [523.25, 659.25, 783.99, 1046.50];
             freqs.forEach((freq, i) => {
                 setTimeout(() => {
                     const osc = audioCtx.createOscillator();
@@ -299,17 +698,15 @@
                     osc.frequency.value = freq;
                     gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
-                    osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-                    osc.start();
-                    osc.stop(audioCtx.currentTime + 0.4);
+                    osc.connect(gain); gain.connect(audioCtx.destination);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.4);
                 }, i * 120);
             });
         }
 
         function playLoseSound() {
             if(!audioCtx) return;
-            const freqs = [349.23, 329.63, 311.13, 293.66]; // 하강음
+            const freqs = [349.23, 329.63, 311.13, 293.66];
             freqs.forEach((freq, i) => {
                 setTimeout(() => {
                     const osc = audioCtx.createOscillator();
@@ -318,19 +715,16 @@
                     osc.frequency.value = freq;
                     gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
-                    osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-                    osc.start();
-                    osc.stop(audioCtx.currentTime + 0.4);
+                    osc.connect(gain); gain.connect(audioCtx.destination);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.4);
                 }, i * 250);
             });
         }
 
-
-        // --- 3. 오목 게임 로직 ---
+        // --- 4. 오목 게임 & 타이머 로직 ---
         const canvas = document.getElementById("omokBoard");
         const ctx = canvas.getContext("2d");
-        const statusBox = document.getElementById("statusBox");
+        const boardContainer = document.getElementById('board-container');
 
         const size = 15;
         const padding = 25;
@@ -338,14 +732,69 @@
         let board = Array.from(Array(size), () => Array(size).fill(0));
         let turn = 1; 
         let gameOver = false;
-        let gameMode = 'COM';
+        
+        // 🌟 타이머 관련 변수
+        let gameStartTime = 0;
+        let turnStartTime = 0;
+        let timerInterval = null;
+        let currentTimeLimit = 30;
 
-        function setMode(mode) {
-            gameMode = mode;
-            document.getElementById('p1btn').classList.toggle('active', mode === '1vs1');
-            document.getElementById('p2btn').classList.toggle('active', mode === 'COM');
-            document.getElementById('oppNameTxt').innerText = mode === 'COM' ? '인공지능' : '플레이어 2';
-            resetGame();
+        function startTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            if (gameOver) return;
+
+            // 게임 진행 시간에 따른 제한시간 축소
+            const elapsedGameSec = (Date.now() - gameStartTime) / 1000;
+            if (elapsedGameSec >= 600) { // 10분 경과
+                currentTimeLimit = 10;
+            } else if (elapsedGameSec >= 300) { // 5분 경과
+                currentTimeLimit = 20;
+            } else {
+                currentTimeLimit = 30;
+            }
+
+            turnStartTime = Date.now();
+            const timerText = document.getElementById('timerText');
+            const timerBar = document.getElementById('timerBar');
+
+            timerInterval = setInterval(() => {
+                if(gameOver) { clearInterval(timerInterval); return; }
+                
+                const elapsedTurn = (Date.now() - turnStartTime) / 1000;
+                const remaining = Math.max(0, currentTimeLimit - elapsedTurn);
+                
+                timerText.innerText = Math.ceil(remaining) + "초";
+                const pct = (remaining / currentTimeLimit) * 100;
+                timerBar.style.width = pct + "%";
+                
+                // 5초 이하 시 붉은색 경고
+                if (remaining <= 5) {
+                    timerBar.style.background = "#e74c3c";
+                    timerText.style.color = "#e74c3c";
+                } else {
+                    timerBar.style.background = "#f1c40f";
+                    timerText.style.color = "#f1c40f";
+                }
+
+                // 타임아웃
+                if (remaining <= 0) {
+                    clearInterval(timerInterval);
+                    handleTimeout();
+                }
+            }, 50);
+        }
+
+        function stopTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            document.getElementById('timerText').innerText = "-";
+            document.getElementById('timerBar').style.width = "0%";
+        }
+
+        function handleTimeout() {
+            if (gameOver) return;
+            // 시간초과: 현재 턴인 사람이 패배함. 상대방 승리!
+            const winner = (turn === 1) ? 2 : 1;
+            triggerWinEffects(winner, true); // true = timeout 발생
         }
 
         function drawBoard() {
@@ -381,10 +830,8 @@
             const x = padding + col * cellSize;
             const y = padding + row * cellSize;
 
-            ctx.shadowBlur = 6;
-            ctx.shadowColor = "rgba(0,0,0,0.4)";
-            ctx.shadowOffsetX = 2;
-            ctx.shadowOffsetY = 2;
+            ctx.shadowBlur = 6; ctx.shadowColor = "rgba(0,0,0,0.4)";
+            ctx.shadowOffsetX = 2; ctx.shadowOffsetY = 2;
 
             ctx.beginPath();
             ctx.arc(x, y, cellSize * 0.44, 0, Math.PI * 2);
@@ -396,14 +843,36 @@
                 grad.addColorStop(0, "#fff"); grad.addColorStop(1, "#ccc");
             }
             
-            ctx.fillStyle = grad;
-            ctx.fill();
-            
+            ctx.fillStyle = grad; ctx.fill();
             ctx.shadowBlur = 0; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0;
         }
 
+        function showFloatingChat(isPlayer) {
+            if (Math.random() > 0.4) return; 
+
+            const msgArray = isPlayer ? chatterPlayer : chatterOpp;
+            const text = msgArray[Math.floor(Math.random() * msgArray.length)];
+
+            const chatEl = document.createElement('div');
+            chatEl.className = 'floating-chat ' + (isPlayer ? 'chat-player' : 'chat-opp');
+            chatEl.innerText = text;
+
+            const rect = boardContainer.getBoundingClientRect();
+            const posX = Math.random() * (rect.width - 150) + 50; 
+            const posY = Math.random() * (rect.height - 150) + 50;
+            
+            chatEl.style.left = posX + 'px';
+            chatEl.style.top = posY + 'px';
+
+            boardContainer.appendChild(chatEl);
+
+            setTimeout(() => {
+                if (chatEl.parentElement) chatEl.remove();
+            }, 1800);
+        }
+
         canvas.addEventListener("click", (e) => {
-            if (gameOver || (gameMode === 'COM' && turn === 2)) return;
+            if (gameOver || (introMode === 'COM' && turn === 2)) return;
 
             const rect = canvas.getBoundingClientRect();
             const x = (e.clientX - rect.left) * (canvas.width / rect.width);
@@ -412,17 +881,21 @@
             const row = Math.round((y - padding) / cellSize);
 
             if (row >= 0 && row < size && col >= 0 && col < size && board[row][col] === 0) {
-                initAudio(); // 첫 터치 시 오디오 활성화
+                initAudio();
+                const isPlayerTurn = turn === 1;
                 placeStone(row, col);
-                if (!gameOver && gameMode === 'COM' && turn === 2) {
-                    setTimeout(smartAiMove, 500);
+                
+                if(!gameOver) showFloatingChat(isPlayerTurn);
+
+                if (!gameOver && introMode === 'COM' && turn === 2) {
+                    setTimeout(smartAiMove, 600);
                 }
             }
         });
 
         function placeStone(row, col) {
             board[row][col] = turn;
-            playStoneSound(); // 돌 놓는 효과음
+            playStoneSound();
             drawBoard();
             
             if (checkWin(row, col, turn)) {
@@ -430,49 +903,72 @@
             } else {
                 turn = (turn === 1) ? 2 : 1;
                 updateStatusUI();
+                startTimer(); // 턴이 바뀌면 타이머 재시작
             }
         }
 
+        // 🌟 턴 인디케이터 🌟
         function updateStatusUI() {
+            const p1Avatar = document.getElementById('p1AvatarWrap');
+            const p2Avatar = document.getElementById('p2AvatarWrap');
+
             if (turn === 1) {
-                statusBox.innerText = `${selectedChar ? selectedChar.name : '흑돌'} 차례 (흑)`;
-                statusBox.className = "status-panel black-turn";
+                p1Avatar.classList.add('active-turn');
+                p2Avatar.classList.remove('active-turn');
             } else {
-                statusBox.innerText = gameMode === 'COM' ? "인공지능 생각중..." : "백돌 차례 (백)";
-                statusBox.className = "status-panel white-turn";
+                p1Avatar.classList.remove('active-turn');
+                p2Avatar.classList.add('active-turn');
             }
         }
 
-        // 결과 모달 표시 로직
-        function triggerWinEffects(winner) {
+        function triggerWinEffects(winner, isTimeout = false) {
             gameOver = true;
+            stopTimer(); // 게임 종료 시 타이머 멈춤
             
             const modal = document.getElementById('result-modal');
             const resultBox = document.getElementById('resultBox');
             const title = document.getElementById('resultTitle');
             const sub = document.getElementById('resultSub');
+            const winCountContainer = document.getElementById('winCountContainer');
 
             modal.style.display = 'flex';
             setTimeout(() => resultBox.classList.add('show'), 50);
 
-            if (gameMode === 'COM') {
-                if (winner === 1) { // 플레이어 승리
-                    title.innerText = "You Win!";
+            let messageBase = isTimeout ? "시간 초과! " : "";
+
+            if (introMode === 'COM') {
+                if (winner === 1) { 
+                    title.innerText = isTimeout ? "Time Over Win!" : "You Win!";
                     title.className = "result-title win-text";
-                    sub.innerText = "대단해요! 컴퓨터를 이겼습니다.";
+                    sub.innerText = messageBase + winMessages[Math.floor(Math.random() * winMessages.length)];
+                    
+                    winCountContainer.style.display = 'block';
+                    document.getElementById('resultCurrentWins').innerText = '...';
+                    
+                    window.recordWinToLeaderboard().then(wins => {
+                        if (wins > 0) document.getElementById('resultCurrentWins').innerText = wins;
+                        else winCountContainer.style.display = 'none';
+                    });
+
                     playWinSound();
                     fireConfetti();
-                } else { // 컴퓨터 승리
-                    title.innerText = "Lose~";
-                    title.className = "result-title lose-text";
-                    sub.innerText = "아쉽네요. 다시 도전해보세요!";
+                    
+                } else { 
+                    title.innerText = isTimeout ? "Time Out!" : "Lose~";
+                    title.className = isTimeout ? "result-title timeout-text" : "result-title lose-text";
+                    sub.innerText = messageBase + loseMessages[Math.floor(Math.random() * loseMessages.length)];
+                    winCountContainer.style.display = 'none';
                     playLoseSound();
                 }
-            } else { // 1vs1 모드
-                const winnerName = winner === 1 ? (selectedChar ? selectedChar.name : "흑돌") : "백돌(Player 2)";
-                title.innerText = `${winnerName} 승리!`;
+            } else { 
+                const winnerName = winner === 1 ? p1Char.name : p2Char.name;
+                title.innerText = isTimeout ? "Time Out!" : `${winnerName} 승리!`;
                 title.className = "result-title win-text";
-                sub.innerText = "멋진 승부였습니다.";
+                sub.innerText = messageBase + winMessages[Math.floor(Math.random() * winMessages.length)];
+                if (isTimeout) {
+                    sub.innerText = `시간 초과로 인해 ${winnerName} 님이 승리하셨습니다!`;
+                }
+                winCountContainer.style.display = 'none';
                 playWinSound();
                 fireConfetti();
             }
@@ -488,40 +984,73 @@
             }());
         }
 
-        function closeResultAndReplay() {
+        window.closeResultAndReplay = function() {
             const resultBox = document.getElementById('resultBox');
             resultBox.classList.remove('show');
+            
+            document.querySelectorAll('.floating-chat').forEach(el => el.remove());
+
             setTimeout(() => {
                 document.getElementById('result-modal').style.display = 'none';
+                if (introMode === 'COM') setRandomAi();
                 resetGame();
             }, 400);
         }
 
-        // AI 로직
         function smartAiMove() {
+            if(gameOver) return;
             let bestScore = -1;
             let moves = [];
+            
+            let mistakeChance = 0;
+            if (currentAi) {
+                if (currentAi.level === 1) mistakeChance = 0.35; 
+                if (currentAi.level === 2) mistakeChance = 0.15; 
+            }
+
+            if (Math.random() < mistakeChance) {
+                let emptySpots = [];
+                for (let r = 0; r < size; r++) {
+                    for (let c = 0; c < size; c++) {
+                        if (board[r][c] === 0) emptySpots.push({r, c});
+                    }
+                }
+                if (emptySpots.length > 0) {
+                    let move = emptySpots[Math.floor(Math.random() * emptySpots.length)];
+                    placeStone(move.r, move.c);
+                    if(!gameOver) showFloatingChat(false);
+                    return;
+                }
+            }
 
             for (let r = 0; r < size; r++) {
                 for (let c = 0; c < size; c++) {
                     if (board[r][c] === 0) {
-                        let score = evaluateSpot(r, c, 2) * 1.2 + evaluateSpot(r, c, 1);
+                        let defWeight = 1.0;
+                        let atkWeight = 1.2;
+                        
+                        if (currentAi && currentAi.level === 4) defWeight = 1.5; 
+
+                        let score = evaluateSpot(r, c, 2) * atkWeight + evaluateSpot(r, c, 1) * defWeight;
                         if (score > bestScore) {
-                            bestScore = score;
-                            moves = [{r, c}];
+                            bestScore = score; moves = [{r, c}];
                         } else if (score === bestScore) {
                             moves.push({r, c});
                         }
                     }
                 }
             }
-            // 첫 수거나 둘 곳이 마땅치 않으면 중앙 근처에 둠
+            
             if(bestScore === 0) {
-                moves = [{r:7, c:7}, {r:7, c:8}, {r:8, c:7}];
+                moves = [{r:7, c:7}, {r:7, c:8}, {r:8, c:7}, {r:8, c:8}];
                 moves = moves.filter(m => board[m.r][m.c] === 0);
             }
-            const move = moves[Math.floor(Math.random() * moves.length)];
-            if(move) placeStone(move.r, move.c);
+            
+            if (moves.length > 0) {
+                const move = moves[Math.floor(Math.random() * moves.length)];
+                placeStone(move.r, move.c);
+                if(!gameOver) showFloatingChat(false);
+            }
         }
 
         function evaluateSpot(r, c, p) {
@@ -565,12 +1094,15 @@
         function resetGame() {
             board = Array.from(Array(size), () => Array(size).fill(0));
             turn = 1; gameOver = false;
+            
+            // 🌟 게임 시작 시간 초기화 및 타이머 시작
+            gameStartTime = Date.now();
+            startTimer();
+            
             updateStatusUI();
             drawBoard();
         }
 
-        // 초기 바둑판 그려두기 (보이지 않지만 준비)
-        drawBoard();
     </script>
 </body>
 </html>

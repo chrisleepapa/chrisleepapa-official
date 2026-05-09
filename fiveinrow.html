@@ -256,31 +256,32 @@
 
         canvas { cursor: pointer; border-radius: 2px; display: block; }
 
-        /* 줌 컨트롤 (우측 하단) */
+        /* 줌 컨트롤 (바둑판 아래로 이동하여 방해 안됨 & 반투명 깔끔한 스타일) */
         .zoom-controls {
-            position: absolute;
-            bottom: 25px;
-            right: 25px;
             display: flex;
-            flex-direction: column;
-            gap: 10px;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 12px;
+            width: 100%;
             z-index: 50;
         }
         .zoom-controls button {
-            width: 45px; height: 45px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid #6f4722;
-            font-size: 26px; font-weight: bold; color: #6f4722;
+            padding: 8px 20px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.6); /* 반투명 */
+            border: 2px solid rgba(111, 71, 34, 0.6);
+            font-size: 15px; font-weight: 800; color: #6f4722;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             display: flex; align-items: center; justify-content: center;
-            transition: transform 0.1s, background 0.1s;
+            transition: all 0.2s;
+            backdrop-filter: blur(4px); /* 뒤 배경 블러 처리 */
+            -webkit-backdrop-filter: blur(4px);
             user-select: none;
         }
         .zoom-controls button:active {
-            background: #e0d7c6;
-            transform: scale(0.9);
+            background: rgba(224, 215, 198, 0.9);
+            transform: scale(0.95);
         }
 
         /* 복기 컨트롤러 UI */
@@ -422,17 +423,19 @@
             </div>
         </div>
 
-        <!-- 바둑판 및 줌 컨트롤 영역 -->
+        <!-- 바둑판 확대 축소 영역 설정 -->
         <div class="board-area">
             <div id="board-wrapper">
                 <div id="board-container">
                     <canvas id="omokBoard" width="650" height="650"></canvas>
                 </div>
             </div>
-            <div class="zoom-controls">
-                <button onclick="changeZoom(0.15)">+</button>
-                <button onclick="changeZoom(-0.15)">-</button>
-            </div>
+        </div>
+        
+        <!-- 줌 컨트롤 (바둑판 아래로 이동하여 방해 안됨) -->
+        <div class="zoom-controls">
+            <button onclick="changeZoom(-0.15)">➖ 축소</button>
+            <button onclick="changeZoom(0.15)">➕ 확대</button>
         </div>
 
         <!-- 복기 컨트롤러 -->
@@ -655,13 +658,10 @@
 
         function initZoom() {
             const screenWidth = window.innerWidth;
-            // 여백(패딩, 마진 등) 40px 제외 후 크기 비례 계산
             const availableWidth = screenWidth - 40; 
             if (availableWidth < BASE_SIZE) {
-                // 모바일 환경 등에서 화면 폭에 맞춰서 최초 축소
                 setZoom(availableWidth / BASE_SIZE);
             } else {
-                // 큰 화면에서는 원본 크기
                 setZoom(1.0);
             }
         }

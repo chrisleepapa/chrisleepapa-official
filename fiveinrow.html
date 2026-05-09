@@ -22,44 +22,39 @@
             padding: 20px 0; box-sizing: border-box;
         }
 
-        /* 🏆 랭킹 보드 (투명도 대폭 수정) */
+        /* 🏆 랭킹 보드 (배경 투명 & 가독성 대폭 개선) */
         .leaderboard-wrapper {
             position: fixed; top: 15px; left: 15px;
-            padding: 10px 15px; background: rgba(0, 0, 0, 0.1); /* 배경 투명도 증가 */
-            border-radius: 12px; width: 180px; text-align: left;
-            backdrop-filter: blur(2px); z-index: 90;
-            transition: all 0.4s ease; border: 1px solid rgba(255,255,255,0.05);
-            opacity: 0.3; /* 🌟 게임 중 캐릭터를 가리지 않도록 기본 투명도 매우 낮춤 */
-            pointer-events: auto;
-        }
-        .leaderboard-wrapper:hover {
-            opacity: 1; /* 🌟 마우스를 올리면 다시 선명하게 보임 */
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
+            padding: 10px 15px; background: transparent; /* 배경 완전 투명 */
+            width: 180px; text-align: left;
+            z-index: 90; pointer-events: auto;
+            /* 글씨가 어떤 배경에서도 잘 보이도록 강한 그림자 추가 */
+            text-shadow: 1px 2px 4px rgba(0,0,0,0.95), 0 0 4px rgba(0,0,0,1), 0 0 10px rgba(0,0,0,0.8);
         }
 
-        .leaderboard-wrapper h3 { margin: 0 0 8px 0; color: #f1c40f; font-size: 13px; font-weight: 900; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+        .leaderboard-wrapper h3 { 
+            margin: 0 0 8px 0; color: #f1c40f; font-size: 14px; font-weight: 900; 
+            border-bottom: 1px solid rgba(241, 196, 15, 0.4); padding-bottom: 4px;
+        }
         .leaderboard-list { list-style: none; padding: 0; margin: 0; }
         .leaderboard-item {
-            display: flex; justify-content: space-between; padding: 4px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: bold; color: #eee; font-size: 12px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            display: flex; justify-content: space-between; padding: 5px 0;
+            font-weight: bold; color: #fff; font-size: 13px;
         }
-        .leaderboard-item:last-child { border-bottom: none; }
-        .leaderboard-item .rank { width: 30px; text-align: left; }
-        .leaderboard-item .ini { flex: 1; text-align: center; color: #fff; font-size: 13px; letter-spacing: 1px; }
-        .leaderboard-item .wins { color: #f1c40f; width: 30px; text-align: right; }
+        .leaderboard-item .rank { width: 35px; text-align: left; color: #ddd; font-weight: 900;}
+        .leaderboard-item .ini { flex: 1; text-align: center; color: #fff; font-size: 14px; letter-spacing: 1px; font-weight: 900;}
+        .leaderboard-item .wins { color: #f1c40f; width: 35px; text-align: right; font-weight: 900; }
 
         @media (max-width: 800px) {
             .leaderboard-wrapper {
                 top: 10px; left: 10px;
-                width: 140px; padding: 8px 10px;
+                width: 150px; padding: 8px 10px;
             }
-            .leaderboard-wrapper h3 { font-size: 11px; margin-bottom: 6px; }
-            .leaderboard-item { font-size: 10px; padding: 3px 0; }
+            .leaderboard-wrapper h3 { font-size: 12px; margin-bottom: 6px; }
+            .leaderboard-item { font-size: 11px; padding: 3px 0; }
             .leaderboard-item .rank { width: 25px; }
-            .leaderboard-item .ini { font-size: 11px; }
-            .leaderboard-item .wins { font-size: 11px; width: 25px; }
+            .leaderboard-item .ini { font-size: 12px; }
+            .leaderboard-item .wins { font-size: 12px; width: 25px; }
         }
 
         /* 캐릭터 선택 화면 (Intro) */
@@ -336,7 +331,7 @@
 </head>
 <body>
 
-    <!-- 🏆 랭킹 보드 -->
+    <!-- 🏆 랭킹 보드 (개선됨) -->
     <div class="leaderboard-wrapper" style="display:none;" id="leaderboardWrapper">
         <h3>🏆 TOP 5 <span id="loadingCloud"></span></h3>
         <ul class="leaderboard-list" id="leaderboardList"></ul>
@@ -445,12 +440,14 @@
                 }
                 data.forEach((entry, idx) => {
                     let medal = `${idx + 1}위`;
-                    if(idx === 0) medal = '🥇';
-                    if(idx === 1) medal = '🥈';
-                    if(idx === 2) medal = '🥉';
+                    let rankColor = '#ddd';
+                    if(idx === 0) { medal = '🥇'; rankColor = '#ffd700'; }
+                    if(idx === 1) { medal = '🥈'; rankColor = '#e0e0e0'; }
+                    if(idx === 2) { medal = '🥉'; rankColor = '#cd7f32'; }
+                    
                     listEl.innerHTML += `
                         <li class="leaderboard-item">
-                            <span class="rank">${medal}</span>
+                            <span class="rank" style="color: ${rankColor};">${medal}</span>
                             <span class="ini">${entry.initials}</span>
                             <span class="wins">${entry.wins}승</span>
                         </li>
@@ -677,19 +674,16 @@
         let board = Array.from(Array(size), () => Array(size).fill(0));
         let turn = 1; let gameOver = false;
         
-        // 상태 변수
         let moveHistory = [];
         let isReviewMode = false;
         let currentReviewStep = 0;
 
         let turnStartTime = 0; let timerInterval = null; let currentTimeLimit = 30;
 
-        // 🌟 2. 턴 수에 따른 제한시간 단축 로직 추가
         function startTimer() {
             if (timerInterval) clearInterval(timerInterval);
             if (gameOver || isReviewMode) return;
             
-            // 🌟 돌 개수(턴 수) 기준으로 타이머 시간 결정
             const moves = moveHistory.length;
             if (moves >= 50) currentTimeLimit = 10;
             else if (moves >= 20) currentTimeLimit = 20;
@@ -762,20 +756,17 @@
             ctx.shadowBlur = 0; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0;
         }
 
-        // 🌟 3. 멋진 착수 이펙트 함수 추가
         function playCoolStoneEffect(row, col, color) {
             const rect = canvas.getBoundingClientRect();
             const cx = padding + col * cellSize;
             const cy = padding + row * cellSize;
             
-            // 스크린 상대 좌표로 변환 (파티클 발생 위치)
             const screenX = rect.left + cx * (rect.width / canvas.width);
             const screenY = rect.top + cy * (rect.height / canvas.height);
             
             const originX = Math.max(0, Math.min(1, screenX / window.innerWidth));
             const originY = Math.max(0, Math.min(1, screenY / window.innerHeight));
 
-            // 파티클 터지는 이펙트
             confetti({
                 particleCount: 25,
                 spread: 60,
@@ -788,7 +779,6 @@
                 disableForReducedMotion: true
             });
 
-            // 바둑판 화면 진동 및 빛 반짝임 효과
             const boardWrapper = document.getElementById('board-wrapper');
             boardWrapper.style.transform = 'scale(1.02)';
             boardWrapper.style.boxShadow = color === 1 
@@ -838,7 +828,6 @@
             moveHistory.push({ row, col, color: turn });
             board[row][col] = turn;
             
-            // 🌟 20수 이상이면 이펙트 발생!
             if (moveHistory.length >= 20) {
                 playCoolStoneEffect(row, col, turn);
             }
@@ -964,13 +953,12 @@
             }
         }
 
-        // 마커 그리기
         function drawLastMoveMarker(row, col) {
             const x = padding + col * cellSize;
             const y = padding + row * cellSize;
             ctx.beginPath();
             ctx.arc(x, y, cellSize * 0.15, 0, Math.PI * 2);
-            ctx.fillStyle = "#e74c3c"; // 강렬한 빨간색 마커
+            ctx.fillStyle = "#e74c3c";
             ctx.fill();
         }
 

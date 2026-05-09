@@ -22,14 +22,22 @@
             padding: 20px 0; box-sizing: border-box;
         }
 
-        /* 🏆 랭킹 보드 */
+        /* 🏆 랭킹 보드 (투명도 대폭 수정) */
         .leaderboard-wrapper {
             position: fixed; top: 15px; left: 15px;
-            padding: 10px 15px; background: rgba(0, 0, 0, 0.15);
+            padding: 10px 15px; background: rgba(0, 0, 0, 0.1); /* 배경 투명도 증가 */
             border-radius: 12px; width: 180px; text-align: left;
-            backdrop-filter: blur(3px); z-index: 90;
-            transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(2px); z-index: 90;
+            transition: all 0.4s ease; border: 1px solid rgba(255,255,255,0.05);
+            opacity: 0.3; /* 🌟 게임 중 캐릭터를 가리지 않도록 기본 투명도 매우 낮춤 */
+            pointer-events: auto;
         }
+        .leaderboard-wrapper:hover {
+            opacity: 1; /* 🌟 마우스를 올리면 다시 선명하게 보임 */
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
         .leaderboard-wrapper h3 { margin: 0 0 8px 0; color: #f1c40f; font-size: 13px; font-weight: 900; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
         .leaderboard-list { list-style: none; padding: 0; margin: 0; }
         .leaderboard-item {
@@ -161,7 +169,7 @@
             .start-btn { margin-top: 10px; padding: 12px 40px; font-size: 18px; }
         }
 
-        /* 🌟 메인 게임 UI */
+        /* 메인 게임 UI */
         #game-screen {
             display: none; flex-direction: column; align-items: center;
             width: 100%; max-width: 500px; position: relative; z-index: 10;
@@ -230,6 +238,8 @@
             border-radius: 8px; box-shadow: 0 15px 40px rgba(0,0,0,0.25);
             background: linear-gradient(145deg, #a67c52, #6f4722);
             margin-top: 5px;
+            /* 이펙트를 위해 transition 추가 */
+            transition: box-shadow 0.1s, transform 0.1s; 
         }
         #board-container {
             position: relative; background: var(--wood-light);
@@ -557,7 +567,7 @@
                     if (p1Char === charData) { p1Char = null; cardEl.classList.remove('selected-p1'); pickingFor = 1; }
                     document.querySelectorAll('.char-card').forEach(c => c.classList.remove('selected-p2'));
                     cardEl.classList.add('selected-p2'); p2Char = charData; pickingFor = 1;
-                    document.getElementById('introInstruction').innerHTML = '<span style="color:#2c3e50;">Player 1(흑돌)</span>을 다시 고르거나 게임을 시작하세요';
+                    document.getElementById('introInstruction').innerHTML = '<span style="color:#2c3e50;">Player 1(흑돌)</span>을 다시 고르거나 게임 시작을 누르세요';
                 }
             }
             checkStartCondition();
@@ -672,14 +682,17 @@
         let isReviewMode = false;
         let currentReviewStep = 0;
 
-        let gameStartTime = 0; let turnStartTime = 0; let timerInterval = null; let currentTimeLimit = 30;
+        let turnStartTime = 0; let timerInterval = null; let currentTimeLimit = 30;
 
+        // 🌟 2. 턴 수에 따른 제한시간 단축 로직 추가
         function startTimer() {
             if (timerInterval) clearInterval(timerInterval);
             if (gameOver || isReviewMode) return;
-            const elapsedGameSec = (Date.now() - gameStartTime) / 1000;
-            if (elapsedGameSec >= 600) currentTimeLimit = 10;
-            else if (elapsedGameSec >= 300) currentTimeLimit = 20;
+            
+            // 🌟 돌 개수(턴 수) 기준으로 타이머 시간 결정
+            const moves = moveHistory.length;
+            if (moves >= 50) currentTimeLimit = 10;
+            else if (moves >= 20) currentTimeLimit = 20;
             else currentTimeLimit = 30;
 
             turnStartTime = Date.now();
@@ -730,7 +743,6 @@
                 }
             }
 
-            // 🌟 10수 이상 진행 시, 일반 플레이 중에도 마지막 수(방금 둔 돌)에 마커 표시 🌟
             if (!isReviewMode && moveHistory.length >= 10) {
                 const lastMove = moveHistory[moveHistory.length - 1];
                 if (lastMove) {
@@ -748,6 +760,45 @@
             else { grad.addColorStop(0, "#fff"); grad.addColorStop(1, "#ccc"); }
             ctx.fillStyle = grad; ctx.fill();
             ctx.shadowBlur = 0; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0;
+        }
+
+        // 🌟 3. 멋진 착수 이펙트 함수 추가
+        function playCoolStoneEffect(row, col, color) {
+            const rect = canvas.getBoundingClientRect();
+            const cx = padding + col * cellSize;
+            const cy = padding + row * cellSize;
+            
+            // 스크린 상대 좌표로 변환 (파티클 발생 위치)
+            const screenX = rect.left + cx * (rect.width / canvas.width);
+            const screenY = rect.top + cy * (rect.height / canvas.height);
+            
+            const originX = Math.max(0, Math.min(1, screenX / window.innerWidth));
+            const originY = Math.max(0, Math.min(1, screenY / window.innerHeight));
+
+            // 파티클 터지는 이펙트
+            confetti({
+                particleCount: 25,
+                spread: 60,
+                startVelocity: 15,
+                origin: { x: originX, y: originY },
+                colors: color === 1 ? ['#111111', '#555555', '#f1c40f'] : ['#ffffff', '#cccccc', '#f1c40f'],
+                zIndex: 150,
+                ticks: 70,
+                scalar: 0.8,
+                disableForReducedMotion: true
+            });
+
+            // 바둑판 화면 진동 및 빛 반짝임 효과
+            const boardWrapper = document.getElementById('board-wrapper');
+            boardWrapper.style.transform = 'scale(1.02)';
+            boardWrapper.style.boxShadow = color === 1 
+                ? '0 0 40px rgba(0,0,0,0.8)' 
+                : '0 0 40px rgba(255,255,255,0.9)';
+                
+            setTimeout(() => {
+                boardWrapper.style.transform = 'scale(1)';
+                boardWrapper.style.boxShadow = '0 15px 40px rgba(0,0,0,0.25)';
+            }, 150);
         }
 
         function showFloatingChat(isPlayer) {
@@ -785,9 +836,15 @@
 
         function placeStone(row, col) {
             moveHistory.push({ row, col, color: turn });
-            
             board[row][col] = turn;
-            playStoneSound(); drawBoard();
+            
+            // 🌟 20수 이상이면 이펙트 발생!
+            if (moveHistory.length >= 20) {
+                playCoolStoneEffect(row, col, turn);
+            }
+
+            playStoneSound(); 
+            drawBoard();
 
             if (checkWin(row, col, turn)) {
                 triggerWinEffects(turn);
@@ -907,7 +964,7 @@
             }
         }
 
-        // 마커 그리기 (복기 및 10수 이상 진행 시 공용 사용)
+        // 마커 그리기
         function drawLastMoveMarker(row, col) {
             const x = padding + col * cellSize;
             const y = padding + row * cellSize;
@@ -1011,7 +1068,6 @@
             isReviewMode = false;
             document.getElementById('review-controls').style.display = 'none';
 
-            gameStartTime = Date.now();
             startTimer();
             updateStatusUI(); drawBoard();
         }

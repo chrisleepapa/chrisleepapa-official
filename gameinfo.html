@@ -866,7 +866,14 @@
         const shareOverlay = document.getElementById('shareOverlay');
         const toast = document.getElementById('toast');
         function openShareModal() { shareOverlay.style.display = 'flex'; setTimeout(() => shareOverlay.classList.add('active'), 10); }
-        function closeShareModal(e) { if (e && e.target !== shareOverlay && e.type !== 'click') return; shareOverlay.classList.remove('active'); setTimeout(() => shareOverlay.style.display = 'none', 300); }
+        
+        function closeShareModal(e) { 
+            // e가 없거나 오버레이 배경(shareOverlay)을 클릭했을 때만 닫히도록 수정
+            if (!e || e.target === shareOverlay) {
+                shareOverlay.classList.remove('active'); 
+                setTimeout(() => shareOverlay.style.display = 'none', 300); 
+            }
+        }
 
         async function copyURL() {
             const currentUrl = window.location.href;
@@ -892,13 +899,15 @@
             else { showToast(i18n[currentLang].toast_error); }
         }
         function showToast(msg) { toast.textContent = msg; toast.style.display = 'block'; setTimeout(() => { toast.style.display = 'none'; }, 2500); }
+        
+        // ── 수정된 escapeHTML 함수 (오류 해결 및 XSS 방지 강화) ──
         function escapeHTML(value) {
             return String(value)
-                .replace(/&/g, '&')
-                .replace(/</g, '<')
-                .replace(/>/g, '>')
-                .replace(/"/g, '"')
-                .replace(/'/g, ''');
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;'); 
         }
 
         // ── Supabase 설정 및 댓글 기능 ──

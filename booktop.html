@@ -20,7 +20,7 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&display=swap');
 
         body {
             font-family: 'Noto Serif KR', serif;
@@ -122,6 +122,52 @@
             0% { opacity: 0.3; transform: scale(0.98); }
             50% { opacity: 1; transform: scale(1); }
             100% { opacity: 0.3; transform: scale(0.98); }
+        }
+
+        /* 팝업 메시지 (책 놓을 때) */
+        .floating-text {
+            position: absolute;
+            pointer-events: none;
+            font-family: 'Noto Serif KR', serif;
+            font-weight: 900;
+            color: #fff;
+            animation: floatUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            z-index: 50;
+            font-size: 2.2rem;
+            transform: translate(-50%, -50%);
+            white-space: nowrap;
+        }
+
+        /* 게임 오버 팝업 메시지 */
+        .gameover-text {
+            position: fixed;
+            top: 40%;
+            left: 50%;
+            pointer-events: none;
+            font-family: 'Noto Serif KR', serif;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 0 0 10px #ff3300, 0 0 20px #8b0000, 0 4px 15px #000;
+            animation: scalePop 2.5s ease-out forwards;
+            z-index: 150;
+            font-size: clamp(4rem, 15vw, 7rem);
+            text-align: center;
+            width: 100%;
+            white-space: nowrap;
+        }
+
+        @keyframes floatUp {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+            20% { opacity: 1; transform: translate(-50%, -80%) scale(1.1); }
+            100% { opacity: 0; transform: translate(-50%, -150%) scale(0.9); }
+        }
+        
+        @keyframes scalePop {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.1) rotate(-10deg); }
+            15% { opacity: 1; transform: translate(-50%, -50%) scale(1.1) rotate(5deg); }
+            30% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+            80% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(1.5); filter: blur(5px); }
         }
 
         /* 모달 창 */
@@ -258,17 +304,17 @@
     <div id="celebration-layer" aria-live="polite"></div>
 
     <div id="game-container">
-        <!-- UI 레이어 (좌측: 글로벌 TOP 5 / 우측: 점수) -->
+        <!-- UI 레이어 -->
         <div id="ui-layer" class="p-3 sm:p-5 flex justify-between items-start pointer-events-none">
             
-            <!-- 좌측: Supabase TOP 5 패널 -->
-            <div class="hud-panel flex flex-col gap-1 pointer-events-auto shadow-2xl" style="min-width: 130px;">
-                <div class="flex items-center justify-center gap-2 border-b border-yellow-700/50 pb-2 mb-1 text-center">
-                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.8)]"></div>
-                    <div class="text-xs text-yellow-500 font-bold tracking-widest">TOP 5</div>
+            <!-- 좌측: 투명한 Supabase TOP 5 패널 -->
+            <div id="top5-panel" class="flex flex-col gap-1 pointer-events-auto" style="min-width: 130px; text-shadow: 1px 2px 4px rgba(0,0,0,0.95), 0 0 2px rgba(0,0,0,1);">
+                <div class="flex items-center justify-center gap-2 border-b border-yellow-500/30 pb-2 mb-1 text-center">
+                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,1)]"></div>
+                    <div class="text-xs text-yellow-400 font-extrabold tracking-widest">TOP 5</div>
                 </div>
-                <ul id="top5-list" class="flex flex-col gap-1 text-gray-300">
-                    <li class="text-center text-gray-500 text-xs py-2">로딩중...</li>
+                <ul id="top5-list" class="flex flex-col gap-1 text-gray-100 font-bold">
+                    <li class="text-center text-gray-300 text-xs py-2 drop-shadow-md">로딩중...</li>
                 </ul>
             </div>
 
@@ -295,7 +341,6 @@
             <h1 class="text-4xl font-bold text-yellow-500 mb-2" style="text-shadow: 0 2px 4px rgba(0,0,0,1);">아빠의 서재</h1>
             <p class="text-gray-400 mb-6 text-xs tracking-widest font-sans">MULTIPLAYER CHALLENGE</p>
             
-            <!-- 이니셜 입력 폼 -->
             <div class="bg-black bg-opacity-40 p-4 rounded mb-6 border border-gray-700/50">
                 <label class="block text-gray-300 text-sm mb-2">랭킹 등록용 이니셜 (영문 3자리)</label>
                 <input type="text" id="player-initial" maxlength="3" 
@@ -330,7 +375,6 @@
 
     <!-- Supabase 연동 및 로직 -->
     <script>
-        // --- Supabase 설정 ---
         const SUPA_URL = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
         const SUPA_KEY = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
         
@@ -340,14 +384,16 @@
         const top5ListEl = document.getElementById('top5-list');
         const initialInput = document.getElementById('player-initial');
 
-        // 이니셜 영문자만 입력 필터링
+        // 재미있는 문구 배열 추가
+        const SUCCESS_MSGS = ['대박!', '최고다!', '멋진데!', '놀라워!', '나이스!', '완벽해!', '오예!', '나이쓰!', '좋았어!'];
+        const FAIL_MSGS = ['아깝!', '이런...', '저런...', '앗 나의 실수!', '와르르...', '조금만 더!', '어이쿠!', '너무 높았나?'];
+
         if(initialInput) {
             initialInput.addEventListener('input', (e) => {
                 e.target.value = e.target.value.replace(/[^a-zA-Z]/g, '').toUpperCase();
             });
         }
 
-        // Top 5 불러오기
         async function fetchTop5() {
             try {
                 const res = await fetch(`${SUPA_URL}/rest/v1/booktop_scores?select=*&order=score.desc,created_at.asc&limit=5`, {
@@ -367,7 +413,6 @@
             }
         }
 
-        // 기록 저장하기
         async function saveScoreToDB(initial, score) {
             if (score <= 0) return;
             try {
@@ -393,38 +438,67 @@
             }
         }
 
-        // Top 5 화면에 그리기
+        // Top5 렌더링 (배경 투명하게 수정)
         function renderTop5() {
             top5ListEl.innerHTML = '';
             
             if (globalTop5.length === 0) {
-                top5ListEl.innerHTML = '<li class="text-center text-gray-500 text-xs py-2">기록 없음</li>';
+                top5ListEl.innerHTML = '<li class="text-center text-gray-300 text-xs py-2 drop-shadow-md">기록 없음</li>';
                 return;
             }
 
             globalTop5.forEach((record, index) => {
                 const li = document.createElement('li');
-                li.className = 'flex justify-between items-center text-sm py-1 bg-black bg-opacity-20 px-2 rounded mb-1';
+                // bg 속성 제거하여 완전 투명하게 처리
+                li.className = 'flex justify-between items-center text-sm py-1 px-1 mb-1 drop-shadow-md';
                 
-                let rankIcon = `<span class="inline-block w-4 text-center font-bold text-gray-500">${index + 1}</span>`;
-                let rankStyle = 'text-gray-400';
+                let rankIcon = `<span class="inline-block w-4 text-center font-bold text-gray-300">${index + 1}</span>`;
+                let rankStyle = 'text-gray-100';
                 
-                if (index === 0) { rankIcon = '🥇'; rankStyle = 'text-yellow-400 font-bold'; }
-                else if (index === 1) { rankIcon = '🥈'; rankStyle = 'text-gray-300 font-semibold'; }
-                else if (index === 2) { rankIcon = '🥉'; rankStyle = 'text-orange-300 font-semibold'; }
+                if (index === 0) { rankIcon = '🥇'; rankStyle = 'text-yellow-300 font-extrabold'; }
+                else if (index === 1) { rankIcon = '🥈'; rankStyle = 'text-gray-200 font-bold'; }
+                else if (index === 2) { rankIcon = '🥉'; rankStyle = 'text-orange-200 font-bold'; }
                 
                 li.innerHTML = `
                     <div class="flex items-center gap-2">
                         ${rankIcon}
                         <span class="${rankStyle} tracking-widest">${record.initial}</span>
                     </div>
-                    <span class="${rankStyle} font-bold">${record.score}</span>
+                    <span class="${rankStyle} font-bold text-base">${record.score}</span>
                 `;
                 top5ListEl.appendChild(li);
             });
         }
 
-        fetchTop5(); // 초기 실행
+        fetchTop5(); 
+
+        // 팝업 텍스트 띄워주는 함수 추가
+        function showPopupMessage(x, y, type) {
+            const el = document.createElement('div');
+            
+            if (type === 'success') {
+                const msg = SUCCESS_MSGS[Math.floor(Math.random() * SUCCESS_MSGS.length)];
+                el.innerText = msg;
+                el.className = 'floating-text';
+                el.style.left = `${x}px`;
+                el.style.top = `${y}px`;
+                
+                // 알록달록 무작위 색상 및 강한 그림자
+                const hues = [45, 180, 320, 200, 10]; 
+                const randomHue = hues[Math.floor(Math.random() * hues.length)];
+                el.style.textShadow = `0 0 5px hsl(${randomHue}, 100%, 50%), 0 0 15px hsl(${randomHue}, 100%, 40%), 0 2px 8px rgba(0,0,0,1)`;
+                
+                document.body.appendChild(el);
+                setTimeout(() => el.remove(), 1200);
+                
+            } else if (type === 'fail') {
+                const msg = FAIL_MSGS[Math.floor(Math.random() * FAIL_MSGS.length)];
+                el.innerText = msg;
+                el.className = 'gameover-text';
+                document.body.appendChild(el);
+                setTimeout(() => el.remove(), 2500); // 2.5초 뒤 삭제
+            }
+        }
 
 
         // --- Matter.js 물리 엔진 ---
@@ -476,14 +550,14 @@
             canvas.width = w; canvas.height = h;
             const ctx = canvas.getContext('2d');
 
-            const isVintage = Math.random() > 0.3; // 양장본 확률 높임
-            const hues = [10, 20, 200, 350, 140, 40]; // 가죽, 버건디, 네이비 등
+            const isVintage = Math.random() > 0.3; 
+            const hues = [10, 20, 200, 350, 140, 40]; 
             const baseHue = hues[Math.floor(Math.random() * hues.length)];
             const saturation = isVintage ? (20 + Math.random() * 20) : (40 + Math.random() * 20);
             const lightness = isVintage ? (15 + Math.random() * 15) : (25 + Math.random() * 15);
             
             const coverColor = `hsl(${baseHue}, ${saturation}%, ${lightness}%)`;
-            const pagesColor = isVintage ? '#c2b38e' : '#e6dfd1'; // 빛바랜 종이색
+            const pagesColor = isVintage ? '#c2b38e' : '#e6dfd1'; 
 
             ctx.fillStyle = coverColor;
             ctx.fillRect(0, 0, w, h);
@@ -515,7 +589,7 @@
             ctx.fillStyle = spineGrad;
             ctx.fillRect(0, 0, spineWidth, h);
 
-            ctx.fillStyle = 'rgba(212, 175, 55, 0.8)'; // 금박
+            ctx.fillStyle = 'rgba(212, 175, 55, 0.8)'; 
             ctx.fillRect(0, h * 0.15, spineWidth, 2);
             ctx.fillRect(0, h * 0.25, spineWidth, 4);
             ctx.fillRect(0, h * 0.8, spineWidth, 2);
@@ -564,7 +638,6 @@
 
         // --- 물리 엔진 & 카메라 로직 ---
         function initPhysics() {
-            // [수정 포인트 1]: 물리 엔진 초기화 시 화면 너비/높이를 재확인하여 레이아웃 어긋남 방지
             width = window.innerWidth;
             height = window.innerHeight;
 
@@ -584,7 +657,6 @@
                 options: {
                     width: width, height: height,
                     wireframes: false, background: 'transparent',
-                    // [수정 포인트 2]: 레티나 모바일 등에서 2~3배 화면이 줌인(확대)되는 버그를 막기 위해 pixelRatio 고정
                     pixelRatio: 1, 
                     hasBounds: true
                 }
@@ -623,7 +695,7 @@
                  ctx.setLineDash([15 * scale, 10 * scale]);
                  ctx.moveTo(currentActiveBook.position.x, currentActiveBook.position.y);
                  ctx.lineTo(currentActiveBook.position.x, ground.position.y);
-                 ctx.strokeStyle = 'rgba(255, 215, 120, 0.4)'; // 스탠드 조명빛 가이드
+                 ctx.strokeStyle = 'rgba(255, 215, 120, 0.4)'; 
                  ctx.lineWidth = Math.max(1, 2 * scale);
                  ctx.stroke();
                  ctx.setLineDash([]);
@@ -660,6 +732,14 @@
             
             const randomAngularVelocity = (Math.random() - 0.5) * 0.03;
             Body.setAngularVelocity(currentActiveBook, randomAngularVelocity);
+
+            // 팝업 텍스트 띄우기 (화면 좌표 계산)
+            const scaleX = width / (currentBounds.max.x - currentBounds.min.x);
+            const scaleY = height / (currentBounds.max.y - currentBounds.min.y);
+            const screenX = (currentActiveBook.position.x - currentBounds.min.x) * scaleX;
+            const screenY = (currentActiveBook.position.y - currentBounds.min.y) * scaleY;
+            
+            showPopupMessage(screenX, screenY, 'success');
 
             currentActiveBook = null;
             controlsHint.style.display = 'none';
@@ -755,6 +835,9 @@
             btnRestartTop.style.display = 'none';
             celebrationLayer.replaceChildren();
             
+            // 실패 시 거대한 텍스트 화면 중앙에 표시
+            showPopupMessage(0, 0, 'fail');
+            
             playCrashSound();
             document.body.style.animation = 'shake 0.5s';
             setTimeout(() => document.body.style.animation = '', 500);
@@ -763,7 +846,6 @@
             finalScoreEl.textContent = finalScore;
             document.getElementById('final-initial').textContent = currentInitial;
 
-            // 글로벌 Top 5 달성 확인 로직
             let isNewRecord = false;
             let isTop5Entry = false;
             
@@ -777,14 +859,14 @@
                     isTop5Entry = true;
                 }
                 
-                // Supabase에 데이터 저장
                 saveScoreToDB(currentInitial, finalScore);
             }
 
             newRecordMsg.style.display = isNewRecord ? 'block' : 'none';
             top5EntryMsg.style.display = (!isNewRecord && isTop5Entry) ? 'block' : 'none';
 
-            setTimeout(() => gameoverModal.style.display = 'block', 700);
+            // 실패 텍스트가 잘 보이도록 모달 띄우는 시간 지연시킴
+            setTimeout(() => gameoverModal.style.display = 'block', 1800);
         }
 
         // 게임 시작 검증 및 로직
@@ -803,6 +885,9 @@
             gameoverModal.style.display = 'none';
             btnRestartTop.style.display = 'block';
             
+            // 화면에 남아있는 플로팅/게임오버 텍스트 모두 삭제
+            document.querySelectorAll('.floating-text, .gameover-text').forEach(el => el.remove());
+
             score = 0; scoreEl.textContent = score;
             books = [];
             celebrationLayer.replaceChildren();

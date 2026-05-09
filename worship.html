@@ -149,6 +149,20 @@
         }
         .player-placeholder:hover .play-btn-circle { transform: scale(1.1); background: #1DB954; }
 
+        /* YouTube 재생 버튼 스타일 추가 */
+        @keyframes pulseRed {
+            0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.6); }
+            70% { box-shadow: 0 0 0 20px rgba(255, 0, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+        }
+        .youtube-play-btn {
+            background: rgba(255, 0, 0, 0.9) !important;
+            animation: pulseRed 2s infinite !important;
+        }
+        .player-placeholder:hover .youtube-play-btn {
+            background: #ff0000 !important;
+        }
+
         .placeholder-text { 
             font-size: 0.95rem; color: #fff; font-weight: 700; letter-spacing: 2px; 
             font-family: 'Cinzel', 'Pretendard', sans-serif; text-shadow: 0 4px 10px rgba(0,0,0,0.8);
@@ -453,6 +467,7 @@
 
     <div class="container">
         <section class="featured-albums">
+            <!-- 1집 : Spotify -->
             <div class="featured-card card-vol1">
                 <div class="spotify-container-album">
                     <div class="player-placeholder" onclick="injectIframe(this, 'https://open.spotify.com/embed/album/0ctoLQNWCmiPEkySv05PAM?utm_source=generator')">
@@ -470,12 +485,15 @@
                     <a href="lyrics.html" class="action-btn btn-lyric" onclick="window.open(this.href,'lyricsPopup','width=860,height=700,scrollbars=yes,resizable=yes'); return false;" data-i18n="btn_lyrics">가사 보기</a>
                 </div>
             </div>
+
+            <!-- 2집 : YouTube 임베드로 변경됨 -->
             <div class="featured-card card-vol2">
                 <div class="spotify-container-album">
-                    <div class="player-placeholder" onclick="injectIframe(this, 'https://open.spotify.com/embed/album/0yhn8oEojOqsI864an6Qki?utm_source=generator')">
+                    <div class="player-placeholder" onclick="injectIframe(this, 'https://www.youtube.com/embed/videoseries?list=OLAK5uy_k9AXYTzto2kBSstq07DrX3o4byN30pwAg')">
                         <div class="placeholder-bg" style="background-image: url('https://images.unsplash.com/photo-1504052434569-70ad5836ab65?q=80&w=800&auto=format&fit=crop');"></div>
                         <div class="placeholder-content">
-                            <div class="play-btn-circle">▶</div>
+                            <!-- 유튜브 느낌을 살린 빨간색 재생 버튼 적용 -->
+                            <div class="play-btn-circle youtube-play-btn">▶</div>
                             <div class="placeholder-text" data-i18n="placeholder_text">음악 재생하기</div>
                         </div>
                     </div>
@@ -836,6 +854,7 @@
             mainNav.classList.toggle('scrolled', window.scrollY > 40);
         }, { passive: true });
 
+        // 유튜브가 정상적으로 플레이 되도록 iframe.setAttribute 추가
         function injectIframe(element, url) {
             const container = element.parentElement;
             const isTrack = container.classList.contains('spotify-container-track');
@@ -846,6 +865,7 @@
             iframe.height = height;
             iframe.frameBorder = '0';
             iframe.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
+            iframe.setAttribute('allowfullscreen', 'true'); // 유튜브 임베드를 위한 속성 추가
             iframe.loading = 'lazy';
             container.innerHTML = '';
             container.appendChild(iframe);

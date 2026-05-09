@@ -25,10 +25,9 @@
         /* 🏆 랭킹 보드 (배경 투명 & 가독성 대폭 개선) */
         .leaderboard-wrapper {
             position: fixed; top: 15px; left: 15px;
-            padding: 10px 15px; background: transparent; /* 배경 완전 투명 */
+            padding: 10px 15px; background: transparent; 
             width: 180px; text-align: left;
             z-index: 90; pointer-events: auto;
-            /* 글씨가 어떤 배경에서도 잘 보이도록 강한 그림자 추가 */
             text-shadow: 1px 2px 4px rgba(0,0,0,0.95), 0 0 4px rgba(0,0,0,1), 0 0 10px rgba(0,0,0,0.8);
         }
 
@@ -167,7 +166,8 @@
         /* 메인 게임 UI */
         #game-screen {
             display: none; flex-direction: column; align-items: center;
-            width: 100%; max-width: 500px; position: relative; z-index: 10;
+            width: 100%; max-width: 800px;
+            position: relative; z-index: 10;
         }
 
         .header { text-align: center; margin-bottom: 5px; width: 100%; padding: 0 10px; }
@@ -227,21 +227,61 @@
         .timer-bar-bg { width: 100%; height: 8px; background: rgba(0,0,0,0.2); border-radius: 4px; overflow: hidden; border: 1px solid rgba(255,255,255,0.3); }
         .timer-bar-fill { height: 100%; width: 100%; background: #f1c40f; transition: width 0.1s linear, background-color 0.3s; }
 
-        /* 바둑판 */
+        /* 바둑판 확대 축소 영역 설정 */
+        .board-area {
+            position: relative;
+            width: fit-content;
+            max-width: 95vw;
+            margin: 0 auto;
+        }
+
         #board-wrapper {
             position: relative; padding: 10px; background: var(--wood-dark);
             border-radius: 8px; box-shadow: 0 15px 40px rgba(0,0,0,0.25);
             background: linear-gradient(145deg, #a67c52, #6f4722);
             margin-top: 5px;
-            /* 이펙트를 위해 transition 추가 */
             transition: box-shadow 0.1s, transform 0.1s; 
+            max-width: 100%;
+            overflow: auto; /* 내용이 넘칠 때 스크롤 생성 */
+            -webkit-overflow-scrolling: touch; /* iOS 부드러운 스크롤 */
+            touch-action: pan-x pan-y pinch-zoom; /* 확대 축소 기본 동작 허용 방지 및 통제용 */
         }
+
         #board-container {
             position: relative; background: var(--wood-light);
             background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 2px, transparent 2px, transparent 10px);
             line-height: 0; border: 1px solid rgba(0,0,0,0.2); overflow: hidden;
+            transform-origin: top left;
         }
-        canvas { cursor: pointer; max-width: 92vw; max-height: 92vw; border-radius: 2px; }
+
+        canvas { cursor: pointer; border-radius: 2px; display: block; }
+
+        /* 줌 컨트롤 (우측 하단) */
+        .zoom-controls {
+            position: absolute;
+            bottom: 25px;
+            right: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 50;
+        }
+        .zoom-controls button {
+            width: 45px; height: 45px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid #6f4722;
+            font-size: 26px; font-weight: bold; color: #6f4722;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            display: flex; align-items: center; justify-content: center;
+            transition: transform 0.1s, background 0.1s;
+            user-select: none;
+        }
+        .zoom-controls button:active {
+            background: #e0d7c6;
+            transform: scale(0.9);
+        }
 
         /* 복기 컨트롤러 UI */
         .review-controls {
@@ -331,7 +371,7 @@
 </head>
 <body>
 
-    <!-- 🏆 랭킹 보드 (개선됨) -->
+    <!-- 🏆 랭킹 보드 -->
     <div class="leaderboard-wrapper" style="display:none;" id="leaderboardWrapper">
         <h3>🏆 TOP 5 <span id="loadingCloud"></span></h3>
         <ul class="leaderboard-list" id="leaderboardList"></ul>
@@ -382,9 +422,16 @@
             </div>
         </div>
 
-        <div id="board-wrapper">
-            <div id="board-container">
-                <canvas id="omokBoard" width="450" height="450"></canvas>
+        <!-- 바둑판 및 줌 컨트롤 영역 -->
+        <div class="board-area">
+            <div id="board-wrapper">
+                <div id="board-container">
+                    <canvas id="omokBoard" width="650" height="650"></canvas>
+                </div>
+            </div>
+            <div class="zoom-controls">
+                <button onclick="changeZoom(0.15)">+</button>
+                <button onclick="changeZoom(-0.15)">-</button>
             </div>
         </div>
 
@@ -586,6 +633,40 @@
             if (isValid) startBtn.classList.add('active'); else startBtn.classList.remove('active');
         }
 
+        // --- 확대/축소(Zoom) 기능 ---
+        let currentZoom = 1.0;
+        const BASE_SIZE = 650;
+
+        function setZoom(level) {
+            currentZoom = Math.max(0.4, Math.min(level, 2.5));
+            const newSize = BASE_SIZE * currentZoom;
+            const cvs = document.getElementById('omokBoard');
+            const container = document.getElementById('board-container');
+            
+            cvs.style.width = newSize + 'px';
+            cvs.style.height = newSize + 'px';
+            container.style.width = newSize + 'px';
+            container.style.height = newSize + 'px';
+        }
+
+        window.changeZoom = function(delta) {
+            setZoom(currentZoom + delta);
+        }
+
+        function initZoom() {
+            const screenWidth = window.innerWidth;
+            // 여백(패딩, 마진 등) 40px 제외 후 크기 비례 계산
+            const availableWidth = screenWidth - 40; 
+            if (availableWidth < BASE_SIZE) {
+                // 모바일 환경 등에서 화면 폭에 맞춰서 최초 축소
+                setZoom(availableWidth / BASE_SIZE);
+            } else {
+                // 큰 화면에서는 원본 크기
+                setZoom(1.0);
+            }
+        }
+        // -----------------------------
+
         window.startGame = function() {
             if (introMode === 'COM') {
                 const iniVal = initialsInput.value.trim().toUpperCase();
@@ -610,7 +691,9 @@
                     document.getElementById('oppNameTxt').innerHTML = `${p2Char.name}<br><span style="color:#666;font-size:12px;">(2P 백돌)</span>`;
                     document.getElementById('oppAvatar').innerHTML = `<img src="${p2Char.img}" alt="${p2Char.name}" onerror="this.style.display='none'; this.parentElement.innerText='${p2Char.icon}';">`;
                 }
+                
                 resetGame();
+                initZoom(); // 게임 화면 진입 시 기기 화면폭에 맞춰 줌 세팅
             }, 500);
         }
 
@@ -1060,6 +1143,40 @@
             updateStatusUI(); drawBoard();
         }
 
+        // --- 모바일 핀치 줌(두 손가락 확대/축소) 로직 ---
+        const boardWrapperEl = document.getElementById('board-wrapper');
+        let touchStartDist = null;
+        let touchStartZoom = 1;
+
+        boardWrapperEl.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 2) {
+                touchStartDist = Math.hypot(
+                    e.touches[0].clientX - e.touches[1].clientX,
+                    e.touches[0].clientY - e.touches[1].clientY
+                );
+                touchStartZoom = currentZoom;
+                e.preventDefault(); 
+            }
+        }, {passive: false});
+
+        boardWrapperEl.addEventListener('touchmove', (e) => {
+            if (e.touches.length === 2 && touchStartDist) {
+                e.preventDefault(); 
+                const currentDist = Math.hypot(
+                    e.touches[0].clientX - e.touches[1].clientX,
+                    e.touches[0].clientY - e.touches[1].clientY
+                );
+                const scale = currentDist / touchStartDist;
+                setZoom(touchStartZoom * scale);
+            }
+        }, {passive: false});
+
+        boardWrapperEl.addEventListener('touchend', (e) => {
+            if (e.touches.length < 2) {
+                touchStartDist = null;
+            }
+        });
+        // --------------------------------------------------
     </script>
 </body>
 </html>

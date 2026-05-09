@@ -124,50 +124,34 @@
             100% { opacity: 0.3; transform: scale(0.98); }
         }
 
-        /* 팝업 메시지 (책 놓을 때) */
-        .floating-text {
+        /* 🌟 오목 스타일 플로팅 멘트 애니메이션 🌟 */
+        @keyframes floatChat {
+            0% { opacity: 0; transform: translate(-50%, 20px) scale(0.5) rotate(-10deg); }
+            20% { opacity: 1; transform: translate(-50%, 0px) scale(1.2) rotate(5deg); }
+            40% { opacity: 1; transform: translate(-50%, -10px) scale(1) rotate(0deg); }
+            80% { opacity: 1; transform: translate(-50%, -20px) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -40px) scale(0.8); }
+        }
+
+        .floating-chat {
             position: absolute;
             pointer-events: none;
-            font-family: 'Noto Serif KR', serif;
-            font-weight: 900;
-            color: #fff;
-            animation: floatUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-            z-index: 50;
-            font-size: 2.2rem;
-            transform: translate(-50%, -50%);
-            white-space: nowrap;
-        }
-
-        /* 게임 오버 팝업 메시지 */
-        .gameover-text {
-            position: fixed;
-            top: 40%;
-            left: 50%;
-            pointer-events: none;
-            font-family: 'Noto Serif KR', serif;
-            font-weight: 900;
-            color: #fff;
-            text-shadow: 0 0 10px #ff3300, 0 0 20px #8b0000, 0 4px 15px #000;
-            animation: scalePop 2.5s ease-out forwards;
             z-index: 150;
-            font-size: clamp(4rem, 15vw, 7rem);
-            text-align: center;
-            width: 100%;
+            font-size: 28px;
+            font-weight: 900;
+            font-family: 'Comic Sans MS', 'Pretendard', sans-serif;
+            text-shadow: 3px 3px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
+            animation: floatChat 1.5s ease-out forwards;
             white-space: nowrap;
         }
 
-        @keyframes floatUp {
-            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
-            20% { opacity: 1; transform: translate(-50%, -80%) scale(1.1); }
-            100% { opacity: 0; transform: translate(-50%, -150%) scale(0.9); }
-        }
+        .chat-success { color: #f1c40f; }
         
-        @keyframes scalePop {
-            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.1) rotate(-10deg); }
-            15% { opacity: 1; transform: translate(-50%, -50%) scale(1.1) rotate(5deg); }
-            30% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
-            80% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
-            100% { opacity: 0; transform: translate(-50%, -50%) scale(1.5); filter: blur(5px); }
+        .chat-fail { 
+            color: #e74c3c; 
+            font-size: clamp(3.5rem, 12vw, 6rem); 
+            animation-duration: 2.5s; 
+            z-index: 200; 
         }
 
         /* 모달 창 */
@@ -373,7 +357,6 @@
         </div>
     </div>
 
-    <!-- Supabase 연동 및 로직 -->
     <script>
         const SUPA_URL = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
         const SUPA_KEY = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
@@ -384,9 +367,9 @@
         const top5ListEl = document.getElementById('top5-list');
         const initialInput = document.getElementById('player-initial');
 
-        // 재미있는 문구 배열 추가
-        const SUCCESS_MSGS = ['대박!', '최고다!', '멋진데!', '놀라워!', '나이스!', '완벽해!', '오예!', '나이쓰!', '좋았어!'];
-        const FAIL_MSGS = ['아깝!', '이런...', '저런...', '앗 나의 실수!', '와르르...', '조금만 더!', '어이쿠!', '너무 높았나?'];
+        // 🌟 오목 스타일 멘트로 변경 🌟
+        const SUCCESS_MSGS = ['대박!', '와우!', '언빌리버블!', '나이스~', '이건 몰랐지?', '천재 아냐?', '간닷!', '완벽해!', '우효~', '폼 미쳤다잉~'];
+        const FAIL_MSGS = ['오 노우!!', '뭐야~', '안돼~', '헐...', '너무해 ㅠㅠ', '와르르...', '이럴수가!', '헉!', '비상사태!', '방심했다...'];
 
         if(initialInput) {
             initialInput.addEventListener('input', (e) => {
@@ -438,7 +421,6 @@
             }
         }
 
-        // Top5 렌더링 (배경 투명하게 수정)
         function renderTop5() {
             top5ListEl.innerHTML = '';
             
@@ -449,7 +431,6 @@
 
             globalTop5.forEach((record, index) => {
                 const li = document.createElement('li');
-                // bg 속성 제거하여 완전 투명하게 처리
                 li.className = 'flex justify-between items-center text-sm py-1 px-1 mb-1 drop-shadow-md';
                 
                 let rankIcon = `<span class="inline-block w-4 text-center font-bold text-gray-300">${index + 1}</span>`;
@@ -472,31 +453,36 @@
 
         fetchTop5(); 
 
-        // 팝업 텍스트 띄워주는 함수 추가
+        // 🌟 플로팅 방식 변경 🌟
         function showPopupMessage(x, y, type) {
             const el = document.createElement('div');
             
             if (type === 'success') {
                 const msg = SUCCESS_MSGS[Math.floor(Math.random() * SUCCESS_MSGS.length)];
                 el.innerText = msg;
-                el.className = 'floating-text';
-                el.style.left = `${x}px`;
-                el.style.top = `${y}px`;
+                el.className = 'floating-chat chat-success';
                 
-                // 알록달록 무작위 색상 및 강한 그림자
-                const hues = [45, 180, 320, 200, 10]; 
-                const randomHue = hues[Math.floor(Math.random() * hues.length)];
-                el.style.textShadow = `0 0 5px hsl(${randomHue}, 100%, 50%), 0 0 15px hsl(${randomHue}, 100%, 40%), 0 2px 8px rgba(0,0,0,1)`;
+                // 오목 스타일로 약간의 랜덤한 오프셋 추가
+                const offsetX = (Math.random() - 0.5) * 80;
+                const offsetY = (Math.random() - 0.5) * 40 - 20;
+                
+                el.style.left = `${x + offsetX}px`;
+                el.style.top = `${y + offsetY}px`;
                 
                 document.body.appendChild(el);
-                setTimeout(() => el.remove(), 1200);
+                setTimeout(() => el.remove(), 1500);
                 
             } else if (type === 'fail') {
                 const msg = FAIL_MSGS[Math.floor(Math.random() * FAIL_MSGS.length)];
                 el.innerText = msg;
-                el.className = 'gameover-text';
+                el.className = 'floating-chat chat-fail';
+                
+                // 실패 시 화면 중앙에서 매우 크게 팝업
+                el.style.left = '50%';
+                el.style.top = '40%';
+                
                 document.body.appendChild(el);
-                setTimeout(() => el.remove(), 2500); // 2.5초 뒤 삭제
+                setTimeout(() => el.remove(), 2500); 
             }
         }
 
@@ -535,13 +521,14 @@
         const roomBg = document.getElementById('room-bg');
         const celebrationLayer = document.getElementById('celebration-layer');
 
-        const CELEBRATION_MILESTONES = new Set([1, 10, 15, 20, 25, 30, 35, 40, 45, 50]);
+        const CELEBRATION_MILESTONES = new Set([1, 10, 15, 20, 25, 30, 35, 40, 45, 50, 60, 70]);
+        // 🌟 축하 멘트도 오목 스타일로 변경 🌟
         const CHEER_MESSAGES = [
-            '완벽한 출발이에요!',
-            '책탑이 반짝반짝 빛나요!',
-            '정말 멋지게 쌓고 있어요!',
-            '아빠의 서재가 환호합니다!',
-            '집중력 최고! 계속 가요!'
+            '오~ 폼 미쳤다잉! 🚀',
+            '이 구역의 책쌓기 달인! 😎',
+            '대박! 재능 발견?! 🎉',
+            '어디까지 올라가는 거예요! 😱',
+            '완벽 그 자체! 나이스! 👍'
         ];
 
         // --- 텍스처 생성기 (Canvas API) ---
@@ -733,13 +720,16 @@
             const randomAngularVelocity = (Math.random() - 0.5) * 0.03;
             Body.setAngularVelocity(currentActiveBook, randomAngularVelocity);
 
-            // 팝업 텍스트 띄우기 (화면 좌표 계산)
+            // 팝업 텍스트를 위한 화면 좌표 변환
             const scaleX = width / (currentBounds.max.x - currentBounds.min.x);
             const scaleY = height / (currentBounds.max.y - currentBounds.min.y);
             const screenX = (currentActiveBook.position.x - currentBounds.min.x) * scaleX;
             const screenY = (currentActiveBook.position.y - currentBounds.min.y) * scaleY;
             
-            showPopupMessage(screenX, screenY, 'success');
+            // 🌟 확률적으로 성공 메시지 띄우기 (너무 자주 뜨면 번잡하므로 70% 확률 적용)
+            if (Math.random() > 0.3) {
+                showPopupMessage(screenX, screenY, 'success');
+            }
 
             currentActiveBook = null;
             controlsHint.style.display = 'none';
@@ -835,7 +825,7 @@
             btnRestartTop.style.display = 'none';
             celebrationLayer.replaceChildren();
             
-            // 실패 시 거대한 텍스트 화면 중앙에 표시
+            // 🌟 실패(무너짐) 시 중앙에 크고 강렬한 멘트 띄우기
             showPopupMessage(0, 0, 'fail');
             
             playCrashSound();
@@ -865,7 +855,6 @@
             newRecordMsg.style.display = isNewRecord ? 'block' : 'none';
             top5EntryMsg.style.display = (!isNewRecord && isTop5Entry) ? 'block' : 'none';
 
-            // 실패 텍스트가 잘 보이도록 모달 띄우는 시간 지연시킴
             setTimeout(() => gameoverModal.style.display = 'block', 1800);
         }
 
@@ -885,8 +874,8 @@
             gameoverModal.style.display = 'none';
             btnRestartTop.style.display = 'block';
             
-            // 화면에 남아있는 플로팅/게임오버 텍스트 모두 삭제
-            document.querySelectorAll('.floating-text, .gameover-text').forEach(el => el.remove());
+            // 🌟 화면에 남아있는 플로팅 텍스트 모두 삭제
+            document.querySelectorAll('.floating-chat').forEach(el => el.remove());
 
             score = 0; scoreEl.textContent = score;
             books = [];

@@ -24,7 +24,7 @@
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root { --gold: #c9a84c; --gold-light: #e8d08a; --bg: #030305; --text: #f0ece4; --nav-height: 70px; --pink-accent: #ffb4c8; --pink-glow: rgba(255, 180, 200, 0.4); --cyan: #4a90e2; --spotify: #1DB954; }
+        :root { --gold: #c9a84c; --gold-light: #e8d08a; --bg: #030305; --text: #f0ece4; --nav-height: 70px; --pink-accent: #ffb4c8; --pink-glow: rgba(255, 180, 200, 0.4); --cyan: #4a90e2; --youtube: #FF0000; --spotify: #1DB954; }
         html { scroll-behavior: smooth; background-color: var(--bg); }
         body { background-color: var(--bg); color: var(--text); font-family: 'Pretendard', 'Noto Serif KR', serif; line-height: 1.7; overflow-x: hidden; background-image: radial-gradient(circle at top right, rgba(40, 20, 40, 0.8), transparent 60%), radial-gradient(circle at bottom left, rgba(10, 10, 20, 0.9), transparent 60%); -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
         img { -webkit-user-drag: none; }
@@ -165,11 +165,12 @@
         /* ── Iframe Placeholder 고급 디자인 (Album) ── */
         .ost-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin-bottom: 100px; }
         .ost-item { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 25px; backdrop-filter: blur(5px); transition: 0.3s; }
-        .ost-item:hover { border-color: #1DB954; transform: translateY(-5px); }
+        .ost-item:hover { border-color: var(--youtube); transform: translateY(-5px); }
         .album-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .album-title { font-family: 'Cinzel', serif; font-size: 1.1rem; color: #fff; }
         .album-type { font-size: 0.7rem; color: var(--gold-light); border: 1px solid; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; }
-        .ost-btn { display: inline-block; margin-top: 15px; color: #1DB954; font-weight: 600; font-size: 0.9rem; transition: 0.3s; }
+        
+        .ost-btn { display: inline-block; margin-top: 15px; color: var(--spotify); font-weight: 600; font-size: 0.9rem; transition: 0.3s; }
         .ost-btn:hover { text-shadow: 0 0 10px rgba(29, 185, 84, 0.5); }
 
         .spotify-container-album {
@@ -195,18 +196,18 @@
         }
         .play-btn-circle { 
             width: 64px; height: 64px; border-radius: 50%; 
-            background: rgba(29, 185, 84, 0.9); color: #fff; 
+            background: rgba(255, 0, 0, 0.9); color: #fff; 
             display: flex; align-items: center; justify-content: center; font-size: 1.6rem; 
             margin-bottom: 16px; transition: transform 0.3s; padding-left: 5px; 
             border: 2px solid rgba(255,255,255,0.3); backdrop-filter: blur(4px);
-            animation: pulseGreen 2s infinite;
+            animation: pulseRed 2s infinite;
         }
-        @keyframes pulseGreen {
-            0% { box-shadow: 0 0 0 0 rgba(29, 185, 84, 0.6); }
-            70% { box-shadow: 0 0 0 20px rgba(29, 185, 84, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(29, 185, 84, 0); }
+        @keyframes pulseRed {
+            0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.6); }
+            70% { box-shadow: 0 0 0 20px rgba(255, 0, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
         }
-        .player-placeholder:hover .play-btn-circle, .player-placeholder:focus-visible .play-btn-circle { transform: scale(1.1); background: #1DB954; }
+        .player-placeholder:hover .play-btn-circle, .player-placeholder:focus-visible .play-btn-circle { transform: scale(1.1); background: var(--youtube); }
         .placeholder-text { 
             font-size: 0.95rem; color: #fff; font-weight: 700; letter-spacing: 2px; 
             font-family: 'Cinzel', 'Pretendard', sans-serif; text-shadow: 0 4px 10px rgba(0,0,0,0.8);
@@ -388,7 +389,7 @@
                     <h3 class="album-title">EP.01 Main</h3><span class="album-type">OST</span>
                 </div>
                 <div class="spotify-container-album">
-                    <button type="button" class="player-placeholder" onclick="injectIframe(this, 'https://open.spotify.com/embed/album/4UbsRkUcH0QJQGS6SUbtN1?utm_source=generator&theme=0')" aria-label="Play EP.01 Main on Spotify">
+                    <button type="button" class="player-placeholder" onclick="injectIframe(this, 'https://www.youtube.com/embed/videoseries?list=OLAK5uy_mqee5T3VeR_PxTavxgLXm1HDpm40_VRZU')" aria-label="Play EP.01 Main on YouTube">
                         <div class="placeholder-bg" style="background-image: url('images/sister01.png');"></div>
                         <div class="placeholder-content">
                             <div class="play-btn-circle">▶</div>
@@ -405,7 +406,7 @@
                     <h3 class="album-title">EP.01 Inst</h3><span class="album-type">OST</span>
                 </div>
                 <div class="spotify-container-album">
-                    <button type="button" class="player-placeholder" onclick="injectIframe(this, 'https://open.spotify.com/embed/album/0UsOZREU7OJeNC4MFRt0Og?utm_source=generator&theme=0')" aria-label="Play EP.01 Inst on Spotify">
+                    <button type="button" class="player-placeholder" onclick="injectIframe(this, 'https://www.youtube.com/embed/videoseries?list=OLAK5uy_kJoo1cwX2Uk-6NU_Wmgq0wuf2IR0eFhVo')" aria-label="Play EP.01 Inst on YouTube">
                         <div class="placeholder-bg" style="background-image: url('images/sister01.png');"></div>
                         <div class="placeholder-content">
                             <div class="play-btn-circle">▶</div>
@@ -422,7 +423,7 @@
                     <h3 class="album-title">EP.01 Eng</h3><span class="album-type">OST</span>
                 </div>
                 <div class="spotify-container-album">
-                    <button type="button" class="player-placeholder" onclick="injectIframe(this, 'https://open.spotify.com/embed/album/22frEKSV9Ano8LoWaOLsnT?utm_source=generator&theme=0')" aria-label="Play EP.01 Eng on Spotify">
+                    <button type="button" class="player-placeholder" onclick="injectIframe(this, 'https://www.youtube.com/embed/videoseries?list=OLAK5uy_kzvIrAGa36Fee3epzQvfZY6AeKfqHivc0')" aria-label="Play EP.01 Eng on YouTube">
                         <div class="placeholder-bg" style="background-image: url('images/sister01.png');"></div>
                         <div class="placeholder-content">
                             <div class="play-btn-circle">▶</div>
@@ -664,7 +665,7 @@
             iframe.frameBorder = '0';
             iframe.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
             iframe.loading = 'lazy';
-            iframe.title = element.getAttribute('aria-label') || 'Spotify player';
+            iframe.title = element.getAttribute('aria-label') || 'Youtube player';
             
             container.innerHTML = '';
             container.appendChild(iframe);

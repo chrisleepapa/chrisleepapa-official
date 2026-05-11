@@ -610,7 +610,7 @@ const TEAMS = {
     members:[
       {id:'knight', name:'어둠기사', img:'/images/darknight.png', skill:'어둠의 기운', desc:'다음 투구 파워 1.5배!'},
       {id:'vane', name:'베인', img:'/images/bain.jpg', skill:'검신의 함성', desc:'검기로 적 돌을 밀어냅니다'},
-      {id:'crown', name:'크라운', img:'/images/crown.jpg', skill:'어둠의 대지진', desc:'과녁 내 적 돌을 강하게 튕겨냅니다'},
+      {id:'crown', name:'마왕', img:'/images/crown.jpg', skill:'어둠의 대지진', desc:'과녁 내 적 돌을 강하게 튕겨냅니다'},
       {id:'angel', name:'천사', img:'/images/angel.jpeg', skill:'어둠의 소용돌이', desc:'모든 아군 돌을 과녁 중앙으로!'}
     ]
   }
@@ -923,6 +923,7 @@ function showCurlingShout() {
 function showFloatingMsg(msg, color) {
   const el = document.createElement('div');
   el.className = 'floating-center-msg';
+  // 줄바꿈 태그(<br>)를 해석하기 위해 innerHTML 사용
   el.innerHTML = msg;
   el.style.color = color;
   document.getElementById('gameWrap').appendChild(el);
@@ -935,6 +936,14 @@ function showTurnCutin(member, team) {
   const portrait = document.getElementById('tcPortrait');
   const name = document.getElementById('tcName');
   const shout = document.getElementById('tcShout');
+
+  // ★ 마왕팀 캐릭터일 경우 전용 컷인 이미지 매칭 ★
+  if (team.id === 'dark') {
+    if (member.id === 'knight') { member.img = '/images/cutin_darknight.png'; }
+    else if (member.id === 'vane') { member.img = '/images/cutin_bain.png'; }
+    else if (member.id === 'crown') { member.img = '/images/cutin_mastercrown.png'; }
+    else if (member.id === 'angel') { member.img = '/images/cutin_angel.png'; }
+  }
 
   portrait.src = member.img;
   portrait.style.borderColor = team.border;
@@ -1225,6 +1234,7 @@ function endRound() {
   
   if (roundWinner) {
     spawnSparks(HOUSE.x, HOUSE.y, roundWinner.color, 40, 3);
+    // <br> 태그를 넣어 모바일 잘림 방지
     showFloatingMsg(`${roundWinner.name}<br>라운드 승리!`, roundWinner.color);
   } else {
     showFloatingMsg(`라운드 무승부!`, '#aaa');
@@ -1311,7 +1321,7 @@ function drawArena() {
   }
   ctx.restore();
 
-  // House Rings
+  // House Rings (아케이드 다트형 링)
   const rings = [ 
     {r:HOUSE.r, c:'#1d4ed8'},      
     {r:HOUSE.r*0.75, c:'#ffffff'}, 
@@ -1343,33 +1353,6 @@ function drawArena() {
   // Throw Zone
   ctx.beginPath(); ctx.arc(START.x, START.y, 60, 0, Math.PI*2);
   ctx.strokeStyle='rgba(0,0,0,0.15)'; ctx.lineWidth=2; ctx.setLineDash([5,5]); ctx.stroke(); ctx.setLineDash([]);
-
-  // ★ 실시간 보드 점수 계산 및 캔버스 표시 ★
-  if(state.phase !== 'setup' && state.phase !== 'turn_intro') {
-    let fScore = 0; let dScore = 0;
-    state.stones.forEach(s => {
-      const dist = Math.hypot(s.x - HOUSE.x, s.y - HOUSE.y);
-      let pts = 0;
-      if (dist <= HOUSE.r * 0.2) pts = 10;
-      else if (dist <= HOUSE.r * 0.45) pts = 5;
-      else if (dist <= HOUSE.r * 0.75) pts = 3;
-      else if (dist <= HOUSE.r) pts = 1;
-      
-      if(pts > 0) {
-        if(s.team.id === 'fairy') fScore += pts;
-        else dScore += pts;
-      }
-    });
-
-    ctx.font = '900 28px "Black Han Sans"';
-    ctx.fillStyle = TEAMS.fairy.color;
-    ctx.textAlign = 'left';
-    ctx.fillText(`요정: ${fScore}점`, 20, 110);
-    
-    ctx.fillStyle = TEAMS.dark.color;
-    ctx.textAlign = 'right';
-    ctx.fillText(`어둠: ${dScore}점`, LOGICAL_W - 20, 110);
-  }
 
   // Drag Arrow
   if (state.dragging && state.dragStart && state.dragNow && !state.isAiTurn && state.activeStone) {
@@ -1410,6 +1393,7 @@ function gameLoop() {
     state.stones.forEach(s => { s.update(); if (s.move) moving = true; });
     resolveCollisions();
     
+    // 이동 중에 산발적으로 컬링 응원 멘트 팝업
     if (moving && state.phase === 'move') {
       if (Date.now() - lastShoutTime > 1200 && Math.random() < 0.05) {
         showCurlingShout();
@@ -1420,7 +1404,10 @@ function gameLoop() {
     if (!moving && state.phase === 'move') {
       if(!state.isAiTurn) showReaction(); 
       state.currentTeam = state.currentTeam.id === 'fairy' ? TEAMS.dark : TEAMS.fairy;
+      
+      // 스톤이 다 멈추면 실시간 점수 업데이트
       updateRealtimeScore();
+      
       spawnStone();
     }
     

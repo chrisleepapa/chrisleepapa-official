@@ -36,9 +36,8 @@
   --c-ice: #00e5ff;
   --c-gold: #ffcf00;
   --bg-deep: #030305;
-  --bg-mid: #0a0a12;
-  --glass: rgba(15, 15, 25, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass: rgba(15, 15, 25, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.15);
 }
 *{box-sizing:border-box; -webkit-tap-highlight-color:transparent; margin:0; padding:0;}
 
@@ -49,14 +48,12 @@ body{
   color:#fff;
 }
 
-/* ─── Cinematic Texture ─── */
 body::before{
   content:''; position:fixed; inset:0; z-index:0;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   opacity: 0.04; pointer-events:none;
 }
 
-/* PC 대응 확장 Wrap */
 #gameWrap{
   position:relative; 
   width:100%; 
@@ -167,47 +164,27 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
   overflow: hidden; flex: none;
 }
 
-/* ★ 개편된 캐릭터 카드 버튼 ★ */
 .char-btn{
-  position: relative;
-  background: rgba(0,0,0,0.8); 
-  border: 2px solid rgba(255,255,255,0.1);
-  border-radius: 20px; 
+  position: relative; background: rgba(0,0,0,0.8); 
+  border: 2px solid rgba(255,255,255,0.1); border-radius: 20px; 
   text-align: center; cursor: pointer;
   transition: all 0.3s cubic-bezier(.175,.885,.32,1.275);
   display: flex; flex-direction: column; justify-content: flex-end;
-  min-height: 190px;
-  overflow: hidden;
-  padding: 0;
+  min-height: 190px; overflow: hidden; padding: 0;
 }
-.char-btn:hover:not(.sel){
-  border-color: var(--c-ice); transform: translateY(-5px) scale(1.02);
-  box-shadow: 0 15px 30px rgba(0,229,255,0.3);
-}
-.char-btn.sel{
-  border-color: var(--c-ice); 
-  box-shadow: 0 0 20px rgba(0,229,255,0.4);
-  opacity: 0.5; pointer-events: none; transform: scale(0.95);
-}
+.char-btn:hover:not(.sel){ border-color: var(--c-ice); transform: translateY(-5px) scale(1.02); box-shadow: 0 15px 30px rgba(0,229,255,0.3); }
+.char-btn.sel{ border-color: var(--c-ice); box-shadow: 0 0 20px rgba(0,229,255,0.4); opacity: 0.5; pointer-events: none; transform: scale(0.95); }
 .char-btn-img {
   position: absolute; inset: 0; width: 100%; height: 100%;
-  object-fit: cover; z-index: 0;
-  filter: brightness(0.65) contrast(1.1);
-  transition: 0.4s ease;
+  object-fit: cover; z-index: 0; filter: brightness(0.65) contrast(1.1); transition: 0.4s ease;
 }
-.char-btn:hover:not(.sel) .char-btn-img {
-  filter: brightness(0.95) contrast(1.1); transform: scale(1.1);
-}
+.char-btn:hover:not(.sel) .char-btn-img { filter: brightness(0.95) contrast(1.1); transform: scale(1.1); }
 .char-btn-overlay {
-  position: relative; z-index: 1;
+  position: relative; z-index: 1; width: 100%; padding: 30px 10px 15px;
   background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.6) 50%, transparent 100%);
-  width: 100%; padding: 30px 10px 15px;
   display: flex; flex-direction: column; align-items: center; gap: 6px;
 }
-.char-btn-name {
-  font-family: 'Black Han Sans', sans-serif; font-size: 1.4rem;
-  color: #fff; text-shadow: 0 2px 10px #000; line-height: 1;
-}
+.char-btn-name { font-family: 'Black Han Sans', sans-serif; font-size: 1.4rem; color: #fff; text-shadow: 0 2px 10px #000; line-height: 1; }
 .skill-tag {
   font-size: 0.75rem; font-weight: 900; background: linear-gradient(90deg, #ff007a, #7a00ff);
   padding: 4px 10px; border-radius: 12px; color: #fff; letter-spacing: 0.5px;
@@ -242,9 +219,7 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
   width:0%; transition:width 0.4s ease; z-index:1; opacity:0.8;
 }
 .skill-btn span { position:relative; z-index:2; text-shadow:0 2px 5px rgba(0,0,0,0.8); }
-.skill-btn.ready {
-  border-color:#fff; box-shadow:0 0 30px rgba(255,0,122,0.6); animation:pulseSkill 1s infinite alternate;
-}
+.skill-btn.ready { border-color:#fff; box-shadow:0 0 30px rgba(255,0,122,0.6); animation:pulseSkill 1s infinite alternate; }
 .skill-btn.ready .fill { background:linear-gradient(90deg, #00e5ff, #0055ff); opacity:1; }
 .skill-btn.ready:hover { transform:scale(1.08); box-shadow:0 0 40px rgba(0,229,255,0.8); }
 
@@ -256,8 +231,8 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
 }
 .guide-pill{
   padding:10px 24px; border-radius:30px; font-size:1rem; font-weight:800;
-  background:rgba(0,0,0,0.8); border:1px solid var(--c-ice);
-  color:#fff; box-shadow:0 0 20px rgba(0,229,255,0.3); letter-spacing:1px;
+  background:var(--glass); border:1px solid var(--glass-border);
+  color:#fff; box-shadow:0 0 20px rgba(0,0,0,0.5); letter-spacing:1px;
 }
 
 /* ★ 시네마틱 컷인 ★ */
@@ -335,7 +310,7 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
 }
 @keyframes popAlert { 0%{transform:translate(-50%, -30%) scale(0.5); opacity:0;} 50%{transform:translate(-50%, -50%) scale(1.2); opacity:1;} 100%{transform:translate(-50%, -70%) scale(1); opacity:0;} }
 
-/* ─── Floating Hip Reaction ─── */
+/* ─── Floating Messages ─── */
 .floating-reaction {
   position: absolute; font-family: 'Black Han Sans', sans-serif; font-size: 2.2rem;
   font-style: italic; font-weight: 900; text-shadow: 0 4px 15px rgba(0,0,0,0.8);
@@ -348,6 +323,21 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
   80% { opacity: 1; transform: translateY(-40px) scale(1) rotate(0deg); }
   100% { opacity: 0; transform: translateY(-80px) scale(0.8) rotate(5deg); }
 }
+
+.floating-center-msg {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  font-family: 'Black Han Sans', sans-serif; font-size: 4rem;
+  font-weight: 900; text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+  pointer-events: none; z-index: 95; opacity: 0; white-space: nowrap;
+  animation: popCenter 2.5s ease-out forwards;
+}
+@keyframes popCenter {
+  0% { opacity: 0; transform: translate(-50%, -30%) scale(0.5); }
+  15% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+  85% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -70%) scale(0.8); }
+}
+
 
 /* ─── Modal ─── */
 #winnerModal{
@@ -593,7 +583,7 @@ async function loadLeaderboard() {
     const data = await res.json();
     document.getElementById('lbSpinner').style.display = 'none';
     list.innerHTML = '';
-    if (!data.length) { list.innerHTML = '<div style="text-align:center; opacity:0.5; padding:10px;">기록이 없습니다.</div>'; return; }
+    if (!data || !data.length) { list.innerHTML = '<div style="text-align:center; opacity:0.5; padding:10px;">기록이 없습니다.</div>'; return; }
     const medals = ['🥇','🥈','🥉','4','5'];
     data.forEach((e, i) => {
       list.innerHTML += `<div class="lb-row"><div style="display:flex; gap:15px; align-items:center;"><div class="lb-medal">${medals[i]}</div><div class="lb-initials">${e.initials}</div></div><div class="lb-wins">${e.wins} WINS</div></div>`;
@@ -708,7 +698,7 @@ class Stone {
   }
   draw() {
     ctx.beginPath(); ctx.arc(this.x + 5, this.y + 5, this.r, 0, Math.PI*2);
-    ctx.fillStyle = 'rgba(0,0,0,0.4)'; ctx.fill();
+    ctx.fillStyle = 'rgba(0,0,0,0.2)'; ctx.fill();
 
     const grad = ctx.createRadialGradient(this.x-6, this.y-6, 3, this.x, this.y, this.r);
     grad.addColorStop(0, '#fff'); grad.addColorStop(0.3, this.team.color); grad.addColorStop(1, this.team.border);
@@ -800,6 +790,15 @@ function showReaction() {
   setTimeout(() => el.remove(), 2000); 
 }
 
+function showFloatingMsg(msg, color) {
+  const el = document.createElement('div');
+  el.className = 'floating-center-msg';
+  el.textContent = msg;
+  el.style.color = color;
+  document.getElementById('gameWrap').appendChild(el);
+  setTimeout(() => el.remove(), 2500); 
+}
+
 function showSkillCutin(member, team) {
   const cutin = document.getElementById('skillCutin');
   const stripe = document.getElementById('cutinStripe');
@@ -863,13 +862,13 @@ function executeSkillEffect(skillId, team) {
   shakeMag = 15; shakeTime = 20; 
 
   switch(skillId) {
-    case 'pretty': spawnSparks(HOUSE.x, HOUSE.y, '#fff', 50, 2); applyImpulse('enemy', 'in_house', 12); break;
+    case 'pretty': spawnSparks(HOUSE.x, HOUSE.y, '#00e5ff', 50, 2); applyImpulse('enemy', 'in_house', 12); break;
     case 'cuty': state.powerBuff[team.id] = 2; spawnSparks(START.x, START.y, '#ff69b4', 40, 1.5); showBuffAlert(); break;
     case 'brook': shakeMag = 25; shakeTime = 30; spawnSparks(HOUSE.x, HOUSE.y, '#ff4500', 60, 3); applyImpulse('enemy', 'in_house', 18); break;
     case 'elion': activeForces.push({ teamId: team.id, target:'ally', cond:'out_house', type:'pull', life:120 }); break;
     case 'knight': state.powerBuff[team.id] = 1; spawnSparks(START.x, START.y, '#6a00ff', 40, 1.5); showBuffAlert(); break;
     case 'vane': shakeMag = 20; shakeTime = 25; applyImpulse('enemy', 'in_house', 15); break;
-    case 'crown': shakeMag = 35; shakeTime = 40; spawnSparks(HOUSE.x, HOUSE.y, '#000', 80, 4); applyImpulse('enemy', 'in_house', 25); break;
+    case 'crown': shakeMag = 35; shakeTime = 40; spawnSparks(HOUSE.x, HOUSE.y, '#333', 80, 4); applyImpulse('enemy', 'in_house', 25); break;
     case 'angel': activeForces.push({ teamId: team.id, target:'ally', cond:'all', type:'pull', life:150 }); break;
   }
   
@@ -906,7 +905,6 @@ function executeAIThrow() {
 
   let targetX = HOUSE.x;
   let targetY = HOUSE.y;
-  let targetType = 'draw';
 
   let enemiesInHouse = [];
   let alliesShort = []; 
@@ -923,27 +921,21 @@ function executeAIThrow() {
 
   let powerMult = 1.0;
 
-  // 1. Takeout Strategy
   if (enemiesInHouse.length > 0 && Math.random() < 0.75) {
-    targetType = 'takeout';
     enemiesInHouse.sort((a,b) => Math.hypot(a.x-HOUSE.x, a.y-HOUSE.y) - Math.hypot(b.x-HOUSE.x, b.y-HOUSE.y));
     const target = enemiesInHouse[0];
     targetX = target.x + (Math.random() - 0.5) * 20;
     targetY = target.y + (Math.random() - 0.5) * 20;
     powerMult = 1.4 + Math.random() * 0.3; 
   }
-  // 2. Promote Strategy
   else if (alliesShort.length > 0 && Math.random() < 0.4) {
-    targetType = 'promote';
     alliesShort.sort((a,b) => a.y - b.y);
     const target = alliesShort[0];
     targetX = target.x;
     targetY = target.y;
     powerMult = 1.15; 
   }
-  // 3. Draw Strategy
   else {
-    targetType = 'draw';
     const randomAngle = Math.random() * Math.PI * 2;
     const randomDist = Math.random() * (HOUSE.r * 0.6); 
     targetX = HOUSE.x + Math.cos(randomAngle) * randomDist;
@@ -1014,7 +1006,7 @@ function resolveCollisions() {
         a.x -= nx*overlap/2; b.x += nx*overlap/2; a.y -= ny*overlap/2; b.y += ny*overlap/2;
         const p = 2 * (nx*(a.vx-b.vx) + ny*(a.vy-b.vy)) / 2;
         a.vx = (a.vx - p*nx)*0.9; a.vy = (a.vy - p*ny)*0.9; b.vx = (b.vx + p*nx)*0.9; b.vy = (b.vy + p*ny)*0.9;
-        spawnSparks((a.x+b.x)/2, (a.y+b.y)/2, '#fff', 5);
+        spawnSparks((a.x+b.x)/2, (a.y+b.y)/2, '#00e5ff', 5);
       }
     }
   }
@@ -1039,45 +1031,85 @@ function applyContinuousForces() {
 }
 
 function endRound() {
-  state.phase = 'end';
+  state.phase = 'end'; // 점수 중복 상승 막기
   
-  const valid = state.stones.map(s => ({ stone: s, dist: Math.hypot(s.x - HOUSE.x, s.y - HOUSE.y) })).filter(v => v.dist < HOUSE.r + STONE_R).sort((a, b) => a.dist - b.dist);
-  const winner = valid.length > 0 ? valid[0].stone.team : null;
+  let fScore = 0; let dScore = 0;
   
-  if (winner) {
-    if (winner.id === 'fairy') state.fairyWins++; else state.darkWins++;
-    spawnSparks(HOUSE.x, HOUSE.y, winner.color, 40, 3);
+  state.stones.forEach(s => {
+    const dist = Math.hypot(s.x - HOUSE.x, s.y - HOUSE.y);
+    let pts = 0;
+    if (dist <= HOUSE.r * 0.2) pts = 10;
+    else if (dist <= HOUSE.r * 0.45) pts = 5;
+    else if (dist <= HOUSE.r * 0.75) pts = 3;
+    else if (dist <= HOUSE.r) pts = 1;
+    
+    if(pts > 0) {
+      if(s.team.id === 'fairy') fScore += pts;
+      else dScore += pts;
+    }
+  });
+  
+  let roundWinner = null;
+  if (fScore > dScore) {
+    state.fairyWins++;
+    roundWinner = TEAMS.fairy;
+  } else if (dScore > fScore) {
+    state.darkWins++;
+    roundWinner = TEAMS.dark;
   }
+  
+  if (roundWinner) {
+    spawnSparks(HOUSE.x, HOUSE.y, roundWinner.color, 40, 3);
+    showFloatingMsg(`${roundWinner.name} 라운드 승리!`, roundWinner.color);
+  } else {
+    showFloatingMsg(`라운드 무승부!`, '#aaa');
+  }
+  
   updateUI();
 
-  if (state.fairyWins >= 2 || state.darkWins >= 2) { 
-    showWinner(state.fairyWins >= 2 ? TEAMS.fairy : TEAMS.dark); 
-    return; 
-  }
-  
   setTimeout(() => {
+    // 게임 종료 판정 (3라운드 종료 또는 2선승)
+    if (state.fairyWins >= 2 || state.darkWins >= 2 || state.round >= 3) { 
+      let overallWinner = null;
+      if (state.fairyWins > state.darkWins) overallWinner = TEAMS.fairy;
+      else if (state.darkWins > state.fairyWins) overallWinner = TEAMS.dark;
+      
+      showWinner(overallWinner); 
+      return; 
+    }
+    
     state.round++; 
     state.stones = []; 
     state.stonesLeft = { fairy: 4, dark: 4 };
     state.currentTeam = state.playerTeam; 
     spawnStone();
-  }, 2000);
+  }, 3000);
 }
 
 function showWinner(team) {
   const modal = document.getElementById('winnerModal'); modal.style.display = 'flex';
-  const isP = team.id === state.playerTeam.id;
-  document.getElementById('winEmoji').textContent = isP ? '🏆' : '💀';
-  document.getElementById('winTitle').textContent = `${team.name} 승리!`;
-  document.getElementById('winTitle').style.color = team.color;
   
-  if (isP) {
-    document.getElementById('winDesc').innerHTML = `최고의 마법사 <b>${state.playerInitials}</b>!<br>빛나는 우승을 차지했습니다.<br><br><span style="color:var(--c-ice); font-size:0.9rem;" id="saveStatus">기록 동기화 중...</span>`;
-    recordWin().then(w => {
-      const el = document.getElementById('saveStatus');
-      if(el) el.innerHTML = w > 0 ? `<b style="color:var(--c-gold);">총 ${w}승 달성!</b>` : `<span style="color:red;">기록 실패</span>`;
-    });
-  } else { document.getElementById('winDesc').innerHTML = `어둠에 패배했습니다...<br>다시 도전하세요.`; }
+  if (!team) {
+    // 무승부
+    document.getElementById('winEmoji').textContent = '🤝';
+    document.getElementById('winTitle').textContent = `무승부!`;
+    document.getElementById('winTitle').style.color = '#fff';
+    document.getElementById('winDesc').innerHTML = `치열한 접전 끝에<br>무승부로 끝났습니다.`;
+  } else {
+    // 승자 존재
+    const isP = team.id === state.playerTeam.id;
+    document.getElementById('winEmoji').textContent = isP ? '🏆' : '💀';
+    document.getElementById('winTitle').textContent = `${team.name} 승리!`;
+    document.getElementById('winTitle').style.color = team.color;
+    
+    if (isP) {
+      document.getElementById('winDesc').innerHTML = `최고의 마법사 <b>${state.playerInitials}</b>!<br>빛나는 우승을 차지했습니다.<br><br><span style="color:var(--c-fairy); font-size:0.9rem;" id="saveStatus">기록 동기화 중...</span>`;
+      recordWin().then(w => {
+        const el = document.getElementById('saveStatus');
+        if(el) el.innerHTML = w > 0 ? `<b style="color:var(--c-gold);">총 ${w}승 달성!</b>` : `<span style="color:red;">기록 실패</span>`;
+      });
+    } else { document.getElementById('winDesc').innerHTML = `어둠에 패배했습니다...<br>다시 도전하세요.`; }
+  }
 }
 
 function resetToMain() {
@@ -1085,6 +1117,7 @@ function resetToMain() {
   document.getElementById('bottomGuide').style.display = 'none'; document.getElementById('skillContainer').style.display = 'none';
   
   document.querySelectorAll('.floating-reaction').forEach(el => el.remove());
+  document.querySelectorAll('.floating-center-msg').forEach(el => el.remove());
   
   state.phase='setup'; state.stones=[]; state.fairyWins=0; state.darkWins=0; state.round=1; state.stonesLeft={fairy:4,dark:4};
   state.skillCharge={fairy:0, dark:0}; state.powerBuff={fairy:0, dark:0};
@@ -1094,43 +1127,87 @@ function resetToMain() {
 // ══════════════════════════════════════════════════════
 // DRAW ARENA
 // ══════════════════════════════════════════════════════
-let bgTime = 0;
 function drawArena() {
-  bgTime += 0.01;
   ctx.clearRect(0,0,LOGICAL_W,LOGICAL_H);
 
-  // Deep Magic Background
-  const bgGrad = ctx.createRadialGradient(LOGICAL_W/2, LOGICAL_H/2, 100, LOGICAL_W/2, LOGICAL_H/2, LOGICAL_H);
-  bgGrad.addColorStop(0, '#151525'); bgGrad.addColorStop(1, '#050508');
+  // 얼음 배경 (White/Ice Theme)
+  const bgGrad = ctx.createLinearGradient(0, 0, 0, LOGICAL_H);
+  bgGrad.addColorStop(0, '#e2e8f0');
+  bgGrad.addColorStop(0.5, '#ffffff');
+  bgGrad.addColorStop(1, '#f8fafc');
   ctx.fillStyle = bgGrad; ctx.fillRect(0,0,LOGICAL_W,LOGICAL_H);
 
-  // Magic Runes
-  ctx.save(); ctx.translate(HOUSE.x, HOUSE.y); ctx.rotate(bgTime * 0.2);
-  ctx.strokeStyle = 'rgba(255,255,255,0.05)'; ctx.lineWidth = 2; ctx.setLineDash([15, 10]);
-  ctx.beginPath(); ctx.arc(0,0, HOUSE.r * 1.5, 0, Math.PI*2); ctx.stroke();
-  ctx.setLineDash([]); ctx.restore();
+  // 얼음판 스크래치 질감
+  ctx.save();
+  ctx.strokeStyle = 'rgba(0,0,0,0.03)';
+  ctx.lineWidth = 1;
+  for(let i=0; i<15; i++) {
+    ctx.beginPath();
+    ctx.moveTo(Math.random()*LOGICAL_W, Math.random()*LOGICAL_H);
+    ctx.lineTo(Math.random()*LOGICAL_W, Math.random()*LOGICAL_H);
+    ctx.stroke();
+  }
+  ctx.restore();
 
-  // House Rings
-  const rings = [ {r:HOUSE.r, c:'#110a22'}, {r:HOUSE.r*0.75, c:'#1a1033'}, {r:HOUSE.r*0.45, c:'#ff2a85'}, {r:HOUSE.r*0.2, c:'#00e5ff'} ];
+  // House Rings (아케이드 다트형 링)
+  const rings = [ 
+    {r:HOUSE.r, c:'#1d4ed8'},      // 파랑 (1점)
+    {r:HOUSE.r*0.75, c:'#ffffff'}, // 흰색 (3점)
+    {r:HOUSE.r*0.45, c:'#ef4444'}, // 빨강 (5점)
+    {r:HOUSE.r*0.2, c:'#ffffff'}   // 흰색 중앙 (10점)
+  ];
+  
   rings.forEach(ring => {
     ctx.beginPath(); ctx.arc(HOUSE.x, HOUSE.y, ring.r, 0, Math.PI*2);
     ctx.fillStyle = ring.c; ctx.fill();
-    ctx.strokeStyle = 'rgba(255,255,255,0.1)'; ctx.lineWidth=1; ctx.stroke();
+    ctx.strokeStyle = 'rgba(0,0,0,0.2)'; ctx.lineWidth=1; ctx.stroke();
   });
 
-  // Target glow
-  ctx.globalAlpha = 0.3 + Math.sin(bgTime*3)*0.1;
-  const glow = ctx.createRadialGradient(HOUSE.x, HOUSE.y, 0, HOUSE.x, HOUSE.y, HOUSE.r);
-  glow.addColorStop(0, 'rgba(0,229,255,0.5)'); glow.addColorStop(1, 'transparent');
-  ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(HOUSE.x, HOUSE.y, HOUSE.r, 0, Math.PI*2); ctx.fill(); ctx.globalAlpha = 1;
+  // 점수 텍스트 표시
+  ctx.fillStyle = 'rgba(0,0,0,0.4)';
+  ctx.font = '900 16px "Black Han Sans"';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('1', HOUSE.x, HOUSE.y - HOUSE.r * 0.87);
+  ctx.fillText('3', HOUSE.x, HOUSE.y - HOUSE.r * 0.6);
+  ctx.fillText('5', HOUSE.x, HOUSE.y - HOUSE.r * 0.32);
+  ctx.fillStyle = 'rgba(200,0,0,0.7)';
+  ctx.fillText('10', HOUSE.x, HOUSE.y);
 
   // Center Line
-  ctx.strokeStyle='rgba(255,255,255,0.05)'; ctx.lineWidth=1;
+  ctx.strokeStyle='rgba(0,0,0,0.08)'; ctx.lineWidth=2;
   ctx.beginPath(); ctx.moveTo(HOUSE.x, 0); ctx.lineTo(HOUSE.x, LOGICAL_H); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0, HOUSE.y); ctx.lineTo(LOGICAL_W, HOUSE.y); ctx.stroke();
 
   // Throw Zone
   ctx.beginPath(); ctx.arc(START.x, START.y, 60, 0, Math.PI*2);
-  ctx.strokeStyle='rgba(0,229,255,0.3)'; ctx.lineWidth=2; ctx.setLineDash([5,5]); ctx.stroke(); ctx.setLineDash([]);
+  ctx.strokeStyle='rgba(0,0,0,0.15)'; ctx.lineWidth=2; ctx.setLineDash([5,5]); ctx.stroke(); ctx.setLineDash([]);
+
+  // ★ 실시간 보드 점수 계산 및 캔버스 표시 ★
+  if(state.phase !== 'setup') {
+    let fScore = 0; let dScore = 0;
+    state.stones.forEach(s => {
+      const dist = Math.hypot(s.x - HOUSE.x, s.y - HOUSE.y);
+      let pts = 0;
+      if (dist <= HOUSE.r * 0.2) pts = 10;
+      else if (dist <= HOUSE.r * 0.45) pts = 5;
+      else if (dist <= HOUSE.r * 0.75) pts = 3;
+      else if (dist <= HOUSE.r) pts = 1;
+      
+      if(pts > 0) {
+        if(s.team.id === 'fairy') fScore += pts;
+        else dScore += pts;
+      }
+    });
+
+    ctx.font = '900 28px "Black Han Sans"';
+    ctx.fillStyle = TEAMS.fairy.color;
+    ctx.textAlign = 'left';
+    ctx.fillText(`요정: ${fScore}점`, 20, 110);
+    
+    ctx.fillStyle = TEAMS.dark.color;
+    ctx.textAlign = 'right';
+    ctx.fillText(`어둠: ${dScore}점`, LOGICAL_W - 20, 110);
+  }
 
   // Drag Arrow
   if (state.dragging && state.dragStart && state.dragNow && !state.isAiTurn && state.activeStone) {

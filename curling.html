@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3207219520058740"
-     crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3207219520058740" crossorigin="anonymous"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-NBGELYQ4TZ"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-NBGELYQ4TZ');
       gtag('config', 'GT-5MJDBTR2');
     </script> 
   
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
-<title>MAGIC CURLING: Fairy vs Crown</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
+    <title>MAGIC CURLING: Fairy vs Crown</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Cinzel:wght@700;900&family=Exo+2:ital,wght@0,400;0,800;0,900;1,900&family=Noto+Sans+KR:wght@500;700;900&display=swap" rel="stylesheet"/>
+    <link rel="preload" href="/images/fairyteam.png" as="image">
+    <link rel="preload" href="/images/darkteam.png" as="image">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Cinzel:wght@700;900&family=Exo+2:ital,wght@0,400;0,800;0,900;1,900&family=Noto+Sans+KR:wght@500;700;900&display=swap" rel="stylesheet"/>
 
 <style>
 :root{
@@ -34,7 +34,7 @@
   --glass: rgba(15, 15, 25, 0.6);
   --glass-border: rgba(255, 255, 255, 0.1);
 }
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0;}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent; margin:0; padding:0;}
 
 body{
   overflow:hidden;
@@ -49,47 +49,48 @@ body::before{
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   opacity: 0.04; pointer-events:none;
 }
-body::after{
-  content:''; position:fixed; inset:0; z-index:9999;
-  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.08) 2px,rgba(0,0,0,.08) 4px);
-  pointer-events:none;
-}
 
+/* PC 대응 확장 Wrap */
 #gameWrap{
-  position:relative; width:100%; max-width:520px; height:100dvh;
+  position:relative; 
+  width:100%; 
+  max-width: 800px; /* PC에서 시원하게 넓게 보임 */
+  height: 100dvh;
   margin:auto; overflow:hidden; z-index:1;
+  box-shadow: 0 0 50px rgba(0,0,0,0.8); /* PC에서 양옆 여백 생길 시 구분선 */
 }
 
-canvas{width:100%;height:100%;display:block;touch-action:none;position:absolute;inset:0;}
+canvas{width:100%; height:100%; display:block; touch-action:none; position:absolute; inset:0; object-fit: contain;}
 #gameCanvas { z-index:2; }
 #effectCanvas { z-index:6; pointer-events:none; }
 #particleCanvas { z-index:7; pointer-events:none; }
 
 /* ─── UI Screens ─── */
 .screen{
-  position:absolute;inset:0;z-index:80;
-  display:flex;flex-direction:column;align-items:center;
-  padding:24px 20px 20px; overflow-y:auto; overflow-x:hidden;
+  position:absolute; inset:0; z-index:80;
+  display:flex; flex-direction:column; align-items:center;
+  padding: max(env(safe-area-inset-top, 24px), 24px) 20px max(env(safe-area-inset-bottom, 20px), 20px);
+  overflow-y:auto; overflow-x:hidden;
   background:radial-gradient(circle at 50% 20%, #151025 0%, var(--bg-deep) 80%);
   transition:opacity .5s ease, transform .5s cubic-bezier(.175,.885,.32,1.275);
 }
-.screen.hidden{opacity:0;transform:scale(.95) translateY(20px);pointer-events:none;}
-.screen.out{opacity:0;transform:scale(1.05) translateY(-20px);pointer-events:none;}
+.screen.hidden{opacity:0; transform:scale(.95) translateY(20px); pointer-events:none;}
+.screen.out{opacity:0; transform:scale(1.05) translateY(-20px); pointer-events:none;}
 
 /* ─── Typography ─── */
 .title-main {
-  font-family:'Cinzel', serif; font-weight:900; font-size:clamp(2.5rem, 9vw, 3.5rem);
+  font-family:'Cinzel', serif; font-weight:900; font-size:clamp(2.2rem, 8vw, 3.5rem);
   text-align:center; line-height:1.1; margin-bottom:5px;
   background: linear-gradient(180deg, #fff, #b3b3b3);
   -webkit-background-clip:text; -webkit-text-fill-color:transparent;
   filter:drop-shadow(0 0 15px rgba(255,255,255,0.2));
 }
 .title-sub {
-  font-family:'Black Han Sans', sans-serif; font-size:clamp(1.8rem, 6vw, 2.2rem);
+  font-family:'Black Han Sans', sans-serif; font-size:clamp(1.5rem, 5vw, 2.2rem);
   text-align:center; letter-spacing:2px;
   background: linear-gradient(90deg, var(--c-fairy-glow), var(--c-ice), var(--c-dark-glow));
   -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-  filter:drop-shadow(0 0 20px rgba(0,229,255,0.4)); margin-bottom: 25px;
+  filter:drop-shadow(0 0 20px rgba(0,229,255,0.4)); margin-bottom: 20px;
 }
 
 /* ─── Glass & Components ─── */
@@ -101,7 +102,7 @@ canvas{width:100%;height:100%;display:block;touch-action:none;position:absolute;
 
 .input-neon{
   width:100%; text-align:center; font-family:'Exo 2',sans-serif;
-  font-size:2.5rem; font-weight:900; letter-spacing:0.2em;
+  font-size:2rem; font-weight:900; letter-spacing:0.2em;
   padding:15px; border-radius:16px; background:rgba(0,0,0,0.3);
   color:var(--c-ice); border:2px solid rgba(0,229,255,0.2);
   outline:none; transition:0.3s; text-transform:uppercase;
@@ -111,8 +112,8 @@ canvas{width:100%;height:100%;display:block;touch-action:none;position:absolute;
 }
 
 .btn-magic{
-  width:100%; border:none; border-radius:18px; padding:18px 20px;
-  font-family:'Black Han Sans', sans-serif; font-size:1.4rem; cursor:pointer;
+  width:100%; border:none; border-radius:18px; padding:16px 20px;
+  font-family:'Black Han Sans', sans-serif; font-size:1.3rem; cursor:pointer;
   transition:all 0.3s cubic-bezier(.175,.885,.32,1.275); color:#fff; letter-spacing:2px;
   background:linear-gradient(135deg, #00d2ff, #3a7bd5);
   box-shadow:0 10px 30px rgba(0,210,255,0.4), inset 0 0 10px rgba(255,255,255,0.3);
@@ -123,78 +124,87 @@ canvas{width:100%;height:100%;display:block;touch-action:none;position:absolute;
 /* ─── Leaderboard ─── */
 .lb-row{
   display:flex; justify-content:space-between; align-items:center;
-  padding:12px 18px; border-radius:16px; background:rgba(255,255,255,0.03);
+  padding:12px 16px; border-radius:12px; background:rgba(0,0,0,0.4);
   border:1px solid rgba(255,255,255,0.05); transition:0.2s; margin-bottom:8px;
 }
 .lb-row:hover{background:rgba(255,255,255,0.08); transform:translateX(5px);}
-.lb-medal{width:30px; font-size:1.3rem; text-shadow: 0 0 10px rgba(255,255,255,0.5);}
-.lb-initials{font-family:'Exo 2',sans-serif; font-weight:800; font-size:1.2rem; letter-spacing:0.15em;}
-.lb-wins{font-family:'Exo 2',sans-serif; font-weight:900; color:var(--c-gold); font-size:1.1rem;}
+.lb-medal{width:30px; font-size:1.2rem; text-shadow: 0 0 10px rgba(255,255,255,0.5);}
+.lb-initials{font-family:'Exo 2',sans-serif; font-weight:800; font-size:1.1rem; letter-spacing:0.15em;}
+.lb-wins{font-family:'Exo 2',sans-serif; font-weight:900; color:var(--c-gold); font-size:1rem;}
 
 /* ─── Team & Character Selection ─── */
 .team-card{
   flex:1; position:relative; border-radius:24px; overflow:hidden;
   cursor:pointer; transition:all 0.4s cubic-bezier(.175,.885,.32,1.275);
-  border:2px solid transparent; min-height:160px;
+  border:2px solid transparent; min-height:140px;
 }
 .team-card:hover{transform:scale(1.05) translateY(-5px); z-index:2;}
-.team-card.fairy:hover{border-color:var(--c-fairy); box-shadow:0 20px 60px rgba(255,42,133,0.5);}
-.team-card.dark:hover{border-color:var(--c-dark); box-shadow:0 20px 60px rgba(106,0,255,0.5);}
+.team-card.fairy:hover{border-color:var(--c-fairy); box-shadow:0 15px 40px rgba(255,42,133,0.5);}
+.team-card.dark:hover{border-color:var(--c-dark); box-shadow:0 15px 40px rgba(106,0,255,0.5);}
 .team-bg{
   position:absolute; inset:0; background-size:cover; background-position:center;
+  background-color: #222; /* 이미지 로딩 전 배경색 */
   transition:transform 0.6s ease; filter:brightness(0.7) contrast(1.2);
 }
 .team-card:hover .team-bg{transform:scale(1.15) rotate(2deg); filter:brightness(1) contrast(1.2);}
 .team-overlay{
   position:absolute; inset:0;
   background:linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
-  display:flex; flex-direction:column; justify-content:flex-end; align-items:center; padding-bottom:20px;
+  display:flex; flex-direction:column; justify-content:flex-end; align-items:center; padding-bottom:15px;
 }
-.team-label{font-family:'Black Han Sans', sans-serif; font-size:2.2rem; text-shadow:0 5px 20px rgba(0,0,0,1);}
+.team-label{font-family:'Black Han Sans', sans-serif; font-size:1.8rem; text-shadow:0 5px 20px rgba(0,0,0,1);}
 
+/* 모바일 잘림 방지 (Order Select Grid) */
+.order-slot{
+  width: 65px; height: 65px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; flex: none;
+}
 .char-btn{
   background:rgba(255,255,255,0.03); border:2px solid rgba(255,255,255,0.08);
-  border-radius:20px; padding:15px 10px; text-align:center; cursor:pointer;
-  transition:0.3s; display:flex; flex-direction:column; align-items:center; gap:8px;
+  border-radius:16px; padding:12px 5px; text-align:center; cursor:pointer;
+  transition:0.3s; display:flex; flex-direction:column; align-items:center; gap:5px;
 }
 .char-btn:hover:not(.sel){
-  background:rgba(255,255,255,0.1); border-color:var(--c-ice); transform:translateY(-5px);
+  background:rgba(255,255,255,0.1); border-color:var(--c-ice); transform:translateY(-3px);
   box-shadow: 0 10px 20px rgba(0,229,255,0.2);
 }
 .char-btn.sel{
-  border-color:var(--c-ice); background:rgba(0,229,255,0.1); opacity:0.3; pointer-events:none; transform:scale(0.9);
+  border-color:var(--c-ice); background:rgba(0,229,255,0.1); opacity:0.3; pointer-events:none; transform:scale(0.95);
 }
 .char-portrait{
-  width:75px; height:75px; border-radius:50%; object-fit:cover;
-  border:3px solid rgba(255,255,255,0.8); box-shadow:0 5px 15px rgba(0,0,0,0.8);
+  width:60px; height:60px; border-radius:50%; object-fit:cover;
+  border:2px solid rgba(255,255,255,0.8); box-shadow:0 5px 15px rgba(0,0,0,0.8);
 }
 .skill-tag {
   font-size: 0.65rem; font-weight: 900; background: linear-gradient(90deg, #ff007a, #7a00ff);
-  padding: 3px 8px; border-radius: 10px; color: #fff; letter-spacing: 1px;
+  padding: 2px 6px; border-radius: 8px; color: #fff; letter-spacing: 0.5px;
 }
 
-/* ─── In-Game UI ─── */
+/* ─── In-Game UI (투명 점수판 최적화) ─── */
 #inGameUI{
   position:absolute; inset:0 auto auto 0; width:100%;
-  padding:15px; display:flex; justify-content:space-between; align-items:flex-start; z-index:20; pointer-events:none;
+  padding: max(env(safe-area-inset-top, 15px), 15px); 
+  display:flex; justify-content:space-between; align-items:flex-start; z-index:20; pointer-events:none;
 }
 .score-board{
-  border-radius:20px; padding:15px; min-width:180px;
-  background:rgba(5,5,10,0.85); border:1px solid rgba(255,255,255,0.1);
-  box-shadow:0 10px 30px rgba(0,0,0,0.6), 0 0 20px rgba(0,229,255,0.1);
-  backdrop-filter:blur(10px);
+  /* 점수판 배경 투명화 */
+  background: transparent; border: none; box-shadow: none; backdrop-filter: none;
+  min-width: 150px;
 }
-.score-row{display:flex; justify-content:space-between; align-items:center; margin:8px 0;}
-.score-num{font-family:'Cinzel', serif; font-size:2rem; font-weight:900;}
+.score-row{display:flex; justify-content:space-between; align-items:center; margin:5px 0; gap: 15px;}
+.score-row div { font-size: 1.1rem; text-shadow: 0 2px 6px rgba(0,0,0,0.9), 0 0 10px rgba(0,0,0,0.8); }
+.score-num{font-family:'Cinzel', serif; font-size:2.5rem !important; font-weight:900; text-shadow: 0 2px 6px rgba(0,0,0,0.9), 0 0 15px rgba(0,0,0,0.8);}
 
 /* ─── Skill & Action UI ─── */
 #skillContainer {
-  position:absolute; bottom:85px; width:100%; display:flex; justify-content:center; z-index:30;
+  position:absolute; bottom: calc(env(safe-area-inset-bottom, 20px) + 70px); 
+  width:100%; display:flex; justify-content:center; z-index:30;
 }
 .skill-btn {
-  position:relative; width:220px; height:55px; border-radius:30px; border:none;
+  position:relative; width:220px; height:50px; border-radius:30px; border:none;
   background:rgba(0,0,0,0.6); border:2px solid rgba(255,255,255,0.2);
-  color:#fff; font-family:'Black Han Sans', sans-serif; font-size:1.3rem; letter-spacing:3px;
+  color:#fff; font-family:'Black Han Sans', sans-serif; font-size:1.2rem; letter-spacing:2px;
   cursor:pointer; overflow:hidden; backdrop-filter:blur(10px); pointer-events:auto;
   transition:all 0.3s cubic-bezier(.175,.885,.32,1.275);
 }
@@ -212,10 +222,11 @@ canvas{width:100%;height:100%;display:block;touch-action:none;position:absolute;
 @keyframes pulseSkill { from {box-shadow:0 0 15px rgba(0,229,255,0.4);} to {box-shadow:0 0 35px rgba(0,229,255,0.8);} }
 
 #bottomGuide{
-  position:absolute; bottom:25px; width:100%; display:none; justify-content:center; z-index:20; pointer-events:none;
+  position:absolute; bottom: env(safe-area-inset-bottom, 20px); 
+  width:100%; display:none; justify-content:center; z-index:20; pointer-events:none;
 }
 .guide-pill{
-  padding:12px 28px; border-radius:30px; font-size:1rem; font-weight:800;
+  padding:10px 24px; border-radius:30px; font-size:1rem; font-weight:800;
   background:rgba(0,0,0,0.8); border:1px solid var(--c-ice);
   color:#fff; box-shadow:0 0 20px rgba(0,229,255,0.3); letter-spacing:1px;
 }
@@ -231,16 +242,16 @@ canvas{width:100%;height:100%;display:block;touch-action:none;position:absolute;
   transform:rotate(-15deg); opacity:0; z-index:1;
 }
 .cutin-portrait {
-  width:200px; height:200px; border-radius:50%; object-fit:cover; border:5px solid #fff;
+  width:180px; height:180px; border-radius:50%; object-fit:cover; border:5px solid #fff;
   box-shadow:0 0 50px #fff; z-index:2; transform:scale(0) rotate(-45deg); opacity:0;
 }
 .cutin-name {
-  font-family:'Black Han Sans', sans-serif; font-size:4.5rem; color:#fff;
-  margin-top:20px; z-index:2; transform:translateX(100px); opacity:0; text-shadow:0 10px 30px rgba(0,0,0,1);
+  font-family:'Black Han Sans', sans-serif; font-size:4rem; color:#fff;
+  margin-top:15px; z-index:2; transform:translateX(100px); opacity:0; text-shadow:0 10px 30px rgba(0,0,0,1);
 }
 .cutin-skillname {
-  font-family:'Noto Sans KR', sans-serif; font-weight:900; font-size:2rem; color:var(--c-gold);
-  z-index:2; transform:translateX(-100px); opacity:0; letter-spacing:5px; text-shadow:0 5px 20px rgba(0,0,0,1);
+  font-family:'Noto Sans KR', sans-serif; font-weight:900; font-size:1.8rem; color:var(--c-gold);
+  z-index:2; transform:translateX(-100px); opacity:0; letter-spacing:4px; text-shadow:0 5px 20px rgba(0,0,0,1);
 }
 
 /* Cut-in Animations */
@@ -254,22 +265,39 @@ canvas{width:100%;height:100%;display:block;touch-action:none;position:absolute;
 @keyframes slideLeft { 0%{transform:translateX(100px); opacity:0;} 20%{transform:translateX(0); opacity:1;} 80%{transform:translateX(0); opacity:1;} 100%{transform:translateX(-100px); opacity:0;} }
 @keyframes slideRight { 0%{transform:translateX(-100px); opacity:0;} 20%{transform:translateX(0); opacity:1;} 80%{transform:translateX(0); opacity:1;} 100%{transform:translateX(100px); opacity:0;} }
 
-/* ─── Screen Flash ─── */
-#screenFlash {
-  position:absolute; inset:0; background:#fff; z-index:90; opacity:0; pointer-events:none;
-}
-
-/* ─── Power Multiplier Alert ─── */
+/* ─── Screen Flash & Buff ─── */
+#screenFlash { position:absolute; inset:0; background:#fff; z-index:90; opacity:0; pointer-events:none; }
 #buffAlert {
   position:absolute; top:35%; left:50%; transform:translate(-50%, -50%);
-  font-family:'Black Han Sans', sans-serif; font-size:3rem; color:var(--c-gold);
-  text-shadow:0 0 30px #ff007a; z-index:40; opacity:0; pointer-events:none;
+  font-family:'Black Han Sans', sans-serif; font-size:2.5rem; color:var(--c-gold);
+  text-shadow:0 0 30px #ff007a; z-index:40; opacity:0; pointer-events:none; width:100%; text-align:center;
 }
 @keyframes popAlert { 0%{transform:translate(-50%, -30%) scale(0.5); opacity:0;} 50%{transform:translate(-50%, -50%) scale(1.2); opacity:1;} 100%{transform:translate(-50%, -70%) scale(1); opacity:0;} }
 
+/* ─── Floating Hip Reaction ─── */
+.floating-reaction {
+  position: absolute;
+  font-family: 'Black Han Sans', sans-serif;
+  font-size: 2rem;
+  font-style: italic;
+  font-weight: 900;
+  text-shadow: 0 4px 15px rgba(0,0,0,0.8);
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0;
+  white-space: nowrap;
+  animation: floatUp 1.8s ease-out forwards;
+}
+@keyframes floatUp {
+  0% { opacity: 0; transform: translateY(20px) scale(0.5) rotate(-10deg); }
+  20% { opacity: 1; transform: translateY(-10px) scale(1.2) rotate(5deg); }
+  80% { opacity: 1; transform: translateY(-40px) scale(1) rotate(0deg); }
+  100% { opacity: 0; transform: translateY(-80px) scale(0.8) rotate(5deg); }
+}
+
 /* ─── Modal ─── */
 #winnerModal{
-  position:absolute; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(20px);
+  position:absolute; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(10px);
   z-index:110; display:none; justify-content:center; align-items:center; padding:20px;
 }
 .modal-card{
@@ -279,7 +307,7 @@ canvas{width:100%;height:100%;display:block;touch-action:none;position:absolute;
   animation:modalIn 0.6s cubic-bezier(.175,.885,.32,1.275) forwards;
 }
 @keyframes modalIn{from{transform:scale(0.8) translateY(50px); opacity:0;} to{transform:scale(1) translateY(0); opacity:1;}}
-.modal-title{font-family:'Cinzel', serif; font-size:3rem; font-weight:900; margin-bottom:10px; text-shadow:0 0 20px rgba(255,255,255,0.5);}
+.modal-title{font-family:'Cinzel', serif; font-size:2.5rem; font-weight:900; margin-bottom:10px; text-shadow:0 0 20px rgba(255,255,255,0.5);}
 
 </style>
 </head>
@@ -295,16 +323,16 @@ canvas{width:100%;height:100%;display:block;touch-action:none;position:absolute;
   <div id="buffAlert">POWER UP! x1.5</div>
 
   <div id="s-login" class="screen">
-    <div style="margin-top:6vh; margin-bottom:30px;">
+    <div style="margin-top:4vh; margin-bottom:20px;">
       <div class="title-main">MAGIC CURLING</div>
       <div class="title-sub">FAIRY vs CROWN</div>
     </div>
 
-    <div class="glass-panel" style="width:100%; max-width:360px; padding:30px 24px; margin-bottom:20px;">
+    <div class="glass-panel" style="width:100%; max-width:360px; padding:25px 24px; margin-bottom:20px;">
       <div style="font-size:0.8rem; font-weight:700; letter-spacing:2px; opacity:0.6; margin-bottom:12px; text-align:center;">PLAYER INITIALS</div>
       <input id="initialsInput" class="input-neon" maxlength="3" placeholder="AAA" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z]/g,'')"/>
-      <div style="height:20px;"></div>
-      <button class="btn-magic" onclick="submitInitials()">마법의 투기장 입장</button>
+      <div style="height:15px;"></div>
+      <button class="btn-magic" onclick="submitInitials()">투기장 입장</button>
     </div>
 
     <div class="glass-panel" style="width:100%; max-width:360px; padding:20px;">
@@ -318,12 +346,12 @@ canvas{width:100%;height:100%;display:block;touch-action:none;position:absolute;
   </div>
 
   <div id="s-team" class="screen hidden">
-    <div style="text-align:center; margin-top:20px; margin-bottom:30px;">
-      <div class="title-main" style="font-size:2.5rem;">CHOOSE FACTION</div>
+    <div style="text-align:center; margin-top:10px; margin-bottom:20px;">
+      <div class="title-main" style="font-size:2.2rem;">CHOOSE FACTION</div>
       <div style="font-size:0.9rem; opacity:0.6; letter-spacing:2px;">빛과 어둠, 당신의 진영은?</div>
     </div>
 
-    <div style="display:flex; flex-direction:column; gap:20px; width:100%; max-width:380px; flex:1; padding-bottom:20px;">
+    <div style="display:flex; flex-direction:column; gap:15px; width:100%; max-width:380px; flex:1; padding-bottom:10px;">
       <div class="team-card fairy" onclick="selectTeam('fairy')">
         <div class="team-bg" style="background-image:url('/images/fairyteam.png');"></div>
         <div class="team-overlay">
@@ -332,7 +360,7 @@ canvas{width:100%;height:100%;display:block;touch-action:none;position:absolute;
         </div>
       </div>
       
-      <div style="text-align:center; font-family:'Cinzel',serif; font-size:1.5rem; font-weight:900; opacity:0.5;">VS</div>
+      <div style="text-align:center; font-family:'Cinzel',serif; font-size:1.2rem; font-weight:900; opacity:0.5;">VS</div>
 
       <div class="team-card dark" onclick="selectTeam('dark')">
         <div class="team-bg" style="background-image:url('/images/darkteam.png');"></div>
@@ -345,23 +373,23 @@ canvas{width:100%;height:100%;display:block;touch-action:none;position:absolute;
   </div>
 
   <div id="s-order" class="screen hidden">
-    <div style="text-align:center; margin-top:10px; margin-bottom:20px;">
-      <div id="orderTitle" class="title-main" style="font-size:2rem; margin-bottom:0;">출전 순서</div>
+    <div style="text-align:center; margin-top:5px; margin-bottom:15px;">
+      <div id="orderTitle" class="title-main" style="font-size:1.8rem; margin-bottom:0;">출전 순서</div>
       <div style="font-size:0.8rem; opacity:0.6; letter-spacing:1px; margin-top:5px;">4명의 마법사를 탭하여 순서를 정하세요</div>
     </div>
 
-    <div id="slotRow" style="display:flex; gap:10px; width:100%; max-width:380px; margin-bottom:20px;"></div>
+    <div id="slotRow" style="display:flex; justify-content:center; gap:8px; width:100%; max-width:380px; margin-bottom:15px;"></div>
 
-    <div id="rosterGrid" style="display:grid; grid-template-columns:1fr 1fr; gap:15px; width:100%; max-width:380px; flex:1; overflow-y:auto; padding-bottom:10px;"></div>
+    <div id="rosterGrid" style="display:grid; grid-template-columns:repeat(2, 1fr); gap:10px; width:100%; max-width:380px; min-height:0; flex:1; overflow-y:auto; padding-bottom:5px;"></div>
 
-    <div style="width:100%; max-width:380px; padding:20px 0;">
+    <div style="width:100%; max-width:380px; padding:10px 0;">
       <button id="startBtn" class="btn-magic" disabled onclick="startGame()">전투 시작</button>
     </div>
   </div>
 
   <div id="inGameUI" style="display:none;">
     <div class="score-board">
-      <div style="font-size:0.7rem; font-weight:900; letter-spacing:2px; opacity:0.5; margin-bottom:10px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:5px;">BEST OF 3</div>
+      <div style="font-size:0.75rem; font-weight:900; letter-spacing:2px; color:rgba(255,255,255,0.7); margin-bottom:5px; text-shadow:0 1px 3px #000;">BEST OF 3</div>
       <div class="score-row">
         <div style="font-weight:900; color:var(--c-fairy-glow);">요정 연합</div>
         <div class="score-num" id="fairyScore">0</div>
@@ -372,8 +400,8 @@ canvas{width:100%;height:100%;display:block;touch-action:none;position:absolute;
       </div>
     </div>
     <div style="display:flex; flex-direction:column; align-items:flex-end; gap:10px;">
-      <div style="padding:10px 20px; background:rgba(0,0,0,0.8); border:1px solid rgba(255,255,255,0.2); border-radius:20px; font-family:'Black Han Sans',sans-serif; font-size:1.2rem;" id="turnBox">요정턴</div>
-      <div style="font-family:'Cinzel',serif; font-weight:900; font-size:1.2rem; text-shadow:0 2px 5px #000;" id="roundText">ROUND 1</div>
+      <div style="padding:10px 20px; background:rgba(0,0,0,0.7); border:1px solid rgba(255,255,255,0.2); border-radius:20px; font-family:'Black Han Sans',sans-serif; font-size:1.1rem;" id="turnBox">요정턴</div>
+      <div style="font-family:'Cinzel',serif; font-weight:900; font-size:1.3rem; text-shadow:0 2px 8px #000;" id="roundText">ROUND 1</div>
     </div>
   </div>
 
@@ -395,10 +423,10 @@ canvas{width:100%;height:100%;display:block;touch-action:none;position:absolute;
 
   <div id="winnerModal">
     <div class="modal-card">
-      <div style="font-size:4rem; margin-bottom:10px;" id="winEmoji">🏆</div>
+      <div style="font-size:3.5rem; margin-bottom:10px;" id="winEmoji">🏆</div>
       <div class="modal-title" id="winTitle">VICTORY</div>
-      <div style="font-size:1.1rem; line-height:1.6; opacity:0.9; margin-bottom:30px;" id="winDesc">승리!</div>
-      <button class="btn-magic" onclick="resetToMain()" style="font-size:1.1rem; padding:15px;">전장 이탈 (메뉴)</button>
+      <div style="font-size:1.1rem; line-height:1.6; opacity:0.9; margin-bottom:25px;" id="winDesc">승리!</div>
+      <button class="btn-magic" onclick="resetToMain()" style="font-size:1.1rem; padding:12px;">전장 이탈 (메뉴)</button>
     </div>
   </div>
 
@@ -412,10 +440,18 @@ const SUPA_URL = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
 const SUPA_KEY = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
 const TABLE_NAME = 'curling_ranking';
 
-const LOGICAL_W = 520, LOGICAL_H = 900;
-const HOUSE = { x: LOGICAL_W / 2, y: 220, r: 140 };
-const START = { x: LOGICAL_W / 2, y: 780 };
-const STONE_R = 20;
+// 캔버스 사이즈 확장 (PC화면 넓게 보이도록)
+const LOGICAL_W = 768, LOGICAL_H = 1024;
+const HOUSE = { x: LOGICAL_W / 2, y: 240, r: 160 };
+const START = { x: LOGICAL_W / 2, y: 880 };
+const STONE_R = 25;
+
+// 재치있고 힙한 리액션 멘트 리스트
+const REACTIONS = [
+  "폼 미쳤다!🔥", "에바 참치 꽁치 나이스샷!🐟", "완벽 그 잡채✨",
+  "이거 실화냐? ㄷㄷㄷ😱", "무야호~ 소리 질러!🗣️", "너 T야? 쿨한 샷!🧊",
+  "억까 없는 클린 샷!😎", "중꺾마! 가즈아!🚀", "찢었다 진짜...👍", "찢.었.다💥"
+];
 
 // 캐릭터별 고유 스킬 정의
 const TEAMS = {
@@ -450,9 +486,8 @@ let state = {
   activeStone:null, dragging:false, dragStart:null, dragNow:null,
   isAiTurn:false,
   
-  // 마법 스킬 시스템
-  skillCharge:{fairy:0, dark:0}, // 0, 1, 2 (2 == 100%)
-  powerBuff:{fairy:0, dark:0} // 버프 남은 횟수 (보통 1)
+  skillCharge:{fairy:0, dark:0}, 
+  powerBuff:{fairy:0, dark:0}
 };
 
 // ══════════════════════════════════════════════════════
@@ -464,19 +499,11 @@ const pCanvas = document.getElementById('particleCanvas'); const pCtx = pCanvas.
 
 [canvas, eCanvas, pCanvas].forEach(c => { c.width = LOGICAL_W; c.height = LOGICAL_H; });
 
-function syncCanvasSize(){
-  const wrap = document.getElementById('gameWrap');
-  const w = wrap.clientWidth, h = wrap.clientHeight;
-  [canvas, eCanvas, pCanvas].forEach(c => { c.style.width = w + 'px'; c.style.height = h + 'px'; });
-}
-syncCanvasSize(); window.addEventListener('resize', syncCanvasSize);
-
 // ══════════════════════════════════════════════════════
 // EFFECT & PARTICLE SYSTEM
 // ══════════════════════════════════════════════════════
 let particles = [];
-let activeVisuals = []; // 진행중인 시각 이펙트 (화살, 망치 등)
-let activeForces = [];  // 지속적인 물리력 (소용돌이 등)
+let activeForces = [];  
 let shakeMag = 0; let shakeTime = 0;
 
 class Particle {
@@ -486,7 +513,7 @@ class Particle {
     const s = (Math.random() * 5 + 2) * speedMult;
     this.vx = Math.cos(a) * s; this.vy = Math.sin(a) * s;
     this.life = 1; this.decay = 0.02 + Math.random() * 0.04;
-    this.size = 3 + Math.random() * 5;
+    this.size = 3 + Math.random() * 6;
   }
   update() {
     this.x += this.vx; this.y += this.vy; this.life -= this.decay;
@@ -572,7 +599,7 @@ function renderOrderUI() {
       div.style.border = `2px solid ${state.playerTeam.color}`;
       div.innerHTML = `<img src="${state.playerTeam.members[state.playerOrder[i]].img}" style="width:100%;height:100%;object-fit:cover;" onerror="this.src=''">`;
     } else {
-      div.innerHTML = `<span style="font-family:'Black Han Sans'; opacity:0.3;">${i+1}</span>`;
+      div.innerHTML = `<span style="font-family:'Black Han Sans'; opacity:0.3; font-size:1.5rem;">${i+1}</span>`;
     }
     slotRow.appendChild(div);
   }
@@ -585,7 +612,7 @@ function renderOrderUI() {
     div.onclick = () => { if(state.playerOrder.length<4 && !isSel) { state.playerOrder.push(idx); renderOrderUI(); } };
     div.innerHTML = `
       <img src="${m.img}" class="char-portrait" onerror="this.src=''">
-      <div style="font-family:'Black Han Sans'; font-size:1.1rem; margin-top:5px;">${m.name}</div>
+      <div style="font-family:'Black Han Sans'; font-size:1rem; margin-top:2px;">${m.name}</div>
       <div class="skill-tag">${m.skill}</div>
     `;
     roster.appendChild(div);
@@ -612,26 +639,26 @@ class Stone {
   constructor(x, y, team) {
     this.x = x; this.y = y; this.vx = 0; this.vy = 0;
     this.team = team; this.r = STONE_R; this.move = false;
-    this.glow = 0; // 버프 시 빛나는 효과
+    this.glow = 0;
   }
   draw() {
-    ctx.beginPath(); ctx.arc(this.x + 4, this.y + 4, this.r, 0, Math.PI*2);
+    ctx.beginPath(); ctx.arc(this.x + 5, this.y + 5, this.r, 0, Math.PI*2);
     ctx.fillStyle = 'rgba(0,0,0,0.4)'; ctx.fill();
 
-    const grad = ctx.createRadialGradient(this.x-5, this.y-5, 2, this.x, this.y, this.r);
+    const grad = ctx.createRadialGradient(this.x-6, this.y-6, 3, this.x, this.y, this.r);
     grad.addColorStop(0, '#fff'); grad.addColorStop(0.3, this.team.color); grad.addColorStop(1, this.team.border);
     
     ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
     ctx.fillStyle = grad; ctx.fill();
-    ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(255,255,255,0.8)'; ctx.stroke();
+    ctx.lineWidth = 4; ctx.strokeStyle = 'rgba(255,255,255,0.8)'; ctx.stroke();
     
     if(this.glow > 0) {
-      ctx.beginPath(); ctx.arc(this.x, this.y, this.r + 5, 0, Math.PI*2);
-      ctx.strokeStyle = '#ffcf00'; ctx.lineWidth = 2; ctx.globalAlpha = 0.6 + Math.sin(Date.now()/100)*0.4;
+      ctx.beginPath(); ctx.arc(this.x, this.y, this.r + 6, 0, Math.PI*2);
+      ctx.strokeStyle = '#ffcf00'; ctx.lineWidth = 3; ctx.globalAlpha = 0.6 + Math.sin(Date.now()/100)*0.4;
       ctx.stroke(); ctx.globalAlpha = 1;
     }
 
-    ctx.font = '20px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.font = '22px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     ctx.fillText(this.team.icon, this.x, this.y + 2);
   }
   update() {
@@ -668,7 +695,6 @@ function updateUI() {
   t.textContent = `${state.currentTeam.icon} ${state.currentTeam.name} TURN`;
   t.style.color = state.currentTeam.color;
 
-  // 스킬 버튼 UI 업데이트
   const charge = state.skillCharge[state.currentTeam.id];
   const btn = document.getElementById('skillBtn');
   const fill = document.getElementById('skillFill');
@@ -695,7 +721,22 @@ function flashScreen(color='white') {
   setTimeout(() => f.style.opacity = '0', 50);
 }
 
-// 스킬 발동 컷인
+// 힙한 플로팅 리액션 멘트 생성기
+function showReaction() {
+  const el = document.createElement('div');
+  el.className = 'floating-reaction';
+  el.textContent = REACTIONS[Math.floor(Math.random() * REACTIONS.length)];
+  const colors = ['#ff2a85', '#00e5ff', '#ffcf00', '#a855f7'];
+  el.style.color = colors[Math.floor(Math.random() * colors.length)];
+  
+  // 랜덤 위치 배정 (화면 중간 영역)
+  el.style.left = (15 + Math.random() * 50) + '%';
+  el.style.top = (30 + Math.random() * 40) + '%';
+  
+  document.getElementById('gameWrap').appendChild(el);
+  setTimeout(() => el.remove(), 2000); // 애니메이션 후 삭제
+}
+
 function showSkillCutin(member, team) {
   const cutin = document.getElementById('skillCutin');
   document.getElementById('cutinStripe').style.background = `linear-gradient(90deg, transparent, ${team.color}, transparent)`;
@@ -714,12 +755,11 @@ function showSkillCutin(member, team) {
   }, 1800);
 }
 
-// 스킬 활성화 (버튼 클릭 시)
 window.activateSkill = function() {
   const team = state.currentTeam;
   if (state.skillCharge[team.id] < 2 || state.phase !== 'aim') return;
   state.skillCharge[team.id] = 0;
-  state.phase = 'skill'; // 스킬 사용 중 조작 불가
+  state.phase = 'skill'; 
   
   const member = getActiveMember(team);
   showSkillCutin(member, team);
@@ -727,10 +767,9 @@ window.activateSkill = function() {
   setTimeout(() => {
     executeSkillEffect(member.id, team);
     updateUI();
-  }, 1500); // 컷인 이후 효과 발동
+  }, 1500); 
 }
 
-// 특정 대상에게 물리력 부여 헬퍼
 function applyImpulse(targetRule, conditionRule, magnitude) {
   state.stones.forEach(s => {
     const isAlly = s.team.id === state.currentTeam.id;
@@ -744,49 +783,21 @@ function applyImpulse(targetRule, conditionRule, magnitude) {
   });
 }
 
-// 실제 스킬 효과 실행
 function executeSkillEffect(skillId, team) {
   flashScreen(team.color);
-  shakeMag = 10; shakeTime = 20;
+  shakeMag = 15; shakeTime = 20; // 쉐이크 이펙트 강화
 
   switch(skillId) {
-    case 'pretty': // 빛의 화살 (적 밀어내기)
-      spawnSparks(HOUSE.x, HOUSE.y, '#fff', 50, 2);
-      applyImpulse('enemy', 'in_house', 12);
-      break;
-    case 'cuty': // 응원의 하트 (버프)
-      state.powerBuff[team.id] = 2;
-      spawnSparks(START.x, START.y, '#ff69b4', 40, 1.5);
-      showBuffAlert();
-      break;
-    case 'brook': // 불의 망치 (지진)
-      shakeMag = 20; shakeTime = 30;
-      spawnSparks(HOUSE.x, HOUSE.y, '#ff4500', 60, 3);
-      applyImpulse('enemy', 'in_house', 18);
-      break;
-    case 'elion': // 장로의 기도 (밖의 아군 안으로)
-      activeForces.push({ teamId: team.id, target:'ally', cond:'out_house', type:'pull', life:120 });
-      break;
-    case 'knight': // 어둠의 기운 (버프)
-      state.powerBuff[team.id] = 1;
-      spawnSparks(START.x, START.y, '#6a00ff', 40, 1.5);
-      showBuffAlert();
-      break;
-    case 'vane': // 검신의 함성 (적 밀어내기)
-      shakeMag = 15; shakeTime = 25;
-      applyImpulse('enemy', 'in_house', 15);
-      break;
-    case 'crown': // 대지진 (초강력 적 방출)
-      shakeMag = 30; shakeTime = 40;
-      spawnSparks(HOUSE.x, HOUSE.y, '#000', 80, 4);
-      applyImpulse('enemy', 'in_house', 25);
-      break;
-    case 'angel': // 소용돌이 (모든 아군 안으로)
-      activeForces.push({ teamId: team.id, target:'ally', cond:'all', type:'pull', life:150 });
-      break;
+    case 'pretty': spawnSparks(HOUSE.x, HOUSE.y, '#fff', 50, 2); applyImpulse('enemy', 'in_house', 12); break;
+    case 'cuty': state.powerBuff[team.id] = 2; spawnSparks(START.x, START.y, '#ff69b4', 40, 1.5); showBuffAlert(); break;
+    case 'brook': shakeMag = 25; shakeTime = 30; spawnSparks(HOUSE.x, HOUSE.y, '#ff4500', 60, 3); applyImpulse('enemy', 'in_house', 18); break;
+    case 'elion': activeForces.push({ teamId: team.id, target:'ally', cond:'out_house', type:'pull', life:120 }); break;
+    case 'knight': state.powerBuff[team.id] = 1; spawnSparks(START.x, START.y, '#6a00ff', 40, 1.5); showBuffAlert(); break;
+    case 'vane': shakeMag = 20; shakeTime = 25; applyImpulse('enemy', 'in_house', 15); break;
+    case 'crown': shakeMag = 35; shakeTime = 40; spawnSparks(HOUSE.x, HOUSE.y, '#000', 80, 4); applyImpulse('enemy', 'in_house', 25); break;
+    case 'angel': activeForces.push({ teamId: team.id, target:'ally', cond:'all', type:'pull', life:150 }); break;
   }
   
-  // 스킬 발동 후 자연스럽게 투구 페이즈로
   setTimeout(() => { state.phase = 'aim'; if(state.isAiTurn) executeAIThrow(); }, 1000);
 }
 
@@ -807,19 +818,19 @@ function spawnStone() {
   
   if (state.isAiTurn) {
     setTimeout(() => {
-      if(state.skillCharge[state.currentTeam.id] >= 2) activateSkill(); // AI 스킬 사용
-      else executeAIThrow(); // AI 일반 투구
+      if(state.skillCharge[state.currentTeam.id] >= 2) activateSkill(); 
+      else executeAIThrow(); 
     }, 1500);
   }
 }
 
 function executeAIThrow() {
   if (state.phase !== 'aim') return;
-  const tx = HOUSE.x + (Math.random() - 0.5) * 80;
-  const ty = HOUSE.y + (Math.random() - 0.5) * 80;
+  const tx = HOUSE.x + (Math.random() - 0.5) * 100;
+  const ty = HOUSE.y + (Math.random() - 0.5) * 100;
   const dx = tx - START.x, dy = ty - START.y;
   const angle = Math.atan2(dy, dx);
-  let power = Math.sqrt(Math.hypot(dx, dy) * 0.05) * (0.9 + Math.random() * 0.2);
+  let power = Math.sqrt(Math.hypot(dx, dy) * 0.05) * (0.95 + Math.random() * 0.15);
   
   if(state.powerBuff[state.currentTeam.id] > 0) { power *= 1.5; state.powerBuff[state.currentTeam.id]--; }
   
@@ -827,13 +838,16 @@ function executeAIThrow() {
   finishThrow();
 }
 
-// ─── Input Handling ───
-function getPos(e) { const r = canvas.getBoundingClientRect(); return { x: (e.clientX - r.left) * (LOGICAL_W / r.width), y: (e.clientY - r.top) * (LOGICAL_H / r.height) }; }
+function getPos(e) { 
+  const r = canvas.getBoundingClientRect(); 
+  // 화면 비율에 맞춰 좌표 계산
+  return { x: (e.clientX - r.left) * (LOGICAL_W / r.width), y: (e.clientY - r.top) * (LOGICAL_H / r.height) }; 
+}
 
 canvas.addEventListener('pointerdown', e => {
   if (state.phase !== 'aim' || state.isAiTurn) return;
   const pos = getPos(e);
-  if (Math.hypot(pos.x - state.activeStone.x, pos.y - state.activeStone.y) < 100) { state.dragging = true; state.dragStart = pos; state.dragNow = pos; }
+  if (Math.hypot(pos.x - state.activeStone.x, pos.y - state.activeStone.y) < 120) { state.dragging = true; state.dragStart = pos; state.dragNow = pos; }
 });
 canvas.addEventListener('pointermove', e => { if (state.dragging) state.dragNow = getPos(e); });
 window.addEventListener('pointerup', () => {
@@ -842,7 +856,8 @@ window.addEventListener('pointerup', () => {
   const dx = state.dragStart.x - state.dragNow.x, dy = state.dragStart.y - state.dragNow.y;
   const dist = Math.hypot(dx, dy);
   if (dist > 10) {
-    let power = Math.min(dist, 250) * 0.12;
+    // 캔버스가 길어졌으므로 파워 한계치 상향
+    let power = Math.min(dist, 350) * 0.12;
     if(state.powerBuff[state.currentTeam.id] > 0) { power *= 1.5; state.powerBuff[state.currentTeam.id]--; }
     const angle = Math.atan2(dy, dx);
     state.activeStone.vx = Math.cos(angle) * power; state.activeStone.vy = Math.sin(angle) * power;
@@ -854,11 +869,10 @@ function finishThrow() {
   state.phase = 'move';
   state.activeStone.glow = 0;
   state.stonesLeft[state.currentTeam.id]--;
-  state.skillCharge[state.currentTeam.id] = Math.min(2, state.skillCharge[state.currentTeam.id] + 1); // 게이지 50% 증가
+  state.skillCharge[state.currentTeam.id] = Math.min(2, state.skillCharge[state.currentTeam.id] + 1);
   updateUI();
 }
 
-// ─── Collision & Forces ───
 function resolveCollisions() {
   for (let i = 0; i < state.stones.length; i++) {
     for (let j = i + 1; j < state.stones.length; j++) {
@@ -878,7 +892,7 @@ function resolveCollisions() {
 function applyContinuousForces() {
   activeForces.forEach(f => {
     f.life--;
-    if(f.life % 5 === 0) spawnSparks(HOUSE.x, HOUSE.y, '#a855f7', 2); // 블랙홀 이펙트
+    if(f.life % 5 === 0) spawnSparks(HOUSE.x, HOUSE.y, '#a855f7', 2); 
     state.stones.forEach(s => {
       const isAlly = s.team.id === f.teamId;
       if((f.target==='ally' && isAlly) || f.target==='all') {
@@ -928,6 +942,10 @@ function showWinner(team) {
 function resetToMain() {
   document.getElementById('winnerModal').style.display = 'none'; document.getElementById('inGameUI').style.display = 'none';
   document.getElementById('bottomGuide').style.display = 'none'; document.getElementById('skillContainer').style.display = 'none';
+  
+  // 모든 팝업 리액션 클리어
+  document.querySelectorAll('.floating-reaction').forEach(el => el.remove());
+  
   state.phase='setup'; state.stones=[]; state.fairyWins=0; state.darkWins=0; state.round=1; state.stonesLeft={fairy:4,dark:4};
   state.skillCharge={fairy:0, dark:0}; state.powerBuff={fairy:0, dark:0};
   loadLeaderboard(); showScreen('s-login');
@@ -942,7 +960,7 @@ function drawArena() {
   ctx.clearRect(0,0,LOGICAL_W,LOGICAL_H);
 
   // Deep Magic Background
-  const bgGrad = ctx.createRadialGradient(LOGICAL_W/2, LOGICAL_H/2, 50, LOGICAL_W/2, LOGICAL_H/2, LOGICAL_H);
+  const bgGrad = ctx.createRadialGradient(LOGICAL_W/2, LOGICAL_H/2, 100, LOGICAL_W/2, LOGICAL_H/2, LOGICAL_H);
   bgGrad.addColorStop(0, '#151525'); bgGrad.addColorStop(1, '#050508');
   ctx.fillStyle = bgGrad; ctx.fillRect(0,0,LOGICAL_W,LOGICAL_H);
 
@@ -971,25 +989,25 @@ function drawArena() {
   ctx.beginPath(); ctx.moveTo(HOUSE.x, 0); ctx.lineTo(HOUSE.x, LOGICAL_H); ctx.stroke();
 
   // Throw Zone
-  ctx.beginPath(); ctx.arc(START.x, START.y, 50, 0, Math.PI*2);
+  ctx.beginPath(); ctx.arc(START.x, START.y, 60, 0, Math.PI*2);
   ctx.strokeStyle='rgba(0,229,255,0.3)'; ctx.lineWidth=2; ctx.setLineDash([5,5]); ctx.stroke(); ctx.setLineDash([]);
 
   // Drag Arrow
   if (state.dragging && state.dragStart && state.dragNow && !state.isAiTurn && state.activeStone) {
     const dx = state.dragStart.x - state.dragNow.x, dy = state.dragStart.y - state.dragNow.y;
     const angle = Math.atan2(dy, dx);
-    let dist = Math.min(Math.hypot(dx, dy), 250);
-    if(state.powerBuff[state.currentTeam.id] > 0) dist *= 1.5; // 버프 시 가이드라인도 길게
+    let dist = Math.min(Math.hypot(dx, dy), 350);
+    if(state.powerBuff[state.currentTeam.id] > 0) dist *= 1.5; 
     
-    const ex = state.activeStone.x + Math.cos(angle)*dist*1.5, ey = state.activeStone.y + Math.sin(angle)*dist*1.5;
+    const ex = state.activeStone.x + Math.cos(angle)*dist*1.2, ey = state.activeStone.y + Math.sin(angle)*dist*1.2;
     const grad = ctx.createLinearGradient(state.activeStone.x, state.activeStone.y, ex, ey);
     grad.addColorStop(0, state.currentTeam.color); grad.addColorStop(1, 'transparent');
     
     ctx.save(); ctx.beginPath(); ctx.moveTo(state.activeStone.x, state.activeStone.y); ctx.lineTo(ex,ey);
-    ctx.strokeStyle=grad; ctx.lineWidth=6; ctx.lineCap='round'; ctx.stroke();
+    ctx.strokeStyle=grad; ctx.lineWidth=8; ctx.lineCap='round'; ctx.stroke();
     
     ctx.translate(ex, ey); ctx.rotate(angle);
-    ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(-15,-10); ctx.lineTo(-15,10); ctx.closePath();
+    ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(-20,-12); ctx.lineTo(-20,12); ctx.closePath();
     ctx.fillStyle = state.currentTeam.color; ctx.shadowBlur=15; ctx.shadowColor=ctx.fillStyle; ctx.fill();
     ctx.restore();
   }
@@ -999,7 +1017,6 @@ function drawArena() {
 // MAIN LOOP
 // ══════════════════════════════════════════════════════
 function gameLoop() {
-  // Screen Shake 적용
   ctx.save(); pCtx.save();
   if (shakeTime > 0) {
     const sx = (Math.random()-0.5) * shakeMag; const sy = (Math.random()-0.5) * shakeMag;
@@ -1013,7 +1030,10 @@ function gameLoop() {
       let moving = false;
       state.stones.forEach(s => { s.update(); if (s.move) moving = true; });
       resolveCollisions();
+      
+      // 스톤이 멈춘 상태이고 무브 페이즈일 때 리액션 플로팅 띄우며 턴 교체
       if (!moving && state.phase === 'move') {
+        if(!state.isAiTurn) showReaction(); // 플레이어가 투구를 마쳤을 때만 멘트
         state.currentTeam = state.currentTeam.id === 'fairy' ? TEAMS.dark : TEAMS.fairy;
         spawnStone();
       }

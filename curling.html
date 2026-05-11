@@ -1,1057 +1,1022 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#030305">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="images/favicon.png">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<title>MAGIC CURLING: Fairy vs Crown</title>
 
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3207219520058740"
-     crossorigin="anonymous"></script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NBGELYQ4TZ"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Cinzel:wght@700;900&family=Exo+2:ital,wght@0,400;0,800;0,900;1,900&family=Noto+Sans+KR:wght@500;700;900&display=swap" rel="stylesheet"/>
 
-      gtag('config', 'G-NBGELYQ4TZ');
-      gtag('config', 'GT-5MJDBTR2');
-    </script>
+<style>
+:root{
+  --c-fairy: #ff2a85;
+  --c-fairy-glow: #ff7eb3;
+  --c-dark: #6a00ff;
+  --c-dark-glow: #a855f7;
+  --c-ice: #00e5ff;
+  --c-gold: #ffcf00;
+  --bg-deep: #030305;
+  --bg-mid: #0a0a12;
+  --glass: rgba(15, 15, 25, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.1);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0;}
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="images/favicon.png" type="image/png">
+body{
+  overflow:hidden;
+  font-family:'Noto Sans KR',sans-serif;
+  background:var(--bg-deep);
+  color:#fff;
+}
 
-    <meta name="description" content="Chris Lee.Papa – Game Center | The Creative Archive">
-    <meta property="og:title" content="Game Center – Chris LEE.PAPA">
-    <meta property="og:description" content="우주와 아카이브의 세계를 여행하는 보드게임과 미니 게임을 즐겨보세요.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://chrisleepapa-official.vercel.app/gameinfo.html">
-    <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/dynamicomok.png">
-    <link rel="canonical" href="https://chrisleepapa-official.vercel.app/gameinfo.html">
+/* ─── Cinematic Texture ─── */
+body::before{
+  content:''; position:fixed; inset:0; z-index:0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.04; pointer-events:none;
+}
+body::after{
+  content:''; position:fixed; inset:0; z-index:9999;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.08) 2px,rgba(0,0,0,.08) 4px);
+  pointer-events:none;
+}
 
-    <title>Game Center - Chris LEE.PAPA</title>
+#gameWrap{
+  position:relative; width:100%; max-width:520px; height:100dvh;
+  margin:auto; overflow:hidden; z-index:1;
+}
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;800;900&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600&family=Noto+Serif+KR:wght@300;400;600&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
-    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
+canvas{width:100%;height:100%;display:block;touch-action:none;position:absolute;inset:0;}
+#gameCanvas { z-index:2; }
+#effectCanvas { z-index:6; pointer-events:none; }
+#particleCanvas { z-index:7; pointer-events:none; }
 
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --gold: #c9a84c;
-            --gold-light: #e8d08a;
-            --bg: #030305;
-            --text: #f0ece4;
-            --nav-height: 70px;
-        }
+/* ─── UI Screens ─── */
+.screen{
+  position:absolute;inset:0;z-index:80;
+  display:flex;flex-direction:column;align-items:center;
+  padding:24px 20px 20px; overflow-y:auto; overflow-x:hidden;
+  background:radial-gradient(circle at 50% 20%, #151025 0%, var(--bg-deep) 80%);
+  transition:opacity .5s ease, transform .5s cubic-bezier(.175,.885,.32,1.275);
+}
+.screen.hidden{opacity:0;transform:scale(.95) translateY(20px);pointer-events:none;}
+.screen.out{opacity:0;transform:scale(1.05) translateY(-20px);pointer-events:none;}
 
-        html { scroll-behavior: smooth; background-color: var(--bg); }
+/* ─── Typography ─── */
+.title-main {
+  font-family:'Cinzel', serif; font-weight:900; font-size:clamp(2.5rem, 9vw, 3.5rem);
+  text-align:center; line-height:1.1; margin-bottom:5px;
+  background: linear-gradient(180deg, #fff, #b3b3b3);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 15px rgba(255,255,255,0.2));
+}
+.title-sub {
+  font-family:'Black Han Sans', sans-serif; font-size:clamp(1.8rem, 6vw, 2.2rem);
+  text-align:center; letter-spacing:2px;
+  background: linear-gradient(90deg, var(--c-fairy-glow), var(--c-ice), var(--c-dark-glow));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 20px rgba(0,229,255,0.4)); margin-bottom: 25px;
+}
 
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Pretendard', 'Noto Serif KR', serif;
-            line-height: 1.6;
-            overflow-x: hidden;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            user-select: none;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+/* ─── Glass & Components ─── */
+.glass-panel{
+  background:var(--glass); border:1px solid var(--glass-border);
+  backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+  border-radius:24px; box-shadow:0 20px 50px rgba(0,0,0,0.5), inset 0 0 20px rgba(255,255,255,0.02);
+}
 
-        img { -webkit-user-drag: none; }
+.input-neon{
+  width:100%; text-align:center; font-family:'Exo 2',sans-serif;
+  font-size:2.5rem; font-weight:900; letter-spacing:0.2em;
+  padding:15px; border-radius:16px; background:rgba(0,0,0,0.3);
+  color:var(--c-ice); border:2px solid rgba(0,229,255,0.2);
+  outline:none; transition:0.3s; text-transform:uppercase;
+}
+.input-neon:focus{
+  border-color:var(--c-ice); box-shadow:0 0 30px rgba(0,229,255,0.3), inset 0 0 15px rgba(0,229,255,0.1);
+}
 
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-            pointer-events: none;
-            z-index: 900;
-            opacity: 0.4;
-        }
+.btn-magic{
+  width:100%; border:none; border-radius:18px; padding:18px 20px;
+  font-family:'Black Han Sans', sans-serif; font-size:1.4rem; cursor:pointer;
+  transition:all 0.3s cubic-bezier(.175,.885,.32,1.275); color:#fff; letter-spacing:2px;
+  background:linear-gradient(135deg, #00d2ff, #3a7bd5);
+  box-shadow:0 10px 30px rgba(0,210,255,0.4), inset 0 0 10px rgba(255,255,255,0.3);
+}
+.btn-magic:hover:not(:disabled){transform:translateY(-4px); box-shadow:0 15px 40px rgba(0,210,255,0.6), inset 0 0 10px rgba(255,255,255,0.5);}
+.btn-magic:disabled{background:#333; box-shadow:none; color:#888; cursor:not-allowed;}
 
-        a { text-decoration: none; color: inherit; }
-        button { appearance: none; background: none; border: 0; padding: 0; font: inherit; color: inherit; }
+/* ─── Leaderboard ─── */
+.lb-row{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:12px 18px; border-radius:16px; background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.05); transition:0.2s; margin-bottom:8px;
+}
+.lb-row:hover{background:rgba(255,255,255,0.08); transform:translateX(5px);}
+.lb-medal{width:30px; font-size:1.3rem; text-shadow: 0 0 10px rgba(255,255,255,0.5);}
+.lb-initials{font-family:'Exo 2',sans-serif; font-weight:800; font-size:1.2rem; letter-spacing:0.15em;}
+.lb-wins{font-family:'Exo 2',sans-serif; font-weight:900; color:var(--c-gold); font-size:1.1rem;}
 
-        /* ── Navigation ── */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            height: var(--nav-height);
-            padding: 0 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            background: rgba(3, 3, 5, 0);
-            backdrop-filter: blur(0px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0);
-            transition: background 0.5s, backdrop-filter 0.5s, border-color 0.5s;
-        }
-        nav.scrolled {
-            background: rgba(3, 3, 5, 0.88);
-            backdrop-filter: blur(14px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .brand-logo {
-            font-family: 'Cinzel', serif;
-            font-size: 1.3rem;
-            font-weight: 800;
-            letter-spacing: 2px;
-            color: var(--gold-light);
-            z-index: 1001;
-            white-space: nowrap;
-        }
+/* ─── Team & Character Selection ─── */
+.team-card{
+  flex:1; position:relative; border-radius:24px; overflow:hidden;
+  cursor:pointer; transition:all 0.4s cubic-bezier(.175,.885,.32,1.275);
+  border:2px solid transparent; min-height:160px;
+}
+.team-card:hover{transform:scale(1.05) translateY(-5px); z-index:2;}
+.team-card.fairy:hover{border-color:var(--c-fairy); box-shadow:0 20px 60px rgba(255,42,133,0.5);}
+.team-card.dark:hover{border-color:var(--c-dark); box-shadow:0 20px 60px rgba(106,0,255,0.5);}
+.team-bg{
+  position:absolute; inset:0; background-size:cover; background-position:center;
+  transition:transform 0.6s ease; filter:brightness(0.7) contrast(1.2);
+}
+.team-card:hover .team-bg{transform:scale(1.15) rotate(2deg); filter:brightness(1) contrast(1.2);}
+.team-overlay{
+  position:absolute; inset:0;
+  background:linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
+  display:flex; flex-direction:column; justify-content:flex-end; align-items:center; padding-bottom:20px;
+}
+.team-label{font-family:'Black Han Sans', sans-serif; font-size:2.2rem; text-shadow:0 5px 20px rgba(0,0,0,1);}
 
-        .nav-right { display: flex; align-items: center; gap: 24px; }
-        .nav-links { display: flex; gap: 30px; }
-        .nav-links a {
-            font-family: 'Cinzel', serif;
-            font-size: 0.8rem;
-            letter-spacing: 1px;
-            color: #a0a0b5;
-            transition: 0.3s;
-            text-transform: uppercase;
-            position: relative;
-        }
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0%;
-            height: 1px;
-            background: var(--gold-light);
-            transition: width 0.3s ease;
-        }
-        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
-        .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+.char-btn{
+  background:rgba(255,255,255,0.03); border:2px solid rgba(255,255,255,0.08);
+  border-radius:20px; padding:15px 10px; text-align:center; cursor:pointer;
+  transition:0.3s; display:flex; flex-direction:column; align-items:center; gap:8px;
+}
+.char-btn:hover:not(.sel){
+  background:rgba(255,255,255,0.1); border-color:var(--c-ice); transform:translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,229,255,0.2);
+}
+.char-btn.sel{
+  border-color:var(--c-ice); background:rgba(0,229,255,0.1); opacity:0.3; pointer-events:none; transform:scale(0.9);
+}
+.char-portrait{
+  width:75px; height:75px; border-radius:50%; object-fit:cover;
+  border:3px solid rgba(255,255,255,0.8); box-shadow:0 5px 15px rgba(0,0,0,0.8);
+}
+.skill-tag {
+  font-size: 0.65rem; font-weight: 900; background: linear-gradient(90deg, #ff007a, #7a00ff);
+  padding: 3px 8px; border-radius: 10px; color: #fff; letter-spacing: 1px;
+}
 
-        /* ── Language Switcher (Dropdown) ── */
-        .lang-dropdown-wrapper { position: relative; font-family: 'Cinzel', serif; font-size: 0.8rem; color: #a0a0b5; z-index: 1001; }
-        .lang-current { cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 6px; transition: color 0.3s; font-weight: 600; letter-spacing: 1px; }
-        .lang-current:hover, .lang-dropdown-wrapper.active .lang-current { color: var(--gold-light); text-shadow: 0 0 8px rgba(201,168,76,0.5); }
-        .lang-current svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; transition: transform 0.3s; }
-        .lang-dropdown-wrapper.active .lang-current svg { transform: rotate(180deg); }
-        .lang-dropdown-menu { position: absolute; top: calc(100% + 10px); right: -10px; background: rgba(10, 10, 15, 0.95); border: 1px solid rgba(201,168,76,0.3); border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; opacity: 0; pointer-events: none; transform: translateY(-10px); transition: opacity 0.3s, transform 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.8); backdrop-filter: blur(10px); min-width: 100px; }
-        .lang-dropdown-wrapper.active .lang-dropdown-menu { opacity: 1; pointer-events: auto; transform: translateY(0); }
-        .lang-btn { padding: 12px 20px; cursor: pointer; transition: 0.3s; letter-spacing: 1px; text-align: center; color: #a0a0b5; }
-        .lang-btn:not(:last-child) { border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .lang-btn:hover, .lang-btn.active { color: var(--gold-light); background: rgba(201,168,76,0.1); }
+/* ─── In-Game UI ─── */
+#inGameUI{
+  position:absolute; inset:0 auto auto 0; width:100%;
+  padding:15px; display:flex; justify-content:space-between; align-items:flex-start; z-index:20; pointer-events:none;
+}
+.score-board{
+  border-radius:20px; padding:15px; min-width:180px;
+  background:rgba(5,5,10,0.85); border:1px solid rgba(255,255,255,0.1);
+  box-shadow:0 10px 30px rgba(0,0,0,0.6), 0 0 20px rgba(0,229,255,0.1);
+  backdrop-filter:blur(10px);
+}
+.score-row{display:flex; justify-content:space-between; align-items:center; margin:8px 0;}
+.score-num{font-family:'Cinzel', serif; font-size:2rem; font-weight:900;}
 
-        /* ── Share Icon Button ── */
-        .share-trigger { cursor: pointer; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; border: 1px solid rgba(201,168,76,0.3); border-radius: 50%; color: var(--gold-light); transition: 0.3s; z-index: 1001; }
-        .share-trigger svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
-        .share-trigger:hover { background: rgba(201,168,76,0.1); border-color: var(--gold-light); box-shadow: 0 0 12px rgba(201,168,76,0.2); transform: translateY(-2px); }
+/* ─── Skill & Action UI ─── */
+#skillContainer {
+  position:absolute; bottom:85px; width:100%; display:flex; justify-content:center; z-index:30;
+}
+.skill-btn {
+  position:relative; width:220px; height:55px; border-radius:30px; border:none;
+  background:rgba(0,0,0,0.6); border:2px solid rgba(255,255,255,0.2);
+  color:#fff; font-family:'Black Han Sans', sans-serif; font-size:1.3rem; letter-spacing:3px;
+  cursor:pointer; overflow:hidden; backdrop-filter:blur(10px); pointer-events:auto;
+  transition:all 0.3s cubic-bezier(.175,.885,.32,1.275);
+}
+.skill-btn .fill {
+  position:absolute; top:0; left:0; height:100%; background:linear-gradient(90deg, #ff007a, #7a00ff);
+  width:0%; transition:width 0.4s ease; z-index:1; opacity:0.8;
+}
+.skill-btn span { position:relative; z-index:2; text-shadow:0 2px 5px rgba(0,0,0,0.8); }
+.skill-btn.ready {
+  border-color:#fff; box-shadow:0 0 30px rgba(255,0,122,0.6); animation:pulseSkill 1s infinite alternate;
+}
+.skill-btn.ready .fill { background:linear-gradient(90deg, #00e5ff, #0055ff); opacity:1; }
+.skill-btn.ready:hover { transform:scale(1.08); box-shadow:0 0 40px rgba(0,229,255,0.8); }
 
-        /* ── Menu Toggle (Hamburger) ── */
-        .menu-toggle {
-            display: none;
-            flex-direction: column;
-            justify-content: space-between;
-            width: 26px;
-            height: 18px;
-            cursor: pointer;
-            z-index: 1001;
-        }
-        .menu-toggle span { width: 100%; height: 2px; background-color: var(--gold-light); transition: 0.3s; border-radius: 2px; }
-        .menu-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-        .menu-toggle.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-        .menu-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+@keyframes pulseSkill { from {box-shadow:0 0 15px rgba(0,229,255,0.4);} to {box-shadow:0 0 35px rgba(0,229,255,0.8);} }
 
-        /* ── 공유 모달 ── */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; }
-        .modal-overlay.active { display: flex; opacity: 1; }
-        .share-modal { background: #0a0a0f; border: 1px solid var(--gold); border-radius: 24px; width: 90%; max-width: 400px; padding: 45px 30px; text-align: center; box-shadow: 0 30px 70px rgba(0,0,0,0.9); }
-        .share-modal h3 { font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--gold-light); margin-bottom: 15px; }
-        .share-modal p { font-size: 0.9rem; color: #888; margin-bottom: 35px; }
-        .share-buttons { display: flex; flex-direction: column; gap: 14px; }
-        .modal-btn { padding: 16px; border-radius: 12px; border: none; font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: 0.3s; }
-        .btn-copy { background: var(--gold); color: #000; }
-        .btn-sns { background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #fff; }
-        .btn-close-modal { margin-top: 25px; color: #666; background: none; font-size: 0.8rem; text-decoration: underline; border: none; cursor: pointer; }
-        .toast-msg { position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%); background: var(--gold); color: #000; padding: 12px 30px; border-radius: 40px; font-size: 0.9rem; font-weight: 700; z-index: 3000; display: none; animation: fadeUp 0.4s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+#bottomGuide{
+  position:absolute; bottom:25px; width:100%; display:none; justify-content:center; z-index:20; pointer-events:none;
+}
+.guide-pill{
+  padding:12px 28px; border-radius:30px; font-size:1rem; font-weight:800;
+  background:rgba(0,0,0,0.8); border:1px solid var(--c-ice);
+  color:#fff; box-shadow:0 0 20px rgba(0,229,255,0.3); letter-spacing:1px;
+}
 
-        /* Canvas Background */
-        #stars-canvas { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: -1; }
+/* ─── Cinematic Skill Cut-in ─── */
+#skillCutin {
+  position:absolute; inset:0; background:rgba(0,0,0,0.85); z-index:100;
+  display:none; flex-direction:column; align-items:center; justify-content:center;
+  backdrop-filter:blur(8px); overflow:hidden;
+}
+.cutin-bg-stripe {
+  position:absolute; width:200%; height:150px; background:linear-gradient(90deg, transparent, rgba(255,0,122,0.8), transparent);
+  transform:rotate(-15deg); opacity:0; z-index:1;
+}
+.cutin-portrait {
+  width:200px; height:200px; border-radius:50%; object-fit:cover; border:5px solid #fff;
+  box-shadow:0 0 50px #fff; z-index:2; transform:scale(0) rotate(-45deg); opacity:0;
+}
+.cutin-name {
+  font-family:'Black Han Sans', sans-serif; font-size:4.5rem; color:#fff;
+  margin-top:20px; z-index:2; transform:translateX(100px); opacity:0; text-shadow:0 10px 30px rgba(0,0,0,1);
+}
+.cutin-skillname {
+  font-family:'Noto Sans KR', sans-serif; font-weight:900; font-size:2rem; color:var(--c-gold);
+  z-index:2; transform:translateX(-100px); opacity:0; letter-spacing:5px; text-shadow:0 5px 20px rgba(0,0,0,1);
+}
 
-        /* Game Selection Area */
-        .game-selection-wrapper {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 120px 20px 80px;
-            z-index: 10;
-        }
+/* Cut-in Animations */
+#skillCutin.play .cutin-bg-stripe { animation: stripeFlash 1.5s ease-out forwards; }
+#skillCutin.play .cutin-portrait { animation: popIn 1.5s cubic-bezier(.175,.885,.32,1.275) forwards; }
+#skillCutin.play .cutin-name { animation: slideLeft 1.5s cubic-bezier(.175,.885,.32,1.275) forwards; }
+#skillCutin.play .cutin-skillname { animation: slideRight 1.5s cubic-bezier(.175,.885,.32,1.275) forwards; }
 
-        .section-heading-tag {
-            font-family: 'Cinzel', serif;
-            font-size: 0.8rem;
-            letter-spacing: 4px;
-            color: rgba(201,168,76,0.6);
-            text-transform: uppercase;
-            margin-bottom: 12px;
-            display: block;
-            text-align: center;
-            animation: fadeIn 1s ease 0.2s forwards;
-            opacity: 0;
-            transform: translateY(10px);
-        }
+@keyframes stripeFlash { 0%{opacity:0; transform:rotate(-15deg) translateY(-200px);} 20%{opacity:1; transform:rotate(-15deg) translateY(0);} 80%{opacity:1; transform:rotate(-15deg) translateY(0);} 100%{opacity:0; transform:rotate(-15deg) translateY(200px);} }
+@keyframes popIn { 0%{transform:scale(0) rotate(-45deg); opacity:0;} 20%{transform:scale(1.2) rotate(10deg); opacity:1;} 80%{transform:scale(1) rotate(0deg); opacity:1;} 100%{transform:scale(2) rotate(20deg); opacity:0;} }
+@keyframes slideLeft { 0%{transform:translateX(100px); opacity:0;} 20%{transform:translateX(0); opacity:1;} 80%{transform:translateX(0); opacity:1;} 100%{transform:translateX(-100px); opacity:0;} }
+@keyframes slideRight { 0%{transform:translateX(-100px); opacity:0;} 20%{transform:translateX(0); opacity:1;} 80%{transform:translateX(0); opacity:1;} 100%{transform:translateX(100px); opacity:0;} }
 
-        .section-heading-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(2rem, 5vw, 3rem);
-            font-weight: 300;
-            color: rgba(240,236,228,0.9);
-            letter-spacing: 0.1em;
-            text-align: center;
-            margin-bottom: 50px;
-            animation: fadeIn 1s ease 0.4s forwards;
-            opacity: 0;
-            transform: translateY(10px);
-        }
+/* ─── Screen Flash ─── */
+#screenFlash {
+  position:absolute; inset:0; background:#fff; z-index:90; opacity:0; pointer-events:none;
+}
 
-        .game-cards {
-            display: flex;
-            gap: 40px;
-            flex-wrap: wrap;
-            justify-content: center;
-            width: 100%;
-            max-width: 1180px;
-        }
+/* ─── Power Multiplier Alert ─── */
+#buffAlert {
+  position:absolute; top:35%; left:50%; transform:translate(-50%, -50%);
+  font-family:'Black Han Sans', sans-serif; font-size:3rem; color:var(--c-gold);
+  text-shadow:0 0 30px #ff007a; z-index:40; opacity:0; pointer-events:none;
+}
+@keyframes popAlert { 0%{transform:translate(-50%, -30%) scale(0.5); opacity:0;} 50%{transform:translate(-50%, -50%) scale(1.2); opacity:1;} 100%{transform:translate(-50%, -70%) scale(1); opacity:0;} }
 
-        .game-card {
-            width: 340px;
-            height: 440px;
-            background: linear-gradient(145deg, rgba(15, 15, 22, 0.8), rgba(5, 5, 8, 0.9));
-            border: 1px solid rgba(201,168,76,0.2);
-            border-radius: 24px;
-            backdrop-filter: blur(15px);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 40px 30px;
-            transition: all 0.4s cubic-bezier(0.2, 0, 0.2, 1);
-            text-decoration: none;
-            position: relative;
-            overflow: hidden;
-            opacity: 0;
-            transform: translateY(30px);
-            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
+/* ─── Modal ─── */
+#winnerModal{
+  position:absolute; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(20px);
+  z-index:110; display:none; justify-content:center; align-items:center; padding:20px;
+}
+.modal-card{
+  width:100%; max-width:400px; border-radius:30px; padding:40px 30px; text-align:center;
+  background:rgba(10,10,20,0.9); border:2px solid rgba(255,255,255,0.1);
+  box-shadow:0 30px 100px rgba(0,0,0,0.8), inset 0 0 30px rgba(255,255,255,0.05);
+  animation:modalIn 0.6s cubic-bezier(.175,.885,.32,1.275) forwards;
+}
+@keyframes modalIn{from{transform:scale(0.8) translateY(50px); opacity:0;} to{transform:scale(1) translateY(0); opacity:1;}}
+.modal-title{font-family:'Cinzel', serif; font-size:3rem; font-weight:900; margin-bottom:10px; text-shadow:0 0 20px rgba(255,255,255,0.5);}
 
-        .game-card:nth-child(1) { animation-delay: 0.6s; }
-        .game-card:nth-child(2) { animation-delay: 0.8s; }
-        .game-card:nth-child(3) { animation-delay: 1s; }
-        .game-card:nth-child(4) { animation-delay: 1.2s; }
-
-        /* ── 풀 이미지 배경을 사용하는 게임 카드 공통 스타일 ── */
-        .game-card-image-mode {
-            justify-content: flex-end;
-            padding: 30px;
-            text-align: left;
-            background: none;
-            border-color: rgba(201,168,76,0.5);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-        }
-
-        .game-card-image-mode .card-image-bg {
-            position: absolute;
-            inset: 0;
-            background-size: cover;
-            background-position: center;
-            z-index: -2;
-            transition: transform 0.6s cubic-bezier(0.2, 0, 0.2, 1);
-        }
-
-        /* 각 카드별 배경 이미지 할당 */
-        .bg-bluemarble { background-image: url('images/bluemarblegame.png'); }
-        .bg-booktop { background-image: url('images/booktop.png'); }
-        .bg-dynamicomok { background-image: url('images/dynamicomok.png'); }
-        .bg-magiccurling { background-image: url('/images/magiccurling.png'); }
-
-        .game-card-image-mode .card-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to bottom, rgba(3, 3, 5, 0.2) 0%, rgba(3, 3, 5, 0.95) 85%);
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        .game-card-image-mode:hover {
-            transform: translateY(-12px) scale(1.02);
-            border-color: var(--gold-light);
-            box-shadow: 0 20px 60px rgba(201,168,76,0.25);
-        }
-
-        .game-card-image-mode:hover .card-image-bg {
-            transform: scale(1.08);
-        }
-
-        .game-card-content-wrap {
-            position: relative;
-            z-index: 1;
-            width: 100%;
-        }
-
-        .game-card-image-mode .game-card-title {
-            font-size: 1.8rem;
-            margin-bottom: 8px;
-            word-break: keep-all;
-        }
-
-        .game-card-image-mode .game-card-desc {
-            color: rgba(240, 236, 228, 0.85);
-            font-size: 0.95rem;
-            line-height: 1.5;
-            margin-bottom: 5px;
-        }
-
-        /* 이미지가 없는 일반 카드들의 호버 효과 (확장성을 위해 유지) */
-        .game-card:not(.game-card-image-mode) .game-icon-large {
-            display: block;
-            font-size: 80px;
-            margin-bottom: 25px;
-            filter: drop-shadow(0 0 20px rgba(201,168,76,0.3));
-            transition: transform 0.4s;
-        }
-
-        .game-card:not(.game-card-image-mode):hover .game-icon-large {
-            transform: scale(1.15) rotate(5deg);
-        }
-
-        .game-card:not(.game-card-image-mode)::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-            transform: skewX(-20deg);
-            transition: 0.6s;
-        }
-
-        .game-card:not(.game-card-image-mode):hover::before {
-            left: 200%;
-        }
-
-        .game-tag {
-            position: absolute;
-            top: 25px;
-            left: 25px;
-            font-family: 'Cinzel', serif;
-            font-size: 0.65rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            padding: 6px 14px;
-            border-radius: 20px;
-            text-transform: uppercase;
-        }
-
-        /* 이미지 카드 내 태그 위치 조정 */
-        .game-card-image-mode .game-tag {
-            top: 20px;
-            left: 20px;
-            z-index: 2;
-        }
-
-        .tag-blue-marble { background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.4); color: var(--gold-light); }
-        .tag-maze { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #ccc; }
-        .tag-omok { background: rgba(97, 67, 255, 0.16); border: 1px solid rgba(180, 156, 255, 0.42); color: #d9d1ff; }
-
-        /* ── 댓글 섹션 스타일 (개선됨) ── */
-        .comments-section {
-            max-width: 800px;
-            margin: 80px auto 0;
-            padding: 0 20px 100px;
-            position: relative;
-            z-index: 10;
-            animation: fadeUp 1s ease 0.6s both;
-        }
-        .comments-divider {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 50px;
-        }
-        .comments-divider::before,
-        .comments-divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(to right, transparent, rgba(201,168,76,0.3), transparent);
-        }
-        .comments-divider-title {
-            font-family: 'Cinzel', serif;
-            font-size: 1.1rem;
-            letter-spacing: 0.3em;
-            color: var(--gold);
-            text-transform: uppercase;
-            white-space: nowrap;
-        }
-
-        .comment-form {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(201,168,76,0.15);
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 40px;
-            backdrop-filter: blur(5px);
-            -webkit-user-select: text;
-            -moz-user-select: text;
-            user-select: text;
-        }
-        .comment-form-label {
-            font-family: 'Cinzel', serif;
-            font-size: 0.8rem;
-            letter-spacing: 1px;
-            color: var(--gold-light);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* PC 기본 레이아웃 (가로 정렬) */
-        .comment-input-row {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-
-        .cm-input {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 12px;
-            padding: 15px 18px;
-            color: #f0ece4;
-            font-family: 'Pretendard', sans-serif;
-            font-size: 0.95rem;
-            transition: border-color 0.3s, background 0.3s;
-            outline: none;
-            -webkit-user-select: text;
-            user-select: text;
-        }
-        .cm-input:focus {
-            border-color: rgba(201,168,76,0.5);
-            background: rgba(255,255,255,0.06);
-        }
-        .cm-input::placeholder { color: #555; }
-
-        #cm-name {
-            width: 220px;
-            flex-shrink: 0;
-        }
-
-        #cm-body {
-            flex-grow: 1;
-            resize: none;
-            height: 100px;
-            line-height: 1.6;
-        }
-
-        .cm-submit-row {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 15px;
-        }
-        .cm-submit-btn {
-            font-family: 'Pretendard', sans-serif;
-            font-size: 0.95rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            padding: 14px 35px;
-            background: linear-gradient(135deg, var(--gold), #a07830);
-            color: #000;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .cm-submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(201,168,76,0.3);
-        }
-        .cm-submit-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .comment-list { display: flex; flex-direction: column; gap: 16px; }
-
-        .comment-card {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 16px;
-            padding: 20px 24px;
-            transition: border-color 0.3s;
-            animation: fadeUp 0.4s ease both;
-        }
-        .comment-card:hover { border-color: rgba(201,168,76,0.2); }
-        .comment-meta {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 10px;
-        }
-        .comment-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, rgba(201,168,76,0.4), rgba(100,60,200,0.4));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Cinzel', serif;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--gold-light);
-            border: 1px solid rgba(201,168,76,0.3);
-            flex-shrink: 0;
-        }
-        .comment-nickname {
-            font-family: 'Pretendard', sans-serif;
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--gold-light);
-            letter-spacing: 0.5px;
-        }
-        .comment-date {
-            font-size: 0.75rem;
-            color: #555;
-            margin-left: auto;
-            font-family: 'Pretendard', sans-serif;
-        }
-        .comment-content {
-            font-family: 'Pretendard', 'Noto Serif KR', sans-serif;
-            font-size: 0.95rem;
-            color: #c8c4bc;
-            line-height: 1.7;
-            padding-left: 44px;
-            -webkit-user-select: text;
-            user-select: text;
-        }
-
-        .cm-empty {
-            text-align: center;
-            padding: 40px 20px;
-            color: #444;
-            font-family: 'Pretendard', sans-serif;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-        }
-        .cm-empty span { display: block; font-size: 1.5rem; margin-bottom: 10px; opacity: 0.5; }
-
-        .cm-loading {
-            text-align: center;
-            padding: 30px;
-            color: #555;
-            font-family: 'Cinzel', serif;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-        }
-
-        @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
-        @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-
-        footer {
-            text-align: center;
-            padding: 40px 20px;
-            font-family: 'Cinzel', serif;
-            font-size: 0.65rem;
-            color: #444;
-            border-top: 1px solid rgba(255,255,255,0.04);
-            letter-spacing: 2px;
-        }
-
-        /* ── 모바일 최적화 ── */
-        @media (max-width: 900px) {
-            nav { padding: 0 20px; }
-            .brand-logo { font-size: 1.1rem; }
-            .nav-links { display: none; }
-            .nav-links.active {
-                display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height));
-                background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 28px; z-index: 1002;
-            }
-            .nav-links.active a { font-size: 1rem; }
-            .nav-right { gap: 14px; }
-            .menu-toggle { display: flex; }
-            .game-cards { flex-direction: column; align-items: center; }
-            .game-card { width: 100%; max-width: 340px; height: 380px; }
-
-            /* 모바일 방명록 폼 세로 정렬 및 여백 조정 */
-            .comment-form { padding: 25px 20px; }
-            .comment-input-row {
-                flex-direction: column;
-                gap: 12px;
-                margin-bottom: 12px;
-            }
-            #cm-name {
-                width: 100%;
-            }
-            #cm-body {
-                width: 100%;
-                height: 100px;
-            }
-            .cm-submit-row {
-                justify-content: flex-end;
-                margin-top: 15px;
-            }
-            .cm-submit-btn {
-                padding: 12px 30px;
-            }
-        }
-
-    </style>
+</style>
 </head>
+
 <body>
+<div id="gameWrap">
 
-    <canvas id="stars-canvas"></canvas>
-
-    <nav id="main-nav">
-        <a href="index.html" class="brand-logo">Chris LEE.PAPA</a>
-        <div class="nav-right">
-            <div class="nav-links" id="navLinks">
-                <a href="index.html" data-i18n="nav_home">Home</a>
-                <a href="worship.html" data-i18n="nav_worship">Worship</a>
-                <a href="music.html" data-i18n="nav_music">Music</a>
-                <a href="book.html" data-i18n="nav_book">Books</a>
-                <a href="movie.html" data-i18n="nav_movie">Movies</a>
-            </div>
-
-            <div class="lang-dropdown-wrapper" id="langWrapper">
-                <button type="button" class="lang-current" onclick="toggleLangDropdown()" aria-expanded="false" aria-controls="langMenu" aria-label="Change language">
-                    <span id="currentLangText">KOR</span>
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </button>
-                <div class="lang-dropdown-menu" id="langMenu">
-                    <button type="button" class="lang-btn active" data-lang="ko" onclick="setLanguage('ko')">KOR</button>
-                    <button type="button" class="lang-btn" data-lang="en" onclick="setLanguage('en')">ENG</button>
-                </div>
-            </div>
-
-            <button type="button" class="share-trigger" onclick="openShareModal()" title="Share" aria-label="Share this page">
-                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                    <circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle>
-                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-                </svg>
-            </button>
-
-            <button type="button" class="menu-toggle" id="mobile-menu" aria-label="Open navigation menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
-        </div>
-    </nav>
-
-    <div class="modal-overlay" id="shareOverlay" onclick="closeShareModal(event)">
-        <div class="share-modal" onclick="event.stopPropagation()">
-            <h3 data-i18n="share_title">SHARE GAME CENTER</h3>
-            <p data-i18n="share_desc">이곳의 즐거움을 소중한 사람들에게 전하세요.</p>
-            <div class="share-buttons">
-                <button type="button" class="modal-btn btn-copy" onclick="copyURL()" data-i18n="share_copy">COPY LINK</button>
-                <button type="button" class="modal-btn btn-sns" onclick="shareViaWebAPI()" data-i18n="share_sns">SNS SHARE</button>
-            </div>
-            <button type="button" class="modal-btn btn-close-modal" onclick="closeShareModal(null)" data-i18n="share_close">Close</button>
-        </div>
-    </div>
-    <div class="toast-msg" id="toast"></div>
-
-    <main class="game-selection-wrapper">
-        <span class="section-heading-tag" data-i18n="game_tag">✦   GAME CENTER   ✦</span>
-        <h2 class="section-heading-title" data-i18n="game_title">Choose Your Game</h2>
-
-        <div class="game-cards">
-            <a href="game.html" class="game-card game-card-image-mode">
-                <div class="card-image-bg bg-bluemarble"></div>
-                <div class="card-overlay"></div>
-                <div class="game-tag tag-blue-marble" data-i18n="board_tag">Board Game</div>
-
-                <div class="game-card-content-wrap">
-                    <h3 class="game-card-title" data-i18n="board_title">브루마블 게임</h3>
-                    <p class="game-card-desc" data-i18n="board_desc">주사위를 굴려 우주와 아카이브의 세계를 여행하는 전략 보드게임입니다. 당신만의 기록을 개척하세요.</p>
-                </div>
-            </a>
-
-            <a href="booktop.html" class="game-card game-card-image-mode">
-                <div class="card-image-bg bg-booktop"></div>
-                <div class="card-overlay"></div>
-                <div class="game-tag tag-maze" data-i18n="physics_tag">Physics</div>
-
-                <div class="game-card-content-wrap">
-                    <h3 class="game-card-title" data-i18n="book_title">책 쌓기 마스터</h3>
-                    <p class="game-card-desc" data-i18n="book_desc">아빠의 서재에서 중력과 균형의 법칙에 도전하세요. 조심스럽게 책을 떨어뜨려 가장 높이 쌓아 올리는 마스터가 되어보세요!</p>
-                </div>
-            </a>
-
-            <a href="fiveinrow.html" class="game-card game-card-image-mode">
-                <div class="card-image-bg bg-dynamicomok"></div>
-                <div class="card-overlay"></div>
-                <div class="game-tag tag-omok" data-i18n="omok_tag">Strategy</div>
-
-                <div class="game-card-content-wrap">
-                    <h3 class="game-card-title" data-i18n="omok_title">Dynamic Omok</h3>
-                    <p class="game-card-desc" data-i18n="omok_desc">부제 five in a row. 캐릭터를 선택하고 제한시간 안에 다섯 돌을 이어 승리를 쟁취하는 다이내믹 오목 대전입니다.</p>
-                </div>
-            </a>
-
-            <a href="curling.html" class="game-card game-card-image-mode">
-                <div class="card-image-bg bg-magiccurling"></div>
-                <div class="card-overlay"></div>
-                <div class="game-tag tag-omok" data-i18n="curling_tag">Sports / Magic</div>
-
-                <div class="game-card-content-wrap">
-                    <h3 class="game-card-title" data-i18n="curling_title">매직 컬링</h3>
-                    <p class="game-card-desc" data-i18n="curling_desc">빛과 어둠의 진영을 선택하고 마법 스킬을 활용하여 승리를 쟁취하는 판타지 마법 컬링 대전입니다.</p>
-                </div>
-            </a>
-        </div>
-    </main>
-
-    <section class="comments-section">
-        <div class="comments-divider">
-            <span class="comments-divider-title" data-i18n="comments_title">Guestbook</span>
-        </div>
-
-        <div class="comment-form">
-            <span class="comment-form-label" data-i18n="comments_leave">✦ 한마디 남겨주세요</span>
-            <div class="comment-input-row">
-                <input id="cm-name" class="cm-input" type="text" placeholder="닉네임" maxlength="20" autocomplete="off">
-                <textarea id="cm-body" class="cm-input" placeholder="게임을 즐기고 느낀 점, 응원의 한마디를 남겨주세요 🙏" maxlength="300"></textarea>
-            </div>
-            <div class="cm-submit-row">
-                <button type="button" class="cm-submit-btn" onclick="submitComment()" data-i18n="comments_submit">남기기</button>
-            </div>
-        </div>
-
-        <div id="cm-list" class="comment-list">
-            <div class="cm-loading" data-i18n="comments_loading">· · ·</div>
-        </div>
-    </section>
-
-    <footer>
-        <p data-i18n="footer_text">© 2026 Chris LEE.PAPA — The Creative Archive</p>
-    </footer>
-
+  <canvas id="particleCanvas"></canvas>
+  <canvas id="gameCanvas"></canvas>
+  <canvas id="effectCanvas"></canvas>
   
-    <script>
-        // ── Multilingual System ──
-        const i18n = {
-            ko: {
-                nav_home: "Home",
-                nav_worship: "Worship",
-                nav_music: "Music",
-                nav_book: "Books",
-                nav_movie: "Movies",
-                share_title: "SHARE GAME CENTER",
-                share_desc: "이곳의 즐거움을 소중한 사람들에게 전하세요.",
-                share_copy: "COPY LINK",
-                share_sns: "SNS SHARE",
-                share_close: "Close",
-                game_tag: "✦   GAME CENTER   ✦",
-                game_title: "Choose Your Game",
-                board_tag: "Board Game",
-                board_title: "브루마블 게임",
-                board_desc: "주사위를 굴려 우주와 아카이브의 세계를 여행하는 전략 보드게임입니다. 당신만의 기록을 개척하세요.",
-                physics_tag: "Physics",
-                book_title: "책 쌓기 마스터",
-                book_desc: "아빠의 서재에서 중력과 균형의 법칙에 도전하세요. 조심스럽게 책을 떨어뜨려 가장 높이 쌓아 올리는 마스터가 되어보세요!",
-                omok_tag: "Strategy",
-                omok_title: "Dynamic Omok",
-                omok_desc: "부제 five in a row. 캐릭터를 선택하고 제한시간 안에 다섯 돌을 이어 승리를 쟁취하는 다이내믹 오목 대전입니다.",
-                curling_tag: "Sports / Magic",
-                curling_title: "매직 컬링",
-                curling_desc: "빛과 어둠의 진영을 선택하고 마법 스킬을 활용하여 승리를 쟁취하는 판타지 마법 컬링 대전입니다.",
-                toast_copy: "링크가 복사되었습니다 ✓",
-                toast_error: "지원하지 않는 브라우저입니다.",
-                footer_text: "© 2026 Chris LEE.PAPA — The Creative Archive",
-                comments_title: "Guestbook",
-                comments_leave: "✦ 한마디 남겨주세요",
-                comments_submit: "남기기",
-                comments_loading: "· · ·",
-                comments_empty: "첫 번째 기록을 남겨주세요"
-            },
-            en: {
-                nav_home: "Home",
-                nav_worship: "Worship",
-                nav_music: "Music",
-                nav_book: "Books",
-                nav_movie: "Movies",
-                share_title: "SHARE GAME CENTER",
-                share_desc: "Share the joy here with your loved ones.",
-                share_copy: "COPY LINK",
-                share_sns: "SNS SHARE",
-                share_close: "Close",
-                game_tag: "✦   GAME CENTER   ✦",
-                game_title: "Choose Your Game",
-                board_tag: "Board Game",
-                board_title: "Blue Marble Game",
-                board_desc: "A strategy board game where you roll the dice to travel the universe and the Archive. Pioneer your own records.",
-                physics_tag: "Physics",
-                book_title: "Book Stacking Master",
-                book_desc: "Challenge the laws of gravity and balance in Dad's study. Drop the books carefully to become the ultimate stacking master!",
-                omok_tag: "Strategy",
-                omok_title: "Dynamic Omok",
-                omok_desc: "Subtitle: five in a row. Choose a character and connect five stones within the time limit in this dynamic Omok duel.",
-                curling_tag: "Sports / Magic",
-                curling_title: "Magic Curling",
-                curling_desc: "Choose between light and dark factions and use magical skills to win this fantasy curling duel.",
-                toast_copy: "Link copied to clipboard ✓",
-                toast_error: "Browser not supported.",
-                footer_text: "© 2026 Chris LEE.PAPA — The Creative Archive",
-                comments_title: "Guestbook",
-                comments_leave: "✦ Leave a message",
-                comments_submit: "Submit",
-                comments_loading: "· · ·",
-                comments_empty: "Be the first to leave a message"
-            }
-        };
+  <div id="screenFlash"></div>
+  <div id="buffAlert">POWER UP! x1.5</div>
 
-        let currentLang = 'ko';
+  <div id="s-login" class="screen">
+    <div style="margin-top:6vh; margin-bottom:30px;">
+      <div class="title-main">MAGIC CURLING</div>
+      <div class="title-sub">FAIRY vs CROWN</div>
+    </div>
 
-        function setLanguage(lang) {
-            currentLang = lang;
-            document.documentElement.lang = lang;
-            try { localStorage.setItem('pref-lang', lang); } catch(e) {}
+    <div class="glass-panel" style="width:100%; max-width:360px; padding:30px 24px; margin-bottom:20px;">
+      <div style="font-size:0.8rem; font-weight:700; letter-spacing:2px; opacity:0.6; margin-bottom:12px; text-align:center;">PLAYER INITIALS</div>
+      <input id="initialsInput" class="input-neon" maxlength="3" placeholder="AAA" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z]/g,'')"/>
+      <div style="height:20px;"></div>
+      <button class="btn-magic" onclick="submitInitials()">마법의 투기장 입장</button>
+    </div>
 
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (i18n[lang][key]) {
-                    el.innerHTML = i18n[lang][key];
-                }
-            });
+    <div class="glass-panel" style="width:100%; max-width:360px; padding:20px;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:15px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:10px;">
+        <div style="font-size:1.3rem;">👑</div>
+        <div style="font-family:'Cinzel',serif; font-weight:900; font-size:1.2rem; letter-spacing:2px;">HALL OF FAME</div>
+        <div id="lbSpinner" style="margin-left:auto; font-size:1rem; animation:spin 1s linear infinite;">⟳</div>
+      </div>
+      <div id="leaderboardList" style="display:flex; flex-direction:column;"></div>
+    </div>
+  </div>
 
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                if (btn.getAttribute('data-lang') === lang) btn.classList.add('active');
-                else btn.classList.remove('active');
-            });
+  <div id="s-team" class="screen hidden">
+    <div style="text-align:center; margin-top:20px; margin-bottom:30px;">
+      <div class="title-main" style="font-size:2.5rem;">CHOOSE FACTION</div>
+      <div style="font-size:0.9rem; opacity:0.6; letter-spacing:2px;">빛과 어둠, 당신의 진영은?</div>
+    </div>
 
-            const langTextObj = document.getElementById('currentLangText');
-            if (langTextObj) langTextObj.textContent = lang === 'ko' ? 'KOR' : 'ENG';
-            const langWrapper = document.getElementById('langWrapper');
-            if (langWrapper) {
-                langWrapper.classList.remove('active');
-                const langButton = langWrapper.querySelector('.lang-current');
-                if (langButton) langButton.setAttribute('aria-expanded', 'false');
-            }
+    <div style="display:flex; flex-direction:column; gap:20px; width:100%; max-width:380px; flex:1; padding-bottom:20px;">
+      <div class="team-card fairy" onclick="selectTeam('fairy')">
+        <div class="team-bg" style="background-image:url('/images/fairyteam.jpg');"></div>
+        <div class="team-overlay">
+          <div class="team-label" style="color:var(--c-fairy-glow);">요정 연합</div>
+          <div style="font-family:'Cinzel',serif; font-weight:700; opacity:0.8;">FAIRY SQUAD</div>
+        </div>
+      </div>
+      
+      <div style="text-align:center; font-family:'Cinzel',serif; font-size:1.5rem; font-weight:900; opacity:0.5;">VS</div>
+
+      <div class="team-card dark" onclick="selectTeam('dark')">
+        <div class="team-bg" style="background-image:url('/images/darkteam.jpg');"></div>
+        <div class="team-overlay">
+          <div class="team-label" style="color:var(--c-dark-glow);">어둠의 왕관</div>
+          <div style="font-family:'Cinzel',serif; font-weight:700; opacity:0.8;">CROWN SQUAD</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="s-order" class="screen hidden">
+    <div style="text-align:center; margin-top:10px; margin-bottom:20px;">
+      <div id="orderTitle" class="title-main" style="font-size:2rem; margin-bottom:0;">출전 순서</div>
+      <div style="font-size:0.8rem; opacity:0.6; letter-spacing:1px; margin-top:5px;">4명의 마법사를 탭하여 순서를 정하세요</div>
+    </div>
+
+    <div id="slotRow" style="display:flex; gap:10px; width:100%; max-width:380px; margin-bottom:20px;"></div>
+
+    <div id="rosterGrid" style="display:grid; grid-template-columns:1fr 1fr; gap:15px; width:100%; max-width:380px; flex:1; overflow-y:auto; padding-bottom:10px;"></div>
+
+    <div style="width:100%; max-width:380px; padding:20px 0;">
+      <button id="startBtn" class="btn-magic" disabled onclick="startGame()">전투 시작</button>
+    </div>
+  </div>
+
+  <div id="inGameUI" style="display:none;">
+    <div class="score-board">
+      <div style="font-size:0.7rem; font-weight:900; letter-spacing:2px; opacity:0.5; margin-bottom:10px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:5px;">BEST OF 3</div>
+      <div class="score-row">
+        <div style="font-weight:900; color:var(--c-fairy-glow);">요정 연합</div>
+        <div class="score-num" id="fairyScore">0</div>
+      </div>
+      <div class="score-row">
+        <div style="font-weight:900; color:var(--c-dark-glow);">어둠의 왕관</div>
+        <div class="score-num" id="darkScore">0</div>
+      </div>
+    </div>
+    <div style="display:flex; flex-direction:column; align-items:flex-end; gap:10px;">
+      <div style="padding:10px 20px; background:rgba(0,0,0,0.8); border:1px solid rgba(255,255,255,0.2); border-radius:20px; font-family:'Black Han Sans',sans-serif; font-size:1.2rem;" id="turnBox">요정턴</div>
+      <div style="font-family:'Cinzel',serif; font-weight:900; font-size:1.2rem; text-shadow:0 2px 5px #000;" id="roundText">ROUND 1</div>
+    </div>
+  </div>
+
+  <div id="skillContainer" style="display:none;">
+    <button id="skillBtn" class="skill-btn" onclick="activateSkill()">
+      <div class="fill" id="skillFill"></div>
+      <span id="skillBtnText">CHARGING...</span>
+    </button>
+  </div>
+
+  <div id="bottomGuide"><div class="guide-pill" id="guideText">🎯 드래그하여 스톤 발사</div></div>
+
+  <div id="skillCutin">
+    <div class="cutin-bg-stripe" id="cutinStripe"></div>
+    <img class="cutin-portrait" id="cutinPortrait" src="" alt="">
+    <div class="cutin-name" id="cutinName">이름</div>
+    <div class="cutin-skillname" id="cutinSkillName">스킬명</div>
+  </div>
+
+  <div id="winnerModal">
+    <div class="modal-card">
+      <div style="font-size:4rem; margin-bottom:10px;" id="winEmoji">🏆</div>
+      <div class="modal-title" id="winTitle">VICTORY</div>
+      <div style="font-size:1.1rem; line-height:1.6; opacity:0.9; margin-bottom:30px;" id="winDesc">승리!</div>
+      <button class="btn-magic" onclick="resetToMain()" style="font-size:1.1rem; padding:15px;">전장 이탈 (메뉴)</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════
+// CONFIG & DB
+// ══════════════════════════════════════════════════════
+const SUPA_URL = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
+const SUPA_KEY = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
+const TABLE_NAME = 'curling_ranking';
+
+const LOGICAL_W = 520, LOGICAL_H = 900;
+const HOUSE = { x: LOGICAL_W / 2, y: 220, r: 140 };
+const START = { x: LOGICAL_W / 2, y: 780 };
+const STONE_R = 20;
+
+// 캐릭터별 고유 스킬 정의
+const TEAMS = {
+  fairy:{
+    id:'fairy',name:'요정 연합',color:'#ff2a85',border:'#ff7eb3',icon:'🧚',
+    members:[
+      {id:'pretty', name:'프리티', img:'/images/pretty.jpg', skill:'빛의 화살', desc:'과녁 내 적 돌을 밀어냅니다'},
+      {id:'cuty', name:'큐티', img:'/images/cuty.jpg', skill:'응원의 하트', desc:'다음 투구 파워 1.5배!'},
+      {id:'brook', name:'브룩', img:'/images/brook.png', skill:'불의 망치', desc:'지진을 일으켜 적을 밀어냅니다'},
+      {id:'elion', name:'엘리온', img:'/images/grandmagic.png', skill:'장로의 기도', desc:'밖의 아군 돌을 안으로 당깁니다'}
+    ]
+  },
+  dark:{
+    id:'dark',name:'어둠의 왕관',color:'#6a00ff',border:'#a855f7',icon:'🌑',
+    members:[
+      {id:'knight', name:'어둠기사', img:'/images/darknight.png', skill:'어둠의 기운', desc:'다음 투구 파워 1.5배!'},
+      {id:'vane', name:'베인', img:'/images/bain.jpg', skill:'검신의 함성', desc:'검기로 적 돌을 밀어냅니다'},
+      {id:'crown', name:'크라운', img:'/images/crown.jpg', skill:'어둠의 대지진', desc:'과녁 내 적 돌을 강하게 튕겨냅니다'},
+      {id:'angel', name:'천사', img:'/images/angel.jpeg', skill:'어둠의 소용돌이', desc:'모든 아군 돌을 과녁 중앙으로!'}
+    ]
+  }
+};
+
+let state = {
+  phase:'setup', // setup, aim, move, skill
+  playerInitials:'',
+  stones:[],
+  currentTeam:null, playerTeam:null, aiTeam:null,
+  playerOrder:[], aiOrder:[0,1,2,3],
+  fairyWins:0, darkWins:0, round:1,
+  stonesLeft:{fairy:4,dark:4},
+  activeStone:null, dragging:false, dragStart:null, dragNow:null,
+  isAiTurn:false,
+  
+  // 마법 스킬 시스템
+  skillCharge:{fairy:0, dark:0}, // 0, 1, 2 (2 == 100%)
+  powerBuff:{fairy:0, dark:0} // 버프 남은 횟수 (보통 1)
+};
+
+// ══════════════════════════════════════════════════════
+// CANVAS SETUP
+// ══════════════════════════════════════════════════════
+const canvas = document.getElementById('gameCanvas'); const ctx = canvas.getContext('2d');
+const eCanvas = document.getElementById('effectCanvas'); const eCtx = eCanvas.getContext('2d');
+const pCanvas = document.getElementById('particleCanvas'); const pCtx = pCanvas.getContext('2d');
+
+[canvas, eCanvas, pCanvas].forEach(c => { c.width = LOGICAL_W; c.height = LOGICAL_H; });
+
+function syncCanvasSize(){
+  const wrap = document.getElementById('gameWrap');
+  const w = wrap.clientWidth, h = wrap.clientHeight;
+  [canvas, eCanvas, pCanvas].forEach(c => { c.style.width = w + 'px'; c.style.height = h + 'px'; });
+}
+syncCanvasSize(); window.addEventListener('resize', syncCanvasSize);
+
+// ══════════════════════════════════════════════════════
+// EFFECT & PARTICLE SYSTEM
+// ══════════════════════════════════════════════════════
+let particles = [];
+let activeVisuals = []; // 진행중인 시각 이펙트 (화살, 망치 등)
+let activeForces = [];  // 지속적인 물리력 (소용돌이 등)
+let shakeMag = 0; let shakeTime = 0;
+
+class Particle {
+  constructor(x, y, color, type='spark', speedMult=1) {
+    this.x = x; this.y = y; this.color = color; this.type = type;
+    const a = Math.random() * Math.PI * 2;
+    const s = (Math.random() * 5 + 2) * speedMult;
+    this.vx = Math.cos(a) * s; this.vy = Math.sin(a) * s;
+    this.life = 1; this.decay = 0.02 + Math.random() * 0.04;
+    this.size = 3 + Math.random() * 5;
+  }
+  update() {
+    this.x += this.vx; this.y += this.vy; this.life -= this.decay;
+    this.vx *= 0.92; this.vy *= 0.92; this.size *= 0.95;
+  }
+  draw(c) {
+    c.globalAlpha = Math.max(0, this.life); c.fillStyle = this.color;
+    c.shadowColor = this.color; c.shadowBlur = 10;
+    c.beginPath(); c.arc(this.x, this.y, this.size, 0, Math.PI*2); c.fill();
+    c.globalAlpha = 1; c.shadowBlur = 0;
+  }
+}
+function spawnSparks(x, y, color, count=15, speed=1) {
+  for(let i=0; i<count; i++) particles.push(new Particle(x, y, color, 'spark', speed));
+}
+
+// ══════════════════════════════════════════════════════
+// LEADERBOARD & DB
+// ══════════════════════════════════════════════════════
+async function loadLeaderboard() {
+  const list = document.getElementById('leaderboardList');
+  try {
+    const res = await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?select=*&order=wins.desc&limit=5`, { headers:{ apikey:SUPA_KEY, Authorization:`Bearer ${SUPA_KEY}` }});
+    const data = await res.json();
+    document.getElementById('lbSpinner').style.display = 'none';
+    list.innerHTML = '';
+    if (!data.length) { list.innerHTML = '<div style="text-align:center; opacity:0.5; padding:10px;">기록이 없습니다.</div>'; return; }
+    const medals = ['🥇','🥈','🥉','4','5'];
+    data.forEach((e, i) => {
+      list.innerHTML += `<div class="lb-row"><div style="display:flex; gap:15px; align-items:center;"><div class="lb-medal">${medals[i]}</div><div class="lb-initials">${e.initials}</div></div><div class="lb-wins">${e.wins} WINS</div></div>`;
+    });
+  } catch {
+    document.getElementById('lbSpinner').textContent = '⚠';
+    list.innerHTML = '<div style="text-align:center; opacity:0.5; padding:10px;">DB 연결 실패</div>';
+  }
+}
+
+async function recordWin() {
+  if (!state.playerInitials) return 0;
+  try {
+    const r = await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?initials=eq.${state.playerInitials}`, { headers:{ apikey:SUPA_KEY, Authorization:`Bearer ${SUPA_KEY}` }});
+    const existing = await r.json();
+    let wins = 1;
+    if (existing.length > 0) {
+      wins = existing[0].wins + 1;
+      await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?initials=eq.${state.playerInitials}`, { method:'PATCH', headers:{ apikey:SUPA_KEY, Authorization:`Bearer ${SUPA_KEY}`, 'Content-Type':'application/json' }, body: JSON.stringify({ wins }) });
+    } else {
+      await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}`, { method:'POST', headers:{ apikey:SUPA_KEY, Authorization:`Bearer ${SUPA_KEY}`, 'Content-Type':'application/json' }, body: JSON.stringify({ initials: state.playerInitials, wins: 1 }) });
+    }
+    loadLeaderboard(); return wins;
+  } catch { return 0; }
+}
+
+// ══════════════════════════════════════════════════════
+// SETUP FLOW
+// ══════════════════════════════════════════════════════
+function showScreen(id) {
+  ['s-login','s-team','s-order'].forEach(s => {
+    const el = document.getElementById(s);
+    if (s === id) { el.style.display = 'flex'; requestAnimationFrame(() => el.classList.remove('hidden','out')); }
+    else if (!el.classList.contains('hidden')) { el.classList.add('out'); setTimeout(() => { el.style.display='none'; el.classList.remove('out'); }, 500); }
+  });
+}
+
+function submitInitials() {
+  const val = document.getElementById('initialsInput').value.trim();
+  if (val.length < 1) return;
+  state.playerInitials = val; showScreen('s-team');
+}
+
+function selectTeam(teamId) {
+  state.playerTeam = TEAMS[teamId]; state.aiTeam = teamId === 'fairy' ? TEAMS.dark : TEAMS.fairy;
+  state.playerOrder = []; renderOrderUI(); showScreen('s-order');
+}
+
+function renderOrderUI() {
+  const slotRow = document.getElementById('slotRow'); slotRow.innerHTML = '';
+  for (let i = 0; i < 4; i++) {
+    const div = document.createElement('div');
+    div.className = 'order-slot';
+    div.style.background = state.playerOrder[i] !== undefined ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.5)';
+    if (state.playerOrder[i] !== undefined) {
+      div.style.border = `2px solid ${state.playerTeam.color}`;
+      div.innerHTML = `<img src="${state.playerTeam.members[state.playerOrder[i]].img}" style="width:100%;height:100%;object-fit:cover;" onerror="this.src=''">`;
+    } else {
+      div.innerHTML = `<span style="font-family:'Black Han Sans'; opacity:0.3;">${i+1}</span>`;
+    }
+    slotRow.appendChild(div);
+  }
+
+  const roster = document.getElementById('rosterGrid'); roster.innerHTML = '';
+  state.playerTeam.members.forEach((m, idx) => {
+    const isSel = state.playerOrder.includes(idx);
+    const div = document.createElement('div');
+    div.className = 'char-btn' + (isSel ? ' sel' : '');
+    div.onclick = () => { if(state.playerOrder.length<4 && !isSel) { state.playerOrder.push(idx); renderOrderUI(); } };
+    div.innerHTML = `
+      <img src="${m.img}" class="char-portrait" onerror="this.src=''">
+      <div style="font-family:'Black Han Sans'; font-size:1.1rem; margin-top:5px;">${m.name}</div>
+      <div class="skill-tag">${m.skill}</div>
+    `;
+    roster.appendChild(div);
+  });
+  const btn = document.getElementById('startBtn');
+  btn.disabled = state.playerOrder.length < 4;
+}
+
+function startGame() {
+  showScreen('');
+  setTimeout(() => {
+    document.getElementById('inGameUI').style.display = 'flex';
+    document.getElementById('bottomGuide').style.display = 'flex';
+    document.getElementById('skillContainer').style.display = 'flex';
+    state.currentTeam = state.playerTeam; state.phase = 'aim';
+    spawnStone();
+  }, 500);
+}
+
+// ══════════════════════════════════════════════════════
+// STONE CLASS
+// ══════════════════════════════════════════════════════
+class Stone {
+  constructor(x, y, team) {
+    this.x = x; this.y = y; this.vx = 0; this.vy = 0;
+    this.team = team; this.r = STONE_R; this.move = false;
+    this.glow = 0; // 버프 시 빛나는 효과
+  }
+  draw() {
+    ctx.beginPath(); ctx.arc(this.x + 4, this.y + 4, this.r, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(0,0,0,0.4)'; ctx.fill();
+
+    const grad = ctx.createRadialGradient(this.x-5, this.y-5, 2, this.x, this.y, this.r);
+    grad.addColorStop(0, '#fff'); grad.addColorStop(0.3, this.team.color); grad.addColorStop(1, this.team.border);
+    
+    ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
+    ctx.fillStyle = grad; ctx.fill();
+    ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(255,255,255,0.8)'; ctx.stroke();
+    
+    if(this.glow > 0) {
+      ctx.beginPath(); ctx.arc(this.x, this.y, this.r + 5, 0, Math.PI*2);
+      ctx.strokeStyle = '#ffcf00'; ctx.lineWidth = 2; ctx.globalAlpha = 0.6 + Math.sin(Date.now()/100)*0.4;
+      ctx.stroke(); ctx.globalAlpha = 1;
+    }
+
+    ctx.font = '20px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(this.team.icon, this.x, this.y + 2);
+  }
+  update() {
+    const speed = Math.hypot(this.vx, this.vy);
+    if (speed > 0.05) {
+      this.move = true;
+      if (Math.random() < 0.3) spawnSparks(this.x, this.y, this.team.color, 1);
+      const ns = Math.max(0, speed - 0.025);
+      this.vx *= ns/speed; this.vy *= ns/speed;
+      this.x += this.vx; this.y += this.vy;
+
+      if (this.x-this.r < 0) { this.x=this.r; this.vx*=-0.8; spawnSparks(this.x,this.y,this.team.color,5); }
+      if (this.x+this.r > LOGICAL_W) { this.x=LOGICAL_W-this.r; this.vx*=-0.8; spawnSparks(this.x,this.y,this.team.color,5); }
+      if (this.y-this.r < 0) { this.y=this.r; this.vy*=-0.8; spawnSparks(this.x,this.y,this.team.color,5); }
+      if (this.y+this.r > LOGICAL_H) { this.y=LOGICAL_H-this.r; this.vy*=-0.8; spawnSparks(this.x,this.y,this.team.color,5); }
+    } else { this.vx = 0; this.vy = 0; this.move = false; }
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// GAME LOGIC & SKILLS
+// ══════════════════════════════════════════════════════
+function getActiveMember(team = state.currentTeam) {
+  const turn = 4 - state.stonesLeft[team.id];
+  return team.id === state.playerTeam.id ? team.members[state.playerOrder[turn]] : team.members[state.aiOrder[turn]];
+}
+
+function updateUI() {
+  document.getElementById('fairyScore').textContent = state.fairyWins;
+  document.getElementById('darkScore').textContent = state.darkWins;
+  document.getElementById('roundText').textContent = `ROUND ${state.round}`;
+
+  const t = document.getElementById('turnBox');
+  t.textContent = `${state.currentTeam.icon} ${state.currentTeam.name} TURN`;
+  t.style.color = state.currentTeam.color;
+
+  // 스킬 버튼 UI 업데이트
+  const charge = state.skillCharge[state.currentTeam.id];
+  const btn = document.getElementById('skillBtn');
+  const fill = document.getElementById('skillFill');
+  const txt = document.getElementById('skillBtnText');
+  
+  btn.style.display = state.isAiTurn ? 'none' : 'block';
+  fill.style.width = (charge * 50) + '%';
+  fill.style.background = `linear-gradient(90deg, ${state.currentTeam.color}, ${state.currentTeam.border})`;
+  
+  if(charge >= 2 && state.phase === 'aim') {
+    btn.classList.add('ready'); txt.textContent = "SKILL READY!"; txt.style.color = "#fff";
+  } else {
+    btn.classList.remove('ready'); txt.textContent = `CHARGE ${charge*50}%`; txt.style.color = "rgba(255,255,255,0.6)";
+  }
+
+  const guide = document.getElementById('guideText');
+  if (state.isAiTurn) guide.innerHTML = "🤖 <span style='opacity:0.7'>상대가 마법을 준비 중...</span>";
+  else guide.textContent = state.powerBuff[state.currentTeam.id] > 0 ? "🔥 파워 버프 활성화! 뒤로 당겨 발사!" : "🎯 뒤로 당겨 발사!";
+}
+
+function flashScreen(color='white') {
+  const f = document.getElementById('screenFlash');
+  f.style.background = color; f.style.opacity = '1';
+  setTimeout(() => f.style.opacity = '0', 50);
+}
+
+// 스킬 발동 컷인
+function showSkillCutin(member, team) {
+  const cutin = document.getElementById('skillCutin');
+  document.getElementById('cutinStripe').style.background = `linear-gradient(90deg, transparent, ${team.color}, transparent)`;
+  document.getElementById('cutinPortrait').src = member.img;
+  document.getElementById('cutinPortrait').style.borderColor = team.border;
+  document.getElementById('cutinPortrait').style.boxShadow = `0 0 50px ${team.color}`;
+  document.getElementById('cutinName').textContent = member.name;
+  document.getElementById('cutinSkillName').textContent = member.skill;
+  
+  cutin.style.display = 'flex';
+  cutin.classList.add('play');
+  
+  setTimeout(() => {
+    cutin.classList.remove('play');
+    cutin.style.display = 'none';
+  }, 1800);
+}
+
+// 스킬 활성화 (버튼 클릭 시)
+window.activateSkill = function() {
+  const team = state.currentTeam;
+  if (state.skillCharge[team.id] < 2 || state.phase !== 'aim') return;
+  state.skillCharge[team.id] = 0;
+  state.phase = 'skill'; // 스킬 사용 중 조작 불가
+  
+  const member = getActiveMember(team);
+  showSkillCutin(member, team);
+  
+  setTimeout(() => {
+    executeSkillEffect(member.id, team);
+    updateUI();
+  }, 1500); // 컷인 이후 효과 발동
+}
+
+// 특정 대상에게 물리력 부여 헬퍼
+function applyImpulse(targetRule, conditionRule, magnitude) {
+  state.stones.forEach(s => {
+    const isAlly = s.team.id === state.currentTeam.id;
+    if((targetRule==='enemy' && !isAlly) || (targetRule==='ally' && isAlly) || targetRule==='all') {
+      const dist = Math.hypot(s.x - HOUSE.x, s.y - HOUSE.y);
+      if(conditionRule==='in_house' && dist <= HOUSE.r + STONE_R) {
+        const angle = Math.atan2(s.y - HOUSE.y, s.x - HOUSE.x);
+        s.vx += Math.cos(angle) * magnitude; s.vy += Math.sin(angle) * magnitude; s.move = true;
+      }
+    }
+  });
+}
+
+// 실제 스킬 효과 실행
+function executeSkillEffect(skillId, team) {
+  flashScreen(team.color);
+  shakeMag = 10; shakeTime = 20;
+
+  switch(skillId) {
+    case 'pretty': // 빛의 화살 (적 밀어내기)
+      spawnSparks(HOUSE.x, HOUSE.y, '#fff', 50, 2);
+      applyImpulse('enemy', 'in_house', 12);
+      break;
+    case 'cuty': // 응원의 하트 (버프)
+      state.powerBuff[team.id] = 2;
+      spawnSparks(START.x, START.y, '#ff69b4', 40, 1.5);
+      showBuffAlert();
+      break;
+    case 'brook': // 불의 망치 (지진)
+      shakeMag = 20; shakeTime = 30;
+      spawnSparks(HOUSE.x, HOUSE.y, '#ff4500', 60, 3);
+      applyImpulse('enemy', 'in_house', 18);
+      break;
+    case 'elion': // 장로의 기도 (밖의 아군 안으로)
+      activeForces.push({ teamId: team.id, target:'ally', cond:'out_house', type:'pull', life:120 });
+      break;
+    case 'knight': // 어둠의 기운 (버프)
+      state.powerBuff[team.id] = 1;
+      spawnSparks(START.x, START.y, '#6a00ff', 40, 1.5);
+      showBuffAlert();
+      break;
+    case 'vane': // 검신의 함성 (적 밀어내기)
+      shakeMag = 15; shakeTime = 25;
+      applyImpulse('enemy', 'in_house', 15);
+      break;
+    case 'crown': // 대지진 (초강력 적 방출)
+      shakeMag = 30; shakeTime = 40;
+      spawnSparks(HOUSE.x, HOUSE.y, '#000', 80, 4);
+      applyImpulse('enemy', 'in_house', 25);
+      break;
+    case 'angel': // 소용돌이 (모든 아군 안으로)
+      activeForces.push({ teamId: team.id, target:'ally', cond:'all', type:'pull', life:150 });
+      break;
+  }
+  
+  // 스킬 발동 후 자연스럽게 투구 페이즈로
+  setTimeout(() => { state.phase = 'aim'; if(state.isAiTurn) executeAIThrow(); }, 1000);
+}
+
+function showBuffAlert() {
+  const a = document.getElementById('buffAlert');
+  a.style.animation = 'none'; void a.offsetWidth; a.style.animation = 'popAlert 2s forwards';
+  if(state.activeStone) state.activeStone.glow = 1;
+}
+
+function spawnStone() {
+  if (state.stonesLeft[state.currentTeam.id] <= 0) { endRound(); return; }
+  state.activeStone = new Stone(START.x, START.y, state.currentTeam);
+  if(state.powerBuff[state.currentTeam.id] > 0) state.activeStone.glow = 1;
+  state.stones.push(state.activeStone);
+  state.phase = 'aim';
+  state.isAiTurn = state.currentTeam.id === state.aiTeam.id;
+  updateUI();
+  
+  if (state.isAiTurn) {
+    setTimeout(() => {
+      if(state.skillCharge[state.currentTeam.id] >= 2) activateSkill(); // AI 스킬 사용
+      else executeAIThrow(); // AI 일반 투구
+    }, 1500);
+  }
+}
+
+function executeAIThrow() {
+  if (state.phase !== 'aim') return;
+  const tx = HOUSE.x + (Math.random() - 0.5) * 80;
+  const ty = HOUSE.y + (Math.random() - 0.5) * 80;
+  const dx = tx - START.x, dy = ty - START.y;
+  const angle = Math.atan2(dy, dx);
+  let power = Math.sqrt(Math.hypot(dx, dy) * 0.05) * (0.9 + Math.random() * 0.2);
+  
+  if(state.powerBuff[state.currentTeam.id] > 0) { power *= 1.5; state.powerBuff[state.currentTeam.id]--; }
+  
+  state.activeStone.vx = Math.cos(angle) * power; state.activeStone.vy = Math.sin(angle) * power;
+  finishThrow();
+}
+
+// ─── Input Handling ───
+function getPos(e) { const r = canvas.getBoundingClientRect(); return { x: (e.clientX - r.left) * (LOGICAL_W / r.width), y: (e.clientY - r.top) * (LOGICAL_H / r.height) }; }
+
+canvas.addEventListener('pointerdown', e => {
+  if (state.phase !== 'aim' || state.isAiTurn) return;
+  const pos = getPos(e);
+  if (Math.hypot(pos.x - state.activeStone.x, pos.y - state.activeStone.y) < 100) { state.dragging = true; state.dragStart = pos; state.dragNow = pos; }
+});
+canvas.addEventListener('pointermove', e => { if (state.dragging) state.dragNow = getPos(e); });
+window.addEventListener('pointerup', () => {
+  if (!state.dragging || state.isAiTurn) return;
+  state.dragging = false;
+  const dx = state.dragStart.x - state.dragNow.x, dy = state.dragStart.y - state.dragNow.y;
+  const dist = Math.hypot(dx, dy);
+  if (dist > 10) {
+    let power = Math.min(dist, 250) * 0.12;
+    if(state.powerBuff[state.currentTeam.id] > 0) { power *= 1.5; state.powerBuff[state.currentTeam.id]--; }
+    const angle = Math.atan2(dy, dx);
+    state.activeStone.vx = Math.cos(angle) * power; state.activeStone.vy = Math.sin(angle) * power;
+    finishThrow();
+  }
+});
+
+function finishThrow() {
+  state.phase = 'move';
+  state.activeStone.glow = 0;
+  state.stonesLeft[state.currentTeam.id]--;
+  state.skillCharge[state.currentTeam.id] = Math.min(2, state.skillCharge[state.currentTeam.id] + 1); // 게이지 50% 증가
+  updateUI();
+}
+
+// ─── Collision & Forces ───
+function resolveCollisions() {
+  for (let i = 0; i < state.stones.length; i++) {
+    for (let j = i + 1; j < state.stones.length; j++) {
+      const a = state.stones[i], b = state.stones[j];
+      const dx = b.x - a.x, dy = b.y - a.y, dist = Math.hypot(dx, dy), min = a.r + b.r;
+      if (dist < min && dist > 0) {
+        const nx = dx/dist, ny = dy/dist, overlap = min - dist;
+        a.x -= nx*overlap/2; b.x += nx*overlap/2; a.y -= ny*overlap/2; b.y += ny*overlap/2;
+        const p = 2 * (nx*(a.vx-b.vx) + ny*(a.vy-b.vy)) / 2;
+        a.vx = (a.vx - p*nx)*0.9; a.vy = (a.vy - p*ny)*0.9; b.vx = (b.vx + p*nx)*0.9; b.vy = (b.vy + p*ny)*0.9;
+        spawnSparks((a.x+b.x)/2, (a.y+b.y)/2, '#fff', 5);
+      }
+    }
+  }
+}
+
+function applyContinuousForces() {
+  activeForces.forEach(f => {
+    f.life--;
+    if(f.life % 5 === 0) spawnSparks(HOUSE.x, HOUSE.y, '#a855f7', 2); // 블랙홀 이펙트
+    state.stones.forEach(s => {
+      const isAlly = s.team.id === f.teamId;
+      if((f.target==='ally' && isAlly) || f.target==='all') {
+        const dx = HOUSE.x - s.x, dy = HOUSE.y - s.y, dist = Math.hypot(dx, dy);
+        if(f.cond==='out_house' && dist < HOUSE.r) return;
+        if(dist > 10) {
+          s.vx += (dx/dist) * 0.3; s.vy += (dy/dist) * 0.3; s.move = true;
         }
+      }
+    });
+  });
+  activeForces = activeForces.filter(f => f.life > 0);
+}
 
-        document.addEventListener('DOMContentLoaded', () => {
-            let savedLang = 'ko';
-            try { savedLang = localStorage.getItem('pref-lang') || 'ko'; } catch(e) {}
-            setLanguage(savedLang);
-        });
+function endRound() {
+  const valid = state.stones.map(s => ({ stone: s, dist: Math.hypot(s.x - HOUSE.x, s.y - HOUSE.y) })).filter(v => v.dist < HOUSE.r + STONE_R).sort((a, b) => a.dist - b.dist);
+  const winner = valid.length > 0 ? valid[0].stone.team : null;
+  if (winner) {
+    if (winner.id === 'fairy') state.fairyWins++; else state.darkWins++;
+    spawnSparks(HOUSE.x, HOUSE.y, winner.color, 40, 3);
+  }
+  updateUI();
 
-        function toggleLangDropdown() {
-            const langWrapper = document.getElementById('langWrapper');
-            const isOpen = langWrapper.classList.toggle('active');
-            const langButton = langWrapper.querySelector('.lang-current');
-            if (langButton) langButton.setAttribute('aria-expanded', String(isOpen));
-        }
+  if (state.fairyWins >= 2 || state.darkWins >= 2) { showWinner(state.fairyWins >= 2 ? TEAMS.fairy : TEAMS.dark); return; }
+  setTimeout(() => {
+    state.round++; state.stones = []; state.stonesLeft = { fairy: 4, dark: 4 };
+    state.currentTeam = state.playerTeam; spawnStone();
+  }, 2000);
+}
 
-        document.addEventListener('click', function(e) {
-            const wrapper = document.getElementById('langWrapper');
-            if (wrapper && !wrapper.contains(e.target)) {
-                wrapper.classList.remove('active');
-                const langButton = wrapper.querySelector('.lang-current');
-                if (langButton) langButton.setAttribute('aria-expanded', 'false');
-            }
-        });
+function showWinner(team) {
+  const modal = document.getElementById('winnerModal'); modal.style.display = 'flex';
+  const isP = team.id === state.playerTeam.id;
+  document.getElementById('winEmoji').textContent = isP ? '🏆' : '💀';
+  document.getElementById('winTitle').textContent = `${team.name} 승리!`;
+  document.getElementById('winTitle').style.color = team.color;
+  
+  if (isP) {
+    document.getElementById('winDesc').innerHTML = `최고의 마법사 <b>${state.playerInitials}</b>!<br>빛나는 우승을 차지했습니다.<br><br><span style="color:var(--c-ice); font-size:0.9rem;" id="saveStatus">기록 동기화 중...</span>`;
+    recordWin().then(w => {
+      const el = document.getElementById('saveStatus');
+      if(el) el.innerHTML = w > 0 ? `<b style="color:var(--c-gold);">총 ${w}승 달성!</b>` : `<span style="color:red;">기록 실패</span>`;
+    });
+  } else { document.getElementById('winDesc').innerHTML = `어둠에 패배했습니다...<br>다시 도전하세요.`; }
+}
 
-        // ── 모바일 메뉴 토글 ──
-        const menuToggle = document.getElementById('mobile-menu');
-        const navLinks = document.getElementById('navLinks');
-        menuToggle.addEventListener('click', () => {
-            const menuOpen = menuToggle.classList.toggle('active');
-            navLinks.classList.toggle('active', menuOpen);
-            menuToggle.setAttribute('aria-expanded', String(menuOpen));
-        });
+function resetToMain() {
+  document.getElementById('winnerModal').style.display = 'none'; document.getElementById('inGameUI').style.display = 'none';
+  document.getElementById('bottomGuide').style.display = 'none'; document.getElementById('skillContainer').style.display = 'none';
+  state.phase='setup'; state.stones=[]; state.fairyWins=0; state.darkWins=0; state.round=1; state.stonesLeft={fairy:4,dark:4};
+  state.skillCharge={fairy:0, dark:0}; state.powerBuff={fairy:0, dark:0};
+  loadLeaderboard(); showScreen('s-login');
+}
 
-        // ── 스크롤 시 네비게이션 스타일 변경 ──
-        const mainNav = document.getElementById('main-nav');
-        window.addEventListener('scroll', () => {
-            mainNav.classList.toggle('scrolled', window.scrollY > 40);
-        }, { passive: true });
+// ══════════════════════════════════════════════════════
+// DRAW ARENA
+// ══════════════════════════════════════════════════════
+let bgTime = 0;
+function drawArena() {
+  bgTime += 0.01;
+  ctx.clearRect(0,0,LOGICAL_W,LOGICAL_H);
 
-        // ── Share & Toast ──
-        const shareOverlay = document.getElementById('shareOverlay');
-        const toast = document.getElementById('toast');
-        function openShareModal() { shareOverlay.style.display = 'flex'; setTimeout(() => shareOverlay.classList.add('active'), 10); }
-        
-        function closeShareModal(e) { 
-            // e가 없거나 오버레이 배경(shareOverlay)을 클릭했을 때만 닫히도록 수정
-            if (!e || e.target === shareOverlay) {
-                shareOverlay.classList.remove('active'); 
-                setTimeout(() => shareOverlay.style.display = 'none', 300); 
-            }
-        }
+  // Deep Magic Background
+  const bgGrad = ctx.createRadialGradient(LOGICAL_W/2, LOGICAL_H/2, 50, LOGICAL_W/2, LOGICAL_H/2, LOGICAL_H);
+  bgGrad.addColorStop(0, '#151525'); bgGrad.addColorStop(1, '#050508');
+  ctx.fillStyle = bgGrad; ctx.fillRect(0,0,LOGICAL_W,LOGICAL_H);
 
-        async function copyURL() {
-            const currentUrl = window.location.href;
-            let success = false;
-            if (navigator.clipboard && window.isSecureContext) { try { await navigator.clipboard.writeText(currentUrl); success = true; } catch (err) {} }
-            if (!success) {
-                const textArea = document.createElement("textarea");
-                textArea.value = currentUrl;
-                textArea.id = "temp-copy-area";
-                textArea.style.position = "fixed";
-                textArea.style.left = "-9999px";
-                document.body.appendChild(textArea);
-                textArea.focus(); textArea.select();
-                try { success = document.execCommand('copy'); } catch (err) {}
-                document.body.removeChild(textArea);
-            }
-            if (success) { showToast(i18n[currentLang].toast_copy); }
-            closeShareModal();
-        }
+  // Magic Runes (Rotating Circle)
+  ctx.save(); ctx.translate(HOUSE.x, HOUSE.y); ctx.rotate(bgTime * 0.2);
+  ctx.strokeStyle = 'rgba(255,255,255,0.05)'; ctx.lineWidth = 2; ctx.setLineDash([15, 10]);
+  ctx.beginPath(); ctx.arc(0,0, HOUSE.r * 1.5, 0, Math.PI*2); ctx.stroke();
+  ctx.setLineDash([]); ctx.restore();
 
-        function shareViaWebAPI() {
-            if (navigator.share) { navigator.share({ title: 'Chris LEE.PAPA - GAME CENTER', text: '즐거운 게임과 아카이브의 세계로 초대합니다.', url: window.location.href }); }
-            else { showToast(i18n[currentLang].toast_error); }
-        }
-        function showToast(msg) { toast.textContent = msg; toast.style.display = 'block'; setTimeout(() => { toast.style.display = 'none'; }, 2500); }
-        
-        // ── 수정된 escapeHTML 함수 (오류 해결 및 XSS 방지 강화) ──
-        function escapeHTML(value) {
-            return String(value)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#39;'); 
-        }
+  // House Rings
+  const rings = [ {r:HOUSE.r, c:'#110a22'}, {r:HOUSE.r*0.75, c:'#1a1033'}, {r:HOUSE.r*0.45, c:'#ff2a85'}, {r:HOUSE.r*0.2, c:'#00e5ff'} ];
+  rings.forEach(ring => {
+    ctx.beginPath(); ctx.arc(HOUSE.x, HOUSE.y, ring.r, 0, Math.PI*2);
+    ctx.fillStyle = ring.c; ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,0.1)'; ctx.lineWidth=1; ctx.stroke();
+  });
 
-        // ── Supabase 설정 및 댓글 기능 ──
-        const SUPA_URL = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
-        const SUPA_KEY = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
-        const PAGE_ID  = '/gameinfo'; // gameinfo 페이지 고유 ID로 변경
+  // Target glow
+  ctx.globalAlpha = 0.3 + Math.sin(bgTime*3)*0.1;
+  const glow = ctx.createRadialGradient(HOUSE.x, HOUSE.y, 0, HOUSE.x, HOUSE.y, HOUSE.r);
+  glow.addColorStop(0, 'rgba(0,229,255,0.5)'); glow.addColorStop(1, 'transparent');
+  ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(HOUSE.x, HOUSE.y, HOUSE.r, 0, Math.PI*2); ctx.fill(); ctx.globalAlpha = 1;
 
-        async function fetchComments() {
-            const list = document.getElementById('cm-list');
-            try {
-                const res = await fetch(
-                    `${SUPA_URL}/rest/v1/comments?page=eq.${encodeURIComponent(PAGE_ID)}&order=created_at.desc`,
-                    { headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` } }
-                );
-                const data = await res.json();
-                if (!Array.isArray(data) || data.length === 0) {
-                    list.innerHTML = `<div class="cm-empty"><span>✦</span><span data-i18n="comments_empty">${i18n[currentLang].comments_empty}</span></div>`;
-                    return;
-                }
-                list.innerHTML = data.map((c, i) => {
-                    const safeNickname = escapeHTML(c.nickname || 'Guest');
-                    const initial = safeNickname.charAt(0).toUpperCase();
-                    const date = c.created_at ? c.created_at.slice(0,10) : '';
-                    const escaped = escapeHTML(c.content || '');
-                    return `
-                    <div class="comment-card" style="animation-delay:${i * 0.05}s">
-                        <div class="comment-meta">
-                            <div class="comment-avatar">${initial}</div>
-                            <span class="comment-nickname">${safeNickname}</span>
-                            <span class="comment-date">${date}</span>
-                        </div>
-                        <div class="comment-content">${escaped}</div>
-                    </div>`;
-                }).join('');
-            } catch(e) {
-                list.innerHTML = `<div class="cm-empty"><span>✦</span>잠시 후 다시 시도해주세요.</div>`;
-            }
-        }
+  // Center Line
+  ctx.strokeStyle='rgba(255,255,255,0.05)'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(HOUSE.x, 0); ctx.lineTo(HOUSE.x, LOGICAL_H); ctx.stroke();
 
-        async function submitComment() {
-            const nickname = document.getElementById('cm-name').value.trim();
-            const content  = document.getElementById('cm-body').value.trim();
-            const btn = document.querySelector('.cm-submit-btn');
+  // Throw Zone
+  ctx.beginPath(); ctx.arc(START.x, START.y, 50, 0, Math.PI*2);
+  ctx.strokeStyle='rgba(0,229,255,0.3)'; ctx.lineWidth=2; ctx.setLineDash([5,5]); ctx.stroke(); ctx.setLineDash([]);
 
-            if (!nickname || !content) {
-                showToast(currentLang === 'ko' ? '닉네임과 내용을 입력해주세요.' : 'Please enter your nickname and message.');
-                return;
-            }
-            if (content.length < 2) {
-                showToast(currentLang === 'ko' ? '내용을 좀 더 입력해주세요.' : 'Please write a bit more.');
-                return;
-            }
+  // Drag Arrow
+  if (state.dragging && state.dragStart && state.dragNow && !state.isAiTurn && state.activeStone) {
+    const dx = state.dragStart.x - state.dragNow.x, dy = state.dragStart.y - state.dragNow.y;
+    const angle = Math.atan2(dy, dx);
+    let dist = Math.min(Math.hypot(dx, dy), 250);
+    if(state.powerBuff[state.currentTeam.id] > 0) dist *= 1.5; // 버프 시 가이드라인도 길게
+    
+    const ex = state.activeStone.x + Math.cos(angle)*dist*1.5, ey = state.activeStone.y + Math.sin(angle)*dist*1.5;
+    const grad = ctx.createLinearGradient(state.activeStone.x, state.activeStone.y, ex, ey);
+    grad.addColorStop(0, state.currentTeam.color); grad.addColorStop(1, 'transparent');
+    
+    ctx.save(); ctx.beginPath(); ctx.moveTo(state.activeStone.x, state.activeStone.y); ctx.lineTo(ex,ey);
+    ctx.strokeStyle=grad; ctx.lineWidth=6; ctx.lineCap='round'; ctx.stroke();
+    
+    ctx.translate(ex, ey); ctx.rotate(angle);
+    ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(-15,-10); ctx.lineTo(-15,10); ctx.closePath();
+    ctx.fillStyle = state.currentTeam.color; ctx.shadowBlur=15; ctx.shadowColor=ctx.fillStyle; ctx.fill();
+    ctx.restore();
+  }
+}
 
-            btn.disabled = true;
-            btn.textContent = '...';
+// ══════════════════════════════════════════════════════
+// MAIN LOOP
+// ══════════════════════════════════════════════════════
+function gameLoop() {
+  // Screen Shake 적용
+  ctx.save(); pCtx.save();
+  if (shakeTime > 0) {
+    const sx = (Math.random()-0.5) * shakeMag; const sy = (Math.random()-0.5) * shakeMag;
+    ctx.translate(sx, sy); pCtx.translate(sx, sy); shakeTime--;
+  }
 
-            try {
-                const res = await fetch(`${SUPA_URL}/rest/v1/comments`, {
-                    method: 'POST',
-                    headers: {
-                        apikey: SUPA_KEY,
-                        Authorization: `Bearer ${SUPA_KEY}`,
-                        'Content-Type': 'application/json',
-                        'Prefer': 'return=minimal'
-                    },
-                    body: JSON.stringify({ page: PAGE_ID, nickname, content })
-                });
-                if (res.ok || res.status === 201) {
-                    document.getElementById('cm-name').value = '';
-                    document.getElementById('cm-body').value = '';
-                    showToast(currentLang === 'ko' ? '소중한 한마디 감사합니다 🙏' : 'Thank you for your message 🙏');
-                    fetchComments();
-                } else {
-                    const err = await res.text();
-                    showToast(currentLang === 'ko' ? '오류가 발생했습니다. 다시 시도해주세요.' : 'An error occurred. Please try again.');
-                    console.error('Supabase error:', err);
-                }
-            } catch(e) {
-                showToast(currentLang === 'ko' ? '네트워크 오류입니다.' : 'Network error.');
-            } finally {
-                btn.disabled = false;
-                btn.textContent = i18n[currentLang]?.comments_submit || '남기기';
-            }
-        }
+  drawArena();
+  if (state.phase !== 'setup') {
+    if (state.phase === 'move' || activeForces.length > 0) {
+      applyContinuousForces();
+      let moving = false;
+      state.stones.forEach(s => { s.update(); if (s.move) moving = true; });
+      resolveCollisions();
+      if (!moving && state.phase === 'move') {
+        state.currentTeam = state.currentTeam.id === 'fairy' ? TEAMS.dark : TEAMS.fairy;
+        spawnStone();
+      }
+    }
+    state.stones.forEach(s => s.draw());
+  }
 
-        fetchComments();
+  pCtx.clearRect(0,0,LOGICAL_W,LOGICAL_H);
+  for(let i=particles.length-1; i>=0; i--) { particles[i].update(); particles[i].draw(pCtx); if(particles[i].life<=0) particles.splice(i,1); }
+  
+  ctx.restore(); pCtx.restore();
+  requestAnimationFrame(gameLoop);
+}
 
-        // ── 우주 배경 캔버스 애니메이션 ──
-        const canvas = document.getElementById('stars-canvas');
-        const ctx = canvas.getContext('2d');
-        let stars = [], shootingStars = [];
-
-        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; initStars(); }
-        function initStars() {
-            stars = [];
-            const count = Math.floor((canvas.width * canvas.height) / 6000);
-            for (let i = 0; i < count; i++) {
-                stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 1.6 + 0.2, opacity: Math.random(), speed: Math.random() * 0.015 + 0.003 });
-            }
-        }
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            stars.forEach(s => {
-                s.opacity += s.speed;
-                if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed;
-                ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255,255,255,${Math.max(0, s.opacity)})`; ctx.fill();
-            });
-            if (Math.random() < 0.01) {
-                shootingStars.push({ x: Math.random() * canvas.width * 0.8 + canvas.width * 0.1, y: Math.random() * canvas.height * 0.35, len: Math.random() * 90 + 60, speed: Math.random() * 9 + 5, opacity: 1 });
-            }
-            shootingStars.forEach((ss, i) => {
-                ss.x -= ss.speed * 0.8; ss.y += ss.speed * 0.5; ss.opacity -= 0.015;
-                const grad = ctx.createLinearGradient(ss.x, ss.y, ss.x + ss.len, ss.y - ss.len * 0.6);
-                grad.addColorStop(0, `rgba(255,255,255,${ss.opacity})`); grad.addColorStop(1, 'transparent');
-                ctx.beginPath(); ctx.strokeStyle = grad; ctx.lineWidth = 1.5;
-                ctx.moveTo(ss.x, ss.y); ctx.lineTo(ss.x + ss.len, ss.y - ss.len * 0.6); ctx.stroke();
-                if (ss.opacity <= 0 || ss.x < -ss.len || ss.y > canvas.height + ss.len) shootingStars.splice(i, 1);
-            });
-            requestAnimationFrame(draw);
-        }
-        window.addEventListener('resize', resize);
-        resize(); draw();
-    </script>
-
- 
+loadLeaderboard();
+requestAnimationFrame(gameLoop);
+</script>
 </body>
 </html>

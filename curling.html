@@ -205,8 +205,9 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
   display: flex; flex-direction: column; align-items: center; gap: 6px;
 }
 .char-btn-name {
-  font-family: 'Black Han Sans', sans-serif; font-size: 1.4rem;
+  font-family: 'Black Han Sans', sans-serif; font-size: 1.1rem;
   color: #fff; text-shadow: 0 2px 10px #000; line-height: 1;
+  word-break: keep-all;
 }
 .skill-tag {
   font-size: 0.75rem; font-weight: 900; background: linear-gradient(90deg, #ff007a, #7a00ff);
@@ -215,39 +216,15 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
 }
 
 /* ─── In-Game UI ─── */
-#inGameUI {
-  position: absolute; top: max(env(safe-area-inset-top, 15px), 15px); left: 0; width: 100%;
-  display: flex; flex-direction: column; gap: 15px; z-index: 20; pointer-events: none;
+#inGameUI{
+  position:absolute; inset:0 auto auto 0; width:100%;
+  padding: max(env(safe-area-inset-top, 15px), 15px); 
+  display:flex; justify-content:space-between; align-items:flex-start; z-index:20; pointer-events:none;
 }
-.hud-top { display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
-.set-score {
-  font-family: 'Cinzel', serif; font-size: 1.8rem; font-weight: 900;
-  display: flex; align-items: center; gap: 8px;
-  background: rgba(0,0,0,0.6); padding: 5px 15px; border-radius: 16px;
-  border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(5px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-}
-.set-score.fairy { color: var(--c-fairy-glow); }
-.set-score.dark { color: var(--c-dark-glow); }
-
-.round-info { text-align: center; }
-.round-info .best-of { font-size: 0.7rem; font-weight: 900; letter-spacing: 2px; color: rgba(255,255,255,0.8); text-shadow: 0 1px 3px #000; margin-bottom: 2px; }
-.round-info .round-num { font-family: 'Cinzel', serif; font-size: 1.6rem; font-weight: 900; text-shadow: 0 2px 8px #000; }
-
-.hud-bottom { display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
-.rt-score {
-  font-family: 'Black Han Sans', sans-serif; font-size: 1.4rem; text-shadow: 0 2px 5px #000;
-  background: rgba(0,0,0,0.5); padding: 6px 16px; border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(5px);
-}
-.rt-score.fairy { color: var(--c-fairy-glow); }
-.rt-score.dark { color: var(--c-dark-glow); }
-
-.turn-box {
-  padding: 8px 24px; border-radius: 20px; font-family: 'Black Han Sans', sans-serif; font-size: 1.2rem;
-  background: rgba(0,0,0,0.8); border: 2px solid; text-shadow: 0 2px 5px #000;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.5); transition: all 0.3s;
-}
+.score-board{ background: transparent; border: none; box-shadow: none; backdrop-filter: none; min-width: 150px; }
+.score-row{display:flex; justify-content:space-between; align-items:center; margin:5px 0; gap: 15px;}
+.score-row div { font-size: 1.1rem; text-shadow: 0 2px 6px rgba(0,0,0,0.9), 0 0 10px rgba(0,0,0,0.8); }
+.score-num{font-family:'Cinzel', serif; font-size:2.5rem !important; font-weight:900; text-shadow: 0 2px 6px rgba(0,0,0,0.9), 0 0 15px rgba(0,0,0,0.8);}
 
 /* ─── Skill & Action UI ─── */
 #skillContainer {
@@ -282,47 +259,7 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
   color:#fff; box-shadow:0 0 20px rgba(0,0,0,0.5); letter-spacing:1px;
 }
 
-/* ★ 스킬 시네마틱 컷인 ★ */
-#skillCutin {
-  position:absolute; inset:0; background:rgba(0,0,0,0.6); z-index:100;
-  display:none; overflow:hidden; backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
-}
-.cutin-bg-slash {
-  position:absolute; top: -10%; left: -20%; width: 140%; height: 120%;
-  transform-origin: center; mix-blend-mode: color-dodge; opacity: 0;
-}
-.cutin-card-wrap {
-  position: absolute; left: 5%; top: 50%; 
-  width: 45%; max-width: 280px; aspect-ratio: 2/3;
-  border-radius: 20px; overflow: hidden;
-  border: 4px solid #fff; box-shadow: 0 0 50px rgba(255,255,255,0.5);
-  transform: translate(-150%, -50%) rotate(-20deg); opacity: 0; z-index: 2;
-}
-.cutin-card-img { width: 100%; height: 100%; object-fit: cover; }
-.cutin-text-wrap {
-  position: absolute; right: 5%; top: 50%; transform: translateY(-50%);
-  display: flex; flex-direction: column; align-items: flex-end;
-  width: 70%; z-index: 3;
-}
-.cutin-name {
-  font-family: 'Black Han Sans', sans-serif; font-size: clamp(3.5rem, 12vw, 5.5rem);
-  color: #fff; text-shadow: 0 10px 30px rgba(0,0,0,1);
-  line-height: 1; margin-bottom: 10px; text-align: right; opacity: 0;
-}
-.cutin-skillname {
-  font-family: 'Noto Sans KR', sans-serif; font-weight: 900; font-size: clamp(1.4rem, 5vw, 2.2rem);
-  color: #fff; letter-spacing: 3px; text-align: right;
-  background: rgba(0,0,0,0.8); padding: 8px 25px; border-radius: 40px;
-  border: 3px solid var(--c-gold); box-shadow: 0 0 30px var(--c-gold);
-  transform: scale(3); opacity: 0; filter: blur(10px);
-}
-
-#skillCutin.play .cutin-bg-slash { animation: cutinBg 2s cubic-bezier(.175,.885,.32,1) forwards; }
-#skillCutin.play .cutin-card-wrap { animation: cutinCard 2s cubic-bezier(.175,.885,.32,1) forwards; }
-#skillCutin.play .cutin-name { animation: cutinName 2s cubic-bezier(.175,.885,.32,1) forwards; }
-#skillCutin.play .cutin-skillname { animation: cutinSkill 2s cubic-bezier(.175,.885,.32,1) forwards; }
-
-/* ★ 턴 시작 컷인 (새롭게 추가) ★ */
+/* ★ 턴 시작을 알리는 컷인 UI 추가 ★ */
 #turnCutin {
   position: absolute; top: 25%; left: 0; width: 100%; z-index: 85;
   display: none; align-items: center; justify-content: center; pointer-events: none;
@@ -339,10 +276,11 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
 .turn-portrait {
   width: 75px; height: 75px; border-radius: 50%; object-fit: cover;
   border: 3px solid #fff; box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  background-color: #333;
 }
 .turn-text { display: flex; flex-direction: column; align-items: flex-start; }
-.turn-name { font-family: 'Black Han Sans', sans-serif; font-size: 2rem; line-height: 1.1; color: #fff; text-shadow: 0 4px 10px #000; }
-.turn-shout { font-family: 'Noto Sans KR', sans-serif; font-weight: 900; font-size: 1.1rem; color: #ffcf00; text-shadow: 0 2px 5px #000; letter-spacing: 1px; }
+.turn-name { font-family: 'Black Han Sans', sans-serif; font-size: 1.5rem; line-height: 1.1; color: #fff; text-shadow: 0 4px 10px #000; }
+.turn-shout { font-family: 'Noto Sans KR', sans-serif; font-weight: 900; font-size: 1rem; color: #ffcf00; text-shadow: 0 2px 5px #000; letter-spacing: 1px; }
 
 @keyframes turnPop {
   0% { opacity: 0; transform: scale(0.8) translateX(-100px) skewX(-15deg); }
@@ -352,10 +290,72 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
   100% { opacity: 0; transform: scale(0.8) translateX(100px) skewX(15deg); }
 }
 
-@keyframes cutinBg { 0% { transform: rotate(-25deg) scaleY(0); opacity: 0; } 10% { transform: rotate(-25deg) scaleY(1); opacity: 0.9; } 90% { transform: rotate(-25deg) scaleY(1); opacity: 0.9; } 100% { transform: rotate(-25deg) scaleY(0); opacity: 0; } }
-@keyframes cutinCard { 0% { transform: translate(-150%, -50%) rotate(-20deg); opacity: 0; } 15% { transform: translate(0%, -50%) rotate(-8deg); opacity: 1; } 85% { transform: translate(5%, -50%) rotate(-5deg); opacity: 1; } 100% { transform: translate(150%, -50%) rotate(10deg); opacity: 0; } }
-@keyframes cutinName { 0% { transform: translateX(100vw); opacity: 0; } 20% { transform: translateX(-20px); opacity: 1; } 25% { transform: translateX(0); opacity: 1; } 85% { transform: translateX(20px); opacity: 1; } 100% { transform: translateX(-100vw); opacity: 0; } }
-@keyframes cutinSkill { 0% { transform: scale(3); opacity: 0; filter: blur(10px); } 25% { transform: scale(1); opacity: 1; filter: blur(0px); } 85% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(0); opacity: 0; } }
+/* ★ 시네마틱 컷인 ★ */
+#skillCutin {
+  position:absolute; inset:0; background:rgba(0,0,0,0.6); z-index:100;
+  display:none; overflow:hidden; backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+}
+.cutin-bg-slash {
+  position:absolute; top: -10%; left: -20%; width: 140%; height: 120%;
+  transform-origin: center; mix-blend-mode: color-dodge; opacity: 0;
+}
+.cutin-card-wrap {
+  position: absolute; left: 5%; top: 50%; 
+  width: 45%; max-width: 280px; aspect-ratio: 2/3;
+  border-radius: 20px; overflow: hidden;
+  border: 4px solid #fff; box-shadow: 0 0 50px rgba(255,255,255,0.5);
+  transform: translate(-150%, -50%) rotate(-20deg); opacity: 0; z-index: 2;
+  background-color: #222;
+}
+.cutin-card-img { width: 100%; height: 100%; object-fit: cover; }
+.cutin-text-wrap {
+  position: absolute; right: 5%; top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; align-items: flex-end;
+  width: 70%; z-index: 3;
+}
+.cutin-name {
+  font-family: 'Black Han Sans', sans-serif; font-size: clamp(2rem, 8vw, 4rem);
+  color: #fff; text-shadow: 0 10px 30px rgba(0,0,0,1);
+  line-height: 1; margin-bottom: 10px; text-align: right; opacity: 0;
+}
+.cutin-skillname {
+  font-family: 'Noto Sans KR', sans-serif; font-weight: 900; font-size: clamp(1.2rem, 4vw, 2rem);
+  color: #fff; letter-spacing: 3px; text-align: right;
+  background: rgba(0,0,0,0.8); padding: 8px 25px; border-radius: 40px;
+  border: 3px solid var(--c-gold); box-shadow: 0 0 30px var(--c-gold);
+  transform: scale(3); opacity: 0; filter: blur(10px);
+}
+
+#skillCutin.play .cutin-bg-slash { animation: cutinBg 2s cubic-bezier(.175,.885,.32,1) forwards; }
+#skillCutin.play .cutin-card-wrap { animation: cutinCard 2s cubic-bezier(.175,.885,.32,1) forwards; }
+#skillCutin.play .cutin-name { animation: cutinName 2s cubic-bezier(.175,.885,.32,1) forwards; }
+#skillCutin.play .cutin-skillname { animation: cutinSkill 2s cubic-bezier(.175,.885,.32,1) forwards; }
+
+@keyframes cutinBg {
+  0% { transform: rotate(-25deg) scaleY(0); opacity: 0; }
+  10% { transform: rotate(-25deg) scaleY(1); opacity: 0.9; }
+  90% { transform: rotate(-25deg) scaleY(1); opacity: 0.9; }
+  100% { transform: rotate(-25deg) scaleY(0); opacity: 0; }
+}
+@keyframes cutinCard {
+  0% { transform: translate(-150%, -50%) rotate(-20deg); opacity: 0; }
+  15% { transform: translate(0%, -50%) rotate(-8deg); opacity: 1; }
+  85% { transform: translate(5%, -50%) rotate(-5deg); opacity: 1; }
+  100% { transform: translate(150%, -50%) rotate(10deg); opacity: 0; }
+}
+@keyframes cutinName {
+  0% { transform: translateX(100vw); opacity: 0; }
+  20% { transform: translateX(-20px); opacity: 1; }
+  25% { transform: translateX(0); opacity: 1; }
+  85% { transform: translateX(20px); opacity: 1; }
+  100% { transform: translateX(-100vw); opacity: 0; }
+}
+@keyframes cutinSkill {
+  0% { transform: scale(3); opacity: 0; filter: blur(10px); }
+  25% { transform: scale(1); opacity: 1; filter: blur(0px); }
+  85% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(0); opacity: 0; }
+}
 
 /* ─── Screen Flash & Buff ─── */
 #screenFlash { position:absolute; inset:0; background:#fff; z-index:110; opacity:0; pointer-events:none; }
@@ -407,7 +407,6 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
   85% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
   100% { opacity: 0; transform: translate(-50%, -70%) scale(0.8); }
 }
-
 
 /* ─── Modal 모바일 최적화 ─── */
 #winnerModal{
@@ -502,6 +501,7 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
   </div>
 
   <div id="inGameUI" style="display:none;">
+    
     <div class="hud-top">
       <div class="set-score fairy"><span style="font-size:1.2rem; opacity:0.8; margin-right:5px;">🧚</span> <span id="fairyScore">0</span></div>
       <div class="round-info">
@@ -516,6 +516,7 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
       <div class="turn-box" id="turnBox">요정턴</div>
       <div class="rt-score dark" id="rtDark">0점</div>
     </div>
+
   </div>
 
   <div id="skillContainer" style="display:none;">
@@ -567,7 +568,7 @@ const SUPA_URL = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
 const SUPA_KEY = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
 const TABLE_NAME = 'curling_ranking';
 
-// 캔버스 사이즈 확장
+// 캔버스 사이즈 확장 (PC화면 넓게 보이도록 비율 조정)
 const LOGICAL_W = 768, LOGICAL_H = 1024;
 const HOUSE = { x: LOGICAL_W / 2, y: 240, r: 160 };
 const START = { x: LOGICAL_W / 2, y: 880 };
@@ -595,6 +596,7 @@ const REACTIONS = [
 ];
 let lastShoutTime = 0;
 
+// ★ 캐릭터 이미지 경로 원본 롤백 ★
 const TEAMS = {
   fairy:{
     id:'fairy',name:'요정 연합',color:'#ff2a85',border:'#ff7eb3',icon:'🧚',
@@ -608,9 +610,9 @@ const TEAMS = {
   dark:{
     id:'dark',name:'어둠의 왕관',color:'#6a00ff',border:'#a855f7',icon:'🌑',
     members:[
-      {id:'knight', name:'어둠기사', img:'/images/darknight.png', skill:'어둠의 기운', desc:'다음 투구 파워 1.5배!'},
-      {id:'vane', name:'베인', img:'/images/bain.jpg', skill:'검신의 함성', desc:'검기로 적 돌을 밀어냅니다'},
-      {id:'crown', name:'마왕', img:'/images/crown.jpg', skill:'어둠의 대지진', desc:'과녁 내 적 돌을 강하게 튕겨냅니다'},
+      {id:'knight', name:'어둠의 기사', img:'/images/darknight.png', skill:'어둠의 기운', desc:'다음 투구 파워 1.5배!'},
+      {id:'vane', name:'어둠의검신 베인', img:'/images/bain.jpg', skill:'검신의 함성', desc:'검기로 적 돌을 밀어냅니다'},
+      {id:'crown', name:'어둠의마왕 크라운', img:'/images/crown.jpg', skill:'어둠의 대지진', desc:'과녁 내 적 돌을 강하게 튕겨냅니다'},
       {id:'angel', name:'천사', img:'/images/angel.jpeg', skill:'어둠의 소용돌이', desc:'모든 아군 돌을 과녁 중앙으로!'}
     ]
   }
@@ -923,7 +925,6 @@ function showCurlingShout() {
 function showFloatingMsg(msg, color) {
   const el = document.createElement('div');
   el.className = 'floating-center-msg';
-  // 줄바꿈 태그(<br>)를 해석하기 위해 innerHTML 사용
   el.innerHTML = msg;
   el.style.color = color;
   document.getElementById('gameWrap').appendChild(el);
@@ -937,15 +938,7 @@ function showTurnCutin(member, team) {
   const name = document.getElementById('tcName');
   const shout = document.getElementById('tcShout');
 
-  // ★ 마왕팀 캐릭터일 경우 전용 컷인 이미지 매칭 ★
-  if (team.id === 'dark') {
-    if (member.id === 'knight') { member.img = '/images/cutin_darknight.png'; }
-    else if (member.id === 'vane') { member.img = '/images/cutin_bain.png'; }
-    else if (member.id === 'crown') { member.img = '/images/cutin_mastercrown.png'; }
-    else if (member.id === 'angel') { member.img = '/images/cutin_angel.png'; }
-  }
-
-  portrait.src = member.img;
+  portrait.src = member.img; // 정확한 원본 이미지 사용
   portrait.style.borderColor = team.border;
   portrait.style.boxShadow = `0 0 20px ${team.color}`;
   
@@ -962,6 +955,7 @@ function showTurnCutin(member, team) {
   }, 1500);
 }
 
+// ★ 스킬 발동 컷인 ★
 function showSkillCutin(member, team) {
   const cutin = document.getElementById('skillCutin');
   const stripe = document.getElementById('cutinStripe');
@@ -974,7 +968,7 @@ function showSkillCutin(member, team) {
   
   cardWrap.style.borderColor = team.border;
   cardWrap.style.boxShadow = `0 0 50px ${team.color}`;
-  portrait.src = member.img;
+  portrait.src = member.img; // 정확한 원본 이미지 사용
   
   name.textContent = member.name;
   name.style.textShadow = `0 10px 30px #000, 0 0 20px ${team.color}`;
@@ -1068,7 +1062,7 @@ function spawnStone() {
       setTimeout(() => {
         if(state.skillCharge[state.currentTeam.id] >= 2) activateSkill(); 
         else executeAIThrow(); 
-      }, 1000); // 속도감을 위해 1초 대기로 단축
+      }, 1000); 
     }
   }, 1500);
 }
@@ -1234,7 +1228,6 @@ function endRound() {
   
   if (roundWinner) {
     spawnSparks(HOUSE.x, HOUSE.y, roundWinner.color, 40, 3);
-    // <br> 태그를 넣어 모바일 잘림 방지
     showFloatingMsg(`${roundWinner.name}<br>라운드 승리!`, roundWinner.color);
   } else {
     showFloatingMsg(`라운드 무승부!`, '#aaa');
@@ -1354,6 +1347,33 @@ function drawArena() {
   ctx.beginPath(); ctx.arc(START.x, START.y, 60, 0, Math.PI*2);
   ctx.strokeStyle='rgba(0,0,0,0.15)'; ctx.lineWidth=2; ctx.setLineDash([5,5]); ctx.stroke(); ctx.setLineDash([]);
 
+  // ★ 실시간 보드 점수 계산 및 캔버스 표시 ★
+  if(state.phase !== 'setup' && state.phase !== 'turn_intro') {
+    let fScore = 0; let dScore = 0;
+    state.stones.forEach(s => {
+      const dist = Math.hypot(s.x - HOUSE.x, s.y - HOUSE.y);
+      let pts = 0;
+      if (dist <= HOUSE.r * 0.2) pts = 10;
+      else if (dist <= HOUSE.r * 0.45) pts = 5;
+      else if (dist <= HOUSE.r * 0.75) pts = 3;
+      else if (dist <= HOUSE.r) pts = 1;
+      
+      if(pts > 0) {
+        if(s.team.id === 'fairy') fScore += pts;
+        else dScore += pts;
+      }
+    });
+
+    ctx.font = '900 28px "Black Han Sans"';
+    ctx.fillStyle = TEAMS.fairy.color;
+    ctx.textAlign = 'left';
+    ctx.fillText(`요정: ${fScore}점`, 20, 110);
+    
+    ctx.fillStyle = TEAMS.dark.color;
+    ctx.textAlign = 'right';
+    ctx.fillText(`어둠: ${dScore}점`, LOGICAL_W - 20, 110);
+  }
+
   // Drag Arrow
   if (state.dragging && state.dragStart && state.dragNow && !state.isAiTurn && state.activeStone) {
     const dx = state.dragStart.x - state.dragNow.x, dy = state.dragStart.y - state.dragNow.y;
@@ -1404,10 +1424,7 @@ function gameLoop() {
     if (!moving && state.phase === 'move') {
       if(!state.isAiTurn) showReaction(); 
       state.currentTeam = state.currentTeam.id === 'fairy' ? TEAMS.dark : TEAMS.fairy;
-      
-      // 스톤이 다 멈추면 실시간 점수 업데이트
       updateRealtimeScore();
-      
       spawnStone();
     }
     

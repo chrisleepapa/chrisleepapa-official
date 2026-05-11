@@ -1,1111 +1,1322 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<title>SISTER SQUAD HYPER CURLING</title>
 
-<title>Sister Squad Hyper Curling</title>
-
-<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,400;0,700;0,900;1,900&family=Nanum+Gothic:wght@700;800&display=swap" rel="stylesheet"/>
 
 <style>
-*{
-    box-sizing:border-box;
-    -webkit-tap-highlight-color:transparent;
+:root{
+  --c-fairy:#ff4da6;
+  --c-dark:#9b5cff;
+  --c-ice:#00f0ff;
+  --c-gold:#ffd447;
+  --bg-deep:#04091c;
+  --bg-mid:#080f2a;
+  --glass:rgba(255,255,255,.07);
+  --glass-border:rgba(255,255,255,.14);
 }
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0;}
 
 body{
-    margin:0;
-    overflow:hidden;
-    font-family:'Pretendard',sans-serif;
-    background:
-        radial-gradient(circle at top,#7c3aed 0%,transparent 30%),
-        radial-gradient(circle at bottom,#06b6d4 0%,transparent 30%),
-        linear-gradient(180deg,#050816 0%,#0f172a 100%);
-    color:white;
+  overflow:hidden;
+  font-family:'Nanum Gothic',sans-serif;
+  background:var(--bg-deep);
+  color:#fff;
+}
+
+/* ─── Scanline overlay ─── */
+body::after{
+  content:'';
+  position:fixed;inset:0;z-index:9999;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.06) 2px,rgba(0,0,0,.06) 4px);
+  pointer-events:none;
 }
 
 #gameWrap{
-    position:relative;
-    width:100%;
-    max-width:520px;
-    height:100vh;
-    margin:auto;
-    overflow:hidden;
-    background:
-        linear-gradient(180deg,#0ea5e9 0%,#dbeafe 45%,#e0f2fe 100%);
-    box-shadow:
-        0 0 60px rgba(0,0,0,.55),
-        inset 0 0 80px rgba(255,255,255,.2);
+  position:relative;
+  width:100%;max-width:520px;height:100dvh;
+  margin:auto;overflow:hidden;
 }
 
-#gameWrap::before{
-    content:'';
-    position:absolute;
-    inset:0;
-    background-image:
-        linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px),
-        linear-gradient(90deg,rgba(255,255,255,.08) 1px, transparent 1px);
-    background-size:40px 40px;
-    pointer-events:none;
-}
+/* ─── Canvas ─── */
+canvas{width:100%;height:100%;display:block;touch-action:none;}
 
-/* Screen overlays: 모바일 스크롤 및 Flex 대응 */
+/* ─── Shared screen base ─── */
 .screen{
-    position:absolute;
-    inset:0;
-    z-index:80;
-    display:flex;
-    flex-direction:column;
-    padding:20px 20px;
-    background:rgba(15, 23, 42, 0.95);
-    backdrop-filter:blur(15px);
-    transition: opacity 0.4s, transform 0.4s;
-    overflow-y: auto;
-    overflow-x: hidden;
+  position:absolute;inset:0;z-index:80;
+  display:flex;flex-direction:column;align-items:center;
+  padding:24px 20px 20px;
+  overflow-y:auto;overflow-x:hidden;
+  background:radial-gradient(ellipse at 50% 0%, #0e1e4a 0%, var(--bg-deep) 60%);
+  transition:opacity .45s ease, transform .45s cubic-bezier(.4,0,.2,1);
+}
+.screen.hidden{opacity:0;transform:scale(.97) translateY(8px);pointer-events:none;}
+.screen.out{opacity:0;transform:scale(1.04) translateY(-8px);pointer-events:none;}
+
+/* ─── Neon heading ─── */
+.neon-title{
+  font-family:'Exo 2',sans-serif;font-weight:900;font-style:italic;
+  background:linear-gradient(90deg,var(--c-ice),var(--c-fairy),var(--c-gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 16px rgba(0,240,255,.5));
+  letter-spacing:-1px;line-height:1.05;
 }
 
-canvas{
-    width:100%;
-    height:100%;
-    display:block;
-    touch-action:none;
-}
-
-.topUI{
-    position:absolute;
-    inset:0 auto auto 0;
-    width:100%;
-    padding:14px;
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-start;
-    z-index:20;
-    pointer-events:none;
-}
-
+/* ─── Glass card ─── */
 .glass{
-    background:rgba(255,255,255,.12);
-    backdrop-filter:blur(18px);
-    border:1px solid rgba(255,255,255,.18);
-    box-shadow:0 10px 30px rgba(0,0,0,.25);
+  background:var(--glass);
+  border:1px solid var(--glass-border);
+  backdrop-filter:blur(20px);
+  box-shadow:0 12px 40px rgba(0,0,0,.4);
+}
+.glass-hi{
+  background:rgba(255,255,255,.11);
+  border:1px solid rgba(255,255,255,.22);
+  backdrop-filter:blur(24px);
+  box-shadow:0 0 40px rgba(0,240,255,.12), 0 12px 40px rgba(0,0,0,.5);
 }
 
-.scoreBox{
-    padding:12px 14px;
-    min-width:180px;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+/* ─── Neon divider ─── */
+.neon-line{
+  width:100%;height:1px;margin:6px 0;
+  background:linear-gradient(90deg,transparent,var(--c-ice),transparent);
+  opacity:.5;
 }
 
-.turnBox{
-    border-radius:999px;
-    padding:10px 18px;
-    font-weight:900;
-    animation:pulse 1.8s infinite;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+/* ─── Input ─── */
+.neon-input{
+  width:100%;text-align:center;font-family:'Exo 2',sans-serif;
+  font-size:2.2rem;font-weight:900;letter-spacing:.25em;
+  padding:14px;border-radius:16px;
+  background:rgba(0,240,255,.06);
+  color:var(--c-ice);border:2px solid rgba(0,240,255,.35);
+  outline:none;transition:.2s;text-transform:uppercase;
+  caret-color:var(--c-ice);
+}
+.neon-input:focus{
+  border-color:var(--c-ice);
+  box-shadow:0 0 24px rgba(0,240,255,.3),inset 0 0 12px rgba(0,240,255,.08);
+}
+.neon-input::placeholder{opacity:.3;}
+
+/* ─── Buttons ─── */
+.btn-main{
+  width:100%;border:none;border-radius:18px;
+  padding:16px 20px;font-family:'Exo 2',sans-serif;
+  font-size:1.15rem;font-weight:900;cursor:pointer;
+  transition:transform .2s, box-shadow .2s;color:#fff;
+  letter-spacing:.04em;
+}
+.btn-main:hover:not(:disabled){transform:translateY(-3px);}
+.btn-main:disabled{opacity:.4;cursor:not-allowed;}
+.btn-ice{
+  background:linear-gradient(135deg,#00d4ff,#0099cc);
+  box-shadow:0 6px 24px rgba(0,212,255,.35);
+}
+.btn-ice:hover:not(:disabled){box-shadow:0 10px 32px rgba(0,212,255,.55);}
+.btn-start{
+  background:linear-gradient(135deg,var(--c-ice),var(--c-fairy));
+  box-shadow:0 6px 24px rgba(255,77,166,.4);
+}
+.btn-start:hover:not(:disabled){box-shadow:0 10px 32px rgba(255,77,166,.6);}
+
+/* ─── Leaderboard ─── */
+.lb-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 16px;border-radius:14px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.08);
+  transition:.2s;
+}
+.lb-row:hover{background:rgba(255,255,255,.1);}
+.lb-medal{width:28px;text-align:center;font-size:1.2rem;}
+.lb-initials{font-family:'Exo 2',sans-serif;font-weight:700;font-size:1.1rem;letter-spacing:.15em;}
+.lb-wins{font-family:'Exo 2',sans-serif;font-weight:900;color:var(--c-gold);font-size:1rem;}
+
+/* ─── Team select cards ─── */
+.team-card{
+  flex:1;position:relative;border-radius:28px;overflow:hidden;
+  cursor:pointer;transition:transform .3s cubic-bezier(.175,.885,.32,1.275), box-shadow .3s;
+  border:3px solid rgba(255,255,255,.1);
+  min-height:140px;
+}
+.team-card:hover{transform:scale(1.04) translateY(-6px);}
+.team-card.fairy:hover{border-color:var(--c-fairy);box-shadow:0 20px 50px rgba(255,77,166,.5);}
+.team-card.dark:hover{border-color:var(--c-dark);box-shadow:0 20px 50px rgba(155,92,255,.5);}
+.team-bg{
+  position:absolute;inset:0;
+  background-size:cover;background-position:center;
+  background-color:#1a1a2e;transition:transform .5s;
+}
+.team-card:hover .team-bg{transform:scale(1.08);}
+.team-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.88) 0%,rgba(0,0,0,.25) 55%,transparent 100%);
+  display:flex;flex-direction:column;justify-content:flex-end;
+  align-items:center;padding-bottom:22px;gap:4px;
+}
+.team-label{
+  font-family:'Exo 2',sans-serif;font-size:2rem;font-weight:900;font-style:italic;
+  text-shadow:0 4px 16px rgba(0,0,0,.8);
+}
+.team-sub{font-size:.75rem;opacity:.65;font-weight:700;letter-spacing:.08em;}
+
+/* ─── Order select ─── */
+.order-slot{
+  flex:1;aspect-ratio:1;border-radius:18px;
+  background:rgba(255,255,255,.06);
+  border:2px dashed rgba(255,255,255,.2);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;transition:.3s;
+  font-size:1.6rem;opacity:.5;
+}
+.order-slot.filled{
+  border-style:solid;opacity:1;
+  box-shadow:0 0 16px rgba(0,240,255,.2);
+}
+.order-slot img{width:100%;height:100%;object-fit:cover;}
+
+.char-btn{
+  background:rgba(255,255,255,.07);
+  border:2px solid rgba(255,255,255,.12);
+  border-radius:20px;padding:12px 8px;
+  text-align:center;cursor:pointer;transition:.25s;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+}
+.char-btn:hover:not(.sel){
+  background:rgba(255,255,255,.13);border-color:rgba(0,240,255,.5);
+  transform:translateY(-3px);
+}
+.char-btn.sel{
+  border-color:var(--c-ice);background:rgba(0,240,255,.08);
+  opacity:.4;pointer-events:none;transform:scale(.93);
+}
+.char-portrait{
+  width:68px;height:68px;border-radius:50%;object-fit:cover;
+  border:3px solid rgba(255,255,255,.5);
+  box-shadow:0 4px 14px rgba(0,0,0,.5);
+  background:#333;
 }
 
-.roundBox{
-    margin-top:10px;
-    padding:8px 14px;
-    font-size:16px;
-    font-weight:900;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+/* ─── In-game top UI ─── */
+#inGameUI{
+  position:absolute;inset:0 auto auto 0;width:100%;
+  padding:12px 14px;display:flex;justify-content:space-between;
+  align-items:flex-start;z-index:20;pointer-events:none;
+}
+.score-card{
+  border-radius:20px;padding:12px 16px;min-width:190px;
+  background:rgba(4,9,28,.82);border:1px solid rgba(255,255,255,.15);
+  backdrop-filter:blur(18px);
+  box-shadow:0 0 30px rgba(0,240,255,.1), 0 8px 24px rgba(0,0,0,.4);
+}
+.score-row{display:flex;justify-content:space-between;align-items:center;gap:10px;}
+.score-label{font-size:.8rem;font-weight:800;letter-spacing:.04em;opacity:.9;}
+.score-num{font-family:'Exo 2',sans-serif;font-size:1.8rem;font-weight:900;color:#fff;}
+.badge-label{font-size:.65rem;font-weight:800;letter-spacing:.12em;opacity:.55;margin-bottom:8px;}
+
+.turn-badge{
+  border-radius:100px;padding:10px 18px;
+  font-family:'Exo 2',sans-serif;font-size:.9rem;font-weight:900;
+  backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,.2);
+  animation:pulseBadge 2s infinite;
+  transition:background .5s;
+}
+@keyframes pulseBadge{
+  0%,100%{transform:scale(1);}
+  50%{transform:scale(1.06);}
 }
 
-@keyframes pulse{
-    0%{transform:scale(1);}
-    50%{transform:scale(1.05);}
-    100%{transform:scale(1);}
+.round-badge{
+  margin-top:8px;padding:6px 14px;border-radius:100px;
+  font-family:'Exo 2',sans-serif;font-size:.8rem;font-weight:900;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);
+  color:rgba(255,255,255,.8);letter-spacing:.08em;
+  backdrop-filter:blur(12px);
 }
 
-/* ---------------- 캐릭터 스킬 컷인 (Character Card) ---------------- */
-.characterCard{
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%) scale(0.5) rotate(-10deg);
-    width:90%;
-    max-width:380px;
-    border-radius:40px;
-    padding:30px;
-    z-index:50;
-    opacity:0;
-    pointer-events:none;
-    text-align: center;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 0 20px rgba(255,255,255,0.4);
-    transition:all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+/* ─── Guide bar ─── */
+#bottomGuide{
+  position:absolute;bottom:20px;width:100%;
+  display:none;justify-content:center;z-index:20;pointer-events:none;
+}
+.guide-pill{
+  padding:10px 22px;border-radius:100px;font-size:.85rem;font-weight:800;
+  background:rgba(4,9,28,.8);border:1px solid rgba(0,240,255,.3);
+  backdrop-filter:blur(16px);color:rgba(255,255,255,.85);
+  box-shadow:0 0 20px rgba(0,240,255,.15);letter-spacing:.04em;
 }
 
-.characterCard.show{
-    opacity:1;
-    transform:translate(-50%,-50%) scale(1) rotate(0deg);
+/* ─── Power meter ─── */
+#powerMeter{
+  position:absolute;bottom:68px;left:50%;transform:translateX(-50%);
+  display:none;z-index:22;pointer-events:none;
+  flex-direction:column;align-items:center;gap:4px;
+}
+.power-bar-bg{
+  width:180px;height:10px;border-radius:100px;
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.15);
+  overflow:hidden;
+}
+.power-bar-fill{
+  height:100%;border-radius:100px;transition:width .05s;
+  background:linear-gradient(90deg,#00f0ff,#ff4da6,#ff2200);
+}
+.power-label{font-family:'Exo 2',sans-serif;font-size:.7rem;font-weight:900;
+  color:rgba(255,255,255,.7);letter-spacing:.1em;}
+
+/* ─── Character cutin ─── */
+#characterCard{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%) scale(.4) rotate(-12deg);
+  width:88%;max-width:360px;border-radius:40px;padding:28px 24px;
+  z-index:50;opacity:0;pointer-events:none;text-align:center;
+  background:rgba(4,9,28,.88);
+  box-shadow:0 30px 70px rgba(0,0,0,.6);
+  transition:all .55s cubic-bezier(.175,.885,.32,1.275);
+}
+#characterCard.show{
+  opacity:1;transform:translate(-50%,-50%) scale(1) rotate(0deg);
+}
+.card-portrait-wrap{
+  width:130px;height:130px;margin:0 auto 14px;
+  border-radius:50%;padding:5px;
+  box-shadow:0 0 40px rgba(255,255,255,.3);
+  animation:floatPortrait 2.5s ease-in-out infinite;
+}
+@keyframes floatPortrait{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+.card-portrait{
+  width:100%;height:100%;object-fit:cover;border-radius:50%;
+  background:#2a2a3e;
+}
+.card-name{
+  font-family:'Exo 2',sans-serif;font-size:2.4rem;font-weight:900;
+  line-height:1;margin-bottom:4px;
+  text-shadow:0 4px 20px rgba(0,0,0,.8);
+}
+.card-team{font-size:.9rem;font-weight:800;opacity:.75;letter-spacing:.06em;}
+.card-skill{
+  margin-top:18px;padding:9px 18px;border-radius:100px;
+  font-size:.9rem;font-weight:900;letter-spacing:.04em;
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.2);
+  display:inline-block;
 }
 
-.characterImageWrapper {
-    position: relative;
-    width: 140px;
-    height: 140px;
-    margin: 0 auto 15px;
-    border-radius: 50%;
-    padding: 6px;
-    background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(255,255,255,0.2));
-    box-shadow: 0 0 30px rgba(255,255,255,0.6);
-    animation: floatAnim 2s ease-in-out infinite;
+/* ─── Reaction pop ─── */
+#reaction{
+  position:absolute;left:50%;top:56%;
+  transform:translateX(-50%);
+  font-family:'Exo 2',sans-serif;font-size:2.2rem;font-weight:900;font-style:italic;
+  z-index:60;opacity:0;pointer-events:none;
+  text-shadow:0 4px 20px rgba(0,0,0,.5);
+  letter-spacing:-.01em;
+}
+#reaction.show{animation:reactPop 1.4s ease forwards;}
+@keyframes reactPop{
+  0%{opacity:0;transform:translate(-50%,30px) scale(.5);}
+  18%{opacity:1;transform:translate(-50%,-24px) scale(1.25);}
+  70%{opacity:1;transform:translate(-50%,-40px) scale(1.1);}
+  100%{opacity:0;transform:translate(-50%,-120px) scale(.9);}
 }
 
-@keyframes floatAnim {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}
-
-.characterPortrait {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
-    background-color: #333;
-}
-
-.characterName{
-    font-size:40px;
-    font-weight:900;
-    margin-bottom:4px;
-    text-shadow: 0 4px 10px rgba(0,0,0,0.6);
-    letter-spacing: -1px;
-}
-
-.characterRole{
-    font-size:18px;
-    font-weight: 700;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-    opacity: 0.9;
-}
-
-.characterSkill{
-    margin-top:20px;
-    font-size:16px;
-    font-weight: 800;
-    line-height:1.6;
-    padding: 8px 16px;
-    border-radius: 20px;
-    background: rgba(0,0,0,0.4);
-    display: inline-block;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-}
-
-/* ---------------- 리액션 텍스트 ---------------- */
-.reaction{
-    position:absolute;
-    left:50%;
-    top:58%;
-    transform:translateX(-50%);
-    font-size:40px;
-    font-weight:900;
-    z-index:60;
-    opacity:0;
-    pointer-events:none;
-    text-shadow:0 10px 30px rgba(0,0,0,.4);
-}
-
-.reaction.show{
-    animation:reactionAnim 1.2s ease forwards;
-}
-
-@keyframes reactionAnim{
-    0%{ opacity:0; transform:translate(-50%,20px) scale(.6); }
-    20%{ opacity:1; transform:translate(-50%,-20px) scale(1.2); }
-    100%{ opacity:0; transform:translate(-50%,-100px) scale(1); }
-}
-
-.bottomGuide{
-    position:absolute;
-    bottom:20px;
-    width:100%;
-    display:flex;
-    justify-content:center;
-    z-index:20;
-    pointer-events:none;
-    transition: opacity 0.3s;
-}
-
-.guideBox{
-    border-radius:999px;
-    padding:12px 18px;
-    font-size:14px;
-    font-weight:700;
-}
-
-/* ---------------- 팀 선택 카드 (모바일 대응) ---------------- */
-.teamSelectCard {
-    position: relative;
-    width: 100%;
-    flex: 1;
-    min-height: 120px;
-    border-radius: 24px;
-    overflow: hidden;
-    cursor: pointer;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
-    border: 4px solid transparent;
-}
-
-.teamSelectCard:hover { transform: scale(1.03) translateY(-5px); }
-.teamSelectCard.fairy:hover { border-color: #f472b6; box-shadow: 0 15px 40px rgba(244,114,182,0.6); }
-.teamSelectCard.dark:hover { border-color: #8b5cf6; box-shadow: 0 15px 40px rgba(139,92,246,0.6); }
-
-.teamImgBg {
-    position: absolute;
-    inset: 0;
-    background-size: cover;
-    background-position: center;
-    background-color: #2a2a2a;
-    transition: transform 0.5s;
-}
-.teamSelectCard:hover .teamImgBg { transform: scale(1.1); }
-
-.teamOverlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-    padding-bottom: 20px;
-}
-
-/* ---------------- 캐릭터 선택 슬롯 (모바일 대응) ---------------- */
-.charSelectBtn {
-    background: rgba(255, 255, 255, 0.1);
-    border: 2px solid rgba(255,255,255,0.2);
-    border-radius: 20px;
-    padding: 10px;
-    text-align: center;
-    cursor: pointer;
-    transition: 0.2s;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-.charSelectBtn.selected {
-    border-color: #22d3ee;
-    background: rgba(34, 211, 238, 0.15);
-    opacity: 0.4;
-    pointer-events: none;
-    transform: scale(0.95);
-}
-
-.selectPortrait {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin: 0 auto 6px;
-    border: 3px solid white;
-    background-color: #444;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-}
-
-.orderSlot {
-    flex: 1;
-    background: rgba(255,255,255,0.1);
-    border: 2px dashed rgba(255,255,255,0.3);
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    aspect-ratio: 1 / 1;
-}
-
-.orderSlotImg {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.btn{
-    border:none;
-    width:100%;
-    border-radius:22px;
-    padding:16px;
-    font-size:20px;
-    font-weight:900;
-    cursor:pointer;
-    transition:.2s;
-    color:white;
-}
-.btn:hover:not(:disabled){ transform:translateY(-4px); }
-.btn:disabled{ opacity:0.5; cursor:not-allowed; }
-
-.fairyGlow{ background:linear-gradient(135deg,#f472b6,#ec4899); }
-.darkGlow{ background:linear-gradient(135deg,#8b5cf6,#7c3aed); }
-.neon{
-    background:linear-gradient(90deg,#22d3ee,#f472b6,#facc15);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-}
-
+/* ─── Winner modal ─── */
 #winnerModal{
-    position:absolute;
-    inset:0;
-    background:rgba(0,0,0,.72);
-    backdrop-filter:blur(12px);
-    z-index:100;
-    display:none;
-    justify-content:center;
-    align-items:center;
-    padding:20px;
+  position:absolute;inset:0;
+  background:rgba(0,0,0,.78);backdrop-filter:blur(16px);
+  z-index:100;display:none;justify-content:center;align-items:center;padding:20px;
 }
-.modalCard{ width:100%; max-width:380px; border-radius:36px; padding:30px; text-align:center; }
-.winTitle{ font-size:42px; font-weight:900; margin-bottom:14px; }
-#saveLoading { display: inline-block; margin-top: 10px; font-size: 16px; font-weight: bold; }
+.modal-card{
+  width:100%;max-width:380px;border-radius:36px;padding:36px 28px;text-align:center;
+  background:rgba(8,15,42,.92);
+  border:1px solid rgba(255,255,255,.15);
+  box-shadow:0 0 60px rgba(0,240,255,.15), 0 30px 60px rgba(0,0,0,.6);
+  animation:modalIn .5s cubic-bezier(.175,.885,.32,1.275) forwards;
+}
+@keyframes modalIn{from{transform:scale(.7) translateY(40px);opacity:0;}to{transform:scale(1) translateY(0);opacity:1;}}
+.modal-emoji{font-size:5rem;margin-bottom:12px;display:block;animation:float 3s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+.modal-title{
+  font-family:'Exo 2',sans-serif;font-size:2.4rem;font-weight:900;font-style:italic;
+  margin-bottom:10px;
+  background:linear-gradient(90deg,var(--c-ice),var(--c-fairy));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.modal-desc{font-size:1rem;opacity:.8;line-height:1.7;margin-bottom:24px;}
+.btn-reset{
+  width:100%;border:none;border-radius:18px;
+  padding:15px;font-family:'Exo 2',sans-serif;
+  font-size:1.05rem;font-weight:900;cursor:pointer;
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);
+  color:#fff;letter-spacing:.06em;transition:.2s;
+}
+.btn-reset:hover{background:rgba(255,255,255,.2);transform:translateY(-3px);}
+
+/* ─── Particle canvas ─── */
+#particleCanvas{
+  position:absolute;inset:0;pointer-events:none;z-index:5;
+  width:100%;height:100%;
+}
+
+/* ─── VS badge ─── */
+.vs-badge{
+  font-family:'Exo 2',sans-serif;font-size:1rem;font-weight:900;font-style:italic;
+  letter-spacing:.1em;opacity:.4;padding:4px 0;
+}
+
+/* ─── Shimmer loading ─── */
+.shimmer{
+  background:linear-gradient(90deg,rgba(255,255,255,.05) 0%,rgba(255,255,255,.12) 50%,rgba(255,255,255,.05) 100%);
+  background-size:200% 100%;animation:shimmer 1.5s infinite;
+  height:48px;border-radius:12px;
+}
+@keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+
+/* ─── Stone count ─── */
+.stone-dots{display:flex;gap:4px;margin-top:6px;}
+.stone-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.25);}
+.stone-dot.active{background:var(--c-ice);box-shadow:0 0 6px var(--c-ice);}
 </style>
 </head>
 
 <body>
-
 <div id="gameWrap">
 
-    <!-- 0. 로그인 및 리더보드 화면 -->
-    <div id="loginScreen" class="screen justify-center items-center">
-        <h1 class="text-4xl sm:text-5xl font-black neon mb-8 text-center leading-tight">
-            SISTER SQUAD<br/>CURLING
-        </h1>
-        
-        <div class="glass p-6 w-full max-w-sm rounded-3xl flex flex-col gap-4 shadow-2xl mb-6">
-            <div class="text-center">
-                <label class="block text-sm font-bold mb-2 opacity-80">영문 이니셜 (최대 3글자)</label>
-                <input type="text" id="initialsInput" maxlength="3" 
-                    class="w-full text-center text-3xl font-black p-4 rounded-xl bg-black/40 text-white border border-white/20 uppercase focus:outline-none focus:border-cyan-400 transition" 
-                    placeholder="ABC" 
-                    oninput="this.value = this.value.toUpperCase().replace(/[^A-Z]/g, '')">
-            </div>
-            <button class="btn bg-cyan-500 hover:bg-cyan-600 shadow-[0_0_15px_rgba(34,211,238,0.4)]" onclick="submitInitials()">
-                접속하기
-            </button>
-        </div>
+  <!-- Particle layer -->
+  <canvas id="particleCanvas"></canvas>
 
-        <div class="glass p-5 w-full max-w-sm rounded-3xl">
-            <h2 class="text-xl font-black mb-4 text-center text-yellow-400 drop-shadow-md">🏆 TOP 5 WINS <span id="loadingCloud"></span></h2>
-            <div id="leaderboardList" class="flex flex-col gap-2">
-                <!-- JS로 렌더링 -->
-            </div>
-        </div>
+  <!-- Game canvas -->
+  <canvas id="gameCanvas"></canvas>
+
+  <!-- ══════════════ SCREEN 0: LOGIN ══════════════ -->
+  <div id="s-login" class="screen">
+    <div style="margin-top:8vh;margin-bottom:24px;text-align:center;">
+      <div class="neon-title" style="font-size:clamp(2.2rem,8vw,3rem);">SISTER SQUAD</div>
+      <div class="neon-title" style="font-size:clamp(1.3rem,5vw,1.7rem);opacity:.85;">HYPER CURLING</div>
+      <div style="margin-top:8px;font-size:.75rem;letter-spacing:.2em;opacity:.35;font-weight:700;">⬡ ICE ARENA EDITION ⬡</div>
     </div>
 
-    <!-- 1. 팀 선택 화면 -->
-    <div id="teamSelectScreen" class="screen justify-center" style="display:none; transform: scale(1.05); opacity: 0;">
-        <div class="text-center mt-2 mb-6 shrink-0">
-            <h1 class="text-4xl sm:text-5xl font-black neon mb-2">TEAM SELECT</h1>
-            <p class="text-sm sm:text-lg opacity-80 font-bold">플레이할 진영을 선택하세요</p>
-        </div>
-        
-        <div class="flex flex-col gap-4 w-full max-w-sm mx-auto flex-1 min-h-[40vh] pb-4">
-            <div class="teamSelectCard fairy" onclick="selectTeam('fairy')">
-                <div class="teamImgBg" style="background-image: url('/images/fairyteam.jpg');"></div>
-                <div class="teamOverlay">
-                    <span class="text-3xl sm:text-4xl font-black text-white" style="text-shadow: 0 4px 10px rgba(236,72,153,0.8);">🧚 요정팀</span>
-                </div>
-            </div>
-
-            <div class="text-center text-xl font-black opacity-50 italic shrink-0 py-1">VS</div>
-
-            <div class="teamSelectCard dark" onclick="selectTeam('dark')">
-                <div class="teamImgBg" style="background-image: url('/images/darkteam.jpg');"></div>
-                <div class="teamOverlay">
-                    <span class="text-3xl sm:text-4xl font-black text-white" style="text-shadow: 0 4px 10px rgba(139,92,246,0.8);">🌑 어둠팀</span>
-                </div>
-            </div>
-        </div>
+    <div class="glass-hi" style="width:100%;max-width:340px;border-radius:28px;padding:24px;margin-bottom:20px;">
+      <div style="font-size:.7rem;font-weight:800;letter-spacing:.18em;opacity:.5;margin-bottom:10px;text-align:center;">PLAYER INITIALS (MAX 3)</div>
+      <input id="initialsInput" class="neon-input" maxlength="3" placeholder="ABC"
+        oninput="this.value=this.value.toUpperCase().replace(/[^A-Z]/g,'')"/>
+      <div style="height:14px;"></div>
+      <button class="btn-main btn-ice" onclick="submitInitials()">⬡ 접속하기</button>
     </div>
 
-    <!-- 2. 순서 선택 화면 -->
-    <div id="orderSelectScreen" class="screen" style="display:none; transform: scale(1.05); opacity: 0;">
-        <div class="text-center mt-2 mb-4 shrink-0">
-            <h1 class="text-2xl sm:text-3xl font-black text-white mb-1" id="orderSelectTitle">출전 순서 선택</h1>
-            <p class="text-xs sm:text-sm opacity-80">원하는 순서대로 4명의 영웅을 탭하세요.</p>
-        </div>
+    <!-- Leaderboard -->
+    <div class="glass" style="width:100%;max-width:340px;border-radius:24px;padding:20px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+        <div style="font-size:1.1rem;">🏆</div>
+        <div style="font-family:'Exo 2',sans-serif;font-weight:900;font-size:1rem;letter-spacing:.1em;">TOP 5 CHAMPIONS</div>
+        <div id="lbSpinner" style="margin-left:auto;font-size:.9rem;animation:spin 1s linear infinite;display:inline-block;">⟳</div>
+      </div>
+      <div id="leaderboardList" style="display:flex;flex-direction:column;gap:8px;"></div>
+    </div>
+  </div>
 
-        <div class="flex justify-between gap-2 mb-4 shrink-0 px-2" id="selectedSlots">
-            <!-- JS로 채워짐 -->
-        </div>
-
-        <div class="grid grid-cols-2 gap-3 mb-4 flex-1 overflow-y-auto" id="characterRoster">
-            <!-- JS로 채워짐 -->
-        </div>
-
-        <div class="shrink-0 pt-2 pb-4">
-            <button id="startGameBtn" class="btn bg-cyan-500 hover:bg-cyan-600 shadow-[0_0_20px_rgba(34,211,238,0.5)]" disabled onclick="startGame()">
-                출격! (GAME START)
-            </button>
-        </div>
+  <!-- ══════════════ SCREEN 1: TEAM SELECT ══════════════ -->
+  <div id="s-team" class="screen hidden">
+    <div style="text-align:center;margin-bottom:20px;margin-top:8px;">
+      <div class="neon-title" style="font-size:2.2rem;">TEAM SELECT</div>
+      <div style="font-size:.8rem;opacity:.5;letter-spacing:.1em;margin-top:4px;font-weight:700;">플레이할 진영을 선택하세요</div>
     </div>
 
-    <!-- 3. 인게임 UI -->
-    <div class="topUI" id="inGameUI" style="display:none;">
-        <div>
-            <div class="scoreBox">
-                <div class="text-xs font-black text-white/80 mb-1 tracking-wider">3판 2선승제 (BEST OF 3)</div>
-                <div class="flex items-center justify-between gap-5 mb-2">
-                    <div class="font-black text-pink-300 drop-shadow-md">🧚 요정팀</div>
-                    <div id="fairyScore" class="text-3xl font-black text-white">0</div>
-                </div>
-                <div class="flex items-center justify-between gap-5">
-                    <div class="font-black text-violet-300 drop-shadow-md">🌑 어둠팀</div>
-                    <div id="darkScore" class="text-3xl font-black text-white">0</div>
-                </div>
-            </div>
-            <div class="roundBox text-white" id="roundText">ROUND 1</div>
+    <div style="display:flex;flex-direction:column;gap:14px;width:100%;max-width:360px;flex:1;padding-bottom:16px;">
+      <div class="team-card fairy" onclick="selectTeam('fairy')">
+        <div class="team-bg" style="background-image:url('/images/fairyteam.jpg');"></div>
+        <div class="team-overlay" style="background:linear-gradient(to top,rgba(255,77,166,.6) 0%,rgba(0,0,0,.3) 50%,transparent 100%);">
+          <div class="team-label" style="color:#fff;text-shadow:0 0 30px rgba(255,77,166,.9);">🧚 요정팀</div>
+          <div class="team-sub" style="color:rgba(255,200,220,.8);">FAIRY SQUAD</div>
         </div>
-        <div class="glass turnBox" id="turnBox">요정팀 TURN</div>
+      </div>
+
+      <div class="vs-badge" style="text-align:center;">— VS —</div>
+
+      <div class="team-card dark" onclick="selectTeam('dark')">
+        <div class="team-bg" style="background-image:url('/images/darkteam.jpg');"></div>
+        <div class="team-overlay" style="background:linear-gradient(to top,rgba(155,92,255,.6) 0%,rgba(0,0,0,.3) 50%,transparent 100%);">
+          <div class="team-label" style="color:#fff;text-shadow:0 0 30px rgba(155,92,255,.9);">🌑 어둠팀</div>
+          <div class="team-sub" style="color:rgba(200,180,255,.8);">DARK SQUAD</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ SCREEN 2: ORDER SELECT ══════════════ -->
+  <div id="s-order" class="screen hidden">
+    <div style="text-align:center;margin-bottom:16px;">
+      <div id="orderTitle" style="font-family:'Exo 2',sans-serif;font-size:1.5rem;font-weight:900;font-style:italic;">출전 순서 선택</div>
+      <div style="font-size:.72rem;opacity:.45;letter-spacing:.08em;margin-top:4px;font-weight:700;">원하는 순서대로 4명의 영웅을 탭하세요</div>
     </div>
 
-    <canvas id="gameCanvas"></canvas>
+    <!-- Slots row -->
+    <div id="slotRow" style="display:flex;gap:8px;width:100%;max-width:340px;margin-bottom:16px;"></div>
 
-    <div class="bottomGuide" id="bottomGuide" style="display:none;">
-        <div class="glass guideBox" id="guideText">
-            🎯 뒤로 당겨 발사!
-        </div>
+    <!-- Character roster -->
+    <div id="rosterGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:340px;flex:1;overflow-y:auto;"></div>
+
+    <div style="width:100%;max-width:340px;padding-top:14px;">
+      <button id="startBtn" class="btn-main btn-start" disabled onclick="startGame()">
+        ⚡ 출격! GAME START
+      </button>
     </div>
+  </div>
 
-    <!-- 캐릭터 스킬 컷인 카드 -->
-    <div id="characterCard" class="characterCard glass"></div>
-    <div id="reaction" class="reaction"></div>
-
-    <!-- 결과 모달 -->
-    <div id="winnerModal">
-        <div class="glass modalCard">
-            <div id="winnerEmoji" class="text-7xl mb-4">🏆</div>
-            <div id="winnerTitle" class="winTitle neon">GAME SET</div>
-            <div id="winnerDesc" class="text-xl opacity-80 mb-6">승리!</div>
-            <button class="btn bg-white/20 hover:bg-white/30 text-white border border-white/40 shadow-lg" onclick="resetToMain()">
-                처음으로 (메뉴)
-            </button>
+  <!-- ══════════════ IN-GAME UI ══════════════ -->
+  <div id="inGameUI" style="display:none;">
+    <div>
+      <div class="score-card">
+        <div class="badge-label">BEST OF 3 — ROUND WINS</div>
+        <div class="score-row" style="margin-bottom:6px;">
+          <div class="score-label" style="color:var(--c-fairy);">🧚 요정팀</div>
+          <div class="score-num" id="fairyScore">0</div>
         </div>
+        <div class="neon-line"></div>
+        <div class="score-row" style="margin-top:6px;">
+          <div class="score-label" style="color:var(--c-dark);">🌑 어둠팀</div>
+          <div class="score-num" id="darkScore">0</div>
+        </div>
+        <!-- Stone dots -->
+        <div style="display:flex;justify-content:space-between;margin-top:10px;">
+          <div class="stone-dots" id="fairyDots"></div>
+          <div class="stone-dots" id="darkDots"></div>
+        </div>
+      </div>
+      <div class="round-badge" id="roundText">ROUND 1</div>
     </div>
+    <div>
+      <div class="turn-badge glass-hi" id="turnBox">🧚 요정팀 TURN</div>
+    </div>
+  </div>
 
-</div>
+  <!-- Power meter -->
+  <div id="powerMeter">
+    <div class="power-label">POWER</div>
+    <div class="power-bar-bg"><div class="power-bar-fill" id="powerFill" style="width:0%;"></div></div>
+  </div>
+
+  <!-- Guide -->
+  <div id="bottomGuide"><div class="guide-pill" id="guideText">🎯 뒤로 당겨 발사!</div></div>
+
+  <!-- Character cutin -->
+  <div id="characterCard"></div>
+
+  <!-- Reaction -->
+  <div id="reaction"></div>
+
+  <!-- Winner modal -->
+  <div id="winnerModal" style="display:none;justify-content:center;align-items:center;">
+    <div class="modal-card">
+      <span class="modal-emoji" id="winEmoji">🏆</span>
+      <div class="modal-title" id="winTitle">GAME SET</div>
+      <div class="modal-desc" id="winDesc">승리!</div>
+      <button class="btn-reset" onclick="resetToMain()">↩ 처음으로 (메뉴)</button>
+    </div>
+  </div>
+
+</div><!-- /gameWrap -->
+
+<style>
+@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+</style>
 
 <script>
-const canvas=document.getElementById('gameCanvas');
-const ctx=canvas.getContext('2d');
-
-const LOGICAL_W=520;
-const LOGICAL_H=900;
-canvas.width=LOGICAL_W;
-canvas.height=LOGICAL_H;
-
-const HOUSE={x:LOGICAL_W/2, y:210, r:150};
-const START={x:LOGICAL_W/2, y:760};
-const STONE_R=22;
-
-const reactionTexts=["GO GO GO!!","하이퍼 샷!!","밀어붙여!!","슈퍼 컬링!!","나이스 샷!!","빙판을 지배해!!","POWER SWEEP!!","레츠 고!!!"];
-
-// Supabase DB 정보
+// ══════════════════════════════════════════════════════
+// CONFIG
+// ══════════════════════════════════════════════════════
 const SUPA_URL = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
 const SUPA_KEY = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
-const TABLE_NAME = 'curling_ranking'; // 컬링 전용 테이블 이름 적용
+const TABLE_NAME = 'curling_ranking';
 
-// 캐릭터 설정
-const TEAMS={
-    fairy:{
-        id:'fairy', name:'요정팀', color:'#f472b6', border:'#ec4899', icon:'🧚',
-        members:[
-            {name:'프리티', img:'/images/pretty.jpg', skill:'스타라이트 드라이브'},
-            {name:'큐티', img:'/images/cuty.jpg', skill:'핑크 스파클 샷'},
-            {name:'브룩', img:'/images/brook.png', skill:'아쿠아 스핀'},
-            {name:'엘리온', img:'/images/grandmagic.png', skill:'문라이트 커브'}
-        ]
-    },
-    dark:{
-        id:'dark', name:'어둠팀', color:'#8b5cf6', border:'#7c3aed', icon:'🌑',
-        members:[
-            {name:'어둠기사', img:'/images/darknight.png', skill:'다크 슬래시'},
-            {name:'베인', img:'/images/bain.jpg', skill:'쉐도우 크래시'},
-            {name:'크라운', img:'/images/crown.jpg', skill:'킹덤 임팩트'},
-            {name:'천사', img:'/images/angel.jpeg', skill:'폴른 윙 스핀'}
-        ]
+const LOGICAL_W = 520, LOGICAL_H = 900;
+const HOUSE = { x: LOGICAL_W / 2, y: 210, r: 150 };
+const START = { x: LOGICAL_W / 2, y: 770 };
+const STONE_R = 22;
+
+const REACTIONS = [
+  "HYPER SHOT!!","빙판을 지배해!!","GO GO GO!!","POWER SWEEP!!",
+  "슈퍼 컬링!!","레츠 고!!!","ICE BREAKER!!","나이스 샷!!"
+];
+
+const TEAMS = {
+  fairy:{
+    id:'fairy',name:'요정팀',color:'#ff4da6',border:'#ff80c8',icon:'🧚',
+    members:[
+      {name:'프리티',img:'/images/pretty.jpg',skill:'스타라이트 드라이브'},
+      {name:'큐티',img:'/images/cuty.jpg',skill:'핑크 스파클 샷'},
+      {name:'브룩',img:'/images/brook.png',skill:'아쿠아 스핀'},
+      {name:'엘리온',img:'/images/grandmagic.png',skill:'문라이트 커브'}
+    ]
+  },
+  dark:{
+    id:'dark',name:'어둠팀',color:'#9b5cff',border:'#c09aff',icon:'🌑',
+    members:[
+      {name:'어둠기사',img:'/images/darknight.png',skill:'다크 슬래시'},
+      {name:'베인',img:'/images/bain.jpg',skill:'쉐도우 크래시'},
+      {name:'크라운',img:'/images/crown.jpg',skill:'킹덤 임팩트'},
+      {name:'천사',img:'/images/angel.jpeg',skill:'폴른 윙 스핀'}
+    ]
+  }
+};
+
+// ══════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════
+let state = {
+  phase:'setup',
+  playerInitials:'',
+  stones:[],
+  currentTeam:null,
+  playerTeam:null,
+  aiTeam:null,
+  playerOrder:[],
+  aiOrder:[0,1,2,3],
+  fairyWins:0, darkWins:0,
+  round:1,
+  stonesLeft:{fairy:4,dark:4},
+  activeStone:null,
+  dragging:false,
+  dragStart:null,
+  dragNow:null,
+  isAiTurn:false
+};
+
+// ══════════════════════════════════════════════════════
+// CANVAS SETUP
+// ══════════════════════════════════════════════════════
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+canvas.width = LOGICAL_W;
+canvas.height = LOGICAL_H;
+
+const pCanvas = document.getElementById('particleCanvas');
+const pCtx = pCanvas.getContext('2d');
+pCanvas.width = LOGICAL_W;
+pCanvas.height = LOGICAL_H;
+
+// sync sizes on resize
+function syncCanvasSize(){
+  const wrap = document.getElementById('gameWrap');
+  const w = wrap.clientWidth, h = wrap.clientHeight;
+  [canvas, pCanvas].forEach(c => {
+    c.style.width = w + 'px';
+    c.style.height = h + 'px';
+  });
+}
+syncCanvasSize();
+window.addEventListener('resize', syncCanvasSize);
+
+// ══════════════════════════════════════════════════════
+// PARTICLES
+// ══════════════════════════════════════════════════════
+const particles = [];
+
+class Particle {
+  constructor(x, y, color, type = 'trail') {
+    this.x = x; this.y = y; this.color = color;
+    this.type = type;
+    if (type === 'spark') {
+      this.vx = (Math.random() - .5) * 12;
+      this.vy = (Math.random() - .5) * 12;
+      this.life = 1; this.decay = .06 + Math.random() * .05;
+      this.size = 3 + Math.random() * 4;
+    } else {
+      this.vx = (Math.random() - .5) * 1.5;
+      this.vy = (Math.random() - .5) * 1.5;
+      this.life = 1; this.decay = .025 + Math.random() * .02;
+      this.size = 4 + Math.random() * 6;
     }
-};
+  }
+  update() {
+    this.x += this.vx; this.y += this.vy;
+    this.life -= this.decay;
+    this.vx *= .94; this.vy *= .94;
+    this.size *= .97;
+  }
+  draw(c) {
+    c.save();
+    c.globalAlpha = Math.max(0, this.life);
+    if (this.type === 'spark') {
+      c.fillStyle = this.color;
+      c.shadowColor = this.color;
+      c.shadowBlur = 8;
+      c.beginPath();
+      c.arc(this.x, this.y, this.size / 2, 0, Math.PI * 2);
+      c.fill();
+    } else {
+      c.fillStyle = this.color;
+      c.shadowColor = this.color;
+      c.shadowBlur = 12;
+      c.beginPath();
+      c.arc(this.x, this.y, this.size / 2, 0, Math.PI * 2);
+      c.fill();
+    }
+    c.restore();
+  }
+}
 
-let state={
-    phase: 'setup',
-    playerInitials: '',
-    stones:[],
-    currentTeam:null,
-    playerTeam:null,
-    aiTeam:null,
-    playerOrder:[], 
-    aiOrder:[0, 1, 2, 3],
-    fairyWins:0,
-    darkWins:0,
-    round:1,
-    stonesLeft:{fairy:4, dark:4},
-    activeStone:null,
-    dragging:false,
-    dragStart:null,
-    dragNow:null,
-    isAiTurn: false
-};
+function spawnSparks(x, y, color, count = 14) {
+  for (let i = 0; i < count; i++) particles.push(new Particle(x, y, color, 'spark'));
+}
 
-// ==========================================
-// DB 및 리더보드 로직
-// ==========================================
+function updateParticles() {
+  for (let i = particles.length - 1; i >= 0; i--) {
+    particles[i].update();
+    if (particles[i].life <= 0) particles.splice(i, 1);
+  }
+}
 
+function drawParticles() {
+  pCtx.clearRect(0, 0, LOGICAL_W, LOGICAL_H);
+  particles.forEach(p => p.draw(pCtx));
+}
+
+// ══════════════════════════════════════════════════════
+// SCREEN TRANSITIONS
+// ══════════════════════════════════════════════════════
+function showScreen(id) {
+  ['s-login','s-team','s-order'].forEach(s => {
+    const el = document.getElementById(s);
+    if (s === id) {
+      el.style.display = 'flex';
+      requestAnimationFrame(() => { el.classList.remove('hidden','out'); });
+    } else if (!el.classList.contains('hidden')) {
+      el.classList.add('out');
+      setTimeout(() => { el.style.display = 'none'; el.classList.remove('out'); }, 450);
+    }
+  });
+}
+
+// ══════════════════════════════════════════════════════
+// LEADERBOARD
+// ══════════════════════════════════════════════════════
 async function loadLeaderboard() {
-    const listEl = document.getElementById('leaderboardList');
-    const loadingCloud = document.getElementById('loadingCloud');
-    if(loadingCloud) loadingCloud.innerText = "🔄";
-    
-    try {
-        const res = await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?select=*&order=wins.desc&limit=5`, {
-            headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}` }
-        });
-        if (!res.ok) throw new Error("DB 연결 에러");
-        const data = await res.json();
-        
-        if(loadingCloud) loadingCloud.innerText = "";
-        listEl.innerHTML = '';
-        
-        if (!Array.isArray(data) || data.length === 0) {
-            listEl.innerHTML = '<div class="text-center opacity-50 py-4 font-bold text-sm">아직 등록된 챔피언이 없습니다.</div>';
-            return;
-        }
-        
-        data.forEach((entry, index) => {
-            let medal = `<span class="opacity-50 text-sm ml-1">${index+1}</span>`;
-            if(index === 0) medal = '🥇';
-            else if(index === 1) medal = '🥈';
-            else if(index === 2) medal = '🥉';
-
-            listEl.innerHTML += `
-                <div class="flex justify-between items-center bg-white/10 rounded-xl p-3 border border-white/5">
-                    <div class="flex items-center gap-3">
-                        <div class="w-6 text-center text-xl">${medal}</div>
-                        <div class="font-bold tracking-widest text-lg">${entry.initials}</div>
-                    </div>
-                    <div class="font-black text-cyan-300">${entry.wins} WINS</div>
-                </div>
-            `;
-        });
-    } catch (e) {
-        console.error('랭킹 불러오기 실패:', e);
-        if(loadingCloud) loadingCloud.innerText = "⚠";
-        listEl.innerHTML = '<div class="text-center opacity-50 py-4 font-bold text-sm">DB 연결에 실패했습니다.<br>Supabase 테이블 설정을 확인해주세요.</div>';
+  const list = document.getElementById('leaderboardList');
+  const spin = document.getElementById('lbSpinner');
+  list.innerHTML = '<div class="shimmer"></div><div class="shimmer" style="height:36px;margin-top:8px;"></div>';
+  try {
+    const res = await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?select=*&order=wins.desc&limit=5`,
+      { headers:{ apikey:SUPA_KEY, Authorization:`Bearer ${SUPA_KEY}` }});
+    const data = await res.json();
+    if(spin) spin.style.display = 'none';
+    list.innerHTML = '';
+    if (!data.length) {
+      list.innerHTML = '<div style="text-align:center;opacity:.35;font-size:.85rem;padding:12px;">아직 등록된 챔피언이 없습니다.</div>';
+      return;
     }
+    const medals = ['🥇','🥈','🥉'];
+    data.forEach((e, i) => {
+      list.innerHTML += `
+        <div class="lb-row">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="lb-medal">${medals[i] || (i+1)}</div>
+            <div class="lb-initials">${e.initials}</div>
+          </div>
+          <div class="lb-wins">${e.wins} WINS</div>
+        </div>`;
+    });
+  } catch {
+    if(spin) spin.textContent = '⚠';
+    list.innerHTML = '<div style="text-align:center;opacity:.35;font-size:.8rem;padding:12px;">DB 연결 실패</div>';
+  }
 }
 
-async function recordWinToLeaderboard() {
-    if (!state.playerInitials) return 0;
-    try {
-        const getRes = await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?initials=eq.${state.playerInitials}`, {
-            headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}` }
-        });
-        const existingData = await getRes.json();
-        let newWins = 1;
-        
-        if (existingData && existingData.length > 0) {
-            newWins = existingData[0].wins + 1;
-            await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?initials=eq.${state.playerInitials}`, {
-                method: 'PATCH',
-                headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ wins: newWins })
-            });
-        } else {
-            await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}`, {
-                method: 'POST',
-                headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ initials: state.playerInitials, wins: 1 })
-            });
-        }
-        
-        // 랭킹 바로 새로고침
-        loadLeaderboard();
-        return newWins;
-    } catch (err) {
-        console.error("랭킹 업데이트 실패:", err);
-        return 0;
+async function recordWin() {
+  if (!state.playerInitials) return 0;
+  try {
+    const r = await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?initials=eq.${state.playerInitials}`,
+      { headers:{ apikey:SUPA_KEY, Authorization:`Bearer ${SUPA_KEY}` }});
+    const existing = await r.json();
+    let wins = 1;
+    if (existing.length > 0) {
+      wins = existing[0].wins + 1;
+      await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?initials=eq.${state.playerInitials}`, {
+        method:'PATCH',
+        headers:{ apikey:SUPA_KEY, Authorization:`Bearer ${SUPA_KEY}`, 'Content-Type':'application/json' },
+        body: JSON.stringify({ wins })
+      });
+    } else {
+      await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}`, {
+        method:'POST',
+        headers:{ apikey:SUPA_KEY, Authorization:`Bearer ${SUPA_KEY}`, 'Content-Type':'application/json' },
+        body: JSON.stringify({ initials: state.playerInitials, wins: 1 })
+      });
     }
+    loadLeaderboard();
+    return wins;
+  } catch { return 0; }
 }
 
-
-// ==========================================
-// 설정 및 UI 로직
-// ==========================================
-
+// ══════════════════════════════════════════════════════
+// SETUP FLOW
+// ══════════════════════════════════════════════════════
 function submitInitials() {
-    const input = document.getElementById('initialsInput');
-    const val = input.value.trim();
-    if(!val) {
-        alert("이니셜을 입력해주세요!");
-        input.focus();
-        return;
-    }
-    state.playerInitials = val;
-
-    const screen = document.getElementById('loginScreen');
-    screen.style.opacity = '0';
-    screen.style.pointerEvents = 'none';
-
-    setTimeout(() => {
-        screen.style.display = 'none';
-        const teamScreen = document.getElementById('teamSelectScreen');
-        teamScreen.style.display = 'flex';
-        void teamScreen.offsetWidth;
-        teamScreen.style.opacity = '1';
-        teamScreen.style.transform = 'scale(1)';
-        teamScreen.style.pointerEvents = 'auto';
-    }, 400);
+  const val = document.getElementById('initialsInput').value.trim();
+  if (!val) { document.getElementById('initialsInput').focus(); return; }
+  state.playerInitials = val;
+  showScreen('s-team');
 }
 
 function selectTeam(teamId) {
-    state.playerTeam = TEAMS[teamId];
-    state.aiTeam = teamId === 'fairy' ? TEAMS.dark : TEAMS.fairy;
-    
-    const teamScreen = document.getElementById('teamSelectScreen');
-    const orderScreen = document.getElementById('orderSelectScreen');
-
-    teamScreen.style.opacity = '0';
-    teamScreen.style.pointerEvents = 'none';
-    
-    setTimeout(() => {
-        teamScreen.style.display = 'none';
-        
-        document.getElementById('orderSelectTitle').innerHTML = `${state.playerTeam.icon} ${state.playerTeam.name} 출전 순서`;
-        document.getElementById('orderSelectTitle').style.color = state.playerTeam.color;
-
-        orderScreen.style.display = 'flex';
-        void orderScreen.offsetWidth;
-        orderScreen.style.opacity = '1';
-        orderScreen.style.transform = 'scale(1)';
-        orderScreen.style.pointerEvents = 'auto';
-        
-        renderOrderSelectUI();
-    }, 400);
+  state.playerTeam = TEAMS[teamId];
+  state.aiTeam = teamId === 'fairy' ? TEAMS.dark : TEAMS.fairy;
+  document.getElementById('orderTitle').textContent = `${state.playerTeam.icon} ${state.playerTeam.name} 출전 순서`;
+  document.getElementById('orderTitle').style.color = state.playerTeam.color;
+  state.playerOrder = [];
+  renderOrderUI();
+  showScreen('s-order');
 }
 
-function renderOrderSelectUI() {
-    const slots = document.getElementById('selectedSlots');
-    slots.innerHTML = '';
-    for(let i=0; i<4; i++) {
-        let content = '';
-        let borderStyle = '';
-        if (state.playerOrder[i] !== undefined) {
-            const member = state.playerTeam.members[state.playerOrder[i]];
-            const imgFallback = `onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\'><rect width=\\'100%\\' height=\\'100%\\' fill=\\'%23666\\'/><text x=\\'50%\\' y=\\'50%\\' font-size=\\'12\\' text-anchor=\\'middle\\' alignment-baseline=\\'middle\\' fill=\\'white\\'>이미지</text></svg>'"`;
-            content = `<img src="${member.img}" class="orderSlotImg" alt="${member.name}" ${imgFallback}>`;
-            borderStyle = `border-style: solid; border-color: ${state.playerTeam.color}; box-shadow: 0 0 12px ${state.playerTeam.color}80;`;
-        }
-        slots.innerHTML += `
-            <div class="orderSlot" style="${borderStyle}">
-                ${content ? content : `<span class="opacity-30 text-2xl font-bold">${i+1}</span>`}
-            </div>
-        `;
+function renderOrderUI() {
+  // Slots
+  const slotRow = document.getElementById('slotRow');
+  slotRow.innerHTML = '';
+  for (let i = 0; i < 4; i++) {
+    const div = document.createElement('div');
+    div.className = 'order-slot' + (state.playerOrder[i] !== undefined ? ' filled' : '');
+    if (state.playerOrder[i] !== undefined) {
+      div.style.borderColor = state.playerTeam.color;
+      const m = state.playerTeam.members[state.playerOrder[i]];
+      div.innerHTML = `<img src="${m.img}" alt="${m.name}" onerror="this.src=''" style="width:100%;height:100%;object-fit:cover;">`;
+    } else {
+      div.innerHTML = `<span style="font-family:'Exo 2',sans-serif;font-size:1.4rem;font-weight:900;color:rgba(255,255,255,.3);">${i+1}</span>`;
     }
+    slotRow.appendChild(div);
+  }
 
-    const roster = document.getElementById('characterRoster');
-    roster.innerHTML = '';
-    state.playerTeam.members.forEach((member, index) => {
-        const isSelected = state.playerOrder.includes(index);
-        const imgFallback = `onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\'><rect width=\\'100%\\' height=\\'100%\\' fill=\\'%23666\\'/></svg>'"`;
+  // Roster
+  const roster = document.getElementById('rosterGrid');
+  roster.innerHTML = '';
+  state.playerTeam.members.forEach((m, idx) => {
+    const isSelected = state.playerOrder.includes(idx);
+    const div = document.createElement('div');
+    div.className = 'char-btn' + (isSelected ? ' sel' : '');
+    div.onclick = () => pickChar(idx);
+    div.innerHTML = `
+      <img src="${m.img}" class="char-portrait" alt="${m.name}" onerror="this.src=''">
+      <div style="font-weight:800;font-size:.95rem;">${m.name}</div>
+      <div style="font-size:.68rem;opacity:.5;font-weight:700;letter-spacing:.04em;">${m.skill}</div>
+    `;
+    roster.appendChild(div);
+  });
 
-        roster.innerHTML += `
-            <div class="charSelectBtn ${isSelected ? 'selected' : ''}" onclick="pickCharacter(${index})">
-                <img src="${member.img}" class="selectPortrait" alt="${member.name}" ${imgFallback}>
-                <div class="font-bold text-base sm:text-lg">${member.name}</div>
-                <div class="text-[11px] sm:text-xs opacity-70 mt-1 truncate w-full px-1">${member.skill}</div>
-            </div>
-        `;
-    });
-
-    const startBtn = document.getElementById('startGameBtn');
-    if(state.playerOrder.length === 4) {
-        startBtn.disabled = false;
-        startBtn.classList.add('animate-bounce');
-    }
+  const btn = document.getElementById('startBtn');
+  btn.disabled = state.playerOrder.length < 4;
+  if (state.playerOrder.length === 4) btn.style.animation = 'pulseBadge 1.5s infinite';
+  else btn.style.animation = 'none';
 }
 
-function pickCharacter(index) {
-    if (state.playerOrder.length < 4 && !state.playerOrder.includes(index)) {
-        state.playerOrder.push(index);
-        renderOrderSelectUI();
-    }
+function pickChar(idx) {
+  if (state.playerOrder.length >= 4 || state.playerOrder.includes(idx)) return;
+  state.playerOrder.push(idx);
+  renderOrderUI();
 }
 
 function startGame() {
-    const orderScreen = document.getElementById('orderSelectScreen');
-    orderScreen.style.opacity = '0';
-    orderScreen.style.transform = 'scale(1.1)';
-    orderScreen.style.pointerEvents = 'none';
-    
-    setTimeout(() => {
-        orderScreen.style.display = 'none';
-        document.getElementById('inGameUI').style.display = 'flex';
-        document.getElementById('bottomGuide').style.display = 'flex';
-        
-        state.currentTeam = state.playerTeam;
-        state.phase = 'aim';
-        spawnStone();
-    }, 400);
+  showScreen('');
+  setTimeout(() => {
+    document.getElementById('inGameUI').style.display = 'flex';
+    document.getElementById('bottomGuide').style.display = 'flex';
+    state.currentTeam = state.playerTeam;
+    state.phase = 'aim';
+    spawnStone();
+  }, 400);
 }
 
+// ══════════════════════════════════════════════════════
+// STONE CLASS
+// ══════════════════════════════════════════════════════
+class Stone {
+  constructor(x, y, team) {
+    this.x = x; this.y = y; this.vx = 0; this.vy = 0;
+    this.team = team; this.r = STONE_R; this.move = false;
+    this.trail = [];
+  }
+  draw() {
+    // Trail
+    this.trail.forEach((t, i) => {
+      const alpha = (i / this.trail.length) * 0.35;
+      const size = this.r * (i / this.trail.length) * 0.7;
+      ctx.beginPath();
+      ctx.arc(t.x, t.y, size, 0, Math.PI * 2);
+      ctx.fillStyle = this.team.color;
+      ctx.globalAlpha = alpha;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    });
 
-// ==========================================
-// 인게임 클래스 및 로직
-// ==========================================
+    // Shadow
+    ctx.beginPath();
+    ctx.arc(this.x + 5, this.y + 6, this.r, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(0,0,0,.22)';
+    ctx.fill();
 
-class Stone{
-    constructor(x,y,team){
-        this.x=x; this.y=y; this.vx=0; this.vy=0;
-        this.team=team; this.r=STONE_R; this.move=false;
+    // Body gradient
+    const grad = ctx.createRadialGradient(this.x - 7, this.y - 7, 2, this.x, this.y, this.r);
+    grad.addColorStop(0, '#fff');
+    grad.addColorStop(.25, this.team.color);
+    grad.addColorStop(1, this.team.border);
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    // Rim glow
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = 'rgba(255,255,255,.6)';
+    ctx.stroke();
+
+    // Outer glow
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r + 4, 0, Math.PI * 2);
+    ctx.strokeStyle = this.team.color;
+    ctx.lineWidth = 1.5;
+    ctx.globalAlpha = .35;
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+
+    // Icon
+    ctx.font = '20px serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#fff';
+    ctx.fillText(this.team.icon, this.x, this.y + 2);
+  }
+  update() {
+    const speed = Math.hypot(this.vx, this.vy);
+    if (speed > .05) {
+      this.move = true;
+
+      // Save trail
+      this.trail.push({ x: this.x, y: this.y });
+      if (this.trail.length > 10) this.trail.shift();
+
+      // Emit trail particles
+      if (Math.random() < .4) {
+        particles.push(new Particle(this.x + (Math.random()-.5)*8, this.y + (Math.random()-.5)*8, this.team.color + '88'));
+      }
+
+      const friction = .022;
+      const ns = Math.max(0, speed - friction);
+      this.vx *= ns / speed; this.vy *= ns / speed;
+      this.x += this.vx; this.y += this.vy;
+
+      if (this.x - this.r < 0) { this.x = this.r; this.vx *= -.85; spawnSparks(this.x, this.y, this.team.color); }
+      if (this.x + this.r > LOGICAL_W) { this.x = LOGICAL_W - this.r; this.vx *= -.85; spawnSparks(this.x, this.y, this.team.color); }
+      if (this.y - this.r < 0) { this.y = this.r; this.vy *= -.85; spawnSparks(this.x, this.y, this.team.color); }
+      if (this.y + this.r > LOGICAL_H) { this.y = LOGICAL_H - this.r; this.vy *= -.85; spawnSparks(this.x, this.y, this.team.color); }
+    } else {
+      this.vx = 0; this.vy = 0; this.move = false; this.trail = [];
     }
-    draw(){
-        ctx.beginPath(); ctx.arc(this.x+5,this.y+5,this.r,0,Math.PI*2); ctx.fillStyle='rgba(0,0,0,.18)'; ctx.fill();
-
-        const grad=ctx.createRadialGradient(this.x-5,this.y-5,5, this.x,this.y,this.r);
-        grad.addColorStop(0,'#fff');
-        grad.addColorStop(.3,this.team.color);
-        grad.addColorStop(1,this.team.border);
-
-        ctx.beginPath(); ctx.arc(this.x,this.y,this.r,0,Math.PI*2); ctx.fillStyle=grad; ctx.fill();
-
-        ctx.lineWidth=4; ctx.strokeStyle='rgba(255,255,255,.8)'; ctx.stroke();
-
-        ctx.font='22px serif'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillStyle = '#fff';
-        ctx.fillText(this.team.icon,this.x,this.y+2);
-    }
-    update(){
-        const speed=Math.hypot(this.vx,this.vy);
-        if(speed>.05){
-            this.move=true;
-            const friction=.025;
-            const ns=Math.max(0,speed-friction);
-            this.vx*=ns/speed; this.vy*=ns/speed;
-            this.x+=this.vx; this.y+=this.vy;
-
-            if(this.x-this.r<0){ this.x=this.r; this.vx*=-.88; }
-            if(this.x+this.r>LOGICAL_W){ this.x=LOGICAL_W-this.r; this.vx*=-.88; }
-            if(this.y-this.r<0){ this.y=this.r; this.vy*=-.88; }
-            if(this.y+this.r>LOGICAL_H){ this.y=LOGICAL_H-this.r; this.vy*=-.88; }
-        } else {
-            this.vx=0; this.vy=0; this.move=false;
-        }
-    }
+  }
 }
 
-function showReaction(){
-    const el=document.getElementById('reaction');
-    el.innerText=reactionTexts[Math.floor(Math.random()*reactionTexts.length)];
-    el.classList.remove('show'); void el.offsetWidth; el.classList.add('show');
-}
-
+// ══════════════════════════════════════════════════════
+// GAME LOGIC
+// ══════════════════════════════════════════════════════
 function getActiveMember() {
-    const turnNum = 4 - state.stonesLeft[state.currentTeam.id];
-    if (state.currentTeam.id === state.playerTeam.id) {
-        return state.currentTeam.members[state.playerOrder[turnNum]];
-    } else {
-        return state.currentTeam.members[state.aiOrder[turnNum]];
+  const turn = 4 - state.stonesLeft[state.currentTeam.id];
+  if (state.currentTeam.id === state.playerTeam.id)
+    return state.currentTeam.members[state.playerOrder[turn]];
+  return state.currentTeam.members[state.aiOrder[turn]];
+}
+
+function showCharCard() {
+  const card = document.getElementById('characterCard');
+  const team = state.currentTeam;
+  const m = getActiveMember();
+  const borderGlow = `0 0 0 3px ${team.color}, 0 0 40px ${team.color}80`;
+
+  card.style.background = team.id === 'fairy'
+    ? 'linear-gradient(145deg,rgba(255,77,166,.25),rgba(4,9,28,.92))'
+    : 'linear-gradient(145deg,rgba(155,92,255,.25),rgba(4,9,28,.92))';
+  card.style.boxShadow = borderGlow + ', 0 30px 70px rgba(0,0,0,.7)';
+
+  card.innerHTML = `
+    <div class="card-portrait-wrap" style="background:linear-gradient(135deg,${team.color},${team.border});">
+      <img class="card-portrait" src="${m.img}" alt="${m.name}" onerror="this.src=''">
+    </div>
+    <div class="card-name" style="color:${team.color};text-shadow:0 0 24px ${team.color}60;">${m.name}</div>
+    <div class="card-team">${team.icon} ${team.name}</div>
+    <div class="card-skill">⚡ ${m.skill}</div>
+  `;
+  card.classList.add('show');
+  setTimeout(() => card.classList.remove('show'), 1700);
+}
+
+function showReaction() {
+  const el = document.getElementById('reaction');
+  el.textContent = REACTIONS[Math.floor(Math.random() * REACTIONS.length)];
+  const colors = ['#ff4da6','#00f0ff','#ffd447','#9b5cff'];
+  el.style.color = colors[Math.floor(Math.random() * colors.length)];
+  el.style.textShadow = `0 0 30px ${colors[0]}`;
+  el.classList.remove('show');
+  void el.offsetWidth;
+  el.classList.add('show');
+}
+
+function updateStoneDots() {
+  ['fairy','dark'].forEach(id => {
+    const el = document.getElementById(id + 'Dots');
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < 4; i++) {
+      const d = document.createElement('div');
+      d.className = 'stone-dot' + (i < state.stonesLeft[id] ? ' active' : '');
+      el.appendChild(d);
     }
+  });
 }
 
-function showCharacterCard(){
-    const card=document.getElementById('characterCard');
-    const team=state.currentTeam;
-    const member = getActiveMember();
+function updateUI() {
+  document.getElementById('fairyScore').textContent = state.fairyWins;
+  document.getElementById('darkScore').textContent = state.darkWins;
+  document.getElementById('roundText').textContent = `ROUND ${state.round}`;
+  updateStoneDots();
 
-    const imgFallback = `onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\'><rect width=\\'100%\\' height=\\'100%\\' fill=\\'%23666\\'/></svg>'"`;
+  const turn = document.getElementById('turnBox');
+  const guide = document.getElementById('guideText');
+  turn.textContent = `${state.currentTeam.icon} ${state.currentTeam.name} TURN`;
+  turn.style.background = state.currentTeam.id === 'fairy'
+    ? 'rgba(255,77,166,.82)' : 'rgba(155,92,255,.82)';
 
-    card.innerHTML=`
-        <div class="characterImageWrapper" style="box-shadow: 0 0 30px ${team.color}80;">
-            <img src="${member.img}" class="characterPortrait" alt="${member.name}" ${imgFallback} />
-        </div>
-        <div class="characterName" style="color: ${team.color}; text-shadow: 2px 2px 0px #fff;">${member.name}</div>
-        <div class="characterRole">${team.icon} ${team.name}</div>
-        <div class="characterSkill">⚡ ${member.skill}</div>
-    `;
-    
-    card.style.background = team.id === 'fairy'
-        ? `linear-gradient(135deg, rgba(244,114,182,.4), rgba(15,23,42,.8))`
-        : `linear-gradient(135deg, rgba(139,92,246,.4), rgba(15,23,42,.8))`;
-    card.style.borderColor = team.color;
-    
-    card.classList.add('show');
-    setTimeout(()=> card.classList.remove('show'), 1600);
+  if (state.isAiTurn) {
+    guide.innerHTML = "🤖 <span style='opacity:.7'>상대방이 조준 중...</span>";
+  } else {
+    guide.textContent = "🎯 뒤로 당겨 발사!";
+  }
 }
 
-function updateUI(){
-    document.getElementById('fairyScore').innerText=state.fairyWins;
-    document.getElementById('darkScore').innerText=state.darkWins;
-    document.getElementById('roundText').innerText=`ROUND ${state.round}`;
-
-    const turnBox=document.getElementById('turnBox');
-    const guideText=document.getElementById('guideText');
-
-    turnBox.innerHTML=`${state.currentTeam.icon} ${state.currentTeam.name} TURN`;
-    turnBox.style.background= state.currentTeam.id==='fairy' ?'rgba(236,72,153,.78)' :'rgba(124,58,237,.78)';
-
-    if (state.isAiTurn) {
-        guideText.innerHTML = "🤖 <span style='opacity:0.8'>상대방이 조준 중입니다...</span>";
-        guideText.parentElement.style.opacity = '0.7';
-    } else {
-        guideText.innerText = "🎯 뒤로 당겨 발사!";
-        guideText.parentElement.style.opacity = '1';
-    }
+function spawnStone() {
+  if (state.stonesLeft[state.currentTeam.id] <= 0) { endRound(); return; }
+  state.activeStone = new Stone(START.x, START.y, state.currentTeam);
+  state.stones.push(state.activeStone);
+  state.phase = 'aim';
+  state.isAiTurn = state.currentTeam.id === state.aiTeam.id;
+  showCharCard();
+  updateUI();
+  if (state.isAiTurn) setTimeout(executeAI, 2200);
 }
 
-function spawnStone(){
-    if(state.stonesLeft[state.currentTeam.id]<=0){
-        endRound();
-        return;
-    }
-    
-    state.activeStone=new Stone(START.x, START.y, state.currentTeam);
-    state.stones.push(state.activeStone);
-    state.phase='aim';
-    state.isAiTurn = (state.currentTeam.id === state.aiTeam.id);
-    
-    showCharacterCard();
-    updateUI();
-
-    if(state.isAiTurn) setTimeout(executeAITurn, 2000);
+function executeAI() {
+  if (state.phase !== 'aim') return;
+  const tx = HOUSE.x + (Math.random() - .5) * 90;
+  const ty = HOUSE.y + (Math.random() - .5) * 90;
+  const dx = tx - START.x, dy = ty - START.y;
+  const angle = Math.atan2(dy, dx);
+  let power = Math.sqrt(Math.hypot(dx, dy) * .05) * (.9 + Math.random() * .2);
+  state.activeStone.vx = Math.cos(angle) * power;
+  state.activeStone.vy = Math.sin(angle) * power;
+  state.phase = 'move';
+  state.stonesLeft[state.currentTeam.id]--;
+  showReaction();
 }
 
-function executeAITurn() {
-    if(state.phase !== 'aim') return;
+// ─── Pointer events ───
+function getPos(e) {
+  const rect = canvas.getBoundingClientRect();
+  return {
+    x: (e.clientX - rect.left) * (canvas.width / rect.width),
+    y: (e.clientY - rect.top) * (canvas.height / rect.height)
+  };
+}
 
-    const targetX = HOUSE.x + (Math.random() - 0.5) * 80;
-    const targetY = HOUSE.y + (Math.random() - 0.5) * 80;
-    const dx = targetX - START.x; const dy = targetY - START.y;
+canvas.addEventListener('pointerdown', e => {
+  if (state.phase !== 'aim' || state.isAiTurn) return;
+  const pos = getPos(e);
+  if (Math.hypot(pos.x - state.activeStone.x, pos.y - state.activeStone.y) < 130) {
+    state.dragging = true;
+    state.dragStart = pos; state.dragNow = pos;
+    document.getElementById('powerMeter').style.display = 'flex';
+  }
+});
+
+canvas.addEventListener('pointermove', e => {
+  if (!state.dragging) return;
+  state.dragNow = getPos(e);
+  const dist = Math.min(Math.hypot(state.dragStart.x - state.dragNow.x, state.dragStart.y - state.dragNow.y), 250);
+  document.getElementById('powerFill').style.width = (dist / 250 * 100) + '%';
+});
+
+window.addEventListener('pointerup', () => {
+  if (!state.dragging || state.isAiTurn) return;
+  state.dragging = false;
+  document.getElementById('powerMeter').style.display = 'none';
+  document.getElementById('powerFill').style.width = '0%';
+  const dx = state.dragStart.x - state.dragNow.x;
+  const dy = state.dragStart.y - state.dragNow.y;
+  const dist = Math.hypot(dx, dy);
+  if (dist > 10) {
+    const power = Math.min(dist, 250) * .12;
     const angle = Math.atan2(dy, dx);
-    const dist = Math.hypot(dx, dy);
-
-    let power = Math.sqrt(dist * 0.05);
-    power *= (0.92 + Math.random() * 0.15);
-
     state.activeStone.vx = Math.cos(angle) * power;
     state.activeStone.vy = Math.sin(angle) * power;
-    
     state.phase = 'move';
     state.stonesLeft[state.currentTeam.id]--;
     showReaction();
-}
-
-canvas.addEventListener('pointerdown',e=>{
-    if(state.phase!=='aim' || state.isAiTurn) return;
-    const pos=getPos(e);
-    if(Math.hypot(pos.x-state.activeStone.x, pos.y-state.activeStone.y)<120){
-        state.dragging=true; state.dragStart=pos; state.dragNow=pos;
-    }
+  }
 });
 
-canvas.addEventListener('pointermove',e=>{
-    if(!state.dragging) return;
-    state.dragNow=getPos(e);
-});
-
-window.addEventListener('pointerup',()=>{
-    if(!state.dragging || state.isAiTurn) return;
-    
-    const dx=state.dragStart.x-state.dragNow.x;
-    const dy=state.dragStart.y-state.dragNow.y;
-    const dist=Math.hypot(dx,dy);
-
-    if(dist>10){
-        const power=Math.min(dist,250)*.12;
-        const angle=Math.atan2(dy,dx);
-        state.activeStone.vx=Math.cos(angle)*power;
-        state.activeStone.vy=Math.sin(angle)*power;
-        state.phase='move';
-        state.stonesLeft[state.currentTeam.id]--;
-        showReaction();
+// ─── Collision ───
+function resolveCollisions() {
+  for (let i = 0; i < state.stones.length; i++) {
+    for (let j = i + 1; j < state.stones.length; j++) {
+      const a = state.stones[i], b = state.stones[j];
+      const dx = b.x - a.x, dy = b.y - a.y;
+      const dist = Math.hypot(dx, dy);
+      const min = a.r + b.r;
+      if (dist < min && dist > 0) {
+        const nx = dx / dist, ny = dy / dist;
+        const overlap = min - dist;
+        a.x -= nx * overlap / 2; b.x += nx * overlap / 2;
+        a.y -= ny * overlap / 2; b.y += ny * overlap / 2;
+        const kx = a.vx - b.vx, ky = a.vy - b.vy;
+        const p = 2 * (nx * kx + ny * ky) / 2;
+        a.vx = (a.vx - p * nx) * .9; a.vy = (a.vy - p * ny) * .9;
+        b.vx = (b.vx + p * nx) * .9; b.vy = (b.vy + p * ny) * .9;
+        // Collision sparks
+        spawnSparks((a.x + b.x) / 2, (a.y + b.y) / 2, '#00f0ff', 10);
+      }
     }
-    state.dragging=false;
-});
-
-function getPos(e){
-    const rect=canvas.getBoundingClientRect();
-    return{
-        x:(e.clientX-rect.left)*(canvas.width/rect.width),
-        y:(e.clientY-rect.top)*(canvas.height/rect.height)
-    };
+  }
 }
 
-function resolveCollisions(){
-    for(let i=0;i<state.stones.length;i++){
-        for(let j=i+1;j<state.stones.length;j++){
-            const a=state.stones[i]; const b=state.stones[j];
-            const dx=b.x-a.x; const dy=b.y-a.y;
-            const dist=Math.hypot(dx,dy);
-            const min=a.r+b.r;
+// ─── Round end ───
+function endRound() {
+  const valid = state.stones
+    .map(s => ({ stone: s, dist: Math.hypot(s.x - HOUSE.x, s.y - HOUSE.y) }))
+    .filter(v => v.dist < HOUSE.r + STONE_R)
+    .sort((a, b) => a.dist - b.dist);
 
-            if(dist<min && dist>0){
-                const nx=dx/dist; const ny=dy/dist;
-                const overlap=min-dist;
-                a.x-=nx*overlap/2; b.x+=nx*overlap/2;
-                a.y-=ny*overlap/2; b.y+=ny*overlap/2;
-                
-                const kx=a.vx-b.vx; const ky=a.vy-b.vy;
-                const p=2*(nx*kx+ny*ky)/2;
-                a.vx=(a.vx-p*nx)*.92; a.vy=(a.vy-p*ny)*.92;
-                b.vx=(b.vx+p*nx)*.92; b.vy=(b.vy+p*ny)*.92;
-            }
-        }
-    }
+  const winner = valid.length > 0 ? valid[0].stone.team : null;
+  if (winner) {
+    if (winner.id === 'fairy') state.fairyWins++;
+    else state.darkWins++;
+    updateUI();
+    spawnSparks(HOUSE.x, HOUSE.y, winner.color, 30);
+  }
+
+  if (state.fairyWins >= 2 || state.darkWins >= 2) {
+    showWinner(state.fairyWins >= 2 ? TEAMS.fairy : TEAMS.dark);
+    return;
+  }
+
+  setTimeout(() => {
+    state.round++;
+    state.stones = [];
+    state.stonesLeft = { fairy: 4, dark: 4 };
+    state.currentTeam = state.playerTeam;
+    spawnStone();
+  }, 1800);
 }
 
-function endRound(){
-    let valid=state.stones.map(s=>({
-        stone:s, dist:Math.hypot(s.x-HOUSE.x,s.y-HOUSE.y)
-    })).filter(v=>v.dist<HOUSE.r+STONE_R);
+function showWinner(team) {
+  const modal = document.getElementById('winnerModal');
+  modal.style.display = 'flex';
+  const isPlayer = team.id === state.playerTeam.id;
+  document.getElementById('winEmoji').textContent = isPlayer ? '🏆' : '💀';
+  document.getElementById('winTitle').textContent = `${team.name} 우승!`;
+  document.getElementById('winTitle').style.background = `linear-gradient(90deg, ${team.color}, #fff)`;
+  document.getElementById('winTitle').style.webkitBackgroundClip = 'text';
 
-    valid.sort((a,b)=>a.dist-b.dist);
-
-    let winner=null;
-    if(valid.length>0) winner=valid[0].stone.team;
-
-    if(winner){
-        if(winner.id==='fairy') state.fairyWins++;
-        else state.darkWins++;
-    }
-
-    if(state.fairyWins>=2 || state.darkWins>=2){
-        showWinner(state.fairyWins>=2 ? TEAMS.fairy : TEAMS.dark);
-        return;
-    }
-
-    setTimeout(()=>{
-        state.round++;
-        state.stones=[];
-        state.stonesLeft={fairy:4, dark:4};
-        state.currentTeam=state.playerTeam;
-        spawnStone();
-    },1800);
-}
-
-function showWinner(team){
-    const modal = document.getElementById('winnerModal');
-    modal.style.display = 'flex';
-    
-    const isPlayerWin = (team.id === state.playerTeam.id);
-    
-    document.getElementById('winnerTitle').innerText = `${team.name} 우승!`;
-    document.getElementById('winnerTitle').style.color = team.color;
-    
-    if (isPlayerWin) {
-        document.getElementById('winnerDesc').innerHTML = `
-            축하합니다 <b>${state.playerInitials}</b>!<br/>
-            ${team.icon} 3판 2선승제 영광의 우승!<br/><br/>
-            <span id="saveLoading" class="text-cyan-300">랭킹 서버에 기록 중... 🔄</span>
-        `;
-        
-        // Supabase DB 기록 요청
-        recordWinToLeaderboard().then(wins => {
-            const loadingText = document.getElementById('saveLoading');
-            if(loadingText) {
-                if(wins > 0) {
-                    loadingText.innerHTML = `<span class="text-yellow-400 text-2xl font-black drop-shadow-md">총 ${wins}승 달성! 🏆</span>`;
-                } else {
-                    loadingText.innerHTML = `<span class="text-red-400">기록 저장 실패 ⚠ (DB 연결 오류)</span>`;
-                }
-            }
-        });
-    } else {
-        document.getElementById('winnerDesc').innerHTML = `AI의 승리입니다!<br/>다음에는 꼭 이겨보세요!`;
-    }
+  if (isPlayer) {
+    document.getElementById('winDesc').innerHTML = `축하합니다 <b>${state.playerInitials}</b>!<br/>${team.icon} 영광의 우승!<br/><br/><span id="saveStatus" style="color:var(--c-ice);font-size:.9rem;">⟳ 랭킹 저장 중...</span>`;
+    recordWin().then(wins => {
+      const el = document.getElementById('saveStatus');
+      if (el) el.innerHTML = wins > 0 ? `<span style="color:var(--c-gold);font-weight:900;font-size:1.1rem;">✨ 총 ${wins}승 달성!</span>` : `<span style="color:#ff4444;font-size:.85rem;">저장 실패 ⚠</span>`;
+    });
+  } else {
+    document.getElementById('winDesc').innerHTML = `아쉽네요!<br/>다음엔 꼭 이겨보세요. 💪`;
+  }
 }
 
 function resetToMain() {
-    // 모달 숨기기 및 인게임 UI 숨기기
-    document.getElementById('winnerModal').style.display='none';
-    document.getElementById('inGameUI').style.display='none';
-    document.getElementById('bottomGuide').style.display='none';
-
-    // 상태 초기화 (이니셜은 그대로 유지)
-    state.phase = 'setup';
-    state.stones = [];
-    state.currentTeam = null;
-    state.playerTeam = null;
-    state.aiTeam = null;
-    state.playerOrder = [];
-    state.fairyWins = 0;
-    state.darkWins = 0;
-    state.round = 1;
-    state.stonesLeft = {fairy:4, dark:4};
-    state.activeStone = null;
-    state.dragging = false;
-
-    // 리더보드 렌더링 후 로그인 화면 다시 띄우기
-    loadLeaderboard();
-    
-    const loginScreen = document.getElementById('loginScreen');
-    loginScreen.style.display = 'flex';
-    void loginScreen.offsetWidth;
-    loginScreen.style.opacity = '1';
-    loginScreen.style.transform = 'scale(1)';
-    loginScreen.style.pointerEvents = 'auto';
-    
-    // 버튼 초기화
-    const startBtn = document.getElementById('startGameBtn');
-    startBtn.disabled = true;
-    startBtn.classList.remove('animate-bounce');
+  document.getElementById('winnerModal').style.display = 'none';
+  document.getElementById('inGameUI').style.display = 'none';
+  document.getElementById('bottomGuide').style.display = 'none';
+  Object.assign(state, {
+    phase:'setup', stones:[], currentTeam:null, playerTeam:null,
+    aiTeam:null, playerOrder:[], fairyWins:0, darkWins:0, round:1,
+    stonesLeft:{fairy:4,dark:4}, activeStone:null, dragging:false
+  });
+  document.getElementById('startBtn').disabled = true;
+  document.getElementById('startBtn').style.animation = 'none';
+  loadLeaderboard();
+  const ls = document.getElementById('s-login');
+  ls.style.display = 'flex';
+  ls.classList.remove('hidden','out');
 }
 
-function drawArena(){
-    ctx.clearRect(0,0,LOGICAL_W,LOGICAL_H);
-    const grad=ctx.createLinearGradient(0,0,0,LOGICAL_H);
-    grad.addColorStop(0,'#dbeafe'); grad.addColorStop(.4,'#eff6ff'); grad.addColorStop(1,'#bfdbfe');
-    ctx.fillStyle=grad; ctx.fillRect(0,0,LOGICAL_W,LOGICAL_H);
+// ══════════════════════════════════════════════════════
+// DRAW ARENA
+// ══════════════════════════════════════════════════════
+let iceTime = 0;
+const iceFlakes = Array.from({length:28}, () => ({
+  x: Math.random() * LOGICAL_W,
+  y: Math.random() * LOGICAL_H,
+  r: .5 + Math.random() * 1.5,
+  speed: .1 + Math.random() * .3,
+  alpha: .1 + Math.random() * .25
+}));
 
-    ctx.beginPath(); ctx.arc(HOUSE.x,HOUSE.y,HOUSE.r,0,Math.PI*2); ctx.fillStyle='#1d4ed8'; ctx.fill();
-    ctx.beginPath(); ctx.arc(HOUSE.x,HOUSE.y,HOUSE.r*.72,0,Math.PI*2); ctx.fillStyle='#fff'; ctx.fill();
-    ctx.beginPath(); ctx.arc(HOUSE.x,HOUSE.y,HOUSE.r*.42,0,Math.PI*2); ctx.fillStyle='#ef4444'; ctx.fill();
-    ctx.beginPath(); ctx.arc(HOUSE.x,HOUSE.y,HOUSE.r*.12,0,Math.PI*2); ctx.fillStyle='#fff'; ctx.fill();
+function drawArena() {
+  iceTime += .008;
 
-    ctx.beginPath(); ctx.moveTo(HOUSE.x,0); ctx.lineTo(HOUSE.x,LOGICAL_H); ctx.strokeStyle='rgba(0,0,0,.08)'; ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(0,HOUSE.y); ctx.lineTo(LOGICAL_W,HOUSE.y); ctx.stroke();
+  // Ice gradient
+  const grad = ctx.createLinearGradient(0, 0, 0, LOGICAL_H);
+  grad.addColorStop(0, '#b8d4f0');
+  grad.addColorStop(.3, '#dbeafe');
+  grad.addColorStop(.65, '#eff6ff');
+  grad.addColorStop(1, '#bfdbfe');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, LOGICAL_W, LOGICAL_H);
 
-    if(state.dragging && !state.isAiTurn){
-        const dx=state.dragStart.x-state.dragNow.x;
-        const dy=state.dragStart.y-state.dragNow.y;
-        const angle=Math.atan2(dy,dx);
-        const dist=Math.min(Math.hypot(dx,dy),250);
-        const ex=state.activeStone.x+Math.cos(angle)*dist*1.5;
-        const ey=state.activeStone.y+Math.sin(angle)*dist*1.5;
+  // Ice texture lines
+  ctx.save();
+  ctx.globalAlpha = .06;
+  for (let i = 0; i < 20; i++) {
+    ctx.beginPath();
+    ctx.moveTo(0, (i / 20) * LOGICAL_H + Math.sin(iceTime + i) * 4);
+    ctx.lineTo(LOGICAL_W, (i / 20) * LOGICAL_H + Math.sin(iceTime + i + 1) * 4);
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  }
+  ctx.restore();
 
-        ctx.beginPath(); ctx.moveTo(state.activeStone.x, state.activeStone.y); ctx.lineTo(ex,ey);
-        ctx.strokeStyle=state.currentTeam.color; ctx.lineWidth=5; ctx.lineCap='round'; ctx.stroke();
+  // Floating ice sparkles
+  iceFlakes.forEach(f => {
+    f.y -= f.speed;
+    if (f.y < -5) f.y = LOGICAL_H + 5;
+    ctx.beginPath();
+    ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255,255,255,${f.alpha})`;
+    ctx.fill();
+  });
+
+  // House circles
+  const circles = [
+    { r: HOUSE.r, color: '#1d4ed8' },
+    { r: HOUSE.r * .72, color: '#fff' },
+    { r: HOUSE.r * .44, color: '#ef4444' },
+    { r: HOUSE.r * .22, color: '#fff' },
+    { r: HOUSE.r * .09, color: '#1d4ed8' }
+  ];
+  circles.forEach(c => {
+    ctx.beginPath();
+    ctx.arc(HOUSE.x, HOUSE.y, c.r, 0, Math.PI * 2);
+    ctx.fillStyle = c.color;
+    ctx.fill();
+  });
+
+  // House glow
+  ctx.save();
+  ctx.globalAlpha = .18 + Math.sin(iceTime * 2) * .05;
+  const glowGrad = ctx.createRadialGradient(HOUSE.x, HOUSE.y, HOUSE.r * .3, HOUSE.x, HOUSE.y, HOUSE.r * 1.2);
+  glowGrad.addColorStop(0, '#00f0ff');
+  glowGrad.addColorStop(1, 'transparent');
+  ctx.beginPath();
+  ctx.arc(HOUSE.x, HOUSE.y, HOUSE.r * 1.2, 0, Math.PI * 2);
+  ctx.fillStyle = glowGrad;
+  ctx.fill();
+  ctx.restore();
+
+  // Center + side lines
+  ctx.save();
+  ctx.strokeStyle = 'rgba(0,0,0,.07)'; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(HOUSE.x, 0); ctx.lineTo(HOUSE.x, LOGICAL_H); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0, HOUSE.y); ctx.lineTo(LOGICAL_W, HOUSE.y); ctx.stroke();
+  ctx.restore();
+
+  // Throw zone
+  ctx.save();
+  ctx.globalAlpha = .18;
+  ctx.beginPath(); ctx.arc(START.x, START.y, 60, 0, Math.PI * 2);
+  ctx.strokeStyle = '#1d4ed8'; ctx.lineWidth = 2; ctx.setLineDash([6,4]); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.restore();
+
+  // Arrow target line
+  if (state.phase === 'aim' && !state.isAiTurn && state.activeStone) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(START.x, HOUSE.y + HOUSE.r + 30);
+    ctx.lineTo(START.x, START.y - STONE_R - 10);
+    ctx.strokeStyle = 'rgba(29,78,216,.2)'; ctx.lineWidth = 1.5; ctx.setLineDash([5,6]); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.restore();
+  }
+
+  // Drag arrow
+  if (state.dragging && state.dragStart && state.dragNow && !state.isAiTurn && state.activeStone) {
+    const dx = state.dragStart.x - state.dragNow.x;
+    const dy = state.dragStart.y - state.dragNow.y;
+    const angle = Math.atan2(dy, dx);
+    const dist = Math.min(Math.hypot(dx, dy), 250);
+    const ex = state.activeStone.x + Math.cos(angle) * dist * 1.6;
+    const ey = state.activeStone.y + Math.sin(angle) * dist * 1.6;
+    const arrowGrad = ctx.createLinearGradient(state.activeStone.x, state.activeStone.y, ex, ey);
+    arrowGrad.addColorStop(0, state.currentTeam.color);
+    arrowGrad.addColorStop(1, state.currentTeam.color + '00');
+    ctx.save();
+    ctx.beginPath(); ctx.moveTo(state.activeStone.x, state.activeStone.y); ctx.lineTo(ex, ey);
+    ctx.strokeStyle = arrowGrad; ctx.lineWidth = 6;
+    ctx.lineCap = 'round';
+    ctx.shadowColor = state.currentTeam.color; ctx.shadowBlur = 18;
+    ctx.stroke();
+    // Arrowhead
+    ctx.translate(ex, ey);
+    ctx.rotate(angle);
+    ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(-16,-8); ctx.lineTo(-16,8); ctx.closePath();
+    ctx.fillStyle = state.currentTeam.color; ctx.fill();
+    ctx.restore();
+
+    // Distance dotted markers
+    for (let d = 40; d <= dist * 1.6; d += 50) {
+      const mx = state.activeStone.x + Math.cos(angle) * d;
+      const my = state.activeStone.y + Math.sin(angle) * d;
+      ctx.beginPath(); ctx.arc(mx, my, 3, 0, Math.PI * 2);
+      ctx.fillStyle = state.currentTeam.color + '60'; ctx.fill();
     }
+  }
 }
 
-function gameLoop(){
-    if(state.phase==='move'){
-        let moving=false;
-        state.stones.forEach(s=>{ s.update(); if(s.move) moving=true; });
-        resolveCollisions();
-        if(!moving){
-            state.currentTeam = state.currentTeam.id === 'fairy' ? TEAMS.dark : TEAMS.fairy;
-            spawnStone();
-        }
+// ══════════════════════════════════════════════════════
+// GAME LOOP
+// ══════════════════════════════════════════════════════
+function gameLoop() {
+  ctx.clearRect(0, 0, LOGICAL_W, LOGICAL_H);
+  drawArena();
+
+  if (state.phase !== 'setup') {
+    if (state.phase === 'move') {
+      let moving = false;
+      state.stones.forEach(s => { s.update(); if (s.move) moving = true; });
+      resolveCollisions();
+      if (!moving) {
+        state.currentTeam = state.currentTeam.id === 'fairy' ? TEAMS.dark : TEAMS.fairy;
+        spawnStone();
+      }
     }
-    
-    // 배경은 게임 전반적으로 항상 그리기
-    drawArena();
-    if(state.phase !== 'setup') {
-        state.stones.forEach(s=>s.draw());
-    }
-    
-    requestAnimationFrame(gameLoop);
+    state.stones.forEach(s => s.draw());
+  }
+
+  updateParticles();
+  drawParticles();
+  requestAnimationFrame(gameLoop);
 }
 
-// 최초 실행: 리더보드 그리기 및 루프 시작
+// ══════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════
 loadLeaderboard();
 requestAnimationFrame(gameLoop);
-
 </script>
 </body>
 </html>

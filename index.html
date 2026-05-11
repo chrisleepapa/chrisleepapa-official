@@ -512,6 +512,10 @@
                     <span class="game-icon">🎮</span>
                     <span class="game-title">Play Game</span>
                 </a>
+                <button type="button" class="play-game-box" onclick="openPlayer()" style="cursor: pointer;">
+                    <span class="game-icon">🎧</span>
+                    <span class="game-title">BGM ON</span>
+                </button>
             </div>
         </div>
         <div class="scroll-hint">
@@ -1061,6 +1065,14 @@
                 showToast(currentLang === 'ko' ? "이미지 저장에 실패했습니다." : "Failed to save image.");
             }
         }
+
+        // ==========================================
+        // 스포티파이 BGM 팝업 플레이어 열기 함수
+        // ==========================================
+        function openPlayer() {
+            window.open('player.html', 'bgmPlayer', 'width=400,height=400,left=100,top=100,scrollbars=no,resizable=no');
+        }
+
     </script>
 </body>
 </html>

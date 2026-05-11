@@ -222,7 +222,7 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
   box-shadow: 0 2px 8px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2);
 }
 
-/* ─── In-Game UI ─── */
+/* ★ 개편된 In-Game HUD (깔끔한 상하단 분리) ★ */
 #inGameUI {
   position: absolute; top: max(env(safe-area-inset-top, 15px), 15px); left: 0; width: 100%;
   display: flex; flex-direction: column; gap: 15px; z-index: 20; pointer-events: none;
@@ -291,7 +291,7 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
   color:#fff; box-shadow:0 0 20px rgba(0,0,0,0.5); letter-spacing:1px;
 }
 
-/* ★ 턴 시작을 알리는 컷인 UI ★ */
+/* ★ 턴 시작을 알리는 컷인 UI 추가 ★ */
 #turnCutin {
   position: absolute; top: 25%; left: 0; width: 100%; z-index: 85;
   display: none; align-items: center; justify-content: center; pointer-events: none;
@@ -439,6 +439,7 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
   85% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
   100% { opacity: 0; transform: translate(-50%, -70%) scale(0.8); }
 }
+
 
 /* ─── Modal 모바일 최적화 ─── */
 #winnerModal{
@@ -957,20 +958,21 @@ function showCurlingShout() {
 function showFloatingMsg(msg, color) {
   const el = document.createElement('div');
   el.className = 'floating-center-msg';
-  // 줄바꿈 태그(<br>)를 해석하기 위해 innerHTML 사용
   el.innerHTML = msg;
   el.style.color = color;
   document.getElementById('gameWrap').appendChild(el);
   setTimeout(() => el.remove(), 2500); 
 }
 
+// ★ 매 턴 시작 컷인 ★
 function showTurnCutin(member, team) {
   const cutin = document.getElementById('turnCutin');
   const portrait = document.getElementById('tcPortrait');
   const name = document.getElementById('tcName');
   const shout = document.getElementById('tcShout');
 
-  portrait.src = member.img; // 정확한 원본 이미지 사용
+  // 멤버의 원래 이미지를 그대로 사용
+  portrait.src = member.img;
   portrait.style.borderColor = team.border;
   portrait.style.boxShadow = `0 0 20px ${team.color}`;
   
@@ -987,6 +989,7 @@ function showTurnCutin(member, team) {
   }, 1500);
 }
 
+// ★ 스킬 발동 컷인 ★
 function showSkillCutin(member, team) {
   const cutin = document.getElementById('skillCutin');
   const stripe = document.getElementById('cutinStripe');
@@ -999,7 +1002,7 @@ function showSkillCutin(member, team) {
   
   cardWrap.style.borderColor = team.border;
   cardWrap.style.boxShadow = `0 0 50px ${team.color}`;
-  portrait.src = member.img; // 정확한 원본 이미지 사용
+  portrait.src = member.img; // 멤버의 원래 이미지를 그대로 사용
   
   name.textContent = member.name;
   name.style.textShadow = `0 10px 30px #000, 0 0 20px ${team.color}`;
@@ -1256,7 +1259,6 @@ function endRound() {
   
   if (roundWinner) {
     spawnSparks(HOUSE.x, HOUSE.y, roundWinner.color, 40, 3);
-    // <br> 태그를 넣어 모바일 잘림 방지
     showFloatingMsg(`${roundWinner.name}<br>라운드 승리!`, roundWinner.color);
   } else {
     showFloatingMsg(`라운드 무승부!`, '#aaa');

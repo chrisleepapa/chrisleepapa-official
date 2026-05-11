@@ -601,7 +601,7 @@ const SUPA_URL = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
 const SUPA_KEY = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
 const TABLE_NAME = 'curling_ranking';
 
-// 캔버스 사이즈 확장
+// 캔버스 사이즈 확장 (PC화면 넓게 보이도록 비율 조정)
 const LOGICAL_W = 768, LOGICAL_H = 1024;
 const HOUSE = { x: LOGICAL_W / 2, y: 240, r: 160 };
 const START = { x: LOGICAL_W / 2, y: 880 };
@@ -866,7 +866,7 @@ class Stone {
 // GAME LOGIC & SKILLS
 // ══════════════════════════════════════════════════════
 function getActiveMember(team = state.currentTeam) {
-  const turn = 4 - state.stonesLeft[team.id];
+  const turn = Math.min(4 - state.stonesLeft[team.id], 3);
   return team.id === state.playerTeam.id ? team.members[state.playerOrder[turn]] : team.members[state.aiOrder[turn]];
 }
 
@@ -885,7 +885,7 @@ function updateUI() {
   const fill = document.getElementById('skillFill');
   const txt = document.getElementById('skillBtnText');
   
-  btn.style.display = state.isAiTurn ? 'none' : 'block';
+  btn.style.display = (state.isAiTurn || state.phase !== 'aim') ? 'none' : 'block';
   fill.style.width = (charge * 50) + '%';
   fill.style.background = `linear-gradient(90deg, ${state.currentTeam.color}, ${state.currentTeam.border})`;
   
@@ -895,9 +895,15 @@ function updateUI() {
     btn.classList.remove('ready'); txt.textContent = `CHARGE ${charge*50}%`; txt.style.color = "rgba(255,255,255,0.6)";
   }
 
-  const guide = document.getElementById('guideText');
-  if (state.isAiTurn) guide.innerHTML = "🤖 <span style='opacity:0.7'>상대가 마법을 준비 중...</span>";
-  else guide.textContent = state.powerBuff[state.currentTeam.id] > 0 ? "🔥 파워 버프 활성화! 뒤로 당겨 발사!" : "🎯 드래그하여 발사!";
+  const guideContainer = document.getElementById('bottomGuide');
+  if (state.phase === 'aim') {
+    guideContainer.style.display = 'flex';
+    const guideText = document.getElementById('guideText');
+    if (state.isAiTurn) guideText.innerHTML = "🤖 <span style='opacity:0.7'>상대가 마법을 준비 중...</span>";
+    else guideText.textContent = state.powerBuff[state.currentTeam.id] > 0 ? "🔥 파워 버프 활성화! 뒤로 당겨 발사!" : "🎯 드래그하여 발사!";
+  } else {
+    guideContainer.style.display = 'none';
+  }
 }
 
 function updateRealtimeScore() {
@@ -958,6 +964,7 @@ function showCurlingShout() {
 function showFloatingMsg(msg, color) {
   const el = document.createElement('div');
   el.className = 'floating-center-msg';
+  // 줄바꿈 태그(<br>)를 해석하기 위해 innerHTML 사용
   el.innerHTML = msg;
   el.style.color = color;
   document.getElementById('gameWrap').appendChild(el);
@@ -1020,18 +1027,28 @@ function showSkillCutin(member, team) {
   }, 2000);
 }
 
+// ★ 스킬 시전: 턴 소모 및 교체 로직 ★
 window.activateSkill = function() {
   const team = state.currentTeam;
   if (state.skillCharge[team.id] < 2 || state.phase !== 'aim') return;
+  
+  const member = getActiveMember(team);
+  
   state.skillCharge[team.id] = 0;
   state.phase = 'skill'; 
   
-  const member = getActiveMember(team);
+  // 스킬 발동 시 돌을 제거하고 투구 기회 소모
+  if (state.activeStone) {
+    state.stones = state.stones.filter(s => s !== state.activeStone);
+    state.activeStone = null;
+  }
+  state.stonesLeft[team.id]--;
+  
+  updateUI();
   showSkillCutin(member, team);
   
   setTimeout(() => {
     executeSkillEffect(member.id, team);
-    updateUI();
   }, 1500); 
 }
 
@@ -1063,8 +1080,8 @@ function executeSkillEffect(skillId, team) {
     case 'angel': activeForces.push({ teamId: team.id, target:'ally', cond:'all', type:'pull', life:150 }); break;
   }
   
-  state.phase = 'aim'; 
-  if(state.isAiTurn) executeAIThrow();
+  // 스킬 처리 후 바로 'move' 상태로 전환하여 이펙트가 끝나면 턴 교체가 진행되도록 유도
+  state.phase = 'move'; 
 }
 
 function showBuffAlert() {
@@ -1259,6 +1276,7 @@ function endRound() {
   
   if (roundWinner) {
     spawnSparks(HOUSE.x, HOUSE.y, roundWinner.color, 40, 3);
+    // <br> 태그를 넣어 모바일 잘림 방지
     showFloatingMsg(`${roundWinner.name}<br>라운드 승리!`, roundWinner.color);
   } else {
     showFloatingMsg(`라운드 무승부!`, '#aaa');

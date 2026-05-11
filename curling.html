@@ -205,9 +205,8 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
   display: flex; flex-direction: column; align-items: center; gap: 6px;
 }
 .char-btn-name {
-  font-family: 'Black Han Sans', sans-serif; font-size: 1.1rem;
+  font-family: 'Black Han Sans', sans-serif; font-size: 1.4rem;
   color: #fff; text-shadow: 0 2px 10px #000; line-height: 1;
-  word-break: keep-all;
 }
 .skill-tag {
   font-size: 0.75rem; font-weight: 900; background: linear-gradient(90deg, #ff007a, #7a00ff);
@@ -215,16 +214,41 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
   box-shadow: 0 2px 8px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2);
 }
 
-/* ─── In-Game UI ─── */
-#inGameUI{
-  position:absolute; inset:0 auto auto 0; width:100%;
-  padding: max(env(safe-area-inset-top, 15px), 15px); 
-  display:flex; justify-content:space-between; align-items:flex-start; z-index:20; pointer-events:none;
+/* ★ 개편된 In-Game HUD (깔끔한 상하단 분리) ★ */
+#inGameUI {
+  position: absolute; top: max(env(safe-area-inset-top, 15px), 15px); left: 0; width: 100%;
+  display: flex; flex-direction: column; gap: 15px; z-index: 20; pointer-events: none;
 }
-.score-board{ background: transparent; border: none; box-shadow: none; backdrop-filter: none; min-width: 150px; }
-.score-row{display:flex; justify-content:space-between; align-items:center; margin:5px 0; gap: 15px;}
-.score-row div { font-size: 1.1rem; text-shadow: 0 2px 6px rgba(0,0,0,0.9), 0 0 10px rgba(0,0,0,0.8); }
-.score-num{font-family:'Cinzel', serif; font-size:2.5rem !important; font-weight:900; text-shadow: 0 2px 6px rgba(0,0,0,0.9), 0 0 15px rgba(0,0,0,0.8);}
+.hud-top { display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
+.set-score {
+  font-family: 'Cinzel', serif; font-size: 1.8rem; font-weight: 900;
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(0,0,0,0.6); padding: 5px 15px; border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+.set-score.fairy { color: var(--c-fairy-glow); }
+.set-score.dark { color: var(--c-dark-glow); }
+
+.round-info { text-align: center; }
+.round-info .best-of { font-size: 0.7rem; font-weight: 900; letter-spacing: 2px; color: rgba(255,255,255,0.8); text-shadow: 0 1px 3px #000; margin-bottom: 2px; }
+.round-info .round-num { font-family: 'Cinzel', serif; font-size: 1.6rem; font-weight: 900; text-shadow: 0 2px 8px #000; }
+
+.hud-bottom { display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
+.rt-score {
+  font-family: 'Black Han Sans', sans-serif; font-size: 1.4rem; text-shadow: 0 2px 5px #000;
+  background: rgba(0,0,0,0.5); padding: 6px 16px; border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(5px);
+  min-width: 70px; text-align: center;
+}
+.rt-score.fairy { color: var(--c-fairy-glow); }
+.rt-score.dark { color: var(--c-dark-glow); }
+
+.turn-box {
+  padding: 8px 24px; border-radius: 20px; font-family: 'Black Han Sans', sans-serif; font-size: 1.2rem;
+  background: rgba(0,0,0,0.8); border: 2px solid; text-shadow: 0 2px 5px #000;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.5); transition: all 0.3s;
+}
 
 /* ─── Skill & Action UI ─── */
 #skillContainer {
@@ -407,6 +431,7 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
   85% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
   100% { opacity: 0; transform: translate(-50%, -70%) scale(0.8); }
 }
+
 
 /* ─── Modal 모바일 최적화 ─── */
 #winnerModal{
@@ -596,7 +621,7 @@ const REACTIONS = [
 ];
 let lastShoutTime = 0;
 
-// ★ 캐릭터 이미지 경로 원본 롤백 ★
+// ★ 원본 캐릭터 이미지 경로 및 한글 이름 유지 ★
 const TEAMS = {
   fairy:{
     id:'fairy',name:'요정 연합',color:'#ff2a85',border:'#ff7eb3',icon:'🧚',
@@ -931,14 +956,13 @@ function showFloatingMsg(msg, color) {
   setTimeout(() => el.remove(), 2500); 
 }
 
-// ★ 매 턴을 시작할 때 알려주는 컷인 ★
 function showTurnCutin(member, team) {
   const cutin = document.getElementById('turnCutin');
   const portrait = document.getElementById('tcPortrait');
   const name = document.getElementById('tcName');
   const shout = document.getElementById('tcShout');
 
-  portrait.src = member.img; // 정확한 원본 이미지 사용
+  portrait.src = member.img;
   portrait.style.borderColor = team.border;
   portrait.style.boxShadow = `0 0 20px ${team.color}`;
   
@@ -955,7 +979,6 @@ function showTurnCutin(member, team) {
   }, 1500);
 }
 
-// ★ 스킬 발동 컷인 ★
 function showSkillCutin(member, team) {
   const cutin = document.getElementById('skillCutin');
   const stripe = document.getElementById('cutinStripe');
@@ -968,7 +991,7 @@ function showSkillCutin(member, team) {
   
   cardWrap.style.borderColor = team.border;
   cardWrap.style.boxShadow = `0 0 50px ${team.color}`;
-  portrait.src = member.img; // 정확한 원본 이미지 사용
+  portrait.src = member.img;
   
   name.textContent = member.name;
   name.style.textShadow = `0 10px 30px #000, 0 0 20px ${team.color}`;
@@ -1042,12 +1065,10 @@ function showBuffAlert() {
 function spawnStone() {
   if (state.stonesLeft[state.currentTeam.id] <= 0) { endRound(); return; }
   
-  // ★ 매 턴 스톤 생성 전에 컷인 등장 ★
   state.phase = 'turn_intro';
   const member = getActiveMember();
   showTurnCutin(member, state.currentTeam);
   
-  // 1.5초 컷인이 끝나면 실제로 스톤이 나타나고 조준(aim) 단계 진입
   setTimeout(() => {
     state.activeStone = new Stone(START.x, START.y, state.currentTeam);
     if(state.powerBuff[state.currentTeam.id] > 0) state.activeStone.glow = 1;
@@ -1057,7 +1078,6 @@ function spawnStone() {
     state.isAiTurn = state.currentTeam.id === state.aiTeam.id;
     updateUI();
     
-    // AI 턴일 때 자동 투구
     if (state.isAiTurn) {
       setTimeout(() => {
         if(state.skillCharge[state.currentTeam.id] >= 2) activateSkill(); 
@@ -1067,7 +1087,6 @@ function spawnStone() {
   }, 1500);
 }
 
-// ─── UPGRADED AI LOGIC ───
 function executeAIThrow() {
   if (state.phase !== 'aim') return;
 
@@ -1346,33 +1365,6 @@ function drawArena() {
   // Throw Zone
   ctx.beginPath(); ctx.arc(START.x, START.y, 60, 0, Math.PI*2);
   ctx.strokeStyle='rgba(0,0,0,0.15)'; ctx.lineWidth=2; ctx.setLineDash([5,5]); ctx.stroke(); ctx.setLineDash([]);
-
-  // ★ 실시간 보드 점수 계산 및 캔버스 표시 ★
-  if(state.phase !== 'setup' && state.phase !== 'turn_intro') {
-    let fScore = 0; let dScore = 0;
-    state.stones.forEach(s => {
-      const dist = Math.hypot(s.x - HOUSE.x, s.y - HOUSE.y);
-      let pts = 0;
-      if (dist <= HOUSE.r * 0.2) pts = 10;
-      else if (dist <= HOUSE.r * 0.45) pts = 5;
-      else if (dist <= HOUSE.r * 0.75) pts = 3;
-      else if (dist <= HOUSE.r) pts = 1;
-      
-      if(pts > 0) {
-        if(s.team.id === 'fairy') fScore += pts;
-        else dScore += pts;
-      }
-    });
-
-    ctx.font = '900 28px "Black Han Sans"';
-    ctx.fillStyle = TEAMS.fairy.color;
-    ctx.textAlign = 'left';
-    ctx.fillText(`요정: ${fScore}점`, 20, 110);
-    
-    ctx.fillStyle = TEAMS.dark.color;
-    ctx.textAlign = 'right';
-    ctx.fillText(`어둠: ${dScore}점`, LOGICAL_W - 20, 110);
-  }
 
   // Drag Arrow
   if (state.dragging && state.dragStart && state.dragNow && !state.isAiTurn && state.activeStone) {

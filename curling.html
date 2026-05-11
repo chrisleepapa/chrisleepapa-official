@@ -23,6 +23,14 @@
 
     <link rel="preload" href="/images/fairyteam.png" as="image">
     <link rel="preload" href="/images/darkteam.png" as="image">
+    <link rel="preload" href="/images/pretty.jpg" as="image">
+    <link rel="preload" href="/images/cuty.jpg" as="image">
+    <link rel="preload" href="/images/brook.png" as="image">
+    <link rel="preload" href="/images/grandmagic.png" as="image">
+    <link rel="preload" href="/images/darknight.png" as="image">
+    <link rel="preload" href="/images/bain.jpg" as="image">
+    <link rel="preload" href="/images/crown.jpg" as="image">
+    <link rel="preload" href="/images/angel.jpeg" as="image">
 
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Cinzel:wght@700;900&family=Exo+2:ital,wght@0,400;0,800;0,900;1,900&family=Noto+Sans+KR:wght@500;700;900&display=swap" rel="stylesheet"/>
@@ -214,7 +222,7 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
   box-shadow: 0 2px 8px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2);
 }
 
-/* ★ 개편된 In-Game HUD (깔끔한 상하단 분리) ★ */
+/* ─── In-Game UI ─── */
 #inGameUI {
   position: absolute; top: max(env(safe-area-inset-top, 15px), 15px); left: 0; width: 100%;
   display: flex; flex-direction: column; gap: 15px; z-index: 20; pointer-events: none;
@@ -283,7 +291,7 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
   color:#fff; box-shadow:0 0 20px rgba(0,0,0,0.5); letter-spacing:1px;
 }
 
-/* ★ 턴 시작을 알리는 컷인 UI 추가 ★ */
+/* ★ 턴 시작을 알리는 컷인 UI ★ */
 #turnCutin {
   position: absolute; top: 25%; left: 0; width: 100%; z-index: 85;
   display: none; align-items: center; justify-content: center; pointer-events: none;
@@ -314,7 +322,7 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
   100% { opacity: 0; transform: scale(0.8) translateX(100px) skewX(15deg); }
 }
 
-/* ★ 시네마틱 컷인 ★ */
+/* ★ 스킬 시네마틱 컷인 ★ */
 #skillCutin {
   position:absolute; inset:0; background:rgba(0,0,0,0.6); z-index:100;
   display:none; overflow:hidden; backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
@@ -431,7 +439,6 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
   85% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
   100% { opacity: 0; transform: translate(-50%, -70%) scale(0.8); }
 }
-
 
 /* ─── Modal 모바일 최적화 ─── */
 #winnerModal{
@@ -593,7 +600,7 @@ const SUPA_URL = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
 const SUPA_KEY = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
 const TABLE_NAME = 'curling_ranking';
 
-// 캔버스 사이즈 확장 (PC화면 넓게 보이도록 비율 조정)
+// 캔버스 사이즈 확장
 const LOGICAL_W = 768, LOGICAL_H = 1024;
 const HOUSE = { x: LOGICAL_W / 2, y: 240, r: 160 };
 const START = { x: LOGICAL_W / 2, y: 880 };
@@ -621,7 +628,7 @@ const REACTIONS = [
 ];
 let lastShoutTime = 0;
 
-// ★ 원본 캐릭터 이미지 경로 및 한글 이름 유지 ★
+// ★ 캐릭터 이미지 경로 및 한글 풀네임 정확히 반영 ★
 const TEAMS = {
   fairy:{
     id:'fairy',name:'요정 연합',color:'#ff2a85',border:'#ff7eb3',icon:'🧚',
@@ -950,6 +957,7 @@ function showCurlingShout() {
 function showFloatingMsg(msg, color) {
   const el = document.createElement('div');
   el.className = 'floating-center-msg';
+  // 줄바꿈 태그(<br>)를 해석하기 위해 innerHTML 사용
   el.innerHTML = msg;
   el.style.color = color;
   document.getElementById('gameWrap').appendChild(el);
@@ -962,7 +970,7 @@ function showTurnCutin(member, team) {
   const name = document.getElementById('tcName');
   const shout = document.getElementById('tcShout');
 
-  portrait.src = member.img;
+  portrait.src = member.img; // 정확한 원본 이미지 사용
   portrait.style.borderColor = team.border;
   portrait.style.boxShadow = `0 0 20px ${team.color}`;
   
@@ -991,7 +999,7 @@ function showSkillCutin(member, team) {
   
   cardWrap.style.borderColor = team.border;
   cardWrap.style.boxShadow = `0 0 50px ${team.color}`;
-  portrait.src = member.img;
+  portrait.src = member.img; // 정확한 원본 이미지 사용
   
   name.textContent = member.name;
   name.style.textShadow = `0 10px 30px #000, 0 0 20px ${team.color}`;
@@ -1087,6 +1095,7 @@ function spawnStone() {
   }, 1500);
 }
 
+// ─── UPGRADED AI LOGIC ───
 function executeAIThrow() {
   if (state.phase !== 'aim') return;
 
@@ -1247,6 +1256,7 @@ function endRound() {
   
   if (roundWinner) {
     spawnSparks(HOUSE.x, HOUSE.y, roundWinner.color, 40, 3);
+    // <br> 태그를 넣어 모바일 잘림 방지
     showFloatingMsg(`${roundWinner.name}<br>라운드 승리!`, roundWinner.color);
   } else {
     showFloatingMsg(`라운드 무승부!`, '#aaa');
@@ -1365,6 +1375,33 @@ function drawArena() {
   // Throw Zone
   ctx.beginPath(); ctx.arc(START.x, START.y, 60, 0, Math.PI*2);
   ctx.strokeStyle='rgba(0,0,0,0.15)'; ctx.lineWidth=2; ctx.setLineDash([5,5]); ctx.stroke(); ctx.setLineDash([]);
+
+  // ★ 실시간 보드 점수 계산 및 캔버스 표시 ★
+  if(state.phase !== 'setup' && state.phase !== 'turn_intro') {
+    let fScore = 0; let dScore = 0;
+    state.stones.forEach(s => {
+      const dist = Math.hypot(s.x - HOUSE.x, s.y - HOUSE.y);
+      let pts = 0;
+      if (dist <= HOUSE.r * 0.2) pts = 10;
+      else if (dist <= HOUSE.r * 0.45) pts = 5;
+      else if (dist <= HOUSE.r * 0.75) pts = 3;
+      else if (dist <= HOUSE.r) pts = 1;
+      
+      if(pts > 0) {
+        if(s.team.id === 'fairy') fScore += pts;
+        else dScore += pts;
+      }
+    });
+
+    ctx.font = '900 28px "Black Han Sans"';
+    ctx.fillStyle = TEAMS.fairy.color;
+    ctx.textAlign = 'left';
+    ctx.fillText(`요정: ${fScore}점`, 20, 110);
+    
+    ctx.fillStyle = TEAMS.dark.color;
+    ctx.textAlign = 'right';
+    ctx.fillText(`어둠: ${dScore}점`, LOGICAL_W - 20, 110);
+  }
 
   // Drag Arrow
   if (state.dragging && state.dragStart && state.dragNow && !state.isAiTurn && state.activeStone) {

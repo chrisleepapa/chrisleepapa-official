@@ -34,7 +34,7 @@
     <!-- 가족팀 추가 리소스 프리로드 -->
     <link rel="preload" href="/images/jung02.jpg" as="image">
     <link rel="preload" href="/images/chris03.jpg" as="image">
-    <link rel="preload" href="/images/mom01.jpeg" as="image">
+    <link rel="preload" href="/images/mom01.jpg" as="image"> <!-- jpg로 수정됨 -->
     <link rel="preload" href="/images/yul01.png" as="image">
     <link rel="preload" href="/images/jung01.png" as="image">
 
@@ -507,6 +507,18 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
     </div>
 
     <div style="display:flex; flex-direction:column; gap:15px; width:100%; max-width:380px; flex:1; padding-bottom:10px; overflow-y:auto;">
+      
+      <!-- 가족팀을 제일 위로 배치 -->
+      <div class="team-card family" onclick="selectTeam('family')">
+        <div class="team-bg" style="background-image:url('/images/jung02.jpg');"></div>
+        <div class="team-overlay">
+          <div class="team-label" style="color:var(--c-gold);">우당탕 가족</div>
+          <div style="font-family:'Cinzel',serif; font-weight:700; opacity:0.8;">FAMILY SQUAD</div>
+        </div>
+      </div>
+
+      <div style="text-align:center; font-family:'Cinzel',serif; font-size:1.2rem; font-weight:900; opacity:0.5;">VS</div>
+
       <div class="team-card fairy" onclick="selectTeam('fairy')">
         <div class="team-bg" style="background-image:url('/images/fairyteam.png');"></div>
         <div class="team-overlay">
@@ -522,16 +534,6 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
         <div class="team-overlay">
           <div class="team-label" style="color:var(--c-dark-glow);">어둠의 왕관</div>
           <div style="font-family:'Cinzel',serif; font-weight:700; opacity:0.8;">CROWN SQUAD</div>
-        </div>
-      </div>
-
-      <div style="text-align:center; font-family:'Cinzel',serif; font-size:1.2rem; font-weight:900; opacity:0.5;">VS</div>
-
-      <div class="team-card family" onclick="selectTeam('family')">
-        <div class="team-bg" style="background-image:url('/images/jung02.jpg');"></div>
-        <div class="team-overlay">
-          <div class="team-label" style="color:var(--c-gold);">우당탕 가족</div>
-          <div style="font-family:'Cinzel',serif; font-weight:700; opacity:0.8;">FAMILY SQUAD</div>
         </div>
       </div>
     </div>
@@ -667,7 +669,8 @@ const TEAMS = {
   family:{
     id:'family',name:'우당탕 가족',color:'#ffcf00',border:'#ffea00',icon:'👨‍👩‍👧‍👧',
     members:[
-      {id:'mom', name:'엄마', img:'/images/mom01.jpeg', skill:'모두 모이자!', desc:'모든 아군 스톤을 과녁 안으로!'},
+      // 엄마 사진 jpg로 수정 완료
+      {id:'mom', name:'엄마', img:'/images/mom01.jpg', skill:'모두 모이자!', desc:'모든 아군 스톤을 과녁 안으로!'},
       {id:'dad', name:'아빠', img:'/images/chris03.jpg', skill:'가족은 내가 지켜', desc:'빠르게 이동하며 적 스톤 타격'},
       {id:'yul', name:'율이', img:'/images/yul01.png', skill:'파이어!!', desc:'과녁 내 적 스톤을 밖으로 밀쳐냄'},
       {id:'jung', name:'정이', img:'/images/jung01.png', skill:'도와줄께!', desc:'무조건 과녁 안으로 돌진!'}
@@ -821,7 +824,6 @@ function renderOrderUI() {
     const div = document.createElement('div');
     div.className = 'char-btn' + (isSel ? ' sel' : '');
     
-    // ★ 다시 눌러서 취소(순서 재배치) 가능하도록 로직 변경 ★
     div.onclick = () => { 
       if (isSel) {
         state.playerOrder = state.playerOrder.filter(id => id !== idx);

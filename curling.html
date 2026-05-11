@@ -54,10 +54,10 @@ body::before{
 #gameWrap{
   position:relative; 
   width:100%; 
-  max-width: 800px; /* PC에서 시원하게 넓게 보임 */
+  max-width: 800px; 
   height: 100dvh;
   margin:auto; overflow:hidden; z-index:1;
-  box-shadow: 0 0 50px rgba(0,0,0,0.8); /* PC에서 양옆 여백 생길 시 구분선 */
+  box-shadow: 0 0 50px rgba(0,0,0,0.8);
 }
 
 canvas{width:100%; height:100%; display:block; touch-action:none; position:absolute; inset:0; object-fit: contain;}
@@ -143,7 +143,7 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
 .team-card.dark:hover{border-color:var(--c-dark); box-shadow:0 15px 40px rgba(106,0,255,0.5);}
 .team-bg{
   position:absolute; inset:0; background-size:cover; background-position:center;
-  background-color: #222; /* 이미지 로딩 전 배경색 */
+  background-color: #222;
   transition:transform 0.6s ease; filter:brightness(0.7) contrast(1.2);
 }
 .team-card:hover .team-bg{transform:scale(1.15) rotate(2deg); filter:brightness(1) contrast(1.2);}
@@ -154,7 +154,6 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
 }
 .team-label{font-family:'Black Han Sans', sans-serif; font-size:1.8rem; text-shadow:0 5px 20px rgba(0,0,0,1);}
 
-/* 모바일 잘림 방지 (Order Select Grid) */
 .order-slot{
   width: 65px; height: 65px; border-radius: 12px;
   display: flex; align-items: center; justify-content: center;
@@ -181,14 +180,13 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
   padding: 2px 6px; border-radius: 8px; color: #fff; letter-spacing: 0.5px;
 }
 
-/* ─── In-Game UI (투명 점수판 최적화) ─── */
+/* ─── In-Game UI ─── */
 #inGameUI{
   position:absolute; inset:0 auto auto 0; width:100%;
   padding: max(env(safe-area-inset-top, 15px), 15px); 
   display:flex; justify-content:space-between; align-items:flex-start; z-index:20; pointer-events:none;
 }
 .score-board{
-  /* 점수판 배경 투명화 */
   background: transparent; border: none; box-shadow: none; backdrop-filter: none;
   min-width: 150px;
 }
@@ -253,12 +251,6 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
   font-family:'Noto Sans KR', sans-serif; font-weight:900; font-size:1.8rem; color:var(--c-gold);
   z-index:2; transform:translateX(-100px); opacity:0; letter-spacing:4px; text-shadow:0 5px 20px rgba(0,0,0,1);
 }
-
-/* Cut-in Animations */
-#skillCutin.play .cutin-bg-stripe { animation: stripeFlash 1.5s ease-out forwards; }
-#skillCutin.play .cutin-portrait { animation: popIn 1.5s cubic-bezier(.175,.885,.32,1.275) forwards; }
-#skillCutin.play .cutin-name { animation: slideLeft 1.5s cubic-bezier(.175,.885,.32,1.275) forwards; }
-#skillCutin.play .cutin-skillname { animation: slideRight 1.5s cubic-bezier(.175,.885,.32,1.275) forwards; }
 
 @keyframes stripeFlash { 0%{opacity:0; transform:rotate(-15deg) translateY(-200px);} 20%{opacity:1; transform:rotate(-15deg) translateY(0);} 80%{opacity:1; transform:rotate(-15deg) translateY(0);} 100%{opacity:0; transform:rotate(-15deg) translateY(200px);} }
 @keyframes popIn { 0%{transform:scale(0) rotate(-45deg); opacity:0;} 20%{transform:scale(1.2) rotate(10deg); opacity:1;} 80%{transform:scale(1) rotate(0deg); opacity:1;} 100%{transform:scale(2) rotate(20deg); opacity:0;} }
@@ -440,7 +432,7 @@ const SUPA_URL = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
 const SUPA_KEY = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
 const TABLE_NAME = 'curling_ranking';
 
-// 캔버스 사이즈 확장 (PC화면 넓게 보이도록)
+// 캔버스 사이즈 확장 (PC화면 넓게 보이도록 비율 조정)
 const LOGICAL_W = 768, LOGICAL_H = 1024;
 const HOUSE = { x: LOGICAL_W / 2, y: 240, r: 160 };
 const START = { x: LOGICAL_W / 2, y: 880 };
@@ -453,7 +445,6 @@ const REACTIONS = [
   "억까 없는 클린 샷!😎", "중꺾마! 가즈아!🚀", "찢었다 진짜...👍", "찢.었.다💥"
 ];
 
-// 캐릭터별 고유 스킬 정의
 const TEAMS = {
   fairy:{
     id:'fairy',name:'요정 연합',color:'#ff2a85',border:'#ff7eb3',icon:'🧚',
@@ -476,7 +467,7 @@ const TEAMS = {
 };
 
 let state = {
-  phase:'setup', // setup, aim, move, skill
+  phase:'setup', 
   playerInitials:'',
   stones:[],
   currentTeam:null, playerTeam:null, aiTeam:null,
@@ -485,14 +476,10 @@ let state = {
   stonesLeft:{fairy:4,dark:4},
   activeStone:null, dragging:false, dragStart:null, dragNow:null,
   isAiTurn:false,
-  
   skillCharge:{fairy:0, dark:0}, 
   powerBuff:{fairy:0, dark:0}
 };
 
-// ══════════════════════════════════════════════════════
-// CANVAS SETUP
-// ══════════════════════════════════════════════════════
 const canvas = document.getElementById('gameCanvas'); const ctx = canvas.getContext('2d');
 const eCanvas = document.getElementById('effectCanvas'); const eCtx = eCanvas.getContext('2d');
 const pCanvas = document.getElementById('particleCanvas'); const pCtx = pCanvas.getContext('2d');
@@ -721,7 +708,7 @@ function flashScreen(color='white') {
   setTimeout(() => f.style.opacity = '0', 50);
 }
 
-// 힙한 플로팅 리액션 멘트 생성기
+// 힙한 플로팅 리액션 멘트 생성
 function showReaction() {
   const el = document.createElement('div');
   el.className = 'floating-reaction';
@@ -729,12 +716,11 @@ function showReaction() {
   const colors = ['#ff2a85', '#00e5ff', '#ffcf00', '#a855f7'];
   el.style.color = colors[Math.floor(Math.random() * colors.length)];
   
-  // 랜덤 위치 배정 (화면 중간 영역)
   el.style.left = (15 + Math.random() * 50) + '%';
   el.style.top = (30 + Math.random() * 40) + '%';
   
   document.getElementById('gameWrap').appendChild(el);
-  setTimeout(() => el.remove(), 2000); // 애니메이션 후 삭제
+  setTimeout(() => el.remove(), 2000); 
 }
 
 function showSkillCutin(member, team) {
@@ -785,7 +771,7 @@ function applyImpulse(targetRule, conditionRule, magnitude) {
 
 function executeSkillEffect(skillId, team) {
   flashScreen(team.color);
-  shakeMag = 15; shakeTime = 20; // 쉐이크 이펙트 강화
+  shakeMag = 15; shakeTime = 20; 
 
   switch(skillId) {
     case 'pretty': spawnSparks(HOUSE.x, HOUSE.y, '#fff', 50, 2); applyImpulse('enemy', 'in_house', 12); break;
@@ -798,7 +784,8 @@ function executeSkillEffect(skillId, team) {
     case 'angel': activeForces.push({ teamId: team.id, target:'ally', cond:'all', type:'pull', life:150 }); break;
   }
   
-  setTimeout(() => { state.phase = 'aim'; if(state.isAiTurn) executeAIThrow(); }, 1000);
+  // 물리 시뮬레이션 시간을 주기 위해 1.5초 후 aim 페이즈로
+  setTimeout(() => { state.phase = 'aim'; if(state.isAiTurn) executeAIThrow(); }, 1500);
 }
 
 function showBuffAlert() {
@@ -840,14 +827,17 @@ function executeAIThrow() {
 
 function getPos(e) { 
   const r = canvas.getBoundingClientRect(); 
-  // 화면 비율에 맞춰 좌표 계산
   return { x: (e.clientX - r.left) * (LOGICAL_W / r.width), y: (e.clientY - r.top) * (LOGICAL_H / r.height) }; 
 }
 
 canvas.addEventListener('pointerdown', e => {
   if (state.phase !== 'aim' || state.isAiTurn) return;
   const pos = getPos(e);
-  if (Math.hypot(pos.x - state.activeStone.x, pos.y - state.activeStone.y) < 120) { state.dragging = true; state.dragStart = pos; state.dragNow = pos; }
+  
+  // ★ 터치 영역 대폭 확대: 화면 하단 40% 영역이거나 스톤 반경 200 이내 터치 시 드래그 허용
+  if (pos.y > LOGICAL_H * 0.6 || Math.hypot(pos.x - state.activeStone.x, pos.y - state.activeStone.y) < 200) { 
+    state.dragging = true; state.dragStart = pos; state.dragNow = pos; 
+  }
 });
 canvas.addEventListener('pointermove', e => { if (state.dragging) state.dragNow = getPos(e); });
 window.addEventListener('pointerup', () => {
@@ -856,7 +846,6 @@ window.addEventListener('pointerup', () => {
   const dx = state.dragStart.x - state.dragNow.x, dy = state.dragStart.y - state.dragNow.y;
   const dist = Math.hypot(dx, dy);
   if (dist > 10) {
-    // 캔버스가 길어졌으므로 파워 한계치 상향
     let power = Math.min(dist, 350) * 0.12;
     if(state.powerBuff[state.currentTeam.id] > 0) { power *= 1.5; state.powerBuff[state.currentTeam.id]--; }
     const angle = Math.atan2(dy, dx);
@@ -943,7 +932,6 @@ function resetToMain() {
   document.getElementById('winnerModal').style.display = 'none'; document.getElementById('inGameUI').style.display = 'none';
   document.getElementById('bottomGuide').style.display = 'none'; document.getElementById('skillContainer').style.display = 'none';
   
-  // 모든 팝업 리액션 클리어
   document.querySelectorAll('.floating-reaction').forEach(el => el.remove());
   
   state.phase='setup'; state.stones=[]; state.fairyWins=0; state.darkWins=0; state.round=1; state.stonesLeft={fairy:4,dark:4};
@@ -964,7 +952,7 @@ function drawArena() {
   bgGrad.addColorStop(0, '#151525'); bgGrad.addColorStop(1, '#050508');
   ctx.fillStyle = bgGrad; ctx.fillRect(0,0,LOGICAL_W,LOGICAL_H);
 
-  // Magic Runes (Rotating Circle)
+  // Magic Runes
   ctx.save(); ctx.translate(HOUSE.x, HOUSE.y); ctx.rotate(bgTime * 0.2);
   ctx.strokeStyle = 'rgba(255,255,255,0.05)'; ctx.lineWidth = 2; ctx.setLineDash([15, 10]);
   ctx.beginPath(); ctx.arc(0,0, HOUSE.r * 1.5, 0, Math.PI*2); ctx.stroke();
@@ -1024,20 +1012,21 @@ function gameLoop() {
   }
 
   drawArena();
+  
   if (state.phase !== 'setup') {
-    if (state.phase === 'move' || activeForces.length > 0) {
-      applyContinuousForces();
-      let moving = false;
-      state.stones.forEach(s => { s.update(); if (s.move) moving = true; });
-      resolveCollisions();
-      
-      // 스톤이 멈춘 상태이고 무브 페이즈일 때 리액션 플로팅 띄우며 턴 교체
-      if (!moving && state.phase === 'move') {
-        if(!state.isAiTurn) showReaction(); // 플레이어가 투구를 마쳤을 때만 멘트
-        state.currentTeam = state.currentTeam.id === 'fairy' ? TEAMS.dark : TEAMS.fairy;
-        spawnStone();
-      }
+    // ★ 스킬 즉발 핵심: 페이즈와 관계없이 항상 물리 엔진을 돌림
+    applyContinuousForces();
+    let moving = false;
+    state.stones.forEach(s => { s.update(); if (s.move) moving = true; });
+    resolveCollisions();
+    
+    // 오직 'move' 페이즈(투구 후)일 때만 돌이 다 멈추면 턴을 교체
+    if (!moving && state.phase === 'move') {
+      if(!state.isAiTurn) showReaction(); 
+      state.currentTeam = state.currentTeam.id === 'fairy' ? TEAMS.dark : TEAMS.fairy;
+      spawnStone();
     }
+    
     state.stones.forEach(s => s.draw());
   }
 

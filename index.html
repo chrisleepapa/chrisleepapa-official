@@ -231,11 +231,11 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 25px; /* 두 노트 사이의 간격 */
+            gap: 25px;
             padding: 5rem 1.5rem 4rem;
             position: relative;
             z-index: 10;
-            margin-top: -60px; /* 기존 크리에이터 노트를 위한 마이너스 마진 유지 */
+            margin-top: -60px;
         }
 
         .note-container {
@@ -283,10 +283,8 @@
         }
 
         /* 캡처를 위한 클래스 */
-        #bibleCaptureTarget.capture-mode {
-            background: #0a0a10 !important;
-            padding: 50px 30px !important;
-            border-radius: 0 !important;
+        .capture-mode {
+            background: #0a0a10 !important; /* 이미지 배경을 깔끔한 단색 다크로 강제 */
         }
 
         /* 성경 말씀 버튼 스타일 */
@@ -537,7 +535,7 @@
                     <p class="eng-verse" id="bibleTextEng">Loading scripture...</p>
 
                     <div class="verse-action-buttons">
-                        <button class="verse-btn" onclick="shareVerseText()">
+                        <button class="verse-btn" onclick="shareVerseImage()">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
                             <span data-i18n="verse_share">말씀 공유</span>
                         </button>
@@ -638,7 +636,6 @@
             <div class="card-badge" data-i18n="badge_music">New Release</div>
             <div class="card-arrow"><svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <div class="card-body">
-                <div class="card-body">
                 <div class="card-preview">
                     <span class="preview-tag" data-i18n="prev_music1">To Rise</span>
                     <span class="preview-tag" data-i18n="prev_music2">Instrumental</span>
@@ -712,10 +709,6 @@
             });
         }
 
-        /* 성경 구절 데이터 배열
-           창세기부터 요한계시록까지 영감을 주는 핵심 구절들을 담았습니다.
-           웹사이트 성능을 위해 전체 성경을 넣지 않고, 로테이션 방식을 채택했습니다.
-        */
         const bibleVerses = [
             { refKo: "창세기 1:1", refEn: "Genesis 1:1", textKo: "태초에 하나님이 천지를 창조하시니라", textEn: "In the beginning God created the heavens and the earth." },
             { refKo: "여호수아 1:9", refEn: "Joshua 1:9", textKo: "내가 네게 명령한 것이 아니냐 강하고 담대하라 두려워하지 말며 놀라지 말라 네가 어디로 가든지 네 하나님 여호와가 너와 함께 하느니라 하시니라", textEn: "Have I not commanded you? Be strong and courageous. Do not be afraid; do not be discouraged, for the LORD your God will be with you wherever you go." },
@@ -770,7 +763,8 @@
                 card_about_sub:"나를 살게 한 것, 그리고 내가 만들어가는 것", card_about_title:"ABOUT",
                 card_contact_sub:"새로운 영감과 비즈니스 제안", card_contact_title:"CONTACT",
                 footer_text:"© 2026 Chris LEE.PAPA — The Creative Archive",
-                toast_copy:"링크가 복사되었습니다 ✓", toast_error:"지원하지 않는 브라우저입니다."
+                toast_copy:"링크가 복사되었습니다 ✓", toast_error:"지원하지 않는 브라우저입니다.",
+                verse_share:"말씀 공유", verse_save:"이미지 저장"
             },
             en: {
                 nav_home:"Home", nav_worship:"Worship", nav_music:"Music", nav_book:"Books", nav_movie:"Movies",
@@ -802,34 +796,26 @@
                 card_about_sub:"What kept me alive, and what I am creating", card_about_title:"ABOUT",
                 card_contact_sub:"New inspiration and business proposals", card_contact_title:"CONTACT",
                 footer_text:"© 2026 Chris LEE.PAPA — The Creative Archive",
-                toast_copy:"Link copied to clipboard ✓", toast_error:"Browser not supported."
+                toast_copy:"Link copied to clipboard ✓", toast_error:"Browser not supported.",
+                verse_share:"Share Image", verse_save:"Save Image"
             }
         };
 
         let currentLang = 'ko';
 
-        // 매일 오전 8시 기준으로 말씀 가져오기 알고리즘
         function getDailyVerse() {
             const now = new Date();
-            // 사용자의 로컬 타임을 한국 표준시(KST: UTC+9)로 변환
             const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
             const kstTime = new Date(utc + (3600000 * 9));
-
-            // 오전 8시 기준 변경을 위해 8시간을 뺌 (결과적으로 오전 8시에 하루가 변경된 것으로 인식됨)
             kstTime.setHours(kstTime.getHours() - 8);
-
-            // 해당 날짜의 고유 Day Number 계산
             const start = new Date(kstTime.getFullYear(), 0, 0);
             const diff = kstTime - start;
             const oneDay = 1000 * 60 * 60 * 24;
             const dayOfYear = Math.floor(diff / oneDay);
-
-            // 말씀을 배열 길이만큼 로테이션
             const verseIndex = dayOfYear % bibleVerses.length;
             return bibleVerses[verseIndex];
         }
 
-        // 언어 변경 시 UI 업데이트
         function setLanguage(lang) {
             currentLang = i18n[lang] ? lang : 'ko';
             lang = currentLang;
@@ -841,13 +827,11 @@
                 if (i18n[lang][key]) el.innerHTML = i18n[lang][key];
             });
 
-            // 성경 말씀 UI 업데이트
             const verse = getDailyVerse();
             document.getElementById('bibleReferenceTitle').textContent = lang === 'ko' ? verse.refKo : verse.refEn;
             document.getElementById('bibleTextKor').textContent = verse.textKo;
             document.getElementById('bibleTextEng').textContent = verse.textEn;
 
-            // 버튼 상태 변경
             document.querySelectorAll('.lang-btn').forEach(btn => {
                 btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
             });
@@ -875,14 +859,12 @@
             }
         });
 
-        // 성경 구절 아코디언 토글
         function toggleBibleNote() {
             const note = document.getElementById('bibleAccordion');
             const isOpen = note.classList.toggle('active');
             note.querySelector('.note-trigger').setAttribute('aria-expanded', String(isOpen));
         }
 
-        // 크리에이터 노트 아코디언 토글
         function toggleCreatorNote() {
             const note = document.getElementById('noteAccordion');
             const isOpen = note.classList.toggle('active');
@@ -999,6 +981,86 @@
             if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && ['I','J'].includes(e.key)) || (e.ctrlKey && e.key === 'U')) e.preventDefault();
             if (e.ctrlKey && ['c','s','p'].includes(e.key)) { if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) e.preventDefault(); }
         });
+
+        // ==========================================
+        // 캡처를 위한 공통 헬퍼 함수 (테두리 및 전체 영역 포함)
+        // ==========================================
+        async function getBibleCanvas() {
+            // 테두리와 제목을 포함하는 전체 컨테이너를 타겟으로 잡음
+            const target = document.getElementById('bibleAccordion');
+            const toggleIcon = target.querySelector('.toggle-symbol');
+            
+            // 캡처 화면을 깔끔하게 하기 위한 클래스 추가 및 토글(+,x) 아이콘 임시 숨김
+            target.classList.add('capture-mode');
+            if (toggleIcon) toggleIcon.style.display = 'none';
+            target.style.boxShadow = 'none'; // 임시로 그림자 제거
+            
+            const canvas = await html2canvas(target, {
+                backgroundColor: '#0a0a10',
+                scale: 3, // 고해상도
+                useCORS: true
+            });
+            
+            // 원상 복구
+            target.classList.remove('capture-mode');
+            if (toggleIcon) toggleIcon.style.display = '';
+            target.style.boxShadow = '';
+            
+            return canvas;
+        }
+
+        // ==========================================
+        // 텍스트 대신 '이미지 파일' 자체를 네이티브 공유하는 함수
+        // ==========================================
+        async function shareVerseImage() {
+            try {
+                const canvas = await getBibleCanvas();
+                canvas.toBlob(async (blob) => {
+                    const file = new File([blob], 'bible_verse.png', { type: 'image/png' });
+                    
+                    // 기기 브라우저가 파일 공유를 지원하는 경우 이미지 파일 전송
+                    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+                        await navigator.share({
+                            title: "Today's Bible Verse",
+                            files: [file]
+                        });
+                    } else {
+                        // 미지원 기기일 경우 텍스트 복사로 대체
+                        shareVerseTextFallback();
+                    }
+                }, 'image/png');
+            } catch (err) {
+                console.error('Share image failed:', err);
+                shareVerseTextFallback();
+            }
+        }
+
+        function shareVerseTextFallback() {
+            const verseKo = document.getElementById('bibleTextKor').textContent;
+            const verseEn = document.getElementById('bibleTextEng').textContent;
+            const ref = document.getElementById('bibleReferenceTitle').textContent;
+            const shareText = `[Today's Bible Verse]\n${ref}\n\n${verseKo}\n\n${verseEn}`;
+            
+            navigator.clipboard.writeText(shareText).then(() => {
+                showToast(currentLang === 'ko' ? "이미지 공유 미지원 브라우저입니다. 말씀 텍스트가 복사되었습니다 ✓" : "Text copied ✓");
+            });
+        }
+
+        // ==========================================
+        // 전체 영역을 고해상도 이미지로 저장하는 함수
+        // ==========================================
+        async function saveVerseAsImage() {
+            try {
+                const canvas = await getBibleCanvas();
+                const link = document.createElement('a');
+                link.download = 'todays_bible_verse.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            } catch (err) {
+                console.error('Capture failed:', err);
+                showToast(currentLang === 'ko' ? "이미지 저장에 실패했습니다." : "Failed to save image.");
+            }
+        }
     </script>
 </body>
 </html>

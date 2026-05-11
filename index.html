@@ -17,7 +17,6 @@
       gtag('config', 'GT-5MJDBTR2');
     </script>
 
-    <!-- html2canvas 라이브러리 추가 (이미지 저장 기능용) -->
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
     <meta charset="UTF-8">
@@ -523,10 +522,8 @@
         </div>
     </header>
 
-    <!-- 새롭게 추가된 래퍼: 오늘의 말씀과 크리에이터 노트를 감쌈 -->
     <section class="notes-wrapper">
         
-        <!-- NEW: Today's Bible Verse Section -->
         <div class="note-container" id="bibleAccordion">
             <button type="button" class="note-trigger" onclick="toggleBibleNote()" aria-expanded="false" aria-controls="bibleNoteContent">
                 <span class="section-tag" data-i18n="bible_tag">✦ &nbsp; Today's Bible Verse &nbsp; ✦</span>
@@ -539,7 +536,6 @@
                     <p id="bibleTextKor">말씀을 불러오는 중입니다...</p>
                     <p class="eng-verse" id="bibleTextEng">Loading scripture...</p>
 
-                    <!-- 공유 및 저장 버튼 추가 -->
                     <div class="verse-action-buttons">
                         <button class="verse-btn" onclick="shareVerseText()">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
@@ -554,7 +550,6 @@
             </div>
         </div>
 
-        <!-- 기존: Creator's Note Section -->
         <div class="note-container" id="noteAccordion">
             <button type="button" class="note-trigger" onclick="toggleCreatorNote()" aria-expanded="false" aria-controls="creatorNoteContent">
                 <span class="section-tag" data-i18n="note_tag">✦ &nbsp; Creator's Note &nbsp; ✦</span>
@@ -643,6 +638,7 @@
             <div class="card-badge" data-i18n="badge_music">New Release</div>
             <div class="card-arrow"><svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <div class="card-body">
+                <div class="card-body">
                 <div class="card-preview">
                     <span class="preview-tag" data-i18n="prev_music1">To Rise</span>
                     <span class="preview-tag" data-i18n="prev_music2">Instrumental</span>
@@ -716,8 +712,7 @@
             });
         }
 
-        /* 
-           성경 구절 데이터 배열
+        /* 성경 구절 데이터 배열
            창세기부터 요한계시록까지 영감을 주는 핵심 구절들을 담았습니다.
            웹사이트 성능을 위해 전체 성경을 넣지 않고, 로테이션 방식을 채택했습니다.
         */
@@ -775,8 +770,7 @@
                 card_about_sub:"나를 살게 한 것, 그리고 내가 만들어가는 것", card_about_title:"ABOUT",
                 card_contact_sub:"새로운 영감과 비즈니스 제안", card_contact_title:"CONTACT",
                 footer_text:"© 2026 Chris LEE.PAPA — The Creative Archive",
-                toast_copy:"링크가 복사되었습니다 ✓", toast_error:"지원하지 않는 브라우저입니다.",
-                verse_share:"말씀 공유", verse_save:"이미지 저장"
+                toast_copy:"링크가 복사되었습니다 ✓", toast_error:"지원하지 않는 브라우저입니다."
             },
             en: {
                 nav_home:"Home", nav_worship:"Worship", nav_music:"Music", nav_book:"Books", nav_movie:"Movies",
@@ -808,8 +802,7 @@
                 card_about_sub:"What kept me alive, and what I am creating", card_about_title:"ABOUT",
                 card_contact_sub:"New inspiration and business proposals", card_contact_title:"CONTACT",
                 footer_text:"© 2026 Chris LEE.PAPA — The Creative Archive",
-                toast_copy:"Link copied to clipboard ✓", toast_error:"Browser not supported.",
-                verse_share:"Share Text", verse_save:"Save Image"
+                toast_copy:"Link copied to clipboard ✓", toast_error:"Browser not supported."
             }
         };
 
@@ -1006,57 +999,6 @@
             if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && ['I','J'].includes(e.key)) || (e.ctrlKey && e.key === 'U')) e.preventDefault();
             if (e.ctrlKey && ['c','s','p'].includes(e.key)) { if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) e.preventDefault(); }
         });
-
-        // ==========================================
-        // NEW: 성경 말씀 전용 공유 및 캡처 함수 추가
-        // ==========================================
-        
-        function shareVerseText() {
-            const verseKo = document.getElementById('bibleTextKor').textContent;
-            const verseEn = document.getElementById('bibleTextEng').textContent;
-            const ref = document.getElementById('bibleReferenceTitle').textContent;
-            const shareText = `[Today's Bible Verse]\n${ref}\n\n${verseKo}\n\n${verseEn}`;
-            
-            if (navigator.share) {
-                navigator.share({
-                    title: "Today's Bible Verse",
-                    text: shareText
-                }).catch(err => console.log('Share failed:', err));
-            } else {
-                navigator.clipboard.writeText(shareText).then(() => {
-                    showToast(currentLang === 'ko' ? "말씀 텍스트가 복사되었습니다 ✓" : "Verse text copied ✓");
-                });
-            }
-        }
-
-        function saveVerseAsImage() {
-            const target = document.getElementById('bibleCaptureTarget');
-            const btns = document.querySelector('.verse-action-buttons');
-            
-            // 캡처 화면을 깔끔하게 하기 위해 버튼 숨김 및 스타일 추가
-            btns.style.display = 'none';
-            target.classList.add('capture-mode');
-            
-            html2canvas(target, {
-                backgroundColor: '#0a0a10',
-                scale: 3, // 고해상도 처리
-                useCORS: true
-            }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = 'todays_bible_verse.png';
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-                
-                // 원상복구
-                btns.style.display = 'flex';
-                target.classList.remove('capture-mode');
-            }).catch(err => {
-                console.error('Capture failed:', err);
-                btns.style.display = 'flex';
-                target.classList.remove('capture-mode');
-                showToast(currentLang === 'ko' ? "이미지 저장에 실패했습니다." : "Failed to save image.");
-            });
-        }
     </script>
 </body>
 </html>

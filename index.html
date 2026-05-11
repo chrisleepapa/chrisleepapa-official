@@ -17,6 +17,9 @@
       gtag('config', 'GT-5MJDBTR2');
     </script>
 
+    <!-- html2canvas 라이브러리 추가 (이미지 저장 기능용) -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="images/favicon.png" type="image/png">
@@ -280,6 +283,50 @@
             font-style: italic;
         }
 
+        /* 캡처를 위한 클래스 */
+        #bibleCaptureTarget.capture-mode {
+            background: #0a0a10 !important;
+            padding: 50px 30px !important;
+            border-radius: 0 !important;
+        }
+
+        /* 성경 말씀 버튼 스타일 */
+        .verse-action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            opacity: 0;
+            transition: opacity 0.5s ease 0.3s;
+        }
+        .note-container.active .verse-action-buttons {
+            opacity: 1;
+        }
+        .verse-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            border: 1px solid rgba(201,168,76,0.3);
+            border-radius: 20px;
+            background: rgba(10, 10, 15, 0.6);
+            color: var(--gold-light);
+            font-family: 'Pretendard', sans-serif;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .verse-btn:hover {
+            background: rgba(201,168,76,0.15);
+            border-color: var(--gold-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(201,168,76,0.15);
+        }
+        .verse-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+
         .note-story-wrap { display: grid; grid-template-columns: 460px 1fr; gap: 0; border-top: 1px solid rgba(255,255,255,0.05); }
 
         .note-gallery-col { position: relative; padding: 40px; background: linear-gradient(150deg, rgba(12,10,18,0.85) 0%, rgba(5,4,8,0.98) 100%); border-right: 1px solid rgba(201,168,76,0.1); display: flex; flex-direction: column; overflow: hidden; }
@@ -488,9 +535,21 @@
             </button>
 
             <div class="note-content" id="bibleNoteContent">
-                <div class="bible-text-wrap">
+                <div class="bible-text-wrap" id="bibleCaptureTarget">
                     <p id="bibleTextKor">말씀을 불러오는 중입니다...</p>
                     <p class="eng-verse" id="bibleTextEng">Loading scripture...</p>
+
+                    <!-- 공유 및 저장 버튼 추가 -->
+                    <div class="verse-action-buttons">
+                        <button class="verse-btn" onclick="shareVerseText()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                            <span data-i18n="verse_share">말씀 공유</span>
+                        </button>
+                        <button class="verse-btn" onclick="saveVerseAsImage()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                            <span data-i18n="verse_save">이미지 저장</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -716,7 +775,8 @@
                 card_about_sub:"나를 살게 한 것, 그리고 내가 만들어가는 것", card_about_title:"ABOUT",
                 card_contact_sub:"새로운 영감과 비즈니스 제안", card_contact_title:"CONTACT",
                 footer_text:"© 2026 Chris LEE.PAPA — The Creative Archive",
-                toast_copy:"링크가 복사되었습니다 ✓", toast_error:"지원하지 않는 브라우저입니다."
+                toast_copy:"링크가 복사되었습니다 ✓", toast_error:"지원하지 않는 브라우저입니다.",
+                verse_share:"말씀 공유", verse_save:"이미지 저장"
             },
             en: {
                 nav_home:"Home", nav_worship:"Worship", nav_music:"Music", nav_book:"Books", nav_movie:"Movies",
@@ -748,7 +808,8 @@
                 card_about_sub:"What kept me alive, and what I am creating", card_about_title:"ABOUT",
                 card_contact_sub:"New inspiration and business proposals", card_contact_title:"CONTACT",
                 footer_text:"© 2026 Chris LEE.PAPA — The Creative Archive",
-                toast_copy:"Link copied to clipboard ✓", toast_error:"Browser not supported."
+                toast_copy:"Link copied to clipboard ✓", toast_error:"Browser not supported.",
+                verse_share:"Share Text", verse_save:"Save Image"
             }
         };
 
@@ -945,6 +1006,57 @@
             if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && ['I','J'].includes(e.key)) || (e.ctrlKey && e.key === 'U')) e.preventDefault();
             if (e.ctrlKey && ['c','s','p'].includes(e.key)) { if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) e.preventDefault(); }
         });
+
+        // ==========================================
+        // NEW: 성경 말씀 전용 공유 및 캡처 함수 추가
+        // ==========================================
+        
+        function shareVerseText() {
+            const verseKo = document.getElementById('bibleTextKor').textContent;
+            const verseEn = document.getElementById('bibleTextEng').textContent;
+            const ref = document.getElementById('bibleReferenceTitle').textContent;
+            const shareText = `[Today's Bible Verse]\n${ref}\n\n${verseKo}\n\n${verseEn}`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: "Today's Bible Verse",
+                    text: shareText
+                }).catch(err => console.log('Share failed:', err));
+            } else {
+                navigator.clipboard.writeText(shareText).then(() => {
+                    showToast(currentLang === 'ko' ? "말씀 텍스트가 복사되었습니다 ✓" : "Verse text copied ✓");
+                });
+            }
+        }
+
+        function saveVerseAsImage() {
+            const target = document.getElementById('bibleCaptureTarget');
+            const btns = document.querySelector('.verse-action-buttons');
+            
+            // 캡처 화면을 깔끔하게 하기 위해 버튼 숨김 및 스타일 추가
+            btns.style.display = 'none';
+            target.classList.add('capture-mode');
+            
+            html2canvas(target, {
+                backgroundColor: '#0a0a10',
+                scale: 3, // 고해상도 처리
+                useCORS: true
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'todays_bible_verse.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                
+                // 원상복구
+                btns.style.display = 'flex';
+                target.classList.remove('capture-mode');
+            }).catch(err => {
+                console.error('Capture failed:', err);
+                btns.style.display = 'flex';
+                target.classList.remove('capture-mode');
+                showToast(currentLang === 'ko' ? "이미지 저장에 실패했습니다." : "Failed to save image.");
+            });
+        }
     </script>
 </body>
 </html>

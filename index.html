@@ -983,17 +983,18 @@
         });
 
         // ==========================================
-        // 캡처를 위한 공통 헬퍼 함수 (테두리 및 전체 영역 포함)
+        // 캡처를 위한 공통 헬퍼 함수 (테두리 및 전체 영역 포함, 버튼 제거)
         // ==========================================
         async function getBibleCanvas() {
-            // 테두리와 제목을 포함하는 전체 컨테이너를 타겟으로 잡음
             const target = document.getElementById('bibleAccordion');
             const toggleIcon = target.querySelector('.toggle-symbol');
+            const actionButtons = target.querySelector('.verse-action-buttons'); // 버튼 영역 선택
             
-            // 캡처 화면을 깔끔하게 하기 위한 클래스 추가 및 토글(+,x) 아이콘 임시 숨김
+            // 캡처 화면을 깔끔하게 하기 위한 클래스 추가 및 불필요한 요소 임시 숨김
             target.classList.add('capture-mode');
             if (toggleIcon) toggleIcon.style.display = 'none';
-            target.style.boxShadow = 'none'; // 임시로 그림자 제거
+            if (actionButtons) actionButtons.style.display = 'none'; // 버튼 캡처 방지 (숨김)
+            target.style.boxShadow = 'none';
             
             const canvas = await html2canvas(target, {
                 backgroundColor: '#0a0a10',
@@ -1001,9 +1002,10 @@
                 useCORS: true
             });
             
-            // 원상 복구
+            // 캡처 후 원상 복구
             target.classList.remove('capture-mode');
             if (toggleIcon) toggleIcon.style.display = '';
+            if (actionButtons) actionButtons.style.display = ''; // 버튼 복구
             target.style.boxShadow = '';
             
             return canvas;
@@ -1018,14 +1020,12 @@
                 canvas.toBlob(async (blob) => {
                     const file = new File([blob], 'bible_verse.png', { type: 'image/png' });
                     
-                    // 기기 브라우저가 파일 공유를 지원하는 경우 이미지 파일 전송
                     if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
                         await navigator.share({
                             title: "Today's Bible Verse",
                             files: [file]
                         });
                     } else {
-                        // 미지원 기기일 경우 텍스트 복사로 대체
                         shareVerseTextFallback();
                     }
                 }, 'image/png');

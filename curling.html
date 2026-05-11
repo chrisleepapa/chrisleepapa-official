@@ -19,7 +19,7 @@
   
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
-    <title>MAGIC CURLING: Fairy vs Crown</title>
+    <title>MAGIC CURLING: Fairy vs Crown vs Family</title>
 
     <link rel="preload" href="/images/fairyteam.png" as="image">
     <link rel="preload" href="/images/darkteam.png" as="image">
@@ -31,6 +31,12 @@
     <link rel="preload" href="/images/bain.jpg" as="image">
     <link rel="preload" href="/images/crown.jpg" as="image">
     <link rel="preload" href="/images/angel.jpeg" as="image">
+    <!-- 가족팀 추가 리소스 프리로드 -->
+    <link rel="preload" href="/images/jung02.jpg" as="image">
+    <link rel="preload" href="/images/chris03.jpg" as="image">
+    <link rel="preload" href="/images/mom01.jpeg" as="image">
+    <link rel="preload" href="/images/yul01.png" as="image">
+    <link rel="preload" href="/images/jung01.png" as="image">
 
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Cinzel:wght@700;900&family=Exo+2:ital,wght@0,400;0,800;0,900;1,900&family=Noto+Sans+KR:wght@500;700;900&display=swap" rel="stylesheet"/>
@@ -102,7 +108,7 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
 .title-sub {
   font-family:'Black Han Sans', sans-serif; font-size:clamp(1.5rem, 5vw, 2.2rem);
   text-align:center; letter-spacing:2px;
-  background: linear-gradient(90deg, var(--c-fairy-glow), var(--c-ice), var(--c-dark-glow));
+  background: linear-gradient(90deg, var(--c-fairy-glow), var(--c-ice), var(--c-gold));
   -webkit-background-clip:text; -webkit-text-fill-color:transparent;
   filter:drop-shadow(0 0 20px rgba(0,229,255,0.4)); margin-bottom: 20px;
 }
@@ -155,6 +161,7 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
 .team-card:hover{transform:scale(1.05) translateY(-5px); z-index:2;}
 .team-card.fairy:hover{border-color:var(--c-fairy); box-shadow:0 15px 40px rgba(255,42,133,0.5);}
 .team-card.dark:hover{border-color:var(--c-dark); box-shadow:0 15px 40px rgba(106,0,255,0.5);}
+.team-card.family:hover{border-color:var(--c-gold); box-shadow:0 15px 40px rgba(255,207,0,0.5);}
 .team-bg{
   position:absolute; inset:0; background-size:cover; background-position:center;
   background-color: #222;
@@ -195,7 +202,8 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
 .char-btn.sel{
   border-color: var(--c-ice); 
   box-shadow: 0 0 20px rgba(0,229,255,0.4);
-  opacity: 0.5; pointer-events: none; transform: scale(0.95);
+  /* 포인터 이벤트 복구 (다시 클릭 가능하게) */
+  opacity: 0.5; transform: scale(0.95);
 }
 .char-btn-img {
   position: absolute; inset: 0; width: 100%; height: 100%;
@@ -222,7 +230,7 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
   box-shadow: 0 2px 8px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2);
 }
 
-/* ★ 개편된 In-Game HUD (깔끔한 상하단 분리) ★ */
+/* ★ 개편된 In-Game HUD ★ */
 #inGameUI {
   position: absolute; top: max(env(safe-area-inset-top, 15px), 15px); left: 0; width: 100%;
   display: flex; flex-direction: column; gap: 15px; z-index: 20; pointer-events: none;
@@ -237,6 +245,7 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
 }
 .set-score.fairy { color: var(--c-fairy-glow); }
 .set-score.dark { color: var(--c-dark-glow); }
+.set-score.family { color: var(--c-gold); }
 
 .round-info { text-align: center; }
 .round-info .best-of { font-size: 0.7rem; font-weight: 900; letter-spacing: 2px; color: rgba(255,255,255,0.8); text-shadow: 0 1px 3px #000; margin-bottom: 2px; }
@@ -251,6 +260,7 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
 }
 .rt-score.fairy { color: var(--c-fairy-glow); }
 .rt-score.dark { color: var(--c-dark-glow); }
+.rt-score.family { color: var(--c-gold); }
 
 .turn-box {
   padding: 8px 24px; border-radius: 20px; font-family: 'Black Han Sans', sans-serif; font-size: 1.2rem;
@@ -398,7 +408,7 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
 }
 @keyframes popAlert { 0%{transform:translate(-50%, -30%) scale(0.5); opacity:0;} 50%{transform:translate(-50%, -50%) scale(1.2); opacity:1;} 100%{transform:translate(-50%, -70%) scale(1); opacity:0;} }
 
-/* ★ Floating Messages 모바일 짤림 방지 및 가독성 최적화 ★ */
+/* ★ Floating Messages ★ */
 .floating-reaction {
   position: absolute; 
   font-family: 'Black Han Sans', sans-serif; 
@@ -440,8 +450,7 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
   100% { opacity: 0; transform: translate(-50%, -70%) scale(0.8); }
 }
 
-
-/* ─── Modal 모바일 최적화 ─── */
+/* ─── Modal ─── */
 #winnerModal{
   position:absolute; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(10px);
   z-index:120; display:none; justify-content:center; align-items:center; padding:20px;
@@ -471,7 +480,7 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
   <div id="s-login" class="screen">
     <div style="margin-top:4vh; margin-bottom:20px;">
       <div class="title-main">MAGIC CURLING</div>
-      <div class="title-sub">FAIRY vs CROWN</div>
+      <div class="title-sub">BATTLE ARENA</div>
     </div>
 
     <div class="glass-panel" style="width:100%; max-width:360px; padding:25px 24px; margin-bottom:20px;">
@@ -494,10 +503,10 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
   <div id="s-team" class="screen hidden">
     <div style="text-align:center; margin-top:10px; margin-bottom:20px;">
       <div class="title-main" style="font-size:2.2rem;">CHOOSE FACTION</div>
-      <div style="font-size:0.9rem; opacity:0.6; letter-spacing:2px;">빛과 어둠, 당신의 진영은?</div>
+      <div style="font-size:0.9rem; opacity:0.6; letter-spacing:2px;">당신의 진영을 선택하세요</div>
     </div>
 
-    <div style="display:flex; flex-direction:column; gap:15px; width:100%; max-width:380px; flex:1; padding-bottom:10px;">
+    <div style="display:flex; flex-direction:column; gap:15px; width:100%; max-width:380px; flex:1; padding-bottom:10px; overflow-y:auto;">
       <div class="team-card fairy" onclick="selectTeam('fairy')">
         <div class="team-bg" style="background-image:url('/images/fairyteam.png');"></div>
         <div class="team-overlay">
@@ -515,13 +524,23 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
           <div style="font-family:'Cinzel',serif; font-weight:700; opacity:0.8;">CROWN SQUAD</div>
         </div>
       </div>
+
+      <div style="text-align:center; font-family:'Cinzel',serif; font-size:1.2rem; font-weight:900; opacity:0.5;">VS</div>
+
+      <div class="team-card family" onclick="selectTeam('family')">
+        <div class="team-bg" style="background-image:url('/images/jung02.jpg');"></div>
+        <div class="team-overlay">
+          <div class="team-label" style="color:var(--c-gold);">우당탕 가족</div>
+          <div style="font-family:'Cinzel',serif; font-weight:700; opacity:0.8;">FAMILY SQUAD</div>
+        </div>
+      </div>
     </div>
   </div>
 
   <div id="s-order" class="screen hidden">
     <div style="text-align:center; margin-top:5px; margin-bottom:15px;">
       <div id="orderTitle" class="title-main" style="font-size:1.8rem; margin-bottom:0;">출전 순서</div>
-      <div style="font-size:0.8rem; opacity:0.6; letter-spacing:1px; margin-top:5px;">4명의 마법사를 탭하여 순서를 정하세요</div>
+      <div style="font-size:0.8rem; opacity:0.6; letter-spacing:1px; margin-top:5px;">4명을 탭하여 순서를 정하세요 (다시 누르면 취소)</div>
     </div>
 
     <div id="slotRow" style="display:flex; justify-content:center; gap:8px; width:100%; max-width:380px; margin-bottom:15px;"></div>
@@ -536,18 +555,18 @@ canvas{width:100%; height:100%; display:block; touch-action:none; position:absol
   <div id="inGameUI" style="display:none;">
     
     <div class="hud-top">
-      <div class="set-score fairy"><span style="font-size:1.2rem; opacity:0.8; margin-right:5px;">🧚</span> <span id="fairyScore">0</span></div>
+      <div id="hudP1ScoreBox" class="set-score fairy"><span id="p1Icon" style="font-size:1.2rem; opacity:0.8; margin-right:5px;">🧚</span> <span id="p1Score">0</span></div>
       <div class="round-info">
         <div class="best-of">BEST OF 3</div>
         <div id="roundText" class="round-num">ROUND 1</div>
       </div>
-      <div class="set-score dark"><span id="darkScore">0</span> <span style="font-size:1.2rem; opacity:0.8; margin-left:5px;">🌑</span></div>
+      <div id="hudP2ScoreBox" class="set-score dark"><span id="p2Score">0</span> <span id="p2Icon" style="font-size:1.2rem; opacity:0.8; margin-left:5px;">🌑</span></div>
     </div>
 
     <div class="hud-bottom">
-      <div class="rt-score fairy" id="rtFairy">0점</div>
+      <div class="rt-score fairy" id="rtP1">0점</div>
       <div class="turn-box" id="turnBox">요정턴</div>
-      <div class="rt-score dark" id="rtDark">0점</div>
+      <div class="rt-score dark" id="rtP2">0점</div>
     </div>
 
   </div>
@@ -601,27 +620,23 @@ const SUPA_URL = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
 const SUPA_KEY = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
 const TABLE_NAME = 'curling_ranking';
 
-// 캔버스 사이즈 확장 (PC화면 넓게 보이도록 비율 조정)
 const LOGICAL_W = 768, LOGICAL_H = 1024;
 const HOUSE = { x: LOGICAL_W / 2, y: 240, r: 160 };
 const START = { x: LOGICAL_W / 2, y: 880 };
 const STONE_R = 25;
 
-// 컬링 특유 기합 멘트 (스톤 미끄러질 때)
 const CURLING_SHOUTS = [
   "헐~!! (HURRY)🧹", "얍!!🔥", "스윕!! 스윕!!🧹", 
   "업!! (UP)✋", "워~ (WHOA)🛑", "조금 더!!", 
   "라인 좋아!✨", "굿 샷!🎯", "기다려!!"
 ];
 
-// 턴 시작 시 등장하는 캐릭터 기합
 const TURN_SHOUTS = [
   "가보자고!🔥", "내 차례군!😎", "스톤 발사 준비!🎯", 
   "길을 비켜라!🚀", "집중하자!✨", "정확하게 노려주마!👁️",
   "마법의 힘을!💫", "얍! 기합 팍!💪"
 ];
 
-// 일반 힙한 리액션 (턴 종료 시)
 const REACTIONS = [
   "폼 미쳤다!🔥", "에바 참치 꽁치 나이스샷!🐟", "완벽 그 잡채✨",
   "이거 실화냐? ㄷㄷㄷ😱", "무야호~ 소리 질러!🗣️", "너 T야? 쿨한 샷!🧊",
@@ -629,7 +644,7 @@ const REACTIONS = [
 ];
 let lastShoutTime = 0;
 
-// ★ 캐릭터 이미지 경로 및 한글 풀네임 정확히 반영 ★
+// ★ 가족팀 추가 반영 ★
 const TEAMS = {
   fairy:{
     id:'fairy',name:'요정 연합',color:'#ff2a85',border:'#ff7eb3',icon:'🧚',
@@ -648,21 +663,29 @@ const TEAMS = {
       {id:'crown', name:'어둠의마왕 크라운', img:'/images/crown.jpg', skill:'어둠의 대지진', desc:'과녁 내 적 돌을 강하게 튕겨냅니다'},
       {id:'angel', name:'천사', img:'/images/angel.jpeg', skill:'어둠의 소용돌이', desc:'모든 아군 돌을 과녁 중앙으로!'}
     ]
+  },
+  family:{
+    id:'family',name:'우당탕 가족',color:'#ffcf00',border:'#ffea00',icon:'👨‍👩‍👧‍👧',
+    members:[
+      {id:'mom', name:'엄마', img:'/images/mom01.jpeg', skill:'모두 모이자!', desc:'모든 아군 스톤을 과녁 안으로!'},
+      {id:'dad', name:'아빠', img:'/images/chris03.jpg', skill:'가족은 내가 지켜', desc:'빠르게 이동하며 적 스톤 타격'},
+      {id:'yul', name:'율이', img:'/images/yul01.png', skill:'파이어!!', desc:'과녁 내 적 스톤을 밖으로 밀쳐냄'},
+      {id:'jung', name:'정이', img:'/images/jung01.png', skill:'도와줄께!', desc:'무조건 과녁 안으로 돌진!'}
+    ]
   }
 };
 
 let state = {
-  phase:'setup', // setup, turn_intro, aim, move, skill, end
+  phase:'setup',
   playerInitials:'',
   stones:[],
   currentTeam:null, playerTeam:null, aiTeam:null,
   playerOrder:[], aiOrder:[0,1,2,3],
-  fairyWins:0, darkWins:0, round:1,
-  stonesLeft:{fairy:4,dark:4},
+  p1Wins:0, p2Wins:0, round:1,
+  stonesLeft:{},
   activeStone:null, dragging:false, dragStart:null, dragNow:null,
   isAiTurn:false,
-  skillCharge:{fairy:0, dark:0}, 
-  powerBuff:{fairy:0, dark:0}
+  skillCharge:{}, powerBuff:{}
 };
 
 const canvas = document.getElementById('gameCanvas'); const ctx = canvas.getContext('2d');
@@ -766,8 +789,15 @@ function submitInitials() {
 }
 
 function selectTeam(teamId) {
-  state.playerTeam = TEAMS[teamId]; state.aiTeam = teamId === 'fairy' ? TEAMS.dark : TEAMS.fairy;
-  state.playerOrder = []; renderOrderUI(); showScreen('s-order');
+  state.playerTeam = TEAMS[teamId]; 
+  
+  // 선택한 팀을 제외한 나머지 팀 중 랜덤으로 AI 팀 설정
+  const others = Object.keys(TEAMS).filter(k => k !== teamId);
+  state.aiTeam = TEAMS[others[Math.floor(Math.random() * others.length)]];
+  
+  state.playerOrder = []; 
+  renderOrderUI(); 
+  showScreen('s-order');
 }
 
 function renderOrderUI() {
@@ -790,7 +820,17 @@ function renderOrderUI() {
     const isSel = state.playerOrder.includes(idx);
     const div = document.createElement('div');
     div.className = 'char-btn' + (isSel ? ' sel' : '');
-    div.onclick = () => { if(state.playerOrder.length<4 && !isSel) { state.playerOrder.push(idx); renderOrderUI(); } };
+    
+    // ★ 다시 눌러서 취소(순서 재배치) 가능하도록 로직 변경 ★
+    div.onclick = () => { 
+      if (isSel) {
+        state.playerOrder = state.playerOrder.filter(id => id !== idx);
+        renderOrderUI();
+      } else if (state.playerOrder.length < 4) { 
+        state.playerOrder.push(idx); 
+        renderOrderUI(); 
+      } 
+    };
     
     div.innerHTML = `
       <img src="${m.img}" class="char-btn-img" onerror="this.src=''">
@@ -811,6 +851,24 @@ function startGame() {
     document.getElementById('inGameUI').style.display = 'flex';
     document.getElementById('bottomGuide').style.display = 'flex';
     document.getElementById('skillContainer').style.display = 'flex';
+    
+    // HUD 세팅
+    document.getElementById('p1Icon').textContent = state.playerTeam.icon;
+    document.getElementById('hudP1ScoreBox').style.color = state.playerTeam.color;
+    document.getElementById('rtP1').style.color = state.playerTeam.color;
+    
+    document.getElementById('p2Icon').textContent = state.aiTeam.icon;
+    document.getElementById('hudP2ScoreBox').style.color = state.aiTeam.color;
+    document.getElementById('rtP2').style.color = state.aiTeam.color;
+
+    state.p1Wins = 0; state.p2Wins = 0; state.round = 1;
+    state.stonesLeft[state.playerTeam.id] = 4;
+    state.stonesLeft[state.aiTeam.id] = 4;
+    state.skillCharge[state.playerTeam.id] = 0;
+    state.skillCharge[state.aiTeam.id] = 0;
+    state.powerBuff[state.playerTeam.id] = 0;
+    state.powerBuff[state.aiTeam.id] = 0;
+
     state.currentTeam = state.playerTeam; 
     spawnStone();
   }, 500);
@@ -871,8 +929,8 @@ function getActiveMember(team = state.currentTeam) {
 }
 
 function updateUI() {
-  document.getElementById('fairyScore').textContent = state.fairyWins;
-  document.getElementById('darkScore').textContent = state.darkWins;
+  document.getElementById('p1Score').textContent = state.p1Wins;
+  document.getElementById('p2Score').textContent = state.p2Wins;
   document.getElementById('roundText').textContent = `ROUND ${state.round}`;
 
   const t = document.getElementById('turnBox');
@@ -880,7 +938,7 @@ function updateUI() {
   t.style.borderColor = state.currentTeam.color;
   t.style.boxShadow = `0 0 15px ${state.currentTeam.color}`;
 
-  const charge = state.skillCharge[state.currentTeam.id];
+  const charge = state.skillCharge[state.currentTeam.id] || 0;
   const btn = document.getElementById('skillBtn');
   const fill = document.getElementById('skillFill');
   const txt = document.getElementById('skillBtnText');
@@ -908,7 +966,7 @@ function updateUI() {
 
 function updateRealtimeScore() {
   if (state.phase === 'setup' || state.phase === 'turn_intro') return;
-  let fScore = 0; let dScore = 0;
+  let p1Score = 0; let p2Score = 0;
   
   state.stones.forEach(s => {
     const dist = Math.hypot(s.x - HOUSE.x, s.y - HOUSE.y);
@@ -919,13 +977,13 @@ function updateRealtimeScore() {
     else if (dist <= HOUSE.r) pts = 1;
     
     if(pts > 0) {
-      if(s.team.id === 'fairy') fScore += pts;
-      else dScore += pts;
+      if(s.team.id === state.playerTeam.id) p1Score += pts;
+      else if(s.team.id === state.aiTeam.id) p2Score += pts;
     }
   });
 
-  document.getElementById('rtFairy').textContent = fScore + "점";
-  document.getElementById('rtDark').textContent = dScore + "점";
+  document.getElementById('rtP1').textContent = p1Score + "점";
+  document.getElementById('rtP2').textContent = p2Score + "점";
 }
 
 function flashScreen(color='white') {
@@ -940,10 +998,8 @@ function showReaction() {
   el.textContent = REACTIONS[Math.floor(Math.random() * REACTIONS.length)];
   const colors = ['#fff', '#00e5ff', '#ffcf00', '#ff7eb3'];
   el.style.color = colors[Math.floor(Math.random() * colors.length)];
-  
   el.style.left = '50%';
   el.style.top = (30 + Math.random() * 40) + '%';
-  
   document.getElementById('gameWrap').appendChild(el);
   setTimeout(() => el.remove(), 2000); 
 }
@@ -953,10 +1009,8 @@ function showCurlingShout() {
   el.className = 'floating-reaction';
   el.textContent = CURLING_SHOUTS[Math.floor(Math.random() * CURLING_SHOUTS.length)];
   el.style.color = state.currentTeam.color; 
-  
   el.style.left = '50%';
   el.style.top = (40 + Math.random() * 30) + '%';
-  
   document.getElementById('gameWrap').appendChild(el);
   setTimeout(() => el.remove(), 2000); 
 }
@@ -964,39 +1018,29 @@ function showCurlingShout() {
 function showFloatingMsg(msg, color) {
   const el = document.createElement('div');
   el.className = 'floating-center-msg';
-  // 줄바꿈 태그(<br>)를 해석하기 위해 innerHTML 사용
   el.innerHTML = msg;
   el.style.color = color;
   document.getElementById('gameWrap').appendChild(el);
   setTimeout(() => el.remove(), 2500); 
 }
 
-// ★ 매 턴 시작 컷인 ★
 function showTurnCutin(member, team) {
   const cutin = document.getElementById('turnCutin');
   const portrait = document.getElementById('tcPortrait');
   const name = document.getElementById('tcName');
   const shout = document.getElementById('tcShout');
 
-  // 멤버의 원래 이미지를 그대로 사용
   portrait.src = member.img;
   portrait.style.borderColor = team.border;
   portrait.style.boxShadow = `0 0 20px ${team.color}`;
-  
   name.textContent = member.name;
   shout.textContent = TURN_SHOUTS[Math.floor(Math.random() * TURN_SHOUTS.length)];
   shout.style.color = team.color;
 
-  cutin.style.display = 'flex';
-  cutin.classList.add('play');
-
-  setTimeout(() => {
-    cutin.classList.remove('play');
-    cutin.style.display = 'none';
-  }, 1500);
+  cutin.style.display = 'flex'; cutin.classList.add('play');
+  setTimeout(() => { cutin.classList.remove('play'); cutin.style.display = 'none'; }, 1500);
 }
 
-// ★ 스킬 발동 컷인 ★
 function showSkillCutin(member, team) {
   const cutin = document.getElementById('skillCutin');
   const stripe = document.getElementById('cutinStripe');
@@ -1006,38 +1050,25 @@ function showSkillCutin(member, team) {
   const skill = document.getElementById('cutinSkillName');
 
   stripe.style.background = `linear-gradient(90deg, transparent, ${team.color}CC, transparent)`;
+  cardWrap.style.borderColor = team.border; cardWrap.style.boxShadow = `0 0 50px ${team.color}`;
+  portrait.src = member.img; 
   
-  cardWrap.style.borderColor = team.border;
-  cardWrap.style.boxShadow = `0 0 50px ${team.color}`;
-  portrait.src = member.img; // 멤버의 원래 이미지를 그대로 사용
+  name.textContent = member.name; name.style.textShadow = `0 10px 30px #000, 0 0 20px ${team.color}`;
+  skill.textContent = member.skill; skill.style.borderColor = team.color; skill.style.boxShadow = `0 0 20px ${team.color}, inset 0 0 10px ${team.color}`;
   
-  name.textContent = member.name;
-  name.style.textShadow = `0 10px 30px #000, 0 0 20px ${team.color}`;
-  
-  skill.textContent = member.skill;
-  skill.style.borderColor = team.color;
-  skill.style.boxShadow = `0 0 20px ${team.color}, inset 0 0 10px ${team.color}`;
-  
-  cutin.style.display = 'block'; 
-  cutin.classList.add('play');
-  
-  setTimeout(() => {
-    cutin.classList.remove('play');
-    cutin.style.display = 'none';
-  }, 2000);
+  cutin.style.display = 'block'; cutin.classList.add('play');
+  setTimeout(() => { cutin.classList.remove('play'); cutin.style.display = 'none'; }, 2000);
 }
 
-// ★ 스킬 시전: 턴 소모 및 교체 로직 ★
 window.activateSkill = function() {
   const team = state.currentTeam;
   if (state.skillCharge[team.id] < 2 || state.phase !== 'aim') return;
   
   const member = getActiveMember(team);
-  
   state.skillCharge[team.id] = 0;
   state.phase = 'skill'; 
   
-  // 스킬 발동 시 돌을 제거하고 투구 기회 소모
+  // 돌을 소모하며 턴 진행 처리
   if (state.activeStone) {
     state.stones = state.stones.filter(s => s !== state.activeStone);
     state.activeStone = null;
@@ -1046,10 +1077,7 @@ window.activateSkill = function() {
   
   updateUI();
   showSkillCutin(member, team);
-  
-  setTimeout(() => {
-    executeSkillEffect(member.id, team);
-  }, 1500); 
+  setTimeout(() => { executeSkillEffect(member.id, team); }, 1500); 
 }
 
 function applyImpulse(targetRule, conditionRule, magnitude) {
@@ -1070,6 +1098,7 @@ function executeSkillEffect(skillId, team) {
   shakeMag = 15; shakeTime = 20; 
 
   switch(skillId) {
+    // 기존 스킬들
     case 'pretty': spawnSparks(HOUSE.x, HOUSE.y, '#00e5ff', 50, 2); applyImpulse('enemy', 'in_house', 12); break;
     case 'cuty': state.powerBuff[team.id] = 2; spawnSparks(START.x, START.y, '#ff69b4', 40, 1.5); showBuffAlert(); break;
     case 'brook': shakeMag = 25; shakeTime = 30; spawnSparks(HOUSE.x, HOUSE.y, '#ff4500', 60, 3); applyImpulse('enemy', 'in_house', 18); break;
@@ -1078,9 +1107,39 @@ function executeSkillEffect(skillId, team) {
     case 'vane': shakeMag = 20; shakeTime = 25; applyImpulse('enemy', 'in_house', 15); break;
     case 'crown': shakeMag = 35; shakeTime = 40; spawnSparks(HOUSE.x, HOUSE.y, '#333', 80, 4); applyImpulse('enemy', 'in_house', 25); break;
     case 'angel': activeForces.push({ teamId: team.id, target:'ally', cond:'all', type:'pull', life:150 }); break;
+
+    // ★ 가족팀 스킬 구현 ★
+    case 'mom': // 모두 모이자!
+      activeForces.push({ teamId: team.id, target:'ally', cond:'all', type:'pull', life:150 }); 
+      break;
+    
+    case 'dad': // 가족은 내가 지켜 (혼자서 적 돌 사이를 핑퐁하며 타격)
+      shakeMag = 25; shakeTime = 50;
+      let dadStone = new Stone(START.x, START.y, team);
+      dadStone.glow = 1;
+      state.stones.push(dadStone);
+      activeForces.push({ teamId: team.id, target:'enemy', cond:'all', type:'dad_dash', life:180, dadStone: dadStone });
+      break;
+    
+    case 'yul': // 파이어!!
+      shakeMag = 20; shakeTime = 25;
+      spawnSparks(HOUSE.x, HOUSE.y, '#ff4500', 60, 3);
+      applyImpulse('enemy', 'in_house', 22);
+      break;
+    
+    case 'jung': // 도와줄께! (무조건 과녁 중앙 돌진)
+      let jungStone = new Stone(START.x, START.y, team);
+      state.stones.push(jungStone);
+      const jdx = HOUSE.x - START.x;
+      const jdy = HOUSE.y - START.y;
+      const jang = Math.atan2(jdy, jdx);
+      jungStone.vx = Math.cos(jang) * 16; 
+      jungStone.vy = Math.sin(jang) * 16;
+      jungStone.move = true;
+      spawnSparks(START.x, START.y, '#00e5ff', 50, 2);
+      break;
   }
   
-  // 스킬 처리 후 바로 'move' 상태로 전환하여 이펙트가 끝나면 턴 교체가 진행되도록 유도
   state.phase = 'move'; 
 }
 
@@ -1115,15 +1174,11 @@ function spawnStone() {
   }, 1500);
 }
 
-// ─── UPGRADED AI LOGIC ───
 function executeAIThrow() {
   if (state.phase !== 'aim') return;
 
-  let targetX = HOUSE.x;
-  let targetY = HOUSE.y;
-
-  let enemiesInHouse = [];
-  let alliesShort = []; 
+  let targetX = HOUSE.x; let targetY = HOUSE.y;
+  let enemiesInHouse = []; let alliesShort = []; 
 
   state.stones.forEach(s => {
     if(s === state.activeStone) return;
@@ -1140,35 +1195,29 @@ function executeAIThrow() {
   if (enemiesInHouse.length > 0 && Math.random() < 0.75) {
     enemiesInHouse.sort((a,b) => Math.hypot(a.x-HOUSE.x, a.y-HOUSE.y) - Math.hypot(b.x-HOUSE.x, b.y-HOUSE.y));
     const target = enemiesInHouse[0];
-    targetX = target.x + (Math.random() - 0.5) * 20;
-    targetY = target.y + (Math.random() - 0.5) * 20;
+    targetX = target.x + (Math.random() - 0.5) * 20; targetY = target.y + (Math.random() - 0.5) * 20;
     powerMult = 1.4 + Math.random() * 0.3; 
   }
   else if (alliesShort.length > 0 && Math.random() < 0.4) {
     alliesShort.sort((a,b) => a.y - b.y);
     const target = alliesShort[0];
-    targetX = target.x;
-    targetY = target.y;
+    targetX = target.x; targetY = target.y;
     powerMult = 1.15; 
   }
   else {
     const randomAngle = Math.random() * Math.PI * 2;
     const randomDist = Math.random() * (HOUSE.r * 0.6); 
-    targetX = HOUSE.x + Math.cos(randomAngle) * randomDist;
-    targetY = HOUSE.y + Math.sin(randomAngle) * randomDist;
+    targetX = HOUSE.x + Math.cos(randomAngle) * randomDist; targetY = HOUSE.y + Math.sin(randomAngle) * randomDist;
     powerMult = 0.95 + Math.random() * 0.1; 
   }
 
-  const dx = targetX - START.x;
-  const dy = targetY - START.y;
-  const angle = Math.atan2(dy, dx);
-  const dist = Math.hypot(dx, dy);
+  const dx = targetX - START.x; const dy = targetY - START.y;
+  const angle = Math.atan2(dy, dx); const dist = Math.hypot(dx, dy);
 
   let power = Math.sqrt(dist * 0.05) * powerMult;
 
   if (state.powerBuff[state.currentTeam.id] > 0) {
-    power *= 1.5;
-    state.powerBuff[state.currentTeam.id]--;
+    power *= 1.5; state.powerBuff[state.currentTeam.id]--;
   }
 
   state.activeStone.vx = Math.cos(angle) * power;
@@ -1231,17 +1280,39 @@ function resolveCollisions() {
 function applyContinuousForces() {
   activeForces.forEach(f => {
     f.life--;
-    if(f.life % 5 === 0) spawnSparks(HOUSE.x, HOUSE.y, '#a855f7', 2); 
-    state.stones.forEach(s => {
-      const isAlly = s.team.id === f.teamId;
-      if((f.target==='ally' && isAlly) || f.target==='all') {
-        const dx = HOUSE.x - s.x, dy = HOUSE.y - s.y, dist = Math.hypot(dx, dy);
-        if(f.cond==='out_house' && dist < HOUSE.r) return;
-        if(dist > 10) {
-          s.vx += (dx/dist) * 0.3; s.vy += (dy/dist) * 0.3; s.move = true;
-        }
+    if(f.life % 5 === 0 && f.type === 'pull') spawnSparks(HOUSE.x, HOUSE.y, '#a855f7', 2); 
+    
+    // 아빠 스킬: 혼자서 여기저기 있는 적 스톤을 추적하여 강하게 타격
+    if (f.type === 'dad_dash' && f.dadStone) {
+      let nearest = null; let minDist = Infinity;
+      state.stones.forEach(s => {
+         if (s.team.id !== f.teamId && s !== f.dadStone) {
+            let d = Math.hypot(s.x - f.dadStone.x, s.y - f.dadStone.y);
+            if (d < minDist) { minDist = d; nearest = s; }
+         }
+      });
+      if (nearest) {
+         let dx = nearest.x - f.dadStone.x;
+         let dy = nearest.y - f.dadStone.y;
+         let angle = Math.atan2(dy, dx);
+         f.dadStone.vx += Math.cos(angle) * 2.0; 
+         f.dadStone.vy += Math.sin(angle) * 2.0;
+         f.dadStone.move = true;
       }
-    });
+      if(f.life % 4 === 0) spawnSparks(f.dadStone.x, f.dadStone.y, '#ffcf00', 4);
+    } else {
+      // 일반 견인 스킬들
+      state.stones.forEach(s => {
+        const isAlly = s.team.id === f.teamId;
+        if((f.target==='ally' && isAlly) || f.target==='all') {
+          const dx = HOUSE.x - s.x, dy = HOUSE.y - s.y, dist = Math.hypot(dx, dy);
+          if(f.cond==='out_house' && dist < HOUSE.r) return;
+          if(dist > 10 && f.type === 'pull') {
+            s.vx += (dx/dist) * 0.3; s.vy += (dy/dist) * 0.3; s.move = true;
+          }
+        }
+      });
+    }
   });
   activeForces = activeForces.filter(f => f.life > 0);
 }
@@ -1249,7 +1320,7 @@ function applyContinuousForces() {
 function endRound() {
   state.phase = 'end'; 
   
-  let fScore = 0; let dScore = 0;
+  let p1Score = 0; let p2Score = 0;
   
   state.stones.forEach(s => {
     const dist = Math.hypot(s.x - HOUSE.x, s.y - HOUSE.y);
@@ -1260,23 +1331,22 @@ function endRound() {
     else if (dist <= HOUSE.r) pts = 1;
     
     if(pts > 0) {
-      if(s.team.id === 'fairy') fScore += pts;
-      else dScore += pts;
+      if(s.team.id === state.playerTeam.id) p1Score += pts;
+      else if(s.team.id === state.aiTeam.id) p2Score += pts;
     }
   });
   
   let roundWinner = null;
-  if (fScore > dScore) {
-    state.fairyWins++;
-    roundWinner = TEAMS.fairy;
-  } else if (dScore > fScore) {
-    state.darkWins++;
-    roundWinner = TEAMS.dark;
+  if (p1Score > p2Score) {
+    state.p1Wins++;
+    roundWinner = state.playerTeam;
+  } else if (p2Score > p1Score) {
+    state.p2Wins++;
+    roundWinner = state.aiTeam;
   }
   
   if (roundWinner) {
     spawnSparks(HOUSE.x, HOUSE.y, roundWinner.color, 40, 3);
-    // <br> 태그를 넣어 모바일 잘림 방지
     showFloatingMsg(`${roundWinner.name}<br>라운드 승리!`, roundWinner.color);
   } else {
     showFloatingMsg(`라운드 무승부!`, '#aaa');
@@ -1285,10 +1355,10 @@ function endRound() {
   updateUI();
 
   setTimeout(() => {
-    if (state.fairyWins >= 2 || state.darkWins >= 2 || state.round >= 3) { 
+    if (state.p1Wins >= 2 || state.p2Wins >= 2 || state.round >= 3) { 
       let overallWinner = null;
-      if (state.fairyWins > state.darkWins) overallWinner = TEAMS.fairy;
-      else if (state.darkWins > state.fairyWins) overallWinner = TEAMS.dark;
+      if (state.p1Wins > state.p2Wins) overallWinner = state.playerTeam;
+      else if (state.p2Wins > state.p1Wins) overallWinner = state.aiTeam;
       
       showWinner(overallWinner); 
       return; 
@@ -1296,7 +1366,8 @@ function endRound() {
     
     state.round++; 
     state.stones = []; 
-    state.stonesLeft = { fairy: 4, dark: 4 };
+    state.stonesLeft[state.playerTeam.id] = 4;
+    state.stonesLeft[state.aiTeam.id] = 4;
     state.currentTeam = state.playerTeam; 
     spawnStone();
   }, 3000);
@@ -1317,12 +1388,12 @@ function showWinner(team) {
     document.getElementById('winTitle').style.color = team.color;
     
     if (isP) {
-      document.getElementById('winDesc').innerHTML = `최고의 마법사 <b>${state.playerInitials}</b>!<br>빛나는 우승을 차지했습니다.<br><br><span style="color:var(--c-fairy); font-size:0.9rem;" id="saveStatus">기록 동기화 중...</span>`;
+      document.getElementById('winDesc').innerHTML = `최고의 플레이어 <b>${state.playerInitials}</b>!<br>빛나는 우승을 차지했습니다.<br><br><span style="color:var(--c-gold); font-size:0.9rem;" id="saveStatus">기록 동기화 중...</span>`;
       recordWin().then(w => {
         const el = document.getElementById('saveStatus');
         if(el) el.innerHTML = w > 0 ? `<b style="color:var(--c-gold);">총 ${w}승 달성!</b>` : `<span style="color:red;">기록 실패</span>`;
       });
-    } else { document.getElementById('winDesc').innerHTML = `어둠에 패배했습니다...<br>다시 도전하세요.`; }
+    } else { document.getElementById('winDesc').innerHTML = `전투에서 패배했습니다...<br>다시 도전하세요.`; }
   }
 }
 
@@ -1333,8 +1404,7 @@ function resetToMain() {
   document.querySelectorAll('.floating-reaction').forEach(el => el.remove());
   document.querySelectorAll('.floating-center-msg').forEach(el => el.remove());
   
-  state.phase='setup'; state.stones=[]; state.fairyWins=0; state.darkWins=0; state.round=1; state.stonesLeft={fairy:4,dark:4};
-  state.skillCharge={fairy:0, dark:0}; state.powerBuff={fairy:0, dark:0};
+  state.phase='setup'; state.stones=[]; state.round=1;
   loadLeaderboard(); showScreen('s-login');
 }
 
@@ -1344,31 +1414,20 @@ function resetToMain() {
 function drawArena() {
   ctx.clearRect(0,0,LOGICAL_W,LOGICAL_H);
 
-  // 얼음 배경 (White/Ice Theme)
   const bgGrad = ctx.createLinearGradient(0, 0, 0, LOGICAL_H);
-  bgGrad.addColorStop(0, '#e2e8f0');
-  bgGrad.addColorStop(0.5, '#ffffff');
-  bgGrad.addColorStop(1, '#f8fafc');
+  bgGrad.addColorStop(0, '#e2e8f0'); bgGrad.addColorStop(0.5, '#ffffff'); bgGrad.addColorStop(1, '#f8fafc');
   ctx.fillStyle = bgGrad; ctx.fillRect(0,0,LOGICAL_W,LOGICAL_H);
 
-  // 얼음판 스크래치 질감
-  ctx.save();
-  ctx.strokeStyle = 'rgba(0,0,0,0.03)';
-  ctx.lineWidth = 1;
+  ctx.save(); ctx.strokeStyle = 'rgba(0,0,0,0.03)'; ctx.lineWidth = 1;
   for(let i=0; i<15; i++) {
-    ctx.beginPath();
-    ctx.moveTo(Math.random()*LOGICAL_W, Math.random()*LOGICAL_H);
-    ctx.lineTo(Math.random()*LOGICAL_W, Math.random()*LOGICAL_H);
-    ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(Math.random()*LOGICAL_W, Math.random()*LOGICAL_H);
+    ctx.lineTo(Math.random()*LOGICAL_W, Math.random()*LOGICAL_H); ctx.stroke();
   }
   ctx.restore();
 
-  // House Rings (아케이드 다트형 링)
   const rings = [ 
-    {r:HOUSE.r, c:'#1d4ed8'},      
-    {r:HOUSE.r*0.75, c:'#ffffff'}, 
-    {r:HOUSE.r*0.45, c:'#ef4444'}, 
-    {r:HOUSE.r*0.2, c:'#ffffff'}   
+    {r:HOUSE.r, c:'#1d4ed8'}, {r:HOUSE.r*0.75, c:'#ffffff'}, 
+    {r:HOUSE.r*0.45, c:'#ef4444'}, {r:HOUSE.r*0.2, c:'#ffffff'}   
   ];
   
   rings.forEach(ring => {
@@ -1377,28 +1436,22 @@ function drawArena() {
     ctx.strokeStyle = 'rgba(0,0,0,0.2)'; ctx.lineWidth=1; ctx.stroke();
   });
 
-  // 점수 텍스트 표시
-  ctx.fillStyle = 'rgba(0,0,0,0.4)';
-  ctx.font = '900 16px "Black Han Sans"';
+  ctx.fillStyle = 'rgba(0,0,0,0.4)'; ctx.font = '900 16px "Black Han Sans"';
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   ctx.fillText('1', HOUSE.x, HOUSE.y - HOUSE.r * 0.87);
   ctx.fillText('3', HOUSE.x, HOUSE.y - HOUSE.r * 0.6);
   ctx.fillText('5', HOUSE.x, HOUSE.y - HOUSE.r * 0.32);
-  ctx.fillStyle = 'rgba(200,0,0,0.7)';
-  ctx.fillText('10', HOUSE.x, HOUSE.y);
+  ctx.fillStyle = 'rgba(200,0,0,0.7)'; ctx.fillText('10', HOUSE.x, HOUSE.y);
 
-  // Center Line
   ctx.strokeStyle='rgba(0,0,0,0.08)'; ctx.lineWidth=2;
   ctx.beginPath(); ctx.moveTo(HOUSE.x, 0); ctx.lineTo(HOUSE.x, LOGICAL_H); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(0, HOUSE.y); ctx.lineTo(LOGICAL_W, HOUSE.y); ctx.stroke();
 
-  // Throw Zone
   ctx.beginPath(); ctx.arc(START.x, START.y, 60, 0, Math.PI*2);
   ctx.strokeStyle='rgba(0,0,0,0.15)'; ctx.lineWidth=2; ctx.setLineDash([5,5]); ctx.stroke(); ctx.setLineDash([]);
 
-  // ★ 실시간 보드 점수 계산 및 캔버스 표시 ★
   if(state.phase !== 'setup' && state.phase !== 'turn_intro') {
-    let fScore = 0; let dScore = 0;
+    let p1Score = 0; let p2Score = 0;
     state.stones.forEach(s => {
       const dist = Math.hypot(s.x - HOUSE.x, s.y - HOUSE.y);
       let pts = 0;
@@ -1408,22 +1461,19 @@ function drawArena() {
       else if (dist <= HOUSE.r) pts = 1;
       
       if(pts > 0) {
-        if(s.team.id === 'fairy') fScore += pts;
-        else dScore += pts;
+        if(s.team.id === state.playerTeam.id) p1Score += pts;
+        else if(s.team.id === state.aiTeam.id) p2Score += pts;
       }
     });
 
     ctx.font = '900 28px "Black Han Sans"';
-    ctx.fillStyle = TEAMS.fairy.color;
-    ctx.textAlign = 'left';
-    ctx.fillText(`요정: ${fScore}점`, 20, 110);
+    ctx.fillStyle = state.playerTeam.color; ctx.textAlign = 'left';
+    ctx.fillText(`${state.playerTeam.name}: ${p1Score}점`, 20, 110);
     
-    ctx.fillStyle = TEAMS.dark.color;
-    ctx.textAlign = 'right';
-    ctx.fillText(`어둠: ${dScore}점`, LOGICAL_W - 20, 110);
+    ctx.fillStyle = state.aiTeam.color; ctx.textAlign = 'right';
+    ctx.fillText(`${state.aiTeam.name}: ${p2Score}점`, LOGICAL_W - 20, 110);
   }
 
-  // Drag Arrow
   if (state.dragging && state.dragStart && state.dragNow && !state.isAiTurn && state.activeStone) {
     const dx = state.dragStart.x - state.dragNow.x, dy = state.dragStart.y - state.dragNow.y;
     const angle = Math.atan2(dy, dx);
@@ -1462,17 +1512,15 @@ function gameLoop() {
     state.stones.forEach(s => { s.update(); if (s.move) moving = true; });
     resolveCollisions();
     
-    // 이동 중에 산발적으로 컬링 응원 멘트 팝업
     if (moving && state.phase === 'move') {
       if (Date.now() - lastShoutTime > 1200 && Math.random() < 0.05) {
-        showCurlingShout();
-        lastShoutTime = Date.now();
+        showCurlingShout(); lastShoutTime = Date.now();
       }
     }
     
     if (!moving && state.phase === 'move') {
       if(!state.isAiTurn) showReaction(); 
-      state.currentTeam = state.currentTeam.id === 'fairy' ? TEAMS.dark : TEAMS.fairy;
+      state.currentTeam = state.currentTeam.id === state.playerTeam.id ? state.aiTeam : state.playerTeam;
       updateRealtimeScore();
       spawnStone();
     }

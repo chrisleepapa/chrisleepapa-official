@@ -1023,6 +1023,7 @@
                     if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
                         await navigator.share({
                             title: "Today's Bible Verse",
+                            text: "https://chrisleepapa-official.vercel.app/",
                             files: [file]
                         });
                     } else {
@@ -1039,7 +1040,7 @@
             const verseKo = document.getElementById('bibleTextKor').textContent;
             const verseEn = document.getElementById('bibleTextEng').textContent;
             const ref = document.getElementById('bibleReferenceTitle').textContent;
-            const shareText = `[Today's Bible Verse]\n${ref}\n\n${verseKo}\n\n${verseEn}`;
+            const shareText = `[Today's Bible Verse]\n${ref}\n\n${verseKo}\n\n${verseEn}\n\nhttps://chrisleepapa-official.vercel.app/`;
             
             navigator.clipboard.writeText(shareText).then(() => {
                 showToast(currentLang === 'ko' ? "이미지 공유 미지원 브라우저입니다. 말씀 텍스트가 복사되었습니다 ✓" : "Text copied ✓");

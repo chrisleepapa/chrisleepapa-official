@@ -78,7 +78,7 @@
         }
         @keyframes shimmer-bar { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
 
-        /* --- Navigation (From index.html) --- */
+        /* --- Navigation (Index.html 규격과 완전 통일) --- */
         nav {
             position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px;
             display: flex; justify-content: space-between; align-items: center; z-index: 1000;
@@ -120,7 +120,6 @@
         .share-trigger svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
         .share-trigger:hover { background: rgba(201,168,76,0.1); border-color: var(--gold-light); box-shadow: 0 0 12px rgba(201,168,76,0.2); transform: translateY(-2px); }
 
-        /* 햄버거 메뉴 */
         .menu-toggle { display: none; flex-direction: column; justify-content: space-between; width: 26px; height: 18px; cursor: pointer; z-index: 1001; }
         .menu-toggle span { width: 100%; height: 2px; background-color: var(--gold-light); transition: 0.3s; border-radius: 2px; }
         .menu-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
@@ -289,8 +288,10 @@
         /* 모바일 최적화 */
         @media (max-width: 900px) {
             nav { padding: 0 20px; }
+            .brand-logo { font-size: 1.1rem; }
             .nav-links { display: none; }
             .nav-links.active { display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height)); background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 28px; z-index: 1002; }
+            .nav-links.active a { font-size: 1rem; }
             .menu-toggle { display: flex; }
             .nav-right { gap: 14px; }
             
@@ -384,10 +385,10 @@
                 <div class="chapter-selection-header">
                     <div class="btn-back" onclick="showBookSelection()">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                        성경 목록
+                        목록
                     </div>
                     <div class="selected-book-title" id="activeBookLabel">Book Name</div>
-                    <div style="width: 80px;"></div> 
+                    <div style="width: 50px;"></div> 
                 </div>
                 <div id="chapterGrid" class="chapter-grid-row"></div>
             </div>
@@ -528,7 +529,6 @@
         function selectBook(id, autoLoad = true) {
             currentBookId = id;
             const bookInfo = BIBLE_BOOKS.find(b => b.id === id);
-            
             const bookView = document.getElementById('book-selection-view');
             const chapterView = document.getElementById('chapter-selection-view');
             
@@ -547,7 +547,6 @@
         function showBookSelection() {
             const bookView = document.getElementById('book-selection-view');
             const chapterView = document.getElementById('chapter-selection-view');
-            
             chapterView.classList.add('view-hidden');
             setTimeout(() => {
                 bookView.classList.remove('view-hidden');
@@ -562,11 +561,7 @@
                 const btn = document.createElement('button');
                 btn.className = `chapter-btn ${currentChapter === i ? 'active' : ''}`;
                 btn.textContent = i;
-                btn.onclick = () => { 
-                    currentChapter = i; 
-                    renderChapterGrid(); 
-                    renderContent(); 
-                };
+                btn.onclick = () => { currentChapter = i; renderChapterGrid(); renderContent(); };
                 grid.appendChild(btn);
             }
         }

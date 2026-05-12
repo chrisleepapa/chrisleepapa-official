@@ -1,20 +1,22 @@
-// 서비스 워커 설치 이벤트
 self.addEventListener('install', (event) => {
-  console.log('ChrisPapa Service Worker: Installed');
+  console.log('ChrisPapa SW: Installed');
   self.skipWaiting();
 });
 
-// 서비스 워커 활성화 이벤트
 self.addEventListener('activate', (event) => {
-  console.log('ChrisPapa Service Worker: Activated');
+  console.log('ChrisPapa SW: Activated');
   event.waitUntil(clients.claim());
 });
 
-// 웹 페이지 요청 시 처리 (네트워크 우선 전략)
 self.addEventListener('fetch', (event) => {
+  // cross-origin 요청은 SW가 간섭하지 않음
+  if (!event.request.url.startsWith(self.location.origin)) return;
+
   event.respondWith(
     fetch(event.request).catch(() => {
-      return new Response('인터넷 연결이 원활하지 않습니다.');
+      return new Response('인터넷 연결이 원활하지 않습니다.', {
+        headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+      });
     })
   );
 });

@@ -803,11 +803,24 @@
 
         let currentLang = 'ko';
 
+        /**
+         * 오늘의 말씀 구절을 가져오는 함수
+         * 오전 6시(KST)를 기점으로 새로운 말씀이 표시되도록 수정되었습니다.
+         */
         function getDailyVerse() {
             const now = new Date();
+            // UTC 시간 계산
             const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+            // 한국 표준시(KST, UTC+9) 계산
             const kstTime = new Date(utc + (3600000 * 9));
-            kstTime.setHours(kstTime.getHours() - 8);
+            
+            /**
+             * 업데이트 기준 시간을 오전 6시로 설정하기 위해 6시간을 뺍니다.
+             * 이렇게 하면 오전 5:59까지는 '어제의 날짜'가 계산되고, 
+             * 오전 6:00 정각부터 '오늘의 날짜'로 인식되어 말씀이 교체됩니다.
+             */
+            kstTime.setHours(kstTime.getHours() - 6);
+            
             const start = new Date(kstTime.getFullYear(), 0, 0);
             const diff = kstTime - start;
             const oneDay = 1000 * 60 * 60 * 24;
@@ -982,38 +995,31 @@
             if (e.ctrlKey && ['c','s','p'].includes(e.key)) { if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) e.preventDefault(); }
         });
 
-        // ==========================================
-        // 캡처를 위한 공통 헬퍼 함수 (테두리 및 전체 영역 포함, 버튼 제거)
-        // ==========================================
+        // 캡처를 위한 공통 헬퍼 함수
         async function getBibleCanvas() {
             const target = document.getElementById('bibleAccordion');
             const toggleIcon = target.querySelector('.toggle-symbol');
-            const actionButtons = target.querySelector('.verse-action-buttons'); // 버튼 영역 선택
+            const actionButtons = target.querySelector('.verse-action-buttons');
             
-            // 캡처 화면을 깔끔하게 하기 위한 클래스 추가 및 불필요한 요소 임시 숨김
             target.classList.add('capture-mode');
             if (toggleIcon) toggleIcon.style.display = 'none';
-            if (actionButtons) actionButtons.style.display = 'none'; // 버튼 캡처 방지 (숨김)
+            if (actionButtons) actionButtons.style.display = 'none';
             target.style.boxShadow = 'none';
             
             const canvas = await html2canvas(target, {
                 backgroundColor: '#0a0a10',
-                scale: 3, // 고해상도
+                scale: 3,
                 useCORS: true
             });
             
-            // 캡처 후 원상 복구
             target.classList.remove('capture-mode');
             if (toggleIcon) toggleIcon.style.display = '';
-            if (actionButtons) actionButtons.style.display = ''; // 버튼 복구
+            if (actionButtons) actionButtons.style.display = '';
             target.style.boxShadow = '';
             
             return canvas;
         }
 
-        // ==========================================
-        // 텍스트 대신 '이미지 파일' 자체를 네이티브 공유하는 함수
-        // ==========================================
         async function shareVerseImage() {
             try {
                 const canvas = await getBibleCanvas();
@@ -1046,9 +1052,6 @@
             });
         }
 
-        // ==========================================
-        // 전체 영역을 고해상도 이미지로 저장하는 함수
-        // ==========================================
         async function saveVerseAsImage() {
             try {
                 const canvas = await getBibleCanvas();

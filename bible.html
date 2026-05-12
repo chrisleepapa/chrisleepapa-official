@@ -293,8 +293,6 @@
         
         /* 기능 적용 상태 스타일 */
         .verse-text.hl-yellow { background-color: rgba(201, 168, 76, 0.25); border-radius: 6px; padding: 2px 6px; }
-        .verse-text.is-read { opacity: 0.4; text-decoration: line-through transparent; }
-        .verse-num.is-read { opacity: 0.2; }
         .badge-wrap { display: inline-flex; gap: 6px; margin-left: 10px; vertical-align: middle; }
         .badge-icon { font-size: 0.9rem; filter: drop-shadow(0 0 5px rgba(255,255,255,0.2)); }
         .memo-display { display: none; margin-top: 15px; padding: 15px; background: rgba(255,255,255,0.05); border-left: 3px solid var(--gold); border-radius: 0 8px 8px 0; font-size: 0.95rem; color: #ccc; }
@@ -310,11 +308,13 @@
         .vt-btn:hover { background: rgba(201,168,76,0.15); border-color: var(--gold); color: #fff; }
         .vt-btn.active { background: var(--gold-pale); border-color: var(--gold); color: var(--gold-light); }
 
-        /* --- 이전 장 / 다음 장 네비게이션 버튼 (신규 추가) --- */
+        /* --- 이전 장 / 다음 장 / 읽음 네비게이션 버튼 (수정됨) --- */
         .chapter-nav-wrapper {
             display: flex;
-            justify-content: space-between;
+            flex-wrap: wrap;
+            justify-content: center;
             align-items: center;
+            gap: 10px;
             margin-top: 60px;
             padding-top: 30px;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
@@ -322,6 +322,7 @@
         .ch-nav-btn {
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(201,168,76,0.3);
@@ -332,6 +333,7 @@
             font-size: 1rem;
             cursor: pointer;
             transition: all 0.3s ease;
+            flex: 1;
         }
         .ch-nav-btn:hover {
             background: rgba(201,168,76,0.15);
@@ -346,6 +348,14 @@
             color: #666;
         }
         .ch-nav-btn svg { width: 20px; height: 20px; }
+        
+        .ch-nav-btn.read-completed {
+            background: var(--gold) !important;
+            color: #000 !important;
+            border-color: var(--gold) !important;
+            font-weight: 800;
+            box-shadow: 0 0 15px rgba(201,168,76,0.4);
+        }
 
         #loadingSpinner { text-align: center; padding: 100px 20px; color: var(--gold-light); font-family: 'Cinzel', serif; letter-spacing: 5px; animation: pulse 2s infinite; }
         @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
@@ -382,7 +392,7 @@
             
             /* 모바일에서 내비게이션 버튼 간격 조정 */
             .chapter-nav-wrapper { margin-top: 40px; padding-top: 20px; }
-            .ch-nav-btn { padding: 10px 18px; font-size: 0.9rem; }
+            .ch-nav-btn { padding: 10px 18px; font-size: 0.9rem; min-width: 100px; }
             
             #mouse-orb { display: none; }
         }
@@ -426,7 +436,7 @@
         </div>
     </nav>
 
-    <!-- 사용자 인증 모달 (신규 추가) -->
+    <!-- 사용자 인증 모달 -->
     <div class="app-modal" id="authModal" style="z-index: 5000; background: rgba(0,0,0,0.95);">
         <div class="app-modal-content" style="max-width: 400px; text-align: center;">
             <h3 style="font-family:'Cinzel', serif; letter-spacing:2px; font-size:1.8rem; margin-bottom:10px;">LOGIN</h3>
@@ -537,7 +547,7 @@
                 <div id="chapterGrid" class="chapter-grid-row"></div>
             </div>
             
-            <!-- ✨ TOP 5 리더보드 (신규 추가) -->
+            <!-- ✨ TOP 5 리더보드 -->
             <div class="top5-leaderboard">
                 <h4 style="font-family:'Cinzel', serif; color:var(--gold-light); font-size:0.95rem; text-align:center; margin-bottom:15px; letter-spacing:1px;">🏆 TOP 5 RANKING</h4>
                 <div id="leaderboardList" style="display:flex; flex-direction:column; gap:8px;"></div>
@@ -552,11 +562,14 @@
             <div id="loadingSpinner">SYNCHRONIZING ARCHIVE...</div>
             <div id="verseContainer" class="verse-container" style="opacity: 0;"></div>
             
-            <!-- ✨ 이전 장 / 다음 장 내비게이션 추가 -->
+            <!-- ✨ 이전 장 / 읽음 / 다음 장 내비게이션 -->
             <div class="chapter-nav-wrapper" id="chapterNavWrapper" style="display: none;">
                 <button class="ch-nav-btn" id="btnPrevChapter" onclick="navigateChapter(-1)">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg> 
                     이전 장
+                </button>
+                <button class="ch-nav-btn" id="btnChapterRead" onclick="toggleChapterRead()" style="min-width: 150px;">
+                    ✅ 이 장 읽음
                 </button>
                 <button class="ch-nav-btn" id="btnNextChapter" onclick="navigateChapter(1)">
                     다음 장 
@@ -658,7 +671,7 @@
         let isDataReady = false;
         let activeMemoVerse = null;
 
-        // --- 개인 인증 및 비밀번호 해시 로직 (신규 추가) ---
+        // --- 개인 인증 및 비밀번호 해시 로직 ---
         async function hashPIN(pin) {
             const msgBuffer = new TextEncoder().encode(pin);
             const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
@@ -736,7 +749,6 @@
                         userState.chapters[chKey] = item.is_read;
                     } else if (key !== 'PROFILE' && key !== 'PROGRESS') {
                         // 절 데이터
-                        if (item.is_read) userState.read[key] = true;
                         if (item.is_highlighted) userState.highlights[key] = true;
                         if (item.is_bookmarked) userState.bookmarks[key] = true;
                         if (item.memo_text) userState.memos[key] = item.memo_text;
@@ -754,7 +766,7 @@
             const payload = {
                 user_id: localUserId,
                 verse_key: vKey,
-                is_read: userState.read[vKey] || false,
+                is_read: false,
                 is_highlighted: userState.highlights[vKey] || false,
                 is_bookmarked: userState.bookmarks[vKey] || false,
                 memo_text: userState.memos[vKey] || null
@@ -792,7 +804,7 @@
             } catch (e) {}
         }
 
-        // --- TOP 5 랭킹 및 진행률 동기화 (신규 추가) ---
+        // --- TOP 5 랭킹 및 진행률 동기화 ---
         function updateOverallProgress() {
             if (!supabaseConnected) return;
             const totalRead = Object.values(userState.chapters).filter(v=>v).length;
@@ -852,7 +864,7 @@
         }
 
 
-        // --- 앱 초기화 로직 (수정됨) ---
+        // --- 앱 초기화 로직 ---
         function checkAuth() {
             localUserId = localStorage.getItem('bible_user_id');
             localUserPin = localStorage.getItem('bible_pin_hash');
@@ -984,7 +996,6 @@
                     
                     container.innerHTML = verses.map(v => {
                         const vKey = `${currentBookId}-${currentChapter}-${v.verse}`;
-                        const isR = userState.read[vKey] ? 'is-read' : '';
                         const isH = userState.highlights[vKey] ? 'hl-yellow' : '';
                         const hasBm = userState.bookmarks[vKey] ? '<span class="badge-icon" title="북마크됨">🔖</span>' : '';
                         const memoTxt = userState.memos[vKey];
@@ -997,8 +1008,8 @@
                         return `
                         <div class="verse-wrapper" id="wrap-${vKey}">
                             <div class="verse-main" onclick="toggleToolbar('${vKey}')">
-                                <div class="verse-num ${isR}" id="num-${vKey}">${v.verse}</div>
-                                <div class="verse-text ${isR} ${isH}" id="txt-${vKey}">
+                                <div class="verse-num" id="num-${vKey}">${v.verse}</div>
+                                <div class="verse-text ${isH}" id="txt-${vKey}">
                                     ${displayedText}
                                     <span class="badge-wrap" id="badge-${vKey}">${hasBm}${hasMemo}</span>
                                 </div>
@@ -1007,7 +1018,6 @@
                                 📝 ${memoTxt || ''}
                             </div>
                             <div class="verse-toolbar" id="tools-${vKey}">
-                                <button class="vt-btn ${isR?'active':''}" id="btn-read-${vKey}" onclick="actionRead('${vKey}')">✅ 읽음</button>
                                 <button class="vt-btn ${isH?'active':''}" id="btn-hl-${vKey}" onclick="actionHighlight('${vKey}')">🖍️ 형광펜</button>
                                 <button class="vt-btn ${hasBm?'active':''}" id="btn-bm-${vKey}" onclick="actionBookmark('${vKey}')">🔖 북마크</button>
                                 <button class="vt-btn" onclick="openMemoModal('${vKey}')">📝 메모 작성</button>
@@ -1020,6 +1030,18 @@
                     navWrapper.style.display = 'flex';
                     document.getElementById('btnPrevChapter').disabled = (currentChapter <= 1);
                     document.getElementById('btnNextChapter').disabled = (currentChapter >= book.max);
+
+                    // ✨ 현재 장 읽음 상태 반영
+                    const chKey = `${currentBookId}-${currentChapter}`;
+                    const isChRead = userState.chapters[chKey];
+                    const btnChapterRead = document.getElementById('btnChapterRead');
+                    if (isChRead) {
+                        btnChapterRead.innerHTML = "✅ 읽음 완료";
+                        btnChapterRead.classList.add('read-completed');
+                    } else {
+                        btnChapterRead.innerHTML = "✅ 이 장 읽음";
+                        btnChapterRead.classList.remove('read-completed');
+                    }
 
                 } else {
                     container.innerHTML = `<div style="text-align:center; padding:150px 20px; color:var(--gold); opacity:0.6;"><p>데이터를 찾을 수 없습니다.</p></div>`;
@@ -1034,19 +1056,35 @@
             }, 100);
         }
 
+        // 🌟 장 단위 읽음 토글 (신규)
+        function toggleChapterRead() {
+            const chKey = `${currentBookId}-${currentChapter}`;
+            const book = BIBLE_BOOKS.find(b => b.id === currentBookId);
+            
+            userState.chapters[chKey] = !userState.chapters[chKey];
+            const isRead = userState.chapters[chKey];
+            
+            saveChapterProgress(chKey, isRead); // Supabase 저장
+            updateOverallProgress(); // 랭킹 진행률 갱신
+            renderChapterGrid(); // 그리드 뷰 갱신
+            
+            if (isRead) {
+                showToast(`🎉 ${book.name} ${currentChapter}장 읽기 완료!`);
+            }
+            
+            // UI 업데이트
+            const btnChapterRead = document.getElementById('btnChapterRead');
+            if (isRead) {
+                btnChapterRead.innerHTML = "✅ 읽음 완료";
+                btnChapterRead.classList.add('read-completed');
+            } else {
+                btnChapterRead.innerHTML = "✅ 이 장 읽음";
+                btnChapterRead.classList.remove('read-completed');
+            }
+        }
+
         // 🌟 상호작용 기능 로직 및 Supabase 저장 호출
         function toggleToolbar(vKey) { document.getElementById(`wrap-${vKey}`).classList.toggle('show-tools'); }
-
-        function actionRead(vKey) {
-            userState.read[vKey] = !userState.read[vKey];
-            const isRead = userState.read[vKey];
-            document.getElementById(`num-${vKey}`).classList.toggle('is-read', isRead);
-            document.getElementById(`txt-${vKey}`).classList.toggle('is-read', isRead);
-            document.getElementById(`btn-read-${vKey}`).classList.toggle('active', isRead);
-            
-            saveVerseToSupabase(vKey); // DB 연동
-            checkChapterComplete();
-        }
 
         function actionHighlight(vKey) {
             userState.highlights[vKey] = !userState.highlights[vKey];
@@ -1095,35 +1133,6 @@
             showToast("메모가 저장되었습니다.");
             
             saveVerseToSupabase(activeMemoVerse); // DB 연동
-        }
-
-        function checkChapterComplete() {
-            const book = BIBLE_BOOKS.find(b => b.id === currentBookId);
-            const versesInCh = globalBibleData.filter(v => {
-                const b = String(v.book).trim();
-                return (b === String(book.id) || b === book.name || b.toUpperCase() === book.abbrev) && Number(v.chapter) === Number(currentChapter);
-            });
-            
-            let readCount = 0;
-            versesInCh.forEach(v => { if(userState.read[`${currentBookId}-${currentChapter}-${v.verse}`]) readCount++; });
-
-            const chKey = `${currentBookId}-${currentChapter}`;
-            if(versesInCh.length > 0 && readCount === versesInCh.length) {
-                if(!userState.chapters[chKey]) {
-                    userState.chapters[chKey] = true;
-                    showToast(`🎉 ${book.name} ${currentChapter}장을 모두 읽으셨습니다!`);
-                    saveChapterProgress(chKey, true); // DB 연동
-                    updateOverallProgress(); // 랭킹 진행률 갱신
-                    renderChapterGrid(); 
-                }
-            } else {
-                if(userState.chapters[chKey]) {
-                    userState.chapters[chKey] = false;
-                    saveChapterProgress(chKey, false); // DB 연동
-                    updateOverallProgress(); // 랭킹 진행률 갱신
-                    renderChapterGrid();
-                }
-            }
         }
 
         function openPlanModal() {

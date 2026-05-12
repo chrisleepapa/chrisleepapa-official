@@ -773,8 +773,8 @@
             };
 
             try {
-                await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?user_id=eq.${localUserId}&verse_key=eq.${vKey}`, {
-                    method: 'PUT', // upsert
+                await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?on_conflict=user_id,verse_key`, {
+                    method: 'POST',
                     headers: { 
                         'apikey': SUPA_KEY, 
                         'Authorization': `Bearer ${SUPA_KEY}`, 
@@ -793,8 +793,8 @@
                 user_id: localUserId, verse_key: dbKey, is_read: isComplete
             };
             try {
-                await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?user_id=eq.${localUserId}&verse_key=eq.${dbKey}`, {
-                    method: 'PUT',
+                await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?on_conflict=user_id,verse_key`, {
+                    method: 'POST',
                     headers: { 
                         'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json',
                         'Prefer': 'resolution=merge-duplicates, return=minimal'
@@ -813,8 +813,8 @@
                 verse_key: 'PROGRESS',
                 memo_text: String(totalRead)
             };
-            fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?user_id=eq.${localUserId}&verse_key=eq.PROGRESS`, {
-                method: 'PUT',
+            fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?on_conflict=user_id,verse_key`, {
+                method: 'POST',
                 headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'resolution=merge-duplicates, return=minimal' },
                 body: JSON.stringify(payload)
             }).then(() => loadLeaderboard());

@@ -38,13 +38,34 @@
         button { appearance: none; background: none; border: 0; padding: 0; font: inherit; color: inherit; }
         body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E"); pointer-events: none; z-index: 900; opacity: 0.4; }
 
-        nav { position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(3, 3, 5, 0); backdrop-filter: blur(0px); border-bottom: 1px solid rgba(255, 255, 255, 0); transition: background 0.5s, backdrop-filter 0.5s, border-color 0.5s; }
-        nav.scrolled { background: rgba(3, 3, 5, 0.88); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
-        .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); z-index: 1001; white-space: nowrap; }
-        
+        /* ========================================================
+           Navigation
+           ======================================================== */
+        #scroll-progress {
+            position: fixed; top: 0; left: 0; height: 2px; width: 0%;
+            background: linear-gradient(90deg, var(--gold), var(--gold-light), #fff8e0, var(--gold));
+            background-size: 200% auto; z-index: 2000; transition: width 0.1s linear;
+            animation: shimmer-bar 3s linear infinite;
+        }
+        @keyframes shimmer-bar { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+
+        nav {
+            position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px;
+            display: flex; justify-content: space-between; align-items: center; z-index: 1000;
+            background: rgba(3, 3, 5, 0); backdrop-filter: blur(0px); border-bottom: 1px solid rgba(255, 255, 255, 0);
+            transition: background 0.5s, backdrop-filter 0.5s, border-color 0.5s;
+        }
+        nav.scrolled {
+            background: rgba(3, 3, 5, 0.88); backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .brand-logo {
+            font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px;
+            color: var(--gold-light); z-index: 1001; white-space: nowrap;
+        }
         .nav-right { display: flex; align-items: center; gap: 24px; }
-        .nav-links { display: flex; gap: 30px; }
-        .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; text-decoration: none; position: relative; }
+        .nav-links { display: flex; gap: 30px; align-items: center; }
+        .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; position: relative; }
         .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0%; height: 1px; background: var(--gold-light); transition: width 0.3s ease; }
         .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
         .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
@@ -54,13 +75,21 @@
         .lang-current:hover, .lang-dropdown-wrapper.active .lang-current { color: var(--gold-light); text-shadow: 0 0 8px rgba(201,168,76,0.5); }
         .lang-current svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; transition: transform 0.3s; }
         .lang-dropdown-wrapper.active .lang-current svg { transform: rotate(180deg); }
-        .lang-dropdown-menu { position: absolute; top: calc(100% + 10px); right: -10px; background: rgba(10, 10, 15, 0.95); border: 1px solid rgba(201,168,76,0.3); border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; opacity: 0; pointer-events: none; transform: translateY(-10px); transition: opacity 0.3s, transform 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.8); backdrop-filter: blur(10px); min-width: 100px; }
+        .lang-dropdown-menu {
+            position: absolute; top: calc(100% + 10px); right: -10px; background: rgba(10, 10, 15, 0.95);
+            border: 1px solid rgba(201,168,76,0.3); border-radius: 12px; display: flex; flex-direction: column;
+            overflow: hidden; opacity: 0; pointer-events: none; transform: translateY(-10px);
+            transition: opacity 0.3s, transform 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.8); backdrop-filter: blur(10px); min-width: 100px;
+        }
         .lang-dropdown-wrapper.active .lang-dropdown-menu { opacity: 1; pointer-events: auto; transform: translateY(0); }
         .lang-btn { padding: 12px 20px; cursor: pointer; transition: 0.3s; letter-spacing: 1px; text-align: center; color: #a0a0b5; }
         .lang-btn:not(:last-child) { border-bottom: 1px solid rgba(255,255,255,0.05); }
         .lang-btn:hover, .lang-btn.active { color: var(--gold-light); background: rgba(201,168,76,0.1); }
 
-        .share-trigger { cursor: pointer; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; border: 1px solid rgba(201,168,76,0.3); border-radius: 50%; color: var(--gold-light); transition: 0.3s; z-index: 1001; }
+        .share-trigger {
+            cursor: pointer; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px;
+            border: 1px solid rgba(201,168,76,0.3); border-radius: 50%; color: var(--gold-light); transition: 0.3s; z-index: 1001;
+        }
         .share-trigger svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
         .share-trigger:hover { background: rgba(201,168,76,0.1); border-color: var(--gold-light); box-shadow: 0 0 12px rgba(201,168,76,0.2); transform: translateY(-2px); }
 
@@ -69,6 +98,8 @@
         .menu-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
         .menu-toggle.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
         .menu-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+        /* ======================================================== */
 
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; }
         .modal-overlay.active { display: flex; opacity: 1; }
@@ -413,11 +444,14 @@
 </head>
 <body>
 
+    <div id="scroll-progress"></div>
+
     <nav id="main-nav">
         <a href="index.html" class="brand-logo">Chris LEE.PAPA</a>
         <div class="nav-right">
             <div class="nav-links" id="navLinks">
                 <a href="index.html" data-i18n="nav_home">Home</a>
+                <a href="bible.html" data-i18n="nav_bible">Bible</a>
                 <a href="worship.html" class="active" data-i18n="nav_worship">Worship</a>
                 <a href="music.html" data-i18n="nav_music">Music</a>
                 <a href="book.html" data-i18n="nav_book">Books</a>
@@ -492,7 +526,7 @@
                 </div>
             </div>
 
-            <!-- 2집 : YouTube 임베드로 변경됨 -->
+            <!-- 2집 : YouTube 임베드 -->
             <div class="featured-card card-vol2">
                 <div class="spotify-container-album">
                     <div class="player-placeholder" onclick="injectIframe(this, 'https://www.youtube.com/embed/videoseries?list=OLAK5uy_k9AXYTzto2kBSstq07DrX3o4byN30pwAg')">
@@ -652,7 +686,7 @@
         const SUPA_KEY = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
         const PAGE_ID  = '/worship';
 
-                function t(key, fallback = '') {
+        function t(key, fallback = '') {
             return i18n[currentLang]?.[key] || i18n.ko?.[key] || fallback;
         }
 
@@ -757,7 +791,7 @@
         // ── Multilingual System ──
         const i18n = {
             ko: {
-                nav_home: "Home", nav_worship: "Worship", nav_music: "Music", nav_book: "Books", nav_movie: "Movies",
+                nav_home: "Home", nav_worship: "Worship", nav_music: "Music", nav_book: "Books", nav_movie: "Movies", nav_bible: "Bible",
                 share_title: "SHARE WORSHIP", share_desc: "이곳의 고백과 찬양이 누군가에게 위로가 되길 바랍니다.",
                 share_copy: "COPY LINK", share_sns: "SNS SHARE", share_close: "Close",
                 header_title: "WORSHIP", header_slogan: "영혼 깊은 곳에서 올려드리는 고백",
@@ -779,7 +813,7 @@
                 comments_network_error: "네트워크 오류입니다.", comments_error: "잠시 후 다시 시도해주세요."
             },
             en: {
-                nav_home: "Home", nav_worship: "Worship", nav_music: "Music", nav_book: "Books", nav_movie: "Movies",
+                nav_home: "Home", nav_worship: "Worship", nav_music: "Music", nav_book: "Books", nav_movie: "Movies", nav_bible: "Bible",
                 share_title: "SHARE WORSHIP", share_desc: "May the confessions and worship here bring comfort to someone.",
                 share_copy: "COPY LINK", share_sns: "SNS SHARE", share_close: "Close",
                 header_title: "WORSHIP", header_slogan: "Confessions offered from the depths of the soul",
@@ -855,9 +889,11 @@
             menuToggle.setAttribute('aria-expanded', String(isOpen));
         });
 
-        const mainNav = document.getElementById('main-nav');
+        // ── 변경된 스크롤 프로그레스 및 내비게이션 바 로직 ──
         window.addEventListener('scroll', () => {
-            mainNav.classList.toggle('scrolled', window.scrollY > 40);
+            const scrollTop = window.scrollY; const docHeight = document.body.scrollHeight - window.innerHeight;
+            document.getElementById('scroll-progress').style.width = (scrollTop / (docHeight || 1) * 100) + '%';
+            document.getElementById('main-nav').classList.toggle('scrolled', scrollTop > 40);
         }, { passive: true });
 
         // 유튜브가 정상적으로 플레이 되도록 iframe.setAttribute 추가

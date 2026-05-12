@@ -381,8 +381,9 @@
         .card { display: block; position: relative; height: 380px; border-radius: 18px; overflow: hidden; cursor: pointer; background: #0a0a10; border: 1px solid rgba(255,255,255,0.06); transition: border-color 0.4s, box-shadow 0.4s, transform 0.4s; opacity: 0; transform: translateY(40px); }
         .card.visible { animation: cardReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes cardReveal { from { opacity: 0; transform: translateY(40px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
-        .card:nth-child(1) { animation-delay: 0s; } .card:nth-child(2) { animation-delay: 0.08s; } .card:nth-child(3) { animation-delay: 0.16s; } .card:nth-child(4) { animation-delay: 0.24s; } .card:nth-child(5) { animation-delay: 0.32s; } .card:nth-child(6) { animation-delay: 0.40s; }
+        .card:nth-child(1) { animation-delay: 0s; } .card:nth-child(2) { animation-delay: 0.08s; } .card:nth-child(3) { animation-delay: 0.16s; } .card:nth-child(4) { animation-delay: 0.24s; } .card:nth-child(5) { animation-delay: 0.32s; } .card:nth-child(6) { animation-delay: 0.40s; } .card:nth-child(7) { animation-delay: 0.48s; }
 
+        .card-bible:hover { box-shadow: 0 20px 50px rgba(40,200,150,0.35); border-color: rgba(60,220,170,0.5); transform: translateY(-5px); } .card-bible:hover .card-label { color: #a0f0d0; }
         .card-worship:hover { box-shadow: 0 20px 50px rgba(140,0,255,0.35); border-color: rgba(150,0,255,0.5); transform: translateY(-5px); } .card-worship:hover .card-label { color: #d4a5ff; }
         .card-book:hover { box-shadow: 0 20px 50px rgba(255,160,190,0.3); border-color: rgba(255,180,200,0.5); transform: translateY(-5px); } .card-book:hover .card-label { color: #ffb4c8; }
         .card-music:hover { box-shadow: 0 20px 50px rgba(0,200,255,0.3); border-color: rgba(0,212,255,0.5); transform: translateY(-5px); } .card-music:hover .card-label { color: #00d4ff; }
@@ -391,6 +392,7 @@
         .card-contact:hover { box-shadow: 0 20px 50px rgba(74,144,226,0.3); border-color: rgba(74,144,226,0.5); transform: translateY(-5px); } .card-contact:hover .card-label { color: #6db3f2; }
 
         .card-bg { position: absolute; inset: 0; z-index: 1; background-size: cover; background-position: center; filter: brightness(0.45) contrast(1.1) saturate(0.9); transition: transform 0.7s cubic-bezier(0.2,0,0.2,1), filter 0.6s; }
+        .card-bible .card-bg { background-image: url('images/bible.png'); background-color: #122;}
         .card-worship .card-bg { background-image: url('images/worship.png'); background-color: #311; }
         .card-book .card-bg    { background-image: url('images/book.png'); background-color: #422;}
         .card-music .card-bg   { background-image: url('images/music.jpg'); background-color: #123;}
@@ -406,6 +408,7 @@
         .card-preview { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 12px; opacity: 0; transform: translateY(8px); transition: opacity 0.4s ease, transform 0.4s ease; }
         .card:hover .card-preview { opacity: 1; transform: translateY(0); }
         .preview-tag { font-family: 'Pretendard', sans-serif; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.5px; padding: 4px 10px; border-radius: 20px; backdrop-filter: blur(6px); white-space: nowrap; }
+        .card-bible .preview-tag { background: rgba(40,200,150,0.18); border: 1px solid rgba(40,200,150,0.35); color: #a0f0d0; }
         .card-worship .preview-tag { background: rgba(160,80,255,0.18); border: 1px solid rgba(160,80,255,0.35); color: #d4a5ff; }
         .card-book    .preview-tag { background: rgba(255,150,180,0.15); border: 1px solid rgba(255,150,180,0.3); color: #ffb4c8; }
         .card-music   .preview-tag { background: rgba(0,180,255,0.12); border: 1px solid rgba(0,200,255,0.3); color: #7ee8ff; }
@@ -415,7 +418,7 @@
 
         .card-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
         .card-meta-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
-        .card-worship .card-meta-dot { background: rgba(180,100,255,0.7); } .card-book .card-meta-dot { background: rgba(255,150,180,0.7); } .card-music .card-meta-dot { background: rgba(0,200,255,0.7); } .card-movie .card-meta-dot { background: rgba(201,168,76,0.7); } .card-about .card-meta-dot { background: rgba(255,255,255,0.5); } .card-contact .card-meta-dot { background: rgba(74,144,226,0.7); }
+        .card-bible .card-meta-dot { background: rgba(40,200,150,0.7); } .card-worship .card-meta-dot { background: rgba(180,100,255,0.7); } .card-book .card-meta-dot { background: rgba(255,150,180,0.7); } .card-music .card-meta-dot { background: rgba(0,200,255,0.7); } .card-movie .card-meta-dot { background: rgba(201,168,76,0.7); } .card-about .card-meta-dot { background: rgba(255,255,255,0.5); } .card-contact .card-meta-dot { background: rgba(74,144,226,0.7); }
         .card-meta-text { font-family: 'Pretendard', sans-serif; font-size: 0.75rem; color: rgba(200,196,190,0.6); letter-spacing: 0.5px; }
 
         .card-sub { font-size: 0.82rem; color: rgba(180,176,168,0.7); margin-bottom: 6px; transition: color 0.3s; }
@@ -427,7 +430,7 @@
         .card:hover .card-arrow { opacity: 1; transform: translateX(0); }
 
         .card-badge { position: absolute; top: 20px; left: 20px; z-index: 5; font-family: 'Cinzel', serif; font-size: 0.6rem; font-weight: 700; letter-spacing: 2px; padding: 5px 12px; border-radius: 20px; text-transform: uppercase; backdrop-filter: blur(8px); }
-        .card-worship .card-badge { background: rgba(120,50,200,0.5); border: 1px solid rgba(160,80,255,0.4); color: #d4a5ff; } .card-book .card-badge { background: rgba(180,80,110,0.4); border: 1px solid rgba(255,150,180,0.4); color: #ffb4c8; } .card-music .card-badge { background: rgba(0,100,160,0.4); border: 1px solid rgba(0,200,255,0.4); color: #7ee8ff; } .card-movie .card-badge { background: rgba(100,80,20,0.5); border: 1px solid rgba(201,168,76,0.4); color: var(--gold-light); } .card-about .card-badge { background: rgba(40,40,50,0.6); border: 1px solid rgba(255,255,255,0.15); color: #ccc; } .card-contact .card-badge { background: rgba(30,60,120,0.4); border: 1px solid rgba(74,144,226,0.4); color: #6db3f2; }
+        .card-bible .card-badge { background: rgba(20,100,75,0.5); border: 1px solid rgba(40,200,150,0.4); color: #a0f0d0; } .card-worship .card-badge { background: rgba(120,50,200,0.5); border: 1px solid rgba(160,80,255,0.4); color: #d4a5ff; } .card-book .card-badge { background: rgba(180,80,110,0.4); border: 1px solid rgba(255,150,180,0.4); color: #ffb4c8; } .card-music .card-badge { background: rgba(0,100,160,0.4); border: 1px solid rgba(0,200,255,0.4); color: #7ee8ff; } .card-movie .card-badge { background: rgba(100,80,20,0.5); border: 1px solid rgba(201,168,76,0.4); color: var(--gold-light); } .card-about .card-badge { background: rgba(40,40,50,0.6); border: 1px solid rgba(255,255,255,0.15); color: #ccc; } .card-contact .card-badge { background: rgba(30,60,120,0.4); border: 1px solid rgba(74,144,226,0.4); color: #6db3f2; }
 
         footer { text-align: center; padding: 40px 20px; font-family: 'Cinzel', serif; font-size: 0.65rem; color: #444; border-top: 1px solid rgba(255,255,255,0.04); letter-spacing: 2px; display: flex; flex-direction: column; align-items: center; }
 
@@ -459,6 +462,7 @@
         <div class="nav-right">
             <div class="nav-links" id="navLinks">
                 <a href="index.html" class="active" data-i18n="nav_home">Home</a>
+                <a href="bible.html" data-i18n="nav_bible">Bible</a>
                 <a href="worship.html" data-i18n="nav_worship">Worship</a>
                 <a href="music.html" data-i18n="nav_music">Music</a>
                 <a href="book.html" data-i18n="nav_book">Books</a>
@@ -599,6 +603,22 @@
     </div>
 
     <main class="portfolio-grid">
+        <a class="card card-bible" href="bible.html">
+            <div class="card-bg"></div>
+            <div class="card-badge" data-i18n="badge_bible">Daily Word</div>
+            <div class="card-arrow"><svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="card-body">
+                <div class="card-preview">
+                    <span class="preview-tag" data-i18n="prev_bible1">오늘의 말씀</span>
+                    <span class="preview-tag" data-i18n="prev_bible2">묵상</span>
+                    <span class="preview-tag" data-i18n="prev_bible3">은혜</span>
+                </div>
+                <div class="card-meta"><div class="card-meta-dot"></div><span class="card-meta-text" data-i18n="meta_bible">Bible · Daily · Grace</span></div>
+                <p class="card-sub" data-i18n="card_bible_sub">매일 새롭게 다가오는 생명의 말씀</p>
+                <h2 class="card-label" data-i18n="card_bible_title">BIBLE</h2>
+            </div>
+        </a>
+
         <a class="card card-worship" href="worship.html">
             <div class="card-bg"></div>
             <div class="card-badge" data-i18n="badge_worship">2 Albums</div>
@@ -734,7 +754,7 @@
 
         const i18n = {
             ko: {
-                nav_home:"Home", nav_worship:"Worship", nav_music:"Music", nav_book:"Books", nav_movie:"Movies",
+                nav_home:"Home", nav_bible:"Bible", nav_worship:"Worship", nav_music:"Music", nav_book:"Books", nav_movie:"Movies",
                 share_title:"SHARE ARCHIVE", share_desc:"이곳의 기록과 영감을 소중한 사람들에게 전하세요.",
                 share_copy:"COPY LINK", share_sns:"SNS SHARE", share_close:"Close",
                 hero_slogan:"The Creative Archive", hero_sub:"찬양 · 음악 · 문학 · 영상", hero_scroll:"SCROLL",
@@ -745,17 +765,19 @@
                 note_desc2:"어두운 시간 속에서 하늘의 무수히 많은 별빛을 보게 해주시고<br>다시 일어날 용기를 주신 주님께 모든 영광을 올립니다.",
                 note_desc3:"저의 열정과 진실한 고백이 담긴 이 곳에 오신 것을 환영합니다.<br>여러분의 삶 속에서 시련을 만나고 넘어지고 쓰러져도<br>포기하지 않고 다시 일어날 수 있는 용기와 기적이 가득하길 기도합니다.",
                 heading_tag:"✦ &nbsp; Portfolio &nbsp; ✦", heading_title:"The Archive",
-                badge_worship:"2 Albums", badge_book:"SISTER SQUAD", badge_music:"New Release",
+                badge_bible:"Daily Word", badge_worship:"2 Albums", badge_book:"SISTER SQUAD", badge_music:"New Release",
                 badge_movie:"AI Film", badge_about:"Creator", badge_contact:"Open to Collab",
+                prev_bible1:"오늘의 말씀", prev_bible2:"묵상", prev_bible3:"은혜",
                 prev_worship1:"나의 찬양 Vol.1", prev_worship2:"나의 찬양 Vol.2", prev_worship3:"6 Tracks",
                 prev_book1:"단편소설", prev_book2:"그림책", prev_book3:"시 · 에세이",
                 prev_music1:"To Rise", prev_music2:"Instrumental", prev_music3:"On Spotify",
                 prev_movie1:"단편영화", prev_movie2:"뮤직비디오", prev_movie3:"영상시",
                 prev_about1:"신앙", prev_about2:"창작", prev_about3:"AI & Tech",
                 prev_contact1:"협업 제안", prev_contact2:"비즈니스", prev_contact3:"영감 나눔",
-                meta_worship:"Vocal · Instrumental · Spotify", meta_book:"Fiction · Illustration · Poetry",
+                meta_bible:"Bible · Daily · Grace", meta_worship:"Vocal · Instrumental · Spotify", meta_book:"Fiction · Illustration · Poetry",
                 meta_music:"AI · Suno · Electronic · Ambient", meta_movie:"Sora · Runway · AI Cinematic",
                 meta_about:"Faith · Creativity · Story", meta_contact:"Collaboration · Inquiry · Connect",
+                card_bible_sub:"매일 새롭게 다가오는 생명의 말씀", card_bible_title:"BIBLE",
                 card_worship_sub:"영혼 깊은 곳에서 올려드리는 고백", card_worship_title:"WORSHIP",
                 card_book_sub:"상상이 종이에 그려진 순간 일어나는 기적", card_book_title:"BOOK",
                 card_music_sub:"AI가 만들어낸 선율, 영혼을 울리는 멜로디", card_music_title:"MUSIC",
@@ -767,7 +789,7 @@
                 verse_share:"말씀 공유", verse_save:"이미지 저장"
             },
             en: {
-                nav_home:"Home", nav_worship:"Worship", nav_music:"Music", nav_book:"Books", nav_movie:"Movies",
+                nav_home:"Home", nav_bible:"Bible", nav_worship:"Worship", nav_music:"Music", nav_book:"Books", nav_movie:"Movies",
                 share_title:"SHARE ARCHIVE", share_desc:"Share the records and inspiration here with your loved ones.",
                 share_copy:"COPY LINK", share_sns:"SNS SHARE", share_close:"Close",
                 hero_slogan:"The Creative Archive", hero_sub:"Worship · Music · Literature · Film", hero_scroll:"SCROLL",
@@ -778,17 +800,19 @@
                 note_desc2:"I give all the glory to the Lord, who allowed me to see the countless stars in the dark times<br>and gave me the courage to rise again.",
                 note_desc3:"Welcome to this place filled with my passion and sincere confessions.<br>I pray that even when you face trials, stumble, and fall in your life,<br>it will be filled with the courage and miracles to rise again without giving up.",
                 heading_tag:"✦ &nbsp; Portfolio &nbsp; ✦", heading_title:"The Archive",
-                badge_worship:"2 Albums", badge_book:"SISTER SQUAD", badge_music:"New Release",
+                badge_bible:"Daily Word", badge_worship:"2 Albums", badge_book:"SISTER SQUAD", badge_music:"New Release",
                 badge_movie:"AI Film", badge_about:"Creator", badge_contact:"Open to Collab",
+                prev_bible1:"Daily Word", prev_bible2:"Meditation", prev_bible3:"Grace",
                 prev_worship1:"My Worship Vol.1", prev_worship2:"My Worship Vol.2", prev_worship3:"6 Tracks",
                 prev_book1:"Short Story", prev_book2:"Picture Book", prev_book3:"Poetry · Essay",
                 prev_music1:"To Rise", prev_music2:"Instrumental", prev_music3:"On Spotify",
                 prev_movie1:"Short Film", prev_movie2:"Music Video", prev_movie3:"Video Poem",
                 prev_about1:"Faith", prev_about2:"Creativity", prev_about3:"AI & Tech",
                 prev_contact1:"Collaboration", prev_contact2:"Business", prev_contact3:"Inspiration",
-                meta_worship:"Vocal · Instrumental · Spotify", meta_book:"Fiction · Illustration · Poetry",
+                meta_bible:"Bible · Daily · Grace", meta_worship:"Vocal · Instrumental · Spotify", meta_book:"Fiction · Illustration · Poetry",
                 meta_music:"AI · Suno · Electronic · Ambient", meta_movie:"Sora · Runway · AI Cinematic",
                 meta_about:"Faith · Creativity · Story", meta_contact:"Collaboration · Inquiry · Connect",
+                card_bible_sub:"The word of life that comes anew every day", card_bible_title:"BIBLE",
                 card_worship_sub:"Confessions offered from the depths of the soul", card_worship_title:"WORSHIP",
                 card_book_sub:"Miracles that happen the moment imagination is drawn on paper", card_book_title:"BOOK",
                 card_music_sub:"Melodies created by AI, touching the soul", card_music_title:"MUSIC",

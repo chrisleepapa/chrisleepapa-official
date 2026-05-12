@@ -996,6 +996,13 @@
             if (actionButtons) actionButtons.style.display = 'none'; // 버튼 캡처 방지 (숨김)
             target.style.boxShadow = 'none';
             
+            // 캡처 이미지 하단에 URL 링크 한 줄 추가 (카카오톡 등에서 텍스트 무시 방지)
+            const watermark = document.createElement('div');
+            watermark.textContent = "https://chrisleepapa-official.vercel.app/";
+            watermark.style.cssText = "font-family: 'Cinzel', sans-serif; font-size: 0.85rem; color: rgba(201,168,76,0.9); text-align: center; margin-top: 10px; margin-bottom: -15px; letter-spacing: 1px;";
+            const bibleWrap = document.getElementById('bibleCaptureTarget');
+            bibleWrap.appendChild(watermark);
+
             const canvas = await html2canvas(target, {
                 backgroundColor: '#0a0a10',
                 scale: 3, // 고해상도
@@ -1007,6 +1014,7 @@
             if (toggleIcon) toggleIcon.style.display = '';
             if (actionButtons) actionButtons.style.display = ''; // 버튼 복구
             target.style.boxShadow = '';
+            bibleWrap.removeChild(watermark);
             
             return canvas;
         }
@@ -1019,32 +1027,63 @@
                 const canvas = await getBibleCanvas();
                 canvas.toBlob(async (blob) => {
                     const file = new File([blob], 'bible_verse.png', { type: 'image/png' });
+                    const shareText = "나를 살린 찬양과 믿음, 그리고 상상력으로 빚어낸 기록들.\nhttps://chrisleepapa-official.vercel.app/";
                     
                     if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-                        await navigator.share({
-                            title: "Today's Bible Verse",
-                            text: "https://chrisleepapa-official.vercel.app/",
-                            files: [file]
-                        });
+                        try {
+                            await navigator.share({
+                                title: "Chris LEE.PAPA - Today's Bible Verse",
+                                text: shareText,
+                                url: "https://chrisleepapa-official.vercel.app/",
+                                files: [file]
+                            });
+                        } catch (shareErr) {
+                            if (shareErr.name !== 'AbortError') {
+                                shareVerseFallback(blob, shareText);
+                            }
+                        }
                     } else {
-                        shareVerseTextFallback();
+                        shareVerseFallback(blob, shareText);
                     }
                 }, 'image/png');
             } catch (err) {
                 console.error('Share image failed:', err);
-                shareVerseTextFallback();
+                shareVerseFallback(null, "https://chrisleepapa-official.vercel.app/");
             }
         }
 
-        function shareVerseTextFallback() {
-            const verseKo = document.getElementById('bibleTextKor').textContent;
-            const verseEn = document.getElementById('bibleTextEng').textContent;
-            const ref = document.getElementById('bibleReferenceTitle').textContent;
-            const shareText = `[Today's Bible Verse]\n${ref}\n\n${verseKo}\n\n${verseEn}\n\nhttps://chrisleepapa-official.vercel.app/`;
+        async function shareVerseFallback(blob, shareText) {
+            let imageCopied = false;
             
-            navigator.clipboard.writeText(shareText).then(() => {
-                showToast(currentLang === 'ko' ? "이미지 공유 미지원 브라우저입니다. 말씀 텍스트가 복사되었습니다 ✓" : "Text copied ✓");
-            });
+            // PC 카카오톡 등에 이미지로 바로 붙여넣을 수 있게 클립보드에 이미지 복사 시도
+            if (blob && navigator.clipboard && window.ClipboardItem) {
+                try {
+                    const item = new ClipboardItem({ 'image/png': blob });
+                    await navigator.clipboard.write([item]);
+                    imageCopied = true;
+                } catch (e) {
+                    console.warn('Image clipboard failed:', e);
+                }
+            }
+
+            if (imageCopied) {
+                showToast(currentLang === 'ko' ? "이미지가 복사되었습니다. 카카오톡 창에 붙여넣기(Ctrl+V) 하세요 ✓" : "Image copied to clipboard ✓");
+            } else {
+                // 구형 브라우저이거나 이미지 복사가 안되는 환경이면 텍스트 링크를 복사
+                const verseKo = document.getElementById('bibleTextKor').textContent;
+                const verseEn = document.getElementById('bibleTextEng').textContent;
+                const ref = document.getElementById('bibleReferenceTitle').textContent;
+                const fallbackText = `[Today's Bible Verse]\n${ref}\n\n${verseKo}\n\n${verseEn}\n\n${shareText}`;
+                
+                try {
+                    await navigator.clipboard.writeText(fallbackText);
+                    showToast(currentLang === 'ko' ? "말씀 텍스트와 링크가 복사되었습니다 ✓" : "Text and link copied ✓");
+                } catch (err) {
+                    const ta = document.createElement('textarea'); ta.value = fallbackText; ta.style.position = 'fixed'; ta.style.left = '-9999px';
+                    document.body.appendChild(ta); ta.focus(); ta.select();
+                    try { document.execCommand('copy'); showToast(currentLang === 'ko' ? "말씀 텍스트와 링크가 복사되었습니다 ✓" : "Text and link copied ✓"); } catch (e) {} document.body.removeChild(ta);
+                }
+            }
         }
 
         // ==========================================

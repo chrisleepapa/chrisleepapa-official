@@ -995,7 +995,7 @@
             if (toggleIcon) toggleIcon.style.display = 'none';
             if (actionButtons) actionButtons.style.display = 'none'; // 버튼 캡처 방지 (숨김)
             target.style.boxShadow = 'none';
-
+            
             const canvas = await html2canvas(target, {
                 backgroundColor: '#0a0a10',
                 scale: 3, // 고해상도
@@ -1012,87 +1012,38 @@
         }
 
         // ==========================================
-        // 모바일/PC 공유 로직 완벽 개선 (이미지 및 텍스트 처리)
+        // 텍스트 대신 '이미지 파일' 자체를 네이티브 공유하는 함수
         // ==========================================
         async function shareVerseImage() {
-            const verseKo = document.getElementById('bibleTextKor').textContent;
-            const verseEn = document.getElementById('bibleTextEng').textContent;
-            const ref = document.getElementById('bibleReferenceTitle').textContent;
-            
-            const shareText = `[Today's Bible Verse]\n${ref}\n\n${verseKo}\n\n${verseEn}`;
-            const shareUrl = "https://chrisleepapa-official.vercel.app/";
-            
-            // 모바일 카카오톡 등에서 텍스트를 무시하고 이미지만 공유할 경우를 대비해
-            // 사용자가 원하면 즉시 붙여넣을 수 있도록 클립보드에 우선 복사해둡니다.
-            try { navigator.clipboard.writeText(`${shareText}\n\n${shareUrl}`); } catch(e) {}
-
             try {
                 const canvas = await getBibleCanvas();
                 canvas.toBlob(async (blob) => {
                     const file = new File([blob], 'bible_verse.png', { type: 'image/png' });
                     
-                    if (navigator.share) {
-                        try {
-                            if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                                // 모바일: 이미지 + 링크 네이티브 공유
-                                await navigator.share({
-                                    title: "Chris LEE.PAPA - Today's Bible Verse",
-                                    text: shareText,
-                                    url: shareUrl,
-                                    files: [file]
-                                });
-                            } else {
-                                // 파일 공유를 지원하지 않는 일부 기기
-                                await navigator.share({
-                                    title: "Chris LEE.PAPA - Today's Bible Verse",
-                                    text: shareText,
-                                    url: shareUrl
-                                });
-                            }
-                            return; // 정상 완료 시 종료
-                        } catch (shareErr) {
-                            if (shareErr.name !== 'AbortError') {
-                                shareVerseFallback(shareText, shareUrl);
-                            }
-                        }
+                    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+                        await navigator.share({
+                            title: "Today's Bible Verse",
+                            files: [file]
+                        });
                     } else {
-                        // PC 환경 (Web Share API 미지원 시)
-                        shareVerseFallback(shareText, shareUrl);
+                        shareVerseTextFallback();
                     }
                 }, 'image/png');
             } catch (err) {
                 console.error('Share image failed:', err);
-                shareVerseFallback(shareText, shareUrl);
+                shareVerseTextFallback();
             }
         }
 
-        async function shareVerseFallback(shareText, shareUrl) {
-            // PC에서는 이미지 클립보드 복사 충돌이 잦으므로, 텍스트와 링크를 깔끔하게 복사합니다.
-            const fallbackText = `${shareText}\n\n[링크로 이동하기]\n${shareUrl}`;
+        function shareVerseTextFallback() {
+            const verseKo = document.getElementById('bibleTextKor').textContent;
+            const verseEn = document.getElementById('bibleTextEng').textContent;
+            const ref = document.getElementById('bibleReferenceTitle').textContent;
+            const shareText = `[Today's Bible Verse]\n${ref}\n\n${verseKo}\n\n${verseEn}`;
             
-            try {
-                if (navigator.clipboard && window.isSecureContext) {
-                    await navigator.clipboard.writeText(fallbackText);
-                    showToast(currentLang === 'ko' ? "말씀과 링크가 복사되었습니다. 카카오톡에 붙여넣기(Ctrl+V) 하세요 ✓" : "Text and link copied ✓");
-                } else {
-                    throw new Error("Clipboard API not available");
-                }
-            } catch (err) {
-                const ta = document.createElement('textarea'); 
-                ta.value = fallbackText; 
-                ta.style.position = 'fixed'; 
-                ta.style.left = '-9999px';
-                document.body.appendChild(ta); 
-                ta.focus(); 
-                ta.select();
-                try { 
-                    document.execCommand('copy'); 
-                    showToast(currentLang === 'ko' ? "말씀과 링크가 복사되었습니다. 카카오톡에 붙여넣기(Ctrl+V) 하세요 ✓" : "Text and link copied ✓"); 
-                } catch (e) {
-                    showToast(currentLang === 'ko' ? "브라우저가 복사 기능을 지원하지 않습니다." : "Copy not supported.");
-                } 
-                document.body.removeChild(ta);
-            }
+            navigator.clipboard.writeText(shareText).then(() => {
+                showToast(currentLang === 'ko' ? "이미지 공유 미지원 브라우저입니다. 말씀 텍스트가 복사되었습니다 ✓" : "Text copied ✓");
+            });
         }
 
         // ==========================================

@@ -6,11 +6,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="images/favicon.png">
-    
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3207219520058740"
-     crossorigin="anonymous"></script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NBGELYQ4TZ"></script>
-    <script>window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-NBGELYQ4TZ'); gtag('config', 'GT-5MJDBTR2');</script>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,13 +28,12 @@
             --text: #f0ece4;
             --text-muted: #8a8a9a;
             --nav-height: 70px;
-            --base-font-size: 1.2rem;
+            --base-font-size: 1.25rem;
         }
 
         html { scroll-behavior: smooth; background-color: var(--bg); }
         body { background-color: var(--bg); color: var(--text); font-family: 'Pretendard', sans-serif; line-height: 1.6; overflow-x: hidden; -webkit-user-select: none; user-select: none; }
 
-        /* 배경 노이즈 */
         body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E"); pointer-events: none; z-index: 900; opacity: 0.4; }
 
         nav { position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(3, 3, 5, 0.88); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
@@ -49,107 +43,113 @@
         .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: var(--text-muted); text-transform: uppercase; position: relative; text-decoration: none; transition: 0.3s; }
         .nav-links a.active, .nav-links a:hover { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
 
-        /* Page Layout */
+        /* Page Header */
         .page-header { padding: 140px 20px 40px; text-align: center; background: radial-gradient(circle at center top, rgba(201,168,76,0.1) 0%, transparent 70%); }
-        .page-title { font-family: 'Cinzel', serif; font-size: clamp(2rem, 5vw, 3rem); color: var(--gold-light); letter-spacing: 0.2em; font-weight: 700; margin-bottom: 10px; text-shadow: 0 0 30px var(--gold-glow); }
+        .page-title { font-family: 'Cinzel', serif; font-size: clamp(2.2rem, 6vw, 3.5rem); color: var(--gold-light); letter-spacing: 0.15em; font-weight: 700; margin-bottom: 10px; text-shadow: 0 0 30px var(--gold-glow); }
         
-        .bible-container { max-width: 1200px; margin: 0 auto; padding: 0 20px 100px; }
+        .bible-container { max-width: 1300px; margin: 0 auto; padding: 0 20px 100px; }
 
-        /* --- 상단 가로형 셀렉터 --- */
+        /* --- 상단 가로형 셀렉터 패널 --- */
         .selector-panel {
             background: var(--bg-panel);
             border: 1px solid rgba(201, 168, 76, 0.2);
             border-radius: 24px;
-            padding: 30px;
-            margin-bottom: 40px;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            padding: 35px;
+            margin-bottom: 50px;
+            backdrop-filter: blur(25px);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
         }
 
         .testament-row {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin-bottom: 25px;
+            gap: 15px;
         }
         .testament-tab {
-            padding: 10px 30px;
+            padding: 12px 45px;
             font-family: 'Cinzel', serif;
-            font-size: 0.85rem;
-            font-weight: 700;
+            font-size: 0.9rem;
+            font-weight: 800;
             color: var(--text-muted);
             background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 40px;
             cursor: pointer;
-            transition: 0.4s;
+            transition: 0.4s cubic-bezier(0.2, 0, 0.2, 1);
         }
         .testament-tab.active {
             background: var(--gold);
             color: #000;
             border-color: var(--gold);
-            box-shadow: 0 0 20px rgba(201,168,76,0.3);
+            box-shadow: 0 0 25px rgba(201,168,76,0.4);
+            transform: translateY(-2px);
         }
 
         .book-list-row {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 8px;
-            margin-bottom: 25px;
-            padding: 5px;
-            max-height: 200px;
+            gap: 12px;
+            padding: 15px;
+            max-height: 250px;
             overflow-y: auto;
+            border-radius: 16px;
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.03);
         }
-        /* 커스텀 스크롤바 */
         .book-list-row::-webkit-scrollbar { width: 4px; }
         .book-list-row::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
 
         .book-item {
-            padding: 8px 16px;
-            border-radius: 12px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.05);
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
             color: rgba(240,236,228,0.7);
             font-family: 'Noto Serif KR', serif;
-            font-size: 0.95rem;
+            font-size: 1rem;
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 10px;
+            white-space: nowrap;
         }
-        .book-item span.en { font-family: 'Cinzel', serif; font-size: 0.65rem; opacity: 0.4; }
-        .book-item:hover { background: rgba(201,168,76,0.1); color: #fff; border-color: rgba(201,168,76,0.3); }
+        .book-item span.en { font-family: 'Cinzel', serif; font-size: 0.65rem; opacity: 0.4; letter-spacing: 1px; }
+        .book-item:hover { background: rgba(201,168,76,0.15); color: #fff; border-color: rgba(201,168,76,0.4); transform: scale(1.03); }
         .book-item.active {
-            background: linear-gradient(135deg, rgba(201,168,76,0.2), rgba(201,168,76,0.05));
+            background: linear-gradient(135deg, rgba(201,168,76,0.3), rgba(201,168,76,0.1));
             color: var(--gold-light);
             border-color: var(--gold);
             font-weight: 600;
+            box-shadow: 0 4px 15px rgba(201,168,76,0.2);
         }
 
         .chapter-grid-row {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 8px;
-            padding-top: 20px;
+            gap: 10px;
+            padding-top: 30px;
             border-top: 1px solid rgba(255,255,255,0.05);
         }
         .chapter-btn {
-            width: 42px;
-            height: 42px;
+            width: 48px;
+            height: 48px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 10px;
+            border-radius: 12px;
             background: rgba(255,255,255,0.02);
             border: 1px solid rgba(255,255,255,0.05);
             color: var(--text-muted);
             font-family: 'Cinzel', serif;
-            font-size: 0.9rem;
+            font-size: 1.1rem;
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.3s;
         }
         .chapter-btn:hover { border-color: var(--gold); color: #fff; }
         .chapter-btn.active {
@@ -157,41 +157,42 @@
             color: #000;
             font-weight: 800;
             border-color: var(--gold);
-            box-shadow: 0 0 15px rgba(201,168,76,0.4);
+            box-shadow: 0 0 20px rgba(201,168,76,0.4);
         }
 
         /* Reader Area */
         .bible-reader {
             background: var(--bg-panel);
             border: 1px solid rgba(255,255,255,0.04);
-            border-radius: 30px;
-            padding: 80px 60px;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.7);
+            border-radius: 35px;
+            padding: 100px 80px;
+            box-shadow: 0 50px 120px rgba(0,0,0,0.8);
             backdrop-filter: blur(20px);
+            min-height: 800px;
         }
-        .chapter-heading { text-align: center; margin-bottom: 60px; position: relative; }
-        .chapter-heading::after { content: ''; display: block; width: 50px; height: 1px; background: var(--gold); margin: 30px auto 0; opacity: 0.5; }
-        .chapter-heading h2 { font-family: 'Noto Serif KR', serif; font-size: 3rem; font-weight: 300; color: #fff; letter-spacing: -0.01em; }
-        .chapter-heading .en-sub { display: block; font-family: 'Cinzel', serif; font-size: 0.9rem; color: var(--gold); letter-spacing: 0.3em; margin-top: 10px; text-transform: uppercase; opacity: 0.7; }
+        .chapter-heading { text-align: center; margin-bottom: 80px; position: relative; }
+        .chapter-heading::after { content: ''; display: block; width: 60px; height: 1px; background: var(--gold); margin: 35px auto 0; opacity: 0.6; }
+        .chapter-heading h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 300; color: #fff; letter-spacing: -0.01em; }
+        .chapter-heading .en-sub { display: block; font-family: 'Cinzel', serif; font-size: 1.1rem; color: var(--gold); letter-spacing: 0.5em; margin-top: 15px; text-transform: uppercase; opacity: 0.7; }
 
-        .verse-container { max-width: 800px; margin: 0 auto; transition: opacity 0.6s ease; }
-        .verse-row { display: flex; gap: 30px; padding: 22px 0; border-bottom: 1px solid rgba(255,255,255,0.03); transition: 0.3s; }
+        .verse-container { max-width: 900px; margin: 0 auto; transition: opacity 0.8s ease; }
+        .verse-row { display: flex; gap: 40px; padding: 30px 0; border-bottom: 1px solid rgba(255,255,255,0.03); transition: background 0.4s; }
         .verse-row:hover { background: rgba(255,255,255,0.015); }
-        .verse-num { font-family: 'Cinzel', serif; font-size: 1rem; font-weight: 700; color: var(--gold); min-width: 40px; text-align: right; padding-top: 6px; opacity: 0.6; }
-        .verse-text { font-family: 'Noto Serif KR', serif; font-size: var(--base-font-size); line-height: 2.3; color: rgba(240,236,228,0.95); word-break: keep-all; }
+        .verse-num { font-family: 'Cinzel', serif; font-size: 1.2rem; font-weight: 700; color: var(--gold); min-width: 50px; text-align: right; padding-top: 8px; opacity: 0.4; }
+        .verse-text { font-family: 'Noto Serif KR', serif; font-size: var(--base-font-size); line-height: 2.5; color: rgba(240,236,228,0.95); word-break: keep-all; }
 
-        #loadingSpinner { text-align: center; padding: 100px; color: var(--gold-light); font-family: 'Cinzel', serif; letter-spacing: 5px; animation: pulse 2s infinite; }
+        #loadingSpinner { text-align: center; padding: 150px 20px; color: var(--gold-light); font-family: 'Cinzel', serif; letter-spacing: 6px; animation: pulse 2s infinite; font-size: 1.3rem; }
         @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
 
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
             nav { padding: 0 20px; }
             .nav-links { display: none; }
-            .selector-panel { padding: 20px 15px; }
-            .bible-reader { padding: 60px 20px; border-radius: 20px; }
-            .chapter-heading h2 { font-size: 2rem; }
-            .verse-row { gap: 15px; }
-            .verse-num { min-width: 25px; font-size: 0.8rem; }
-            .verse-text { font-size: 1.1rem; }
+            .selector-panel { padding: 25px 15px; gap: 20px; }
+            .bible-reader { padding: 80px 30px; border-radius: 25px; }
+            .chapter-heading h2 { font-size: 2.2rem; }
+            .verse-row { gap: 20px; padding: 25px 0; }
+            .verse-num { min-width: 35px; font-size: 1rem; }
+            .verse-text { font-size: 1.15rem; line-height: 2.2; }
         }
     </style>
 </head>
@@ -216,90 +217,81 @@
     </header>
 
     <div class="bible-container">
-        <!-- 상단 가로형 선택 패널 -->
         <section class="selector-panel">
             <div class="testament-row">
                 <button class="testament-tab active" id="ot-tab" onclick="changeTestament('ot')">OLD TESTAMENT</button>
                 <button class="testament-tab" id="nt-tab" onclick="changeTestament('nt')">NEW TESTAMENT</button>
             </div>
             
-            <div id="bookList" class="book-list-row">
-                <!-- 자바스크립트로 66권 목록 생성 -->
-            </div>
-
-            <div id="chapterGrid" class="chapter-grid-row">
-                <!-- 자바스크립트로 장 번호 생성 -->
-            </div>
+            <div id="bookList" class="book-list-row"></div>
+            <div id="chapterGrid" class="chapter-grid-row"></div>
         </section>
 
-        <!-- 말씀 읽기 영역 -->
         <article class="bible-reader">
             <div class="chapter-heading">
-                <h2 id="headerTitle">Genesis</h2>
-                <span class="en-sub" id="enSub">Connect to Archive</span>
+                <h2 id="headerTitle">Connecting...</h2>
+                <span class="en-sub" id="enSub">Synchronizing Archive</span>
             </div>
-            <div id="loadingSpinner" style="display:none;">SYNCHRONIZING...</div>
-            <div id="verseContainer" class="verse-container"></div>
+            <div id="loadingSpinner">SYNCHRONIZING ARCHIVE...</div>
+            <div id="verseContainer" class="verse-container" style="opacity: 0;"></div>
         </article>
     </div>
 
     <script>
         const BIBLE_BOOKS = [
-            {id:1, name:"창세기", en:"Genesis", abbrev:"GEN", type:"ot", max:50}, {id:2, name:"출애굽기", en:"Exodus", abbrev:"EXO", type:"ot", max:40},
-            {id:3, name:"레위기", en:"Leviticus", abbrev:"LEV", type:"ot", max:27}, {id:4, name:"민수기", en:"Numbers", abbrev:"NUM", type:"ot", max:36},
-            {id:5, name:"신명기", en:"Deuteronomy", abbrev:"DEU", type:"ot", max:34}, {id:6, name:"여호수아", en:"Joshua", abbrev:"JOS", type:"ot", max:24},
-            {id:7, name:"사사기", en:"Judges", abbrev:"JDG", type:"ot", max:21}, {id:8, name:"룻기", en:"Ruth", abbrev:"RUT", type:"ot", max:4},
-            {id:9, name:"사무엘상", en:"1 Samuel", abbrev:"1SA", type:"ot", max:31}, {id:10, name:"사무엘하", en:"2 Samuel", abbrev:"2SA", type:"ot", max:24},
-            {id:11, name:"열왕기상", en:"1 Kings", abbrev:"1KI", type:"ot", max:22}, {id:12, name:"열왕기하", en:"2 Kings", abbrev:"2KI", type:"ot", max:25},
-            {id:13, name:"역대상", en:"1 Chronicles", abbrev:"1CH", type:"ot", max:29}, {id:14, name:"역대하", en:"2 Chronicles", abbrev:"2CH", type:"ot", max:36},
-            {id:15, name:"에스라", en:"Ezra", abbrev:"EZR", type:"ot", max:10}, {id:16, name:"느헤미야", en:"Nehemiah", abbrev:"NEH", type:"ot", max:13},
-            {id:17, name:"에스더", en:"Esther", abbrev:"EST", type:"ot", max:10}, {id:18, name:"욥기", en:"Job", abbrev:"JOB", type:"ot", max:42},
-            {id:19, name:"시편", en:"Psalms", abbrev:"PSA", type:"ot", max:150}, {id:20, name:"잠언", en:"Proverbs", abbrev:"PRO", type:"ot", max:31},
-            {id:21, name:"전도서", en:"Ecclesiastes", abbrev:"ECC", type:"ot", max:12}, {id:22, name:"아가", en:"Song of Solomon", abbrev:"SNG", type:"ot", max:8},
-            {id:23, name:"이사야", en:"Isaiah", abbrev:"ISA", type:"ot", max:66}, {id:24, name:"예레미야", en:"Jeremiah", abbrev:"JER", type:"ot", max:52},
-            {id:25, name:"예레미야 애가", en:"Lamentations", abbrev:"LAM", type:"ot", max:5}, {id:26, name:"에스겔", en:"Ezekiel", abbrev:"EZE", type:"ot", max:48},
-            {id:27, name:"다니엘", en:"Daniel", abbrev:"DAN", type:"ot", max:12}, {id:28, name:"호세아", en:"Hosea", abbrev:"HOS", type:"ot", max:14},
-            {id:29, name:"요엘", en:"Joel", abbrev:"JOL", type:"ot", max:3}, {id:30, name:"아모스", en:"Amos", abbrev:"AMO", type:"ot", max:9},
-            {id:31, name:"오바댜", en:"Obadiah", abbrev:"OBA", type:"ot", max:1}, {id:32, name:"요나", en:"Jonah", abbrev:"JON", type:"ot", max:4},
-            {id:33, name:"미가", en:"Micah", abbrev:"MIC", type:"ot", max:7}, {id:34, name:"나훔", en:"Nahum", abbrev:"NAM", type:"ot", max:3},
-            {id:35, name:"하박국", en:"Habakkuk", abbrev:"HAB", type:"ot", max:3}, {id:36, name:"스바냐", en:"Zephaniah", abbrev:"ZEP", type:"ot", max:3},
-            {id:37, name:"학개", en:"Haggai", abbrev:"HAG", type:"ot", max:2}, {id:38, name:"스가랴", en:"Zechariah", abbrev:"ZEC", type:"ot", max:14},
-            {id:39, name:"말라기", en:"Malachi", abbrev:"MAL", type:"ot", max:4},
-            {id:40, name:"마태복음", en:"Matthew", abbrev:"MAT", type:"nt", max:28}, {id:41, name:"마가복음", en:"Mark", abbrev:"MRK", type:"nt", max:16},
-            {id:42, name:"누가복음", en:"Luke", abbrev:"LUK", type:"nt", max:24}, {id:43, name:"요한복음", en:"John", abbrev:"JHN", type:"nt", max:21},
-            {id:44, name:"사도행전", en:"Acts", abbrev:"ACT", type:"nt", max:28}, {id:45, name:"로마서", en:"Romans", abbrev:"ROM", type:"nt", max:16},
-            {id:46, name:"고린도전서", en:"1 Corinthians", abbrev:"1CO", type:"nt", max:16}, {id:47, name:"고린도후서", en:"2 Corinthians", abbrev:"2CO", type:"nt", max:13},
-            {id:48, name:"갈라디아서", en:"Galatians", abbrev:"GAL", type:"nt", max:6}, {id:49, name:"에베소서", en:"Ephesians", abbrev:"EPH", type:"nt", max:6},
-            {id:50, name:"빌립보서", en:"Philippians", abbrev:"PHP", type:"nt", max:4}, {id:51, name:"골로새서", en:"Colossians", abbrev:"COL", type:"nt", max:4},
-            {id:52, name:"데살로니가전서", en:"1 Thessalonians", abbrev:"1TH", type:"nt", max:5}, {id:53, name:"데살로니가후서", en:"2 Thessalonians", abbrev:"2TH", type:"nt", max:3},
-            {id:54, name:"디모데전서", en:"1 Timothy", abbrev:"1TI", type:"nt", max:6}, {id:55, name:"디모데후서", en:"2 Timothy", abbrev:"2TI", type:"nt", max:4},
-            {id:56, name:"디도서", en:"Titus", abbrev:"TIT", type:"nt", max:3}, {id:57, name:"빌레몬서", en:"Philemon", abbrev:"PHM", type:"nt", max:1},
-            {id:58, name:"히브리서", en:"Hebrews", abbrev:"HEB", type:"nt", max:13}, {id:59, name:"야고보서", en:"James", abbrev:"JAS", type:"nt", max:5},
-            {id:60, name:"베드로전서", en:"1 Peter", abbrev:"1PE", type:"nt", max:5}, {id:61, name:"베드로후서", en:"2 Peter", abbrev:"2PE", type:"nt", max:3},
-            {id:62, name:"요한일서", en:"1 John", abbrev:"1JN", type:"nt", max:5}, {id:63, name:"요한이서", en:"2 John", abbrev:"2JN", type:"nt", max:1},
-            {id:64, name:"요한삼서", en:"3 John", abbrev:"3JN", type:"nt", max:1}, {id:65, name:"유다서", en:"Jude", abbrev:"JUD", type:"nt", max:1},
-            {id:66, name:"요한계시록", en:"Revelation", abbrev:"REV", type:"nt", max:22}
+            {id:1, name:"창세기", kr_short:"창", en:"Genesis", abbrev:"GEN", type:"ot", max:50}, {id:2, name:"출애굽기", kr_short:"출", en:"Exodus", abbrev:"EXO", type:"ot", max:40},
+            {id:3, name:"레위기", kr_short:"레", en:"Leviticus", abbrev:"LEV", type:"ot", max:27}, {id:4, name:"민수기", kr_short:"민", en:"Numbers", abbrev:"NUM", type:"ot", max:36},
+            {id:5, name:"신명기", kr_short:"신", en:"Deuteronomy", abbrev:"DEU", type:"ot", max:34}, {id:6, name:"여호수아", kr_short:"여", en:"Joshua", abbrev:"JOS", type:"ot", max:24},
+            {id:7, name:"사사기", kr_short:"사", en:"Judges", abbrev:"JDG", type:"ot", max:21}, {id:8, name:"룻기", kr_short:"룻", en:"Ruth", abbrev:"RUT", type:"ot", max:4},
+            {id:9, name:"사무엘상", kr_short:"삼상", en:"1 Samuel", abbrev:"1SA", type:"ot", max:31}, {id:10, name:"사무엘하", kr_short:"삼하", en:"2 Samuel", abbrev:"2SA", type:"ot", max:24},
+            {id:11, name:"열왕기상", kr_short:"왕상", en:"1 Kings", abbrev:"1KI", type:"ot", max:22}, {id:12, name:"열왕기하", kr_short:"왕하", en:"2 Kings", abbrev:"2KI", type:"ot", max:25},
+            {id:13, name:"역대상", kr_short:"대상", en:"1 Chronicles", abbrev:"1CH", type:"ot", max:29}, {id:14, name:"역대하", kr_short:"대하", en:"2 Chronicles", abbrev:"2CH", type:"ot", max:36},
+            {id:15, name:"에스라", kr_short:"스", en:"Ezra", abbrev:"EZR", type:"ot", max:10}, {id:16, name:"느헤미야", kr_short:"느", en:"Nehemiah", abbrev:"NEH", type:"ot", max:13},
+            {id:17, name:"에스더", kr_short:"에", en:"Esther", abbrev:"EST", type:"ot", max:10}, {id:18, name:"욥기", kr_short:"욥", en:"Job", abbrev:"JOB", type:"ot", max:42},
+            {id:19, name:"시편", kr_short:"시", en:"Psalms", abbrev:"PSA", type:"ot", max:150}, {id:20, name:"잠언", kr_short:"잠", en:"Proverbs", abbrev:"PRO", type:"ot", max:31},
+            {id:21, name:"전도서", kr_short:"전", en:"Ecclesiastes", abbrev:"ECC", type:"ot", max:12}, {id:22, name:"아가", kr_short:"아", en:"Song of Solomon", abbrev:"SNG", type:"ot", max:8},
+            {id:23, name:"이사야", kr_short:"사", en:"Isaiah", abbrev:"ISA", type:"ot", max:66}, {id:24, name:"예레미야", kr_short:"렘", en:"Jeremiah", abbrev:"JER", type:"ot", max:52},
+            {id:25, name:"예레미야 애가", kr_short:"애", en:"Lamentations", abbrev:"LAM", type:"ot", max:5}, {id:26, name:"에스겔", kr_short:"겔", en:"Ezekiel", abbrev:"EZE", type:"ot", max:48},
+            {id:27, name:"다니엘", kr_short:"단", en:"Daniel", abbrev:"DAN", type:"ot", max:12}, {id:28, name:"호세아", kr_short:"호", en:"Hosea", abbrev:"HOS", type:"ot", max:14},
+            {id:29, name:"요엘", kr_short:"욜", en:"Joel", abbrev:"JOL", type:"ot", max:3}, {id:30, name:"아모스", kr_short:"암", en:"Amos", abbrev:"AMO", type:"ot", max:9},
+            {id:31, name:"오바댜", kr_short:"옵", en:"Obadiah", abbrev:"OBA", type:"ot", max:1}, {id:32, name:"요나", kr_short:"욘", en:"Jonah", abbrev:"JON", type:"ot", max:4},
+            {id:33, name:"미가", kr_short:"미", en:"Micah", abbrev:"MIC", type:"ot", max:7}, {id:34, name:"나훔", kr_short:"나", en:"Nahum", abbrev:"NAM", type:"ot", max:3},
+            {id:35, name:"하박국", kr_short:"합", en:"Habakkuk", abbrev:"HAB", type:"ot", max:3}, {id:36, name:"스바냐", kr_short:"습", en:"Zephaniah", abbrev:"ZEP", type:"ot", max:3},
+            {id:37, name:"학개", kr_short:"학", en:"Haggai", abbrev:"HAG", type:"ot", max:2}, {id:38, name:"스가랴", kr_short:"슥", en:"Zechariah", abbrev:"ZEC", type:"ot", max:14},
+            {id:39, name:"말라기", kr_short:"말", en:"Malachi", abbrev:"MAL", type:"ot", max:4},
+            {id:40, name:"마태복음", kr_short:"마", en:"Matthew", abbrev:"MAT", type:"nt", max:28}, {id:41, name:"마가복음", kr_short:"막", en:"Mark", abbrev:"MRK", type:"nt", max:16},
+            {id:42, name:"누가복음", kr_short:"눅", en:"Luke", abbrev:"LUK", type:"nt", max:24}, {id:43, name:"요한복음", kr_short:"요", en:"John", abbrev:"JHN", type:"nt", max:21},
+            {id:44, name:"사도행전", kr_short:"행", en:"Acts", abbrev:"ACT", type:"nt", max:28}, {id:45, name:"로마서", kr_short:"롬", en:"Romans", abbrev:"ROM", type:"nt", max:16},
+            {id:46, name:"고린도전서", kr_short:"고전", en:"1 Corinthians", abbrev:"1CO", type:"nt", max:16}, {id:47, name:"고린도후서", kr_short:"고후", en:"2 Corinthians", abbrev:"2CO", type:"nt", max:13},
+            {id:48, name:"갈라디아서", kr_short:"갈", en:"Galatians", abbrev:"GAL", type:"nt", max:6}, {id:49, name:"에베소서", kr_short:"엡", en:"Ephesians", abbrev:"EPH", type:"nt", max:6},
+            {id:50, name:"빌립보서", kr_short:"빌", en:"Philippians", abbrev:"PHP", type:"nt", max:4}, {id:51, name:"골로새서", kr_short:"골", en:"Colossians", abbrev:"COL", type:"nt", max:4},
+            {id:52, name:"데살로니가전서", kr_short:"살전", en:"1 Thessalonians", abbrev:"1TH", type:"nt", max:5}, {id:53, name:"데살로니가후서", kr_short:"살후", en:"2 Thessalonians", abbrev:"2TH", type:"nt", max:3},
+            {id:54, name:"디모데전서", kr_short:"딤전", en:"1 Timothy", abbrev:"1TI", type:"nt", max:6}, {id:55, name:"디모데후서", kr_short:"딤후", en:"2 Timothy", abbrev:"2TI", type:"nt", max:4},
+            {id:56, name:"디도서", kr_short:"딛", en:"Titus", abbrev:"TIT", type:"nt", max:3}, {id:57, name:"빌레몬서", kr_short:"몬", en:"Philemon", abbrev:"PHM", type:"nt", max:1},
+            {id:58, name:"히브리서", kr_short:"히", en:"Hebrews", abbrev:"HEB", type:"nt", max:13}, {id:59, name:"야고보서", kr_short:"야", en:"James", abbrev:"JAS", type:"nt", max:5},
+            {id:60, name:"베드로전서", kr_short:"벧전", en:"1 Peter", abbrev:"1PE", type:"nt", max:5}, {id:61, name:"베드로후서", kr_short:"벧후", en:"2 Peter", abbrev:"2PE", type:"nt", max:3},
+            {id:62, name:"요한일서", kr_short:"요일", en:"1 John", abbrev:"1JN", type:"nt", max:5}, {id:63, name:"요한이서", kr_short:"요이", en:"2 John", abbrev:"2JN", type:"nt", max:1},
+            {id:64, name:"요한삼서", kr_short:"요삼", en:"3 John", abbrev:"3JN", type:"nt", max:1}, {id:65, name:"유다서", kr_short:"유", en:"Jude", abbrev:"JUD", type:"nt", max:1},
+            {id:66, name:"요한계시록", kr_short:"계", en:"Revelation", abbrev:"REV", type:"nt", max:22}
         ];
 
         let globalBibleData = [];
         let currentBookId = 1;
         let currentChapter = 1;
         let currentTestament = 'ot';
+        let isDataReady = false;
 
         async function init() {
             const spinner = document.getElementById('loadingSpinner');
-            spinner.style.display = 'block';
-            
             try {
-                // 깃허브 공개 API에서 데이터 로드
                 const response = await fetch('https://raw.githubusercontent.com/stranger828/bibleAPI/main/bible_structured.json');
                 globalBibleData = await response.json();
+                isDataReady = true;
                 spinner.style.display = 'none';
-                
                 renderBooks('ot');
                 selectBook(1); 
             } catch (e) {
-                spinner.textContent = "ARCHIVE CONNECTION FAILED.";
+                spinner.innerHTML = "CONNECTION FAILED.<br><small>데이터를 불러올 수 없습니다.</small>";
             }
         }
 
@@ -308,10 +300,8 @@
             document.getElementById('ot-tab').classList.toggle('active', type === 'ot');
             document.getElementById('nt-tab').classList.toggle('active', type === 'nt');
             renderBooks(type);
-            
-            // 탭 변경 시 해당 분류의 첫 번째 책 자동 선택
-            const firstBookInTestament = BIBLE_BOOKS.find(b => b.type === type);
-            if(firstBookInTestament) selectBook(firstBookInTestament.id);
+            const firstBook = BIBLE_BOOKS.find(b => b.type === type);
+            if(firstBook) selectBook(firstBook.id);
         }
 
         function renderBooks(type) {
@@ -329,12 +319,10 @@
         function selectBook(id) {
             currentBookId = id;
             currentChapter = 1;
-            
-            // 목록 활성화 UI 갱신
             document.querySelectorAll('.book-item').forEach(el => {
-                el.classList.toggle('active', el.innerText.includes(BIBLE_BOOKS.find(b => b.id === id).name));
+                const bookInfo = BIBLE_BOOKS.find(b => b.id === id);
+                el.classList.toggle('active', el.innerText.includes(bookInfo.name));
             });
-
             renderChapterGrid();
             renderContent();
         }
@@ -344,7 +332,7 @@
             const grid = document.getElementById('chapterGrid');
             grid.innerHTML = '';
             for (let i = 1; i <= book.max; i++) {
-                const btn = document.createElement('div');
+                const btn = document.createElement('button');
                 btn.className = `chapter-btn ${currentChapter === i ? 'active' : ''}`;
                 btn.textContent = i;
                 btn.onclick = () => {
@@ -360,46 +348,35 @@
             const book = BIBLE_BOOKS.find(b => b.id === currentBookId);
             document.getElementById('headerTitle').textContent = `${book.name} ${currentChapter}`;
             document.getElementById('enSub').textContent = `${book.en} Chapter ${currentChapter}`;
-            
             const container = document.getElementById('verseContainer');
             container.style.opacity = 0;
+            if (!isDataReady) return;
 
-            // 데이터 필터링 (다양한 매칭 규칙 적용)
             const verses = globalBibleData.filter(v => {
-                const matchBook = String(v.book) === String(book.id) || 
-                                  v.book === book.name || 
-                                  v.book === book.en || 
-                                  v.book === book.abbrev;
-                return matchBook && Number(v.chapter) === Number(currentChapter);
+                const b = String(v.book).trim();
+                const matchBook = b === String(book.id) || b === book.name || b === book.kr_short || b === book.en || b.toUpperCase() === book.abbrev;
+                const matchChapter = Number(v.chapter) === Number(currentChapter);
+                return matchBook && matchChapter;
             });
 
             setTimeout(() => {
                 if (verses.length > 0) {
-                    verses.sort((a, b) => a.verse - b.verse);
+                    verses.sort((a, b) => Number(a.verse) - Number(b.verse));
                     container.innerHTML = verses.map(v => `
                         <div class="verse-row">
                             <div class="verse-num">${v.verse}</div>
-                            <div class="verse-text">${v.content || v.text}</div>
+                            <div class="verse-text">${v.content || v.text || ""}</div>
                         </div>
                     `).join('');
                 } else {
-                    container.innerHTML = `
-                        <div style="text-align:center; padding:100px; color:var(--text-muted);">
-                            <p>NOT FOUND IN ARCHIVE</p>
-                            <p style="font-size:0.8rem; margin-top:10px; opacity:0.5;">
-                                (Book: ${book.name}, Ch: ${currentChapter})
-                            </p>
-                        </div>`;
+                    container.innerHTML = `<div style="text-align:center; padding:150px 20px; color:var(--text-muted);"><p>데이터를 찾을 수 없습니다.</p></div>`;
                 }
                 container.style.opacity = 1;
-            }, 200);
-
-            // 말씀 영역으로 부드럽게 스크롤
-            const readerTop = document.querySelector('.bible-reader').offsetTop - 100;
-            window.scrollTo({top: readerTop, behavior: 'smooth'});
+            }, 100);
+            window.scrollTo({top: document.querySelector('.bible-reader').offsetTop - 120, behavior: 'smooth'});
         }
 
-        init();
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>

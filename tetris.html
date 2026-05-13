@@ -239,7 +239,7 @@
     <!-- 🦅 독수리 이벤트 -->
     <div id="eagle-wrap">🦅</div>
 
-    <!-- 1. 메인 화면 -->
+    <!-- 1. 메인 로그인 화면 -->
     <div id="s-login" class="screen">
         <div style="margin-top: 5vh;">
             <div class="title-main">TETRIS</div>
@@ -404,9 +404,11 @@
     const canvas = document.getElementById('tetris');
     const ctx = canvas.getContext('2d');
 
+    // ★ 최고 도달 레벨을 안전하게 보관할 전역 변수
+    let maxReachedLevel = 1;
+
     async function loadLeaderboard() {
         try {
-            // DB 컬럼이 level로 변경됨에 맞추어 select 변경
             const res = await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?select=initials,level&order=level.desc,timestamp.asc&limit=5`, {
                 headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` }
             });
@@ -422,7 +424,7 @@
     }
 
     async function saveScore(level) {
-        if (!currentInitials || level <= 1) return; // 1레벨(시작 레벨)은 저장하지 않음
+        if (!currentInitials) return;
         try {
             await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}`, {
                 method: 'POST',
@@ -522,8 +524,11 @@
             // 🔥 5라인 지울 때마다 1레벨 상승
             player.level = Math.floor(player.lines / 5) + 1;
             
+            // ★ 최고 레벨을 갱신 (죽었을 때 올바른 값을 저장하기 위해)
+            maxReachedLevel = player.level;
+            
             if (player.level > oldLevel) {
-                // 속도를 레벨당 150ms 씩 감소 (최대 체감 속도 향상, 한계치 100ms)
+                // 속도를 레벨당 150ms 씩 감소
                 dropInterval = Math.max(100, 1000 - ((player.level - 1) * 150));
                 showLevelUpAnimation(player.level);
             } else {
@@ -585,8 +590,9 @@
     function finishGame() {
         playSound('gameover');
         document.getElementById('gameover').style.display = 'flex';
-        document.getElementById('finalLines').innerText = player.level;
-        saveScore(player.level);
+        // ★ 여기서 player.level 이 아닌 보장된 maxReachedLevel 변수를 사용!
+        document.getElementById('finalLevel').innerText = maxReachedLevel;
+        saveScore(maxReachedLevel);
     }
 
     function update(time = 0) {
@@ -625,7 +631,11 @@
 
     function startGame() {
         arena = Array.from({length: ROWS}, () => Array(COLS).fill(0));
-        player.lines = 0; player.level = 1; player.gameOver = false; dropInterval = 1000;
+        player.lines = 0; 
+        player.level = 1; 
+        maxReachedLevel = 1; // ★ 시작 시 확실하게 최고 레벨 초기화
+        player.gameOver = false; 
+        dropInterval = 1000;
         document.getElementById('hudLevel').innerText = '1';
         draw();
         startEagleIntro();

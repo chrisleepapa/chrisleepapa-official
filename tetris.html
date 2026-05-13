@@ -329,7 +329,7 @@
 
 <script>
     // ══════════════════════════════════════════════════════
-    // YOUTUBE BGM PLAYER (유튜브 API)
+    // YOUTUBE BGM PLAYER (유튜브 플레이리스트 완벽 지원 및 랜덤 셔플)
     // ══════════════════════════════════════════════════════
     let ytPlayer;
     let isYtReady = false;
@@ -343,19 +343,24 @@
         ytPlayer = new YT.Player('yt-player-container', {
             height: '0',
             width: '0',
-            videoId: 'koog7oOrISY', // ★ 요청하신 새로운 유튜브 영상 ID
             playerVars: {
                 'autoplay': 0, 
                 'controls': 0,
                 'disablekb': 1,
-                'loop': 1,
-                'playlist': 'koog7oOrISY', // ★ 반복 재생을 위해 동일한 영상 ID 입력
+                'listType': 'playlist', // ★ 플레이리스트 타입 선언
+                'list': 'PL3p0Se-Sm12SdPoWcevuXVd5pAMfpOGxY', // ★ 전달해주신 플레이리스트 ID
                 'playsinline': 1
             },
             events: {
                 'onReady': function(event) {
                     isYtReady = true;
-                    event.target.setVolume(25); 
+                    event.target.setVolume(25); // 기본 볼륨 설정
+                },
+                'onStateChange': function(event) {
+                    // ★ 혹시라도 유튜브 정책상 멈추는 경우를 대비해, 영상이 끝나면 강제로 다음 곡으로 넘기는 안전장치
+                    if (event.data === YT.PlayerState.ENDED) {
+                        ytPlayer.nextVideo();
+                    }
                 }
             }
         });
@@ -449,7 +454,7 @@
     }
 
     // ══════════════════════════════════════════════════════
-    // SUPABASE & CONFIG (에러 추적 강화)
+    // SUPABASE & CONFIG
     // ══════════════════════════════════════════════════════
     const SUPA_URL = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
     const SUPA_KEY = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
@@ -486,7 +491,6 @@
         }
     }
 
-    // ★ 점수 저장 및 에러 화면 출력
     async function saveScore(level) {
         if (!currentInitials) return false;
         try {
@@ -507,7 +511,7 @@
                         body: JSON.stringify({ level: Number(level), timestamp: new Date().toISOString() })
                     });
                 } else {
-                    return true; // 갱신 불필요 (기존 점수가 같거나 높음)
+                    return true; 
                 }
             } else {
                 res = await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}`, {
@@ -771,7 +775,6 @@
         if (collide(arena, player)) { player.gameOver = true; finishGame(); }
     }
 
-    // ★ 게임오버 시 저장이 끝날 때까지 기다리도록 async 적용
     async function finishGame() {
         playSound('gameover');
         if (isYtReady && ytPlayer) ytPlayer.pauseVideo();
@@ -779,7 +782,6 @@
         document.getElementById('gameover').style.display = 'flex';
         document.getElementById('finalLevel').innerText = maxReachedLevel;
         
-        // 버튼을 '저장 중'으로 변경하고 클릭 못하게 막음 (가장 중요)
         const retryBtn = document.getElementById('retryBtn');
         if (retryBtn) {
             retryBtn.innerText = "기록 저장 중... ⏳";
@@ -788,10 +790,8 @@
             retryBtn.style.pointerEvents = "none";
         }
 
-        // DB에 저장이 끝날 때까지 대기
         await saveScore(maxReachedLevel);
         
-        // 저장이 끝나면 버튼을 다시 원래대로 복구
         if (retryBtn) {
             retryBtn.innerText = "다시 도전";
             retryBtn.disabled = false;
@@ -849,7 +849,11 @@
         document.getElementById('touch-dpad').style.opacity = '1';
         document.getElementById('touch-dpad').style.pointerEvents = 'auto';
 
+        // ★ 입장 시 플레이리스트를 셔플(랜덤 섞기)하고 무한반복 설정 후 재생!
         if (isYtReady && ytPlayer) {
+            ytPlayer.setShuffle(true);
+            ytPlayer.setLoop(true);
+            ytPlayer.nextVideo(); // 섞은 플레이리스트의 새로운 랜덤 곡으로 넘김
             ytPlayer.playVideo();
         }
         

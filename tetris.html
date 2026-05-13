@@ -166,23 +166,34 @@
         }
         canvas { width: 100%; height: 100%; display: block; }
 
-        /* ─── Center Transparent D-Pad ─── */
+        /* ─── ★ 수정된 거대 투명 컨트롤러 ─── */
         #touch-dpad {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 90%; aspect-ratio: 1; display: grid;
-            grid-template-columns: 1fr 1.2fr 1fr; grid-template-rows: 1fr 1.2fr 1fr; gap: 8px;
+            position: absolute; inset: 0;
             z-index: 60; opacity: 0; pointer-events: none; transition: 0.5s;
         }
         .t-btn {
-            background: rgba(255, 255, 255, 0.05); /* 투명하지만 살짝 보이게 설정 */
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px; display: flex; align-items: center; justify-content: center;
-            font-size: 1.8rem; color: rgba(255, 255, 255, 0.4); cursor: pointer; user-select: none;
-            backdrop-filter: blur(1px); transition: 0.1s;
+            position: absolute;
+            background: rgba(255, 255, 255, 0.015); /* 거의 희미하게 */
+            border: 1px solid rgba(255, 255, 255, 0.03); /* 경계선 아주 얇게 */
+            display: flex; align-items: center; justify-content: center;
+            font-size: 3.5rem; color: rgba(255, 255, 255, 0.15); /* 텍스트도 투명하게 */
+            cursor: pointer; user-select: none;
+            transition: 0.1s;
         }
-        .t-btn:active { background: rgba(255, 255, 255, 0.2); transform: scale(0.95); }
-        .t-btn.btn-drop { color: var(--c-neon); border-color: rgba(255,0,127,0.3); }
-        .t-btn.btn-action { color: var(--c-cyan); border-color: rgba(0,229,255,0.3); }
+        .t-btn:active { background: rgba(255, 255, 255, 0.08); }
+        .t-btn.btn-drop { color: rgba(255,0,127,0.2); border-color: rgba(255,0,127,0.05); }
+        .t-btn.btn-action { color: rgba(0,229,255,0.2); border-color: rgba(0,229,255,0.05); }
+
+        /* 좌측 중앙 구역 */
+        #t-left { top: 15%; left: 0; width: 30%; height: 65%; border-radius: 0 20px 20px 0; }
+        /* 우측 중앙 구역 */
+        #t-right { top: 15%; right: 0; width: 30%; height: 65%; border-radius: 20px 0 0 20px; }
+        /* 중앙 회전 구역 */
+        #t-up { top: 15%; left: 30%; width: 40%; height: 65%; border-radius: 20px; font-size: 4.5rem; }
+        /* 하단 왼쪽 (소프트 드롭) */
+        #t-down { bottom: 0; left: 0; width: 50%; height: 20%; border-radius: 0 20px 0 0; }
+        /* 하단 오른쪽 (하드 드롭) */
+        #t-space { bottom: 0; right: 0; width: 50%; height: 20%; border-radius: 20px 0 0 0; font-size: 3rem; }
 
         /* Game Over */
         #gameover {
@@ -286,19 +297,13 @@
         <div class="canvas-wrapper">
             <canvas id="tetris"></canvas>
             
-            <!-- 4. 중앙 투명 컨트롤러 (D-Pad) -->
+            <!-- 4. ★ 수정된 영역 분할 컨트롤러 -->
             <div id="touch-dpad">
-                <div></div> <!-- Top Left (Empty) -->
-                <div class="t-btn btn-action" id="t-up">↻</div> <!-- Rotate -->
-                <div></div> <!-- Top Right (Empty) -->
-                
-                <div class="t-btn" id="t-left">◀</div> <!-- Left -->
-                <div class="t-btn btn-drop" id="t-space">⏬</div> <!-- Hard Drop -->
-                <div class="t-btn" id="t-right">▶</div> <!-- Right -->
-                
-                <div></div> <!-- Bottom Left (Empty) -->
-                <div class="t-btn" id="t-down">▼</div> <!-- Soft Drop -->
-                <div></div> <!-- Bottom Right (Empty) -->
+                <div class="t-btn" id="t-left">◀</div>
+                <div class="t-btn btn-action" id="t-up">↻</div>
+                <div class="t-btn" id="t-right">▶</div>
+                <div class="t-btn" id="t-down">▼</div>
+                <div class="t-btn btn-drop" id="t-space">⏬</div>
             </div>
         </div>
     </main>
@@ -468,9 +473,9 @@
     let speedPhaseTime = 0;
     
     let isIntro = false;
-    let isPaused = false; // ★ 일시정지 상태 변수
+    let isPaused = false; // 일시정지 상태 변수
 
-    // ★ 다다음 블록까지 저장할 배열
+    // 다다음 블록까지 저장할 배열
     let nextPieces = [];
 
     function getRandomPieceMatrix() {
@@ -490,7 +495,7 @@
 
     const colors = [null, '#00e5ff', '#ff8e0d', '#3877ff', '#ffdd00', '#ff007f', '#00ff66', '#b300ff'];
 
-    // ★ 미리보기 캔버스 그리기
+    // 미리보기 캔버스 그리기
     function drawNextPieces() {
         const nc = document.getElementById('nextCanvas');
         const nctx = nc.getContext('2d');
@@ -570,16 +575,33 @@
         });
     }
 
-    // ★ 캐스케이드 방식 (중력 적용) 포함한 청소 로직
+    // ★ 산산조각 떨어지는 캐스케이드(중력) 및 청소 로직
     function arenaSweep() {
         let totalCleared = 0;
-        let cascadeOccurred;
+        let boardChanged = true;
         
-        do {
-            cascadeOccurred = false;
-            let clearedThisRound = 0;
+        while (boardChanged) {
+            boardChanged = false;
             
-            // 1. 꽉 찬 줄을 빈칸(0)으로 지우기
+            // 1. 캐스케이드 (중력) 적용: 허공에 뜬 블록들을 바닥/다른 블록에 닿을 때까지 내림
+            // 방금 닿은 블록이라도 허공에 뜬 부분은 이 로직에 의해 분리되어 떨어집니다.
+            let moved;
+            do {
+                moved = false;
+                for (let y = ROWS - 2; y >= 0; y--) {
+                    for (let x = 0; x < COLS; x++) {
+                        if (arena[y][x] !== 0 && arena[y + 1][x] === 0) {
+                            arena[y + 1][x] = arena[y][x];
+                            arena[y][x] = 0;
+                            moved = true;
+                            boardChanged = true;
+                        }
+                    }
+                }
+            } while (moved);
+
+            // 2. 라인 클리어 체크
+            let clearedThisRound = 0;
             for (let y = ROWS - 1; y >= 0; y--) {
                 let isFull = true;
                 for (let x = 0; x < COLS; x++) {
@@ -588,29 +610,11 @@
                 if (isFull) {
                     arena[y].fill(0);
                     clearedThisRound++;
+                    boardChanged = true;
                 }
             }
-            
-            // 2. 라인이 지워졌다면 캐스케이드 (중력) 적용
-            if (clearedThisRound > 0) {
-                totalCleared += clearedThisRound;
-                let moved;
-                do {
-                    moved = false;
-                    // 밑에서부터 위로 검사하며 공중에 뜬 블록들을 한 칸씩 내림
-                    for (let y = ROWS - 2; y >= 0; y--) {
-                        for (let x = 0; x < COLS; x++) {
-                            if (arena[y][x] !== 0 && arena[y + 1][x] === 0) {
-                                arena[y + 1][x] = arena[y][x];
-                                arena[y][x] = 0;
-                                moved = true;
-                                cascadeOccurred = true; // 블록이 움직였으므로 새로운 라인이 생겼는지 재검사 필요
-                            }
-                        }
-                    }
-                } while (moved); // 더 이상 떨어질 블록이 없을 때까지 반복
-            }
-        } while (cascadeOccurred);
+            totalCleared += clearedThisRound;
+        }
 
         // 3. 점수 및 레벨업 정산
         if (totalCleared > 0) {
@@ -635,7 +639,12 @@
         if (isIntro || isPaused) return;
         player.pos.y++;
         if (collide(arena, player)) {
-            player.pos.y--; merge(arena, player); playerReset(); arenaSweep();
+            // ★ 수정: 배열 합치기 -> 캐스케이드 발동 -> 새 조각 소환 순으로 변경하여
+            // 방금 닿은 블록이 즉각적으로 쪼개지며 떨어지게 설계
+            player.pos.y--; 
+            merge(arena, player); 
+            arenaSweep(); 
+            playerReset(); 
         }
         dropCounter = 0;
     }
@@ -643,7 +652,10 @@
     function hardDrop() {
         if (player.gameOver || isIntro || isPaused) return;
         while (!collide(arena, player)) { player.pos.y++; }
-        player.pos.y--; merge(arena, player); playerReset(); arenaSweep();
+        player.pos.y--; 
+        merge(arena, player); 
+        arenaSweep(); 
+        playerReset(); 
         dropCounter = 0; playSound('drop'); draw();
     }
 
@@ -674,7 +686,7 @@
     }
 
     function playerReset() {
-        // ★ 큐에 블록이 부족하면 채워넣기
+        // 큐에 블록이 부족하면 채워넣기
         while(nextPieces.length < 2) {
             nextPieces.push(getRandomPieceMatrix());
         }
@@ -694,7 +706,7 @@
         saveScore(maxReachedLevel);
     }
 
-    // ★ 일시정지 토글 함수
+    // 일시정지 토글 함수
     function togglePause() {
         if (player.gameOver || isIntro) return;
         isPaused = !isPaused;
@@ -709,7 +721,7 @@
     }
 
     function update(time = 0) {
-        if (player.gameOver || isIntro || isPaused) return; // ★ 일시정지 시 루프 건너뛰기
+        if (player.gameOver || isIntro || isPaused) return; // 일시정지 시 루프 건너뛰기
         const deltaTime = time - lastTime; lastTime = time;
         
         if (player.level >= 6) {
@@ -751,7 +763,7 @@
         document.getElementById('s-login').classList.add('hidden');
         document.getElementById('hud').style.opacity = '1';
         
-        // ★ 중앙 투명 컨트롤러 활성화
+        // 투명 컨트롤러 활성화
         document.getElementById('touch-dpad').style.opacity = '1';
         document.getElementById('touch-dpad').style.pointerEvents = 'auto';
         
@@ -804,7 +816,7 @@
         btn.addEventListener('pointercancel', end);
     }
 
-    // ★ 바뀐 컨트롤러 ID로 이벤트 바인딩
+    // 컨트롤러 ID로 이벤트 바인딩
     bindBtn('t-left', () => playerMove(-1), true);
     bindBtn('t-right', () => playerMove(1), true);
     bindBtn('t-down', () => playerDrop(), true);

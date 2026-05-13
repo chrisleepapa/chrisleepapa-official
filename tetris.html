@@ -423,15 +423,34 @@
         } catch (e) { document.getElementById('lbSpinner').textContent = '⚠'; }
     }
 
+    // 🔥 동일 이니셜 확인 후 덮어쓰기 로직
     async function saveScore(level) {
         if (!currentInitials) return;
         try {
-            await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}`, {
-                method: 'POST',
-                headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
-                body: JSON.stringify({ initials: currentInitials, level: level, timestamp: new Date().toISOString() })
+            // 1. 기존에 같은 이니셜로 저장된 기록 확인
+            const checkRes = await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?select=level&initials=eq.${currentInitials}`, {
+                headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` }
             });
-        } catch (e) {}
+            const existing = await checkRes.json();
+
+            if (existing && existing.length > 0) {
+                // 2. 기록이 있고, 기존 레벨보다 지금 레벨이 더 높을 때만 업데이트 (PATCH)
+                if (level > existing[0].level) {
+                    await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?initials=eq.${currentInitials}`, {
+                        method: 'PATCH',
+                        headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+                        body: JSON.stringify({ level: level, timestamp: new Date().toISOString() })
+                    });
+                }
+            } else {
+                // 3. 기록이 없으면 새로 추가 (POST)
+                await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}`, {
+                    method: 'POST',
+                    headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+                    body: JSON.stringify({ initials: currentInitials, level: level, timestamp: new Date().toISOString() })
+                });
+            }
+        } catch (e) { console.error("Save Error", e); }
     }
 
     // ══════════════════════════════════════════════════════
@@ -441,10 +460,10 @@
     let arena = Array.from({length: ROWS}, () => Array(COLS).fill(0));
     let player = { pos: {x: 0, y: 0}, matrix: null, lines: 0, level: 1, gameOver: true };
     
-    // 🔥 스피드 제어용 변수 추가
+    // 🔥 스피드 제어용 변수
     let dropCounter = 0, dropInterval = 1000, lastTime = 0;
     let baseDropInterval = 1000;
-    let speedPhase = 'FAST'; // 'FAST' or 'SLOW'
+    let speedPhase = 'FAST'; 
     let speedPhaseTime = 0;
     
     let isIntro = false;
@@ -531,11 +550,9 @@
             maxReachedLevel = player.level;
             
             if (player.level > oldLevel) {
-                // 기본 속도: 레벨당 150ms 감소 (최소 100ms)
                 baseDropInterval = Math.max(100, 1000 - ((player.level - 1) * 150));
                 dropInterval = baseDropInterval;
                 
-                // 🌟 6레벨 이상일 때: 속도 사이클 상태값 초기화
                 if (player.level >= 6) {
                     speedPhase = 'FAST';
                     speedPhaseTime = 0;
@@ -609,25 +626,22 @@
         if (player.gameOver || isIntro) return;
         const deltaTime = time - lastTime; lastTime = time;
         
-        // 🔥 6레벨 이상일 때: 3초 폭주 -> 10초 휴식 사이클 로직 적용
+        // 🔥 6레벨 이상: 3초 폭주 -> 10초 휴식 사이클 로직
         if (player.level >= 6) {
             speedPhaseTime += deltaTime;
             
             if (speedPhase === 'FAST' && speedPhaseTime >= 3000) {
-                // 3초가 지나면 10초 동안 처음(1000ms) 속도로 느려짐
                 speedPhase = 'SLOW';
                 speedPhaseTime = 0;
                 dropInterval = 1000;
                 showReaction("휴식 타임! 😌");
             } else if (speedPhase === 'SLOW' && speedPhaseTime >= 10000) {
-                // 10초가 지나면 다시 현재 레벨의 빠른 속도로 복귀
                 speedPhase = 'FAST';
                 speedPhaseTime = 0;
                 dropInterval = baseDropInterval;
                 showReaction("다시 달린다! 🔥");
             }
         } else {
-            // 6레벨 미만은 쭈욱 현재 레벨의 기본 속도로 진행
             dropInterval = baseDropInterval;
         }
 
@@ -671,7 +685,6 @@
         maxReachedLevel = 1; 
         player.gameOver = false; 
         
-        // 시작 시 스피드 초기화
         baseDropInterval = 1000;
         dropInterval = 1000;
         speedPhase = 'FAST';

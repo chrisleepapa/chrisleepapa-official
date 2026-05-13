@@ -173,10 +173,10 @@
         }
         .t-btn {
             position: absolute;
-            background: rgba(255, 255, 255, 0.015); /* 거의 희미하게 */
-            border: 1px solid rgba(255, 255, 255, 0.03); /* 경계선 아주 얇게 */
+            background: rgba(255, 255, 255, 0.015);
+            border: 1px solid rgba(255, 255, 255, 0.03);
             display: flex; align-items: center; justify-content: center;
-            font-size: 3.5rem; color: rgba(255, 255, 255, 0.15); /* 텍스트도 투명하게 */
+            font-size: 3.5rem; color: rgba(255, 255, 255, 0.15);
             cursor: pointer; user-select: none;
             transition: 0.1s;
         }
@@ -184,15 +184,10 @@
         .t-btn.btn-drop { color: rgba(255,0,127,0.2); border-color: rgba(255,0,127,0.05); }
         .t-btn.btn-action { color: rgba(0,229,255,0.2); border-color: rgba(0,229,255,0.05); }
 
-        /* 좌측 중앙 (방향키 좌) */
         #t-left { top: 15%; left: 0; width: 30%; height: 65%; border-radius: 0 20px 20px 0; }
-        /* 우측 중앙 (방향키 우) */
         #t-right { top: 15%; right: 0; width: 30%; height: 65%; border-radius: 20px 0 0 20px; }
-        /* 중앙 상단 (회전) */
         #t-up { top: 15%; left: 30%; width: 40%; height: 32.5%; border-radius: 20px 20px 0 0; font-size: 4.5rem; border-bottom: none; }
-        /* 중앙 하단 (하드 드롭 - 회전 바로 밑) */
         #t-space { top: 47.5%; left: 30%; width: 40%; height: 32.5%; border-radius: 0 0 20px 20px; font-size: 3.5rem; border-top: none; }
-        /* 하단 (소프트 드롭 - 전체 너비) */
         #t-down { bottom: 0; left: 0; width: 100%; height: 20%; border-radius: 20px 20px 0 0; }
 
         /* Game Over */
@@ -240,6 +235,11 @@
             pointer-events: none;
             line-height: 1.1;
         }
+        
+        /* 유튜브 플레이어 영역 (안보임) */
+        #yt-player-container {
+            position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none; z-index: -1;
+        }
     </style>
 </head>
 <body>
@@ -247,6 +247,9 @@
 <div id="gameWrap">
     <!-- 🦅 독수리 이벤트 -->
     <div id="eagle-wrap">🦅</div>
+    
+    <!-- 🎵 숨겨진 유튜브 플레이어 -->
+    <div id="yt-player-container"></div>
 
     <!-- 1. 메인 로그인 화면 -->
     <div id="s-login" class="screen">
@@ -297,7 +300,7 @@
         <div class="canvas-wrapper">
             <canvas id="tetris"></canvas>
             
-            <!-- 4. ★ 영역 분할 컨트롤러 -->
+            <!-- 4. 영역 분할 컨트롤러 -->
             <div id="touch-dpad">
                 <div class="t-btn" id="t-left">◀</div>
                 <div class="t-btn btn-action" id="t-up">↻</div>
@@ -314,12 +317,46 @@
             <div style="font-size: 3rem; margin-bottom: 10px;">💀</div>
             <div class="title-main" style="font-size: 2rem; color: #ff007f; -webkit-text-fill-color: #ff007f;">GAME OVER</div>
             <div style="font-size: 1.1rem; margin-bottom: 25px; opacity: 0.8;">최종 도달: <span style="color:var(--c-gold); font-weight:900;">LV.<span id="finalLevel">1</span></span></div>
-            <button class="btn-magic" onclick="location.reload()">다시 도전</button>
+            <!-- ★ 저장이 완전히 끝날때까지 버튼 비활성화를 위해 id 추가 -->
+            <button id="retryBtn" class="btn-magic" onclick="location.reload()">다시 도전</button>
         </div>
     </div>
 </div>
 
 <script>
+    // ══════════════════════════════════════════════════════
+    // YOUTUBE BGM PLAYER (유튜브 API)
+    // ══════════════════════════════════════════════════════
+    let ytPlayer;
+    let isYtReady = false;
+
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    window.onYouTubeIframeAPIReady = function() {
+        ytPlayer = new YT.Player('yt-player-container', {
+            height: '0',
+            width: '0',
+            videoId: 'K4DyBUG242c', 
+            playerVars: {
+                'autoplay': 0, 
+                'controls': 0,
+                'disablekb': 1,
+                'loop': 1,
+                'playlist': 'K4DyBUG242c', 
+                'playsinline': 1
+            },
+            events: {
+                'onReady': function(event) {
+                    isYtReady = true;
+                    event.target.setVolume(25); 
+                }
+            }
+        });
+    };
+
     // ══════════════════════════════════════════════════════
     // SOUND & REACTION
     // ══════════════════════════════════════════════════════
@@ -428,12 +465,15 @@
             const list = document.getElementById('leaderboardList');
             list.innerHTML = '';
             const medals = ['🥇', '🥈', '🥉', '4', '5'];
-            data.forEach((e, i) => {
-                list.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:3px; background:rgba(0,0,0,0.2); padding:5px 10px; border-radius:5px;"><span>${medals[i]} <b>${e.initials}</b></span><span style="color:var(--c-gold); font-weight:900;">LV.${e.level}</span></div>`;
-            });
+            if (Array.isArray(data)) {
+                data.forEach((e, i) => {
+                    list.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:3px; background:rgba(0,0,0,0.2); padding:5px 10px; border-radius:5px;"><span>${medals[i] || ''} <b>${e.initials}</b></span><span style="color:var(--c-gold); font-weight:900;">LV.${e.level}</span></div>`;
+                });
+            }
         } catch (e) { document.getElementById('lbSpinner').textContent = '⚠'; }
     }
 
+    // ★ 점수 저장 시 숫자로 완벽하게 형변환(Number)하여 저장 및 비교
     async function saveScore(level) {
         if (!currentInitials) return;
         try {
@@ -442,19 +482,21 @@
             });
             const existing = await checkRes.json();
 
-            if (existing && existing.length > 0) {
-                if (level > existing[0].level) {
+            // 응답이 정상 배열인 경우에만 체크
+            if (Array.isArray(existing) && existing.length > 0) {
+                // 기존 레벨과 신규 레벨을 모두 숫자로 변환하여 비교 (문자열 비교 버그 원천 차단)
+                if (Number(level) > Number(existing[0].level)) {
                     await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?initials=eq.${currentInitials}`, {
                         method: 'PATCH',
                         headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
-                        body: JSON.stringify({ level: level, timestamp: new Date().toISOString() })
+                        body: JSON.stringify({ level: Number(level), timestamp: new Date().toISOString() })
                     });
                 }
             } else {
                 await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}`, {
                     method: 'POST',
                     headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
-                    body: JSON.stringify({ initials: currentInitials, level: level, timestamp: new Date().toISOString() })
+                    body: JSON.stringify({ initials: currentInitials, level: Number(level), timestamp: new Date().toISOString() })
                 });
             }
         } catch (e) { console.error("Save Error", e); }
@@ -474,24 +516,20 @@
 
     let nextPieces = [];
 
-    // ★ 수정된 속도 산출 로직: 구간별 속도 스케일링 설정 및 휴식시간 제거
     function getDropIntervalForLevel(level) {
         let speedLv;
-        // 구간별 속도(Speed Level) 판별
         if (level <= 5) speedLv = 1;
         else if (level <= 8) speedLv = 2;
         else if (level <= 10) speedLv = 3;
         else if (level <= 12) speedLv = 4;
         else if (level <= 15) speedLv = 5;
-        else speedLv = 5 + (level - 15); // 그 이후는 레벨 1당 속도 1씩 추가
+        else speedLv = 5 + (level - 15); 
 
-        // Speed Level을 밀리초(ms) 단위 드롭 간격으로 매핑
         if (speedLv === 1) return 1000;
         if (speedLv === 2) return 700;
         if (speedLv === 3) return 450;
         if (speedLv === 4) return 250;
         if (speedLv === 5) return 120;
-        // 속도 6 이후부터는 더욱 짧아지되 최소 하한선인 20ms를 둠
         return Math.max(20, 120 - (speedLv - 5) * 15); 
     }
 
@@ -633,7 +671,6 @@
             player.level = Math.floor(player.lines / 5) + 1;
             maxReachedLevel = Math.max(maxReachedLevel, player.level);
             
-            // ★ 레벨이 올랐을 때 구간별 속도로 드롭 속도 갱신
             if (player.level > oldLevel) {
                 dropInterval = getDropIntervalForLevel(player.level);
                 showLevelUpAnimation(player.level);
@@ -704,11 +741,33 @@
         if (collide(arena, player)) { player.gameOver = true; finishGame(); }
     }
 
-    function finishGame() {
+    // ★ 게임오버 시 저장이 끝날 때까지 기다리도록 async 적용
+    async function finishGame() {
         playSound('gameover');
+        if (isYtReady && ytPlayer) ytPlayer.pauseVideo();
+        
         document.getElementById('gameover').style.display = 'flex';
         document.getElementById('finalLevel').innerText = maxReachedLevel;
-        saveScore(maxReachedLevel);
+        
+        // 버튼을 '저장 중'으로 변경하고 클릭 못하게 막음 (가장 중요)
+        const retryBtn = document.getElementById('retryBtn');
+        if (retryBtn) {
+            retryBtn.innerText = "기록 저장 중... ⏳";
+            retryBtn.disabled = true;
+            retryBtn.style.opacity = "0.5";
+            retryBtn.style.pointerEvents = "none";
+        }
+
+        // DB에 저장이 끝날 때까지 대기
+        await saveScore(maxReachedLevel);
+        
+        // 저장이 끝나면 버튼을 다시 원래대로 복구
+        if (retryBtn) {
+            retryBtn.innerText = "다시 도전";
+            retryBtn.disabled = false;
+            retryBtn.style.opacity = "1";
+            retryBtn.style.pointerEvents = "auto";
+        }
     }
 
     function togglePause() {
@@ -718,9 +777,11 @@
         
         if (isPaused) {
             showReaction("PAUSE ⏸️");
+            if (isYtReady && ytPlayer) ytPlayer.pauseVideo();
         } else {
             lastTime = performance.now(); 
             update();
+            if (isYtReady && ytPlayer) ytPlayer.playVideo();
         }
     }
 
@@ -728,7 +789,6 @@
         if (player.gameOver || isIntro || isPaused) return; 
         const deltaTime = time - lastTime; lastTime = time;
         
-        // ★ 휴식시간 로직 완전히 제거됨 (계속 유지되는 설정된 드롭 간격 사용)
         dropCounter += deltaTime;
         if (dropCounter > dropInterval) playerDrop();
         
@@ -758,6 +818,10 @@
         
         document.getElementById('touch-dpad').style.opacity = '1';
         document.getElementById('touch-dpad').style.pointerEvents = 'auto';
+
+        if (isYtReady && ytPlayer) {
+            ytPlayer.playVideo();
+        }
         
         setTimeout(startGame, 500); 
     }
@@ -771,7 +835,7 @@
         isPaused = false;
         document.getElementById('btn-pause').innerText = '⏸️';
         
-        dropInterval = getDropIntervalForLevel(1); // 1레벨 기본 속도로 시작
+        dropInterval = getDropIntervalForLevel(1); 
         nextPieces = []; 
         
         document.getElementById('hudLevel').innerText = '1';

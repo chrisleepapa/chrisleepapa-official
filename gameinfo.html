@@ -78,7 +78,7 @@
         a { text-decoration: none; color: inherit; }
         button { appearance: none; background: none; border: 0; padding: 0; font: inherit; color: inherit; }
 
-        /* ── Scroll Progress & Navigation (Standardized) ── */
+        /* ── Scroll Progress & Navigation ── */
         #scroll-progress {
             position: fixed; top: 0; left: 0; height: 2px; width: 0%;
             background: linear-gradient(90deg, var(--gold), var(--gold-light), #fff8e0, var(--gold));
@@ -226,6 +226,7 @@
         .game-card:nth-child(2) { animation-delay: 0.8s; }
         .game-card:nth-child(3) { animation-delay: 1s; }
         .game-card:nth-child(4) { animation-delay: 1.2s; }
+        .game-card:nth-child(5) { animation-delay: 1.4s; }
 
         .game-card-image-mode {
             justify-content: flex-end;
@@ -249,6 +250,7 @@
         .bg-booktop { background-image: url('images/booktop.png'); }
         .bg-dynamicomok { background-image: url('images/dynamicomok.png'); }
         .bg-magiccurling { background-image: url('/images/magiccurling.png'); }
+        .bg-tetris { background-image: url('/images/tetris.png'); }
 
         .game-card-image-mode .card-overlay {
             position: absolute;
@@ -309,6 +311,7 @@
         .tag-blue-marble { background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.4); color: var(--gold-light); }
         .tag-maze { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #ccc; }
         .tag-omok { background: rgba(97, 67, 255, 0.16); border: 1px solid rgba(180, 156, 255, 0.42); color: #d9d1ff; }
+        .tag-tetris { background: rgba(255, 0, 127, 0.15); border: 1px solid rgba(255, 0, 127, 0.4); color: #ff80c0; }
 
         /* ── Guestbook Section ── */
         .comments-section {
@@ -388,23 +391,10 @@
         }
         .cm-input::placeholder { color: #555; }
 
-        #cm-name {
-            width: 220px;
-            flex-shrink: 0;
-        }
+        #cm-name { width: 220px; flex-shrink: 0; }
+        #cm-body { flex-grow: 1; resize: none; height: 100px; line-height: 1.6; }
 
-        #cm-body {
-            flex-grow: 1;
-            resize: none;
-            height: 100px;
-            line-height: 1.6;
-        }
-
-        .cm-submit-row {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 15px;
-        }
+        .cm-submit-row { display: flex; justify-content: flex-end; margin-top: 15px; }
         .cm-submit-btn {
             font-family: 'Pretendard', sans-serif;
             font-size: 0.95rem;
@@ -418,15 +408,8 @@
             cursor: pointer;
             transition: all 0.3s;
         }
-        .cm-submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(201,168,76,0.3);
-        }
-        .cm-submit-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
+        .cm-submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(201,168,76,0.3); }
+        .cm-submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
         .comment-list { display: flex; flex-direction: column; gap: 16px; }
 
@@ -439,58 +422,19 @@
             animation: fadeUp 0.4s ease both;
         }
         .comment-card:hover { border-color: rgba(201,168,76,0.2); }
-        .comment-meta {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 10px;
-        }
+        .comment-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
         .comment-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
+            width: 32px; height: 32px; border-radius: 50%;
             background: linear-gradient(135deg, rgba(201,168,76,0.4), rgba(100,60,200,0.4));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Cinzel', serif;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--gold-light);
-            border: 1px solid rgba(201,168,76,0.3);
-            flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Cinzel', serif; font-size: 0.8rem; font-weight: 700;
+            color: var(--gold-light); border: 1px solid rgba(201,168,76,0.3); flex-shrink: 0;
         }
-        .comment-nickname {
-            font-family: 'Pretendard', sans-serif;
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--gold-light);
-            letter-spacing: 0.5px;
-        }
-        .comment-date {
-            font-size: 0.75rem;
-            color: #555;
-            margin-left: auto;
-            font-family: 'Pretendard', sans-serif;
-        }
-        .comment-content {
-            font-family: 'Pretendard', 'Noto Serif KR', sans-serif;
-            font-size: 0.95rem;
-            color: #c8c4bc;
-            line-height: 1.7;
-            padding-left: 44px;
-            -webkit-user-select: text;
-            user-select: text;
-        }
+        .comment-nickname { font-family: 'Pretendard', sans-serif; font-size: 0.95rem; font-weight: 600; color: var(--gold-light); letter-spacing: 0.5px; }
+        .comment-date { font-size: 0.75rem; color: #555; margin-left: auto; font-family: 'Pretendard', sans-serif; }
+        .comment-content { font-family: 'Pretendard', 'Noto Serif KR', sans-serif; font-size: 0.95rem; color: #c8c4bc; line-height: 1.7; padding-left: 44px; -webkit-user-select: text; user-select: text; }
 
-        .cm-empty, .cm-loading {
-            text-align: center;
-            padding: 40px 20px;
-            color: #444;
-            font-family: 'Pretendard', sans-serif;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-        }
+        .cm-empty, .cm-loading { text-align: center; padding: 40px 20px; color: #444; font-family: 'Pretendard', sans-serif; font-size: 0.9rem; letter-spacing: 1px; }
         .cm-empty span { display: block; font-size: 1.5rem; margin-bottom: 10px; opacity: 0.5; }
 
         @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
@@ -521,27 +465,12 @@
             .menu-toggle { display: flex; }
             .game-cards { flex-direction: column; align-items: center; }
             .game-card { width: 100%; max-width: 340px; height: 380px; }
-
             .comment-form { padding: 25px 20px; }
-            .comment-input-row {
-                flex-direction: column;
-                gap: 12px;
-                margin-bottom: 12px;
-            }
-            #cm-name {
-                width: 100%;
-            }
-            #cm-body {
-                width: 100%;
-                height: 100px;
-            }
-            .cm-submit-row {
-                justify-content: flex-end;
-                margin-top: 15px;
-            }
-            .cm-submit-btn {
-                padding: 12px 30px;
-            }
+            .comment-input-row { flex-direction: column; gap: 12px; margin-bottom: 12px; }
+            #cm-name { width: 100%; }
+            #cm-body { width: 100%; height: 100px; }
+            .cm-submit-row { justify-content: flex-end; margin-top: 15px; }
+            .cm-submit-btn { padding: 12px 30px; }
         }
     </style>
 </head>
@@ -602,47 +531,58 @@
         <h2 class="section-heading-title" data-i18n="game_title">Choose Your Game</h2>
 
         <div class="game-cards">
+            <!-- Game 1 -->
             <a href="game.html" class="game-card game-card-image-mode">
                 <div class="card-image-bg bg-bluemarble"></div>
                 <div class="card-overlay"></div>
                 <div class="game-tag tag-blue-marble" data-i18n="board_tag">Board Game</div>
-
                 <div class="game-card-content-wrap">
                     <h3 class="game-card-title" data-i18n="board_title">브루마블 게임</h3>
                     <p class="game-card-desc" data-i18n="board_desc">주사위를 굴려 우주와 아카이브의 세계를 여행하는 전략 보드게임입니다. 당신만의 기록을 개척하세요.</p>
                 </div>
             </a>
 
+            <!-- Game 2 -->
             <a href="booktop.html" class="game-card game-card-image-mode">
                 <div class="card-image-bg bg-booktop"></div>
                 <div class="card-overlay"></div>
                 <div class="game-tag tag-maze" data-i18n="physics_tag">Physics</div>
-
                 <div class="game-card-content-wrap">
                     <h3 class="game-card-title" data-i18n="book_title">책 쌓기 마스터</h3>
                     <p class="game-card-desc" data-i18n="book_desc">아빠의 서재에서 중력과 균형의 법칙에 도전하세요. 조심스럽게 책을 떨어뜨려 가장 높이 쌓아 올리는 마스터가 되어보세요!</p>
                 </div>
             </a>
 
+            <!-- Game 3 -->
             <a href="fiveinrow.html" class="game-card game-card-image-mode">
                 <div class="card-image-bg bg-dynamicomok"></div>
                 <div class="card-overlay"></div>
                 <div class="game-tag tag-omok" data-i18n="omok_tag">Strategy</div>
-
                 <div class="game-card-content-wrap">
                     <h3 class="game-card-title" data-i18n="omok_title">Dynamic Omok</h3>
                     <p class="game-card-desc" data-i18n="omok_desc">부제 five in a row. 캐릭터를 선택하고 제한시간 안에 다섯 돌을 이어 승리를 쟁취하는 다이내믹 오목 대전입니다.</p>
                 </div>
             </a>
 
+            <!-- Game 4 -->
             <a href="curling.html" class="game-card game-card-image-mode">
                 <div class="card-image-bg bg-magiccurling"></div>
                 <div class="card-overlay"></div>
                 <div class="game-tag tag-omok" data-i18n="curling_tag">Sports / Magic</div>
-
                 <div class="game-card-content-wrap">
                     <h3 class="game-card-title" data-i18n="curling_title">매직 컬링</h3>
                     <p class="game-card-desc" data-i18n="curling_desc">빛과 어둠의 진영을 선택하고 마법 스킬을 활용하여 승리를 쟁취하는 판타지 마법 컬링 대전입니다.</p>
+                </div>
+            </a>
+
+            <!-- Game 5: Tetris -->
+            <a href="tetris.html" class="game-card game-card-image-mode">
+                <div class="card-image-bg bg-tetris"></div>
+                <div class="card-overlay"></div>
+                <div class="game-tag tag-tetris" data-i18n="tetris_tag">Arcade / Puzzle</div>
+                <div class="game-card-content-wrap">
+                    <h3 class="game-card-title" data-i18n="tetris_title">독수리의 테트리스</h3>
+                    <p class="game-card-desc" data-i18n="tetris_desc">클래식의 귀환! 네온 불빛 아래에서 블록을 쌓고 라인을 클리어하며 최고의 기록에 도전하는 퍼즐 게임입니다.</p>
                 </div>
             </a>
         </div>
@@ -685,10 +625,12 @@
                 physics_tag: "Physics", book_title: "책 쌓기 마스터", book_desc: "아빠의 서재에서 중력과 균형의 법칙에 도전하세요. 조심스럽게 책을 떨어뜨려 가장 높이 쌓아 올리는 마스터가 되어보세요!",
                 omok_tag: "Strategy", omok_title: "Dynamic Omok", omok_desc: "부제 five in a row. 캐릭터를 선택하고 제한시간 안에 다섯 돌을 이어 승리를 쟁취하는 다이내믹 오목 대전입니다.",
                 curling_tag: "Sports / Magic", curling_title: "매직 컬링", curling_desc: "빛과 어둠의 진영을 선택하고 마법 스킬을 활용하여 승리를 쟁취하는 판타지 마법 컬링 대전입니다.",
+                tetris_tag: "Arcade / Puzzle", tetris_title: "테트리스 배틀", tetris_desc: "클래식의 귀환! 네온 불빛 아래에서 블록을 쌓고 라인을 클리어하며 최고의 기록에 도전하는 퍼즐 게임입니다.",
                 toast_copy: "링크가 복사되었습니다 ✓", toast_error: "지원하지 않는 브라우저입니다.",
                 footer_text: "© 2026 Chris LEE.PAPA — The Creative Archive",
                 comments_title: "Guestbook", comments_leave: "✦ 한마디 남겨주세요",
-                comments_submit: "남기기", comments_loading: "· · ·", comments_empty: "첫 번째 기록을 남겨주세요"
+                comments_submit: "남기기", comments_loading: "· · ·", comments_empty: "첫 번째 기록을 남겨주세요",
+                comments_thanks: "감사합니다!"
             },
             en: {
                 nav_home: "Home", nav_bible: "Bible", nav_worship: "Worship", nav_music: "Music", nav_book: "Books", nav_movie: "Movies",
@@ -699,10 +641,12 @@
                 physics_tag: "Physics", book_title: "Book Stacking Master", book_desc: "Challenge the laws of gravity and balance in Dad's study. Drop the books carefully to become the ultimate stacking master!",
                 omok_tag: "Strategy", omok_title: "Dynamic Omok", omok_desc: "Subtitle: five in a row. Choose a character and connect five stones within the time limit in this dynamic Omok duel.",
                 curling_tag: "Sports / Magic", curling_title: "Magic Curling", curling_desc: "Choose between light and dark factions and use magical skills to win this fantasy curling duel.",
+                tetris_tag: "Arcade / Puzzle", tetris_title: "Tetris Battle", tetris_desc: "The return of a classic! Stack blocks and clear lines under neon lights to challenge the ultimate record.",
                 toast_copy: "Link copied to clipboard ✓", toast_error: "Browser not supported.",
                 footer_text: "© 2026 Chris LEE.PAPA — The Creative Archive",
                 comments_title: "Guestbook", comments_leave: "✦ Leave a message",
-                comments_submit: "Submit", comments_loading: "· · ·", comments_empty: "Be the first to leave a message"
+                comments_submit: "Submit", comments_loading: "· · ·", comments_empty: "Be the first to leave a message",
+                comments_thanks: "Thank you!"
             }
         };
 
@@ -759,7 +703,6 @@
             menuToggle.setAttribute('aria-expanded', String(menuOpen));
         });
 
-        // ── 변경된 스크롤 프로그레스 및 내비게이션 바 로직 ──
         window.addEventListener('scroll', () => {
             const scrollTop = window.scrollY; const docHeight = document.body.scrollHeight - window.innerHeight;
             document.getElementById('scroll-progress').style.width = (scrollTop / (docHeight || 1) * 100) + '%';
@@ -788,7 +731,6 @@
             return String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
         }
 
-        // ── Supabase 댓글 기능 ──
         const SUPA_URL = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
         const SUPA_KEY = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
         const PAGE_ID  = '/gameinfo';
@@ -828,7 +770,6 @@
             } catch(e) { showToast('네트워크 오류입니다.'); } finally { btn.disabled = false; btn.textContent = i18n[currentLang].comments_submit; }
         }
 
-        // ── 우주 배경 캔버스 ──
         const canvas = document.getElementById('stars-canvas'); const ctx = canvas.getContext('2d'); let stars = [], shootingStars = [];
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; initStars(); }
         function initStars() { stars = []; const count = Math.floor((canvas.width * canvas.height) / 6000); for (let i = 0; i < count; i++) stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 1.6 + 0.2, opacity: Math.random(), speed: Math.random() * 0.015 + 0.003 }); }

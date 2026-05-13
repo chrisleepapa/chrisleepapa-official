@@ -408,9 +408,18 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 
 /* 파워 업 시 프로필 강조용 클래스 */
 .sc.cur.pwr { border-color: #FF4500; box-shadow: 0 0 20px rgba(255, 69, 0, 0.6); }
+
+/* 유튜브 플레이어 영역 (안보임) */
+#yt-player-container {
+    position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none; z-index: -1;
+}
 </style>
 </head>
 <body>
+
+<!-- 🎵 숨겨진 유튜브 플레이어 -->
+<div id="yt-player-container"></div>
+
 <!-- 각성 및 스페셜 시네마틱 전체화면 (수정 완료!) -->
 <div id="cine" onclick="cineDismiss()">
   <div id="cine-img"></div>
@@ -557,6 +566,43 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 </div>
 
 <script>
+// ══════════════════════════════════════════════════════
+// YOUTUBE BGM PLAYER (책쌓기/오목과 동일한 재생목록 & 랜덤 셔플)
+// ══════════════════════════════════════════════════════
+var ytPlayer;
+var isYtReady = false;
+
+var tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+window.onYouTubeIframeAPIReady = function() {
+    ytPlayer = new YT.Player('yt-player-container', {
+        height: '0',
+        width: '0',
+        playerVars: {
+            'autoplay': 0, 
+            'controls': 0,
+            'disablekb': 1,
+            'listType': 'playlist', 
+            'list': 'PL3p0Se-Sm12SdPoWcevuXVd5pAMfpOGxY', 
+            'playsinline': 1
+        },
+        events: {
+            'onReady': function(event) {
+                isYtReady = true;
+                event.target.setVolume(25); 
+            },
+            'onStateChange': function(event) {
+                if (event.data === YT.PlayerState.ENDED) {
+                    ytPlayer.nextVideo();
+                }
+            }
+        }
+    });
+};
+
 /* ══ STARFIELD ══ */
 (function(){
   var sl=document.getElementById('sl');
@@ -1188,6 +1234,10 @@ function showStarPop(x,y,txt){
 
 function showWin(){
   over=true;sWin();spawnConfetti();
+
+  // ★ BGM 일시정지 (우승 사운드를 위해)
+  if (isYtReady && ytPlayer) ytPlayer.pauseVideo();
+
   var w=stars[0]>=WIN?0:1;
   document.getElementById('wpr').innerHTML=SV[PL[w].char];
   document.getElementById('wnm').textContent=PL[w].nm+' 승리! 🎉';
@@ -1205,6 +1255,10 @@ function resetGame(){
   rolling=false;ev=null;over=false;moving=false;
   resetEventChain();
   totalTurns=1;
+  
+  // ★ BGM 초기화 화면에서 일시정지 (시작 시 다시 켬)
+  if (isYtReady && ytPlayer) ytPlayer.pauseVideo();
+
   document.getElementById('gov').classList.remove('vis');
   document.getElementById('eov').classList.remove('vis');
   Array.from(document.getElementById('lgp').querySelectorAll('.lge')).forEach(function(e){e.remove();});
@@ -1307,6 +1361,14 @@ function startGame(){
   setTimeout(function(){document.getElementById('is').style.display='none';},520);
   addLog('✨ 모험 시작! ' + PL[cur].ic + ' ' + PL[cur].nm + ' 차례입니다.');
   renderAll(); // 선공 플레이어 반영하여 렌더링
+
+  // ★ BGM 시작
+  if (isYtReady && ytPlayer) {
+      ytPlayer.setShuffle(true);
+      ytPlayer.setLoop(true);
+      ytPlayer.nextVideo();
+      ytPlayer.playVideo();
+  }
 }
 
 // 처음 실행 시 보드판을 무작위로 한 번 섞은 후 구성합니다.

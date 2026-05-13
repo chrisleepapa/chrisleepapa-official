@@ -7,10 +7,16 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="images/favicon.png">
     
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3207219520058740"
-     crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3207219520058740" crossorigin="anonymous"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-NBGELYQ4TZ"></script>
-    <script>window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-NBGELYQ4TZ'); gtag('config', 'GT-5MJDBTR2');</script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-NBGELYQ4TZ');
+      gtag('config', 'GT-5MJDBTR2');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="SISTER SQUAD - 마법 세계로 빠져든 두 자매의 환상적인 모험">
@@ -36,92 +42,68 @@
         img { -webkit-user-drag: none; }
         body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E"); pointer-events: none; z-index: 900; opacity: 0.3; }
         a { text-decoration: none; color: inherit; }
+        button { appearance: none; background: none; border: 0; padding: 0; font: inherit; color: inherit; }
 
+        /* ── Scroll Progress & Navigation (Standardized) ── */
         #scroll-progress {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 2px;
-            width: 0%;
+            position: fixed; top: 0; left: 0; height: 2px; width: 0%;
             background: linear-gradient(90deg, var(--gold), var(--gold-light), #fff8e0, var(--gold));
-            background-size: 200% auto;
-            z-index: 2000;
-            transition: width 0.1s linear;
+            background-size: 200% auto; z-index: 2000; transition: width 0.1s linear;
             animation: shimmer-bar 3s linear infinite;
         }
-        @keyframes shimmer-bar {
-            0% { background-position: 0% center; }
-            100% { background-position: 200% center; }
-        }
+        @keyframes shimmer-bar { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
 
         nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            height: var(--nav-height);
-            padding: 0 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            background: rgba(3, 3, 5, 0);
-            backdrop-filter: blur(0px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0);
+            position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px;
+            display: flex; justify-content: space-between; align-items: center; z-index: 1000;
+            background: rgba(3, 3, 5, 0); backdrop-filter: blur(0px); border-bottom: 1px solid rgba(255, 255, 255, 0);
             transition: background 0.5s, backdrop-filter 0.5s, border-color 0.5s;
         }
         nav.scrolled {
-            background: rgba(3, 3, 5, 0.88);
-            backdrop-filter: blur(14px);
+            background: rgba(3, 3, 5, 0.88); backdrop-filter: blur(14px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
         .brand-logo {
-            font-family: 'Cinzel', serif;
-            font-size: 1.3rem;
-            font-weight: 800;
-            letter-spacing: 2px;
-            color: var(--gold-light);
-            z-index: 1001;
-            white-space: nowrap;
+            font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px;
+            color: var(--gold-light); z-index: 1001; white-space: nowrap;
         }
-        
         .nav-right { display: flex; align-items: center; gap: 24px; }
-        .nav-links { display: flex; gap: 30px; }
-        .nav-links a {
-            font-family: 'Cinzel', serif;
-            font-size: 0.8rem;
-            letter-spacing: 1px;
-            color: #a0a0b5;
-            transition: 0.3s;
-            text-transform: uppercase;
-            position: relative;
-        }        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0%; height: 1px; background: var(--gold-light); transition: width 0.3s ease; }
+        .nav-links { display: flex; gap: 30px; align-items: center; }
+        .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; position: relative; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0%; height: 1px; background: var(--gold-light); transition: width 0.3s ease; }
         .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
         .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
-        
-        /* ── Language Switcher (Dropdown) ── */
+
         .lang-dropdown-wrapper { position: relative; font-family: 'Cinzel', serif; font-size: 0.8rem; color: #a0a0b5; z-index: 1001; }
-        .lang-current { cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 6px; transition: color 0.3s; font-weight: 600; letter-spacing: 1px; background: none; border: 0; color: inherit; font-family: inherit; font-size: inherit; }
+        .lang-current { cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 6px; transition: color 0.3s; font-weight: 600; letter-spacing: 1px; }
         .lang-current:hover, .lang-dropdown-wrapper.active .lang-current { color: var(--gold-light); text-shadow: 0 0 8px rgba(201,168,76,0.5); }
         .lang-current svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; transition: transform 0.3s; }
         .lang-dropdown-wrapper.active .lang-current svg { transform: rotate(180deg); }
-        .lang-dropdown-menu { position: absolute; top: calc(100% + 10px); right: -10px; background: rgba(10, 10, 15, 0.95); border: 1px solid rgba(201,168,76,0.3); border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; opacity: 0; pointer-events: none; transform: translateY(-10px); transition: opacity 0.3s, transform 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.8); backdrop-filter: blur(10px); min-width: 100px; }
+        .lang-dropdown-menu {
+            position: absolute; top: calc(100% + 10px); right: -10px; background: rgba(10, 10, 15, 0.95);
+            border: 1px solid rgba(201,168,76,0.3); border-radius: 12px; display: flex; flex-direction: column;
+            overflow: hidden; opacity: 0; pointer-events: none; transform: translateY(-10px);
+            transition: opacity 0.3s, transform 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.8); backdrop-filter: blur(10px); min-width: 100px;
+        }
         .lang-dropdown-wrapper.active .lang-dropdown-menu { opacity: 1; pointer-events: auto; transform: translateY(0); }
-        .lang-btn { padding: 12px 20px; cursor: pointer; transition: 0.3s; letter-spacing: 1px; text-align: center; color: #a0a0b5; background: transparent; border: 0; font-family: inherit; font-size: inherit; }
+        .lang-btn { padding: 12px 20px; cursor: pointer; transition: 0.3s; letter-spacing: 1px; text-align: center; color: #a0a0b5; }
         .lang-btn:not(:last-child) { border-bottom: 1px solid rgba(255,255,255,0.05); }
         .lang-btn:hover, .lang-btn.active { color: var(--gold-light); background: rgba(201,168,76,0.1); }
 
-        /* ── Share Icon Button ── */
-        .share-trigger { cursor: pointer; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; border: 1px solid rgba(201,168,76,0.3); border-radius: 50%; color: var(--gold-light); background: transparent; transition: 0.3s; z-index: 1001; }
+        .share-trigger {
+            cursor: pointer; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px;
+            border: 1px solid rgba(201,168,76,0.3); border-radius: 50%; color: var(--gold-light); transition: 0.3s; z-index: 1001;
+        }
         .share-trigger svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
-        .share-trigger:hover, .share-trigger:focus-visible { background: rgba(201,168,76,0.1); border-color: var(--gold-light); box-shadow: 0 0 12px rgba(201,168,76,0.2); transform: translateY(-2px); }
-        
-        /* ── Menu Toggle (Hamburger) ── */
-        .menu-toggle { display: none; flex-direction: column; justify-content: space-between; width: 26px; height: 18px; cursor: pointer; z-index: 1001; background: none; border: 0; padding: 0; }
+        .share-trigger:hover { background: rgba(201,168,76,0.1); border-color: var(--gold-light); box-shadow: 0 0 12px rgba(201,168,76,0.2); transform: translateY(-2px); }
+
+        .menu-toggle { display: none; flex-direction: column; justify-content: space-between; width: 26px; height: 18px; cursor: pointer; z-index: 1001; }
         .menu-toggle span { width: 100%; height: 2px; background-color: var(--gold-light); transition: 0.3s; border-radius: 2px; }
         .menu-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
         .menu-toggle.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
         .menu-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
+        /* ── 공유 모달 ── */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; }
         .modal-overlay.active { display: flex; opacity: 1; }
         .share-modal { background: #0a0a0f; border: 1px solid var(--gold); border-radius: 24px; width: 90%; max-width: 400px; padding: 45px 30px; text-align: center; box-shadow: 0 30px 70px rgba(0,0,0,0.9); }
@@ -135,6 +117,7 @@
         .btn-close-modal { margin-top: 25px; color: #666; background: none; font-size: 0.8rem; text-decoration: underline; border: none; cursor: pointer; }
         .toast-msg { position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%); background: var(--gold); color: #000; padding: 12px 30px; border-radius: 40px; font-size: 0.9rem; font-weight: 700; z-index: 3000; display: none; animation: fadeUp 0.4s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 
+        /* ── 본문 콘텐츠 ── */
         .page-header { position: relative; width: 100%; height: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; padding-top: var(--nav-height); }
         #stars-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
         .header-content { position: relative; z-index: 3; text-align: center; animation: fadeUp 1.2s ease both; }
@@ -157,18 +140,17 @@
 
         .character-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 100px; }
         .char-card { display: block; color: inherit; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 24px; text-align: center; transition: 0.4s ease; backdrop-filter: blur(5px); overflow: hidden; cursor: pointer; }
-        .char-card:hover, .char-card:focus-visible { transform: translateY(-12px); border-color: var(--pink-accent); box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 25px var(--pink-glow); outline: none; }
+        .char-card:hover { transform: translateY(-12px); border-color: var(--pink-accent); box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 25px var(--pink-glow); }
         .char-img-area { width: 100%; height: 350px; background-size: cover; background-position: center; transition: 0.6s ease; }
-        .char-card:hover .char-img-area, .char-card:focus-visible .char-img-area { transform: scale(1.05); }
+        .char-card:hover .char-img-area { transform: scale(1.05); }
         
         .char-content { padding: 40px 30px; position: relative; }
         .char-tag { font-size: 0.7rem; color: var(--pink-accent); border: 1px solid var(--pink-accent); padding: 3px 14px; border-radius: 20px; margin-bottom: 15px; display: inline-block; text-transform: uppercase; letter-spacing: 1px; }
         .char-name { font-family: 'Cinzel', serif; font-size: 1.8rem; font-weight: 700; color: #fff; margin-bottom: 0; transition: margin 0.5s ease; }
         .char-desc { font-size: 1rem; color: #a0a0b5; line-height: 1.8; word-break: keep-all; font-weight: 300; max-height: 0; opacity: 0; transform: translateY(20px); transition: all 0.5s ease; overflow: hidden; margin-top: 0; }
-        .char-card:hover .char-name, .char-card:focus-visible .char-name { margin-bottom: 15px; }
-        .char-card:hover .char-desc, .char-card:focus-visible .char-desc { max-height: 150px; opacity: 1; transform: translateY(0); margin-top: 15px; }
+        .char-card:hover .char-name { margin-bottom: 15px; }
+        .char-card:hover .char-desc { max-height: 150px; opacity: 1; transform: translateY(0); margin-top: 15px; }
 
-        /* ── Iframe Placeholder 고급 디자인 (Album) ── */
         .ost-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin-bottom: 100px; }
         .ost-item { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 25px; backdrop-filter: blur(5px); transition: 0.3s; }
         .ost-item:hover { border-color: var(--youtube); transform: translateY(-5px); }
@@ -194,7 +176,7 @@
             background-size: cover; background-position: center;
             filter: blur(15px) brightness(0.3); z-index: 1; transition: 0.5s ease;
         }
-        .player-placeholder:hover .placeholder-bg, .player-placeholder:focus-visible .placeholder-bg {
+        .player-placeholder:hover .placeholder-bg {
             filter: blur(8px) brightness(0.4); transform: scale(1.05);
         }
         .placeholder-content {
@@ -213,7 +195,7 @@
             70% { box-shadow: 0 0 0 20px rgba(255, 0, 0, 0); }
             100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
         }
-        .player-placeholder:hover .play-btn-circle, .player-placeholder:focus-visible .play-btn-circle { transform: scale(1.1); background: var(--youtube); }
+        .player-placeholder:hover .play-btn-circle { transform: scale(1.1); background: var(--youtube); }
         .placeholder-text { 
             font-size: 0.95rem; color: #fff; font-weight: 700; letter-spacing: 2px; 
             font-family: 'Cinzel', 'Pretendard', sans-serif; text-shadow: 0 4px 10px rgba(0,0,0,0.8);
@@ -221,7 +203,7 @@
 
         .buy-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
         .buy-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(201,168,76,0.15); border-radius: 24px; padding: 40px 30px; text-align: center; transition: 0.4s; backdrop-filter: blur(10px); }
-        .buy-card:hover, .buy-card:focus-within { transform: translateY(-10px); border-color: var(--gold); }
+        .buy-card:hover { transform: translateY(-10px); border-color: var(--gold); }
         .book-img-wrap { width: 100%; aspect-ratio: 3 / 4; margin-bottom: 30px; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); }
         .book-img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
         .buy-card:hover .book-img { transform: scale(1.05); }
@@ -231,9 +213,6 @@
         .btn-paper { background: var(--gold); color: #000; }
         .btn-ebook { border: 1.5px solid var(--cyan); color: var(--cyan); }
         .btn-coloring { border: 1.5px solid var(--pink-accent); color: var(--pink-accent); }
-
-        .buy-btn:focus-visible, .ost-btn:focus-visible, .back-link:focus-visible, .lang-current:focus-visible, .lang-btn:focus-visible, .modal-btn:focus-visible { outline: 2px solid var(--gold-light); outline-offset: 3px; }
-
 
         /* ── Guestbook Section ── */
         .comments-section { max-width: 850px; margin: 90px auto 0; padding: 0 0 20px; position: relative; z-index: 10; animation: fadeUp 1s ease 0.4s both; }
@@ -250,7 +229,7 @@
         #cm-body { flex-grow: 1; resize: vertical; min-height: 100px; line-height: 1.6; }
         .cm-submit-row { display: flex; justify-content: flex-end; margin-top: 15px; }
         .cm-submit-btn { font-family: 'Pretendard', sans-serif; font-size: 0.95rem; font-weight: 800; letter-spacing: 1px; padding: 14px 36px; background: linear-gradient(135deg, var(--pink-accent), var(--gold)); color: #08080b; border: none; border-radius: 30px; cursor: pointer; transition: all 0.3s; }
-        .cm-submit-btn:hover, .cm-submit-btn:focus-visible { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(255,180,200,0.25); outline: none; }
+        .cm-submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(255,180,200,0.25); outline: none; }
         .cm-submit-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; box-shadow: none; }
         .comment-list { display: flex; flex-direction: column; gap: 16px; }
         .comment-card { background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 20px 24px; transition: border-color 0.3s; animation: fadeUp 0.4s ease both; -webkit-user-select: text; user-select: text; }
@@ -292,20 +271,20 @@
 </head>
 <body>
 
- <div id="scroll-progress"></div>
+    <div id="scroll-progress"></div>
 
     <nav id="main-nav">
         <a href="index.html" class="brand-logo">Chris LEE.PAPA</a>
         <div class="nav-right">
             <div class="nav-links" id="navLinks">
                 <a href="index.html" data-i18n="nav_home">Home</a>
+                <a href="bible.html" data-i18n="nav_bible">Bible</a>
                 <a href="worship.html" data-i18n="nav_worship">Worship</a>
                 <a href="music.html" data-i18n="nav_music">Music</a>
                 <a href="book.html" class="active" data-i18n="nav_book">Books</a>
                 <a href="movie.html" data-i18n="nav_movie">Movies</a>
             </div>
 
-            <!-- Language Switcher Dropdown -->
             <div class="lang-dropdown-wrapper" id="langWrapper">
                 <button type="button" class="lang-current" onclick="toggleLangDropdown()" aria-expanded="false" aria-controls="langMenu" aria-label="Change language">
                     <span id="currentLangText">KOR</span>
@@ -317,17 +296,13 @@
                 </div>
             </div>
 
-            <!-- Share Icon Button -->
             <button type="button" class="share-trigger" onclick="openShareModal()" title="Share" aria-label="Share this page">
                 <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                    <circle cx="18" cy="5" r="3"></circle>
-                    <circle cx="6" cy="12" r="3"></circle>
-                    <circle cx="18" cy="19" r="3"></circle>
-                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                    <circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle>
+                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
                 </svg>
             </button>
-            
+
             <button type="button" class="menu-toggle" id="mobile-menu" aria-label="Open navigation menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
         </div>
     </nav>
@@ -478,6 +453,7 @@
         const i18n = {
             ko: {
                 nav_home: "Home",
+                nav_bible: "Bible",
                 nav_worship: "Worship",
                 nav_music: "Music",
                 nav_book: "Books",
@@ -525,6 +501,7 @@
             },
             en: {
                 nav_home: "Home",
+                nav_bible: "Bible",
                 nav_worship: "Worship",
                 nav_music: "Music",
                 nav_book: "Books",
@@ -599,7 +576,7 @@
             // Save preference
             try { localStorage.setItem('pref-lang', safeLang); } catch(e) {}
             
-            // Update UI texts
+            // Update UI texts (inner HTML to preserve line breaks and html tags like <br>)
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if (dictionary[key]) {
@@ -650,6 +627,15 @@
         });
 
         function safeNavigate(url) { if (url && url.trim() !== "") { window.location.assign(url); } }
+        
+        // ── Scroll Progress and Nav logic ──
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY; const docHeight = document.body.scrollHeight - window.innerHeight;
+            document.getElementById('scroll-progress').style.width = (scrollTop / (docHeight || 1) * 100) + '%';
+            const mainNavObj = document.getElementById('main-nav');
+            if (mainNavObj) mainNavObj.classList.toggle('scrolled', scrollTop > 40);
+        }, { passive: true });
+
         const menuToggle = document.getElementById('mobile-menu'); const navLinks = document.getElementById('navLinks');
         if (menuToggle && navLinks) {
             menuToggle.addEventListener('click', () => {
@@ -659,7 +645,15 @@
                 menuToggle.setAttribute('aria-expanded', String(isOpen));
                 menuToggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
             });
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    menuToggle.classList.remove('active');
+                    navLinks.classList.remove('active');
+                    menuToggle.setAttribute('aria-expanded', 'false');
+                });
+            });
         }
+
         // ✅ 클릭 시 iframe을 동적으로 생성
         function injectIframe(element, url) {
             const container = element && element.parentElement;
@@ -679,7 +673,7 @@
 
         const shareOverlay = document.getElementById('shareOverlay'); const toast = document.getElementById('toast');
         function openShareModal() { if (!shareOverlay) return; shareOverlay.style.display = 'flex'; setTimeout(() => shareOverlay.classList.add('active'), 10); }
-        function closeShareModal(e) { if (!shareOverlay) return; if (e && e.target !== shareOverlay) return; shareOverlay.classList.remove('active'); setTimeout(() => shareOverlay.style.display = 'none', 300); }
+        function closeShareModal(e) { if (!shareOverlay) return; if (e && e.target !== shareOverlay && e.type !== 'click') return; shareOverlay.classList.remove('active'); setTimeout(() => shareOverlay.style.display = 'none', 300); }
 
         async function copyURL() {
             const currentUrl = window.location.href; let success = false;
@@ -693,16 +687,7 @@
         }
 
         function shareViaWebAPI() { if (navigator.share) { navigator.share({ title: 'Chris LEE.PAPA - SISTER SQUAD', text: '두 자매의 마법 같은 모험 이야기', url: window.location.href }).catch(console.error); } else { showToast(i18n[currentLang].toast_error); } }
-         function showToast(msg) { if (!toast) return; toast.textContent = msg; toast.style.display = 'block'; setTimeout(() => { toast.style.display = 'none'; }, 2500); }
-
-        const progressBar = document.getElementById('scroll-progress');
-        const mainNav = document.getElementById('main-nav');
-        window.addEventListener('scroll', () => {
-            const scrollTop = window.scrollY;
-            const docHeight = document.body.scrollHeight - window.innerHeight;
-            if (progressBar) progressBar.style.width = (scrollTop / (docHeight || 1) * 100) + '%';
-            if (mainNav) mainNav.classList.toggle('scrolled', scrollTop > 40);
-        }, { passive: true });
+        function showToast(msg) { if (!toast) return; toast.textContent = msg; toast.style.display = 'block'; setTimeout(() => { toast.style.display = 'none'; }, 2500); }
 
         // ── Guestbook System ──
         const SUPA_URL = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
@@ -846,18 +831,56 @@
 
         document.addEventListener('DOMContentLoaded', fetchComments);
 
-        const canvas = document.getElementById('stars-canvas'); const ctx = canvas ? canvas.getContext('2d') : null; let stars = [];
-        function resize() { if (!canvas) return; canvas.width = window.innerWidth; canvas.height = 400; initStars(); }
-        function initStars() { if (!canvas) return; stars = []; const count = (canvas.width * canvas.height) / 7000; for (let i = 0; i < count; i++) { stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 1.5 + 0.2, opacity: Math.random(), speed: Math.random() * 0.015 + 0.005, color: Math.random() > 0.8 ? '255, 180, 200' : '255, 255, 255' }); } }
-        function draw() { if (!ctx || !canvas) return; ctx.clearRect(0, 0, canvas.width, canvas.height); stars.forEach(s => { s.opacity += s.speed; if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed; ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fillStyle = `rgba(${s.color}, ${Math.max(0, s.opacity)})`; ctx.fill(); }); requestAnimationFrame(draw); }
-        window.addEventListener('resize', resize); resize(); draw();
+        const canvas = document.getElementById('stars-canvas');
+        const ctx = canvas ? canvas.getContext('2d') : null;
+        let stars = [];
+        function resize() {
+            if (!canvas) return;
+            canvas.width = window.innerWidth;
+            canvas.height = 400;
+            initStars();
+        }
+        function initStars() {
+            if (!canvas) return;
+            stars = [];
+            const count = (canvas.width * canvas.height) / 7000;
+            for (let i = 0; i < count; i++) {
+                stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 1.5 + 0.2, opacity: Math.random(), speed: Math.random() * 0.015 + 0.005, color: Math.random() > 0.8 ? '255, 180, 200' : '255, 255, 255' });
+            }
+        }
+        function draw() {
+            if (!canvas || !ctx) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(s => {
+                s.opacity += s.speed;
+                if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed;
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${s.color}, ${Math.max(0, s.opacity)})`;
+                ctx.fill();
+            });
+            requestAnimationFrame(draw);
+        }
+        window.addEventListener('resize', resize);
+        resize();
+        draw();
 
         document.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('copy', e => { if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) { e.preventDefault(); } });
+        document.addEventListener('copy', e => {
+            if (e.target && e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) {
+                e.preventDefault();
+            }
+        });
         document.addEventListener('keydown', e => {
+            const targetId = e.target ? e.target.id : '';
             if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || (e.ctrlKey && e.key === 'U')) e.preventDefault();
-            if (e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'p')) { if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) e.preventDefault(); }
-            if (e.key === 'PrintScreen' && navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText('').catch(() => {});        });
+            if (e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'p')) {
+                if (targetId !== 'temp-copy-area' && window.getSelection().toString().length > 0) e.preventDefault();
+            }
+            if (e.key === 'PrintScreen' && navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText('').catch(() => {});
+            }
+        });
     </script>
 </body>
 </html>

@@ -440,7 +440,13 @@
     const COLS = 10, ROWS = 20, BLOCK_SIZE = 30;
     let arena = Array.from({length: ROWS}, () => Array(COLS).fill(0));
     let player = { pos: {x: 0, y: 0}, matrix: null, lines: 0, level: 1, gameOver: true };
+    
+    // 🔥 스피드 제어용 변수 추가
     let dropCounter = 0, dropInterval = 1000, lastTime = 0;
+    let baseDropInterval = 1000;
+    let speedPhase = 'FAST'; // 'FAST' or 'SLOW'
+    let speedPhaseTime = 0;
+    
     let isIntro = false;
 
     function createPiece(type) {
@@ -521,15 +527,20 @@
             const oldLevel = player.level;
             player.lines += count;
             
-            // 🔥 5라인 지울 때마다 1레벨 상승
             player.level = Math.floor(player.lines / 5) + 1;
-            
-            // ★ 최고 레벨을 갱신 (죽었을 때 올바른 값을 저장하기 위해)
             maxReachedLevel = player.level;
             
             if (player.level > oldLevel) {
-                // 속도를 레벨당 150ms 씩 감소
-                dropInterval = Math.max(100, 1000 - ((player.level - 1) * 150));
+                // 기본 속도: 레벨당 150ms 감소 (최소 100ms)
+                baseDropInterval = Math.max(100, 1000 - ((player.level - 1) * 150));
+                dropInterval = baseDropInterval;
+                
+                // 🌟 6레벨 이상일 때: 속도 사이클 상태값 초기화
+                if (player.level >= 6) {
+                    speedPhase = 'FAST';
+                    speedPhaseTime = 0;
+                }
+                
                 showLevelUpAnimation(player.level);
             } else {
                 playSound('clear');
@@ -590,7 +601,6 @@
     function finishGame() {
         playSound('gameover');
         document.getElementById('gameover').style.display = 'flex';
-        // ★ 여기서 player.level 이 아닌 보장된 maxReachedLevel 변수를 사용!
         document.getElementById('finalLevel').innerText = maxReachedLevel;
         saveScore(maxReachedLevel);
     }
@@ -598,9 +608,34 @@
     function update(time = 0) {
         if (player.gameOver || isIntro) return;
         const deltaTime = time - lastTime; lastTime = time;
+        
+        // 🔥 6레벨 이상일 때: 3초 폭주 -> 10초 휴식 사이클 로직 적용
+        if (player.level >= 6) {
+            speedPhaseTime += deltaTime;
+            
+            if (speedPhase === 'FAST' && speedPhaseTime >= 3000) {
+                // 3초가 지나면 10초 동안 처음(1000ms) 속도로 느려짐
+                speedPhase = 'SLOW';
+                speedPhaseTime = 0;
+                dropInterval = 1000;
+                showReaction("휴식 타임! 😌");
+            } else if (speedPhase === 'SLOW' && speedPhaseTime >= 10000) {
+                // 10초가 지나면 다시 현재 레벨의 빠른 속도로 복귀
+                speedPhase = 'FAST';
+                speedPhaseTime = 0;
+                dropInterval = baseDropInterval;
+                showReaction("다시 달린다! 🔥");
+            }
+        } else {
+            // 6레벨 미만은 쭈욱 현재 레벨의 기본 속도로 진행
+            dropInterval = baseDropInterval;
+        }
+
         dropCounter += deltaTime;
         if (dropCounter > dropInterval) playerDrop();
-        draw(); requestAnimationFrame(update);
+        
+        draw(); 
+        requestAnimationFrame(update);
     }
 
     // 🦅 Eagle Intro
@@ -633,9 +668,15 @@
         arena = Array.from({length: ROWS}, () => Array(COLS).fill(0));
         player.lines = 0; 
         player.level = 1; 
-        maxReachedLevel = 1; // ★ 시작 시 확실하게 최고 레벨 초기화
+        maxReachedLevel = 1; 
         player.gameOver = false; 
+        
+        // 시작 시 스피드 초기화
+        baseDropInterval = 1000;
         dropInterval = 1000;
+        speedPhase = 'FAST';
+        speedPhaseTime = 0;
+        
         document.getElementById('hudLevel').innerText = '1';
         draw();
         startEagleIntro();

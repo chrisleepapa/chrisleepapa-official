@@ -14,7 +14,6 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-NBGELYQ4TZ');
       gtag('config', 'GT-5MJDBTR2');
     </script>
@@ -79,88 +78,60 @@
         a { text-decoration: none; color: inherit; }
         button { appearance: none; background: none; border: 0; padding: 0; font: inherit; color: inherit; }
 
-        /* ── Navigation ── */
+        /* ── Scroll Progress & Navigation (Standardized) ── */
+        #scroll-progress {
+            position: fixed; top: 0; left: 0; height: 2px; width: 0%;
+            background: linear-gradient(90deg, var(--gold), var(--gold-light), #fff8e0, var(--gold));
+            background-size: 200% auto; z-index: 2000; transition: width 0.1s linear;
+            animation: shimmer-bar 3s linear infinite;
+        }
+        @keyframes shimmer-bar { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+
         nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            height: var(--nav-height);
-            padding: 0 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            background: rgba(3, 3, 5, 0);
-            backdrop-filter: blur(0px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0);
+            position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px;
+            display: flex; justify-content: space-between; align-items: center; z-index: 1000;
+            background: rgba(3, 3, 5, 0); backdrop-filter: blur(0px); border-bottom: 1px solid rgba(255, 255, 255, 0);
             transition: background 0.5s, backdrop-filter 0.5s, border-color 0.5s;
         }
         nav.scrolled {
-            background: rgba(3, 3, 5, 0.88);
-            backdrop-filter: blur(14px);
+            background: rgba(3, 3, 5, 0.88); backdrop-filter: blur(14px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
         .brand-logo {
-            font-family: 'Cinzel', serif;
-            font-size: 1.3rem;
-            font-weight: 800;
-            letter-spacing: 2px;
-            color: var(--gold-light);
-            z-index: 1001;
-            white-space: nowrap;
+            font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px;
+            color: var(--gold-light); z-index: 1001; white-space: nowrap;
         }
-
         .nav-right { display: flex; align-items: center; gap: 24px; }
-        .nav-links { display: flex; gap: 30px; }
-        .nav-links a {
-            font-family: 'Cinzel', serif;
-            font-size: 0.8rem;
-            letter-spacing: 1px;
-            color: #a0a0b5;
-            transition: 0.3s;
-            text-transform: uppercase;
-            position: relative;
-        }
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0%;
-            height: 1px;
-            background: var(--gold-light);
-            transition: width 0.3s ease;
-        }
+        .nav-links { display: flex; gap: 30px; align-items: center; }
+        .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; position: relative; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0%; height: 1px; background: var(--gold-light); transition: width 0.3s ease; }
         .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
         .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
 
-        /* ── Language Switcher (Dropdown) ── */
         .lang-dropdown-wrapper { position: relative; font-family: 'Cinzel', serif; font-size: 0.8rem; color: #a0a0b5; z-index: 1001; }
         .lang-current { cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 6px; transition: color 0.3s; font-weight: 600; letter-spacing: 1px; }
         .lang-current:hover, .lang-dropdown-wrapper.active .lang-current { color: var(--gold-light); text-shadow: 0 0 8px rgba(201,168,76,0.5); }
         .lang-current svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; transition: transform 0.3s; }
         .lang-dropdown-wrapper.active .lang-current svg { transform: rotate(180deg); }
-        .lang-dropdown-menu { position: absolute; top: calc(100% + 10px); right: -10px; background: rgba(10, 10, 15, 0.95); border: 1px solid rgba(201,168,76,0.3); border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; opacity: 0; pointer-events: none; transform: translateY(-10px); transition: opacity 0.3s, transform 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.8); backdrop-filter: blur(10px); min-width: 100px; }
+        .lang-dropdown-menu {
+            position: absolute; top: calc(100% + 10px); right: -10px; background: rgba(10, 10, 15, 0.95);
+            border: 1px solid rgba(201,168,76,0.3); border-radius: 12px; display: flex; flex-direction: column;
+            overflow: hidden; opacity: 0; pointer-events: none; transform: translateY(-10px);
+            transition: opacity 0.3s, transform 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.8); backdrop-filter: blur(10px); min-width: 100px;
+        }
         .lang-dropdown-wrapper.active .lang-dropdown-menu { opacity: 1; pointer-events: auto; transform: translateY(0); }
         .lang-btn { padding: 12px 20px; cursor: pointer; transition: 0.3s; letter-spacing: 1px; text-align: center; color: #a0a0b5; }
         .lang-btn:not(:last-child) { border-bottom: 1px solid rgba(255,255,255,0.05); }
         .lang-btn:hover, .lang-btn.active { color: var(--gold-light); background: rgba(201,168,76,0.1); }
 
-        /* ── Share Icon Button ── */
-        .share-trigger { cursor: pointer; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; border: 1px solid rgba(201,168,76,0.3); border-radius: 50%; color: var(--gold-light); transition: 0.3s; z-index: 1001; }
+        .share-trigger {
+            cursor: pointer; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px;
+            border: 1px solid rgba(201,168,76,0.3); border-radius: 50%; color: var(--gold-light); transition: 0.3s; z-index: 1001;
+        }
         .share-trigger svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
         .share-trigger:hover { background: rgba(201,168,76,0.1); border-color: var(--gold-light); box-shadow: 0 0 12px rgba(201,168,76,0.2); transform: translateY(-2px); }
 
-        /* ── Menu Toggle (Hamburger) ── */
-        .menu-toggle {
-            display: none;
-            flex-direction: column;
-            justify-content: space-between;
-            width: 26px;
-            height: 18px;
-            cursor: pointer;
-            z-index: 1001;
-        }
+        .menu-toggle { display: none; flex-direction: column; justify-content: space-between; width: 26px; height: 18px; cursor: pointer; z-index: 1001; }
         .menu-toggle span { width: 100%; height: 2px; background-color: var(--gold-light); transition: 0.3s; border-radius: 2px; }
         .menu-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
         .menu-toggle.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
@@ -256,7 +227,6 @@
         .game-card:nth-child(3) { animation-delay: 1s; }
         .game-card:nth-child(4) { animation-delay: 1.2s; }
 
-        /* ── 풀 이미지 배경을 사용하는 게임 카드 공통 스타일 ── */
         .game-card-image-mode {
             justify-content: flex-end;
             padding: 30px;
@@ -275,7 +245,6 @@
             transition: transform 0.6s cubic-bezier(0.2, 0, 0.2, 1);
         }
 
-        /* 각 카드별 배경 이미지 할당 */
         .bg-bluemarble { background-image: url('images/bluemarblegame.png'); }
         .bg-booktop { background-image: url('images/booktop.png'); }
         .bg-dynamicomok { background-image: url('images/dynamicomok.png'); }
@@ -318,32 +287,6 @@
             margin-bottom: 5px;
         }
 
-        /* 이미지가 없는 일반 카드들의 호버 효과 (확장성을 위해 유지) */
-        .game-card:not(.game-card-image-mode) .game-icon-large {
-            display: block;
-            font-size: 80px;
-            margin-bottom: 25px;
-            filter: drop-shadow(0 0 20px rgba(201,168,76,0.3));
-            transition: transform 0.4s;
-        }
-
-        .game-card:not(.game-card-image-mode):hover .game-icon-large {
-            transform: scale(1.15) rotate(5deg);
-        }
-
-        .game-card:not(.game-card-image-mode)::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-            transform: skewX(-20deg);
-            transition: 0.6s;
-        }
-
-        .game-card:not(.game-card-image-mode):hover::before {
-            left: 200%;
-        }
-
         .game-tag {
             position: absolute;
             top: 25px;
@@ -357,7 +300,6 @@
             text-transform: uppercase;
         }
 
-        /* 이미지 카드 내 태그 위치 조정 */
         .game-card-image-mode .game-tag {
             top: 20px;
             left: 20px;
@@ -368,7 +310,7 @@
         .tag-maze { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #ccc; }
         .tag-omok { background: rgba(97, 67, 255, 0.16); border: 1px solid rgba(180, 156, 255, 0.42); color: #d9d1ff; }
 
-        /* ── 댓글 섹션 스타일 (개선됨) ── */
+        /* ── Guestbook Section ── */
         .comments-section {
             max-width: 800px;
             margin: 80px auto 0;
@@ -421,7 +363,6 @@
             gap: 8px;
         }
 
-        /* PC 기본 레이아웃 (가로 정렬) */
         .comment-input-row {
             display: flex;
             gap: 15px;
@@ -542,7 +483,7 @@
             user-select: text;
         }
 
-        .cm-empty {
+        .cm-empty, .cm-loading {
             text-align: center;
             padding: 40px 20px;
             color: #444;
@@ -551,15 +492,6 @@
             letter-spacing: 1px;
         }
         .cm-empty span { display: block; font-size: 1.5rem; margin-bottom: 10px; opacity: 0.5; }
-
-        .cm-loading {
-            text-align: center;
-            padding: 30px;
-            color: #555;
-            font-family: 'Cinzel', serif;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-        }
 
         @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
         @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
@@ -590,7 +522,6 @@
             .game-cards { flex-direction: column; align-items: center; }
             .game-card { width: 100%; max-width: 340px; height: 380px; }
 
-            /* 모바일 방명록 폼 세로 정렬 및 여백 조정 */
             .comment-form { padding: 25px 20px; }
             .comment-input-row {
                 flex-direction: column;
@@ -612,11 +543,11 @@
                 padding: 12px 30px;
             }
         }
-
     </style>
 </head>
 <body>
 
+    <div id="scroll-progress"></div>
     <canvas id="stars-canvas"></canvas>
 
     <nav id="main-nav">
@@ -624,6 +555,7 @@
         <div class="nav-right">
             <div class="nav-links" id="navLinks">
                 <a href="index.html" data-i18n="nav_home">Home</a>
+                <a href="bible.html" data-i18n="nav_bible">Bible</a>
                 <a href="worship.html" data-i18n="nav_worship">Worship</a>
                 <a href="music.html" data-i18n="nav_music">Music</a>
                 <a href="book.html" data-i18n="nav_book">Books</a>
@@ -693,7 +625,7 @@
             </a>
 
             <a href="fiveinrow.html" class="game-card game-card-image-mode">
-                <div class="card-image-bg bg-dynamicomok"></div>
+                <div class="card-image-bg bg-dynamicomomok"></div>
                 <div class="card-overlay"></div>
                 <div class="game-tag tag-omok" data-i18n="omok_tag">Strategy</div>
 
@@ -741,77 +673,36 @@
         <p data-i18n="footer_text">© 2026 Chris LEE.PAPA — The Creative Archive</p>
     </footer>
 
-  
     <script>
         // ── Multilingual System ──
         const i18n = {
             ko: {
-                nav_home: "Home",
-                nav_worship: "Worship",
-                nav_music: "Music",
-                nav_book: "Books",
-                nav_movie: "Movies",
-                share_title: "SHARE GAME CENTER",
-                share_desc: "이곳의 즐거움을 소중한 사람들에게 전하세요.",
-                share_copy: "COPY LINK",
-                share_sns: "SNS SHARE",
-                share_close: "Close",
-                game_tag: "✦   GAME CENTER   ✦",
-                game_title: "Choose Your Game",
-                board_tag: "Board Game",
-                board_title: "브루마블 게임",
-                board_desc: "주사위를 굴려 우주와 아카이브의 세계를 여행하는 전략 보드게임입니다. 당신만의 기록을 개척하세요.",
-                physics_tag: "Physics",
-                book_title: "책 쌓기 마스터",
-                book_desc: "아빠의 서재에서 중력과 균형의 법칙에 도전하세요. 조심스럽게 책을 떨어뜨려 가장 높이 쌓아 올리는 마스터가 되어보세요!",
-                omok_tag: "Strategy",
-                omok_title: "Dynamic Omok",
-                omok_desc: "부제 five in a row. 캐릭터를 선택하고 제한시간 안에 다섯 돌을 이어 승리를 쟁취하는 다이내믹 오목 대전입니다.",
-                curling_tag: "Sports / Magic",
-                curling_title: "매직 컬링",
-                curling_desc: "빛과 어둠의 진영을 선택하고 마법 스킬을 활용하여 승리를 쟁취하는 판타지 마법 컬링 대전입니다.",
-                toast_copy: "링크가 복사되었습니다 ✓",
-                toast_error: "지원하지 않는 브라우저입니다.",
+                nav_home: "Home", nav_bible: "Bible", nav_worship: "Worship", nav_music: "Music", nav_book: "Books", nav_movie: "Movies",
+                share_title: "SHARE GAME CENTER", share_desc: "이곳의 즐거움을 소중한 사람들에게 전하세요.",
+                share_copy: "COPY LINK", share_sns: "SNS SHARE", share_close: "Close",
+                game_tag: "✦   GAME CENTER   ✦", game_title: "Choose Your Game",
+                board_tag: "Board Game", board_title: "브루마블 게임", board_desc: "주사위를 굴려 우주와 아카이브의 세계를 여행하는 전략 보드게임입니다. 당신만의 기록을 개척하세요.",
+                physics_tag: "Physics", book_title: "책 쌓기 마스터", book_desc: "아빠의 서재에서 중력과 균형의 법칙에 도전하세요. 조심스럽게 책을 떨어뜨려 가장 높이 쌓아 올리는 마스터가 되어보세요!",
+                omok_tag: "Strategy", omok_title: "Dynamic Omok", omok_desc: "부제 five in a row. 캐릭터를 선택하고 제한시간 안에 다섯 돌을 이어 승리를 쟁취하는 다이내믹 오목 대전입니다.",
+                curling_tag: "Sports / Magic", curling_title: "매직 컬링", curling_desc: "빛과 어둠의 진영을 선택하고 마법 스킬을 활용하여 승리를 쟁취하는 판타지 마법 컬링 대전입니다.",
+                toast_copy: "링크가 복사되었습니다 ✓", toast_error: "지원하지 않는 브라우저입니다.",
                 footer_text: "© 2026 Chris LEE.PAPA — The Creative Archive",
-                comments_title: "Guestbook",
-                comments_leave: "✦ 한마디 남겨주세요",
-                comments_submit: "남기기",
-                comments_loading: "· · ·",
-                comments_empty: "첫 번째 기록을 남겨주세요"
+                comments_title: "Guestbook", comments_leave: "✦ 한마디 남겨주세요",
+                comments_submit: "남기기", comments_loading: "· · ·", comments_empty: "첫 번째 기록을 남겨주세요"
             },
             en: {
-                nav_home: "Home",
-                nav_worship: "Worship",
-                nav_music: "Music",
-                nav_book: "Books",
-                nav_movie: "Movies",
-                share_title: "SHARE GAME CENTER",
-                share_desc: "Share the joy here with your loved ones.",
-                share_copy: "COPY LINK",
-                share_sns: "SNS SHARE",
-                share_close: "Close",
-                game_tag: "✦   GAME CENTER   ✦",
-                game_title: "Choose Your Game",
-                board_tag: "Board Game",
-                board_title: "Blue Marble Game",
-                board_desc: "A strategy board game where you roll the dice to travel the universe and the Archive. Pioneer your own records.",
-                physics_tag: "Physics",
-                book_title: "Book Stacking Master",
-                book_desc: "Challenge the laws of gravity and balance in Dad's study. Drop the books carefully to become the ultimate stacking master!",
-                omok_tag: "Strategy",
-                omok_title: "Dynamic Omok",
-                omok_desc: "Subtitle: five in a row. Choose a character and connect five stones within the time limit in this dynamic Omok duel.",
-                curling_tag: "Sports / Magic",
-                curling_title: "Magic Curling",
-                curling_desc: "Choose between light and dark factions and use magical skills to win this fantasy curling duel.",
-                toast_copy: "Link copied to clipboard ✓",
-                toast_error: "Browser not supported.",
+                nav_home: "Home", nav_bible: "Bible", nav_worship: "Worship", nav_music: "Music", nav_book: "Books", nav_movie: "Movies",
+                share_title: "SHARE GAME CENTER", share_desc: "Share the joy here with your loved ones.",
+                share_copy: "COPY LINK", share_sns: "SNS SHARE", share_close: "Close",
+                game_tag: "✦   GAME CENTER   ✦", game_title: "Choose Your Game",
+                board_tag: "Board Game", board_title: "Blue Marble Game", board_desc: "A strategy board game where you roll the dice to travel the universe and the Archive. Pioneer your own records.",
+                physics_tag: "Physics", book_title: "Book Stacking Master", book_desc: "Challenge the laws of gravity and balance in Dad's study. Drop the books carefully to become the ultimate stacking master!",
+                omok_tag: "Strategy", omok_title: "Dynamic Omok", omok_desc: "Subtitle: five in a row. Choose a character and connect five stones within the time limit in this dynamic Omok duel.",
+                curling_tag: "Sports / Magic", curling_title: "Magic Curling", curling_desc: "Choose between light and dark factions and use magical skills to win this fantasy curling duel.",
+                toast_copy: "Link copied to clipboard ✓", toast_error: "Browser not supported.",
                 footer_text: "© 2026 Chris LEE.PAPA — The Creative Archive",
-                comments_title: "Guestbook",
-                comments_leave: "✦ Leave a message",
-                comments_submit: "Submit",
-                comments_loading: "· · ·",
-                comments_empty: "Be the first to leave a message"
+                comments_title: "Guestbook", comments_leave: "✦ Leave a message",
+                comments_submit: "Submit", comments_loading: "· · ·", comments_empty: "Be the first to leave a message"
             }
         };
 
@@ -824,9 +715,7 @@
 
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
-                if (i18n[lang][key]) {
-                    el.innerHTML = i18n[lang][key];
-                }
+                if (i18n[lang][key]) el.innerHTML = i18n[lang][key];
             });
 
             document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -837,36 +726,31 @@
             const langTextObj = document.getElementById('currentLangText');
             if (langTextObj) langTextObj.textContent = lang === 'ko' ? 'KOR' : 'ENG';
             const langWrapper = document.getElementById('langWrapper');
-            if (langWrapper) {
-                langWrapper.classList.remove('active');
-                const langButton = langWrapper.querySelector('.lang-current');
-                if (langButton) langButton.setAttribute('aria-expanded', 'false');
-            }
+            if (langWrapper) langWrapper.classList.remove('active');
+            document.querySelector('.lang-current').setAttribute('aria-expanded', 'false');
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             let savedLang = 'ko';
             try { savedLang = localStorage.getItem('pref-lang') || 'ko'; } catch(e) {}
             setLanguage(savedLang);
+            fetchComments();
         });
 
         function toggleLangDropdown() {
-            const langWrapper = document.getElementById('langWrapper');
-            const isOpen = langWrapper.classList.toggle('active');
-            const langButton = langWrapper.querySelector('.lang-current');
-            if (langButton) langButton.setAttribute('aria-expanded', String(isOpen));
+            const wrapper = document.getElementById('langWrapper');
+            const isOpen = wrapper.classList.toggle('active');
+            document.querySelector('.lang-current').setAttribute('aria-expanded', String(isOpen));
         }
 
         document.addEventListener('click', function(e) {
             const wrapper = document.getElementById('langWrapper');
             if (wrapper && !wrapper.contains(e.target)) {
                 wrapper.classList.remove('active');
-                const langButton = wrapper.querySelector('.lang-current');
-                if (langButton) langButton.setAttribute('aria-expanded', 'false');
+                document.querySelector('.lang-current').setAttribute('aria-expanded', 'false');
             }
         });
 
-        // ── 모바일 메뉴 토글 ──
         const menuToggle = document.getElementById('mobile-menu');
         const navLinks = document.getElementById('navLinks');
         menuToggle.addEventListener('click', () => {
@@ -875,183 +759,93 @@
             menuToggle.setAttribute('aria-expanded', String(menuOpen));
         });
 
-        // ── 스크롤 시 네비게이션 스타일 변경 ──
-        const mainNav = document.getElementById('main-nav');
+        // ── 변경된 스크롤 프로그레스 및 내비게이션 바 로직 ──
         window.addEventListener('scroll', () => {
-            mainNav.classList.toggle('scrolled', window.scrollY > 40);
+            const scrollTop = window.scrollY; const docHeight = document.body.scrollHeight - window.innerHeight;
+            document.getElementById('scroll-progress').style.width = (scrollTop / (docHeight || 1) * 100) + '%';
+            document.getElementById('main-nav').classList.toggle('scrolled', scrollTop > 40);
         }, { passive: true });
 
-        // ── Share & Toast ──
         const shareOverlay = document.getElementById('shareOverlay');
         const toast = document.getElementById('toast');
         function openShareModal() { shareOverlay.style.display = 'flex'; setTimeout(() => shareOverlay.classList.add('active'), 10); }
-        
-        function closeShareModal(e) { 
-            // e가 없거나 오버레이 배경(shareOverlay)을 클릭했을 때만 닫히도록 수정
-            if (!e || e.target === shareOverlay) {
-                shareOverlay.classList.remove('active'); 
-                setTimeout(() => shareOverlay.style.display = 'none', 300); 
-            }
-        }
+        function closeShareModal(e) { if (!e || e.target === shareOverlay) { shareOverlay.classList.remove('active'); setTimeout(() => shareOverlay.style.display = 'none', 300); } }
 
         async function copyURL() {
-            const currentUrl = window.location.href;
-            let success = false;
+            const currentUrl = window.location.href; let success = false;
             if (navigator.clipboard && window.isSecureContext) { try { await navigator.clipboard.writeText(currentUrl); success = true; } catch (err) {} }
             if (!success) {
-                const textArea = document.createElement("textarea");
-                textArea.value = currentUrl;
-                textArea.id = "temp-copy-area";
-                textArea.style.position = "fixed";
-                textArea.style.left = "-9999px";
-                document.body.appendChild(textArea);
-                textArea.focus(); textArea.select();
-                try { success = document.execCommand('copy'); } catch (err) {}
-                document.body.removeChild(textArea);
+                const ta = document.createElement("textarea"); ta.value = currentUrl; ta.id = "temp-copy-area"; ta.style.position = "fixed"; ta.style.left = "-9999px";
+                document.body.appendChild(ta); ta.focus(); ta.select(); try { success = document.execCommand('copy'); } catch (err) {} document.body.removeChild(ta);
             }
-            if (success) { showToast(i18n[currentLang].toast_copy); }
-            closeShareModal();
+            if (success) { showToast(i18n[currentLang].toast_copy); } closeShareModal();
         }
 
-        function shareViaWebAPI() {
-            if (navigator.share) { navigator.share({ title: 'Chris LEE.PAPA - GAME CENTER', text: '즐거운 게임과 아카이브의 세계로 초대합니다.', url: window.location.href }); }
-            else { showToast(i18n[currentLang].toast_error); }
-        }
+        function shareViaWebAPI() { if (navigator.share) { navigator.share({ title: 'Chris LEE.PAPA - GAME CENTER', text: '즐거운 게임과 아카이브의 세계로 초대합니다.', url: window.location.href }); } else { showToast(i18n[currentLang].toast_error); } }
         function showToast(msg) { toast.textContent = msg; toast.style.display = 'block'; setTimeout(() => { toast.style.display = 'none'; }, 2500); }
-        
-        // ── 수정된 escapeHTML 함수 (오류 해결 및 XSS 방지 강화) ──
+
         function escapeHTML(value) {
-            return String(value)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#39;'); 
+            return String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
         }
 
-        // ── Supabase 설정 및 댓글 기능 ──
+        // ── Supabase 댓글 기능 ──
         const SUPA_URL = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
         const SUPA_KEY = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
-        const PAGE_ID  = '/gameinfo'; // gameinfo 페이지 고유 ID로 변경
+        const PAGE_ID  = '/gameinfo';
 
         async function fetchComments() {
             const list = document.getElementById('cm-list');
             try {
-                const res = await fetch(
-                    `${SUPA_URL}/rest/v1/comments?page=eq.${encodeURIComponent(PAGE_ID)}&order=created_at.desc`,
-                    { headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` } }
-                );
+                const res = await fetch(`${SUPA_URL}/rest/v1/comments?page=eq.${encodeURIComponent(PAGE_ID)}&order=created_at.desc`, { headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` } });
                 const data = await res.json();
                 if (!Array.isArray(data) || data.length === 0) {
                     list.innerHTML = `<div class="cm-empty"><span>✦</span><span data-i18n="comments_empty">${i18n[currentLang].comments_empty}</span></div>`;
                     return;
                 }
-                list.innerHTML = data.map((c, i) => {
-                    const safeNickname = escapeHTML(c.nickname || 'Guest');
-                    const initial = safeNickname.charAt(0).toUpperCase();
-                    const date = c.created_at ? c.created_at.slice(0,10) : '';
-                    const escaped = escapeHTML(c.content || '');
-                    return `
+                list.innerHTML = data.map((c, i) => `
                     <div class="comment-card" style="animation-delay:${i * 0.05}s">
                         <div class="comment-meta">
-                            <div class="comment-avatar">${initial}</div>
-                            <span class="comment-nickname">${safeNickname}</span>
-                            <span class="comment-date">${date}</span>
+                            <div class="comment-avatar">${escapeHTML(c.nickname || 'G').charAt(0).toUpperCase()}</div>
+                            <span class="comment-nickname">${escapeHTML(c.nickname || 'Guest')}</span>
+                            <span class="comment-date">${c.created_at ? c.created_at.slice(0,10) : ''}</span>
                         </div>
-                        <div class="comment-content">${escaped}</div>
-                    </div>`;
-                }).join('');
-            } catch(e) {
-                list.innerHTML = `<div class="cm-empty"><span>✦</span>잠시 후 다시 시도해주세요.</div>`;
-            }
+                        <div class="comment-content">${escapeHTML(c.content || '')}</div>
+                    </div>`).join('');
+            } catch(e) { list.innerHTML = `<div class="cm-empty"><span>✦</span>잠시 후 다시 시도해주세요.</div>`; }
         }
 
         async function submitComment() {
-            const nickname = document.getElementById('cm-name').value.trim();
-            const content  = document.getElementById('cm-body').value.trim();
-            const btn = document.querySelector('.cm-submit-btn');
-
-            if (!nickname || !content) {
-                showToast(currentLang === 'ko' ? '닉네임과 내용을 입력해주세요.' : 'Please enter your nickname and message.');
-                return;
-            }
-            if (content.length < 2) {
-                showToast(currentLang === 'ko' ? '내용을 좀 더 입력해주세요.' : 'Please write a bit more.');
-                return;
-            }
-
-            btn.disabled = true;
-            btn.textContent = '...';
-
+            const ni = document.getElementById('cm-name'); const bi = document.getElementById('cm-body'); const btn = document.querySelector('.cm-submit-btn');
+            const nickname = ni.value.trim(); const content = bi.value.trim();
+            if (!nickname || !content) { showToast(i18n[currentLang].comments_leave); return; }
+            btn.disabled = true; btn.textContent = '...';
             try {
                 const res = await fetch(`${SUPA_URL}/rest/v1/comments`, {
-                    method: 'POST',
-                    headers: {
-                        apikey: SUPA_KEY,
-                        Authorization: `Bearer ${SUPA_KEY}`,
-                        'Content-Type': 'application/json',
-                        'Prefer': 'return=minimal'
-                    },
+                    method: 'POST', headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
                     body: JSON.stringify({ page: PAGE_ID, nickname, content })
                 });
-                if (res.ok || res.status === 201) {
-                    document.getElementById('cm-name').value = '';
-                    document.getElementById('cm-body').value = '';
-                    showToast(currentLang === 'ko' ? '소중한 한마디 감사합니다 🙏' : 'Thank you for your message 🙏');
-                    fetchComments();
-                } else {
-                    const err = await res.text();
-                    showToast(currentLang === 'ko' ? '오류가 발생했습니다. 다시 시도해주세요.' : 'An error occurred. Please try again.');
-                    console.error('Supabase error:', err);
-                }
-            } catch(e) {
-                showToast(currentLang === 'ko' ? '네트워크 오류입니다.' : 'Network error.');
-            } finally {
-                btn.disabled = false;
-                btn.textContent = i18n[currentLang]?.comments_submit || '남기기';
-            }
+                if (res.ok) { ni.value = ''; bi.value = ''; showToast(i18n[currentLang].comments_thanks || '감사합니다!'); fetchComments(); }
+            } catch(e) { showToast('네트워크 오류입니다.'); } finally { btn.disabled = false; btn.textContent = i18n[currentLang].comments_submit; }
         }
 
-        fetchComments();
-
-        // ── 우주 배경 캔버스 애니메이션 ──
-        const canvas = document.getElementById('stars-canvas');
-        const ctx = canvas.getContext('2d');
-        let stars = [], shootingStars = [];
-
+        // ── 우주 배경 캔버스 ──
+        const canvas = document.getElementById('stars-canvas'); const ctx = canvas.getContext('2d'); let stars = [], shootingStars = [];
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; initStars(); }
-        function initStars() {
-            stars = [];
-            const count = Math.floor((canvas.width * canvas.height) / 6000);
-            for (let i = 0; i < count; i++) {
-                stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 1.6 + 0.2, opacity: Math.random(), speed: Math.random() * 0.015 + 0.003 });
-            }
-        }
+        function initStars() { stars = []; const count = Math.floor((canvas.width * canvas.height) / 6000); for (let i = 0; i < count; i++) stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 1.6 + 0.2, opacity: Math.random(), speed: Math.random() * 0.015 + 0.003 }); }
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            stars.forEach(s => {
-                s.opacity += s.speed;
-                if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed;
-                ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255,255,255,${Math.max(0, s.opacity)})`; ctx.fill();
-            });
-            if (Math.random() < 0.01) {
-                shootingStars.push({ x: Math.random() * canvas.width * 0.8 + canvas.width * 0.1, y: Math.random() * canvas.height * 0.35, len: Math.random() * 90 + 60, speed: Math.random() * 9 + 5, opacity: 1 });
-            }
+            stars.forEach(s => { s.opacity += s.speed; if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed; ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fillStyle = `rgba(255,255,255,${Math.max(0, s.opacity)})`; ctx.fill(); });
+            if (Math.random() < 0.01) shootingStars.push({ x: Math.random() * canvas.width * 0.8 + canvas.width * 0.1, y: Math.random() * canvas.height * 0.35, len: Math.random() * 90 + 60, speed: Math.random() * 9 + 5, opacity: 1 });
             shootingStars.forEach((ss, i) => {
                 ss.x -= ss.speed * 0.8; ss.y += ss.speed * 0.5; ss.opacity -= 0.015;
                 const grad = ctx.createLinearGradient(ss.x, ss.y, ss.x + ss.len, ss.y - ss.len * 0.6);
                 grad.addColorStop(0, `rgba(255,255,255,${ss.opacity})`); grad.addColorStop(1, 'transparent');
-                ctx.beginPath(); ctx.strokeStyle = grad; ctx.lineWidth = 1.5;
-                ctx.moveTo(ss.x, ss.y); ctx.lineTo(ss.x + ss.len, ss.y - ss.len * 0.6); ctx.stroke();
+                ctx.beginPath(); ctx.strokeStyle = grad; ctx.lineWidth = 1.5; ctx.moveTo(ss.x, ss.y); ctx.lineTo(ss.x + ss.len, ss.y - ss.len * 0.6); ctx.stroke();
                 if (ss.opacity <= 0 || ss.x < -ss.len || ss.y > canvas.height + ss.len) shootingStars.splice(i, 1);
             });
             requestAnimationFrame(draw);
         }
-        window.addEventListener('resize', resize);
-        resize(); draw();
+        window.addEventListener('resize', resize); resize(); draw();
     </script>
-
- 
 </body>
 </html>

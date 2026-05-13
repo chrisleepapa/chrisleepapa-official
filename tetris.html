@@ -174,11 +174,36 @@
 
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         .spinner { animation: spin 1s linear infinite; display: inline-block; }
+
+        /* 🦅 Eagle Intro Style */
+        #eagle-wrap {
+            position: absolute; top: 15%; left: -100px;
+            font-size: 3rem; z-index: 105; pointer-events: none;
+            display: none;
+        }
+
+        /* ✨ Floating Messages */
+        .floating-reaction {
+            position: absolute; left: 50%; top: 40%; transform: translateX(-50%);
+            font-family: 'Black Han Sans', sans-serif; font-size: 2.2rem; font-style: italic;
+            color: var(--c-gold); text-shadow: 0 0 15px rgba(0,0,0,0.8);
+            z-index: 120; pointer-events: none; opacity: 0;
+            white-space: nowrap;
+        }
+        @keyframes float-reaction {
+            0% { transform: translate(-50%, 20px) scale(0.5); opacity: 0; }
+            20% { transform: translate(-50%, 0) scale(1.1); opacity: 1; }
+            80% { transform: translate(-50%, -40px) scale(1); opacity: 1; }
+            100% { transform: translate(-50%, -80px) scale(0.8); opacity: 0; }
+        }
     </style>
 </head>
 <body>
 
 <div id="gameWrap">
+    <!-- 독수리 서빙용 -->
+    <div id="eagle-wrap">🦅</div>
+
     <!-- 1. 메인 로그인 화면 -->
     <div id="s-login" class="screen">
         <div style="margin-top: 5vh;">
@@ -215,7 +240,7 @@
     </div>
 
     <!-- 3. 게임 캔버스 -->
-    <main>
+    <main id="mainGameArea">
         <div class="canvas-wrapper">
             <canvas id="tetris"></canvas>
         </div>
@@ -247,9 +272,11 @@
 
 <script>
     // ══════════════════════════════════════════════════════
-    // SOUND SYSTEM (Web Audio API)
+    // SOUND & REACTION DATA
     // ══════════════════════════════════════════════════════
     let audioCtx;
+    const REACTIONS = ["폼 미쳤다!", "나이스 샷!", "오우예!", "찢었다!", "레벨 업!! 🔥", "GOAT!", "천재인가?", "완벽해!", "멈춰!!", "깔끔쓰✨"];
+
     function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
 
     function playSound(type) {
@@ -287,6 +314,15 @@
             gain.gain.setValueAtTime(0.2, t); gain.gain.linearRampToValueAtTime(0, t + 0.5);
             osc.start(t); osc.stop(t + 0.5);
         }
+    }
+
+    function showReaction(text) {
+        const el = document.createElement('div');
+        el.className = 'floating-reaction';
+        el.textContent = text || REACTIONS[Math.floor(Math.random() * REACTIONS.length)];
+        document.getElementById('mainGameArea').appendChild(el);
+        el.style.animation = 'float-reaction 1.2s ease-out forwards';
+        setTimeout(() => el.remove(), 1300);
     }
 
     // ══════════════════════════════════════════════════════
@@ -335,6 +371,7 @@
     let arena = Array.from({length: ROWS}, () => Array(COLS).fill(0));
     let player = { pos: {x: 0, y: 0}, matrix: null, lines: 0, gameOver: true };
     let dropCounter = 0, dropInterval = 1000, lastTime = 0;
+    let isIntro = false;
 
     function createPiece(type) {
         if (type === 'I') return [[0,1,0,0],[0,1,0,0],[0,1,0,0],[0,1,0,0]];
@@ -405,14 +442,25 @@
             ++y; count++;
         }
         if (count > 0) {
+            const oldLevel = Math.floor(player.lines / 10);
             player.lines += count;
+            const newLevel = Math.floor(player.lines / 10);
+            
             document.getElementById('hudLines').innerText = player.lines;
-            dropInterval = Math.max(100, 1000 - (player.lines * 30));
+            
+            // 속도 레벨업 체크 (10줄마다)
+            if (newLevel > oldLevel) {
+                dropInterval = Math.max(100, 1000 - (newLevel * 120));
+                showReaction("LEVEL UP! 🔥");
+            } else {
+                showReaction(); // 일반 리액션
+            }
             playSound('clear');
         }
     }
 
     function playerDrop() {
+        if (isIntro) return;
         player.pos.y++;
         if (collide(arena, player)) {
             player.pos.y--; merge(arena, player); playerReset(); arenaSweep();
@@ -421,14 +469,14 @@
     }
 
     function hardDrop() {
-        if (player.gameOver) return;
+        if (player.gameOver || isIntro) return;
         while (!collide(arena, player)) { player.pos.y++; }
         player.pos.y--; merge(arena, player); playerReset(); arenaSweep();
         dropCounter = 0; playSound('drop'); draw();
     }
 
     function playerMove(dir) {
-        if (player.gameOver) return;
+        if (player.gameOver || isIntro) return;
         player.pos.x += dir;
         if (collide(arena, player)) player.pos.x -= dir;
         else playSound('move');
@@ -436,7 +484,7 @@
     }
 
     function playerRotate() {
-        if (player.gameOver) return;
+        if (player.gameOver || isIntro) return;
         const pos = player.pos.x; let offset = 1;
         rotate(player.matrix);
         while (collide(arena, player)) {
@@ -469,11 +517,42 @@
     }
 
     function update(time = 0) {
-        if (player.gameOver) return;
+        if (player.gameOver || isIntro) return;
         const deltaTime = time - lastTime; lastTime = time;
         dropCounter += deltaTime;
         if (dropCounter > dropInterval) playerDrop();
         draw(); requestAnimationFrame(update);
+    }
+
+    // 🦅 Eagle Intro Function
+    function startEagleIntro() {
+        isIntro = true;
+        const eagle = document.getElementById('eagle-wrap');
+        eagle.style.display = 'block';
+        eagle.style.left = '-100px';
+        
+        // 1. 독수리 비행 (왼쪽 -> 중앙)
+        eagle.animate([
+            { left: '-100px' },
+            { left: '45%' }
+        ], { duration: 1500, fill: 'forwards' }).onfinish = () => {
+            // 2. 블록 떨구기
+            playerReset();
+            draw();
+            playSound('drop');
+            showReaction("START! 🦅");
+            
+            // 3. 독수리 탈출 (중앙 -> 오른쪽)
+            eagle.animate([
+                { left: '45%' },
+                { left: '120%' }
+            ], { duration: 1000, fill: 'forwards', easing: 'ease-in' }).onfinish = () => {
+                eagle.style.display = 'none';
+                isIntro = false;
+                lastTime = performance.now();
+                update();
+            };
+        };
     }
 
     // ══════════════════════════════════════════════════════
@@ -494,12 +573,16 @@
     function startGame() {
         arena = Array.from({length: ROWS}, () => Array(COLS).fill(0));
         player.lines = 0; player.gameOver = false;
-        document.getElementById('hudLines').innerText = '0'; playerReset();
-        lastTime = performance.now(); update();
+        dropInterval = 1000;
+        document.getElementById('hudLines').innerText = '0';
+        
+        // 독수리 이벤트 시작
+        startEagleIntro();
     }
 
+    // Keyboard
     window.addEventListener('keydown', e => {
-        if (player.gameOver) return;
+        if (player.gameOver || isIntro) return;
         if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', ' '].includes(e.key)) e.preventDefault();
         if (e.key === 'ArrowLeft') playerMove(-1);
         else if (e.key === 'ArrowRight') playerMove(1);
@@ -513,7 +596,7 @@
         if(!btn) return;
         let timer = null;
         const start = (e) => {
-            e.preventDefault(); if(player.gameOver) return;
+            e.preventDefault(); if(player.gameOver || isIntro) return;
             action();
             if(repeat) { clearInterval(timer); timer = setInterval(action, 90); }
         };

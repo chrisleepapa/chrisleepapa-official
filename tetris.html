@@ -166,7 +166,7 @@
         }
         canvas { width: 100%; height: 100%; display: block; }
 
-        /* ─── ★ 거대 투명 컨트롤러 (드롭버튼 회전 아래로 이동) ─── */
+        /* ─── 거대 투명 컨트롤러 ─── */
         #touch-dpad {
             position: absolute; inset: 0;
             z-index: 60; opacity: 0; pointer-events: none; transition: 0.5s;
@@ -468,14 +468,32 @@
     let player = { pos: {x: 0, y: 0}, matrix: null, lines: 0, level: 1, gameOver: true };
     
     let dropCounter = 0, dropInterval = 1000, lastTime = 0;
-    let baseDropInterval = 1000;
-    let speedPhase = 'FAST'; 
-    let speedPhaseTime = 0;
     
     let isIntro = false;
     let isPaused = false; 
 
     let nextPieces = [];
+
+    // ★ 수정된 속도 산출 로직: 구간별 속도 스케일링 설정 및 휴식시간 제거
+    function getDropIntervalForLevel(level) {
+        let speedLv;
+        // 구간별 속도(Speed Level) 판별
+        if (level <= 5) speedLv = 1;
+        else if (level <= 8) speedLv = 2;
+        else if (level <= 10) speedLv = 3;
+        else if (level <= 12) speedLv = 4;
+        else if (level <= 15) speedLv = 5;
+        else speedLv = 5 + (level - 15); // 그 이후는 레벨 1당 속도 1씩 추가
+
+        // Speed Level을 밀리초(ms) 단위 드롭 간격으로 매핑
+        if (speedLv === 1) return 1000;
+        if (speedLv === 2) return 700;
+        if (speedLv === 3) return 450;
+        if (speedLv === 4) return 250;
+        if (speedLv === 5) return 120;
+        // 속도 6 이후부터는 더욱 짧아지되 최소 하한선인 20ms를 둠
+        return Math.max(20, 120 - (speedLv - 5) * 15); 
+    }
 
     function getRandomPieceMatrix() {
         const pieces = 'ILJOTSZ';
@@ -615,10 +633,9 @@
             player.level = Math.floor(player.lines / 5) + 1;
             maxReachedLevel = Math.max(maxReachedLevel, player.level);
             
+            // ★ 레벨이 올랐을 때 구간별 속도로 드롭 속도 갱신
             if (player.level > oldLevel) {
-                baseDropInterval = Math.max(100, 1000 - ((player.level - 1) * 150));
-                dropInterval = baseDropInterval;
-                if (player.level >= 6) { speedPhase = 'FAST'; speedPhaseTime = 0; }
+                dropInterval = getDropIntervalForLevel(player.level);
                 showLevelUpAnimation(player.level);
             } else {
                 playSound('clear');
@@ -711,17 +728,7 @@
         if (player.gameOver || isIntro || isPaused) return; 
         const deltaTime = time - lastTime; lastTime = time;
         
-        if (player.level >= 6) {
-            speedPhaseTime += deltaTime;
-            if (speedPhase === 'FAST' && speedPhaseTime >= 3000) {
-                speedPhase = 'SLOW'; speedPhaseTime = 0; dropInterval = 1000; showReaction("휴식 타임! 😌");
-            } else if (speedPhase === 'SLOW' && speedPhaseTime >= 10000) {
-                speedPhase = 'FAST'; speedPhaseTime = 0; dropInterval = baseDropInterval; showReaction("다시 달린다! 🔥");
-            }
-        } else {
-            dropInterval = baseDropInterval;
-        }
-
+        // ★ 휴식시간 로직 완전히 제거됨 (계속 유지되는 설정된 드롭 간격 사용)
         dropCounter += deltaTime;
         if (dropCounter > dropInterval) playerDrop();
         
@@ -764,8 +771,7 @@
         isPaused = false;
         document.getElementById('btn-pause').innerText = '⏸️';
         
-        baseDropInterval = 1000; dropInterval = 1000;
-        speedPhase = 'FAST'; speedPhaseTime = 0;
+        dropInterval = getDropIntervalForLevel(1); // 1레벨 기본 속도로 시작
         nextPieces = []; 
         
         document.getElementById('hudLevel').innerText = '1';
@@ -786,7 +792,6 @@
         else if (e.key === ' ') hardDrop();
     });
 
-    // ★ 연속 이동(DAS/ARR) 적용된 버튼 바인딩 함수
     function bindBtn(id, action, repeat = false) {
         const btn = document.getElementById(id);
         let timer = null;
@@ -797,7 +802,6 @@
             if(repeat) { 
                 clearTimeout(timeout);
                 clearInterval(timer);
-                // 누르고 있을 때: 150ms 딜레이 후 40ms 간격으로 초고속 이동 발동
                 timeout = setTimeout(() => {
                     timer = setInterval(action, 40); 
                 }, 150);

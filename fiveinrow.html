@@ -385,9 +385,17 @@
         .btn-char:hover { background: #fff; transform: translateY(-2px); }
 
         #loadingCloud { font-size: 10px; color: #ccc; font-weight: normal; margin-left: 5px; }
+
+        /* 유튜브 플레이어 영역 (안보임) */
+        #yt-player-container {
+            position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none; z-index: -1;
+        }
     </style>
 </head>
 <body>
+
+    <!-- 🎵 숨겨진 유튜브 플레이어 -->
+    <div id="yt-player-container"></div>
 
     <!-- 🏆 랭킹 보드 -->
     <div class="leaderboard-wrapper" style="display:none;" id="leaderboardWrapper">
@@ -486,6 +494,43 @@
     </div>
 
     <script>
+        // ══════════════════════════════════════════════════════
+        // YOUTUBE BGM PLAYER (테트리스와 동일한 재생목록 & 랜덤 셔플)
+        // ══════════════════════════════════════════════════════
+        let ytPlayer;
+        let isYtReady = false;
+
+        const tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        window.onYouTubeIframeAPIReady = function() {
+            ytPlayer = new YT.Player('yt-player-container', {
+                height: '0',
+                width: '0',
+                playerVars: {
+                    'autoplay': 0, 
+                    'controls': 0,
+                    'disablekb': 1,
+                    'listType': 'playlist', 
+                    'list': 'PL3p0Se-Sm12SdPoWcevuXVd5pAMfpOGxY', 
+                    'playsinline': 1
+                },
+                events: {
+                    'onReady': function(event) {
+                        isYtReady = true;
+                        event.target.setVolume(25); 
+                    },
+                    'onStateChange': function(event) {
+                        if (event.data === YT.PlayerState.ENDED) {
+                            ytPlayer.nextVideo();
+                        }
+                    }
+                }
+            });
+        };
+
         const SUPA_URL = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
         const SUPA_KEY = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
         const TABLE_NAME = 'omok_ranking';
@@ -693,6 +738,15 @@
                 if(!p1Char || !p2Char) return;
             }
             document.getElementById('intro-screen').style.opacity = '0';
+
+            // ★ 오목 게임 시작 시 유튜브 BGM 셔플 및 재생
+            if (isYtReady && ytPlayer) {
+                ytPlayer.setShuffle(true);
+                ytPlayer.setLoop(true);
+                ytPlayer.nextVideo();
+                ytPlayer.playVideo();
+            }
+
             setTimeout(() => {
                 document.getElementById('intro-screen').style.display = 'none';
                 document.getElementById('game-screen').style.display = 'flex';
@@ -725,6 +779,9 @@
             document.getElementById('game-screen').style.display = 'none';
             document.getElementById('leaderboardWrapper').style.display = 'none';
             stopTimer();
+            // ★ 처음으로 돌아갈 때 BGM 정지
+            if (isYtReady && ytPlayer) ytPlayer.pauseVideo();
+            
             const intro = document.getElementById('intro-screen');
             intro.style.display = 'flex';
             setTimeout(() => intro.style.opacity = '1', 50);
@@ -952,6 +1009,9 @@
 
         function triggerWinEffects(winner, isTimeout = false) {
             gameOver = true; stopTimer();
+            // ★ 게임 오버 시 BGM 일시정지 (결과창 사운드를 위해)
+            if (isYtReady && ytPlayer) ytPlayer.pauseVideo();
+            
             const modal = document.getElementById('result-modal'); const resultBox = document.getElementById('resultBox');
             const title = document.getElementById('resultTitle'); const sub = document.getElementById('resultSub');
             const winCountContainer = document.getElementById('winCountContainer');
@@ -1000,6 +1060,10 @@
             setTimeout(() => {
                 document.getElementById('result-modal').style.display = 'none';
                 if (introMode === 'COM') setRandomAi();
+                
+                // ★ 다시 하기 시 BGM 다시 재생
+                if (isYtReady && ytPlayer) ytPlayer.playVideo();
+                
                 resetGame();
             }, 400);
         }

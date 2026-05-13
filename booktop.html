@@ -283,9 +283,17 @@
             10%, 30%, 50%, 70%, 90% { transform: translate(-3px, -2px) rotate(-1deg); }
             20%, 40%, 60%, 80% { transform: translate(3px, 2px) rotate(1deg); }
         }
+
+        /* 유튜브 플레이어 영역 (안보임) */
+        #yt-player-container {
+            position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none; z-index: -1;
+        }
     </style>
 </head>
 <body>
+
+    <!-- 🎵 숨겨진 유튜브 플레이어 -->
+    <div id="yt-player-container"></div>
 
     <!-- 서재 배경 요소들 -->
     <div id="room-bg"></div>
@@ -364,6 +372,43 @@
     </div>
 
     <script>
+        // ══════════════════════════════════════════════════════
+        // YOUTUBE BGM PLAYER (오목과 동일한 재생목록 & 랜덤 셔플)
+        // ══════════════════════════════════════════════════════
+        let ytPlayer;
+        let isYtReady = false;
+
+        const tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        window.onYouTubeIframeAPIReady = function() {
+            ytPlayer = new YT.Player('yt-player-container', {
+                height: '0',
+                width: '0',
+                playerVars: {
+                    'autoplay': 0, 
+                    'controls': 0,
+                    'disablekb': 1,
+                    'listType': 'playlist', 
+                    'list': 'PL3p0Se-Sm12SdPoWcevuXVd5pAMfpOGxY', 
+                    'playsinline': 1
+                },
+                events: {
+                    'onReady': function(event) {
+                        isYtReady = true;
+                        event.target.setVolume(25); 
+                    },
+                    'onStateChange': function(event) {
+                        if (event.data === YT.PlayerState.ENDED) {
+                            ytPlayer.nextVideo();
+                        }
+                    }
+                }
+            });
+        };
+
         const SUPA_URL = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
         const SUPA_KEY = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
         
@@ -862,6 +907,10 @@
 
         function gameOver() {
             gameState = 'GAMEOVER';
+            
+            // ★ 게임 오버 시 BGM 일시정지
+            if (isYtReady && ytPlayer) ytPlayer.pauseVideo();
+            
             controlsHint.style.display = 'none';
             btnRestartTop.style.display = 'none';
             celebrationLayer.replaceChildren();
@@ -909,6 +958,17 @@
                 }
                 document.getElementById('initial-error').style.display = 'none';
                 currentInitial = initialVal;
+                
+                // ★ 처음 시작 시 유튜브 BGM 셔플 및 재생
+                if (isYtReady && ytPlayer) {
+                    ytPlayer.setShuffle(true);
+                    ytPlayer.setLoop(true);
+                    ytPlayer.nextVideo();
+                    ytPlayer.playVideo();
+                }
+            } else {
+                // ★ 다시 하기 시 BGM 다시 재생
+                if (isYtReady && ytPlayer) ytPlayer.playVideo();
             }
 
             startModal.style.display = 'none';

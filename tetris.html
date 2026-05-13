@@ -38,12 +38,13 @@
             font-family: 'Poppins', sans-serif;
             background: var(--bg-deep);
             color: #fff;
-            /* 100dvh 오류 방지를 위해 모바일 화면 크기에 딱 맞추는 설정 */
+            /* 모바일 화면 잘림 방지 (전체 화면 고정) */
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
             width: 100vw; height: 100%;
         }
 
+        /* 시네마틱 노이즈 텍스처 */
         body::before {
             content: ''; position: fixed; inset: 0; z-index: 0;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
@@ -117,9 +118,9 @@
 
         .lb-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; }
 
-        /* ─── HUD ─── */
+        /* ─── HUD Area ─── */
         #hud {
-            flex: 0 0 auto; /* 크기 고정 */
+            flex: 0 0 auto;
             padding: max(env(safe-area-inset-top, 15px), 15px) 20px 10px;
             display: flex; justify-content: space-between; align-items: center;
             z-index: 50; pointer-events: none; opacity: 0; transition: 0.5s;
@@ -129,24 +130,27 @@
             padding: 8px 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);
         }
         .hud-label { font-size: 10px; color: #aaa; text-transform: uppercase; letter-spacing: 1px; }
-        .hud-val { font-family: 'Exo 2', sans-serif; font-size: 20px; font-weight: 900; color: var(--c-cyan); }
+        .hud-val { 
+            font-family: 'Exo 2', sans-serif; font-size: 20px; font-weight: 900; color: var(--c-cyan); 
+            display: inline-block; transition: all 0.3s;
+        }
 
-        /* ─── Game Area ─── */
+        /* ─── Main Game Area ─── */
         main { 
-            flex: 1 1 0; /* 남은 공간을 모두 차지하되 넘치지 않게 */
+            flex: 1 1 0; 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
             justify-content: center; 
             padding: 5px 15px; 
-            min-height: 0; /* flex 자식 축소 버그 방지 */
+            min-height: 0; 
             overflow: hidden;
         }
         .canvas-wrapper {
             position: relative; 
             height: 100%; 
             max-width: 100%;
-            aspect-ratio: 10 / 20; /* 10:20 테트리스 보드 비율 유지 */
+            aspect-ratio: 10 / 20;
             background: #000; 
             border-radius: 12px; 
             border: 2px solid #ff007f;
@@ -157,7 +161,7 @@
 
         /* ─── Mobile Controller ─── */
         #controller {
-            flex: 0 0 auto; /* 크기 고정 절대 밀리지 않음 */
+            flex: 0 0 auto;
             padding: 10px 15px max(env(safe-area-inset-bottom, 15px), 15px);
             display: flex;
             flex-direction: column;
@@ -204,7 +208,7 @@
         .floating-reaction {
             position: absolute; left: 50%; top: 40%; transform: translateX(-50%);
             font-family: 'Black Han Sans', sans-serif; font-size: 2rem; font-style: italic;
-            color: var(--c-gold); text-shadow: 0 0 15px rgba(0,0,0,0.8);
+            color: #fff; text-shadow: 0 0 15px var(--c-cyan), 0 5px 10px rgba(0,0,0,0.8);
             z-index: 120; pointer-events: none; opacity: 0;
             white-space: nowrap;
         }
@@ -214,6 +218,19 @@
             80% { transform: translate(-50%, -40px) scale(1); opacity: 1; }
             100% { transform: translate(-50%, -80px) scale(0.8); opacity: 0; }
         }
+
+        /* 🌟 Level Up Animation Element */
+        .level-up-anim {
+            position: absolute;
+            text-align: center;
+            font-family: 'Black Han Sans', sans-serif;
+            font-size: 2.2rem;
+            color: var(--c-gold);
+            text-shadow: 0 0 20px var(--c-neon), 0 5px 10px rgba(0,0,0,0.8);
+            z-index: 150;
+            pointer-events: none;
+            line-height: 1.1;
+        }
     </style>
 </head>
 <body>
@@ -222,7 +239,7 @@
     <!-- 🦅 독수리 이벤트 -->
     <div id="eagle-wrap">🦅</div>
 
-    <!-- 1. 메인 로그인 화면 -->
+    <!-- 1. 메인 화면 -->
     <div id="s-login" class="screen">
         <div style="margin-top: 5vh;">
             <div class="title-main">TETRIS</div>
@@ -252,19 +269,19 @@
             <div id="hudInit" class="hud-val">---</div>
         </div>
         <div class="hud-item" style="text-align: right;">
-            <div class="hud-label">Lines</div>
-            <div id="hudLines" class="hud-val">0</div>
+            <div class="hud-label">LEVEL</div>
+            <div id="hudLevel" class="hud-val">1</div>
         </div>
     </div>
 
-    <!-- 3. 게임 영역 (Flex 1로 남는 영역 자동 채움) -->
+    <!-- 3. 게임 영역 -->
     <main id="mainGameArea">
         <div class="canvas-wrapper">
             <canvas id="tetris"></canvas>
         </div>
     </main>
 
-    <!-- 4. 고정 컨트롤러 -->
+    <!-- 4. 조작 버튼 -->
     <div id="controller">
         <div class="ctrl-row">
             <div class="ctrl-btn btn-action" id="btn-up">회전 ↻</div>
@@ -282,7 +299,7 @@
         <div class="gameover-card">
             <div style="font-size: 3rem; margin-bottom: 10px;">💀</div>
             <div class="title-main" style="font-size: 2rem; color: #ff007f; -webkit-text-fill-color: #ff007f;">GAME OVER</div>
-            <div style="font-size: 1.1rem; margin-bottom: 25px; opacity: 0.8;">최종 기록: <span id="finalLines" style="color:var(--c-cyan); font-weight:900;">0</span>줄</div>
+            <div style="font-size: 1.1rem; margin-bottom: 25px; opacity: 0.8;">최종 도달: <span style="color:var(--c-gold); font-weight:900;">LV.<span id="finalLevel">1</span></span></div>
             <button class="btn-magic" onclick="location.reload()">다시 도전</button>
         </div>
     </div>
@@ -293,7 +310,7 @@
     // SOUND & REACTION
     // ══════════════════════════════════════════════════════
     let audioCtx;
-    const REACTIONS = ["폼 미쳤다!", "나이스!", "오우예!", "찢었다!", "레벨업! 🔥", "GOAT!", "완벽해!", "깔끔쓰✨"];
+    const REACTIONS = ["폼 미쳤다!", "나이스!", "오우예!", "찢었다!", "GOAT!", "완벽해!", "깔끔쓰✨"];
 
     function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
 
@@ -319,6 +336,13 @@
                 o.frequency.setValueAtTime(f, t + i * 0.1);
                 g.gain.setValueAtTime(0.05, t + i * 0.1); o.start(t + i * 0.1); o.stop(t + i * 0.1 + 0.2);
             });
+        } else if (type === 'levelup') {
+            [440, 554, 659, 880].forEach((f, i) => {
+                const o = audioCtx.createOscillator(); const g = audioCtx.createGain();
+                o.type = 'triangle'; o.connect(g); g.connect(audioCtx.destination);
+                o.frequency.setValueAtTime(f, t + i * 0.15);
+                g.gain.setValueAtTime(0.1, t + i * 0.15); o.start(t + i * 0.15); o.stop(t + i * 0.15 + 0.3);
+            });
         }
     }
 
@@ -329,6 +353,45 @@
         document.getElementById('mainGameArea').appendChild(el);
         el.style.animation = 'float-reaction 1.2s ease-out forwards';
         setTimeout(() => el.remove(), 1300);
+    }
+
+    // 🔥 레벨업 우측 상단 날아가기 애니메이션
+    function showLevelUpAnimation(level) {
+        playSound('levelup');
+        const el = document.createElement('div');
+        el.className = 'level-up-anim';
+        el.innerHTML = `LEVEL UP!<br><span style="font-size:4rem">${level}</span>`;
+        document.getElementById('gameWrap').appendChild(el);
+        
+        const hud = document.getElementById('hudLevel');
+        const hudRect = hud.getBoundingClientRect();
+        const wrapRect = document.getElementById('gameWrap').getBoundingClientRect();
+        
+        const targetX = (hudRect.left - wrapRect.left) + (hudRect.width / 2);
+        const targetY = (hudRect.top - wrapRect.top) + (hudRect.height / 2);
+        const startX = wrapRect.width / 2;
+        const startY = wrapRect.height / 2;
+        
+        el.style.left = startX + 'px';
+        el.style.top = startY + 'px';
+        
+        const anim = el.animate([
+            { transform: 'translate(-50%, -50%) scale(0)', opacity: 0, offset: 0 },
+            { transform: 'translate(-50%, -50%) scale(1.2)', opacity: 1, offset: 0.15 },
+            { transform: 'translate(-50%, -50%) scale(1)', opacity: 1, offset: 0.7 },
+            { transform: `translate(calc(-50% + ${targetX - startX}px), calc(-50% + ${targetY - startY}px)) scale(0.2)`, opacity: 0.5, offset: 1 }
+        ], { duration: 1800, easing: 'ease-in-out' });
+        
+        anim.onfinish = () => {
+            el.remove();
+            hud.innerText = level;
+            hud.style.color = '#ffcf00';
+            hud.style.transform = 'scale(1.5)';
+            setTimeout(() => {
+                hud.style.transform = 'scale(1)';
+                hud.style.color = 'var(--c-cyan)';
+            }, 300);
+        };
     }
 
     // ══════════════════════════════════════════════════════
@@ -343,7 +406,8 @@
 
     async function loadLeaderboard() {
         try {
-            const res = await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?select=initials,lines&order=lines.desc,timestamp.asc&limit=5`, {
+            // DB 컬럼이 level로 변경됨에 맞추어 select 변경
+            const res = await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?select=initials,level&order=level.desc,timestamp.asc&limit=5`, {
                 headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` }
             });
             const data = await res.json();
@@ -352,18 +416,18 @@
             list.innerHTML = '';
             const medals = ['🥇', '🥈', '🥉', '4', '5'];
             data.forEach((e, i) => {
-                list.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:3px; background:rgba(0,0,0,0.2); padding:5px 10px; border-radius:5px;"><span>${medals[i]} <b>${e.initials}</b></span><span>${e.lines} L</span></div>`;
+                list.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:3px; background:rgba(0,0,0,0.2); padding:5px 10px; border-radius:5px;"><span>${medals[i]} <b>${e.initials}</b></span><span style="color:var(--c-gold); font-weight:900;">LV.${e.level}</span></div>`;
             });
         } catch (e) { document.getElementById('lbSpinner').textContent = '⚠'; }
     }
 
-    async function saveScore(lines) {
-        if (!currentInitials || lines <= 0) return;
+    async function saveScore(level) {
+        if (!currentInitials || level <= 1) return; // 1레벨(시작 레벨)은 저장하지 않음
         try {
             await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}`, {
                 method: 'POST',
                 headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
-                body: JSON.stringify({ initials: currentInitials, lines: lines, timestamp: new Date().toISOString() })
+                body: JSON.stringify({ initials: currentInitials, level: level, timestamp: new Date().toISOString() })
             });
         } catch (e) {}
     }
@@ -373,7 +437,7 @@
     // ══════════════════════════════════════════════════════
     const COLS = 10, ROWS = 20, BLOCK_SIZE = 30;
     let arena = Array.from({length: ROWS}, () => Array(COLS).fill(0));
-    let player = { pos: {x: 0, y: 0}, matrix: null, lines: 0, gameOver: true };
+    let player = { pos: {x: 0, y: 0}, matrix: null, lines: 0, level: 1, gameOver: true };
     let dropCounter = 0, dropInterval = 1000, lastTime = 0;
     let isIntro = false;
 
@@ -450,16 +514,22 @@
             arena.unshift(arena.splice(y, 1)[0].fill(0));
             ++y; count++;
         }
+        
         if (count > 0) {
-            const oldLevel = Math.floor(player.lines / 10);
+            const oldLevel = player.level;
             player.lines += count;
-            const newLevel = Math.floor(player.lines / 10);
-            document.getElementById('hudLines').innerText = player.lines;
-            if (newLevel > oldLevel) {
-                dropInterval = Math.max(100, 1000 - (newLevel * 100));
-                showReaction("LEVEL UP! 🔥");
-            } else showReaction();
-            playSound('clear');
+            
+            // 🔥 5라인 지울 때마다 1레벨 상승
+            player.level = Math.floor(player.lines / 5) + 1;
+            
+            if (player.level > oldLevel) {
+                // 속도를 레벨당 150ms 씩 감소 (최대 체감 속도 향상, 한계치 100ms)
+                dropInterval = Math.max(100, 1000 - ((player.level - 1) * 150));
+                showLevelUpAnimation(player.level);
+            } else {
+                playSound('clear');
+                showReaction();
+            }
         }
     }
 
@@ -515,8 +585,8 @@
     function finishGame() {
         playSound('gameover');
         document.getElementById('gameover').style.display = 'flex';
-        document.getElementById('finalLines').innerText = player.lines;
-        saveScore(player.lines);
+        document.getElementById('finalLines').innerText = player.level;
+        saveScore(player.level);
     }
 
     function update(time = 0) {
@@ -550,14 +620,13 @@
         document.getElementById('controller').style.opacity = '1';
         document.getElementById('controller').style.pointerEvents = 'auto';
         
-        // 캔버스 크기를 정확히 잡기 위한 지연 실행
         setTimeout(startGame, 500); 
     }
 
     function startGame() {
         arena = Array.from({length: ROWS}, () => Array(COLS).fill(0));
-        player.lines = 0; player.gameOver = false; dropInterval = 1000;
-        document.getElementById('hudLines').innerText = '0';
+        player.lines = 0; player.level = 1; player.gameOver = false; dropInterval = 1000;
+        document.getElementById('hudLevel').innerText = '1';
         draw();
         startEagleIntro();
     }
@@ -592,7 +661,6 @@
     bindBtn('btn-up', () => playerRotate());
     bindBtn('btn-space', () => hardDrop());
 
-    // 리사이즈 로직 업데이트 (동적 캔버스 크기 조절)
     window.addEventListener('resize', () => { draw(); });
     loadLeaderboard();
 </script>

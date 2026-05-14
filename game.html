@@ -28,7 +28,7 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 @keyframes twk{0%,100%{opacity:.15;transform:scale(1);}50%{opacity:1;transform:scale(1.8);}}
 #fx{position:fixed;inset:0;pointer-events:none;z-index:55;}
 
-/* === 풀스크린 게임 레이아웃 (꽉 차는 직사각형) === */
+/* === 풀스크린 게임 레이아웃 === */
 .wr{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;height:100vh;height:100dvh;padding:1.5vh 2vw;}
 .board{display:grid;grid-template-columns:repeat(7,1fr);grid-template-rows:repeat(7,1fr);gap:1vw;
        width:100%;height:100%;max-width:900px;
@@ -43,18 +43,15 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 .cell:hover{transform:scale(1.08);z-index:10;box-shadow:0 0 16px rgba(255,255,255,.35);}
 .cell.corner{border-radius:16px;border-width:2.5px;}
 
-/* 타일 배경 및 아우라 */
 .tc{background:radial-gradient(circle at 30% 30%,#FFFBE6,#D4A000);border-color:#FFD700;box-shadow:0 0 16px rgba(255,215,0,.55);}
 .te{background:radial-gradient(circle at 30% 30%,#D6F5E1,#27AE60);border-color:#27AE60;box-shadow:0 0 8px rgba(46,204,113,.35);}
 .tt{background:radial-gradient(circle at 30% 30%,#FDE8E8,#E74C3C);border-color:#E74C3C;box-shadow:0 0 8px rgba(231,76,60,.35);}
 .tb{background:radial-gradient(circle at 30% 30%,#FEF0D6,#E67E22);border-color:#E67E22;box-shadow:0 0 8px rgba(230,126,34,.35);}
 .tm{background:radial-gradient(circle at 30% 30%,#F4ECF7,#9B59B6);border-color:#9B59B6;box-shadow:0 0 12px rgba(155,89,182,.45);}
 
-/* 타일 내부 텍스트 큼직하게 */
 .cem{font-size:clamp(20px, 5vw, 36px);line-height:1;filter:drop-shadow(0 2px 3px rgba(0,0,0,.5));margin-bottom:4px;}
 .cnm{font-size:clamp(9px, 2vw, 14px);font-weight:900;color:#fff;text-align:center;line-height:1.2;word-break:keep-all;text-shadow:0 1px 4px rgba(0,0,0,.9),0 0 2px rgba(0,0,0,.8);}
 
-/* 캐릭터 말 위치 (타일 가운데로 이동) */
 .ctk{position:absolute;inset:0;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:3px;pointer-events:none;z-index:5;}
 .tok{display:block;transition:filter .3s;}
 .tok.a0{filter:drop-shadow(0 0 6px #4A90D9) drop-shadow(0 0 12px #4A90D9);animation:tbounce .6s ease-in-out infinite;}
@@ -67,7 +64,7 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 .cell.lnd{animation:pulse .4s;}
 .board.shk{animation:shake .6s;}
 
-/* === 중앙 UI 공간 확보 (넓은 패딩, vmin 적용) === */
+/* === 중앙 UI === */
 .cp{grid-column:2/7;grid-row:2/7;background:linear-gradient(160deg,rgba(18,6,46,.95),rgba(6,22,52,.95));border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:2.5% 3%;border:2px solid rgba(255,215,0,.25);overflow:hidden;position:relative;}
 .cp::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(155,89,182,.15),transparent 75%);pointer-events:none;}
 
@@ -100,7 +97,6 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 .rbtn:not(:disabled):hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(233,30,99,.65);}
 .rbtn:disabled{background:#3a3a5a;cursor:not-allowed;box-shadow:none;opacity:.65;}
 
-/* 미니 로그 (한 줄) */
 #lgp{background:rgba(0,0,0,.6);border:1px solid rgba(255,215,0,.2);border-radius:12px;padding:clamp(6px, 1.5vmin, 10px) 16px;width:95%;text-align:center;font-size:clamp(11px, 2.2vmin, 18px);color:#fff;box-shadow:inset 0 0 10px rgba(0,0,0,.6);font-weight:800;word-break:keep-all;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
 
 /* 오버레이 팝업들 */
@@ -126,10 +122,10 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 @keyframes epicCardRevealGreen { 0% { transform: perspective(1500px) rotateY(90deg) rotateX(10deg) scale(0.2) translateY(200px); opacity: 0; box-shadow: 0 0 0 transparent; } 45% { transform: perspective(1500px) rotateY(-360deg) rotateX(-5deg) scale(1.05) translateY(-20px); opacity: 1; box-shadow: 0 0 100px #2ECC71, 0 0 50px #fff; } 100% { transform: perspective(1500px) rotateY(0deg) rotateX(0deg) scale(1) translateY(0); opacity: 1; box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 40px rgba(46,204,113,0.5); } }
 @keyframes epicCardRevealMagic { 0% { transform: perspective(1500px) rotateY(90deg) rotateX(10deg) scale(0.2) translateY(200px); opacity: 0; box-shadow: 0 0 0 transparent; } 45% { transform: perspective(1500px) rotateY(-360deg) rotateX(-5deg) scale(1.05) translateY(-20px); opacity: 1; box-shadow: 0 0 100px #9B59B6, 0 0 50px #fff; } 100% { transform: perspective(1500px) rotateY(0deg) rotateX(0deg) scale(1) translateY(0); opacity: 1; box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 40px rgba(155,89,182,0.5); } }
 
-/* 상단 이미지를 꽉차고 시원하게 */
+/* 카드 상단 이미지 및 비디오 영역 */
 .ecard.photo-card .ehdg { height: 38vh; min-height: 280px; padding: 0; display: flex; flex-direction: column; justify-content: flex-end; align-items: stretch; }
 .ecard.photo-card .echar { position: absolute; inset: 0; width: 100%; height: 100%; animation: none; filter: none; z-index: 1; }
-.ecard.photo-card .echar img { width: 100% !important; height: 100% !important; border-radius: 0 !important; object-fit: cover; }
+.ecard.photo-card .echar img, .ecard.photo-card .echar video { width: 100% !important; height: 100% !important; border-radius: 0 !important; object-fit: cover; pointer-events: none; }
 .ecard.photo-card .ehdgt { position: relative; z-index: 3; text-align: center; padding: 60px 20px 25px; background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 40%, transparent 100%); width: 100%; }
 .ecard.photo-card .ecnm { font-size: 18px; color: #FFD700; text-shadow: 0 2px 4px rgba(0,0,0,0.9); }
 .ecard.photo-card .esnm { font-size: 38px; text-shadow: 0 2px 8px rgba(0,0,0,1); }
@@ -223,10 +219,12 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 /* ══ CINEMATIC FULLSCREEN ══ */
 #cine{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center; cursor:pointer;opacity:0;pointer-events:none;transition:opacity .5s ease;}
 #cine.on{opacity:1;pointer-events:all;}
-#cine-img{position:absolute;inset:0;background-size:cover;background-position:center top; transform:scale(1.12);transition:transform 5s ease-out;}
-#cine.on #cine-img{transform:scale(1);}
-#cine.evil #cine-img{filter:brightness(.35) saturate(2) hue-rotate(-15deg);}
-#cine.good #cine-img{filter:brightness(.52) saturate(1.3);}
+#cine-img { position:absolute; inset:0; background-size:cover; background-position:center top; transform:scale(1.12); transition:transform 5s ease-out; }
+#cine-vid { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transform:scale(1.12); transition:transform 5s ease-out; pointer-events:none; display:none; }
+#cine.on #cine-img, #cine.on #cine-vid {transform:scale(1);}
+#cine.evil #cine-img, #cine.evil #cine-vid {filter:brightness(.35) saturate(2) hue-rotate(-15deg);}
+#cine.good #cine-img, #cine.good #cine-vid {filter:brightness(.52) saturate(1.3);}
+
 #cine-vig{position:absolute;inset:0; background:radial-gradient(ellipse 80% 80% at 50% 50%,transparent 25%,rgba(0,0,0,.88) 100%);}
 #cine.evil #cine-vig{background:radial-gradient(ellipse 70% 70% at 50% 50%,transparent 20%,rgba(60,0,0,.95) 100%);}
 #cine-lines{position:absolute;inset:0;pointer-events:none;opacity:.3; background:repeating-linear-gradient(0deg,transparent 0,transparent 2px,rgba(0,0,0,.6) 2px,rgba(0,0,0,.6) 4px);}
@@ -267,9 +265,10 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 
 <div id="yt-player-container"></div>
 
-<!-- 전체화면 시네마틱 -->
+<!-- 전체화면 시네마틱 (비디오 지원 추가) -->
 <div id="cine" onclick="cineDismiss()">
   <div id="cine-img"></div>
+  <video id="cine-vid" autoplay muted loop playsinline></video>
   <div id="cine-vig"></div>
   <div id="cine-lines"></div>
   <canvas id="cfx"></canvas>
@@ -500,8 +499,9 @@ function sBattleRoll(){[400,450,500,550].forEach(function(f,i){setTimeout(functi
 var SV={
 yul:'<div class="sprite-char sprite-yul sprite-anim"></div>',
 jung:'<div class="sprite-char sprite-jeong sprite-anim"></div>',
-superyul:'<img src="./images/superyul.jpeg" style="width:100%; height:100%; object-fit:cover; border-radius:16px;">',
-superjung:'<img src="./images/superjung.jpeg" style="width:100%; height:100%; object-fit:cover; border-radius:16px;">',
+// 비디오 태그 적용 (각성 시 이벤트 카드용)
+superyul:'<video src="./images/superyul.mp4" autoplay muted loop playsinline style="width:100%; height:100%; object-fit:cover;"></video>',
+superjung:'<video src="./images/superjung.mp4" autoplay muted loop playsinline style="width:100%; height:100%; object-fit:cover;"></video>',
 darkknight:'<img src="./images/darknight.png" style="width:100%; height:100%; object-fit:cover; border-radius:16px;">',
 bain:'<img src="./images/bain.jpg" style="width:100%; height:100%; object-fit:cover; border-radius:16px;">',
 crown:'<img src="./images/crown.jpg" style="width:100%; height:100%; object-fit:cover; border-radius:16px;">',
@@ -664,7 +664,7 @@ function renderAll(){
   SP.forEach(function(sp){
     var tk=document.getElementById('tk'+sp.id); if(!tk)return; tk.innerHTML='';
     
-    // 다크나이트 말 렌더링 (플레이어 뒤에 겹치도록 z-index 조절)
+    // 다크나이트 말 렌더링
     if (dkActive && dkPos === sp.id) {
         var sdk = document.createElement('div');
         sdk.className = 'tok a2';
@@ -725,11 +725,11 @@ function handleRoll(){
   if(skip[cur]){
     skip[cur]=false; 
     addLog(PL[cur].ic+' '+PL[cur].nm+' 쉬는 중...');
-    totalRolls++; // 쉬는것도 턴 소모로 친다면 (주사위는 안던지지만 카운트 증가)
+    totalRolls++; 
     finalizeTurn(); renderAll(); return;
   }
   
-  totalRolls++; // 실제 주사위 굴린 횟수 증가
+  totalRolls++; 
   rolling=true;renderAll();sDice();
   var t=0;
   var iv=setInterval(function(){
@@ -746,13 +746,11 @@ function handleRoll(){
   },80);
 }
 
-// 플레이어가 목표지점에 도착했을 때 이벤트 처리
 function handleLanding(targetPos, fromMove) {
     var collisionWithDK = (dkActive && targetPos === dkPos);
     var collisionWithSister = (pos[0] === pos[1] && targetPos !== 0);
 
     if (collisionWithDK) {
-        // 플레이어가 스스로 어둠의 기사에게 뛰어듬!
         stars[cur] = Math.max(0, stars[cur] - 2);
         addLog('💀 어둠의 기사와 조우! 별 -2');
         sTrap();
@@ -788,7 +786,7 @@ function movePlayer(from, steps, isPwr){
   },280);
 }
 
-/* ══ ENCOUNTER RPS BATTLE (만남 시 가위바위보) ══ */
+/* ══ ENCOUNTER RPS BATTLE ══ */
 function startEncounterRPS(targetPos, fromMove) {
     encActive = true;
     encTargetPos = targetPos;
@@ -798,12 +796,11 @@ function startEncounterRPS(targetPos, fromMove) {
     document.getElementById('enc-res').innerText = '가위바위보 준비...';
     document.getElementById('enc-res').style.color = '#fff';
     
-    // 이모지 리셋
     document.getElementById('enc-h0').innerText = '❔';
     document.getElementById('enc-h1').innerText = '❔';
     
     ov.classList.add('vis');
-    sTrap(); // 긴장감 있는 사운드
+    sTrap(); 
     setTimeout(playEncounterRPS, 1000);
 }
 
@@ -833,7 +830,7 @@ function playEncounterRPS() {
                 var w = -1;
                 if ((c0 === 0 && c1 === 2) || (c0 === 1 && c1 === 0) || (c0 === 2 && c1 === 1)) { w = 0; } else { w = 1; }
                 
-                var l = 1 - w; // 패자
+                var l = 1 - w; 
                 if (stars[l] > 0) {
                     stars[w]++; stars[l]--;
                     res.innerText = PL[w].nm + ' 승리! 별 1개를 빼앗았습니다!';
@@ -883,7 +880,6 @@ function playDKTurn() {
     renderAll();
     sBattleRoll();
     
-    // 주사위 애니메이션 후 이동
     setTimeout(function() {
         var d1 = Math.ceil(Math.random()*6);
         var d2 = Math.ceil(Math.random()*6);
@@ -947,7 +943,7 @@ function checkDKRetreat() {
     setTimeout(nextPlayerTurn, 500);
 }
 
-/* ══ EVENTS & CINE ══ */
+/* ══ CINE & EVENTS ══ */
 var CINE_DATA={
   '엄마 부엌':{type:'good', img:'./images/mom.jpeg', tag:'💝 SPECIAL ENCOUNTER 💝', name:'엄마', sub:'우리 율이 정이 왔어? 😊\n엄마가 제일 사랑하는 우리 딸들~!\n갓 구운 쿠키랑 사랑을 듬뿍 줄게! 💕'},
   '아빠 서재':{type:'good', img:'./images/chris05.jpg', tag:'📖 SPECIAL ENCOUNTER 📖', name:'아빠', sub:'오! 우리 딸들이 대모험 중이구나! 🌟\n아빠가 항상 응원해줄게!\n자, 특별 보너스를 받아라! ✨'},
@@ -955,28 +951,17 @@ var CINE_DATA={
   '어둠의 검신 베인':{type:'evil', img:'./images/bain.jpg', tag:'⚔ BOSS ENCOUNTER ⚔', name:'어둠의 검신 베인', sub:'어둠의 검이 빛을 집어삼키리라...\n어리석은 여행자여,\n이제 네 별은 내 것이다! ⚔️'}
 };
      
-var PRIORITY_IMAGE_ASSETS=['./images/mom.jpeg','./images/chris05.jpg','./images/crown.jpg','./images/bain.jpg','./images/superyul.jpeg','./images/superjung.jpeg', './images/darknight.png'];
-var CARD_IMAGE_ASSETS=['./images/darknight.png','./images/angel.jpeg','./images/magicbook.jpeg','./images/grandmagic.png','./images/town.jpg','./images/fairytail.jpg','./images/brook.png','./images/fairytown.jpeg','./images/team.png','./images/yul_spritesheet.png','./images/jeong_spritesheet.png','./images/darknight_spritesheet.png'];
-var preloadedImages={};
-
 function preloadImage(src){
-  if(preloadedImages[src])return preloadedImages[src];
-  var img=new Image(); img.decoding='async'; img.loading='eager'; preloadedImages[src]=img;
+  var img=new Image(); img.decoding='async'; img.loading='eager';
   img.src=src; if(img.decode){img.decode().catch(function(){});} return img;
 }
-function preloadGameImages(){
-  PRIORITY_IMAGE_ASSETS.forEach(preloadImage);
-  var rest=CARD_IMAGE_ASSETS.filter(function(src){return !preloadedImages[src];});
-  var loadRest=function(){rest.forEach(preloadImage);};
-  if('requestIdleCallback' in window){requestIdleCallback(loadRest,{timeout:1200});} else{setTimeout(loadRest,250);}
-}
-     
-var cfxCanvas,cfxCtx,cfxParts=[],cfxRunning=false,cineNext=null;
+
 function cfxInit(){
   cfxCanvas=document.getElementById('cfx');cfxCtx=cfxCanvas.getContext('2d');
   cfxCanvas.width=innerWidth;cfxCanvas.height=innerHeight;
   window.addEventListener('resize',function(){if(cfxCanvas){cfxCanvas.width=innerWidth;cfxCanvas.height=innerHeight;}});
 }
+
 function cfxLoop(){
   if(!cfxRunning)return; cfxCtx.clearRect(0,0,cfxCanvas.width,cfxCanvas.height);
   cfxParts=cfxParts.filter(function(p){return p.l>0;});
@@ -1005,7 +990,24 @@ function cfxSpawn(type){
 
 function cineShow(cfg, callback){
   if(!cfxCanvas)cfxInit(); cineNext=callback; var el=document.getElementById('cine'); el.className=cfg.type;
-  preloadImage(cfg.img); document.getElementById('cine-img').style.backgroundImage='url("'+cfg.img+'")';
+  
+  var imgEl = document.getElementById('cine-img');
+  var vidEl = document.getElementById('cine-vid');
+  
+  // 비디오가 설정된 경우 (각성 이벤트)
+  if(cfg.video) {
+      imgEl.style.display = 'none';
+      vidEl.style.display = 'block';
+      vidEl.src = cfg.video;
+      vidEl.play().catch(function(){}); // 브라우저 자동재생 정책 대비
+  } else {
+      vidEl.style.display = 'none';
+      vidEl.pause();
+      vidEl.removeAttribute('src');
+      imgEl.style.display = 'block';
+      preloadImage(cfg.img); imgEl.style.backgroundImage='url("'+cfg.img+'")';
+  }
+
   document.getElementById('cine-tag').textContent=cfg.tag; document.getElementById('cine-name').textContent=cfg.name;
   
   var subEl = document.getElementById('cine-sub'); subEl.innerHTML = '';
@@ -1025,6 +1027,10 @@ function cineDismiss(){
   if(!cineNext)return;
   var el=document.getElementById('cine'); el.classList.remove('on'); cfxRunning=false; cfxParts=[];
   if(cfxCtx)cfxCtx.clearRect(0,0,cfxCanvas.width,cfxCanvas.height);
+  
+  var vidEl = document.getElementById('cine-vid');
+  vidEl.pause();
+  
   var cb=cineNext;cineNext=null; setTimeout(cb, 550);
 }
 
@@ -1043,7 +1049,13 @@ function checkAndTriggerEvent(sid, fromMove) {
        var awaken = {
          char: cur === 0 ? 'superyul' : 'superjung', cn: PL[cur].nm, name: PL[cur].nm + ' 각성!',
          cd: '출발점에 정확히 멈춰 각성했어요! 별 1개와 다음 주사위 이동 2배를 얻습니다!',
-         cine: { type: 'good', img: cur === 0 ? './images/superyul.jpeg' : './images/superjung.jpeg', tag: '⚡ AWAKENING ⚡', name: PL[cur].nm + ' 각성!', sub: '출발점에 정확히 멈췄어요!\n별 1개를 얻고\n다음 주사위 이동이 2배가 됩니다! 🔥' }
+         cine: { 
+             type: 'good', 
+             img: cur === 0 ? './images/superyul.jpeg' : './images/superjung.jpeg', // Fallback
+             video: cur === 0 ? './images/superyul.mp4' : './images/superjung.mp4',  // Video Source
+             tag: '⚡ AWAKENING ⚡', name: PL[cur].nm + ' 각성!', 
+             sub: '출발점에 정확히 멈췄어요!\n별 1개를 얻고\n다음 주사위 이동이 2배가 됩니다! 🔥' 
+         }
        };
        addLog(PL[cur].ic + ' ' + PL[cur].nm + ' 출발점 도착! 각성! ⭐ +1 & 주사위 x2 🚀');
        cineShow(awaken.cine, function(){ triggerEvent(sid, fromMove, awaken, mc); });
@@ -1087,6 +1099,8 @@ function openEventCard(){
   ec.className = baseClass;
   
   document.getElementById('ehbg').style.background=sp.bg;
+  
+  // 영상인지 확인 후 미리보기 이미지 로드 스킵
   var charHtml=SV[cardChar]||SV.luna;
   document.getElementById('ech').innerHTML=charHtml;
   document.getElementById('ecnm').textContent=awakeCard?awakeCard.cn:sp.cn;
@@ -1325,7 +1339,7 @@ function startGame(){
   if (isYtReady && ytPlayer) { ytPlayer.setShuffle(true); ytPlayer.setLoop(true); ytPlayer.nextVideo(); ytPlayer.playVideo(); }
 }
 
-preloadGameImages(); shuffleBoard(); buildBoard();
+shuffleBoard(); buildBoard();
 </script>
 </body>
 </html>

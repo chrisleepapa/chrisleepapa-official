@@ -68,39 +68,39 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 .board.shk{animation:shake .6s;}
 
 /* === 중앙 UI 공간 확보 (넓은 패딩) === */
-.cp{grid-column:2/7;grid-row:2/7;background:linear-gradient(160deg,rgba(18,6,46,.95),rgba(6,22,52,.95));border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;padding:5% 4%;border:2px solid rgba(255,215,0,.25);overflow:hidden;position:relative;}
+.cp{grid-column:2/7;grid-row:2/7;background:linear-gradient(160deg,rgba(18,6,46,.95),rgba(6,22,52,.95));border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:2.5% 3%;border:2px solid rgba(255,215,0,.25);overflow:hidden;position:relative;}
 .cp::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(155,89,182,.15),transparent 75%);pointer-events:none;}
 
-.ctit{font-family:'Fredoka One',cursive;font-size:clamp(20px, 4.5vw, 36px);background:linear-gradient(135deg,#FFD700,#FF69B4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:1.5px;text-align:center;filter:drop-shadow(0 2px 6px rgba(0,0,0,.6));}
+.ctit{font-family:'Fredoka One',cursive;font-size:clamp(16px, 3.5vmin, 34px);background:linear-gradient(135deg,#FFD700,#FF69B4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:1.5px;text-align:center;filter:drop-shadow(0 2px 6px rgba(0,0,0,.6));margin-bottom:1%;}
 
-.scs{display:flex;gap:12px;width:100%;justify-content:space-evenly;}
-.sc{background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.1);border-radius:18px;padding:12px;text-align:center;transition:all .3s;flex:1;max-width:140px;}
+.scs{display:flex;gap:2%;width:100%;justify-content:space-evenly;}
+.sc{background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.1);border-radius:18px;padding:clamp(6px, 1.5vmin, 12px);text-align:center;transition:all .3s;flex:1;max-width:140px;}
 .sc.cur{background:rgba(255,215,0,.15);border-color:rgba(255,215,0,.6);box-shadow:0 0 20px rgba(255,215,0,.3);}
 .sc.cur.pwr{border-color:#FF4500;box-shadow:0 0 25px rgba(255,69,0,.6);}
 .spi{display:block;transition:transform .3s;}
 .sc.cur .spi{transform:scale(1.15);}
-.spn{color:#fff;font-size:clamp(12px,2.5vw,18px);font-weight:900;margin-top:6px;}
-.sps{color:var(--gold);font-size:clamp(18px,4vw,28px);font-weight:900;}
+.spn{color:#fff;font-size:clamp(10px,2vmin,18px);font-weight:900;margin-top:clamp(2px, 1vmin, 6px);}
+.sps{color:var(--gold);font-size:clamp(14px,3.5vmin,28px);font-weight:900;}
 
-.pbs{width:90%;display:flex;flex-direction:column;gap:8px;}
+.pbs{width:90%;display:flex;flex-direction:column;gap:clamp(4px, 1vmin, 8px);margin: 2% 0;}
 .pbr{display:flex;align-items:center;gap:6px;}
-.pbt{flex:1;height:10px;background:rgba(255,255,255,.1);border-radius:6px;overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.5);}
+.pbt{flex:1;height:clamp(6px, 1.5vmin, 10px);background:rgba(255,255,255,.1);border-radius:6px;overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.5);}
 .pbf{height:100%;border-radius:6px;transition:width .6s cubic-bezier(.34,1.56,.64,1);}
 
-#turn-indicator{font-family:'Fredoka One',cursive;font-size:clamp(16px,4vw,26px);color:var(--gold);text-shadow:0 0 12px rgba(255,215,0,.6);text-align:center;}
+#turn-indicator{font-family:'Fredoka One',cursive;font-size:clamp(14px,3vmin,26px);color:var(--gold);text-shadow:0 0 12px rgba(255,215,0,.6);text-align:center;margin-bottom:1%;}
 
-.dcr{display:flex;justify-content:center;gap:20px;}
-.die{font-size:clamp(40px, 8vw, 70px);display:inline-block;}
+.dcr{display:flex;justify-content:center;gap:15px;}
+.die{font-size:clamp(32px, 6.5vmin, 70px);display:inline-block;line-height:1;}
 .die.rl{animation:dr .12s ease-in-out infinite;}
 
-.rbtn{width:90%;max-width:320px;padding:clamp(16px, 3vh, 24px);background:linear-gradient(135deg,#FF69B4,#9B59B6);border:none;border-radius:24px;color:#fff;font-size:clamp(16px, 4vw, 24px);font-weight:900;font-family:'Nunito',sans-serif;cursor:pointer;box-shadow:0 6px 20px rgba(233,30,99,.5);transition:transform .2s,box-shadow .2s;overflow:hidden;position:relative;}
+.rbtn{width:90%;max-width:320px;padding:clamp(10px, 2vmin, 24px);background:linear-gradient(135deg,#FF69B4,#9B59B6);border:none;border-radius:24px;color:#fff;font-size:clamp(14px, 3vmin, 24px);font-weight:900;font-family:'Nunito',sans-serif;cursor:pointer;box-shadow:0 6px 20px rgba(233,30,99,.5);transition:transform .2s,box-shadow .2s;overflow:hidden;position:relative;margin:1% 0;}
 .rbtn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(255,255,255,.2),transparent);transform:translateX(-100%);transition:transform .4s;}
 .rbtn:hover::before{transform:translateX(100%);}
 .rbtn:not(:disabled):hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(233,30,99,.65);}
 .rbtn:disabled{background:#3a3a5a;cursor:not-allowed;box-shadow:none;opacity:.65;}
 
 /* 미니 로그 (한 줄) */
-#lgp{background:rgba(0,0,0,.6);border:1px solid rgba(255,215,0,.2);border-radius:12px;padding:10px 16px;width:95%;text-align:center;font-size:clamp(12px, 2.5vw, 18px);color:#fff;box-shadow:inset 0 0 10px rgba(0,0,0,.6);font-weight:800;word-break:keep-all;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+#lgp{background:rgba(0,0,0,.6);border:1px solid rgba(255,215,0,.2);border-radius:12px;padding:clamp(6px, 1.5vmin, 10px) 16px;width:95%;text-align:center;font-size:clamp(11px, 2.2vmin, 18px);color:#fff;box-shadow:inset 0 0 10px rgba(0,0,0,.6);font-weight:800;word-break:keep-all;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
 
 /* 오버레이 팝업들 (크고 시원하게 변경) */
 .ov{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:200;padding:10px;opacity:0;pointer-events:none;transition:opacity .3s;}
@@ -215,7 +215,7 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 .sprite-anim { animation: sprite-run 0.8s infinite; }
 @keyframes sprite-run { 0%,19.99%{background-position:0% 0%;} 20%,39.99%{background-position:25% 0%;} 40%,59.99%{background-position:50% 0%;} 60%,79.99%{background-position:75% 0%;} 80%,100%{background-position:100% 0%;} }
 
-.tok-img-wrap { width: clamp(24px, 5.5vw, 44px); height: clamp(24px, 5.5vw, 44px); border-radius: 50%; border: 2.5px solid white; box-shadow: 0 0 8px rgba(0,0,0,0.6); overflow: hidden; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; margin: 0 auto; }
+.tok-img-wrap { width: clamp(24px, 6vmin, 50px); height: clamp(24px, 6vmin, 50px); border-radius: 50%; border: 2.5px solid white; box-shadow: 0 0 8px rgba(0,0,0,0.6); overflow: hidden; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; margin: 0 auto; }
 .tok-img-wrap .sprite-char { width: 100%; height: 100%; transform: translateY(0); }
 
 /* ══ CINEMATIC FULLSCREEN ══ */
@@ -324,13 +324,13 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
       <!-- 점수판 -->
       <div class="scs">
         <div class="sc cur" id="sc0">
-          <div class="spi"><div class="tok-img-wrap" style="border-color:#4A90D9; width:clamp(40px, 8vw, 60px); height:clamp(40px, 8vw, 60px);"><div class="sprite-char sprite-yul sprite-anim"></div></div></div>
-          <div class="spn">율이 <span id="ssk0" style="display:none; color:#FF6B6B; font-size:12px;">😴</span></div>
+          <div class="spi"><div class="tok-img-wrap" style="border-color:#4A90D9;"><div class="sprite-char sprite-yul sprite-anim"></div></div></div>
+          <div class="spn">율이 <span id="ssk0" style="display:none; color:#FF6B6B; font-size:clamp(8px, 1.5vmin, 12px);">😴</span></div>
           <div class="sps" id="ss0">⭐0</div>
         </div>
         <div class="sc" id="sc1">
-          <div class="spi"><div class="tok-img-wrap" style="border-color:#FF69B4; width:clamp(40px, 8vw, 60px); height:clamp(40px, 8vw, 60px);"><div class="sprite-char sprite-jeong sprite-anim"></div></div></div>
-          <div class="spn">정이 <span id="ssk1" style="display:none; color:#FF6B6B; font-size:12px;">😴</span></div>
+          <div class="spi"><div class="tok-img-wrap" style="border-color:#FF69B4;"><div class="sprite-char sprite-jeong sprite-anim"></div></div></div>
+          <div class="spn">정이 <span id="ssk1" style="display:none; color:#FF6B6B; font-size:clamp(8px, 1.5vmin, 12px);">😴</span></div>
           <div class="sps" id="ss1">⭐0</div>
         </div>
       </div>

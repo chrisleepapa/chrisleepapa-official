@@ -97,6 +97,7 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 .rbtn:not(:disabled):hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(233,30,99,.65);}
 .rbtn:disabled{background:#3a3a5a;cursor:not-allowed;box-shadow:none;opacity:.65;}
 
+/* 미니 로그 (한 줄) */
 #lgp{background:rgba(0,0,0,.6);border:1px solid rgba(255,215,0,.2);border-radius:12px;padding:clamp(6px, 1.5vmin, 10px) 16px;width:95%;text-align:center;font-size:clamp(11px, 2.2vmin, 18px);color:#fff;box-shadow:inset 0 0 10px rgba(0,0,0,.6);font-weight:800;word-break:keep-all;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
 
 /* 오버레이 팝업들 */
@@ -364,16 +365,16 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 <div class="ov" id="enc-ov">
   <div class="ecard tc2" style="padding-top:20px; border-color:#FF69B4;">
     <div class="ebody" style="text-align:center; padding: 25px 20px;">
-      <h2 style="color:var(--gold); font-family:'Fredoka One',cursive; font-size:clamp(20px, 5vw, 32px); margin-bottom:10px; text-shadow:0 0 10px rgba(255,215,0,.6);">⚔️ 같은 칸에서 만났다! ⚔️</h2>
-      <p style="color:#C9A6FF; font-size:clamp(12px, 3vw, 16px); margin-bottom:20px;">가위바위보 승리 시 별 1개를 빼앗습니다!</p>
+      <h2 id="enc-title" style="color:var(--gold); font-family:'Fredoka One',cursive; font-size:clamp(20px, 5vw, 32px); margin-bottom:10px; text-shadow:0 0 10px rgba(255,215,0,.6);">⚔️ 같은 칸에서 만났다! ⚔️</h2>
+      <p id="enc-desc" style="color:#C9A6FF; font-size:clamp(12px, 3vw, 16px); margin-bottom:20px;">가위바위보 승리 시 별 1개를 빼앗습니다!</p>
       <div class="rps-vs">
           <div class="rps-box">
-            <div class="rps-nm">👩 율이</div>
+            <div class="rps-nm" id="enc-p0-nm">👩 율이</div>
             <div id="enc-h0" class="rps-h">❔</div>
           </div>
           <div class="rps-vstxt">VS</div>
           <div class="rps-box">
-            <div class="rps-nm">👧 정이</div>
+            <div class="rps-nm" id="enc-p1-nm">👧 정이</div>
             <div id="enc-h1" class="rps-h">❔</div>
           </div>
       </div>
@@ -499,9 +500,8 @@ function sBattleRoll(){[400,450,500,550].forEach(function(f,i){setTimeout(functi
 var SV={
 yul:'<div class="sprite-char sprite-yul sprite-anim"></div>',
 jung:'<div class="sprite-char sprite-jeong sprite-anim"></div>',
-// 비디오 태그 적용 (각성 시 이벤트 카드용)
-superyul:'<video src="./images/superyul.mp4" autoplay muted loop playsinline style="width:100%; height:100%; object-fit:cover;"></video>',
-superjung:'<video src="./images/superjung.mp4" autoplay muted loop playsinline style="width:100%; height:100%; object-fit:cover;"></video>',
+superyul:'<video src="./images/superyul.mp4" autoplay muted loop playsinline style="width:100%; height:100%; object-fit:cover; border-radius:16px;"></video>',
+superjung:'<video src="./images/superjung.mp4" autoplay muted loop playsinline style="width:100%; height:100%; object-fit:cover; border-radius:16px;"></video>',
 darkknight:'<img src="./images/darknight.png" style="width:100%; height:100%; object-fit:cover; border-radius:16px;">',
 bain:'<img src="./images/bain.jpg" style="width:100%; height:100%; object-fit:cover; border-radius:16px;">',
 crown:'<img src="./images/crown.jpg" style="width:100%; height:100%; object-fit:cover; border-radius:16px;">',
@@ -751,16 +751,12 @@ function handleLanding(targetPos, fromMove) {
     var collisionWithSister = (pos[0] === pos[1] && targetPos !== 0);
 
     if (collisionWithDK) {
-        stars[cur] = Math.max(0, stars[cur] - 2);
-        addLog('💀 어둠의 기사와 조우! 별 -2');
-        sTrap();
         var cine = {
             type: 'evil', img: './images/darknight.png', tag: '🚨 DANGER 🚨',
-            name: '어둠의 기사 조우!', sub: PL[cur].nm + '님이 어둠의 기사와 만났습니다!\n별 2개를 빼앗깁니다! 💀'
+            name: '어둠의 기사 조우!', sub: PL[cur].nm + '님이 어둠의 기사와 만났습니다!\n운명을 건 가위바위보를 시작합니다!'
         };
         cineShow(cine, function() {
-            if (collisionWithSister) { startEncounterRPS(targetPos, fromMove); } 
-            else { checkAndTriggerEvent(targetPos, fromMove); }
+            startDKRPS([cur], collisionWithSister, targetPos, fromMove);
         });
     } else if (collisionWithSister) {
         startEncounterRPS(targetPos, fromMove);
@@ -792,12 +788,20 @@ function startEncounterRPS(targetPos, fromMove) {
     encTargetPos = targetPos;
     encFromMove = fromMove;
     var ov = document.getElementById('enc-ov');
+    
+    document.getElementById('enc-title').innerText = '⚔️ 같은 칸에서 만났다! ⚔️';
+    document.getElementById('enc-desc').innerText = '가위바위보 승리 시 별 1개를 빼앗습니다!';
+    document.getElementById('enc-p0-nm').innerText = '👩 율이';
+    document.getElementById('enc-p1-nm').innerText = '👧 정이';
+    
     document.getElementById('enc-btn').style.display = 'none';
     document.getElementById('enc-res').innerText = '가위바위보 준비...';
     document.getElementById('enc-res').style.color = '#fff';
     
     document.getElementById('enc-h0').innerText = '❔';
     document.getElementById('enc-h1').innerText = '❔';
+    
+    document.getElementById('enc-btn').onclick = endEncounterRPS;
     
     ov.classList.add('vis');
     sTrap(); 
@@ -856,7 +860,105 @@ function endEncounterRPS() {
     setTimeout(function() { checkAndTriggerEvent(encTargetPos, encFromMove); }, 400);
 }
 
-/* ══ 어둠의 기사 자율 턴 로직 ══ */
+/* ══ 어둠의 기사 가위바위보 및 자율 턴 로직 ══ */
+function startDKRPS(caughtPlayers, alsoSisterCollision, targetPos, fromMove) {
+    encActive = true;
+    var ov = document.getElementById('enc-ov');
+    
+    var pName = caughtPlayers.map(function(p){ return PL[p].nm; }).join(' & ');
+    document.getElementById('enc-title').innerText = '🦇 어둠의 기사 배틀! 🦇';
+    document.getElementById('enc-desc').innerText = '승리하면 무사통과! 패배하면 별 2개를 빼앗깁니다!';
+    document.getElementById('enc-p0-nm').innerText = pName;
+    document.getElementById('enc-p1-nm').innerText = '어둠의 기사';
+
+    document.getElementById('enc-btn').style.display = 'none';
+    document.getElementById('enc-res').innerText = '가위바위보 준비...';
+    document.getElementById('enc-res').style.color = '#fff';
+    
+    document.getElementById('enc-h0').innerText = '❔';
+    document.getElementById('enc-h1').innerText = '❔';
+    
+    ov.classList.add('vis');
+    sTrap();
+    setTimeout(function() {
+        playDKRPS(caughtPlayers, alsoSisterCollision, targetPos, fromMove);
+    }, 1000);
+}
+
+function playDKRPS(caughtPlayers, alsoSisterCollision, targetPos, fromMove) {
+    var h0 = document.getElementById('enc-h0'), h1 = document.getElementById('enc-h1'), res = document.getElementById('enc-res');
+    var rollCnt = 0;
+    sDice();
+
+    var iv = setInterval(function() {
+        h0.innerText = RPS_EMOJI[Math.floor(Math.random() * 3)];
+        h1.innerText = RPS_EMOJI[Math.floor(Math.random() * 3)];
+        rollCnt++;
+        if(rollCnt > 12) {
+            clearInterval(iv);
+            var c0 = Math.floor(Math.random() * 3); // Sisters
+            var c1 = Math.floor(Math.random() * 3); // DK
+
+            h0.innerText = RPS_EMOJI[c0]; h0.classList.add('pop');
+            h1.innerText = RPS_EMOJI[c1]; h1.classList.add('pop');
+            setTimeout(function(){ h0.classList.remove('pop'); h1.classList.remove('pop'); }, 300);
+
+            if (c0 === c1) {
+                res.innerText = '앗! 비겼어요! 다시 한 번!';
+                res.style.color = '#C9A6FF';
+                sTrap(); setTimeout(function(){ playDKRPS(caughtPlayers, alsoSisterCollision, targetPos, fromMove); }, 1000);
+            } else {
+                var playerWins = false;
+                if ((c0 === 0 && c1 === 2) || (c0 === 1 && c1 === 0) || (c0 === 2 && c1 === 1)) { playerWins = true; }
+
+                if (playerWins) {
+                    res.innerText = '🎉 승리! 어둠의 기사를 물리쳤습니다!';
+                    addLog('🦇 어둠의 기사 배틀 승리! 무사히 피했습니다.');
+                    res.style.color = '#FFD700';
+                    sStar();
+                } else {
+                    res.innerText = '💀 패배... 별 2개를 빼앗깁니다!';
+                    caughtPlayers.forEach(function(p) {
+                        stars[p] = Math.max(0, stars[p] - 2);
+                    });
+                    addLog('💀 어둠의 기사에게 패배! 별 -2');
+                    res.style.color = '#FF6B6B';
+                    sTrap();
+                    spawnStars(window.innerWidth/2,window.innerHeight/2,10,'#FF6B6B');
+                }
+
+                document.getElementById('enc-btn').style.display = 'block';
+                document.getElementById('enc-btn').onclick = function() {
+                    endDKRPS(alsoSisterCollision, targetPos, fromMove);
+                };
+                renderAll();
+            }
+        }
+    }, 80);
+}
+
+function endDKRPS(alsoSisterCollision, targetPos, fromMove) {
+    document.getElementById('enc-ov').classList.remove('vis');
+    encActive = false;
+
+    // Restore text for potential sister enc
+    document.getElementById('enc-title').innerText = '⚔️ 같은 칸에서 만났다! ⚔️';
+    document.getElementById('enc-desc').innerText = '가위바위보 승리 시 별 1개를 빼앗습니다!';
+    document.getElementById('enc-p0-nm').innerText = '👩 율이';
+    document.getElementById('enc-p1-nm').innerText = '👧 정이';
+    document.getElementById('enc-btn').onclick = endEncounterRPS;
+
+    if (stars[0] >= WIN || stars[1] >= WIN) { renderAll(); setTimeout(showWin, 400); return; }
+
+    if (alsoSisterCollision) {
+        startEncounterRPS(targetPos, fromMove);
+    } else if (targetPos !== undefined) {
+        checkAndTriggerEvent(targetPos, fromMove);
+    } else {
+        checkDKRetreat();
+    }
+}
+
 function spawnDK() {
     dkActive = true;
     dkPos = 0;
@@ -914,19 +1016,13 @@ function resolveDKLanding() {
     if (dkPos === pos[1]) caught.push(1);
 
     if (caught.length > 0) {
-        sTrap();
-        caught.forEach(function(p) {
-            stars[p] = Math.max(0, stars[p] - 2);
-            addLog('💀 어둠의 기사에게 잡혔다! ' + PL[p].nm + ' 별 -2');
-        });
-        
-        var names = caught.map(function(p){ return PL[p].nm; }).join(', ');
+        var names = caught.map(function(p){ return PL[p].nm; }).join('와(과) ');
         var cine = {
             type: 'evil', img: './images/darknight.png', tag: '🚨 CAUGHT! 🚨',
-            name: '어둠의 기사 습격!', sub: names + '님이 어둠의 기사에게 잡혔습니다!\n별 2개를 빼앗깁니다! 💀'
+            name: '어둠의 기사 습격!', sub: names + '님이 어둠의 기사에게 잡혔습니다!\n운명을 건 가위바위보를 시작합니다!'
         };
         cineShow(cine, function() {
-            checkDKRetreat();
+            startDKRPS(caught, false, undefined, false);
         });
     } else {
         checkDKRetreat();
@@ -988,6 +1084,8 @@ function cfxSpawn(type){
   }
 }
 
+var cineTimeout = null;
+
 function cineShow(cfg, callback){
   if(!cfxCanvas)cfxInit(); cineNext=callback; var el=document.getElementById('cine'); el.className=cfg.type;
   
@@ -1001,7 +1099,10 @@ function cineShow(cfg, callback){
       vidEl.src = cfg.video;
       vidEl.muted = true; // 브라우저 정책 우회를 위해 스크립트로 다시 강제 음소거
       vidEl.load(); // 소스를 갱신하도록 브라우저에 명령
-      vidEl.play().catch(function(e){ console.warn('시네마틱 영상 재생 차단됨:', e); }); 
+      var playPromise = vidEl.play();
+      if (playPromise !== undefined) {
+          playPromise.catch(function(e){ console.warn('시네마틱 영상 재생 차단됨:', e); }); 
+      }
   } else {
       vidEl.style.display = 'none';
       vidEl.pause();
@@ -1023,10 +1124,17 @@ function cineShow(cfg, callback){
   } else { [120,100,80].forEach(function(f,i){setTimeout(function(){tone(f,.35,'sawtooth',.25);},i*110);}); setTimeout(function(){[350,280,200].forEach(function(f,i){setTimeout(function(){tone(f,.2,'square',.2);},i*70);});},550); }
   cfxSpawn(cfg.type);cfxRunning=true;cfxLoop();
   requestAnimationFrame(function(){requestAnimationFrame(function(){el.classList.add('on');});});
+
+  // 🌟 멈춤 오해 방지: 4초 뒤 시네마틱 자동 스킵
+  if(cineTimeout) clearTimeout(cineTimeout);
+  cineTimeout = setTimeout(function() {
+      cineDismiss();
+  }, 4000);
 }
 
 function cineDismiss(){
   if(!cineNext)return;
+  if(cineTimeout) clearTimeout(cineTimeout);
   var el=document.getElementById('cine'); el.classList.remove('on'); cfxRunning=false; cfxParts=[];
   if(cfxCtx)cfxCtx.clearRect(0,0,cfxCanvas.width,cfxCanvas.height);
   

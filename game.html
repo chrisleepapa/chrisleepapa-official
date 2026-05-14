@@ -29,20 +29,101 @@ body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
 #fx{position:fixed;inset:0;pointer-events:none;z-index:55;}
 
 /* === 풀스크린 보드게임 레이아웃 === */
-.wr{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;height:100vh;height:100dvh;padding:10px;}
+.wr{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;height:100vh;height:100dvh;padding:4dvh 12px;} 
+
+/* 🌟 보드판 (은하수 강물 애니메이션 적용) 🌟 */
 .board{
     display:grid; grid-template-columns:repeat(7,1fr); grid-template-rows:repeat(7,1fr); gap:1.2vw;
     width:100%; max-width:850px; aspect-ratio: 1;
     max-height: 95vh;
-    background:rgba(8,4,22,.85); border-radius:24px; padding:1.5%; border:3px solid rgba(255,215,0,.3);
-    box-shadow:0 0 60px rgba(155,89,182,.5),inset 0 0 40px rgba(0,0,0,.6);
+    background:#080416; /* 은하수가 돋보이도록 어두운 배경 */
+    border-radius:24px; padding:1.5%; border:3px solid rgba(255,215,0,.3);
+    position: relative;
+    z-index: 1;
+    overflow: hidden; /* 강물이 판 밖으로 나가지 않게 */
+    animation: boardGlow 6s ease-in-out infinite; /* 전체 판 테두리 호흡 효과 */
 }
+
+/* 판 테두리가 부드럽게 색이 변하며 빛나는 효과 */
+@keyframes boardGlow {
+    0%, 100% { box-shadow: 0 0 60px rgba(155,89,182,.5), inset 0 0 40px rgba(0,0,0,.6); border-color: rgba(255,215,0,.3); }
+    50% { box-shadow: 0 0 80px rgba(74,144,217,.7), inset 0 0 50px rgba(155,89,182,.4); border-color: rgba(255,105,180,.6); }
+}
+
+/* 타일 밑으로 흐르는 은하수 강물 그라데이션 */
+.board::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, 
+        rgba(8, 4, 22, 0.9) 0%, 
+        rgba(45, 15, 80, 0.85) 25%, 
+        rgba(105, 55, 180, 0.7) 45%, 
+        rgba(74, 144, 217, 0.8) 50%, 
+        rgba(255, 105, 180, 0.7) 55%, 
+        rgba(45, 15, 80, 0.85) 75%, 
+        rgba(8, 4, 22, 0.9) 100%
+    );
+    background-size: 300% 300%;
+    animation: flowRiver 10s ease-in-out infinite;
+    z-index: 0; pointer-events: none;
+}
+
+/* 강물 위를 반짝이며 흘러가는 별가루 파티클 */
+.board::after {
+    content: ''; position: absolute; inset: 0;
+    background-image: 
+        radial-gradient(1.5px 1.5px at 20px 30px, #fff, transparent),
+        radial-gradient(2.5px 2.5px at 60px 80px, #FFD700, transparent),
+        radial-gradient(1px 1px at 100px 20px, #fff, transparent),
+        radial-gradient(3px 3px at 150px 100px, #4A90D9, transparent),
+        radial-gradient(2px 2px at 10px 120px, #FF69B4, transparent),
+        radial-gradient(1.5px 1.5px at 80px 150px, #fff, transparent),
+        radial-gradient(2px 2px at 130px 170px, #9B59B6, transparent);
+    background-size: 200px 200px; 
+    animation: twinkleRiver 15s linear infinite;
+    z-index: 0; pointer-events: none;
+    mix-blend-mode: screen;
+}
+
+@keyframes flowRiver {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes twinkleRiver {
+    0% { background-position: 0px 0px; opacity: 0.3; }
+    25% { opacity: 0.8; }
+    50% { opacity: 0.4; }
+    75% { opacity: 0.9; }
+    100% { background-position: -200px -200px; opacity: 0.3; }
+}
+
 
 @media (max-width: 600px) {
-  .board { gap: 4px; padding: 6px; border-radius: 18px; aspect-ratio: auto; height: 100%; max-height: 100%; }
+  .board { 
+    gap: 4px; padding: 6px; border-radius: 18px; 
+    aspect-ratio: auto; 
+    height: 100%; width: 100%; 
+    max-height: 100%; margin: auto; 
+  }
+  .cell { aspect-ratio: 1 / 1; width: 100%; height: auto; margin: auto; border-radius: 10px; }
+  .cell.corner { border-radius: 12px; border-width: 1.5px; }
+  .cem { font-size: clamp(14px, 4vw, 22px); margin-bottom: 0; }
+  .cnm { font-size: clamp(7.5px, 2vw, 10px); }
+  .cp { padding: 8px; gap: 6px; justify-content: space-evenly; }
+  .ctit { font-size: clamp(14px, 3.5vw, 20px); }
+  .scs { gap: 5px; }
+  .sc { padding: 4px; max-width: 110px; }
+  .sps { font-size: clamp(12px, 3.5vw, 16px); }
+  #turn-indicator { font-size: clamp(12px, 3.5vw, 16px); }
+  #roll-counter { font-size: clamp(10px, 2.5vw, 12px); }
+  .die { font-size: clamp(26px, 6vw, 40px); }
+  .rbtn { padding: 8px; font-size: clamp(12px, 3.5vw, 16px); }
+  #lgp { padding: 6px; font-size: clamp(10px, 2.5vw, 13px); }
+  .tok-img-wrap { width: clamp(20px, 4.5vw, 32px); height: clamp(20px, 4.5vw, 32px); }
 }
 
-.cell{border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2px;position:relative;overflow:hidden;border:2px solid transparent;transition:transform .15s,box-shadow .15s;}
+.cell{position:relative; z-index:1; border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2px;overflow:hidden;border:2px solid transparent;transition:transform .15s,box-shadow .15s;}
 .cell:hover{transform:scale(1.08);z-index:10;box-shadow:0 0 16px rgba(255,255,255,.35);}
 .cell.corner{border-radius:16px;border-width:2.5px;}
 
@@ -66,15 +147,16 @@ body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
 @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.15);}}
 .cell.shk{animation:shake .5s;}
 .cell.lnd{animation:pulse .4s;}
-.board.shk{animation:shake .6s;}
+.board.shk{animation:shake .6s !important;} /* 흔들림 우선 적용 */
 
 /* === 중앙 UI === */
 .cp{
     grid-column:2/7; grid-row:2/7;
-    background:linear-gradient(160deg,rgba(18,6,46,.95),rgba(6,22,52,.95));
+    background:linear-gradient(160deg,rgba(18,6,46,.98),rgba(6,22,52,.98)); /* 은하수가 너무 비치지 않게 투명도 조정 */
     border-radius:20px; border:2px solid rgba(255,215,0,.25);
     display:flex; flex-direction:column; align-items:center; justify-content:center;
     padding:10px; position:relative; overflow:hidden; gap: 2%;
+    z-index: 2; /* 타일보다 위, 은하수 덮어주기 */
 }
 .cp::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(155,89,182,.15),transparent 75%);pointer-events:none;}
 
@@ -558,7 +640,7 @@ var SP=[
   {id:15,t:'m',nm:'황금 상자',  em:'🎁',bg:'linear-gradient(135deg,#D35400,#E67E22)',char:'magicbook',cn:'랜덤보상',         cd:'열쇠 구멍으로 빛이 새어나옵니다. 열어볼까요?', magic:true},
   {id:16,t:'e',nm:'마법 크리스탈',em:'💎',bg:'linear-gradient(135deg,#0A4A3A,#1ABC9C)',char:'angel',    cn:'엘리온 (현자)',     cd:'에너지가 담긴 크리스탈로 별 1개 획득.',  st:1},
   {id:17,t:'b',nm:'별똥별',     em:'🌠',bg:'linear-gradient(135deg,#4A4A00,#F1C40F)',char:'yul',      cn:'율이',           cd:'소원을 빌어 즉시 한 번 더 굴리기 기회 획득.',   xr:true},
-  {id:18,t:'c',nm:'마법도서관', em:'📚',bg:'linear-gradient(135deg,#3A2A00,#8B6914)',char:'dad',      cn:'아빠',           cd:'아빠가 세상의 비밀이 숨겨진 책을 주며 별 2개를 줍니다.',st:2},
+  {id:18,t:'c',nm:'마법도서관', em:'📚',bg:'linear-gradient(135deg,#3A2A00,#8B6914)',char:'dad',      cn:'아빠',           cd:'아빠가 세상의 비밀이 신겨진 책을 주며 별 2개를 줍니다.',st:2},
   {id:19,t:'e',nm:'엄마 부엌',  em:'🍪',bg:'linear-gradient(135deg,#4A2A00,#E67E22)',char:'mom',      cn:'엄마',           cd:'엄마가 구워준 쿠키를 먹고 기운을 차려 별 2개 획득.',st:2},
   {id:20,t:'b',nm:'아빠 서재',  em:'📖',bg:'linear-gradient(135deg,#0A2A4A,#2980B9)',char:'dad',      cn:'아빠',           cd:'아빠의 책을 읽고 즉시 한 번 더 굴리기 기회 획득. 별 2개 획득.',  xr:true, st:2},
   {id:21,t:'t',nm:'어둠의 기사단4', em:'🧪',bg:'linear-gradient(135deg,#0A3A1A,#27AE60)',char:'darkknight',cn:'어둠의기사단',      cd:'이상한 물약을 마시고 뒤로 2칸 이동. 별 1개 빼앗김.',         mv:-2, st:-1},
@@ -575,11 +657,6 @@ var PL=[
   {nm:'정이',ic:'👧',ds:'동생 · 마법사', char:'jung'}
 ];
 
-/* ══════════════════════════════════════════════
-   [FIX] 전역 변수 명시적 선언
-   - encTargetPos, encFromMove: 원본에서 암묵적 전역이었음
-   - cinematicPlaying: 신규 추가. 시네마틱 재생 중 버튼 잠금용
-══════════════════════════════════════════════ */
 var pos=[0,0], stars=[0,0], cur=0, dice=[1,2], skip=[false,false], powerUp=[false,false];
 var rolling=false, ev=null, over=false, moving=false;
 var totalTurns = 1;
@@ -594,14 +671,10 @@ var dkStepsTaken = 0;
 var encActive = false;
 var dkAnimating = false;
 
-/* [FIX #1] cinematicPlaying 플래그: 시네마틱 동안 버튼 완전 잠금 */
 var cinematicPlaying = false;
-
-/* [FIX #6] encTargetPos, encFromMove 명시적 전역 선언 */
 var encTargetPos = 0;
 var encFromMove = false;
 
-/* [FIX #3] cfxLoop 중복 실행 방지용 변수 */
 var cfxCanvas = null;
 var cfxCtx = null;
 var cfxRunning = false;
@@ -618,7 +691,6 @@ function shuffleBoard() {
   }
   SP = [startSpace].concat(restSpaces);
   SP.forEach(function(sp, idx) { sp.id = idx; });
-  /* [FIX #5] 보드 셔플 시 DK 활성화 상태면 비활성화 (위치 오염 방지) */
   if (dkActive) {
     dkActive = false;
     dkAnimating = false;
@@ -653,9 +725,7 @@ function registerEventVisit(sid) {
   return '';
 }
 
-/* 턴 종료 로직 */
 function finalizeTurn() {
-    /* [FIX #4] dkActive 체크를 먼저 해서 이미 DK가 있으면 재소환 방지 */
     if (!dkActive && totalRolls >= nextDKTarget) {
         nextDKTarget += 10;
         spawnDK();
@@ -743,7 +813,6 @@ function renderAll(){
   document.getElementById('d1').className='die'+(rolling?' rl':'');
 
   var btn=document.getElementById('rb');
-  /* [FIX #1] cinematicPlaying 조건 추가 — 시네마틱 중 버튼 완전 비활성화 */
   var can = !rolling && !ev && !over && !moving && !encActive && !dkAnimating && !cinematicPlaying;
   btn.disabled=!can;
   btn.textContent=skip[cur]?'⏭️ 턴 넘기기':rolling?'🎲 굴리는 중...':(powerUp[cur]?'🔥 파워 굴리기 (x2)':'🎲 주사위 굴리기');
@@ -755,7 +824,6 @@ function addLog(msg){
 }
 
 function handleRoll(){
-  /* [FIX #1] cinematicPlaying 추가 가드 */
   if(rolling||ev||over||moving||encActive||dkAnimating||cinematicPlaying)return;
   resetEventChain();
   
@@ -819,10 +887,8 @@ function movePlayer(from, steps, isPwr){
   },280);
 }
 
-/* ══ ENCOUNTER RPS BATTLE ══ */
 function startEncounterRPS(targetPos, fromMove) {
     encActive = true;
-    /* [FIX #6] 명시적 전역에 할당 */
     encTargetPos = targetPos;
     encFromMove = fromMove;
     var ov = document.getElementById('enc-ov');
@@ -898,7 +964,6 @@ function endEncounterRPS() {
     setTimeout(function() { checkAndTriggerEvent(encTargetPos, encFromMove); }, 400);
 }
 
-/* ══ 어둠의 기사 가위바위보 ══ */
 function startDKRPS(caughtPlayers, alsoSisterCollision, targetPos, fromMove) {
     encActive = true;
     var ov = document.getElementById('enc-ov');
@@ -996,9 +1061,8 @@ function endDKRPS(alsoSisterCollision, targetPos, fromMove) {
     }
 }
 
-/* [FIX #2] spawnDK: cinematicPlaying을 즉시 true로 설정해 버튼 잠금 */
 function spawnDK() {
-    cinematicPlaying = true; /* 즉시 버튼 잠금 */
+    cinematicPlaying = true; 
     dkActive = true;
     dkPos = 0;
     dkStepsTaken = 0;
@@ -1078,7 +1142,6 @@ function checkDKRetreat() {
     setTimeout(nextPlayerTurn, 500);
 }
 
-/* ══ CINE & EVENTS ══ */
 var CINE_DATA={
   '엄마 부엌':{type:'good', img:'./images/mom.jpeg', tag:'💝 SPECIAL ENCOUNTER 💝', name:'엄마', sub:'우리 율이 정이 왔어? 😊\n엄마가 제일 사랑하는 우리 딸들~!\n갓 구운 쿠키랑 사랑을 듬뿍 줄게! 💕'},
   '아빠 서재':{type:'good', img:'./images/chris05.jpg', tag:'📖 SPECIAL ENCOUNTER 📖', name:'아빠', sub:'오! 우리 딸들이 대모험 중이구나! 🌟\n아빠가 항상 응원해줄게!\n자, 특별 보너스를 받아라! ✨'},
@@ -1123,21 +1186,12 @@ function cfxSpawn(type){
   }
 }
 
-/* ══════════════════════════════════════════════
-   [FIX #1 + #2 + #3] cineShow / cineDismiss 전면 수정
-   - cinematicPlaying = true 즉시 설정 (버튼 잠금)
-   - cfxLoop 중복 실행 방지 (!cfxRunning 가드)
-   - cineDismiss의 setTimeout 콜백 내부에서 cinematicPlaying = false
-     (콜백이 자체 잠금 플래그를 세울 때까지 버튼이 열리지 않게)
-══════════════════════════════════════════════ */
 function cineShow(cfg, callback) {
     if(!cfxCanvas) cfxInit();
 
-    /* [FIX #2] 시네마틱 시작과 동시에 즉시 잠금 */
     cinematicPlaying = true;
-    renderAll(); /* 버튼 즉시 비활성화 반영 */
+    renderAll(); 
 
-    /* 이전 cineTimeout이 있으면 취소 */
     if(cineTimeout) clearTimeout(cineTimeout);
 
     cineNext = callback;
@@ -1172,7 +1226,6 @@ function cineShow(cfg, callback) {
     }
     
     cfxSpawn(cfg.type);
-    /* [FIX #3] cfxLoop 중복 방지 — 이미 실행 중이면 새로 시작 안 함 */
     if (!cfxRunning) {
         cfxRunning = true;
         cfxLoop();
@@ -1200,11 +1253,10 @@ function cineDismiss() {
     var cb = cineNext;
     cineNext = null;
 
-    /* [FIX #1] cinematicPlaying은 콜백 직전까지 유지 → 550ms 공백 동안 버튼 잠금 유지 */
     setTimeout(function(){
-        cinematicPlaying = false; /* 콜백 실행 직전에 해제 */
-        renderAll();              /* 버튼 상태 즉시 반영 (콜백이 새 플래그를 세울 것임) */
-        cb();                     /* 콜백 실행 (dkAnimating, encActive 등이 여기서 설정됨) */
+        cinematicPlaying = false; 
+        renderAll();              
+        cb();                     
     }, 550);
 }
 
@@ -1450,9 +1502,7 @@ function resetGame(){
   
   totalRolls = 0; nextDKTarget = 10; dkActive = false; dkPos = 0; dkStepsTaken = 0;
   encActive = false; dkAnimating = false;
-  /* [FIX] resetGame 시 cinematicPlaying 초기화 */
   cinematicPlaying = false;
-  /* [FIX] cfxLoop 정리 */
   cfxRunning = false; cfxParts = [];
   if(cfxCtx && cfxCanvas) cfxCtx.clearRect(0,0,cfxCanvas.width,cfxCanvas.height);
   if(cineTimeout){ clearTimeout(cineTimeout); cineTimeout = null; }

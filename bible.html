@@ -211,6 +211,13 @@
         .rank-item .rank-ini { font-weight: bold; color: var(--gold); font-family: 'Cinzel', serif; letter-spacing: 2px; }
         .rank-item .rank-pct { color: #a0a0b5; font-family: 'Pretendard', sans-serif; font-weight: 600; }
 
+        /* 퀴즈 전용 스타일 추가 */
+        .quiz-q-block { margin-bottom: 25px; padding: 15px; background: rgba(255,255,255,0.03); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
+        .quiz-q-text { font-family: 'Noto Serif KR', serif; font-size: 1.05rem; color: var(--gold-light); margin-bottom: 15px; }
+        .quiz-opt-label { display: block; margin-bottom: 8px; font-size: 0.95rem; color: #eee; cursor: pointer; padding: 10px; border-radius: 8px; transition: 0.2s; border: 1px solid transparent; background: rgba(0,0,0,0.2); }
+        .quiz-opt-label:hover { background: rgba(201,168,76,0.1); border-color: rgba(201,168,76,0.3); }
+        .quiz-opt-label input { margin-right: 10px; accent-color: var(--gold); cursor: pointer; }
+
         /* --- Bible UI Main Layout --- */
         .page-header { padding: 140px 20px 40px; text-align: center; background: radial-gradient(circle at center top, rgba(201,168,76,0.12) 0%, transparent 70%); }
         .page-title { font-family: 'Cinzel', serif; font-size: clamp(2.2rem, 6vw, 3.5rem); color: var(--gold-light); letter-spacing: 0.15em; font-weight: 700; text-shadow: 0 0 30px var(--gold-glow); }
@@ -503,6 +510,19 @@
             
             <div class="modal-action-row" style="margin-top:20px;">
                 <button class="modal-btn btn-copy" onclick="closeAppModal('archiveModal')" style="width:100%;">닫기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ✨ 퀴즈 모달 추가 -->
+    <div class="app-modal" id="quizModal" onclick="closeAppModal('quizModal', event)">
+        <div class="app-modal-content" onclick="event.stopPropagation()" style="max-width: 650px;">
+            <h3 style="font-size:1.6rem; color:var(--gold-light); margin-bottom:5px;">📝 말씀 확인 퀴즈</h3>
+            <p style="text-align:center; color:#a0a0b5; font-size:0.9rem; margin-bottom:20px;">현재 장을 올바르게 읽었는지 확인합니다.<br>3문제 중 2문제 이상 정답을 맞혀야 읽음 처리됩니다.</p>
+            <div id="quizContainer" style="text-align:left; margin-bottom: 20px;"></div>
+            <div class="modal-action-row">
+                <button class="modal-btn btn-sns" onclick="closeAppModal('quizModal')" style="flex:1;">다시 읽기(취소)</button>
+                <button class="modal-btn btn-copy" onclick="submitQuiz()" style="flex:1;">제출하기</button>
             </div>
         </div>
     </div>
@@ -1056,25 +1076,38 @@
             }, 100);
         }
 
-        // 🌟 장 단위 읽음 토글 (신규)
+        // 🌟 장 단위 읽음 토글 (퀴즈 연동)
         function toggleChapterRead() {
+            const chKey = `${currentBookId}-${currentChapter}`;
+            const isRead = userState.chapters[chKey];
+            
+            if (isRead) {
+                // 이미 읽은 상태라면 바로 취소 처리 (기존 로직)
+                executeMarkChapter(false);
+            } else {
+                // 안 읽은 상태에서 누르면 퀴즈 모달 띄우기
+                openQuizModal();
+            }
+        }
+
+        // 실제 읽음 상태를 변경하는 실행부
+        function executeMarkChapter(isComplete) {
             const chKey = `${currentBookId}-${currentChapter}`;
             const book = BIBLE_BOOKS.find(b => b.id === currentBookId);
             
-            userState.chapters[chKey] = !userState.chapters[chKey];
-            const isRead = userState.chapters[chKey];
+            userState.chapters[chKey] = isComplete;
             
-            saveChapterProgress(chKey, isRead); // Supabase 저장
+            saveChapterProgress(chKey, isComplete); // Supabase 저장
             updateOverallProgress(); // 랭킹 진행률 갱신
             renderChapterGrid(); // 그리드 뷰 갱신
             
-            if (isRead) {
+            if (isComplete) {
                 showToast(`🎉 ${book.name} ${currentChapter}장 읽기 완료!`);
             }
             
             // UI 업데이트
             const btnChapterRead = document.getElementById('btnChapterRead');
-            if (isRead) {
+            if (isComplete) {
                 btnChapterRead.innerHTML = "✅ 읽음 완료";
                 btnChapterRead.classList.add('read-completed');
             } else {
@@ -1082,6 +1115,120 @@
                 btnChapterRead.classList.remove('read-completed');
             }
         }
+
+        // --- ✨ 퀴즈 자동 생성 로직 ---
+        let currentQuizAnswers = [];
+
+        function openQuizModal() {
+            const book = BIBLE_BOOKS.find(b => b.id === currentBookId);
+            
+            // 현재 장의 말씀 가져오기
+            const currentVerses = globalBibleData.filter(v => {
+                const b = String(v.book).trim();
+                const matchBook = b === String(book.id) || b === book.name || b === book.kr_short || b === book.en || b.toUpperCase() === book.abbrev;
+                return matchBook && Number(v.chapter) === Number(currentChapter);
+            });
+
+            // 구절이 3개 미만인 짧은 장일 경우 퀴즈 패스 (바로 읽음 처리)
+            if (currentVerses.length < 3) {
+                executeMarkChapter(true);
+                return;
+            }
+
+            // 문제 출제를 위해 구절 랜덤하게 3개 섞기
+            const shuffledVerses = [...currentVerses].sort(() => 0.5 - Math.random());
+            const q1Verse = shuffledVerses[0].content || shuffledVerses[0].text;
+            const q2Verse = shuffledVerses[1].content || shuffledVerses[1].text;
+            const q3Verse = shuffledVerses[2].content || shuffledVerses[2].text;
+
+            currentQuizAnswers = [];
+            let html = '';
+
+            // [1] 빈칸 채우기 문제
+            const words = q1Verse.split(' ').filter(w => w.length > 1);
+            const targetWord = words[Math.floor(Math.random() * words.length)] || q1Verse.split(' ')[0];
+            const blankedVerse = q1Verse.replace(targetWord, ' <strong>[ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ]</strong> ');
+            
+            const randomWords = currentVerses.map(v => (v.content||v.text).split(' ').filter(w=>w.length>1)).flat();
+            let wrong1 = randomWords[Math.floor(Math.random() * randomWords.length)] || '하나님';
+            let wrong2 = randomWords[Math.floor(Math.random() * randomWords.length)] || '예수님';
+            
+            let q1Opts = [targetWord, wrong1, wrong2];
+            q1Opts = [...new Set(q1Opts)]; 
+            while(q1Opts.length < 3) q1Opts.push(Math.random().toString(36).substring(7)); 
+            q1Opts.sort(() => 0.5 - Math.random());
+            currentQuizAnswers.push(q1Opts.indexOf(targetWord));
+
+            html += `<div class="quiz-q-block">
+                        <div class="quiz-q-text">1. 다음 구절의 빈칸에 들어갈 알맞은 단어는 무엇일까요?</div>
+                        <p style="font-size:1.05rem; margin-bottom:15px; color:#ccc; line-height:1.6;">"${blankedVerse}"</p>
+                        ${q1Opts.map((opt, idx) => `
+                            <label class="quiz-opt-label">
+                                <input type="radio" name="q0" value="${idx}"> ${opt}
+                            </label>
+                        `).join('')}
+                     </div>`;
+
+            // [2] OX 문제
+            const isTrue = Math.random() > 0.5;
+            let q2Text = q2Verse;
+            if (!isTrue) {
+                // 완전히 다른 장의 구절을 하나 무작위로 가져오기
+                const otherVerses = globalBibleData.filter(v => Number(v.chapter) !== Number(currentChapter) && (v.content||v.text).length > 10);
+                if(otherVerses.length > 0) {
+                    q2Text = otherVerses[Math.floor(Math.random() * otherVerses.length)].content || otherVerses[Math.floor(Math.random() * otherVerses.length)].text;
+                }
+            }
+            currentQuizAnswers.push(isTrue ? 0 : 1);
+
+            html += `<div class="quiz-q-block">
+                        <div class="quiz-q-text">2. 다음은 <strong>${book.name} ${currentChapter}장</strong>에 포함된 말씀이 맞습니까?</div>
+                        <p style="font-size:1.05rem; margin-bottom:15px; color:#ccc; line-height:1.6;">"${q2Text}"</p>
+                        <label class="quiz-opt-label"><input type="radio" name="q1" value="0"> O (해당 장의 말씀이 맞습니다)</label>
+                        <label class="quiz-opt-label"><input type="radio" name="q1" value="1"> X (해당 장의 말씀이 아닙니다)</label>
+                     </div>`;
+
+            // [3] 객관식 문제
+            const diffVerses = globalBibleData.filter(v => Number(v.chapter) !== Number(currentChapter) && (v.content||v.text).length > 10).sort(() => 0.5 - Math.random());
+            let q3Opts = [q3Verse, diffVerses[0]?.content || diffVerses[0]?.text, diffVerses[1]?.content || diffVerses[1]?.text];
+            q3Opts.sort(() => 0.5 - Math.random());
+            currentQuizAnswers.push(q3Opts.indexOf(q3Verse));
+
+            html += `<div class="quiz-q-block">
+                        <div class="quiz-q-text">3. 다음 중 <strong>${book.name} ${currentChapter}장</strong>에 기록된 말씀은 무엇일까요?</div>
+                        ${q3Opts.map((opt, idx) => `
+                            <label class="quiz-opt-label">
+                                <input type="radio" name="q2" value="${idx}"> "${opt}"
+                            </label>
+                        `).join('')}
+                     </div>`;
+
+            document.getElementById('quizContainer').innerHTML = html;
+            document.getElementById('quizModal').classList.add('active');
+        }
+
+        // 퀴즈 결과 제출 및 채점 처리
+        function submitQuiz() {
+            let score = 0;
+            for (let i = 0; i < 3; i++) {
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                if (!selected) {
+                    showToast("모든 문제의 답을 선택해주세요.");
+                    return;
+                }
+                if (parseInt(selected.value) === currentQuizAnswers[i]) {
+                    score++;
+                }
+            }
+
+            if (score >= 2) {
+                closeAppModal('quizModal');
+                executeMarkChapter(true);
+            } else {
+                showToast(`😢 안타깝네요! (${score}/3 정답) 2문제 이상 맞춰야 통과됩니다. 다시 시도해주세요.`);
+            }
+        }
+
 
         // 🌟 상호작용 기능 로직 및 Supabase 저장 호출
         function toggleToolbar(vKey) { document.getElementById(`wrap-${vKey}`).classList.toggle('show-tools'); }

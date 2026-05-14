@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3207219520058740"
-     crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3207219520058740" crossorigin="anonymous"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-NBGELYQ4TZ"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -20,21 +18,24 @@
 <style>
 :root{--gold:#FFD700;--pink:#FF69B4;--purple:#9B59B6;--blue:#4A90D9;--dark:#110828;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;overflow:hidden;touch-action:manipulation;}
-body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;color:#fff;position:relative;}
+html,body{height:100%;overflow:hidden;touch-action:manipulation;background:var(--dark);}
+body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
+
+/* 배경 효과 */
 .sf{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at 20% 20%,rgba(60,20,130,.8),transparent 55%),radial-gradient(ellipse at 80% 80%,rgba(10,40,90,.9),transparent 55%),#110828;}
 .sl{position:fixed;inset:0;z-index:0;pointer-events:none;}
 .st{position:absolute;border-radius:50%;background:#fff;animation:twk var(--d,3s) ease-in-out var(--dl,0s) infinite;}
 @keyframes twk{0%,100%{opacity:.15;transform:scale(1);}50%{opacity:1;transform:scale(1.8);}}
 #fx{position:fixed;inset:0;pointer-events:none;z-index:55;}
 
-/* === 풀스크린 게임 레이아웃 (정사각형 유지, 가운데 공간 넓게) === */
+/* === 풀스크린 보드게임 레이아웃 === */
 .wr{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;height:100vh;height:100dvh;padding:10px;}
 .board{
-    display:grid; grid-template-columns:repeat(7,1fr); grid-template-rows:repeat(7,1fr); gap:6px;
-    width:100%; max-width:850px; aspect-ratio:1; max-height:96vh;
-    background:rgba(8,4,22,.85);border-radius:24px;padding:12px;border:3px solid rgba(255,215,0,.3);
-    box-shadow:0 0 60px rgba(155,89,182,.5),inset 0 0 40px rgba(0,0,0,.6); transition:transform 0.3s;
+    display:grid; grid-template-columns:repeat(7,1fr); grid-template-rows:repeat(7,1fr); gap:1.2vw;
+    width:100%; max-width:850px; aspect-ratio: 1;
+    max-height: 95vh;
+    background:rgba(8,4,22,.85); border-radius:24px; padding:1.5%; border:3px solid rgba(255,215,0,.3);
+    box-shadow:0 0 60px rgba(155,89,182,.5),inset 0 0 40px rgba(0,0,0,.6);
 }
 
 @media (max-width: 600px) {
@@ -45,101 +46,100 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 .cell:hover{transform:scale(1.08);z-index:10;box-shadow:0 0 16px rgba(255,255,255,.35);}
 .cell.corner{border-radius:16px;border-width:2.5px;}
 
-/* 타일 배경 및 아우라 */
+/* 타일 디자인 */
 .tc{background:radial-gradient(circle at 30% 30%,#FFFBE6,#D4A000);border-color:#FFD700;box-shadow:0 0 16px rgba(255,215,0,.55);}
 .te{background:radial-gradient(circle at 30% 30%,#D6F5E1,#27AE60);border-color:#27AE60;box-shadow:0 0 8px rgba(46,204,113,.35);}
 .tt{background:radial-gradient(circle at 30% 30%,#FDE8E8,#E74C3C);border-color:#E74C3C;box-shadow:0 0 8px rgba(231,76,60,.35);}
 .tb{background:radial-gradient(circle at 30% 30%,#FEF0D6,#E67E22);border-color:#E67E22;box-shadow:0 0 8px rgba(230,126,34,.35);}
 .tm{background:radial-gradient(circle at 30% 30%,#F4ECF7,#9B59B6);border-color:#9B59B6;box-shadow:0 0 12px rgba(155,89,182,.45);}
 
-/* 타일 내부 텍스트 */
 .cem{font-size:clamp(16px, 4vw, 32px);line-height:1;filter:drop-shadow(0 2px 3px rgba(0,0,0,.5));margin-bottom:2px;}
 .cnm{font-size:clamp(8px, 1.8vw, 13px);font-weight:900;color:#fff;text-align:center;line-height:1.1;word-break:keep-all;text-shadow:0 1px 4px rgba(0,0,0,.9),0 0 2px rgba(0,0,0,.8);}
 
-/* 캐릭터 말 위치 */
-.ctk{position:absolute;inset:0;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:3px;pointer-events:none;z-index:5;}
+.ctk{position:absolute;inset:0;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:2px;pointer-events:none;z-index:5;}
 .tok{display:block;transition:filter .3s;}
 .tok.a0{filter:drop-shadow(0 0 6px #4A90D9) drop-shadow(0 0 12px #4A90D9);animation:tbounce .6s ease-in-out infinite;}
 .tok.a1{filter:drop-shadow(0 0 6px #FF69B4) drop-shadow(0 0 12px #FF69B4);animation:tbounce .6s ease-in-out .3s infinite;}
 
-@keyframes tbounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+@keyframes tbounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
 @keyframes shake{0%,100%{transform:translateX(0);}20%{transform:translateX(-5px) rotate(-3deg);}40%{transform:translateX(5px) rotate(3deg);}60%{transform:translateX(-3px);}80%{transform:translateX(3px);}}
 @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.15);}}
 .cell.shk{animation:shake .5s;}
 .cell.lnd{animation:pulse .4s;}
 .board.shk{animation:shake .6s;}
 
-/* === 겹침 현상 해결된 중앙 UI === */
+/* === 중앙 UI === */
 .cp{
     grid-column:2/7; grid-row:2/7;
     background:linear-gradient(160deg,rgba(18,6,46,.95),rgba(6,22,52,.95));
-    border-radius:20px; display:flex; flex-direction:column; align-items:center; justify-content:space-evenly;
-    padding:4% 2%; border:2px solid rgba(255,215,0,.25); overflow:hidden; position:relative;
+    border-radius:20px; border:2px solid rgba(255,215,0,.25);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:10px; position:relative; overflow:hidden; gap: 2%;
 }
 .cp::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(155,89,182,.15),transparent 75%);pointer-events:none;}
 
-.ctit{font-family:'Fredoka One',cursive;font-size:clamp(16px, 4vw, 32px);background:linear-gradient(135deg,#FFD700,#FF69B4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:1px;text-align:center;filter:drop-shadow(0 2px 4px rgba(0,0,0,.6)); margin: 0;}
+.ctit{font-family:'Fredoka One',cursive;font-size:clamp(16px, 4vw, 30px);background:linear-gradient(135deg,#FFD700,#FF69B4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:1px;text-align:center;filter:drop-shadow(0 2px 4px rgba(0,0,0,.6));}
 
-.scs{display:flex;gap:4%;width:90%;justify-content:center; align-items: stretch;}
-.sc{background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.1);border-radius:16px;padding:2% 4%;text-align:center;transition:all .3s;flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;}
+.scs{display:flex;gap:10px;width:100%;justify-content:center;}
+.sc{background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.1);border-radius:14px;padding:8px;text-align:center;transition:all .3s;flex:1;max-width:130px;}
 .sc.cur{background:rgba(255,215,0,.15);border-color:rgba(255,215,0,.6);box-shadow:0 0 15px rgba(255,215,0,.3);}
 .sc.cur.pwr{border-color:#FF4500;box-shadow:0 0 20px rgba(255,69,0,.6);}
-.spi{display:block;transition:transform .3s; margin-bottom:4px;}
+.spi{display:block;transition:transform .3s;}
 .sc.cur .spi{transform:scale(1.15);}
-.spn{color:#fff;font-size:clamp(11px,2.5vw,16px);font-weight:900;}
-.sps{color:var(--gold);font-size:clamp(16px,4vw,24px);font-weight:900;}
+.spn{color:#fff;font-size:clamp(11px,2vw,14px);font-weight:900;margin-top:4px;}
+.sps{color:var(--gold);font-size:clamp(16px,4vw,22px);font-weight:900;}
 
-.pbs{width:80%;display:flex;flex-direction:column;gap:4px;}
+.pbs{width:80%;display:flex;flex-direction:column;gap:5px;}
 .pbr{display:flex;align-items:center;gap:6px;}
 .pbt{flex:1;height:8px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.5);}
 .pbf{height:100%;border-radius:4px;transition:width .6s cubic-bezier(.34,1.56,.64,1);}
 
-#turn-indicator{font-family:'Fredoka One',cursive;font-size:clamp(16px,4vw,24px);color:var(--gold);text-shadow:0 0 10px rgba(255,215,0,.6);text-align:center; margin:0;}
-#roll-counter{color:#E74C3C;font-size:clamp(10px,2.5vw,16px);font-weight:800;text-shadow:0 1px 2px rgba(0,0,0,0.8); margin:0;}
+#turn-indicator{font-family:'Fredoka One',cursive;font-size:clamp(16px,4vw,22px);color:var(--gold);text-shadow:0 0 10px rgba(255,215,0,.6);text-align:center;}
+#roll-counter{color:#E74C3C;font-size:clamp(10px,2vw,14px);font-weight:800;text-shadow:0 1px 2px rgba(0,0,0,0.8);}
 
-.dcr{display:flex;justify-content:center;gap:15px; margin: 0;}
+.dcr{display:flex;justify-content:center;gap:15px;}
 .die{font-size:clamp(35px, 8vw, 60px);display:inline-block;line-height:1;}
 .die.rl{animation:dr .12s ease-in-out infinite;}
 
-.rbtn{width:80%;max-width:280px;padding:clamp(10px, 2.5vw, 18px);background:linear-gradient(135deg,#FF69B4,#9B59B6);border:none;border-radius:20px;color:#fff;font-size:clamp(14px, 3.5vw, 22px);font-weight:900;font-family:'Nunito',sans-serif;cursor:pointer;box-shadow:0 4px 15px rgba(233,30,99,.5);transition:transform .2s,box-shadow .2s;overflow:hidden;position:relative;}
+.rbtn{width:85%;max-width:260px;padding:12px;background:linear-gradient(135deg,#FF69B4,#9B59B6);border:none;border-radius:18px;color:#fff;font-size:clamp(14px, 3.5vw, 20px);font-weight:900;font-family:'Nunito',sans-serif;cursor:pointer;box-shadow:0 4px 15px rgba(233,30,99,.5);transition:transform .2s,box-shadow .2s;overflow:hidden;position:relative;}
 .rbtn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(255,255,255,.2),transparent);transform:translateX(-100%);transition:transform .4s;}
 .rbtn:hover::before{transform:translateX(100%);}
 .rbtn:not(:disabled):hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(233,30,99,.65);}
 .rbtn:disabled{background:#3a3a5a;cursor:not-allowed;box-shadow:none;opacity:.65;}
 
-#lgp{background:rgba(0,0,0,.6);border:1px solid rgba(255,215,0,.2);border-radius:10px;padding:8px;width:90%;text-align:center;font-size:clamp(11px, 2.5vw, 16px);color:#fff;box-shadow:inset 0 0 8px rgba(0,0,0,.6);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#lgp{background:rgba(0,0,0,.6);border:1px solid rgba(255,215,0,.2);border-radius:10px;padding:8px;width:90%;text-align:center;font-size:clamp(11px, 2.5vw, 15px);color:#fff;box-shadow:inset 0 0 8px rgba(0,0,0,.6);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 
 /* 오버레이 팝업들 */
-.ov{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:200;padding:10px;opacity:0;pointer-events:none;transition:opacity .3s;}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;z-index:200;padding:10px;opacity:0;pointer-events:none;transition:opacity .3s;}
 .ov.vis{opacity:1;pointer-events:all;}
 
-.ecard{background:linear-gradient(160deg,#1E0B4E,#0A1F55);border-radius:24px;max-width:92vw;width:100%;overflow:hidden;border:3px solid rgba(255,215,0,.4);box-shadow:0 0 80px rgba(255,215,0,.35),0 30px 90px rgba(0,0,0,.8);transform:scale(.8) translateY(40px);transition:transform .35s cubic-bezier(.34,1.56,.64,1);}
+.ecard{background:linear-gradient(160deg,#1E0B4E,#0A1F55);border-radius:24px;max-width:92vw;width:100%;overflow:hidden;border:3px solid rgba(255,215,0,.4);box-shadow:0 0 60px rgba(255,215,0,.3),0 20px 60px rgba(0,0,0,.8);transform:scale(.8) translateY(40px);transition:transform .35s cubic-bezier(.34,1.56,.64,1);}
 .ov.vis .ecard{transform:scale(1) translateY(0);}
-.ecard.tt2{border-color:rgba(231,76,60,.6);box-shadow:0 0 80px rgba(231,76,60,.35),0 30px 90px rgba(0,0,0,.8);}
+.ecard.tt2{border-color:rgba(231,76,60,.6);box-shadow:0 0 60px rgba(231,76,60,.3),0 20px 60px rgba(0,0,0,.8);}
 .ecard.tb2{border-color:rgba(230,126,34,.6);}
 .ecard.tc2{border-color:rgba(255,215,0,.6);}
-.ecard.tm2{border-color:rgba(155,89,182,.6);box-shadow:0 0 80px rgba(155,89,182,.45),0 30px 90px rgba(0,0,0,.8);}
+.ecard.tm2{border-color:rgba(155,89,182,.6);box-shadow:0 0 60px rgba(155,89,182,.3),0 20px 60px rgba(0,0,0,.8);}
 
-/* ===== 3D 사진 카드 연출 ===== */
-.ecard.photo-card { transform: perspective(1500px) rotateY(90deg) scale(0.2) translateY(200px); opacity: 0; border: 4px solid #FFD700; position: relative; transition: none; max-width: 440px; }
+/* 3D 사진 카드 연출 */
+.ecard.photo-card { transform: perspective(1500px) rotateY(90deg) scale(0.2) translateY(200px); opacity: 0; border: 3px solid #FFD700; position: relative; transition: none; max-width: 440px; }
 .ov.vis .ecard.photo-card { animation: epicCardReveal 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
 .ov.vis .ecard.photo-card.photo-evil { animation: epicCardRevealEvil 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; border-color: #E74C3C; }
 .ov.vis .ecard.photo-card.photo-green { animation: epicCardRevealGreen 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; border-color: #2ECC71; }
 .ov.vis .ecard.photo-card.photo-magic { animation: epicCardRevealMagic 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; border-color: #9B59B6; }
 
-@keyframes epicCardReveal { 0% { transform: perspective(1500px) rotateY(90deg) rotateX(10deg) scale(0.2) translateY(200px); opacity: 0; box-shadow: 0 0 0 transparent; } 45% { transform: perspective(1500px) rotateY(-360deg) rotateX(-5deg) scale(1.05) translateY(-20px); opacity: 1; box-shadow: 0 0 100px #FFD700, 0 0 50px #fff; } 100% { transform: perspective(1500px) rotateY(0deg) rotateX(0deg) scale(1) translateY(0); opacity: 1; box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 40px rgba(255,215,0,0.5); } }
-@keyframes epicCardRevealEvil { 0% { transform: perspective(1500px) rotateY(90deg) rotateX(10deg) scale(0.2) translateY(200px); opacity: 0; box-shadow: 0 0 0 transparent; } 45% { transform: perspective(1500px) rotateY(-360deg) rotateX(-5deg) scale(1.05) translateY(-20px); opacity: 1; box-shadow: 0 0 100px #E74C3C, 0 0 50px #fff; } 100% { transform: perspective(1500px) rotateY(0deg) rotateX(0deg) scale(1) translateY(0); opacity: 1; box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 40px rgba(231,76,60,0.5); } }
-@keyframes epicCardRevealGreen { 0% { transform: perspective(1500px) rotateY(90deg) rotateX(10deg) scale(0.2) translateY(200px); opacity: 0; box-shadow: 0 0 0 transparent; } 45% { transform: perspective(1500px) rotateY(-360deg) rotateX(-5deg) scale(1.05) translateY(-20px); opacity: 1; box-shadow: 0 0 100px #2ECC71, 0 0 50px #fff; } 100% { transform: perspective(1500px) rotateY(0deg) rotateX(0deg) scale(1) translateY(0); opacity: 1; box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 40px rgba(46,204,113,0.5); } }
-@keyframes epicCardRevealMagic { 0% { transform: perspective(1500px) rotateY(90deg) rotateX(10deg) scale(0.2) translateY(200px); opacity: 0; box-shadow: 0 0 0 transparent; } 45% { transform: perspective(1500px) rotateY(-360deg) rotateX(-5deg) scale(1.05) translateY(-20px); opacity: 1; box-shadow: 0 0 100px #9B59B6, 0 0 50px #fff; } 100% { transform: perspective(1500px) rotateY(0deg) rotateX(0deg) scale(1) translateY(0); opacity: 1; box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 40px rgba(155,89,182,0.5); } }
+@keyframes epicCardReveal { 0% { transform: perspective(1500px) rotateY(90deg) rotateX(10deg) scale(0.2) translateY(200px); opacity: 0; box-shadow: 0 0 0 transparent; } 45% { transform: perspective(1500px) rotateY(-360deg) rotateX(-5deg) scale(1.05) translateY(-20px); opacity: 1; box-shadow: 0 0 80px #FFD700, 0 0 40px #fff; } 100% { transform: perspective(1500px) rotateY(0deg) rotateX(0deg) scale(1) translateY(0); opacity: 1; box-shadow: 0 20px 40px rgba(0,0,0,0.9), 0 0 30px rgba(255,215,0,0.5); } }
+@keyframes epicCardRevealEvil { 0% { transform: perspective(1500px) rotateY(90deg) rotateX(10deg) scale(0.2) translateY(200px); opacity: 0; } 45% { transform: perspective(1500px) rotateY(-360deg) rotateX(-5deg) scale(1.05) translateY(-20px); opacity: 1; box-shadow: 0 0 80px #E74C3C, 0 0 40px #fff; } 100% { transform: perspective(1500px) rotateY(0deg) rotateX(0deg) scale(1) translateY(0); opacity: 1; box-shadow: 0 20px 40px rgba(0,0,0,0.9), 0 0 30px rgba(231,76,60,0.5); } }
+@keyframes epicCardRevealGreen { 0% { transform: perspective(1500px) rotateY(90deg) rotateX(10deg) scale(0.2) translateY(200px); opacity: 0; } 45% { transform: perspective(1500px) rotateY(-360deg) rotateX(-5deg) scale(1.05) translateY(-20px); opacity: 1; box-shadow: 0 0 80px #2ECC71, 0 0 40px #fff; } 100% { transform: perspective(1500px) rotateY(0deg) rotateX(0deg) scale(1) translateY(0); opacity: 1; box-shadow: 0 20px 40px rgba(0,0,0,0.9), 0 0 30px rgba(46,204,113,0.5); } }
+@keyframes epicCardRevealMagic { 0% { transform: perspective(1500px) rotateY(90deg) rotateX(10deg) scale(0.2) translateY(200px); opacity: 0; } 45% { transform: perspective(1500px) rotateY(-360deg) rotateX(-5deg) scale(1.05) translateY(-20px); opacity: 1; box-shadow: 0 0 80px #9B59B6, 0 0 40px #fff; } 100% { transform: perspective(1500px) rotateY(0deg) rotateX(0deg) scale(1) translateY(0); opacity: 1; box-shadow: 0 20px 40px rgba(0,0,0,0.9), 0 0 30px rgba(155,89,182,0.5); } }
 
 /* 카드 상단 이미지 영역 */
 .ecard.photo-card .ehdg { height: 35vh; min-height: 240px; padding: 0; display: flex; flex-direction: column; justify-content: flex-end; align-items: stretch; position:relative; overflow:hidden;}
 .ecard.photo-card .echar { position: absolute; inset: 0; width: 100%; height: 100%; animation: none; filter: none; z-index: 1; }
-.ecard.photo-card .echar img { width: 100% !important; height: 100% !important; border-radius: 0 !important; object-fit: cover; }
+.ecard.photo-card .echar img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; border-radius:0;}
 .ecard.photo-card .ehdgt { position: relative; z-index: 3; text-align: center; padding: 50px 15px 15px; background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 40%, transparent 100%); width: 100%; }
 .ecard.photo-card .ecnm { font-size: 16px; color: #FFD700; text-shadow: 0 2px 4px rgba(0,0,0,0.9); }
 .ecard.photo-card .esnm { font-size: 32px; text-shadow: 0 2px 8px rgba(0,0,0,1); line-height:1.1;}
-.ecard.photo-card .esem { position: absolute; top: 15px; right: 15px; font-size: 40px; margin: 0; z-index: 4; background: rgba(0,0,0,0.6); width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; border-radius: 50%; border: 2px solid rgba(255,255,255,0.4); backdrop-filter: blur(4px); box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+.ecard.photo-card .esem { position: absolute; top: 15px; right: 15px; font-size: 36px; margin: 0; z-index: 4; background: rgba(0,0,0,0.6); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 50%; border: 2px solid rgba(255,255,255,0.4); backdrop-filter: blur(4px); box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
 .ecard.photo-card .ebody { position: relative; z-index: 3; background: rgba(15, 10, 30, 0.98); border-top: 2px solid rgba(255,215,0,0.3); padding: 20px 15px; }
 
 .ecard.photo-card::after { content: ''; position: absolute; top: -150%; left: -50%; width: 200%; height: 200%; background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 40%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0.1) 60%, rgba(255,255,255,0) 100%); transform: rotate(30deg); animation: cardSweep 3.5s infinite linear; z-index: 10; pointer-events: none; }
@@ -168,54 +168,54 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 .cbtn.battle-btn { background:linear-gradient(135deg,#E74C3C,#C0392B); animation: pulse-battle 1.5s infinite; }
 @keyframes pulse-battle { 0% { box-shadow: 0 0 0 0 rgba(231,76,60, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(231,76,60, 0); } 100% { box-shadow: 0 0 0 0 rgba(231,76,60, 0); } }
 
-.cbtn{width:100%;padding:16px;background:linear-gradient(135deg,#FF69B4,#9B59B6);border:none;border-radius:18px;color:#fff;font-size:18px;font-weight:900;font-family:'Nunito',sans-serif;cursor:pointer;box-shadow:0 5px 20px rgba(233,30,99,.4);transition:transform .2s,box-shadow .2s;}
-.cbtn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(233,30,99,.6);}
+.cbtn{width:100%;padding:15px;background:linear-gradient(135deg,#FF69B4,#9B59B6);border:none;border-radius:15px;color:#fff;font-size:16px;font-weight:900;font-family:'Nunito',sans-serif;cursor:pointer;box-shadow:0 4px 15px rgba(233,30,99,.4);transition:transform .2s,box-shadow .2s;}
+.cbtn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(233,30,99,.6);}
 
-.gocard{background:linear-gradient(160deg,#1E0B4E,#0A1F55);border-radius:26px;padding:40px 30px;max-width:92vw;width:100%;text-align:center;border:3px solid rgba(255,215,0,.5);box-shadow:0 0 90px rgba(255,215,0,.45),0 40px 90px rgba(0,0,0,.8);transform:scale(.7);transition:transform .4s cubic-bezier(.34,1.56,.64,1);}
+.gocard{background:linear-gradient(160deg,#1E0B4E,#0A1F55);border-radius:26px;padding:30px 20px;max-width:92vw;width:100%;text-align:center;border:3px solid rgba(255,215,0,.5);box-shadow:0 0 90px rgba(255,215,0,.45),0 40px 90px rgba(0,0,0,.8);transform:scale(.7);transition:transform .4s cubic-bezier(.34,1.56,.64,1);}
 .ov.vis .gocard{transform:scale(1);}
-.trp{font-size:72px;display:block;margin-bottom:8px;filter:drop-shadow(0 0 20px gold);}
-.wh{font-family:'Fredoka One',cursive;font-size:32px;background:linear-gradient(135deg,#FFD700,#FF69B4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px;}
-.wpr{width:100px;height:100px;margin:0 auto 12px;border-radius:50%;overflow:hidden;border:4px solid rgba(255,215,0,.55);box-shadow:0 0 25px rgba(255,215,0,.38);background:rgba(0,0,0,.3);}
+.trp{font-size:60px;display:block;margin-bottom:5px;filter:drop-shadow(0 0 20px gold);}
+.wh{font-family:'Fredoka One',cursive;font-size:28px;background:linear-gradient(135deg,#FFD700,#FF69B4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px;}
+.wpr{width:100px;height:100px;margin:0 auto 10px;border-radius:50%;overflow:hidden;border:4px solid rgba(255,215,0,.55);box-shadow:0 0 20px rgba(255,215,0,.38);background:rgba(0,0,0,.3);}
 .wpr svg, .wpr img{width:100%;height:100%;object-fit:cover;}
-.wnm{color:#fff;font-size:24px;font-weight:900;margin-bottom:4px;}
-.wdc{color:#C9A6FF;font-size:14px;margin-bottom:24px;}
-.fsr{display:flex;justify-content:center;gap:14px;margin-bottom:26px;}
-.fc{background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.1);border-radius:16px;padding:12px 18px;text-align:center;}
+.wnm{color:#fff;font-size:22px;font-weight:900;margin-bottom:4px;}
+.wdc{color:#C9A6FF;font-size:14px;margin-bottom:20px;}
+.fsr{display:flex;justify-content:center;gap:10px;margin-bottom:20px;}
+.fc{background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.1);border-radius:14px;padding:10px 15px;text-align:center;}
 .fc.wc{background:rgba(255,215,0,.15);border-color:rgba(255,215,0,.5);}
 .fpn{color:#fff;font-size:14px;font-weight:800;margin-top:4px;}
 .fps{color:var(--gold);font-size:20px;font-weight:900;}
 .fpc{color:var(--gold);font-size:12px;font-weight:800;}
-.rsbtn{padding:16px 44px;background:linear-gradient(135deg,#FF69B4,#9B59B6);border:none;border-radius:20px;color:#fff;font-size:18px;font-weight:900;font-family:'Nunito',sans-serif;cursor:pointer;box-shadow:0 6px 25px rgba(233,30,99,.5);transition:transform .2s,box-shadow .2s;}
+.rsbtn{padding:15px 40px;background:linear-gradient(135deg,#FF69B4,#9B59B6);border:none;border-radius:18px;color:#fff;font-size:18px;font-weight:900;font-family:'Nunito',sans-serif;cursor:pointer;box-shadow:0 6px 20px rgba(233,30,99,.5);transition:transform .2s,box-shadow .2s;}
 .rsbtn:hover{transform:translateY(-3px) scale(1.03);}
 
 /* 시작화면 */
 #is{position:fixed;inset:0;z-index:500;background:linear-gradient(160deg,#110828,#061434);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;transition:opacity .5s,transform .5s;}
 #is.hd{opacity:0;transform:scale(1.04);pointer-events:none;}
-.it1{font-family:'Fredoka One',cursive;font-size:clamp(26px,7vw,54px);background:linear-gradient(135deg,#FFD700,#FF69B4,#C9A6FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 28px rgba(255,215,0,.5));text-align:center;margin-bottom:6px;letter-spacing:3px;}
-.it2{color:#C9A6FF;font-size:clamp(12px,2.5vw,17px);font-weight:700;text-align:center;margin-bottom:36px;}
-.icp{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-bottom:36px;}
-.icc{background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.14);border-radius:24px;padding:16px 12px 14px;text-align:center;width:110px;transition:transform .3s,border-color .3s,box-shadow .3s;animation:fl 3s ease-in-out infinite;}
+.it1{font-family:'Fredoka One',cursive;font-size:clamp(26px,7vw,50px);background:linear-gradient(135deg,#FFD700,#FF69B4,#C9A6FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 28px rgba(255,215,0,.5));text-align:center;margin-bottom:6px;letter-spacing:2px;}
+.it2{color:#C9A6FF;font-size:clamp(12px,2.5vw,16px);font-weight:700;text-align:center;margin-bottom:30px;}
+.icp{display:flex;gap:15px;justify-content:center;flex-wrap:wrap;margin-bottom:30px;}
+.icc{background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.14);border-radius:20px;padding:12px 10px;text-align:center;width:110px;transition:transform .3s,border-color .3s,box-shadow .3s;animation:fl 3s ease-in-out infinite;}
 .icc:nth-child(2){animation-delay:.5s;}
-.icc:hover{transform:translateY(-8px) scale(1.06);border-color:rgba(255,215,0,.5);box-shadow:0 0 24px rgba(255,215,0,.22);}
+.icc:hover{transform:translateY(-5px) scale(1.05);border-color:rgba(255,215,0,.5);box-shadow:0 0 20px rgba(255,215,0,.22);}
 .icn{color:var(--gold);font-size:14px;font-weight:900;font-family:'Fredoka One',cursive;}
 .icr{color:rgba(255,255,255,.45);font-size:10px;font-weight:600;margin-top:4px;}
-.stbtn{padding:16px 56px;background:linear-gradient(135deg,#FF69B4,#9B59B6,#4A90D9);border:none;border-radius:20px;color:#fff;font-size:clamp(16px,3.5vw,22px);font-weight:900;font-family:'Nunito',sans-serif;cursor:pointer;box-shadow:0 8px 40px rgba(233,30,99,.5);transition:transform .25s,box-shadow .25s;letter-spacing:1px;}
-.stbtn:hover{transform:translateY(-4px) scale(1.04);box-shadow:0 14px 50px rgba(233,30,99,.65);}
+.stbtn{padding:15px 50px;background:linear-gradient(135deg,#FF69B4,#9B59B6,#4A90D9);border:none;border-radius:18px;color:#fff;font-size:clamp(15px,3.5vw,20px);font-weight:900;font-family:'Nunito',sans-serif;cursor:pointer;box-shadow:0 6px 30px rgba(233,30,99,.5);transition:transform .25s,box-shadow .25s;letter-spacing:1px;}
+.stbtn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 10px 40px rgba(233,30,99,.65);}
 
-.starpop{position:fixed;font-family:'Fredoka One',cursive;font-size:26px;color:var(--gold);pointer-events:none;z-index:300;animation:stup .9s ease-out forwards;text-shadow:0 0 14px rgba(255,215,0,.9), 0 2px 4px rgba(0,0,0,.8);}
-@keyframes stup{0%{opacity:1;transform:translateY(0) scale(1);}100%{opacity:0;transform:translateY(-70px) scale(1.5);}}
+.starpop{position:fixed;font-family:'Fredoka One',cursive;font-size:24px;color:var(--gold);pointer-events:none;z-index:300;animation:stup .9s ease-out forwards;text-shadow:0 0 12px rgba(255,215,0,.9), 0 2px 4px rgba(0,0,0,.8);}
+@keyframes stup{0%{opacity:1;transform:translateY(0) scale(1);}100%{opacity:0;transform:translateY(-60px) scale(1.5);}}
 
-/* ===== 가위바위보 UI ===== */
-#rps-ui { display:none; flex-direction:column; align-items:center; gap:20px; width:100%; max-width:400px; margin-bottom: 20px;}
-.rps-vs { display:flex; justify-content:space-between; width:100%; padding:0 20px; align-items:center; }
+/* 가위바위보 UI */
+#rps-ui { display:none; flex-direction:column; align-items:center; gap:15px; width:100%; max-width:350px; margin-bottom: 20px;}
+.rps-vs { display:flex; justify-content:space-between; width:100%; padding:0 15px; align-items:center; }
 .rps-box { text-align:center; }
-.rps-nm { font-size:clamp(16px, 3vw, 22px); margin-bottom:10px; font-weight:800; }
-.rps-h { font-size:clamp(40px, 7vw, 60px); background:rgba(255,255,255,0.08); width:clamp(70px, 18vw, 90px); height:clamp(70px, 18vw, 90px); border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid rgba(255,255,255,0.2); box-shadow:0 0 20px rgba(0,0,0,0.3); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.rps-nm { font-size:clamp(14px, 3vw, 20px); margin-bottom:8px; font-weight:800; }
+.rps-h { font-size:clamp(35px, 7vw, 55px); background:rgba(255,255,255,0.08); width:clamp(60px, 15vw, 80px); height:clamp(60px, 15vw, 80px); border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid rgba(255,255,255,0.2); box-shadow:0 0 15px rgba(0,0,0,0.3); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 .rps-h.pop { transform: scale(1.2); }
-.rps-vstxt { font-size:clamp(26px, 6vw, 40px); font-family:'Fredoka One',cursive; color:var(--gold); text-shadow:0 0 12px rgba(255,215,0,.6); }
-#rps-result { font-family:'Fredoka One',cursive; font-size:clamp(16px, 3vw, 22px); min-height:50px; text-align:center; color:#fff; transition:color 0.3s; padding: 0 15px; word-break: keep-all; line-height: 1.4; }
+.rps-vstxt { font-size:clamp(22px, 5vw, 35px); font-family:'Fredoka One',cursive; color:var(--gold); text-shadow:0 0 10px rgba(255,215,0,.6); }
+#rps-result { font-family:'Fredoka One',cursive; font-size:clamp(14px, 3vw, 20px); min-height:45px; text-align:center; color:#fff; transition:color 0.3s; padding: 0 10px; word-break: keep-all; line-height: 1.4; }
 
-/* 캐릭터 및 다크나이트 스프라이트 */
+/* 캐릭터 스프라이트 */
 .sprite-char { width: 100%; height: 100%; background-size: 500% 100%; background-position: 0% 0%; background-repeat: no-repeat; }
 .sprite-yul { background-image: url('./images/yul_spritesheet.png'); }
 .sprite-jeong { background-image: url('./images/jeong_spritesheet.png'); }
@@ -223,10 +223,10 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 .sprite-anim { animation: sprite-run 0.8s infinite; }
 @keyframes sprite-run { 0%,19.99%{background-position:0% 0%;} 20%,39.99%{background-position:25% 0%;} 40%,59.99%{background-position:50% 0%;} 60%,79.99%{background-position:75% 0%;} 80%,100%{background-position:100% 0%;} }
 
-.tok-img-wrap { width: clamp(24px, 5.5vw, 44px); height: clamp(24px, 5.5vw, 44px); border-radius: 50%; border: 2.5px solid white; box-shadow: 0 0 8px rgba(0,0,0,0.6); overflow: hidden; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; margin: 0 auto; }
+.tok-img-wrap { width: clamp(20px, 4.5vw, 40px); height: clamp(20px, 4.5vw, 40px); border-radius: 50%; border: 2px solid white; box-shadow: 0 0 6px rgba(0,0,0,0.6); overflow: hidden; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; margin: 0 auto; }
 .tok-img-wrap .sprite-char { width: 100%; height: 100%; transform: translateY(0); }
 
-/* ══ CINEMATIC FULLSCREEN ══ */
+/* CINEMATIC FULLSCREEN */
 #cine{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center; cursor:pointer;opacity:0;pointer-events:none;transition:opacity .5s ease;}
 #cine.on{opacity:1;pointer-events:all;}
 #cine-img { position:absolute; inset:0; background-size:cover; background-position:center top; transform:scale(1.12); transition:transform 5s ease-out; }
@@ -238,29 +238,29 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 #cine.evil #cine-vig{background:radial-gradient(ellipse 70% 70% at 50% 50%,transparent 20%,rgba(60,0,0,.95) 100%);}
 #cine-lines{position:absolute;inset:0;pointer-events:none;opacity:.3; background:repeating-linear-gradient(0deg,transparent 0,transparent 2px,rgba(0,0,0,.6) 2px,rgba(0,0,0,.6) 4px);}
 #cfx{position:absolute;inset:0;pointer-events:none;z-index:2;}
-.cc{position:absolute;width:54px;height:54px;border-style:solid;opacity:0;}
+.cc{position:absolute;width:40px;height:40px;border-style:solid;opacity:0;}
 #cine.on .cc{animation:ccIn .4s .9s forwards;}
 @keyframes ccIn{to{opacity:1;}}
-#cc1{top:16px;left:16px;border-width:3px 0 0 3px;}
-#cc2{top:16px;right:16px;border-width:3px 3px 0 0;}
-#cc3{bottom:16px;left:16px;border-width:0 0 3px 3px;}
-#cc4{bottom:16px;right:16px;border-width:0 3px 3px 0;}
+#cc1{top:15px;left:15px;border-width:3px 0 0 3px;}
+#cc2{top:15px;right:15px;border-width:3px 3px 0 0;}
+#cc3{bottom:15px;left:15px;border-width:0 0 3px 3px;}
+#cc4{bottom:15px;right:15px;border-width:0 3px 3px 0;}
 #cine.good .cc{border-color:rgba(255,215,0,.8);}
 #cine.evil .cc{border-color:rgba(220,0,0,.8);}
-#cine-body{position:relative;z-index:5;text-align:center;padding:24px 20px; opacity:0;transform:translateY(50px); transition:opacity .7s .5s,transform .7s .5s cubic-bezier(.34,1.56,.64,1);}
+#cine-body{position:relative;z-index:5;text-align:center;padding:20px; opacity:0;transform:translateY(50px); transition:opacity .7s .5s,transform .7s .5s cubic-bezier(.34,1.56,.64,1);}
 #cine.on #cine-body{opacity:1;transform:translateY(0);}
-#cine-tag{font-family:'Fredoka One',cursive;font-size:clamp(10px,2vw,13px); letter-spacing:7px;text-transform:uppercase;margin-bottom:12px; opacity:0;}
+#cine-tag{font-family:'Fredoka One',cursive;font-size:clamp(10px,2vw,12px); letter-spacing:5px;text-transform:uppercase;margin-bottom:10px; opacity:0;}
 #cine.on #cine-tag{animation:cfu .6s .9s forwards;}
-#cine-name{font-family:'Fredoka One',cursive;font-size:clamp(34px,9vw,82px); line-height:1.05;margin-bottom:6px;opacity:0;}
+#cine-name{font-family:'Fredoka One',cursive;font-size:clamp(30px,8vw,70px); line-height:1.1;margin-bottom:6px;opacity:0;}
 #cine.on #cine-name{animation:cpop 1s .55s forwards cubic-bezier(.34,1.56,.64,1);}
-#cine.good #cine-name{color:#FFD700;text-shadow:0 0 50px rgba(255,215,0,.9),0 0 100px rgba(255,180,0,.5),3px 3px 0 rgba(0,0,0,.6);}
-#cine.evil #cine-name{color:#FF2222;text-shadow:0 0 50px rgba(255,0,0,.9),0 0 100px rgba(180,0,0,.5),3px 3px 0 rgba(0,0,0,.8);}
-.crl{width:min(300px,72vw);height:2px;margin:10px auto;opacity:0;transform:scaleX(0);transform-origin:center;}
+#cine.good #cine-name{color:#FFD700;text-shadow:0 0 40px rgba(255,215,0,.9),0 0 80px rgba(255,180,0,.5),2px 2px 0 rgba(0,0,0,.6);}
+#cine.evil #cine-name{color:#FF2222;text-shadow:0 0 40px rgba(255,0,0,.9),0 0 80px rgba(180,0,0,.5),2px 2px 0 rgba(0,0,0,.8);}
+.crl{width:min(250px,65vw);height:2px;margin:10px auto;opacity:0;transform:scaleX(0);transform-origin:center;}
 #cine.on .crl{animation:crl .8s .75s forwards cubic-bezier(.34,1.56,.64,1);}
-#cine.good .crl{background:linear-gradient(90deg,transparent,#FFD700,transparent);box-shadow:0 0 14px rgba(255,215,0,.7);}
-#cine.evil .crl{background:linear-gradient(90deg,transparent,#FF2222,transparent);box-shadow:0 0 14px rgba(255,0,0,.7);}
-#cine-sub{font-size:clamp(13px,2.8vw,18px);font-weight:800;color:rgba(255,255,255,.9); line-height:1.75;margin:10px 0 24px;text-shadow:0 2px 14px rgba(0,0,0,.9);}
-#cine-tap{font-size:clamp(11px,2vw,13px);font-weight:800;letter-spacing:4px; color:rgba(255,255,255,.5);text-transform:uppercase;opacity:0;}
+#cine.good .crl{background:linear-gradient(90deg,transparent,#FFD700,transparent);box-shadow:0 0 12px rgba(255,215,0,.7);}
+#cine.evil .crl{background:linear-gradient(90deg,transparent,#FF2222,transparent);box-shadow:0 0 12px rgba(255,0,0,.7);}
+#cine-sub{font-size:clamp(12px,2.5vw,16px);font-weight:800;color:rgba(255,255,255,.9); line-height:1.6;margin:10px 0 20px;text-shadow:0 2px 10px rgba(0,0,0,.9);}
+#cine-tap{font-size:clamp(10px,1.8vw,12px);font-weight:800;letter-spacing:3px; color:rgba(255,255,255,.5);text-transform:uppercase;opacity:0;}
 #cine.on #cine-tap{animation:ctap 1.4s 2s ease-in-out infinite;}
 @keyframes cfu{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 @keyframes cpop{from{opacity:0;transform:scale(.35);}to{opacity:1;transform:scale(1);}}
@@ -275,7 +275,7 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 <div id="yt-player-container"></div>
 
 <!-- 전체화면 시네마틱 -->
-<div id="cine" onclick="cineDismissManual()">
+<div id="cine" onclick="cineDismiss()">
   <div id="cine-img"></div>
   <div id="cine-vig"></div>
   <div id="cine-lines"></div>
@@ -300,8 +300,8 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
   <div class="it1">✨ SISTER SQUAD ✨</div>
   <div class="it2">놀라운 자매들의 대모험 — 별 10개를 먼저 모으면 승리! 🌟</div>
   <div class="icp">
-    <div class="icc"><div id="isvg0" style="width:80px;height:94px;margin:0 auto 7px;"></div><div class="icn">율이</div><div class="icr">언니 · 탐험가</div></div>
-    <div class="icc"><div id="isvg1" style="width:80px;height:94px;margin:0 auto 7px;"></div><div class="icn">정이</div><div class="icr">동생 · 마법사</div></div>
+    <div class="icc"><div id="isvg0" style="width:70px;height:80px;margin:0 auto 5px;"></div><div class="icn">율이</div><div class="icr">언니 · 탐험가</div></div>
+    <div class="icc"><div id="isvg1" style="width:70px;height:80px;margin:0 auto 5px;"></div><div class="icn">정이</div><div class="icr">동생 · 마법사</div></div>
   </div>
   
   <div id="rps-ui">
@@ -371,9 +371,9 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 <!-- 만남(Encounter) 가위바위보 오버레이 -->
 <div class="ov" id="enc-ov">
   <div class="ecard tc2" style="padding-top:20px; border-color:#FF69B4;">
-    <div class="ebody" style="text-align:center; padding: 25px 20px;">
-      <h2 id="enc-title" style="color:var(--gold); font-family:'Fredoka One',cursive; font-size:clamp(20px, 5vw, 32px); margin-bottom:10px; text-shadow:0 0 10px rgba(255,215,0,.6);">⚔️ 같은 칸에서 만났다! ⚔️</h2>
-      <p id="enc-desc" style="color:#C9A6FF; font-size:clamp(12px, 3vw, 16px); margin-bottom:20px;">가위바위보 승리 시 별 1개를 빼앗습니다!</p>
+    <div class="ebody" style="text-align:center; padding: 20px;">
+      <h2 id="enc-title" style="color:var(--gold); font-family:'Fredoka One',cursive; font-size:clamp(18px, 4vw, 28px); margin-bottom:8px; text-shadow:0 0 10px rgba(255,215,0,.6);">⚔️ 같은 칸에서 만났다! ⚔️</h2>
+      <p id="enc-desc" style="color:#C9A6FF; font-size:clamp(12px, 2.5vw, 15px); margin-bottom:15px;">가위바위보 승리 시 별 1개를 빼앗습니다!</p>
       <div class="rps-vs">
           <div class="rps-box">
             <div class="rps-nm" id="enc-p0-nm">👩 율이</div>
@@ -385,7 +385,7 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
             <div id="enc-h1" class="rps-h">❔</div>
           </div>
       </div>
-      <div id="enc-res" style="margin:25px 0; font-size:clamp(14px, 3.5vw, 20px); font-weight:800; height:30px;"></div>
+      <div id="enc-res" style="margin:20px 0; font-size:clamp(13px, 3vw, 18px); font-weight:800; height:25px;"></div>
       <button class="cbtn" id="enc-btn" style="display:none;" onclick="endEncounterRPS()">✨ 결과 확인</button>
     </div>
   </div>
@@ -437,7 +437,10 @@ window.onYouTubeIframeAPIReady = function() {
     ytPlayer = new YT.Player('yt-player-container', {
         height: '0', width: '0',
         playerVars: { 'autoplay': 0, 'controls': 0, 'disablekb': 1, 'listType': 'playlist', 'list': 'PL3p0Se-Sm12SdPoWcevuXVd5pAMfpOGxY', 'playsinline': 1 },
-        events: { 'onReady': function(event) { isYtReady = true; event.target.setVolume(25); }, 'onStateChange': function(event) { if (event.data === YT.PlayerState.ENDED) ytPlayer.nextVideo(); } }
+        events: { 
+            'onReady': function(event) { isYtReady = true; event.target.setVolume(25); }, 
+            'onStateChange': function(event) { if (event.data === YT.PlayerState.ENDED) ytPlayer.nextVideo(); } 
+        }
     });
 };
 
@@ -503,25 +506,25 @@ function sStep(){tone(350+Math.random()*200,0.04,'sine',0.07);}
 function sWin(){[523,587,659,698,784,880,988,1047].forEach(function(f,i){setTimeout(function(){tone(f,0.14,'sine',0.14);},i*90);});}
 function sBattleRoll(){[400,450,500,550].forEach(function(f,i){setTimeout(function(){tone(f,0.05,'square',0.2);},i*50);});}
 
-/* ══ CHARACTER SVGs & SPRITES (동영상 제거 완료) ══ */
+/* ══ CHARACTER SVGs & SPRITES ══ */
 var SV={
 yul:'<div class="sprite-char sprite-yul sprite-anim"></div>',
 jung:'<div class="sprite-char sprite-jeong sprite-anim"></div>',
-superyul:'<img src="./images/superyul.jpeg" style="width:100%; height:100%; object-fit:cover; border-radius:16px;">',
-superjung:'<img src="./images/superjung.jpeg" style="width:100%; height:100%; object-fit:cover; border-radius:16px;">',
-darkknight:'<img src="./images/darknight.png" style="width:100%; height:100%; object-fit:cover; border-radius:16px;">',
-bain:'<img src="./images/bain.jpg" style="width:100%; height:100%; object-fit:cover; border-radius:16px;">',
-crown:'<img src="./images/crown.jpg" style="width:100%; height:100%; object-fit:cover; border-radius:16px;">',
-mom:'<img src="./images/mom.jpeg" style="width:100%; height:100%; object-fit:cover; border-radius:16px;">',
-dad:'<img src="./images/chris05.jpg" style="width:100%; height:100%; object-fit:cover; border-radius:16px;">',
-angel: '<img src="./images/angel.jpeg" style="width:100%; height:100%; object-fit:cover; border-radius:16px;">',
-magicbook: '<img src="./images/magicbook.jpeg" style="width:100%; height:100%; object-fit:cover; border-radius:16px;">',
-grandmagic: '<img src="./images/grandmagic.png" style="width:100%; height:100%; object-fit:cover; border-radius:16px;">',
-town: '<img src="./images/town.jpg" style="width:100%; height:100%; object-fit:cover; border-radius:16px;">',
-fairytail: '<img src="./images/fairytail.jpg" style="width:100%; height:100%; object-fit:cover; border-radius:16px;">',
-brook: '<img src="./images/brook.png" style="width:100%; height:100%; object-fit:cover; border-radius:16px;">',
-fairytown: '<img src="./images/fairytown.jpeg" style="width:100%; height:100%; object-fit:cover; border-radius:16px;">',
-team: '<img src="./images/team.png" style="width:100%; height:100%; object-fit:cover; border-radius:16px;">',
+superyul:'<img src="./images/superyul.jpeg" style="width:100%; height:100%; object-fit:cover;">',
+superjung:'<img src="./images/superjung.jpeg" style="width:100%; height:100%; object-fit:cover;">',
+darkknight:'<img src="./images/darknight.png" style="width:100%; height:100%; object-fit:cover;">',
+bain:'<img src="./images/bain.jpg" style="width:100%; height:100%; object-fit:cover;">',
+crown:'<img src="./images/crown.jpg" style="width:100%; height:100%; object-fit:cover;">',
+mom:'<img src="./images/mom.jpeg" style="width:100%; height:100%; object-fit:cover;">',
+dad:'<img src="./images/chris05.jpg" style="width:100%; height:100%; object-fit:cover;">',
+angel: '<img src="./images/angel.jpeg" style="width:100%; height:100%; object-fit:cover;">',
+magicbook: '<img src="./images/magicbook.jpeg" style="width:100%; height:100%; object-fit:cover;">',
+grandmagic: '<img src="./images/grandmagic.png" style="width:100%; height:100%; object-fit:cover;">',
+town: '<img src="./images/town.jpg" style="width:100%; height:100%; object-fit:cover;">',
+fairytail: '<img src="./images/fairytail.jpg" style="width:100%; height:100%; object-fit:cover;">',
+brook: '<img src="./images/brook.png" style="width:100%; height:100%; object-fit:cover;">',
+fairytown: '<img src="./images/fairytown.jpeg" style="width:100%; height:100%; object-fit:cover;">',
+team: '<img src="./images/team.png" style="width:100%; height:100%; object-fit:cover;">',
 dk_sprite: '<div class="sprite-char sprite-dk sprite-anim"></div>'
 };
 
@@ -572,13 +575,17 @@ var PL=[
   {nm:'정이',ic:'👧',ds:'동생 · 마법사', char:'jung'}
 ];
 
-var pos=[0,0],stars=[0,0],cur=0,dice=[1,2],skip=[false,false],powerUp=[false,false];
-var rolling=false,ev=null,over=false,moving=false;
+/* ══════════════════════════════════════════════
+   [FIX] 전역 변수 명시적 선언
+   - encTargetPos, encFromMove: 원본에서 암묵적 전역이었음
+   - cinematicPlaying: 신규 추가. 시네마틱 재생 중 버튼 잠금용
+══════════════════════════════════════════════ */
+var pos=[0,0], stars=[0,0], cur=0, dice=[1,2], skip=[false,false], powerUp=[false,false];
+var rolling=false, ev=null, over=false, moving=false;
 var totalTurns = 1;
 var MAX_EVENT_CHAIN = 6;
 var eventChain = null;
 
-/* 🦇 어둠의 기사 변수 */
 var totalRolls = 0;
 var nextDKTarget = 10;
 var dkActive = false;
@@ -586,6 +593,21 @@ var dkPos = 0;
 var dkStepsTaken = 0;
 var encActive = false;
 var dkAnimating = false;
+
+/* [FIX #1] cinematicPlaying 플래그: 시네마틱 동안 버튼 완전 잠금 */
+var cinematicPlaying = false;
+
+/* [FIX #6] encTargetPos, encFromMove 명시적 전역 선언 */
+var encTargetPos = 0;
+var encFromMove = false;
+
+/* [FIX #3] cfxLoop 중복 실행 방지용 변수 */
+var cfxCanvas = null;
+var cfxCtx = null;
+var cfxRunning = false;
+var cfxParts = [];
+var cineNext = null;
+var cineTimeout = null;
      
 function shuffleBoard() {
   var startSpace = SP[0];
@@ -596,6 +618,14 @@ function shuffleBoard() {
   }
   SP = [startSpace].concat(restSpaces);
   SP.forEach(function(sp, idx) { sp.id = idx; });
+  /* [FIX #5] 보드 셔플 시 DK 활성화 상태면 비활성화 (위치 오염 방지) */
+  if (dkActive) {
+    dkActive = false;
+    dkAnimating = false;
+    dkPos = 0;
+    dkStepsTaken = 0;
+    addLog('🌪️ 마법의 바람에 어둠의 기사도 사라졌습니다!');
+  }
 }
 
 function rebuildBoardDOM() {
@@ -623,20 +653,10 @@ function registerEventVisit(sid) {
   return '';
 }
 
-/* 턴 종료 로직 통합: 멈춤 방지를 위해 엄격한 흐름 제어 적용 */
+/* 턴 종료 로직 */
 function finalizeTurn() {
-    ev = null;
-    moving = false;
-    rolling = false;
-    resetEventChain();
-    
-    if (stars[0] >= WIN || stars[1] >= WIN) { 
-        renderAll(); 
-        setTimeout(showWin, 400); 
-        return; 
-    }
-
-    if (totalRolls >= nextDKTarget) {
+    /* [FIX #4] dkActive 체크를 먼저 해서 이미 DK가 있으면 재소환 방지 */
+    if (!dkActive && totalRolls >= nextDKTarget) {
         nextDKTarget += 10;
         spawnDK();
     } else if (dkActive) {
@@ -651,12 +671,14 @@ function nextPlayerTurn() {
     addLog(PL[nx].ic + ' ' + PL[nx].nm + ' 차례!');
     cur = nx;
     advanceTurn();
-    renderAll();
 }
 
 function endTurnAfterEventChain(reason) {
+  ev = null; moving = false; rolling = false; resetEventChain();
   addLog('🌀 ' + reason);
+  if (stars[cur] >= WIN) { renderAll(); setTimeout(showWin, 400); return; }
   finalizeTurn();
+  renderAll();
 }
 
 function advanceTurn() {
@@ -680,7 +702,6 @@ function renderAll(){
   SP.forEach(function(sp){
     var tk=document.getElementById('tk'+sp.id); if(!tk)return; tk.innerHTML='';
     
-    // 다크나이트 말 렌더링
     if (dkActive && dkPos === sp.id) {
         var sdk = document.createElement('div');
         sdk.className = 'tok a2';
@@ -702,7 +723,6 @@ function renderAll(){
     }
   });
   
-  // 중앙 UI 갱신
   [0,1].forEach(function(i){
     document.getElementById('sc'+i).className='sc'+(i===cur?' cur':'')+(powerUp[i]?' pwr':'');
     document.getElementById('ss'+i).textContent='⭐'+stars[i];
@@ -714,7 +734,6 @@ function renderAll(){
   var ti = document.getElementById('turn-indicator');
   if(ti) ti.textContent = p.ic + ' ' + p.nm + ' 차례!' + (powerUp[cur] ? ' ⚡ 파워 업!' : '') + (skip[cur] ? ' (쉬는 중)' : '');
 
-  // 롤 카운터 갱신
   var rollsLeft = nextDKTarget - totalRolls;
   document.getElementById('roll-counter').innerText = '🔥 어둠의 기사 출현까지: ' + rollsLeft + '회';
 
@@ -724,7 +743,8 @@ function renderAll(){
   document.getElementById('d1').className='die'+(rolling?' rl':'');
 
   var btn=document.getElementById('rb');
-  var can=!rolling&&!ev&&!over&&!moving&&!encActive&&!dkAnimating;
+  /* [FIX #1] cinematicPlaying 조건 추가 — 시네마틱 중 버튼 완전 비활성화 */
+  var can = !rolling && !ev && !over && !moving && !encActive && !dkAnimating && !cinematicPlaying;
   btn.disabled=!can;
   btn.textContent=skip[cur]?'⏭️ 턴 넘기기':rolling?'🎲 굴리는 중...':(powerUp[cur]?'🔥 파워 굴리기 (x2)':'🎲 주사위 굴리기');
 }
@@ -735,14 +755,15 @@ function addLog(msg){
 }
 
 function handleRoll(){
-  if(rolling||ev||over||moving||encActive||dkAnimating)return;
+  /* [FIX #1] cinematicPlaying 추가 가드 */
+  if(rolling||ev||over||moving||encActive||dkAnimating||cinematicPlaying)return;
   resetEventChain();
   
   if(skip[cur]){
     skip[cur]=false; 
     addLog(PL[cur].ic+' '+PL[cur].nm+' 쉬는 중...');
     totalRolls++; 
-    finalizeTurn(); return;
+    finalizeTurn(); renderAll(); return;
   }
   
   totalRolls++; 
@@ -801,6 +822,7 @@ function movePlayer(from, steps, isPwr){
 /* ══ ENCOUNTER RPS BATTLE ══ */
 function startEncounterRPS(targetPos, fromMove) {
     encActive = true;
+    /* [FIX #6] 명시적 전역에 할당 */
     encTargetPos = targetPos;
     encFromMove = fromMove;
     var ov = document.getElementById('enc-ov');
@@ -876,7 +898,7 @@ function endEncounterRPS() {
     setTimeout(function() { checkAndTriggerEvent(encTargetPos, encFromMove); }, 400);
 }
 
-/* ══ 어둠의 기사 가위바위보 및 자율 턴 로직 ══ */
+/* ══ 어둠의 기사 가위바위보 ══ */
 function startDKRPS(caughtPlayers, alsoSisterCollision, targetPos, fromMove) {
     encActive = true;
     var ov = document.getElementById('enc-ov');
@@ -912,8 +934,8 @@ function playDKRPS(caughtPlayers, alsoSisterCollision, targetPos, fromMove) {
         rollCnt++;
         if(rollCnt > 12) {
             clearInterval(iv);
-            var c0 = Math.floor(Math.random() * 3); // Sisters
-            var c1 = Math.floor(Math.random() * 3); // DK
+            var c0 = Math.floor(Math.random() * 3);
+            var c1 = Math.floor(Math.random() * 3);
 
             h0.innerText = RPS_EMOJI[c0]; h0.classList.add('pop');
             h1.innerText = RPS_EMOJI[c1]; h1.classList.add('pop');
@@ -957,12 +979,13 @@ function endDKRPS(alsoSisterCollision, targetPos, fromMove) {
     document.getElementById('enc-ov').classList.remove('vis');
     encActive = false;
 
-    // Restore text for potential sister enc
     document.getElementById('enc-title').innerText = '⚔️ 같은 칸에서 만났다! ⚔️';
     document.getElementById('enc-desc').innerText = '가위바위보 승리 시 별 1개를 빼앗습니다!';
     document.getElementById('enc-p0-nm').innerText = '👩 율이';
     document.getElementById('enc-p1-nm').innerText = '👧 정이';
     document.getElementById('enc-btn').onclick = endEncounterRPS;
+
+    if (stars[0] >= WIN || stars[1] >= WIN) { renderAll(); setTimeout(showWin, 400); return; }
 
     if (alsoSisterCollision) {
         startEncounterRPS(targetPos, fromMove);
@@ -973,7 +996,9 @@ function endDKRPS(alsoSisterCollision, targetPos, fromMove) {
     }
 }
 
+/* [FIX #2] spawnDK: cinematicPlaying을 즉시 true로 설정해 버튼 잠금 */
 function spawnDK() {
+    cinematicPlaying = true; /* 즉시 버튼 잠금 */
     dkActive = true;
     dkPos = 0;
     dkStepsTaken = 0;
@@ -1067,8 +1092,8 @@ function preloadImage(src){
 }
 
 function cfxInit(){
-  cfxCanvas=document.getElementById('cfx');cfxCtx=cfxCanvas.getContext('2d');
-  cfxCanvas.width=innerWidth;cfxCanvas.height=innerHeight;
+  cfxCanvas=document.getElementById('cfx'); cfxCtx=cfxCanvas.getContext('2d');
+  cfxCanvas.width=innerWidth; cfxCanvas.height=innerHeight;
   window.addEventListener('resize',function(){if(cfxCanvas){cfxCanvas.width=innerWidth;cfxCanvas.height=innerHeight;}});
 }
 
@@ -1098,73 +1123,89 @@ function cfxSpawn(type){
   }
 }
 
-var cineTimeout = null;
-
-// 시네마틱 애니메이션 및 진행 제어
+/* ══════════════════════════════════════════════
+   [FIX #1 + #2 + #3] cineShow / cineDismiss 전면 수정
+   - cinematicPlaying = true 즉시 설정 (버튼 잠금)
+   - cfxLoop 중복 실행 방지 (!cfxRunning 가드)
+   - cineDismiss의 setTimeout 콜백 내부에서 cinematicPlaying = false
+     (콜백이 자체 잠금 플래그를 세울 때까지 버튼이 열리지 않게)
+══════════════════════════════════════════════ */
 function cineShow(cfg, callback) {
-    if(!cfxCanvas) cfxInit(); 
-    cineNext = callback; 
+    if(!cfxCanvas) cfxInit();
+
+    /* [FIX #2] 시네마틱 시작과 동시에 즉시 잠금 */
+    cinematicPlaying = true;
+    renderAll(); /* 버튼 즉시 비활성화 반영 */
+
+    /* 이전 cineTimeout이 있으면 취소 */
+    if(cineTimeout) clearTimeout(cineTimeout);
+
+    cineNext = callback;
     
-    var el = document.getElementById('cine'); 
+    var el = document.getElementById('cine');
     el.className = cfg.type;
     
     var imgEl = document.getElementById('cine-img');
     imgEl.style.display = 'block';
-    preloadImage(cfg.img); 
+    preloadImage(cfg.img);
     imgEl.style.backgroundImage = 'url("'+cfg.img+'")';
     
-    document.getElementById('cine-tag').textContent = cfg.tag; 
+    document.getElementById('cine-tag').textContent = cfg.tag;
     document.getElementById('cine-name').textContent = cfg.name;
     
-    var subEl = document.getElementById('cine-sub'); 
+    var subEl = document.getElementById('cine-sub');
     subEl.innerHTML = '';
     var lines = cfg.sub.split('\n');
     lines.forEach(function(line, idx) {
-        var d = document.createElement('div'); 
-        d.textContent = line; 
+        var d = document.createElement('div');
+        d.textContent = line;
         d.style.opacity = '0';
-        d.style.animation = 'cfu 0.6s ' + (1.1 + idx * 0.9) + 's forwards'; 
+        d.style.animation = 'cfu 0.6s ' + (1.1 + idx * 0.9) + 's forwards';
         subEl.appendChild(d);
     });
 
-    if(cfg.type === 'good') { 
+    if(cfg.type === 'good') {
         [523,659,784,880,1047].forEach(function(f,i){setTimeout(function(){tone(f,.25,'sine',.18);},i*80);});
-    } else { 
-        [120,100,80].forEach(function(f,i){setTimeout(function(){tone(f,.35,'sawtooth',.25);},i*110);}); 
-        setTimeout(function(){[350,280,200].forEach(function(f,i){setTimeout(function(){tone(f,.2,'square',.2);},i*70);});},550); 
+    } else {
+        [120,100,80].forEach(function(f,i){setTimeout(function(){tone(f,.35,'sawtooth',.25);},i*110);});
+        setTimeout(function(){[350,280,200].forEach(function(f,i){setTimeout(function(){tone(f,.2,'square',.2);},i*70);});},550);
     }
     
-    cfxSpawn(cfg.type); 
-    cfxRunning = true; 
-    cfxLoop();
+    cfxSpawn(cfg.type);
+    /* [FIX #3] cfxLoop 중복 방지 — 이미 실행 중이면 새로 시작 안 함 */
+    if (!cfxRunning) {
+        cfxRunning = true;
+        cfxLoop();
+    }
     
     requestAnimationFrame(function(){
         requestAnimationFrame(function(){ el.classList.add('on'); });
     });
 
-    // 화면 멈춤 방지: 터치를 안해도 무조건 4초 뒤 닫기 처리
-    if(cineTimeout) clearTimeout(cineTimeout);
     cineTimeout = setTimeout(function() {
-        cineDismissManual();
+        cineDismiss();
     }, 4000);
 }
 
-// 수동 및 자동 닫기 처리
-function cineDismissManual() {
+function cineDismiss() {
     if(!cineNext) return;
-    if(cineTimeout) clearTimeout(cineTimeout);
-    cineTimeout = null;
+    if(cineTimeout) { clearTimeout(cineTimeout); cineTimeout = null; }
     
-    var el = document.getElementById('cine'); 
-    el.classList.remove('on'); 
-    cfxRunning = false; 
+    var el = document.getElementById('cine');
+    el.classList.remove('on');
+    cfxRunning = false;
     cfxParts = [];
     if(cfxCtx) cfxCtx.clearRect(0,0,cfxCanvas.width,cfxCanvas.height);
     
-    // 콜백 백업 후 초기화하여 중복 실행 방지
     var cb = cineNext;
-    cineNext = null; 
-    setTimeout(cb, 550);
+    cineNext = null;
+
+    /* [FIX #1] cinematicPlaying은 콜백 직전까지 유지 → 550ms 공백 동안 버튼 잠금 유지 */
+    setTimeout(function(){
+        cinematicPlaying = false; /* 콜백 실행 직전에 해제 */
+        renderAll();              /* 버튼 상태 즉시 반영 (콜백이 새 플래그를 세울 것임) */
+        cb();                     /* 콜백 실행 (dkAnimating, encActive 등이 여기서 설정됨) */
+    }, 550);
 }
 
 function checkAndTriggerEvent(sid, fromMove) {
@@ -1231,6 +1272,7 @@ function openEventCard(){
   ec.className = baseClass;
   
   document.getElementById('ehbg').style.background=sp.bg;
+  
   var charHtml=SV[cardChar]||SV.luna;
   document.getElementById('ech').innerHTML=charHtml;
 
@@ -1406,8 +1448,17 @@ function resetGame(){
   pos=[0,0];stars=[0,0];cur=0;dice=[1,2];skip=[false,false];powerUp=[false,false];
   rolling=false;ev=null;over=false;moving=false; resetEventChain(); totalTurns=1;
   
-  totalRolls = 0; nextDKTarget = 10; dkActive = false; dkPos = 0; dkStepsTaken = 0; encActive = false; dkAnimating = false;
-  
+  totalRolls = 0; nextDKTarget = 10; dkActive = false; dkPos = 0; dkStepsTaken = 0;
+  encActive = false; dkAnimating = false;
+  /* [FIX] resetGame 시 cinematicPlaying 초기화 */
+  cinematicPlaying = false;
+  /* [FIX] cfxLoop 정리 */
+  cfxRunning = false; cfxParts = [];
+  if(cfxCtx && cfxCanvas) cfxCtx.clearRect(0,0,cfxCanvas.width,cfxCanvas.height);
+  if(cineTimeout){ clearTimeout(cineTimeout); cineTimeout = null; }
+  cineNext = null;
+  document.getElementById('cine').classList.remove('on');
+
   if (isYtReady && ytPlayer) ytPlayer.pauseVideo();
 
   document.getElementById('gov').classList.remove('vis');
@@ -1426,7 +1477,7 @@ function resetGame(){
   setTimeout(function(){isScreen.classList.remove('hd');}, 50);
 }
 
-// 자동 가위바위보 로직
+/* 가위바위보 로직 */
 var RPS_EMOJI = ['✊', '✋', '✌️'];
 var isRpsPlaying = false;
 function startAutoRPS() {
@@ -1470,20 +1521,7 @@ function startGame(){
   if (isYtReady && ytPlayer) { ytPlayer.setShuffle(true); ytPlayer.setLoop(true); ytPlayer.nextVideo(); ytPlayer.playVideo(); }
 }
 
-// 초기화 로직
-var PRIORITY_IMAGE_ASSETS=['./images/mom.jpeg','./images/chris05.jpg','./images/crown.jpg','./images/bain.jpg','./images/superyul.jpeg','./images/superjung.jpeg', './images/darknight.png'];
-var CARD_IMAGE_ASSETS=['./images/darknight.png','./images/angel.jpeg','./images/magicbook.jpeg','./images/grandmagic.png','./images/town.jpg','./images/fairytail.jpg','./images/brook.png','./images/fairytown.jpeg','./images/team.png','./images/yul_spritesheet.png','./images/jeong_spritesheet.png','./images/darknight_spritesheet.png'];
-var preloadedImages={};
-function preloadGameImages(){
-  PRIORITY_IMAGE_ASSETS.forEach(preloadImage);
-  var rest=CARD_IMAGE_ASSETS.filter(function(src){return !preloadedImages[src];});
-  var loadRest=function(){rest.forEach(preloadImage);};
-  if('requestIdleCallback' in window){requestIdleCallback(loadRest,{timeout:1200});} else{setTimeout(loadRest,250);}
-}
-
-preloadGameImages(); 
-shuffleBoard(); 
-buildBoard();
+shuffleBoard(); buildBoard();
 </script>
 </body>
 </html>

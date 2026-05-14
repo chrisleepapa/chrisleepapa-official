@@ -67,7 +67,7 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 .cell.lnd{animation:pulse .4s;}
 .board.shk{animation:shake .6s;}
 
-/* === 중앙 UI 공간 확보 (넓은 패딩) === */
+/* === 중앙 UI 공간 확보 (넓은 패딩, vmin 적용) === */
 .cp{grid-column:2/7;grid-row:2/7;background:linear-gradient(160deg,rgba(18,6,46,.95),rgba(6,22,52,.95));border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:2.5% 3%;border:2px solid rgba(255,215,0,.25);overflow:hidden;position:relative;}
 .cp::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(155,89,182,.15),transparent 75%);pointer-events:none;}
 
@@ -87,7 +87,8 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 .pbt{flex:1;height:clamp(6px, 1.5vmin, 10px);background:rgba(255,255,255,.1);border-radius:6px;overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.5);}
 .pbf{height:100%;border-radius:6px;transition:width .6s cubic-bezier(.34,1.56,.64,1);}
 
-#turn-indicator{font-family:'Fredoka One',cursive;font-size:clamp(14px,3vmin,26px);color:var(--gold);text-shadow:0 0 12px rgba(255,215,0,.6);text-align:center;margin-bottom:1%;}
+#turn-indicator{font-family:'Fredoka One',cursive;font-size:clamp(14px,3vmin,26px);color:var(--gold);text-shadow:0 0 12px rgba(255,215,0,.6);text-align:center;}
+#roll-counter{color:#E74C3C;font-size:clamp(10px,2vmin,18px);font-weight:800;margin-bottom:1%; text-shadow:0 1px 3px rgba(0,0,0,0.8);}
 
 .dcr{display:flex;justify-content:center;gap:15px;}
 .die{font-size:clamp(32px, 6.5vmin, 70px);display:inline-block;line-height:1;}
@@ -102,7 +103,7 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 /* 미니 로그 (한 줄) */
 #lgp{background:rgba(0,0,0,.6);border:1px solid rgba(255,215,0,.2);border-radius:12px;padding:clamp(6px, 1.5vmin, 10px) 16px;width:95%;text-align:center;font-size:clamp(11px, 2.2vmin, 18px);color:#fff;box-shadow:inset 0 0 10px rgba(0,0,0,.6);font-weight:800;word-break:keep-all;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
 
-/* 오버레이 팝업들 (크고 시원하게 변경) */
+/* 오버레이 팝업들 */
 .ov{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:200;padding:10px;opacity:0;pointer-events:none;transition:opacity .3s;}
 .ov.vis{opacity:1;pointer-events:all;}
 
@@ -113,7 +114,7 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 .ecard.tc2{border-color:rgba(255,215,0,.6);}
 .ecard.tm2{border-color:rgba(155,89,182,.6);box-shadow:0 0 80px rgba(155,89,182,.45),0 30px 90px rgba(0,0,0,.8);}
 
-/* ===== 브루마블 스페셜 3D 사진 카드 연출 (더 웅장하게) ===== */
+/* ===== 브루마블 스페셜 3D 사진 카드 연출 ===== */
 .ecard.photo-card { transform: perspective(1500px) rotateY(90deg) scale(0.2) translateY(200px); opacity: 0; border: 4px solid #FFD700; position: relative; transition: none; max-width: 92vw; }
 .ov.vis .ecard.photo-card { animation: epicCardReveal 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
 .ov.vis .ecard.photo-card.photo-evil { animation: epicCardRevealEvil 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; border-color: #E74C3C; }
@@ -136,7 +137,6 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 .ecard.photo-card .ebody { position: relative; z-index: 3; background: rgba(15, 10, 30, 0.98); border-top: 2px solid rgba(255,215,0,0.3); padding: 25px 20px; }
 
 .ecard.photo-card::after { content: ''; position: absolute; top: -150%; left: -50%; width: 200%; height: 200%; background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 40%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0.1) 60%, rgba(255,255,255,0) 100%); transform: rotate(30deg); animation: cardSweep 3.5s infinite linear; z-index: 10; pointer-events: none; }
-@keyframes cardSweep { 0% { top: -200%; left: -200%; } 30% { top: 100%; left: 100%; } 100% { top: 100%; left: 100%; } }
 
 .ehdg{position:relative;height:22vh;min-height: 180px;display:flex;align-items:flex-end;justify-content:space-between;padding:16px;overflow:hidden;}
 .ehbg{position:absolute;inset:0;opacity:.92;}
@@ -209,13 +209,15 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 .rps-vstxt { font-size:clamp(26px, 6vw, 40px); font-family:'Fredoka One',cursive; color:var(--gold); text-shadow:0 0 12px rgba(255,215,0,.6); }
 #rps-result { font-family:'Fredoka One',cursive; font-size:clamp(16px, 3vw, 22px); min-height:50px; text-align:center; color:#fff; transition:color 0.3s; padding: 0 15px; word-break: keep-all; line-height: 1.4; }
 
+/* 캐릭터 및 다크나이트 스프라이트 */
 .sprite-char { width: 100%; height: 100%; background-size: 500% 100%; background-position: 0% 0%; background-repeat: no-repeat; }
 .sprite-yul { background-image: url('./images/yul_spritesheet.png'); }
 .sprite-jeong { background-image: url('./images/jeong_spritesheet.png'); }
+.sprite-dk { background-image: url('./images/darknight_spritesheet.png'); }
 .sprite-anim { animation: sprite-run 0.8s infinite; }
 @keyframes sprite-run { 0%,19.99%{background-position:0% 0%;} 20%,39.99%{background-position:25% 0%;} 40%,59.99%{background-position:50% 0%;} 60%,79.99%{background-position:75% 0%;} 80%,100%{background-position:100% 0%;} }
 
-.tok-img-wrap { width: clamp(24px, 6vmin, 50px); height: clamp(24px, 6vmin, 50px); border-radius: 50%; border: 2.5px solid white; box-shadow: 0 0 8px rgba(0,0,0,0.6); overflow: hidden; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; margin: 0 auto; }
+.tok-img-wrap { width: clamp(24px, 5.5vw, 44px); height: clamp(24px, 5.5vw, 44px); border-radius: 50%; border: 2.5px solid white; box-shadow: 0 0 8px rgba(0,0,0,0.6); overflow: hidden; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; margin: 0 auto; }
 .tok-img-wrap .sprite-char { width: 100%; height: 100%; transform: translateY(0); }
 
 /* ══ CINEMATIC FULLSCREEN ══ */
@@ -316,7 +318,6 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 <!-- 풀스크린 메인 보드 -->
 <div class="wr">
   <div class="board" id="board">
-    <!-- 보드판 가운데 공간 (기존 사이드바 요소 통합) -->
     <div class="cp" style="grid-column:2/7;grid-row:2/7;">
       
       <div class="ctit">✨ SISTER SQUAD ✨</div>
@@ -343,6 +344,9 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
 
       <!-- 현재 차례 표시 -->
       <div id="turn-indicator">👩 율이 차례!</div>
+      
+      <!-- 다크나이트 카운터 -->
+      <div id="roll-counter">🔥 어둠의 기사 출현까지: 10회</div>
 
       <!-- 주사위 표시 -->
       <div class="dcr"><span class="die" id="d0">⚀</span><span class="die" id="d1">⚁</span></div>
@@ -353,6 +357,29 @@ body{min-height:100vh;background:var(--dark);font-family:'Nunito',sans-serif;col
       <!-- 미니 모험 일지 -->
       <div id="lgp"><div class="lge fr">✨ 모험 준비 완료!</div></div>
       
+    </div>
+  </div>
+</div>
+
+<!-- 만남(Encounter) 가위바위보 오버레이 -->
+<div class="ov" id="enc-ov">
+  <div class="ecard tc2" style="padding-top:20px; border-color:#FF69B4;">
+    <div class="ebody" style="text-align:center; padding: 25px 20px;">
+      <h2 style="color:var(--gold); font-family:'Fredoka One',cursive; font-size:clamp(20px, 5vw, 32px); margin-bottom:10px; text-shadow:0 0 10px rgba(255,215,0,.6);">⚔️ 같은 칸에서 만났다! ⚔️</h2>
+      <p style="color:#C9A6FF; font-size:clamp(12px, 3vw, 16px); margin-bottom:20px;">가위바위보 승리 시 별 1개를 빼앗습니다!</p>
+      <div class="rps-vs">
+          <div class="rps-box">
+            <div class="rps-nm">👩 율이</div>
+            <div id="enc-h0" class="rps-h">❔</div>
+          </div>
+          <div class="rps-vstxt">VS</div>
+          <div class="rps-box">
+            <div class="rps-nm">👧 정이</div>
+            <div id="enc-h1" class="rps-h">❔</div>
+          </div>
+      </div>
+      <div id="enc-res" style="margin:25px 0; font-size:clamp(14px, 3.5vw, 20px); font-weight:800; height:30px;"></div>
+      <button class="cbtn" id="enc-btn" style="display:none;" onclick="endEncounterRPS()">✨ 결과 확인</button>
     </div>
   </div>
 </div>
@@ -487,7 +514,8 @@ town: '<img src="./images/town.jpg" style="width:100%; height:100%; object-fit:c
 fairytail: '<img src="./images/fairytail.jpg" style="width:100%; height:100%; object-fit:cover; border-radius:16px;">',
 brook: '<img src="./images/brook.png" style="width:100%; height:100%; object-fit:cover; border-radius:16px;">',
 fairytown: '<img src="./images/fairytown.jpeg" style="width:100%; height:100%; object-fit:cover; border-radius:16px;">',
-team: '<img src="./images/team.png" style="width:100%; height:100%; object-fit:cover; border-radius:16px;">'
+team: '<img src="./images/team.png" style="width:100%; height:100%; object-fit:cover; border-radius:16px;">',
+dk_sprite: '<div class="sprite-char sprite-dk sprite-anim"></div>'
 };
 
 /* ══ MAGIC CARDS ══ */
@@ -542,6 +570,15 @@ var rolling=false,ev=null,over=false,moving=false;
 var totalTurns = 1;
 var MAX_EVENT_CHAIN = 6;
 var eventChain = null;
+
+/* 🦇 어둠의 기사 변수 */
+var totalRolls = 0;
+var nextDKTarget = 10;
+var dkActive = false;
+var dkPos = 0;
+var dkStepsTaken = 0;
+var encActive = false;
+var dkAnimating = false;
      
 function shuffleBoard() {
   var startSpace = SP[0];
@@ -579,12 +616,31 @@ function registerEventVisit(sid) {
   return '';
 }
 
+/* 턴 종료 로직 통합 */
+function finalizeTurn() {
+    if (totalRolls >= nextDKTarget) {
+        nextDKTarget += 10;
+        spawnDK();
+    } else if (dkActive) {
+        playDKTurn();
+    } else {
+        nextPlayerTurn();
+    }
+}
+
+function nextPlayerTurn() {
+    var nx = 1 - cur;
+    addLog(PL[nx].ic + ' ' + PL[nx].nm + ' 차례!');
+    cur = nx;
+    advanceTurn();
+}
+
 function endTurnAfterEventChain(reason) {
   ev = null; moving = false; rolling = false; resetEventChain();
-  addLog('🌀 ' + reason + ' 다음 차례로!');
+  addLog('🌀 ' + reason);
   if (stars[cur] >= WIN) { renderAll(); setTimeout(showWin, 400); return; }
-  var nx = 1 - cur; addLog(PL[nx].ic + ' ' + PL[nx].nm + ' 차례!');
-  cur = nx; advanceTurn(); renderAll();
+  finalizeTurn();
+  renderAll();
 }
 
 function advanceTurn() {
@@ -607,12 +663,25 @@ function buildBoard(){
 function renderAll(){
   SP.forEach(function(sp){
     var tk=document.getElementById('tk'+sp.id); if(!tk)return; tk.innerHTML='';
+    
+    // 다크나이트 말 렌더링 (플레이어 뒤에 겹치도록 z-index 조절)
+    if (dkActive && dkPos === sp.id) {
+        var sdk = document.createElement('div');
+        sdk.className = 'tok a2';
+        sdk.style.filter = 'drop-shadow(0 0 6px #E74C3C) drop-shadow(0 0 12px #E74C3C)';
+        sdk.style.zIndex = '3';
+        sdk.innerHTML = '<div class="tok-img-wrap" style="border-color:#E74C3C;"><div class="sprite-char sprite-dk sprite-anim"></div></div>';
+        tk.appendChild(sdk);
+    }
+    
     if(pos[0]===sp.id){
-      var s=document.createElement('div'); s.className='tok'+(cur===0&&!moving?' a0':'');
+      var s=document.createElement('div'); s.className='tok'+(cur===0&&!moving&&!dkAnimating?' a0':'');
+      s.style.zIndex = '5';
       s.innerHTML='<div class="tok-img-wrap"><div class="sprite-char sprite-yul sprite-anim"></div></div>'; tk.appendChild(s);
     }
     if(pos[1]===sp.id){
-      var s2=document.createElement('div'); s2.className='tok'+(cur===1&&!moving?' a1':'');
+      var s2=document.createElement('div'); s2.className='tok'+(cur===1&&!moving&&!dkAnimating?' a1':'');
+      s2.style.zIndex = '5';
       s2.innerHTML='<div class="tok-img-wrap"><div class="sprite-char sprite-jeong sprite-anim"></div></div>'; tk.appendChild(s2);
     }
   });
@@ -629,13 +698,17 @@ function renderAll(){
   var ti = document.getElementById('turn-indicator');
   if(ti) ti.textContent = p.ic + ' ' + p.nm + ' 차례!' + (powerUp[cur] ? ' ⚡ 파워 업!' : '') + (skip[cur] ? ' (쉬는 중)' : '');
 
+  // 롤 카운터 갱신
+  var rollsLeft = nextDKTarget - totalRolls;
+  document.getElementById('roll-counter').innerText = '🔥 어둠의 기사 출현까지: ' + rollsLeft + '회';
+
   document.getElementById('d0').textContent=DICE[dice[0]];
   document.getElementById('d1').textContent=DICE[dice[1]];
   document.getElementById('d0').className='die'+(rolling?' rl':'');
   document.getElementById('d1').className='die'+(rolling?' rl':'');
 
   var btn=document.getElementById('rb');
-  var can=!rolling&&!ev&&!over&&!moving;
+  var can=!rolling&&!ev&&!over&&!moving&&!encActive&&!dkAnimating;
   btn.disabled=!can;
   btn.textContent=skip[cur]?'⏭️ 턴 넘기기':rolling?'🎲 굴리는 중...':(powerUp[cur]?'🔥 파워 굴리기 (x2)':'🎲 주사위 굴리기');
 }
@@ -646,13 +719,17 @@ function addLog(msg){
 }
 
 function handleRoll(){
-  if(rolling||ev||over||moving)return;
+  if(rolling||ev||over||moving||encActive||dkAnimating)return;
   resetEventChain();
+  
   if(skip[cur]){
-    skip[cur]=false; var nx=1-cur;
-    addLog(PL[cur].ic+' '+PL[cur].nm+' 쉬는 중... → '+PL[nx].ic+' '+PL[nx].nm+' 차례!');
-    cur=nx; advanceTurn(); renderAll();return;
+    skip[cur]=false; 
+    addLog(PL[cur].ic+' '+PL[cur].nm+' 쉬는 중...');
+    totalRolls++; // 쉬는것도 턴 소모로 친다면 (주사위는 안던지지만 카운트 증가)
+    finalizeTurn(); renderAll(); return;
   }
+  
+  totalRolls++; // 실제 주사위 굴린 횟수 증가
   rolling=true;renderAll();sDice();
   var t=0;
   var iv=setInterval(function(){
@@ -669,6 +746,31 @@ function handleRoll(){
   },80);
 }
 
+// 플레이어가 목표지점에 도착했을 때 이벤트 처리
+function handleLanding(targetPos, fromMove) {
+    var collisionWithDK = (dkActive && targetPos === dkPos);
+    var collisionWithSister = (pos[0] === pos[1] && targetPos !== 0);
+
+    if (collisionWithDK) {
+        // 플레이어가 스스로 어둠의 기사에게 뛰어듬!
+        stars[cur] = Math.max(0, stars[cur] - 2);
+        addLog('💀 어둠의 기사와 조우! 별 -2');
+        sTrap();
+        var cine = {
+            type: 'evil', img: './images/darknight.png', tag: '🚨 DANGER 🚨',
+            name: '어둠의 기사 조우!', sub: PL[cur].nm + '님이 어둠의 기사와 만났습니다!\n별 2개를 빼앗깁니다! 💀'
+        };
+        cineShow(cine, function() {
+            if (collisionWithSister) { startEncounterRPS(targetPos, fromMove); } 
+            else { checkAndTriggerEvent(targetPos, fromMove); }
+        });
+    } else if (collisionWithSister) {
+        startEncounterRPS(targetPos, fromMove);
+    } else {
+        checkAndTriggerEvent(targetPos, fromMove);
+    }
+}
+
 function movePlayer(from, steps, isPwr){
   moving=true;renderAll();
   if(isPwr) addLog(PL[cur].ic+' 파워 업 발동! 🚀 '+(dice[0]+dice[1])+'x2 = '+steps+'칸!');
@@ -681,9 +783,168 @@ function movePlayer(from, steps, isPwr){
     if(cell){cell.classList.add('lnd');setTimeout(function(){cell.classList.remove('lnd');},380);}
     if(step>=steps){
       clearInterval(iv);moving=false;
-      setTimeout(function(){checkAndTriggerEvent(pos[cur],false);},300);
+      setTimeout(function(){handleLanding(pos[cur],false);},300);
     }
   },280);
+}
+
+/* ══ ENCOUNTER RPS BATTLE (만남 시 가위바위보) ══ */
+function startEncounterRPS(targetPos, fromMove) {
+    encActive = true;
+    encTargetPos = targetPos;
+    encFromMove = fromMove;
+    var ov = document.getElementById('enc-ov');
+    document.getElementById('enc-btn').style.display = 'none';
+    document.getElementById('enc-res').innerText = '가위바위보 준비...';
+    document.getElementById('enc-res').style.color = '#fff';
+    
+    // 이모지 리셋
+    document.getElementById('enc-h0').innerText = '❔';
+    document.getElementById('enc-h1').innerText = '❔';
+    
+    ov.classList.add('vis');
+    sTrap(); // 긴장감 있는 사운드
+    setTimeout(playEncounterRPS, 1000);
+}
+
+function playEncounterRPS() {
+    var h0 = document.getElementById('enc-h0'), h1 = document.getElementById('enc-h1'), res = document.getElementById('enc-res');
+    var rollCnt = 0;
+    sDice();
+    
+    var iv = setInterval(function() {
+        h0.innerText = RPS_EMOJI[Math.floor(Math.random() * 3)];
+        h1.innerText = RPS_EMOJI[Math.floor(Math.random() * 3)];
+        rollCnt++;
+        if(rollCnt > 12) {
+            clearInterval(iv);
+            var c0 = Math.floor(Math.random() * 3);
+            var c1 = Math.floor(Math.random() * 3);
+            
+            h0.innerText = RPS_EMOJI[c0]; h0.classList.add('pop');
+            h1.innerText = RPS_EMOJI[c1]; h1.classList.add('pop');
+            setTimeout(function(){ h0.classList.remove('pop'); h1.classList.remove('pop'); }, 300);
+
+            if (c0 === c1) {
+                res.innerText = '앗! 비겼어요! 다시 한 번!'; 
+                res.style.color = '#C9A6FF';
+                sTrap(); setTimeout(playEncounterRPS, 1000);
+            } else {
+                var w = -1;
+                if ((c0 === 0 && c1 === 2) || (c0 === 1 && c1 === 0) || (c0 === 2 && c1 === 1)) { w = 0; } else { w = 1; }
+                
+                var l = 1 - w; // 패자
+                if (stars[l] > 0) {
+                    stars[w]++; stars[l]--;
+                    res.innerText = PL[w].nm + ' 승리! 별 1개를 빼앗았습니다!';
+                    addLog('⚔️ 배틀 승리! ' + PL[w].nm + '이(가) 별을 뺏었습니다!');
+                } else {
+                    res.innerText = PL[w].nm + ' 승리! 하지만 뺏을 별이 없네요!';
+                    addLog('⚔️ 배틀 승리! ' + PL[w].nm + '이(가) 이겼습니다!');
+                }
+                
+                res.style.color = w === 0 ? '#4A90D9' : '#FF69B4';
+                sStar();
+                document.getElementById('enc-btn').style.display = 'block';
+                renderAll();
+            }
+        }
+    }, 80);
+}
+
+function endEncounterRPS() {
+    document.getElementById('enc-ov').classList.remove('vis');
+    encActive = false;
+    if (stars[0] >= WIN || stars[1] >= WIN) { renderAll(); setTimeout(showWin, 400); return; }
+    setTimeout(function() { checkAndTriggerEvent(encTargetPos, encFromMove); }, 400);
+}
+
+/* ══ 어둠의 기사 자율 턴 로직 ══ */
+function spawnDK() {
+    dkActive = true;
+    dkPos = 0;
+    dkStepsTaken = 0;
+    var cine = {
+        type: 'evil',
+        img: './images/darknight.png',
+        tag: '⚠️ WARNING ⚠️',
+        name: '어둠의 기사 출현!',
+        sub: '주사위를 '+(nextDKTarget-10)+'번 던진 대가로...\n어둠의 기사가 추격을 시작합니다!\n잡히면 별을 2개 빼앗깁니다!'
+    };
+    sTrap();
+    cineShow(cine, function() {
+        playDKTurn();
+    });
+}
+
+function playDKTurn() {
+    dkAnimating = true;
+    addLog('🦇 어둠의 기사 차례!');
+    renderAll();
+    sBattleRoll();
+    
+    // 주사위 애니메이션 후 이동
+    setTimeout(function() {
+        var d1 = Math.ceil(Math.random()*6);
+        var d2 = Math.ceil(Math.random()*6);
+        var steps = d1 + d2;
+        addLog('🦇 어둠의 기사 주사위: ' + steps + '칸!');
+        moveDK(steps);
+    }, 800);
+}
+
+function moveDK(steps) {
+    var step = 0;
+    var from = dkPos;
+    var iv = setInterval(function() {
+        step++;
+        dkPos = (from + step) % 24;
+        dkStepsTaken++;
+        renderAll();
+        sStep();
+
+        if (step >= steps) {
+            clearInterval(iv);
+            setTimeout(function() {
+                resolveDKLanding();
+            }, 400);
+        }
+    }, 280);
+}
+
+function resolveDKLanding() {
+    var caught = [];
+    if (dkPos === pos[0]) caught.push(0);
+    if (dkPos === pos[1]) caught.push(1);
+
+    if (caught.length > 0) {
+        sTrap();
+        caught.forEach(function(p) {
+            stars[p] = Math.max(0, stars[p] - 2);
+            addLog('💀 어둠의 기사에게 잡혔다! ' + PL[p].nm + ' 별 -2');
+        });
+        
+        var names = caught.map(function(p){ return PL[p].nm; }).join(', ');
+        var cine = {
+            type: 'evil', img: './images/darknight.png', tag: '🚨 CAUGHT! 🚨',
+            name: '어둠의 기사 습격!', sub: names + '님이 어둠의 기사에게 잡혔습니다!\n별 2개를 빼앗깁니다! 💀'
+        };
+        cineShow(cine, function() {
+            checkDKRetreat();
+        });
+    } else {
+        checkDKRetreat();
+    }
+}
+
+function checkDKRetreat() {
+    if (dkStepsTaken >= 24) {
+        dkActive = false;
+        addLog('🦇 어둠의 기사가 한 바퀴를 돌아 사라졌습니다.');
+    }
+    dkAnimating = false;
+    renderAll();
+    setTimeout(nextPlayerTurn, 500);
 }
 
 /* ══ EVENTS & CINE ══ */
@@ -694,8 +955,8 @@ var CINE_DATA={
   '어둠의 검신 베인':{type:'evil', img:'./images/bain.jpg', tag:'⚔ BOSS ENCOUNTER ⚔', name:'어둠의 검신 베인', sub:'어둠의 검이 빛을 집어삼키리라...\n어리석은 여행자여,\n이제 네 별은 내 것이다! ⚔️'}
 };
      
-var PRIORITY_IMAGE_ASSETS=['./images/mom.jpeg','./images/chris05.jpg','./images/crown.jpg','./images/bain.jpg','./images/superyul.jpeg','./images/superjung.jpeg'];
-var CARD_IMAGE_ASSETS=['./images/darknight.png','./images/angel.jpeg','./images/magicbook.jpeg','./images/grandmagic.png','./images/town.jpg','./images/fairytail.jpg','./images/brook.png','./images/fairytown.jpeg','./images/team.png','./images/yul_spritesheet.png','./images/jeong_spritesheet.png'];
+var PRIORITY_IMAGE_ASSETS=['./images/mom.jpeg','./images/chris05.jpg','./images/crown.jpg','./images/bain.jpg','./images/superyul.jpeg','./images/superjung.jpeg', './images/darknight.png'];
+var CARD_IMAGE_ASSETS=['./images/darknight.png','./images/angel.jpeg','./images/magicbook.jpeg','./images/grandmagic.png','./images/town.jpg','./images/fairytail.jpg','./images/brook.png','./images/fairytown.jpeg','./images/team.png','./images/yul_spritesheet.png','./images/jeong_spritesheet.png','./images/darknight_spritesheet.png'];
 var preloadedImages={};
 
 function preloadImage(src){
@@ -784,7 +1045,7 @@ function checkAndTriggerEvent(sid, fromMove) {
          cd: '출발점에 정확히 멈춰 각성했어요! 별 1개와 다음 주사위 이동 2배를 얻습니다!',
          cine: { type: 'good', img: cur === 0 ? './images/superyul.jpeg' : './images/superjung.jpeg', tag: '⚡ AWAKENING ⚡', name: PL[cur].nm + ' 각성!', sub: '출발점에 정확히 멈췄어요!\n별 1개를 얻고\n다음 주사위 이동이 2배가 됩니다! 🔥' }
        };
-       addLog(PL[cur].ic + ' ' + PL[cur].nm + ' 출발점 정확히 도착! 각성! ⭐ +1 & 다음 주사위 x2 🚀');
+       addLog(PL[cur].ic + ' ' + PL[cur].nm + ' 출발점 도착! 각성! ⭐ +1 & 주사위 x2 🚀');
        cineShow(awaken.cine, function(){ triggerEvent(sid, fromMove, awaken, mc); });
     } else {
        triggerEvent(sid, fromMove, null, mc);
@@ -880,12 +1141,10 @@ function executeBossBattle() {
             
             if(isWin) {
                 efx.innerHTML += '<div class="efb sp">🎉 배틀 승리! 방어 성공 & 별 1개 획득!</div>';
-                ev.battleResult = 1;
-                sStar();
+                ev.battleResult = 1; sStar();
             } else {
                 efx.innerHTML += '<div class="efb sn">💀 배틀 패배... 별 2개를 빼앗깁니다.</div>';
-                ev.battleResult = -2;
-                sTrap();
+                ev.battleResult = -2; sTrap();
             }
             
             btn.disabled = false; btn.innerHTML = '✨ 결과 확인하고 계속하기';
@@ -921,7 +1180,7 @@ function confirmEvent(){
       }
       if(mc.toStart) {
          pos[cur] = 0; addLog('🧹 출발점으로 날아갑니다!'); hasMoved = true;
-         setTimeout(function(){ checkAndTriggerEvent(0, true); }, 600);
+         setTimeout(function(){ handleLanding(0, true); }, 600);
       }
   } 
   else if(battleResult !== undefined) {
@@ -962,7 +1221,7 @@ function confirmEvent(){
             if(c2){c2.classList.add('lnd');setTimeout(function(){c2.classList.remove('lnd');},380);}
             if(step2>=steps2){
               clearInterval(iv2);moving=false;
-              setTimeout(function(){checkAndTriggerEvent(pos[cur],true);},300);
+              setTimeout(function(){handleLanding(pos[cur],true);},300);
             }
           },280);
         },300);
@@ -971,8 +1230,8 @@ function confirmEvent(){
   
   if(stars[cur]>=WIN){renderAll();setTimeout(showWin,400);return;}
   if(!extraRoll&&!hasMoved){
-    resetEventChain(); var nx=1-cur;
-    addLog(PL[nx].ic+' '+PL[nx].nm+' 차례!'); cur=nx; advanceTurn();
+    resetEventChain(); 
+    finalizeTurn(); 
   }
   renderAll();
 }
@@ -1001,10 +1260,14 @@ function showWin(){
 function resetGame(){
   pos=[0,0];stars=[0,0];cur=0;dice=[1,2];skip=[false,false];powerUp=[false,false];
   rolling=false;ev=null;over=false;moving=false; resetEventChain(); totalTurns=1;
+  
+  totalRolls = 0; nextDKTarget = 10; dkActive = false; dkPos = 0; dkStepsTaken = 0; encActive = false; dkAnimating = false;
+  
   if (isYtReady && ytPlayer) ytPlayer.pauseVideo();
 
   document.getElementById('gov').classList.remove('vis');
   document.getElementById('eov').classList.remove('vis');
+  document.getElementById('enc-ov').classList.remove('vis');
   
   shuffleBoard(); rebuildBoardDOM();
   document.querySelector('.icp').style.display = 'flex';

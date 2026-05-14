@@ -16,47 +16,91 @@
 <title>✨ Sister Squad — 놀라운 자매들의 대모험</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
 <style>
-:root{--gold:#FFD700;--pink:#FF69B4;--purple:#9B59B6;--blue:#4A90D9;--dark:#110828;}
+:root{--gold:#FFD700;--pink:#FF69B4;--purple:#9B59B6;--blue:#4A90D9;--dark:#0b081a;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;overflow:hidden;touch-action:manipulation;background:var(--dark);}
 body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
 
 /* 배경 효과 */
-.sf{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at 20% 20%,rgba(60,20,130,.8),transparent 55%),radial-gradient(ellipse at 80% 80%,rgba(10,40,90,.9),transparent 55%),#110828;}
+.sf{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at 20% 20%,rgba(30,10,70,.8),transparent 55%),radial-gradient(ellipse at 80% 80%,rgba(5,20,50,.9),transparent 55%),#0b081a;}
 .sl{position:fixed;inset:0;z-index:0;pointer-events:none;}
 .st{position:absolute;border-radius:50%;background:#fff;animation:twk var(--d,3s) ease-in-out var(--dl,0s) infinite;}
 @keyframes twk{0%,100%{opacity:.15;transform:scale(1);}50%{opacity:1;transform:scale(1.8);}}
 #fx{position:fixed;inset:0;pointer-events:none;z-index:55;}
 
-/* === 풀스크린 보드게임 레이아웃 === */
-.wr{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;height:100vh;height:100dvh;padding:10px;}
-.board{
-    display:grid; grid-template-columns:repeat(7,1fr); grid-template-rows:repeat(7,1fr); gap:1.2vw;
-    width:100%; max-width:850px; aspect-ratio: 1;
-    max-height: 95vh;
-    background:rgba(8,4,22,.85); border-radius:24px; padding:1.5%; border:3px solid rgba(255,215,0,.3);
-    box-shadow:0 0 60px rgba(155,89,182,.5),inset 0 0 40px rgba(0,0,0,.6);
+.wr{
+    position:relative; z-index:1; display:flex; align-items:center; justify-content:center;
+    height:100vh; height:100dvh; width: 100vw; padding:1.5vmin;
+}
+
+.board {
+    display:grid; 
+    grid-template-columns:repeat(7, 1fr); 
+    grid-template-rows:repeat(7, 1fr); 
+    gap:1.8vmin; /* 화면 크기에 비례하는 갭 */
+    width:100%; height:100%; 
+    max-width: 800px; /* PC 해상도 최대치 제한 */
+    max-height: 1000px; 
+    background:rgba(13, 10, 35, 0.85); 
+    border-radius:24px; padding:1.5vmin; 
+    border:2px solid rgba(255,215,0,.3);
+    box-shadow:0 0 60px rgba(0,0,0,.8), inset 0 0 40px rgba(0,0,0,.8);
 }
 
 @media (max-width: 600px) {
-  .board { gap: 4px; padding: 6px; border-radius: 18px; aspect-ratio: auto; height: 100%; max-height: 100%; }
+    .wr { padding: 4px; }
+    .board { gap: 6px; padding: 6px; border-radius: 15px; border-width: 1px; }
 }
 
-.cell{border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2px;position:relative;overflow:hidden;border:2px solid transparent;transition:transform .15s,box-shadow .15s;}
-.cell:hover{transform:scale(1.08);z-index:10;box-shadow:0 0 16px rgba(255,255,255,.35);}
-.cell.corner{border-radius:16px;border-width:2.5px;}
+.cell {
+    border-radius: 12px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 2px; position: relative; overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    transition: transform 0.15s, box-shadow 0.15s;
+}
 
-/* 타일 디자인 */
-.tc{background:radial-gradient(circle at 30% 30%,#FFFBE6,#D4A000);border-color:#FFD700;box-shadow:0 0 16px rgba(255,215,0,.55);}
-.te{background:radial-gradient(circle at 30% 30%,#D6F5E1,#27AE60);border-color:#27AE60;box-shadow:0 0 8px rgba(46,204,113,.35);}
-.tt{background:radial-gradient(circle at 30% 30%,#FDE8E8,#E74C3C);border-color:#E74C3C;box-shadow:0 0 8px rgba(231,76,60,.35);}
-.tb{background:radial-gradient(circle at 30% 30%,#FEF0D6,#E67E22);border-color:#E67E22;box-shadow:0 0 8px rgba(230,126,34,.35);}
-.tm{background:radial-gradient(circle at 30% 30%,#F4ECF7,#9B59B6);border-color:#9B59B6;box-shadow:0 0 12px rgba(155,89,182,.45);}
+.cell::after { /* 상단 유리 반사광 효과 */
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 50%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.45), transparent);
+    pointer-events: none; z-index: 10;
+}
+.cell::before { /* 어두운 이너 섀도우를 통한 입체감 부여 */
+    content: ''; position: absolute; inset: 0;
+    box-shadow: inset 0 -12px 20px rgba(0,0,0,0.6), inset 0 3px 6px rgba(255,255,255,0.3);
+    pointer-events: none; z-index: 1;
+}
 
-.cem{font-size:clamp(16px, 4vw, 32px);line-height:1;filter:drop-shadow(0 2px 3px rgba(0,0,0,.5));margin-bottom:2px;}
-.cnm{font-size:clamp(8px, 1.8vw, 13px);font-weight:900;color:#fff;text-align:center;line-height:1.1;word-break:keep-all;text-shadow:0 1px 4px rgba(0,0,0,.9),0 0 2px rgba(0,0,0,.8);}
+.cell:hover{transform:scale(1.08);z-index:10;box-shadow:0 0 20px rgba(255,255,255,.5);}
+.cell.corner{border-radius:15px;border-width:2px;}
 
-.ctk{position:absolute;inset:0;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:2px;pointer-events:none;z-index:5;}
+/* 타일 종류별 색상 - 이미지 기반의 쨍하고 영롱한 컬러 매핑 */
+.tc { /* 노랑/황금 */
+    background: linear-gradient(135deg, #FFD700 0%, #B8860B 100%);
+    border-color: #FFFACD; box-shadow: 0 0 10px rgba(255,215,0,0.5);
+}
+.te { /* 초록 */
+    background: linear-gradient(135deg, #2ECC71 0%, #196F3D 100%);
+    border-color: #A9DFBF; box-shadow: 0 0 10px rgba(46,204,113,0.5);
+}
+.tt { /* 빨강 */
+    background: linear-gradient(135deg, #E74C3C 0%, #7B241C 100%);
+    border-color: #F5B7B1; box-shadow: 0 0 10px rgba(231,76,60,0.5);
+}
+.tb { /* 파랑 (이미지 컨셉상 주황을 딥블루로 대체하여 다채로움 부여) */
+    background: linear-gradient(135deg, #3498DB 0%, #1A5276 100%);
+    border-color: #AED6F6; box-shadow: 0 0 10px rgba(52,152,219,0.5);
+}
+.tm { /* 보라 */
+    background: linear-gradient(135deg, #9B59B6 0%, #512E5F 100%);
+    border-color: #D7BDE2; box-shadow: 0 0 10px rgba(155,89,182,0.5);
+}
+
+.cem { font-size: clamp(14px, 4vmin, 32px); line-height: 1.1; margin-bottom: 2px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.7)); position: relative; z-index: 5; }
+.cnm { font-size: clamp(8px, 2.2vmin, 14px); font-weight: 900; color: #fff; text-align: center; line-height: 1.15; word-break: keep-all; text-shadow: 1px 1px 3px rgba(0,0,0,0.9), 0 0 5px rgba(0,0,0,0.8); position: relative; z-index: 5; }
+
+.ctk{position:absolute;inset:0;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:2px;pointer-events:none;z-index:20;}
 .tok{display:block;transition:filter .3s;}
 .tok.a0{filter:drop-shadow(0 0 6px #4A90D9) drop-shadow(0 0 12px #4A90D9);animation:tbounce .6s ease-in-out infinite;}
 .tok.a1{filter:drop-shadow(0 0 6px #FF69B4) drop-shadow(0 0 12px #FF69B4);animation:tbounce .6s ease-in-out .3s infinite;}
@@ -68,55 +112,105 @@ body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
 .cell.lnd{animation:pulse .4s;}
 .board.shk{animation:shake .6s;}
 
-/* === 중앙 UI === */
-.cp{
-    grid-column:2/7; grid-row:2/7;
-    background:linear-gradient(160deg,rgba(18,6,46,.95),rgba(6,22,52,.95));
-    border-radius:20px; border:2px solid rgba(255,215,0,.25);
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    padding:10px; position:relative; overflow:hidden; gap: 2%;
+.cp {
+    grid-column: 2/7; grid-row: 2/7;
+    background: radial-gradient(ellipse at center, #1b2046 0%, #0d0f24 100%);
+    border-radius: 18px; border: 1px solid rgba(255,215,0,0.3);
+    position: relative; overflow: hidden;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 3%; padding: 10px; box-shadow: inset 0 0 30px rgba(0,0,0,0.9);
 }
-.cp::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(155,89,182,.15),transparent 75%);pointer-events:none;}
 
-.ctit{font-family:'Fredoka One',cursive;font-size:clamp(16px, 4vw, 30px);background:linear-gradient(135deg,#FFD700,#FF69B4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:1px;text-align:center;filter:drop-shadow(0 2px 4px rgba(0,0,0,.6));}
+.cp::after {
+    content: ''; position: absolute; inset: 0;
+    background-image: 
+        radial-gradient(rgba(255,255,255,0.15) 1px, transparent 1px),
+        radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px);
+    background-size: 30px 30px, 45px 45px; background-position: 0 0, 15px 15px;
+    pointer-events: none; opacity: 0.6;
+}
 
-.scs{display:flex;gap:10px;width:100%;justify-content:center;}
-.sc{background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.1);border-radius:14px;padding:8px;text-align:center;transition:all .3s;flex:1;max-width:130px;}
-.sc.cur{background:rgba(255,215,0,.15);border-color:rgba(255,215,0,.6);box-shadow:0 0 15px rgba(255,215,0,.3);}
+.ctit {
+    position: relative; z-index: 5;
+    font-family: 'Fredoka One', cursive; font-size: clamp(18px, 4vmin, 32px);
+    color: #FFB6C1; letter-spacing: 1px; text-align: center;
+    text-shadow: 0 0 10px rgba(255, 105, 180, 0.8), 0 0 20px rgba(255, 105, 180, 0.4);
+}
+.ctit::before { content: '✨ '; }
+.ctit::after { content: ' ✨'; }
+
+/* 점수판 디자인 */
+.scs { display: flex; gap: 15px; width: 100%; justify-content: center; position: relative; z-index: 5; }
+.sc {
+    background: rgba(10, 15, 40, 0.6);
+    border: 2px solid transparent; border-radius: 15px;
+    padding: 8px; text-align: center; transition: all .3s; flex: 1; max-width: 140px;
+    box-shadow: inset 0 0 10px rgba(255,255,255,0.05);
+}
+#sc0 { border-color: rgba(74, 144, 217, 0.6); box-shadow: 0 0 15px rgba(74, 144, 217, 0.3), inset 0 0 10px rgba(74,144,217,0.2); }
+#sc1 { border-color: rgba(255, 105, 180, 0.6); box-shadow: 0 0 15px rgba(255, 105, 180, 0.3), inset 0 0 10px rgba(255,105,180,0.2); }
+.sc.cur { background: rgba(255, 255, 255, 0.08); }
+#sc0.cur { border-color: #4A90D9; box-shadow: 0 0 25px rgba(74, 144, 217, 0.7); }
+#sc1.cur { border-color: #FF69B4; box-shadow: 0 0 25px rgba(255, 105, 180, 0.7); }
 .sc.cur.pwr{border-color:#FF4500;box-shadow:0 0 20px rgba(255,69,0,.6);}
-.spi{display:block;transition:transform .3s;}
-.sc.cur .spi{transform:scale(1.15);}
-.spn{color:#fff;font-size:clamp(11px,2vw,14px);font-weight:900;margin-top:4px;}
-.sps{color:var(--gold);font-size:clamp(16px,4vw,22px);font-weight:900;}
 
-.pbs{width:80%;display:flex;flex-direction:column;gap:5px;}
+.spi { display: block; transition: transform .3s; margin-bottom: 2px; }
+.sc.cur .spi { transform: scale(1.1); }
+.spn { color: #fff; font-size: clamp(12px, 2.5vmin, 15px); font-weight: 900; }
+.sps { color: var(--gold); font-size: clamp(16px, 4vmin, 24px); font-weight: 900; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+
+/* 게이지 바 숨김 (이미지 UI와 맞추기 위해 선택적 유지, 여기서는 디자인 단순화를 위해 보존) */
+.pbs{width:80%;display:flex;flex-direction:column;gap:5px; position:relative; z-index:5; opacity: 0.8;}
 .pbr{display:flex;align-items:center;gap:6px;}
-.pbt{flex:1;height:8px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.5);}
+.pbt{flex:1;height:6px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.5);}
 .pbf{height:100%;border-radius:4px;transition:width .6s cubic-bezier(.34,1.56,.64,1);}
 
-#turn-indicator{font-family:'Fredoka One',cursive;font-size:clamp(16px,4vw,22px);color:var(--gold);text-shadow:0 0 10px rgba(255,215,0,.6);text-align:center;}
-#roll-counter{color:#E74C3C;font-size:clamp(10px,2vw,14px);font-weight:800;text-shadow:0 1px 2px rgba(0,0,0,0.8);}
+#turn-indicator { position: relative; z-index: 5; font-family: 'Fredoka One', cursive; font-size: clamp(14px, 3.5vmin, 20px); color: #FFD700; text-shadow: 0 2px 4px rgba(0,0,0,0.8); text-align: center; }
+#roll-counter { position: relative; z-index: 5; color: #FF4500; font-size: clamp(10px, 2.5vmin, 14px); font-weight: 800; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
 
-.dcr{display:flex;justify-content:center;gap:15px;}
-.die{font-size:clamp(35px, 8vw, 60px);display:inline-block;line-height:1;}
+.dcr { display: flex; justify-content: center; gap: 15px; position: relative; z-index: 5; margin: 2px 0; }
+.die {
+    font-size: clamp(30px, 7vmin, 55px);
+    display: flex; align-items: center; justify-content: center;
+    width: clamp(40px, 9vmin, 65px); height: clamp(40px, 9vmin, 65px);
+    background: rgba(0, 0, 0, 0.6); /* 검은 바탕 */
+    border: 2px solid rgba(255,255,255,0.8); /* 흰 테두리 */
+    border-radius: 12px; color: #fff; line-height: 1;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.8), 0 0 10px rgba(255,255,255,0.2);
+}
 .die.rl{animation:dr .12s ease-in-out infinite;}
 
-.rbtn{width:85%;max-width:260px;padding:12px;background:linear-gradient(135deg,#FF69B4,#9B59B6);border:none;border-radius:18px;color:#fff;font-size:clamp(14px, 3.5vw, 20px);font-weight:900;font-family:'Nunito',sans-serif;cursor:pointer;box-shadow:0 4px 15px rgba(233,30,99,.5);transition:transform .2s,box-shadow .2s;overflow:hidden;position:relative;}
-.rbtn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(255,255,255,.2),transparent);transform:translateX(-100%);transition:transform .4s;}
+.rbtn {
+    position: relative; z-index: 5;
+    width: 85%; max-width: 280px; padding: 12px;
+    background: linear-gradient(to right, #FF5E94, #A845E1); /* 핑크퍼플 그라데이션 */
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 30px; /* 캡슐 형태 */
+    color: #fff; font-size: clamp(16px, 4vmin, 22px); font-weight: 900; font-family: 'Nunito', sans-serif;
+    cursor: pointer; box-shadow: 0 4px 20px rgba(168, 69, 225, 0.6), inset 0 3px 6px rgba(255,255,255,0.4);
+    transition: transform .2s, box-shadow .2s; overflow: hidden;
+}
+.rbtn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(255,255,255,.3),transparent);transform:translateX(-100%);transition:transform .4s;}
 .rbtn:hover::before{transform:translateX(100%);}
-.rbtn:not(:disabled):hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(233,30,99,.65);}
+.rbtn:not(:disabled):hover{transform:translateY(-2px);box-shadow:0 6px 25px rgba(168, 69, 225, 0.8);}
 .rbtn:disabled{background:#3a3a5a;cursor:not-allowed;box-shadow:none;opacity:.65;}
 
-#lgp{background:rgba(0,0,0,.6);border:1px solid rgba(255,215,0,.2);border-radius:10px;padding:8px;width:90%;text-align:center;font-size:clamp(11px, 2.5vw, 15px);color:#fff;box-shadow:inset 0 0 8px rgba(0,0,0,.6);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#lgp {
+    position: relative; z-index: 5;
+    background: rgba(0,0,0,.6); border: 1px solid rgba(255,215,0,.2);
+    border-radius: 20px; padding: 6px 12px; width: 90%; text-align: center;
+    font-size: clamp(10px, 2.5vmin, 14px); color: #fff; font-weight: 800;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    box-shadow: inset 0 0 8px rgba(0,0,0,.6);
+}
 
-/* 오버레이 팝업들 */
 .ov{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;z-index:200;padding:10px;opacity:0;pointer-events:none;transition:opacity .3s;}
 .ov.vis{opacity:1;pointer-events:all;}
 
 .ecard{background:linear-gradient(160deg,#1E0B4E,#0A1F55);border-radius:24px;max-width:92vw;width:100%;overflow:hidden;border:3px solid rgba(255,215,0,.4);box-shadow:0 0 60px rgba(255,215,0,.3),0 20px 60px rgba(0,0,0,.8);transform:scale(.8) translateY(40px);transition:transform .35s cubic-bezier(.34,1.56,.64,1);}
 .ov.vis .ecard{transform:scale(1) translateY(0);}
 .ecard.tt2{border-color:rgba(231,76,60,.6);box-shadow:0 0 60px rgba(231,76,60,.3),0 20px 60px rgba(0,0,0,.8);}
-.ecard.tb2{border-color:rgba(230,126,34,.6);}
+.ecard.tb2{border-color:rgba(52,152,219,.6);box-shadow:0 0 60px rgba(52,152,219,.3),0 20px 60px rgba(0,0,0,.8);}
 .ecard.tc2{border-color:rgba(255,215,0,.6);}
 .ecard.tm2{border-color:rgba(155,89,182,.6);box-shadow:0 0 60px rgba(155,89,182,.3),0 20px 60px rgba(0,0,0,.8);}
 
@@ -223,7 +317,7 @@ body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
 .sprite-anim { animation: sprite-run 0.8s infinite; }
 @keyframes sprite-run { 0%,19.99%{background-position:0% 0%;} 20%,39.99%{background-position:25% 0%;} 40%,59.99%{background-position:50% 0%;} 60%,79.99%{background-position:75% 0%;} 80%,100%{background-position:100% 0%;} }
 
-.tok-img-wrap { width: clamp(20px, 4.5vw, 40px); height: clamp(20px, 4.5vw, 40px); border-radius: 50%; border: 2px solid white; box-shadow: 0 0 6px rgba(0,0,0,0.6); overflow: hidden; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; margin: 0 auto; }
+.tok-img-wrap { width: clamp(20px, 5vmin, 40px); height: clamp(20px, 5vmin, 40px); border-radius: 50%; border: 2px solid white; box-shadow: 0 0 6px rgba(0,0,0,0.6); overflow: hidden; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; margin: 0 auto; }
 .tok-img-wrap .sprite-char { width: 100%; height: 100%; transform: translateY(0); }
 
 /* CINEMATIC FULLSCREEN */
@@ -327,7 +421,7 @@ body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
   <div class="board" id="board">
     <div class="cp" style="grid-column:2/7;grid-row:2/7;">
       
-      <div class="ctit">✨ SISTER SQUAD ✨</div>
+      <div class="ctit">SISTER SQUAD</div>
       
       <!-- 점수판 -->
       <div class="scs">
@@ -344,13 +438,13 @@ body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
       </div>
 
       <!-- 진행률 게이지 -->
-      <div class="pbs">
+      <div class="pbs" style="display:none;"> <!-- 이미지 UI 반영을 위해 임시 숨김 유지 -->
         <div class="pbr"><div class="pbt"><div class="pbf" id="pb0" style="width:0%;background:linear-gradient(90deg,#4A90D9,#C9A6FF)"></div></div></div>
         <div class="pbr"><div class="pbt"><div class="pbf" id="pb1" style="width:0%;background:linear-gradient(90deg,#E91E63,#FF69B4)"></div></div></div>
       </div>
 
       <!-- 현재 차례 표시 -->
-      <div id="turn-indicator">👩 율이 차례!</div>
+      <div id="turn-indicator">👩 정이 차례!</div>
       
       <!-- 다크나이트 카운터 -->
       <div id="roll-counter">🔥 어둠의 기사 출현까지: 10회</div>
@@ -540,29 +634,29 @@ var MAGIC_CARDS = [
 
 /* ══ SPACES DATA ══ */
 var SP=[
-  {id:0, t:'c',nm:'출발!',     em:'🏠',bg:'linear-gradient(135deg,#FFF9C4,#D4A000)',char:'yul',     cn:'각성',           cd:'출발점에 정확히 멈춰 각성! 별 1개와 다음 주사위 이동 2배를 얻습니다!',   st:1},
+  {id:0, t:'c',nm:'출발!',     em:'🏠',bg:'linear-gradient(135deg,#FFF9C4,#D4A000)',char:'yul',     cn:'각성',            cd:'출발점에 정확히 멈춰 각성! 별 1개와 다음 주사위 이동 2배를 얻습니다!',   st:1},
   {id:1, t:'e',nm:'버섯숲',     em:'🍄',bg:'linear-gradient(135deg,#1A6B3A,#2ECC71)',char:'town',     cn:'루미나 (요정여왕)',  cd:'특별한 마법 버섯으로 별 1개 획득!',      st:1},
   {id:2, t:'e',nm:'요정여왕',   em:'👸',bg:'linear-gradient(135deg,#3A0A6A,#9B59B6)',char:'fairytail',cn:'루미나 (요정여왕)',  cd:'요정여왕 루미나의 환영과 함께 별 1개 획득.', st:1},
   {id:3, t:'t',nm:'어둠의 기사단1', em:'⚡',bg:'linear-gradient(135deg,#3A0A0A,#E74C3C)',char:'darkknight',cn:'어둠의기사단',       cd:'마법에 걸려 다음 1턴 쉬기.',    sk:true},
   {id:4, t:'m',nm:'마법 우체통',em:'💌',bg:'linear-gradient(135deg,#8E44AD,#9B59B6)',char:'magicbook',cn:'비밀편지',         cd:'두근두근! 봉투 안에 어떤 마법이 들어있을까요?', magic:true},
-  {id:5, t:'e',nm:'나비정원',   em:'🦋',bg:'linear-gradient(135deg,#0A3A6A,#3498DB)',char:'jung',      cn:'정이',           cd:'동생 정이가 예쁜 나비를 찾아 별 1개 획득.',        st:1},
+  {id:5, t:'e',nm:'나비정원',   em:'🦋',bg:'linear-gradient(135deg,#0A3A6A,#3498DB)',char:'jung',      cn:'정이',            cd:'동생 정이가 예쁜 나비를 찾아 별 1개 획득.',        st:1},
   {id:6, t:'c',nm:'요정마을',   em:'🌸',bg:'linear-gradient(135deg,#6A0A3A,#FF69B4)',char:'fairytown',     cn:'루미나 (요정여왕)',  cd:'요정마을에 오신 것을 환영해요! 요정여왕 루미나가 별 1개를 줍니다.', st:1},
   {id:7, t:'e',nm:'달빛숲',     em:'🌙',bg:'linear-gradient(135deg,#2A2A50,#5D6D7E)',char:'town',    cn:'엘리온 (현자)',     cd:'현자 엘리온이 달빛의 선물로 별 1개 획득.',    st:1},
   {id:8, t:'t',nm:'어둠의 기사단2', em:'⚔️',bg:'linear-gradient(135deg,#1A1A2A,#566573)',char:'darkknight',cn:'어둠의기사단',      cd:'기사단에게 걸려 별 1개 빼앗김.',               st:-1},
-  {id:9, t:'b',nm:'현자 지름길',em:'🧙',bg:'linear-gradient(135deg,#3A006A,#8E44AD)',char:'grandmagic',cn:'엘리온 (현자)',     cd:'현자 엘리온을 따라 앞으로 2칸 이동.',           mv:2},
-  {id:10,t:'e',nm:'꽃밭',       em:'🌺',bg:'linear-gradient(135deg,#6A0A2A,#E91E63)',char:'jung',      cn:'정이',           cd:'꽃밭에서 놀다가 별 1개 획득.',                st:1},
+  {id:9, t:'b',nm:'현자 지름길',em:'🧙',bg:'linear-gradient(135deg,#3A006A,#8E44AD)',char:'grandmagic',cn:'엘리온 (현자)',     cd:'현자 엘리온을 따라 앞으로 2칸 이동.',            mv:2},
+  {id:10,t:'e',nm:'꽃밭',       em:'🌺',bg:'linear-gradient(135deg,#6A0A2A,#E91E63)',char:'jung',      cn:'정이',            cd:'꽃밭에서 놀다가 별 1개 획득.',                 st:1},
   {id:11,t:'t',nm:'어둠의 마왕 크라운',em:'🌪️',bg:'linear-gradient(135deg,#2A2A2A,#95A5A6)',char:'crown',     cn:'어둠왕',         cd:'마왕과 조우했습니다! 무시무시한 폭풍이 몰아칩니다. 주사위 배틀로 살아남으세요!', boss:true},
   {id:12,t:'t',nm:'어둠의 검신 베인',  em:'🏰',bg:'linear-gradient(135deg,#0A0A1A,#2C3E50)',char:'bain',      cn:'어둠왕',         cd:'감히 내 성에 들어오다니! 너의 별을 걸고 나와 승부하라!', boss:true},
-  {id:13,t:'e',nm:'별자리',     em:'⭐',bg:'linear-gradient(135deg,#4A3A00,#F39C12)',char:'yul',      cn:'율이',           cd:'마법책에서 본 별자리를 발견하여 별 1개 획득.',     st:1},
-  {id:14,t:'t',nm:'어둠의 기사단3', em:'🧊',bg:'linear-gradient(135deg,#0A2A4A,#5DADE2)',char:'darkknight',cn:'어둠의기사단',      cd:'얼음 감옥에 갇혀 다음 1턴 쉬기.',             sk:true},
+  {id:13,t:'e',nm:'별자리',     em:'⭐',bg:'linear-gradient(135deg,#4A3A00,#F39C12)',char:'yul',      cn:'율이',            cd:'마법책에서 본 별자리를 발견하여 별 1개 획득.',     st:1},
+  {id:14,t:'t',nm:'어둠의 기사단3', em:'🧊',bg:'linear-gradient(135deg,#0A2A4A,#5DADE2)',char:'darkknight',cn:'어둠의기사단',      cd:'얼음 감옥에 갇혀 다음 1턴 쉬기.',              sk:true},
   {id:15,t:'m',nm:'황금 상자',  em:'🎁',bg:'linear-gradient(135deg,#D35400,#E67E22)',char:'magicbook',cn:'랜덤보상',         cd:'열쇠 구멍으로 빛이 새어나옵니다. 열어볼까요?', magic:true},
   {id:16,t:'e',nm:'마법 크리스탈',em:'💎',bg:'linear-gradient(135deg,#0A4A3A,#1ABC9C)',char:'angel',    cn:'엘리온 (현자)',     cd:'에너지가 담긴 크리스탈로 별 1개 획득.',  st:1},
-  {id:17,t:'b',nm:'별똥별',     em:'🌠',bg:'linear-gradient(135deg,#4A4A00,#F1C40F)',char:'yul',      cn:'율이',           cd:'소원을 빌어 즉시 한 번 더 굴리기 기회 획득.',   xr:true},
-  {id:18,t:'c',nm:'마법도서관', em:'📚',bg:'linear-gradient(135deg,#3A2A00,#8B6914)',char:'dad',      cn:'아빠',           cd:'아빠가 세상의 비밀이 숨겨진 책을 주며 별 2개를 줍니다.',st:2},
-  {id:19,t:'e',nm:'엄마 부엌',  em:'🍪',bg:'linear-gradient(135deg,#4A2A00,#E67E22)',char:'mom',      cn:'엄마',           cd:'엄마가 구워준 쿠키를 먹고 기운을 차려 별 2개 획득.',st:2},
-  {id:20,t:'b',nm:'아빠 서재',  em:'📖',bg:'linear-gradient(135deg,#0A2A4A,#2980B9)',char:'dad',      cn:'아빠',           cd:'아빠의 책을 읽고 즉시 한 번 더 굴리기 기회 획득. 별 2개 획득.',  xr:true, st:2},
+  {id:17,t:'b',nm:'별똥별',     em:'🌠',bg:'linear-gradient(135deg,#4A4A00,#F1C40F)',char:'yul',      cn:'율이',            cd:'소원을 빌어 즉시 한 번 더 굴리기 기회 획득.',   xr:true},
+  {id:18,t:'c',nm:'마법도서관', em:'📚',bg:'linear-gradient(135deg,#3A2A00,#8B6914)',char:'dad',      cn:'아빠',            cd:'아빠가 세상의 비밀이 숨겨진 책을 주며 별 2개를 줍니다.',st:2},
+  {id:19,t:'e',nm:'엄마 부엌',  em:'🍪',bg:'linear-gradient(135deg,#4A2A00,#E67E22)',char:'mom',      cn:'엄마',            cd:'엄마가 구워준 쿠키를 먹고 기운을 차려 별 2개 획득.',st:2},
+  {id:20,t:'b',nm:'아빠 서재',  em:'📖',bg:'linear-gradient(135deg,#0A2A4A,#2980B9)',char:'dad',      cn:'아빠',            cd:'아빠의 책을 읽고 즉시 한 번 더 굴리기 기회 획득. 별 2개 획득.',  xr:true, st:2},
   {id:21,t:'t',nm:'어둠의 기사단4', em:'🧪',bg:'linear-gradient(135deg,#0A3A1A,#27AE60)',char:'darkknight',cn:'어둠의기사단',      cd:'이상한 물약을 마시고 뒤로 2칸 이동. 별 1개 빼앗김.',         mv:-2, st:-1},
-  {id:22,t:'e',nm:'요정 친구',  em:'✨',bg:'linear-gradient(135deg,#4A3A00,#F39C12)',char:'jung',      cn:'정이',           cd:'정이의 새 요정 친구와 함께 별 1개 획득.',             st:1},
+  {id:22,t:'e',nm:'요정 친구',  em:'✨',bg:'linear-gradient(135deg,#4A3A00,#F39C12)',char:'jung',      cn:'정이',            cd:'정이의 새 요정 친구와 함께 별 1개 획득.',            st:1},
   {id:23,t:'b',nm:'마법의 문',  em:'🚪',bg:'linear-gradient(135deg,#3A0A6A,#9B59B6)',char:'magicbook',cn:'엘리온 (현자)',     cd:'지름길로 앞으로 3칸 순간이동.',        mv:3}
 ];
 
@@ -575,11 +669,6 @@ var PL=[
   {nm:'정이',ic:'👧',ds:'동생 · 마법사', char:'jung'}
 ];
 
-/* ══════════════════════════════════════════════
-   [FIX] 전역 변수 명시적 선언
-   - encTargetPos, encFromMove: 원본에서 암묵적 전역이었음
-   - cinematicPlaying: 신규 추가. 시네마틱 재생 중 버튼 잠금용
-══════════════════════════════════════════════ */
 var pos=[0,0], stars=[0,0], cur=0, dice=[1,2], skip=[false,false], powerUp=[false,false];
 var rolling=false, ev=null, over=false, moving=false;
 var totalTurns = 1;
@@ -593,22 +682,17 @@ var dkPos = 0;
 var dkStepsTaken = 0;
 var encActive = false;
 var dkAnimating = false;
-
-/* [FIX #1] cinematicPlaying 플래그: 시네마틱 동안 버튼 완전 잠금 */
 var cinematicPlaying = false;
-
-/* [FIX #6] encTargetPos, encFromMove 명시적 전역 선언 */
 var encTargetPos = 0;
 var encFromMove = false;
 
-/* [FIX #3] cfxLoop 중복 실행 방지용 변수 */
 var cfxCanvas = null;
 var cfxCtx = null;
 var cfxRunning = false;
 var cfxParts = [];
 var cineNext = null;
 var cineTimeout = null;
-     
+      
 function shuffleBoard() {
   var startSpace = SP[0];
   var restSpaces = SP.slice(1);
@@ -618,7 +702,6 @@ function shuffleBoard() {
   }
   SP = [startSpace].concat(restSpaces);
   SP.forEach(function(sp, idx) { sp.id = idx; });
-  /* [FIX #5] 보드 셔플 시 DK 활성화 상태면 비활성화 (위치 오염 방지) */
   if (dkActive) {
     dkActive = false;
     dkAnimating = false;
@@ -653,9 +736,7 @@ function registerEventVisit(sid) {
   return '';
 }
 
-/* 턴 종료 로직 */
 function finalizeTurn() {
-    /* [FIX #4] dkActive 체크를 먼저 해서 이미 DK가 있으면 재소환 방지 */
     if (!dkActive && totalRolls >= nextDKTarget) {
         nextDKTarget += 10;
         spawnDK();
@@ -743,7 +824,6 @@ function renderAll(){
   document.getElementById('d1').className='die'+(rolling?' rl':'');
 
   var btn=document.getElementById('rb');
-  /* [FIX #1] cinematicPlaying 조건 추가 — 시네마틱 중 버튼 완전 비활성화 */
   var can = !rolling && !ev && !over && !moving && !encActive && !dkAnimating && !cinematicPlaying;
   btn.disabled=!can;
   btn.textContent=skip[cur]?'⏭️ 턴 넘기기':rolling?'🎲 굴리는 중...':(powerUp[cur]?'🔥 파워 굴리기 (x2)':'🎲 주사위 굴리기');
@@ -755,7 +835,6 @@ function addLog(msg){
 }
 
 function handleRoll(){
-  /* [FIX #1] cinematicPlaying 추가 가드 */
   if(rolling||ev||over||moving||encActive||dkAnimating||cinematicPlaying)return;
   resetEventChain();
   
@@ -819,10 +898,8 @@ function movePlayer(from, steps, isPwr){
   },280);
 }
 
-/* ══ ENCOUNTER RPS BATTLE ══ */
 function startEncounterRPS(targetPos, fromMove) {
     encActive = true;
-    /* [FIX #6] 명시적 전역에 할당 */
     encTargetPos = targetPos;
     encFromMove = fromMove;
     var ov = document.getElementById('enc-ov');
@@ -898,7 +975,6 @@ function endEncounterRPS() {
     setTimeout(function() { checkAndTriggerEvent(encTargetPos, encFromMove); }, 400);
 }
 
-/* ══ 어둠의 기사 가위바위보 ══ */
 function startDKRPS(caughtPlayers, alsoSisterCollision, targetPos, fromMove) {
     encActive = true;
     var ov = document.getElementById('enc-ov');
@@ -996,9 +1072,8 @@ function endDKRPS(alsoSisterCollision, targetPos, fromMove) {
     }
 }
 
-/* [FIX #2] spawnDK: cinematicPlaying을 즉시 true로 설정해 버튼 잠금 */
 function spawnDK() {
-    cinematicPlaying = true; /* 즉시 버튼 잠금 */
+    cinematicPlaying = true;
     dkActive = true;
     dkPos = 0;
     dkStepsTaken = 0;
@@ -1078,14 +1153,13 @@ function checkDKRetreat() {
     setTimeout(nextPlayerTurn, 500);
 }
 
-/* ══ CINE & EVENTS ══ */
 var CINE_DATA={
   '엄마 부엌':{type:'good', img:'./images/mom.jpeg', tag:'💝 SPECIAL ENCOUNTER 💝', name:'엄마', sub:'우리 율이 정이 왔어? 😊\n엄마가 제일 사랑하는 우리 딸들~!\n갓 구운 쿠키랑 사랑을 듬뿍 줄게! 💕'},
-  '아빠 서재':{type:'good', img:'./images/chris05.jpg', tag:'📖 SPECIAL ENCOUNTER 📖', name:'아빠', sub:'오! 우리 딸들이 대모험 중이구나! 🌟\n아빠가 항상 응원해줄게!\n자, 특별 보너스를 받아라! ✨'},
+  '아빠 서재':{type:'good', img:'./images/chris05.jpg', tag:'📖 SPECIAL ENCOUNTER 📖', name:'아빠', sub:'오! 우리 딸들이 대모험 중이구나! 🌟\n아빠가 항상 응원해줄게!\n자, 특별 보너 준을 받아라! ✨'},
   '어둠의 마왕 크라운':{type:'evil', img:'./images/crown.jpg', tag:'☠ BOSS ENCOUNTER ☠', name:'어둠의 마왕 크라운', sub:'크하하하! 감히 내 영역을 침범하다니!\n너희의 소중한 별들을...\n이 거대한 폭풍으로 날려주마! 💀'},
   '어둠의 검신 베인':{type:'evil', img:'./images/bain.jpg', tag:'⚔ BOSS ENCOUNTER ⚔', name:'어둠의 검신 베인', sub:'어둠의 검이 빛을 집어삼키리라...\n어리석은 여행자여,\n이제 네 별은 내 것이다! ⚔️'}
 };
-     
+      
 function preloadImage(src){
   var img=new Image(); img.decoding='async'; img.loading='eager';
   img.src=src; if(img.decode){img.decode().catch(function(){});} return img;
@@ -1123,21 +1197,12 @@ function cfxSpawn(type){
   }
 }
 
-/* ══════════════════════════════════════════════
-   [FIX #1 + #2 + #3] cineShow / cineDismiss 전면 수정
-   - cinematicPlaying = true 즉시 설정 (버튼 잠금)
-   - cfxLoop 중복 실행 방지 (!cfxRunning 가드)
-   - cineDismiss의 setTimeout 콜백 내부에서 cinematicPlaying = false
-     (콜백이 자체 잠금 플래그를 세울 때까지 버튼이 열리지 않게)
-══════════════════════════════════════════════ */
 function cineShow(cfg, callback) {
     if(!cfxCanvas) cfxInit();
 
-    /* [FIX #2] 시네마틱 시작과 동시에 즉시 잠금 */
     cinematicPlaying = true;
-    renderAll(); /* 버튼 즉시 비활성화 반영 */
+    renderAll(); 
 
-    /* 이전 cineTimeout이 있으면 취소 */
     if(cineTimeout) clearTimeout(cineTimeout);
 
     cineNext = callback;
@@ -1172,7 +1237,6 @@ function cineShow(cfg, callback) {
     }
     
     cfxSpawn(cfg.type);
-    /* [FIX #3] cfxLoop 중복 방지 — 이미 실행 중이면 새로 시작 안 함 */
     if (!cfxRunning) {
         cfxRunning = true;
         cfxLoop();
@@ -1200,11 +1264,10 @@ function cineDismiss() {
     var cb = cineNext;
     cineNext = null;
 
-    /* [FIX #1] cinematicPlaying은 콜백 직전까지 유지 → 550ms 공백 동안 버튼 잠금 유지 */
     setTimeout(function(){
-        cinematicPlaying = false; /* 콜백 실행 직전에 해제 */
-        renderAll();              /* 버튼 상태 즉시 반영 (콜백이 새 플래그를 세울 것임) */
-        cb();                     /* 콜백 실행 (dkAnimating, encActive 등이 여기서 설정됨) */
+        cinematicPlaying = false; 
+        renderAll();              
+        cb();                     
     }, 550);
 }
 
@@ -1241,7 +1304,7 @@ function triggerEvent(sid,fromMove,awaken,mc){
   var sp=SP[sid];
   if(!fromMove)addLog(PL[cur].ic+' → '+sp.em+' '+sp.nm);
   ev={sid:sid, awaken:awaken||null, mc:mc||null};  
-     
+      
   var cData = awaken ? null : CINE_DATA[sp.nm];
   if(cData){ cineShow(cData, function(){ openEventCard(); }); } 
   else { openEventCard(); }
@@ -1450,9 +1513,7 @@ function resetGame(){
   
   totalRolls = 0; nextDKTarget = 10; dkActive = false; dkPos = 0; dkStepsTaken = 0;
   encActive = false; dkAnimating = false;
-  /* [FIX] resetGame 시 cinematicPlaying 초기화 */
   cinematicPlaying = false;
-  /* [FIX] cfxLoop 정리 */
   cfxRunning = false; cfxParts = [];
   if(cfxCtx && cfxCanvas) cfxCtx.clearRect(0,0,cfxCanvas.width,cfxCanvas.height);
   if(cineTimeout){ clearTimeout(cineTimeout); cineTimeout = null; }
@@ -1477,7 +1538,6 @@ function resetGame(){
   setTimeout(function(){isScreen.classList.remove('hd');}, 50);
 }
 
-/* 가위바위보 로직 */
 var RPS_EMOJI = ['✊', '✋', '✌️'];
 var isRpsPlaying = false;
 function startAutoRPS() {

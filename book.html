@@ -13,7 +13,6 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-NBGELYQ4TZ');
       gtag('config', 'GT-5MJDBTR2');
     </script>
@@ -37,97 +36,45 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Cormorant+Garamond:wght@600&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
 
+    <!-- 공통 스타일 -->
+    <link rel="stylesheet" href="css/common.css">
+
     <style>
+        /* ── book.html 전용 스타일 ── */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root { --gold: #c9a84c; --gold-light: #e8d08a; --cyan: #00d4ff; --bg: #030305; --text: #f0ece4; --text-dim: #9a9490; --nav-height: 70px; --pink-glow: rgba(255, 180, 200, 0.3); }
+        :root {
+            --gold: #c9a84c; --gold-light: #e8d08a; --cyan: #00d4ff;
+            --bg: #030305; --text: #f0ece4; --text-dim: #9a9490;
+            --nav-height: 70px; --pink-glow: rgba(255, 180, 200, 0.3);
+        }
         html { scroll-behavior: smooth; background-color: var(--bg); }
-        body { background-color: var(--bg); color: var(--text); font-family: 'Pretendard', 'Noto Serif KR', serif; line-height: 1.6; overflow-x: hidden; background-image: radial-gradient(circle at top right, rgba(20, 20, 40, 0.8), transparent 60%), radial-gradient(circle at bottom left, rgba(10, 10, 20, 0.9), transparent 60%); -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+        body {
+            background-color: var(--bg); color: var(--text);
+            font-family: 'Pretendard', 'Noto Serif KR', serif;
+            line-height: 1.6; overflow-x: hidden;
+            background-image:
+                radial-gradient(circle at top right, rgba(20, 20, 40, 0.8), transparent 60%),
+                radial-gradient(circle at bottom left, rgba(10, 10, 20, 0.9), transparent 60%);
+            -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
+        }
         img { -webkit-user-drag: none; }
-        body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events: none; z-index: 900; opacity: 0.3; }
+        body::before {
+            content: ''; position: fixed; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none; z-index: 900; opacity: 0.3;
+        }
         a { text-decoration: none; color: inherit; }
         button { appearance: none; background: none; border: 0; padding: 0; font: inherit; color: inherit; }
 
-        /* ── Scroll Progress & Navigation (Standardized) ── */
-        #scroll-progress {
-            position: fixed; top: 0; left: 0; height: 2px; width: 0%;
-            background: linear-gradient(90deg, var(--gold), var(--gold-light), #fff8e0, var(--gold));
-            background-size: 200% auto; z-index: 2000; transition: width 0.1s linear;
-            animation: shimmer-bar 3s linear infinite;
-        }
-        @keyframes shimmer-bar { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
-
-        nav {
-            position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px;
-            display: flex; justify-content: space-between; align-items: center; z-index: 1000;
-            background: rgba(3, 3, 5, 0); backdrop-filter: blur(0px); border-bottom: 1px solid rgba(255, 255, 255, 0);
-            transition: background 0.5s, backdrop-filter 0.5s, border-color 0.5s;
-        }
-        nav.scrolled {
-            background: rgba(3, 3, 5, 0.88); backdrop-filter: blur(14px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .brand-logo {
-            font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px;
-            color: var(--gold-light); z-index: 1001; white-space: nowrap;
-        }
-        .nav-right { display: flex; align-items: center; gap: 24px; }
-        .nav-links { display: flex; gap: 30px; align-items: center; }
-        .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; position: relative; }
-        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0%; height: 1px; background: var(--gold-light); transition: width 0.3s ease; }
-        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
-        .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
-
-        .lang-dropdown-wrapper { position: relative; font-family: 'Cinzel', serif; font-size: 0.8rem; color: #a0a0b5; z-index: 1001; }
-        .lang-current { cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 6px; transition: color 0.3s; font-weight: 600; letter-spacing: 1px; }
-        .lang-current:hover, .lang-dropdown-wrapper.active .lang-current { color: var(--gold-light); text-shadow: 0 0 8px rgba(201,168,76,0.5); }
-        .lang-current svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; transition: transform 0.3s; }
-        .lang-dropdown-wrapper.active .lang-current svg { transform: rotate(180deg); }
-        .lang-dropdown-menu {
-            position: absolute; top: calc(100% + 10px); right: -10px; background: rgba(10, 10, 15, 0.95);
-            border: 1px solid rgba(201,168,76,0.3); border-radius: 12px; display: flex; flex-direction: column;
-            overflow: hidden; opacity: 0; pointer-events: none; transform: translateY(-10px);
-            transition: opacity 0.3s, transform 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.8); backdrop-filter: blur(10px); min-width: 100px;
-        }
-        .lang-dropdown-wrapper.active .lang-dropdown-menu { opacity: 1; pointer-events: auto; transform: translateY(0); }
-        .lang-btn { padding: 12px 20px; cursor: pointer; transition: 0.3s; letter-spacing: 1px; text-align: center; color: #a0a0b5; }
-        .lang-btn:not(:last-child) { border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .lang-btn:hover, .lang-btn.active { color: var(--gold-light); background: rgba(201,168,76,0.1); }
-
-        .share-trigger {
-            cursor: pointer; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px;
-            border: 1px solid rgba(201,168,76,0.3); border-radius: 50%; color: var(--gold-light); transition: 0.3s; z-index: 1001;
-        }
-        .share-trigger svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
-        .share-trigger:hover { background: rgba(201,168,76,0.1); border-color: var(--gold-light); box-shadow: 0 0 12px rgba(201,168,76,0.2); transform: translateY(-2px); }
-
-        .menu-toggle { display: none; flex-direction: column; justify-content: space-between; width: 26px; height: 18px; cursor: pointer; z-index: 1001; }
-        .menu-toggle span { width: 100%; height: 2px; background-color: var(--gold-light); transition: 0.3s; border-radius: 2px; }
-        .menu-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-        .menu-toggle.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-        .menu-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
-
-        /* ── 공유 모달 ── */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; }
-        .modal-overlay.active { display: flex; opacity: 1; }
-        .share-modal { background: #0a0a0f; border: 1px solid var(--gold); border-radius: 24px; width: 90%; max-width: 400px; padding: 45px 30px; text-align: center; box-shadow: 0 30px 70px rgba(0,0,0,0.9); }
-        .share-modal h3 { font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--gold-light); margin-bottom: 15px; }
-        .share-modal p { font-size: 0.9rem; color: #888; margin-bottom: 35px; }
-        .share-buttons { display: flex; flex-direction: column; gap: 14px; }
-        .modal-btn { padding: 16px; border-radius: 12px; border: none; font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: 0.3s; }
-        .btn-copy { background: var(--gold); color: #000; }
-        .btn-sns { background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #fff; }
-        .btn-close-modal { margin-top: 25px; color: #666; background: none; font-size: 0.8rem; text-decoration: underline; border: none; cursor: pointer; }
-        .toast-msg { position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%); background: var(--gold); color: #000; padding: 12px 30px; border-radius: 40px; font-size: 0.9rem; font-weight: 700; z-index: 3000; display: none; animation: fadeUp 0.4s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-
-        /* ── 본문 스타일 ── */
+        /* ── 페이지 헤더 ── */
         .page-header { position: relative; width: 100%; height: 350px; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; padding-top: var(--nav-height); }
         #stars-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
         .header-content { position: relative; z-index: 3; text-align: center; animation: fadeUp 1.2s ease both; }
         .header-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 8vw, 3.5rem); font-weight: 600; letter-spacing: 0.1em; color: var(--gold-light); text-shadow: 0 0 20px rgba(201,168,76,0.3); margin-bottom: 10px; }
         .header-slogan { font-family: 'Cinzel', serif; font-size: clamp(0.7rem, 2vw, 0.9rem); letter-spacing: 0.4em; color: var(--text-dim); text-transform: uppercase; }
 
+        /* ── 본문 카드 ── */
         .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px 100px; position: relative; z-index: 10; }
-
         .hero-card.sistersquad { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 180, 200, 0.2); border-radius: 24px; padding: 60px 40px; text-align: center; margin-bottom: 60px; backdrop-filter: blur(10px); transition: transform 0.4s ease, border-color 0.4s, box-shadow 0.4s; animation: fadeUp 1s ease 0.2s both; cursor: pointer; }
         .hero-card.sistersquad:hover { transform: translateY(-8px); border-color: rgba(255, 180, 200, 0.5); box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 40px var(--pink-glow); }
         .card-image-box { width: 100%; max-width: 500px; height: 300px; margin: 0 auto 35px; border-radius: 16px; background-image: url('images/book.png'); background-size: cover; background-position: center; box-shadow: 0 15px 35px rgba(0,0,0,0.5); border: 1px solid rgba(255, 255, 255, 0.05); }
@@ -139,15 +86,13 @@
         .teaser-card { background: rgba(255, 255, 255, 0.01); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 50px 40px; display: flex; flex-direction: column; align-items: center; gap: 30px; backdrop-filter: blur(5px); animation: fadeUp 1s ease 0.4s both; text-align: center; }
         .teaser-img-wrap { position: relative; width: 100%; border-radius: 12px; overflow: hidden; }
         .teaser-img { width: 100%; height: 320px; border-radius: 12px; background-image: url('images/miracleshot1.png'); background-size: cover; background-position: center; opacity: 0.8; filter: contrast(1.1); box-shadow: 0 10px 20px rgba(0,0,0,0.4); border: 1px solid rgba(255, 255, 255, 0.05); }
-        
         @keyframes pulseGlow { 0% { box-shadow: 0 0 0 0 rgba(74, 144, 226, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(74, 144, 226, 0); } 100% { box-shadow: 0 0 0 0 rgba(74, 144, 226, 0); } }
         .teaser-coming-soon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(74, 144, 226, 0.85); color: #fff; padding: 12px 36px; border-radius: 30px; font-family: 'Cinzel', serif; font-size: 1rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,0.25); white-space: nowrap; animation: pulseGlow 2s infinite; }
-        
         .teaser-content { width: 100%; }
         .teaser-title { font-size: 2rem; color: #ffffff; margin-bottom: 15px; font-weight: 700; }
         .teaser-desc { color: #8a8a9d; font-size: 1rem; line-height: 1.7; word-break: keep-all; }
 
-        /* ── Guestbook Section ── */
+        /* ── 방명록 ── */
         .comments-section { max-width: 800px; margin: 80px auto 0; padding: 0 20px 100px; position: relative; z-index: 10; animation: fadeUp 1s ease 0.6s both; }
         .comments-divider { display: flex; align-items: center; gap: 20px; margin-bottom: 50px; }
         .comments-divider::before, .comments-divider::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(201,168,76,0.3), transparent); }
@@ -176,20 +121,14 @@
         .cm-empty span:first-child { display: block; font-size: 1.5rem; margin-bottom: 10px; opacity: 0.55; }
         .cm-loading { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 2px; }
 
-        footer { text-align: center; padding: 80px 40px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: #555; border-top: 1px solid rgba(255,255,255,0.03); }
+        @keyframes shimmer-bar { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-        @media (max-width: 900px) { 
-            nav { padding: 0 20px; } 
-            .brand-logo { font-size: 1.1rem; } 
-            .nav-links { display: none; } 
-            .nav-links.active { display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height)); background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 25px; z-index: 1002; } 
-            .nav-links.active a { font-size: 1rem; }
-            .nav-right { gap: 14px; }
-            .menu-toggle { display: flex; } 
-            .hero-card.sistersquad { padding: 45px 20px; } 
-            .card-image-box { height: 220px; } 
-            .teaser-card { padding: 30px 20px; gap: 20px; } 
-            .teaser-img { height: 220px; background-size: cover; } 
+        @media (max-width: 900px) {
+            .hero-card.sistersquad { padding: 45px 20px; }
+            .card-image-box { height: 220px; }
+            .teaser-card { padding: 30px 20px; gap: 20px; }
+            .teaser-img { height: 220px; background-size: cover; }
             .comments-section { margin-top: 60px; padding: 0 20px 80px; }
             .comment-form { padding: 25px 20px; }
             .comment-input-row { flex-direction: column; gap: 12px; margin-bottom: 12px; }
@@ -197,61 +136,14 @@
             #cm-body { width: 100%; height: 100px; }
             .comment-content { padding-left: 0; }
         }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <div id="scroll-progress"></div>
+    <!-- ★ 공통 헤더 (components/header.html) -->
+    <div id="site-nav"></div>
 
-    <nav id="main-nav">
-        <a href="index.html" class="brand-logo">Chris LEE.PAPA</a>
-        <div class="nav-right">
-            <div class="nav-links" id="navLinks">
-                <a href="index.html" data-i18n="nav_home">Home</a>
-                <a href="bible.html" data-i18n="nav_bible">Bible</a>
-                <a href="worship.html" data-i18n="nav_worship">Worship</a>
-                <a href="music.html" data-i18n="nav_music">Music</a>
-                <a href="book.html" class="active" data-i18n="nav_book">Books</a>
-                <a href="movie.html" data-i18n="nav_movie">Movies</a>
-            </div>
-
-            <div class="lang-dropdown-wrapper" id="langWrapper">
-                <button type="button" class="lang-current" onclick="toggleLangDropdown()" aria-expanded="false" aria-controls="langMenu" aria-label="Change language">
-                    <span id="currentLangText">KOR</span>
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </button>
-                <div class="lang-dropdown-menu" id="langMenu">
-                    <button type="button" class="lang-btn active" data-lang="ko" onclick="setLanguage('ko')">KOR</button>
-                    <button type="button" class="lang-btn" data-lang="en" onclick="setLanguage('en')">ENG</button>
-                </div>
-            </div>
-
-            <button type="button" class="share-trigger" onclick="openShareModal()" title="Share" aria-label="Share this page">
-                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                    <circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle>
-                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-                </svg>
-            </button>
-
-            <button type="button" class="menu-toggle" id="mobile-menu" aria-label="Open navigation menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
-        </div>
-    </nav>
-
-    <div class="modal-overlay" id="shareOverlay" onclick="closeShareModal(event)">
-        <div class="share-modal" onclick="event.stopPropagation()">
-            <h3 data-i18n="share_title">SHARE UNIVERSE</h3>
-            <p data-i18n="share_desc">상상 속 마법 같은 세계관을 소중한 사람들에게 전하세요.</p>
-            <div class="share-buttons">
-                <button class="modal-btn btn-copy" onclick="copyURL()" data-i18n="share_copy">COPY LINK</button>
-                <button class="modal-btn btn-sns" onclick="shareViaWebAPI()" data-i18n="share_sns">SNS SHARE</button>
-            </div>
-            <button class="modal-btn btn-close-modal" onclick="closeShareModal(null)" data-i18n="share_close">Close</button>
-        </div>
-    </div>
-
-    <div class="toast-msg" id="toast"></div>
-
+    <!-- ── 본문 ── -->
     <header class="page-header">
         <canvas id="stars-canvas"></canvas>
         <div class="header-content">
@@ -279,13 +171,12 @@
             </div>
         </section>
     </div>
-    
-    <!-- ── 방명록(댓글) 섹션 ── -->
+
+    <!-- ── 방명록 섹션 ── -->
     <section class="comments-section" aria-labelledby="comments-heading">
         <div class="comments-divider">
             <h2 id="comments-heading" class="comments-divider-title" data-i18n="comments_title">Guestbook</h2>
         </div>
-
         <div class="comment-form">
             <label class="comment-form-label" for="cm-body" data-i18n="comments_leave">✦ 한마디 남겨주세요</label>
             <div class="comment-input-row">
@@ -296,268 +187,145 @@
                 <button type="button" class="cm-submit-btn" onclick="submitComment()" data-i18n="comments_submit">남기기</button>
             </div>
         </div>
-
         <div id="cm-list" class="comment-list" aria-live="polite">
             <div class="cm-loading" data-i18n="comments_loading">· · ·</div>
         </div>
     </section>
 
-    <footer><p data-i18n="footer_text">© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
+    <!-- ★ 공통 푸터 (components/footer.html) -->
+    <div id="site-footer"></div>
 
+    <!-- ★ 페이지 전용 i18n -->
     <script>
-        // ── Multilingual System ──
-        const i18n = {
+        window.PAGE_I18N = {
             ko: {
-                nav_home: "Home",
-                nav_bible: "Bible",
-                nav_worship: "Worship",
-                nav_music: "Music",
-                nav_book: "Books",
-                nav_movie: "Movies",
-                share_title: "SHARE UNIVERSE",
-                share_desc: "상상 속 마법 같은 세계관을 소중한 사람들에게 전하세요.",
-                share_copy: "COPY LINK",
-                share_sns: "SNS SHARE",
-                share_close: "Close",
-                header_title: "Books & Universe",
-                header_slogan: "Imagination to Reality",
-                sister_title: "SISTER SQUAD",
-                sister_desc: "책 속 마법 세계로 들어간 언니와 동생!<br>어둠에 맞서며 진정한 용기와<br> 가족의 사랑을 깨닫는 환상적인 모험.<br>사랑하는 두 딸에게서 영감을 받아<br> 탄생한 따뜻한 판타지 소설 입니다.",
-                btn_readmore: "Read More",
-                teaser_badge: "COMING SOON",
-                teaser_title: "Miracle Shot",
-                teaser_desc: "개성이 넘치는 아이들과 함께 실패에서<br>기적을 쏘아 올리는 이코치의 이야기.<br>최강 골레이로 '영', 불꽃슈터 '황'<br> 슈퍼소닉 '길', 패스마스터 '고'<br>네 소년의 환상의 풋살 판타지를 만나세요.",
-                footer_text: "© 2026 Chris LEE.PAPA — The Creative Archive",
-                toast_copy: "링크가 복사되었습니다 ✓",
-                toast_error: "지원하지 않는 브라우저입니다.",
-                comments_title: "Guestbook",
-                comments_leave: "✦ 한마디 남겨주세요",
-                comments_submit: "남기기",
-                comments_loading: "· · ·",
-                comments_empty: "첫 번째 기록을 남겨주세요",
-                comments_error: "잠시 후 다시 시도해주세요.",
-                comments_name_placeholder: "닉네임",
-                comments_body_placeholder: "책과 세계관에 대한 응원, 기대평을 남겨주세요 ✨",
-                comments_required: "닉네임과 내용을 입력해주세요.",
-                comments_too_short: "내용을 좀 더 입력해주세요.",
-                comments_thanks: "소중한 한마디 감사합니다 🙏",
-                comments_submit_error: "오류가 발생했습니다. 다시 시도해주세요.",
-                comments_network_error: "네트워크 오류입니다."
+                share_desc:                 '상상 속 마법 같은 세계관을 소중한 사람들에게 전하세요.',
+                header_title:               'Books & Universe',
+                header_slogan:              'Imagination to Reality',
+                sister_title:               'SISTER SQUAD',
+                sister_desc:                '책 속 마법 세계로 들어간 언니와 동생!<br>어둠에 맞서며 진정한 용기와<br> 가족의 사랑을 깨닫는 환상적인 모험.<br>사랑하는 두 딸에게서 영감을 받아<br> 탄생한 따뜻한 판타지 소설 입니다.',
+                btn_readmore:               'Read More',
+                teaser_badge:               'COMING SOON',
+                teaser_title:               'Miracle Shot',
+                teaser_desc:                '개성이 넘치는 아이들과 함께 실패에서<br>기적을 쏘아 올리는 이코치의 이야기.<br>최강 골레이로 \'영\', 불꽃슈터 \'황\'<br> 슈퍼소닉 \'길\', 패스마스터 \'고\'<br>네 소년의 환상의 풋살 판타지를 만나세요.',
+                comments_title:             'Guestbook',
+                comments_leave:             '✦ 한마디 남겨주세요',
+                comments_submit:            '남기기',
+                comments_loading:           '· · ·',
+                comments_empty:             '첫 번째 기록을 남겨주세요',
+                comments_error:             '잠시 후 다시 시도해주세요.',
+                comments_name_placeholder:  '닉네임',
+                comments_body_placeholder:  '책과 세계관에 대한 응원, 기대평을 남겨주세요 ✨',
+                comments_required:          '닉네임과 내용을 입력해주세요.',
+                comments_too_short:         '내용을 좀 더 입력해주세요.',
+                comments_thanks:            '소중한 한마디 감사합니다 🙏',
+                comments_submit_error:      '오류가 발생했습니다. 다시 시도해주세요.',
+                comments_network_error:     '네트워크 오류입니다.'
             },
             en: {
-                nav_home: "Home",
-                nav_bible: "Bible",
-                nav_worship: "Worship",
-                nav_music: "Music",
-                nav_book: "Books",
-                nav_movie: "Movies",
-                share_title: "SHARE UNIVERSE",
-                share_desc: "Share this magical imaginary universe with your loved ones.",
-                share_copy: "COPY LINK",
-                share_sns: "SNS SHARE",
-                share_close: "Close",
-                header_title: "Books & Universe",
-                header_slogan: "Imagination to Reality",
-                sister_title: "SISTER SQUAD",
-                sister_desc: "Two sisters who entered a magical world in a book!<br>A fantastic adventure of facing darkness<br>and realizing true courage and family love.<br>A heartwarming fantasy novel inspired by<br>my two beloved daughters.",
-                btn_readmore: "Read More",
-                teaser_badge: "COMING SOON",
-                teaser_title: "Miracle Shot",
-                teaser_desc: "The story of Coach Lee shooting a miracle<br>out of failure with kids full of personality.<br>The strongest Goleiro 'Young', Flame Shooter 'Hwang',<br>Supersonic 'Gil', Pass Master 'Go'.<br>Meet the fantastic futsal fantasy of four boys.",
-                footer_text: "© 2026 Chris LEE.PAPA — The Creative Archive",
-                toast_copy: "Link copied to clipboard ✓",
-                toast_error: "Browser not supported.",
-                comments_title: "Guestbook",
-                comments_leave: "✦ Leave a message",
-                comments_submit: "Submit",
-                comments_loading: "· · ·",
-                comments_empty: "Be the first to leave a message",
-                comments_error: "Please try again later.",
-                comments_name_placeholder: "Nickname",
-                comments_body_placeholder: "Leave encouragement or thoughts about the books and universe ✨",
-                comments_required: "Please enter both a nickname and a message.",
-                comments_too_short: "Please write a little more.",
-                comments_thanks: "Thank you for your message 🙏",
-                comments_submit_error: "Something went wrong. Please try again.",
-                comments_network_error: "Network error. Please try again."
+                share_desc:                 'Share this magical imaginary universe with your loved ones.',
+                header_title:               'Books & Universe',
+                header_slogan:              'Imagination to Reality',
+                sister_title:               'SISTER SQUAD',
+                sister_desc:                'Two sisters who entered a magical world in a book!<br>A fantastic adventure of facing darkness<br>and realizing true courage and family love.<br>A heartwarming fantasy novel inspired by<br>my two beloved daughters.',
+                btn_readmore:               'Read More',
+                teaser_badge:               'COMING SOON',
+                teaser_title:               'Miracle Shot',
+                teaser_desc:                'The story of Coach Lee shooting a miracle<br>out of failure with kids full of personality.<br>The strongest Goleiro \'Young\', Flame Shooter \'Hwang\',<br>Supersonic \'Gil\', Pass Master \'Go\'.<br>Meet the fantastic futsal fantasy of four boys.',
+                comments_title:             'Guestbook',
+                comments_leave:             '✦ Leave a message',
+                comments_submit:            'Submit',
+                comments_loading:           '· · ·',
+                comments_empty:             'Be the first to leave a message',
+                comments_error:             'Please try again later.',
+                comments_name_placeholder:  'Nickname',
+                comments_body_placeholder:  'Leave encouragement or thoughts about the books and universe ✨',
+                comments_required:          'Please enter both a nickname and a message.',
+                comments_too_short:         'Please write a little more.',
+                comments_thanks:            'Thank you for your message 🙏',
+                comments_submit_error:      'Something went wrong. Please try again.',
+                comments_network_error:     'Network error. Please try again.'
             }
         };
 
-        let currentLang = 'ko';
-
-        function getTranslation(key) {
-            const dictionary = i18n[currentLang] || i18n.ko;
-            return dictionary[key] || i18n.ko[key] || '';
-        }
-        
-        function setLanguage(lang) {
-            const nextLang = Object.prototype.hasOwnProperty.call(i18n, lang) ? lang : 'ko';
-            currentLang = nextLang;
-            document.documentElement.lang = nextLang;
-            
-            try { localStorage.setItem('pref-lang', nextLang); } catch(e) {}
-            
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                const translatedText = getTranslation(key);
-                if (translatedText) {
-                    el.innerHTML = translatedText;
-                }
-            });
-
+        /* ── 언어 변경 시 placeholder 별도 처리 ──
+           main.js 의 data-i18n 처리는 innerHTML만 담당하므로
+           placeholder 는 onLangChange 에서 직접 업데이트합니다. */
+        window.onLangChange = function(lang) {
+            const dict = (window.PAGE_I18N && window.PAGE_I18N[lang]) || {};
             document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
                 const key = el.getAttribute('data-i18n-placeholder');
-                const translatedText = getTranslation(key);
-                if (translatedText) {
-                    el.setAttribute('placeholder', translatedText);
+                if (dict[key]) el.setAttribute('placeholder', dict[key]);
+            });
+        };
+
+        /* ── 페이지 로직: 별 캔버스 + 방명록 ── */
+        window.onMainReady = function() {
+            /* 별 캔버스 */
+            const canvas = document.getElementById('stars-canvas');
+            const ctx = canvas ? canvas.getContext('2d') : null;
+            let stars = [];
+            function resize() {
+                if (!canvas) return;
+                canvas.width = window.innerWidth;
+                canvas.height = 350;
+                initStars();
+            }
+            function initStars() {
+                if (!canvas) return;
+                stars = [];
+                const count = (canvas.width * canvas.height) / 7500;
+                for (let i = 0; i < count; i++) {
+                    stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 1.6 + 0.2, opacity: Math.random(), speed: Math.random() * 0.02 + 0.005 });
                 }
-            });
-
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.getAttribute('data-lang') === nextLang);
-            });
-
-            const langTextObj = document.getElementById('currentLangText');
-            if (langTextObj) langTextObj.textContent = nextLang === 'ko' ? 'KOR' : 'ENG';
-            const langWrapper = document.getElementById('langWrapper');
-            const langCurrent = langWrapper ? langWrapper.querySelector('.lang-current') : null;
-            if (langWrapper) langWrapper.classList.remove('active');
-            if (langCurrent) langCurrent.setAttribute('aria-expanded', 'false');
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            let savedLang = 'ko';
-            try { savedLang = localStorage.getItem('pref-lang') || 'ko'; } catch(e) {}
-            setLanguage(savedLang);
-        });
-
-        function toggleLangDropdown() {
-            const langWrapper = document.getElementById('langWrapper');
-            if (!langWrapper) return;
-            const isActive = langWrapper.classList.toggle('active');
-            const langCurrent = langWrapper.querySelector('.lang-current');
-            if (langCurrent) langCurrent.setAttribute('aria-expanded', String(isActive));
-        }
-
-        document.addEventListener('click', function(e) {
-            const wrapper = document.getElementById('langWrapper');
-            if (wrapper && !wrapper.contains(e.target)) {
-                wrapper.classList.remove('active');
-                const langCurrent = wrapper.querySelector('.lang-current');
-                if (langCurrent) langCurrent.setAttribute('aria-expanded', 'false');
             }
-        });
-
-        function safeNavigate(url) { if (url && url.trim() !== '') { window.location.assign(url); } }
-        function handleCardKey(event, url) {
-            if (event.key === 'Enter' || event.key === ' ') {
-                event.preventDefault();
-                safeNavigate(url);
-            }
-        }
-
-        const mainNav = document.getElementById('main-nav');
-        function updateNavOnScroll() {
-            if (!mainNav) return;
-            mainNav.classList.toggle('scrolled', window.scrollY > 24);
-        }
-        window.addEventListener('scroll', updateNavOnScroll, { passive: true });
-        updateNavOnScroll();
-        
-        // ── 변경된 스크롤 프로그레스 바 로직 ──
-        window.addEventListener('scroll', () => {
-            const scrollTop = window.scrollY; const docHeight = document.body.scrollHeight - window.innerHeight;
-            document.getElementById('scroll-progress').style.width = (scrollTop / (docHeight || 1) * 100) + '%';
-        }, { passive: true });
-
-        const menuToggle = document.getElementById('mobile-menu');
-        const navLinks = document.getElementById('navLinks');
-        if (menuToggle && navLinks) {
-            menuToggle.addEventListener('click', () => {
-                const isActive = menuToggle.classList.toggle('active');
-                navLinks.classList.toggle('active', isActive);
-                menuToggle.setAttribute('aria-expanded', String(isActive));
-            });
-
-            navLinks.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', () => {
-                    menuToggle.classList.remove('active');
-                    navLinks.classList.remove('active');
-                    menuToggle.setAttribute('aria-expanded', 'false');
+            function draw() {
+                if (!canvas || !ctx) return;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                stars.forEach(s => {
+                    s.opacity += s.speed;
+                    if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed;
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0, s.opacity)})`;
+                    ctx.fill();
                 });
-            });
-        }
-
-        const shareOverlay = document.getElementById('shareOverlay');
-        const toast = document.getElementById('toast');
-        function openShareModal() {
-            if (!shareOverlay) return;
-            shareOverlay.style.display = 'flex';
-            setTimeout(() => shareOverlay.classList.add('active'), 10);
-        }
-        function closeShareModal(e) {
-            if (!shareOverlay || (e && e.target !== shareOverlay && e.type !== 'click')) return;
-            shareOverlay.classList.remove('active');
-            setTimeout(() => { shareOverlay.style.display = 'none'; }, 300);
-        }
-
-        async function copyURL() {
-            const currentUrl = window.location.href;
-            let success = false;
-            if (navigator.clipboard && window.isSecureContext) {
-                try { await navigator.clipboard.writeText(currentUrl); success = true; } catch (err) {}
+                requestAnimationFrame(draw);
             }
-            if (!success) {
-                const textArea = document.createElement('textarea');
-                textArea.value = currentUrl;
-                textArea.id = 'temp-copy-area';
-                textArea.style.position = 'fixed';
-                textArea.style.left = '-9999px';
-                document.body.appendChild(textArea);
-                textArea.focus();
-                textArea.select();
-                try { success = document.execCommand('copy'); } catch (err) {}
-                document.body.removeChild(textArea);
-            }
-            if (success) { showToast(getTranslation('toast_copy')); }
-            closeShareModal();
+            window.addEventListener('resize', resize);
+            resize();
+            draw();
+
+            /* 방명록 초기 로드 */
+            fetchComments();
+        };
+
+        /* ── 카드 네비게이션 헬퍼 ── */
+        function safeNavigate(url) { if (url && url.trim() !== '') window.location.assign(url); }
+        function handleCardKey(event, url) {
+            if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); safeNavigate(url); }
         }
 
-        async function shareViaWebAPI() {
-            if (!navigator.share) {
-                showToast(getTranslation('toast_error'));
-                return;
-            }
-            try {
-                await navigator.share({ title: 'Chris LEE.PAPA - BOOKS', text: '상상이 현실이 되는 곳, 크리스리의 도서 아카이브입니다.', url: window.location.href });
-            } catch (err) {
-                if (err && err.name !== 'AbortError') console.error(err);
-            }
-        }
-        function showToast(msg) {
-            if (!toast || !msg) return;
-            toast.textContent = msg;
-            toast.style.display = 'block';
-            setTimeout(() => { toast.style.display = 'none'; }, 2500);
+        /* ── 번역 키 조회 헬퍼 (방명록용) ── */
+        function getTranslation(key) {
+            const lang = (typeof window.getCurrentLang === 'function') ? window.getCurrentLang() : 'ko';
+            const dict = (window.PAGE_I18N && window.PAGE_I18N[lang]) || {};
+            return dict[key] || (window.PAGE_I18N && window.PAGE_I18N.ko && window.PAGE_I18N.ko[key]) || '';
         }
 
-
-        // ── Guestbook System ──
+        /* ── 방명록 시스템 (Supabase) ── */
         const SUPA_URL = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
         const SUPA_KEY = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
-        const PAGE_ID = '/book';
+        const PAGE_ID  = '/book';
 
         function createCommentMessage(messageKey) {
             const empty = document.createElement('div');
             empty.className = 'cm-empty';
-
             const icon = document.createElement('span');
             icon.textContent = '✦';
-
             const message = document.createElement('span');
             message.setAttribute('data-i18n', messageKey);
             message.textContent = getTranslation(messageKey);
-
             empty.append(icon, message);
             return empty;
         }
@@ -566,39 +334,24 @@
             const list = document.getElementById('cm-list');
             if (!list) return;
             list.textContent = '';
-
             if (!Array.isArray(comments) || comments.length === 0) {
                 list.appendChild(createCommentMessage('comments_empty'));
                 return;
             }
-
             comments.forEach((comment, index) => {
                 const nickname = String(comment.nickname || 'Guest').trim() || 'Guest';
-                const content = String(comment.content || '').trim();
-                const date = comment.created_at ? String(comment.created_at).slice(0, 10) : '';
+                const content  = String(comment.content  || '').trim();
+                const date     = comment.created_at ? String(comment.created_at).slice(0, 10) : '';
 
-                const card = document.createElement('div');
+                const card   = document.createElement('div');
                 card.className = 'comment-card';
                 card.style.animationDelay = `${index * 0.05}s`;
 
-                const meta = document.createElement('div');
-                meta.className = 'comment-meta';
-
-                const avatar = document.createElement('div');
-                avatar.className = 'comment-avatar';
-                avatar.textContent = nickname.charAt(0).toUpperCase() || 'G';
-
-                const name = document.createElement('span');
-                name.className = 'comment-nickname';
-                name.textContent = nickname;
-
-                const dateEl = document.createElement('span');
-                dateEl.className = 'comment-date';
-                dateEl.textContent = date;
-
-                const body = document.createElement('div');
-                body.className = 'comment-content';
-                body.textContent = content;
+                const meta   = document.createElement('div');  meta.className = 'comment-meta';
+                const avatar = document.createElement('div');  avatar.className = 'comment-avatar'; avatar.textContent = nickname.charAt(0).toUpperCase() || 'G';
+                const name   = document.createElement('span'); name.className = 'comment-nickname'; name.textContent = nickname;
+                const dateEl = document.createElement('span'); dateEl.className = 'comment-date';   dateEl.textContent = date;
+                const body   = document.createElement('div');  body.className = 'comment-content';  body.textContent = content;
 
                 meta.append(avatar, name, dateEl);
                 card.append(meta, body);
@@ -609,16 +362,13 @@
         async function fetchComments() {
             const list = document.getElementById('cm-list');
             if (!list) return;
-
             try {
                 const res = await fetch(
                     `${SUPA_URL}/rest/v1/comments?page=eq.${encodeURIComponent(PAGE_ID)}&order=created_at.desc`,
                     { headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` } }
                 );
-
                 if (!res.ok) throw new Error(`Supabase read failed: ${res.status}`);
-                const data = await res.json();
-                renderComments(data);
+                renderComments(await res.json());
             } catch (err) {
                 console.error(err);
                 list.textContent = '';
@@ -629,107 +379,45 @@
         async function submitComment() {
             const nameInput = document.getElementById('cm-name');
             const bodyInput = document.getElementById('cm-body');
-            const btn = document.querySelector('.cm-submit-btn');
+            const btn       = document.querySelector('.cm-submit-btn');
             if (!nameInput || !bodyInput || !btn) return;
 
             const nickname = nameInput.value.trim();
-            const content = bodyInput.value.trim();
+            const content  = bodyInput.value.trim();
 
-            if (!nickname || !content) {
-                showToast(getTranslation('comments_required'));
-                return;
-            }
-            if (content.length < 2) {
-                showToast(getTranslation('comments_too_short'));
-                return;
-            }
+            if (!nickname || !content)  { window.showToast(getTranslation('comments_required'));  return; }
+            if (content.length < 2)     { window.showToast(getTranslation('comments_too_short')); return; }
 
-            btn.disabled = true;
+            btn.disabled    = true;
             btn.textContent = '...';
 
             try {
                 const res = await fetch(`${SUPA_URL}/rest/v1/comments`, {
                     method: 'POST',
-                    headers: {
-                        apikey: SUPA_KEY,
-                        Authorization: `Bearer ${SUPA_KEY}`,
-                        'Content-Type': 'application/json',
-                        'Prefer': 'return=minimal'
-                    },
+                    headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
                     body: JSON.stringify({ page: PAGE_ID, nickname, content })
                 });
-
                 if (res.ok || res.status === 201) {
                     nameInput.value = '';
                     bodyInput.value = '';
-                    showToast(getTranslation('comments_thanks'));
+                    window.showToast(getTranslation('comments_thanks'));
                     fetchComments();
                 } else {
-                    const errText = await res.text();
-                    showToast(getTranslation('comments_submit_error'));
-                    console.error('Supabase error:', errText);
+                    window.showToast(getTranslation('comments_submit_error'));
+                    console.error('Supabase error:', await res.text());
                 }
             } catch (err) {
-                showToast(getTranslation('comments_network_error'));
+                window.showToast(getTranslation('comments_network_error'));
                 console.error(err);
             } finally {
-                btn.disabled = false;
+                btn.disabled    = false;
                 btn.textContent = getTranslation('comments_submit') || '남기기';
             }
         }
-
-        document.addEventListener('DOMContentLoaded', fetchComments);
-
-        const canvas = document.getElementById('stars-canvas');
-        const ctx = canvas ? canvas.getContext('2d') : null;
-        let stars = [];
-        function resize() {
-            if (!canvas) return;
-            canvas.width = window.innerWidth;
-            canvas.height = 350;
-            initStars();
-        }
-        function initStars() {
-            if (!canvas) return;
-            stars = [];
-            const count = (canvas.width * canvas.height) / 7500;
-            for (let i = 0; i < count; i++) {
-                stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 1.6 + 0.2, opacity: Math.random(), speed: Math.random() * 0.02 + 0.005 });
-            }
-        }
-        function draw() {
-            if (!canvas || !ctx) return;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            stars.forEach(s => {
-                s.opacity += s.speed;
-                if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed;
-                ctx.beginPath();
-                ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0, s.opacity)})`;
-                ctx.fill();
-            });
-            requestAnimationFrame(draw);
-        }
-        window.addEventListener('resize', resize);
-        resize();
-        draw();
-
-        document.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('copy', e => {
-            if (e.target && e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) {
-                e.preventDefault();
-            }
-        });
-        document.addEventListener('keydown', e => {
-            const targetId = e.target ? e.target.id : '';
-            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || (e.ctrlKey && e.key === 'U')) e.preventDefault();
-            if (e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'p')) {
-                if (targetId !== 'temp-copy-area' && window.getSelection().toString().length > 0) e.preventDefault();
-            }
-            if (e.key === 'PrintScreen' && navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText('').catch(() => {});
-            }
-        });
     </script>
+
+    <!-- ★ 공통 스크립트 -->
+    <script src="js/main.js"></script>
+
 </body>
 </html>

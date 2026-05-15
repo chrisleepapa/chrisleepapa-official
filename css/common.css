@@ -1,0 +1,420 @@
+/* ==============================================
+   css/common.css — Chris LEE.PAPA 공통 스타일
+   header.html / footer.html / main.js 와 연동
+   ============================================== */
+
+/* 1. 폰트 & 리셋 */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;800&family=Cormorant+Garamond:wght@300;400;600&family=Noto+Sans+KR:wght@300;400;700&display=swap');
+
+:root {
+    --gold:      #c9a84c;
+    --gold-light:#e8d08a;
+    --bg:        #030305;
+    --card-bg:   #0a0a0c;
+    --text:      #e0e0e0;
+    --nav-height:70px;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: 'Cormorant Garamond', 'Noto Sans KR', serif;
+    overflow-x: hidden;
+}
+a    { text-decoration: none; color: inherit; }
+ul   { list-style: none; }
+img  { -webkit-user-drag: none; }
+
+
+/* ──────────────────────────────────────────────
+   2. 스크롤 진행 바  (#scroll-progress)
+────────────────────────────────────────────── */
+#scroll-progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    width: 0;
+    background: var(--gold);
+    z-index: 2000;
+    transition: width 0.1s linear;
+}
+
+
+/* ──────────────────────────────────────────────
+   3. 마우스 오브  (#mouse-orb)
+────────────────────────────────────────────── */
+#mouse-orb {
+    position: fixed;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
+    transition: left 0.08s ease, top 0.08s ease;
+}
+
+
+/* ──────────────────────────────────────────────
+   4. 내비게이션  (#main-nav)
+────────────────────────────────────────────── */
+#main-nav {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    z-index: 1000;
+    padding: 0 20px;
+    height: var(--nav-height);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: transparent;
+    transition: background 0.35s ease, border-bottom 0.35s ease, backdrop-filter 0.35s ease;
+}
+#main-nav.scrolled {
+    background: rgba(3, 3, 5, 0.92);
+    border-bottom: 1px solid rgba(201,168,76,0.18);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+/* 브랜드 로고 */
+.brand-logo {
+    font-family: 'Cinzel', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.12em;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+.brand-logo:hover { color: var(--gold-light); }
+
+/* 오른쪽 그룹 */
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+/* ──────────────────────────────────────────────
+   5. nav 링크 목록
+   모바일 기본: 숨김 (오버레이로 표시)
+   데스크톱(901px+): 가로 배치
+────────────────────────────────────────────── */
+.nav-links {
+    /* 모바일: 전체화면 오버레이 메뉴 (기본 숨김) */
+    display: none;
+    position: fixed;
+    top: var(--nav-height);
+    left: 0;
+    width: 100%;
+    height: calc(100dvh - var(--nav-height));
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 36px;
+    background: rgba(3,3,5,0.98);
+    z-index: 999;
+    padding: 40px 20px;
+}
+.nav-links.active {
+    display: flex;
+}
+.nav-links a {
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    letter-spacing: 0.12em;
+    color: rgba(224,224,224,0.75);
+    transition: color 0.25s;
+    position: relative;
+    padding-bottom: 3px;
+}
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 1px;
+    background: var(--gold);
+    transition: width 0.25s ease;
+}
+.nav-links a:hover,
+.nav-links a.active { color: var(--gold); }
+.nav-links a:hover::after,
+.nav-links a.active::after { width: 100%; }
+
+
+/* ──────────────────────────────────────────────
+   6. 언어 드롭다운  (#langWrapper)
+────────────────────────────────────────────── */
+.lang-dropdown-wrapper {
+    position: relative;
+}
+.lang-current {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: none;
+    border: 1px solid rgba(201,168,76,0.35);
+    border-radius: 20px;
+    padding: 5px 12px;
+    color: var(--gold);
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+    white-space: nowrap;
+}
+.lang-current svg {
+    width: 12px; height: 12px;
+    stroke: var(--gold);
+    transition: transform 0.25s;
+}
+.lang-dropdown-wrapper.active .lang-current svg {
+    transform: rotate(180deg);
+}
+.lang-current:hover {
+    background: rgba(201,168,76,0.1);
+    border-color: var(--gold);
+}
+
+.lang-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background: rgba(10,10,14,0.96);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 10px;
+    overflow: hidden;
+    display: none;
+    flex-direction: column;
+    min-width: 80px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    z-index: 2000;
+}
+.lang-dropdown-wrapper.active .lang-dropdown-menu {
+    display: flex;
+}
+.lang-btn {
+    background: none;
+    border: none;
+    color: rgba(224,224,224,0.65);
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    padding: 10px 18px;
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.2s, color 0.2s;
+}
+.lang-btn:hover    { background: rgba(201,168,76,0.1); color: var(--gold); }
+.lang-btn.active   { color: var(--gold); font-weight: 700; }
+
+
+/* ──────────────────────────────────────────────
+   7. 공유 버튼  (.share-trigger)
+────────────────────────────────────────────── */
+.share-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px; height: 34px;
+    background: none;
+    border: 1px solid rgba(201,168,76,0.35);
+    border-radius: 50%;
+    color: var(--gold);
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    flex-shrink: 0;
+}
+.share-trigger svg { width: 15px; height: 15px; stroke: var(--gold); }
+.share-trigger:hover {
+    background: rgba(201,168,76,0.12);
+    border-color: var(--gold);
+    transform: scale(1.08);
+}
+
+
+/* ──────────────────────────────────────────────
+   8. 햄버거 버튼  (.menu-toggle)
+   모바일 기본: 표시 / 데스크톱(901px+): 숨김
+────────────────────────────────────────────── */
+.menu-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 34px; height: 34px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    flex-shrink: 0;
+}
+.menu-toggle span {
+    display: block;
+    width: 22px; height: 2px;
+    background: var(--gold);
+    border-radius: 2px;
+    transition: transform 0.3s, opacity 0.3s;
+}
+.menu-toggle.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.menu-toggle.active span:nth-child(2) { opacity: 0; }
+.menu-toggle.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+
+/* ──────────────────────────────────────────────
+   9. 공유 모달  (.modal-overlay / .share-modal)
+────────────────────────────────────────────── */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.72);
+    z-index: 3000;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(4px);
+}
+.modal-overlay.active { opacity: 1; }
+
+.share-modal {
+    background: rgba(12,12,16,0.97);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 18px;
+    padding: 44px 40px 36px;
+    text-align: center;
+    max-width: 420px;
+    width: 90%;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.7), inset 0 0 30px rgba(201,168,76,0.03);
+    transform: translateY(12px);
+    transition: transform 0.3s ease;
+}
+.modal-overlay.active .share-modal { transform: translateY(0); }
+
+.share-modal h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.18em;
+    color: var(--gold);
+    margin-bottom: 14px;
+}
+.share-modal p {
+    font-size: 0.88rem;
+    color: rgba(224,224,224,0.65);
+    line-height: 1.7;
+    margin-bottom: 30px;
+}
+.share-buttons {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+.modal-btn {
+    font-family: 'Cinzel', serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    padding: 11px 24px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.25s;
+    border: 1px solid rgba(201,168,76,0.5);
+    background: transparent;
+    color: var(--gold);
+}
+.modal-btn:hover { background: var(--gold); color: #000; }
+.btn-close {
+    background: none;
+    border: none;
+    color: rgba(224,224,224,0.4);
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.btn-close:hover { color: rgba(224,224,224,0.85); }
+
+
+/* ──────────────────────────────────────────────
+   10. 토스트  (#toast / .toast-msg)
+────────────────────────────────────────────── */
+#toast,
+.toast-msg {
+    display: none;
+    position: fixed;
+    bottom: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(201,168,76,0.92);
+    color: #000;
+    font-family: 'Cinzel', serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 12px 28px;
+    border-radius: 30px;
+    z-index: 4000;
+    pointer-events: none;
+    white-space: nowrap;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
+
+
+/* ──────────────────────────────────────────────
+   11. 푸터  (footer)
+────────────────────────────────────────────── */
+footer {
+    border-top: 1px solid rgba(201,168,76,0.14);
+    padding: 36px 20px;
+    background: rgba(3,3,5,0.95);
+    text-align: center;
+    margin-top: auto;
+    width: 100%;
+}
+footer p {
+    font-family: 'Cinzel', serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    color: rgba(201,168,76,0.55);
+}
+
+
+/* ──────────────────────────────────────────────
+   12. 데스크톱 (901px 이상)
+   nav-links 가로 배치 / 햄버거 숨김
+────────────────────────────────────────────── */
+@media (min-width: 901px) {
+    #main-nav { padding: 0 40px; }
+
+    /* 햄버거 버튼 숨김 */
+    .menu-toggle { display: none; }
+
+    /* nav 링크 가로 배치 */
+    .nav-links {
+        display: flex;
+        position: static;
+        width: auto;
+        height: auto;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 28px;
+        background: none;
+        padding: 0;
+        z-index: auto;
+    }
+    .nav-links a { font-size: 0.78rem; }
+
+    .nav-right { gap: 28px; }
+
+    .share-modal { padding: 44px 40px 36px; }
+}

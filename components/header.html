@@ -1,0 +1,75 @@
+<!--
+  components/header.html
+  =====================
+  공유 헤더 컴포넌트입니다.
+  js/main.js 의 loadComponents() 가 fetch 로 읽어 #site-nav 에 주입합니다.
+  이 파일을 직접 열지 마세요 — 항상 개별 페이지를 통해 렌더됩니다.
+-->
+
+<div id="scroll-progress"></div>
+<div id="mouse-orb"></div>
+
+<nav id="main-nav">
+    <a href="index.html" class="brand-logo">Chris LEE.PAPA</a>
+    <div class="nav-right">
+        <div class="nav-links" id="navLinks">
+            <a href="index.html"   data-i18n="nav_home"    data-page="index">Home</a>
+            <a href="bible.html"   data-i18n="nav_bible"   data-page="bible">Bible</a>
+            <a href="worship.html" data-i18n="nav_worship" data-page="worship">Worship</a>
+            <a href="music.html"   data-i18n="nav_music"   data-page="music">Music</a>
+            <a href="book.html"    data-i18n="nav_book"    data-page="book">Books</a>
+            <a href="movie.html"   data-i18n="nav_movie"   data-page="movie">Movies</a>
+        </div>
+
+        <!-- 언어 선택 드롭다운 -->
+        <div class="lang-dropdown-wrapper" id="langWrapper">
+            <button type="button" class="lang-current" id="langToggleBtn"
+                    aria-expanded="false" aria-controls="langMenu" aria-label="Change language">
+                <span id="currentLangText">KOR</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </button>
+            <div class="lang-dropdown-menu" id="langMenu" role="menu">
+                <button type="button" class="lang-btn active" data-lang="ko" role="menuitem">KOR</button>
+                <button type="button" class="lang-btn"        data-lang="en" role="menuitem">ENG</button>
+            </div>
+        </div>
+
+        <!-- 공유 버튼 -->
+        <button type="button" class="share-trigger" id="shareOpenBtn"
+                title="Share" aria-label="Share this page">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                <circle cx="18" cy="5"  r="3"></circle>
+                <circle cx="6"  cy="12" r="3"></circle>
+                <circle cx="18" cy="19" r="3"></circle>
+                <line x1="8.59"  y1="13.51" x2="15.42" y2="17.49"></line>
+                <line x1="15.41" y1="6.51"  x2="8.59"  y2="10.49"></line>
+            </svg>
+        </button>
+
+        <!-- 모바일 햄버거 버튼 -->
+        <button type="button" class="menu-toggle" id="mobile-menu"
+                aria-label="Open navigation menu" aria-expanded="false" aria-controls="navLinks">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
+
+<!-- 공유 모달 -->
+<div class="modal-overlay" id="shareOverlay" role="dialog"
+     aria-modal="true" aria-labelledby="shareModalTitle" aria-hidden="true">
+    <div class="share-modal" onclick="event.stopPropagation()">
+        <h3 id="shareModalTitle" data-i18n="share_title">SHARE ARCHIVE</h3>
+        <p data-i18n="share_desc">이곳의 기록과 영감을 소중한 사람들에게 전하세요.</p>
+        <div class="share-buttons">
+            <button class="modal-btn btn-copy" id="shareCopyBtn" data-i18n="share_copy">COPY LINK</button>
+            <button class="modal-btn btn-sns"  id="shareSNSBtn"  data-i18n="share_sns">SNS SHARE</button>
+        </div>
+        <button class="btn-close" id="shareCloseBtn" data-i18n="share_close">Close</button>
+    </div>
+</div>
+
+<!-- 토스트 메시지 -->
+<div class="toast-msg" id="toast" role="status" aria-live="polite"></div>

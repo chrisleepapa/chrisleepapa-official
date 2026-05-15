@@ -14,10 +14,10 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-NBGELYQ4TZ');
       gtag('config', 'GT-5MJDBTR2');
     </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Chris Lee.Papa – ABOUT | 새로운 도전과 창조의 기록들">
@@ -35,8 +35,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
 
+    <!-- 공통 CSS -->
+    <link rel="stylesheet" href="css/common.css">
+
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --gold: #c9a84c;
             --gold-light: #e8d08a;
@@ -68,73 +70,6 @@
             z-index: 900;
             opacity: 0.35;
         }
-
-        /* ── Scroll progress ── */
-        #scroll-progress {
-            position: fixed; top: 0; left: 0; height: 2px; width: 0%;
-            background: linear-gradient(90deg, var(--gold), var(--gold-light), #fff8e0, var(--gold));
-            background-size: 200% auto;
-            z-index: 2000;
-            animation: shimmer-bar 3s linear infinite;
-        }
-        @keyframes shimmer-bar { 0%{background-position:0% center} 100%{background-position:200% center} }
-
-        /* ── Nav ── */
-        nav {
-            position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px;
-            display: flex; justify-content: space-between; align-items: center;
-            z-index: 1000; background: rgba(3,3,5,0.88); backdrop-filter: blur(14px);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .brand-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-light); white-space: nowrap; }
-        .nav-right { display: flex; align-items: center; gap: 24px; }
-        .nav-links { display: flex; gap: 30px; }
-        .nav-links a {
-            font-family: 'Cinzel', serif; font-size: 0.8rem; color: #a0a0b5;
-            transition: 0.3s; letter-spacing: 1px; text-transform: uppercase; position: relative;
-        }
-        .nav-links a::after { content:''; position:absolute; bottom:-4px; left:0; width:0%; height:1px; background:var(--gold-light); transition:width 0.3s; }
-        .nav-links a:hover::after, .nav-links a.active::after { width:100%; }
-        .nav-links a:hover, .nav-links a.active { color:#fff; text-shadow:0 0 10px rgba(255,255,255,0.5); }
-        
-        /* ── Language Switcher (Dropdown) ── */
-        .lang-dropdown-wrapper { position: relative; font-family: 'Cinzel', serif; font-size: 0.8rem; color: #a0a0b5; z-index: 1001; }
-        .lang-current { cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 6px; transition: color 0.3s; font-weight: 600; letter-spacing: 1px; }
-        .lang-current:hover, .lang-dropdown-wrapper.active .lang-current { color: var(--gold-light); text-shadow: 0 0 8px rgba(201,168,76,0.5); }
-        .lang-current svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; transition: transform 0.3s; }
-        .lang-dropdown-wrapper.active .lang-current svg { transform: rotate(180deg); }
-        .lang-dropdown-menu { position: absolute; top: calc(100% + 10px); right: -10px; background: rgba(10, 10, 15, 0.95); border: 1px solid rgba(201,168,76,0.3); border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; opacity: 0; pointer-events: none; transform: translateY(-10px); transition: opacity 0.3s, transform 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.8); backdrop-filter: blur(10px); min-width: 100px; }
-        .lang-dropdown-wrapper.active .lang-dropdown-menu { opacity: 1; pointer-events: auto; transform: translateY(0); }
-        .lang-btn { padding: 12px 20px; cursor: pointer; transition: 0.3s; letter-spacing: 1px; text-align: center; color: #a0a0b5; }
-        .lang-btn:not(:last-child) { border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .lang-btn:hover, .lang-btn.active { color: var(--gold-light); background: rgba(201,168,76,0.1); }
-
-        /* ── Share Icon Button ── */
-        .share-trigger { cursor: pointer; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; border: 1px solid rgba(201,168,76,0.3); border-radius: 50%; color: var(--gold-light); transition: 0.3s; z-index: 1001; }
-        .share-trigger svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
-        .share-trigger:hover { background: rgba(201,168,76,0.1); border-color: var(--gold-light); box-shadow: 0 0 12px rgba(201,168,76,0.2); transform: translateY(-2px); }
-
-        /* ── Menu Toggle (Hamburger) ── */
-        .menu-toggle { display: none; flex-direction: column; justify-content: space-between; width: 26px; height: 18px; cursor: pointer; z-index: 1001; }
-        .menu-toggle span { width: 100%; height: 2px; background-color: var(--gold-light); transition: 0.3s; border-radius: 2px; }
-        .menu-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-        .menu-toggle.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-        .menu-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
-
-        /* ── Modal ── */
-        .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px); z-index:2000; display:none; align-items:center; justify-content:center; opacity:0; transition:opacity 0.3s; }
-        .modal-overlay.active { display:flex; opacity:1; }
-        .share-modal { background:#0a0a0f; border:1px solid var(--gold); border-radius:20px; width:90%; max-width:400px; padding:40px 30px; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,0.8); transform:translateY(20px); transition:transform 0.3s; }
-        .modal-overlay.active .share-modal { transform:translateY(0); }
-        .share-modal h3 { font-family:'Cinzel',serif; font-size:1.2rem; color:var(--gold-light); margin-bottom:15px; }
-        .share-modal p { font-size:0.9rem; color:#a0a0b5; margin-bottom:30px; }
-        .share-buttons { display:flex; flex-direction:column; gap:12px; }
-        .modal-btn { padding:14px; border-radius:12px; border:none; font-family:'Cinzel',serif; font-size:0.85rem; font-weight:600; cursor:pointer; transition:0.3s; }
-        .btn-copy { background:var(--gold); color:#000; }
-        .btn-copy:hover { background:var(--gold-light); }
-        .btn-sns { background:transparent; border:1px solid rgba(255,255,255,0.1); color:#fff; }
-        .btn-close { margin-top:20px; color:#555; background:none; font-size:0.75rem; text-decoration:underline; cursor:pointer; border:none; }
-        .toast-msg { position:fixed; bottom:40px; left:50%; transform:translateX(-50%); background:var(--gold); color:#000; padding:12px 30px; border-radius:30px; font-size:0.85rem; font-weight:700; z-index:3000; display:none; box-shadow:0 10px 30px rgba(0,0,0,0.5); }
 
         /* ── Page content ── */
         .page-wrapper {
@@ -325,80 +260,20 @@
             text-align: center;
         }
 
-        footer { text-align:center; padding:40px; font-family:'Cinzel',serif; font-size:0.65rem; color:#444; border-top:1px solid rgba(255,255,255,0.04); letter-spacing:2px; margin-top:auto; }
-
         @keyframes shimmer { 0%{background-position:0% center} 100%{background-position:200% center} }
         @keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
 
         @media (max-width: 900px) {
-            nav { padding: 0 20px; }
-            .brand-logo { font-size: 1.1rem; }
-            .nav-links { display: none; }
-            .nav-links.active {
-                display:flex; position:fixed; top:var(--nav-height); left:0; width:100%;
-                height:calc(100vh - var(--nav-height)); background:rgba(3,3,5,0.98);
-                flex-direction:column; align-items:center; justify-content:center; gap:28px; z-index:1002;
-            }
-            .menu-toggle { display: flex; }
             .identity-block { padding: 30px 24px; }
             .timeline-item { grid-template-columns: 70px 1fr; gap: 12px; }
         }
     </style>
 </head>
 <body>
-    <div id="scroll-progress"></div>
+    <!-- ① nav placeholder — components/header.html 이 자동 삽입됨 -->
+    <div id="site-nav"></div>
 
-    <nav>
-        <a href="index.html" class="brand-logo">Chris LEE.PAPA</a>
-        <div class="nav-right">
-            <div class="nav-links" id="navLinks">
-                <a href="index.html" data-i18n="nav_home">Home</a>
-                <a href="worship.html" data-i18n="nav_worship">Worship</a>
-                <a href="music.html" data-i18n="nav_music">Music</a>
-                <a href="book.html" data-i18n="nav_book">Books</a>
-                <a href="movie.html" data-i18n="nav_movie">Movies</a>
-            </div>
-            
-            <!-- Language Switcher Dropdown -->
-            <div class="lang-dropdown-wrapper" id="langWrapper">
-                <div class="lang-current" onclick="toggleLangDropdown()">
-                    <span id="currentLangText">KOR</span>
-                    <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>
-                <div class="lang-dropdown-menu">
-                    <span class="lang-btn active" data-lang="ko" onclick="setLanguage('ko')">KOR</span>
-                    <span class="lang-btn" data-lang="en" onclick="setLanguage('en')">ENG</span>
-                </div>
-            </div>
-
-            <!-- Share Icon Button -->
-            <div class="share-trigger" onclick="openShareModal()" title="Share">
-                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                    <circle cx="18" cy="5" r="3"></circle>
-                    <circle cx="6" cy="12" r="3"></circle>
-                    <circle cx="18" cy="19" r="3"></circle>
-                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-                </svg>
-            </div>
-
-            <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
-        </div>
-    </nav>
-
-    <div class="modal-overlay" id="shareOverlay" onclick="closeShareModal(event)">
-        <div class="share-modal" onclick="event.stopPropagation()">
-            <h3 data-i18n="share_title">SHARE ABOUT</h3>
-            <p data-i18n="share_desc">크리스리의 도전을 주변에 공유해보세요.</p>
-            <div class="share-buttons">
-                <button class="modal-btn btn-copy" onclick="copyURL()" data-i18n="share_copy">COPY LINK</button>
-                <button class="modal-btn btn-sns" onclick="shareViaWebAPI()" data-i18n="share_sns">SNS SHARE</button>
-            </div>
-            <button class="btn-close" onclick="closeShareModal(null)" data-i18n="share_close">Close</button>
-        </div>
-    </div>
-    <div class="toast-msg" id="toast"></div>
-
+    <!-- ── 본문 시작 ── -->
     <div class="page-wrapper">
 
         <!-- Header -->
@@ -483,24 +358,17 @@
         </div>
 
     </div>
+    <!-- ── 본문 끝 ── -->
 
-    <footer><p data-i18n="footer_text">© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
+    <!-- ② footer placeholder + main.js 로드 -->
+    <div id="site-footer"></div>
 
+    <!-- about.html 전용 번역 키 (main.js 공통 키 제외한 것들만) -->
     <script>
-        // ── Multilingual System ──
-        const i18n = {
+        window.PAGE_I18N = {
             ko: {
-                nav_home: "Home",
-                nav_worship: "Worship",
-                nav_music: "Music",
-                nav_book: "Books",
-                nav_movie: "Movies",
-                nav_share: "SHARE",
                 share_title: "SHARE ABOUT",
                 share_desc: "크리스리의 도전을 주변에 공유해보세요.",
-                share_copy: "COPY LINK",
-                share_sns: "SNS SHARE",
-                share_close: "Close",
                 header_tag: "✦ &nbsp; The Story &nbsp; ✦",
                 header_title: "ABOUT",
                 identity_label: "✦ &nbsp; Who I Am",
@@ -518,24 +386,11 @@
                 link_spot_desc: "음악 스트리밍",
                 link_yt_desc: "영상 아카이브",
                 link_x_desc: "일상과 생각들",
-                link_contact_desc: "비즈니스 제안",
-                footer_text: "© 2026 Chris LEE.PAPA — The Creative Archive",
-                toast_copy: "링크가 복사되었습니다 ✓",
-                toast_fail: "복사 실패",
-                toast_error: "지원하지 않는 브라우저입니다."
+                link_contact_desc: "비즈니스 제안"
             },
             en: {
-                nav_home: "Home",
-                nav_worship: "Worship",
-                nav_music: "Music",
-                nav_book: "Books",
-                nav_movie: "Movies",
-                nav_share: "SHARE",
                 share_title: "SHARE ABOUT",
-                share_desc: "Share Chris Lee's challenge with others.",
-                share_copy: "COPY LINK",
-                share_sns: "SNS SHARE",
-                share_close: "Close",
+                share_desc: "Share Chris Lee's journey with others.",
                 header_tag: "✦ &nbsp; The Story &nbsp; ✦",
                 header_title: "ABOUT",
                 identity_label: "✦ &nbsp; Who I Am",
@@ -553,101 +408,14 @@
                 link_spot_desc: "Music Streaming",
                 link_yt_desc: "Video Archive",
                 link_x_desc: "Daily Life & Thoughts",
-                link_contact_desc: "Business Proposals",
-                footer_text: "© 2026 Chris LEE.PAPA — The Creative Archive",
-                toast_copy: "Link copied to clipboard ✓",
-                toast_fail: "Copy failed",
-                toast_error: "Browser not supported."
+                link_contact_desc: "Business Proposals"
             }
         };
 
-        let currentLang = 'ko';
-
-        function setLanguage(lang) {
-            currentLang = lang;
-            document.documentElement.lang = lang;
-            
-            // Save preference
-            try { localStorage.setItem('pref-lang', lang); } catch(e) {}
-
-            // Update UI texts
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (i18n[lang][key]) {
-                    el.innerHTML = i18n[lang][key];
-                }
-            });
-
-            // Update active state on language buttons
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                if (btn.getAttribute('data-lang') === lang) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
-            });
-
-            // Update dropdown display text and close
-            const langTextObj = document.getElementById('currentLangText');
-            if (langTextObj) langTextObj.textContent = lang === 'ko' ? 'KOR' : 'ENG';
-            const langWrapper = document.getElementById('langWrapper');
-            if (langWrapper) langWrapper.classList.remove('active');
-        }
-
-        // Initialize language
-        document.addEventListener('DOMContentLoaded', () => {
-            let savedLang = 'ko';
-            try { savedLang = localStorage.getItem('pref-lang') || 'ko'; } catch(e) {}
-            setLanguage(savedLang);
-        });
-
-        // ── Dropdown Toggle ──
-        function toggleLangDropdown() {
-            document.getElementById('langWrapper').classList.toggle('active');
-        }
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function(e) {
-            const wrapper = document.getElementById('langWrapper');
-            if (wrapper && !wrapper.contains(e.target)) {
-                wrapper.classList.remove('active');
-            }
-        });
-
-        const menuToggle = document.getElementById('mobile-menu');
-        const navLinks = document.getElementById('navLinks');
-        menuToggle.addEventListener('click', () => {
-            menuToggle.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        });
-
-        const shareOverlay = document.getElementById('shareOverlay');
-        const toast = document.getElementById('toast');
-        function openShareModal() { shareOverlay.style.display='flex'; setTimeout(()=>shareOverlay.classList.add('active'),10); }
-        function closeShareModal(e) { if(e&&e.target!==shareOverlay && e.type !== 'click')return; shareOverlay.classList.remove('active'); setTimeout(()=>shareOverlay.style.display='none',300); }
-        
-        async function copyURL() {
-            let ok=false;
-            if(navigator.clipboard&&window.isSecureContext){try{await navigator.clipboard.writeText(location.href);ok=true;}catch(e){}}
-            if(!ok){const ta=document.createElement('textarea');ta.value=location.href;ta.style.cssText='position:fixed;left:-9999px';document.body.appendChild(ta);ta.focus();ta.select();try{ok=document.execCommand('copy');}catch(e){}document.body.removeChild(ta);}
-            showToast(ok ? i18n[currentLang].toast_copy : i18n[currentLang].toast_fail);
-            closeShareModal({target:shareOverlay});
-        }
-        function shareViaWebAPI(){
-            if(navigator.share){
-                navigator.share({title:'ABOUT Chris LEE.PAPA',url:location.href});
-            } else {
-                showToast(i18n[currentLang].toast_error);
-            }
-        }
-        function showToast(msg){toast.textContent=msg;toast.style.display='block';setTimeout(()=>toast.style.display='none',2500);}
-
-        // Scroll progress
-        const bar=document.getElementById('scroll-progress');
-        window.addEventListener('scroll',()=>{const s=window.scrollY,d=document.body.scrollHeight-window.innerHeight;bar.style.width=(s/d*100)+'%';},{passive:true});
-
-        document.addEventListener('contextmenu',e=>e.preventDefault());
-        document.addEventListener('keydown',e=>{if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&['I','J'].includes(e.key))||(e.ctrlKey&&e.key==='U'))e.preventDefault();});
+        // about.html은 페이지 전용 초기화 로직 없음
+        // 필요 시 아래처럼 등록
+        // window.onMainReady = function() { };
     </script>
+    <script src="js/main.js"></script>
 </body>
 </html>

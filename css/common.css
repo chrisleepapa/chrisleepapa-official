@@ -66,7 +66,7 @@ img  { -webkit-user-drag: none; }
     top: 0; left: 0;
     width: 100%;
     z-index: 1000;
-    padding: 0 40px;
+    padding: 0 20px;
     height: var(--nav-height);
     display: flex;
     align-items: center;
@@ -97,18 +97,36 @@ img  { -webkit-user-drag: none; }
 .nav-right {
     display: flex;
     align-items: center;
-    gap: 28px;
+    gap: 14px;
 }
 
-/* 링크 목록 */
+/* ──────────────────────────────────────────────
+   5. nav 링크 목록
+   모바일 기본: 숨김 (오버레이로 표시)
+   데스크톱(901px+): 가로 배치
+────────────────────────────────────────────── */
 .nav-links {
-    display: flex;
+    /* 모바일: 전체화면 오버레이 메뉴 (기본 숨김) */
+    display: none;
+    position: fixed;
+    top: var(--nav-height);
+    left: 0;
+    width: 100%;
+    height: calc(100dvh - var(--nav-height));
+    flex-direction: column;
     align-items: center;
-    gap: 28px;
+    justify-content: center;
+    gap: 36px;
+    background: rgba(3,3,5,0.98);
+    z-index: 999;
+    padding: 40px 20px;
+}
+.nav-links.active {
+    display: flex;
 }
 .nav-links a {
     font-family: 'Cinzel', serif;
-    font-size: 0.78rem;
+    font-size: 1rem;
     letter-spacing: 0.12em;
     color: rgba(224,224,224,0.75);
     transition: color 0.25s;
@@ -124,17 +142,13 @@ img  { -webkit-user-drag: none; }
     transition: width 0.25s ease;
 }
 .nav-links a:hover,
-.nav-links a.active {
-    color: var(--gold);
-}
+.nav-links a.active { color: var(--gold); }
 .nav-links a:hover::after,
-.nav-links a.active::after {
-    width: 100%;
-}
+.nav-links a.active::after { width: 100%; }
 
 
 /* ──────────────────────────────────────────────
-   5. 언어 드롭다운  (#langWrapper)
+   6. 언어 드롭다운  (#langWrapper)
 ────────────────────────────────────────────── */
 .lang-dropdown-wrapper {
     position: relative;
@@ -202,7 +216,7 @@ img  { -webkit-user-drag: none; }
 
 
 /* ──────────────────────────────────────────────
-   6. 공유 버튼  (.share-trigger)
+   7. 공유 버튼  (.share-trigger)
 ────────────────────────────────────────────── */
 .share-trigger {
     display: flex;
@@ -226,10 +240,11 @@ img  { -webkit-user-drag: none; }
 
 
 /* ──────────────────────────────────────────────
-   7. 모바일 햄버거  (.menu-toggle)
+   8. 햄버거 버튼  (.menu-toggle)
+   모바일 기본: 표시 / 데스크톱(901px+): 숨김
 ────────────────────────────────────────────── */
 .menu-toggle {
-    display: none;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -254,7 +269,7 @@ img  { -webkit-user-drag: none; }
 
 
 /* ──────────────────────────────────────────────
-   8. 공유 모달  (.modal-overlay / .share-modal)
+   9. 공유 모달  (.modal-overlay / .share-modal)
 ────────────────────────────────────────────── */
 .modal-overlay {
     display: none;
@@ -330,7 +345,7 @@ img  { -webkit-user-drag: none; }
 
 
 /* ──────────────────────────────────────────────
-   9. 토스트  (#toast / .toast-msg)
+   10. 토스트  (#toast / .toast-msg)
 ────────────────────────────────────────────── */
 #toast,
 .toast-msg {
@@ -355,7 +370,7 @@ img  { -webkit-user-drag: none; }
 
 
 /* ──────────────────────────────────────────────
-   10. 푸터  (footer)
+   11. 푸터  (footer)
 ────────────────────────────────────────────── */
 footer {
     border-top: 1px solid rgba(201,168,76,0.14);
@@ -374,29 +389,32 @@ footer p {
 
 
 /* ──────────────────────────────────────────────
-   11. 모바일 반응형
+   12. 데스크톱 (901px 이상)
+   nav-links 가로 배치 / 햄버거 숨김
 ────────────────────────────────────────────── */
-@media (max-width: 900px) {
-    #main-nav { padding: 0 20px; }
+@media (min-width: 901px) {
+    #main-nav { padding: 0 40px; }
 
-    .menu-toggle { display: flex; }
+    /* 햄버거 버튼 숨김 */
+    .menu-toggle { display: none; }
 
+    /* nav 링크 가로 배치 */
     .nav-links {
-        position: fixed;
-        top: var(--nav-height);
-        left: -100%;
-        width: 100%;
-        height: calc(100dvh - var(--nav-height));
-        flex-direction: column;
-        justify-content: center;
-        gap: 36px;
-        background: rgba(3,3,5,0.98);
-        transition: left 0.4s cubic-bezier(0.4,0,0.2,1);
-        z-index: 999;
-        padding: 40px 20px;
+        display: flex;
+        position: static;
+        width: auto;
+        height: auto;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 28px;
+        background: none;
+        padding: 0;
+        z-index: auto;
     }
-    .nav-links.active { left: 0; }
-    .nav-links a { font-size: 1rem; }
+    .nav-links a { font-size: 0.78rem; }
 
-    .share-modal { padding: 36px 24px 28px; }
+    .nav-right { gap: 28px; }
+
+    .share-modal { padding: 44px 40px 36px; }
 }

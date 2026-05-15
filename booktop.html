@@ -438,11 +438,11 @@
             }
         }
 
-        // 🌟 수정된 기록 저장 로직: 동일한 이니셜의 중복 방지 및 최고 기록 1개만 완벽 유지
+        // 🌟 수정된 기록 저장 로직 (UNIQUE 제약조건 완벽 대응) 🌟
         async function saveScoreToDB(initial, score) {
             if (score <= 0) return;
             try {
-                // 1. 해당 이니셜의 기존 기록을 모두 조회
+                // 1. 해당 이니셜의 기존 기록을 조회합니다.
                 const getRes = await fetch(`${SUPA_URL}/rest/v1/booktop_scores?initial=eq.${initial}`, {
                     headers: {
                         apikey: SUPA_KEY,
@@ -452,39 +452,26 @@
                 const existingData = await getRes.json();
 
                 if (existingData && existingData.length > 0) {
-                    // 2. 기존 기록 중 가장 높은 점수 추출
-                    const currentBest = Math.max(...existingData.map(d => d.score));
+                    // 2. 기존 기록의 점수를 확인합니다.
+                    const currentBest = existingData[0].score;
                     
                     if (score > currentBest) {
-                        // 3. 현재 점수가 더 높다면, 중복 표기를 막기 위해 해당 이니셜의 모든 예전 기록 삭제
+                        // 3. UNIQUE 제약조건이 있으므로, 충돌을 피하기 위해 기존 데이터를 수정(PATCH) 합니다.
                         await fetch(`${SUPA_URL}/rest/v1/booktop_scores?initial=eq.${initial}`, {
-                            method: 'DELETE',
-                            headers: {
-                                apikey: SUPA_KEY,
-                                Authorization: `Bearer ${SUPA_KEY}`
-                            }
-                        });
-                        
-                        // 4. 삭제 후, 새로운 최고 점수로 딱 1개의 기록만 추가 (POST)
-                        await fetch(`${SUPA_URL}/rest/v1/booktop_scores`, {
-                            method: 'POST',
+                            method: 'PATCH',
                             headers: {
                                 apikey: SUPA_KEY,
                                 Authorization: `Bearer ${SUPA_KEY}`,
                                 'Content-Type': 'application/json',
                                 'Prefer': 'return=minimal'
                             },
-                            body: JSON.stringify({
-                                initial: initial,
-                                score: score
-                            })
+                            body: JSON.stringify({ score: score })
                         });
                         
-                        // 5. 반영된 데이터로 Top 5 새로고침
                         await fetchTop5();
                     }
                 } else {
-                    // 기존 기록이 아예 없으면 바로 새로 추가 (POST)
+                    // 4. 기존 기록이 아예 없으면 새로 추가 (POST)
                     const res = await fetch(`${SUPA_URL}/rest/v1/booktop_scores`, {
                         method: 'POST',
                         headers: {

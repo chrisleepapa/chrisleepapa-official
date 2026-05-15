@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="images/favicon.png">
-    
+
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3207219520058740" crossorigin="anonymous"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-NBGELYQ4TZ"></script>
     <script>
@@ -28,7 +28,7 @@
     <link rel="canonical" href="https://chrisleepapa-official.vercel.app/jung.html">
     <link rel="icon" href="images/favicon.png">
     <title>Jung (정) Profile – SisterSquad</title>
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Cormorant+Garamond:wght@600&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
@@ -44,79 +44,7 @@
         a { text-decoration: none; color: inherit; }
         button { appearance: none; background: none; border: 0; padding: 0; font: inherit; color: inherit; }
 
-        /* ── Scroll Progress & Navigation (Standardized) ── */
-        #scroll-progress {
-            position: fixed; top: 0; left: 0; height: 2px; width: 0%;
-            background: linear-gradient(90deg, var(--gold), var(--gold-light), #fff8e0, var(--gold));
-            background-size: 200% auto; z-index: 2000; transition: width 0.1s linear;
-            animation: shimmer-bar 3s linear infinite;
-        }
-        @keyframes shimmer-bar { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
-
-        nav {
-            position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px;
-            display: flex; justify-content: space-between; align-items: center; z-index: 1000;
-            background: rgba(3, 3, 5, 0); backdrop-filter: blur(0px); border-bottom: 1px solid rgba(255, 255, 255, 0);
-            transition: background 0.5s, backdrop-filter 0.5s, border-color 0.5s;
-        }
-        nav.scrolled {
-            background: rgba(3, 3, 5, 0.88); backdrop-filter: blur(14px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .brand-logo {
-            font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px;
-            color: var(--gold-light); z-index: 1001; white-space: nowrap;
-        }
-        .nav-right { display: flex; align-items: center; gap: 24px; }
-        .nav-links { display: flex; gap: 30px; align-items: center; }
-        .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; position: relative; }
-        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0%; height: 1px; background: var(--gold-light); transition: width 0.3s ease; }
-        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
-        .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
-        
-        .lang-dropdown-wrapper { position: relative; font-family: 'Cinzel', serif; font-size: 0.8rem; color: #a0a0b5; z-index: 1001; }
-        .lang-current { cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 6px; transition: color 0.3s; font-weight: 600; letter-spacing: 1px; background: transparent; border: 0; color: inherit; font-family: inherit; font-size: inherit; }
-        .lang-current:hover, .lang-dropdown-wrapper.active .lang-current { color: var(--gold-light); text-shadow: 0 0 8px rgba(201,168,76,0.5); }
-        .lang-current svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; transition: transform 0.3s; }
-        .lang-dropdown-wrapper.active .lang-current svg { transform: rotate(180deg); }
-        .lang-dropdown-menu {
-            position: absolute; top: calc(100% + 10px); right: -10px; background: rgba(10, 10, 15, 0.95);
-            border: 1px solid rgba(201,168,76,0.3); border-radius: 12px; display: flex; flex-direction: column;
-            overflow: hidden; opacity: 0; pointer-events: none; transform: translateY(-10px);
-            transition: opacity 0.3s, transform 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.8); backdrop-filter: blur(10px); min-width: 100px;
-        }
-        .lang-dropdown-wrapper.active .lang-dropdown-menu { opacity: 1; pointer-events: auto; transform: translateY(0); }
-        .lang-btn { padding: 12px 20px; cursor: pointer; transition: 0.3s; letter-spacing: 1px; text-align: center; color: #a0a0b5; background: transparent; border: 0; font-family: inherit; font-size: inherit; }
-        .lang-btn:not(:last-child) { border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .lang-btn:hover, .lang-btn.active { color: var(--gold-light); background: rgba(201,168,76,0.1); }
-
-        .share-trigger {
-            cursor: pointer; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px;
-            border: 1px solid rgba(201,168,76,0.3); border-radius: 50%; color: var(--gold-light); background: transparent; transition: 0.3s; z-index: 1001; padding: 0;
-        }
-        .share-trigger svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
-        .share-trigger:hover, .share-trigger:focus-visible { background: rgba(201,168,76,0.1); border-color: var(--gold-light); box-shadow: 0 0 12px rgba(201,168,76,0.2); transform: translateY(-2px); outline: none; }
-
-        .menu-toggle { display: none; flex-direction: column; justify-content: space-between; width: 26px; height: 18px; cursor: pointer; z-index: 1001; background: transparent; border: 0; padding: 0; }
-        .menu-toggle span { width: 100%; height: 2px; background-color: var(--gold-light); transition: 0.3s; border-radius: 2px; }
-        .menu-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-        .menu-toggle.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-        .menu-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
-
-        .modal-overlay-share { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 3000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; }
-        .modal-overlay-share.active { display: flex; opacity: 1; }
-        .share-modal { background: #0a0a0f; border: 1px solid var(--gold); border-radius: 24px; width: 90%; max-width: 400px; padding: 45px 30px; text-align: center; box-shadow: 0 30px 70px rgba(0,0,0,0.9); }
-        .share-modal h3 { font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--gold-light); margin-bottom: 15px; }
-        .share-modal p { font-size: 0.9rem; color: #888; margin-bottom: 35px; }
-        .share-buttons { display: flex; flex-direction: column; gap: 14px; }
-        .modal-btn { padding: 16px; border-radius: 12px; border: none; font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: 0.3s; }
-        .btn-copy { background: var(--gold); color: #000; }
-        .btn-copy:hover { background: var(--gold-light); box-shadow: 0 4px 20px rgba(201,168,76,0.4); }
-        .btn-sns { background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #fff; }
-        .btn-sns:hover { background: rgba(255,255,255,0.05); }
-        .btn-close-share { margin-top: 25px; color: #666; background: none; font-size: 0.8rem; text-decoration: underline; border: none; cursor: pointer; }
-        .toast-msg { position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%); background: var(--gold); color: #000; padding: 12px 30px; border-radius: 40px; font-size: 0.9rem; font-weight: 700; z-index: 4000; display: none; animation: fadeUp 0.4s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-
+        /* ── 본문 콘텐츠 ── */
         .page-header { position: relative; width: 100%; height: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; padding-top: var(--nav-height); }
         #stars-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
         .header-content { position: relative; z-index: 3; text-align: center; animation: fadeUp 1.2s ease both; }
@@ -144,11 +72,9 @@
         .quote-box { background: linear-gradient(135deg, rgba(255, 143, 177, 0.05) 0%, rgba(0, 0, 0, 0) 100%); border-left: 3px solid var(--char-accent); padding: 25px 30px; border-radius: 0 16px 16px 0; font-family: 'Noto Serif KR', serif; font-size: 1.2rem; font-style: italic; color: #fff; line-height: 1.6; }
 
         .section-title { font-family: 'Cinzel', serif; font-size: 1.8rem; color: var(--gold); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 40px; padding-bottom: 15px; border-bottom: 1px solid rgba(201,168,76,0.2); text-align: center; margin-top: 80px; animation: fadeUp 1s ease 0.6s both; }
-        
-        /* ── 정갈한 1칸씩 (Uniform Grid) 레이아웃 적용 ── */
+
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; animation: fadeUp 1s ease 0.8s both; }
         .gallery-item { position: relative; border-radius: 16px; overflow: hidden; aspect-ratio: 16/9; background: #000; border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 15px 35px rgba(0,0,0,0.5); cursor: pointer; transition: all 0.4s ease; }
-        
         .gallery-item:hover { transform: translateY(-8px); border-color: var(--char-accent); box-shadow: 0 20px 40px var(--char-glow); }
         .gallery-img { width: 100%; height: 100%; background-size: cover; background-position: center; filter: brightness(0.8) grayscale(20%); transition: all 0.5s ease; }
         .gallery-item:hover .gallery-img { filter: brightness(1.1) grayscale(0%); transform: scale(1.08); }
@@ -160,16 +86,7 @@
         .close-gallery { position: absolute; top: 30px; right: 40px; color: #fff; font-size: 40px; font-weight: 300; cursor: pointer; transition: 0.3s; z-index: 2001; }
         .close-gallery:hover { color: var(--char-accent); transform: scale(1.1); }
 
-        footer { text-align: center; padding: 80px 40px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: #555; border-top: 1px solid rgba(255,255,255,0.03); margin-top: auto;}
-
         @media (max-width: 900px) {
-            nav { padding: 0 20px; }
-            .brand-logo { font-size: 1.1rem; }
-            .nav-links { display: none; }
-            .nav-links.active { display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height)); background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 28px; z-index: 1002; }
-            .nav-links.active a { font-size: 1rem; }
-            .menu-toggle { display: flex; }
-            .nav-right { gap: 14px; }
             .profile-layout { grid-template-columns: 1fr; gap: 40px; }
             .profile-visual { max-width: 500px; margin: 0 auto; }
             .data-header { text-align: center; }
@@ -181,55 +98,8 @@
 </head>
 <body>
 
-    <div id="scroll-progress"></div>
-
-    <nav id="main-nav">
-        <a href="index.html" class="brand-logo">Chris LEE.PAPA</a>
-        <div class="nav-right">
-            <div class="nav-links" id="navLinks">
-                <a href="index.html" data-i18n="nav_home">Home</a>
-                <a href="bible.html" data-i18n="nav_bible">Bible</a>
-                <a href="worship.html" data-i18n="nav_worship">Worship</a>
-                <a href="music.html" data-i18n="nav_music">Music</a>
-                <a href="book.html" class="active" data-i18n="nav_book">Books</a>
-                <a href="movie.html" data-i18n="nav_movie">Movies</a>
-            </div>
-
-            <div class="lang-dropdown-wrapper" id="langWrapper">
-                <button type="button" class="lang-current" onclick="toggleLangDropdown()" aria-expanded="false" aria-controls="langMenu" aria-label="Change language">
-                    <span id="currentLangText">KOR</span>
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </button>
-                <div class="lang-dropdown-menu" id="langMenu">
-                    <button type="button" class="lang-btn active" data-lang="ko" onclick="setLanguage('ko')">KOR</button>
-                    <button type="button" class="lang-btn" data-lang="en" onclick="setLanguage('en')">ENG</button>
-                </div>
-            </div>
-
-            <button type="button" class="share-trigger" onclick="openShareModal()" title="Share" aria-label="Share this page">
-                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true">
-                    <circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle>
-                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-                </svg>
-            </button>
-
-            <button type="button" class="menu-toggle" id="mobile-menu" aria-label="Open navigation menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
-        </div>
-    </nav>
-
-    <div class="modal-overlay-share" id="shareOverlay" onclick="closeShareModal(event)" aria-hidden="true">
-        <div class="share-modal" onclick="event.stopPropagation()">
-            <h3 data-i18n="share_title">SHARE JUNG'S PROFILE</h3>
-            <p data-i18n="share_desc">따뜻한 감성과 교감의 마스터, 정이를 소개해보세요.</p>
-            <div class="share-buttons">
-                <button type="button" class="modal-btn btn-copy" onclick="copyURL()" data-i18n="share_copy">COPY LINK</button>
-                <button type="button" class="modal-btn btn-sns" onclick="shareViaWebAPI()" data-i18n="share_sns">SNS SHARE</button>
-            </div>
-            <button type="button" class="btn-close-share" onclick="closeShareModal(null)" data-i18n="share_close">Close</button>
-        </div>
-    </div>
-
-    <div class="toast-msg" id="toast"></div>
+    <!-- ① 공용 nav placeholder — main.js 가 header.html 을 여기에 삽입합니다 -->
+    <div id="site-nav"></div>
 
     <header class="page-header">
         <canvas id="stars-canvas"></canvas>
@@ -283,28 +153,21 @@
         </div>
     </main>
 
+    <!-- 갤러리 라이트박스 (이 페이지 전용 UI) -->
     <div id="imageModal" class="modal-gallery">
         <span class="close-gallery" id="closeGallery">&times;</span>
         <img class="modal-content" id="modalImg" alt="확대된 이미지">
     </div>
 
-    <footer><p data-i18n="footer_text">© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
+    <!-- ② 공용 footer placeholder -->
+    <div id="site-footer"></div>
 
+    <!-- ③ 이 페이지 전용 i18n 키 등록 (main.js 로드 직전) -->
     <script>
-        // ── Multilingual System ──
-        const i18n = {
+        window.PAGE_I18N = {
             ko: {
-                nav_home: "Home",
-                nav_worship: "Worship",
-                nav_music: "Music",
-                nav_book: "Books",
-                nav_movie: "Movies",
-                nav_share: "SHARE",
                 share_title: "SHARE JUNG'S PROFILE",
                 share_desc: "따뜻한 감성과 교감의 마스터, 정이를 소개해보세요.",
-                share_copy: "COPY LINK",
-                share_sns: "SNS SHARE",
-                share_close: "Close",
                 header_title: "JUNG",
                 header_slogan: "The Heart Weaver",
                 back_link: "‹ SisterSquad로 돌아가기",
@@ -317,23 +180,11 @@
                 special_title: "Special Abilities",
                 special_desc: "<strong>Taming & Empathy (테이밍 & 교감):</strong> 그녀의 잠재 능력인 테이밍은 모든 살아 숨 쉬는 것들과 친구가 되고 싶어 하는 순수한 마음에서 비롯되었습니다. 노래하는 나비, 흉포한 숲의 괴수, 심지어 어둠의 공간까지, 그녀는 진심 어린 교감을 통해 그들의 마음을 열고 친구로 만듭니다. 전투 상황에서는 파괴력보다 평화적인 해결책을 제시합니다.",
                 quote: "\"괜찮아, 무섭지 않아<br> 너도 사실은 외로웠구나.<br>우리 친구 할까?\"",
-                gallery_title: "Visual Archives",
-                footer_text: "© 2026 Chris LEE.PAPA — The Creative Archive",
-                toast_copy: "링크가 복사되었습니다 ✓",
-                toast_error: "지원하지 않는 브라우저입니다."
+                gallery_title: "Visual Archives"
             },
             en: {
-                nav_home: "Home",
-                nav_worship: "Worship",
-                nav_music: "Music",
-                nav_book: "Books",
-                nav_movie: "Movies",
-                nav_share: "SHARE",
                 share_title: "SHARE JUNG'S PROFILE",
                 share_desc: "Introduce Jung, the master of warm emotion and empathy.",
-                share_copy: "COPY LINK",
-                share_sns: "SNS SHARE",
-                share_close: "Close",
                 header_title: "JUNG",
                 header_slogan: "The Heart Weaver",
                 back_link: "‹ Back to SisterSquad",
@@ -346,189 +197,80 @@
                 special_title: "Special Abilities",
                 special_desc: "<strong>Taming & Empathy:</strong> Her potential ability, taming, comes from a pure desire to become friends with all living and breathing things. From singing butterflies to ferocious forest monsters, and even dark spaces, she opens their hearts and makes them friends through sincere empathy. In combat situations, she presents peaceful solutions rather than destructive power.",
                 quote: "\"It's okay, don't be scared.<br> You were actually lonely too.<br>Shall we be friends?\"",
-                gallery_title: "Visual Archives",
-                footer_text: "© 2026 Chris LEE.PAPA — The Creative Archive",
-                toast_copy: "Link copied to clipboard ✓",
-                toast_error: "Browser not supported."
+                gallery_title: "Visual Archives"
             }
         };
 
-        let currentLang = 'ko';
+        // ④ 컴포넌트 삽입 완료 후 실행할 페이지 전용 로직
+        window.onMainReady = function() {
+            // 별 캔버스 — jung 페이지는 핑크 별색 사용
+            const canvas = document.getElementById('stars-canvas');
+            const ctx = canvas ? canvas.getContext('2d') : null;
+            let stars = [];
 
-        function setLanguage(lang) {
-            currentLang = lang;
-            document.documentElement.lang = lang;
-            
-            try { localStorage.setItem('pref-lang', lang); } catch(e) {}
-
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (i18n[lang][key]) {
-                    el.innerHTML = i18n[lang][key];
-                }
-            });
-
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                if (btn.getAttribute('data-lang') === lang) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
-            });
-
-            const langTextObj = document.getElementById('currentLangText');
-            if (langTextObj) langTextObj.textContent = lang === 'ko' ? 'KOR' : 'ENG';
-            const langWrapper = document.getElementById('langWrapper');
-            if (langWrapper) langWrapper.classList.remove('active');
-            const langCurrent = document.querySelector('.lang-current');
-            if (langCurrent) langCurrent.setAttribute('aria-expanded', 'false');
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            let savedLang = 'ko';
-            try { savedLang = localStorage.getItem('pref-lang') || 'ko'; } catch(e) {}
-            setLanguage(savedLang);
-        });
-
-        function toggleLangDropdown() {
-            const wrapper = document.getElementById('langWrapper');
-            if (!wrapper) return;
-            const isOpen = wrapper.classList.toggle('active');
-            const langCurrent = document.querySelector('.lang-current');
-            if (langCurrent) langCurrent.setAttribute('aria-expanded', String(isOpen));
-        }
-
-        document.addEventListener('click', (e) => {
-            const wrapper = document.getElementById('langWrapper');
-            if (wrapper && !wrapper.contains(e.target)) {
-                wrapper.classList.remove('active');
-                const langCurrent = document.querySelector('.lang-current');
-                if(langCurrent) langCurrent.setAttribute('aria-expanded', 'false');
+            function resize() {
+                if (!canvas) return;
+                canvas.width = window.innerWidth;
+                canvas.height = 400;
+                initStars();
             }
-        });
+            function initStars() {
+                if (!canvas) return;
+                stars = [];
+                const count = (canvas.width * canvas.height) / 7000;
+                for (let i = 0; i < count; i++) {
+                    stars.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        size: Math.random() * 1.5 + 0.2,
+                        opacity: Math.random(),
+                        speed: Math.random() * 0.015 + 0.005,
+                        color: Math.random() > 0.75 ? '255, 143, 177' : '255, 255, 255'
+                    });
+                }
+            }
+            function draw() {
+                if (!ctx || !canvas) return;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                stars.forEach(s => {
+                    s.opacity += s.speed;
+                    if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed;
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(${s.color}, ${Math.max(0, s.opacity)})`;
+                    ctx.fill();
+                });
+                requestAnimationFrame(draw);
+            }
+            if (canvas && ctx) {
+                window.addEventListener('resize', resize);
+                resize();
+                draw();
+            }
 
-        function safeNavigate(url) { if (url && url.trim() !== "") { window.location.assign(url); } }
-        
-        const menuToggle = document.getElementById('mobile-menu');
-        const navLinks = document.getElementById('navLinks');
-        if (menuToggle && navLinks) {
-            menuToggle.addEventListener('click', () => {
-                const isOpen = !menuToggle.classList.contains('active');
-                menuToggle.classList.toggle('active', isOpen);
-                navLinks.classList.toggle('active', isOpen);
-                menuToggle.setAttribute('aria-expanded', String(isOpen));
-                menuToggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
-            });
-            navLinks.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', () => {
-                    menuToggle.classList.remove('active');
-                    navLinks.classList.remove('active');
-                    menuToggle.setAttribute('aria-expanded', 'false');
+            // 갤러리 라이트박스
+            const galleryModal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImg');
+            const closeGallery = document.getElementById('closeGallery');
+
+            document.querySelectorAll('.gallery-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const bgImage = window.getComputedStyle(item.querySelector('.gallery-img')).backgroundImage;
+                    modalImg.src = bgImage.replace(/(url\(|\)|"|')/g, '');
+                    galleryModal.classList.add('show');
                 });
             });
-        }
 
-        window.addEventListener('scroll', () => {
-            const scrollTop = window.scrollY; const docHeight = document.body.scrollHeight - window.innerHeight;
-            const progress = document.getElementById('scroll-progress');
-            if(progress) progress.style.width = (scrollTop / (docHeight || 1) * 100) + '%';
-            
-            const mainNav = document.getElementById('main-nav');
-            if (mainNav) mainNav.classList.toggle('scrolled', scrollTop > 40);
-        }, { passive: true });
-
-        const shareOverlay = document.getElementById('shareOverlay'); 
-        const toast = document.getElementById('toast');
-        
-        function openShareModal() { 
-            if(!shareOverlay) return;
-            shareOverlay.style.display = 'flex'; 
-            shareOverlay.setAttribute('aria-hidden', 'false'); 
-            setTimeout(() => shareOverlay.classList.add('active'), 10); 
-        }
-        
-        function closeShareModal(e) { 
-            if(!shareOverlay) return;
-            if (e && e.target !== shareOverlay && e.type !== 'click') return; 
-            shareOverlay.classList.remove('active'); 
-            shareOverlay.setAttribute('aria-hidden', 'true'); 
-            setTimeout(() => { shareOverlay.style.display = 'none'; }, 300); 
-        }
-
-        async function copyURL() {
-            const currentUrl = window.location.href; let success = false;
-            if (navigator.clipboard && window.isSecureContext) { try { await navigator.clipboard.writeText(currentUrl); success = true; } catch (err) {} }
-            if (!success) {
-                const textArea = document.createElement("textarea"); textArea.value = currentUrl; textArea.id = "temp-copy-area"; textArea.style.position = "fixed"; textArea.style.left = "-9999px";
-                document.body.appendChild(textArea); textArea.focus(); textArea.select(); try { success = document.execCommand('copy'); } catch (err) {} document.body.removeChild(textArea);
+            function closeLightBox() {
+                galleryModal.classList.remove('show');
+                setTimeout(() => { modalImg.src = ''; }, 300);
             }
-            if (success) { showToast(i18n[currentLang].toast_copy); } else { showToast(i18n[currentLang].toast_error); } closeShareModal();
-        }
-
-        function shareViaWebAPI() { 
-            if (navigator.share) { 
-                navigator.share({ title: 'Jung (SisterSquad) Profile', url: window.location.href }).catch(console.error); 
-            } else { 
-                showToast(i18n[currentLang].toast_error); 
-            } 
-        }
-        
-        function showToast(msg) { 
-            if(!toast) return;
-            toast.textContent = msg; toast.style.display = 'block'; 
-            setTimeout(() => { toast.style.display = 'none'; }, 2500); 
-        }
-
-        const canvas = document.getElementById('stars-canvas'); 
-        const ctx = canvas ? canvas.getContext('2d') : null; 
-        let stars = [];
-        function resize() { 
-            if(!canvas) return;
-            canvas.width = window.innerWidth; canvas.height = 400; initStars(); 
-        }
-        function initStars() { 
-            if(!canvas) return;
-            stars = []; const count = (canvas.width * canvas.height) / 7000; 
-            for (let i = 0; i < count; i++) { 
-                stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 1.5 + 0.2, opacity: Math.random(), speed: Math.random() * 0.015 + 0.005, color: Math.random() > 0.75 ? '255, 143, 177' : '255, 255, 255' }); 
-            } 
-        }
-        function draw() { 
-            if(!ctx || !canvas) return;
-            ctx.clearRect(0, 0, canvas.width, canvas.height); 
-            stars.forEach(s => { 
-                s.opacity += s.speed; 
-                if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed; 
-                ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fillStyle = `rgba(${s.color}, ${Math.max(0, s.opacity)})`; ctx.fill(); 
-            }); 
-            requestAnimationFrame(draw); 
-        }
-        if(canvas && ctx) {
-            window.addEventListener('resize', resize); resize(); draw();
-        }
-
-        const galleryModal = document.getElementById('imageModal'); 
-        const modalImg = document.getElementById('modalImg'); 
-        const closeGallery = document.getElementById('closeGallery');
-        document.querySelectorAll('.gallery-item').forEach(item => { 
-            item.addEventListener('click', () => { 
-                const bgImage = window.getComputedStyle(item.querySelector('.gallery-img')).backgroundImage; 
-                modalImg.src = bgImage.replace(/(url\(|\)|"|')/g, ''); galleryModal.classList.add('show'); 
-            }); 
-        });
-        function closeLightBox() { 
-            galleryModal.classList.remove('show'); setTimeout(() => { modalImg.src = ''; }, 300); 
-        }
-        if(closeGallery) closeGallery.addEventListener('click', closeLightBox); 
-        if(galleryModal) galleryModal.addEventListener('click', (e) => { if (e.target === galleryModal) closeLightBox(); });
-
-        document.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('copy', e => { if (e.target && e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) { e.preventDefault(); } });
-        document.addEventListener('keydown', e => {
-            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || (e.ctrlKey && e.key === 'U')) e.preventDefault();
-            if (e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'p')) { if (e.target && e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) e.preventDefault(); }
-            if (e.key === 'PrintScreen' && navigator.clipboard) navigator.clipboard.writeText('').catch(() => {});
-        });
+            if (closeGallery) closeGallery.addEventListener('click', closeLightBox);
+            if (galleryModal) galleryModal.addEventListener('click', (e) => { if (e.target === galleryModal) closeLightBox(); });
+        };
     </script>
+
+    <!-- ⑤ 공용 main.js 로드 -->
+    <script src="js/main.js"></script>
 </body>
 </html>

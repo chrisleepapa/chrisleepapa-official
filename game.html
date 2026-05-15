@@ -29,37 +29,35 @@ body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
 #fx{position:fixed;inset:0;pointer-events:none;z-index:55;}
 
 /* === 풀스크린 보드게임 레이아웃 === */
-.wr{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;height:100vh;height:100dvh;padding:4dvh 12px;} 
+.wr{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;height:100vh;height:100dvh;padding:4dvh 12px;}
 
-/* 🌟 보드판 (은하수 강물 애니메이션 적용) 🌟 */
+/* 🌟 보드판 */
 .board{
     display:grid; grid-template-columns:repeat(7,1fr); grid-template-rows:repeat(7,1fr); gap:1.2vw;
     width:100%; max-width:850px; aspect-ratio: 1;
     max-height: 95vh;
-    background:#080416; /* 은하수가 돋보이도록 어두운 배경 */
+    background:#080416;
     border-radius:24px; padding:1.5%; border:3px solid rgba(255,215,0,.3);
     position: relative;
     z-index: 1;
-    overflow: hidden; /* 강물이 판 밖으로 나가지 않게 */
-    animation: boardGlow 6s ease-in-out infinite; /* 전체 판 테두리 호흡 효과 */
+    overflow: hidden;
+    animation: boardGlow 6s ease-in-out infinite;
 }
 
-/* 판 테두리가 부드럽게 색이 변하며 빛나는 효과 */
 @keyframes boardGlow {
     0%, 100% { box-shadow: 0 0 60px rgba(155,89,182,.5), inset 0 0 40px rgba(0,0,0,.6); border-color: rgba(255,215,0,.3); }
     50% { box-shadow: 0 0 80px rgba(74,144,217,.7), inset 0 0 50px rgba(155,89,182,.4); border-color: rgba(255,105,180,.6); }
 }
 
-/* 타일 밑으로 흐르는 은하수 강물 그라데이션 */
 .board::before {
     content: ''; position: absolute; inset: 0;
-    background: linear-gradient(135deg, 
-        rgba(8, 4, 22, 0.9) 0%, 
-        rgba(45, 15, 80, 0.85) 25%, 
-        rgba(105, 55, 180, 0.7) 45%, 
-        rgba(74, 144, 217, 0.8) 50%, 
-        rgba(255, 105, 180, 0.7) 55%, 
-        rgba(45, 15, 80, 0.85) 75%, 
+    background: linear-gradient(135deg,
+        rgba(8, 4, 22, 0.9) 0%,
+        rgba(45, 15, 80, 0.85) 25%,
+        rgba(105, 55, 180, 0.7) 45%,
+        rgba(74, 144, 217, 0.8) 50%,
+        rgba(255, 105, 180, 0.7) 55%,
+        rgba(45, 15, 80, 0.85) 75%,
         rgba(8, 4, 22, 0.9) 100%
     );
     background-size: 300% 300%;
@@ -67,10 +65,9 @@ body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
     z-index: 0; pointer-events: none;
 }
 
-/* 강물 위를 반짝이며 흘러가는 별가루 파티클 */
 .board::after {
     content: ''; position: absolute; inset: 0;
-    background-image: 
+    background-image:
         radial-gradient(1.5px 1.5px at 20px 30px, #fff, transparent),
         radial-gradient(2.5px 2.5px at 60px 80px, #FFD700, transparent),
         radial-gradient(1px 1px at 100px 20px, #fff, transparent),
@@ -78,7 +75,7 @@ body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
         radial-gradient(2px 2px at 10px 120px, #FF69B4, transparent),
         radial-gradient(1.5px 1.5px at 80px 150px, #fff, transparent),
         radial-gradient(2px 2px at 130px 170px, #9B59B6, transparent);
-    background-size: 200px 200px; 
+    background-size: 200px 200px;
     animation: twinkleRiver 15s linear infinite;
     z-index: 0; pointer-events: none;
     mix-blend-mode: screen;
@@ -98,13 +95,13 @@ body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
     100% { background-position: -200px -200px; opacity: 0.3; }
 }
 
-
+/* ── PATCH ①: 모바일 세로 간격 대폭 축소 ── */
 @media (max-width: 600px) {
   .wr { padding: 1dvh 4px; }
-  .board { 
-    gap: 3px; padding: 4px; border-radius: 18px; 
-    aspect-ratio: auto; 
-    width: 100vw; 
+  .board {
+    gap: 3px; padding: 4px; border-radius: 18px;
+    aspect-ratio: auto;
+    width: 100vw;
     max-width: 100vw;
     height: 96dvh;
     max-height: 96dvh;
@@ -113,30 +110,43 @@ body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
   }
   .cell { aspect-ratio: 1 / 1; width: 100%; height: auto; margin: auto; border-radius: 8px; }
   .cell.corner { border-radius: 10px; border-width: 1.5px; }
-  .cem { font-size: clamp(11px, 3.2vw, 18px); margin-bottom: 0; }
-  .cnm { font-size: clamp(6px, 1.7vw, 9px); }
-  .cp { padding: 5px 6px; gap: 3px; justify-content: space-evenly; }
-  .ctit { font-size: clamp(12px, 3vw, 17px); }
-  .scs { gap: 4px; }
-  .sc { padding: 3px 4px; max-width: 100px; }
-  .sps { font-size: clamp(11px, 3vw, 15px); }
-  .spn { font-size: clamp(9px, 2vw, 12px); }
-  .pbs { width: 90%; gap: 3px; }
-  .pbt { height: 6px; }
-  #turn-indicator { font-size: clamp(11px, 3vw, 15px); }
-  #roll-counter { font-size: clamp(9px, 2.2vw, 11px); }
-  .die { font-size: clamp(22px, 5.5vw, 35px); }
-  .dcr { gap: 10px; }
-  .rbtn { padding: 7px 10px; font-size: clamp(11px, 3vw, 15px); }
-  #lgp { padding: 5px 6px; font-size: clamp(9px, 2.2vw, 12px); }
-  .tok-img-wrap { width: clamp(18px, 4vw, 28px); height: clamp(18px, 4vw, 28px); }
+  .cem { font-size: clamp(10px, 2.8vw, 16px); margin-bottom: 0; }
+  .cnm { font-size: clamp(5px, 1.4vw, 8px); }
+
+  /* 중앙 패널 간격 핵심 축소 */
+  .cp {
+    gap: 1% !important;
+    padding: 5px 6px !important;
+  }
+  .ctit { font-size: clamp(12px, 2.8vw, 16px) !important; }
+  .scs { gap: 4px !important; }
+  .sc { padding: 3px 4px !important; max-width: 95px !important; }
+  .sps { font-size: clamp(12px, 2.8vw, 15px) !important; }
+  .spn { font-size: clamp(7px, 1.6vw, 10px) !important; }
+  .pbs { width: 92% !important; gap: 2px !important; }
+  .pbt { height: 5px !important; }
+  #turn-indicator { font-size: clamp(12px, 2.8vw, 15px) !important; }
+  #roll-counter { font-size: clamp(8px, 1.8vw, 10px) !important; }
+  .dcr { gap: 6px !important; }
+  .die { font-size: clamp(20px, 4.8vw, 28px) !important; }
+  .rbtn {
+    padding: 6px 8px !important;
+    font-size: clamp(11px, 2.6vw, 14px) !important;
+    max-width: 210px !important;
+    border-radius: 14px !important;
+  }
+  #lgp {
+    padding: 4px 5px !important;
+    font-size: clamp(8px, 1.8vw, 10px) !important;
+    border-radius: 7px !important;
+  }
+  .tok-img-wrap { width: clamp(15px, 3.5vw, 24px) !important; height: clamp(15px, 3.5vw, 24px) !important; }
 }
 
 .cell{position:relative; z-index:1; border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2px;overflow:hidden;border:2px solid transparent;transition:transform .15s,box-shadow .15s;}
 .cell:hover{transform:scale(1.08);z-index:10;box-shadow:0 0 16px rgba(255,255,255,.35);}
 .cell.corner{border-radius:16px;border-width:2.5px;}
 
-/* 타일 디자인 */
 .tc{background:radial-gradient(circle at 30% 30%,#FFFBE6,#D4A000);border-color:#FFD700;box-shadow:0 0 16px rgba(255,215,0,.55);}
 .te{background:radial-gradient(circle at 30% 30%,#D6F5E1,#27AE60);border-color:#27AE60;box-shadow:0 0 8px rgba(46,204,113,.35);}
 .tt{background:radial-gradient(circle at 30% 30%,#FDE8E8,#E74C3C);border-color:#E74C3C;box-shadow:0 0 8px rgba(231,76,60,.35);}
@@ -156,16 +166,16 @@ body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
 @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.15);}}
 .cell.shk{animation:shake .5s;}
 .cell.lnd{animation:pulse .4s;}
-.board.shk{animation:shake .6s !important;} /* 흔들림 우선 적용 */
+.board.shk{animation:shake .6s !important;}
 
 /* === 중앙 UI === */
 .cp{
     grid-column:2/7; grid-row:2/7;
-    background:linear-gradient(160deg,rgba(18,6,46,.98),rgba(6,22,52,.98)); /* 은하수가 너무 비치지 않게 투명도 조정 */
+    background:linear-gradient(160deg,rgba(18,6,46,.98),rgba(6,22,52,.98));
     border-radius:20px; border:2px solid rgba(255,215,0,.25);
     display:flex; flex-direction:column; align-items:center; justify-content:center;
     padding:10px; position:relative; overflow:hidden; gap: 2%;
-    z-index: 2; /* 타일보다 위, 은하수 덮어주기 */
+    z-index: 2;
 }
 .cp::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(155,89,182,.15),transparent 75%);pointer-events:none;}
 
@@ -200,9 +210,33 @@ body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
 
 #lgp{background:rgba(0,0,0,.6);border:1px solid rgba(255,215,0,.2);border-radius:10px;padding:8px;width:90%;text-align:center;font-size:clamp(11px, 2.5vw, 15px);color:#fff;box-shadow:inset 0 0 8px rgba(0,0,0,.6);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 
-/* 오버레이 팝업들 */
+/* ── PATCH ③: 가위바위보 오버레이 가로 축소 ── */
 .ov{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;z-index:200;padding:10px;opacity:0;pointer-events:none;transition:opacity .3s;}
 .ov.vis{opacity:1;pointer-events:all;}
+
+/* enc-ov 전용: 가로 폭 제한 */
+#enc-ov .ecard {
+  max-width: 360px !important;
+  width: 88vw !important;
+}
+@media (max-width: 600px) {
+  #enc-ov .ecard {
+    max-width: 320px !important;
+    width: 91vw !important;
+  }
+  #enc-ov .ebody { padding: 14px 12px !important; }
+  #enc-title { font-size: clamp(14px, 3.5vw, 20px) !important; }
+  #enc-desc { font-size: clamp(10px, 2.2vw, 13px) !important; margin-bottom: 10px !important; }
+  .rps-vs { padding: 0 6px !important; }
+  .rps-h {
+    width: clamp(46px, 11vw, 62px) !important;
+    height: clamp(46px, 11vw, 62px) !important;
+    font-size: clamp(26px, 6vw, 38px) !important;
+  }
+  .rps-nm { font-size: clamp(11px, 2.5vw, 14px) !important; margin-bottom: 5px !important; }
+  .rps-vstxt { font-size: clamp(18px, 4vw, 24px) !important; }
+  #enc-res { font-size: clamp(11px, 2.4vw, 14px) !important; min-height: 38px !important; }
+}
 
 .ecard{background:linear-gradient(160deg,#1E0B4E,#0A1F55);border-radius:24px;max-width:92vw;width:100%;overflow:hidden;border:3px solid rgba(255,215,0,.4);box-shadow:0 0 60px rgba(255,215,0,.3),0 20px 60px rgba(0,0,0,.8);transform:scale(.8) translateY(40px);transition:transform .35s cubic-bezier(.34,1.56,.64,1);}
 .ov.vis .ecard{transform:scale(1) translateY(0);}
@@ -268,8 +302,40 @@ body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
 .cbtn{width:100%;padding:15px;background:linear-gradient(135deg,#FF69B4,#9B59B6);border:none;border-radius:15px;color:#fff;font-size:16px;font-weight:900;font-family:'Nunito',sans-serif;cursor:pointer;box-shadow:0 4px 15px rgba(233,30,99,.4);transition:transform .2s,box-shadow .2s;}
 .cbtn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(233,30,99,.6);}
 
-.gocard{background:linear-gradient(160deg,#1E0B4E,#0A1F55);border-radius:26px;padding:30px 20px;max-width:92vw;width:100%;text-align:center;border:3px solid rgba(255,215,0,.5);box-shadow:0 0 90px rgba(255,215,0,.45),0 40px 90px rgba(0,0,0,.8);transform:scale(.7);transition:transform .4s cubic-bezier(.34,1.56,.64,1);}
+/* ── PATCH ④: 게임 결과 화면 가로 축소 ── */
+.gocard{
+  background:linear-gradient(160deg,#1E0B4E,#0A1F55);
+  border-radius:26px;
+  padding:28px 18px;
+  max-width:340px;        /* ← 축소 */
+  width:88vw;             /* ← 축소 */
+  text-align:center;
+  border:3px solid rgba(255,215,0,.5);
+  box-shadow:0 0 90px rgba(255,215,0,.45),0 40px 90px rgba(0,0,0,.8);
+  transform:scale(.7);
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1);
+}
 .ov.vis .gocard{transform:scale(1);}
+
+@media (max-width: 600px) {
+  .gocard {
+    max-width: 310px !important;
+    width: 91vw !important;
+    padding: 18px 12px !important;
+  }
+  .trp { font-size: 42px !important; margin-bottom: 2px !important; }
+  .wh { font-size: 20px !important; margin-bottom: 5px !important; }
+  .wpr { width: 72px !important; height: 72px !important; margin-bottom: 6px !important; }
+  .wnm { font-size: 17px !important; margin-bottom: 3px !important; }
+  .wdc { font-size: 11px !important; margin-bottom: 12px !important; }
+  .fsr { gap: 6px !important; margin-bottom: 12px !important; }
+  .fc { padding: 7px 9px !important; }
+  .fps { font-size: 15px !important; }
+  .fpn { font-size: 11px !important; }
+  .fpc { font-size: 10px !important; }
+  .rsbtn { padding: 11px 24px !important; font-size: 14px !important; }
+}
+
 .trp{font-size:60px;display:block;margin-bottom:5px;filter:drop-shadow(0 0 20px gold);}
 .wh{font-family:'Fredoka One',cursive;font-size:28px;background:linear-gradient(135deg,#FFD700,#FF69B4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px;}
 .wpr{width:100px;height:100px;margin:0 auto 10px;border-radius:50%;overflow:hidden;border:4px solid rgba(255,215,0,.55);box-shadow:0 0 20px rgba(255,215,0,.38);background:rgba(0,0,0,.3);}
@@ -323,16 +389,31 @@ body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
 .tok-img-wrap { width: clamp(20px, 4.5vw, 40px); height: clamp(20px, 4.5vw, 40px); border-radius: 50%; border: 2px solid white; box-shadow: 0 0 6px rgba(0,0,0,0.6); overflow: hidden; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; margin: 0 auto; }
 .tok-img-wrap .sprite-char { width: 100%; height: 100%; transform: translateY(0); }
 
-/* CINEMATIC FULLSCREEN */
+/* ── PATCH ②: 시네마틱 화면 - 얼굴 중앙 정렬 ── */
 #cine{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center; cursor:pointer;opacity:0;pointer-events:none;transition:opacity .5s ease;}
 #cine.on{opacity:1;pointer-events:all;}
-#cine-img { position:absolute; inset:0; background-size:cover; background-position:center center; transform:scale(1.12); transition:transform 5s ease-out; }
-#cine.on #cine-img {transform:scale(1);}
-#cine.evil #cine-img {filter:brightness(.35) saturate(2) hue-rotate(-15deg);}
-#cine.good #cine-img {filter:brightness(.52) saturate(1.3);}
 
-#cine-vig{position:absolute;inset:0; background:radial-gradient(ellipse 80% 80% at 50% 50%,transparent 25%,rgba(0,0,0,.88) 100%);}
-#cine.evil #cine-vig{background:radial-gradient(ellipse 70% 70% at 50% 50%,transparent 20%,rgba(60,0,0,.95) 100%);}
+/* 배경 이미지: 항상 얼굴이 중앙에 오도록 */
+#cine-img {
+  position:absolute; inset:0;
+  background-size: cover;
+  background-position: center 20%;   /* ← 얼굴 중앙 정렬 핵심 */
+  transform:scale(1.12);
+  transition:transform 5s ease-out;
+}
+#cine.on #cine-img { transform:scale(1); }
+#cine.evil #cine-img { filter:brightness(.35) saturate(2) hue-rotate(-15deg); }
+#cine.good #cine-img { filter:brightness(.52) saturate(1.3); }
+
+/* 어두운 오버레이: 하단은 완전 어둡게, 중앙은 얼굴이 보이도록 열기 */
+#cine-vig{
+  position:absolute; inset:0;
+  background: radial-gradient(ellipse 70% 65% at 50% 42%, transparent 20%, rgba(0,0,0,.82) 100%);
+}
+#cine.evil #cine-vig{
+  background: radial-gradient(ellipse 65% 60% at 50% 40%, transparent 18%, rgba(40,0,0,.92) 100%);
+}
+
 #cine-lines{position:absolute;inset:0;pointer-events:none;opacity:.3; background:repeating-linear-gradient(0deg,transparent 0,transparent 2px,rgba(0,0,0,.6) 2px,rgba(0,0,0,.6) 4px);}
 #cfx{position:absolute;inset:0;pointer-events:none;z-index:2;}
 .cc{position:absolute;width:40px;height:40px;border-style:solid;opacity:0;}
@@ -344,8 +425,24 @@ body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
 #cc4{bottom:15px;right:15px;border-width:0 3px 3px 0;}
 #cine.good .cc{border-color:rgba(255,215,0,.8);}
 #cine.evil .cc{border-color:rgba(220,0,0,.8);}
-#cine-body{position:relative;z-index:5;text-align:center;padding:20px; max-width:90vw; width:100%; opacity:0;transform:translateY(30px); transition:opacity .7s .5s,transform .7s .5s cubic-bezier(.34,1.56,.64,1);}
-#cine.on #cine-body{opacity:1;transform:translateY(0);}
+
+#cine-body{
+  position:relative; z-index:5; text-align:center;
+  padding:20px; max-width:88vw; width:100%;
+  /* 텍스트 블록을 화면 하단 쪽으로 내려서 얼굴과 겹치지 않게 */
+  margin-top: 38vh;
+  opacity:0; transform:translateY(30px);
+  transition:opacity .7s .5s,transform .7s .5s cubic-bezier(.34,1.56,.64,1);
+}
+#cine.on #cine-body{ opacity:1; transform:translateY(0); }
+
+@media (max-width: 600px) {
+  #cine-body { margin-top: 34vh; padding: 12px; }
+  #cine-name { font-size: clamp(22px, 7vw, 40px) !important; }
+  #cine-sub { font-size: clamp(11px, 2.6vw, 14px) !important; }
+  .crl { width: min(200px, 55vw) !important; }
+}
+
 #cine-tag{font-family:'Fredoka One',cursive;font-size:clamp(10px,2vw,12px); letter-spacing:5px;text-transform:uppercase;margin-bottom:10px; opacity:0;}
 #cine.on #cine-tag{animation:cfu .6s .9s forwards;}
 #cine-name{font-family:'Fredoka One',cursive;font-size:clamp(30px,8vw,70px); line-height:1.1;margin-bottom:6px;opacity:0;}
@@ -400,7 +497,7 @@ body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
     <div class="icc"><div id="isvg0" style="width:70px;height:80px;margin:0 auto 5px;"></div><div class="icn">율이</div><div class="icr">언니 · 탐험가</div></div>
     <div class="icc"><div id="isvg1" style="width:70px;height:80px;margin:0 auto 5px;"></div><div class="icn">정이</div><div class="icr">동생 · 마법사</div></div>
   </div>
-  
+
   <div id="rps-ui">
     <div class="rps-vs">
       <div class="rps-box">
@@ -423,9 +520,9 @@ body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
 <div class="wr">
   <div class="board" id="board">
     <div class="cp" style="grid-column:2/7;grid-row:2/7;">
-      
+
       <div class="ctit">✨ SISTER SQUAD ✨</div>
-      
+
       <!-- 점수판 -->
       <div class="scs">
         <div class="sc cur" id="sc0">
@@ -448,19 +545,19 @@ body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
 
       <!-- 현재 차례 표시 -->
       <div id="turn-indicator">👩 율이 차례!</div>
-      
+
       <!-- 다크나이트 카운터 -->
       <div id="roll-counter">🔥 어둠의 기사 출현까지: 10회</div>
 
       <!-- 주사위 표시 -->
       <div class="dcr"><span class="die" id="d0">⚀</span><span class="die" id="d1">⚁</span></div>
-      
+
       <!-- 주사위 굴리기 버튼 -->
       <button class="rbtn" id="rb" onclick="handleRoll()">🎲 주사위 굴리기</button>
 
       <!-- 미니 모험 일지 -->
       <div id="lgp"><div class="lge fr">✨ 모험 준비 완료!</div></div>
-      
+
     </div>
   </div>
 </div>
@@ -534,9 +631,9 @@ window.onYouTubeIframeAPIReady = function() {
     ytPlayer = new YT.Player('yt-player-container', {
         height: '0', width: '0',
         playerVars: { 'autoplay': 0, 'controls': 0, 'disablekb': 1, 'listType': 'playlist', 'list': 'PL3p0Se-Sm12SdPoWcevuXVd5pAMfpOGxY', 'playsinline': 1 },
-        events: { 
-            'onReady': function(event) { isYtReady = true; event.target.setVolume(25); }, 
-            'onStateChange': function(event) { if (event.data === YT.PlayerState.ENDED) ytPlayer.nextVideo(); } 
+        events: {
+            'onReady': function(event) { isYtReady = true; event.target.setVolume(25); },
+            'onStateChange': function(event) { if (event.data === YT.PlayerState.ENDED) ytPlayer.nextVideo(); }
         }
     });
 };
@@ -696,7 +793,7 @@ var cfxRunning = false;
 var cfxParts = [];
 var cineNext = null;
 var cineTimeout = null;
-     
+
 function shuffleBoard() {
   var startSpace = SP[0];
   var restSpaces = SP.slice(1);
@@ -719,7 +816,7 @@ function rebuildBoardDOM() {
   var b = document.getElementById('board');
   var cells = b.querySelectorAll('.cell');
   for (var i = 0; i < cells.length; i++) cells[i].remove();
-  
+
   SP.forEach(function(sp) {
     var g = GR[sp.id], d = document.createElement('div');
     d.className = 'cell ' + TC[sp.t] + (sp.t === 'c' ? ' corner' : '');
@@ -786,7 +883,7 @@ function buildBoard(){
 function renderAll(){
   SP.forEach(function(sp){
     var tk=document.getElementById('tk'+sp.id); if(!tk)return; tk.innerHTML='';
-    
+
     if (dkActive && dkPos === sp.id) {
         var sdk = document.createElement('div');
         sdk.className = 'tok a2';
@@ -795,7 +892,7 @@ function renderAll(){
         sdk.innerHTML = '<div class="tok-img-wrap" style="border-color:#E74C3C;"><div class="sprite-char sprite-dk sprite-anim"></div></div>';
         tk.appendChild(sdk);
     }
-    
+
     if(pos[0]===sp.id){
       var s=document.createElement('div'); s.className='tok'+(cur===0&&!moving&&!dkAnimating?' a0':'');
       s.style.zIndex = '5';
@@ -807,14 +904,14 @@ function renderAll(){
       s2.innerHTML='<div class="tok-img-wrap"><div class="sprite-char sprite-jeong sprite-anim"></div></div>'; tk.appendChild(s2);
     }
   });
-  
+
   [0,1].forEach(function(i){
     document.getElementById('sc'+i).className='sc'+(i===cur?' cur':'')+(powerUp[i]?' pwr':'');
     document.getElementById('ss'+i).textContent='⭐'+stars[i];
     document.getElementById('pb'+i).style.width=Math.min(100,stars[i]/WIN*100)+'%';
     document.getElementById('ssk'+i).style.display=skip[i]?'inline':'none';
   });
-  
+
   var p=PL[cur];
   var ti = document.getElementById('turn-indicator');
   if(ti) ti.textContent = p.ic + ' ' + p.nm + ' 차례!' + (powerUp[cur] ? ' ⚡ 파워 업!' : '') + (skip[cur] ? ' (쉬는 중)' : '');
@@ -841,15 +938,15 @@ function addLog(msg){
 function handleRoll(){
   if(rolling||ev||over||moving||encActive||dkAnimating||cinematicPlaying)return;
   resetEventChain();
-  
+
   if(skip[cur]){
-    skip[cur]=false; 
+    skip[cur]=false;
     addLog(PL[cur].ic+' '+PL[cur].nm+' 쉬는 중...');
-    totalRolls++; 
+    totalRolls++;
     finalizeTurn(); renderAll(); return;
   }
-  
-  totalRolls++; 
+
+  totalRolls++;
   rolling=true;renderAll();sDice();
   var t=0;
   var iv=setInterval(function(){
@@ -907,23 +1004,23 @@ function startEncounterRPS(targetPos, fromMove) {
     encTargetPos = targetPos;
     encFromMove = fromMove;
     var ov = document.getElementById('enc-ov');
-    
+
     document.getElementById('enc-title').innerText = '⚔️ 같은 칸에서 만났다! ⚔️';
     document.getElementById('enc-desc').innerText = '가위바위보 승리 시 별 1개를 빼앗습니다!';
     document.getElementById('enc-p0-nm').innerText = '👩 율이';
     document.getElementById('enc-p1-nm').innerText = '👧 정이';
-    
+
     document.getElementById('enc-btn').style.display = 'none';
     document.getElementById('enc-res').innerText = '가위바위보 준비...';
     document.getElementById('enc-res').style.color = '#fff';
-    
+
     document.getElementById('enc-h0').innerText = '❔';
     document.getElementById('enc-h1').innerText = '❔';
-    
+
     document.getElementById('enc-btn').onclick = endEncounterRPS;
-    
+
     ov.classList.add('vis');
-    sTrap(); 
+    sTrap();
     setTimeout(playEncounterRPS, 1000);
 }
 
@@ -931,7 +1028,7 @@ function playEncounterRPS() {
     var h0 = document.getElementById('enc-h0'), h1 = document.getElementById('enc-h1'), res = document.getElementById('enc-res');
     var rollCnt = 0;
     sDice();
-    
+
     var iv = setInterval(function() {
         h0.innerText = RPS_EMOJI[Math.floor(Math.random() * 3)];
         h1.innerText = RPS_EMOJI[Math.floor(Math.random() * 3)];
@@ -940,20 +1037,20 @@ function playEncounterRPS() {
             clearInterval(iv);
             var c0 = Math.floor(Math.random() * 3);
             var c1 = Math.floor(Math.random() * 3);
-            
+
             h0.innerText = RPS_EMOJI[c0]; h0.classList.add('pop');
             h1.innerText = RPS_EMOJI[c1]; h1.classList.add('pop');
             setTimeout(function(){ h0.classList.remove('pop'); h1.classList.remove('pop'); }, 300);
 
             if (c0 === c1) {
-                res.innerText = '앗! 비겼어요! 다시 한 번!'; 
+                res.innerText = '앗! 비겼어요! 다시 한 번!';
                 res.style.color = '#C9A6FF';
                 sTrap(); setTimeout(playEncounterRPS, 1000);
             } else {
                 var w = -1;
                 if ((c0 === 0 && c1 === 2) || (c0 === 1 && c1 === 0) || (c0 === 2 && c1 === 1)) { w = 0; } else { w = 1; }
-                
-                var l = 1 - w; 
+
+                var l = 1 - w;
                 if (stars[l] > 0) {
                     stars[w]++; stars[l]--;
                     res.innerText = PL[w].nm + ' 승리! 별 1개를 빼앗았습니다!';
@@ -962,7 +1059,7 @@ function playEncounterRPS() {
                     res.innerText = PL[w].nm + ' 승리! 하지만 뺏을 별이 없네요!';
                     addLog('⚔️ 배틀 승리! ' + PL[w].nm + '이(가) 이겼습니다!');
                 }
-                
+
                 res.style.color = w === 0 ? '#4A90D9' : '#FF69B4';
                 sStar();
                 document.getElementById('enc-btn').style.display = 'block';
@@ -982,7 +1079,7 @@ function endEncounterRPS() {
 function startDKRPS(caughtPlayers, alsoSisterCollision, targetPos, fromMove) {
     encActive = true;
     var ov = document.getElementById('enc-ov');
-    
+
     var pName = caughtPlayers.map(function(p){ return PL[p].nm; }).join(' & ');
     document.getElementById('enc-title').innerText = '🦇 어둠의 기사 배틀! 🦇';
     document.getElementById('enc-desc').innerText = '승리하면 무사통과! 패배하면 별 2개를 빼앗깁니다!';
@@ -992,10 +1089,10 @@ function startDKRPS(caughtPlayers, alsoSisterCollision, targetPos, fromMove) {
     document.getElementById('enc-btn').style.display = 'none';
     document.getElementById('enc-res').innerText = '가위바위보 준비...';
     document.getElementById('enc-res').style.color = '#fff';
-    
+
     document.getElementById('enc-h0').innerText = '❔';
     document.getElementById('enc-h1').innerText = '❔';
-    
+
     ov.classList.add('vis');
     sTrap();
     setTimeout(function() {
@@ -1077,7 +1174,7 @@ function endDKRPS(alsoSisterCollision, targetPos, fromMove) {
 }
 
 function spawnDK() {
-    cinematicPlaying = true; 
+    cinematicPlaying = true;
     dkActive = true;
     dkPos = 0;
     dkStepsTaken = 0;
@@ -1099,7 +1196,7 @@ function playDKTurn() {
     addLog('🦇 어둠의 기사 차례!');
     renderAll();
     sBattleRoll();
-    
+
     setTimeout(function() {
         var d1 = Math.ceil(Math.random()*6);
         var d2 = Math.ceil(Math.random()*6);
@@ -1163,7 +1260,7 @@ var CINE_DATA={
   '어둠의 마왕 크라운':{type:'evil', img:'./images/crown.jpg', tag:'☠ BOSS ENCOUNTER ☠', name:'어둠의 마왕 크라운', sub:'크하하하! 감히 내 영역을 침범하다니!\n너희의 소중한 별들을...\n이 거대한 폭풍으로 날려주마! 💀'},
   '어둠의 검신 베인':{type:'evil', img:'./images/bain.jpg', tag:'⚔ BOSS ENCOUNTER ⚔', name:'어둠의 검신 베인', sub:'어둠의 검이 빛을 집어삼키리라...\n어리석은 여행자여,\n이제 네 별은 내 것이다! ⚔️'}
 };
-     
+
 function preloadImage(src){
   var img=new Image(); img.decoding='async'; img.loading='eager';
   img.src=src; if(img.decode){img.decode().catch(function(){});} return img;
@@ -1205,23 +1302,23 @@ function cineShow(cfg, callback) {
     if(!cfxCanvas) cfxInit();
 
     cinematicPlaying = true;
-    renderAll(); 
+    renderAll();
 
     if(cineTimeout) clearTimeout(cineTimeout);
 
     cineNext = callback;
-    
+
     var el = document.getElementById('cine');
     el.className = cfg.type;
-    
+
     var imgEl = document.getElementById('cine-img');
     imgEl.style.display = 'block';
     preloadImage(cfg.img);
     imgEl.style.backgroundImage = 'url("'+cfg.img+'")';
-    
+
     document.getElementById('cine-tag').textContent = cfg.tag;
     document.getElementById('cine-name').textContent = cfg.name;
-    
+
     var subEl = document.getElementById('cine-sub');
     subEl.innerHTML = '';
     var lines = cfg.sub.split('\n');
@@ -1239,13 +1336,13 @@ function cineShow(cfg, callback) {
         [120,100,80].forEach(function(f,i){setTimeout(function(){tone(f,.35,'sawtooth',.25);},i*110);});
         setTimeout(function(){[350,280,200].forEach(function(f,i){setTimeout(function(){tone(f,.2,'square',.2);},i*70);});},550);
     }
-    
+
     cfxSpawn(cfg.type);
     if (!cfxRunning) {
         cfxRunning = true;
         cfxLoop();
     }
-    
+
     requestAnimationFrame(function(){
         requestAnimationFrame(function(){ el.classList.add('on'); });
     });
@@ -1258,43 +1355,43 @@ function cineShow(cfg, callback) {
 function cineDismiss() {
     if(!cineNext) return;
     if(cineTimeout) { clearTimeout(cineTimeout); cineTimeout = null; }
-    
+
     var el = document.getElementById('cine');
     el.classList.remove('on');
     cfxRunning = false;
     cfxParts = [];
     if(cfxCtx) cfxCtx.clearRect(0,0,cfxCanvas.width,cfxCanvas.height);
-    
+
     var cb = cineNext;
     cineNext = null;
 
     setTimeout(function(){
-        cinematicPlaying = false; 
-        renderAll();              
-        cb();                     
+        cinematicPlaying = false;
+        renderAll();
+        cb();
     }, 550);
 }
 
 function checkAndTriggerEvent(sid, fromMove) {
     var stopReason = registerEventVisit(sid);
     if (stopReason) { endTurnAfterEventChain(stopReason); return; }
-    
+
     var sp = SP[sid];
     var isAwake = (sid === 0);
     var mc = null;
-    
+
     if(sp.magic) { mc = MAGIC_CARDS[Math.floor(Math.random() * MAGIC_CARDS.length)]; }
-    
+
     if(isAwake){
        powerUp[cur] = true;
        var awaken = {
          char: cur === 0 ? 'superyul' : 'superjung', cn: PL[cur].nm, name: PL[cur].nm + ' 각성!',
          cd: '출발점에 정확히 멈춰 각성했어요! 별 1개와 다음 주사위 이동 2배를 얻습니다!',
-         cine: { 
-             type: 'good', 
+         cine: {
+             type: 'good',
              img: cur === 0 ? './images/superyul.jpeg' : './images/superjung.jpeg',
-             tag: '⚡ AWAKENING ⚡', name: PL[cur].nm + ' 각성!', 
-             sub: '출발점에 정확히 멈췄어요!\n별 1개를 얻고\n다음 주사위 이동이 2배가 됩니다! 🔥' 
+             tag: '⚡ AWAKENING ⚡', name: PL[cur].nm + ' 각성!',
+             sub: '출발점에 정확히 멈췄어요!\n별 1개를 얻고\n다음 주사위 이동이 2배가 됩니다! 🔥'
          }
        };
        addLog(PL[cur].ic + ' ' + PL[cur].nm + ' 출발점 도착! 각성! ⭐ +1 & 주사위 x2 🚀');
@@ -1307,10 +1404,10 @@ function checkAndTriggerEvent(sid, fromMove) {
 function triggerEvent(sid,fromMove,awaken,mc){
   var sp=SP[sid];
   if(!fromMove)addLog(PL[cur].ic+' → '+sp.em+' '+sp.nm);
-  ev={sid:sid, awaken:awaken||null, mc:mc||null};  
-     
+  ev={sid:sid, awaken:awaken||null, mc:mc||null};
+
   var cData = awaken ? null : CINE_DATA[sp.nm];
-  if(cData){ cineShow(cData, function(){ openEventCard(); }); } 
+  if(cData){ cineShow(cData, function(){ openEventCard(); }); }
   else { openEventCard(); }
 }
 
@@ -1319,17 +1416,17 @@ function openEventCard(){
   var awakeCard=ev.awaken;
   var mcCard = ev.mc;
   var cardChar=awakeCard?awakeCard.char:sp.char;
-  
-  if(sp.t==='t'){ var c=document.getElementById('c'+ev.sid); if(c){c.classList.add('shk');setTimeout(function(){c.classList.remove('shk');},500);} sTrap(); } 
+
+  if(sp.t==='t'){ var c=document.getElementById('c'+ev.sid); if(c){c.classList.add('shk');setTimeout(function(){c.classList.remove('shk');},500);} sTrap(); }
   else {sStar();}
-  
+
   var ec=document.getElementById('ec');
   var baseClass = 'ecard' + (sp.t==='t'?' tt2':sp.t==='b'?' tb2':sp.t==='c'?' tc2':sp.t==='m'?' tm2':'');
-  
-  var photoChars = ['mom', 'dad', 'bain', 'crown', 'darkknight', 'town', 'fairytail', 'brook', 'fairytown', 'grandmagic', 'angel', 'magicbook', 'team', 'superyul', 'superjung', 'yul', 'jung'];  
+
+  var photoChars = ['mom', 'dad', 'bain', 'crown', 'darkknight', 'town', 'fairytail', 'brook', 'fairytown', 'grandmagic', 'angel', 'magicbook', 'team', 'superyul', 'superjung', 'yul', 'jung'];
   var evilChars = ['bain', 'crown', 'darkknight'];
   var magicChars = ['magicbook'];
-  
+
   if (photoChars.includes(cardChar) || true) {
     baseClass += ' photo-card';
     if (evilChars.includes(cardChar)) baseClass += ' photo-evil';
@@ -1339,14 +1436,14 @@ function openEventCard(){
     else baseClass += ' photo-green';
   }
   ec.className = baseClass;
-  
+
   document.getElementById('ehbg').style.background=sp.bg;
-  
+
   var charHtml=SV[cardChar]||SV.luna;
   document.getElementById('ech').innerHTML=charHtml;
 
   document.getElementById('ecnm').textContent=awakeCard?awakeCard.cn:sp.cn;
-  
+
   if(mcCard) {
       document.getElementById('esem').textContent=mcCard.em;
       document.getElementById('esnm').textContent=mcCard.nm;
@@ -1356,25 +1453,25 @@ function openEventCard(){
       document.getElementById('esnm').textContent=awakeCard?awakeCard.name:sp.nm;
       document.getElementById('edlg').textContent=awakeCard?awakeCard.cd:sp.cd;
   }
-  
+
   var efx=document.getElementById('efx');efx.innerHTML='';
   var btn = document.getElementById('ecBtn');
   btn.className = 'cbtn'; btn.innerHTML = '✨ 계속하기!'; btn.onclick = confirmEvent;
-  
+
   if(!mcCard) {
       if(sp.st&&sp.st!==0){var b=document.createElement('div');b.className='efb '+(sp.st>0?'sp':'sn');b.textContent='⭐ '+(sp.st>0?'+':'')+sp.st+'개';efx.appendChild(b);}
       if(sp.xr){var b2=document.createElement('div');b2.className='efb ex';b2.textContent='🎲 한 번 더!';efx.appendChild(b2);}
       if(sp.sk){var b3=document.createElement('div');b3.className='efb sk';b3.textContent='⏸️ 1턴 쉬기';efx.appendChild(b3);}
       if(sp.mv){var b4=document.createElement('div');b4.className='efb '+(sp.mv>0?'mp':'mn');b4.textContent=(sp.mv>0?'⬆️':'⬇️')+' '+Math.abs(sp.mv)+'칸 이동';efx.appendChild(b4);}
   }
-  
+
   if(sp.boss) {
       efx.innerHTML = '<div class="efb sn">⚔️ 주사위를 굴려 4 이상이면 승리, 3 이하면 패배!</div>';
       btn.className = 'cbtn battle-btn';
       btn.innerHTML = '🎲 전투 주사위 굴리기!';
       btn.onclick = executeBossBattle;
   }
-  
+
   document.getElementById('eov').classList.add('vis'); renderAll();
 }
 
@@ -1382,11 +1479,11 @@ function executeBossBattle() {
     var btn = document.getElementById('ecBtn');
     btn.disabled = true; btn.innerHTML = '굴리는 중...'; btn.className = 'cbtn';
     sBattleRoll();
-    
+
     var efx = document.getElementById('efx');
     var rollCnt = 0;
     var resultRoll = Math.ceil(Math.random() * 6);
-    
+
     var rollIv = setInterval(function() {
         efx.innerHTML = '<div style="font-size:35px; color:#fff; text-shadow:0 0 10px gold; text-align:center; width:100%; margin-bottom:10px;">🎲 ' + Math.ceil(Math.random() * 6) + '</div>';
         rollCnt++;
@@ -1394,7 +1491,7 @@ function executeBossBattle() {
             clearInterval(rollIv);
             var isWin = resultRoll >= 4;
             efx.innerHTML = '<div style="font-size:35px; color:#fff; text-shadow:0 0 10px gold; text-align:center; width:100%; margin-bottom:10px;">🎲 ' + resultRoll + '</div>';
-            
+
             if(isWin) {
                 efx.innerHTML += '<div class="efb sp">🎉 배틀 승리! 방어 성공 & 별 1개 획득!</div>';
                 ev.battleResult = 1; sStar();
@@ -1402,7 +1499,7 @@ function executeBossBattle() {
                 efx.innerHTML += '<div class="efb sn">💀 배틀 패배... 별 2개를 빼앗깁니다.</div>';
                 ev.battleResult = -2; sTrap();
             }
-            
+
             btn.disabled = false; btn.innerHTML = '✨ 결과 확인하고 계속하기';
             btn.onclick = confirmEvent;
         }
@@ -1416,9 +1513,9 @@ function confirmEvent(){
   var battleResult = ev.battleResult;
   ev=null;
   document.getElementById('eov').classList.remove('vis');
-  
+
   var extraRoll=false,hasMoved=false;
-  
+
   if(mc) {
       if(mc.st) {
          stars[cur] = Math.max(0, stars[cur] + mc.st);
@@ -1431,14 +1528,14 @@ function confirmEvent(){
       }
       if(mc.steal) {
          var opp = 1 - cur;
-         if(stars[opp] > 0) { stars[opp]--; stars[cur]++; addLog('🐈 상대방의 별 1개를 뺏었습니다!'); sStar(); } 
+         if(stars[opp] > 0) { stars[opp]--; stars[cur]++; addLog('🐈 상대방의 별 1개를 뺏었습니다!'); sStar(); }
          else { addLog('🐈 상대방의 별이 없어 뺏지 못했습니다.'); }
       }
       if(mc.toStart) {
          pos[cur] = 0; addLog('🧹 출발점으로 날아갑니다!'); hasMoved = true;
          setTimeout(function(){ handleLanding(0, true); }, 600);
       }
-  } 
+  }
   else if(battleResult !== undefined) {
       stars[cur] = Math.max(0, stars[cur] + battleResult);
       if(battleResult > 0) {
@@ -1483,11 +1580,11 @@ function confirmEvent(){
         },300);
       }
   }
-  
+
   if(stars[cur]>=WIN){renderAll();setTimeout(showWin,400);return;}
   if(!extraRoll&&!hasMoved){
-    resetEventChain(); 
-    finalizeTurn(); 
+    resetEventChain();
+    finalizeTurn();
   }
   renderAll();
 }
@@ -1516,7 +1613,7 @@ function showWin(){
 function resetGame(){
   pos=[0,0];stars=[0,0];cur=0;dice=[1,2];skip=[false,false];powerUp=[false,false];
   rolling=false;ev=null;over=false;moving=false; resetEventChain(); totalTurns=1;
-  
+
   totalRolls = 0; nextDKTarget = 10; dkActive = false; dkPos = 0; dkStepsTaken = 0;
   encActive = false; dkAnimating = false;
   cinematicPlaying = false;
@@ -1531,7 +1628,7 @@ function resetGame(){
   document.getElementById('gov').classList.remove('vis');
   document.getElementById('eov').classList.remove('vis');
   document.getElementById('enc-ov').classList.remove('vis');
-  
+
   shuffleBoard(); rebuildBoardDOM();
   document.querySelector('.icp').style.display = 'flex';
   document.getElementById('init-btn').style.display = '';
@@ -1539,7 +1636,7 @@ function resetGame(){
   document.getElementById('final-start-btn').style.display = 'none';
   document.getElementById('yul-hand').innerText = '❔'; document.getElementById('jeong-hand').innerText = '❔'; document.getElementById('rps-result').innerText = '';
   document.querySelector('.it2').innerText = '놀라운 자매들의 대모험 — 별 10개를 먼저 모으면 승리! 🌟';
-  
+
   var isScreen = document.getElementById('is'); isScreen.style.display = 'flex';
   setTimeout(function(){isScreen.classList.remove('hd');}, 50);
 }
@@ -1591,4 +1688,4 @@ function startGame(){
 shuffleBoard(); buildBoard();
 </script>
 </body>
-</html
+</html>

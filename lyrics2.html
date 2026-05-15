@@ -6,12 +6,14 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="images/favicon.png">
-
+    
+    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-NBGELYQ4TZ"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
+
       gtag('config', 'G-NBGELYQ4TZ');
       gtag('config', 'GT-5MJDBTR2');
     </script>
@@ -19,33 +21,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Chris Lee.Papa – Worship Lyrics Vol.2 | 나의 찬양 2집 가사집">
+
+    <!-- SNS 공유용 OG 태그 -->
     <meta property="og:title" content="WORSHIP LYRICS Vol.2 – Chris LEE.PAPA">
     <meta property="og:description" content="영혼을 울리는 고백, 나의 찬양 Vol. 2 가사집입니다.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://chrisleepapa-official.vercel.app/lyrics2.html">
     <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png">
+
     <link rel="canonical" href="https://chrisleepapa-official.vercel.app/lyrics2.html">
     <link rel="icon" href="images/favicon.png">
     <title>LYRICS VOL.2 – Chris LEE.PAPA</title>
-
+    
+    <!-- 폰트 통합 호출 (index.html 기준 규격 통일) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Cormorant+Garamond:wght@300;600&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
 
-    <!-- ★ 공통 스타일 -->
-    <link rel="stylesheet" href="css/common.css">
-
     <style>
-        /* ── lyrics2.html 전용 스타일 ── */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --gold: #c9a84c;
+            --gold-light: #e8d08a;
+            --bg: #030305;
+            --text: #f0ece4;
+            --nav-height: 70px;
+        }
+
+        html { scroll-behavior: smooth; background-color: var(--bg); }
 
         body {
+            background-color: var(--bg);
+            color: var(--text);
             font-family: 'Pretendard', 'Noto Serif KR', serif;
             line-height: 1.6;
-            background-image: radial-gradient(circle at top center, rgba(60,30,80,0.4), transparent 60%),
-                              radial-gradient(circle at bottom, rgba(40,30,10,0.6), transparent 70%);
-            -webkit-user-select: none; -moz-user-select: none; user-select: none;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at top center, rgba(60, 30, 80, 0.4), transparent 60%),
+                              radial-gradient(circle at bottom, rgba(40, 30, 10, 0.6), transparent 70%);
+            -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
         }
+
+        img { -webkit-user-drag: none; }
+        a { text-decoration: none; color: inherit; }
+        button { appearance: none; background: none; border: 0; padding: 0; font: inherit; color: inherit; }
 
         body::before {
             content: ''; position: fixed; inset: 0;
@@ -53,15 +73,100 @@
             pointer-events: none; z-index: 900; opacity: 0.4;
         }
 
-        /* 스크롤 진행바 shimmer */
+        /* ========================================================
+           Navigation
+           ======================================================== */
         #scroll-progress {
+            position: fixed; top: 0; left: 0; height: 2px; width: 0%;
             background: linear-gradient(90deg, var(--gold), var(--gold-light), #fff8e0, var(--gold));
-            background-size: 200% auto;
+            background-size: 200% auto; z-index: 2000; transition: width 0.1s linear;
             animation: shimmer-bar 3s linear infinite;
         }
         @keyframes shimmer-bar { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
 
-        /* ── 페이지 헤더 ── */
+        nav {
+            position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px;
+            display: flex; justify-content: space-between; align-items: center; z-index: 1000;
+            background: rgba(3, 3, 5, 0); backdrop-filter: blur(0px); border-bottom: 1px solid rgba(255, 255, 255, 0);
+            transition: background 0.5s, backdrop-filter 0.5s, border-color 0.5s;
+        }
+        nav.scrolled {
+            background: rgba(3, 3, 5, 0.88); backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .brand-logo {
+            font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px;
+            color: var(--gold-light); z-index: 1001; white-space: nowrap;
+        }
+        .nav-right { display: flex; align-items: center; gap: 24px; }
+        .nav-links { display: flex; gap: 30px; align-items: center; }
+        .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; position: relative; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0%; height: 1px; background: var(--gold-light); transition: width 0.3s ease; }
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+        .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+
+        .lang-dropdown-wrapper { position: relative; font-family: 'Cinzel', serif; font-size: 0.8rem; color: #a0a0b5; z-index: 1001; }
+        .lang-current { cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 6px; transition: color 0.3s; font-weight: 600; letter-spacing: 1px; }
+        .lang-current:hover, .lang-dropdown-wrapper.active .lang-current { color: var(--gold-light); text-shadow: 0 0 8px rgba(201,168,76,0.5); }
+        .lang-current svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; transition: transform 0.3s; }
+        .lang-dropdown-wrapper.active .lang-current svg { transform: rotate(180deg); }
+        .lang-dropdown-menu {
+            position: absolute; top: calc(100% + 10px); right: -10px; background: rgba(10, 10, 15, 0.95);
+            border: 1px solid rgba(201,168,76,0.3); border-radius: 12px; display: flex; flex-direction: column;
+            overflow: hidden; opacity: 0; pointer-events: none; transform: translateY(-10px);
+            transition: opacity 0.3s, transform 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.8); backdrop-filter: blur(10px); min-width: 100px;
+        }
+        .lang-dropdown-wrapper.active .lang-dropdown-menu { opacity: 1; pointer-events: auto; transform: translateY(0); }
+        .lang-btn { padding: 12px 20px; cursor: pointer; transition: 0.3s; letter-spacing: 1px; text-align: center; color: #a0a0b5; }
+        .lang-btn:not(:last-child) { border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .lang-btn:hover, .lang-btn.active { color: var(--gold-light); background: rgba(201,168,76,0.1); }
+
+        .share-trigger {
+            cursor: pointer; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px;
+            border: 1px solid rgba(201,168,76,0.3); border-radius: 50%; color: var(--gold-light); transition: 0.3s; z-index: 1001;
+        }
+        .share-trigger svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
+        .share-trigger:hover { background: rgba(201,168,76,0.1); border-color: var(--gold-light); box-shadow: 0 0 12px rgba(201,168,76,0.2); transform: translateY(-2px); }
+
+        .menu-toggle { display: none; flex-direction: column; justify-content: space-between; width: 26px; height: 18px; cursor: pointer; z-index: 1001; }
+        .menu-toggle span { width: 100%; height: 2px; background-color: var(--gold-light); transition: 0.3s; border-radius: 2px; }
+        .menu-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .menu-toggle.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .menu-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+        /* ======================================================== */
+
+        /* 공유 모달 */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+            z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: 0.3s;
+        }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .share-modal {
+            background: #0a0a0f; border: 1px solid var(--gold); border-radius: 24px;
+            width: 90%; max-width: 400px; padding: 45px 30px; text-align: center;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.9);
+        }
+        .share-modal h3 { font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--gold-light); margin-bottom: 15px; }
+        .share-modal p { font-size: 0.9rem; color: #888; margin-bottom: 35px; }
+        .share-buttons { display: flex; flex-direction: column; gap: 14px; }
+        .modal-btn {
+            padding: 16px; border-radius: 12px; border: none; font-family: 'Cinzel', serif;
+            font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: 0.3s;
+        }
+        .btn-copy { background: var(--gold); color: #000; }
+        .btn-sns { background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #fff; }
+        .btn-sns:hover { background: rgba(255,255,255,0.05); }
+        .btn-close-modal { margin-top: 25px; color: #666; background: none; font-size: 0.8rem; text-decoration: underline; border: none; cursor: pointer; }
+
+        .toast-msg {
+            position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%);
+            background: var(--gold); color: #000; padding: 12px 30px; border-radius: 40px;
+            font-size: 0.9rem; font-weight: 700; z-index: 3000; display: none; animation: fadeUp 0.4s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        /* 헤더 */
         .page-header {
             position: relative; width: 100%; height: 350px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -76,13 +181,13 @@
         #stars-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
         .header-content { position: relative; z-index: 3; text-align: center; animation: fadeUp 1.2s ease both; }
         .header-title {
-            font-family: 'Cinzel', serif; font-size: clamp(2.5rem, 8vw, 4rem);
+            font-family: 'Cinzel', serif; font-size: clamp(2.5rem, 8vw, 4rem); 
             font-weight: 700; letter-spacing: 0.15em; color: var(--gold-light);
             text-shadow: 0 0 30px rgba(201,168,76,0.3); margin-bottom: 10px;
         }
         .header-slogan { font-family: 'Noto Serif KR', serif; font-size: clamp(0.9rem, 2vw, 1.1rem); letter-spacing: 2px; color: #cdd6f4; font-weight: 300; }
 
-        /* ── 본문 ── */
+        /* 콘텐츠 */
         .container { max-width: 800px; margin: 0 auto; padding: 20px 20px 150px; position: relative; z-index: 10; animation: fadeUp 1s ease 0.3s both; }
         .back-link {
             display: inline-flex; align-items: center; gap: 8px; font-family: 'Cinzel', serif;
@@ -95,31 +200,87 @@
         .page-heading { text-align: center; margin-bottom: 50px; padding: 0 10px; }
         .page-heading h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.1rem, 4.5vw, 1.5rem); font-weight: 400; color: #fff; letter-spacing: 0.5px; word-break: keep-all; }
 
-        /* ── 아코디언 ── */
-        .accordion-item { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; margin-bottom: 15px; backdrop-filter: blur(10px); transition: all 0.4s ease; overflow: hidden; }
+        /* 아코디언 */
+        .accordion-item { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; margin-bottom: 15px; backdrop-filter: blur(10px); transition: all 0.4s ease; overflow: hidden; }
         .accordion-header { width: 100%; background: transparent; border: none; padding: 20px 25px; text-align: left; font-family: 'Noto Serif KR', serif; font-size: 1.2rem; font-weight: 600; color: var(--text); cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease; }
-        .accordion-item:hover { background: rgba(255,255,255,0.04); border-color: rgba(201,168,76,0.3); transform: translateX(5px); }
+        .accordion-item:hover { background: rgba(255, 255, 255, 0.04); border-color: rgba(201,168,76,0.3); transform: translateX(5px); }
         .track-num { font-family: 'Cinzel', serif; color: var(--gold); font-size: 1rem; margin-right: 15px; font-weight: 700; }
         .toggle-icon { font-size: 1.4rem; color: var(--gold); transition: transform 0.4s ease; font-weight: 300; flex-shrink: 0; }
-        .accordion-item.active { border-color: rgba(201,168,76,0.5); box-shadow: 0 10px 30px rgba(0,0,0,0.5); background: rgba(20,15,25,0.6); }
+        .accordion-item.active { border-color: rgba(201,168,76,0.5); box-shadow: 0 10px 30px rgba(0,0,0,0.5); background: rgba(20, 15, 25, 0.6); }
         .accordion-item.active .toggle-icon { transform: rotate(45deg); color: var(--gold-light); }
         .accordion-body { max-height: 0; overflow: hidden; transition: all 0.6s ease-in-out; opacity: 0; text-align: center; }
         .accordion-item.active .accordion-body { max-height: 5000px; padding: 40px 20px; opacity: 1; }
         .lyric-text { font-size: clamp(0.9rem, 3.5vw, 1.05rem); font-weight: 300; line-height: 2.4; color: rgba(240,236,228,0.9); white-space: pre-wrap; word-break: break-word; letter-spacing: 0.5px; }
 
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        footer { text-align: center; padding: 60px 20px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: #555; border-top: 1px solid rgba(255,255,255,0.03); }
 
         @media (max-width: 900px) {
-            .container { padding-left: 16px; padding-right: 16px; }
+            nav { padding: 0 20px; }
+            .brand-logo { font-size: 1.1rem; }
+            .nav-links { display: none; }
+            .nav-links.active { display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height)); background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 28px; z-index: 1002; }
+            .nav-links.active a { font-size: 1rem; }
+            .nav-right { gap: 14px; }
+            .menu-toggle { display: flex; }
         }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <!-- ① 공용 nav placeholder -->
-    <div id="site-nav"></div>
+    <div id="scroll-progress"></div>
 
-    <!-- ── 페이지 헤더 ── -->
+    <nav id="main-nav">
+        <a href="index.html" class="brand-logo">Chris LEE.PAPA</a>
+        <div class="nav-right">
+            <div class="nav-links" id="navLinks">
+                <a href="index.html" data-i18n="nav_home">Home</a>
+                <a href="bible.html" data-i18n="nav_bible">Bible</a>
+                <a href="worship.html" class="active" data-i18n="nav_worship">Worship</a>
+                <a href="music.html" data-i18n="nav_music">Music</a>
+                <a href="book.html" data-i18n="nav_book">Books</a>
+                <a href="movie.html" data-i18n="nav_movie">Movies</a>
+            </div>
+
+            <div class="lang-dropdown-wrapper" id="langWrapper">
+                <button type="button" class="lang-current" onclick="toggleLangDropdown()" aria-expanded="false" aria-controls="langMenu" aria-label="Change language">
+                    <span id="currentLangText">KOR</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="lang-dropdown-menu" id="langMenu">
+                    <button type="button" class="lang-btn active" data-lang="ko" onclick="setLanguage('ko')">KOR</button>
+                    <button type="button" class="lang-btn" data-lang="en" onclick="setLanguage('en')">ENG</button>
+                </div>
+            </div>
+
+            <button type="button" class="share-trigger" onclick="openShareModal()" title="Share" aria-label="Share lyrics">
+                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                    <circle cx="18" cy="5" r="3"></circle>
+                    <circle cx="6" cy="12" r="3"></circle>
+                    <circle cx="18" cy="19" r="3"></circle>
+                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                </svg>
+            </button>
+            
+            <button type="button" class="menu-toggle" id="mobile-menu" aria-label="Open navigation menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <div class="modal-overlay" id="shareOverlay" onclick="closeShareModal(event)">
+        <div class="share-modal" role="dialog" aria-modal="true" aria-labelledby="shareTitle" onclick="event.stopPropagation()">
+            <h3 id="shareTitle" data-i18n="share_title">SHARE LYRICS VOL.2</h3>
+            <p data-i18n="share_desc">이곳의 고백이 누군가의 마음에 별빛이 되길.</p>
+            <div class="share-buttons">
+                <button class="modal-btn btn-copy" type="button" onclick="copyURL()" data-i18n="share_copy">COPY LINK</button>
+                <button class="modal-btn btn-sns" type="button" onclick="shareViaWebAPI()" data-i18n="share_sns">SNS SHARE</button>
+            </div>
+            <button class="modal-btn btn-close-modal" type="button" onclick="closeShareModal(null)" data-i18n="share_close">Close</button>
+        </div>
+    </div>
+
+    <div class="toast-msg" id="toast"></div>
+
     <header class="page-header">
         <canvas id="stars-canvas"></canvas>
         <div class="header-content">
@@ -128,7 +289,6 @@
         </div>
     </header>
 
-    <!-- ── 본문 ── -->
     <main class="container">
         <a href="worship.html" class="back-link" data-i18n="back_link">‹ 예배로 돌아가기</a>
 
@@ -222,6 +382,26 @@
 우리의 예배
 지금 시작돼
 
+[Verse 2]
+두려움은 사라져
+빛이 비춰와
+닫혀 있던 문들이
+모두 열려가
+하나 되어 외쳐
+세상을 흔들어
+믿음의 파도가
+지금 일어나
+
+[Final Chorus]
+일어나 외쳐
+지금 이 순간
+더 크게 소리쳐
+온 땅이 울려
+주님과 함께 달려!
+심장이 뛰어
+우리의 예배
+지금 시작돼
+
 [Outro]
 우리의 예배
 멈추지 않아</p>
@@ -241,6 +421,50 @@
 조용히 들려오는 음성
 나를 부르십니다
 
+[Pre-Chorus]
+내 안에 잠들던 노래가
+이제 주께 향하네
+
+[Chorus]
+주를 향해 노래하리
+온 마음 다해 부르리
+나의 기쁨 나의 노래
+주님 한 분뿐이라
+주를 향해 기도하리
+내 삶의 모든 순간
+내 호흡이 있는 날까지
+주 이름 높이리
+
+[Verse 2]
+걸어온 시간을 돌아보면
+은혜가 가득했고
+무거운 마음 내려놓을 때
+평안을 주셨네
+
+[Pre-Chorus]
+내 안에 다시 피어나는
+감사의 멜로디
+
+[Chorus]
+주를 향해 노래하리
+온 마음 다해 부르리
+나의 기쁨 나의 노래
+주님 한 분뿐이라
+주를 향해 기도하리
+내 삶의 모든 순간
+내 호흡이 있는 날까지
+주 이름 높이리
+
+[Verse 3]
+흐르는 세월 속에서
+주 사랑 변함없고
+오늘의 걸음 위에
+은혜를 더하시네
+
+[Pre-Chorus]
+내 영혼 깊은 곳에서
+찬양이 울려 퍼져
+
 [Chorus]
 주를 향해 노래하리
 온 마음 다해 부르리
@@ -253,12 +477,12 @@
 
 [Final Chorus]
 주를 향해 노래하리 (노래해)
-온 마음 다해 부르리
+온 마음 다해 부르리 
 나의 기쁨 나의 노래 (오직)
 주님 한 분뿐이
 
 주를 향해 기도하리 (영원히)
-내 삶의 모든 순간
+내 삶의 모든 순간 
 내 호흡이 있는 날까지 (오직)
 주 이름 높이리</p>
                 </div>
@@ -281,6 +505,10 @@
 다시 일어설 힘을
 내게 주셨네
 
+[Pre-Chorus]
+지금까지 걸어온 길
+주가 인도하셨네
+
 [Chorus]
 감사합니다 주님
 나를 여기까지
@@ -290,6 +518,16 @@
 나의 하나님
 내 삶의 모든 날
 주께 드립니다
+
+[Verse 2]
+눈물 많던 시간도
+주가 알고 계셨고
+작은 나의 기도도
+외면하지 않으셨네
+어둠 속을 걸을 때
+빛이 되어 주시고
+오늘도 내 삶을
+인도하시네
 
 [Bridge]
 주님만이 나의 길
@@ -321,6 +559,14 @@
 내 힘으로 산 것 같았지만
 보이지 않던 주의 손이
 나의 길을 지키셨네
+넘어지고 흔들리던
+수많았던 시간 속에도
+말없이 나와 함께 하신
+주의 사랑 있었네
+
+[Pre-Chorus]
+지금 여기 서 있는 건
+주님의 인도하심
 
 [Chorus]
 감사로 노래합니다
@@ -331,6 +577,16 @@
 나의 모든 이유는
 지금까지 지켜주신
 주님의 사랑
+
+[Verse 2]
+멀고 험한 길 위에서
+지쳐 주저앉던 날에도
+다시 일어설 힘을 주신
+주의 따뜻한 손길
+눈물로 지나온 날도
+헛된 시간 아니었네
+그 모든 길의 순간마다
+주가 함께 하셨네
 
 [Bridge]
 내 모든 삶이
@@ -359,6 +615,18 @@
 어제도 오늘도
 주와 함께 걸어가네
 
+[Verse 2]
+지친 마음 안고서
+주님 이름 부릅니다
+눈물 속의 기도도
+주님께서 들으시네
+
+[Chorus]
+주님 나의 힘 되시고
+주님 나의 길 되시네
+어제도 오늘도
+주와 함께 걸어가네
+
 [Bridge]
 주의 은혜 변함없네
 주의 사랑 영원하네</p>
@@ -377,6 +645,14 @@
 조용히 깨어나
 작은 빛의 숨결이
 내 안에 흐르네
+발걸음을 멈춰 서서
+주를 바라봐
+이 밤의 별빛 속에
+주를 노래해
+
+[Pre-Chorus]
+고개를 들어 하늘을 향해
+잔잔한 이 리듬에 믿음이 살아나
 
 [Chorus]
 조용히 외쳐
@@ -386,7 +662,17 @@
 주님과 함께 걸어
 두려움 버리고
 우리의 예배
-지금 시작돼</p>
+지금 시작돼
+
+[Verse 2]
+두려움은 사라져
+평안이 와
+닫혀 있던 마음이
+다시 열려가
+하나 되어 외쳐
+세상을 움직여
+믿음의 물결이
+잔잔히 흐르네</p>
                 </div>
             </div>
 
@@ -402,6 +688,20 @@
 온 세상을 비추네
 기쁜 소식 들려와
 예수님이 오셨네
+
+[Chorus]
+깨어나 깨어 노래해
+기쁘게 외쳐
+예수님 오신 날
+함께 뛰어
+더크게 소리쳐
+주님을 찬양해
+
+[Verse 2]
+별이 비춘 그 밤에
+천사 노래 울리고
+온 세상이 기뻐해
+구주께서 오셨네
 
 [Chorus]
 깨어나 깨어 노래해
@@ -432,6 +732,10 @@
 예수님의 따뜻한 사랑
 나를 다시 일으켜
 
+[Pre-Chorus]
+작은 친절 하나로 세상은 달라져
+주님이 보여주신 사랑을 따라가
+
 [Chorus]
 예수님 사랑으로
 우리 함께 걸어가
@@ -440,7 +744,13 @@
 예수님 사랑으로
 세상을 밝히는 빛
 우리 삶 속에서
-주 사랑 전해요</p>
+주 사랑 전해요
+
+[Verse 2]
+친구가 힘들 때에도
+곁에 있어 줄게
+예수님의 사랑처럼
+서로를 안아줘</p>
                 </div>
             </div>
 
@@ -452,10 +762,15 @@
                 </button>
                 <div class="accordion-body">
                     <p class="lyric-text" data-i18n="track10_lyric">[Verse 1]
-예수님 함께 걸어요
+예수님 함께 걸어요 
 예수님 손을 잡아요
 기쁘게 웃으면서
 찬양을 불러요
+
+[Pre-Chorus]
+왼쪽으로 한 걸음
+오른쪽으로 한 걸음
+빙글빙글 돌아요
 
 [Chorus]
 예수님과 함께해요 (Yeah!)
@@ -474,115 +789,328 @@
         </div>
     </main>
 
-    <!-- ② 공용 footer placeholder -->
-    <div id="site-footer"></div>
+    <footer><p data-i18n="footer_text">© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
 
-    <!-- ③ 페이지 전용 i18n + 콜백 (main.js 로드 직전) -->
     <script>
-        window.PAGE_I18N = {
+        // ── Multilingual System ──
+        const i18n = {
             ko: {
+                nav_home: "Home",
+                nav_bible: "Bible",
+                nav_worship: "Worship",
+                nav_music: "Music",
+                nav_book: "Books",
+                nav_movie: "Movies",
+                nav_share: "SHARE",
                 share_title: "SHARE LYRICS VOL.2",
                 share_desc: "이곳의 고백이 누군가의 마음에 별빛이 되길.",
+                share_copy: "COPY LINK",
+                share_sns: "SNS SHARE",
+                share_close: "Close",
                 header_title: "LYRICS",
                 header_slogan: "나의 찬양 Vol. 2 가사집",
                 back_link: "‹ 예배로 돌아가기",
                 heading_tag: "✦ &nbsp; 2nd Confession &nbsp; ✦",
                 heading_title: "영혼을 울리는 고백, 찬양 가사집",
+
                 track1_title: "모두 찬양해",
+                track1_lyric: `[Verse 1]\n주의 말씀 귀에 들려\n내 마음 깊이 흐르네\n낮은 곳에서 부르시는\n그 사랑 나를 이끄네\n\n[Verse 2]\n흔들리는 길 위에서도\n주 손 잡고 걸어가\n어둠 속에서도 빛 되신\n그 사랑 노래하리\n\n[Pre-Chorus]\n모든 음이 하나 되어\n두팔 벌려 찬양해\n\n[Chorus]\n모두 찬양해 온 맘 다해\n하늘과 땅이 노래하네\n강물처럼 이어져\n큰 바다로 퍼져가\n\n모두 찬양해 영원토록\n사랑의 화음 울리네\n우리의 숨결 모여서\n주의 이름 높이네\n\n[Bridge]\n주 사랑 넘쳐 흐르고\n우리의 노래 하늘에 닿네\n\n[Final Chorus]\n모두 찬양해 온 맘 다해\n온 세상이 화답하네\n강물처럼 이어져\n큰 바다로 퍼져가\n\n모두 찬양해 영원토록\n영광의 화음 울리네\n두팔 벌려 찬양해\n주의 이름 높이네`,
+
                 track2_title: "일어나 외쳐",
+                track2_lyric: `[Verse 1]\n잠들어 있던 심장이\n지금 깨어나\n꺼지지 않던 불꽃이\n다시 타올라\n발을 구르며 외쳐\n멈출 수 없어\n이 밤이 끝날 때까지\n우린 달려가\n\n[Pre-Chorus]\n고개를 들어\n하늘을 향해\n이 리듬 위에\n믿음이 살아나\n\n[Chorus]\n일어나 외쳐\n지금 이 순간\n더 크게 소리쳐\n온 땅이 울려\n주님과 함께 달려!\n심장이 뛰어\n우리의 예배\n지금 시작돼\n\n[Verse 2]\n두려움은 사라져\n빛이 비춰와\n닫혀 있던 문들이\n모두 열려가\n하나 되어 외쳐\n세상을 흔들어\n믿음의 파도가\n지금 일어나\n\n[Final Chorus]\n일어나 외쳐\n지금 이 순간\n더 크게 소리쳐\n온 땅이 울려\n주님과 함께 달려!\n심장이 뛰어\n우리의 예배\n지금 시작돼\n\n[Outro]\n우리의 예배\n멈추지 않아`,
+
                 track3_title: "주를 향해 노래하리",
+                track3_lyric: `[Verse 1]\n주 앞에 서 있는 이 시간\n내 마음 열어 드립니다\n조용히 들려오는 음성\n나를 부르십니다\n\n[Pre-Chorus]\n내 안에 잠들던 노래가\n이제 주께 향하네\n\n[Chorus]\n주를 향해 노래하리\n온 마음 다해 부르리\n나의 기쁨 나의 노래\n주님 한 분뿐이라\n주를 향해 기도하리\n내 삶의 모든 순간\n내 호흡이 있는 날까지\n주 이름 높이리\n\n[Verse 2]\n걸어온 시간을 돌아보면\n은혜가 가득했고\n무거운 마음 내려놓을 때\n평안을 주셨네\n\n[Pre-Chorus]\n내 안에 다시 피어나는\n감사의 멜로디\n\n[Chorus]\n주를 향해 노래하리\n온 마음 다해 부르리\n나의 기쁨 나의 노래\n주님 한 분뿐이라\n주를 향해 기도하리\n내 삶의 모든 순간\n내 호흡이 있는 날까지\n주 이름 높이리\n\n[Verse 3]\n흐르는 세월 속에서\n주 사랑 변함없고\n오늘의 걸음 위에\n은혜를 더하시네\n\n[Pre-Chorus]\n내 영혼 깊은 곳에서\n찬양이 울려 퍼져\n\n[Chorus]\n주를 향해 노래하리\n온 마음 다해 부르리\n나의 기쁨 나의 노래\n주님 한 분뿐이라\n주를 향해 기도하리\n내 삶의 모든 순간\n내 호흡이 있는 날까지\n주 이름 높이리\n\n[Final Chorus]\n주를 향해 노래하리 (노래해)\n온 마음 다해 부르리 \n나의 기쁨 나의 노래 (오직)\n주님 한 분뿐이\n\n주를 향해 기도하리 (영원히)\n내 삶의 모든 순간 \n내 호흡이 있는 날까지 (오직)\n주 이름 높이리`,
+
                 track4_title: "사랑합니다. 주님",
+                track4_lyric: `[Verse 1]\n쉽지않던 나의 삶에\n주님 함께 하셨네\n알지 못한 순간에도\n나를 지켜주셨네\n넘어지고 지친 날도\n주가 곁에 계셨고\n다시 일어설 힘을\n내게 주셨네\n\n[Pre-Chorus]\n지금까지 걸어온 길\n주가 인도하셨네\n\n[Chorus]\n감사합니다 주님\n나를 여기까지\n주의 사랑으로\n이끄셨네\n사랑합니다 주님\n나의 하나님\n내 삶의 모든 날\n주께 드립니다\n\n[Verse 2]\n눈물 많던 시간도\n주가 알고 계셨고\n작은 나의 기도도\n외면하지 않으셨네\n어둠 속을 걸을 때\n빛이 되어 주시고\n오늘도 내 삶을\n인도하시네\n\n[Bridge]\n주님만이 나의 길\n주님만이 나의 힘\n주님만이 나의 노래\n영원히 찬양해\n\n[Final Chorus]\n감사합니다 주님\n나의 구원 되신 주\n내 삶의 모든 순간\n주께 드립니다\n사랑합니다 주님\n나의 하나님\n영원토록 주만\n찬양합니다`,
+
                 track5_title: "돌아보면 모든 날이",
+                track5_lyric: `[Verse 1]\n돌아보면 모든 날이\n내 힘으로 산 것 같았지만\n보이지 않던 주의 손이\n나의 길을 지키셨네\n넘어지고 흔들리던\n수많았던 시간 속에도\n말없이 나와 함께 하신\n주의 사랑 있었네\n\n[Pre-Chorus]\n지금 여기 서 있는 건\n주님의 인도하심\n\n[Chorus]\n감사로 노래합니다\n내 삶을 이끄신 주\n어둔 밤을 지나 오늘까지\n나를 붙드셨네\n감사로 고백합니다\n나의 모든 이유는\n지금까지 지켜주신\n주님의 사랑\n\n[Verse 2]\n멀고 험한 길 위에서\n지쳐 주저앉던 날에도\n다시 일어설 힘을 주신\n주의 따뜻한 손길\n눈물로 지나온 날도\n헛된 시간 아니었네\n그 모든 길의 순간마다\n주가 함께 하셨네\n\n[Bridge]\n내 모든 삶이\n주의 손 안에\n내 모든 길이\n주의 계획 안에`,
+
                 track6_title: "주님 나의 힘",
+                track6_lyric: `[Verse 1]\n조용한 이 새벽에\n주님 앞에 나옵니다\n작은 믿음 이 마음\n주님께 드립니다\n\n[Chorus]\n주님 나의 힘 되시고\n주님 나의 길 되시네\n어제도 오늘도\n주와 함께 걸어가네\n\n[Verse 2]\n지친 마음 안고서\n주님 이름 부릅니다\n눈물 속의 기도도\n주님께서 들으시네\n\n[Chorus]\n주님 나의 힘 되시고\n주님 나의 길 되시네\n어제도 오늘도\n주와 함께 걸어가네\n\n[Bridge]\n주의 은혜 변함없네\n주의 사랑 영원하네`,
+
                 track7_title: "조용히 외쳐",
+                track7_lyric: `[Verse 1]\n잠들어 있던 심장이\n조용히 깨어나\n작은 빛의 숨결이\n내 안에 흐르네\n발걸음을 멈춰 서서\n주를 바라봐\n이 밤의 별빛 속에\n주를 노래해\n\n[Pre-Chorus]\n고개를 들어 하늘을 향해\n잔잔한 이 리듬에 믿음이 살아나\n\n[Chorus]\n조용히 외쳐\n지금 이 순간\n담대히 소리쳐\n온 땅이 울려\n주님과 함께 걸어\n두려움 버리고\n우리의 예배\n지금 시작돼\n\n[Verse 2]\n두려움은 사라져\n평안이 와\n닫혀 있던 마음이\n다시 열려가\n하나 되어 외쳐\n세상을 움직여\n믿음의 물결이\n잔잔히 흐르네`,
+
                 track8_title: "깨어 노래해",
+                track8_lyric: `[Verse 1]\n어둠 속에 빛이 와\n온 세상을 비추네\n기쁜 소식 들려와\n예수님이 오셨네\n\n[Chorus]\n깨어나 깨어 노래해\n기쁘게 외쳐\n예수님 오신 날\n함께 뛰어\n더크게 소리쳐\n주님을 찬양해\n\n[Verse 2]\n별이 비춘 그 밤에\n천사 노래 울리고\n온 세상이 기뻐해\n구주께서 오셨네\n\n[Chorus]\n깨어나 깨어 노래해\n기쁘게 외쳐\n예수님 오신 날\n함께 뛰어\n더크게 소리쳐\n주님을 찬양해\n\n[Bridge]\n하늘 높이 점프해\n손을 들어 찬양해\n온 세상이 노래해\n예수님 사랑해`,
+
                 track9_title: "예수님 사랑",
-                track10_title: "예수님 최고"
+                track9_lyric: `[Verse 1]\n밝은 아침 햇살처럼\n내 마음 비추는 빛\n예수님의 따뜻한 사랑\n나를 다시 일으켜\n\n[Pre-Chorus]\n작은 친절 하나로 세상은 달라져\n주님이 보여주신 사랑을 따라가\n\n[Chorus]\n예수님 사랑으로\n우리 함께 걸어가\n너와 나 손을 잡고\n기쁨으로 노래해\n예수님 사랑으로\n세상을 밝히는 빛\n우리 삶 속에서\n주 사랑 전해요\n\n[Verse 2]\n친구가 힘들 때에도\n곁에 있어 줄게\n예수님의 사랑처럼\n서로를 안아줘`,
+
+                track10_title: "예수님 최고",
+                track10_lyric: `[Verse 1]\n예수님 함께 걸어요 \n예수님 손을 잡아요\n기쁘게 웃으면서\n찬양을 불러요\n\n[Pre-Chorus]\n왼쪽으로 한 걸음\n오른쪽으로 한 걸음\n빙글빙글 돌아요\n\n[Chorus]\n예수님과 함께해요 (Yeah!)\n기쁜 마음 가득해 (Hey!)\n손뼉 치며 노래해요\n랄라랄라 기뻐요\n예수님과 함께해요 (Yeah!)\n우리 모두 하나돼 (Hey!)\n점프 점프 뛰면서\n찬양을 불러요\n\n[Outro]\n모두 함께 찬양해!`,
+
+                footer_text: "© 2026 Chris LEE.PAPA — The Creative Archive",
+                toast_copy: "링크가 복사되었습니다 ✓",
+                toast_error: "지원하지 않는 브라우저입니다."
             },
             en: {
+                nav_home: "Home",
+                nav_bible: "Bible",
+                nav_worship: "Worship",
+                nav_music: "Music",
+                nav_book: "Books",
+                nav_movie: "Movies",
+                nav_share: "SHARE",
                 share_title: "SHARE LYRICS VOL.2",
                 share_desc: "May the confessions here be a starlight in someone's heart.",
+                share_copy: "COPY LINK",
+                share_sns: "SNS SHARE",
+                share_close: "Close",
                 header_title: "LYRICS",
                 header_slogan: "My Worship Vol. 2 Lyrics",
                 back_link: "‹ Back to Worship",
                 heading_tag: "✦ &nbsp; 2nd Confession &nbsp; ✦",
                 heading_title: "Soul-stirring confessions, praise lyrics",
+
                 track1_title: "Praise Everyone",
+                track1_lyric: `[Verse 1]\nThe Lord's word hits my ears\nFlows deep into my heart\nCalling from a low place\nThat love leads me\n\n[Verse 2]\nEven on a shaking road\nHolding the Lord's hand I walk\nEven in darkness, the light\nI will sing of that love\n\n[Pre-Chorus]\nAll notes become one\nWith open arms, praise\n\n[Chorus]\nLet everyone praise with all their heart\nHeaven and earth sing\nConnected like a river\nSpreading to the great ocean\n\nLet everyone praise forever\nThe harmony of love rings\nOur breaths gather\nExalting the Lord's name\n\n[Bridge]\nThe Lord's love overflows\nOur song reaches heaven\n\n[Final Chorus]\nLet everyone praise with all their heart\nThe whole world responds\nConnected like a river\nSpreading to the great ocean\n\nLet everyone praise forever\nThe harmony of glory rings\nWith open arms, praise\nExalting the Lord's name`,
+
                 track2_title: "Arise and Shout",
+                track2_lyric: `[Verse 1]\nThe sleeping heart\nWakes up now\nThe unextinguished flame\nBurns again\nStomp your feet and shout\nCan't stop\nUntil this night ends\nWe run\n\n[Pre-Chorus]\nLift your head\nToward the sky\nOn this rhythm\nFaith comes alive\n\n[Chorus]\nArise and shout\nRight at this moment\nShout louder\nThe whole earth rings\nRun with the Lord!\nThe heart beats\nOur worship\nStarts now\n\n[Verse 2]\nFear disappears\nLight shines\nThe closed doors\nAll open up\nShout as one\nShake the world\nThe wave of faith\nRises now\n\n[Final Chorus]\nArise and shout\nRight at this moment\nShout louder\nThe whole earth rings\nRun with the Lord!\nThe heart beats\nOur worship\nStarts now\n\n[Outro]\nOur worship\nDoesn't stop`,
+
                 track3_title: "I Will Sing Toward the Lord",
+                track3_lyric: `[Verse 1]\nThis time standing before the Lord\nI open my heart and give it\nThe voice heard quietly\nCalls me\n\n[Pre-Chorus]\nThe song that slept inside me\nNow turns toward the Lord\n\n[Chorus]\nI will sing toward the Lord\nI will call with all my heart\nMy joy, my song\nOnly the Lord alone\nI will pray toward the Lord\nEvery moment of my life\nAs long as I have breath\nI will exalt the Lord's name\n\n[Verse 2]\nLooking back at the time I've walked\nIt was full of grace\nWhen I laid down my heavy heart\nYou gave me peace\n\n[Pre-Chorus]\nBlooming again inside me\nThe melody of gratitude\n\n[Chorus]\nI will sing toward the Lord\nI will call with all my heart\nMy joy, my song\nOnly the Lord alone\nI will pray toward the Lord\nEvery moment of my life\nAs long as I have breath\nI will exalt the Lord's name\n\n[Verse 3]\nIn the passing years\nThe Lord's love is unchanging\nOn today's steps\nYou add grace\n\n[Pre-Chorus]\nDeep in my soul\nPraise rings out\n\n[Chorus]\nI will sing toward the Lord\nI will call with all my heart\nMy joy, my song\nOnly the Lord alone\nI will pray toward the Lord\nEvery moment of my life\nAs long as I have breath\nI will exalt the Lord's name\n\n[Final Chorus]\nI will sing toward the Lord (Sing)\nI will call with all my heart\nMy joy, my song (Only)\nOnly the Lord alone\n\nI will pray toward the Lord (Forever)\nEvery moment of my life\nAs long as I have breath (Only)\nI will exalt the Lord's name`,
+
                 track4_title: "I Love You, Lord",
+                track4_lyric: `[Verse 1]\nIn my life that wasn't easy\nThe Lord was with me\nEven in moments I didn't know\nYou protected me\nEven on days I fell and was tired\nThe Lord was by my side\nYou gave me the strength\nTo rise again\n\n[Pre-Chorus]\nThe path I've walked so far\nThe Lord guided\n\n[Chorus]\nThank You, Lord\nFor leading me\nHere by Your love\nI love You, Lord\nMy God\nAll the days of my life\nI give to You\n\n[Verse 2]\nThe times full of tears\nThe Lord knew\nEven my small prayers\nYou did not turn away\nWhen walking in the dark\nYou became my light\nAnd today You guide\nMy life\n\n[Bridge]\nOnly the Lord is my path\nOnly the Lord is my strength\nOnly the Lord is my song\nI praise forever\n\n[Final Chorus]\nThank You, Lord\nThe Lord who became my salvation\nEvery moment of my life\nI give to You\nI love You, Lord\nMy God\nForever only the Lord\nI praise`,
+
                 track5_title: "Looking Back, Every Day",
+                track5_lyric: `[Verse 1]\nLooking back, every day\nSeemed lived by my own strength\nBut the unseen hand of the Lord\nProtected my path\nEven in the countless times\nI fell and wavered\nThe Lord's love that silently\nWas with me\n\n[Pre-Chorus]\nStanding here right now\nIs the Lord's guidance\n\n[Chorus]\nI sing with gratitude\nThe Lord who led my life\nPassing the dark night until today\nYou held me\nI confess with gratitude\nMy every reason is\nThe Lord's love\nThat protected me until now\n\n[Verse 2]\nOn the far and rough road\nEven on days I collapsed in exhaustion\nThe warm touch of the Lord\nThat gave strength to rise again\nThe days passed with tears\nWere not in vain\nIn every moment of that road\nThe Lord was with me\n\n[Bridge]\nAll my life\nIs in the Lord's hands\nAll my paths\nAre in the Lord's plan`,
+
                 track6_title: "Lord My Strength",
+                track6_lyric: `[Verse 1]\nIn this quiet dawn\nI come before the Lord\nThis small faith, this heart\nI give to the Lord\n\n[Chorus]\nThe Lord is my strength\nThe Lord is my path\nYesterday and today\nI walk with the Lord\n\n[Verse 2]\nHolding a weary heart\nI call the Lord's name\nThe prayer in tears\nThe Lord hears\n\n[Chorus]\nThe Lord is my strength\nThe Lord is my path\nYesterday and today\nI walk with the Lord\n\n[Bridge]\nThe Lord's grace is unchanging\nThe Lord's love is eternal`,
+
                 track7_title: "Shout Quietly",
+                track7_lyric: `[Verse 1]\nThe sleeping heart\nQuietly wakes up\nThe breath of a small light\nFlows in me\nStopping my steps\nI look at the Lord\nIn the starlight of this night\nI sing of the Lord\n\n[Pre-Chorus]\nLift your head toward the sky\nOn this calm rhythm, faith comes alive\n\n[Chorus]\nShout quietly\nRight at this moment\nShout boldly\nThe whole earth rings\nWalk with the Lord\nCast away fear\nOur worship\nStarts now\n\n[Verse 2]\nFear disappears\nPeace comes\nThe closed heart\nOpens again\nShout as one\nMove the world\nThe wave of faith\nFlows calmly`,
+
                 track8_title: "Awake and Sing",
+                track8_lyric: `[Verse 1]\nLight comes into the darkness\nShining on the whole world\nGood news is heard\nJesus has come\n\n[Chorus]\nAwake, awake and sing\nShout joyfully\nThe day Jesus came\nJump together\nShout louder\nPraise the Lord\n\n[Verse 2]\nOn that night the star shone\nAngels' song rings\nThe whole world rejoices\nThe Savior has come\n\n[Chorus]\nAwake, awake and sing\nShout joyfully\nThe day Jesus came\nJump together\nShout louder\nPraise the Lord\n\n[Bridge]\nJump high to the sky\nRaise your hands and praise\nThe whole world sings\nLove you, Jesus`,
+
                 track9_title: "Jesus' Love",
-                track10_title: "Jesus is the Best"
+                track9_lyric: `[Verse 1]\nLike the bright morning sunshine\nThe light shining on my heart\nJesus' warm love\nRaises me up again\n\n[Pre-Chorus]\nWith one small kindness the world changes\nFollow the love the Lord showed\n\n[Chorus]\nWith Jesus' love\nWe walk together\nYou and I holding hands\nSing with joy\nWith Jesus' love\nThe light that brightens the world\nIn our lives\nShare the Lord's love\n\n[Verse 2]\nEven when a friend is struggling\nI'll be by your side\nLike Jesus' love\nEmbrace each other`,
+
+                track10_title: "Jesus is the Best",
+                track10_lyric: `[Verse 1]\nWalk together with Jesus\nHold hands with Jesus\nSmiling joyfully\nLet's sing praises\n\n[Pre-Chorus]\nOne step to the left\nOne step to the right\nSpin round and round\n\n[Chorus]\nTogether with Jesus (Yeah!)\nFull of a joyful heart (Hey!)\nClapping hands and singing\nLa la la la, so happy\nTogether with Jesus (Yeah!)\nWe all become one (Hey!)\nJumping, jumping up\nLet's sing praises\n\n[Outro]\nLet's all praise together!`
             }
         };
 
-        // ④ 컴포넌트 삽입 완료 후 실행
-        window.onMainReady = function() {
-            // 별 캔버스
-            const canvas = document.getElementById('stars-canvas');
-            const ctx = canvas ? canvas.getContext('2d') : null;
-            let stars = [];
-            function resize() { if (!canvas) return; canvas.width = window.innerWidth; canvas.height = 350; initStars(); }
-            function initStars() {
-                stars = [];
-                const count = (canvas.width * canvas.height) / 7000;
-                for (let i = 0; i < count; i++) {
-                    stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 1.5 + 0.3, opacity: Math.random(), speed: Math.random() * 0.015 + 0.005, color: Math.random() > 0.85 ? '201, 168, 76' : '255, 255, 255' });
-                }
-            }
-            function draw() {
-                if (!canvas || !ctx) return;
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                stars.forEach(s => {
-                    s.opacity += s.speed;
-                    if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed;
-                    ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(${s.color}, ${Math.max(0, s.opacity)})`; ctx.fill();
-                });
-                requestAnimationFrame(draw);
-            }
-            if (canvas && ctx) { window.addEventListener('resize', resize); resize(); draw(); }
+        let currentLang = 'ko';
 
-            // 아코디언
-            document.querySelectorAll('.accordion-header').forEach(header => {
-                header.addEventListener('click', function() {
-                    const item = this.parentElement;
-                    const isActive = item.classList.contains('active');
-                    document.querySelectorAll('.accordion-item').forEach(el => {
-                        el.classList.remove('active');
-                        const btn = el.querySelector('.accordion-header');
-                        if (btn) btn.setAttribute('aria-expanded', 'false');
-                    });
-                    if (!isActive) {
-                        item.classList.add('active');
-                        this.setAttribute('aria-expanded', 'true');
-                        setTimeout(() => {
-                            const offsetPosition = item.getBoundingClientRect().top + window.pageYOffset - 100;
-                            window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-                        }, 350);
+        function getSupportedLanguage(lang) {
+            return Object.prototype.hasOwnProperty.call(i18n, lang) ? lang : 'ko';
+        }
+        
+        function setLanguage(lang) {
+            currentLang = getSupportedLanguage(lang);
+            document.documentElement.lang = currentLang;
+            
+            try { localStorage.setItem('pref-lang', currentLang); } catch(e) {}
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                const translation = i18n[currentLang][key];
+                if (translation) {
+                    if (key === 'heading_tag') {
+                        el.innerHTML = translation;
+                    } else {
+                        el.textContent = translation;
                     }
-                });
-            });
-
-            // 보안 이벤트 (가사 보호)
-            document.addEventListener('contextmenu', e => e.preventDefault());
-            document.addEventListener('copy', e => {
-                if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) e.preventDefault();
-            });
-            document.addEventListener('keydown', e => {
-                if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || (e.ctrlKey && e.key === 'U')) e.preventDefault();
-                if (e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'p')) {
-                    if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) e.preventDefault();
                 }
             });
-        };
-    </script>
 
-    <!-- ⑤ 공용 main.js 로드 -->
-    <script src="js/main.js"></script>
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                if (btn.getAttribute('data-lang') === currentLang) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            const langTextObj = document.getElementById('currentLangText');
+            if (langTextObj) langTextObj.textContent = currentLang === 'ko' ? 'KOR' : 'ENG';
+            const langWrapper = document.getElementById('langWrapper');
+            if (langWrapper) langWrapper.classList.remove('active');
+            updateLangDropdownState();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            let savedLang = 'ko';
+            try { savedLang = localStorage.getItem('pref-lang') || 'ko'; } catch(e) {}
+            setLanguage(savedLang);
+        });
+
+        function updateLangDropdownState() {
+            const langWrapper = document.getElementById('langWrapper');
+            const langCurrent = document.querySelector('.lang-current');
+            if (langWrapper && langCurrent) {
+                langCurrent.setAttribute('aria-expanded', String(langWrapper.classList.contains('active')));
+            }
+        }
+
+        function toggleLangDropdown() {
+            const langWrapper = document.getElementById('langWrapper');
+            if (langWrapper) {
+                langWrapper.classList.toggle('active');
+                updateLangDropdownState();
+            }
+        }
+
+        document.addEventListener('click', function(e) {
+            const wrapper = document.getElementById('langWrapper');
+            if (wrapper && !wrapper.contains(e.target)) {
+                wrapper.classList.remove('active');
+                updateLangDropdownState();
+            }
+        });
+
+        // ── 변경된 스크롤 프로그레스 및 내비게이션 바 로직 ──
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY; const docHeight = document.body.scrollHeight - window.innerHeight;
+            document.getElementById('scroll-progress').style.width = (scrollTop / (docHeight || 1) * 100) + '%';
+            document.getElementById('main-nav').classList.toggle('scrolled', scrollTop > 40);
+        }, { passive: true });
+
+        const menuToggle = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('navLinks');
+        if (menuToggle && navLinks) {
+            menuToggle.addEventListener('click', () => {
+                const isOpen = menuToggle.classList.toggle('active');
+                navLinks.classList.toggle('active', isOpen);
+                menuToggle.setAttribute('aria-expanded', String(isOpen));
+            });
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    menuToggle.classList.remove('active');
+                    navLinks.classList.remove('active');
+                    menuToggle.setAttribute('aria-expanded', 'false');
+                });
+            });
+        }
+
+        const accordionHeaders = document.querySelectorAll('.accordion-header');
+        accordionHeaders.forEach(header => {
+            header.addEventListener('click', function() {
+                const item = this.parentElement;
+                const isActive = item.classList.contains('active');
+                
+                document.querySelectorAll('.accordion-item').forEach(el => {
+                    el.classList.remove('active');
+                    const button = el.querySelector('.accordion-header');
+                    if (button) button.setAttribute('aria-expanded', 'false');
+                });
+                
+                if (!isActive) {
+                    item.classList.add('active');
+                    this.setAttribute('aria-expanded', 'true');
+                    setTimeout(() => { 
+                        const headerOffset = 100;
+                        const elementPosition = item.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                        window.scrollTo({ top: offsetPosition, behavior: 'smooth' }); 
+                    }, 350);
+                }
+            });
+        });
+
+        const shareOverlay = document.getElementById('shareOverlay');
+        const toast = document.getElementById('toast');
+
+        function openShareModal() {
+            if (!shareOverlay) return;
+            shareOverlay.style.display = 'flex';
+            setTimeout(() => shareOverlay.classList.add('active'), 10);
+        }
+
+        function closeShareModal(e) {
+            if (!shareOverlay) return;
+            if (e && e.target !== shareOverlay && e.type !== 'click') return;
+            shareOverlay.classList.remove('active');
+            setTimeout(() => shareOverlay.style.display = 'none', 300);
+        }
+
+        async function copyURL() {
+            const currentUrl = window.location.href;
+            let success = false;
+            if (navigator.clipboard && window.isSecureContext) {
+                try { await navigator.clipboard.writeText(currentUrl); success = true; } catch (err) { }
+            }
+            if (!success) {
+                const textArea = document.createElement("textarea");
+                textArea.value = currentUrl;
+                textArea.id = "temp-copy-area";
+                textArea.style.position = "fixed"; textArea.style.left = "-9999px";
+                document.body.appendChild(textArea);
+                textArea.focus(); textArea.select();
+                try { success = document.execCommand('copy'); } catch (err) { }
+                document.body.removeChild(textArea);
+            }
+            if (success) { showToast(i18n[currentLang].toast_copy); }
+            closeShareModal();
+        }
+
+        function shareViaWebAPI() {
+            if (navigator.share) {
+                navigator.share({ title: 'Chris LEE.PAPA - LYRICS Vol.2', url: window.location.href }).catch(console.error);
+            } else { showToast(i18n[currentLang].toast_error); }
+        }
+
+        function showToast(msg) {
+            if (!toast) return;
+            toast.textContent = msg; toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 2500);
+        }
+
+        const canvas = document.getElementById('stars-canvas');
+        const ctx = canvas ? canvas.getContext('2d') : null;
+        let stars = [];
+        function resize() { if (!canvas) return; canvas.width = window.innerWidth; canvas.height = 350; initStars(); }
+        function initStars() {
+            stars = [];
+            const count = (canvas.width * canvas.height) / 7000;
+            for (let i = 0; i < count; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+                    size: Math.random() * 1.5 + 0.3, opacity: Math.random(),
+                    speed: Math.random() * 0.015 + 0.005,
+                    color: Math.random() > 0.85 ? '201, 168, 76' : '255, 255, 255'
+                });
+            }
+        }
+        function draw() {
+            if (!canvas || !ctx) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(s => {
+                s.opacity += s.speed;
+                if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed;
+                ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${s.color}, ${Math.max(0, s.opacity)})`; ctx.fill();
+            });
+            requestAnimationFrame(draw);
+        }
+        if (canvas && ctx) {
+            window.addEventListener('resize', resize);
+            resize(); draw();
+        }
+
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('copy', e => {
+            if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) {
+                e.preventDefault();
+            }
+        });
+        document.addEventListener('keydown', e => {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || (e.ctrlKey && e.key === 'U')) e.preventDefault();
+            if (e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'p')) {
+                if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) e.preventDefault();
+            }
+            if (e.key === 'PrintScreen' && navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText('').catch(() => {});
+            }
+        });
+    </script>
 </body>
 </html>

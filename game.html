@@ -16,14 +16,13 @@
 <title>✨ Sister Squad — 놀라운 자매들의 대모험</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
 <style>
-:root{--gold:#FFD700;--pink:#FF69B4;--purple:#9B59B6;--blue:#4A90D9;--dark:#0b081a;}
+:root{--gold:#FFD700;--pink:#FF69B4;--purple:#9B59B6;--blue:#4A90D9;--dark:#110828;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-/* 브라우저 바운스 효과 방지 및 화면 100% 고정 */
-html,body{height:100%;overflow:hidden;touch-action:manipulation;background:var(--dark);overscroll-behavior:none;}
+html,body{height:100%;overflow:hidden;touch-action:manipulation;background:var(--dark);}
 body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
 
 /* 배경 효과 */
-.sf{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at 20% 20%,rgba(30,10,70,.8),transparent 55%),radial-gradient(ellipse at 80% 80%,rgba(5,20,50,.9),transparent 55%),#0b081a;}
+.sf{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at 20% 20%,rgba(60,20,130,.8),transparent 55%),radial-gradient(ellipse at 80% 80%,rgba(10,40,90,.9),transparent 55%),#110828;}
 .sl{position:fixed;inset:0;z-index:0;pointer-events:none;}
 .st{position:absolute;border-radius:50%;background:#fff;animation:twk var(--d,3s) ease-in-out var(--dl,0s) infinite;}
 @keyframes twk{0%,100%{opacity:.15;transform:scale(1);}50%{opacity:1;transform:scale(1.8);}}
@@ -83,24 +82,6 @@ body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
     animation: twinkleRiver 15s linear infinite;
     z-index: 0; pointer-events: none;
     mix-blend-mode: screen;
-.wr{
-    position:relative; z-index:1; display:flex; align-items:center; justify-content:center;
-    height:100vh; height:100dvh; width: 100vw; padding:2vmin;
-}
-
-.board {
-    display:grid; 
-    /* minmax(0, 1fr)로 설정하여 내용물 때문에 그리드 크기가 팽창하는 것을 방지 */
-    grid-template-columns:repeat(7, minmax(0, 1fr)); 
-    grid-template-rows:repeat(7, minmax(0, 1fr)); 
-    gap:1.5vmin; /* 간격 살짝 축소 */
-    width:100%; height:100%; 
-    max-width: 900px; 
-    max-height: 1200px; 
-    background:rgba(13, 10, 35, 0.85); 
-    border-radius:24px; padding:1.5vmin; 
-    border:2px solid rgba(255,215,0,.3);
-    box-shadow:0 0 60px rgba(0,0,0,.8), inset 0 0 40px rgba(0,0,0,.8);
 }
 
 @keyframes flowRiver {
@@ -145,48 +126,18 @@ body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
 .cell{position:relative; z-index:1; border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2px;overflow:hidden;border:2px solid transparent;transition:transform .15s,box-shadow .15s;}
 .cell:hover{transform:scale(1.08);z-index:10;box-shadow:0 0 16px rgba(255,255,255,.35);}
 .cell.corner{border-radius:16px;border-width:2.5px;}
-    .wr { padding: 4px; }
-    /* 모바일에서는 갭과 패딩을 최소화하여 공간 확보 */
-    .board { gap: 1.5vw; padding: 1.5vw; border-radius: 15px; border-width: 1px; }
-}
 
-.cell {
-    border-radius: 10px;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    padding: 2px; position: relative; overflow: hidden;
-    border: 2px solid rgba(255, 255, 255, 0.4);
-    transition: transform 0.15s, box-shadow 0.15s;
-    /* 내용물이 넘쳐도 셀이 안 커지도록 축소 허용 */
-    min-width: 0; min-height: 0;
-}
+/* 타일 디자인 */
+.tc{background:radial-gradient(circle at 30% 30%,#FFFBE6,#D4A000);border-color:#FFD700;box-shadow:0 0 16px rgba(255,215,0,.55);}
+.te{background:radial-gradient(circle at 30% 30%,#D6F5E1,#27AE60);border-color:#27AE60;box-shadow:0 0 8px rgba(46,204,113,.35);}
+.tt{background:radial-gradient(circle at 30% 30%,#FDE8E8,#E74C3C);border-color:#E74C3C;box-shadow:0 0 8px rgba(231,76,60,.35);}
+.tb{background:radial-gradient(circle at 30% 30%,#FEF0D6,#E67E22);border-color:#E67E22;box-shadow:0 0 8px rgba(230,126,34,.35);}
+.tm{background:radial-gradient(circle at 30% 30%,#F4ECF7,#9B59B6);border-color:#9B59B6;box-shadow:0 0 12px rgba(155,89,182,.45);}
 
-.cell::after {
-    content: ''; position: absolute;
-    top: 0; left: 0; right: 0; height: 50%;
-    background: linear-gradient(to bottom, rgba(255,255,255,0.45), transparent);
-    pointer-events: none; z-index: 10;
-}
-.cell::before {
-    content: ''; position: absolute; inset: 0;
-    box-shadow: inset 0 -12px 20px rgba(0,0,0,0.6), inset 0 3px 6px rgba(255,255,255,0.3);
-    pointer-events: none; z-index: 1;
-}
+.cem{font-size:clamp(16px, 4vw, 32px);line-height:1;filter:drop-shadow(0 2px 3px rgba(0,0,0,.5));margin-bottom:2px;}
+.cnm{font-size:clamp(8px, 1.8vw, 13px);font-weight:900;color:#fff;text-align:center;line-height:1.1;word-break:keep-all;text-shadow:0 1px 4px rgba(0,0,0,.9),0 0 2px rgba(0,0,0,.8);}
 
-.cell:hover{transform:scale(1.08);z-index:10;box-shadow:0 0 20px rgba(255,255,255,.5);}
-.cell.corner{border-radius:15px;border-width:2px;}
-
-/* 타일 종류별 색상 */
-.tc { background: linear-gradient(135deg, #FFD700 0%, #B8860B 100%); border-color: #FFFACD; box-shadow: 0 0 10px rgba(255,215,0,0.5); }
-.te { background: linear-gradient(135deg, #2ECC71 0%, #196F3D 100%); border-color: #A9DFBF; box-shadow: 0 0 10px rgba(46,204,113,0.5); }
-.tt { background: linear-gradient(135deg, #E74C3C 0%, #7B241C 100%); border-color: #F5B7B1; box-shadow: 0 0 10px rgba(231,76,60,0.5); }
-.tb { background: linear-gradient(135deg, #3498DB 0%, #1A5276 100%); border-color: #AED6F6; box-shadow: 0 0 10px rgba(52,152,219,0.5); }
-.tm { background: linear-gradient(135deg, #9B59B6 0%, #512E5F 100%); border-color: #D7BDE2; box-shadow: 0 0 10px rgba(155,89,182,0.5); }
-
-/* 글자 넘침 방지 및 폰트 크기 조절 */
-.cem { font-size: clamp(12px, 3.5vmin, 32px); line-height: 1.1; margin-bottom: 2px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.7)); position: relative; z-index: 5; flex-shrink: 0; }
-.cnm { font-size: clamp(7px, 1.8vmin, 14px); font-weight: 900; color: #fff; text-align: center; line-height: 1.1; word-break: break-word; overflow-wrap: anywhere; text-shadow: 1px 1px 3px rgba(0,0,0,0.9), 0 0 5px rgba(0,0,0,0.8); position: relative; z-index: 5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-
-.ctk{position:absolute;inset:0;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:2px;pointer-events:none;z-index:20;}
+.ctk{position:absolute;inset:0;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:2px;pointer-events:none;z-index:5;}
 .tok{display:block;transition:filter .3s;}
 .tok.a0{filter:drop-shadow(0 0 6px #4A90D9) drop-shadow(0 0 12px #4A90D9);animation:tbounce .6s ease-in-out infinite;}
 .tok.a1{filter:drop-shadow(0 0 6px #FF69B4) drop-shadow(0 0 12px #FF69B4);animation:tbounce .6s ease-in-out .3s infinite;}
@@ -206,110 +157,53 @@ body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
     display:flex; flex-direction:column; align-items:center; justify-content:center;
     padding:10px; position:relative; overflow:hidden; gap: 2%;
     z-index: 2; /* 타일보다 위, 은하수 덮어주기 */
-/* 중앙 상태 패널 */
-.cp {
-    grid-column: 2/7; grid-row: 2/7;
-    background: radial-gradient(ellipse at center, #1b2046 0%, #0d0f24 100%);
-    border-radius: 18px; border: 1px solid rgba(255,215,0,0.3);
-    position: relative; overflow: hidden;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 1.5vh; padding: 2vmin; box-shadow: inset 0 0 30px rgba(0,0,0,0.9);
-    min-width: 0; min-height: 0;
 }
+.cp::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(155,89,182,.15),transparent 75%);pointer-events:none;}
 
-.cp::after {
-    content: ''; position: absolute; inset: 0;
-    background-image: 
-        radial-gradient(rgba(255,255,255,0.15) 1px, transparent 1px),
-        radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px);
-    background-size: 30px 30px, 45px 45px; background-position: 0 0, 15px 15px;
-    pointer-events: none; opacity: 0.6;
-}
+.ctit{font-family:'Fredoka One',cursive;font-size:clamp(16px, 4vw, 30px);background:linear-gradient(135deg,#FFD700,#FF69B4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:1px;text-align:center;filter:drop-shadow(0 2px 4px rgba(0,0,0,.6));}
 
-.ctit {
-    position: relative; z-index: 5;
-    font-family: 'Fredoka One', cursive; font-size: clamp(16px, 3.5vmin, 32px);
-    color: #FFB6C1; letter-spacing: 1px; text-align: center;
-    text-shadow: 0 0 10px rgba(255, 105, 180, 0.8), 0 0 20px rgba(255, 105, 180, 0.4);
-}
-.ctit::before { content: '✨ '; }
-.ctit::after { content: ' ✨'; }
-
-/* 점수판 디자인 */
-.scs { display: flex; gap: 8px; width: 100%; justify-content: center; position: relative; z-index: 5; }
-.sc {
-    background: rgba(10, 15, 40, 0.6);
-    border: 2px solid transparent; border-radius: 15px;
-    padding: 6px; text-align: center; transition: all .3s; flex: 1; max-width: 140px;
-    box-shadow: inset 0 0 10px rgba(255,255,255,0.05);
-    min-width: 0;
-}
-#sc0 { border-color: rgba(74, 144, 217, 0.6); box-shadow: 0 0 15px rgba(74, 144, 217, 0.3), inset 0 0 10px rgba(74,144,217,0.2); }
-#sc1 { border-color: rgba(255, 105, 180, 0.6); box-shadow: 0 0 15px rgba(255, 105, 180, 0.3), inset 0 0 10px rgba(255,105,180,0.2); }
-.sc.cur { background: rgba(255, 255, 255, 0.08); }
-#sc0.cur { border-color: #4A90D9; box-shadow: 0 0 25px rgba(74, 144, 217, 0.7); }
-#sc1.cur { border-color: #FF69B4; box-shadow: 0 0 25px rgba(255, 105, 180, 0.7); }
+.scs{display:flex;gap:10px;width:100%;justify-content:center;}
+.sc{background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.1);border-radius:14px;padding:8px;text-align:center;transition:all .3s;flex:1;max-width:130px;}
+.sc.cur{background:rgba(255,215,0,.15);border-color:rgba(255,215,0,.6);box-shadow:0 0 15px rgba(255,215,0,.3);}
 .sc.cur.pwr{border-color:#FF4500;box-shadow:0 0 20px rgba(255,69,0,.6);}
+.spi{display:block;transition:transform .3s;}
+.sc.cur .spi{transform:scale(1.15);}
+.spn{color:#fff;font-size:clamp(11px,2vw,14px);font-weight:900;margin-top:4px;}
+.sps{color:var(--gold);font-size:clamp(16px,4vw,22px);font-weight:900;}
 
-.spi { display: block; transition: transform .3s; margin-bottom: 2px; }
-.sc.cur .spi { transform: scale(1.1); }
-.spn { color: #fff; font-size: clamp(10px, 2.2vmin, 15px); font-weight: 900; white-space: nowrap; }
-.sps { color: var(--gold); font-size: clamp(14px, 3.5vmin, 24px); font-weight: 900; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+.pbs{width:80%;display:flex;flex-direction:column;gap:5px;}
+.pbr{display:flex;align-items:center;gap:6px;}
+.pbt{flex:1;height:8px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.5);}
+.pbf{height:100%;border-radius:4px;transition:width .6s cubic-bezier(.34,1.56,.64,1);}
 
-#turn-indicator { position: relative; z-index: 5; font-family: 'Fredoka One', cursive; font-size: clamp(12px, 3vmin, 20px); color: #FFD700; text-shadow: 0 2px 4px rgba(0,0,0,0.8); text-align: center; }
-#roll-counter { position: relative; z-index: 5; color: #FF4500; font-size: clamp(10px, 2vmin, 14px); font-weight: 800; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
+#turn-indicator{font-family:'Fredoka One',cursive;font-size:clamp(16px,4vw,22px);color:var(--gold);text-shadow:0 0 10px rgba(255,215,0,.6);text-align:center;}
+#roll-counter{color:#E74C3C;font-size:clamp(10px,2vw,14px);font-weight:800;text-shadow:0 1px 2px rgba(0,0,0,0.8);}
 
-.dcr { display: flex; justify-content: center; gap: 12px; position: relative; z-index: 5; margin: 2px 0; }
-.die {
-    font-size: clamp(28px, 6vmin, 55px);
-    display: flex; align-items: center; justify-content: center;
-    width: clamp(38px, 8vmin, 65px); height: clamp(38px, 8vmin, 65px);
-    background: rgba(0, 0, 0, 0.6); 
-    border: 2px solid rgba(255,255,255,0.8); 
-    border-radius: 12px; color: #fff; line-height: 1;
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.8), 0 0 10px rgba(255,255,255,0.2);
-}
+.dcr{display:flex;justify-content:center;gap:15px;}
+.die{font-size:clamp(35px, 8vw, 60px);display:inline-block;line-height:1;}
 .die.rl{animation:dr .12s ease-in-out infinite;}
 
-.rbtn {
-    position: relative; z-index: 5;
-    width: 85%; max-width: 280px; padding: clamp(8px, 1.5vh, 12px);
-    background: linear-gradient(to right, #FF5E94, #A845E1);
-    border: 1px solid rgba(255,255,255,0.4);
-    border-radius: 30px; 
-    color: #fff; font-size: clamp(14px, 3.5vmin, 22px); font-weight: 900; font-family: 'Nunito', sans-serif;
-    cursor: pointer; box-shadow: 0 4px 20px rgba(168, 69, 225, 0.6), inset 0 3px 6px rgba(255,255,255,0.4);
-    transition: transform .2s, box-shadow .2s; overflow: hidden;
-    white-space: nowrap;
-}
-.rbtn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(255,255,255,.3),transparent);transform:translateX(-100%);transition:transform .4s;}
+.rbtn{width:85%;max-width:260px;padding:12px;background:linear-gradient(135deg,#FF69B4,#9B59B6);border:none;border-radius:18px;color:#fff;font-size:clamp(14px, 3.5vw, 20px);font-weight:900;font-family:'Nunito',sans-serif;cursor:pointer;box-shadow:0 4px 15px rgba(233,30,99,.5);transition:transform .2s,box-shadow .2s;overflow:hidden;position:relative;}
+.rbtn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(255,255,255,.2),transparent);transform:translateX(-100%);transition:transform .4s;}
 .rbtn:hover::before{transform:translateX(100%);}
-.rbtn:not(:disabled):hover{transform:translateY(-2px);box-shadow:0 6px 25px rgba(168, 69, 225, 0.8);}
+.rbtn:not(:disabled):hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(233,30,99,.65);}
 .rbtn:disabled{background:#3a3a5a;cursor:not-allowed;box-shadow:none;opacity:.65;}
 
-#lgp {
-    position: relative; z-index: 5;
-    background: rgba(0,0,0,.6); border: 1px solid rgba(255,215,0,.2);
-    border-radius: 20px; padding: 6px 12px; width: 95%; text-align: center;
-    font-size: clamp(10px, 2.2vmin, 14px); color: #fff; font-weight: 800;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    box-shadow: inset 0 0 8px rgba(0,0,0,.6);
-}
+#lgp{background:rgba(0,0,0,.6);border:1px solid rgba(255,215,0,.2);border-radius:10px;padding:8px;width:90%;text-align:center;font-size:clamp(11px, 2.5vw, 15px);color:#fff;box-shadow:inset 0 0 8px rgba(0,0,0,.6);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 
+/* 오버레이 팝업들 */
 .ov{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;z-index:200;padding:10px;opacity:0;pointer-events:none;transition:opacity .3s;}
 .ov.vis{opacity:1;pointer-events:all;}
 
-/* 팝업 창들도 잘리지 않도록 높이 제한 및 스크롤 추가 */
-.ecard{background:linear-gradient(160deg,#1E0B4E,#0A1F55);border-radius:24px;max-width:92vw;width:100%;overflow-y:auto;max-height:90vh;border:3px solid rgba(255,215,0,.4);box-shadow:0 0 60px rgba(255,215,0,.3),0 20px 60px rgba(0,0,0,.8);transform:scale(.8) translateY(40px);transition:transform .35s cubic-bezier(.34,1.56,.64,1); -ms-overflow-style: none; scrollbar-width: none;}
-.ecard::-webkit-scrollbar { display: none; }
+.ecard{background:linear-gradient(160deg,#1E0B4E,#0A1F55);border-radius:24px;max-width:92vw;width:100%;overflow:hidden;border:3px solid rgba(255,215,0,.4);box-shadow:0 0 60px rgba(255,215,0,.3),0 20px 60px rgba(0,0,0,.8);transform:scale(.8) translateY(40px);transition:transform .35s cubic-bezier(.34,1.56,.64,1);}
 .ov.vis .ecard{transform:scale(1) translateY(0);}
 .ecard.tt2{border-color:rgba(231,76,60,.6);box-shadow:0 0 60px rgba(231,76,60,.3),0 20px 60px rgba(0,0,0,.8);}
-.ecard.tb2{border-color:rgba(52,152,219,.6);box-shadow:0 0 60px rgba(52,152,219,.3),0 20px 60px rgba(0,0,0,.8);}
+.ecard.tb2{border-color:rgba(230,126,34,.6);}
 .ecard.tc2{border-color:rgba(255,215,0,.6);}
 .ecard.tm2{border-color:rgba(155,89,182,.6);box-shadow:0 0 60px rgba(155,89,182,.3),0 20px 60px rgba(0,0,0,.8);}
 
 /* 3D 사진 카드 연출 */
-.ecard.photo-card { transform: perspective(1500px) rotateY(90deg) scale(0.2) translateY(200px); opacity: 0; border: 3px solid #FFD700; position: relative; transition: none; max-width: 440px; overflow-x: hidden; }
+.ecard.photo-card { transform: perspective(1500px) rotateY(90deg) scale(0.2) translateY(200px); opacity: 0; border: 3px solid #FFD700; position: relative; transition: none; max-width: 440px; }
 .ov.vis .ecard.photo-card { animation: epicCardReveal 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
 .ov.vis .ecard.photo-card.photo-evil { animation: epicCardRevealEvil 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; border-color: #E74C3C; }
 .ov.vis .ecard.photo-card.photo-green { animation: epicCardRevealGreen 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; border-color: #2ECC71; }
@@ -320,32 +214,32 @@ body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
 @keyframes epicCardRevealGreen { 0% { transform: perspective(1500px) rotateY(90deg) rotateX(10deg) scale(0.2) translateY(200px); opacity: 0; } 45% { transform: perspective(1500px) rotateY(-360deg) rotateX(-5deg) scale(1.05) translateY(-20px); opacity: 1; box-shadow: 0 0 80px #2ECC71, 0 0 40px #fff; } 100% { transform: perspective(1500px) rotateY(0deg) rotateX(0deg) scale(1) translateY(0); opacity: 1; box-shadow: 0 20px 40px rgba(0,0,0,0.9), 0 0 30px rgba(46,204,113,0.5); } }
 @keyframes epicCardRevealMagic { 0% { transform: perspective(1500px) rotateY(90deg) rotateX(10deg) scale(0.2) translateY(200px); opacity: 0; } 45% { transform: perspective(1500px) rotateY(-360deg) rotateX(-5deg) scale(1.05) translateY(-20px); opacity: 1; box-shadow: 0 0 80px #9B59B6, 0 0 40px #fff; } 100% { transform: perspective(1500px) rotateY(0deg) rotateX(0deg) scale(1) translateY(0); opacity: 1; box-shadow: 0 20px 40px rgba(0,0,0,0.9), 0 0 30px rgba(155,89,182,0.5); } }
 
-/* 카드 상단 이미지 영역 모바일 최적화 */
-.ecard.photo-card .ehdg { height: clamp(120px, 30vh, 260px); padding: 0; display: flex; flex-direction: column; justify-content: flex-end; align-items: stretch; position:relative; overflow:hidden;}
+/* 카드 상단 이미지 영역 */
+.ecard.photo-card .ehdg { height: 35vh; min-height: 240px; padding: 0; display: flex; flex-direction: column; justify-content: flex-end; align-items: stretch; position:relative; overflow:hidden;}
 .ecard.photo-card .echar { position: absolute; inset: 0; width: 100%; height: 100%; animation: none; filter: none; z-index: 1; }
 .ecard.photo-card .echar img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; border-radius:0;}
-.ecard.photo-card .ehdgt { position: relative; z-index: 3; text-align: center; padding: 30px 15px 15px; background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 40%, transparent 100%); width: 100%; }
-.ecard.photo-card .ecnm { font-size: 14px; color: #FFD700; text-shadow: 0 2px 4px rgba(0,0,0,0.9); }
-.ecard.photo-card .esnm { font-size: clamp(20px, 6vw, 32px); text-shadow: 0 2px 8px rgba(0,0,0,1); line-height:1.1;}
-.ecard.photo-card .esem { position: absolute; top: 10px; right: 10px; font-size: 28px; margin: 0; z-index: 4; background: rgba(0,0,0,0.6); width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 50%; border: 2px solid rgba(255,255,255,0.4); backdrop-filter: blur(4px); box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-.ecard.photo-card .ebody { position: relative; z-index: 3; background: rgba(15, 10, 30, 0.98); border-top: 2px solid rgba(255,215,0,0.3); padding: 15px; }
+.ecard.photo-card .ehdgt { position: relative; z-index: 3; text-align: center; padding: 50px 15px 15px; background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 40%, transparent 100%); width: 100%; }
+.ecard.photo-card .ecnm { font-size: 16px; color: #FFD700; text-shadow: 0 2px 4px rgba(0,0,0,0.9); }
+.ecard.photo-card .esnm { font-size: 32px; text-shadow: 0 2px 8px rgba(0,0,0,1); line-height:1.1;}
+.ecard.photo-card .esem { position: absolute; top: 15px; right: 15px; font-size: 36px; margin: 0; z-index: 4; background: rgba(0,0,0,0.6); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 50%; border: 2px solid rgba(255,255,255,0.4); backdrop-filter: blur(4px); box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+.ecard.photo-card .ebody { position: relative; z-index: 3; background: rgba(15, 10, 30, 0.98); border-top: 2px solid rgba(255,215,0,0.3); padding: 20px 15px; }
 
 .ecard.photo-card::after { content: ''; position: absolute; top: -150%; left: -50%; width: 200%; height: 200%; background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 40%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0.1) 60%, rgba(255,255,255,0) 100%); transform: rotate(30deg); animation: cardSweep 3.5s infinite linear; z-index: 10; pointer-events: none; }
 
-.ehdg{position:relative;height: clamp(100px, 20vh, 180px); display:flex;align-items:flex-end;justify-content:space-between;padding:15px;overflow:hidden;}
+.ehdg{position:relative;height:20vh;min-height: 160px;display:flex;align-items:flex-end;justify-content:space-between;padding:15px;overflow:hidden;}
 .ehbg{position:absolute;inset:0;opacity:.92;}
-.echar{position:relative;z-index:2;width:90px;height:120px;flex-shrink:0;filter:drop-shadow(0 0 15px rgba(255,255,255,.25));animation:cfl 3s ease-in-out infinite;}
+.echar{position:relative;z-index:2;width:120px;height:150px;flex-shrink:0;filter:drop-shadow(0 0 15px rgba(255,255,255,.25));animation:cfl 3s ease-in-out infinite;}
 @keyframes cfl{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
 .ehdgt{position:relative;z-index:2;text-align:right;flex:1;padding-left:10px;}
-.ecnm{font-family:'Fredoka One',cursive;font-size:12px;color:rgba(255,255,255,.85);margin-bottom:2px;}
-.esem{font-size:35px;filter:drop-shadow(0 0 10px rgba(255,255,255,.5));display:block;margin-bottom:2px;}
-.esnm{font-family:'Fredoka One',cursive;font-size: clamp(18px, 5vw, 24px); color:var(--gold);line-height:1.1;text-shadow:0 0 15px rgba(255,215,0,.7);}
+.ecnm{font-family:'Fredoka One',cursive;font-size:14px;color:rgba(255,255,255,.85);margin-bottom:2px;}
+.esem{font-size:46px;filter:drop-shadow(0 0 10px rgba(255,255,255,.5));display:block;margin-bottom:2px;}
+.esnm{font-family:'Fredoka One',cursive;font-size:24px;color:var(--gold);line-height:1.1;text-shadow:0 0 15px rgba(255,215,0,.7);}
 .ebody{padding:15px;}
 .dlg{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px;margin-bottom:15px;position:relative;}
-.dlg::before{content:'"';position:absolute;top:-10px;left:10px;font-size:30px;color:rgba(255,215,0,.35);font-family:'Fredoka One',cursive;line-height:1;}
-.dlgt{color:#E8D5FF;font-size:clamp(12px, 3.5vw, 15px);line-height:1.4;padding-left:4px;word-break:keep-all;}
+.dlg::before{content:'"';position:absolute;top:-10px;left:10px;font-size:36px;color:rgba(255,215,0,.35);font-family:'Fredoka One',cursive;line-height:1;}
+.dlgt{color:#E8D5FF;font-size:15px;line-height:1.5;padding-left:4px;}
 .efx{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:15px;justify-content:center;}
-.efb{padding:6px 10px;border-radius:20px;font-size:12px;font-weight:900;border:1.5px solid transparent; text-align:center;}
+.efb{padding:8px 14px;border-radius:20px;font-size:14px;font-weight:900;border:1.5px solid transparent;}
 .efb.sp{background:rgba(255,215,0,.14);color:var(--gold);border-color:rgba(255,215,0,.38);}
 .efb.sn{background:rgba(231,76,60,.14);color:#FF6B6B;border-color:rgba(231,76,60,.38);}
 .efb.ex{background:rgba(230,126,34,.14);color:#F0A060;border-color:rgba(230,126,34,.38);}
@@ -356,53 +250,52 @@ body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
 .cbtn.battle-btn { background:linear-gradient(135deg,#E74C3C,#C0392B); animation: pulse-battle 1.5s infinite; }
 @keyframes pulse-battle { 0% { box-shadow: 0 0 0 0 rgba(231,76,60, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(231,76,60, 0); } 100% { box-shadow: 0 0 0 0 rgba(231,76,60, 0); } }
 
-.cbtn{width:100%;padding:12px;background:linear-gradient(135deg,#FF69B4,#9B59B6);border:none;border-radius:12px;color:#fff;font-size:15px;font-weight:900;font-family:'Nunito',sans-serif;cursor:pointer;box-shadow:0 4px 15px rgba(233,30,99,.4);transition:transform .2s,box-shadow .2s;}
+.cbtn{width:100%;padding:15px;background:linear-gradient(135deg,#FF69B4,#9B59B6);border:none;border-radius:15px;color:#fff;font-size:16px;font-weight:900;font-family:'Nunito',sans-serif;cursor:pointer;box-shadow:0 4px 15px rgba(233,30,99,.4);transition:transform .2s,box-shadow .2s;}
 .cbtn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(233,30,99,.6);}
 
-.gocard{background:linear-gradient(160deg,#1E0B4E,#0A1F55);border-radius:26px;padding:30px 20px;max-width:92vw;width:100%;max-height:90vh;overflow-y:auto;text-align:center;border:3px solid rgba(255,215,0,.5);box-shadow:0 0 90px rgba(255,215,0,.45),0 40px 90px rgba(0,0,0,.8);transform:scale(.7);transition:transform .4s cubic-bezier(.34,1.56,.64,1);-ms-overflow-style:none;scrollbar-width:none;}
-.gocard::-webkit-scrollbar{display:none;}
+.gocard{background:linear-gradient(160deg,#1E0B4E,#0A1F55);border-radius:26px;padding:30px 20px;max-width:92vw;width:100%;text-align:center;border:3px solid rgba(255,215,0,.5);box-shadow:0 0 90px rgba(255,215,0,.45),0 40px 90px rgba(0,0,0,.8);transform:scale(.7);transition:transform .4s cubic-bezier(.34,1.56,.64,1);}
 .ov.vis .gocard{transform:scale(1);}
-.trp{font-size:50px;display:block;margin-bottom:5px;filter:drop-shadow(0 0 20px gold);}
-.wh{font-family:'Fredoka One',cursive;font-size:24px;background:linear-gradient(135deg,#FFD700,#FF69B4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px;}
-.wpr{width:80px;height:80px;margin:0 auto 10px;border-radius:50%;overflow:hidden;border:4px solid rgba(255,215,0,.55);box-shadow:0 0 20px rgba(255,215,0,.38);background:rgba(0,0,0,.3);}
+.trp{font-size:60px;display:block;margin-bottom:5px;filter:drop-shadow(0 0 20px gold);}
+.wh{font-family:'Fredoka One',cursive;font-size:28px;background:linear-gradient(135deg,#FFD700,#FF69B4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px;}
+.wpr{width:100px;height:100px;margin:0 auto 10px;border-radius:50%;overflow:hidden;border:4px solid rgba(255,215,0,.55);box-shadow:0 0 20px rgba(255,215,0,.38);background:rgba(0,0,0,.3);}
 .wpr svg, .wpr img{width:100%;height:100%;object-fit:cover;}
-.wnm{color:#fff;font-size:20px;font-weight:900;margin-bottom:4px;}
-.wdc{color:#C9A6FF;font-size:13px;margin-bottom:15px;}
-.fsr{display:flex;justify-content:center;gap:10px;margin-bottom:20px; flex-wrap:wrap;}
-.fc{background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.1);border-radius:14px;padding:8px 12px;text-align:center;min-width:100px;}
+.wnm{color:#fff;font-size:22px;font-weight:900;margin-bottom:4px;}
+.wdc{color:#C9A6FF;font-size:14px;margin-bottom:20px;}
+.fsr{display:flex;justify-content:center;gap:10px;margin-bottom:20px;}
+.fc{background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.1);border-radius:14px;padding:10px 15px;text-align:center;}
 .fc.wc{background:rgba(255,215,0,.15);border-color:rgba(255,215,0,.5);}
-.fpn{color:#fff;font-size:13px;font-weight:800;margin-top:4px;}
-.fps{color:var(--gold);font-size:18px;font-weight:900;}
-.fpc{color:var(--gold);font-size:11px;font-weight:800;}
-.rsbtn{padding:12px 30px;background:linear-gradient(135deg,#FF69B4,#9B59B6);border:none;border-radius:18px;color:#fff;font-size:16px;font-weight:900;font-family:'Nunito',sans-serif;cursor:pointer;box-shadow:0 6px 20px rgba(233,30,99,.5);transition:transform .2s,box-shadow .2s;}
+.fpn{color:#fff;font-size:14px;font-weight:800;margin-top:4px;}
+.fps{color:var(--gold);font-size:20px;font-weight:900;}
+.fpc{color:var(--gold);font-size:12px;font-weight:800;}
+.rsbtn{padding:15px 40px;background:linear-gradient(135deg,#FF69B4,#9B59B6);border:none;border-radius:18px;color:#fff;font-size:18px;font-weight:900;font-family:'Nunito',sans-serif;cursor:pointer;box-shadow:0 6px 20px rgba(233,30,99,.5);transition:transform .2s,box-shadow .2s;}
 .rsbtn:hover{transform:translateY(-3px) scale(1.03);}
 
 /* 시작화면 */
-#is{position:fixed;inset:0;z-index:500;background:linear-gradient(160deg,#110828,#061434);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;transition:opacity .5s,transform .5s;overflow-y:auto;}
+#is{position:fixed;inset:0;z-index:500;background:linear-gradient(160deg,#110828,#061434);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;transition:opacity .5s,transform .5s;}
 #is.hd{opacity:0;transform:scale(1.04);pointer-events:none;}
-.it1{font-family:'Fredoka One',cursive;font-size:clamp(24px,7vw,50px);background:linear-gradient(135deg,#FFD700,#FF69B4,#C9A6FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 28px rgba(255,215,0,.5));text-align:center;margin-bottom:6px;letter-spacing:1px;}
-.it2{color:#C9A6FF;font-size:clamp(11px,2.5vw,16px);font-weight:700;text-align:center;margin-bottom:20px;word-break:keep-all;}
-.icp{display:flex;gap:15px;justify-content:center;flex-wrap:wrap;margin-bottom:25px;}
-.icc{background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.14);border-radius:20px;padding:12px 10px;text-align:center;width:100px;transition:transform .3s,border-color .3s,box-shadow .3s;animation:fl 3s ease-in-out infinite;}
+.it1{font-family:'Fredoka One',cursive;font-size:clamp(26px,7vw,50px);background:linear-gradient(135deg,#FFD700,#FF69B4,#C9A6FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 28px rgba(255,215,0,.5));text-align:center;margin-bottom:6px;letter-spacing:2px;}
+.it2{color:#C9A6FF;font-size:clamp(12px,2.5vw,16px);font-weight:700;text-align:center;margin-bottom:30px;}
+.icp{display:flex;gap:15px;justify-content:center;flex-wrap:wrap;margin-bottom:30px;}
+.icc{background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.14);border-radius:20px;padding:12px 10px;text-align:center;width:110px;transition:transform .3s,border-color .3s,box-shadow .3s;animation:fl 3s ease-in-out infinite;}
 .icc:nth-child(2){animation-delay:.5s;}
 .icc:hover{transform:translateY(-5px) scale(1.05);border-color:rgba(255,215,0,.5);box-shadow:0 0 20px rgba(255,215,0,.22);}
-.icn{color:var(--gold);font-size:13px;font-weight:900;font-family:'Fredoka One',cursive;}
+.icn{color:var(--gold);font-size:14px;font-weight:900;font-family:'Fredoka One',cursive;}
 .icr{color:rgba(255,255,255,.45);font-size:10px;font-weight:600;margin-top:4px;}
-.stbtn{padding:12px 30px;background:linear-gradient(135deg,#FF69B4,#9B59B6,#4A90D9);border:none;border-radius:18px;color:#fff;font-size:clamp(14px,3.5vw,18px);font-weight:900;font-family:'Nunito',sans-serif;cursor:pointer;box-shadow:0 6px 30px rgba(233,30,99,.5);transition:transform .25s,box-shadow .25s;letter-spacing:1px;}
+.stbtn{padding:15px 50px;background:linear-gradient(135deg,#FF69B4,#9B59B6,#4A90D9);border:none;border-radius:18px;color:#fff;font-size:clamp(15px,3.5vw,20px);font-weight:900;font-family:'Nunito',sans-serif;cursor:pointer;box-shadow:0 6px 30px rgba(233,30,99,.5);transition:transform .25s,box-shadow .25s;letter-spacing:1px;}
 .stbtn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 10px 40px rgba(233,30,99,.65);}
 
-.starpop{position:fixed;font-family:'Fredoka One',cursive;font-size:20px;color:var(--gold);pointer-events:none;z-index:300;animation:stup .9s ease-out forwards;text-shadow:0 0 12px rgba(255,215,0,.9), 0 2px 4px rgba(0,0,0,.8);}
+.starpop{position:fixed;font-family:'Fredoka One',cursive;font-size:24px;color:var(--gold);pointer-events:none;z-index:300;animation:stup .9s ease-out forwards;text-shadow:0 0 12px rgba(255,215,0,.9), 0 2px 4px rgba(0,0,0,.8);}
 @keyframes stup{0%{opacity:1;transform:translateY(0) scale(1);}100%{opacity:0;transform:translateY(-60px) scale(1.5);}}
 
 /* 가위바위보 UI */
-#rps-ui { display:none; flex-direction:column; align-items:center; gap:12px; width:100%; max-width:350px; margin-bottom: 20px;}
-.rps-vs { display:flex; justify-content:space-between; width:100%; padding:0 10px; align-items:center; }
+#rps-ui { display:none; flex-direction:column; align-items:center; gap:15px; width:100%; max-width:350px; margin-bottom: 20px;}
+.rps-vs { display:flex; justify-content:space-between; width:100%; padding:0 15px; align-items:center; }
 .rps-box { text-align:center; }
-.rps-nm { font-size:clamp(12px, 3vw, 18px); margin-bottom:6px; font-weight:800; }
-.rps-h { font-size:clamp(30px, 7vw, 50px); background:rgba(255,255,255,0.08); width:clamp(55px, 15vw, 75px); height:clamp(55px, 15vw, 75px); border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid rgba(255,255,255,0.2); box-shadow:0 0 15px rgba(0,0,0,0.3); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.rps-nm { font-size:clamp(14px, 3vw, 20px); margin-bottom:8px; font-weight:800; }
+.rps-h { font-size:clamp(35px, 7vw, 55px); background:rgba(255,255,255,0.08); width:clamp(60px, 15vw, 80px); height:clamp(60px, 15vw, 80px); border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid rgba(255,255,255,0.2); box-shadow:0 0 15px rgba(0,0,0,0.3); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 .rps-h.pop { transform: scale(1.2); }
-.rps-vstxt { font-size:clamp(18px, 5vw, 30px); font-family:'Fredoka One',cursive; color:var(--gold); text-shadow:0 0 10px rgba(255,215,0,.6); }
-#rps-result { font-family:'Fredoka One',cursive; font-size:clamp(12px, 3vw, 18px); min-height:40px; text-align:center; color:#fff; transition:color 0.3s; padding: 0 10px; word-break: keep-all; line-height: 1.4; }
+.rps-vstxt { font-size:clamp(22px, 5vw, 35px); font-family:'Fredoka One',cursive; color:var(--gold); text-shadow:0 0 10px rgba(255,215,0,.6); }
+#rps-result { font-family:'Fredoka One',cursive; font-size:clamp(14px, 3vw, 20px); min-height:45px; text-align:center; color:#fff; transition:color 0.3s; padding: 0 10px; word-break: keep-all; line-height: 1.4; }
 
 /* 캐릭터 스프라이트 */
 .sprite-char { width: 100%; height: 100%; background-size: 500% 100%; background-position: 0% 0%; background-repeat: no-repeat; }
@@ -412,8 +305,7 @@ body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
 .sprite-anim { animation: sprite-run 0.8s infinite; }
 @keyframes sprite-run { 0%,19.99%{background-position:0% 0%;} 20%,39.99%{background-position:25% 0%;} 40%,59.99%{background-position:50% 0%;} 60%,79.99%{background-position:75% 0%;} 80%,100%{background-position:100% 0%;} }
 
-/* 토큰 크기 조정 */
-.tok-img-wrap { width: clamp(18px, 4.5vmin, 35px); height: clamp(18px, 4.5vmin, 35px); border-radius: 50%; border: 2px solid white; box-shadow: 0 0 6px rgba(0,0,0,0.6); overflow: hidden; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; margin: 0 auto; }
+.tok-img-wrap { width: clamp(20px, 4.5vw, 40px); height: clamp(20px, 4.5vw, 40px); border-radius: 50%; border: 2px solid white; box-shadow: 0 0 6px rgba(0,0,0,0.6); overflow: hidden; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; margin: 0 auto; }
 .tok-img-wrap .sprite-char { width: 100%; height: 100%; transform: translateY(0); }
 
 /* CINEMATIC FULLSCREEN */
@@ -428,7 +320,7 @@ body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
 #cine.evil #cine-vig{background:radial-gradient(ellipse 70% 70% at 50% 50%,transparent 20%,rgba(60,0,0,.95) 100%);}
 #cine-lines{position:absolute;inset:0;pointer-events:none;opacity:.3; background:repeating-linear-gradient(0deg,transparent 0,transparent 2px,rgba(0,0,0,.6) 2px,rgba(0,0,0,.6) 4px);}
 #cfx{position:absolute;inset:0;pointer-events:none;z-index:2;}
-.cc{position:absolute;width:30px;height:30px;border-style:solid;opacity:0;}
+.cc{position:absolute;width:40px;height:40px;border-style:solid;opacity:0;}
 #cine.on .cc{animation:ccIn .4s .9s forwards;}
 @keyframes ccIn{to{opacity:1;}}
 #cc1{top:15px;left:15px;border-width:3px 0 0 3px;}
@@ -439,18 +331,18 @@ body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
 #cine.evil .cc{border-color:rgba(220,0,0,.8);}
 #cine-body{position:relative;z-index:5;text-align:center;padding:20px; opacity:0;transform:translateY(50px); transition:opacity .7s .5s,transform .7s .5s cubic-bezier(.34,1.56,.64,1);}
 #cine.on #cine-body{opacity:1;transform:translateY(0);}
-#cine-tag{font-family:'Fredoka One',cursive;font-size:clamp(10px,2vw,12px); letter-spacing:3px;text-transform:uppercase;margin-bottom:8px; opacity:0;}
+#cine-tag{font-family:'Fredoka One',cursive;font-size:clamp(10px,2vw,12px); letter-spacing:5px;text-transform:uppercase;margin-bottom:10px; opacity:0;}
 #cine.on #cine-tag{animation:cfu .6s .9s forwards;}
-#cine-name{font-family:'Fredoka One',cursive;font-size:clamp(26px,7vw,60px); line-height:1.1;margin-bottom:6px;opacity:0;}
+#cine-name{font-family:'Fredoka One',cursive;font-size:clamp(30px,8vw,70px); line-height:1.1;margin-bottom:6px;opacity:0;}
 #cine.on #cine-name{animation:cpop 1s .55s forwards cubic-bezier(.34,1.56,.64,1);}
 #cine.good #cine-name{color:#FFD700;text-shadow:0 0 40px rgba(255,215,0,.9),0 0 80px rgba(255,180,0,.5),2px 2px 0 rgba(0,0,0,.6);}
 #cine.evil #cine-name{color:#FF2222;text-shadow:0 0 40px rgba(255,0,0,.9),0 0 80px rgba(180,0,0,.5),2px 2px 0 rgba(0,0,0,.8);}
-.crl{width:min(200px,60vw);height:2px;margin:8px auto;opacity:0;transform:scaleX(0);transform-origin:center;}
+.crl{width:min(250px,65vw);height:2px;margin:10px auto;opacity:0;transform:scaleX(0);transform-origin:center;}
 #cine.on .crl{animation:crl .8s .75s forwards cubic-bezier(.34,1.56,.64,1);}
 #cine.good .crl{background:linear-gradient(90deg,transparent,#FFD700,transparent);box-shadow:0 0 12px rgba(255,215,0,.7);}
 #cine.evil .crl{background:linear-gradient(90deg,transparent,#FF2222,transparent);box-shadow:0 0 12px rgba(255,0,0,.7);}
-#cine-sub{font-size:clamp(11px,2.5vw,15px);font-weight:800;color:rgba(255,255,255,.9); line-height:1.5;margin:8px 0 15px;text-shadow:0 2px 10px rgba(0,0,0,.9);}
-#cine-tap{font-size:clamp(9px,1.8vw,11px);font-weight:800;letter-spacing:2px; color:rgba(255,255,255,.5);text-transform:uppercase;opacity:0;}
+#cine-sub{font-size:clamp(12px,2.5vw,16px);font-weight:800;color:rgba(255,255,255,.9); line-height:1.6;margin:10px 0 20px;text-shadow:0 2px 10px rgba(0,0,0,.9);}
+#cine-tap{font-size:clamp(10px,1.8vw,12px);font-weight:800;letter-spacing:3px; color:rgba(255,255,255,.5);text-transform:uppercase;opacity:0;}
 #cine.on #cine-tap{animation:ctap 1.4s 2s ease-in-out infinite;}
 @keyframes cfu{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 @keyframes cpop{from{opacity:0;transform:scale(.35);}to{opacity:1;transform:scale(1);}}
@@ -490,8 +382,8 @@ body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
   <div class="it1">✨ SISTER SQUAD ✨</div>
   <div class="it2">놀라운 자매들의 대모험 — 별 10개를 먼저 모으면 승리! 🌟</div>
   <div class="icp">
-    <div class="icc"><div id="isvg0" style="width:60px;height:70px;margin:0 auto 5px;"></div><div class="icn">율이</div><div class="icr">언니 · 탐험가</div></div>
-    <div class="icc"><div id="isvg1" style="width:60px;height:70px;margin:0 auto 5px;"></div><div class="icn">정이</div><div class="icr">동생 · 마법사</div></div>
+    <div class="icc"><div id="isvg0" style="width:70px;height:80px;margin:0 auto 5px;"></div><div class="icn">율이</div><div class="icr">언니 · 탐험가</div></div>
+    <div class="icc"><div id="isvg1" style="width:70px;height:80px;margin:0 auto 5px;"></div><div class="icn">정이</div><div class="icr">동생 · 마법사</div></div>
   </div>
   
   <div id="rps-ui">
@@ -517,7 +409,7 @@ body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
   <div class="board" id="board">
     <div class="cp" style="grid-column:2/7;grid-row:2/7;">
       
-      <div class="ctit">SISTER SQUAD</div>
+      <div class="ctit">✨ SISTER SQUAD ✨</div>
       
       <!-- 점수판 -->
       <div class="scs">
@@ -533,14 +425,14 @@ body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
         </div>
       </div>
 
-      <!-- 진행률 게이지 숨김 유지 -->
-      <div class="pbs" style="display:none;">
+      <!-- 진행률 게이지 -->
+      <div class="pbs">
         <div class="pbr"><div class="pbt"><div class="pbf" id="pb0" style="width:0%;background:linear-gradient(90deg,#4A90D9,#C9A6FF)"></div></div></div>
         <div class="pbr"><div class="pbt"><div class="pbf" id="pb1" style="width:0%;background:linear-gradient(90deg,#E91E63,#FF69B4)"></div></div></div>
       </div>
 
       <!-- 현재 차례 표시 -->
-      <div id="turn-indicator">👩 정이 차례!</div>
+      <div id="turn-indicator">👩 율이 차례!</div>
       
       <!-- 다크나이트 카운터 -->
       <div id="roll-counter">🔥 어둠의 기사 출현까지: 10회</div>
@@ -562,8 +454,8 @@ body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
 <div class="ov" id="enc-ov">
   <div class="ecard tc2" style="padding-top:20px; border-color:#FF69B4;">
     <div class="ebody" style="text-align:center; padding: 20px;">
-      <h2 id="enc-title" style="color:var(--gold); font-family:'Fredoka One',cursive; font-size:clamp(16px, 4vw, 24px); margin-bottom:8px; text-shadow:0 0 10px rgba(255,215,0,.6);">⚔️ 같은 칸에서 만났다! ⚔️</h2>
-      <p id="enc-desc" style="color:#C9A6FF; font-size:clamp(11px, 2.5vw, 14px); margin-bottom:15px; word-break:keep-all;">가위바위보 승리 시 별 1개를 빼앗습니다!</p>
+      <h2 id="enc-title" style="color:var(--gold); font-family:'Fredoka One',cursive; font-size:clamp(18px, 4vw, 28px); margin-bottom:8px; text-shadow:0 0 10px rgba(255,215,0,.6);">⚔️ 같은 칸에서 만났다! ⚔️</h2>
+      <p id="enc-desc" style="color:#C9A6FF; font-size:clamp(12px, 2.5vw, 15px); margin-bottom:15px;">가위바위보 승리 시 별 1개를 빼앗습니다!</p>
       <div class="rps-vs">
           <div class="rps-box">
             <div class="rps-nm" id="enc-p0-nm">👩 율이</div>
@@ -575,7 +467,7 @@ body{font-family:'Nunito',sans-serif;color:#fff;position:relative;}
             <div id="enc-h1" class="rps-h">❔</div>
           </div>
       </div>
-      <div id="enc-res" style="margin:20px 0; font-size:clamp(12px, 3vw, 16px); font-weight:800; min-height:25px;"></div>
+      <div id="enc-res" style="margin:20px 0; font-size:clamp(13px, 3vw, 18px); font-weight:800; height:25px;"></div>
       <button class="cbtn" id="enc-btn" style="display:none;" onclick="endEncounterRPS()">✨ 결과 확인</button>
     </div>
   </div>
@@ -730,33 +622,29 @@ var MAGIC_CARDS = [
 
 /* ══ SPACES DATA ══ */
 var SP=[
-  {id:0, t:'c',nm:'출발!',     em:'🏠',bg:'linear-gradient(135deg,#FFF9C4,#D4A000)',char:'yul',     cn:'각성',            cd:'출발점에 정확히 멈춰 각성! 별 1개와 다음 주사위 이동 2배를 얻습니다!',   st:1},
+  {id:0, t:'c',nm:'출발!',     em:'🏠',bg:'linear-gradient(135deg,#FFF9C4,#D4A000)',char:'yul',     cn:'각성',           cd:'출발점에 정확히 멈춰 각성! 별 1개와 다음 주사위 이동 2배를 얻습니다!',   st:1},
   {id:1, t:'e',nm:'버섯숲',     em:'🍄',bg:'linear-gradient(135deg,#1A6B3A,#2ECC71)',char:'town',     cn:'루미나 (요정여왕)',  cd:'특별한 마법 버섯으로 별 1개 획득!',      st:1},
   {id:2, t:'e',nm:'요정여왕',   em:'👸',bg:'linear-gradient(135deg,#3A0A6A,#9B59B6)',char:'fairytail',cn:'루미나 (요정여왕)',  cd:'요정여왕 루미나의 환영과 함께 별 1개 획득.', st:1},
   {id:3, t:'t',nm:'어둠의 기사단1', em:'⚡',bg:'linear-gradient(135deg,#3A0A0A,#E74C3C)',char:'darkknight',cn:'어둠의기사단',       cd:'마법에 걸려 다음 1턴 쉬기.',    sk:true},
   {id:4, t:'m',nm:'마법 우체통',em:'💌',bg:'linear-gradient(135deg,#8E44AD,#9B59B6)',char:'magicbook',cn:'비밀편지',         cd:'두근두근! 봉투 안에 어떤 마법이 들어있을까요?', magic:true},
-  {id:5, t:'e',nm:'나비정원',   em:'🦋',bg:'linear-gradient(135deg,#0A3A6A,#3498DB)',char:'jung',      cn:'정이',            cd:'동생 정이가 예쁜 나비를 찾아 별 1개 획득.',        st:1},
+  {id:5, t:'e',nm:'나비정원',   em:'🦋',bg:'linear-gradient(135deg,#0A3A6A,#3498DB)',char:'jung',      cn:'정이',           cd:'동생 정이가 예쁜 나비를 찾아 별 1개 획득.',        st:1},
   {id:6, t:'c',nm:'요정마을',   em:'🌸',bg:'linear-gradient(135deg,#6A0A3A,#FF69B4)',char:'fairytown',     cn:'루미나 (요정여왕)',  cd:'요정마을에 오신 것을 환영해요! 요정여왕 루미나가 별 1개를 줍니다.', st:1},
   {id:7, t:'e',nm:'달빛숲',     em:'🌙',bg:'linear-gradient(135deg,#2A2A50,#5D6D7E)',char:'town',    cn:'엘리온 (현자)',     cd:'현자 엘리온이 달빛의 선물로 별 1개 획득.',    st:1},
   {id:8, t:'t',nm:'어둠의 기사단2', em:'⚔️',bg:'linear-gradient(135deg,#1A1A2A,#566573)',char:'darkknight',cn:'어둠의기사단',      cd:'기사단에게 걸려 별 1개 빼앗김.',               st:-1},
-  {id:9, t:'b',nm:'현자 지름길',em:'🧙',bg:'linear-gradient(135deg,#3A006A,#8E44AD)',char:'grandmagic',cn:'엘리온 (현자)',     cd:'현자 엘리온을 따라 앞으로 2칸 이동.',            mv:2},
-  {id:10,t:'e',nm:'꽃밭',       em:'🌺',bg:'linear-gradient(135deg,#6A0A2A,#E91E63)',char:'jung',      cn:'정이',            cd:'꽃밭에서 놀다가 별 1개 획득.',                 st:1},
+  {id:9, t:'b',nm:'현자 지름길',em:'🧙',bg:'linear-gradient(135deg,#3A006A,#8E44AD)',char:'grandmagic',cn:'엘리온 (현자)',     cd:'현자 엘리온을 따라 앞으로 2칸 이동.',           mv:2},
+  {id:10,t:'e',nm:'꽃밭',       em:'🌺',bg:'linear-gradient(135deg,#6A0A2A,#E91E63)',char:'jung',      cn:'정이',           cd:'꽃밭에서 놀다가 별 1개 획득.',                st:1},
   {id:11,t:'t',nm:'어둠의 마왕 크라운',em:'🌪️',bg:'linear-gradient(135deg,#2A2A2A,#95A5A6)',char:'crown',     cn:'어둠왕',         cd:'마왕과 조우했습니다! 무시무시한 폭풍이 몰아칩니다. 주사위 배틀로 살아남으세요!', boss:true},
   {id:12,t:'t',nm:'어둠의 검신 베인',  em:'🏰',bg:'linear-gradient(135deg,#0A0A1A,#2C3E50)',char:'bain',      cn:'어둠왕',         cd:'감히 내 성에 들어오다니! 너의 별을 걸고 나와 승부하라!', boss:true},
-  {id:13,t:'e',nm:'별자리',     em:'⭐',bg:'linear-gradient(135deg,#4A3A00,#F39C12)',char:'yul',      cn:'율이',            cd:'마법책에서 본 별자리를 발견하여 별 1개 획득.',     st:1},
-  {id:14,t:'t',nm:'어둠의 기사단3', em:'🧊',bg:'linear-gradient(135deg,#0A2A4A,#5DADE2)',char:'darkknight',cn:'어둠의기사단',      cd:'얼음 감옥에 갇혀 다음 1턴 쉬기.',              sk:true},
+  {id:13,t:'e',nm:'별자리',     em:'⭐',bg:'linear-gradient(135deg,#4A3A00,#F39C12)',char:'yul',      cn:'율이',           cd:'마법책에서 본 별자리를 발견하여 별 1개 획득.',     st:1},
+  {id:14,t:'t',nm:'어둠의 기사단3', em:'🧊',bg:'linear-gradient(135deg,#0A2A4A,#5DADE2)',char:'darkknight',cn:'어둠의기사단',      cd:'얼음 감옥에 갇혀 다음 1턴 쉬기.',             sk:true},
   {id:15,t:'m',nm:'황금 상자',  em:'🎁',bg:'linear-gradient(135deg,#D35400,#E67E22)',char:'magicbook',cn:'랜덤보상',         cd:'열쇠 구멍으로 빛이 새어나옵니다. 열어볼까요?', magic:true},
   {id:16,t:'e',nm:'마법 크리스탈',em:'💎',bg:'linear-gradient(135deg,#0A4A3A,#1ABC9C)',char:'angel',    cn:'엘리온 (현자)',     cd:'에너지가 담긴 크리스탈로 별 1개 획득.',  st:1},
   {id:17,t:'b',nm:'별똥별',     em:'🌠',bg:'linear-gradient(135deg,#4A4A00,#F1C40F)',char:'yul',      cn:'율이',           cd:'소원을 빌어 즉시 한 번 더 굴리기 기회 획득.',   xr:true},
   {id:18,t:'c',nm:'마법도서관', em:'📚',bg:'linear-gradient(135deg,#3A2A00,#8B6914)',char:'dad',      cn:'아빠',           cd:'아빠가 세상의 비밀이 신겨진 책을 주며 별 2개를 줍니다.',st:2},
   {id:19,t:'e',nm:'엄마 부엌',  em:'🍪',bg:'linear-gradient(135deg,#4A2A00,#E67E22)',char:'mom',      cn:'엄마',           cd:'엄마가 구워준 쿠키를 먹고 기운을 차려 별 2개 획득.',st:2},
   {id:20,t:'b',nm:'아빠 서재',  em:'📖',bg:'linear-gradient(135deg,#0A2A4A,#2980B9)',char:'dad',      cn:'아빠',           cd:'아빠의 책을 읽고 즉시 한 번 더 굴리기 기회 획득. 별 2개 획득.',  xr:true, st:2},
-  {id:17,t:'b',nm:'별똥별',     em:'🌠',bg:'linear-gradient(135deg,#4A4A00,#F1C40F)',char:'yul',      cn:'율이',            cd:'소원을 빌어 즉시 한 번 더 굴리기 기회 획득.',   xr:true},
-  {id:18,t:'c',nm:'마법도서관', em:'📚',bg:'linear-gradient(135deg,#3A2A00,#8B6914)',char:'dad',      cn:'아빠',            cd:'아빠가 세상의 비밀이 숨겨진 책을 주며 별 2개를 줍니다.',st:2},
-  {id:19,t:'e',nm:'엄마 부엌',  em:'🍪',bg:'linear-gradient(135deg,#4A2A00,#E67E22)',char:'mom',      cn:'엄마',            cd:'엄마가 구워준 쿠키를 먹고 기운을 차려 별 2개 획득.',st:2},
-  {id:20,t:'b',nm:'아빠 서재',  em:'📖',bg:'linear-gradient(135deg,#0A2A4A,#2980B9)',char:'dad',      cn:'아빠',            cd:'아빠의 책을 읽고 즉시 한 번 더 굴리기 기회 획득. 별 2개 획득.',  xr:true, st:2},
   {id:21,t:'t',nm:'어둠의 기사단4', em:'🧪',bg:'linear-gradient(135deg,#0A3A1A,#27AE60)',char:'darkknight',cn:'어둠의기사단',      cd:'이상한 물약을 마시고 뒤로 2칸 이동. 별 1개 빼앗김.',         mv:-2, st:-1},
-  {id:22,t:'e',nm:'요정 친구',  em:'✨',bg:'linear-gradient(135deg,#4A3A00,#F39C12)',char:'jung',      cn:'정이',            cd:'정이의 새 요정 친구와 함께 별 1개 획득.',            st:1},
+  {id:22,t:'e',nm:'요정 친구',  em:'✨',bg:'linear-gradient(135deg,#4A3A00,#F39C12)',char:'jung',      cn:'정이',           cd:'정이의 새 요정 친구와 함께 별 1개 획득.',             st:1},
   {id:23,t:'b',nm:'마법의 문',  em:'🚪',bg:'linear-gradient(135deg,#3A0A6A,#9B59B6)',char:'magicbook',cn:'엘리온 (현자)',     cd:'지름길로 앞으로 3칸 순간이동.',        mv:3}
 ];
 
@@ -793,7 +681,7 @@ var cfxRunning = false;
 var cfxParts = [];
 var cineNext = null;
 var cineTimeout = null;
-      
+     
 function shuffleBoard() {
   var startSpace = SP[0];
   var restSpaces = SP.slice(1);
@@ -1175,7 +1063,6 @@ function endDKRPS(alsoSisterCollision, targetPos, fromMove) {
 
 function spawnDK() {
     cinematicPlaying = true; 
-    cinematicPlaying = true;
     dkActive = true;
     dkPos = 0;
     dkStepsTaken = 0;
@@ -1257,11 +1144,11 @@ function checkDKRetreat() {
 
 var CINE_DATA={
   '엄마 부엌':{type:'good', img:'./images/mom.jpeg', tag:'💝 SPECIAL ENCOUNTER 💝', name:'엄마', sub:'우리 율이 정이 왔어? 😊\n엄마가 제일 사랑하는 우리 딸들~!\n갓 구운 쿠키랑 사랑을 듬뿍 줄게! 💕'},
-  '아빠 서재':{type:'good', img:'./images/chris05.jpg', tag:'📖 SPECIAL ENCOUNTER 📖', name:'아빠', sub:'오! 우리 딸들이 대모험 중이구나! 🌟\n아빠가 항상 응원해줄게!\n자, 특별 보너 준을 받아라! ✨'},
+  '아빠 서재':{type:'good', img:'./images/chris05.jpg', tag:'📖 SPECIAL ENCOUNTER 📖', name:'아빠', sub:'오! 우리 딸들이 대모험 중이구나! 🌟\n아빠가 항상 응원해줄게!\n자, 특별 보너스를 받아라! ✨'},
   '어둠의 마왕 크라운':{type:'evil', img:'./images/crown.jpg', tag:'☠ BOSS ENCOUNTER ☠', name:'어둠의 마왕 크라운', sub:'크하하하! 감히 내 영역을 침범하다니!\n너희의 소중한 별들을...\n이 거대한 폭풍으로 날려주마! 💀'},
   '어둠의 검신 베인':{type:'evil', img:'./images/bain.jpg', tag:'⚔ BOSS ENCOUNTER ⚔', name:'어둠의 검신 베인', sub:'어둠의 검이 빛을 집어삼키리라...\n어리석은 여행자여,\n이제 네 별은 내 것이다! ⚔️'}
 };
-      
+     
 function preloadImage(src){
   var img=new Image(); img.decoding='async'; img.loading='eager';
   img.src=src; if(img.decode){img.decode().catch(function(){});} return img;
@@ -1406,7 +1293,7 @@ function triggerEvent(sid,fromMove,awaken,mc){
   var sp=SP[sid];
   if(!fromMove)addLog(PL[cur].ic+' → '+sp.em+' '+sp.nm);
   ev={sid:sid, awaken:awaken||null, mc:mc||null};  
-      
+     
   var cData = awaken ? null : CINE_DATA[sp.nm];
   if(cData){ cineShow(cData, function(){ openEventCard(); }); } 
   else { openEventCard(); }
@@ -1602,7 +1489,7 @@ function showWin(){
   document.getElementById('wnm').textContent=PL[w].nm+' 승리! 🎉';
   document.getElementById('wdc').textContent='별 '+stars[w]+'개를 모아서 이겼어요!';
   document.getElementById('fsr').innerHTML=PL.map(function(p,i){
-    var charHtml = '<div class="tok-img-wrap" style="width:40px;height:40px;margin-bottom:6px;border-width:2px;border-color:'+(i===0?'#4A90D9':'#FF69B4')+';">' + SV[p.char] + '</div>';
+    var charHtml = '<div class="tok-img-wrap" style="width:44px;height:44px;margin-bottom:6px;border-width:2px;border-color:'+(i===0?'#4A90D9':'#FF69B4')+';">' + SV[p.char] + '</div>';
     return '<div class="fc'+(i===w?' wc':'')+'">'+charHtml+'<div class="fpn">'+p.nm+'</div><div class="fps">⭐'+stars[i]+'</div>'+(i===w?'<div class="fpc">👑 우승!</div>':'')+'</div>';
   }).join('');
   document.getElementById('gov').classList.add('vis');
@@ -1640,6 +1527,7 @@ function resetGame(){
   setTimeout(function(){isScreen.classList.remove('hd');}, 50);
 }
 
+/* 가위바위보 로직 */
 var RPS_EMOJI = ['✊', '✋', '✌️'];
 var isRpsPlaying = false;
 function startAutoRPS() {
@@ -1686,4 +1574,4 @@ function startGame(){
 shuffleBoard(); buildBoard();
 </script>
 </body>
-</html>
+</html

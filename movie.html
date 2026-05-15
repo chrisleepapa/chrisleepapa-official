@@ -13,7 +13,6 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-NBGELYQ4TZ');
       gtag('config', 'GT-5MJDBTR2');
     </script>
@@ -34,6 +33,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Cormorant+Garamond:wght@600&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
+    <link rel="stylesheet" href="css/common.css">
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -45,86 +45,14 @@
         button { appearance: none; background: none; border: 0; padding: 0; font: inherit; color: inherit; }
         body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events: none; z-index: 900; opacity: 0.3; }
 
-        /* ========================================================
-           Navigation (규격 통일)
-           ======================================================== */
-        #scroll-progress {
-            position: fixed; top: 0; left: 0; height: 2px; width: 0%;
-            background: linear-gradient(90deg, var(--gold), var(--gold-light), #fff8e0, var(--gold));
-            background-size: 200% auto; z-index: 2000; transition: width 0.1s linear;
-            animation: shimmer-bar 3s linear infinite;
-        }
-        @keyframes shimmer-bar { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
-
-        nav {
-            position: fixed; top: 0; width: 100%; height: var(--nav-height); padding: 0 50px;
-            display: flex; justify-content: space-between; align-items: center; z-index: 1000;
-            background: rgba(3, 3, 5, 0); backdrop-filter: blur(0px); border-bottom: 1px solid rgba(255, 255, 255, 0);
-            transition: background 0.5s, backdrop-filter 0.5s, border-color 0.5s;
-        }
-        nav.scrolled {
-            background: rgba(3, 3, 5, 0.88); backdrop-filter: blur(14px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .brand-logo {
-            font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; letter-spacing: 2px;
-            color: var(--gold-light); z-index: 1001; white-space: nowrap;
-        }
-        .nav-right { display: flex; align-items: center; gap: 24px; }
-        .nav-links { display: flex; gap: 30px; align-items: center; }
-        .nav-links a { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #a0a0b5; transition: 0.3s; text-transform: uppercase; position: relative; }
-        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0%; height: 1px; background: var(--gold-light); transition: width 0.3s ease; }
-        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
-        .nav-links a:hover, .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
-
-        .lang-dropdown-wrapper { position: relative; font-family: 'Cinzel', serif; font-size: 0.8rem; color: #a0a0b5; z-index: 1001; }
-        .lang-current { cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 6px; transition: color 0.3s; font-weight: 600; letter-spacing: 1px; }
-        .lang-current:hover, .lang-dropdown-wrapper.active .lang-current { color: var(--gold-light); text-shadow: 0 0 8px rgba(201,168,76,0.5); }
-        .lang-current svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; transition: transform 0.3s; }
-        .lang-dropdown-wrapper.active .lang-current svg { transform: rotate(180deg); }
-        .lang-dropdown-menu {
-            position: absolute; top: calc(100% + 10px); right: -10px; background: rgba(10, 10, 15, 0.95);
-            border: 1px solid rgba(201,168,76,0.3); border-radius: 12px; display: flex; flex-direction: column;
-            overflow: hidden; opacity: 0; pointer-events: none; transform: translateY(-10px);
-            transition: opacity 0.3s, transform 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.8); backdrop-filter: blur(10px); min-width: 100px;
-        }
-        .lang-dropdown-wrapper.active .lang-dropdown-menu { opacity: 1; pointer-events: auto; transform: translateY(0); }
-        .lang-btn { padding: 12px 20px; cursor: pointer; transition: 0.3s; letter-spacing: 1px; text-align: center; color: #a0a0b5; }
-        .lang-btn:not(:last-child) { border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .lang-btn:hover, .lang-btn.active { color: var(--gold-light); background: rgba(201,168,76,0.1); }
-
-        .share-trigger {
-            cursor: pointer; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px;
-            border: 1px solid rgba(201,168,76,0.3); border-radius: 50%; color: var(--gold-light); transition: 0.3s; z-index: 1001;
-        }
-        .share-trigger svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
-        .share-trigger:hover { background: rgba(201,168,76,0.1); border-color: var(--gold-light); box-shadow: 0 0 12px rgba(201,168,76,0.2); transform: translateY(-2px); }
-
-        .menu-toggle { display: none; flex-direction: column; justify-content: space-between; width: 26px; height: 18px; cursor: pointer; z-index: 1001; }
-        .menu-toggle span { width: 100%; height: 2px; background-color: var(--gold-light); transition: 0.3s; border-radius: 2px; }
-        .menu-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-        .menu-toggle.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-        .menu-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
-
-        /* ======================================================== */
-
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; }
-        .modal-overlay.active { display: flex; opacity: 1; }
-        .share-modal { background: #0a0a0f; border: 1px solid var(--gold); border-radius: 24px; width: 90%; max-width: 400px; padding: 45px 30px; text-align: center; box-shadow: 0 30px 70px rgba(0,0,0,0.9); }
-        .share-modal h3 { font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--gold-light); margin-bottom: 15px; }
-        .share-modal p { font-size: 0.9rem; color: #888; margin-bottom: 35px; }
-        .share-buttons { display: flex; flex-direction: column; gap: 14px; }
-        .modal-btn { padding: 16px; border-radius: 12px; border: none; font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: 0.3s; }
-        .btn-copy { background: var(--gold); color: #000; }
-        .btn-sns { background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #fff; }
-        .btn-close-modal { margin-top: 25px; color: #666; background: none; font-size: 0.8rem; text-decoration: underline; border: none; cursor: pointer; }
-        .toast-msg { position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%); background: var(--gold); color: #000; padding: 12px 30px; border-radius: 40px; font-size: 0.9rem; font-weight: 700; z-index: 3000; display: none; animation: fadeUp 0.4s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        /* ── 페이지 전용 스타일 ── */
 
         .page-header { position: relative; width: 100%; height: 350px; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; padding-top: var(--nav-height); }
         #stars-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
         .header-content { position: relative; z-index: 3; text-align: center; animation: fadeUp 1.2s ease both; }
         .header-title { font-family: 'Cinzel', serif; font-size: clamp(2rem, 8vw, 3.5rem); font-weight: 700; letter-spacing: 0.15em; color: #ffffff; text-shadow: 0 0 20px rgba(255, 255, 255, 0.3); margin-bottom: 10px; }
         .header-slogan { font-size: clamp(0.85rem, 2vw, 1rem); color: var(--text-dim); letter-spacing: 1px; }
+
         .theater-wrapper { max-width: 1100px; margin: 0 auto 40px; padding: 0 20px; animation: fadeUp 1s ease 0.2s both; position: relative; z-index: 10; }
         .main-screen { position: relative; width: 100%; padding-bottom: 56.25%; background: #000; border-radius: 16px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.8); z-index: 10; }
         .main-screen iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
@@ -188,15 +116,7 @@
         .cm-empty, .cm-loading { text-align: center; padding: 40px 20px; color: #555; font-family: 'Cinzel', serif; font-size: 0.85rem; letter-spacing: 2px; }
         .cm-empty span:first-child { display: block; font-size: 1.5rem; margin-bottom: 10px; opacity: 0.5; }
 
-        footer { text-align: center; padding: 60px 40px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: #555; border-top: 1px solid rgba(255,255,255,0.03); }
-
         @media (max-width: 900px) {
-            nav { padding: 0 20px; }
-            .brand-logo { font-size: 1.1rem; }
-            .nav-links { display: none; }
-            .nav-links.active { display: flex; position: fixed; top: var(--nav-height); left: 0; width: 100%; height: calc(100vh - var(--nav-height)); background: rgba(3, 3, 5, 0.98); flex-direction: column; align-items: center; justify-content: center; gap: 25px; z-index: 1002; }
-            .nav-right { gap: 14px; }
-            .menu-toggle { display: flex; }
             .page-header { height: 250px; }
             .shorts-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
             .shorts-section { padding: 40px 15px; }
@@ -208,60 +128,10 @@
 </head>
 <body>
 
-    <div id="scroll-progress"></div>
+    <!-- ① 공용 nav placeholder -->
+    <div id="site-nav"></div>
 
-    <nav id="main-nav">
-        <a href="index.html" class="brand-logo">Chris LEE.PAPA</a>
-        <div class="nav-right">
-            <div class="nav-links" id="navLinks">
-                <a href="index.html" data-i18n="nav_home">Home</a>
-                <a href="bible.html" data-i18n="nav_bible">Bible</a>
-                <a href="worship.html" data-i18n="nav_worship">Worship</a>
-                <a href="music.html" data-i18n="nav_music">Music</a>
-                <a href="book.html" data-i18n="nav_book">Books</a>
-                <a href="movie.html" class="active" data-i18n="nav_movie">Movies</a>
-            </div>
-
-            <!-- Language Switcher Dropdown -->
-            <div class="lang-dropdown-wrapper" id="langWrapper">
-                <button class="lang-current" type="button" onclick="toggleLangDropdown(event)" aria-haspopup="true" aria-expanded="false">
-                    <span id="currentLangText">KOR</span>
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </button>
-                <div class="lang-dropdown-menu">
-                    <button type="button" class="lang-btn active" data-lang="ko" onclick="setLanguage('ko')">KOR</button>
-                    <button type="button" class="lang-btn" data-lang="en" onclick="setLanguage('en')">ENG</button>
-                </div>
-            </div>
-
-            <!-- Share Icon Button -->
-            <button class="share-trigger" type="button" onclick="openShareModal()" title="Share" aria-label="Share this page">
-                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                    <circle cx="18" cy="5" r="3"></circle>
-                    <circle cx="6" cy="12" r="3"></circle>
-                    <circle cx="18" cy="19" r="3"></circle>
-                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-                </svg>
-            </button>
-
-            <button class="menu-toggle" id="mobile-menu" type="button" aria-label="Open navigation menu" aria-controls="navLinks" aria-expanded="false"><span></span><span></span><span></span></button>
-        </div>
-    </nav>
-
-    <!-- SNS 공유 모달 -->
-    <div class="modal-overlay" id="shareOverlay" onclick="closeShareModal(event)">
-        <div class="share-modal" onclick="event.stopPropagation()">
-            <h3 data-i18n="share_title">SHARE MOVIE ARCHIVE</h3>
-            <p data-i18n="share_desc">크리스리의 시네마틱 세계관을 소중한 사람들과 나누세요.</p>
-            <div class="share-buttons">
-                <button class="modal-btn btn-copy" onclick="copyURL()" data-i18n="share_copy">COPY LINK</button>
-                <button class="modal-btn btn-sns" onclick="shareViaWebAPI()" data-i18n="share_sns">SNS SHARE</button>
-            </div>
-            <button class="modal-btn btn-close-modal" onclick="closeShareModal(null)" data-i18n="share_close">Close</button>
-        </div>
-    </div>
-    <div class="toast-msg" id="toast"></div>
+    <!-- ── 페이지 본문 ── -->
 
     <header class="page-header">
         <canvas id="stars-canvas"></canvas>
@@ -274,7 +144,6 @@
     <main class="theater-wrapper">
         <div class="main-screen" id="main-video-container">
             <iframe id="main-video-player" src="https://www.youtube.com/embed/kAkGg2t1Ats?autoplay=0&enablejsapi=1" title="Main Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe>
-            <!-- ⛶ 확대 시 자동으로 가로 전환을 위한 커스텀 버튼 -->
             <button class="expand-landscape-btn" onclick="expandToLandscape()" data-i18n="expand_btn">⛶ 전체화면 (가로)</button>
         </div>
         <div class="screen-info">
@@ -331,7 +200,6 @@
         <div class="comments-divider">
             <span class="comments-divider-title" data-i18n="comments_title">Guestbook</span>
         </div>
-
         <div class="comment-form">
             <span class="comment-form-label" data-i18n="comments_leave">✦ 한마디 남겨주세요</span>
             <div class="comment-input-row">
@@ -342,145 +210,87 @@
                 <button class="cm-submit-btn" type="button" onclick="submitComment()" data-i18n="comments_submit">남기기</button>
             </div>
         </div>
-
         <div id="cm-list" class="comment-list" aria-live="polite">
             <div class="cm-loading" data-i18n="comments_loading">· · ·</div>
         </div>
     </section>
 
-    <footer><p data-i18n="footer_text">© 2026 Chris LEE.PAPA — The Creative Archive</p></footer>
+    <!-- ② 공용 footer placeholder -->
+    <div id="site-footer"></div>
 
+    <!-- ③ 페이지 전용 i18n (공통 키는 main.js에 있으므로 이 페이지 고유 키만 작성) -->
     <script>
-        // ── Multilingual System ──
-        const i18n = {
+        window.PAGE_I18N = {
             ko: {
-                nav_home: "Home", nav_bible: "Bible", nav_worship: "Worship", nav_music: "Music", nav_book: "Books", nav_movie: "Movies",
-                share_title: "SHARE MOVIE ARCHIVE", share_desc: "크리스리의 시네마틱 세계관을 소중한 사람들과 나누세요.",
-                share_copy: "COPY LINK", share_sns: "SNS SHARE", share_close: "Close",
-                header_title: "MOVIE ARCHIVE", header_slogan: "프레임에 담긴 무한한 세계",
-                expand_btn: "⛶ 전체화면 (가로)", carousel_heading: "UP NEXT", shorts_heading: "VERTICAL ARCHIVES",
-                footer_text: "© 2026 Chris LEE.PAPA — The Creative Archive", toast_copy: "링크가 복사되었습니다 ✓",
-                toast_error: "지원하지 않는 브라우저입니다.", comments_title: "Guestbook",
-                comments_leave: "✦ 한마디 남겨주세요", comments_submit: "남기기", comments_loading: "· · ·",
-                comments_empty: "첫 번째 기록을 남겨주세요", comments_name_placeholder: "닉네임",
+                share_title: "SHARE MOVIE ARCHIVE",
+                share_desc: "크리스리의 시네마틱 세계관을 소중한 사람들과 나누세요.",
+                header_title: "MOVIE ARCHIVE",
+                header_slogan: "프레임에 담긴 무한한 세계",
+                expand_btn: "⛶ 전체화면 (가로)",
+                carousel_heading: "UP NEXT",
+                shorts_heading: "VERTICAL ARCHIVES",
+                comments_title: "Guestbook",
+                comments_leave: "✦ 한마디 남겨주세요",
+                comments_submit: "남기기",
+                comments_loading: "· · ·",
+                comments_empty: "첫 번째 기록을 남겨주세요",
+                comments_name_placeholder: "닉네임",
                 comments_body_placeholder: "영상을 보며 느낀 점, 감동의 한마디를 남겨주세요 🙏",
-                comments_validation_required: "닉네임과 내용을 입력해주세요.", comments_validation_short: "내용을 좀 더 입력해주세요.",
-                comments_thanks: "소중한 한마디 감사합니다 🙏", comments_retry: "오류가 발생했습니다. 다시 시도해주세요.",
+                comments_validation_required: "닉네임과 내용을 입력해주세요.",
+                comments_validation_short: "내용을 좀 더 입력해주세요.",
+                comments_thanks: "소중한 한마디 감사합니다 🙏",
+                comments_retry: "오류가 발생했습니다. 다시 시도해주세요.",
                 comments_network: "네트워크 오류입니다."
             },
             en: {
-                nav_home: "Home", nav_bible: "Bible", nav_worship: "Worship", nav_music: "Music", nav_book: "Books", nav_movie: "Movies",
-                share_title: "SHARE MOVIE ARCHIVE", share_desc: "Share Chris Lee's cinematic universe with your loved ones.",
-                share_copy: "COPY LINK", share_sns: "SNS SHARE", share_close: "Close",
-                header_title: "MOVIE ARCHIVE", header_slogan: "An infinite world captured in a frame",
-                expand_btn: "⛶ Fullscreen (Landscape)", carousel_heading: "UP NEXT", shorts_heading: "VERTICAL ARCHIVES",
-                footer_text: "© 2026 Chris LEE.PAPA — The Creative Archive", toast_copy: "Link copied to clipboard ✓",
-                toast_error: "Browser not supported.", comments_title: "Guestbook",
-                comments_leave: "✦ Leave a message", comments_submit: "Submit", comments_loading: "· · ·",
-                comments_empty: "Be the first to leave a message", comments_name_placeholder: "Nickname",
+                share_title: "SHARE MOVIE ARCHIVE",
+                share_desc: "Share Chris Lee's cinematic universe with your loved ones.",
+                header_title: "MOVIE ARCHIVE",
+                header_slogan: "An infinite world captured in a frame",
+                expand_btn: "⛶ Fullscreen (Landscape)",
+                carousel_heading: "UP NEXT",
+                shorts_heading: "VERTICAL ARCHIVES",
+                comments_title: "Guestbook",
+                comments_leave: "✦ Leave a message",
+                comments_submit: "Submit",
+                comments_loading: "· · ·",
+                comments_empty: "Be the first to leave a message",
+                comments_name_placeholder: "Nickname",
                 comments_body_placeholder: "Share what this video made you feel 🙏",
-                comments_validation_required: "Please enter a nickname and message.", comments_validation_short: "Please enter a little more.",
-                comments_thanks: "Thank you for your message 🙏", comments_retry: "Something went wrong. Please try again.",
+                comments_validation_required: "Please enter a nickname and message.",
+                comments_validation_short: "Please enter a little more.",
+                comments_thanks: "Thank you for your message 🙏",
+                comments_retry: "Something went wrong. Please try again.",
                 comments_network: "Network error. Please try again."
             }
         };
 
+        // ④ 컴포넌트 삽입 완료 후 실행할 콜백
+        window.onMainReady = function() {
+            initStarCanvas();
+            renderCarousel();
+            fetchComments();
+        };
+
+        // ⑤ 언어 변경 시 추가 동작
+        window.onLangChange = function(lang) {
+            updateMainVideoInfo();
+            renderCarousel();
+        };
+
+        // ── 영상 데이터 ──
         const videoData = [
             { id: 'kAkGg2t1Ats', title_ko: "이게 AI 로 되네? 그냥 만들어본 뮤직비디오 'FURIOUS 💥'", title_en: "Is this AI? Music Video 'FURIOUS 💥'", badge_ko: 'FEATURED', badge_en: 'FEATURED', desc_ko: '직접 제작한 AI 기반 오리지널 뮤직비디오입니다. 역동적인 템포와 생성형 AI 비주얼이 결합된 강렬한 세계를 감상해 보세요.', desc_en: 'An original AI-based music video. Enjoy a powerful world where dynamic tempo meets generative AI visuals.' },
+            { id: 'LfxDfxPtaV0', title_ko: "크리스리 다큐 예고편 (AI 영상)", title_en: "Chris Lee Documentary Trailer (AI Video)", badge_ko: 'CINEMATIC', badge_en: 'CINEMATIC', desc_ko: '크리스리의 도전을 담은 AI 기반 다큐 예고편입니다.', desc_en: "An AI-based documentary trailer capturing Chris Lee's journey." },
+            { id: 'i9YEleoZkjA', title_ko: "AI 기반 단편 영화 비주얼", title_en: "AI-Based Short Film Visual", badge_ko: 'CINEMATIC', badge_en: 'CINEMATIC', desc_ko: '아름다운 빛과 그림자가 교차하는 AI 기반 단편 영화 비주얼입니다.', desc_en: 'An AI-based short film visual where beautiful light and shadow intersect.' },
+            { id: 'A5j9T_xdRGM', title_ko: "AI로 담은 예수님의 이야기", title_en: "The Story of Jesus in AI", badge_ko: 'SPIRITUAL', badge_en: 'SPIRITUAL', desc_ko: '신앙과 예술이 만나는 경계에서, AI로 재현한 예수님의 이야기입니다.', desc_en: 'At the boundary where faith meets art, the story of Jesus reimagined with AI.' },
             { id: 'byxLKvBHULk', title_ko: "역대급 출연진 귀칼 실사 촬영 현장 #귀멸의칼날", title_en: "Behind the Scenes of Demon Slayer Live-Action", badge_ko: 'CINEMATIC', badge_en: 'CINEMATIC', desc_ko: '끝없는 상상력을 바탕으로 렌더링된 실사 아트워크 영상입니다.', desc_en: 'Ultra-high-definition cinematic artwork rendered with endless imagination.' },
             { id: 'vlt7VfCA8bM', title_ko: "사랑한다고 뮤직비디오", title_en: "Love song Music Video", badge_ko: 'CINEMATIC', badge_en: 'CINEMATIC', desc_ko: '아름다운 사랑과 이별의 노래에 대한 뮤직비디오', desc_en: 'An AI-based short film visual where beautiful light and shadow intersect.' }
         ];
 
-        let currentLang = 'ko';
         let activeVideoIndex = 0;
 
-        function setLanguage(lang) {
-            if (!i18n[lang]) lang = 'ko';
-            currentLang = lang;
-            document.documentElement.lang = lang;
-            try { localStorage.setItem('pref-lang', lang); } catch(e) {}
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (i18n[lang][key]) el.textContent = i18n[lang][key];
-            });
-            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-                const key = el.getAttribute('data-i18n-placeholder');
-                if (i18n[lang][key]) el.setAttribute('placeholder', i18n[lang][key]);
-            });
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
-            });
-            const langTextObj = document.getElementById('currentLangText');
-            if (langTextObj) langTextObj.textContent = lang === 'ko' ? 'KOR' : 'ENG';
-            const langWrapper = document.getElementById('langWrapper');
-            if (langWrapper) langWrapper.classList.remove('active');
-            updateMainVideoInfo();
-            renderCarousel();
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            let savedLang = 'ko';
-            try { savedLang = localStorage.getItem('pref-lang') || 'ko'; } catch(e) {}
-            setLanguage(savedLang);
-            fetchComments();
-        });
-
-        function toggleLangDropdown(event) {
-            if (event) event.stopPropagation();
-            const wrapper = document.getElementById('langWrapper');
-            if (!wrapper) return;
-            const isActive = wrapper.classList.toggle('active');
-            wrapper.querySelector('.lang-current').setAttribute('aria-expanded', String(isActive));
-        }
-
-        document.addEventListener('click', function(e) {
-            const wrapper = document.getElementById('langWrapper');
-            if (wrapper && !wrapper.contains(e.target)) {
-                wrapper.classList.remove('active');
-                wrapper.querySelector('.lang-current').setAttribute('aria-expanded', 'false');
-            }
-        });
-
-        const menuToggle = document.getElementById('mobile-menu');
-        const navLinks = document.getElementById('navLinks');
-        if (menuToggle && navLinks) {
-            menuToggle.addEventListener('click', () => {
-                const isOpen = menuToggle.classList.toggle('active');
-                navLinks.classList.toggle('active', isOpen);
-                menuToggle.setAttribute('aria-expanded', String(isOpen));
-            });
-        }
-
-        // ── 변경된 스크롤 프로그레스 및 내비게이션 바 로직 ──
-        window.addEventListener('scroll', () => {
-            const scrollTop = window.scrollY; const docHeight = document.body.scrollHeight - window.innerHeight;
-            document.getElementById('scroll-progress').style.width = (scrollTop / (docHeight || 1) * 100) + '%';
-            document.getElementById('main-nav').classList.toggle('scrolled', scrollTop > 40);
-        }, { passive: true });
-
-        const shareOverlay = document.getElementById('shareOverlay');
-        const toast = document.getElementById('toast');
-        function openShareModal() { if (!shareOverlay) return; shareOverlay.style.display = 'flex'; setTimeout(() => shareOverlay.classList.add('active'), 10); }
-        function closeShareModal(e) { if (!shareOverlay || (e && e.target !== shareOverlay && e.type !== 'click')) return; shareOverlay.classList.remove('active'); setTimeout(() => shareOverlay.style.display = 'none', 300); }
-
-        async function copyURL() {
-            const url = window.location.href; let success = false;
-            if (navigator.clipboard && window.isSecureContext) { try { await navigator.clipboard.writeText(url); success = true; } catch (err) {} }
-            if (!success) {
-                const ta = document.createElement("textarea"); ta.value = url; ta.id = "temp-copy-area"; ta.style.position = "fixed"; ta.style.left = "-9999px";
-                document.body.appendChild(ta); ta.focus(); ta.select(); try { success = document.execCommand('copy'); } catch (err) {} document.body.removeChild(ta);
-            }
-            if (success) showToast(i18n[currentLang].toast_copy);
-            closeShareModal();
-        }
-
-        async function shareViaWebAPI() {
-            if (!navigator.share) { showToast(i18n[currentLang].toast_error); return; }
-            try { await navigator.share({ title: 'Chris LEE.PAPA - MOVIE', text: currentLang === 'ko' ? 'AI로 그려낸 시네마틱 비주얼 아카이브입니다.' : "Chris Lee's cinematic visual archive created with AI.", url: window.location.href }); } catch (err) { if (!err || err.name !== 'AbortError') showToast(i18n[currentLang].toast_error); }
-        }
-
-        function showToast(msg) { if (!toast) return; toast.textContent = msg; toast.style.display = 'block'; setTimeout(() => { toast.style.display = 'none'; }, 2500); }
-
+        // ── Supabase 댓글 ──
         const SUPA_URL = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
         const SUPA_KEY = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
         const PAGE_ID = '/movie';
@@ -489,17 +299,28 @@
             const list = document.getElementById('cm-list');
             if (!list) return;
             try {
-                const res = await fetch(`${SUPA_URL}/rest/v1/comments?page=eq.${encodeURIComponent(PAGE_ID)}&order=created_at.desc`, { headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` } });
+                const res = await fetch(`${SUPA_URL}/rest/v1/comments?page=eq.${encodeURIComponent(PAGE_ID)}&order=created_at.desc`, {
+                    headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` }
+                });
                 if (!res.ok) throw new Error();
                 const data = await res.json();
                 renderComments(data);
-            } catch (err) { list.innerHTML = `<div class="cm-empty"><span>✦</span>${i18n[currentLang].comments_retry}</div>`; }
+            } catch (err) {
+                const lang = window.__currentLang || 'ko';
+                const msg = window.PAGE_I18N[lang]?.comments_retry || '오류가 발생했습니다. 다시 시도해주세요.';
+                list.innerHTML = `<div class="cm-empty"><span>✦</span>${msg}</div>`;
+            }
         }
 
         function renderComments(comments) {
             const list = document.getElementById('cm-list');
             if (!list) return;
-            if (!comments.length) { list.innerHTML = `<div class="cm-empty"><span>✦</span>${i18n[currentLang].comments_empty}</div>`; return; }
+            const lang = window.__currentLang || 'ko';
+            if (!comments.length) {
+                const msg = window.PAGE_I18N[lang]?.comments_empty || '첫 번째 기록을 남겨주세요';
+                list.innerHTML = `<div class="cm-empty"><span>✦</span>${msg}</div>`;
+                return;
+            }
             list.innerHTML = comments.map((c, i) => `
                 <div class="comment-card" style="animation-delay:${i * 0.05}s">
                     <div class="comment-meta">
@@ -512,65 +333,100 @@
         }
 
         async function submitComment() {
-            const ni = document.getElementById('cm-name'); const bi = document.getElementById('cm-body'); const btn = document.querySelector('.cm-submit-btn');
-            const nickname = ni.value.trim(); const content = bi.value.trim();
-            if (!nickname || !content) { showToast(i18n[currentLang].comments_validation_required); return; }
+            const ni = document.getElementById('cm-name');
+            const bi = document.getElementById('cm-body');
+            const btn = document.querySelector('.cm-submit-btn');
+            const lang = window.__currentLang || 'ko';
+            const t = window.PAGE_I18N[lang];
+            const nickname = ni.value.trim();
+            const content = bi.value.trim();
+            if (!nickname || !content) { if (window.showToast) showToast(t.comments_validation_required); return; }
             btn.disabled = true; btn.textContent = '...';
             try {
-                const res = await fetch(`${SUPA_URL}/rest/v1/comments`, { method: 'POST', headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' }, body: JSON.stringify({ page: PAGE_ID, nickname, content }) });
-                if (res.ok) { ni.value = ''; bi.value = ''; showToast(i18n[currentLang].comments_thanks); fetchComments(); }
-            } catch (err) { showToast(i18n[currentLang].comments_network); } finally { btn.disabled = false; btn.textContent = i18n[currentLang].comments_submit; }
+                const res = await fetch(`${SUPA_URL}/rest/v1/comments`, {
+                    method: 'POST',
+                    headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+                    body: JSON.stringify({ page: PAGE_ID, nickname, content })
+                });
+                if (res.ok) { ni.value = ''; bi.value = ''; if (window.showToast) showToast(t.comments_thanks); fetchComments(); }
+            } catch (err) {
+                if (window.showToast) showToast(t.comments_network);
+            } finally {
+                btn.disabled = false; btn.textContent = t.comments_submit;
+            }
         }
 
-        const canvas = document.getElementById('stars-canvas'); const ctx = canvas ? canvas.getContext('2d') : null; let stars = [];
-        function resize() { if (!canvas) return; canvas.width = window.innerWidth; canvas.height = 350; initStars(); }
-        function initStars() { stars = []; const count = (canvas.width * canvas.height) / 6000; for (let i = 0; i < count; i++) stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 1.5 + 0.2, opacity: Math.random(), speed: Math.random() * 0.02 + 0.005 }); }
-        function draw() { if (!ctx) return; ctx.clearRect(0, 0, canvas.width, canvas.height); stars.forEach(s => { s.opacity += s.speed; if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed; ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0, s.opacity)})`; ctx.fill(); }); requestAnimationFrame(draw); }
-        window.addEventListener('resize', resize); resize(); draw();
+        // ── 별 캔버스 ──
+        function initStarCanvas() {
+            const canvas = document.getElementById('stars-canvas');
+            const ctx = canvas ? canvas.getContext('2d') : null;
+            if (!ctx) return;
+            let stars = [];
+            function resize() { canvas.width = window.innerWidth; canvas.height = 350; initStars(); }
+            function initStars() {
+                stars = [];
+                const count = (canvas.width * canvas.height) / 6000;
+                for (let i = 0; i < count; i++) stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 1.5 + 0.2, opacity: Math.random(), speed: Math.random() * 0.02 + 0.005 });
+            }
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                stars.forEach(s => {
+                    s.opacity += s.speed;
+                    if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed;
+                    ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0, s.opacity)})`; ctx.fill();
+                });
+                requestAnimationFrame(draw);
+            }
+            window.addEventListener('resize', resize); resize(); draw();
+        }
 
+        // ── 영상 플레이어 ──
         function expandToLandscape() {
             const iframe = document.getElementById('main-video-player'); if (!iframe) return;
             if (iframe.requestFullscreen) iframe.requestFullscreen().then(lockLandscape);
             else if (iframe.webkitRequestFullscreen) { iframe.webkitRequestFullscreen(); lockLandscape(); }
         }
-        function lockLandscape() { if (window.screen && screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(() => {}); }
-
-        const carouselList = document.getElementById('carousel-list');
-        const mainPlayer = document.getElementById('main-video-player');
-        const mainTitle = document.getElementById('main-video-title');
-        const mainBadge = document.getElementById('main-video-badge');
-        const mainDesc = document.getElementById('main-video-desc');
+        function lockLandscape() {
+            if (window.screen && screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(() => {});
+        }
 
         function updateMainVideoInfo() {
+            const lang = window.__currentLang || 'ko';
             const v = videoData[activeVideoIndex]; if (!v) return;
-            mainTitle.textContent = v[`title_${currentLang}`];
-            mainBadge.textContent = v[`badge_${currentLang}`];
-            mainDesc.textContent = v[`desc_${currentLang}`];
+            const mainTitle = document.getElementById('main-video-title');
+            const mainBadge = document.getElementById('main-video-badge');
+            const mainDesc  = document.getElementById('main-video-desc');
+            if (mainTitle) mainTitle.textContent = v[`title_${lang}`];
+            if (mainBadge) mainBadge.textContent = v[`badge_${lang}`];
+            if (mainDesc)  mainDesc.textContent  = v[`desc_${lang}`];
         }
 
         function renderCarousel() {
+            const lang = window.__currentLang || 'ko';
+            const carouselList = document.getElementById('carousel-list');
             if (!carouselList) return;
             carouselList.innerHTML = videoData.map((v, i) => `
                 <div class="thumbnail-card ${i === activeVideoIndex ? 'active' : ''}" onclick="loadMainVideo(${i}, this)">
                     <div class="thumb-img" style="background-image: url('https://img.youtube.com/vi/${v.id}/hqdefault.jpg')"></div>
-                    <div class="thumb-overlay"><span class="thumb-title">${v[`title_${currentLang}`]}</span></div>
+                    <div class="thumb-overlay"><span class="thumb-title">${v[`title_${lang}`]}</span></div>
                 </div>`).join('');
         }
 
-        function loadMainVideo(i, el) {
-            activeVideoIndex = i; const v = videoData[i];
-            if (mainPlayer.src.indexOf(v.id) === -1) mainPlayer.src = `https://www.youtube.com/embed/${v.id}?autoplay=1&enablejsapi=1`;
+        function loadMainVideo(i) {
+            activeVideoIndex = i;
+            const v = videoData[i];
+            const mainPlayer = document.getElementById('main-video-player');
+            if (mainPlayer && mainPlayer.src.indexOf(v.id) === -1) {
+                mainPlayer.src = `https://www.youtube.com/embed/${v.id}?autoplay=1&enablejsapi=1`;
+            }
             updateMainVideoInfo(); renderCarousel();
-            const tw = document.querySelector('.theater-wrapper'); if (tw) window.scrollTo({ top: tw.offsetTop - 120, behavior: 'smooth' });
+            const tw = document.querySelector('.theater-wrapper');
+            if (tw) window.scrollTo({ top: tw.offsetTop - 120, behavior: 'smooth' });
         }
-
-        document.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('copy', e => { if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) e.preventDefault(); });
-        document.addEventListener('keydown', e => {
-            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || (e.ctrlKey && e.key === 'U')) e.preventDefault();
-            if (e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'p')) { if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) e.preventDefault(); }
-            if (e.key === 'PrintScreen') navigator.clipboard.writeText('');
-        });
     </script>
+
+    <!-- ⑥ main.js 로드 (항상 마지막) -->
+    <script src="js/main.js"></script>
 </body>
 </html>

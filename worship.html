@@ -422,9 +422,39 @@
         /* ── 모바일 ── */
         @media (max-width: 900px) {
             .page-header { height: 350px; }
-            .track-item { flex-direction: column; text-align: center; gap: 20px; }
+
+            /* ★ 본문 좌우 넘침 방지 */
+            .container {
+                padding-left: 16px;
+                padding-right: 16px;
+                overflow-x: hidden;
+            }
+
+            /* ★ 앨범 카드 — minmax(350px)가 모바일 화면 너비를 초과해 우측 넘침 발생 → 1열로 변경 */
+            .featured-albums {
+                grid-template-columns: 1fr;
+                gap: 24px;
+                margin-bottom: 60px;
+            }
+            .featured-card {
+                padding: 28px 20px;
+            }
+
+            /* ★ 트랙 아이템 */
+            .track-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+                padding: 20px 16px;
+            }
             .track-info { align-items: center; }
             .spotify-container-track { width: 100%; }
+
+            /* ★ Guestbook */
+            .comments-section {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
             .comment-input-row { flex-direction: column; }
             #cm-name { max-width: 100%; }
         }

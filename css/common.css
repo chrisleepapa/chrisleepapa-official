@@ -21,7 +21,7 @@ body {
     background-color: var(--bg);
     color: var(--text);
     font-family: 'Cormorant Garamond', 'Noto Sans KR', serif;
-    overflow-x: hidden;
+    overflow-x: hidden; /* ★ 모든 페이지 가로 스크롤 차단 */
 }
 a    { text-decoration: none; color: inherit; }
 ul   { list-style: none; }
@@ -73,6 +73,8 @@ img  { -webkit-user-drag: none; }
     justify-content: space-between;
     background: transparent;
     transition: background 0.35s ease, border-bottom 0.35s ease, backdrop-filter 0.35s ease;
+    box-sizing: border-box; /* ★ padding이 width 안에 포함되도록 */
+    max-width: 100vw;       /* ★ 뷰포트 너비 초과 방지 */
 }
 #main-nav.scrolled {
     background: rgba(3, 3, 5, 0.92);
@@ -89,7 +91,10 @@ img  { -webkit-user-drag: none; }
     color: var(--gold);
     letter-spacing: 0.12em;
     white-space: nowrap;
-    flex-shrink: 0;
+    flex-shrink: 1;    /* ★ 공간 부족 시 살짝 줄어들 수 있도록 */
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .brand-logo:hover { color: var(--gold-light); }
 
@@ -98,6 +103,8 @@ img  { -webkit-user-drag: none; }
     display: flex;
     align-items: center;
     gap: 14px;
+    flex-shrink: 0;    /* ★ 로고에 밀려 찌그러지지 않도록 */
+    min-width: 0;      /* ★ flex 넘침 방지 */
 }
 
 /* ──────────────────────────────────────────────

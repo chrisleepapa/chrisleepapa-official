@@ -375,6 +375,16 @@
         .yt-eq-bar:nth-child(3) { animation-delay: -0.1s; height: 70%; }
         @keyframes eq-bounce { 0%, 100% { transform: scaleY(0.4); } 50% { transform: scaleY(1); } }
 
+        /* ── Spotify iframe ── */
+        .spotify-embed-wrap {
+            display: none;
+            margin-bottom: 32px;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+        .spotify-embed-wrap.visible { display: block; }
+        .spotify-embed-wrap iframe { width: 100%; border-radius: 14px; border: none; display: block; }
+
         /* ── 가사 섹션 ── */
         .lyrics-section-title {
             font-family: 'Cinzel', serif;
@@ -624,6 +634,18 @@
                     YouTube BGM 재생 중
                 </div>
 
+                <!-- Vol.1 Spotify 임베드 -->
+                <div class="spotify-embed-wrap" id="spotify-embed-wrap">
+                    <iframe
+                        id="spotify-iframe"
+                        src="https://open.spotify.com/embed/album/0ctoLQNWCmiPEkySv05PAM?utm_source=generator&theme=0"
+                        width="100%"
+                        height="352"
+                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                        loading="lazy">
+                    </iframe>
+                </div>
+
                 <!-- 가사 섹션 -->
                 <div class="lyrics-section-title">✦ &nbsp; LYRICS &nbsp; ✦</div>
                 <div id="modal-lyrics">
@@ -825,6 +847,14 @@
 
             // 가사 아코디언
             buildLyrics(vol);
+
+            // Vol.1 Spotify 임베드 표시/숨김
+            const spotifyWrap = document.getElementById('spotify-embed-wrap');
+            if (vol === 'vol1') {
+                spotifyWrap.classList.add('visible');
+            } else {
+                spotifyWrap.classList.remove('visible');
+            }
 
             // 모달 표시
             modal.style.display = 'flex';

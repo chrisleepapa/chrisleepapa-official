@@ -1,274 +1,449 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>우리 아이 수학 학습 허브</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #030305;
-    --surface: #0e0e12;
-    --surface2: #16161e;
-    --accent: #c9a96e;
-    --accent2: #e8c98a;
-    --text: #e8e4dc;
-    --text2: #6a6660;
-    --border: #1e1e26;
-    --border2: #2a2a36;
-    --glow: rgba(201,169,110,0.07);
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Noto Sans KR', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-  body::after {
-    content: '';
-    position: fixed; inset: 0;
-    background: radial-gradient(ellipse at 80% 10%, rgba(201,169,110,0.04) 0%, transparent 60%),
+    <!-- ★ 공통 메타 / PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#030305">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="images/favicon.png">
+
+    <!-- ★ Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3207219520058740" crossorigin="anonymous"></script>
+
+    <!-- ★ Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NBGELYQ4TZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-NBGELYQ4TZ');
+      gtag('config', 'GT-5MJDBTR2');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="images/favicon.png" type="image/png">
+
+    <title>우리아이 스터디 카페</title>
+    <meta name="description" content="우리아이 스터디 카페 – 수학, 영어, 문해력, 게임까지 EBS 학습 콘텐츠를 한 곳에서 만나보세요.">
+    <meta name="keywords" content="우리아이 스터디 카페, EBS 수학, 초등 영어, 문해력, 학습 게임, Chris LEE.PAPA">
+    <meta property="og:title" content="우리아이 스터디 카페">
+    <meta property="og:description" content="수학, 영어, 문해력, 게임까지 EBS 학습 콘텐츠를 한 곳에서.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://chrisleepapa-official.vercel.app/math.html">
+    <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png">
+    <link rel="canonical" href="https://chrisleepapa-official.vercel.app/math.html">
+
+    <!-- ★ 공통 폰트 (index와 동일) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;800;900&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600&family=Noto+Serif+KR:wght@300;400;600&family=Noto+Sans+KR:wght@300;400;500;700&family=Space+Mono:wght@400;700&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css">
+
+    <!-- ★ 공통 스타일시트 -->
+    <link rel="stylesheet" href="css/common.css">
+
+    <style>
+        /* ── 전역 변수 & 리셋 ── */
+        :root {
+            --bg: #030305;
+            --surface: #0e0e12;
+            --surface2: #16161e;
+            --accent: #c9a96e;
+            --accent2: #e8c98a;
+            --gold: #c9a84c;
+            --gold-light: #e8d08a;
+            --text: #e8e4dc;
+            --text2: #6a6660;
+            --border: #1e1e26;
+            --border2: #2a2a36;
+            --nav-height: 70px;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; background-color: var(--bg); }
+
+        body {
+            font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        img { -webkit-user-drag: none; }
+
+        a { text-decoration: none; color: inherit; }
+        button { appearance: none; background: none; border: 0; padding: 0; font: inherit; color: inherit; }
+
+        /* ── 배경 노이즈 텍스처 (index와 동일) ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 900;
+            opacity: 0.4;
+        }
+
+        /* ── 배경 그라디언트 글로우 ── */
+        body::after {
+            content: '';
+            position: fixed; inset: 0;
+            background:
+                radial-gradient(ellipse at 80% 10%, rgba(201,169,110,0.04) 0%, transparent 60%),
                 radial-gradient(ellipse at 10% 90%, rgba(201,169,110,0.03) 0%, transparent 50%);
-    pointer-events: none; z-index: 0;
-  }
+            pointer-events: none;
+            z-index: 0;
+        }
 
-  /* HEADER */
-  header {
-    position: relative; z-index: 1;
-    padding: 5rem 2rem 4rem;
-    border-bottom: 1px solid var(--border);
-  }
-  .header-inner { max-width: 860px; margin: 0 auto; }
+        /* ── 페이지 헤더 ── */
+        .page-header {
+            position: relative;
+            z-index: 1;
+            padding: calc(var(--nav-height) + 4rem) 2rem 3.5rem;
+            border-bottom: 1px solid var(--border);
+        }
 
-  .header-eyebrow {
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 4px;
-    color: var(--accent);
-    text-transform: uppercase;
-    margin-bottom: 2rem;
-    opacity: 0.8;
-  }
-  .header-eyebrow span { opacity: 0.5; margin: 0 8px; }
+        .header-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
 
-  header h1 {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 300;
-    font-size: clamp(2.8rem, 7vw, 5rem);
-    line-height: 1.05;
-    color: var(--text);
-    letter-spacing: -1px;
-    margin-bottom: 1.8rem;
-  }
-  header h1 em {
-    font-style: italic;
-    color: var(--accent);
-  }
+        .header-eyebrow {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 4px;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 1.8rem;
+            opacity: 0.8;
+        }
+        .header-eyebrow span { opacity: 0.5; margin: 0 8px; }
 
-  .header-rule {
-    width: 40px; height: 1px;
-    background: linear-gradient(90deg, var(--accent) 0%, transparent 100%);
-    margin-bottom: 1.4rem;
-  }
+        .page-header h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            font-size: clamp(2.4rem, 6vw, 4.2rem);
+            line-height: 1.08;
+            color: var(--text);
+            letter-spacing: -1px;
+            margin-bottom: 1.5rem;
+        }
+        .page-header h1 em {
+            font-style: italic;
+            background: linear-gradient(108deg, #b8922a 0%, #e8d08a 30%, #fffbe8 50%, #c9a84c 70%, #e8d08a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-  header p {
-    font-size: 13px;
-    color: var(--text2);
-    line-height: 1.8;
-    letter-spacing: 0.3px;
-    max-width: 380px;
-  }
+        .header-rule {
+            width: 40px;
+            height: 1px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+            margin-bottom: 1.2rem;
+        }
 
-  /* MAIN */
-  main {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 4.5rem 2rem 7rem;
-    position: relative; z-index: 1;
-  }
+        .page-header p {
+            font-size: 13px;
+            color: var(--text2);
+            line-height: 1.8;
+            letter-spacing: 0.3px;
+            max-width: 400px;
+            font-family: 'Pretendard', sans-serif;
+        }
 
-  .section-label {
-    font-family: 'Space Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 4px;
-    color: var(--text2);
-    text-transform: uppercase;
-    margin-bottom: 2.8rem;
-    display: flex; align-items: center; gap: 18px;
-    opacity: 0.7;
-  }
-  .section-label::after {
-    content: '';
-    flex: 1; height: 1px;
-    background: linear-gradient(90deg, var(--border2), transparent);
-  }
+        /* ── 메인 콘텐츠 ── */
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 4rem 2rem 7rem;
+            position: relative;
+            z-index: 1;
+        }
 
-  /* LINK GRID */
-  .link-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-    border: 1px solid var(--border2);
-    border-radius: 2px;
-    overflow: hidden;
-    gap: 1px;
-    background: var(--border2);
-  }
+        .section-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 4px;
+            color: var(--text2);
+            text-transform: uppercase;
+            margin-bottom: 2.4rem;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            opacity: 0.7;
+        }
+        .section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--border2), transparent);
+        }
 
-  .link-card {
-    background: var(--surface);
-    padding: 2.2rem 2rem;
-    text-decoration: none;
-    color: var(--text);
-    display: flex; flex-direction: column;
-    gap: 8px;
-    position: relative;
-    overflow: hidden;
-    transition: background 0.25s;
-    min-height: 220px;
-  }
-  .link-card::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--accent), transparent);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.3s ease;
-  }
-  .link-card:hover { background: var(--surface2); }
-  .link-card:hover::after { transform: scaleX(1); }
+        /* ── 링크 그리드 (바둑판식) ── */
+        .link-grid {
+            display: grid;
+            /* PC: 4열 바둑판식 */
+            grid-template-columns: repeat(4, 1fr);
+            border: 1px solid var(--border2);
+            border-radius: 4px;
+            overflow: hidden;
+            gap: 1px;
+            background: var(--border2);
+        }
 
-  .card-num {
-    font-family: 'Space Mono', monospace;
-    font-size: 9px;
-    color: var(--accent);
-    letter-spacing: 3px;
-    opacity: 0.5;
-    margin-bottom: 4px;
-  }
+        /* ── 링크 카드 (타일) - 크기 약간 축소 ── */
+        .link-card {
+            background: var(--surface);
+            padding: 1.6rem 1.5rem;
+            text-decoration: none;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            position: relative;
+            overflow: hidden;
+            transition: background 0.25s, transform 0.2s;
+            min-height: 180px;
+        }
+        .link-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+        .link-card:hover { background: var(--surface2); }
+        .link-card:hover::after { transform: scaleX(1); }
 
-  .card-icon {
-    font-size: 24px;
-    line-height: 1;
-    margin-bottom: 8px;
-  }
+        .card-num {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            color: var(--accent);
+            letter-spacing: 3px;
+            opacity: 0.5;
+            margin-bottom: 2px;
+        }
 
-  .card-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.45rem;
-    font-weight: 600;
-    line-height: 1.2;
-    color: var(--text);
-    transition: color 0.2s;
-  }
-  .link-card:hover .card-title { color: var(--accent2); }
+        .card-icon {
+            font-size: 22px;
+            line-height: 1;
+            margin-bottom: 6px;
+        }
 
-  .card-desc {
-    font-size: 11.5px;
-    color: var(--text2);
-    line-height: 1.7;
-    margin-top: 2px;
-  }
+        .card-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            line-height: 1.2;
+            color: var(--text);
+            transition: color 0.2s;
+        }
+        .link-card:hover .card-title { color: var(--accent2); }
 
-  .card-cta {
-    margin-top: auto;
-    padding-top: 1.4rem;
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    color: var(--accent);
-    letter-spacing: 2px;
-    display: flex; align-items: center; gap: 8px;
-    opacity: 0;
-    transform: translateY(4px);
-    transition: opacity 0.25s, transform 0.25s;
-  }
-  .card-cta::after {
-    content: '→';
-  }
-  .link-card:hover .card-cta {
-    opacity: 1;
-    transform: translateY(0);
-  }
+        .card-desc {
+            font-size: 11px;
+            color: var(--text2);
+            line-height: 1.65;
+            margin-top: 2px;
+            font-family: 'Pretendard', sans-serif;
+        }
 
-  /* FOOTER */
-  footer {
-    position: relative; z-index: 1;
-    text-align: center;
-    padding: 2rem;
-    border-top: 1px solid var(--border);
-    font-family: 'Space Mono', monospace;
-    font-size: 9px;
-    color: var(--text2);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    opacity: 0.4;
-  }
-</style>
+        .card-cta {
+            margin-top: auto;
+            padding-top: 1rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            color: var(--accent);
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+            transform: translateY(4px);
+            transition: opacity 0.25s, transform 0.25s;
+        }
+        .card-cta::after { content: '→'; }
+        .link-card:hover .card-cta { opacity: 1; transform: translateY(0); }
+
+        /* ── 카테고리 구분 배지 ── */
+        .card-category {
+            position: absolute;
+            top: 12px;
+            right: 14px;
+            font-family: 'Space Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: 20px;
+            border: 1px solid rgba(201,169,110,0.25);
+            color: rgba(201,169,110,0.6);
+        }
+
+        /* ── 푸터 ── */
+        footer {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid var(--border);
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            color: var(--text2);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: 0.4;
+        }
+
+        /* ── 반응형: 태블릿 (3열) ── */
+        @media (max-width: 900px) {
+            .link-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .link-card {
+                min-height: 170px;
+                padding: 1.4rem 1.3rem;
+            }
+        }
+
+        /* ── 반응형: 모바일 (2열) ── */
+        @media (max-width: 600px) {
+            .link-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .link-card {
+                min-height: 155px;
+                padding: 1.2rem 1.1rem;
+            }
+            .card-title { font-size: 1.1rem; }
+            .card-icon { font-size: 20px; }
+            .card-desc { font-size: 10.5px; }
+            .page-header { padding: calc(var(--nav-height) + 2.5rem) 1.2rem 2.5rem; }
+            main { padding: 2.5rem 1.2rem 5rem; }
+        }
+
+        /* ── 아주 작은 화면 (2열 유지, 더 컴팩트) ── */
+        @media (max-width: 380px) {
+            .link-card {
+                min-height: 140px;
+                padding: 1rem 0.9rem;
+            }
+            .card-title { font-size: 1rem; }
+        }
+    </style>
 </head>
 <body>
 
-<header>
-  <div class="header-inner">
-    <div class="header-eyebrow">✦<span>·</span>초등 수학 학습 아카이브<span>·</span>✦</div>
-    <h1>우리 아이<br><em>수학 허브</em></h1>
-    <div class="header-rule"></div>
-    <p>EBS 수학 콘텐츠를 한 곳에서.<br>학습 · 영상 · AI 추천 · 문해력까지.</p>
-  </div>
-</header>
+    <!-- ★ 공통 헤더 (index와 동일) -->
+    <div id="site-nav"></div>
 
-<main>
-  <div class="section-label">The Archive <span style="opacity:.3">·</span> EBS 학습 링크</div>
+    <!-- ── 페이지 헤더 ── -->
+    <header class="page-header">
+        <div class="header-inner">
+            <div class="header-eyebrow">✦<span>·</span>우리 가족 학습 공간<span>·</span>✦</div>
+            <h1>우리아이<br><em>스터디 카페</em></h1>
+            <div class="header-rule"></div>
+            <p>수학 · 영어 · 문해력 · 게임까지.<br>EBS 학습 콘텐츠를 한 곳에서 만나보세요.</p>
+        </div>
+    </header>
 
-  <div class="link-grid">
+    <!-- ── 메인 타일 그리드 ── -->
+    <main>
+        <div class="section-label">The Archive <span style="opacity:.3">·</span> EBS 학습 링크</div>
 
-    <a href="https://www.ebsmath.co.kr" target="_blank" class="link-card">
-      <div class="card-num">01 · SITE</div>
-      <div class="card-icon">📐</div>
-      <div class="card-title">EBS Math<br>바로가기</div>
-      <div class="card-desc">EBS 수학 공식 사이트.<br>학년별 강좌 및 전체 콘텐츠.</div>
-      <div class="card-cta">OPEN</div>
-    </a>
+        <div class="link-grid">
 
-    <a href="https://www.ebsmath.co.kr/mathquiz/Main" target="_blank" class="link-card">
-      <div class="card-num">02 · GAME</div>
-      <div class="card-icon">🎮</div>
-      <div class="card-title">EBS Math<br>게임하기</div>
-      <div class="card-desc">수학 개념을 게임으로.<br>재미있게 실력을 키워요.</div>
-      <div class="card-cta">PLAY</div>
-    </a>
+            <!-- 01 수학 사이트 -->
+            <a href="https://www.ebsmath.co.kr" target="_blank" class="link-card">
+                <div class="card-num">01 · SITE</div>
+                <div class="card-icon">📐</div>
+                <div class="card-title">EBS Math<br>바로가기</div>
+                <div class="card-desc">EBS 수학 공식 사이트.<br>학년별 강좌 및 전체 콘텐츠.</div>
+                <div class="card-cta">OPEN</div>
+            </a>
 
-    <a href="https://www.ebsmath.co.kr/resource/rscList?grdCd=EGRD01&cate=211100&listViewMode=rscList" target="_blank" class="link-card">
-      <div class="card-num">03 · VIDEO</div>
-      <div class="card-icon">🎬</div>
-      <div class="card-title">EBS 수학<br>영상 링크</div>
-      <div class="card-desc">학년별 수학 영상 자료실.<br>단원 개념 영상 모아보기.</div>
-      <div class="card-cta">WATCH</div>
-    </a>
+            <!-- 02 수학 게임 -->
+            <a href="https://www.ebsmath.co.kr/mathquiz/Main" target="_blank" class="link-card">
+                <div class="card-num">02 · GAME</div>
+                <div class="card-icon">🎮</div>
+                <div class="card-title">EBS Math<br>게임하기</div>
+                <div class="card-desc">수학 개념을 게임으로.<br>재미있게 실력을 키워요.</div>
+                <div class="card-cta">PLAY</div>
+            </a>
 
-    <a href="https://ai-new.ebs.co.kr/pri/" target="_blank" class="link-card">
-      <div class="card-num">04 · AI</div>
-      <div class="card-icon">🤖</div>
-      <div class="card-title">AI EBS<br>학습</div>
-      <div class="card-desc">인공지능 단추(DANCHOO).<br>나에게 딱 맞는 맞춤 학습.</div>
-      <div class="card-cta">START</div>
-    </a>
+            <!-- 03 수학 영상 -->
+            <a href="https://www.ebsmath.co.kr/resource/rscList?grdCd=EGRD01&cate=211100&listViewMode=rscList" target="_blank" class="link-card">
+                <div class="card-num">03 · VIDEO</div>
+                <div class="card-icon">🎬</div>
+                <div class="card-title">EBS 수학<br>영상 링크</div>
+                <div class="card-desc">학년별 수학 영상 자료실.<br>단원 개념 영상 모아보기.</div>
+                <div class="card-cta">WATCH</div>
+            </a>
 
-    <a href="https://primary.ebs.co.kr/course/literacy" target="_blank" class="link-card">
-      <div class="card-num">05 · TEST</div>
-      <div class="card-icon">📖</div>
-      <div class="card-title">문해력<br>진단 테스트</div>
-      <div class="card-desc">EBS 초등 문해력 진단.<br>읽기 수준을 정확하게 파악.</div>
-      <div class="card-cta">TEST</div>
-    </a>
+            <!-- 04 AI 학습 -->
+            <a href="https://ai-new.ebs.co.kr/pri/" target="_blank" class="link-card">
+                <div class="card-num">04 · AI</div>
+                <div class="card-icon">🤖</div>
+                <div class="card-title">AI EBS<br>학습</div>
+                <div class="card-desc">인공지능 단추(DANCHOO).<br>나에게 딱 맞는 맞춤 학습.</div>
+                <div class="card-cta">START</div>
+            </a>
 
-  </div>
-</main>
+            <!-- 05 문해력 -->
+            <a href="https://primary.ebs.co.kr/course/literacy" target="_blank" class="link-card">
+                <div class="card-num">05 · TEST</div>
+                <div class="card-icon">📖</div>
+                <div class="card-title">문해력<br>진단 테스트</div>
+                <div class="card-desc">EBS 초등 문해력 진단.<br>읽기 수준을 정확하게 파악.</div>
+                <div class="card-cta">TEST</div>
+            </a>
 
-<footer>✦ · 우리 아이 수학 학습 아카이브 · EBS · ✦</footer>
+            <!-- 06 영어 (EBS 초등 영어) -->
+            <a href="https://primary.ebs.co.kr/course/english" target="_blank" class="link-card">
+                <div class="card-num">06 · ENGLISH</div>
+                <div class="card-icon">🌍</div>
+                <div class="card-title">EBS 초등<br>영어</div>
+                <div class="card-desc">EBS 초등 영어 강좌 모음.<br>파닉스부터 회화까지.</div>
+                <div class="card-cta">LEARN</div>
+            </a>
+
+            <!-- 07 EBS 초등 전체 -->
+            <a href="https://primary.ebs.co.kr" target="_blank" class="link-card">
+                <div class="card-num">07 · PORTAL</div>
+                <div class="card-icon">🏫</div>
+                <div class="card-title">EBS 초등<br>홈페이지</div>
+                <div class="card-desc">EBS 초등 전체 학습 포털.<br>모든 과목을 한 곳에서.</div>
+                <div class="card-cta">VISIT</div>
+            </a>
+
+            <!-- 08 EBS 놀이학교 / 창의 -->
+            <a href="https://primary.ebs.co.kr/course/creative" target="_blank" class="link-card">
+                <div class="card-num">08 · FUN</div>
+                <div class="card-icon">🎨</div>
+                <div class="card-title">창의체험<br>활동</div>
+                <div class="card-desc">예체능·창의 콘텐츠 모음.<br>즐겁게 배우는 놀이학습.</div>
+                <div class="card-cta">EXPLORE</div>
+            </a>
+
+        </div>
+    </main>
+
+    <footer>✦ · 우리아이 스터디 카페 · EBS · ✦</footer>
+
+    <!-- ★ 공통 스크립트 (index와 동일) -->
+    <script src="js/main.js"></script>
 
 </body>
 </html>

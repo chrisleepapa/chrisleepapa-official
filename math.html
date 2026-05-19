@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>우리 아이 수학 학습 허브</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #030305;
+    --surface: #0e0e12;
+    --surface2: #16161e;
+    --accent: #c9a96e;
+    --accent2: #e8c98a;
+    --text: #e8e4dc;
+    --text2: #6a6660;
+    --border: #1e1e26;
+    --border2: #2a2a36;
+    --glow: rgba(201,169,110,0.07);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background: radial-gradient(ellipse at 80% 10%, rgba(201,169,110,0.04) 0%, transparent 60%),
+                radial-gradient(ellipse at 10% 90%, rgba(201,169,110,0.03) 0%, transparent 50%);
+    pointer-events: none; z-index: 0;
+  }
+
+  /* HEADER */
+  header {
+    position: relative; z-index: 1;
+    padding: 5rem 2rem 4rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .header-inner { max-width: 860px; margin: 0 auto; }
+
+  .header-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    opacity: 0.8;
+  }
+  .header-eyebrow span { opacity: 0.5; margin: 0 8px; }
+
+  header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(2.8rem, 7vw, 5rem);
+    line-height: 1.05;
+    color: var(--text);
+    letter-spacing: -1px;
+    margin-bottom: 1.8rem;
+  }
+  header h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .header-rule {
+    width: 40px; height: 1px;
+    background: linear-gradient(90deg, var(--accent) 0%, transparent 100%);
+    margin-bottom: 1.4rem;
+  }
+
+  header p {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.8;
+    letter-spacing: 0.3px;
+    max-width: 380px;
+  }
+
+  /* MAIN */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 4.5rem 2rem 7rem;
+    position: relative; z-index: 1;
+  }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 4px;
+    color: var(--text2);
+    text-transform: uppercase;
+    margin-bottom: 2.8rem;
+    display: flex; align-items: center; gap: 18px;
+    opacity: 0.7;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1; height: 1px;
+    background: linear-gradient(90deg, var(--border2), transparent);
+  }
+
+  /* LINK GRID */
+  .link-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    border: 1px solid var(--border2);
+    border-radius: 2px;
+    overflow: hidden;
+    gap: 1px;
+    background: var(--border2);
+  }
+
+  .link-card {
+    background: var(--surface);
+    padding: 2.2rem 2rem;
+    text-decoration: none;
+    color: var(--text);
+    display: flex; flex-direction: column;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.25s;
+    min-height: 220px;
+  }
+  .link-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  .link-card:hover { background: var(--surface2); }
+  .link-card:hover::after { transform: scaleX(1); }
+
+  .card-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: var(--accent);
+    letter-spacing: 3px;
+    opacity: 0.5;
+    margin-bottom: 4px;
+  }
+
+  .card-icon {
+    font-size: 24px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.45rem;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--text);
+    transition: color 0.2s;
+  }
+  .link-card:hover .card-title { color: var(--accent2); }
+
+  .card-desc {
+    font-size: 11.5px;
+    color: var(--text2);
+    line-height: 1.7;
+    margin-top: 2px;
+  }
+
+  .card-cta {
+    margin-top: auto;
+    padding-top: 1.4rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 2px;
+    display: flex; align-items: center; gap: 8px;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.25s, transform 0.25s;
+  }
+  .card-cta::after {
+    content: '→';
+  }
+  .link-card:hover .card-cta {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* FOOTER */
+  footer {
+    position: relative; z-index: 1;
+    text-align: center;
+    padding: 2rem;
+    border-top: 1px solid var(--border);
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: var(--text2);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.4;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-eyebrow">✦<span>·</span>초등 수학 학습 아카이브<span>·</span>✦</div>
+    <h1>우리 아이<br><em>수학 허브</em></h1>
+    <div class="header-rule"></div>
+    <p>EBS 수학 콘텐츠를 한 곳에서.<br>학습 · 영상 · AI 추천 · 문해력까지.</p>
+  </div>
+</header>
+
+<main>
+  <div class="section-label">The Archive <span style="opacity:.3">·</span> EBS 학습 링크</div>
+
+  <div class="link-grid">
+
+    <a href="https://www.ebsmath.co.kr" target="_blank" class="link-card">
+      <div class="card-num">01 · SITE</div>
+      <div class="card-icon">📐</div>
+      <div class="card-title">EBS Math<br>바로가기</div>
+      <div class="card-desc">EBS 수학 공식 사이트.<br>학년별 강좌 및 전체 콘텐츠.</div>
+      <div class="card-cta">OPEN</div>
+    </a>
+
+    <a href="https://www.ebsmath.co.kr/mathquiz/Main" target="_blank" class="link-card">
+      <div class="card-num">02 · GAME</div>
+      <div class="card-icon">🎮</div>
+      <div class="card-title">EBS Math<br>게임하기</div>
+      <div class="card-desc">수학 개념을 게임으로.<br>재미있게 실력을 키워요.</div>
+      <div class="card-cta">PLAY</div>
+    </a>
+
+    <a href="https://www.ebsmath.co.kr/resource/rscList?grdCd=EGRD01&cate=211100&listViewMode=rscList" target="_blank" class="link-card">
+      <div class="card-num">03 · VIDEO</div>
+      <div class="card-icon">🎬</div>
+      <div class="card-title">EBS 수학<br>영상 링크</div>
+      <div class="card-desc">학년별 수학 영상 자료실.<br>단원 개념 영상 모아보기.</div>
+      <div class="card-cta">WATCH</div>
+    </a>
+
+    <a href="https://ai-new.ebs.co.kr/pri/" target="_blank" class="link-card">
+      <div class="card-num">04 · AI</div>
+      <div class="card-icon">🤖</div>
+      <div class="card-title">AI EBS<br>학습</div>
+      <div class="card-desc">인공지능 단추(DANCHOO).<br>나에게 딱 맞는 맞춤 학습.</div>
+      <div class="card-cta">START</div>
+    </a>
+
+    <a href="https://primary.ebs.co.kr/course/literacy" target="_blank" class="link-card">
+      <div class="card-num">05 · TEST</div>
+      <div class="card-icon">📖</div>
+      <div class="card-title">문해력<br>진단 테스트</div>
+      <div class="card-desc">EBS 초등 문해력 진단.<br>읽기 수준을 정확하게 파악.</div>
+      <div class="card-cta">TEST</div>
+    </a>
+
+  </div>
+</main>
+
+<footer>✦ · 우리 아이 수학 학습 아카이브 · EBS · ✦</footer>
+
+</body>
+</html>

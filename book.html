@@ -21,13 +21,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="images/favicon.png" type="image/png">
 
-    <meta name="description" content="Chris Lee.Papa – BOOK | SisterSquad · MiracleShot">
+    <!-- ✅ SEO: description 개선 -->
+    <meta name="description" content="크리스리파파의 도서 & 세계관 아카이브. 두 딸에게서 영감을 받은 판타지 소설 Sister Squad와 풋살 판타지 Miracle Shot을 만나보세요.">
+
+    <!-- ✅ OG 태그 정비 -->
     <meta property="og:title" content="BOOK – Chris LEE.PAPA">
     <meta property="og:description" content="상상력이 종이에 그려진 순간 일어나는 기적, 도서 및 세계관 아카이브입니다.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://chrisleepapa-official.vercel.app/book.html">
-    <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png">
-    <link rel="canonical" href="https://chrisleepapa-official.vercel.app/book.html">
+    <meta property="og:url" content="https://chrisleepapa-official.vercel.app/book">
+    <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1">
+    <meta property="og:locale" content="ko_KR">
+    <meta property="og:locale:alternate" content="en_US">
+    <meta property="og:site_name" content="Chris LEE.PAPA">
+
+    <!-- ✅ Twitter Card 추가 -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="BOOK – Chris LEE.PAPA">
+    <meta name="twitter:description" content="크리스리파파의 도서 & 세계관 아카이브. Sister Squad · Miracle Shot">
+    <meta name="twitter:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1">
+
+    <!-- ✅ canonical: .html 확장자 제거 → /book -->
+    <link rel="canonical" href="https://chrisleepapa-official.vercel.app/book">
 
     <title>BOOK – Chris LEE.PAPA</title>
 
@@ -248,9 +262,6 @@
             }
         };
 
-        /* ── 언어 변경 시 placeholder 별도 처리 ──
-           main.js 의 data-i18n 처리는 innerHTML만 담당하므로
-           placeholder 는 onLangChange 에서 직접 업데이트합니다. */
         window.onLangChange = function(lang) {
             const dict = (window.PAGE_I18N && window.PAGE_I18N[lang]) || {};
             document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
@@ -259,9 +270,7 @@
             });
         };
 
-        /* ── 페이지 로직: 별 캔버스 + 방명록 ── */
         window.onMainReady = function() {
-            /* 별 캔버스 */
             const canvas = document.getElementById('stars-canvas');
             const ctx = canvas ? canvas.getContext('2d') : null;
             let stars = [];
@@ -296,24 +305,20 @@
             resize();
             draw();
 
-            /* 방명록 초기 로드 */
             fetchComments();
         };
 
-        /* ── 카드 네비게이션 헬퍼 ── */
         function safeNavigate(url) { if (url && url.trim() !== '') window.location.assign(url); }
         function handleCardKey(event, url) {
             if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); safeNavigate(url); }
         }
 
-        /* ── 번역 키 조회 헬퍼 (방명록용) ── */
         function getTranslation(key) {
             const lang = (typeof window.getCurrentLang === 'function') ? window.getCurrentLang() : 'ko';
             const dict = (window.PAGE_I18N && window.PAGE_I18N[lang]) || {};
             return dict[key] || (window.PAGE_I18N && window.PAGE_I18N.ko && window.PAGE_I18N.ko[key]) || '';
         }
 
-        /* ── 방명록 시스템 (Supabase) ── */
         const SUPA_URL = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
         const SUPA_KEY = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
         const PAGE_ID  = '/book';

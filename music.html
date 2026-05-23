@@ -6,9 +6,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="images/favicon.png">
-    
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3207219520058740"
-     crossorigin="anonymous"></script>
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3207219520058740" crossorigin="anonymous"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-NBGELYQ4TZ"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -20,19 +19,31 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="icon" href="images/favicon.png" type="image/png">
 
-    <meta name="description" content="Chris Lee.Papa – MUSIC | The Creative Archive">
+    <!-- ✅ SEO: description 개선 -->
+    <meta name="description" content="Chris LEE.PAPA의 음악 아카이브. AI가 만들어낸 선율과 영혼을 울리는 멜로디, Spotify 앨범 전곡을 감상해보세요.">
 
-    <meta property="og:title" content="MUSIC – Chris LEE.PAPA">
+    <!-- ✅ OG 태그 정비 -->
+    <meta property="og:title" content="MUSIC ARCHIVE – Chris LEE.PAPA">
     <meta property="og:description" content="AI가 만들어낸 선율, 영혼을 울리는 멜로디를 감상해보세요.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://chrisleepapa-official.vercel.app/music.html">
-    <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png">
+    <meta property="og:url" content="https://chrisleepapa-official.vercel.app/music">
+    <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1">
+    <meta property="og:locale" content="ko_KR">
+    <meta property="og:locale:alternate" content="en_US">
+    <meta property="og:site_name" content="Chris LEE.PAPA">
 
-    <link rel="canonical" href="https://chrisleepapa-official.vercel.app/music.html">
-    <title>MUSIC – Chris LEE.PAPA</title>
+    <!-- ✅ Twitter Card 추가 -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MUSIC ARCHIVE – Chris LEE.PAPA">
+    <meta name="twitter:description" content="AI가 만들어낸 선율, 영혼을 울리는 멜로디를 감상해보세요.">
+    <meta name="twitter:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1">
+
+    <!-- ✅ canonical: .html 확장자 제거 → /music -->
+    <link rel="canonical" href="https://chrisleepapa-official.vercel.app/music">
+
+    <title>MUSIC ARCHIVE – Chris LEE.PAPA</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -320,6 +331,8 @@
             updateActiveTrackDisplay();
             applyInputPlaceholders(lang);
         };
+
+        function safeNavigate(url) { if (url && url.trim() !== '') window.location.assign(url); }
     </script>
 
     <!-- ★ 페이지 전용 로직 ── -->

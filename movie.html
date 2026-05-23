@@ -7,6 +7,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="images/favicon.png">
 
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3207219520058740" crossorigin="anonymous"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-NBGELYQ4TZ"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -19,14 +20,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="images/favicon.png" type="image/png">
-    <meta name="description" content="Chris Lee.Papa – MOVIE | The Creative Archive">
-    <meta property="og:title" content="MOVIE – Chris LEE.PAPA">
+
+    <!-- ✅ SEO: description 개선 -->
+    <meta name="description" content="Chris LEE.PAPA의 영상 아카이브. AI 기반 뮤직비디오, 단편 영화, 쇼츠까지 프레임에 담긴 무한한 창작 세계를 감상해보세요.">
+
+    <!-- ✅ OG 태그 정비 -->
+    <meta property="og:title" content="MOVIE ARCHIVE – Chris LEE.PAPA">
     <meta property="og:description" content="프레임에 담긴 무한한 세계, 크리스리의 영상 아카이브를 감상해보세요.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://chrisleepapa-official.vercel.app/movie.html">
-    <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png">
-    <link rel="canonical" href="https://chrisleepapa-official.vercel.app/movie.html">
-    <title>MOVIE – Chris LEE.PAPA</title>
+    <meta property="og:url" content="https://chrisleepapa-official.vercel.app/movie">
+    <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1">
+    <meta property="og:locale" content="ko_KR">
+    <meta property="og:locale:alternate" content="en_US">
+    <meta property="og:site_name" content="Chris LEE.PAPA">
+
+    <!-- ✅ Twitter Card 추가 -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MOVIE ARCHIVE – Chris LEE.PAPA">
+    <meta name="twitter:description" content="프레임에 담긴 무한한 세계, 크리스리의 영상 아카이브를 감상해보세요.">
+    <meta name="twitter:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1">
+
+    <!-- ✅ canonical: .html 확장자 제거 → /movie -->
+    <link rel="canonical" href="https://chrisleepapa-official.vercel.app/movie">
+
+    <title>MOVIE ARCHIVE – Chris LEE.PAPA</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -587,6 +604,8 @@
                 btn.textContent = getTranslation('comments_submit') || '남기기';
             }
         }
+
+        function safeNavigate(url) { if (url && url.trim() !== '') window.location.assign(url); }
     </script>
 
     <!-- ★ 공통 스크립트 -->

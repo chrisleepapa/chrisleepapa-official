@@ -21,12 +21,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="images/favicon.png" type="image/png">
 
-    <!-- ✅ SEO: description 개선 -->
-    <meta name="description" content="Chris LEE.PAPA의 음악 아카이브. AI가 만들어낸 선율과 영혼을 울리는 멜로디, Spotify 앨범 전곡을 감상해보세요.">
-
-    <!-- ✅ OG 태그 정비 -->
+    <meta name="description" content="Chris LEE.PAPA Music Archive — To Rise, 사랑한다고, 2026 난리났어, 벽력일섬, 영역전개, We own the Cup 등 6개 앨범 26곡. Suno AI로 제작한 인스트루멘탈·팝·CCM. Spotify·Apple Music 스트리밍.">
     <meta property="og:title" content="MUSIC ARCHIVE – Chris LEE.PAPA">
-    <meta property="og:description" content="AI가 만들어낸 선율, 영혼을 울리는 멜로디를 감상해보세요.">
+    <meta property="og:description" content="Suno AI로 제작한 인스트루멘탈·팝·CCM 창작 음악. Spotify에서 전곡 스트리밍 가능. AI 음악 프로듀서 Chris LEE.PAPA의 음악 아카이브.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://chrisleepapa-official.vercel.app/music">
     <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1">
@@ -34,13 +31,11 @@
     <meta property="og:locale:alternate" content="en_US">
     <meta property="og:site_name" content="Chris LEE.PAPA">
 
-    <!-- ✅ Twitter Card 추가 -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="MUSIC ARCHIVE – Chris LEE.PAPA">
     <meta name="twitter:description" content="AI가 만들어낸 선율, 영혼을 울리는 멜로디를 감상해보세요.">
     <meta name="twitter:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1">
 
-    <!-- ✅ canonical: .html 확장자 제거 → /music -->
     <link rel="canonical" href="https://chrisleepapa-official.vercel.app/music">
 
     <title>MUSIC ARCHIVE – Chris LEE.PAPA</title>
@@ -50,7 +45,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Cormorant+Garamond:wght@600&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
 
-    <!-- 공통 스타일 -->
     <link rel="stylesheet" href="css/common.css">
 
     <style>
@@ -154,41 +148,6 @@
         .track-details h4 { font-size: 1rem; color: #ffffff; margin-bottom: 4px; font-weight: 500; }
         .track-details p { font-size: 0.8rem; color: #8a8a9d; }
 
-        /* ── 댓글 섹션 ── */
-        .comments-section {
-            max-width: 800px; margin: 80px auto 0; padding: 0 20px 100px;
-            position: relative; z-index: 10; animation: fadeUp 1s ease 0.6s both;
-        }
-        .comments-divider { display: flex; align-items: center; gap: 20px; margin-bottom: 50px; }
-        .comments-divider::before,
-        .comments-divider::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(201,168,76,0.3), transparent); }
-        .comments-divider-title { font-family: 'Cinzel', serif; font-size: 1.1rem; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; white-space: nowrap; }
-
-        .comment-form { background: rgba(255,255,255,0.02); border: 1px solid rgba(201,168,76,0.2); border-radius: 20px; padding: 30px; margin-bottom: 40px; backdrop-filter: blur(5px); -webkit-user-select: text; -moz-user-select: text; user-select: text; }
-        .comment-form-label { font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 2px; color: var(--gold-light); text-transform: uppercase; margin-bottom: 18px; display: block; }
-        .comment-input-row { display: flex; gap: 12px; margin-bottom: 12px; }
-        .cm-input { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 12px 16px; color: #f0ece4; font-family: 'Pretendard', sans-serif; font-size: 0.9rem; transition: border-color 0.3s; outline: none; width: 100%; -webkit-user-select: text; user-select: text; }
-        .cm-input:focus { border-color: rgba(201,168,76,0.5); background: rgba(255,255,255,0.06); }
-        .cm-input::placeholder { color: #555; }
-        #cm-name { max-width: 200px; flex-shrink: 0; }
-        #cm-body { resize: none; min-height: 80px; }
-        .cm-submit-row { display: flex; justify-content: flex-end; }
-        .cm-submit-btn { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 2px; padding: 10px 28px; border-radius: 30px; background: rgba(201,168,76,0.1); color: var(--gold-light); border: 1px solid rgba(201,168,76,0.3); cursor: pointer; transition: 0.3s; }
-        .cm-submit-btn:hover { background: var(--gold); color: #000; }
-        .cm-submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-        .comment-list { display: flex; flex-direction: column; gap: 16px; }
-        .comment-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 20px; animation: fadeUp 0.5s ease both; }
-        .comment-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-        .comment-avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, rgba(201,168,76,0.4), rgba(100,60,200,0.4)); display: flex; align-items: center; justify-content: center; font-family: 'Cinzel', serif; font-size: 0.8rem; font-weight: 700; color: var(--gold-light); border: 1px solid rgba(201,168,76,0.3); flex-shrink: 0; }
-        .comment-nickname { font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 700; color: var(--gold-light); letter-spacing: 1px; }
-        .comment-date { font-size: 0.75rem; color: #444; margin-left: auto; font-family: 'Pretendard', sans-serif; }
-        .comment-content { font-family: 'Pretendard', 'Noto Serif KR', sans-serif; font-size: 0.95rem; color: #c8c4bc; line-height: 1.7; padding-left: 44px; -webkit-user-select: text; user-select: text; }
-
-        .cm-empty { text-align: center; padding: 40px 20px; color: #444; font-family: 'Cinzel', serif; font-size: 0.85rem; letter-spacing: 2px; }
-        .cm-empty span { display: block; font-size: 1.5rem; margin-bottom: 10px; opacity: 0.5; }
-        .cm-loading { text-align: center; padding: 30px; color: #555; font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 2px; }
-
         /* ── 모바일 최적화 ── */
         @media (max-width: 900px) {
             .page-header { height: 250px; }
@@ -198,8 +157,6 @@
             .spotify-container iframe { min-height: 400px; }
             .album-art-large { width: 180px; height: 180px; margin-bottom: 25px; }
             .playlist-sidebar { width: 100%; height: auto; max-height: none; overflow-y: visible; }
-            .comment-input-row { flex-direction: column; }
-            #cm-name { max-width: 100%; }
         }
 
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
@@ -207,10 +164,9 @@
 </head>
 <body>
 
-    <!-- ★ 공통 헤더 (components/header.html) -->
+    <!-- ★ 공통 헤더 -->
     <div id="site-nav"></div>
 
-    <!-- ── 본문 ── -->
     <header class="page-header">
         <canvas id="stars-canvas"></canvas>
         <div class="header-content">
@@ -232,7 +188,7 @@
                     <div class="placeholder-bg" id="placeholder-bg" style="background-image: url('images/music.jpg');"></div>
                     <div class="placeholder-content">
                         <div class="play-btn-circle">▶</div>
-                        <div class="placeholder-text" data-i18n="placeholder_text">CLICK TO PLAY</div>
+                        <div class="placeholder-text" data-i18n="placeholder_text">음악 재생하기</div>
                     </div>
                 </div>
             </div>
@@ -246,31 +202,112 @@
         </aside>
     </main>
 
-    <section class="comments-section">
-        <div class="comments-divider">
-            <span class="comments-divider-title" data-i18n="comments_title">Guestbook</span>
-        </div>
+    <!-- ── SEO 음악 소개 블록 ── -->
+    <section style="max-width:960px; margin:0 auto 60px; padding:0 24px;">
+        <div style="border:1px solid rgba(201,168,76,0.15); border-radius:20px; padding:36px 40px; background:rgba(10,10,18,0.7);">
+            <h2 style="font-family:'Cinzel',serif; color:#c9a84c; font-size:1.05rem; letter-spacing:2px; margin-bottom:8px;">✦ &nbsp; MUSIC ARCHIVE</h2>
+            <p style="color:#888; font-size:0.82rem; letter-spacing:1px; margin-bottom:24px; font-family:'Cinzel',serif;">CHRIS LEE.PAPA · SPOTIFY ARTIST</p>
+            <p style="color:#c8c4bc; font-size:0.93rem; line-height:2.1; margin-bottom:32px;">
+                <strong style="color:#e8d08a;">Chris LEE.PAPA</strong>는 AI 음악 프로덕션 툴 <strong style="color:#c9a84c;">Suno AI</strong>를 활용하여
+                인스트루멘탈, 팝, 찬양 장르를 넘나드는 창작 음악을 제작하는 독립 음악 프로듀서입니다.
+                <strong style="color:#e8d08a;">DistroKid</strong>을 통해 전 세계 음원 플랫폼에 배포하며,
+                Spotify, Apple Music, YouTube Music에서 전곡을 감상할 수 있습니다.
+            </p>
 
-        <div class="comment-form">
-            <span class="comment-form-label" data-i18n="comments_leave">✦ 한마디 남겨주세요</span>
-            <div class="comment-input-row">
-                <input id="cm-name" class="cm-input" type="text" placeholder="닉네임" maxlength="20" autocomplete="off">
-                <textarea id="cm-body" class="cm-input" placeholder="음악을 들으며 느낀 점, 감동의 한마디를 남겨주세요 🙏" maxlength="300"></textarea>
-            </div>
-            <div class="cm-submit-row">
-                <button class="cm-submit-btn" onclick="submitComment()" data-i18n="comments_submit">남기기</button>
-            </div>
-        </div>
+            <h3 style="font-family:'Cinzel',serif; color:#c9a84c; font-size:0.85rem; letter-spacing:2px; margin-bottom:18px;">✦ &nbsp; ALBUMS & TRACKLIST</h3>
+            <div style="display:flex; flex-direction:column; gap:20px; margin-bottom:32px;">
 
-        <div id="cm-list" class="comment-list">
-            <div class="cm-loading" data-i18n="comments_loading">· · ·</div>
+                <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.07); border-radius:14px; padding:20px 22px;">
+                    <div style="font-family:'Cinzel',serif; color:#e8d08a; font-size:0.88rem; letter-spacing:1.5px; margin-bottom:12px;">To Rise <span style="color:#555; font-size:0.75rem; font-family:'Pretendard',sans-serif; font-weight:400; margin-left:8px;">· 4 tracks</span></div>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:8px;">
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">01</span>To Rise <span style="color:#555; font-size:0.75rem;">03:22</span></div>
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">02</span>Morning Breeze <span style="color:#555; font-size:0.75rem;">02:43</span></div>
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">03</span>Last Vibrato <span style="color:#555; font-size:0.75rem;">02:41</span></div>
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">04</span>Never Stop <span style="color:#555; font-size:0.75rem;">02:03</span></div>
+                    </div>
+                </div>
+
+                <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.07); border-radius:14px; padding:20px 22px;">
+                    <div style="font-family:'Cinzel',serif; color:#e8d08a; font-size:0.88rem; letter-spacing:1.5px; margin-bottom:12px;">사랑한다고 <span style="color:#555; font-size:0.75rem; font-family:'Pretendard',sans-serif; font-weight:400; margin-left:8px;">· 3 tracks</span></div>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:8px;">
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">01</span>사랑한다고 <span style="color:#555; font-size:0.75rem;">04:46</span></div>
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">02</span>Saying I love you <span style="color:#555; font-size:0.75rem;">04:22</span></div>
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">03</span>Winter's Symphony <span style="color:#555; font-size:0.75rem;">02:49</span></div>
+                    </div>
+                </div>
+
+                <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.07); border-radius:14px; padding:20px 22px;">
+                    <div style="font-family:'Cinzel',serif; color:#e8d08a; font-size:0.88rem; letter-spacing:1.5px; margin-bottom:12px;">2026 난리났어 <span style="color:#555; font-size:0.75rem; font-family:'Pretendard',sans-serif; font-weight:400; margin-left:8px;">· 6 tracks</span></div>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:8px;">
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">01</span>난리났어 <span style="color:#555; font-size:0.75rem;">03:01</span></div>
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">02</span>2026 <span style="color:#555; font-size:0.75rem;">02:52</span></div>
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">03</span>2026_Inst <span style="color:#555; font-size:0.75rem;">02:49</span></div>
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">04</span>Tonight_Inst <span style="color:#555; font-size:0.75rem;">01:34</span></div>
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">05</span>Flash Bang <span style="color:#555; font-size:0.75rem;">02:46</span></div>
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">06</span>Blow It Up <span style="color:#555; font-size:0.75rem;">03:04</span></div>
+                    </div>
+                </div>
+
+                <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.07); border-radius:14px; padding:20px 22px;">
+                    <div style="font-family:'Cinzel',serif; color:#e8d08a; font-size:0.88rem; letter-spacing:1.5px; margin-bottom:12px;">벽력일섬 <span style="color:#555; font-size:0.75rem; font-family:'Pretendard',sans-serif; font-weight:400; margin-left:8px;">· 4 tracks</span></div>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:8px;">
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">01</span>벽력일섬_Hekireki Issen <span style="color:#555; font-size:0.75rem;">02:02</span></div>
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">02</span>Rev It Up_kor <span style="color:#555; font-size:0.75rem;">02:48</span></div>
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">03</span>Rev It Up_eng <span style="color:#555; font-size:0.75rem;">03:04</span></div>
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">04</span>Hekireki Issen_Inst <span style="color:#555; font-size:0.75rem;">02:31</span></div>
+                    </div>
+                </div>
+
+                <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.07); border-radius:14px; padding:20px 22px;">
+                    <div style="font-family:'Cinzel',serif; color:#e8d08a; font-size:0.88rem; letter-spacing:1.5px; margin-bottom:12px;">영역전개 <span style="color:#555; font-size:0.75rem; font-family:'Pretendard',sans-serif; font-weight:400; margin-left:8px;">· 2 tracks</span></div>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:8px;">
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">01</span>영역전개 <span style="color:#555; font-size:0.75rem;">03:02</span></div>
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">02</span>영역전개_inst <span style="color:#555; font-size:0.75rem;">03:09</span></div>
+                    </div>
+                </div>
+
+                <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.07); border-radius:14px; padding:20px 22px;">
+                    <div style="font-family:'Cinzel',serif; color:#e8d08a; font-size:0.88rem; letter-spacing:1.5px; margin-bottom:12px;">We own the Cup <span style="color:#555; font-size:0.75rem; font-family:'Pretendard',sans-serif; font-weight:400; margin-left:8px;">· 7 tracks</span></div>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:8px;">
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">01</span>Feel the Power <span style="color:#555; font-size:0.75rem;">03:34</span></div>
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">02</span>We own the Cup <span style="color:#555; font-size:0.75rem;">02:56</span></div>
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">03</span>Summer never dies <span style="color:#555; font-size:0.75rem;">03:04</span></div>
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">04</span>Feel the Power - Inst <span style="color:#555; font-size:0.75rem;">02:43</span></div>
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">05</span>We own the Cup - Inst <span style="color:#555; font-size:0.75rem;">02:34</span></div>
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">06</span>Summer never dies - Inst <span style="color:#555; font-size:0.75rem;">03:04</span></div>
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">07</span>여름끝까지 - Kor <span style="color:#555; font-size:0.75rem;">03:06</span></div>
+                    </div>
+                </div>
+
+            </div>
+            <p style="color:#777; font-size:0.82rem; line-height:1.8; text-align:center; padding-top:4px;">
+                총 6개 앨범 · 26곡 · Spotify · Apple Music · YouTube Music 스트리밍 가능
+            </p>
+
+            <div style="margin-top:32px; padding-top:28px; border-top:1px solid rgba(255,255,255,0.06);">
+                <h3 style="font-family:'Cinzel',serif; color:#c9a84c; font-size:0.85rem; letter-spacing:2px; margin-bottom:16px;">✦ &nbsp; HOW IT'S MADE</h3>
+                <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px;">
+                    <div style="background:rgba(201,168,76,0.06); border-radius:12px; padding:16px 18px;">
+                        <div style="color:#e8d08a; font-size:0.78rem; font-family:'Cinzel',serif; letter-spacing:1px; margin-bottom:8px;">🎵 AI 작곡</div>
+                        <p style="color:#a0a09a; font-size:0.85rem; line-height:1.8;">Suno AI를 사용해 장르, 분위기, 악기 구성을 직접 프롬프팅하여 음악을 제작합니다.</p>
+                    </div>
+                    <div style="background:rgba(201,168,76,0.06); border-radius:12px; padding:16px 18px;">
+                        <div style="color:#e8d08a; font-size:0.78rem; font-family:'Cinzel',serif; letter-spacing:1px; margin-bottom:8px;">📀 글로벌 배포</div>
+                        <p style="color:#a0a09a; font-size:0.85rem; line-height:1.8;">DistroKid을 통해 Spotify, Apple Music, YouTube Music 등 100개 이상 플랫폼에 배포합니다.</p>
+                    </div>
+                    <div style="background:rgba(201,168,76,0.06); border-radius:12px; padding:16px 18px;">
+                        <div style="color:#e8d08a; font-size:0.78rem; font-family:'Cinzel',serif; letter-spacing:1px; margin-bottom:8px;">🎨 독립 크리에이터</div>
+                        <p style="color:#a0a09a; font-size:0.85rem; line-height:1.8;">기획·작사·프로덕션·아트워크 디자인까지 Chris LEE.PAPA가 단독으로 제작하는 인디 음악입니다.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- ★ 공통 푸터 (components/footer.html) -->
+    <!-- ★ 공통 푸터 — guestbook.js 가 이 앞에 공통 방명록을 자동 삽입합니다 -->
     <div id="site-footer"></div>
 
-    <!-- ★ 페이지 전용 i18n (공통 키 제외, main.js 에 병합됨) -->
+    <!-- ★ 페이지 전용 i18n -->
     <script>
         window.PAGE_I18N = {
             ko: {
@@ -280,17 +317,6 @@
                 placeholder_text: '음악 재생하기',
                 btn_spotify:      'Spotify에서 전곡 듣기 ›',
                 playlist_title:   'TRACKLIST',
-                comments_title:   'Guestbook',
-                comments_leave:   '✦ 한마디 남겨주세요',
-                comments_submit:  '남기기',
-                comments_loading: '· · ·',
-                comments_empty:   '첫 번째 기록을 남겨주세요',
-                comments_error:   '잠시 후 다시 시도해주세요.',
-                comments_validation_required: '닉네임과 내용을 입력해주세요.',
-                comments_validation_short:    '내용을 좀 더 입력해주세요.',
-                comments_success:       '소중한 한마디 감사합니다 🙏',
-                comments_submit_error:  '오류가 발생했습니다. 다시 시도해주세요.',
-                comments_network_error: '네트워크 오류입니다.',
                 name_placeholder: '닉네임',
                 body_placeholder: '음악을 들으며 느낀 점, 감동의 한마디를 남겨주세요 🙏'
             },
@@ -301,17 +327,6 @@
                 placeholder_text: 'CLICK TO PLAY',
                 btn_spotify:      'Listen all on Spotify ›',
                 playlist_title:   'TRACKLIST',
-                comments_title:   'Guestbook',
-                comments_leave:   '✦ Leave a message',
-                comments_submit:  'Submit',
-                comments_loading: '· · ·',
-                comments_empty:   'Be the first to leave a message',
-                comments_error:   'Please try again later.',
-                comments_validation_required: 'Please enter your nickname and message.',
-                comments_validation_short:    'Please write a little more.',
-                comments_success:       'Thank you for your message 🙏',
-                comments_submit_error:  'An error occurred. Please try again.',
-                comments_network_error: 'Network error.',
                 name_placeholder: 'Nickname',
                 body_placeholder: 'Share what you felt while listening to the music 🙏'
             }
@@ -321,7 +336,6 @@
         window.onMainReady = function() {
             initStarsCanvas();
             fetchSpotifyCovers();
-            fetchComments();
             applyInputPlaceholders(window.getCurrentLang ? window.getCurrentLang() : 'ko');
         };
 
@@ -337,11 +351,6 @@
 
     <!-- ★ 페이지 전용 로직 ── -->
     <script>
-        // ── Supabase 설정 ──
-        const SUPA_URL = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
-        const SUPA_KEY = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
-        const PAGE_ID  = '/music';
-
         function escapeHtml(value) {
             return String(value ?? '').replace(/[&<>"']/g, (char) => ({
                 '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
@@ -351,102 +360,15 @@
         function escapeCssUrl(value) {
             return String(value ?? '').replace(/[\\"')\r\n]/g, encodeURIComponent);
         }
-
-        // ── 입력 placeholder 적용 (i18n) ──
-        function applyInputPlaceholders(lang) {
-            const dict = (window.PAGE_I18N && window.PAGE_I18N[lang]) || {};
-            const nameInput = document.getElementById('cm-name');
-            const bodyInput = document.getElementById('cm-body');
-            if (nameInput && dict.name_placeholder) nameInput.placeholder = dict.name_placeholder;
-            if (bodyInput && dict.body_placeholder) bodyInput.placeholder = dict.body_placeholder;
-        }
-
-        // ── 댓글 불러오기 ──
-        async function fetchComments() {
-            const list = document.getElementById('cm-list');
-            if (!list) return;
-            const lang = window.getCurrentLang ? window.getCurrentLang() : 'ko';
-            const dict = (window.PAGE_I18N && window.PAGE_I18N[lang]) || {};
-            try {
-                const res = await fetch(
-                    `${SUPA_URL}/rest/v1/comments?page=eq.${encodeURIComponent(PAGE_ID)}&order=created_at.desc`,
-                    { headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` } }
-                );
-                if (!res.ok) throw new Error(`Supabase comments fetch failed: ${res.status}`);
-                const data = await res.json();
-                if (!Array.isArray(data) || data.length === 0) {
-                    list.innerHTML = `<div class="cm-empty"><span>✦</span><span>${escapeHtml(dict.comments_empty || '첫 번째 기록을 남겨주세요')}</span></div>`;
-                    return;
-                }
-                list.innerHTML = data.map((c, i) => {
-                    const nickname = String(c.nickname || 'Guest').trim() || 'Guest';
-                    const content  = String(c.content || '').trim();
-                    const initial  = nickname.charAt(0).toUpperCase();
-                    const date     = c.created_at ? String(c.created_at).slice(0, 10) : '';
-                    return `
-                    <div class="comment-card" style="animation-delay:${i * 0.05}s">
-                        <div class="comment-meta">
-                            <div class="comment-avatar">${escapeHtml(initial)}</div>
-                            <span class="comment-nickname">${escapeHtml(nickname)}</span>
-                            <span class="comment-date">${escapeHtml(date)}</span>
-                        </div>
-                        <div class="comment-content">${escapeHtml(content)}</div>
-                    </div>`;
-                }).join('');
-            } catch(e) {
-                console.error(e);
-                const lang2 = window.getCurrentLang ? window.getCurrentLang() : 'ko';
-                const dict2 = (window.PAGE_I18N && window.PAGE_I18N[lang2]) || {};
-                list.innerHTML = `<div class="cm-empty"><span>✦</span>${escapeHtml(dict2.comments_error || '잠시 후 다시 시도해주세요.')}</div>`;
-            }
-        }
-
-        // ── 댓글 제출 ──
-        async function submitComment() {
-            const nameInput = document.getElementById('cm-name');
-            const bodyInput = document.getElementById('cm-body');
-            const btn       = document.querySelector('.cm-submit-btn');
-            const nickname  = nameInput?.value.trim() || '';
-            const content   = bodyInput?.value.trim() || '';
-            if (!btn) return;
-            const lang = window.getCurrentLang ? window.getCurrentLang() : 'ko';
-            const dict = (window.PAGE_I18N && window.PAGE_I18N[lang]) || {};
-
-            if (!nickname || !content) { window.showToast && window.showToast(dict.comments_validation_required || '닉네임과 내용을 입력해주세요.'); return; }
-            if (content.length < 2)    { window.showToast && window.showToast(dict.comments_validation_short    || '내용을 좀 더 입력해주세요.'); return; }
-
-            btn.disabled = true;
-            btn.textContent = '...';
-            try {
-                const res = await fetch(`${SUPA_URL}/rest/v1/comments`, {
-                    method: 'POST',
-                    headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
-                    body: JSON.stringify({ page: PAGE_ID, nickname, content })
-                });
-                if (res.ok || res.status === 201) {
-                    if (nameInput) nameInput.value = '';
-                    if (bodyInput) bodyInput.value = '';
-                    window.showToast && window.showToast(dict.comments_success || '소중한 한마디 감사합니다 🙏');
-                    fetchComments();
-                } else {
-                    window.showToast && window.showToast(dict.comments_submit_error || '오류가 발생했습니다. 다시 시도해주세요.');
-                }
-            } catch(e) {
-                window.showToast && window.showToast(dict.comments_network_error || '네트워크 오류입니다.');
-            } finally {
-                btn.disabled = false;
-                const dict2 = (window.PAGE_I18N && window.PAGE_I18N[window.getCurrentLang ? window.getCurrentLang() : 'ko']) || {};
-                btn.textContent = dict2.comments_submit || '남기기';
-            }
-        }
-
+        
         // ── Dynamic Music Data ──
         const musicData = [
-            { title_ko: 'To Rise',    title_en: 'To Rise',           type_ko: '연주곡',   type_en: 'Instrumental', albumId: '2OSKuof7gooLElmFYvoygK', cover: 'images/music.jpg', embedUrl: 'https://open.spotify.com/embed/album/2OSKuof7gooLElmFYvoygK?utm_source=generator' },
-            { title_ko: '2026 앨범',  title_en: '2026 Album',        type_ko: '정규 앨범', type_en: 'Album',         albumId: '2AzUPgjWYDodUqFTNjPU1l', cover: 'images/music.jpg', embedUrl: 'https://open.spotify.com/embed/album/2AzUPgjWYDodUqFTNjPU1l?utm_source=generator' },
-            { title_ko: '벽력일섬',   title_en: 'Thunderclap',       type_ko: '정규 앨범', type_en: 'Album',         albumId: '25T549XyXnmiZhqGn7p4x4', cover: 'images/music.jpg', embedUrl: 'https://open.spotify.com/embed/album/25T549XyXnmiZhqGn7p4x4?utm_source=generator' },
-            { title_ko: '영역전개',   title_en: 'Domain Expansion',  type_ko: '정규 앨범', type_en: 'Album',         albumId: '6rZBdEFTJ5mLwINtn9C8KZ', cover: 'images/music.jpg', embedUrl: 'https://open.spotify.com/embed/album/6rZBdEFTJ5mLwINtn9C8KZ?utm_source=generator' },
-            { title_ko: '사랑한다고', title_en: 'I Love You',        type_ko: '보컬 트랙', type_en: 'Vocal',         albumId: '2s7tJtoaxDT8KUkJ3OL8DD', cover: 'images/music.jpg', embedUrl: 'https://open.spotify.com/embed/album/2s7tJtoaxDT8KUkJ3OL8DD?utm_source=generator' }
+            { title_ko: 'To Rise',         title_en: 'To Rise',           type_ko: '연주곡',   type_en: 'Instrumental', albumId: '2OSKuof7gooLElmFYvoygK', cover: 'images/music.jpg', embedUrl: 'https://open.spotify.com/embed/album/2OSKuof7gooLElmFYvoygK?utm_source=generator' },
+            { title_ko: '2026 앨범',        title_en: '2026 Album',        type_ko: '정규 앨범', type_en: 'Album',         albumId: '2AzUPgjWYDodUqFTNjPU1l', cover: 'images/music.jpg', embedUrl: 'https://open.spotify.com/embed/album/2AzUPgjWYDodUqFTNjPU1l?utm_source=generator' },
+            { title_ko: '벽력일섬',         title_en: 'Thunderclap',       type_ko: '정규 앨범', type_en: 'Album',         albumId: '25T549XyXnmiZhqGn7p4x4', cover: 'images/music.jpg', embedUrl: 'https://open.spotify.com/embed/album/25T549XyXnmiZhqGn7p4x4?utm_source=generator' },
+            { title_ko: '영역전개',         title_en: 'Domain Expansion',  type_ko: '정규 앨범', type_en: 'Album',         albumId: '6rZBdEFTJ5mLwINtn9C8KZ', cover: 'images/music.jpg', embedUrl: 'https://open.spotify.com/embed/album/6rZBdEFTJ5mLwINtn9C8KZ?utm_source=generator' },
+            { title_ko: '사랑한다고',       title_en: 'I Love You',        type_ko: '보컬 트랙', type_en: 'Vocal',         albumId: '2s7tJtoaxDT8KUkJ3OL8DD', cover: 'images/music.jpg', embedUrl: 'https://open.spotify.com/embed/album/2s7tJtoaxDT8KUkJ3OL8DD?utm_source=generator' },
+            { title_ko: 'We own the Cup',  title_en: 'We own the Cup',    type_ko: '정규 앨범', type_en: 'Album',         albumId: '0sR4hKvhzN4U2GaQKx6Qek', cover: 'images/music.jpg', embedUrl: 'https://open.spotify.com/embed/album/0sR4hKvhzN4U2GaQKx6Qek?utm_source=generator' }
         ];
 
         let activeTrackIndex = 0;
@@ -561,12 +483,22 @@
                 requestAnimationFrame(draw);
             }
             window.addEventListener('resize', resize);
-            resize(); draw();
+            resize();
+            draw();
+        }   /* ← 이 닫는 중괄호가 원본에서 누락되어 트랙리스트 전체가 실행 안 됐던 원인 */
+
+        // ── escapeCssUrl / escapeHtml 헬퍼 (main.js 에 없을 경우 폴백) ──
+        function escapeCssUrl(url) { return (url || '').replace(/['"()]/g, '\\$&'); }
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.appendChild(document.createTextNode(str || ''));
+            return div.innerHTML;
         }
     </script>
 
-    <!-- ★ 공통 스크립트 -->
+    <!-- ★ 공통 스크립트 & 공통 방명록 -->
     <script src="js/main.js"></script>
+    <script src="js/guestbook.js"></script>
 
 </body>
 </html>

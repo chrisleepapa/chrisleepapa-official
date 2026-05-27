@@ -35,9 +35,9 @@ const BASE_I18N = {
         nav_music:   'Music',
         nav_book:    'Books',
         nav_movie:   'Movies',
+        nav_game:    '게임',
 
         share_title: 'SHARE ARCHIVE',
-        share_desc:  '이곳의 기록과 영감을 소중한 사람들에게 전하세요.',
         share_copy:  'COPY LINK',
         share_sns:   'SNS SHARE',
         share_close: 'Close',
@@ -54,6 +54,7 @@ const BASE_I18N = {
         nav_music:   'Music',
         nav_book:    'Books',
         nav_movie:   'Movies',
+        nav_game:    'Game',
 
         share_title: 'SHARE ARCHIVE',
         share_desc:  'Share the records and inspiration here with your loved ones.',

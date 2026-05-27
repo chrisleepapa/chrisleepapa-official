@@ -21,12 +21,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="images/favicon.png">
 
-    <!-- ✅ SEO: description 개선 -->
-    <meta name="description" content="두 딸에게서 영감을 받은 판타지 소설 Sister Squad. 마법 세계로 빠져든 언니 율과 동생 정의 환상적인 모험, 가족의 사랑과 진정한 용기를 담은 이야기입니다.">
-
-    <!-- ✅ OG 태그 정비 -->
+    <meta name="description" content="Sister Squad(시스터스쿼드) — 율(11세)과 정(7세), 두 자매가 마법 세계로 빨려 들어가며 펼치는 판타지 모험 소설. YES24 종이책·전자책·컬러링북 판매 중. 오리지널 사운드트랙 Spotify 스트리밍. Chris LEE.PAPA 원작.">
     <meta property="og:title" content="SISTER SQUAD – Chris LEE.PAPA">
-    <meta property="og:description" content="마법 세계로 빠져든 두 자매의 환상적인 모험 이야기를 만나보세요.">
+    <meta property="og:description" content="T 언니 율과 F 동생 정이 마법 세계에서 펼치는 환상적인 모험. 판타지 소설·컬러링북·OST까지. YES24 판매 중.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://chrisleepapa-official.vercel.app/sistersquad">
     <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1">
@@ -34,13 +31,11 @@
     <meta property="og:locale:alternate" content="en_US">
     <meta property="og:site_name" content="Chris LEE.PAPA">
 
-    <!-- ✅ Twitter Card 추가 -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="SISTER SQUAD – Chris LEE.PAPA">
     <meta name="twitter:description" content="마법 세계로 빠져든 두 자매의 환상적인 모험. 언니 율과 동생 정의 이야기.">
     <meta name="twitter:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1">
 
-    <!-- ✅ canonical: .html 확장자 제거 → /sistersquad -->
     <link rel="canonical" href="https://chrisleepapa-official.vercel.app/sistersquad">
 
     <title>SISTER SQUAD – Chris LEE.PAPA</title>
@@ -50,7 +45,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Cormorant+Garamond:wght@600&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
 
-    <!-- 공통 스타일 -->
     <link rel="stylesheet" href="css/common.css">
 
     <style>
@@ -145,37 +139,8 @@
         .book-type-label { font-family: 'Cinzel', serif; font-size: 0.8rem; color: var(--gold-light); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 25px; display: block; }
         .buy-btn { display: block; width: 100%; padding: 15px; border-radius: 30px; font-weight: 700; font-size: 0.9rem; transition: 0.3s; text-transform: uppercase; }
         .btn-paper   { background: var(--gold); color: #000; }
-        .btn-ebook   { border: 1.5px solid var(--cyan);         color: var(--cyan); }
-        .btn-coloring{ border: 1.5px solid var(--pink-accent);  color: var(--pink-accent); }
-
-        /* ── 방명록 ── */
-        .comments-section { max-width: 850px; margin: 90px auto 0; padding: 0 0 20px; position: relative; z-index: 10; animation: fadeUp 1s ease 0.4s both; }
-        .comments-divider { display: flex; align-items: center; gap: 20px; margin-bottom: 45px; }
-        .comments-divider::before, .comments-divider::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(255,180,200,0.28), transparent); }
-        .comments-divider-title { font-family: 'Cinzel', serif; font-size: 1.05rem; letter-spacing: 0.3em; color: var(--pink-accent); text-transform: uppercase; white-space: nowrap; }
-        .comment-form { background: rgba(255,255,255,0.025); border: 1px solid rgba(255,180,200,0.18); border-radius: 22px; padding: 30px; margin-bottom: 38px; backdrop-filter: blur(8px); -webkit-user-select: text; -moz-user-select: text; user-select: text; }
-        .comment-form-label { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: var(--pink-accent); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
-        .comment-input-row { display: flex; gap: 15px; margin-bottom: 15px; }
-        .cm-input { background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 15px 18px; color: var(--text); font-family: 'Pretendard', 'Noto Serif KR', sans-serif; font-size: 0.95rem; transition: border-color 0.3s, background 0.3s; outline: none; -webkit-user-select: text; user-select: text; }
-        .cm-input:focus { border-color: rgba(255,180,200,0.6); background: rgba(255,255,255,0.065); }
-        .cm-input::placeholder { color: #6f6570; }
-        #cm-name { width: 220px; flex-shrink: 0; }
-        #cm-body { flex-grow: 1; resize: vertical; min-height: 100px; line-height: 1.6; }
-        .cm-submit-row { display: flex; justify-content: flex-end; margin-top: 15px; }
-        .cm-submit-btn { font-family: 'Pretendard', sans-serif; font-size: 0.95rem; font-weight: 800; letter-spacing: 1px; padding: 14px 36px; background: linear-gradient(135deg, var(--pink-accent), var(--gold)); color: #08080b; border: none; border-radius: 30px; cursor: pointer; transition: all 0.3s; }
-        .cm-submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(255,180,200,0.25); outline: none; }
-        .cm-submit-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; box-shadow: none; }
-        .comment-list { display: flex; flex-direction: column; gap: 16px; }
-        .comment-card { background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 20px 24px; transition: border-color 0.3s; animation: fadeUp 0.4s ease both; -webkit-user-select: text; user-select: text; }
-        .comment-card:hover { border-color: rgba(255,180,200,0.25); }
-        .comment-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
-        .comment-avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, rgba(255,180,200,0.35), rgba(201,168,76,0.35)); display: flex; align-items: center; justify-content: center; font-family: 'Cinzel', serif; font-size: 0.8rem; font-weight: 700; color: #ffdfeb; border: 1px solid rgba(255,180,200,0.3); flex-shrink: 0; }
-        .comment-nickname { font-family: 'Pretendard', sans-serif; font-size: 0.95rem; font-weight: 700; color: var(--gold-light); letter-spacing: 0.5px; }
-        .comment-date { font-size: 0.75rem; color: #68606a; margin-left: auto; font-family: 'Pretendard', sans-serif; }
-        .comment-content { font-family: 'Pretendard', 'Noto Serif KR', sans-serif; font-size: 0.95rem; color: #d8d2dc; line-height: 1.7; padding-left: 44px; white-space: pre-wrap; word-break: break-word; }
-        .cm-empty, .cm-loading { text-align: center; padding: 36px 20px; color: #756c76; font-family: 'Pretendard', sans-serif; font-size: 0.9rem; letter-spacing: 1px; }
-        .cm-empty span:first-child { display: block; font-size: 1.5rem; margin-bottom: 10px; opacity: 0.65; }
-        .cm-loading { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 2px; }
+        .btn-ebook   { border: 1.5px solid var(--cyan);        color: var(--cyan); }
+        .btn-coloring{ border: 1.5px solid var(--pink-accent); color: var(--pink-accent); }
 
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -185,22 +150,15 @@
             .char-name { margin-bottom: 15px; }
             .char-desc { max-height: none; opacity: 1; transform: none; margin-top: 15px; }
             .synopsis-section { padding: 35px 20px; }
-            .comments-section { margin-top: 70px; padding-bottom: 0; }
-            .comment-form { padding: 25px 20px; }
-            .comment-input-row { flex-direction: column; gap: 12px; margin-bottom: 12px; }
-            #cm-name { width: 100%; }
-            #cm-body { width: 100%; min-height: 110px; }
-            .comment-content { padding-left: 0; }
             .container { padding-bottom: 60px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ★ 공통 헤더 (components/header.html) -->
+    <!-- ★ 공통 헤더 -->
     <div id="site-nav"></div>
 
-    <!-- ── 본문 ── -->
     <header class="page-header">
         <canvas id="stars-canvas"></canvas>
         <div class="header-content">
@@ -316,116 +274,136 @@
             </div>
         </div>
 
-        <!-- ── 방명록 ── -->
-        <section class="comments-section" aria-labelledby="comments-heading">
-            <div class="comments-divider">
-                <h2 id="comments-heading" class="comments-divider-title" data-i18n="comments_title">Guestbook</h2>
-            </div>
-            <div class="comment-form">
-                <label class="comment-form-label" for="cm-body" data-i18n="comments_leave">✦ 한마디 남겨주세요</label>
-                <div class="comment-input-row">
-                    <input id="cm-name" class="cm-input" type="text" placeholder="닉네임" data-i18n-placeholder="comments_name_placeholder" maxlength="20" autocomplete="nickname">
-                    <textarea id="cm-body" class="cm-input" placeholder="두 자매의 모험에 대한 응원과 기대평을 남겨주세요 ✨" data-i18n-placeholder="comments_body_placeholder" maxlength="300"></textarea>
+        <!-- ── SEO 상세 소개 블록 ── -->
+        <section style="max-width:900px; margin:60px auto 0; padding:0 20px;">
+            <div style="border:1px solid rgba(201,168,76,0.15); border-radius:20px; padding:36px 40px; background:rgba(10,10,18,0.7);">
+                <h2 style="font-family:'Cinzel',serif; color:#c9a84c; font-size:1.05rem; letter-spacing:2px; margin-bottom:24px;">✦ &nbsp; ABOUT SISTER SQUAD</h2>
+
+                <!-- 스토리 상세 -->
+                <div style="margin-bottom:28px; padding-bottom:24px; border-bottom:1px solid rgba(255,255,255,0.06);">
+                    <h3 style="font-family:'Cinzel',serif; color:#e8d08a; font-size:0.88rem; letter-spacing:1.5px; margin-bottom:14px;">📖 THE STORY</h3>
+                    <p style="color:#c0bcb4; font-size:0.92rem; line-height:2.1;">
+                        어느 날, 오래된 마법 책이 열리는 순간 두 자매의 세계가 바뀝니다.
+                        <strong style="color:#e8d08a;">T 언니 율(11세)</strong>은 냉철한 이성과 분석력으로 위기를 헤쳐나가고,
+                        <strong style="color:#e8d08a;">F 동생 정(7세)</strong>은 따뜻한 공감 능력으로 모든 생명과 교감합니다.
+                        서로 정반대의 성격을 가진 두 자매는 어둠의 군주가 지배하는
+                        <strong style="color:#c9a84c;">페어리 타운(Fairy Town)</strong>에서 마법사, 용사, 정령술사 동료들과 함께
+                        세상을 구하는 여정을 떠납니다.<br><br>
+                        싸움의 끝에서 그들이 깨닫는 것 — 진정한 용기는 힘이 아니라
+                        <strong style="color:#e8d08a;">가족의 사랑</strong>에서 온다는 것입니다.
+                    </p>
                 </div>
-                <div class="cm-submit-row">
-                    <button type="button" class="cm-submit-btn" onclick="submitComment()" data-i18n="comments_submit">남기기</button>
+
+                <!-- 캐릭터 상세 -->
+                <div style="margin-bottom:28px; padding-bottom:24px; border-bottom:1px solid rgba(255,255,255,0.06);">
+                    <h3 style="font-family:'Cinzel',serif; color:#e8d08a; font-size:0.88rem; letter-spacing:1.5px; margin-bottom:14px;">⚔️ CHARACTERS</h3>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px;">
+                        <div style="background:rgba(201,168,76,0.06); border-radius:12px; padding:18px 20px;">
+                            <div style="color:#c9a84c; font-family:'Cinzel',serif; font-size:0.75rem; letter-spacing:1px; margin-bottom:6px;">THE BRAVE LEADER</div>
+                            <div style="color:#e8d08a; font-size:1rem; font-weight:700; margin-bottom:8px;">율 (Yul) · 11세</div>
+                            <p style="color:#a0a09a; font-size:0.85rem; line-height:1.8;">냉철한 이성과 분석력을 가진 언니. 동생을 지키기 위해 강력한 <strong style="color:#c9a84c;">염력(念力)</strong>을 각성시킵니다. 어떤 위기에서도 흔들리지 않는 팀의 리더.</p>
+                        </div>
+                        <div style="background:rgba(201,168,76,0.06); border-radius:12px; padding:18px 20px;">
+                            <div style="color:#c9a84c; font-family:'Cinzel',serif; font-size:0.75rem; letter-spacing:1px; margin-bottom:6px;">THE HEART WEAVER</div>
+                            <div style="color:#e8d08a; font-size:1rem; font-weight:700; margin-bottom:8px;">정 (Jung) · 7세</div>
+                            <p style="color:#a0a09a; font-size:0.85rem; line-height:1.8;">풍부한 감성과 따뜻한 마음을 가진 동생. 살아 숨 쉬는 모든 것과 교감하며 <strong style="color:#c9a84c;">기적</strong>을 만들어냅니다. 팀의 가장 큰 힘은 그녀의 사랑입니다.</p>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div id="cm-list" class="comment-list" aria-live="polite">
-                <div class="cm-loading" data-i18n="comments_loading">· · ·</div>
+
+                <!-- 출판 정보 -->
+                <div style="margin-bottom:28px; padding-bottom:24px; border-bottom:1px solid rgba(255,255,255,0.06);">
+                    <h3 style="font-family:'Cinzel',serif; color:#e8d08a; font-size:0.88rem; letter-spacing:1.5px; margin-bottom:14px;">📚 PUBLISHED WORKS</h3>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px;">
+                        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:10px; padding:14px 16px;">
+                            <div style="color:#c9a84c; font-size:0.75rem; font-family:'Cinzel',serif; margin-bottom:6px;">Paperback</div>
+                            <div style="color:#d0ccc4; font-size:0.85rem; line-height:1.7;">Sister Squad Vol.1<br><span style="color:#666; font-size:0.78rem;">YES24 종이책 판매 중</span></div>
+                        </div>
+                        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:10px; padding:14px 16px;">
+                            <div style="color:#c9a84c; font-size:0.75rem; font-family:'Cinzel',serif; margin-bottom:6px;">E-Book</div>
+                            <div style="color:#d0ccc4; font-size:0.85rem; line-height:1.7;">Sister Squad Vol.1<br><span style="color:#666; font-size:0.78rem;">YES24 전자책 판매 중</span></div>
+                        </div>
+                        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:10px; padding:14px 16px;">
+                            <div style="color:#c9a84c; font-size:0.75rem; font-family:'Cinzel',serif; margin-bottom:6px;">Coloring Book</div>
+                            <div style="color:#d0ccc4; font-size:0.85rem; line-height:1.7;">Sister Squad 컬러링북<br><span style="color:#666; font-size:0.78rem;">YES24 판매 중</span></div>
+                        </div>
+                        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:10px; padding:14px 16px;">
+                            <div style="color:#c9a84c; font-size:0.75rem; font-family:'Cinzel',serif; margin-bottom:6px;">OST</div>
+                            <div style="color:#d0ccc4; font-size:0.85rem; line-height:1.7;">EP.01 Main · Inst · Eng<br><span style="color:#666; font-size:0.78rem;">Spotify 스트리밍</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 작가 소개 -->
+                <div style="background:rgba(201,168,76,0.05); border-radius:14px; padding:22px 26px;">
+                    <h3 style="font-family:'Cinzel',serif; color:#c9a84c; font-size:0.85rem; letter-spacing:2px; margin-bottom:12px;">✦ &nbsp; ABOUT THE AUTHOR</h3>
+                    <p style="color:#a0a0b5; font-size:0.88rem; line-height:2;">
+                        <strong style="color:#e8d08a;">Chris LEE.PAPA</strong>는 두 딸 <strong style="color:#c9a84c;">율이와 정이</strong>를 모티프로
+                        Sister Squad 오리지널 IP를 창작했습니다.
+                        교회 어린이 사역 찬양 인도 경험을 바탕으로 어린이와 가족을 위한 콘텐츠를 제작하며,
+                        AI 기술을 활용해 소설·OST·컬러링북·게임까지 하나의 세계관을 구축하고 있습니다.
+                        Sister Squad는 단순한 판타지 소설을 넘어,
+                        아이들에게 <strong style="color:#e8d08a;">용기와 사랑의 가치</strong>를 전하는 이야기입니다.
+                    </p>
+                </div>
             </div>
         </section>
+        <!-- ── SEO 블록 끝 ── -->
 
     </div>
 
-    <!-- ★ 공통 푸터 (components/footer.html) -->
+    <!-- ★ 공통 푸터 -->
     <div id="site-footer"></div>
 
     <!-- ★ 페이지 전용 i18n -->
     <script>
         window.PAGE_I18N = {
             ko: {
-                share_desc:                 '두 자매의 마법 같은 모험을 소중한 사람들에게 전하세요.',
-                header_title:               'SISTER SQUAD',
-                header_slogan:              'Two Sisters, One Magical Destiny',
-                back_link:                  '‹ 라이브러리로 돌아가기',
-                story_label:                'THE STORY',
-                story_desc:                 '어느 날 갑자기 펼쳐진 신비로운 책 속의 세계.<br>이성적이고 용감한 <b>T 언니 \'율\'</b>과 <br>따뜻하고  공감 능력이 뛰어난 <b>F 동생 \'정\'</b>은<br>우연히 환상적인 모험을 시작합니다.<br><br>어둠의 그림자가 덮쳐오는 위기의 순간마다,<br>서로 다른 성격의 두 자매는 서로를 채워주며<br><b>가족의 사랑과 진정한 용기</b>를 깨달아갑니다.',
-                char_sec_title:             '캐릭터 소개',
-                char_yul_tag:               'The Brave Leader',
-                char_yul_name:              'Yul (율)',
-                char_yul_desc:              '냉철한 이성과 분석력을 가진 11세 소녀 율이<br>동생을 지키기 위해 강력한 염력의 힘을 각성시킵니다.',
-                char_jung_tag:              'The Heart Weaver',
-                char_jung_name:             'Jung (정)',
-                char_jung_desc:             '풍부한 감성과 따뜻한 마음을 가진 7세 동생 정이<br>살아 숨 쉬는 모든 것과 교감하며 기적을 만들어냅니다.',
-                ost_sec_title:              '오리지널 사운드트랙',
-                placeholder_text:           '음악 재생하기',
-                ost_btn:                    '전체 앨범 듣기 ›',
-                buy_sec_title:              '도서 구매',
-                buy_paper:                  '종이책 구매 (YES24)',
-                buy_ebook:                  '전자책 구매 (YES24)',
-                buy_coloring:               '컬러링북 구매 (YES24)',
-                comments_title:             'Guestbook',
-                comments_leave:             '✦ 한마디 남겨주세요',
-                comments_submit:            '남기기',
-                comments_loading:           '· · ·',
-                comments_empty:             '첫 번째 기록을 남겨주세요',
-                comments_error:             '잠시 후 다시 시도해주세요.',
-                comments_name_placeholder:  '닉네임',
-                comments_body_placeholder:  '두 자매의 모험에 대한 응원과 기대평을 남겨주세요 ✨',
-                comments_required:          '닉네임과 내용을 입력해주세요.',
-                comments_too_short:         '내용을 좀 더 입력해주세요.',
-                comments_thanks:            '소중한 한마디 감사합니다 🙏',
-                comments_submit_error:      '오류가 발생했습니다. 다시 시도해주세요.',
-                comments_network_error:     '네트워크 오류입니다.'
+                share_desc:       '두 자매의 마법 같은 모험을 소중한 사람들에게 전하세요.',
+                header_title:     'SISTER SQUAD',
+                header_slogan:    'Two Sisters, One Magical Destiny',
+                back_link:        '‹ 라이브러리로 돌아가기',
+                story_label:      'THE STORY',
+                story_desc:       '어느 날 갑자기 펼쳐진 신비로운 책 속의 세계.<br>이성적이고 용감한 <b>T 언니 \'율\'</b>과 <br>따뜻하고  공감 능력이 뛰어난 <b>F 동생 \'정\'</b>은<br>우연히 환상적인 모험을 시작합니다.<br><br>어둠의 그림자가 덮쳐오는 위기의 순간마다,<br>서로 다른 성격의 두 자매는 서로를 채워주며<br><b>가족의 사랑과 진정한 용기</b>를 깨달아갑니다.',
+                char_sec_title:   '캐릭터 소개',
+                char_yul_tag:     'The Brave Leader',
+                char_yul_name:    'Yul (율)',
+                char_yul_desc:    '냉철한 이성과 분석력을 가진 11세 소녀 율이<br>동생을 지키기 위해 강력한 염력의 힘을 각성시킵니다.',
+                char_jung_tag:    'The Heart Weaver',
+                char_jung_name:   'Jung (정)',
+                char_jung_desc:   '풍부한 감성과 따뜻한 마음을 가진 7세 동생 정이<br>살아 숨 쉬는 모든 것과 교감하며 기적을 만들어냅니다.',
+                ost_sec_title:    '오리지널 사운드트랙',
+                placeholder_text: '음악 재생하기',
+                ost_btn:          '전체 앨범 듣기 ›',
+                buy_sec_title:    '도서 구매',
+                buy_paper:        '종이책 구매 (YES24)',
+                buy_ebook:        '전자책 구매 (YES24)',
+                buy_coloring:     '컬러링북 구매 (YES24)'
             },
             en: {
-                share_desc:                 'Share the magical adventure of two sisters with your loved ones.',
-                header_title:               'SISTER SQUAD',
-                header_slogan:              'Two Sisters, One Magical Destiny',
-                back_link:                  '‹ Back to Library',
-                story_label:                'THE STORY',
-                story_desc:                 'A mysterious world within a book suddenly unfolds one day.<br>The rational and brave <b>\'T\' older sister, Yul</b>, and <br>the warm and empathetic <b>\'F\' younger sister, Jung</b>,<br>accidentally embark on a fantastic adventure.<br><br>Whenever the shadow of darkness strikes,<br>the two sisters with different personalities complement each other,<br>realizing <b>family love and true courage</b>.',
-                char_sec_title:             'Character Introduction',
-                char_yul_tag:               'The Brave Leader',
-                char_yul_name:              'Yul',
-                char_yul_desc:              'Yul, an 11-year-old girl with cool reason and analytical skills,<br>awakens a powerful telekinetic force to protect her sister.',
-                char_jung_tag:              'The Heart Weaver',
-                char_jung_name:             'Jung',
-                char_jung_desc:             'Jung, a 7-year-old younger sister with rich emotions and a warm heart,<br>communicates with all living things to create miracles.',
-                ost_sec_title:              'Original Soundtrack',
-                placeholder_text:           'CLICK TO PLAY',
-                ost_btn:                    'Listen Full Album ›',
-                buy_sec_title:              'Get the Book',
-                buy_paper:                  'Buy Paperback (YES24)',
-                buy_ebook:                  'Buy E-Book (YES24)',
-                buy_coloring:               'Buy Coloring Book (YES24)',
-                comments_title:             'Guestbook',
-                comments_leave:             '✦ Leave a message',
-                comments_submit:            'Submit',
-                comments_loading:           '· · ·',
-                comments_empty:             'Be the first to leave a message',
-                comments_error:             'Please try again later.',
-                comments_name_placeholder:  'Nickname',
-                comments_body_placeholder:  'Leave encouragement or thoughts about the two sisters\' adventure ✨',
-                comments_required:          'Please enter both a nickname and a message.',
-                comments_too_short:         'Please write a little more.',
-                comments_thanks:            'Thank you for your message 🙏',
-                comments_submit_error:      'Something went wrong. Please try again.',
-                comments_network_error:     'Network error. Please try again.'
+                share_desc:       'Share the magical adventure of two sisters with your loved ones.',
+                header_title:     'SISTER SQUAD',
+                header_slogan:    'Two Sisters, One Magical Destiny',
+                back_link:        '‹ Back to Library',
+                story_label:      'THE STORY',
+                story_desc:       'A mysterious world within a book suddenly unfolds one day.<br>The rational and brave <b>\'T\' older sister, Yul</b>, and <br>the warm and empathetic <b>\'F\' younger sister, Jung</b>,<br>accidentally embark on a fantastic adventure.<br><br>Whenever the shadow of darkness strikes,<br>the two sisters with different personalities complement each other,<br>realizing <b>family love and true courage</b>.',
+                char_sec_title:   'Character Introduction',
+                char_yul_tag:     'The Brave Leader',
+                char_yul_name:    'Yul',
+                char_yul_desc:    'Yul, an 11-year-old girl with cool reason and analytical skills,<br>awakens a powerful telekinetic force to protect her sister.',
+                char_jung_tag:    'The Heart Weaver',
+                char_jung_name:   'Jung',
+                char_jung_desc:   'Jung, a 7-year-old younger sister with rich emotions and a warm heart,<br>communicates with all living things to create miracles.',
+                ost_sec_title:    'Original Soundtrack',
+                placeholder_text: 'CLICK TO PLAY',
+                ost_btn:          'Listen Full Album ›',
+                buy_sec_title:    'Get the Book',
+                buy_paper:        'Buy Paperback (YES24)',
+                buy_ebook:        'Buy E-Book (YES24)',
+                buy_coloring:     'Buy Coloring Book (YES24)'
             }
         };
 
-        /* ── placeholder 언어 변경 처리 ── */
-        window.onLangChange = function(lang) {
-            const dict = (window.PAGE_I18N && window.PAGE_I18N[lang]) || {};
-            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-                const key = el.getAttribute('data-i18n-placeholder');
-                if (dict[key]) el.setAttribute('placeholder', dict[key]);
-            });
-        };
-
-        /* ── 페이지 로직 ── */
         window.onMainReady = function() {
             const canvas = document.getElementById('stars-canvas');
             const ctx = canvas ? canvas.getContext('2d') : null;
@@ -467,20 +445,10 @@
             window.addEventListener('resize', resize);
             resize();
             draw();
-
-            fetchComments();
         };
 
-        /* ── 헬퍼 ── */
         function safeNavigate(url) { if (url && url.trim() !== '') window.location.assign(url); }
 
-        function getTranslation(key) {
-            const lang = (typeof window.getCurrentLang === 'function') ? window.getCurrentLang() : 'ko';
-            const dict = (window.PAGE_I18N && window.PAGE_I18N[lang]) || {};
-            return dict[key] || (window.PAGE_I18N && window.PAGE_I18N.ko && window.PAGE_I18N.ko[key]) || '';
-        }
-
-        /* ── YouTube iframe 인젝터 ── */
         function injectIframe(element, url) {
             const container = element && element.parentElement;
             if (!container) return;
@@ -494,99 +462,6 @@
             iframe.title = element.getAttribute('aria-label') || 'YouTube player';
             container.innerHTML = '';
             container.appendChild(iframe);
-        }
-
-        /* ── 방명록 시스템 (Supabase) ── */
-        const SUPA_URL = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
-        const SUPA_KEY = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
-        const PAGE_ID  = '/sistersquad';
-
-        function createCommentMessage(messageKey) {
-            const empty = document.createElement('div');
-            empty.className = 'cm-empty';
-            const icon = document.createElement('span'); icon.textContent = '✦';
-            const message = document.createElement('span');
-            message.setAttribute('data-i18n', messageKey);
-            message.textContent = getTranslation(messageKey);
-            empty.append(icon, message);
-            return empty;
-        }
-
-        function renderComments(comments) {
-            const list = document.getElementById('cm-list');
-            if (!list) return;
-            list.textContent = '';
-            if (!Array.isArray(comments) || comments.length === 0) {
-                list.appendChild(createCommentMessage('comments_empty')); return;
-            }
-            comments.forEach((comment, index) => {
-                const nickname = String(comment.nickname || 'Guest').trim() || 'Guest';
-                const content  = String(comment.content  || '').trim();
-                const date     = comment.created_at ? String(comment.created_at).slice(0, 10) : '';
-
-                const card   = document.createElement('div');  card.className = 'comment-card'; card.style.animationDelay = `${index * 0.05}s`;
-                const meta   = document.createElement('div');  meta.className = 'comment-meta';
-                const avatar = document.createElement('div');  avatar.className = 'comment-avatar'; avatar.textContent = nickname.charAt(0).toUpperCase() || 'G';
-                const name   = document.createElement('span'); name.className = 'comment-nickname'; name.textContent = nickname;
-                const dateEl = document.createElement('span'); dateEl.className = 'comment-date';   dateEl.textContent = date;
-                const body   = document.createElement('div');  body.className = 'comment-content';  body.textContent = content;
-
-                meta.append(avatar, name, dateEl);
-                card.append(meta, body);
-                list.appendChild(card);
-            });
-        }
-
-        async function fetchComments() {
-            const list = document.getElementById('cm-list');
-            if (!list) return;
-            try {
-                const res = await fetch(
-                    `${SUPA_URL}/rest/v1/comments?page=eq.${encodeURIComponent(PAGE_ID)}&order=created_at.desc`,
-                    { headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` } }
-                );
-                if (!res.ok) throw new Error(`Supabase read failed: ${res.status}`);
-                renderComments(await res.json());
-            } catch (err) {
-                console.error(err);
-                list.textContent = '';
-                list.appendChild(createCommentMessage('comments_error'));
-            }
-        }
-
-        async function submitComment() {
-            const nameInput = document.getElementById('cm-name');
-            const bodyInput = document.getElementById('cm-body');
-            const btn       = document.querySelector('.cm-submit-btn');
-            if (!nameInput || !bodyInput || !btn) return;
-
-            const nickname = nameInput.value.trim();
-            const content  = bodyInput.value.trim();
-            if (!nickname || !content)  { window.showToast(getTranslation('comments_required'));  return; }
-            if (content.length < 2)     { window.showToast(getTranslation('comments_too_short')); return; }
-
-            btn.disabled = true; btn.textContent = '...';
-            try {
-                const res = await fetch(`${SUPA_URL}/rest/v1/comments`, {
-                    method: 'POST',
-                    headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
-                    body: JSON.stringify({ page: PAGE_ID, nickname, content })
-                });
-                if (res.ok || res.status === 201) {
-                    nameInput.value = ''; bodyInput.value = '';
-                    window.showToast(getTranslation('comments_thanks'));
-                    fetchComments();
-                } else {
-                    window.showToast(getTranslation('comments_submit_error'));
-                    console.error('Supabase error:', await res.text());
-                }
-            } catch (err) {
-                window.showToast(getTranslation('comments_network_error'));
-                console.error(err);
-            } finally {
-                btn.disabled = false;
-                btn.textContent = getTranslation('comments_submit') || '남기기';
-            }
         }
     </script>
 

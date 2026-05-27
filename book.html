@@ -31,13 +31,11 @@
     <meta property="og:locale:alternate" content="en_US">
     <meta property="og:site_name" content="Chris LEE.PAPA">
 
-    <!-- ✅ Twitter Card 추가 -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="BOOK – Chris LEE.PAPA">
     <meta name="twitter:description" content="크리스리파파의 도서 & 세계관 아카이브. Sister Squad · Miracle Shot">
     <meta name="twitter:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1">
 
-    <!-- ✅ canonical: .html 확장자 제거 → /book -->
     <link rel="canonical" href="https://chrisleepapa-official.vercel.app/book">
 
     <title>BOOK – Chris LEE.PAPA</title>
@@ -103,36 +101,6 @@
         .teaser-title { font-size: 2rem; color: #ffffff; margin-bottom: 15px; font-weight: 700; }
         .teaser-desc { color: #8a8a9d; font-size: 1rem; line-height: 1.7; word-break: keep-all; }
 
-        /* ── 방명록 ── */
-        .comments-section { max-width: 800px; margin: 80px auto 0; padding: 0 20px 100px; position: relative; z-index: 10; animation: fadeUp 1s ease 0.6s both; }
-        .comments-divider { display: flex; align-items: center; gap: 20px; margin-bottom: 50px; }
-        .comments-divider::before, .comments-divider::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(201,168,76,0.3), transparent); }
-        .comments-divider-title { font-family: 'Cinzel', serif; font-size: 1.1rem; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; white-space: nowrap; }
-        .comment-form { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,180,200,0.18); border-radius: 20px; padding: 30px; margin-bottom: 40px; backdrop-filter: blur(5px); -webkit-user-select: text; -moz-user-select: text; user-select: text; }
-        .comment-form-label { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px; color: #ffb4c8; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
-        .comment-input-row { display: flex; gap: 15px; margin-bottom: 15px; }
-        .cm-input { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 15px 18px; color: #f0ece4; font-family: 'Pretendard', sans-serif; font-size: 0.95rem; transition: border-color 0.3s, background 0.3s; outline: none; -webkit-user-select: text; user-select: text; }
-        .cm-input:focus { border-color: rgba(255,180,200,0.55); background: rgba(255,255,255,0.06); }
-        .cm-input::placeholder { color: #5f5a60; }
-        #cm-name { width: 220px; flex-shrink: 0; }
-        #cm-body { flex-grow: 1; resize: none; height: 100px; line-height: 1.6; }
-        .cm-submit-row { display: flex; justify-content: flex-end; margin-top: 15px; }
-        .cm-submit-btn { font-family: 'Pretendard', sans-serif; font-size: 0.95rem; font-weight: 700; letter-spacing: 1px; padding: 14px 35px; background: linear-gradient(135deg, #ffb4c8, #c9a84c); color: #000; border: none; border-radius: 30px; cursor: pointer; transition: all 0.3s; }
-        .cm-submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255,180,200,0.25); }
-        .cm-submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-        .comment-list { display: flex; flex-direction: column; gap: 16px; }
-        .comment-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 20px 24px; transition: border-color 0.3s; animation: fadeUp 0.4s ease both; }
-        .comment-card:hover { border-color: rgba(255,180,200,0.25); }
-        .comment-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
-        .comment-avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, rgba(255,180,200,0.35), rgba(201,168,76,0.35)); display: flex; align-items: center; justify-content: center; font-family: 'Cinzel', serif; font-size: 0.8rem; font-weight: 700; color: #ffdfeb; border: 1px solid rgba(255,180,200,0.3); flex-shrink: 0; }
-        .comment-nickname { font-family: 'Pretendard', sans-serif; font-size: 0.95rem; font-weight: 600; color: var(--gold-light); letter-spacing: 0.5px; }
-        .comment-date { font-size: 0.75rem; color: #555; margin-left: auto; font-family: 'Pretendard', sans-serif; }
-        .comment-content { font-family: 'Pretendard', 'Noto Serif KR', sans-serif; font-size: 0.95rem; color: #c8c4bc; line-height: 1.7; padding-left: 44px; white-space: pre-wrap; word-break: break-word; -webkit-user-select: text; user-select: text; }
-        .cm-empty, .cm-loading { text-align: center; padding: 36px 20px; color: #555; font-family: 'Pretendard', sans-serif; font-size: 0.9rem; letter-spacing: 1px; }
-        .cm-empty span:first-child { display: block; font-size: 1.5rem; margin-bottom: 10px; opacity: 0.55; }
-        .cm-loading { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 2px; }
-
-        @keyframes shimmer-bar { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
         @media (max-width: 900px) {
@@ -140,12 +108,6 @@
             .card-image-box { height: 220px; }
             .teaser-card { padding: 30px 20px; gap: 20px; }
             .teaser-img { height: 220px; background-size: cover; }
-            .comments-section { margin-top: 60px; padding: 0 20px 80px; }
-            .comment-form { padding: 25px 20px; }
-            .comment-input-row { flex-direction: column; gap: 12px; margin-bottom: 12px; }
-            #cm-name { width: 100%; }
-            #cm-body { width: 100%; height: 100px; }
-            .comment-content { padding-left: 0; }
         }
     </style>
 </head>
@@ -192,13 +154,13 @@
             <div style="margin-bottom:36px; padding-bottom:32px; border-bottom:1px solid rgba(255,255,255,0.06);">
                 <h3 style="font-family:'Cinzel',serif; color:#e8d08a; font-size:1rem; letter-spacing:1.5px; margin-bottom:14px;">SISTER SQUAD — 시스터스쿼드</h3>
                 <p style="color:#c0bcb4; font-size:0.92rem; line-height:2; margin-bottom:14px;">
-                    <strong style="color:#e8d08a;">Sister Squad</strong>는 크리스리파파의 두 딸, 
-                    <strong style="color:#c9a84c;">율이</strong>와 <strong style="color:#c9a84c;">정이</strong>를 모티프로 탄생한 
+                    <strong style="color:#e8d08a;">Sister Squad</strong>는 크리스리파파의 두 딸,
+                    <strong style="color:#c9a84c;">율이</strong>와 <strong style="color:#c9a84c;">정이</strong>를 모티프로 탄생한
                     오리지널 판타지 IP입니다. 평범한 자매가 오래된 책을 펼치는 순간 마법 세계로 빨려 들어가며 이야기가 시작됩니다.
                 </p>
                 <p style="color:#c0bcb4; font-size:0.92rem; line-height:2; margin-bottom:14px;">
-                    빛과 어둠이 공존하는 <strong style="color:#e8d08a;">페어리 타운(Fairy Town)</strong>에서 두 자매는 
-                    마법사, 용사, 정령술사 등 개성 넘치는 동료들과 함께 어둠의 군주에 맞서 싸웁니다. 
+                    빛과 어둠이 공존하는 <strong style="color:#e8d08a;">페어리 타운(Fairy Town)</strong>에서 두 자매는
+                    마법사, 용사, 정령술사 등 개성 넘치는 동료들과 함께 어둠의 군주에 맞서 싸웁니다.
                     싸움의 끝에서 그들이 깨닫는 것은 용기가 힘이 아니라 <strong style="color:#c9a84c;">사랑에서 온다</strong>는 진실입니다.
                 </p>
                 <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; margin-top:16px;">
@@ -225,13 +187,13 @@
             <div>
                 <h3 style="font-family:'Cinzel',serif; color:#e8d08a; font-size:1rem; letter-spacing:1.5px; margin-bottom:14px;">MIRACLE SHOT — 미라클 샷 <span style="font-size:0.75rem; color:#c9a84c; background:rgba(201,168,76,0.12); border-radius:20px; padding:3px 10px; margin-left:8px; letter-spacing:1px;">COMING SOON</span></h3>
                 <p style="color:#c0bcb4; font-size:0.92rem; line-height:2; margin-bottom:14px;">
-                    <strong style="color:#e8d08a;">Miracle Shot</strong>은 풋살을 통해 성장하는 네 소년과 그들을 이끄는 이코치의 이야기입니다. 
-                    실패와 좌절 속에서도 포기하지 않는 아이들이 기적 같은 한 발을 쏘아 올리는 
+                    <strong style="color:#e8d08a;">Miracle Shot</strong>은 풋살을 통해 성장하는 네 소년과 그들을 이끄는 이코치의 이야기입니다.
+                    실패와 좌절 속에서도 포기하지 않는 아이들이 기적 같은 한 발을 쏘아 올리는
                     <strong style="color:#c9a84c;">스포츠 판타지 소설</strong>입니다.
                 </p>
                 <p style="color:#c0bcb4; font-size:0.92rem; line-height:2; margin-bottom:14px;">
-                    최강 골키퍼 <strong style="color:#e8d08a;">'영'</strong>, 불꽃 같은 슈팅의 <strong style="color:#e8d08a;">'황'</strong>, 
-                    압도적인 스피드의 <strong style="color:#e8d08a;">'길'</strong>, 탁월한 패스 감각의 <strong style="color:#e8d08a;">'고'</strong>. 
+                    최강 골키퍼 <strong style="color:#e8d08a;">'영'</strong>, 불꽃 같은 슈팅의 <strong style="color:#e8d08a;">'황'</strong>,
+                    압도적인 스피드의 <strong style="color:#e8d08a;">'길'</strong>, 탁월한 패스 감각의 <strong style="color:#e8d08a;">'고'</strong>.
                     네 소년은 각자의 상처를 안고 필드에 서지만, 함께할 때 비로소 진짜 팀이 됩니다.
                 </p>
                 <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; margin-top:16px;">
@@ -263,88 +225,34 @@
     </section>
     <!-- ── SEO 작품 소개 섹션 끝 ── -->
 
-    <!-- ── 방명록 섹션 ── -->
-    <section class="comments-section" aria-labelledby="comments-heading">
-        <div class="comments-divider">
-            <h2 id="comments-heading" class="comments-divider-title" data-i18n="comments_title">Guestbook</h2>
-        </div>
-        <div class="comment-form">
-            <label class="comment-form-label" for="cm-body" data-i18n="comments_leave">✦ 한마디 남겨주세요</label>
-            <div class="comment-input-row">
-                <input id="cm-name" class="cm-input" type="text" placeholder="닉네임" data-i18n-placeholder="comments_name_placeholder" maxlength="20" autocomplete="nickname">
-                <textarea id="cm-body" class="cm-input" placeholder="책과 세계관에 대한 응원, 기대평을 남겨주세요 ✨" data-i18n-placeholder="comments_body_placeholder" maxlength="300"></textarea>
-            </div>
-            <div class="cm-submit-row">
-                <button type="button" class="cm-submit-btn" onclick="submitComment()" data-i18n="comments_submit">남기기</button>
-            </div>
-        </div>
-        <div id="cm-list" class="comment-list" aria-live="polite">
-            <div class="cm-loading" data-i18n="comments_loading">· · ·</div>
-        </div>
-    </section>
-
-    <!-- ★ 공통 푸터 (components/footer.html) -->
+    <!-- ★ 공통 푸터 — guestbook.js 가 이 앞에 공통 방명록을 자동 삽입합니다 -->
     <div id="site-footer"></div>
 
     <!-- ★ 페이지 전용 i18n -->
     <script>
         window.PAGE_I18N = {
             ko: {
-                share_desc:                 '상상 속 마법 같은 세계관을 소중한 사람들에게 전하세요.',
-                header_title:               'Books & Universe',
-                header_slogan:              'Imagination to Reality',
-                sister_title:               'SISTER SQUAD',
-                sister_desc:                '책 속 마법 세계로 들어간 언니와 동생!<br>어둠에 맞서며 진정한 용기와<br> 가족의 사랑을 깨닫는 환상적인 모험.<br>사랑하는 두 딸에게서 영감을 받아<br> 탄생한 따뜻한 판타지 소설 입니다.',
-                btn_readmore:               'Read More',
-                teaser_badge:               'COMING SOON',
-                teaser_title:               'Miracle Shot',
-                teaser_desc:                '개성이 넘치는 아이들과 함께 실패에서<br>기적을 쏘아 올리는 이코치의 이야기.<br>최강 골레이로 \'영\', 불꽃슈터 \'황\'<br> 슈퍼소닉 \'길\', 패스마스터 \'고\'<br>네 소년의 환상의 풋살 판타지를 만나세요.',
-                comments_title:             'Guestbook',
-                comments_leave:             '✦ 한마디 남겨주세요',
-                comments_submit:            '남기기',
-                comments_loading:           '· · ·',
-                comments_empty:             '첫 번째 기록을 남겨주세요',
-                comments_error:             '잠시 후 다시 시도해주세요.',
-                comments_name_placeholder:  '닉네임',
-                comments_body_placeholder:  '책과 세계관에 대한 응원, 기대평을 남겨주세요 ✨',
-                comments_required:          '닉네임과 내용을 입력해주세요.',
-                comments_too_short:         '내용을 좀 더 입력해주세요.',
-                comments_thanks:            '소중한 한마디 감사합니다 🙏',
-                comments_submit_error:      '오류가 발생했습니다. 다시 시도해주세요.',
-                comments_network_error:     '네트워크 오류입니다.'
+                share_desc:       '상상 속 마법 같은 세계관을 소중한 사람들에게 전하세요.',
+                header_title:     'Books & Universe',
+                header_slogan:    'Imagination to Reality',
+                sister_title:     'SISTER SQUAD',
+                sister_desc:      '책 속 마법 세계로 들어간 언니와 동생!<br>어둠에 맞서며 진정한 용기와<br> 가족의 사랑을 깨닫는 환상적인 모험.<br>사랑하는 두 딸에게서 영감을 받아<br> 탄생한 따뜻한 판타지 소설 입니다.',
+                btn_readmore:     'Read More',
+                teaser_badge:     'COMING SOON',
+                teaser_title:     'Miracle Shot',
+                teaser_desc:      '개성이 넘치는 아이들과 함께 실패에서<br>기적을 쏘아 올리는 이코치의 이야기.<br>최강 골레이로 \'영\', 불꽃슈터 \'황\'<br> 슈퍼소닉 \'길\', 패스마스터 \'고\'<br>네 소년의 환상의 풋살 판타지를 만나세요.'
             },
             en: {
-                share_desc:                 'Share this magical imaginary universe with your loved ones.',
-                header_title:               'Books & Universe',
-                header_slogan:              'Imagination to Reality',
-                sister_title:               'SISTER SQUAD',
-                sister_desc:                'Two sisters who entered a magical world in a book!<br>A fantastic adventure of facing darkness<br>and realizing true courage and family love.<br>A heartwarming fantasy novel inspired by<br>my two beloved daughters.',
-                btn_readmore:               'Read More',
-                teaser_badge:               'COMING SOON',
-                teaser_title:               'Miracle Shot',
-                teaser_desc:                'The story of Coach Lee shooting a miracle<br>out of failure with kids full of personality.<br>The strongest Goleiro \'Young\', Flame Shooter \'Hwang\',<br>Supersonic \'Gil\', Pass Master \'Go\'.<br>Meet the fantastic futsal fantasy of four boys.',
-                comments_title:             'Guestbook',
-                comments_leave:             '✦ Leave a message',
-                comments_submit:            'Submit',
-                comments_loading:           '· · ·',
-                comments_empty:             'Be the first to leave a message',
-                comments_error:             'Please try again later.',
-                comments_name_placeholder:  'Nickname',
-                comments_body_placeholder:  'Leave encouragement or thoughts about the books and universe ✨',
-                comments_required:          'Please enter both a nickname and a message.',
-                comments_too_short:         'Please write a little more.',
-                comments_thanks:            'Thank you for your message 🙏',
-                comments_submit_error:      'Something went wrong. Please try again.',
-                comments_network_error:     'Network error. Please try again.'
+                share_desc:       'Share this magical imaginary universe with your loved ones.',
+                header_title:     'Books & Universe',
+                header_slogan:    'Imagination to Reality',
+                sister_title:     'SISTER SQUAD',
+                sister_desc:      'Two sisters who entered a magical world in a book!<br>A fantastic adventure of facing darkness<br>and realizing true courage and family love.<br>A heartwarming fantasy novel inspired by<br>my two beloved daughters.',
+                btn_readmore:     'Read More',
+                teaser_badge:     'COMING SOON',
+                teaser_title:     'Miracle Shot',
+                teaser_desc:      'The story of Coach Lee shooting a miracle<br>out of failure with kids full of personality.<br>The strongest Goleiro \'Young\', Flame Shooter \'Hwang\',<br>Supersonic \'Gil\', Pass Master \'Go\'.<br>Meet the fantastic futsal fantasy of four boys.'
             }
-        };
-
-        window.onLangChange = function(lang) {
-            const dict = (window.PAGE_I18N && window.PAGE_I18N[lang]) || {};
-            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-                const key = el.getAttribute('data-i18n-placeholder');
-                if (dict[key]) el.setAttribute('placeholder', dict[key]);
-            });
         };
 
         window.onMainReady = function() {
@@ -381,125 +289,17 @@
             window.addEventListener('resize', resize);
             resize();
             draw();
-
-            fetchComments();
         };
 
         function safeNavigate(url) { if (url && url.trim() !== '') window.location.assign(url); }
         function handleCardKey(event, url) {
             if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); safeNavigate(url); }
         }
-
-        function getTranslation(key) {
-            const lang = (typeof window.getCurrentLang === 'function') ? window.getCurrentLang() : 'ko';
-            const dict = (window.PAGE_I18N && window.PAGE_I18N[lang]) || {};
-            return dict[key] || (window.PAGE_I18N && window.PAGE_I18N.ko && window.PAGE_I18N.ko[key]) || '';
-        }
-
-        const SUPA_URL = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
-        const SUPA_KEY = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
-        const PAGE_ID  = '/book';
-
-        function createCommentMessage(messageKey) {
-            const empty = document.createElement('div');
-            empty.className = 'cm-empty';
-            const icon = document.createElement('span');
-            icon.textContent = '✦';
-            const message = document.createElement('span');
-            message.setAttribute('data-i18n', messageKey);
-            message.textContent = getTranslation(messageKey);
-            empty.append(icon, message);
-            return empty;
-        }
-
-        function renderComments(comments) {
-            const list = document.getElementById('cm-list');
-            if (!list) return;
-            list.textContent = '';
-            if (!Array.isArray(comments) || comments.length === 0) {
-                list.appendChild(createCommentMessage('comments_empty'));
-                return;
-            }
-            comments.forEach((comment, index) => {
-                const nickname = String(comment.nickname || 'Guest').trim() || 'Guest';
-                const content  = String(comment.content  || '').trim();
-                const date     = comment.created_at ? String(comment.created_at).slice(0, 10) : '';
-
-                const card   = document.createElement('div');
-                card.className = 'comment-card';
-                card.style.animationDelay = `${index * 0.05}s`;
-
-                const meta   = document.createElement('div');  meta.className = 'comment-meta';
-                const avatar = document.createElement('div');  avatar.className = 'comment-avatar'; avatar.textContent = nickname.charAt(0).toUpperCase() || 'G';
-                const name   = document.createElement('span'); name.className = 'comment-nickname'; name.textContent = nickname;
-                const dateEl = document.createElement('span'); dateEl.className = 'comment-date';   dateEl.textContent = date;
-                const body   = document.createElement('div');  body.className = 'comment-content';  body.textContent = content;
-
-                meta.append(avatar, name, dateEl);
-                card.append(meta, body);
-                list.appendChild(card);
-            });
-        }
-
-        async function fetchComments() {
-            const list = document.getElementById('cm-list');
-            if (!list) return;
-            try {
-                const res = await fetch(
-                    `${SUPA_URL}/rest/v1/comments?page=eq.${encodeURIComponent(PAGE_ID)}&order=created_at.desc`,
-                    { headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` } }
-                );
-                if (!res.ok) throw new Error(`Supabase read failed: ${res.status}`);
-                renderComments(await res.json());
-            } catch (err) {
-                console.error(err);
-                list.textContent = '';
-                list.appendChild(createCommentMessage('comments_error'));
-            }
-        }
-
-        async function submitComment() {
-            const nameInput = document.getElementById('cm-name');
-            const bodyInput = document.getElementById('cm-body');
-            const btn       = document.querySelector('.cm-submit-btn');
-            if (!nameInput || !bodyInput || !btn) return;
-
-            const nickname = nameInput.value.trim();
-            const content  = bodyInput.value.trim();
-
-            if (!nickname || !content)  { window.showToast(getTranslation('comments_required'));  return; }
-            if (content.length < 2)     { window.showToast(getTranslation('comments_too_short')); return; }
-
-            btn.disabled    = true;
-            btn.textContent = '...';
-
-            try {
-                const res = await fetch(`${SUPA_URL}/rest/v1/comments`, {
-                    method: 'POST',
-                    headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
-                    body: JSON.stringify({ page: PAGE_ID, nickname, content })
-                });
-                if (res.ok || res.status === 201) {
-                    nameInput.value = '';
-                    bodyInput.value = '';
-                    window.showToast(getTranslation('comments_thanks'));
-                    fetchComments();
-                } else {
-                    window.showToast(getTranslation('comments_submit_error'));
-                    console.error('Supabase error:', await res.text());
-                }
-            } catch (err) {
-                window.showToast(getTranslation('comments_network_error'));
-                console.error(err);
-            } finally {
-                btn.disabled    = false;
-                btn.textContent = getTranslation('comments_submit') || '남기기';
-            }
-        }
     </script>
 
-    <!-- ★ 공통 스크립트 -->
+    <!-- ★ 공통 스크립트 & 공통 방명록 -->
     <script src="js/main.js"></script>
+    <script src="js/guestbook.js"></script>
 
 </body>
 </html>

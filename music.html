@@ -351,6 +351,16 @@
 
     <!-- ★ 페이지 전용 로직 ── -->
     <script>
+        function escapeHtml(value) {
+            return String(value ?? '').replace(/[&<>"']/g, (char) => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            }[char]));
+        }
+
+        function escapeCssUrl(value) {
+            return String(value ?? '').replace(/[\\"')\r\n]/g, encodeURIComponent);
+        }
+        
         // ── Dynamic Music Data ──
         const musicData = [
             { title_ko: 'To Rise',         title_en: 'To Rise',           type_ko: '연주곡',   type_en: 'Instrumental', albumId: '2OSKuof7gooLElmFYvoygK', cover: 'images/music.jpg', embedUrl: 'https://open.spotify.com/embed/album/2OSKuof7gooLElmFYvoygK?utm_source=generator' },

@@ -1,17 +1,24 @@
 /**
  * Chris LEE.PAPA — Unified Guestbook
- * Persistent Storage 기반 통합 방명록
+ * Supabase 기반 통합 방명록
  * 모든 페이지 하단에 공통으로 삽입됩니다.
+ *
+ * ※ 닉네임: 영문 3글자 (대소문자 허용, 자동 대문자 변환)
  */
 
 (function () {
   'use strict';
 
-  /* ── 스토리지 키 ── */
-  const STORAGE_KEY = 'guestbook-entries';
-  const SHARED = true; // 모든 방문자 공유
+  /* ══════════════════════════════════════
+     Supabase 설정 (music.html 과 동일한 키)
+     ══════════════════════════════════════ */
+  const SUPA_URL  = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
+  const SUPA_KEY  = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
+  const TABLE     = 'guestbook';   // Supabase 테이블명
 
-  /* ── CSS 주입 ── */
+  /* ══════════════════════════════════════
+     CSS 주입
+     ══════════════════════════════════════ */
   const style = document.createElement('style');
   style.textContent = `
     /* ===== GUESTBOOK SECTION ===== */
@@ -105,11 +112,13 @@
       box-shadow: 0 0 40px rgba(201,168,76,0.07);
     }
 
+    /* 닉네임 + 출신지 그리드 */
     .gb-form-row {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 120px 1fr;
       gap: 16px;
       margin-bottom: 16px;
+      align-items: start;
     }
 
     .gb-field {
@@ -124,6 +133,19 @@
       letter-spacing: 3px;
       color: rgba(201,168,76,0.65);
       text-transform: uppercase;
+    }
+
+    /* 닉네임 힌트 */
+    .gb-name-hint {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 0.62rem;
+      color: rgba(200,196,190,0.3);
+      letter-spacing: 0.5px;
+      margin-top: 2px;
+    }
+
+    .gb-name-hint.error {
+      color: rgba(255,120,100,0.75);
     }
 
     .gb-input,
@@ -152,6 +174,21 @@
     .gb-textarea:focus {
       border-color: rgba(201,168,76,0.5);
       box-shadow: 0 0 0 3px rgba(201,168,76,0.06);
+    }
+
+    /* 닉네임 입력: 중앙 정렬 + 대문자 강조 */
+    #gb-name {
+      text-align: center;
+      letter-spacing: 6px;
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .gb-input.invalid {
+      border-color: rgba(255,100,80,0.5);
+      box-shadow: 0 0 0 3px rgba(255,80,60,0.08);
     }
 
     .gb-textarea { min-height: 100px; margin-bottom: 20px; }
@@ -313,9 +350,10 @@
       margin-bottom: 12px;
     }
 
+    /* 아바타: 영문 3글자 표시 */
     .gb-avatar {
-      width: 40px;
-      height: 40px;
+      width: 46px;
+      height: 46px;
       border-radius: 50%;
       background: linear-gradient(135deg, rgba(201,168,76,0.3), rgba(201,168,76,0.08));
       border: 1px solid rgba(201,168,76,0.25);
@@ -323,10 +361,11 @@
       align-items: center;
       justify-content: center;
       font-family: 'Cinzel', serif;
-      font-size: 0.9rem;
-      color: rgba(201,168,76,0.8);
-      flex-shrink: 0;
+      font-size: 0.62rem;
       font-weight: 700;
+      letter-spacing: 1.5px;
+      color: rgba(201,168,76,0.9);
+      flex-shrink: 0;
     }
 
     .gb-entry-meta { flex: 1; }
@@ -334,10 +373,11 @@
     .gb-entry-name {
       font-family: 'Cinzel', serif;
       font-size: 0.78rem;
-      letter-spacing: 1.5px;
+      letter-spacing: 2px;
       color: rgba(240,236,228,0.9);
       display: block;
       margin-bottom: 3px;
+      text-transform: uppercase;
     }
 
     .gb-entry-info {
@@ -370,20 +410,6 @@
       word-break: keep-all;
     }
 
-    /* 삭제 버튼 (본인 글) */
-    .gb-delete-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: rgba(200,196,190,0.2);
-      transition: color 0.2s;
-      padding: 4px;
-      display: flex;
-      align-items: center;
-    }
-    .gb-delete-btn:hover { color: rgba(255,100,100,0.6); }
-    .gb-delete-btn svg { width: 14px; height: 14px; }
-
     /* 빈 상태 */
     .gb-empty {
       text-align: center;
@@ -403,6 +429,16 @@
       font-size: 0.7rem;
       letter-spacing: 3px;
       text-transform: uppercase;
+    }
+
+    /* 로딩 스피너 */
+    .gb-loading {
+      text-align: center;
+      padding: 40px 20px;
+      color: rgba(201,168,76,0.4);
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 4px;
     }
 
     /* 더보기 */
@@ -429,7 +465,6 @@
       border-color: rgba(201,168,76,0.45);
       color: rgba(201,168,76,0.8);
     }
-
     .gb-load-more-btn:disabled {
       opacity: 0.3;
       pointer-events: none;
@@ -446,7 +481,25 @@
   `;
   document.head.appendChild(style);
 
-  /* ── 현재 페이지명 ── */
+  /* ══════════════════════════════════════
+     유틸
+     ══════════════════════════════════════ */
+
+  /** XSS 방어 */
+  function sanitize(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  /** 날짜 포맷 */
+  function formatDate(iso) {
+    const d = new Date(iso);
+    const pad = n => String(n).padStart(2, '0');
+    return `${d.getFullYear()}.${pad(d.getMonth()+1)}.${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  }
+
+  /** 현재 페이지 라벨 */
   function getPageLabel() {
     const path = location.pathname.replace(/\/$/, '').split('/').pop() || 'index';
     const map = {
@@ -458,50 +511,15 @@
     return map[path] || path.charAt(0).toUpperCase() + path.slice(1);
   }
 
-  /* ── 날짜 포맷 ── */
-  function formatDate(iso) {
-    const d = new Date(iso);
-    const pad = n => String(n).padStart(2, '0');
-    return `${d.getFullYear()}.${pad(d.getMonth()+1)}.${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  /** 닉네임 유효성 검사 — 영문 3글자만 허용 */
+  function isValidNickname(value) {
+    return /^[A-Za-z]{3}$/.test(value);
   }
 
-  /* ── 아바타 이니셜 ── */
-  function getInitial(name) {
-    const n = name.trim();
-    if (!n) return '✦';
-    // 한글이면 첫 글자
-    if (/[\uac00-\ud7a3]/.test(n[0])) return n[0];
-    return n[0].toUpperCase();
-  }
-
-  /* ── 세션 ID (삭제 권한용) ── */
-  function getSessionId() {
-    let id = sessionStorage.getItem('gb-session');
-    if (!id) {
-      id = Math.random().toString(36).slice(2);
-      sessionStorage.setItem('gb-session', id);
-    }
-    return id;
-  }
-
-  /* ── 스토리지 헬퍼 ── */
-  async function loadEntries() {
-    try {
-      const res = await window.storage.get(STORAGE_KEY, SHARED);
-      if (!res) return [];
-      return JSON.parse(res.value);
-    } catch { return []; }
-  }
-
-  async function saveEntries(entries) {
-    try {
-      await window.storage.set(STORAGE_KEY, JSON.stringify(entries), SHARED);
-      return true;
-    } catch { return false; }
-  }
-
-  /* ── 토스트 ── */
-  let toastEl = null;
+  /* ══════════════════════════════════════
+     토스트
+     ══════════════════════════════════════ */
+  let toastEl    = null;
   let toastTimer = null;
 
   function showGbToast(msg) {
@@ -516,18 +534,46 @@
     toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2800);
   }
 
-  /* ── XSS 방어 ── */
-  function sanitize(str) {
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
+  /* ══════════════════════════════════════
+     Supabase API 헬퍼
+     ══════════════════════════════════════ */
+  const HEADERS = {
+    apikey:        SUPA_KEY,
+    Authorization: `Bearer ${SUPA_KEY}`,
+    'Content-Type': 'application/json',
+    'Prefer':      'return=minimal'
+  };
+
+  /** 방명록 목록 가져오기 (최신순) */
+  async function fetchEntries() {
+    const res = await fetch(
+      `${SUPA_URL}/rest/v1/${TABLE}?order=created_at.desc`,
+      { headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` } }
+    );
+    if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
+    return res.json();
   }
 
-  /* ── 엔트리 렌더 ── */
-  const PAGE_SIZE = 10;
-  let allEntries = [];
-  let displayCount = PAGE_SIZE;
-  const sessionId = getSessionId();
+  /** 방명록 글 저장 */
+  async function insertEntry({ nickname, message, page }) {
+    const res = await fetch(
+      `${SUPA_URL}/rest/v1/${TABLE}`,
+      {
+        method:  'POST',
+        headers: HEADERS,
+        body:    JSON.stringify({ nickname, message, page })
+      }
+    );
+    if (!res.ok) throw new Error(`Insert failed: ${res.status}`);
+    return true;
+  }
+
+  /* ══════════════════════════════════════
+     렌더링
+     ══════════════════════════════════════ */
+  const PAGE_SIZE   = 10;
+  let   allEntries  = [];
+  let   displayCount = PAGE_SIZE;
 
   function renderEntries() {
     const container = document.getElementById('gb-entries-list');
@@ -549,45 +595,36 @@
     }
 
     const visible = allEntries.slice(0, displayCount);
-    container.innerHTML = visible.map((e, i) => `
-      <div class="gb-entry" style="animation-delay:${i * 0.04}s">
-        <div class="gb-entry-header">
-          <div class="gb-avatar">${sanitize(getInitial(e.name))}</div>
-          <div class="gb-entry-meta">
-            <span class="gb-entry-name">${sanitize(e.name)}</span>
-            <div class="gb-entry-info">
-              <span class="gb-entry-date">${formatDate(e.date)}</span>
-              <span class="gb-entry-page">${sanitize(e.page)}</span>
+    container.innerHTML = visible.map((e, i) => {
+      const nick = String(e.nickname || 'GUE').toUpperCase().slice(0, 3);
+      const text = String(e.message || '');
+      const date = e.created_at ? String(e.created_at).slice(0, 10) : '';
+      const page = String(e.page || '');
+      return `
+        <div class="gb-entry" style="animation-delay:${i * 0.04}s">
+          <div class="gb-entry-header">
+            <div class="gb-avatar">${sanitize(nick)}</div>
+            <div class="gb-entry-meta">
+              <span class="gb-entry-name">${sanitize(nick)}</span>
+              <div class="gb-entry-info">
+                <span class="gb-entry-date">${sanitize(date)}</span>
+                ${page ? `<span class="gb-entry-page">${sanitize(page)}</span>` : ''}
+              </div>
             </div>
           </div>
-          ${e.sessionId === sessionId ? `
-          <button class="gb-delete-btn" data-id="${e.id}" title="삭제" aria-label="삭제">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-              <path d="M18 6L6 18M6 6l12 12"/>
-            </svg>
-          </button>` : ''}
+          <p class="gb-entry-text">${sanitize(text).replace(/\n/g, '<br>')}</p>
         </div>
-        <p class="gb-entry-text">${sanitize(e.message).replace(/\n/g, '<br>')}</p>
-      </div>
-    `).join('');
-
-    // 삭제 이벤트
-    container.querySelectorAll('.gb-delete-btn').forEach(btn => {
-      btn.addEventListener('click', async () => {
-        const id = btn.dataset.id;
-        allEntries = allEntries.filter(e => e.id !== id);
-        await saveEntries(allEntries);
-        renderEntries();
-        showGbToast('✦  삭제되었습니다');
-      });
-    });
+      `;
+    }).join('');
 
     if (moreBtn) {
       moreBtn.style.display = displayCount >= total ? 'none' : '';
     }
   }
 
-  /* ── 방명록 HTML 생성 ── */
+  /* ══════════════════════════════════════
+     HTML 생성
+     ══════════════════════════════════════ */
   function buildGuestbookHTML() {
     return `
       <section id="guestbook-section" aria-label="방명록">
@@ -601,38 +638,35 @@
 
           <!-- 작성 폼 -->
           <div class="gb-form-wrap">
+
             <div class="gb-form-row">
+              <!-- 닉네임: 영문 3글자 -->
               <div class="gb-field">
-                <label class="gb-label" for="gb-name">이름 / Name</label>
+                <label class="gb-label" for="gb-name">Nickname</label>
                 <input
                   id="gb-name"
                   class="gb-input"
                   type="text"
-                  placeholder="익명"
-                  maxlength="20"
+                  placeholder="ABC"
+                  maxlength="3"
                   autocomplete="off"
                   spellcheck="false"
+                  inputmode="text"
                 />
+                <span class="gb-name-hint" id="gb-name-hint">영문 3글자</span>
               </div>
+
+              <!-- 메시지 -->
               <div class="gb-field">
-                <label class="gb-label" for="gb-from">어디서 오셨나요?</label>
-                <input
-                  id="gb-from"
-                  class="gb-input"
-                  type="text"
-                  placeholder="Seoul, Korea"
-                  maxlength="30"
-                  autocomplete="off"
-                />
+                <label class="gb-label" for="gb-message">Message</label>
+                <textarea
+                  id="gb-message"
+                  class="gb-textarea"
+                  placeholder="이곳에 방문한 소감, 응원의 말을 남겨주세요 ✦"
+                  maxlength="300"
+                ></textarea>
               </div>
             </div>
-
-            <textarea
-              id="gb-message"
-              class="gb-textarea"
-              placeholder="이곳에 방문한 소감, 응원의 말, 또는 기도 제목을 남겨주세요 ✦"
-              maxlength="300"
-            ></textarea>
 
             <div class="gb-form-footer">
               <span class="gb-char-count" id="gb-char-count">0 / 300</span>
@@ -645,14 +679,15 @@
             </div>
           </div>
 
-          <!-- 목록 -->
+          <!-- 목록 헤더 -->
           <div class="gb-list-header">
             <span class="gb-list-label">Messages</span>
             <span class="gb-count-badge" id="gb-count">0</span>
           </div>
 
+          <!-- 엔트리 목록 -->
           <div class="gb-entries" id="gb-entries-list">
-            <!-- 엔트리 렌더링 -->
+            <div class="gb-loading">· · ·</div>
           </div>
 
           <div class="gb-load-more">
@@ -666,10 +701,12 @@
     `;
   }
 
-  /* ── 초기화 ── */
+  /* ══════════════════════════════════════
+     초기화
+     ══════════════════════════════════════ */
   async function init() {
-    // site-footer 바로 앞에 삽입
-    const footer = document.getElementById('site-footer');
+    /* site-footer 바로 앞에 삽입 */
+    const footer  = document.getElementById('site-footer');
     const wrapper = document.createElement('div');
     wrapper.innerHTML = buildGuestbookHTML();
     const section = wrapper.firstElementChild;
@@ -680,69 +717,112 @@
       document.body.appendChild(section);
     }
 
-    // 데이터 로드
-    allEntries = await loadEntries();
+    /* ── 데이터 로드 ── */
+    try {
+      allEntries = await fetchEntries();
+    } catch (e) {
+      console.error('[Guestbook] fetchEntries error:', e);
+      allEntries = [];
+    }
     renderEntries();
 
-    // 글자 수 카운터
-    const msgEl  = document.getElementById('gb-message');
+    /* ── 닉네임 입력 처리 ── */
+    const nameInput = document.getElementById('gb-name');
+    const nameHint  = document.getElementById('gb-name-hint');
+
+    nameInput.addEventListener('input', () => {
+      // 영문 외 문자 실시간 제거
+      nameInput.value = nameInput.value.replace(/[^A-Za-z]/g, '').toUpperCase();
+
+      const len = nameInput.value.length;
+      if (len === 0) {
+        nameHint.textContent = '영문 3글자';
+        nameHint.className   = 'gb-name-hint';
+        nameInput.classList.remove('invalid');
+      } else if (len < 3) {
+        nameHint.textContent = `${3 - len}글자 더 입력해주세요`;
+        nameHint.className   = 'gb-name-hint error';
+        nameInput.classList.add('invalid');
+      } else {
+        nameHint.textContent = '✓ 완성';
+        nameHint.className   = 'gb-name-hint';
+        nameInput.classList.remove('invalid');
+      }
+    });
+
+    /* ── 글자 수 카운터 ── */
+    const msgEl   = document.getElementById('gb-message');
     const countEl = document.getElementById('gb-char-count');
+
     msgEl.addEventListener('input', () => {
       const len = msgEl.value.length;
       countEl.textContent = `${len} / 300`;
       countEl.classList.toggle('warn', len > 260);
     });
 
-    // 더보기
+    /* ── 더보기 ── */
     document.getElementById('gb-load-more-btn')?.addEventListener('click', () => {
       displayCount += PAGE_SIZE;
       renderEntries();
     });
 
-    // 제출
+    /* ── 제출 ── */
     document.getElementById('gb-submit-btn')?.addEventListener('click', async () => {
-      const name    = (document.getElementById('gb-name').value.trim()  || '익명');
-      const from    = (document.getElementById('gb-from').value.trim()  || '');
-      const message = msgEl.value.trim();
+      const nickname = nameInput.value.trim().toUpperCase();
+      const message  = msgEl.value.trim();
+      const page     = getPageLabel();
+      const btn      = document.getElementById('gb-submit-btn');
 
+      /* 닉네임 유효성 검사 */
+      if (!isValidNickname(nickname)) {
+        showGbToast('✦  닉네임은 영문 3글자여야 합니다');
+        nameInput.classList.add('invalid');
+        nameInput.focus();
+        return;
+      }
+
+      /* 메시지 유효성 검사 */
       if (!message) {
         showGbToast('✦  메시지를 입력해주세요');
         msgEl.focus();
         return;
       }
+      if (message.length < 2) {
+        showGbToast('✦  내용을 좀 더 입력해주세요');
+        msgEl.focus();
+        return;
+      }
 
-      const btn = document.getElementById('gb-submit-btn');
+      /* 제출 */
       btn.classList.add('loading');
+      try {
+        await insertEntry({ nickname, message, page });
 
-      const entry = {
-        id:        Date.now().toString(36) + Math.random().toString(36).slice(2, 5),
-        name:      name + (from ? ` · ${from}` : ''),
-        message,
-        page:      getPageLabel(),
-        date:      new Date().toISOString(),
-        sessionId: sessionId
-      };
-
-      allEntries = [entry, ...allEntries];
-      const ok = await saveEntries(allEntries);
-
-      btn.classList.remove('loading');
-
-      if (ok) {
-        document.getElementById('gb-name').value    = '';
-        document.getElementById('gb-from').value    = '';
-        msgEl.value = '';
-        countEl.textContent = '0 / 300';
+        /* 성공: 폼 초기화 */
+        nameInput.value      = '';
+        msgEl.value          = '';
+        countEl.textContent  = '0 / 300';
+        nameHint.textContent = '영문 3글자';
+        nameHint.className   = 'gb-name-hint';
+        nameInput.classList.remove('invalid');
         displayCount = PAGE_SIZE;
+
+        showGbToast('✦  방명록에 기록되었습니다 🙏');
+
+        /* 목록 새로고침 */
+        allEntries = await fetchEntries();
         renderEntries();
-        showGbToast('✦  방명록에 기록되었습니다');
         section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      } else {
+
+      } catch (e) {
+        console.error('[Guestbook] insertEntry error:', e);
         showGbToast('✦  저장에 실패했습니다. 다시 시도해주세요');
+      } finally {
+        btn.classList.remove('loading');
       }
     });
 
-    // Enter 키 (Ctrl+Enter로 제출)
+    /* ── Ctrl+Enter 단축키 ── */
     msgEl.addEventListener('keydown', e => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
         document.getElementById('gb-submit-btn')?.click();
@@ -750,15 +830,11 @@
     });
   }
 
-  /* 스토리지 API 없으면 조용히 스킵 */
-  if (window.storage) {
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', init);
-    } else {
-      init();
-    }
+  /* DOM 준비 후 실행 */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
   } else {
-    console.warn('[Guestbook] window.storage unavailable — skipping guestbook init');
+    init();
   }
 
 })();

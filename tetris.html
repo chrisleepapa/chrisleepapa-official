@@ -663,57 +663,38 @@
         });
     }
 
-    function arenaSweep() {
-        let totalCleared = 0;
-        let boardChanged = true;
-        
-        while (boardChanged) {
-            boardChanged = false;
-            let moved;
-            do {
-                moved = false;
-                for (let y = ROWS - 2; y >= 0; y--) {
-                    for (let x = 0; x < COLS; x++) {
-                        if (arena[y][x] !== 0 && arena[y + 1][x] === 0) {
-                            arena[y + 1][x] = arena[y][x];
-                            arena[y][x] = 0;
-                            moved = true;
-                            boardChanged = true;
-                        }
-                    }
-                }
-            } while (moved);
+function arenaSweep() {
+    let totalCleared = 0;
 
-            let clearedThisRound = 0;
-            for (let y = ROWS - 1; y >= 0; y--) {
-                let isFull = true;
-                for (let x = 0; x < COLS; x++) {
-                    if (arena[y][x] === 0) { isFull = false; break; }
-                }
-                if (isFull) {
-                    arena[y].fill(0);
-                    clearedThisRound++;
-                    boardChanged = true;
-                }
-            }
-            totalCleared += clearedThisRound;
+    for (let y = ROWS - 1; y >= 0; y--) {
+        let isFull = true;
+        for (let x = 0; x < COLS; x++) {
+            if (arena[y][x] === 0) { isFull = false; break; }
         }
-
-        if (totalCleared > 0) {
-            const oldLevel = player.level;
-            player.lines += totalCleared;
-            player.level = Math.floor(player.lines / 5) + 1;
-            maxReachedLevel = Math.max(maxReachedLevel, player.level);
-            
-            if (player.level > oldLevel) {
-                dropInterval = getDropIntervalForLevel(player.level);
-                showLevelUpAnimation(player.level);
-            } else {
-                playSound('clear');
-                showReaction();
-            }
+        if (isFull) {
+            // 꽉 찬 줄 제거 후, 위 줄들을 한 칸씩 아래로
+            arena.splice(y, 1);
+            arena.unshift(Array(COLS).fill(0));
+            totalCleared++;
+            y++; // 같은 y 위치 재검사
         }
     }
+
+    if (totalCleared > 0) {
+        const oldLevel = player.level;
+        player.lines += totalCleared;
+        player.level = Math.floor(player.lines / 5) + 1;
+        maxReachedLevel = Math.max(maxReachedLevel, player.level);
+
+        if (player.level > oldLevel) {
+            dropInterval = getDropIntervalForLevel(player.level);
+            showLevelUpAnimation(player.level);
+        } else {
+            playSound('clear');
+            showReaction();
+        }
+    }
+}
 
     function playerDrop() {
         if (isIntro || isPaused) return;

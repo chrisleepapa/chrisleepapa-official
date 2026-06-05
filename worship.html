@@ -1,896 +1,1458 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#030305">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="images/favicon.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#030305">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="images/favicon.png">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3207219520058740" crossorigin="anonymous"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NBGELYQ4TZ"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-NBGELYQ4TZ');
+gtag('config', 'GT-5MJDBTR2');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="images/favicon.png">
+<meta name="description" content="Chris LEE.PAPA Worship 아카이브 — 나의 찬양 Vol.1(The First Confession), Vol.2(2nd Confession). AI로 제작한 한국어 CCM 찬양 앨범. Spotify·YouTube 스트리밍. 영혼 깊은 곳에서 올려드리는 고백의 기록.">
+<meta property="og:title" content="WORSHIP – Chris LEE.PAPA">
+<meta property="og:description" content="영혼 깊은 곳에서 올려드리는 고백과 찬양의 기록들. 나의 찬양 Vol.1 · Vol.2.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://chrisleepapa-official.vercel.app/worship">
+<meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:site_name" content="Chris LEE.PAPA">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="WORSHIP – Chris LEE.PAPA">
+<meta name="twitter:description" content="영혼 깊은 곳에서 올려드리는 고백과 찬양의 기록들. 나의 찬양 Vol.1 · Vol.2.">
+<meta name="twitter:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png">
+<link rel="canonical" href="https://chrisleepapa-official.vercel.app/worship">
+<title>WORSHIP – Chris LEE.PAPA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="css/common.css">
+<style>
+body {
+  font-family: 'Pretendard', 'Noto Serif KR', serif;
+  background-image:
+    radial-gradient(circle at top center, rgba(60,30,80,0.4), transparent 60%),
+    radial-gradient(circle at bottom, rgba(40,30,10,0.6), transparent 70%);
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 900;
+  opacity: 0.4;
+}
+#scroll-progress {
+  background: linear-gradient(90deg, var(--gold), var(--gold-light), #fff8e0, var(--gold));
+  background-size: 200% auto;
+  animation: shimmer-bar 3s linear infinite;
+}
+@keyframes shimmer-bar { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
 
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3207219520058740" crossorigin="anonymous"></script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NBGELYQ4TZ"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-NBGELYQ4TZ');
-      gtag('config', 'GT-5MJDBTR2');
-    </script>
+/* ── 페이지 헤더 ── */
+.page-header {
+  position: relative;
+  width: 100%;
+  height: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding-top: var(--nav-height);
+}
+.page-header::after {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 80px;
+  background: linear-gradient(to bottom, rgba(201,168,76,0.8), transparent);
+  margin: 30px auto 0;
+  position: relative;
+  z-index: 3;
+  animation: fadeUp 1.5s ease both;
+}
+#stars-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
+.header-content { position: relative; z-index: 3; text-align: center; animation: fadeUp 1.2s ease both; }
+.header-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(3rem, 10vw, 5rem);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--gold-light);
+  text-shadow: 0 0 30px rgba(201,168,76,0.3);
+  margin-bottom: 15px;
+}
+.header-slogan {
+  font-family: 'Noto Serif KR', serif;
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  letter-spacing: 2px;
+  color: #cdd6f4;
+  font-weight: 300;
+}
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="images/favicon.png">
+/* ── 본문 컨테이너 ── */
+.container { max-width: 1100px; margin: 0 auto; padding: 40px 20px 100px; position: relative; z-index: 10; }
 
-    <!-- ✅ SEO: description 개선 -->
-    <meta name="description" content="Chris LEE.PAPA Worship 아카이브 — 나의 찬양 Vol.1(The First Confession), Vol.2(2nd Confession). AI로 제작한 한국어 CCM 찬양 앨범. Spotify·YouTube 스트리밍. 영혼 깊은 곳에서 올려드리는 고백의 기록.">
+/* ── 앨범 그리드 ── */
+.albums-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 40px;
+  margin-bottom: 80px;
+}
 
-    <!-- ✅ OG 태그 정비 -->
-    <meta property="og:title" content="WORSHIP – Chris LEE.PAPA">
-    <meta property="og:description" content="영혼 깊은 곳에서 올려드리는 고백과 찬양의 기록들. 나의 찬양 Vol.1 · Vol.2.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://chrisleepapa-official.vercel.app/worship">
-    <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png">
-    <meta property="og:locale" content="ko_KR">
-    <meta property="og:locale:alternate" content="en_US">
-    <meta property="og:site_name" content="Chris LEE.PAPA">
+/* ── 앨범 카드 ── */
+.album-card {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+  border: 1px solid rgba(201,168,76,0.15);
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  animation: fadeUp 1s ease both;
+  aspect-ratio: 1 / 1.15;
+  background: #0a0a12;
+}
+.album-card:nth-child(2) { animation-delay: 0.15s; }
+.album-card:hover {
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: 0 40px 80px rgba(0,0,0,0.9), 0 0 40px rgba(201,168,76,0.15);
+  border-color: rgba(201,168,76,0.5);
+}
+.album-cover {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 75%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  transition: transform 0.6s ease;
+}
+.album-card:hover .album-cover { transform: scale(1.05); }
+.album-cover-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0) 30%, rgba(5,3,15,0.7) 55%, rgba(5,3,15,0.98) 72%, rgba(5,3,15,1) 100%);
+  z-index: 2;
+}
+.album-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  padding: 28px 28px 30px;
+}
+.album-vol-badge {
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.4em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: block;
+}
+.album-title {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 16px;
+  line-height: 1.3;
+}
+.album-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  color: var(--gold-light);
+  text-transform: uppercase;
+  transition: all 0.3s;
+}
+.album-cta svg { transition: transform 0.3s; }
+.album-card:hover .album-cta svg { transform: translateX(5px); }
+.album-card:hover .album-cta { color: #fff; }
+.album-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  border: 1px solid rgba(201,168,76,0);
+  transition: border-color 0.4s;
+  z-index: 4;
+  pointer-events: none;
+}
+.album-card:hover::after { border-color: rgba(201,168,76,0.4); }
 
-    <!-- ✅ Twitter Card 추가 -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="WORSHIP – Chris LEE.PAPA">
-    <meta name="twitter:description" content="영혼 깊은 곳에서 올려드리는 고백과 찬양의 기록들. 나의 찬양 Vol.1 · Vol.2.">
-    <meta name="twitter:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png">
+/* ── 앨범 모달 ── */
+#album-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  overflow-y: auto;
+  padding: 20px;
+  box-sizing: border-box;
+  background: rgba(0,0,0,0);
+  transition: background 0.4s;
+}
+#album-modal.open {
+  display: flex;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+.modal-inner {
+  position: relative;
+  width: 100%;
+  max-width: 780px;
+  margin: auto;
+  background: rgba(10,8,20,0.97);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.9);
+  transform: translateY(40px) scale(0.96);
+  opacity: 0;
+  transition: all 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+}
+#album-modal.open .modal-inner {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+.modal-hero {
+  position: relative;
+  height: 280px;
+  overflow: hidden;
+}
+.modal-hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+  display: block;
+}
+.modal-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(10,8,20,0.6) 60%, rgba(10,8,20,1) 100%);
+}
+.modal-hero-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 30px 36px 24px;
+}
+.modal-vol {
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.4em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.modal-title {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+}
+.modal-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.5);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  z-index: 10;
+  backdrop-filter: blur(4px);
+}
+.modal-close:hover { background: rgba(255,255,255,0.15); transform: scale(1.1); }
+.modal-body { padding: 0 36px 50px; }
+.stream-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 40px;
+  padding-top: 4px;
+}
+.stream-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 22px;
+  border-radius: 30px;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+  border: 1px solid;
+  transition: all 0.3s;
+  letter-spacing: 0.3px;
+}
+.btn-spotify { background: rgba(29,185,84,0.08); color: #1DB954; border-color: rgba(29,185,84,0.4); }
+.btn-spotify:hover { background: #1DB954; color: #000; }
+.btn-youtube { background: rgba(255,60,60,0.08); color: #ff4d4d; border-color: rgba(255,60,60,0.4); }
+.btn-youtube:hover { background: #ff0000; color: #fff; border-color: #ff0000; }
 
-    <!-- ✅ canonical: .html 확장자 제거 → /worship -->
-    <link rel="canonical" href="https://chrisleepapa-official.vercel.app/worship">
+/* YouTube 재생 표시 */
+.yt-playing-indicator {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  color: #ff4d4d;
+  margin-bottom: 28px;
+  margin-top: -20px;
+}
+.yt-playing-indicator.active { display: flex; }
+.yt-eq { display: inline-flex; align-items: flex-end; gap: 2px; height: 12px; }
+.yt-eq-bar { width: 2px; background: #ff4d4d; border-radius: 1px; animation: eq-bounce 0.8s infinite ease-in-out; }
+.yt-eq-bar:nth-child(1) { animation-delay: -0.2s; height: 50%; }
+.yt-eq-bar:nth-child(2) { animation-delay: -0.4s; height: 100%; }
+.yt-eq-bar:nth-child(3) { animation-delay: -0.1s; height: 70%; }
+@keyframes eq-bounce { 0%, 100% { transform: scaleY(0.4); } 50% { transform: scaleY(1); } }
 
-    <title>WORSHIP – Chris LEE.PAPA</title>
+/* Spotify iframe */
+.spotify-embed-wrap {
+  display: none;
+  margin-bottom: 32px;
+  border-radius: 14px;
+  overflow: hidden;
+}
+.spotify-embed-wrap.visible { display: block; }
+.spotify-embed-wrap iframe { width: 100%; border-radius: 14px; border: none; display: block; }
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css">
-    <link rel="stylesheet" href="css/common.css">
+/* ── 가사 섹션 제목 ── */
+.lyrics-section-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(201,168,76,0.15);
+}
 
-    <style>
-        /* ── worship.html 전용 스타일 ── */
-        body {
-            font-family: 'Pretendard', 'Noto Serif KR', serif;
-            background-image:
-                radial-gradient(circle at top center, rgba(60,30,80,0.4), transparent 60%),
-                radial-gradient(circle at bottom, rgba(40,30,10,0.6), transparent 70%);
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            user-select: none;
-        }
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
-            pointer-events: none;
-            z-index: 900;
-            opacity: 0.4;
-        }
+/* ── CSS-only 아코디언 ── */
+.accordion-item {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 14px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+.accordion-item:hover {
+  border-color: rgba(201,168,76,0.25);
+  background: rgba(255,255,255,0.04);
+}
+/* hidden checkbox — toggle 역할 */
+.accordion-toggle {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.accordion-label {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  font-family: 'Noto Serif KR', serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text, #e8e2d4);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.track-num {
+  font-family: 'Cinzel', serif;
+  color: var(--gold, #c9a84c);
+  font-size: 0.9rem;
+  margin-right: 12px;
+  font-weight: 700;
+}
+.toggle-icon {
+  font-size: 1.4rem;
+  color: var(--gold, #c9a84c);
+  font-weight: 300;
+  flex-shrink: 0;
+  transition: transform 0.4s ease;
+  line-height: 1;
+}
+/* 아코디언 바디: 기본 숨김 */
+.accordion-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease-in-out, opacity 0.4s ease, padding 0.4s ease;
+  opacity: 0;
+  padding: 0 20px;
+}
+/* 체크박스 on → 바디 펼침 */
+.accordion-toggle:checked ~ .accordion-body {
+  max-height: 8000px;
+  opacity: 1;
+  padding: 20px 20px 28px;
+}
+/* 체크박스 on → + 를 × 로 */
+.accordion-toggle:checked ~ .accordion-label .toggle-icon {
+  transform: rotate(45deg);
+}
+/* 체크박스 on → 아이템 테두리 강조 */
+.accordion-toggle:checked ~ .accordion-label {
+  color: #fff;
+}
+.accordion-item:has(.accordion-toggle:checked) {
+  border-color: rgba(201,168,76,0.4);
+  background: rgba(15,10,25,0.6);
+}
 
-        #scroll-progress {
-            background: linear-gradient(90deg, var(--gold), var(--gold-light), #fff8e0, var(--gold));
-            background-size: 200% auto;
-            animation: shimmer-bar 3s linear infinite;
-        }
-        @keyframes shimmer-bar { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+/* 가사 텍스트 — 구글봇이 읽을 수 있는 실제 HTML */
+.lyric-text {
+  font-family: 'Pretendard', 'Noto Serif KR', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 300;
+  line-height: 2.2;
+  color: rgba(240,236,228,0.88);
+  white-space: pre-wrap;
+  word-break: break-word;
+  letter-spacing: 0.3px;
+  text-align: center;
+  -webkit-user-select: text;
+  user-select: text;
+}
+.lyric-section-tag {
+  display: block;
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  color: rgba(201,168,76,0.6);
+  margin: 14px 0 4px;
+}
 
-        /* ── 페이지 헤더 ── */
-        .page-header {
-            position: relative;
-            width: 100%;
-            height: 420px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            padding-top: var(--nav-height);
-        }
-        .page-header::after {
-            content: '';
-            display: block;
-            width: 1px;
-            height: 80px;
-            background: linear-gradient(to bottom, rgba(201,168,76,0.8), transparent);
-            margin: 30px auto 0;
-            position: relative;
-            z-index: 3;
-            animation: fadeUp 1.5s ease both;
-        }
-        #stars-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
-        .header-content { position: relative; z-index: 3; text-align: center; animation: fadeUp 1.2s ease both; }
-        .header-title {
-            font-family: 'Cinzel', serif;
-            font-size: clamp(3rem, 10vw, 5rem);
-            font-weight: 700;
-            letter-spacing: 0.15em;
-            color: var(--gold-light);
-            text-shadow: 0 0 30px rgba(201,168,76,0.3);
-            margin-bottom: 15px;
-        }
-        .header-slogan {
-            font-family: 'Noto Serif KR', serif;
-            font-size: clamp(1rem, 2.5vw, 1.2rem);
-            letter-spacing: 2px;
-            color: #cdd6f4;
-            font-weight: 300;
-        }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* ── 본문 컨테이너 ── */
-        .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px 100px; position: relative; z-index: 10; }
-
-        /* ── 앨범 그리드 ── */
-        .albums-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 40px;
-            margin-bottom: 80px;
-        }
-
-        /* ── 앨범 카드 ── */
-        .album-card {
-            position: relative;
-            border-radius: 20px;
-            overflow: hidden;
-            cursor: pointer;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.7);
-            border: 1px solid rgba(201,168,76,0.15);
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-            animation: fadeUp 1s ease both;
-            aspect-ratio: 1 / 1.15;
-            background: #0a0a12;
-        }
-        .album-card:nth-child(2) { animation-delay: 0.15s; }
-        .album-card:hover {
-            transform: translateY(-12px) scale(1.02);
-            box-shadow: 0 40px 80px rgba(0,0,0,0.9), 0 0 40px rgba(201,168,76,0.15);
-            border-color: rgba(201,168,76,0.5);
-        }
-
-        /* 앨범 커버 이미지 */
-        .album-cover {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 75%;
-            object-fit: cover;
-            object-position: center top;
-            display: block;
-            transition: transform 0.6s ease;
-        }
-        .album-card:hover .album-cover { transform: scale(1.05); }
-
-        /* 커버 위 그라디언트 오버레이 */
-        .album-cover-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(
-                to bottom,
-                rgba(0,0,0,0) 30%,
-                rgba(5,3,15,0.7) 55%,
-                rgba(5,3,15,0.98) 72%,
-                rgba(5,3,15,1) 100%
-            );
-            z-index: 2;
-        }
-
-        /* 앨범 정보 (하단) */
-        .album-info {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            z-index: 3;
-            padding: 28px 28px 30px;
-        }
-        .album-vol-badge {
-            font-family: 'Cinzel', serif;
-            font-size: 0.7rem;
-            letter-spacing: 0.4em;
-            color: var(--gold);
-            text-transform: uppercase;
-            margin-bottom: 8px;
-            display: block;
-        }
-        .album-title {
-            font-family: 'Noto Serif KR', serif;
-            font-size: 1.6rem;
-            font-weight: 600;
-            color: #fff;
-            margin-bottom: 16px;
-            line-height: 1.3;
-        }
-        .album-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-family: 'Cinzel', serif;
-            font-size: 0.75rem;
-            letter-spacing: 0.25em;
-            color: var(--gold-light);
-            text-transform: uppercase;
-            transition: all 0.3s;
-        }
-        .album-cta svg { transition: transform 0.3s; }
-        .album-card:hover .album-cta svg { transform: translateX(5px); }
-        .album-card:hover .album-cta { color: #fff; }
-
-        /* 빛나는 테두리 효과 */
-        .album-card::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 20px;
-            border: 1px solid rgba(201,168,76,0);
-            transition: border-color 0.4s;
-            z-index: 4;
-            pointer-events: none;
-        }
-        .album-card:hover::after { border-color: rgba(201,168,76,0.4); }
-
-        /* ── 앨범 모달 오버레이 ── */
-        #album-modal {
-            position: fixed;
-            inset: 0;
-            z-index: 1000;
-            display: none;
-            align-items: flex-start;
-            justify-content: center;
-            overflow-y: auto;
-            padding: 20px;
-            box-sizing: border-box;
-            background: rgba(0,0,0,0);
-            transition: background 0.4s;
-        }
-        #album-modal.open {
-            display: flex;
-            background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-        }
-
-        .modal-inner {
-            position: relative;
-            width: 100%;
-            max-width: 780px;
-            margin: auto;
-            background: rgba(10,8,20,0.97);
-            border: 1px solid rgba(201,168,76,0.2);
-            border-radius: 24px;
-            overflow: hidden;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.9);
-            transform: translateY(40px) scale(0.96);
-            opacity: 0;
-            transition: all 0.45s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-        #album-modal.open .modal-inner {
-            transform: translateY(0) scale(1);
-            opacity: 1;
-        }
-
-        /* 모달 헤더 (앨범아트 배경) */
-        .modal-hero {
-            position: relative;
-            height: 280px;
-            overflow: hidden;
-        }
-        .modal-hero-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center 25%;
-            display: block;
-        }
-        .modal-hero-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(
-                to bottom,
-                rgba(0,0,0,0.1) 0%,
-                rgba(10,8,20,0.6) 60%,
-                rgba(10,8,20,1) 100%
-            );
-        }
-        .modal-hero-content {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 30px 36px 24px;
-        }
-        .modal-vol {
-            font-family: 'Cinzel', serif;
-            font-size: 0.7rem;
-            letter-spacing: 0.4em;
-            color: var(--gold);
-            text-transform: uppercase;
-            margin-bottom: 6px;
-        }
-        .modal-title {
-            font-family: 'Noto Serif KR', serif;
-            font-size: 2rem;
-            font-weight: 600;
-            color: #fff;
-            text-shadow: 0 2px 12px rgba(0,0,0,0.6);
-        }
-
-        /* 닫기 버튼 */
-        .modal-close {
-            position: absolute;
-            top: 18px;
-            right: 18px;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.2);
-            color: #fff;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            z-index: 10;
-            backdrop-filter: blur(4px);
-        }
-        .modal-close:hover { background: rgba(255,255,255,0.15); transform: scale(1.1); }
-
-        /* 모달 바디 */
-        .modal-body { padding: 0 36px 50px; }
-
-        /* 스트리밍 버튼 */
-        .stream-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 40px;
-            padding-top: 4px;
-        }
-        .stream-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 11px 22px;
-            border-radius: 30px;
-            font-family: 'Pretendard', sans-serif;
-            font-size: 0.88rem;
-            font-weight: 700;
-            text-decoration: none;
-            border: 1px solid;
-            transition: all 0.3s;
-            letter-spacing: 0.3px;
-        }
-        .btn-spotify { background: rgba(29,185,84,0.08); color: #1DB954; border-color: rgba(29,185,84,0.4); }
-        .btn-spotify:hover { background: #1DB954; color: #000; }
-        .btn-youtube { background: rgba(255,60,60,0.08); color: #ff4d4d; border-color: rgba(255,60,60,0.4); }
-        .btn-youtube:hover { background: #ff0000; color: #fff; border-color: #ff0000; }
-
-        /* YouTube BGM 재생 중 표시 */
-        .yt-playing-indicator {
-            display: none;
-            align-items: center;
-            gap: 8px;
-            font-family: 'Cinzel', serif;
-            font-size: 0.72rem;
-            letter-spacing: 0.2em;
-            color: #ff4d4d;
-            margin-bottom: 28px;
-            margin-top: -20px;
-        }
-        .yt-playing-indicator.active { display: flex; }
-        .yt-eq { display: inline-flex; align-items: flex-end; gap: 2px; height: 12px; }
-        .yt-eq-bar { width: 2px; background: #ff4d4d; border-radius: 1px; animation: eq-bounce 0.8s infinite ease-in-out; }
-        .yt-eq-bar:nth-child(1) { animation-delay: -0.2s; height: 50%; }
-        .yt-eq-bar:nth-child(2) { animation-delay: -0.4s; height: 100%; }
-        .yt-eq-bar:nth-child(3) { animation-delay: -0.1s; height: 70%; }
-        @keyframes eq-bounce { 0%, 100% { transform: scaleY(0.4); } 50% { transform: scaleY(1); } }
-
-        /* ── Spotify iframe ── */
-        .spotify-embed-wrap {
-            display: none;
-            margin-bottom: 32px;
-            border-radius: 14px;
-            overflow: hidden;
-        }
-        .spotify-embed-wrap.visible { display: block; }
-        .spotify-embed-wrap iframe { width: 100%; border-radius: 14px; border: none; display: block; }
-
-        /* ── 가사 섹션 ── */
-        .lyrics-section-title {
-            font-family: 'Cinzel', serif;
-            font-size: 0.85rem;
-            letter-spacing: 0.3em;
-            color: var(--gold);
-            text-transform: uppercase;
-            margin-bottom: 20px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(201,168,76,0.15);
-        }
-
-        /* 아코디언 */
-        .accordion-item {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 14px;
-            margin-bottom: 10px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-        .accordion-header {
-            width: 100%;
-            background: transparent;
-            border: none;
-            padding: 16px 20px;
-            text-align: left;
-            font-family: 'Noto Serif KR', serif;
-            font-size: 1.05rem;
-            font-weight: 600;
-            color: var(--text, #e8e2d4);
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.3s ease;
-        }
-        .accordion-item:hover { background: rgba(255,255,255,0.04); border-color: rgba(201,168,76,0.25); }
-        .track-num { font-family: 'Cinzel', serif; color: var(--gold, #c9a84c); font-size: 0.9rem; margin-right: 12px; font-weight: 700; }
-        .toggle-icon { font-size: 1.2rem; color: var(--gold, #c9a84c); transition: transform 0.4s ease; font-weight: 300; flex-shrink: 0; }
-        .accordion-item.active { border-color: rgba(201,168,76,0.4); background: rgba(15,10,25,0.6); }
-        .accordion-item.active .toggle-icon { transform: rotate(45deg); }
-        .accordion-body { max-height: 0; overflow: hidden; transition: all 0.5s ease-in-out; opacity: 0; }
-        .accordion-item.active .accordion-body { max-height: 6000px; padding: 20px 20px 28px; opacity: 1; }
-        .lyric-text {
-            font-family: 'Pretendard', 'Noto Serif KR', sans-serif;
-            font-size: 0.92rem;
-            font-weight: 300;
-            line-height: 2.2;
-            color: rgba(240,236,228,0.88);
-            white-space: pre-wrap;
-            word-break: break-word;
-            letter-spacing: 0.3px;
-            text-align: center;
-            -webkit-user-select: text;
-            user-select: text;
-        }
-
-        /* ── 키프레임 ── */
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* ── 모바일 ── */
-        @media (max-width: 900px) {
-            .page-header { height: 320px; }
-            .container { padding-left: 16px; padding-right: 16px; overflow-x: hidden; }
-            .albums-grid { grid-template-columns: 1fr; gap: 24px; }
-            .album-card { aspect-ratio: 1 / 1.1; }
-            .modal-hero { height: 200px; }
-            .modal-hero-content { padding: 20px 24px 18px; }
-            .modal-title { font-size: 1.5rem; }
-            .modal-body { padding: 0 20px 40px; }
-            .accordion-header { font-size: 0.95rem; padding: 14px 16px; }
-        }
-    </style>
+@media (max-width: 900px) {
+  .page-header { height: 320px; }
+  .container { padding-left: 16px; padding-right: 16px; overflow-x: hidden; }
+  .albums-grid { grid-template-columns: 1fr; gap: 24px; }
+  .album-card { aspect-ratio: 1 / 1.1; }
+  .modal-hero { height: 200px; }
+  .modal-hero-content { padding: 20px 24px 18px; }
+  .modal-title { font-size: 1.5rem; }
+  .modal-body { padding: 0 20px 40px; }
+  .accordion-label { font-size: 0.95rem; padding: 14px 16px; }
+}
+</style>
 </head>
 <body>
 
-    <!-- 🎵 숨겨진 유튜브 플레이어 (Vol.2) -->
-    <div id="yt-player-container" style="position:absolute;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;z-index:-1;"></div>
+<!-- 유튜브 BGM 플레이어 (숨김) -->
+<div id="yt-player-container" style="position:absolute;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;z-index:-1;"></div>
 
-    <!-- 공용 nav -->
-    <div id="site-nav"></div>
+<div id="site-nav"></div>
 
-    <!-- 페이지 헤더 -->
-    <header class="page-header">
-        <canvas id="stars-canvas"></canvas>
-        <div class="header-content">
-            <h1 class="header-title" data-i18n="header_title">WORSHIP</h1>
-            <p class="header-slogan" data-i18n="header_slogan">영혼 깊은 곳에서 올려드리는 고백</p>
+<!-- 페이지 헤더 -->
+<header class="page-header">
+  <canvas id="stars-canvas"></canvas>
+  <div class="header-content">
+    <h1 class="header-title" data-i18n="header_title">WORSHIP</h1>
+    <p class="header-slogan" data-i18n="header_slogan">영혼 깊은 곳에서 올려드리는 고백</p>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- 앨범 카드 그리드 -->
+  <section class="albums-grid">
+    <div class="album-card" onclick="openModal('vol1')">
+      <img class="album-cover" src="images/vol1.jpg" alt="나의 찬양 Vol.1 The First Confession 앨범 커버" loading="lazy" onerror="this.style.display='none'">
+      <div class="album-cover-overlay"></div>
+      <div class="album-info">
+        <span class="album-vol-badge">Vol. 1 · The First Confession</span>
+        <div class="album-title" data-i18n="album1_title">나의 찬양 Vol. 1</div>
+        <div class="album-cta">
+          가사 &amp; 스트리밍
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
         </div>
-    </header>
-
-    <div class="container">
-        <section class="albums-grid">
-
-            <!-- ── Vol. 1 카드 ── -->
-            <div class="album-card" onclick="openModal('vol1')">
-                <img class="album-cover" src="images/vol1.jpg" alt="나의 찬양 Vol.1 앨범 커버" loading="lazy"
-                     onerror="this.style.display='none'">
-                <div class="album-cover-overlay"></div>
-                <div class="album-info">
-                    <span class="album-vol-badge">Vol. 1 · The First Confession</span>
-                    <div class="album-title" data-i18n="album1_title">나의 찬양 Vol. 1</div>
-                    <div class="album-cta">
-                        가사 &amp; 스트리밍
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ── Vol. 2 카드 ── -->
-            <div class="album-card" onclick="openModal('vol2')">
-                <img class="album-cover" src="images/vol2.png" alt="나의 찬양 Vol.2 앨범 커버" loading="lazy"
-                     onerror="this.style.display='none'">
-                <div class="album-cover-overlay"></div>
-                <div class="album-info">
-                    <span class="album-vol-badge">Vol. 2 · 2nd Confession</span>
-                    <div class="album-title" data-i18n="album2_title">나의 찬양 Vol. 2</div>
-                    <div class="album-cta">
-                        가사 &amp; 스트리밍
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
-                    </div>
-                </div>
-            </div>
-
-        </section>
-
-        <!-- ── SEO 찬양 소개 블록 ── -->
-        <section style="max-width:900px; margin:0 auto 60px; padding:0 20px;">
-            <div style="border:1px solid rgba(201,168,76,0.15); border-radius:20px; padding:36px 40px; background:rgba(10,10,18,0.7);">
-                <h2 style="font-family:'Cinzel',serif; color:#c9a84c; font-size:1.05rem; letter-spacing:2px; margin-bottom:24px; text-align:center;">✦ &nbsp; WORSHIP ARCHIVE</h2>
-                <p style="color:#c8c4bc; font-size:0.95rem; line-height:2.1; margin-bottom:28px; text-align:center;">
-                    <strong style="color:#e8d08a;">Chris LEE.PAPA</strong>가 영혼 깊은 곳에서 올려드리는 고백과 찬양의 기록입니다.<br>
-                    오랜 시간 교회 어린이 삶의 경험과 은혜에 AI 음악 프로덕션 기술을 더해<br>
-                    진심을 담은 <strong style="color:#c9a84c;">한국어 CCM 찬양 앨범</strong>을 제작했습니다.
-                </p>
-
-                <!-- Vol.1 -->
-                <div style="margin-bottom:32px; padding-bottom:28px; border-bottom:1px solid rgba(255,255,255,0.06);">
-                    <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px;">
-                        <div style="width:48px; height:48px; border-radius:12px; background:linear-gradient(135deg,rgba(201,168,76,0.3),rgba(80,40,120,0.3)); border:1px solid rgba(201,168,76,0.3); display:flex; align-items:center; justify-content:center; font-family:'Cinzel',serif; color:#c9a84c; font-size:0.7rem; font-weight:700; text-align:center; line-height:1.3; flex-shrink:0;">Vol.<br>1</div>
-                        <div>
-                            <h3 style="font-family:'Cinzel',serif; color:#e8d08a; font-size:0.95rem; letter-spacing:1.5px; margin-bottom:4px;">나의 찬양 Vol. 1 — The First Confession</h3>
-                            <p style="color:#888; font-size:0.8rem; letter-spacing:1px;">Spotify · Apple Music · YouTube Music 스트리밍</p>
-                        </div>
-                    </div>
-                    <p style="color:#b0acaa; font-size:0.9rem; line-height:2;">
-                        첫 번째 찬양 앨범 <strong style="color:#e8d08a;">나의 찬양 Vol. 1</strong>은 Chris LEE.PAPA의 신앙 고백을 담은 데뷔 워십 앨범입니다.
-                        오랜 시련과 어두운 시간 속에서도 하나님을 바라보며 올려드린 진실한 예배의 기록으로,
-                        상처받은 이들에게 위로와 회복의 메시지를 전합니다.
-                        Suno AI를 활용한 독창적인 프로덕션으로 제작되었으며,
-                        Spotify, Apple Music, YouTube Music 등 전 세계 음원 플랫폼에서 스트리밍할 수 있습니다.
-                    </p>
-                </div>
-
-                <!-- Vol.2 -->
-                <div style="margin-bottom:32px; padding-bottom:28px; border-bottom:1px solid rgba(255,255,255,0.06);">
-                    <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px;">
-                        <div style="width:48px; height:48px; border-radius:12px; background:linear-gradient(135deg,rgba(100,60,200,0.3),rgba(201,168,76,0.2)); border:1px solid rgba(140,100,220,0.3); display:flex; align-items:center; justify-content:center; font-family:'Cinzel',serif; color:#b090f0; font-size:0.7rem; font-weight:700; text-align:center; line-height:1.3; flex-shrink:0;">Vol.<br>2</div>
-                        <div>
-                            <h3 style="font-family:'Cinzel',serif; color:#e8d08a; font-size:0.95rem; letter-spacing:1.5px; margin-bottom:4px;">나의 찬양 Vol. 2 — 2nd Confession</h3>
-                            <p style="color:#888; font-size:0.8rem; letter-spacing:1px;">YouTube 스트리밍</p>
-                        </div>
-                    </div>
-                    <p style="color:#b0acaa; font-size:0.9rem; line-height:2;">
-                        두 번째 찬양 앨범 <strong style="color:#e8d08a;">나의 찬양 Vol. 2</strong>는 첫 번째 고백에서 한 걸음 더 나아간 성숙한 신앙의 이야기입니다.
-                        Vol. 1이 눈물과 회복의 기록이었다면, Vol. 2는 그 이후 감사와 헌신의 고백을 담고 있습니다.
-                        YouTube를 통해 무료로 감상할 수 있으며, 페이지에서 바로 BGM으로 재생할 수 있습니다.
-                    </p>
-                </div>
-
-                <!-- 찬양 철학 -->
-                <div style="background:rgba(201,168,76,0.05); border-radius:14px; padding:24px 28px;">
-                    <h3 style="font-family:'Cinzel',serif; color:#c9a84c; font-size:0.85rem; letter-spacing:2px; margin-bottom:14px;">✦ &nbsp; 찬양에 대하여</h3>
-                    <p style="color:#a0a0b5; font-size:0.88rem; line-height:2;">
-                        Chris LEE.PAPA는 특별한 삶의 경험의 시간을 거치고 교회 어린이부 교사로 봉사하고 있습니다. .
-                        아이들과 함께 기뻐 찬양하고, 말씀 앞에 무릎 꿇던 그 시간들이
-                        이 음악의 뿌리입니다. 찬양은 진솔한 은혜의 기록이라고 생각합니다.
-                        상한 심령이 하나님 앞에 내어 드리는 가장 솔직한 언어라고 믿습니다.
-                        AI라는 새로운 도구를 손에 쥐었지만, 그 중심에는 변하지 않는 한 가지 고백이 있습니다 —
-                        <strong style="color:#e8d08a;">"주님, 나의 모든 것을 드립니다."</strong>
-                    </p>
-                </div>
-            </div>
-        </section>
-        <!-- ── SEO 블록 끝 ── -->
-
+      </div>
     </div>
-
-    <!-- ── 앨범 상세 모달 ── -->
-    <div id="album-modal" role="dialog" aria-modal="true">
-        <div class="modal-inner" id="modal-inner">
-
-            <!-- 닫기 -->
-            <button class="modal-close" onclick="closeModal()" aria-label="닫기">✕</button>
-
-            <!-- 모달 히어로 (앨범아트 배경) -->
-            <div class="modal-hero">
-                <img class="modal-hero-img" id="modal-img" src="" alt="">
-                <div class="modal-hero-overlay"></div>
-                <div class="modal-hero-content">
-                    <div class="modal-vol" id="modal-vol">Vol. 1</div>
-                    <div class="modal-title" id="modal-title">나의 찬양 Vol. 1</div>
-                </div>
-            </div>
-
-            <!-- 모달 바디 -->
-            <div class="modal-body">
-
-                <!-- 스트리밍 버튼 -->
-                <div class="stream-row" id="modal-stream-row">
-                    <!-- JS로 삽입 -->
-                </div>
-
-                <!-- Vol.2 YouTube 재생 중 표시 -->
-                <div class="yt-playing-indicator" id="yt-indicator">
-                    <div class="yt-eq"><div class="yt-eq-bar"></div><div class="yt-eq-bar"></div><div class="yt-eq-bar"></div></div>
-                    YouTube BGM 재생 중
-                </div>
-
-                <!-- Vol.1 Spotify 임베드 -->
-                <div class="spotify-embed-wrap" id="spotify-embed-wrap">
-                    <iframe
-                        id="spotify-iframe"
-                        src="https://open.spotify.com/embed/album/0ctoLQNWCmiPEkySv05PAM?utm_source=generator&theme=0"
-                        width="100%"
-                        height="352"
-                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                        loading="lazy">
-                    </iframe>
-                </div>
-
-                <!-- 가사 섹션 -->
-                <div class="lyrics-section-title">✦ &nbsp; LYRICS &nbsp; ✦</div>
-                <div id="modal-lyrics">
-                    <!-- JS로 아코디언 삽입 -->
-                </div>
-            </div>
+    <div class="album-card" onclick="openModal('vol2')">
+      <img class="album-cover" src="images/vol2.png" alt="나의 찬양 Vol.2 2nd Confession 앨범 커버" loading="lazy" onerror="this.style.display='none'">
+      <div class="album-cover-overlay"></div>
+      <div class="album-info">
+        <span class="album-vol-badge">Vol. 2 · 2nd Confession</span>
+        <div class="album-title" data-i18n="album2_title">나의 찬양 Vol. 2</div>
+        <div class="album-cta">
+          가사 &amp; 스트리밍
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
         </div>
+      </div>
     </div>
+  </section>
 
-    <!-- 공용 footer (guestbook.js가 공통 방명록을 자동 삽입합니다) -->
-    <div id="site-footer"></div>
+  <!-- SEO 워십 소개 블록 -->
+  <section style="max-width:900px; margin:0 auto 60px; padding:0 20px;">
+    <div style="border:1px solid rgba(201,168,76,0.15); border-radius:20px; padding:36px 40px; background:rgba(10,10,18,0.7);">
+      <h2 style="font-family:'Cinzel',serif; color:#c9a84c; font-size:1.05rem; letter-spacing:2px; margin-bottom:24px; text-align:center;">✦ &nbsp; WORSHIP ARCHIVE</h2>
+      <p style="color:#c8c4bc; font-size:0.95rem; line-height:2.1; margin-bottom:28px; text-align:center;">
+        <strong style="color:#e8d08a;">Chris LEE.PAPA</strong>가 영혼 깊은 곳에서 올려드리는 고백과 찬양의 기록입니다.<br>
+        오랜 시간 교회 어린이부 사역의 경험과 은혜에 AI 음악 프로덕션 기술을 더해<br>
+        진심을 담은 <strong style="color:#c9a84c;">한국어 CCM 찬양 앨범</strong>을 제작했습니다.
+      </p>
+      <div style="margin-bottom:32px; padding-bottom:28px; border-bottom:1px solid rgba(255,255,255,0.06);">
+        <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px;">
+          <div style="width:48px; height:48px; border-radius:12px; background:linear-gradient(135deg,rgba(201,168,76,0.3),rgba(80,40,120,0.3)); border:1px solid rgba(201,168,76,0.3); display:flex; align-items:center; justify-content:center; font-family:'Cinzel',serif; color:#c9a84c; font-size:0.7rem; font-weight:700; text-align:center; line-height:1.3; flex-shrink:0;">Vol.<br>1</div>
+          <div>
+            <h3 style="font-family:'Cinzel',serif; color:#e8d08a; font-size:0.95rem; letter-spacing:1.5px; margin-bottom:4px;">나의 찬양 Vol. 1 — The First Confession</h3>
+            <p style="color:#888; font-size:0.8rem; letter-spacing:1px;">Spotify · Apple Music · YouTube Music 스트리밍</p>
+          </div>
+        </div>
+        <p style="color:#b0acaa; font-size:0.9rem; line-height:2;">
+          첫 번째 찬양 앨범 <strong style="color:#e8d08a;">나의 찬양 Vol. 1</strong>은 Chris LEE.PAPA의 신앙 고백을 담은 데뷔 워십 앨범입니다.
+          오랜 시련과 어두운 시간 속에서도 하나님을 바라보며 올려드린 진실한 예배의 기록으로,
+          상처받은 이들에게 위로와 회복의 메시지를 전합니다.
+          Suno AI를 활용한 독창적인 프로덕션으로 제작되었으며,
+          Spotify, Apple Music, YouTube Music 등 전 세계 음원 플랫폼에서 스트리밍할 수 있습니다.
+        </p>
+      </div>
+      <div style="margin-bottom:32px; padding-bottom:28px; border-bottom:1px solid rgba(255,255,255,0.06);">
+        <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px;">
+          <div style="width:48px; height:48px; border-radius:12px; background:linear-gradient(135deg,rgba(100,60,200,0.3),rgba(201,168,76,0.2)); border:1px solid rgba(140,100,220,0.3); display:flex; align-items:center; justify-content:center; font-family:'Cinzel',serif; color:#b090f0; font-size:0.7rem; font-weight:700; text-align:center; line-height:1.3; flex-shrink:0;">Vol.<br>2</div>
+          <div>
+            <h3 style="font-family:'Cinzel',serif; color:#e8d08a; font-size:0.95rem; letter-spacing:1.5px; margin-bottom:4px;">나의 찬양 Vol. 2 — 2nd Confession</h3>
+            <p style="color:#888; font-size:0.8rem; letter-spacing:1px;">Spotify · YouTube 스트리밍</p>
+          </div>
+        </div>
+        <p style="color:#b0acaa; font-size:0.9rem; line-height:2;">
+          두 번째 찬양 앨범 <strong style="color:#e8d08a;">나의 찬양 Vol. 2</strong>는 첫 번째 고백에서 한 걸음 더 나아간 성숙한 신앙의 이야기입니다.
+          Vol. 1이 눈물과 회복의 기록이었다면, Vol. 2는 그 이후 감사와 헌신의 고백을 담고 있습니다.
+          Spotify와 YouTube를 통해 감상할 수 있으며, 페이지에서 바로 BGM으로 재생할 수 있습니다.
+        </p>
+      </div>
+      <div style="background:rgba(201,168,76,0.05); border-radius:14px; padding:24px 28px;">
+        <h3 style="font-family:'Cinzel',serif; color:#c9a84c; font-size:0.85rem; letter-spacing:2px; margin-bottom:14px;">✦ &nbsp; 찬양에 대하여</h3>
+        <p style="color:#a0a0b5; font-size:0.88rem; line-height:2;">
+          Chris LEE.PAPA는 특별한 삶의 경험의 시간을 거치고 교회 어린이부 교사로 봉사하고 있습니다.
+          아이들과 함께 기뻐 찬양하고, 말씀 앞에 무릎 꿇던 그 시간들이 이 음악의 뿌리입니다.
+          찬양은 진솔한 은혜의 기록이라고 생각합니다.
+          상한 심령이 하나님 앞에 내어 드리는 가장 솔직한 언어라고 믿습니다.
+          AI라는 새로운 도구를 손에 쥐었지만, 그 중심에는 변하지 않는 한 가지 고백이 있습니다 —
+          <strong style="color:#e8d08a;">"주님, 나의 모든 것을 드립니다."</strong>
+        </p>
+      </div>
+    </div>
+  </section>
 
-    <!-- i18n -->
-    <script>
-        window.PAGE_I18N = {
-            ko: {
-                share_title: 'SHARE WORSHIP',
-                share_desc: '이곳의 고백과 찬양이 누군가에게 위로가 되길 바랍니다.',
-                header_title: 'WORSHIP',
-                header_slogan: '영혼 깊은 곳에서 올려드리는 고백',
-                album1_title: '나의 찬양 Vol. 1',
-                album2_title: '나의 찬양 Vol. 2',
-                name_placeholder: '닉네임',
-                body_placeholder: '찬양을 들으며 느낀 점, 위로의 한마디를 남겨주세요 🙏'
-            },
-            en: {
-                share_title: 'SHARE WORSHIP',
-                share_desc: 'May the confessions and worship here bring comfort to someone.',
-                header_title: 'WORSHIP',
-                header_slogan: 'Confessions offered from the depths of the soul',
-                album1_title: 'My Worship Vol. 1',
-                album2_title: 'My Worship Vol. 2',
-                name_placeholder: 'Nickname',
-                body_placeholder: 'Share what you felt while listening 🙏'
-            }
-        };
-        window.onMainReady = function() {
-            initStarsCanvas();
-        };
-    </script>
+  <!-- ══════════════════════════════════════════
+       SEO 가사 전문 섹션 — 구글봇이 직접 읽는 HTML
+       ══════════════════════════════════════════ -->
 
-    <!-- 페이지 로직 -->
-    <script>
-        // ══ 가사 데이터 ══
-        const LYRICS = {
-            vol1: [
-                { num:'01', title:'이 길 위해서', lyric:`[Verse 1]\n빛나는 태양이 저물어 갈 때\n조용히 내 마음 돌아봅니다\n채우려 할수록 비워지는 밤\n가만히 두 눈을 감아봅니다\n\n[Pre-Chorus]\n작은 한숨조차 기도가 되어\n나의 곁에 계신 주를 느낄 때\n두렵기만 했던 나의 하루를\n다시 시작할 힘을 얻습니다\n\n[Chorus]\n오늘도 걷는 이 길 위에서\n한없이 부족한 나를 위해서\n말없이 다가와 손 잡아주신\n그 따뜻한 품에 기대어 갑니다\n\n[Verse 2]\n어제와 똑같은 오늘이어도\n마음은 유난히 어두웠는데\n나의 연약함을 아시는 주님\n내 곁에 다가와 안아주시네\n\n[Pre-Chorus]\n작은 소리조차 찬양이 되어\n나를 감싸주는 빛이 비칠 때\n흔들릴 것 같던 나의 목소리\n다시 소리칠 힘을 얻습니다\n\n[Chorus]\n오늘도 걷는 이 길 위에서\n한없이 부족한 나를 위해서\n조용히 다가와 손 잡아주신\n그 인자한 손 잡고 나아갑니다\n\n[Bridge]\n화려한 믿음은 아닐지라도\n소박한 진심을 아시는 주님\n매일 마주하는 나의 일상에\n주의 은혜가 스며듭니다\n\n[Final Chorus]\n오늘도 걷는 이 길 위에서 (걸어가)\n한없이 부족한 나를 위해서 (나를 위해)\n말없이 다가와 손 잡아주신 (나의 주님)\n그 따뜻한 품에 기대어 갑니다\n\n[Outro]\n이 길 위에서...\n나를 위해서...` },
-                { num:'02', title:'사랑으로', lyric:`[Verse 1]\n메마른 밤을 지나\n숨을 고르며 서 있던 나\n말없이 비춰 오던 빛\n나를 다시 일으켜\n\n[Pre-Chorus]\n손 내밀어 주신 음성\n고개 숙인 그 순간\n두려움보다 먼저\n사랑이 다가왔네\n\n[Chorus]\n사랑으로 날 부르신 주\n넘어질 때도 떠나지 않고\n내가 약해진 그 자리에도\n주 사랑은 남아 있네\n\n[Verse 2]\n끝이 보이지 않아\n걸음이 느려질 때도\n기다림 속에 흐르던\n신실한 그 약속\n\n[Pre-Chorus]\n돌아서려 했던 마음\n수없이 흔들릴 때\n말없이 나를 안아\n다시 걷게 하셨네\n\n[Bridge]\n말로 다 못한 기도\n눈물로 남겨진 고백\n주님은 이미 알고 계셔\n사랑으로 응답하셨네\n\n[Final Chorus]\n주 사랑으로 살아가리\n이제는 내가 포기안해\n시간이 흘러도\n내사랑은 여기 있네` },
-                { num:'03', title:'나의 찬양', lyric:`[Verse 1]\n내 생명 갖기 전부터\n주님은 날 아셨죠\n내 의지 상관없이\n사랑은 흘렀네요\n\n[Pre-Chorus]\n길 잃은 밤에도\n날 비춘 그 손길\n변치 않는 신실함\n\n[Chorus]\n한결같이 날 지키신 주\n늘 곁에 계셨네\n아름다운 그 이름 찬양해\n깊은 감사뿐이죠\n\n[Verse 2]\n내 모든 걸음 속에\n당신의 은혜가\n변함없는 그 사랑\n선물이 되었네\n\n[Bridge]\n언제나 그 자리에\n나를 기다린 사랑\n나의 노래 됩니다\n내 믿음 소망이 되네\n\n[Final Chorus]\n사랑합니다 나의 주님 (나의 주)\n영원히 찬양합니다 (찬양해요)\n위대하신 그 이름 전해 (소리높여)\n사랑을 나눠요` },
-                { num:'04', title:'기적입니다.', lyric:`[Verse 1]\n자랑할 것 하나 없는 나인데\n날마다 넘어지고 죄만 지었었는데\n이런 나를 먼저 찾아와 주시고\n따스한 손길로 꼭 안아주셨죠\n\n[Verse 2]\n세상속에 찌들었던 나인데\n힘없이 무너지고 좌절 했었는데\n조용히 나를 찾아와 주시고\n구원의 손길로 날 건져주셨죠\n\n[Chorus]\n기적입니다 주를 만난 건\n메마른 내 삶에 피어난 노래\n기적입니다 내가 믿는 건\n주의 은혜 아니면 안 되는 일들\n참 감사한 오늘 기적입니다\n\n[Bridge]\n눈을 들어 온 세상을 보니\n주의 사랑이 느껴지네요\n들판에 풀과 하늘의 별까지\n보잘것없는 나도 사랑하시네\n\n[Final Chorus]\n기적입니다 온 땅과 만물 (찬양해)\n주님이 만드신 아름다운 세상\n기적입니다 (기적이죠) 주를 믿는 것\n주의 사랑 아니면 안 되는 일들\n참 감사한 오늘 사랑입니다` },
-                { num:'05', title:'파레시아', lyric:`[Verse 1]\n새벽 길 위, 무거운 어깨\n오늘 하루, 또 시작되네\n맡겨진 짐, 다 지고 가는\n나의 삶은, 주가 아시네\n\n[Verse 2]\n떨칠 수 없는, 이름의 무게\n혼자 참아온, 남모를 눈물\n흔들거리는, 나의 발걸음\n주님 오늘, 붙드소서\n\n[Pre-Chorus]\n나를 부르네, 주의 음성\n내 모습 이대로, 나갑니다\n십자가 사랑, 그 힘을 믿고\n고개 들어, 하늘 보네\n\n[Chorus]\n파레시아, 주 앞에 가리라\n파레시아, 나의 승리야\n험한 세상도, 두렵지 않네\n주의 강한 손, 날 붙드니까\n당당하게, 한 걸음 더\n\n[Bridge]\n세상이 줄 수 없는 평안\n주님이 약속하신 평화\n우리는 결코 혼자가 아냐\n주와 함께 걷는 이 길\n\n[Final Chorus]\n파레시아, 주 앞에 가리라\n파레시아, 나의 승리야\n험한 세상도, 두렵지 않네\n주의 강한 손, 날 붙드니까\n당당하게, 한 걸음 더` },
-                { num:'06', title:'나의 목소리', lyric:`[Verse 1]\n두 손을 모으고 눈을 감아요\n작은 내 마음을 주님께 드려요\n조용한 이 시간 우리와 함께하시는\n사랑의 하나님 참 감사합니다\n\n[Chorus]\n내 마음속에 계신 하나님\n나의 목소리 들으시는 주님\n잔잔한 바람처럼 내 맘 만지시고\n언제나 우리와 함께하셔요\n\n[Verse 2]\n예쁜 마음 모아 노래 불러요\n작은 내 발걸음 주님만 따라가요\n세상의 빛으로 우리를 부르신\n귀하신 하나님 사랑합니다` },
-                { num:'07', title:'오 기쁜 날', lyric:`[Verse 1]\n아침 햇살, 반짝이며\n주님 사랑, 노래해요\n우리 마음, 가득하게\n주의 은혜, 넘쳐나요\n\n[Verse 2]\n슬픈 생각, 모두 잊고\n두 손 높이, 들어봐요\n어린 아이, 할아버지\n모두 함께, 춤을 춰요\n\n[Pre-Chorus]\n가슴 펴고, 하늘 봐요\n우리 소리, 하나 되어\n주를 향해, 고백해요\n지금 바로, 시작해요!\n\n[Chorus]\n오 기쁜 날! 주 찬양해!\n온 세상에, 울려라!\n축복의 날! 주 노래해!\n할렐루 할렐루야!\n사랑의 주 나의 주님, 감사해!\n우리 함께, 소리 높여\n할렐루 할렐루야!` },
-                { num:'08', title:'우리의 예배', lyric:`[Verse 1]\n주일 아침 환한 햇살 아래\n설레는 맘으로 모였어요\n나를 위해 준비하신 사랑\n오늘도 기대하며 나아가요\n\n[Verse 2]\n세상 속의 바쁜 마음들은\n모두 다 예쁘게 접어두고\n하나님의 귀한 말씀 속에\n내 마음 깊이 잠겨볼래요\n\n[Chorus]\n우리의 예배를 받아주세요\n가장 귀한 노래로 주님만 높여요\n하늘의 은혜가 가득 내려와\n우리를 기쁨으로 채워주시네\n\n[Final Chorus]\n사랑의 주님만 바라봅니다\n온 맘 다해 정성을 모두 드려요\n언제나 우리와 함께하시는\n하나님만 높여 예배해요` },
-                { num:'09', title:'우리의 마음', lyric:`[Verse 1]\n햇살 반짝! 들려오는 소리\n두 손 모아 기도드려요\n작은 마음 사랑 가득히\n하나님께 노래할래요\n\n[Chorus]\n예수님 사랑해요 (사랑해요!)\n내 마음 가득히 (가득히!)\n맑고 고운 소리 (찬송해요!)\n우리 마음 (받아주세요!)\n\n[Verse 2]\n어제보다 주님 닮아요\n친구들과 예배드려요\n걸음걸음 인도하시니\n행복한 나 주의 자녀들` },
-                { num:'10', title:'나의 모든 날', lyric:`[Verse 1]\n눈 비비며 일어나는 평범한 아침\n보글보글 찌개 소리 즐거운 우리 집\n당연한 줄 알았더니 모든 게 선물이라\n주님 주신 은혜 속에 오늘 내가 사네.\n\n[Verse 2]\n덜컹거리는 버스 창가 햇살 비치고\n스치는 바람 속에 주의 사랑 느끼네.\n지루했던 일상들이 노래가 되어 터지니\n나의 모든 걸음마다 기쁨 가득하네.\n\n[Pre-Chorus]\n때로는 시련의 벽이 날 막아설 때\n슬픔에 밤을 새며 혼자 울 때\n나보다 앞서가는 주님 믿고\n담대히 나아갑니다.\n\n[Chorus]\n나의 모든 날들이 주님의 은혜라\n어두운 밤 지나고 찬란한 빛 비추네.\n박수치며 찬양해 기쁨의 노래를\n나의 평생 주님만 노래하리라.` }
-            ],
-            vol2: [
-                { num:'01', title:'모두 찬양해', lyric:`[Verse 1]\n주의 말씀 귀에 들려\n내 마음 깊이 흐르네\n낮은 곳에서 부르시는\n그 사랑 나를 이끄네\n\n[Verse 2]\n흔들리는 길 위에서도\n주 손 잡고 걸어가\n어둠 속에서도 빛 되신\n그 사랑 노래하리\n\n[Pre-Chorus]\n모든 음이 하나 되어\n두팔 벌려 찬양해\n\n[Chorus]\n모두 찬양해 온 맘 다해\n하늘과 땅이 노래하네\n강물처럼 이어져\n큰 바다로 퍼져가\n\n모두 찬양해 영원토록\n사랑의 화음 울리네\n우리의 숨결 모여서\n주의 이름 높이네\n\n[Bridge]\n주 사랑 넘쳐 흐르고\n우리의 노래 하늘에 닿네\n\n[Final Chorus]\n모두 찬양해 온 맘 다해\n온 세상이 화답하네\n강물처럼 이어져\n큰 바다로 퍼져가\n\n모두 찬양해 영원토록\n영광의 화음 울리네\n두팔 벌려 찬양해\n주의 이름 높이네` },
-                { num:'02', title:'일어나 외쳐', lyric:`[Verse 1]\n잠들어 있던 심장이\n지금 깨어나\n꺼지지 않던 불꽃이\n다시 타올라\n발을 구르며 외쳐\n멈출 수 없어\n이 밤이 끝날 때까지\n우린 달려가\n\n[Pre-Chorus]\n고개를 들어\n하늘을 향해\n이 리듬 위에\n믿음이 살아나\n\n[Chorus]\n일어나 외쳐\n지금 이 순간\n더 크게 소리쳐\n온 땅이 울려\n주님과 함께 달려!\n심장이 뛰어\n우리의 예배\n지금 시작돼\n\n[Verse 2]\n두려움은 사라져\n빛이 비춰와\n닫혀 있던 문들이\n모두 열려가\n하나 되어 외쳐\n세상을 흔들어\n믿음의 파도가\n지금 일어나\n\n[Final Chorus]\n일어나 외쳐\n지금 이 순간\n더 크게 소리쳐\n온 땅이 울려\n주님과 함께 달려!\n심장이 뛰어\n우리의 예배\n지금 시작돼\n\n[Outro]\n우리의 예배\n멈추지 않아` },
-                { num:'03', title:'주를 향해 노래하리', lyric:`[Verse 1]\n주 앞에 서 있는 이 시간\n내 마음 열어 드립니다\n조용히 들려오는 음성\n나를 부르십니다\n\n[Pre-Chorus]\n내 안에 잠들던 노래가\n이제 주께 향하네\n\n[Chorus]\n주를 향해 노래하리\n온 마음 다해 부르리\n나의 기쁨 나의 노래\n주님 한 분뿐이라\n주를 향해 기도하리\n내 삶의 모든 순간\n내 호흡이 있는 날까지\n주 이름 높이리\n\n[Verse 2]\n걸어온 시간을 돌아보면\n은혜가 가득했고\n무거운 마음 내려놓을 때\n평안을 주셨네\n\n[Pre-Chorus]\n내 안에 다시 피어나는\n감사의 멜로디\n\n[Chorus]\n주를 향해 노래하리\n온 마음 다해 부르리\n나의 기쁨 나의 노래\n주님 한 분뿐이라\n주를 향해 기도하리\n내 삶의 모든 순간\n내 호흡이 있는 날까지\n주 이름 높이리\n\n[Verse 3]\n흐르는 세월 속에서\n주 사랑 변함없고\n오늘의 걸음 위에\n은혜를 더하시네\n\n[Pre-Chorus]\n내 영혼 깊은 곳에서\n찬양이 울려 퍼져\n\n[Final Chorus]\n주를 향해 노래하리 (노래해)\n온 마음 다해 부르리\n나의 기쁨 나의 노래 (오직)\n주님 한 분뿐이\n\n주를 향해 기도하리 (영원히)\n내 삶의 모든 순간\n내 호흡이 있는 날까지 (오직)\n주 이름 높이리` },
-                { num:'04', title:'사랑합니다. 주님', lyric:`[Verse 1]\n쉽지않던 나의 삶에\n주님 함께 하셨네\n알지 못한 순간에도\n나를 지켜주셨네\n넘어지고 지친 날도\n주가 곁에 계셨고\n다시 일어설 힘을\n내게 주셨네\n\n[Pre-Chorus]\n지금까지 걸어온 길\n주가 인도하셨네\n\n[Chorus]\n감사합니다 주님\n나를 여기까지\n주의 사랑으로\n이끄셨네\n사랑합니다 주님\n나의 하나님\n내 삶의 모든 날\n주께 드립니다\n\n[Verse 2]\n눈물 많던 시간도\n주가 알고 계셨고\n작은 나의 기도도\n외면하지 않으셨네\n어둠 속을 걸을 때\n빛이 되어 주시고\n오늘도 내 삶을\n인도하시네\n\n[Bridge]\n주님만이 나의 길\n주님만이 나의 힘\n주님만이 나의 노래\n영원히 찬양해\n\n[Final Chorus]\n감사합니다 주님\n나의 구원 되신 주\n내 삶의 모든 순간\n주께 드립니다\n사랑합니다 주님\n나의 하나님\n영원토록 주만\n찬양합니다` },
-                { num:'05', title:'돌아보면 모든 날이', lyric:`[Verse 1]\n돌아보면 모든 날이\n내 힘으로 산 것 같았지만\n보이지 않던 주의 손이\n나의 길을 지키셨네\n넘어지고 흔들리던\n수많았던 시간 속에도\n말없이 나와 함께 하신\n주의 사랑 있었네\n\n[Pre-Chorus]\n지금 여기 서 있는 건\n주님의 인도하심\n\n[Chorus]\n감사로 노래합니다\n내 삶을 이끄신 주\n어둔 밤을 지나 오늘까지\n나를 붙드셨네\n감사로 고백합니다\n나의 모든 이유는\n지금까지 지켜주신\n주님의 사랑\n\n[Verse 2]\n멀고 험한 길 위에서\n지쳐 주저앉던 날에도\n다시 일어설 힘을 주신\n주의 따뜻한 손길\n눈물로 지나온 날도\n헛된 시간 아니었네\n그 모든 길의 순간마다\n주가 함께 하셨네\n\n[Bridge]\n내 모든 삶이\n주의 손 안에\n내 모든 길이\n주의 계획 안에` },
-                { num:'06', title:'주님 나의 힘', lyric:`[Verse 1]\n조용한 이 새벽에\n주님 앞에 나옵니다\n작은 믿음 이 마음\n주님께 드립니다\n\n[Chorus]\n주님 나의 힘 되시고\n주님 나의 길 되시네\n어제도 오늘도\n주와 함께 걸어가네\n\n[Verse 2]\n지친 마음 안고서\n주님 이름 부릅니다\n눈물 속의 기도도\n주님께서 들으시네\n\n[Chorus]\n주님 나의 힘 되시고\n주님 나의 길 되시네\n어제도 오늘도\n주와 함께 걸어가네\n\n[Bridge]\n주의 은혜 변함없네\n주의 사랑 영원하네` },
-                { num:'07', title:'조용히 외쳐', lyric:`[Verse 1]\n잠들어 있던 심장이\n조용히 깨어나\n작은 빛의 숨결이\n내 안에 흐르네\n발걸음을 멈춰 서서\n주를 바라봐\n이 밤의 별빛 속에\n주를 노래해\n\n[Pre-Chorus]\n고개를 들어 하늘을 향해\n잔잔한 이 리듬에 믿음이 살아나\n\n[Chorus]\n조용히 외쳐\n지금 이 순간\n담대히 소리쳐\n온 땅이 울려\n주님과 함께 걸어\n두려움 버리고\n우리의 예배\n지금 시작돼\n\n[Verse 2]\n두려움은 사라져\n평안이 와\n닫혀 있던 마음이\n다시 열려가\n하나 되어 외쳐\n세상을 움직여\n믿음의 물결이\n잔잔히 흐르네` },
-                { num:'08', title:'깨어 노래해', lyric:`[Verse 1]\n어둠 속에 빛이 와\n온 세상을 비추네\n기쁜 소식 들려와\n예수님이 오셨네\n\n[Chorus]\n깨어나 깨어 노래해\n기쁘게 외쳐\n예수님 오신 날\n함께 뛰어\n더크게 소리쳐\n주님을 찬양해\n\n[Verse 2]\n별이 비춘 그 밤에\n천사 노래 울리고\n온 세상이 기뻐해\n구주께서 오셨네\n\n[Chorus]\n깨어나 깨어 노래해\n기쁘게 외쳐\n예수님 오신 날\n함께 뛰어\n더크게 소리쳐\n주님을 찬양해\n\n[Bridge]\n하늘 높이 점프해\n손을 들어 찬양해\n온 세상이 노래해\n예수님 사랑해` },
-                { num:'09', title:'예수님 사랑', lyric:`[Verse 1]\n밝은 아침 햇살처럼\n내 마음 비추는 빛\n예수님의 따뜻한 사랑\n나를 다시 일으켜\n\n[Pre-Chorus]\n작은 친절 하나로 세상은 달라져\n주님이 보여주신 사랑을 따라가\n\n[Chorus]\n예수님 사랑으로\n우리 함께 걸어가\n너와 나 손을 잡고\n기쁨으로 노래해\n예수님 사랑으로\n세상을 밝히는 빛\n우리 삶 속에서\n주 사랑 전해요\n\n[Verse 2]\n친구가 힘들 때에도\n곁에 있어 줄게\n예수님의 사랑처럼\n서로를 안아줘` },
-                { num:'10', title:'예수님 최고', lyric:`[Verse 1]\n예수님 함께 걸어요\n예수님 손을 잡아요\n기쁘게 웃으면서\n찬양을 불러요\n\n[Pre-Chorus]\n왼쪽으로 한 걸음\n오른쪽으로 한 걸음\n빙글빙글 돌아요\n\n[Chorus]\n예수님과 함께해요 (Yeah!)\n기쁜 마음 가득해 (Hey!)\n손뼉 치며 노래해요\n랄라랄라 기뻐요\n예수님과 함께해요 (Yeah!)\n우리 모두 하나돼 (Hey!)\n점프 점프 뛰면서\n찬양을 불러요\n\n[Outro]\n모두 함께 찬양해!` }
-            ]
-        };
+  <!-- Vol.1 가사 전문 -->
+  <section style="max-width:900px; margin:0 auto 80px; padding:0 20px;">
+    <h2 style="font-family:'Cinzel',serif; color:#c9a84c; font-size:1rem; letter-spacing:3px; text-align:center; margin-bottom:40px;">
+      ✦ &nbsp; 나의 찬양 Vol.1 — 전곡 가사 &nbsp; ✦
+    </h2>
 
-        // ══ 앨범 메타 ══
-        const ALBUM_META = {
-            vol1: {
-                img: 'images/vol1.jpg',
-                vol: 'Vol. 1 · The First Confession',
-                title: '나의 찬양 Vol. 1',
-                streams: [
-                    { cls:'btn-spotify', href:'https://open.spotify.com/album/0ctoLQNWCmiPEkySv05PAM', label:'🎵 Spotify 전곡 듣기' }
-                ]
-            },
-            vol2: {
-                img: 'images/vol2.png',
-                vol: 'Vol. 2 · 2nd Confession',
-                title: '나의 찬양 Vol. 2',
-                streams: [
-                    { cls:'btn-spotify', href:'https://open.spotify.com/album/0yhn8oEojOqsI864an6Qki?si=H2m48xnZT7O3C2PpUuCU_A', label:'🎵 Spotify 전곡 듣기' }
-                ]
-            }
-        };
+    <!-- 01. 이 길 위해서 -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v1t01">
+      <label class="accordion-label" for="v1t01">
+        <span><span class="track-num">01.</span>이 길 위해서</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-text"><span class="lyric-section-tag">[Verse 1]</span>빛나는 태양이 저물어 갈 때
+조용히 내 마음 돌아봅니다
+채우려 할수록 비워지는 밤
+가만히 두 눈을 감아봅니다
 
-        let currentVol = null;
+<span class="lyric-section-tag">[Pre-Chorus]</span>작은 한숨조차 기도가 되어
+나의 곁에 계신 주를 느낄 때
+두렵기만 했던 나의 하루를
+다시 시작할 힘을 얻습니다
 
-        // ══ YouTube IFrame API ══
-        let ytPlayer = null;
-        let isYtReady = false;
+<span class="lyric-section-tag">[Chorus]</span>오늘도 걷는 이 길 위에서
+한없이 부족한 나를 위해서
+말없이 다가와 손 잡아주신
+그 따뜻한 품에 기대어 갑니다
 
-        const ytScript = document.createElement('script');
-        ytScript.src = 'https://www.youtube.com/iframe_api';
-        document.head.appendChild(ytScript);
+<span class="lyric-section-tag">[Verse 2]</span>어제와 똑같은 오늘이어도
+마음은 유난히 어두웠는데
+나의 연약함을 아시는 주님
+내 곁에 다가와 안아주시네
 
-        window.onYouTubeIframeAPIReady = function() {
-            ytPlayer = new YT.Player('yt-player-container', {
-                height: '0', width: '0',
-                playerVars: {
-                    autoplay: 0, controls: 0, disablekb: 1,
-                    listType: 'playlist',
-                    list: 'OLAK5uy_k9AXYTzto2kBSstq07DrX3o4byN30pwAg',
-                    playsinline: 1
-                },
-                events: {
-                    onReady: function(e) {
-                        isYtReady = true;
-                        e.target.setVolume(30);
-                    },
-                    onStateChange: function(e) {
-                        if (e.data === YT.PlayerState.ENDED) ytPlayer.nextVideo();
-                    }
-                }
-            });
-        };
+<span class="lyric-section-tag">[Pre-Chorus]</span>작은 소리조차 찬양이 되어
+나를 감싸주는 빛이 비칠 때
+흔들릴 것 같던 나의 목소리
+다시 소리칠 힘을 얻습니다
 
-        function playVol2BGM() {
-            if (!isYtReady || !ytPlayer) return;
-            ytPlayer.setShuffle(true);
-            ytPlayer.setLoop(true);
-            ytPlayer.nextVideo();
-            ytPlayer.playVideo();
-            document.getElementById('yt-indicator').classList.add('active');
-        }
+<span class="lyric-section-tag">[Bridge]</span>화려한 믿음은 아닐지라도
+소박한 진심을 아시는 주님
+매일 마주하는 나의 일상에
+주의 은혜가 스며듭니다
 
-        function stopVol2BGM() {
-            if (!isYtReady || !ytPlayer) return;
-            ytPlayer.pauseVideo();
-            document.getElementById('yt-indicator').classList.remove('active');
-        }
+<span class="lyric-section-tag">[Final Chorus]</span>오늘도 걷는 이 길 위에서
+한없이 부족한 나를 위해서
+말없이 다가와 손 잡아주신
+그 따뜻한 품에 기대어 갑니다</p>
+      </div>
+    </article>
 
-        // ══ 모달 열기 ══
-        function openModal(vol) {
-            currentVol = vol;
-            const meta = ALBUM_META[vol];
-            const modal = document.getElementById('album-modal');
+    <!-- 02. 사랑으로 -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v1t02">
+      <label class="accordion-label" for="v1t02">
+        <span><span class="track-num">02.</span>사랑으로</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-text"><span class="lyric-section-tag">[Verse 1]</span>메마른 밤을 지나
+숨을 고르며 서 있던 나
+말없이 비춰 오던 빛
+나를 다시 일으켜
 
-            document.getElementById('modal-img').src = meta.img;
-            document.getElementById('modal-img').alt = meta.title;
-            document.getElementById('modal-vol').textContent = meta.vol;
-            document.getElementById('modal-title').textContent = meta.title;
+<span class="lyric-section-tag">[Pre-Chorus]</span>손 내밀어 주신 음성
+고개 숙인 그 순간
+두려움보다 먼저
+사랑이 다가왔네
 
-            const streamRow = document.getElementById('modal-stream-row');
-            streamRow.innerHTML = meta.streams.map(s =>
-                `<a class="stream-btn ${s.cls}" href="${s.href}" target="_blank" rel="noopener">${s.label}</a>`
-            ).join('');
+<span class="lyric-section-tag">[Chorus]</span>사랑으로 날 부르신 주
+넘어질 때도 떠나지 않고
+내가 약해진 그 자리에도
+주 사랑은 남아 있네
 
-            buildLyrics(vol);
+<span class="lyric-section-tag">[Verse 2]</span>끝이 보이지 않아
+걸음이 느려질 때도
+기다림 속에 흐르던
+신실한 그 약속
 
-            const spotifyWrap = document.getElementById('spotify-embed-wrap');
-            if (vol === 'vol1') {
-                spotifyWrap.classList.add('visible');
-            } else {
-                spotifyWrap.classList.remove('visible');
-            }
+<span class="lyric-section-tag">[Bridge]</span>말로 다 못한 기도
+눈물로 남겨진 고백
+주님은 이미 알고 계셔
+사랑으로 응답하셨네
 
-            modal.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-            requestAnimationFrame(() => modal.classList.add('open'));
+<span class="lyric-section-tag">[Final Chorus]</span>주 사랑으로 살아가리
+이제는 내가 포기안해
+시간이 흘러도
+내사랑은 여기 있네</p>
+      </div>
+    </article>
 
-            if (vol === 'vol2') {
-                setTimeout(playVol2BGM, 600);
-            } else {
-                stopVol2BGM();
-            }
-        }
+    <!-- 03. 나의 찬양 -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v1t03">
+      <label class="accordion-label" for="v1t03">
+        <span><span class="track-num">03.</span>나의 찬양</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-text"><span class="lyric-section-tag">[Verse 1]</span>내 생명 갖기 전부터
+주님은 날 아셨죠
+내 의지 상관없이
+사랑은 흘렀네요
 
-        function closeModal() {
-            const modal = document.getElementById('album-modal');
-            modal.classList.remove('open');
-            stopVol2BGM();
-            document.body.style.overflow = '';
-            setTimeout(() => { modal.style.display = 'none'; currentVol = null; }, 450);
-        }
+<span class="lyric-section-tag">[Pre-Chorus]</span>길 잃은 밤에도
+날 비춘 그 손길
+변치 않는 신실함
 
-        document.addEventListener('keydown', e => { if (e.key === 'Escape' && currentVol) closeModal(); });
+<span class="lyric-section-tag">[Chorus]</span>한결같이 날 지키신 주
+늘 곁에 계셨네
+아름다운 그 이름 찬양해
+깊은 감사뿐이죠
 
-        document.getElementById('album-modal').addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
-        });
+<span class="lyric-section-tag">[Verse 2]</span>내 모든 걸음 속에
+당신의 은혜가
+변함없는 그 사랑
+선물이 되었네
 
-        // ══ 가사 아코디언 빌드 ══
-        function buildLyrics(vol) {
-            const container = document.getElementById('modal-lyrics');
-            const tracks = LYRICS[vol];
-            container.innerHTML = tracks.map((t, i) => `
-                <div class="accordion-item" id="acc-${vol}-${i}">
-                    <button class="accordion-header" type="button" onclick="toggleAccordion('${vol}',${i})">
-                        <span><span class="track-num">${t.num}.</span>${t.title}</span>
-                        <span class="toggle-icon">+</span>
-                    </button>
-                    <div class="accordion-body">
-                        <p class="lyric-text">${escapeHtml(t.lyric)}</p>
-                    </div>
-                </div>
-            `).join('');
-        }
+<span class="lyric-section-tag">[Bridge]</span>언제나 그 자리에
+나를 기다린 사랑
+나의 노래 됩니다
+내 믿음 소망이 되네
 
-        function toggleAccordion(vol, idx) {
-            const id = `acc-${vol}-${idx}`;
-            const item = document.getElementById(id);
-            const isActive = item.classList.contains('active');
-            document.querySelectorAll(`#modal-lyrics .accordion-item`).forEach(el => el.classList.remove('active'));
-            if (!isActive) {
-                item.classList.add('active');
-                setTimeout(() => {
-                    item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }, 350);
-            }
-        }
+<span class="lyric-section-tag">[Final Chorus]</span>사랑합니다 나의 주님
+영원히 찬양합니다
+위대하신 그 이름 전해
+사랑을 나눠요</p>
+      </div>
+    </article>
 
-        function escapeHtml(str) {
-            return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-        }
+    <!-- 04. 기적입니다 -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v1t04">
+      <label class="accordion-label" for="v1t04">
+        <span><span class="track-num">04.</span>기적입니다.</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-text"><span class="lyric-section-tag">[Verse 1]</span>자랑할 것 하나 없는 나인데
+날마다 넘어지고 죄만 지었었는데
+이런 나를 먼저 찾아와 주시고
+따스한 손길로 꼭 안아주셨죠
 
-        // ══ 별 캔버스 ══
-        function initStarsCanvas() {
-            const canvas = document.getElementById('stars-canvas');
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            let stars = [];
-            function resize() { canvas.width = window.innerWidth; canvas.height = 420; initStars(); }
-            function initStars() {
-                stars = [];
-                const count = (canvas.width * canvas.height) / 7000;
-                for (let i = 0; i < count; i++) {
-                    stars.push({
-                        x: Math.random() * canvas.width, y: Math.random() * canvas.height,
-                        size: Math.random() * 1.5 + 0.3, opacity: Math.random(),
-                        speed: Math.random() * 0.015 + 0.005,
-                        color: Math.random() > 0.85 ? '201, 168, 76' : '255, 255, 255'
-                    });
-                }
-            }
-            function draw() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                stars.forEach(s => {
-                    s.opacity += s.speed;
-                    if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed;
-                    ctx.beginPath();
-                    ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(${s.color}, ${Math.max(0, s.opacity)})`;
-                    ctx.fill();
-                });
-                requestAnimationFrame(draw);
-            }
-            window.addEventListener('resize', resize);
-            resize(); draw();
-        }
-    </script>
+<span class="lyric-section-tag">[Verse 2]</span>세상속에 찌들었던 나인데
+힘없이 무너지고 좌절 했었는데
+조용히 나를 찾아와 주시고
+구원의 손길로 날 건져주셨죠
 
-    <script src="js/main.js"></script>
-    <script src="js/guestbook.js"></script>
+<span class="lyric-section-tag">[Chorus]</span>기적입니다 주를 만난 건
+메마른 내 삶에 피어난 노래
+기적입니다 내가 믿는 건
+주의 은혜 아니면 안 되는 일들
+참 감사한 오늘 기적입니다
+
+<span class="lyric-section-tag">[Bridge]</span>눈을 들어 온 세상을 보니
+주의 사랑이 느껴지네요
+들판에 풀과 하늘의 별까지
+보잘것없는 나도 사랑하시네
+
+<span class="lyric-section-tag">[Final Chorus]</span>기적입니다 온 땅과 만물
+주님이 만드신 아름다운 세상
+기적입니다 주를 믿는 것
+주의 사랑 아니면 안 되는 일들
+참 감사한 오늘 사랑입니다</p>
+      </div>
+    </article>
+
+    <!-- 05. 파레시아 -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v1t05">
+      <label class="accordion-label" for="v1t05">
+        <span><span class="track-num">05.</span>파레시아</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-text"><span class="lyric-section-tag">[Verse 1]</span>새벽 길 위, 무거운 어깨
+오늘 하루, 또 시작되네
+맡겨진 짐, 다 지고 가는
+나의 삶은, 주가 아시네
+
+<span class="lyric-section-tag">[Verse 2]</span>떨칠 수 없는, 이름의 무게
+혼자 참아온, 남모를 눈물
+흔들거리는, 나의 발걸음
+주님 오늘, 붙드소서
+
+<span class="lyric-section-tag">[Pre-Chorus]</span>나를 부르네, 주의 음성
+내 모습 이대로, 나갑니다
+십자가 사랑, 그 힘을 믿고
+고개 들어, 하늘 보네
+
+<span class="lyric-section-tag">[Chorus]</span>파레시아, 주 앞에 가리라
+파레시아, 나의 승리야
+험한 세상도, 두렵지 않네
+주의 강한 손, 날 붙드니까
+당당하게, 한 걸음 더
+
+<span class="lyric-section-tag">[Bridge]</span>세상이 줄 수 없는 평안
+주님이 약속하신 평화
+우리는 결코 혼자가 아냐
+주와 함께 걷는 이 길
+
+<span class="lyric-section-tag">[Final Chorus]</span>파레시아, 주 앞에 가리라
+파레시아, 나의 승리야
+험한 세상도, 두렵지 않네
+주의 강한 손, 날 붙드니까
+당당하게, 한 걸음 더</p>
+      </div>
+    </article>
+
+    <!-- 06. 나의 목소리 -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v1t06">
+      <label class="accordion-label" for="v1t06">
+        <span><span class="track-num">06.</span>나의 목소리</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-text"><span class="lyric-section-tag">[Verse 1]</span>두 손을 모으고 눈을 감아요
+작은 내 마음을 주님께 드려요
+조용한 이 시간 우리와 함께하시는
+사랑의 하나님 참 감사합니다
+
+<span class="lyric-section-tag">[Chorus]</span>내 마음속에 계신 하나님
+나의 목소리 들으시는 주님
+잔잔한 바람처럼 내 맘 만지시고
+언제나 우리와 함께하셔요
+
+<span class="lyric-section-tag">[Verse 2]</span>예쁜 마음 모아 노래 불러요
+작은 내 발걸음 주님만 따라가요
+세상의 빛으로 우리를 부르신
+귀하신 하나님 사랑합니다</p>
+      </div>
+    </article>
+
+    <!-- 07. 오 기쁜 날 -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v1t07">
+      <label class="accordion-label" for="v1t07">
+        <span><span class="track-num">07.</span>오 기쁜 날</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-text"><span class="lyric-section-tag">[Verse 1]</span>아침 햇살, 반짝이며
+주님 사랑, 노래해요
+우리 마음, 가득하게
+주의 은혜, 넘쳐나요
+
+<span class="lyric-section-tag">[Verse 2]</span>슬픈 생각, 모두 잊고
+두 손 높이, 들어봐요
+어린 아이, 할아버지
+모두 함께, 춤을 춰요
+
+<span class="lyric-section-tag">[Chorus]</span>오 기쁜 날! 주 찬양해!
+온 세상에, 울려라!
+축복의 날! 주 노래해!
+할렐루 할렐루야!
+사랑의 주 나의 주님, 감사해!
+우리 함께, 소리 높여
+할렐루 할렐루야!</p>
+      </div>
+    </article>
+
+    <!-- 08. 우리의 예배 -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v1t08">
+      <label class="accordion-label" for="v1t08">
+        <span><span class="track-num">08.</span>우리의 예배</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-text"><span class="lyric-section-tag">[Verse 1]</span>주일 아침 환한 햇살 아래
+설레는 맘으로 모였어요
+나를 위해 준비하신 사랑
+오늘도 기대하며 나아가요
+
+<span class="lyric-section-tag">[Verse 2]</span>세상 속의 바쁜 마음들은
+모두 다 예쁘게 접어두고
+하나님의 귀한 말씀 속에
+내 마음 깊이 잠겨볼래요
+
+<span class="lyric-section-tag">[Chorus]</span>우리의 예배를 받아주세요
+가장 귀한 노래로 주님만 높여요
+하늘의 은혜가 가득 내려와
+우리를 기쁨으로 채워주시네
+
+<span class="lyric-section-tag">[Final Chorus]</span>사랑의 주님만 바라봅니다
+온 맘 다해 정성을 모두 드려요
+언제나 우리와 함께하시는
+하나님만 높여 예배해요</p>
+      </div>
+    </article>
+
+    <!-- 09. 우리의 마음 -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v1t09">
+      <label class="accordion-label" for="v1t09">
+        <span><span class="track-num">09.</span>우리의 마음</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-text"><span class="lyric-section-tag">[Verse 1]</span>햇살 반짝! 들려오는 소리
+두 손 모아 기도드려요
+작은 마음 사랑 가득히
+하나님께 노래할래요
+
+<span class="lyric-section-tag">[Chorus]</span>예수님 사랑해요
+내 마음 가득히
+맑고 고운 소리
+우리 마음 받아주세요
+
+<span class="lyric-section-tag">[Verse 2]</span>어제보다 주님 닮아요
+친구들과 예배드려요
+걸음걸음 인도하시니
+행복한 나 주의 자녀들</p>
+      </div>
+    </article>
+
+    <!-- 10. 나의 모든 날 -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v1t10">
+      <label class="accordion-label" for="v1t10">
+        <span><span class="track-num">10.</span>나의 모든 날</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-text"><span class="lyric-section-tag">[Verse 1]</span>눈 비비며 일어나는 평범한 아침
+보글보글 찌개 소리 즐거운 우리 집
+당연한 줄 알았더니 모든 게 선물이라
+주님 주신 은혜 속에 오늘 내가 사네
+
+<span class="lyric-section-tag">[Verse 2]</span>덜컹거리는 버스 창가 햇살 비치고
+스치는 바람 속에 주의 사랑 느끼네
+지루했던 일상들이 노래가 되어 터지니
+나의 모든 걸음마다 기쁨 가득하네
+
+<span class="lyric-section-tag">[Pre-Chorus]</span>때로는 시련의 벽이 날 막아설 때
+슬픔에 밤을 새며 혼자 울 때
+나보다 앞서가는 주님 믿고
+담대히 나아갑니다
+
+<span class="lyric-section-tag">[Chorus]</span>나의 모든 날들이 주님의 은혜라
+어두운 밤 지나고 찬란한 빛 비추네
+박수치며 찬양해 기쁨의 노래를
+나의 평생 주님만 노래하리라</p>
+      </div>
+    </article>
+  </section>
+
+  <!-- Vol.2 가사 전문 -->
+  <section style="max-width:900px; margin:0 auto 80px; padding:0 20px;">
+    <h2 style="font-family:'Cinzel',serif; color:#c9a84c; font-size:1rem; letter-spacing:3px; text-align:center; margin-bottom:40px;">
+      ✦ &nbsp; 나의 찬양 Vol.2 — 전곡 가사 &nbsp; ✦
+    </h2>
+
+    <!-- 01. 모두 찬양해 -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v2t01">
+      <label class="accordion-label" for="v2t01">
+        <span><span class="track-num">01.</span>모두 찬양해</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-text"><span class="lyric-section-tag">[Verse 1]</span>주의 말씀 귀에 들려
+내 마음 깊이 흐르네
+낮은 곳에서 부르시는
+그 사랑 나를 이끄네
+
+<span class="lyric-section-tag">[Verse 2]</span>흔들리는 길 위에서도
+주 손 잡고 걸어가
+어둠 속에서도 빛 되신
+그 사랑 노래하리
+
+<span class="lyric-section-tag">[Chorus]</span>모두 찬양해 온 맘 다해
+하늘과 땅이 노래하네
+강물처럼 이어져
+큰 바다로 퍼져가
+
+모두 찬양해 영원토록
+사랑의 화음 울리네
+우리의 숨결 모여서
+주의 이름 높이네
+
+<span class="lyric-section-tag">[Final Chorus]</span>모두 찬양해 온 맘 다해
+온 세상이 화답하네
+두팔 벌려 찬양해
+주의 이름 높이네</p>
+      </div>
+    </article>
+
+    <!-- 02. 일어나 외쳐 -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v2t02">
+      <label class="accordion-label" for="v2t02">
+        <span><span class="track-num">02.</span>일어나 외쳐</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-text"><span class="lyric-section-tag">[Verse 1]</span>잠들어 있던 심장이
+지금 깨어나
+꺼지지 않던 불꽃이
+다시 타올라
+발을 구르며 외쳐
+멈출 수 없어
+이 밤이 끝날 때까지
+우린 달려가
+
+<span class="lyric-section-tag">[Chorus]</span>일어나 외쳐
+지금 이 순간
+더 크게 소리쳐
+온 땅이 울려
+주님과 함께 달려!
+심장이 뛰어
+우리의 예배
+지금 시작돼
+
+<span class="lyric-section-tag">[Verse 2]</span>두려움은 사라져
+빛이 비춰와
+닫혀 있던 문들이
+모두 열려가
+하나 되어 외쳐
+세상을 흔들어
+믿음의 파도가
+지금 일어나
+
+<span class="lyric-section-tag">[Outro]</span>우리의 예배
+멈추지 않아</p>
+      </div>
+    </article>
+
+    <!-- 03. 주를 향해 노래하리 -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v2t03">
+      <label class="accordion-label" for="v2t03">
+        <span><span class="track-num">03.</span>주를 향해 노래하리</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-text"><span class="lyric-section-tag">[Verse 1]</span>주 앞에 서 있는 이 시간
+내 마음 열어 드립니다
+조용히 들려오는 음성
+나를 부르십니다
+
+<span class="lyric-section-tag">[Chorus]</span>주를 향해 노래하리
+온 마음 다해 부르리
+나의 기쁨 나의 노래
+주님 한 분뿐이라
+주를 향해 기도하리
+내 삶의 모든 순간
+내 호흡이 있는 날까지
+주 이름 높이리
+
+<span class="lyric-section-tag">[Verse 2]</span>걸어온 시간을 돌아보면
+은혜가 가득했고
+무거운 마음 내려놓을 때
+평안을 주셨네
+
+<span class="lyric-section-tag">[Verse 3]</span>흐르는 세월 속에서
+주 사랑 변함없고
+오늘의 걸음 위에
+은혜를 더하시네
+
+<span class="lyric-section-tag">[Final Chorus]</span>주를 향해 노래하리
+온 마음 다해 부르리
+나의 기쁨 나의 노래
+주님 한 분뿐이
+주를 향해 기도하리
+내 삶의 모든 순간
+내 호흡이 있는 날까지
+주 이름 높이리</p>
+      </div>
+    </article>
+
+    <!-- 04. 사랑합니다. 주님 -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v2t04">
+      <label class="accordion-label" for="v2t04">
+        <span><span class="track-num">04.</span>사랑합니다. 주님</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-text"><span class="lyric-section-tag">[Verse 1]</span>쉽지않던 나의 삶에
+주님 함께 하셨네
+알지 못한 순간에도
+나를 지켜주셨네
+넘어지고 지친 날도
+주가 곁에 계셨고
+다시 일어설 힘을
+내게 주셨네
+
+<span class="lyric-section-tag">[Chorus]</span>감사합니다 주님
+나를 여기까지
+주의 사랑으로
+이끄셨네
+사랑합니다 주님
+나의 하나님
+내 삶의 모든 날
+주께 드립니다
+
+<span class="lyric-section-tag">[Verse 2]</span>눈물 많던 시간도
+주가 알고 계셨고
+작은 나의 기도도
+외면하지 않으셨네
+어둠 속을 걸을 때
+빛이 되어 주시고
+오늘도 내 삶을
+인도하시네
+
+<span class="lyric-section-tag">[Bridge]</span>주님만이 나의 길
+주님만이 나의 힘
+주님만이 나의 노래
+영원히 찬양해
+
+<span class="lyric-section-tag">[Final Chorus]</span>감사합니다 주님
+나의 구원 되신 주
+내 삶의 모든 순간
+주께 드립니다
+사랑합니다 주님
+나의 하나님
+영원토록 주만
+찬양합니다</p>
+      </div>
+    </article>
+
+    <!-- 05. 돌아보면 모든 날이 -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v2t05">
+      <label class="accordion-label" for="v2t05">
+        <span><span class="track-num">05.</span>돌아보면 모든 날이</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-text"><span class="lyric-section-tag">[Verse 1]</span>돌아보면 모든 날이
+내 힘으로 산 것 같았지만
+보이지 않던 주의 손이
+나의 길을 지키셨네
+넘어지고 흔들리던
+수많았던 시간 속에도
+말없이 나와 함께 하신
+주의 사랑 있었네
+
+<span class="lyric-section-tag">[Chorus]</span>감사로 노래합니다
+내 삶을 이끄신 주
+어둔 밤을 지나 오늘까지
+나를 붙드셨네
+감사로 고백합니다
+나의 모든 이유는
+지금까지 지켜주신
+주님의 사랑
+
+<span class="lyric-section-tag">[Verse 2]</span>멀고 험한 길 위에서
+지쳐 주저앉던 날에도
+다시 일어설 힘을 주신
+주의 따뜻한 손길
+눈물로 지나온 날도
+헛된 시간 아니었네
+그 모든 길의 순간마다
+주가 함께 하셨네
+
+<span class="lyric-section-tag">[Bridge]</span>내 모든 삶이
+주의 손 안에
+내 모든 길이
+주의 계획 안에</p>
+      </div>
+    </article>
+
+    <!-- 06. 주님 나의 힘 -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v2t06">
+      <label class="accordion-label" for="v2t06">
+        <span><span class="track-num">06.</span>주님 나의 힘</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-text"><span class="lyric-section-tag">[Verse 1]</span>조용한 이 새벽에
+주님 앞에 나옵니다
+작은 믿음 이 마음
+주님께 드립니다
+
+<span class="lyric-section-tag">[Chorus]</span>주님 나의 힘 되시고
+주님 나의 길 되시네
+어제도 오늘도
+주와 함께 걸어가네
+
+<span class="lyric-section-tag">[Verse 2]</span>지친 마음 안고서
+주님 이름 부릅니다
+눈물 속의 기도도
+주님께서 들으시네
+
+<span class="lyric-section-tag">[Bridge]</span>주의 은혜 변함없네
+주의 사랑 영원하네</p>
+      </div>
+    </article>
+
+    <!-- 07. 조용히 외쳐 -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v2t07">
+      <label class="accordion-label" for="v2t07">
+        <span><span class="track-num">07.</span>조용히 외쳐</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-text"><span class="lyric-section-tag">[Verse 1]</span>잠들어 있던 심장이
+조용히 깨어나
+작은 빛의 숨결이
+내 안에 흐르네
+발걸음을 멈춰 서서
+주를 바라봐
+이 밤의 별빛 속에
+주를 노래해
+
+<span class="lyric-section-tag">[Chorus]</span>조용히 외쳐
+지금 이 순간
+담대히 소리쳐
+온 땅이 울려
+주님과 함께 걸어
+두려움 버리고
+우리의 예배
+지금 시작돼
+
+<span class="lyric-section-tag">[Verse 2]</span>두려움은 사라져
+평안이 와
+닫혀 있던 마음이
+다시 열려가
+하나 되어 외쳐
+세상을 움직여
+믿음의 물결이
+잔잔히 흐르네</p>
+      </div>
+    </article>
+
+    <!-- 08. 깨어 노래해 -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v2t08">
+      <label class="accordion-label" for="v2t08">
+        <span><span class="track-num">08.</span>깨어 노래해</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-text"><span class="lyric-section-tag">[Verse 1]</span>어둠 속에 빛이 와
+온 세상을 비추네
+기쁜 소식 들려와
+예수님이 오셨네
+
+<span class="lyric-section-tag">[Chorus]</span>깨어나 깨어 노래해
+기쁘게 외쳐
+예수님 오신 날
+함께 뛰어
+더크게 소리쳐
+주님을 찬양해
+
+<span class="lyric-section-tag">[Bridge]</span>하늘 높이 점프해
+손을 들어 찬양해
+온 세상이 노래해
+예수님 사랑해</p>
+      </div>
+    </article>
+
+    <!-- 09. 예수님 사랑 -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v2t09">
+      <label class="accordion-label" for="v2t09">
+        <span><span class="track-num">09.</span>예수님 사랑</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-text"><span class="lyric-section-tag">[Verse 1]</span>밝은 아침 햇살처럼
+내 마음 비추는 빛
+예수님의 따뜻한 사랑
+나를 다시 일으켜
+
+<span class="lyric-section-tag">[Pre-Chorus]</span>작은 친절 하나로 세상은 달라져
+주님이 보여주신 사랑을 따라가
+
+<span class="lyric-section-tag">[Chorus]</span>예수님 사랑으로
+우리 함께 걸어가
+너와 나 손을 잡고
+기쁨으로 노래해
+예수님 사랑으로
+세상을 밝히는 빛
+우리 삶 속에서
+주 사랑 전해요
+
+<span class="lyric-section-tag">[Verse 2]</span>친구가 힘들 때에도
+곁에 있어 줄게
+예수님의 사랑처럼
+서로를 안아줘</p>
+      </div>
+    </article>
+
+    <!-- 10. 예수님 최고 -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v2t10">
+      <label class="accordion-label" for="v2t10">
+        <span><span class="track-num">10.</span>예수님 최고</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-text"><span class="lyric-section-tag">[Verse 1]</span>예수님 함께 걸어요
+예수님 손을 잡아요
+기쁘게 웃으면서
+찬양을 불러요
+
+<span class="lyric-section-tag">[Chorus]</span>예수님과 함께해요
+기쁜 마음 가득해
+손뼉 치며 노래해요
+랄라랄라 기뻐요
+예수님과 함께해요
+우리 모두 하나돼
+점프 점프 뛰면서
+찬양을 불러요
+
+<span class="lyric-section-tag">[Outro]</span>모두 함께 찬양해!</p>
+      </div>
+    </article>
+  </section>
+
+</div><!-- /container -->
+
+<!-- 앨범 모달 (비주얼 전용) -->
+<div id="album-modal" role="dialog" aria-modal="true">
+  <div class="modal-inner" id="modal-inner">
+    <button class="modal-close" onclick="closeModal()" aria-label="닫기">✕</button>
+    <div class="modal-hero">
+      <img class="modal-hero-img" id="modal-img" src="" alt="">
+      <div class="modal-hero-overlay"></div>
+      <div class="modal-hero-content">
+        <div class="modal-vol" id="modal-vol"></div>
+        <div class="modal-title" id="modal-title"></div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="stream-row" id="modal-stream-row"></div>
+      <div class="yt-playing-indicator" id="yt-indicator">
+        <div class="yt-eq"><div class="yt-eq-bar"></div><div class="yt-eq-bar"></div><div class="yt-eq-bar"></div></div>
+        YouTube BGM 재생 중
+      </div>
+      <div class="spotify-embed-wrap" id="spotify-embed-wrap">
+        <iframe id="spotify-iframe"
+          src="https://open.spotify.com/embed/album/0ctoLQNWCmiPEkySv05PAM?utm_source=generator&theme=0"
+          width="100%" height="352"
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy"></iframe>
+      </div>
+      <div class="lyrics-section-title">✦ &nbsp; 아래 목록에서 가사를 확인하세요 &nbsp; ✦</div>
+      <p style="color:rgba(200,196,188,0.5); font-size:0.85rem; text-align:center; margin-top:-10px;">
+        모달을 닫고 아래 전곡 가사 섹션에서 열람할 수 있습니다
+      </p>
+    </div>
+  </div>
+</div>
+
+<div id="site-footer"></div>
+
+<script>
+window.PAGE_I18N = {
+  ko: {
+    share_title: 'SHARE WORSHIP',
+    share_desc: '이곳의 고백과 찬양이 누군가에게 위로가 되길 바랍니다.',
+    header_title: 'WORSHIP',
+    header_slogan: '영혼 깊은 곳에서 올려드리는 고백',
+    album1_title: '나의 찬양 Vol. 1',
+    album2_title: '나의 찬양 Vol. 2'
+  },
+  en: {
+    share_title: 'SHARE WORSHIP',
+    share_desc: 'May the confessions and worship here bring comfort to someone.',
+    header_title: 'WORSHIP',
+    header_slogan: 'Confessions offered from the depths of the soul',
+    album1_title: 'My Worship Vol. 1',
+    album2_title: 'My Worship Vol. 2'
+  }
+};
+window.onMainReady = function() { initStarsCanvas(); };
+</script>
+
+<script>
+const ALBUM_META = {
+  vol1: {
+    img: 'images/vol1.jpg',
+    vol: 'Vol. 1 · The First Confession',
+    title: '나의 찬양 Vol. 1',
+    streams: [
+      { cls:'btn-spotify', href:'https://open.spotify.com/album/0ctoLQNWCmiPEkySv05PAM', label:'🎵 Spotify 전곡 듣기' }
+    ],
+    showSpotify: true
+  },
+  vol2: {
+    img: 'images/vol2.png',
+    vol: 'Vol. 2 · 2nd Confession',
+    title: '나의 찬양 Vol. 2',
+    streams: [
+      { cls:'btn-spotify', href:'https://open.spotify.com/album/0yhn8oEojOqsI864an6Qki?si=H2m48xnZT7O3C2PpUuCU_A', label:'🎵 Spotify 전곡 듣기' }
+    ],
+    showSpotify: false
+  }
+};
+
+let currentVol = null;
+
+/* ── YouTube IFrame API ── */
+let ytPlayer = null, isYtReady = false;
+const ytScript = document.createElement('script');
+ytScript.src = 'https://www.youtube.com/iframe_api';
+document.head.appendChild(ytScript);
+window.onYouTubeIframeAPIReady = function() {
+  ytPlayer = new YT.Player('yt-player-container', {
+    height:'0', width:'0',
+    playerVars:{ autoplay:0, controls:0, disablekb:1, listType:'playlist', list:'OLAK5uy_k9AXYTzto2kBSstq07DrX3o4byN30pwAg', playsinline:1 },
+    events:{
+      onReady: function(e){ isYtReady=true; e.target.setVolume(30); },
+      onStateChange: function(e){ if(e.data===YT.PlayerState.ENDED) ytPlayer.nextVideo(); }
+    }
+  });
+};
+function playVol2BGM(){ if(!isYtReady||!ytPlayer)return; ytPlayer.setShuffle(true); ytPlayer.setLoop(true); ytPlayer.nextVideo(); ytPlayer.playVideo(); document.getElementById('yt-indicator').classList.add('active'); }
+function stopVol2BGM(){ if(!isYtReady||!ytPlayer)return; ytPlayer.pauseVideo(); document.getElementById('yt-indicator').classList.remove('active'); }
+
+function openModal(vol) {
+  currentVol = vol;
+  const meta = ALBUM_META[vol];
+  document.getElementById('modal-img').src = meta.img;
+  document.getElementById('modal-img').alt = meta.title;
+  document.getElementById('modal-vol').textContent = meta.vol;
+  document.getElementById('modal-title').textContent = meta.title;
+  document.getElementById('modal-stream-row').innerHTML = meta.streams.map(s =>
+    `<a class="stream-btn ${s.cls}" href="${s.href}" target="_blank" rel="noopener">${s.label}</a>`
+  ).join('');
+  const spotifyWrap = document.getElementById('spotify-embed-wrap');
+  meta.showSpotify ? spotifyWrap.classList.add('visible') : spotifyWrap.classList.remove('visible');
+  const modal = document.getElementById('album-modal');
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  requestAnimationFrame(() => modal.classList.add('open'));
+  if(vol==='vol2') setTimeout(playVol2BGM, 600); else stopVol2BGM();
+}
+function closeModal() {
+  const modal = document.getElementById('album-modal');
+  modal.classList.remove('open');
+  stopVol2BGM();
+  document.body.style.overflow = '';
+  setTimeout(()=>{ modal.style.display='none'; currentVol=null; }, 450);
+}
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'&&currentVol) closeModal(); });
+document.getElementById('album-modal').addEventListener('click', function(e){ if(e.target===this) closeModal(); });
+
+/* ── 별 캔버스 ── */
+function initStarsCanvas() {
+  const canvas = document.getElementById('stars-canvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+  function resize(){ canvas.width=window.innerWidth; canvas.height=420; initStars(); }
+  function initStars(){
+    stars=[];
+    const count=(canvas.width*canvas.height)/7000;
+    for(let i=0;i<count;i++) stars.push({ x:Math.random()*canvas.width, y:Math.random()*canvas.height, size:Math.random()*1.5+0.3, opacity:Math.random(), speed:Math.random()*0.015+0.005, color:Math.random()>0.85?'201, 168, 76':'255, 255, 255' });
+  }
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    stars.forEach(s=>{ s.opacity+=s.speed; if(s.opacity>1||s.opacity<0) s.speed=-s.speed; ctx.beginPath(); ctx.arc(s.x,s.y,s.size,0,Math.PI*2); ctx.fillStyle=`rgba(${s.color},${Math.max(0,s.opacity)})`; ctx.fill(); });
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',resize); resize(); draw();
+}
+</script>
+<script src="js/main.js"></script>
+<script src="js/guestbook.js"></script>
 </body>
 </html>

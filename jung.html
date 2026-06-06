@@ -92,7 +92,7 @@
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; animation: fadeUp 1s ease 0.8s both; }
         .gallery-item { position: relative; border-radius: 16px; overflow: hidden; aspect-ratio: 16/9; background: #000; border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 15px 35px rgba(0,0,0,0.5); cursor: pointer; transition: all 0.4s ease; }
         .gallery-item:hover { transform: translateY(-8px); border-color: var(--char-accent); box-shadow: 0 20px 40px var(--char-glow); }
-        .gallery-img { width: 100%; height: 100%; background-size: cover; background-position: center; filter: brightness(0.8) grayscale(20%); transition: all 0.5s ease; }
+        .gallery-img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; filter: brightness(0.8) grayscale(20%); transition: all 0.5s ease; }
         .gallery-item:hover .gallery-img { filter: brightness(1.1) grayscale(0%); transform: scale(1.08); }
 
         .modal-gallery { display: none; position: fixed; z-index: 2000; inset: 0; background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px); align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; }
@@ -153,19 +153,19 @@
 
         <h2 class="section-title" data-i18n="gallery_title">Visual Archives</h2>
         <div class="gallery-grid">
-            <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/jung01.png');"></div></div>
-            <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/jung02.jpg');"></div></div>
-            <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/jung03.jpg');"></div></div>
-            <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/jung04.jpg');"></div></div>
-            <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/jung05.jpg');"></div></div>
-            <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/jung06.jpg');"></div></div>
-            <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/jung07.jpg');"></div></div>
-            <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/jung08.png');"></div></div>
-            <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/jung09.jpg');"></div></div>
-            <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/jung10.jpg');"></div></div>
-            <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/jung11.jpg');"></div></div>
-            <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/jung12.jpg');"></div></div>
-            <div class="gallery-item"><div class="gallery-img" style="background-image: url('images/jung13.jpg');"></div></div>
+            <div class="gallery-item"><img class="gallery-img" src="images/jung01.png" alt="정 (Jung) — Sister Squad 캐릭터 일러스트 1" loading="lazy"></div>
+            <div class="gallery-item"><img class="gallery-img" src="images/jung02.jpg" alt="정 (Jung) — 교감의 마스터 일러스트 2" loading="lazy"></div>
+            <div class="gallery-item"><img class="gallery-img" src="images/jung03.jpg" alt="정 (Jung) — 하트 위버 페어리 타운 일러스트 3" loading="lazy"></div>
+            <div class="gallery-item"><img class="gallery-img" src="images/jung04.jpg" alt="정 (Jung) — 순수의 활 일러스트 4" loading="lazy"></div>
+            <div class="gallery-item"><img class="gallery-img" src="images/jung05.jpg" alt="정 (Jung) — 테이밍 능력 일러스트 5" loading="lazy"></div>
+            <div class="gallery-item"><img class="gallery-img" src="images/jung06.jpg" alt="정 (Jung) — 요정 교감 일러스트 6" loading="lazy"></div>
+            <div class="gallery-item"><img class="gallery-img" src="images/jung07.jpg" alt="정 (Jung) — 어둠 치유 일러스트 7" loading="lazy"></div>
+            <div class="gallery-item"><img class="gallery-img" src="images/jung08.png" alt="정 (Jung) — 율과 Sister Squad 일러스트 8" loading="lazy"></div>
+            <div class="gallery-item"><img class="gallery-img" src="images/jung09.jpg" alt="정 (Jung) — 동물 교감 일러스트 9" loading="lazy"></div>
+            <div class="gallery-item"><img class="gallery-img" src="images/jung10.jpg" alt="정 (Jung) — 페어리 타운 모험 일러스트 10" loading="lazy"></div>
+            <div class="gallery-item"><img class="gallery-img" src="images/jung11.jpg" alt="정 (Jung) — 요정 언어 일러스트 11" loading="lazy"></div>
+            <div class="gallery-item"><img class="gallery-img" src="images/jung12.jpg" alt="정 (Jung) — Sister Squad 일러스트 12" loading="lazy"></div>
+            <div class="gallery-item"><img class="gallery-img" src="images/jung13.jpg" alt="정 (Jung) — Chris LEE.PAPA 원작 일러스트 13" loading="lazy"></div>
         </div>
 
         <!-- ── SEO 캐릭터 심화 블록 ── -->
@@ -176,14 +176,8 @@
                 <!-- 성격 분석 -->
                 <div style="margin-bottom:28px; padding-bottom:24px; border-bottom:1px solid rgba(255,255,255,0.06);">
                     <h3 style="font-family:'Cinzel',serif; color:#e8d08a; font-size:0.88rem; letter-spacing:1.5px; margin-bottom:14px;">💗 PERSONALITY — F형 마음의 마법사</h3>
-                    <p style="color:#c0bcb4; font-size:0.92rem; line-height:2.1;">
-                        정은 전형적인 <strong style="color:#ffb6c1;">F(감정형)</strong> 캐릭터입니다.
-                        논리보다 감정을, 분석보다 공감을 먼저 선택하는 소녀.
-                        언니 율이 "왜?"를 묻는다면, 정은 "어떤 기분이야?"를 묻습니다.<br><br>
-                        겁이 많고 낯선 것에 쉽게 울음을 터뜨리지만,
-                        그 순수한 두려움이 오히려 세상 모든 존재의 마음을 여는 <strong style="color:#ffb6c1;">열쇠</strong>가 됩니다.
-                        어둠의 군주가 지배하는 페어리 타운에서 가장 많은 생명을 구한 것은
-                        강력한 마법이 아니라 정의 <strong style="color:#e8d08a;">진심 어린 한마디</strong>였습니다.
+                    <p style="color:#c0bcb4; font-size:0.92rem; line-height:1.9; word-break:keep-all; text-align:left;">
+                        정은 전형적인 <strong style="color:#ffb6c1;">F(감정형)</strong> 캐릭터입니다. 논리보다 감정을, 분석보다 공감을 먼저 선택하는 소녀. 언니 율이 "왜?"를 묻는다면, 정은 "어떤 기분이야?"를 묻습니다. 겁이 많고 낯선 것에 쉽게 울음을 터뜨리지만, 그 순수한 두려움이 오히려 세상 모든 존재의 마음을 여는 <strong style="color:#ffb6c1;">열쇠</strong>가 됩니다. 어둠의 군주가 지배하는 페어리 타운에서 가장 많은 생명을 구한 것은 강력한 마법이 아니라 정의 <strong style="color:#e8d08a;">진심 어린 한마디</strong>였습니다.
                     </p>
                 </div>
 
@@ -209,13 +203,8 @@
                 <!-- 관계 -->
                 <div style="margin-bottom:28px; padding-bottom:24px; border-bottom:1px solid rgba(255,255,255,0.06);">
                     <h3 style="font-family:'Cinzel',serif; color:#e8d08a; font-size:0.88rem; letter-spacing:1.5px; margin-bottom:14px;">💫 RELATIONSHIP — 율(Yul)과의 관계</h3>
-                    <p style="color:#c0bcb4; font-size:0.92rem; line-height:2.1;">
-                        정에게 언니 율은 동경과 안도의 존재입니다.
-                        차갑고 무뚝뚝해 보이는 언니지만, 항상 앞에서 싸우고 자신을 지켜준다는 걸 누구보다 잘 압니다.
-                        반면 율은 처음에 동생이 짐이 된다고 느꼈지만,
-                        정이 불가능한 상황을 <strong style="color:#ffb6c1;">공감 하나로 해결</strong>하는 장면들을 보며 인식이 바뀝니다.
-                        두 자매는 서로 다르기 때문에 완전합니다.
-                        이성과 감성, 힘과 치유 — 율과 정이 함께일 때 페어리 타운은 희망을 가집니다.
+                    <p style="color:#c0bcb4; font-size:0.92rem; line-height:1.9; word-break:keep-all; text-align:left;">
+                        정에게 언니 율은 동경과 안도의 존재입니다. 차갑고 무뚝뚝해 보이는 언니지만, 항상 앞에서 싸우고 자신을 지켜준다는 걸 누구보다 잘 압니다. 반면 율은 처음에 동생이 짐이 된다고 느꼈지만, 정이 불가능한 상황을 <strong style="color:#ffb6c1;">공감 하나로 해결</strong>하는 장면들을 보며 인식이 바뀝니다. 두 자매는 서로 다르기 때문에 완전합니다. 이성과 감성, 힘과 치유 — 율과 정이 함께일 때 페어리 타운은 희망을 가집니다.
                     </p>
                 </div>
 
@@ -335,8 +324,8 @@
 
             document.querySelectorAll('.gallery-item').forEach(item => {
                 item.addEventListener('click', () => {
-                    const bgImage = window.getComputedStyle(item.querySelector('.gallery-img')).backgroundImage;
-                    modalImg.src = bgImage.replace(/(url\(|\)|"|')/g, '');
+                    const img = item.querySelector('.gallery-img');
+                    modalImg.src = img ? img.src : '';
                     galleryModal.classList.add('show');
                 });
             });

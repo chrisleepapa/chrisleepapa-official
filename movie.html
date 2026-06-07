@@ -404,29 +404,10 @@
         }
 
         function renderCarousel() {
-            const lang = (typeof window.getCurrentLang === 'function') ? window.getCurrentLang() : 'ko';
-            const carouselList = document.getElementById('carousel-list');
-            if (!carouselList) return;
-            carouselList.textContent = '';
-            videoData.forEach((v, i) => {
-                const card = document.createElement('div');
-                card.className = `thumbnail-card${i === activeVideoIndex ? ' active' : ''}`;
-                card.onclick = () => loadMainVideo(i);
-
-                const thumb = document.createElement('div');
-                thumb.className = 'thumb-img';
-                thumb.style.backgroundImage = `url('https://img.youtube.com/vi/${v.id}/hqdefault.jpg')`;
-
-                const overlay = document.createElement('div');
-                overlay.className = 'thumb-overlay';
-
-                const title = document.createElement('span');
-                title.className = 'thumb-title';
-                title.textContent = v[`title_${lang}`];
-
-                overlay.appendChild(title);
-                card.append(thumb, overlay);
-                carouselList.appendChild(card);
+            // HTML에 직접 렌더링된 카드의 active 클래스만 업데이트 (SEO용 HTML 유지)
+            const cards = document.querySelectorAll('#carousel-list .thumbnail-card');
+            cards.forEach((card, i) => {
+                card.classList.toggle('active', i === activeVideoIndex);
             });
         }
 

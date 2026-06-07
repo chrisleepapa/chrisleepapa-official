@@ -164,11 +164,11 @@
             transition: transform 0.6s cubic-bezier(0.2, 0, 0.2, 1);
         }
 
-        .bg-bluemarble   { background-image: url('images/bluemarblegame.png'); }
-        .bg-booktop      { background-image: url('images/booktop.png'); }
-        .bg-dynamicomok  { background-image: url('images/dynamicomok.png'); }
-        .bg-magiccurling { background-image: url('images/magiccurling.png'); }
-        .bg-tetris       { background-image: url('images/tetris.png'); }
+        .bg-bluemarble {}
+        .bg-booktop {}
+        .bg-dynamicomok {}
+        .bg-magiccurling {}
+        .bg-tetris {}
 
         .game-card-image-mode .card-overlay {
             position: absolute;
@@ -247,72 +247,79 @@
     <canvas id="stars-canvas"></canvas>
 
     <main class="game-selection-wrapper">
-        <span class="section-heading-tag" data-i18n="game_tag">✦   GAME CENTER   ✦</span>
-        <h2 class="section-heading-title" data-i18n="game_title">Choose Your Game</h2>
+        <span class="section-heading-tag">✦   GAME CENTER   ✦</span>
+        <h2 class="section-heading-title">Choose Your Game</h2>
 
         <!-- ── SEO 정적 소개 블록 ── -->
         <div style="max-width:860px; margin:0 auto 48px; padding:0 20px; text-align:center;">
-            <p style="color:#a0a0b5; font-size:0.95rem; line-height:2; letter-spacing:0.3px;">
-                <strong style="color:#e8d08a;">Chris LEE.PAPA Game Center</strong>는 아빠가 두 딸
-                <strong style="color:#c9a84c;">율이와 정이</strong>를 위해 직접 기획하고 개발한
-                <strong style="color:#e8d08a;">5가지 무료 온라인 미니게임</strong> 모음입니다.<br>
-                전략 보드게임부터 오목, 컬링, 테트리스, 물리 퍼즐까지 — 온 가족이 함께 즐길 수 있는 게임들을 만나보세요.
+            <p style="color:#a0a0b5; font-size:0.95rem; line-height:1.9; letter-spacing:0.3px; word-break:keep-all; text-align:center;">
+                <strong style="color:#e8d08a;">Chris LEE.PAPA Game Center</strong>는 아빠가 두 딸 <strong style="color:#c9a84c;">율이와 정이</strong>를 위해 직접 기획하고 개발한 <strong style="color:#e8d08a;">5가지 무료 온라인 미니게임</strong> 모음입니다. 전략 보드게임부터 오목, 컬링, 테트리스, 물리 퍼즐까지 — 온 가족이 함께 즐길 수 있는 게임들을 만나보세요.
             </p>
         </div>
 
         <div class="game-cards">
             <!-- Game 1 -->
             <a href="game.html" class="game-card game-card-image-mode">
-                <div class="card-image-bg bg-bluemarble"></div>
+                <div class="card-image-bg bg-bluemarble">
+                    <img src="images/bluemarblegame.png" alt="부르마블 게임 — Chris LEE.PAPA 우주 테마 전략 보드게임" loading="lazy">
+                </div>
                 <div class="card-overlay"></div>
-                <div class="game-tag tag-blue-marble" data-i18n="board_tag">Board Game</div>
+                <div class="game-tag tag-blue-marble">Board Game</div>
                 <div class="game-card-content-wrap">
-                    <h3 class="game-card-title" data-i18n="board_title">부르마블 게임</h3>
-                    <p class="game-card-desc" data-i18n="board_desc">주사위를 굴려 우주와 아카이브의 세계를 여행하는 전략 보드게임입니다. 부동산을 매입하고 통행료를 받으며 상대를 파산시키는 부르마블 방식의 보드게임. 2~4인 멀티플레이 지원. 당신만의 기록을 개척하세요.</p>
+                    <h3 class="game-card-title">부르마블 게임</h3>
+                    <p class="game-card-desc" style="word-break:keep-all;">주사위를 굴려 우주와 아카이브의 세계를 여행하는 전략 보드게임입니다. 부동산을 매입하고 통행료를 받으며 상대를 파산시키는 부르마블 방식의 보드게임. 2~4인 멀티플레이 지원. 당신만의 기록을 개척하세요.</p>
                 </div>
             </a>
 
             <!-- Game 2 -->
             <a href="booktop.html" class="game-card game-card-image-mode">
-                <div class="card-image-bg bg-booktop"></div>
+                <div class="card-image-bg bg-booktop">
+                    <img src="images/booktop.png" alt="책 쌓기 마스터 — Chris LEE.PAPA 물리 퍼즐 게임" loading="lazy">
+                </div>
                 <div class="card-overlay"></div>
-                <div class="game-tag tag-maze" data-i18n="physics_tag">Physics</div>
+                <div class="game-tag tag-maze">Physics</div>
                 <div class="game-card-content-wrap">
-                    <h3 class="game-card-title" data-i18n="book_title">책 쌓기 마스터</h3>
-                    <p class="game-card-desc" data-i18n="book_desc">아빠의 서재에서 중력과 균형의 법칙에 도전하세요. 조심스럽게 책을 떨어뜨려 가장 높이 쌓아 올리는 마스터가 되어보세요! 물리 엔진 기반의 책 쌓기 퍼즐로, 기울기와 무게중심을 계산해 최고 기록에 도전하는 1인용 캐주얼 게임입니다.</p>
+                    <h3 class="game-card-title">책 쌓기 마스터</h3>
+                    <p class="game-card-desc" style="word-break:keep-all;">아빠의 서재에서 중력과 균형의 법칙에 도전하세요. 조심스럽게 책을 떨어뜨려 가장 높이 쌓아 올리는 마스터가 되어보세요! 물리 엔진 기반의 책 쌓기 퍼즐로, 기울기와 무게중심을 계산해 최고 기록에 도전하는 1인용 캐주얼 게임입니다.</p>
                 </div>
             </a>
 
             <!-- Game 3 -->
             <a href="fiveinrow.html" class="game-card game-card-image-mode">
-                <div class="card-image-bg bg-dynamicomok"></div>
+                <div class="card-image-bg bg-dynamicomok">
+                    <img src="images/dynamicomok.png" alt="Dynamic Omok — Chris LEE.PAPA 전략 오목 게임" loading="lazy">
+                </div>
                 <div class="card-overlay"></div>
-                <div class="game-tag tag-omok" data-i18n="omok_tag">Strategy</div>
+                <div class="game-tag tag-omok">Strategy</div>
                 <div class="game-card-content-wrap">
-                    <h3 class="game-card-title" data-i18n="omok_title">Dynamic Omok</h3>
-                    <p class="game-card-desc" data-i18n="omok_desc">부제 five in a row. 캐릭터를 선택하고 제한시간 안에 다섯 돌을 이어 승리를 쟁취하는 다이내믹 오목 대전입니다. 2인 대전 및 AI와의 1인 플레이 지원. 타이머 압박 속에서 수읽기와 순발력을 동시에 겨루는 전략 오목 게임입니다.</p>
+                    <h3 class="game-card-title">Dynamic Omok</h3>
+                    <p class="game-card-desc" style="word-break:keep-all;">부제 five in a row. 캐릭터를 선택하고 제한시간 안에 다섯 돌을 이어 승리를 쟁취하는 다이내믹 오목 대전입니다. 2인 대전 및 AI와의 1인 플레이 지원. 타이머 압박 속에서 수읽기와 순발력을 동시에 겨루는 전략 오목 게임입니다.</p>
                 </div>
             </a>
 
             <!-- Game 4 -->
             <a href="curling.html" class="game-card game-card-image-mode">
-                <div class="card-image-bg bg-magiccurling"></div>
+                <div class="card-image-bg bg-magiccurling">
+                    <img src="images/magiccurling.png" alt="매직 컬링 — Chris LEE.PAPA 판타지 마법 컬링 게임" loading="lazy">
+                </div>
                 <div class="card-overlay"></div>
-                <div class="game-tag tag-omok" data-i18n="curling_tag">Sports / Magic</div>
+                <div class="game-tag tag-omok">Sports / Magic</div>
                 <div class="game-card-content-wrap">
-                    <h3 class="game-card-title" data-i18n="curling_title">매직 컬링</h3>
-                    <p class="game-card-desc" data-i18n="curling_desc">빛과 어둠의 진영을 선택하고 마법 스킬을 활용하여 승리를 쟁취하는 판타지 마법 컬링 대전입니다. 스톤을 투구해 하우스 중앙에 가장 가까이 배치하는 전략 컬링 룰에 마법 스킬 시스템을 결합한 2인 대전 게임입니다.</p>
+                    <h3 class="game-card-title">매직 컬링</h3>
+                    <p class="game-card-desc" style="word-break:keep-all;">빛과 어둠의 진영을 선택하고 마법 스킬을 활용하여 승리를 쟁취하는 판타지 마법 컬링 대전입니다. 스톤을 투구해 하우스 중앙에 가장 가까이 배치하는 전략 컬링 룰에 마법 스킬 시스템을 결합한 2인 대전 게임입니다.</p>
                 </div>
             </a>
 
             <!-- Game 5 -->
             <a href="tetris.html" class="game-card game-card-image-mode">
-                <div class="card-image-bg bg-tetris"></div>
+                <div class="card-image-bg bg-tetris">
+                    <img src="images/tetris.png" alt="독수리의 테트리스 — Chris LEE.PAPA 네온 아케이드 테트리스 게임" loading="lazy">
+                </div>
                 <div class="card-overlay"></div>
-                <div class="game-tag tag-tetris" data-i18n="tetris_tag">Arcade / Puzzle</div>
+                <div class="game-tag tag-tetris">Arcade / Puzzle</div>
                 <div class="game-card-content-wrap">
-                    <h3 class="game-card-title" data-i18n="tetris_title">독수리의 테트리스</h3>
-                    <p class="game-card-desc" data-i18n="tetris_desc">클래식의 귀환! 네온 불빛 아래에서 블록을 쌓고 라인을 클리어하며 최고의 기록에 도전하는 퍼즐 게임입니다. T·S·Z·I·O·L·J 7가지 테트로미노를 회전·이동시켜 가로 라인을 완성하세요. 레벨이 올라갈수록 블록 낙하 속도가 빨라지는 정통 아케이드 테트리스입니다.</p>
+                    <h3 class="game-card-title">독수리의 테트리스</h3>
+                    <p class="game-card-desc" style="word-break:keep-all;">클래식의 귀환! 네온 불빛 아래에서 블록을 쌓고 라인을 클리어하며 최고의 기록에 도전하는 퍼즐 게임입니다. T·S·Z·I·O·L·J 7가지 테트로미노를 회전·이동시켜 가로 라인을 완성하세요. 레벨이 올라갈수록 블록 낙하 속도가 빨라지는 정통 아케이드 테트리스입니다.</p>
                 </div>
             </a>
         </div>

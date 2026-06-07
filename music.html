@@ -144,7 +144,7 @@
         .track-item { display: flex; align-items: center; gap: 15px; padding: 15px; border-radius: 16px; cursor: pointer; transition: all 0.3s; border: 1px solid transparent; margin-bottom: 12px; }
         .track-item:hover { background: rgba(255, 255, 255, 0.03); }
         .track-item.active { background: rgba(29, 185, 84, 0.08); border-color: rgba(29, 185, 84, 0.2); }
-        .track-thumb { width: 55px; height: 55px; border-radius: 10px; background-size: cover; background-position: center; flex-shrink: 0; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        .track-thumb { width: 55px; height: 55px; border-radius: 10px; object-fit: cover; flex-shrink: 0; box-shadow: 0 5px 15px rgba(0,0,0,0.5); display: block; }
         .track-details h4 { font-size: 1rem; color: #ffffff; margin-bottom: 4px; font-weight: 500; }
         .track-details p { font-size: 0.8rem; color: #8a8a9d; }
 
@@ -198,7 +198,32 @@
 
         <aside class="playlist-sidebar">
             <div class="playlist-header" data-i18n="playlist_title">TRACKLIST</div>
-            <div id="playlist-container"></div>
+            <div id="playlist-container">
+                <div class="track-item active" onclick="loadTrack(0,this,false)">
+                    <img class="track-thumb" src="images/music.jpg" alt="To Rise — 연주곡 앨범" loading="lazy" style="width:55px;height:55px;border-radius:10px;object-fit:cover;flex-shrink:0;">
+                    <div class="track-details"><h4>To Rise</h4><p>연주곡</p></div>
+                </div>
+                <div class="track-item" onclick="loadTrack(1,this,false)">
+                    <img class="track-thumb" src="images/music.jpg" alt="2026 앨범 — 정규 앨범" loading="lazy" style="width:55px;height:55px;border-radius:10px;object-fit:cover;flex-shrink:0;">
+                    <div class="track-details"><h4>2026 앨범</h4><p>정규 앨범</p></div>
+                </div>
+                <div class="track-item" onclick="loadTrack(2,this,false)">
+                    <img class="track-thumb" src="images/music.jpg" alt="벽력일섬 — 정규 앨범" loading="lazy" style="width:55px;height:55px;border-radius:10px;object-fit:cover;flex-shrink:0;">
+                    <div class="track-details"><h4>벽력일섬</h4><p>정규 앨범</p></div>
+                </div>
+                <div class="track-item" onclick="loadTrack(3,this,false)">
+                    <img class="track-thumb" src="images/music.jpg" alt="영역전개 — 정규 앨범" loading="lazy" style="width:55px;height:55px;border-radius:10px;object-fit:cover;flex-shrink:0;">
+                    <div class="track-details"><h4>영역전개</h4><p>정규 앨범</p></div>
+                </div>
+                <div class="track-item" onclick="loadTrack(4,this,false)">
+                    <img class="track-thumb" src="images/music.jpg" alt="사랑한다고 — 보컬 트랙" loading="lazy" style="width:55px;height:55px;border-radius:10px;object-fit:cover;flex-shrink:0;">
+                    <div class="track-details"><h4>사랑한다고</h4><p>보컬 트랙</p></div>
+                </div>
+                <div class="track-item" onclick="loadTrack(5,this,false)">
+                    <img class="track-thumb" src="images/music.jpg" alt="We own the Cup — 정규 앨범" loading="lazy" style="width:55px;height:55px;border-radius:10px;object-fit:cover;flex-shrink:0;">
+                    <div class="track-details"><h4>We own the Cup</h4><p>정규 앨범</p></div>
+                </div>
+            </div>
         </aside>
     </main>
 
@@ -207,11 +232,8 @@
         <div style="border:1px solid rgba(201,168,76,0.15); border-radius:20px; padding:36px 40px; background:rgba(10,10,18,0.7);">
             <h2 style="font-family:'Cinzel',serif; color:#c9a84c; font-size:1.05rem; letter-spacing:2px; margin-bottom:8px;">✦ &nbsp; MUSIC ARCHIVE</h2>
             <p style="color:#888; font-size:0.82rem; letter-spacing:1px; margin-bottom:24px; font-family:'Cinzel',serif;">CHRIS LEE.PAPA · SPOTIFY ARTIST</p>
-            <p style="color:#c8c4bc; font-size:0.93rem; line-height:2.1; margin-bottom:32px;">
-                <strong style="color:#e8d08a;">Chris LEE.PAPA</strong>는 AI 음악 프로덕션 툴 <strong style="color:#c9a84c;">Suno AI</strong>를 활용하여
-                인스트루멘탈, 팝, 찬양 장르를 넘나드는 창작 음악을 제작하는 독립 음악 프로듀서입니다.
-                <strong style="color:#e8d08a;">DistroKid</strong>을 통해 전 세계 음원 플랫폼에 배포하며,
-                Spotify, Apple Music, YouTube Music에서 전곡을 감상할 수 있습니다.
+            <p style="color:#c8c4bc; font-size:0.93rem; line-height:1.9; margin-bottom:32px; word-break:keep-all; text-align:left;">
+                <strong style="color:#e8d08a;">Chris LEE.PAPA</strong>는 AI 음악 프로덕션 툴 <strong style="color:#c9a84c;">Suno AI</strong>를 활용하여 인스트루멘탈, 팝, 찬양 장르를 넘나드는 창작 음악을 제작하는 독립 음악 프로듀서입니다. <strong style="color:#e8d08a;">DistroKid</strong>을 통해 전 세계 음원 플랫폼에 배포하며, Spotify, Apple Music, YouTube Music에서 전곡을 감상할 수 있습니다.
             </p>
 
             <h3 style="font-family:'Cinzel',serif; color:#c9a84c; font-size:0.85rem; letter-spacing:2px; margin-bottom:18px;">✦ &nbsp; ALBUMS & TRACKLIST</h3>
@@ -394,24 +416,9 @@
         }
 
         function renderPlaylist() {
-            if (!playlistContainer) return;
-            const lang = window.getCurrentLang ? window.getCurrentLang() : 'ko';
-            playlistContainer.innerHTML = '';
-            musicData.forEach((track, index) => {
-                const item = document.createElement('div');
-                item.className = `track-item ${index === activeTrackIndex ? 'active' : ''}`;
-                const displayTitle = track[`title_${lang}`];
-                const displayType  = track[`type_${lang}`];
-                item.innerHTML = `
-                    <div class="track-thumb" style="background-image: url('${escapeCssUrl(track.cover)}');"></div>
-                    <div class="track-details">
-                        <h4>${escapeHtml(displayTitle)}</h4>
-                        <p>${escapeHtml(displayType)}</p>
-                    </div>
-                `;
-                item.addEventListener('click', () => loadTrack(index, item, false));
-                playlistContainer.appendChild(item);
-            });
+            // HTML에 직접 렌더링된 트랙 목록 유지 — active 클래스만 토글
+            const items = document.querySelectorAll('#playlist-container .track-item');
+            items.forEach((el, i) => el.classList.toggle('active', i === activeTrackIndex));
         }
 
         function updateActiveTrackDisplay() {
@@ -444,6 +451,12 @@
             if (mainCover) mainCover.style.backgroundImage = `url('${escapeCssUrl(track.cover)}')`;
             const phBg = document.getElementById('placeholder-bg');
             if (phBg) phBg.style.backgroundImage = `url('${escapeCssUrl(track.cover)}')`;
+            // 트랙 썸네일 img src 업데이트
+            const items = document.querySelectorAll('#playlist-container .track-item');
+            items.forEach((el, i) => {
+                const img = el.querySelector('.track-thumb');
+                if (img && musicData[i]) img.src = musicData[i].cover;
+            });
             updateActiveTrackDisplay();
             if (!isInit) {
                 if (!isIframeInjected) {

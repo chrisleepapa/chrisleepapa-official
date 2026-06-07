@@ -86,7 +86,8 @@
         .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px 100px; position: relative; z-index: 10; }
         .hero-card.sistersquad { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 180, 200, 0.2); border-radius: 24px; padding: 60px 40px; text-align: center; margin-bottom: 60px; backdrop-filter: blur(10px); transition: transform 0.4s ease, border-color 0.4s, box-shadow 0.4s; animation: fadeUp 1s ease 0.2s both; cursor: pointer; }
         .hero-card.sistersquad:hover { transform: translateY(-8px); border-color: rgba(255, 180, 200, 0.5); box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 40px var(--pink-glow); }
-        .card-image-box { width: 100%; max-width: 500px; height: 300px; margin: 0 auto 35px; border-radius: 16px; background-image: url('images/book.png'); background-size: cover; background-position: center; box-shadow: 0 15px 35px rgba(0,0,0,0.5); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .card-image-box { width: 100%; max-width: 500px; height: 300px; margin: 0 auto 35px; border-radius: 16px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.5); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .card-image-box img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
         .sister-title { font-family: 'Cinzel', serif; font-size: clamp(2rem, 6vw, 3.2rem); font-weight: 700; color: #ffb4c8; margin-bottom: 20px; letter-spacing: 2px; text-shadow: 0 0 15px var(--pink-glow); }
         .desc-text { font-size: 1.1rem; color: #cdd6f4; max-width: 750px; margin: 0 auto 35px; line-height: 1.8; font-weight: 300; word-break: keep-all; }
         .action-btn { display: inline-block; padding: 12px 45px; background: transparent; color: #fff; border: 1px solid #ffb4c8; border-radius: 30px; font-weight: 600; font-size: 0.95rem; transition: 0.3s; letter-spacing: 1px; text-transform: uppercase; }
@@ -94,7 +95,8 @@
 
         .teaser-card { background: rgba(255, 255, 255, 0.01); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 50px 40px; display: flex; flex-direction: column; align-items: center; gap: 30px; backdrop-filter: blur(5px); animation: fadeUp 1s ease 0.4s both; text-align: center; }
         .teaser-img-wrap { position: relative; width: 100%; border-radius: 12px; overflow: hidden; }
-        .teaser-img { width: 100%; height: 320px; border-radius: 12px; background-image: url('images/miracleshot1.png'); background-size: cover; background-position: center; opacity: 0.8; filter: contrast(1.1); box-shadow: 0 10px 20px rgba(0,0,0,0.4); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .teaser-img { width: 100%; height: 320px; border-radius: 12px; overflow: hidden; opacity: 0.8; filter: contrast(1.1); box-shadow: 0 10px 20px rgba(0,0,0,0.4); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .teaser-img img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
         @keyframes pulseGlow { 0% { box-shadow: 0 0 0 0 rgba(74, 144, 226, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(74, 144, 226, 0); } 100% { box-shadow: 0 0 0 0 rgba(74, 144, 226, 0); } }
         .teaser-coming-soon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(74, 144, 226, 0.85); color: #fff; padding: 12px 36px; border-radius: 30px; font-family: 'Cinzel', serif; font-size: 1rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,0.25); white-space: nowrap; animation: pulseGlow 2s infinite; }
         .teaser-content { width: 100%; }
@@ -127,20 +129,20 @@
 
     <div class="container">
         <section class="hero-card sistersquad" role="link" tabindex="0" onclick="safeNavigate('sistersquad.html')" onkeydown="handleCardKey(event, 'sistersquad.html')">
-            <div class="card-image-box"></div>
+            <div class="card-image-box"><img src="images/book.png" alt="Sister Squad 판타지 소설 — Chris LEE.PAPA 원작 두 자매 판타지 모험 책 표지"></div>
             <h2 class="sister-title" data-i18n="sister_title">SISTER SQUAD</h2>
-            <p class="desc-text" data-i18n="sister_desc">책 속 마법 세계로 들어간 언니와 동생!<br>어둠에 맞서며 진정한 용기와<br>가족의 사랑을 깨닫는 환상적인 모험.<br>사랑하는 두 딸 율이와 정이에게서 영감을 받아<br>탄생한 따뜻한 판타지 소설입니다.</p>
+            <p class="desc-text" style="word-break:keep-all;">책 속 마법 세계로 들어간 언니와 동생! 어둠에 맞서며 진정한 용기와 가족의 사랑을 깨닫는 환상적인 모험. 사랑하는 두 딸 율이와 정이에게서 영감을 받아 탄생한 따뜻한 판타지 소설입니다.</p>
             <a href="sistersquad.html" class="action-btn" onclick="event.stopPropagation()" data-i18n="btn_readmore">Read More</a>
         </section>
 
         <section class="teaser-card">
             <div class="teaser-img-wrap">
-                <div class="teaser-img"></div>
+                <div class="teaser-img"><img src="images/miracleshot1.png" alt="Miracle Shot 풋살 판타지 소설 — Chris LEE.PAPA 원작 스포츠 성장 소설 커버" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
                 <span class="teaser-coming-soon" data-i18n="teaser_badge">COMING SOON</span>
             </div>
             <div class="teaser-content">
                 <h2 class="teaser-title" data-i18n="teaser_title">Miracle Shot</h2>
-                <p class="teaser-desc" data-i18n="teaser_desc">개성이 넘치는 아이들과 함께 실패에서<br>기적을 쏘아 올리는 이코치의 이야기.<br>최강 골레이로 '영', 불꽃슈터 '황'<br> 슈퍼소닉 '길', 패스마스터 '고'<br>네 소년의 환상의 풋살 판타지를 만나세요.</p>
+                <p class="teaser-desc" style="word-break:keep-all;">개성이 넘치는 아이들과 함께 실패에서 기적을 쏘아 올리는 이코치의 이야기. 최강 골레이로 '영', 불꽃슈터 '황', 슈퍼소닉 '길', 패스마스터 '고' — 네 소년의 환상의 풋살 판타지를 만나세요.</p>
             </div>
         </section>
     </div>
@@ -153,15 +155,11 @@
             <!-- Sister Squad -->
             <div style="margin-bottom:36px; padding-bottom:32px; border-bottom:1px solid rgba(255,255,255,0.06);">
                 <h3 style="font-family:'Cinzel',serif; color:#e8d08a; font-size:1rem; letter-spacing:1.5px; margin-bottom:14px;">SISTER SQUAD — 시스터스쿼드</h3>
-                <p style="color:#c0bcb4; font-size:0.92rem; line-height:2; margin-bottom:14px;">
-                    <strong style="color:#e8d08a;">Sister Squad</strong>는 크리스리파파의 두 딸,
-                    <strong style="color:#c9a84c;">율이</strong>와 <strong style="color:#c9a84c;">정이</strong>를 모티프로 탄생한
-                    오리지널 판타지 IP입니다. 평범한 자매가 오래된 책을 펼치는 순간 마법 세계로 빨려 들어가며 이야기가 시작됩니다.
+                <p style="color:#c0bcb4; font-size:0.92rem; line-height:1.9; margin-bottom:14px; word-break:keep-all; text-align:left;">
+                    <strong style="color:#e8d08a;">Sister Squad</strong>는 크리스리파파의 두 딸, <strong style="color:#c9a84c;">율이</strong>와 <strong style="color:#c9a84c;">정이</strong>를 모티프로 탄생한 오리지널 판타지 IP입니다. 평범한 자매가 오래된 책을 펼치는 순간 마법 세계로 빨려 들어가며 이야기가 시작됩니다.
                 </p>
-                <p style="color:#c0bcb4; font-size:0.92rem; line-height:2; margin-bottom:14px;">
-                    빛과 어둠이 공존하는 <strong style="color:#e8d08a;">페어리 타운(Fairy Town)</strong>에서 두 자매는
-                    마법사, 용사, 정령술사 등 개성 넘치는 동료들과 함께 어둠의 군주에 맞서 싸웁니다.
-                    싸움의 끝에서 그들이 깨닫는 것은 용기가 힘이 아니라 <strong style="color:#c9a84c;">사랑에서 온다</strong>는 진실입니다.
+                <p style="color:#c0bcb4; font-size:0.92rem; line-height:1.9; margin-bottom:14px; word-break:keep-all; text-align:left;">
+                    빛과 어둠이 공존하는 <strong style="color:#e8d08a;">페어리 타운(Fairy Town)</strong>에서 두 자매는 마법사, 용사, 정령술사 등 개성 넘치는 동료들과 함께 어둠의 군주에 맞서 싸웁니다. 싸움의 끝에서 그들이 깨닫는 것은 용기가 힘이 아니라 <strong style="color:#c9a84c;">사랑에서 온다</strong>는 진실입니다.
                 </p>
                 <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; margin-top:16px;">
                     <div style="background:rgba(201,168,76,0.07); border-radius:10px; padding:12px 14px;">
@@ -186,15 +184,11 @@
             <!-- Miracle Shot -->
             <div>
                 <h3 style="font-family:'Cinzel',serif; color:#e8d08a; font-size:1rem; letter-spacing:1.5px; margin-bottom:14px;">MIRACLE SHOT — 미라클 샷 <span style="font-size:0.75rem; color:#c9a84c; background:rgba(201,168,76,0.12); border-radius:20px; padding:3px 10px; margin-left:8px; letter-spacing:1px;">COMING SOON</span></h3>
-                <p style="color:#c0bcb4; font-size:0.92rem; line-height:2; margin-bottom:14px;">
-                    <strong style="color:#e8d08a;">Miracle Shot</strong>은 풋살을 통해 성장하는 네 소년과 그들을 이끄는 이코치의 이야기입니다.
-                    실패와 좌절 속에서도 포기하지 않는 아이들이 기적 같은 한 발을 쏘아 올리는
-                    <strong style="color:#c9a84c;">스포츠 판타지 소설</strong>입니다.
+                <p style="color:#c0bcb4; font-size:0.92rem; line-height:1.9; margin-bottom:14px; word-break:keep-all; text-align:left;">
+                    <strong style="color:#e8d08a;">Miracle Shot</strong>은 풋살을 통해 성장하는 네 소년과 그들을 이끄는 이코치의 이야기입니다. 실패와 좌절 속에서도 포기하지 않는 아이들이 기적 같은 한 발을 쏘아 올리는 <strong style="color:#c9a84c;">스포츠 판타지 소설</strong>입니다.
                 </p>
-                <p style="color:#c0bcb4; font-size:0.92rem; line-height:2; margin-bottom:14px;">
-                    최강 골키퍼 <strong style="color:#e8d08a;">'영'</strong>, 불꽃 같은 슈팅의 <strong style="color:#e8d08a;">'황'</strong>,
-                    압도적인 스피드의 <strong style="color:#e8d08a;">'길'</strong>, 탁월한 패스 감각의 <strong style="color:#e8d08a;">'고'</strong>.
-                    네 소년은 각자의 상처를 안고 필드에 서지만, 함께할 때 비로소 진짜 팀이 됩니다.
+                <p style="color:#c0bcb4; font-size:0.92rem; line-height:1.9; margin-bottom:14px; word-break:keep-all; text-align:left;">
+                    최강 골키퍼 <strong style="color:#e8d08a;">'영'</strong>, 불꽃 같은 슈팅의 <strong style="color:#e8d08a;">'황'</strong>, 압도적인 스피드의 <strong style="color:#e8d08a;">'길'</strong>, 탁월한 패스 감각의 <strong style="color:#e8d08a;">'고'</strong>. 네 소년은 각자의 상처를 안고 필드에 서지만, 함께할 때 비로소 진짜 팀이 됩니다.
                 </p>
                 <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; margin-top:16px;">
                     <div style="background:rgba(201,168,76,0.07); border-radius:10px; padding:12px 14px;">

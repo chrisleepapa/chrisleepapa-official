@@ -42,7 +42,9 @@ const BASE_I18N = {
         share_sns:   'SNS SHARE',
         share_close: 'Close',
 
-        footer_text: '© 2026 Chris LEE.PAPA — The Creative Archive',
+        footer_text: '© 2026 Chris LEE.PAPA — The Creative Archive. All rights reserved.',
+        footer_privacy: '개인정보처리방침',
+        footer_terms:   '이용약관',
 
         toast_copy:  '링크가 복사되었습니다 ✓',
         toast_error: '지원하지 않는 브라우저입니다.',
@@ -62,7 +64,9 @@ const BASE_I18N = {
         share_sns:   'SNS SHARE',
         share_close: 'Close',
 
-        footer_text: '© 2026 Chris LEE.PAPA — The Creative Archive',
+        footer_text: '© 2026 Chris LEE.PAPA — The Creative Archive. All rights reserved.',
+        footer_privacy: 'Privacy Policy',
+        footer_terms:   'Terms of Use',
 
         toast_copy:  'Link copied ✓',
         toast_error: 'Sharing is not supported in this browser.',

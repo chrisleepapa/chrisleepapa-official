@@ -103,6 +103,7 @@
         .char-card:hover { transform: translateY(-12px); border-color: var(--pink-accent); box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 25px var(--pink-glow); }
         .char-img-area { width: 100%; height: 350px; background-size: cover; background-position: center; transition: 0.6s ease; }
         .char-card:hover .char-img-area { transform: scale(1.05); }
+        .char-card:hover .char-img-area img { transform: scale(1.05); }
         .char-content { padding: 40px 30px; position: relative; }
         .char-tag { font-size: 0.7rem; color: var(--pink-accent); border: 1px solid var(--pink-accent); padding: 3px 14px; border-radius: 20px; margin-bottom: 15px; display: inline-block; text-transform: uppercase; letter-spacing: 1px; }
         .char-name { font-family: 'Cinzel', serif; font-size: 1.8rem; font-weight: 700; color: #fff; margin-bottom: 0; transition: margin 0.5s ease; }
@@ -176,25 +177,29 @@
 
         <section class="synopsis-section">
             <span class="section-label" data-i18n="story_label">THE STORY</span>
-            <p class="synopsis-text" data-i18n="story_desc">어느 날 갑자기 펼쳐진 신비로운 책 속의 세계.<br>이성적이고 용감한 <b>T 언니 '율'</b>과 <br>따뜻하고  공감 능력이 뛰어난 <b>F 동생 '정'</b>은<br>우연히 환상적인 모험을 시작합니다.<br><br>어둠의 그림자가 덮쳐오는 위기의 순간마다,<br>서로 다른 성격의 두 자매는 서로를 채워주며<br><b>가족의 사랑과 진정한 용기</b>를 깨달아갑니다.</p>
+            <p class="synopsis-text" style="word-break:keep-all;">어느 날 갑자기 펼쳐진 신비로운 책 속의 세계. 이성적이고 용감한 <b>T 언니 '율'</b>과 따뜻하고 공감 능력이 뛰어난 <b>F 동생 '정'</b>은 우연히 환상적인 모험을 시작합니다. 어둠의 그림자가 덮쳐오는 위기의 순간마다, 서로 다른 성격의 두 자매는 서로를 채워주며 <b>가족의 사랑과 진정한 용기</b>를 깨달아갑니다.</p>
         </section>
 
         <h2 class="section-title" data-i18n="char_sec_title">Character Introduction</h2>
         <div class="character-grid">
             <a href="yul.html" class="char-card">
-                <div class="char-img-area" style="background-image: url('images/yul01.png');"></div>
+                <div class="char-img-area" style="overflow:hidden;">
+                    <img src="images/yul01.png" alt="율 (Yul) — Sister Squad The Brave Leader 캐릭터" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;transition:0.6s ease;">
+                </div>
                 <div class="char-content">
-                    <span class="char-tag" data-i18n="char_yul_tag">The Brave Leader</span>
-                    <h3 class="char-name" data-i18n="char_yul_name">Yul (율)</h3>
-                    <p class="char-desc" data-i18n="char_yul_desc">냉철한 이성과 분석력을 가진 11세 소녀 율이<br>동생을 지키기 위해 강력한 염력의 힘을 각성시킵니다.</p>
+                    <span class="char-tag">The Brave Leader</span>
+                    <h3 class="char-name">Yul (율)</h3>
+                    <p class="char-desc" style="word-break:keep-all;">냉철한 이성과 분석력을 가진 11세 소녀 율이 동생을 지키기 위해 강력한 염력의 힘을 각성시킵니다.</p>
                 </div>
             </a>
             <a href="jung.html" class="char-card">
-                <div class="char-img-area" style="background-image: url('images/jung01.png');"></div>
+                <div class="char-img-area" style="overflow:hidden;">
+                    <img src="images/jung01.png" alt="정 (Jung) — Sister Squad The Heart Weaver 캐릭터" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;transition:0.6s ease;">
+                </div>
                 <div class="char-content">
-                    <span class="char-tag" data-i18n="char_jung_tag">The Heart Weaver</span>
-                    <h3 class="char-name" data-i18n="char_jung_name">Jung (정)</h3>
-                    <p class="char-desc" data-i18n="char_jung_desc">풍부한 감성과 따뜻한 마음을 가진 7세 동생 정이<br>살아 숨 쉬는 모든 것과 교감하며 기적을 만들어냅니다.</p>
+                    <span class="char-tag">The Heart Weaver</span>
+                    <h3 class="char-name">Jung (정)</h3>
+                    <p class="char-desc" style="word-break:keep-all;">풍부한 감성과 따뜻한 마음을 가진 7세 동생 정이 살아 숨 쉬는 모든 것과 교감하며 기적을 만들어냅니다.</p>
                 </div>
             </a>
         </div>
@@ -208,7 +213,7 @@
                     <h3 class="album-title">EP.01 Main</h3><span class="album-type">OST</span>
                 </div>
                 <div class="spotify-container-album">
-                    <button type="button" class="player-placeholder" onclick="injectIframe(this, 'https://www.youtube.com/embed/videoseries?list=OLAK5uy_mqee5T3VeR_PxTavxgLXm1HDpm40_VRZU')" aria-label="Play EP.01 Main on YouTube">
+                    <button type="button" class="player-placeholder" onclick="injectIframe(this, 'https://www.youtube.com/embed/videoseries?list=OLAK5uy_mqee5T3VeR_PxTavxgLXm1HDpm40_VRZU')" aria-label="Sister Squad OST EP.01 Main — YouTube 재생" title="Sister Squad OST EP.01 Main 재생">
                         <div class="placeholder-bg" style="background-image: url('images/sister01.png');"></div>
                         <div class="placeholder-content">
                             <div class="play-btn-circle">▶</div>
@@ -282,15 +287,8 @@
                 <!-- 스토리 상세 -->
                 <div style="margin-bottom:28px; padding-bottom:24px; border-bottom:1px solid rgba(255,255,255,0.06);">
                     <h3 style="font-family:'Cinzel',serif; color:#e8d08a; font-size:0.88rem; letter-spacing:1.5px; margin-bottom:14px;">📖 THE STORY</h3>
-                    <p style="color:#c0bcb4; font-size:0.92rem; line-height:2.1;">
-                        어느 날, 오래된 마법 책이 열리는 순간 두 자매의 세계가 바뀝니다.
-                        <strong style="color:#e8d08a;">T 언니 율(11세)</strong>은 냉철한 이성과 분석력으로 위기를 헤쳐나가고,
-                        <strong style="color:#e8d08a;">F 동생 정(7세)</strong>은 따뜻한 공감 능력으로 모든 생명과 교감합니다.
-                        서로 정반대의 성격을 가진 두 자매는 어둠의 군주가 지배하는
-                        <strong style="color:#c9a84c;">페어리 타운(Fairy Town)</strong>에서 마법사, 용사, 정령술사 동료들과 함께
-                        세상을 구하는 여정을 떠납니다.<br><br>
-                        싸움의 끝에서 그들이 깨닫는 것 — 진정한 용기는 힘이 아니라
-                        <strong style="color:#e8d08a;">가족의 사랑</strong>에서 온다는 것입니다.
+                    <p style="color:#c0bcb4; font-size:0.92rem; line-height:1.9; word-break:keep-all; text-align:left;">
+                        어느 날, 오래된 마법 책이 열리는 순간 두 자매의 세계가 바뀝니다. <strong style="color:#e8d08a;">T 언니 율(11세)</strong>은 냉철한 이성과 분석력으로 위기를 헤쳐나가고, <strong style="color:#e8d08a;">F 동생 정(7세)</strong>은 따뜻한 공감 능력으로 모든 생명과 교감합니다. 서로 정반대의 성격을 가진 두 자매는 어둠의 군주가 지배하는 <strong style="color:#c9a84c;">페어리 타운(Fairy Town)</strong>에서 마법사, 용사, 정령술사 동료들과 함께 세상을 구하는 여정을 떠납니다. 싸움의 끝에서 그들이 깨닫는 것 — 진정한 용기는 힘이 아니라 <strong style="color:#e8d08a;">가족의 사랑</strong>에서 온다는 것입니다.
                     </p>
                 </div>
 
@@ -337,13 +335,8 @@
                 <!-- 작가 소개 -->
                 <div style="background:rgba(201,168,76,0.05); border-radius:14px; padding:22px 26px;">
                     <h3 style="font-family:'Cinzel',serif; color:#c9a84c; font-size:0.85rem; letter-spacing:2px; margin-bottom:12px;">✦ &nbsp; ABOUT THE AUTHOR</h3>
-                    <p style="color:#a0a0b5; font-size:0.88rem; line-height:2;">
-                        <strong style="color:#e8d08a;">Chris LEE.PAPA</strong>는 두 딸 <strong style="color:#c9a84c;">율이와 정이</strong>를 모티프로
-                        Sister Squad 오리지널 IP를 창작했습니다.
-                        교회 어린이 사역 찬양 인도 경험을 바탕으로 어린이와 가족을 위한 콘텐츠를 제작하며,
-                        AI 기술을 활용해 소설·OST·컬러링북·게임까지 하나의 세계관을 구축하고 있습니다.
-                        Sister Squad는 단순한 판타지 소설을 넘어,
-                        아이들에게 <strong style="color:#e8d08a;">용기와 사랑의 가치</strong>를 전하는 이야기입니다.
+                    <p style="color:#a0a0b5; font-size:0.88rem; line-height:1.9; word-break:keep-all; text-align:left;">
+                        <strong style="color:#e8d08a;">Chris LEE.PAPA</strong>는 두 딸 <strong style="color:#c9a84c;">율이와 정이</strong>를 모티프로 Sister Squad 오리지널 IP를 창작했습니다. 교회 어린이 사역 경험을 바탕으로 어린이와 가족을 위한 콘텐츠를 제작하며, AI 기술을 활용해 소설·OST·컬러링북·게임까지 하나의 세계관을 구축하고 있습니다. Sister Squad는 단순한 판타지 소설을 넘어, 아이들에게 <strong style="color:#e8d08a;">용기와 사랑의 가치</strong>를 전하는 이야기입니다.
                     </p>
                 </div>
             </div>

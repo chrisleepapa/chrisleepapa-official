@@ -533,7 +533,7 @@
         .card-game { border-color: rgba(0,230,120,0.2); }
         .card-game:hover { box-shadow: 0 20px 50px rgba(0,230,120,0.35), 0 0 20px rgba(0,230,120,0.15); border-color: rgba(0,230,120,0.6); transform: translateY(-5px); }
         .card-game:hover .card-label { color: #4fffb0; text-shadow: 0 0 16px rgba(0,230,120,0.5); }
-        .card-game .card-bg { background-image: url('images/game.png'); background-color: #041a0e; }
+        .card-game .card-bg { background-color: #041a0e; }
         .card-game .card-badge { background: rgba(0,80,40,0.55); border: 1px solid rgba(0,230,120,0.45); color: #4fffb0; }
         .card-game .card-meta-dot { background: rgba(0,230,120,0.7); }
         .card-game .preview-tag { background: rgba(0,200,100,0.13); border: 1px solid rgba(0,200,100,0.3); color: #4fffb0; }
@@ -556,7 +556,7 @@
         .card-guestbook {
             border-color: rgba(255,210,100,0.15);
         }
-        .card-guestbook .card-bg { background-image: url('images/guest.png'); background-color: #0e0b02; }
+        .card-guestbook .card-bg { background-color: #0e0b02; }
         .card-guestbook:hover {
             box-shadow: 0 20px 50px rgba(255,200,50,0.22), 0 0 20px rgba(255,200,50,0.1);
             border-color: rgba(255,210,100,0.5);
@@ -595,16 +595,18 @@
         }
         .card-guestbook:hover::before { opacity: 1; }
 
-        .card-bg { position: absolute; inset: 0; z-index: 1; background-size: cover; background-position: center; filter: brightness(0.45) contrast(1.1) saturate(0.9); transition: transform 0.7s cubic-bezier(0.2,0,0.2,1), filter 0.6s; }
-        .card-bible .card-bg  { background-image: url('images/bible.png');   background-color: #211a0c; transform-origin: center right; transform: scale(1.3); filter: brightness(0.65) contrast(1.05); }
-        .card.card-bible:hover .card-bg { transform: scale(1.35); filter: brightness(0.8) contrast(1.05); }
-        .card-worship .card-bg { background-image: url('images/worship.png'); background-color: #311; }
-        .card-book .card-bg    { background-image: url('images/book.png');    background-color: #422; }
-        .card-music .card-bg   { background-image: url('images/music.jpg');   background-color: #123; }
-        .card-movie .card-bg   { background-image: url('images/movie.png');   background-color: #331; }
-        .card-about .card-bg   { background-image: url('images/chris01.png'); background-color: #222; }
-        .card-contact .card-bg { background-image: url('images/chris02.png'); background-color: #134; }
-        .card:hover .card-bg   { transform: scale(1.07); filter: brightness(0.65) contrast(1.05) saturate(1.05); }
+        .card-bg { position: absolute; inset: 0; z-index: 1; overflow: hidden; }
+        .card-bg img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; filter: brightness(0.45) contrast(1.1) saturate(0.9); transition: transform 0.7s cubic-bezier(0.2,0,0.2,1), filter 0.6s; }
+        .card-bible .card-bg  { background-color: #211a0c; transform-origin: center right; }
+        .card-bible .card-bg img { transform: scale(1.3); filter: brightness(0.65) contrast(1.05); }
+        .card.card-bible:hover .card-bg img { transform: scale(1.35); filter: brightness(0.8) contrast(1.05); }
+        .card-worship .card-bg { background-color: #311; }
+        .card-book .card-bg    { background-color: #422; }
+        .card-music .card-bg   { background-color: #123; }
+        .card-movie .card-bg   { background-color: #331; }
+        .card-about .card-bg   { background-color: #222; }
+        .card-contact .card-bg { background-color: #134; }
+        .card:hover .card-bg img { transform: scale(1.07); filter: brightness(0.65) contrast(1.05) saturate(1.05); }
 
         .card::after { content: ''; position: absolute; inset: 0; z-index: 4; background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.03) 50%, transparent 60%); transform: translateX(-100%); transition: transform 0.6s ease; }
         .card:hover::after { transform: translateX(100%); }
@@ -632,7 +634,7 @@
         .card-contact .card-meta-dot { background: rgba(74,144,226,0.7); }
         .card-meta-text { font-family: 'Pretendard', sans-serif; font-size: 0.75rem; color: rgba(200,196,190,0.6); letter-spacing: 0.5px; }
 
-        .card-sub { font-size: 0.82rem; color: rgba(180,176,168,0.7); margin-bottom: 6px; transition: color 0.3s; }
+        .card-sub { font-size: 0.82rem; color: rgba(180,176,168,0.7); margin-bottom: 6px; transition: color 0.3s; word-break: keep-all; }
         .card:hover .card-sub { color: rgba(220,216,208,0.85); }
         .card-label { font-family: 'Cinzel', serif; font-size: 2.2rem; font-weight: 700; letter-spacing: 0.1em; color: #ffffff; transition: color 0.3s, text-shadow 0.3s; }
 
@@ -810,15 +812,15 @@
                     <div class="note-story-col">
                         <div class="story-chapter">
                             <div class="story-chapter-label">Chapter 01 &nbsp;·&nbsp; 만남</div>
-                            <p data-i18n="note_desc1">이곳은 상상력으로 빚어낸 이야기들과 제 삶의 중심이 되는 신앙이 함께 공존하는 공간입니다.<br>몇개월 전부터 AI와 기술을 통해 새로운 세계과 만나고 아름다운 창작물들을 만들고 있습니다.</p>
+                            <p style="word-break:keep-all;">이곳은 상상력으로 빚어낸 이야기들과 제 삶의 중심이 되는 신앙이 함께 공존하는 공간입니다. 몇 달 전부터 AI와 기술을 통해 새로운 세계와 만나고 아름다운 창작물들을 만들고 있습니다.</p>
                         </div>
                         <div class="story-chapter">
                             <div class="story-chapter-label">Chapter 02 &nbsp;·&nbsp; 고백</div>
-                            <p><strong data-i18n="note_desc2">어두운 시간 속에서 하늘의 무수히 많은 별빛을 보게 해주시고<br>다시 일어날 용기를 주신 주님께 모든 영광을 올립니다.</strong></p>
+                            <p style="word-break:keep-all;"><strong>어두운 시간 속에서 하늘의 무수히 많은 별빛을 보게 해주시고, 다시 일어날 용기를 주신 주님께 모든 영광을 올립니다.</strong></p>
                         </div>
                         <div class="story-chapter">
                             <div class="story-chapter-label">Chapter 03 &nbsp;·&nbsp; 초대</div>
-                            <p data-i18n="note_desc3">저의 열정과 진실한 고백이 담긴 이 곳에 오신 것을 환영합니다.<br>여러분의 삶 속에서 시련을 만나고 넘어지고 쓰러져도<br>포기하지 않고 다시 일어날 수 있는 <strong>용기와 기적이 가득하길 기도합니다.</strong></p>
+                            <p style="word-break:keep-all;">저의 열정과 진실한 고백이 담긴 이곳에 오신 것을 환영합니다. 여러분의 삶 속에서 시련을 만나고 넘어지고 쓰러져도, 포기하지 않고 다시 일어날 수 있는 <strong>용기와 기적이 가득하길 기도합니다.</strong></p>
                         </div>
                         <div class="story-signature">
                             <div class="story-signature-line"></div>
@@ -839,7 +841,7 @@
     <main class="portfolio-grid" aria-label="포트폴리오 카드 목록">
 
         <a class="card card-bible" href="bible" aria-label="성경 말씀 페이지로 이동">
-            <div class="card-bg" role="img" aria-label="성경 배경 이미지"></div>
+            <div class="card-bg" role="img" aria-label="성경 배경 이미지"><img src="images/bible.png" alt="Bible in my hand — 성경 일독 앱 Chris LEE.PAPA" loading="lazy"></div>
             <div class="card-badge" data-i18n="badge_bible">Holy Bible</div>
             <div class="card-arrow" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <div class="card-body">
@@ -849,13 +851,13 @@
                     <span class="preview-tag" data-i18n="prev_bible3">은혜</span>
                 </div>
                 <div class="card-meta"><div class="card-meta-dot"></div><span class="card-meta-text" data-i18n="meta_bible">Bible · Daily · Grace</span></div>
-                <p class="card-sub" data-i18n="card_bible_sub">나를 살리는 생명의 말씀</p>
-                <h2 class="card-label" data-i18n="card_bible_title">BIBLE</h2>
+                <p class="card-sub">나를 살리는 생명의 말씀</p>
+                <h2 class="card-label">BIBLE</h2>
             </div>
         </a>
 
         <a class="card card-worship" href="worship" aria-label="찬양 앨범 페이지로 이동">
-            <div class="card-bg" role="img" aria-label="찬양 배경 이미지"></div>
+            <div class="card-bg" role="img" aria-label="찬양 배경 이미지"><img src="images/worship.png" alt="Worship — 나의 찬양 Vol.1 Vol.2 CCM 앨범 Chris LEE.PAPA" loading="lazy"></div>
             <div class="card-badge" data-i18n="badge_worship">2 Albums</div>
             <div class="card-arrow" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <div class="card-body">
@@ -865,13 +867,13 @@
                     <span class="preview-tag" data-i18n="prev_worship3">6 Tracks</span>
                 </div>
                 <div class="card-meta"><div class="card-meta-dot"></div><span class="card-meta-text" data-i18n="meta_worship">Vocal · Instrumental · Spotify</span></div>
-                <p class="card-sub" data-i18n="card_worship_sub">영혼 깊은 곳에서 올려드리는 고백</p>
-                <h2 class="card-label" data-i18n="card_worship_title">WORSHIP</h2>
+                <p class="card-sub">영혼 깊은 곳에서 올려드리는 고백</p>
+                <h2 class="card-label">WORSHIP</h2>
             </div>
         </a>
 
         <a class="card card-book" href="book" aria-label="도서 페이지로 이동">
-            <div class="card-bg" role="img" aria-label="도서 배경 이미지"></div>
+            <div class="card-bg" role="img" aria-label="도서 배경 이미지"><img src="images/book.png" alt="Book — Sister Squad 판타지 소설 Chris LEE.PAPA" loading="lazy"></div>
             <div class="card-badge" data-i18n="badge_book">SISTER SQUAD</div>
             <div class="card-arrow" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <div class="card-body">
@@ -881,13 +883,13 @@
                     <span class="preview-tag" data-i18n="prev_book3">시 · 에세이</span>
                 </div>
                 <div class="card-meta"><div class="card-meta-dot"></div><span class="card-meta-text" data-i18n="meta_book">Fiction · Illustration · Poetry</span></div>
-                <p class="card-sub" data-i18n="card_book_sub">상상이 종이에 그려진 순간 일어나는 기적</p>
-                <h2 class="card-label" data-i18n="card_book_title">BOOK</h2>
+                <p class="card-sub">상상이 종이에 그려진 순간 일어나는 기적</p>
+                <h2 class="card-label">BOOK</h2>
             </div>
         </a>
 
         <a class="card card-music" href="music" aria-label="음악 페이지로 이동">
-            <div class="card-bg" role="img" aria-label="음악 배경 이미지"></div>
+            <div class="card-bg" role="img" aria-label="음악 배경 이미지"><img src="images/music.jpg" alt="Music — To Rise AI 음악 Spotify Chris LEE.PAPA" loading="lazy"></div>
             <div class="card-badge" data-i18n="badge_music">New Release</div>
             <div class="card-arrow" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <div class="card-body">
@@ -897,13 +899,13 @@
                     <span class="preview-tag" data-i18n="prev_music3">On Spotify</span>
                 </div>
                 <div class="card-meta"><div class="card-meta-dot"></div><span class="card-meta-text" data-i18n="meta_music">AI · Suno · Electronic · Ambient</span></div>
-                <p class="card-sub" data-i18n="card_music_sub">AI가 만들어낸 선율, 영혼을 울리는 멜로디</p>
-                <h2 class="card-label" data-i18n="card_music_title">MUSIC</h2>
+                <p class="card-sub">AI가 만들어낸 선율, 영혼을 울리는 멜로디</p>
+                <h2 class="card-label">MUSIC</h2>
             </div>
         </a>
 
         <a class="card card-movie" href="movie" aria-label="영화 페이지로 이동">
-            <div class="card-bg" role="img" aria-label="영화 배경 이미지"></div>
+            <div class="card-bg" role="img" aria-label="영화 배경 이미지"><img src="images/movie.png" alt="Movie Archive — AI 뮤직비디오 단편영화 Chris LEE.PAPA" loading="lazy"></div>
             <div class="card-badge" data-i18n="badge_movie">AI Film</div>
             <div class="card-arrow" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <div class="card-body">
@@ -913,13 +915,13 @@
                     <span class="preview-tag" data-i18n="prev_movie3">영상</span>
                 </div>
                 <div class="card-meta"><div class="card-meta-dot"></div><span class="card-meta-text" data-i18n="meta_movie">AI Cinematic</span></div>
-                <p class="card-sub" data-i18n="card_movie_sub">프레임에 담긴 무한한 세계</p>
-                <h2 class="card-label" data-i18n="card_movie_title">MOVIE</h2>
+                <p class="card-sub">프레임에 담긴 무한한 세계</p>
+                <h2 class="card-label">MOVIE</h2>
             </div>
         </a>
 
         <a class="card card-game" href="gameinfo" aria-label="게임 페이지로 이동">
-            <div class="card-bg" role="img" aria-label="게임 배경 이미지"></div>
+            <div class="card-bg" role="img" aria-label="게임 배경 이미지"><img src="images/game.png" alt="Game Center — 미니게임 Sister Squad 아케이드 Chris LEE.PAPA" loading="lazy"></div>
             <div class="card-badge" data-i18n="badge_game">Play Now</div>
             <div class="card-arrow" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <div class="card-body">
@@ -929,13 +931,13 @@
                     <span class="preview-tag" data-i18n="prev_game3">아케이드</span>
                 </div>
                 <div class="card-meta"><div class="card-meta-dot"></div><span class="card-meta-text" data-i18n="meta_game">Mini Game · Arcade · Fun</span></div>
-                <p class="card-sub" data-i18n="card_game_sub">율이와 정이의 신나는 모험</p>
-                <h2 class="card-label" data-i18n="card_game_title">GAME</h2>
+                <p class="card-sub">율이와 정이의 신나는 모험</p>
+                <h2 class="card-label">GAME</h2>
             </div>
         </a>
 
         <a class="card card-about" href="about" aria-label="크리에이터 소개 페이지로 이동">
-            <div class="card-bg" role="img" aria-label="크리에이터 배경 이미지"></div>
+            <div class="card-bg" role="img" aria-label="크리에이터 배경 이미지"><img src="images/chris01.png" alt="ABOUT — Chris LEE.PAPA" loading="lazy"></div>
             <div class="card-badge" data-i18n="badge_about">Creator</div>
             <div class="card-arrow" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <div class="card-body">
@@ -945,13 +947,13 @@
                     <span class="preview-tag" data-i18n="prev_about3">AI & Tech</span>
                 </div>
                 <div class="card-meta"><div class="card-meta-dot"></div><span class="card-meta-text" data-i18n="meta_about">Faith · Creativity · Story</span></div>
-                <p class="card-sub" data-i18n="card_about_sub">나를 살게 한 것, 그리고 내가 만들어가는 것</p>
-                <h2 class="card-label" data-i18n="card_about_title">ABOUT</h2>
+                <p class="card-sub">나를 살게 한 것, 그리고 내가 만들어가는 것</p>
+                <h2 class="card-label">ABOUT</h2>
             </div>
         </a>
 
         <a class="card card-contact" href="contact" aria-label="연락 페이지로 이동">
-            <div class="card-bg" role="img" aria-label="연락 배경 이미지"></div>
+            <div class="card-bg" role="img" aria-label="연락 배경 이미지"><img src="images/chris02.png" alt="CONTACT — Chris LEE.PAPA" loading="lazy"></div>
             <div class="card-badge" data-i18n="badge_contact">Open to Collab</div>
             <div class="card-arrow" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <div class="card-body">
@@ -961,14 +963,14 @@
                     <span class="preview-tag" data-i18n="prev_contact3">영감 나눔</span>
                 </div>
                 <div class="card-meta"><div class="card-meta-dot"></div><span class="card-meta-text" data-i18n="meta_contact">Collaboration · Inquiry · Connect</span></div>
-                <p class="card-sub" data-i18n="card_contact_sub">새로운 영감과 비즈니스 제안</p>
-                <h2 class="card-label" data-i18n="card_contact_title">CONTACT</h2>
+                <p class="card-sub">새로운 영감과 비즈니스 제안</p>
+                <h2 class="card-label">CONTACT</h2>
             </div>
         </a>
 
         <!-- ── GUESTBOOK 카드 (CONTACT 바로 다음) ── -->
         <a class="card card-guestbook" href="guestbook" aria-label="방명록 페이지로 이동">
-            <div class="card-bg" role="img" aria-label="방명록 배경 이미지"></div>
+            <div class="card-bg" role="img" aria-label="방명록 배경 이미지"><img src="images/guest.png" alt="Guestbook — Chris LEE.PAPA 방명록" loading="lazy"></div>
             <div class="card-badge" data-i18n="badge_guestbook">Guestbook</div>
             <div class="card-arrow" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <div class="card-body">
@@ -981,8 +983,8 @@
                     <div class="card-meta-dot"></div>
                     <span class="card-meta-text" data-i18n="meta_guestbook">Community · Archive · Together</span>
                 </div>
-                <p class="card-sub" data-i18n="card_guestbook_sub">당신의 발자국을 이곳에 남겨주세요</p>
-                <h2 class="card-label" data-i18n="card_guestbook_title">GUEST<wbr>BOOK</h2>
+                <p class="card-sub">당신의 발자국을 이곳에 남겨주세요</p>
+                <h2 class="card-label">GUESTBOOK</h2>
             </div>
         </a>
 
@@ -1001,9 +1003,9 @@
                 bible_tag:       '✦ &nbsp; Today\'s Bible Verse &nbsp; ✦',
                 note_tag:        '✦ &nbsp; Creator\'s Note &nbsp; ✦',
                 note_title:      '나를 살게 한 것, 그리고 내가 만들어가는 것',
-                note_desc1:      '이곳은 상상력으로 빚어낸 이야기들과 제 삶의 중심이 되는 신앙이 함께 공존하는 공간입니다.<br>몇개월 전부터 AI와 기술을 통해 새로운 세계과 만나고 아름다운 창작물들을 만들고 있습니다.',
-                note_desc2:      '어두운 시간 속에서 하늘의 무수히 많은 별빛을 보게 해주시고<br>다시 일어날 용기를 주신 주님께 모든 영광을 올립니다.',
-                note_desc3:      '저의 열정과 진실한 고백이 담긴 이 곳에 오신 것을 환영합니다.<br>여러분의 삶 속에서 시련을 만나고 넘어지고 쓰러져도<br>포기하지 않고 다시 일어날 수 있는 용기와 기적이 가득하길 기도합니다.',
+                note_desc1:      '이곳은 상상력으로 빚어낸 이야기들과 제 삶의 중심이 되는 신앙이 함께 공존하는 공간입니다. 몇 달 전부터 AI와 기술을 통해 새로운 세계와 만나고 아름다운 창작물들을 만들고 있습니다.',
+                note_desc2:      '어두운 시간 속에서 하늘의 무수히 많은 별빛을 보게 해주시고, 다시 일어날 용기를 주신 주님께 모든 영광을 올립니다.',
+                note_desc3:      '저의 열정과 진실한 고백이 담긴 이곳에 오신 것을 환영합니다. 여러분의 삶 속에서 시련을 만나고 넘어지고 쓰러져도, 포기하지 않고 다시 일어날 수 있는 용기와 기적이 가득하길 기도합니다.',
                 heading_tag:     '✦ &nbsp; Portfolio &nbsp; ✦',
                 heading_title:   'The Archive',
                 badge_bible:   'Holy Bible',  badge_worship: '2 Albums',      badge_book:    'SISTER SQUAD', badge_music:   'New Release',
@@ -1043,9 +1045,9 @@
                 bible_tag:       '✦ &nbsp; Today\'s Bible Verse &nbsp; ✦',
                 note_tag:        '✦ &nbsp; Creator\'s Note &nbsp; ✦',
                 note_title:      'What kept me alive, and what I am creating',
-                note_desc1:      'This is a space where stories shaped by imagination coexist with the faith that centers my life.<br>For the past few months, I have been encountering new worlds and creating beautiful works through AI and technology.',
-                note_desc2:      'I give all the glory to the Lord, who allowed me to see the countless stars in the dark times<br>and gave me the courage to rise again.',
-                note_desc3:      'Welcome to this place filled with my passion and sincere confessions.<br>I pray that even when you face trials, stumble, and fall in your life,<br>it will be filled with the courage and miracles to rise again without giving up.',
+                note_desc1:      'This is a space where stories shaped by imagination coexist with the faith that centers my life. For the past few months, I have been encountering new worlds and creating beautiful works through AI and technology.',
+                note_desc2:      'I give all the glory to the Lord, who allowed me to see the countless stars in the dark times, and gave me the courage to rise again.',
+                note_desc3:      'Welcome to this place filled with my passion and sincere confessions. I pray that even when you face trials, stumble, and fall in your life, it will be filled with the courage and miracles to rise again without giving up.',
                 heading_tag:     '✦ &nbsp; Portfolio &nbsp; ✦',
                 heading_title:   'The Archive',
                 badge_bible:   'Holy Bible',    badge_worship: '2 Albums',    badge_book:    'SISTER SQUAD', badge_music:   'New Release',

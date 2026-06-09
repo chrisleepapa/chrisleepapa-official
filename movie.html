@@ -124,7 +124,7 @@
         .shorts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 25px; }
         .shorts-link { position: relative; width: 100%; padding-bottom: 177.78%; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 30px rgba(0,0,0,0.6); transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease; border: 1px solid rgba(255,255,255,0.1); display: block; text-decoration: none; cursor: pointer; }
         .shorts-link:hover { transform: translateY(-10px) scale(1.02); border-color: #dc2626; box-shadow: 0 20px 40px rgba(220, 38, 38, 0.4); }
-        .shorts-thumb { position: absolute; inset: 0; background-size: cover; background-position: center; filter: brightness(0.8); transition: transform 0.6s ease, filter 0.4s ease; }
+        .shorts-thumb { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.8); transition: transform 0.6s ease, filter 0.4s ease; display: block; }
         .shorts-link:hover .shorts-thumb { filter: brightness(1.1); transform: scale(1.08); }
         .shorts-play-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.2); transition: 0.3s; }
         .shorts-play-overlay span { width: 50px; height: 50px; background: rgba(220, 38, 38, 0.85); backdrop-filter: blur(5px); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.2rem; border: none; transition: 0.3s; }
@@ -170,43 +170,62 @@
     </main>
 
     <section class="carousel-section">
-        <h3 class="carousel-heading" data-i18n="carousel_heading">UP NEXT</h3>
-        <div class="carousel-container" id="carousel-list"></div>
+        <h3 class="carousel-heading">UP NEXT</h3>
+        <div class="carousel-container" id="carousel-list">
+            <div class="thumbnail-card active" onclick="loadMainVideo(0)">
+                <img class="thumb-img" src="https://img.youtube.com/vi/kAkGg2t1Ats/hqdefault.jpg" alt="이게 AI 로 되네? 그냥 만들어본 뮤직비디오 FURIOUS — AI 뮤직비디오" loading="lazy" style="width:100%;height:158px;object-fit:cover;display:block;">
+                <div class="thumb-overlay">
+                    <span class="thumb-title">이게 AI 로 되네? 그냥 만들어본 뮤직비디오 'FURIOUS 💥'</span>
+                </div>
+            </div>
+            <div class="thumbnail-card" onclick="loadMainVideo(1)">
+                <img class="thumb-img" src="https://img.youtube.com/vi/byxLKvBHULk/hqdefault.jpg" alt="역대급 출연진 귀멸의칼날 실사 촬영 현장 — AI 시네마틱 영상" loading="lazy" style="width:100%;height:158px;object-fit:cover;display:block;">
+                <div class="thumb-overlay">
+                    <span class="thumb-title">역대급 출연진 귀칼 실사 촬영 현장 #귀멸의칼날</span>
+                </div>
+            </div>
+            <div class="thumbnail-card" onclick="loadMainVideo(2)">
+                <img class="thumb-img" src="https://img.youtube.com/vi/vlt7VfCA8bM/hqdefault.jpg" alt="사랑한다고 뮤직비디오 — Chris LEE.PAPA" loading="lazy" style="width:100%;height:158px;object-fit:cover;display:block;">
+                <div class="thumb-overlay">
+                    <span class="thumb-title">사랑한다고 뮤직비디오</span>
+                </div>
+            </div>
+        </div>
     </section>
 
     <section class="shorts-section">
         <h3 class="shorts-heading" data-i18n="shorts_heading">VERTICAL ARCHIVES</h3>
         <div class="shorts-grid">
-            <a href="https://www.youtube.com/shorts/gQ4Ip6cyr1U" target="_blank" rel="noopener" class="shorts-link">
-                <div class="shorts-thumb" style="background-image: url('https://img.youtube.com/vi/gQ4Ip6cyr1U/maxresdefault.jpg');"></div>
+            <a href="https://www.youtube.com/shorts/gQ4Ip6cyr1U" target="_blank" rel="noopener" class="shorts-link" aria-label="AI 생성 영상 쇼츠 1 — Chris LEE.PAPA YouTube Shorts">
+                <img class="shorts-thumb" src="https://img.youtube.com/vi/gQ4Ip6cyr1U/maxresdefault.jpg" alt="AI 생성 영상 쇼츠 1 — Chris LEE.PAPA YouTube Shorts" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.8);">
                 <div class="shorts-play-overlay"><span>▶</span></div>
             </a>
-            <a href="https://www.youtube.com/shorts/z-2LOBuWos8" target="_blank" rel="noopener" class="shorts-link">
-                <div class="shorts-thumb" style="background-image: url('https://img.youtube.com/vi/z-2LOBuWos8/maxresdefault.jpg');"></div>
+            <a href="https://www.youtube.com/shorts/z-2LOBuWos8" target="_blank" rel="noopener" class="shorts-link" aria-label="AI 생성 영상 쇼츠 2 — Chris LEE.PAPA YouTube Shorts">
+                <img class="shorts-thumb" src="https://img.youtube.com/vi/z-2LOBuWos8/maxresdefault.jpg" alt="AI 생성 영상 쇼츠 2 — Chris LEE.PAPA YouTube Shorts" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.8);">
                 <div class="shorts-play-overlay"><span>▶</span></div>
             </a>
-            <a href="https://www.youtube.com/shorts/pGibrT9Pp3I" target="_blank" rel="noopener" class="shorts-link">
-                <div class="shorts-thumb" style="background-image: url('https://img.youtube.com/vi/pGibrT9Pp3I/maxresdefault.jpg');"></div>
+            <a href="https://www.youtube.com/shorts/pGibrT9Pp3I" target="_blank" rel="noopener" class="shorts-link" aria-label="AI 생성 영상 쇼츠 3 — Chris LEE.PAPA YouTube Shorts">
+                <img class="shorts-thumb" src="https://img.youtube.com/vi/pGibrT9Pp3I/maxresdefault.jpg" alt="AI 생성 영상 쇼츠 3 — Chris LEE.PAPA YouTube Shorts" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.8);">
                 <div class="shorts-play-overlay"><span>▶</span></div>
             </a>
-            <a href="https://www.youtube.com/shorts/VXWdSOXGwKQ" target="_blank" rel="noopener" class="shorts-link">
-                <div class="shorts-thumb" style="background-image: url('https://img.youtube.com/vi/VXWdSOXGwKQ/maxresdefault.jpg');"></div>
+            <a href="https://www.youtube.com/shorts/VXWdSOXGwKQ" target="_blank" rel="noopener" class="shorts-link" aria-label="AI 생성 영상 쇼츠 4 — Chris LEE.PAPA YouTube Shorts">
+                <img class="shorts-thumb" src="https://img.youtube.com/vi/VXWdSOXGwKQ/maxresdefault.jpg" alt="AI 생성 영상 쇼츠 4 — Chris LEE.PAPA YouTube Shorts" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.8);">
                 <div class="shorts-play-overlay"><span>▶</span></div>
             </a>
-            <a href="https://www.youtube.com/shorts/XjSUJRduAzI" target="_blank" rel="noopener" class="shorts-link">
-                <div class="shorts-thumb" style="background-image: url('https://img.youtube.com/vi/XjSUJRduAzI/maxresdefault.jpg');"></div>
+            <a href="https://www.youtube.com/shorts/XjSUJRduAzI" target="_blank" rel="noopener" class="shorts-link" aria-label="AI 생성 영상 쇼츠 5 — Chris LEE.PAPA YouTube Shorts">
+                <img class="shorts-thumb" src="https://img.youtube.com/vi/XjSUJRduAzI/maxresdefault.jpg" alt="AI 생성 영상 쇼츠 5 — Chris LEE.PAPA YouTube Shorts" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.8);">
                 <div class="shorts-play-overlay"><span>▶</span></div>
             </a>
-            <a href="https://www.youtube.com/shorts/MYlAYewAdu4" target="_blank" rel="noopener" class="shorts-link">
-                <div class="shorts-thumb" style="background-image: url('https://img.youtube.com/vi/MYlAYewAdu4/maxresdefault.jpg');"></div>
+            <a href="https://www.youtube.com/shorts/MYlAYewAdu4" target="_blank" rel="noopener" class="shorts-link" aria-label="AI 생성 영상 쇼츠 6 — Chris LEE.PAPA YouTube Shorts">
+                <img class="shorts-thumb" src="https://img.youtube.com/vi/MYlAYewAdu4/maxresdefault.jpg" alt="AI 생성 영상 쇼츠 6 — Chris LEE.PAPA YouTube Shorts" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.8);">
                 <div class="shorts-play-overlay"><span>▶</span></div>
             </a>
-            <a href="https://www.youtube.com/shorts/0d-rUizVukQ" target="_blank" rel="noopener" class="shorts-link">
-                <div class="shorts-thumb" style="background-image: url('https://img.youtube.com/vi/0d-rUizVukQ/maxresdefault.jpg');"></div>
+            <a href="https://www.youtube.com/shorts/0d-rUizVukQ" target="_blank" rel="noopener" class="shorts-link" aria-label="AI 생성 영상 쇼츠 7 — Chris LEE.PAPA YouTube Shorts">
+                <img class="shorts-thumb" src="https://img.youtube.com/vi/0d-rUizVukQ/maxresdefault.jpg" alt="AI 생성 영상 쇼츠 7 — Chris LEE.PAPA YouTube Shorts" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.8);">
                 <div class="shorts-play-overlay"><span>▶</span></div>
             </a>
-            <a href="https://www.youtube.com/shorts/tgR1Kq3fGWE" target="_blank" rel="noopener" class="shorts-link">
-                <div class="shorts-thumb" style="background-image: url('https://img.youtube.com/vi/tgR1Kq3fGWE/maxresdefault.jpg');"></div>
+            <a href="https://www.youtube.com/shorts/tgR1Kq3fGWE" target="_blank" rel="noopener" class="shorts-link" aria-label="AI 생성 영상 쇼츠 8 — Chris LEE.PAPA YouTube Shorts">
+                <img class="shorts-thumb" src="https://img.youtube.com/vi/tgR1Kq3fGWE/maxresdefault.jpg" alt="AI 생성 영상 쇼츠 8 — Chris LEE.PAPA YouTube Shorts" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.8);">
                 <div class="shorts-play-overlay"><span>▶</span></div>
             </a>
         </div>
@@ -217,11 +236,8 @@
         <div style="border:1px solid rgba(201,168,76,0.15); border-radius:20px; padding:36px 40px; background:rgba(10,10,18,0.7);">
             <h2 style="font-family:'Cinzel',serif; color:#c9a84c; font-size:1.05rem; letter-spacing:2px; margin-bottom:8px;">✦ &nbsp; MOVIE ARCHIVE</h2>
             <p style="color:#888; font-size:0.82rem; letter-spacing:1px; margin-bottom:24px; font-family:'Cinzel',serif;">CHRIS LEE.PAPA · YOUTUBE CHANNEL</p>
-            <p style="color:#c8c4bc; font-size:0.93rem; line-height:2.1; margin-bottom:32px;">
-                <strong style="color:#e8d08a;">Chris LEE.PAPA</strong>의 영상 아카이브입니다.
-                생성형 AI 비주얼과 Suno AI 음악을 결합한 <strong style="color:#c9a84c;">오리지널 뮤직비디오</strong>,
-                신앙과 예술이 만나는 <strong style="color:#c9a84c;">시네마틱 단편 영상</strong>, YouTube 쇼츠까지
-                모든 영상을 이 페이지에서 감상할 수 있습니다.
+            <p style="color:#c8c4bc; font-size:0.93rem; line-height:1.9; margin-bottom:32px; word-break:keep-all; text-align:left;">
+                <strong style="color:#e8d08a;">Chris LEE.PAPA</strong>의 영상 아카이브입니다. 생성형 AI 비주얼과 Suno AI 음악을 결합한 <strong style="color:#c9a84c;">오리지널 뮤직비디오</strong>, 신앙과 예술이 만나는 <strong style="color:#c9a84c;">시네마틱 단편 영상</strong>, YouTube 쇼츠까지 모든 영상을 이 페이지에서 감상할 수 있습니다.
             </p>
 
             <h3 style="font-family:'Cinzel',serif; color:#c9a84c; font-size:0.85rem; letter-spacing:2px; margin-bottom:18px;">✦ &nbsp; VIDEO LIST</h3>
@@ -257,14 +273,8 @@
 
             <div style="background:rgba(201,168,76,0.05); border-radius:14px; padding:24px 28px;">
                 <h3 style="font-family:'Cinzel',serif; color:#c9a84c; font-size:0.85rem; letter-spacing:2px; margin-bottom:14px;">✦ &nbsp; HOW IT'S MADE</h3>
-                <p style="color:#a0a0b5; font-size:0.88rem; line-height:2;">
-                    Chris LEE.PAPA의 모든 영상은 <strong style="color:#e8d08a;">생성형 AI 비주얼</strong>과
-                    <strong style="color:#e8d08a;">Suno AI 음악</strong>을 결합해 제작됩니다.
-                    스토리보드 기획부터 AI 이미지 생성, 영상 편집, 음악 믹싱까지
-                    Chris LEE.PAPA가 단독으로 프로듀싱하는 완전한 독립 창작물입니다.
-                    신앙, 판타지, 스포츠, 감성 등 다양한 장르를 넘나들며
-                    AI라는 새로운 언어로 이야기를 전합니다.
-                    모든 영상은 <strong style="color:#c9a84c;">YouTube 채널 @chrisleepapaofficial</strong>에서 무료로 감상할 수 있습니다.
+                <p style="color:#a0a0b5; font-size:0.88rem; line-height:1.9; word-break:keep-all; text-align:left;">
+                    Chris LEE.PAPA의 모든 영상은 <strong style="color:#e8d08a;">생성형 AI 비주얼</strong>과 <strong style="color:#e8d08a;">Suno AI 음악</strong>을 결합해 제작됩니다. 스토리보드 기획부터 AI 이미지 생성, 영상 편집, 음악 믹싱까지 Chris LEE.PAPA가 단독으로 프로듀싱하는 완전한 독립 창작물입니다. 신앙, 판타지, 스포츠, 감성 등 다양한 장르를 넘나들며 AI라는 새로운 언어로 이야기를 전합니다. 모든 영상은 <strong style="color:#c9a84c;">YouTube 채널 @chrisleepapaofficial</strong>에서 무료로 감상할 수 있습니다.
                 </p>
             </div>
         </div>
@@ -394,29 +404,10 @@
         }
 
         function renderCarousel() {
-            const lang = (typeof window.getCurrentLang === 'function') ? window.getCurrentLang() : 'ko';
-            const carouselList = document.getElementById('carousel-list');
-            if (!carouselList) return;
-            carouselList.textContent = '';
-            videoData.forEach((v, i) => {
-                const card = document.createElement('div');
-                card.className = `thumbnail-card${i === activeVideoIndex ? ' active' : ''}`;
-                card.onclick = () => loadMainVideo(i);
-
-                const thumb = document.createElement('div');
-                thumb.className = 'thumb-img';
-                thumb.style.backgroundImage = `url('https://img.youtube.com/vi/${v.id}/hqdefault.jpg')`;
-
-                const overlay = document.createElement('div');
-                overlay.className = 'thumb-overlay';
-
-                const title = document.createElement('span');
-                title.className = 'thumb-title';
-                title.textContent = v[`title_${lang}`];
-
-                overlay.appendChild(title);
-                card.append(thumb, overlay);
-                carouselList.appendChild(card);
+            // HTML에 직접 렌더링된 카드의 active 클래스만 업데이트 (SEO용 HTML 유지)
+            const cards = document.querySelectorAll('#carousel-list .thumbnail-card');
+            cards.forEach((card, i) => {
+                card.classList.toggle('active', i === activeVideoIndex);
             });
         }
 

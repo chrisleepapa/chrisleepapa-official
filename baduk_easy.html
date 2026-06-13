@@ -1,11 +1,23 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#030305">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#030305">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="images/favicon.png">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3207219520058740"
+     crossorigin="anonymous"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NBGELYQ4TZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-NBGELYQ4TZ');
+      gtag('config', 'GT-5MJDBTR2');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="description" content="바둑 EASY — Sister Squad와 함께 즐기는 무료 바둑 게임. Chris LEE.PAPA.">
 <meta property="og:title" content="바둑 EASY — Chris LEE.PAPA">
 <meta property="og:type" content="website">
@@ -250,8 +262,8 @@ header .htitle{font-family:'Cinzel',serif;font-size:14px;color:var(--gold);lette
 
 <script>
 /* ===== SUPABASE ===== */
-const SB_URL  = 'YOUR_SUPABASE_URL';
-const SB_ANON = 'YOUR_SUPABASE_ANON_KEY';
+const SB_URL  = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
+const SB_ANON = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
 const TABLE   = 'baduk_easy_ranking';
 let sb = null;
 try { sb = supabase.createClient(SB_URL, SB_ANON); } catch(e) {}
@@ -293,7 +305,7 @@ function chkStart(){document.getElementById('bstart').disabled=!(gIni.length===3
 /* ===== TOP 5 ===== */
 async function loadTop5(){
   const el=document.getElementById('top5-list');
-  if(!sb||SB_URL==='YOUR_SUPABASE_URL'){
+  if(!sb){
     el.innerHTML='<div class="no-data">🏆 첫 승리의 주인공이 되세요!</div>'; return;
   }
   try{
@@ -630,7 +642,7 @@ async function showResult(win,desc){
 /* ===== DB: upsert wins ===== */
 async function recordWin(){
   const msgEl=document.getElementById('reg-msg');
-  if(!sb||SB_URL==='YOUR_SUPABASE_URL'){
+  if(!sb){
     msgEl.innerHTML='<div class="reg-msg ok">🎉 승리! (DB 미연결)</div>'; return;
   }
   try{

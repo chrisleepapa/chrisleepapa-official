@@ -131,6 +131,7 @@ body::before {
   background: #0a0a12;
 }
 .album-card:nth-child(2) { animation-delay: 0.15s; }
+.album-card:nth-child(3) { animation-delay: 0.3s; }
 .album-card:hover {
   transform: translateY(-12px) scale(1.02);
   box-shadow: 0 40px 80px rgba(0,0,0,0.9), 0 0 40px rgba(201,168,76,0.15);
@@ -358,6 +359,52 @@ body::before {
 .spotify-embed-wrap.visible { display: block; }
 .spotify-embed-wrap iframe { width: 100%; border-radius: 14px; border: none; display: block; }
 
+/* ── 모달 트랙 리스트 (곡 선택 → 가사 이동) ── */
+.modal-track-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+.modal-track-list-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.25em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.modal-track-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  text-align: left;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 10px;
+  padding: 11px 16px;
+  cursor: pointer;
+  font-family: 'Pretendard', sans-serif;
+  color: #e8e2d4;
+  font-size: 0.92rem;
+  transition: all 0.25s;
+}
+.modal-track-item:hover {
+  border-color: rgba(201,168,76,0.4);
+  background: rgba(201,168,76,0.06);
+  transform: translateX(3px);
+}
+.modal-track-item .track-num {
+  margin-right: 0;
+}
+.modal-track-item .track-arrow {
+  margin-left: auto;
+  color: rgba(201,168,76,0.6);
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
 /* ── 가사 섹션 제목 ── */
 .lyrics-section-title {
   font-family: 'Cinzel', serif;
@@ -377,11 +424,15 @@ body::before {
   border-radius: 14px;
   margin-bottom: 10px;
   overflow: hidden;
-  transition: border-color 0.3s;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 .accordion-item:hover {
   border-color: rgba(201,168,76,0.25);
   background: rgba(255,255,255,0.04);
+}
+.accordion-item.jump-highlight {
+  border-color: rgba(201,168,76,0.7);
+  box-shadow: 0 0 0 3px rgba(201,168,76,0.15);
 }
 /* hidden checkbox — toggle 역할 */
 .accordion-toggle {
@@ -468,6 +519,14 @@ body::before {
   color: rgba(201,168,76,0.6);
   margin: 14px 0 4px;
 }
+.lyric-placeholder {
+  font-family: 'Pretendard', sans-serif;
+  font-size: 0.88rem;
+  color: rgba(200,196,188,0.5);
+  text-align: center;
+  font-style: italic;
+  padding: 10px 0;
+}
 
 @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -528,6 +587,18 @@ body::before {
         </div>
       </div>
     </div>
+    <div class="album-card" onclick="openModal('vol3')">
+      <img class="album-cover" src="images/vol3.jpg" alt="Shout 앨범 커버" loading="lazy" onerror="this.style.display='none'">
+      <div class="album-cover-overlay"></div>
+      <div class="album-info">
+        <span class="album-vol-badge">Vol. 3 · English Worship</span>
+        <div class="album-title" data-i18n="album3_title">Shout</div>
+        <div class="album-cta">
+          가사 &amp; 스트리밍
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- SEO 워십 소개 블록 -->
@@ -559,6 +630,18 @@ body::before {
         </div>
         <p style="color:#b0acaa; font-size:0.9rem; line-height:1.9; word-break:keep-all; text-align:left;">
           <strong style="color:#e8d08a;">나의 찬양 Vol. 2</strong>는 첫 번째 고백에서 한 걸음 더 나아간 성숙한 신앙의 이야기입니다. Vol. 1이 눈물과 회복의 기록이었다면, Vol. 2는 그 이후 감사와 헌신의 고백을 담고 있습니다. Spotify와 YouTube에서 감상할 수 있으며, 앨범 카드를 탭하면 페이지에서 바로 BGM으로 재생됩니다.
+        </p>
+      </div>
+      <div style="margin-bottom:32px; padding-bottom:28px; border-bottom:1px solid rgba(255,255,255,0.06);">
+        <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px;">
+          <div style="width:48px; height:48px; border-radius:12px; background:linear-gradient(135deg,rgba(30,60,120,0.3),rgba(201,168,76,0.2)); border:1px solid rgba(80,140,220,0.3); display:flex; align-items:center; justify-content:center; font-family:'Cinzel',serif; color:#8ec0f0; font-size:0.7rem; font-weight:700; text-align:center; line-height:1.3; flex-shrink:0;">Vol.<br>3</div>
+          <div>
+            <h3 style="font-family:'Cinzel',serif; color:#e8d08a; font-size:0.9rem; letter-spacing:1px; margin-bottom:4px; word-break:keep-all;">Shout<br><span style="font-size:0.78rem; opacity:0.8;">— English Worship</span></h3>
+            <p style="color:#888; font-size:0.78rem;">Spotify</p>
+          </div>
+        </div>
+        <p style="color:#b0acaa; font-size:0.9rem; line-height:1.9; word-break:keep-all; text-align:left;">
+          <strong style="color:#e8d08a;">Shout</strong>는 Chris LEE.PAPA의 첫 영어 워십 앨범입니다. 한국어로 올려드리던 고백을 넘어, 온 땅이 함께 외칠 수 있는 영어 찬양으로 확장한 기록입니다. Spotify에서 전곡을 감상할 수 있습니다.
         </p>
       </div>
       <div style="background:rgba(201,168,76,0.05); border-radius:14px; padding:24px 28px;">
@@ -1290,6 +1373,239 @@ body::before {
     </article>
   </section>
 
+  <!-- Vol.3 (Shout) 가사 전문 -->
+  <section style="max-width:900px; margin:0 auto 80px; padding:0 20px;">
+    <h2 style="font-family:'Cinzel',serif; color:#c9a84c; font-size:1rem; letter-spacing:3px; text-align:center; margin-bottom:12px;">
+      ✦ &nbsp; Shout — Full Lyrics &nbsp; ✦
+    </h2>
+    <p style="color:rgba(200,196,188,0.55); font-size:0.85rem; text-align:center; margin-bottom:32px;">
+      가사 준비 중입니다. 각 트랙의 영어 가사를 보내주시면 채워드릴게요.
+    </p>
+
+    <!-- 01. Shout -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v3t01">
+      <label class="accordion-label" for="v3t01">
+        <span><span class="track-num">01.</span>Shout</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-placeholder">가사를 준비 중입니다.</p>
+      </div>
+    </article>
+
+    <!-- 02. Oh what a day -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v3t02">
+      <label class="accordion-label" for="v3t02">
+        <span><span class="track-num">02.</span>Oh what a day</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-placeholder">가사를 준비 중입니다.</p>
+      </div>
+    </article>
+
+    <!-- 03. I will sing to You, Lord -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v3t03">
+      <label class="accordion-label" for="v3t03">
+        <span><span class="track-num">03.</span>I will sing to You, Lord</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-placeholder">가사를 준비 중입니다.</p>
+      </div>
+    </article>
+
+    <!-- 04. Love Has Called My Name -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v3t04">
+      <label class="accordion-label" for="v3t04">
+        <span><span class="track-num">04.</span>Love Has Called My Name</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-placeholder">가사를 준비 중입니다.</p>
+      </div>
+    </article>
+
+    <!-- 05. Parrhesia -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v3t05">
+      <label class="accordion-label" for="v3t05">
+        <span><span class="track-num">05.</span>Parrhesia</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-placeholder">가사를 준비 중입니다.</p>
+      </div>
+    </article>
+
+    <!-- 06. Faithful Still -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v3t06">
+      <label class="accordion-label" for="v3t06">
+        <span><span class="track-num">06.</span>Faithful Still</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-placeholder">가사를 준비 중입니다.</p>
+      </div>
+    </article>
+
+    <!-- 07. All my life -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v3t07">
+      <label class="accordion-label" for="v3t07">
+        <span><span class="track-num">07.</span>All my life</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-placeholder">가사를 준비 중입니다.</p>
+      </div>
+    </article>
+
+    <!-- 08. Every Breath -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v3t08">
+      <label class="accordion-label" for="v3t08">
+        <span><span class="track-num">08.</span>Every Breath</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-placeholder">가사를 준비 중입니다.</p>
+      </div>
+    </article>
+
+    <!-- 09. Harmony of Praise -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v3t09">
+      <label class="accordion-label" for="v3t09">
+        <span><span class="track-num">09.</span>Harmony of Praise</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-placeholder">가사를 준비 중입니다.</p>
+      </div>
+    </article>
+
+    <!-- 10. I love You, Lord -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v3t10">
+      <label class="accordion-label" for="v3t10">
+        <span><span class="track-num">10.</span>I love You, Lord</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-placeholder">가사를 준비 중입니다.</p>
+      </div>
+    </article>
+
+    <!-- 11. Miracle of Grace -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v3t11">
+      <label class="accordion-label" for="v3t11">
+        <span><span class="track-num">11.</span>Miracle of Grace</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-placeholder">가사를 준비 중입니다.</p>
+      </div>
+    </article>
+
+    <!-- 12. My Voice -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v3t12">
+      <label class="accordion-label" for="v3t12">
+        <span><span class="track-num">12.</span>My Voice</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-placeholder">가사를 준비 중입니다.</p>
+      </div>
+    </article>
+
+    <!-- 13. Lord, You are my way -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v3t13">
+      <label class="accordion-label" for="v3t13">
+        <span><span class="track-num">13.</span>Lord, You are my way</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-placeholder">가사를 준비 중입니다.</p>
+      </div>
+    </article>
+
+    <!-- 14. Our Worship -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v3t14">
+      <label class="accordion-label" for="v3t14">
+        <span><span class="track-num">14.</span>Our Worship</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-placeholder">가사를 준비 중입니다.</p>
+      </div>
+    </article>
+
+    <!-- 15. Wake up -->
+    <article class="accordion-item">
+      <input type="checkbox" class="accordion-toggle" id="v3t15">
+      <label class="accordion-label" for="v3t15">
+        <span><span class="track-num">15.</span>Wake up</span>
+        <span class="toggle-icon">+</span>
+      </label>
+      <div class="accordion-body">
+        <p class="lyric-placeholder">가사를 준비 중입니다.</p>
+      </div>
+    </article>
+  </section>
+
+  <!-- ── 찬양 앨범 스토리 섹션 ── -->
+    <section style="max-width:900px; margin:0 auto 80px; padding:0 24px;">
+        <div style="border:1px solid rgba(201,168,76,0.15); border-radius:20px; padding:40px; background:rgba(10,10,18,0.7);">
+
+            <h2 style="font-family:'Cinzel',serif; color:#c9a84c; font-size:1rem; letter-spacing:3px; text-align:center; margin-bottom:40px;">
+                &#10022; &nbsp; 찬양 앨범을 만들기까지 &nbsp; &#10022;
+            </h2>
+
+            <div style="display:flex; flex-direction:column; gap:32px;">
+
+                <div style="padding-bottom:32px; border-bottom:1px solid rgba(255,255,255,0.06);">
+                    <h3 style="font-family:'Cinzel',serif; color:#e8d08a; font-size:0.85rem; letter-spacing:2px; margin-bottom:16px;">어두운 시간이 찬양이 되다</h3>
+                    <p style="color:#c0bcb4; font-size:0.95rem; line-height:2; word-break:keep-all; text-align:left;">누구에게나 살면서 가장 어둡고 힘든 시간이 찾아옵니다. 저에게도 그런 시간이 있었어요. 앞이 보이지 않고, 무엇을 붙잡아야 할지 몰랐던 그 시간 속에서 저는 자연스럽게 찬양을 부르기 시작했습니다.</p>
+                    <p style="color:#c0bcb4; font-size:0.95rem; line-height:2; word-break:keep-all; text-align:left; margin-top:16px;">특별한 계획이 있었던 게 아니에요. 그냥 마음속에 있는 말들을 주님 앞에 쏟아내다 보니, 그것이 노래가 되었고, 그 노래들이 모여 앨범이 되었습니다. <strong style="color:#e8d08a;">나의 찬양 Vol.1 — The First Confession</strong>은 그렇게 탄생했어요. 첫 번째 고백이라는 부제처럼, 그것은 제 인생에서 가장 솔직한 고백의 기록이었습니다.</p>
+                </div>
+
+                <div style="padding-bottom:32px; border-bottom:1px solid rgba(255,255,255,0.06);">
+                    <h3 style="font-family:'Cinzel',serif; color:#e8d08a; font-size:0.85rem; letter-spacing:2px; margin-bottom:16px;">Vol.1 그리고 Vol.2 — 각자의 이야기</h3>
+                    <p style="color:#c0bcb4; font-size:0.95rem; line-height:2; word-break:keep-all; text-align:left;">Vol.1이 눈물과 고백의 기록이었다면, <strong style="color:#e8d08a;">나의 찬양 Vol.2 — 2nd Confession</strong>은 그 이후의 이야기입니다. 넘어졌다가 다시 일어선 자리에서, 이제는 감사와 헌신의 마음으로 올려드린 찬양들이에요.</p>
+                    <p style="color:#c0bcb4; font-size:0.95rem; line-height:2; word-break:keep-all; text-align:left; margin-top:16px;">두 앨범 모두 저에게는 각자의 의미가 있어요. Vol.1은 무너진 자리에서 손을 내밀어 주신 하나님께 드린 고백이고, Vol.2는 그 손을 잡고 다시 걸어가는 과정에서 드린 감사입니다. 어느 하나가 더 소중하다고 할 수 없어요. 둘이 합쳐져야 하나의 완전한 여정이 되거든요.</p>
+                </div>
+
+                <div style="padding-bottom:32px; border-bottom:1px solid rgba(255,255,255,0.06);">
+                    <h3 style="font-family:'Cinzel',serif; color:#e8d08a; font-size:0.85rem; letter-spacing:2px; margin-bottom:16px;">AI로 찬양을 만든다는 것</h3>
+                    <p style="color:#c0bcb4; font-size:0.95rem; line-height:2; word-break:keep-all; text-align:left;">처음에는 저도 반신반의했어요. AI로 만든 음악이 진짜 찬양이 될 수 있을까? 하지만 직접 해보면서 생각이 바뀌었습니다. 악기를 잘 다루지 못해도, 전문 스튜디오가 없어도 — 진심을 담은 가사와 멜로디는 AI라는 도구를 통해 완전한 찬양으로 태어날 수 있었어요.</p>
+                    <p style="color:#c0bcb4; font-size:0.95rem; line-height:2; word-break:keep-all; text-align:left; margin-top:16px;">도구가 달라져도 마음은 같습니다. Suno AI를 사용했지만, 곡의 분위기와 가사 한 줄 한 줄은 모두 제가 직접 기획하고 고민했어요. 기술이 창의성을 대체하는 게 아니라, 기술이 창의성을 <strong style="color:#c9a84c;">해방</strong>시킨다는 것을 찬양을 만들면서 처음 실감했습니다.</p>
+                </div>
+
+                <div>
+                    <h3 style="font-family:'Cinzel',serif; color:#e8d08a; font-size:0.85rem; letter-spacing:2px; margin-bottom:16px;">이 찬양을 듣는 당신에게</h3>
+                    <p style="color:#c0bcb4; font-size:0.95rem; line-height:2; word-break:keep-all; text-align:left;">이 앨범을 만들면서 제가 가장 많이 생각한 사람은 저와 비슷한 시간을 보내고 있는 누군가였어요. 어둠 속에서 버티고 있는 분, 포기하고 싶은 순간을 지나고 계신 분, 하나님이 멀게 느껴지는 분.</p>
+                    <p style="color:#c0bcb4; font-size:0.95rem; line-height:2; word-break:keep-all; text-align:left; margin-top:16px;">그분들께 이 찬양이 닿았으면 좋겠어요. 거창한 위로가 아니에요. 그냥 이 노래를 들으면서 잠깐이라도 <strong style="color:#e8d08a;">"나만 이런 게 아니구나"</strong> 하고 느끼실 수 있다면, 그것으로 충분합니다. 시련 속에서도 포기하지 않고 다시 일어날 수 있는 힘이 이 찬양 안에 있기를 기도합니다.</p>
+
+                    <div style="margin-top:32px; padding:24px 28px; background:rgba(201,168,76,0.05); border-left:3px solid rgba(201,168,76,0.4); border-radius:0 12px 12px 0;">
+                        <p style="color:#e8d08a; font-family:'Noto Serif KR',serif; font-size:1rem; line-height:2; word-break:keep-all; font-style:italic; margin:0;">"어두운 시간 속에서도 포기하지 않고 다시 일어날 수 있는 용기와 기적이 여러분의 삶 속에 가득하길 기도합니다."</p>
+                        <p style="color:rgba(201,168,76,0.6); font-family:'Cinzel',serif; font-size:0.78rem; letter-spacing:2px; margin-top:14px; margin-bottom:0;">— Chris LEE.PAPA</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
 </div><!-- /container -->
 
 <!-- 앨범 모달 (비주얼 전용) -->
@@ -1312,18 +1628,17 @@ body::before {
       </div>
       <div class="spotify-embed-wrap" id="spotify-embed-wrap">
         <iframe id="spotify-iframe"
-          src="https://open.spotify.com/embed/album/0ctoLQNWCmiPEkySv05PAM?utm_source=generator&theme=0"
+          src=""
           width="100%" height="352"
           allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
           loading="lazy"></iframe>
       </div>
-      <div class="lyrics-section-title">✦ &nbsp; 아래 목록에서 가사를 확인하세요 &nbsp; ✦</div>
-      <p style="color:rgba(200,196,188,0.5); font-size:0.85rem; text-align:center; margin-top:-10px;">
-        모달을 닫고 아래 전곡 가사 섹션에서 열람할 수 있습니다
-      </p>
+      <div class="lyrics-section-title">✦ &nbsp; 곡을 선택하면 가사로 바로 이동합니다 &nbsp; ✦</div>
+      <div class="modal-track-list" id="modal-track-list"></div>
     </div>
   </div>
 </div>
+
 
 <div id="site-footer"></div>
 
@@ -1335,7 +1650,8 @@ window.PAGE_I18N = {
     header_title: 'WORSHIP',
     header_slogan: '영혼 깊은 곳에서 올려드리는 고백',
     album1_title: '나의 찬양 Vol. 1',
-    album2_title: '나의 찬양 Vol. 2'
+    album2_title: '나의 찬양 Vol. 2',
+    album3_title: 'Shout'
   },
   en: {
     share_title: 'SHARE WORSHIP',
@@ -1343,7 +1659,8 @@ window.PAGE_I18N = {
     header_title: 'WORSHIP',
     header_slogan: 'Confessions offered from the depths of the soul',
     album1_title: 'My Worship Vol. 1',
-    album2_title: 'My Worship Vol. 2'
+    album2_title: 'My Worship Vol. 2',
+    album3_title: 'Shout'
   }
 };
 window.onMainReady = function() { initStarsCanvas(); };
@@ -1358,7 +1675,20 @@ const ALBUM_META = {
     streams: [
       { cls:'btn-spotify', href:'https://open.spotify.com/album/0ctoLQNWCmiPEkySv05PAM', label:'🎵 Spotify 전곡 듣기' }
     ],
-    showSpotify: true
+    showSpotify: true,
+    spotifyEmbedId: '0ctoLQNWCmiPEkySv05PAM',
+    tracks: [
+      { id:'v1t01', title:'이 길 위해서' },
+      { id:'v1t02', title:'사랑으로' },
+      { id:'v1t03', title:'나의 찬양' },
+      { id:'v1t04', title:'기적입니다.' },
+      { id:'v1t05', title:'파레시아' },
+      { id:'v1t06', title:'나의 목소리' },
+      { id:'v1t07', title:'오 기쁜 날' },
+      { id:'v1t08', title:'우리의 예배' },
+      { id:'v1t09', title:'우리의 마음' },
+      { id:'v1t10', title:'나의 모든 날' }
+    ]
   },
   vol2: {
     img: 'images/vol2.png',
@@ -1367,7 +1697,47 @@ const ALBUM_META = {
     streams: [
       { cls:'btn-spotify', href:'https://open.spotify.com/album/0yhn8oEojOqsI864an6Qki?si=H2m48xnZT7O3C2PpUuCU_A', label:'🎵 Spotify 전곡 듣기' }
     ],
-    showSpotify: false
+    showSpotify: false,
+    spotifyEmbedId: '0yhn8oEojOqsI864an6Qki',
+    tracks: [
+      { id:'v2t01', title:'모두 찬양해' },
+      { id:'v2t02', title:'일어나 외쳐' },
+      { id:'v2t03', title:'주를 향해 노래하리' },
+      { id:'v2t04', title:'사랑합니다. 주님' },
+      { id:'v2t05', title:'돌아보면 모든 날이' },
+      { id:'v2t06', title:'주님 나의 힘' },
+      { id:'v2t07', title:'조용히 외쳐' },
+      { id:'v2t08', title:'깨어 노래해' },
+      { id:'v2t09', title:'예수님 사랑' },
+      { id:'v2t10', title:'예수님 최고' }
+    ]
+  },
+  vol3: {
+    img: 'images/vol3.jpg',
+    vol: 'Vol. 3 · English Worship',
+    title: 'Shout',
+    streams: [
+      { cls:'btn-spotify', href:'https://open.spotify.com/album/3XaG1yonPrJiyVPwExgVBm?si=4RFjSZF9QOWO0TTyGpRJsA', label:'🎵 Spotify 전곡 듣기' }
+    ],
+    showSpotify: true,
+    spotifyEmbedId: '3XaG1yonPrJiyVPwExgVBm',
+    tracks: [
+      { id:'v3t01', title:'Shout' },
+      { id:'v3t02', title:'Oh what a day' },
+      { id:'v3t03', title:'I will sing to You, Lord' },
+      { id:'v3t04', title:'Love Has Called My Name' },
+      { id:'v3t05', title:'Parrhesia' },
+      { id:'v3t06', title:'Faithful Still' },
+      { id:'v3t07', title:'All my life' },
+      { id:'v3t08', title:'Every Breath' },
+      { id:'v3t09', title:'Harmony of Praise' },
+      { id:'v3t10', title:'I love You, Lord' },
+      { id:'v3t11', title:'Miracle of Grace' },
+      { id:'v3t12', title:'My Voice' },
+      { id:'v3t13', title:'Lord, You are my way' },
+      { id:'v3t14', title:'Our Worship' },
+      { id:'v3t15', title:'Wake up' }
+    ]
   }
 };
 
@@ -1401,8 +1771,25 @@ function openModal(vol) {
   document.getElementById('modal-stream-row').innerHTML = meta.streams.map(s =>
     `<a class="stream-btn ${s.cls}" href="${s.href}" target="_blank" rel="noopener">${s.label}</a>`
   ).join('');
+
   const spotifyWrap = document.getElementById('spotify-embed-wrap');
-  meta.showSpotify ? spotifyWrap.classList.add('visible') : spotifyWrap.classList.remove('visible');
+  const spotifyIframe = document.getElementById('spotify-iframe');
+  if (meta.showSpotify && meta.spotifyEmbedId) {
+    spotifyIframe.src = `https://open.spotify.com/embed/album/${meta.spotifyEmbedId}?utm_source=generator&theme=0`;
+    spotifyWrap.classList.add('visible');
+  } else {
+    spotifyIframe.src = '';
+    spotifyWrap.classList.remove('visible');
+  }
+
+  document.getElementById('modal-track-list').innerHTML = meta.tracks.map((t, i) =>
+    `<button type="button" class="modal-track-item" onclick="selectTrack('${t.id}')">
+      <span class="track-num">${String(i+1).padStart(2,'0')}.</span>
+      <span>${t.title}</span>
+      <span class="track-arrow">가사 보기 →</span>
+    </button>`
+  ).join('');
+
   const modal = document.getElementById('album-modal');
   modal.style.display = 'flex';
   document.body.style.overflow = 'hidden';
@@ -1415,6 +1802,20 @@ function closeModal() {
   stopVol2BGM();
   document.body.style.overflow = '';
   setTimeout(()=>{ modal.style.display='none'; currentVol=null; }, 450);
+}
+function selectTrack(trackId) {
+  closeModal();
+  setTimeout(() => {
+    const checkbox = document.getElementById(trackId);
+    if (!checkbox) return;
+    checkbox.checked = true;
+    const item = checkbox.closest('.accordion-item');
+    if (item) {
+      item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      item.classList.add('jump-highlight');
+      setTimeout(() => item.classList.remove('jump-highlight'), 1800);
+    }
+  }, 480);
 }
 document.addEventListener('keydown', e=>{ if(e.key==='Escape'&&currentVol) closeModal(); });
 document.getElementById('album-modal').addEventListener('click', function(e){ if(e.target===this) closeModal(); });

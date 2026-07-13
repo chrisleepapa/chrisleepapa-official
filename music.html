@@ -21,7 +21,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="images/favicon.png" type="image/png">
 
-    <meta name="description" content="Chris LEE.PAPA Music Archive — To Rise, 사랑한다고, 2026 난리났어, 벽력일섬, 영역전개, We own the Cup 등 6개 앨범 26곡. Suno AI로 제작한 인스트루멘탈·팝·CCM. Spotify·Apple Music 스트리밍.">
+    <meta name="description" content="Chris LEE.PAPA Music Archive — When the city stood still, To The Space, Ensemble, To Rise, 사랑한다고, 2026 난리났어, 벽력일섬, 영역전개, We own the Cup 등 9개 앨범 41곡. Suno AI로 제작한 인스트루멘탈·팝·CCM. Spotify·Apple Music 스트리밍.">
     <meta property="og:title" content="MUSIC ARCHIVE – Chris LEE.PAPA">
     <meta property="og:description" content="Suno AI로 제작한 인스트루멘탈·팝·CCM 창작 음악. Spotify에서 전곡 스트리밍 가능. AI 음악 프로듀서 Chris LEE.PAPA의 음악 아카이브.">
     <meta property="og:type" content="website">
@@ -87,7 +87,21 @@
         /* ── 플레이어 레이아웃 ── */
         .interactive-player-wrapper { max-width: 1200px; margin: 0 auto 100px; padding: 0 20px; display: flex; gap: 40px; align-items: flex-start; position: relative; z-index: 10; }
         .player-focus { flex: 1.5; background: rgba(15, 15, 20, 0.4); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 24px; padding: 50px 40px; backdrop-filter: blur(20px); box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
-        .album-art-large { width: clamp(200px, 40vw, 280px); height: clamp(200px, 40vw, 280px); margin: 0 auto 35px; border-radius: 50%; background-size: cover; background-position: center; box-shadow: 0 20px 50px rgba(0,0,0,0.6); transition: background-image 0.5s ease; }
+        .album-art-large {
+            width: clamp(200px, 40vw, 280px); height: clamp(200px, 40vw, 280px); margin: 0 auto 35px;
+            border-radius: 50%; background-size: cover; background-position: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6), inset 0 0 0 10px rgba(0,0,0,0.55), inset 0 0 0 12px rgba(255,255,255,0.06);
+            transition: background-image 0.5s ease;
+            position: relative;
+            animation: spin 14s linear infinite;
+            animation-play-state: paused;
+        }
+        .album-art-large::after {
+            content: ''; position: absolute; inset: 0; margin: auto;
+            width: 20%; height: 20%; border-radius: 50%;
+            background: var(--bg); box-shadow: 0 0 0 3px rgba(255,255,255,0.15);
+        }
+        .album-art-large.is-playing { animation-play-state: running; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
         .active-info h2 { font-size: 2.2rem; margin-bottom: 10px; color: #ffffff; font-weight: 700; letter-spacing: 1px; }
         .active-badge { display: inline-block; padding: 6px 18px; background: rgba(29, 185, 84, 0.1); color: var(--spotify-green); border: 1px solid rgba(29, 185, 84, 0.3); border-radius: 20px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
@@ -178,8 +192,8 @@
         <section class="player-focus">
             <div class="album-art-large" id="main-cover" style="background-image: url('images/music.jpg');"></div>
             <div class="active-info">
-                <h2 id="main-title">To Rise</h2>
-                <span class="active-badge" id="main-type">Instrumental</span>
+                <h2 id="main-title">When the city stood still</h2>
+                <span class="active-badge" id="main-type">Album</span>
             </div>
 
             <div class="spotify-container" id="spotify-container">
@@ -192,33 +206,45 @@
                 </div>
             </div>
 
-            <a id="main-external-link" href="https://open.spotify.com/album/2OSKuof7gooLElmFYvoygK" target="_blank" rel="noopener" class="external-link-btn" data-i18n="btn_spotify">Spotify에서 전곡 듣기 ›</a>
+            <a id="main-external-link" href="https://open.spotify.com/album/5qWOsYCJgw1bmXqvko7Thv" target="_blank" rel="noopener" class="external-link-btn" data-i18n="btn_spotify">Spotify에서 전곡 듣기 ›</a>
         </section>
 
         <aside class="playlist-sidebar">
             <div class="playlist-header" data-i18n="playlist_title">TRACKLIST</div>
             <div id="playlist-container">
                 <div class="track-item active" onclick="loadTrack(0,this,false)">
+                    <img class="track-thumb" src="images/music.jpg" alt="When the city stood still — 정규 앨범" loading="lazy">
+                    <div class="track-details"><h4>When the city stood still</h4><p>정규 앨범</p></div>
+                </div>
+                <div class="track-item" onclick="loadTrack(1,this,false)">
+                    <img class="track-thumb" src="images/music.jpg" alt="To The Space — 싱글" loading="lazy">
+                    <div class="track-details"><h4>To The Space</h4><p>싱글</p></div>
+                </div>
+                <div class="track-item" onclick="loadTrack(2,this,false)">
+                    <img class="track-thumb" src="images/music.jpg" alt="Ensemble — EP" loading="lazy">
+                    <div class="track-details"><h4>Ensemble</h4><p>EP</p></div>
+                </div>
+                <div class="track-item" onclick="loadTrack(3,this,false)">
                     <img class="track-thumb" src="images/music.jpg" alt="To Rise — 연주곡 앨범" loading="lazy">
                     <div class="track-details"><h4>To Rise</h4><p>연주곡</p></div>
                 </div>
-                <div class="track-item" onclick="loadTrack(1,this,false)">
+                <div class="track-item" onclick="loadTrack(4,this,false)">
                     <img class="track-thumb" src="images/music.jpg" alt="2026 앨범 — 정규 앨범" loading="lazy">
                     <div class="track-details"><h4>2026 앨범</h4><p>정규 앨범</p></div>
                 </div>
-                <div class="track-item" onclick="loadTrack(2,this,false)">
+                <div class="track-item" onclick="loadTrack(5,this,false)">
                     <img class="track-thumb" src="images/music.jpg" alt="벽력일섬 — 정규 앨범" loading="lazy">
                     <div class="track-details"><h4>벽력일섬</h4><p>정규 앨범</p></div>
                 </div>
-                <div class="track-item" onclick="loadTrack(3,this,false)">
+                <div class="track-item" onclick="loadTrack(6,this,false)">
                     <img class="track-thumb" src="images/music.jpg" alt="영역전개 — 정규 앨범" loading="lazy">
                     <div class="track-details"><h4>영역전개</h4><p>정규 앨범</p></div>
                 </div>
-                <div class="track-item" onclick="loadTrack(4,this,false)">
+                <div class="track-item" onclick="loadTrack(7,this,false)">
                     <img class="track-thumb" src="images/music.jpg" alt="사랑한다고 — 보컬 트랙" loading="lazy">
                     <div class="track-details"><h4>사랑한다고</h4><p>보컬 트랙</p></div>
                 </div>
-                <div class="track-item" onclick="loadTrack(5,this,false)">
+                <div class="track-item" onclick="loadTrack(8,this,false)">
                     <img class="track-thumb" src="images/music.jpg" alt="We own the Cup — 정규 앨범" loading="lazy">
                     <div class="track-details"><h4>We own the Cup</h4><p>정규 앨범</p></div>
                 </div>
@@ -236,6 +262,39 @@
 
             <h3 style="font-family:'Cinzel',serif; color:#c9a84c; font-size:0.85rem; letter-spacing:2px; margin-bottom:18px;">✦   ALBUMS & TRACKLIST</h3>
             <div style="display:flex; flex-direction:column; gap:20px; margin-bottom:32px;">
+
+                <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.07); border-radius:14px; padding:20px 22px;">
+                    <div style="font-family:'Cinzel',serif; color:#e8d08a; font-size:0.88rem; letter-spacing:1.5px; margin-bottom:12px;">When the city stood still <span style="color:#555; font-size:0.75rem; font-family:'Pretendard',sans-serif; font-weight:400; margin-left:8px;">· 8 tracks</span></div>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:8px;">
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">01</span>When the city stood still</div>
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">02</span>After the rain</div>
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">03</span>When did the years go</div>
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">04</span>Remember</div>
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">05</span>Night Breeze</div>
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">06</span>Disco reborn</div>
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">07</span>Guitar Hero</div>
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">08</span>Master Bassist</div>
+                    </div>
+                </div>
+
+                <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.07); border-radius:14px; padding:20px 22px;">
+                    <div style="font-family:'Cinzel',serif; color:#e8d08a; font-size:0.88rem; letter-spacing:1.5px; margin-bottom:12px;">To The Space <span style="color:#555; font-size:0.75rem; font-family:'Pretendard',sans-serif; font-weight:400; margin-left:8px;">· 1 track</span></div>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:8px;">
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">01</span>To The Space</div>
+                    </div>
+                </div>
+
+                <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.07); border-radius:14px; padding:20px 22px;">
+                    <div style="font-family:'Cinzel',serif; color:#e8d08a; font-size:0.88rem; letter-spacing:1.5px; margin-bottom:12px;">Ensemble <span style="color:#555; font-size:0.75rem; font-family:'Pretendard',sans-serif; font-weight:400; margin-left:8px;">· 6 tracks</span></div>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:8px;">
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">01</span>Emotional</div>
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">02</span>Ensemble</div>
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">03</span>Climax</div>
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">04</span>Groove</div>
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">05</span>Impact</div>
+                        <div style="color:#a0a09a; font-size:0.85rem; padding:6px 10px; background:rgba(201,168,76,0.04); border-radius:8px;"><span style="color:#c9a84c; margin-right:8px; font-size:0.75rem;">06</span>Energetic</div>
+                    </div>
+                </div>
 
                 <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.07); border-radius:14px; padding:20px 22px;">
                     <div style="font-family:'Cinzel',serif; color:#e8d08a; font-size:0.88rem; letter-spacing:1.5px; margin-bottom:12px;">To Rise <span style="color:#555; font-size:0.75rem; font-family:'Pretendard',sans-serif; font-weight:400; margin-left:8px;">· 4 tracks</span></div>
@@ -301,7 +360,7 @@
 
             </div>
             <p style="color:#777; font-size:0.82rem; line-height:1.8; text-align:center; padding-top:4px;">
-                총 6개 앨범 · 26곡 · Spotify · Apple Music · YouTube Music 스트리밍 가능
+                총 9개 앨범 · 41곡 · Spotify · Apple Music · YouTube Music 스트리밍 가능
             </p>
 
             <div style="margin-top:32px; padding-top:28px; border-top:1px solid rgba(255,255,255,0.06);">
@@ -383,6 +442,9 @@
         // ── Dynamic Music Data ──
         // 스포티파이 실제 embed iframe 주소로 변경했습니다.
         const musicData = [
+            { title_ko: 'When the city stood still', title_en: 'When the city stood still', type_ko: '정규 앨범', type_en: 'Album', albumId: '5qWOsYCJgw1bmXqvko7Thv', cover: 'images/music.jpg', embedUrl: 'https://open.spotify.com/embed/album/5qWOsYCJgw1bmXqvko7Thv' },
+            { title_ko: 'To The Space',   title_en: 'To The Space',   type_ko: '싱글',     type_en: 'Single',       albumId: '1JyYgZ8VTbh5mASNezCTcJ', cover: 'images/music.jpg', embedUrl: 'https://open.spotify.com/embed/album/1JyYgZ8VTbh5mASNezCTcJ' },
+            { title_ko: 'Ensemble',       title_en: 'Ensemble',       type_ko: 'EP',       type_en: 'EP',            albumId: '2X3dnf8vnhCSQ0c7H9oZht', cover: 'images/music.jpg', embedUrl: 'https://open.spotify.com/embed/album/2X3dnf8vnhCSQ0c7H9oZht' },
             { title_ko: 'To Rise',         title_en: 'To Rise',           type_ko: '연주곡',   type_en: 'Instrumental', albumId: '2OSKuof7gooLElmFYvoygK', cover: 'images/music.jpg', embedUrl: 'https://open.spotify.com/embed/album/2OSKuof7gooLElmFYvoygK' },
             { title_ko: '2026 앨범',        title_en: '2026 Album',        type_ko: '정규 앨범', type_en: 'Album',         albumId: '2AzUPgjWYDodUqFTNjPU1l', cover: 'images/music.jpg', embedUrl: 'https://open.spotify.com/embed/album/2AzUPgjWYDodUqFTNjPU1l' },
             { title_ko: '벽력일섬',         title_en: 'Thunderclap',       type_ko: '정규 앨범', type_en: 'Album',         albumId: '25T549XyXnmiZhqGn7p4x4', cover: 'images/music.jpg', embedUrl: 'https://open.spotify.com/embed/album/25T549XyXnmiZhqGn7p4x4' },
@@ -458,6 +520,7 @@
             container.innerHTML = '';
             container.appendChild(iframe);
             isIframeInjected = true;
+            if (mainCover) mainCover.classList.add('is-playing');
         }
 
         function loadTrack(index, element, isInit = false) {

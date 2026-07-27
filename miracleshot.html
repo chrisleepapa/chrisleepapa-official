@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#030305">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="images/favicon.png">
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3207219520058740" crossorigin="anonymous"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NBGELYQ4TZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-NBGELYQ4TZ');
+      gtag('config', 'GT-5MJDBTR2');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="images/favicon.png">
+
+    <meta name="description" content="Miracle Shot(미라클 샷) — 최강 골키퍼 영, 불꽃슈터 황, 슈퍼소닉 길, 패스마스터 고. 실패에서 기적을 쏘아 올리는 네 소년의 풋살 판타지 소설. Chris LEE.PAPA 원작.">
+    <meta property="og:title" content="MIRACLE SHOT – Chris LEE.PAPA">
+    <meta property="og:description" content="개성 넘치는 네 소년, 영·황·길·고가 풋살을 통해 성장하는 스포츠 판타지. 실패와 좌절을 넘어 기적 같은 한 발을 쏘아 올리는 이야기.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://chrisleepapa-official.vercel.app/miracleshot">
+    <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1">
+    <meta property="og:locale" content="ko_KR">
+    <meta property="og:locale:alternate" content="en_US">
+    <meta property="og:site_name" content="Chris LEE.PAPA">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MIRACLE SHOT – Chris LEE.PAPA">
+    <meta name="twitter:description" content="풋살을 통해 성장하는 네 소년의 기적 같은 이야기. 영·황·길·고의 풋살 판타지.">
+    <meta name="twitter:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1">
+
+    <link rel="canonical" href="https://chrisleepapa-official.vercel.app/miracleshot">
+
+    <title>MIRACLE SHOT – Chris LEE.PAPA</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Cormorant+Garamond:wght@600&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
+
+    <link rel="stylesheet" href="css/common.css">
+
+    <style>
+        /* ── miracleshot.html 전용 스타일 ── */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --gold: #c9a84c; --gold-light: #e8d08a;
+            --bg: #030305; --text: #f0ece4; --nav-height: 70px;
+            --accent: #00d4ff; --accent-glow: rgba(0, 212, 255, 0.4);
+            --youtube: #FF0000; --spotify: #1DB954;
+        }
+        html { scroll-behavior: smooth; background-color: var(--bg); }
+        body {
+            background-color: var(--bg); color: var(--text);
+            font-family: 'Pretendard', 'Noto Serif KR', serif;
+            line-height: 1.7; overflow-x: hidden;
+            background-image:
+                radial-gradient(circle at top right, rgba(10, 30, 45, 0.8), transparent 60%),
+                radial-gradient(circle at bottom left, rgba(10, 10, 20, 0.9), transparent 60%);
+            -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
+        }
+        img { -webkit-user-drag: none; }
+        body::before {
+            content: ''; position: fixed; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
+            pointer-events: none; z-index: 900; opacity: 0.3;
+        }
+        a { text-decoration: none; color: inherit; }
+        button { appearance: none; background: none; border: 0; padding: 0; font: inherit; color: inherit; }
+
+        /* ── 페이지 헤더 ── */
+        .page-header { position: relative; width: 100%; height: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; padding-top: var(--nav-height); }
+        #stars-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
+        .header-content { position: relative; z-index: 3; text-align: center; animation: fadeUp 1.2s ease both; }
+        .header-title { font-family: 'Cinzel', serif; font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 700; letter-spacing: 0.2em; color: var(--accent); text-shadow: 0 0 30px var(--accent-glow); margin-bottom: 15px; }
+        .header-slogan { font-family: 'Cormorant Garamond', serif; font-size: clamp(0.9rem, 2.5vw, 1.2rem); letter-spacing: 0.3em; color: #cdd6f4; font-style: italic; }
+
+        /* ── 본문 ── */
+        .container { max-width: 1100px; margin: 0 auto; padding: 10px 20px 100px; position: relative; z-index: 10; }
+        .back-link { display: inline-flex; align-items: center; gap: 8px; font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 0.2em; color: var(--gold-light); margin-bottom: 40px; transition: 0.3s; text-transform: uppercase; cursor: pointer; }
+        .back-link:hover { text-shadow: 0 0 10px var(--gold-light); transform: translateX(-5px); }
+
+        .section-title { font-family: 'Cinzel', serif; font-size: 1.4rem; color: var(--gold); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 40px; padding-bottom: 15px; border-bottom: 1px solid rgba(201,168,76,0.2); text-align: center; }
+
+        .synopsis-section { background: rgba(15, 15, 20, 0.4); border: 1px solid rgba(0, 212, 255, 0.15); border-radius: 24px; padding: 50px 30px; margin-bottom: 100px; backdrop-filter: blur(10px); animation: fadeUp 1s ease 0.2s both; }
+        .section-label { font-family: 'Cinzel', serif; color: var(--accent); font-size: 0.8rem; letter-spacing: 4px; display: block; margin-bottom: 20px; text-align: center; }
+        .synopsis-text { font-size: clamp(0.9rem, 2.5vw, 1.05rem); line-height: 2.2; text-align: center; color: #e0e0ff; word-break: keep-all; font-weight: 300; max-width: 900px; margin: 0 auto; }
+        .synopsis-text b { color: var(--accent); font-weight: 500; }
+
+        /* ── 캐릭터 ── */
+        .character-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 100px; }
+        .char-card { display: block; color: inherit; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 24px; text-align: center; transition: 0.4s ease; backdrop-filter: blur(5px); overflow: hidden; cursor: pointer; }
+        .char-card:hover { transform: translateY(-12px); border-color: var(--accent); box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 25px var(--accent-glow); }
+        .char-img-area { width: 100%; height: 350px; background-size: cover; background-position: center; transition: 0.6s ease; }
+        .char-card:hover .char-img-area img { transform: scale(1.05); }
+        .char-content { padding: 40px 30px; position: relative; }
+        .char-tag { font-size: 0.7rem; color: var(--accent); border: 1px solid var(--accent); padding: 3px 14px; border-radius: 20px; margin-bottom: 15px; display: inline-block; text-transform: uppercase; letter-spacing: 1px; }
+        .char-name { font-family: 'Cinzel', serif; font-size: 1.8rem; font-weight: 700; color: #fff; margin-bottom: 0; transition: margin 0.5s ease; }
+        .char-desc { font-size: 1rem; color: #a0a0b5; line-height: 1.8; word-break: keep-all; font-weight: 300; max-height: 0; opacity: 0; transform: translateY(20px); transition: all 0.5s ease; overflow: hidden; margin-top: 0; }
+        .char-card:hover .char-name { margin-bottom: 15px; }
+        .char-card:hover .char-desc { max-height: 150px; opacity: 1; transform: translateY(0); margin-top: 15px; }
+
+        /* ── 주요 사진 & 영상 ── */
+        .media-section { margin-bottom: 100px; }
+        .media-video-wrapper { position: relative; width: 100%; padding-bottom: 56.25%; border-radius: 24px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 30px 60px rgba(0,0,0,0.6); margin-bottom: 30px; background: #000; }
+        .media-video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        .photo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+        .photo-item { border-radius: 16px; overflow: hidden; aspect-ratio: 4 / 3; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
+        .photo-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: 0.5s ease; }
+        .photo-item:hover img { transform: scale(1.08); }
+
+        /* ── OST ── */
+        .ost-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin-bottom: 100px; }
+        .ost-item { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 25px; backdrop-filter: blur(5px); transition: 0.3s; }
+        .ost-item:hover { border-color: var(--youtube); transform: translateY(-5px); }
+        .album-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .album-title { font-family: 'Cinzel', serif; font-size: 1.1rem; color: #fff; }
+        .album-type { font-size: 0.7rem; color: var(--gold-light); border: 1px solid; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; }
+        .ost-btn { display: inline-block; margin-top: 15px; color: var(--spotify); font-weight: 600; font-size: 0.9rem; transition: 0.3s; }
+        .ost-btn:hover { text-shadow: 0 0 10px rgba(29, 185, 84, 0.5); }
+        .spotify-container-album { border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255, 255, 255, 0.08); background: #0a0a0f; width: 100%; height: 352px; margin-bottom: 15px; position: relative; transition: all 0.3s ease; }
+        .player-placeholder { width: 100%; height: 100%; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; background: transparent; border: 0; color: inherit; padding: 0; }
+        .placeholder-bg { position: absolute; inset: -10px; background-size: cover; background-position: center; filter: blur(15px) brightness(0.3); z-index: 1; transition: 0.5s ease; }
+        .player-placeholder:hover .placeholder-bg { filter: blur(8px) brightness(0.4); transform: scale(1.05); }
+        .placeholder-content { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; }
+        .play-btn-circle { width: 64px; height: 64px; border-radius: 50%; background: rgba(255, 0, 0, 0.9); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; margin-bottom: 16px; transition: transform 0.3s; padding-left: 5px; border: 2px solid rgba(255,255,255,0.3); backdrop-filter: blur(4px); animation: pulseRed 2s infinite; }
+        @keyframes pulseRed { 0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.6); } 70% { box-shadow: 0 0 0 20px rgba(255, 0, 0, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); } }
+        .player-placeholder:hover .play-btn-circle { transform: scale(1.1); background: var(--youtube); }
+        .placeholder-text { font-size: 0.95rem; color: #fff; font-weight: 700; letter-spacing: 2px; font-family: 'Cinzel', 'Pretendard', sans-serif; text-shadow: 0 4px 10px rgba(0,0,0,0.8); }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 900px) {
+            .character-grid { grid-template-columns: 1fr; }
+            .char-img-area { height: 300px; }
+            .char-name { margin-bottom: 15px; }
+            .char-desc { max-height: none; opacity: 1; transform: none; margin-top: 15px; }
+            .synopsis-section { padding: 35px 20px; }
+            .container { padding-bottom: 60px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ★ 공통 헤더 -->
+    <div id="site-nav"></div>
+
+    <header class="page-header">
+        <canvas id="stars-canvas"></canvas>
+        <div class="header-content">
+            <h1 class="header-title" data-i18n="header_title">MIRACLE SHOT</h1>
+            <p class="header-slogan" data-i18n="header_slogan">Four Boys, One Miracle</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <a href="book.html" class="back-link" onclick="safeNavigate('book.html'); return false;" data-i18n="back_link">‹ 라이브러리로 돌아가기</a>
+
+        <section class="synopsis-section">
+            <span class="section-label" data-i18n="story_label">THE STORY</span>
+            <p class="synopsis-text" style="word-break:keep-all;">개성이 넘치는 네 소년, 최강 골키퍼 <b>'영'</b>, 불꽃 슈터 <b>'황'</b>, 슈퍼소닉 <b>'길'</b>, 패스마스터 <b>'고'</b>가 이코치와 함께 풋살 팀을 이룹니다. 실패와 좌절 속에서도 포기하지 않고 함께 흘린 땀은 <b>기적 같은 한 발</b>이 되어 필드 위로 쏘아 올려집니다.</p>
+        </section>
+
+        <h2 class="section-title" data-i18n="char_sec_title">Character Introduction</h2>
+        <div class="character-grid">
+            <div class="char-card" style="cursor:default;">
+                <div class="char-img-area" style="overflow:hidden;">
+                    <img src="images/young01.png" alt="영 (Young) — Miracle Shot The Ultimate Goalkeeper 캐릭터" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;transition:0.6s ease;">
+                </div>
+                <div class="char-content">
+                    <span class="char-tag">The Ultimate Goalkeeper</span>
+                    <h3 class="char-name">Young (영)</h3>
+                    <p class="char-desc" style="word-break:keep-all;">누구도 뚫지 못하는 철벽 골키퍼 영. 어떤 슛도 막아내는 반사신경과 담대함으로 팀의 마지막 수비선을 지킵니다.</p>
+                </div>
+            </div>
+            <div class="char-card" style="cursor:default;">
+                <div class="char-img-area" style="overflow:hidden;">
+                    <img src="images/hwang01.png" alt="황 (Hwang) — Miracle Shot The Flame Shooter 캐릭터" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;transition:0.6s ease;">
+                </div>
+                <div class="char-content">
+                    <span class="char-tag">The Flame Shooter</span>
+                    <h3 class="char-name">Hwang (황)</h3>
+                    <p class="char-desc" style="word-break:keep-all;">불꽃 같은 슈팅을 가진 황. 뜨거운 승부욕과 폭발적인 킥력으로 결정적인 순간마다 골을 만들어냅니다.</p>
+                </div>
+            </div>
+            <div class="char-card" style="cursor:default;">
+                <div class="char-img-area" style="overflow:hidden;">
+                    <img src="images/gil01.png" alt="길 (Gil) — Miracle Shot Supersonic 캐릭터" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;transition:0.6s ease;">
+                </div>
+                <div class="char-content">
+                    <span class="char-tag">Supersonic</span>
+                    <h3 class="char-name">Gil (길)</h3>
+                    <p class="char-desc" style="word-break:keep-all;">압도적인 스피드의 소유자 길. 누구보다 빠른 드리블과 돌파력으로 상대 수비를 순식간에 무너뜨립니다.</p>
+                </div>
+            </div>
+            <div class="char-card" style="cursor:default;">
+                <div class="char-img-area" style="overflow:hidden;">
+                    <img src="images/go01.png" alt="고 (Go) — Miracle Shot The Pass Master 캐릭터" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;transition:0.6s ease;">
+                </div>
+                <div class="char-content">
+                    <span class="char-tag">The Pass Master</span>
+                    <h3 class="char-name">Go (고)</h3>
+                    <p class="char-desc" style="word-break:keep-all;">탁월한 시야와 패스 감각을 지닌 고. 팀 전체를 하나로 잇는 정교한 패스로 기적 같은 찬스를 만들어냅니다.</p>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title" data-i18n="media_sec_title">Highlights: Photos &amp; Video</h2>
+        <section class="media-section">
+            <div class="media-video-wrapper">
+                <iframe src="https://www.youtube.com/embed/VIDEO_ID_HERE" title="MIRACLE SHOT Highlight Video" allowfullscreen></iframe>
+            </div>
+            <div class="photo-grid">
+                <div class="photo-item"><img src="images/m00.jpg" alt="Miracle Shot 하이라이트 사진 1"></div>
+                <div class="photo-item"><img src="images/m01.jpg" alt="Miracle Shot 하이라이트 사진 2"></div>
+                <div class="photo-item"><img src="images/m02.png" alt="Miracle Shot 하이라이트 사진 3"></div>
+                <div class="photo-item"><img src="images/m03.png" alt="Miracle Shot 하이라이트 사진 4"></div>
+                <div class="photo-item"><img src="images/m04.jpg" alt="Miracle Shot 하이라이트 사진 5"></div>
+                <div class="photo-item"><img src="images/m05.jpg" alt="Miracle Shot 하이라이트 사진 6"></div>
+                <div class="photo-item"><img src="images/m06.jpg" alt="Miracle Shot 하이라이트 사진 7"></div>
+                <div class="photo-item"><img src="images/m07.jpg" alt="Miracle Shot 하이라이트 사진 8"></div>
+                <div class="photo-item"><img src="images/m08.jpg" alt="Miracle Shot 하이라이트 사진 9"></div>
+                <div class="photo-item"><img src="images/m09.jpg" alt="Miracle Shot 하이라이트 사진 10"></div>
+            </div>
+        </section>
+
+        <h2 class="section-title" data-i18n="ost_sec_title">Original Soundtrack</h2>
+        <div class="ost-grid">
+
+            <!-- Main Theme -->
+            <div class="ost-item">
+                <div class="album-header">
+                    <h3 class="album-title">Miracle Shot</h3><span class="album-type">OST</span>
+                </div>
+                <div class="spotify-container-album">
+                    <button type="button" class="player-placeholder" onclick="injectIframe(this, 'https://www.youtube.com/embed/rbN6Hgwrp0M')" aria-label="Miracle Shot OST — YouTube 재생" title="Miracle Shot OST 재생">
+                        <div class="placeholder-bg" style="background-image: url('images/m00.jpg');"></div>
+                        <div class="placeholder-content">
+                            <div class="play-btn-circle">▶</div>
+                            <div class="placeholder-text" data-i18n="placeholder_text">음악 재생하기</div>
+                        </div>
+                    </button>
+                </div>
+                <a href="https://open.spotify.com/album/21owv1ciX15mEtqJXUIwJQ?si=G6Icc2OYRt-aqJ9tAqY7Ag" target="_blank" rel="noopener noreferrer" class="ost-btn" data-i18n="ost_btn">전체 앨범 듣기 ›</a>
+            </div>
+
+        </div>
+
+        <!-- ── SEO 상세 소개 블록 ── -->
+        <section style="max-width:900px; margin:60px auto 0; padding:0 20px;">
+            <div style="border:1px solid rgba(201,168,76,0.15); border-radius:20px; padding:36px 40px; background:rgba(10,10,18,0.7);">
+                <h2 style="font-family:'Cinzel',serif; color:#c9a84c; font-size:1.05rem; letter-spacing:2px; margin-bottom:24px;">✦ &nbsp; ABOUT MIRACLE SHOT</h2>
+
+                <!-- 스토리 상세 -->
+                <div style="margin-bottom:28px; padding-bottom:24px; border-bottom:1px solid rgba(255,255,255,0.06);">
+                    <h3 style="font-family:'Cinzel',serif; color:#e8d08a; font-size:0.88rem; letter-spacing:1.5px; margin-bottom:14px;">📖 THE STORY</h3>
+                    <p style="color:#c0bcb4; font-size:0.92rem; line-height:1.9; word-break:keep-all; text-align:left;">
+                        평범한 동네 풋살장에서 시작된 네 소년의 이야기. <strong style="color:#e8d08a;">최강 골키퍼 영</strong>, <strong style="color:#e8d08a;">불꽃 슈터 황</strong>, <strong style="color:#e8d08a;">슈퍼소닉 길</strong>, <strong style="color:#e8d08a;">패스마스터 고</strong>는 각자의 상처와 콤플렉스를 안고 필드에 섭니다. 이코치의 지도 아래 실패를 거듭하던 아이들은 서로를 믿는 법을 배우고, 마침내 <strong style="color:#c9a84c;">기적 같은 한 발</strong>을 함께 쏘아 올립니다.
+                    </p>
+                </div>
+
+                <!-- 캐릭터 상세 -->
+                <div style="margin-bottom:28px; padding-bottom:24px; border-bottom:1px solid rgba(255,255,255,0.06);">
+                    <h3 style="font-family:'Cinzel',serif; color:#e8d08a; font-size:0.88rem; letter-spacing:1.5px; margin-bottom:14px;">⚽ CHARACTERS</h3>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px;">
+                        <div style="background:rgba(201,168,76,0.06); border-radius:12px; padding:18px 20px;">
+                            <div style="color:#c9a84c; font-family:'Cinzel',serif; font-size:0.75rem; letter-spacing:1px; margin-bottom:6px;">THE ULTIMATE GOALKEEPER</div>
+                            <div style="color:#e8d08a; font-size:1rem; font-weight:700; margin-bottom:8px;">영 (Young)</div>
+                            <p style="color:#a0a09a; font-size:0.85rem; line-height:1.8;">누구도 뚫지 못하는 철벽 골키퍼. 반사신경과 담대함으로 팀의 마지막 수비선을 지킵니다.</p>
+                        </div>
+                        <div style="background:rgba(201,168,76,0.06); border-radius:12px; padding:18px 20px;">
+                            <div style="color:#c9a84c; font-family:'Cinzel',serif; font-size:0.75rem; letter-spacing:1px; margin-bottom:6px;">THE FLAME SHOOTER</div>
+                            <div style="color:#e8d08a; font-size:1rem; font-weight:700; margin-bottom:8px;">황 (Hwang)</div>
+                            <p style="color:#a0a09a; font-size:0.85rem; line-height:1.8;">불꽃 같은 슈팅의 소유자. 뜨거운 승부욕과 폭발적인 킥력으로 결정적 순간 골을 만듭니다.</p>
+                        </div>
+                        <div style="background:rgba(201,168,76,0.06); border-radius:12px; padding:18px 20px;">
+                            <div style="color:#c9a84c; font-family:'Cinzel',serif; font-size:0.75rem; letter-spacing:1px; margin-bottom:6px;">SUPERSONIC</div>
+                            <div style="color:#e8d08a; font-size:1rem; font-weight:700; margin-bottom:8px;">길 (Gil)</div>
+                            <p style="color:#a0a09a; font-size:0.85rem; line-height:1.8;">압도적인 스피드의 소유자. 빠른 드리블과 돌파력으로 상대 수비를 무너뜨립니다.</p>
+                        </div>
+                        <div style="background:rgba(201,168,76,0.06); border-radius:12px; padding:18px 20px;">
+                            <div style="color:#c9a84c; font-family:'Cinzel',serif; font-size:0.75rem; letter-spacing:1px; margin-bottom:6px;">THE PASS MASTER</div>
+                            <div style="color:#e8d08a; font-size:1rem; font-weight:700; margin-bottom:8px;">고 (Go)</div>
+                            <p style="color:#a0a09a; font-size:0.85rem; line-height:1.8;">탁월한 시야와 패스 감각의 소유자. 정교한 패스로 팀의 기적 같은 찬스를 만들어냅니다.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 작가 소개 -->
+                <div style="background:rgba(201,168,76,0.05); border-radius:14px; padding:22px 26px;">
+                    <h3 style="font-family:'Cinzel',serif; color:#c9a84c; font-size:0.85rem; letter-spacing:2px; margin-bottom:12px;">✦ &nbsp; ABOUT THE AUTHOR</h3>
+                    <p style="color:#a0a0b5; font-size:0.88rem; line-height:1.9; word-break:keep-all; text-align:left;">
+                        <strong style="color:#e8d08a;">Chris LEE.PAPA</strong>는 풋살을 통해 성장하는 아이들의 이야기를 담아 Miracle Shot 오리지널 IP를 창작했습니다. 실패해도 다시 일어서는 아이들의 용기, 그리고 함께할 때 비로소 완성되는 팀워크의 가치를 담은 <strong style="color:#e8d08a;">스포츠 판타지 소설</strong>입니다.
+                    </p>
+                </div>
+            </div>
+        </section>
+        <!-- ── SEO 블록 끝 ── -->
+
+    </div>
+
+    <!-- ★ 공통 푸터 -->
+    <div id="site-footer"></div>
+
+    <!-- ★ 페이지 전용 i18n -->
+    <script>
+        window.PAGE_I18N = {
+            ko: {
+                share_desc:       '네 소년의 기적 같은 풋살 이야기를 소중한 사람들에게 전하세요.',
+                header_title:     'MIRACLE SHOT',
+                header_slogan:    'Four Boys, One Miracle',
+                back_link:        '‹ 라이브러리로 돌아가기',
+                story_label:      'THE STORY',
+                story_desc:       '개성이 넘치는 네 소년, 최강 골키퍼 <b>\'영\'</b>, 불꽃 슈터 <b>\'황\'</b>,<br>슈퍼소닉 <b>\'길\'</b>, 패스마스터 <b>\'고\'</b>가<br>이코치와 함께 풋살 팀을 이룹니다.<br><br>실패와 좌절 속에서도 포기하지 않고 흘린 땀은<br><b>기적 같은 한 발</b>이 되어 필드 위로 쏘아 올려집니다.',
+                char_sec_title:   '캐릭터 소개',
+                media_sec_title:  '주요 사진 & 영상',
+                ost_sec_title:    '오리지널 사운드트랙',
+                placeholder_text: '음악 재생하기',
+                ost_btn:          '전체 앨범 듣기 ›'
+            },
+            en: {
+                share_desc:       'Share the miraculous futsal story of four boys with your loved ones.',
+                header_title:     'MIRACLE SHOT',
+                header_slogan:    'Four Boys, One Miracle',
+                back_link:        '‹ Back to Library',
+                story_label:      'THE STORY',
+                story_desc:       'Four boys full of personality — the ultimate goalkeeper <b>\'Young\'</b>, flame shooter <b>\'Hwang\'</b>,<br>supersonic <b>\'Gil\'</b>, and pass master <b>\'Go\'</b> —<br>form a futsal team under Coach Lee.<br><br>Through failure and setbacks, their sweat becomes<br>a <b>miraculous shot</b> fired across the field.',
+                char_sec_title:   'Character Introduction',
+                media_sec_title:  'Highlights: Photos &amp; Video',
+                ost_sec_title:    'Original Soundtrack',
+                placeholder_text: 'CLICK TO PLAY',
+                ost_btn:          'Listen Full Album ›'
+            }
+        };
+
+        window.onMainReady = function() {
+            const canvas = document.getElementById('stars-canvas');
+            const ctx = canvas ? canvas.getContext('2d') : null;
+            let stars = [];
+            function resize() {
+                if (!canvas) return;
+                canvas.width = window.innerWidth;
+                canvas.height = 400;
+                initStars();
+            }
+            function initStars() {
+                if (!canvas) return;
+                stars = [];
+                const count = (canvas.width * canvas.height) / 7000;
+                for (let i = 0; i < count; i++) {
+                    stars.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        size: Math.random() * 1.5 + 0.2,
+                        opacity: Math.random(),
+                        speed: Math.random() * 0.015 + 0.005,
+                        color: Math.random() > 0.8 ? '0, 212, 255' : '255, 255, 255'
+                    });
+                }
+            }
+            function draw() {
+                if (!canvas || !ctx) return;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                stars.forEach(s => {
+                    s.opacity += s.speed;
+                    if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed;
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(${s.color}, ${Math.max(0, s.opacity)})`;
+                    ctx.fill();
+                });
+                requestAnimationFrame(draw);
+            }
+            window.addEventListener('resize', resize);
+            resize();
+            draw();
+        };
+
+        function safeNavigate(url) { if (url && url.trim() !== '') window.location.assign(url); }
+
+        function injectIframe(element, url) {
+            const container = element && element.parentElement;
+            if (!container) return;
+            const iframe = document.createElement('iframe');
+            iframe.src = url;
+            iframe.width = '100%';
+            iframe.height = '352';
+            iframe.frameBorder = '0';
+            iframe.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
+            iframe.loading = 'lazy';
+            iframe.title = element.getAttribute('aria-label') || 'YouTube player';
+            container.innerHTML = '';
+            container.appendChild(iframe);
+        }
+    </script>
+
+    <!-- ★ 공통 스크립트 -->
+    <script src="js/main.js"></script>
+
+</body>
+</html>

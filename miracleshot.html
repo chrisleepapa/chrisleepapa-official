@@ -97,25 +97,26 @@
         /* ── 캐릭터 ── */
         .character-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 100px; }
         .char-card { display: block; color: inherit; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 24px; text-align: center; transition: 0.4s ease; backdrop-filter: blur(5px); overflow: hidden; cursor: pointer; }
-        .char-card:hover { transform: translateY(-12px); border-color: var(--accent); box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 25px var(--accent-glow); }
+        .char-card:hover, .char-card.flipped { transform: translateY(-12px); border-color: var(--accent); box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 25px var(--accent-glow); }
         .char-img-area { width: 100%; height: 460px; background: rgba(0,0,0,0.25); position: relative; overflow: hidden; }
         .char-photo, .bible-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center; transition: opacity 0.7s ease; }
         .char-photo { opacity: 1; z-index: 2; }
         .bible-photo { opacity: 0; z-index: 1; }
-        .char-card:hover .char-photo { opacity: 0; }
-        .char-card:hover .bible-photo { opacity: 1; }
-        .char-card:hover .char-img-area { transform: scale(1.02); }
+        .char-card:hover .char-photo, .char-card.flipped .char-photo { opacity: 0; }
+        .char-card:hover .bible-photo, .char-card.flipped .bible-photo { opacity: 1; }
+        .char-card:hover .char-img-area, .char-card.flipped .char-img-area { transform: scale(1.02); }
         .char-content { padding: 40px 30px; position: relative; }
         .char-tag { font-size: 0.7rem; color: var(--accent); border: 1px solid var(--accent); padding: 3px 14px; border-radius: 20px; margin-bottom: 15px; display: inline-block; text-transform: uppercase; letter-spacing: 1px; }
         .char-name { font-family: 'Cinzel', serif; font-size: 1.8rem; font-weight: 700; color: #fff; margin-bottom: 0; transition: margin 0.5s ease; }
         .char-desc { font-size: 1rem; color: #a0a0b5; line-height: 1.8; word-break: keep-all; font-weight: 300; max-height: 0; opacity: 0; transform: translateY(20px); transition: all 0.5s ease; overflow: hidden; margin-top: 0; }
-        .char-card:hover .char-name { margin-bottom: 15px; }
-        .char-card:hover .char-desc { max-height: 150px; opacity: 1; transform: translateY(0); margin-top: 15px; }
+        .char-card:hover .char-name, .char-card.flipped .char-name { margin-bottom: 15px; }
+        .char-card:hover .char-desc, .char-card.flipped .char-desc { max-height: 150px; opacity: 1; transform: translateY(0); margin-top: 15px; }
         .bible-info { max-height: 0; opacity: 0; transform: translateY(15px); transition: all 0.6s ease 0.1s; overflow: hidden; margin-top: 0; padding-top: 0; border-top: 0 solid rgba(201,168,76,0.2); }
-        .char-card:hover .bible-info { max-height: 200px; opacity: 1; transform: translateY(0); margin-top: 18px; padding-top: 18px; border-top: 1px solid rgba(201,168,76,0.2); }
+        .char-card:hover .bible-info, .char-card.flipped .bible-info { max-height: 200px; opacity: 1; transform: translateY(0); margin-top: 18px; padding-top: 18px; border-top: 1px solid rgba(201,168,76,0.2); }
         .bible-label { display: block; font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 2px; color: var(--gold-light); text-transform: uppercase; margin-bottom: 6px; }
         .bible-name { display: block; font-family: 'Cinzel', serif; font-size: 1.1rem; color: var(--gold); margin-bottom: 8px; }
         .bible-desc { font-size: 0.88rem; color: #b8b4ac; line-height: 1.7; word-break: keep-all; font-weight: 300; }
+        .flip-hint { display: none; }
 
         /* ── 주요 사진 & 영상 ── */
         .media-section { margin-bottom: 100px; }
@@ -172,12 +173,10 @@
         @media (max-width: 900px) {
             .character-grid { grid-template-columns: 1fr; }
             .char-img-area { height: 380px; }
-            .char-name { margin-bottom: 15px; }
-            .char-desc { max-height: none; opacity: 1; transform: none; margin-top: 15px; }
-            .bible-info { max-height: none; opacity: 1; transform: none; margin-top: 18px; padding-top: 18px; border-top: 1px solid rgba(201,168,76,0.2); }
-            .bible-photo { display: none; }
             .synopsis-section { padding: 35px 20px; }
             .container { padding-bottom: 60px; }
+            .flip-hint { display: block; font-size: 0.7rem; color: var(--accent); letter-spacing: 1px; margin-top: 6px; opacity: 0.8; }
+            .char-card.flipped .flip-hint { display: none; }
         }
     </style>
 </head>
@@ -204,7 +203,7 @@
 
         <h2 class="section-title" data-i18n="char_sec_title">Character Introduction</h2>
         <div class="character-grid">
-            <div class="char-card" style="cursor:default;">
+            <div class="char-card">
                 <div class="char-img-area">
                     <img class="char-photo" src="images/y00.jpg" loading="eager" decoding="async" alt="영 (Young) — Miracle Shot The Ultimate Goalkeeper 캐릭터">
                     <img class="bible-photo" src="images/y01.jpg" loading="lazy" decoding="async" alt="영과 닮은 성경 속 인물 바울">
@@ -218,9 +217,10 @@
                         <strong class="bible-name">바울 (Paul)</strong>
                         <p class="bible-desc" style="word-break:keep-all;">교회를 핍박하던 사람에서 구원받아, 복음을 전하는 데 목숨까지 던졌던 바울. 영도 힘을 두려워하던 마음을 내려놓고, 그 힘을 지키는 일에 쓰기로 결심합니다.</p>
                     </div>
+                    <span class="flip-hint">탭해서 성경 속 인물 보기 ›</span>
                 </div>
             </div>
-            <div class="char-card" style="cursor:default;">
+            <div class="char-card">
                 <div class="char-img-area">
                     <img class="char-photo" src="images/h00.jpg" loading="eager" decoding="async" alt="황 (Hwang) — Miracle Shot The Flame Shooter 캐릭터">
                     <img class="bible-photo" src="images/h01.jpg" loading="lazy" decoding="async" alt="황과 닮은 성경 속 인물 다윗">
@@ -234,9 +234,10 @@
                         <strong class="bible-name">다윗 (David)</strong>
                         <p class="bible-desc" style="word-break:keep-all;">작은 몸이지만 큰 믿음으로 하나님께 선택받아 왕이 된 다윗. 황도 왜소한 체격을 딛고, 홀로 벽을 향해 공을 차며 자신만의 강한 슛을 갈고닦았습니다.</p>
                     </div>
+                    <span class="flip-hint">탭해서 성경 속 인물 보기 ›</span>
                 </div>
             </div>
-            <div class="char-card" style="cursor:default;">
+            <div class="char-card">
                 <div class="char-img-area">
                     <img class="char-photo" src="images/g00.jpg" loading="eager" decoding="async" alt="길 (Gil) — Miracle Shot Supersonic 캐릭터">
                     <img class="bible-photo" src="images/g01.jpg" loading="lazy" decoding="async" alt="길과 닮은 성경 속 인물 삼손">
@@ -250,9 +251,10 @@
                         <strong class="bible-name">삼손 (Samson)</strong>
                         <p class="bible-desc" style="word-break:keep-all;">넘치는 힘을 과시하며 살다가, 마지막 순간 하나님께 응답받아 영웅이 된 삼손. 길도 멈추지 못하는 에너지 때문에 오해받았지만, 마침내 진짜 쓰임을 찾아갑니다.</p>
                     </div>
+                    <span class="flip-hint">탭해서 성경 속 인물 보기 ›</span>
                 </div>
             </div>
-            <div class="char-card" style="cursor:default;">
+            <div class="char-card">
                 <div class="char-img-area">
                     <img class="char-photo" src="images/k00.jpg" loading="eager" decoding="async" alt="고 (Go) — Miracle Shot The Pass Master 캐릭터">
                     <img class="bible-photo" src="images/k01.jpg" loading="lazy" decoding="async" alt="고와 닮은 성경 속 인물 에스더">
@@ -266,6 +268,7 @@
                         <strong class="bible-name">에스더 (Esther)</strong>
                         <p class="bible-desc" style="word-break:keep-all;">절체절명의 위기 앞에서 백성들에게 기도를 부탁하고, 담대하게 나아간 에스더. 고도 동료들을 믿는 법을 배우며, 결정적인 순간 패스를 찌를 용기를 얻습니다.</p>
                     </div>
+                    <span class="flip-hint">탭해서 성경 속 인물 보기 ›</span>
                 </div>
             </div>
         </div>
@@ -398,7 +401,6 @@
                 header_slogan:    'Four Boys, One Miracle',
                 back_link:        '‹ 라이브러리로 돌아가기',
                 story_label:      'THE STORY',
-                story_desc:       '개성이 넘치는 네 소년, 최강 골키퍼 <b>\'영\'</b>, 불꽃 슈터 <b>\'황\'</b>,<br>슈퍼소닉 <b>\'길\'</b>, 패스마스터 <b>\'고\'</b>가<br>이코치와 함께 풋살 팀을 이룹니다.<br><br>실패와 좌절 속에서도 포기하지 않고 흘린 땀은<br><b>기적 같은 한 발</b>이 되어 필드 위로 쏘아 올려집니다.',
                 char_sec_title:   '캐릭터 소개',
                 media_sec_title:  '주요 사진',
                 buy_sec_title:    '도서 구매하기',
@@ -416,7 +418,6 @@
                 header_slogan:    'Four Boys, One Miracle',
                 back_link:        '‹ Back to Library',
                 story_label:      'THE STORY',
-                story_desc:       'Four boys full of personality — the ultimate goalkeeper <b>\'Young\'</b>, flame shooter <b>\'Hwang\'</b>,<br>supersonic <b>\'Gil\'</b>, and pass master <b>\'Go\'</b> —<br>form a futsal team under Coach Lee.<br><br>Through failure and setbacks, their sweat becomes<br>a <b>miraculous shot</b> fired across the field.',
                 char_sec_title:   'Character Introduction',
                 media_sec_title:  'Highlights: Photos',
                 buy_sec_title:    'Get the Book',
@@ -496,6 +497,19 @@
             document.querySelectorAll('.photo-item img').forEach(function(img) {
                 img.addEventListener('click', function() {
                     openLightbox(img.src, img.alt);
+                });
+            });
+
+            // 캐릭터 카드: 터치 기기에서는 hover가 없으므로 탭으로 성경인물 사진/설명을 토글
+            document.querySelectorAll('.char-card').forEach(function(card) {
+                card.addEventListener('click', function(e) {
+                    const isTouch = window.matchMedia('(hover: none)').matches;
+                    if (!isTouch) return; // 데스크탑은 기존 hover 효과 그대로 사용
+                    const alreadyOpen = card.classList.contains('flipped');
+                    document.querySelectorAll('.char-card.flipped').forEach(function(c) {
+                        if (c !== card) c.classList.remove('flipped');
+                    });
+                    card.classList.toggle('flipped', !alreadyOpen);
                 });
             });
         });

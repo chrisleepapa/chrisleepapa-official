@@ -55,6 +55,7 @@
             --gold: #c9a84c; --gold-light: #e8d08a; --cyan: #00d4ff;
             --bg: #030305; --text: #f0ece4; --text-dim: #9a9490;
             --nav-height: 70px; --pink-glow: rgba(255, 180, 200, 0.3);
+            --cyan-glow: rgba(0, 212, 255, 0.3);
         }
         html { scroll-behavior: smooth; background-color: var(--bg); }
         body {
@@ -84,32 +85,26 @@
 
         /* ── 본문 카드 ── */
         .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px 100px; position: relative; z-index: 10; }
-        .hero-card.sistersquad { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 180, 200, 0.2); border-radius: 24px; padding: 60px 40px; text-align: center; margin-bottom: 60px; backdrop-filter: blur(10px); transition: transform 0.4s ease, border-color 0.4s, box-shadow 0.4s; animation: fadeUp 1s ease 0.2s both; cursor: pointer; }
+        .hero-card { background: rgba(255, 255, 255, 0.02); border-radius: 24px; padding: 60px 40px; text-align: center; margin-bottom: 40px; backdrop-filter: blur(10px); transition: transform 0.4s ease, border-color 0.4s, box-shadow 0.4s; cursor: pointer; }
+        .hero-card.sistersquad { border: 1px solid rgba(255, 180, 200, 0.2); animation: fadeUp 1s ease 0.2s both; }
         .hero-card.sistersquad:hover { transform: translateY(-8px); border-color: rgba(255, 180, 200, 0.5); box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 40px var(--pink-glow); }
+        .hero-card.miracleshot { border: 1px solid rgba(0, 212, 255, 0.2); animation: fadeUp 1s ease 0.35s both; }
+        .hero-card.miracleshot:hover { transform: translateY(-8px); border-color: rgba(0, 212, 255, 0.5); box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 40px var(--cyan-glow); }
         .card-image-box { width: 100%; max-width: 500px; height: 300px; margin: 0 auto 35px; border-radius: 16px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.5); border: 1px solid rgba(255, 255, 255, 0.05); }
         .card-image-box img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
         .sister-title { font-family: 'Cinzel', serif; font-size: clamp(2rem, 6vw, 3.2rem); font-weight: 700; color: #ffb4c8; margin-bottom: 20px; letter-spacing: 2px; text-shadow: 0 0 15px var(--pink-glow); }
+        .miracle-title { font-family: 'Cinzel', serif; font-size: clamp(2rem, 6vw, 3.2rem); font-weight: 700; color: var(--cyan); margin-bottom: 20px; letter-spacing: 2px; text-shadow: 0 0 15px var(--cyan-glow); }
         .desc-text { font-size: 1.1rem; color: #cdd6f4; max-width: 750px; margin: 0 auto 35px; line-height: 1.8; font-weight: 300; word-break: keep-all; }
         .action-btn { display: inline-block; padding: 12px 45px; background: transparent; color: #fff; border: 1px solid #ffb4c8; border-radius: 30px; font-weight: 600; font-size: 0.95rem; transition: 0.3s; letter-spacing: 1px; text-transform: uppercase; }
-        .hero-card:hover .action-btn { background: #ffb4c8; color: #000; box-shadow: 0 0 20px var(--pink-glow); }
-
-        .teaser-card { background: rgba(255, 255, 255, 0.01); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 50px 40px; display: flex; flex-direction: column; align-items: center; gap: 30px; backdrop-filter: blur(5px); animation: fadeUp 1s ease 0.4s both; text-align: center; }
-        .teaser-img-wrap { position: relative; width: 100%; border-radius: 12px; overflow: hidden; }
-        .teaser-img { width: 100%; height: 320px; border-radius: 12px; overflow: hidden; opacity: 0.8; filter: contrast(1.1); box-shadow: 0 10px 20px rgba(0,0,0,0.4); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .teaser-img img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
-        @keyframes pulseGlow { 0% { box-shadow: 0 0 0 0 rgba(74, 144, 226, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(74, 144, 226, 0); } 100% { box-shadow: 0 0 0 0 rgba(74, 144, 226, 0); } }
-        .teaser-coming-soon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(74, 144, 226, 0.85); color: #fff; padding: 12px 36px; border-radius: 30px; font-family: 'Cinzel', serif; font-size: 1rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,0.25); white-space: nowrap; animation: pulseGlow 2s infinite; }
-        .teaser-content { width: 100%; }
-        .teaser-title { font-size: 2rem; color: #ffffff; margin-bottom: 15px; font-weight: 700; }
-        .teaser-desc { color: #8a8a9d; font-size: 1rem; line-height: 1.7; word-break: keep-all; }
+        .hero-card.sistersquad:hover .action-btn { background: #ffb4c8; color: #000; box-shadow: 0 0 20px var(--pink-glow); }
+        .action-btn.miracle-btn { border: 1px solid var(--cyan); }
+        .hero-card.miracleshot:hover .action-btn { background: var(--cyan); color: #000; box-shadow: 0 0 20px var(--cyan-glow); }
 
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
         @media (max-width: 900px) {
-            .hero-card.sistersquad { padding: 45px 20px; }
+            .hero-card { padding: 45px 20px; }
             .card-image-box { height: 220px; }
-            .teaser-card { padding: 30px 20px; gap: 20px; }
-            .teaser-img { height: 220px; background-size: cover; }
         }
     </style>
 </head>
@@ -135,15 +130,11 @@
             <a href="sistersquad.html" class="action-btn" onclick="event.stopPropagation()" data-i18n="btn_readmore">Read More</a>
         </section>
 
-        <section class="teaser-card">
-            <div class="teaser-img-wrap">
-                <div class="teaser-img"><img src="images/miracleshot1.png" alt="Miracle Shot 풋살 판타지 소설 — Chris LEE.PAPA 원작 스포츠 성장 소설 커버" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
-                <span class="teaser-coming-soon" data-i18n="teaser_badge">COMING SOON</span>
-            </div>
-            <div class="teaser-content">
-                <h2 class="teaser-title" data-i18n="teaser_title">Miracle Shot</h2>
-                <p class="teaser-desc" style="word-break:keep-all;">개성이 넘치는 아이들과 함께 실패에서 기적을 쏘아 올리는 이코치의 이야기. 최강 골레이로 '영', 불꽃슈터 '황', 슈퍼소닉 '길', 패스마스터 '고' — 네 소년의 환상의 풋살 판타지를 만나세요.</p>
-            </div>
+        <section class="hero-card miracleshot" role="link" tabindex="0" onclick="safeNavigate('miracleshot.html')" onkeydown="handleCardKey(event, 'miracleshot.html')">
+            <div class="card-image-box"><img src="images/miracleshot1.png" alt="Miracle Shot 풋살 판타지 소설 — Chris LEE.PAPA 원작 스포츠 성장 소설 표지"></div>
+            <h2 class="miracle-title" data-i18n="teaser_title">Miracle Shot</h2>
+            <p class="desc-text" style="word-break:keep-all;">개성이 넘치는 아이들과 함께 실패에서 기적을 쏘아 올리는 이코치의 이야기. 최강 골레이로 '영', 불꽃슈터 '황', 슈퍼소닉 '길', 패스마스터 '고' — 네 소년의 환상적인 풋살 판타지, 지금 만나보세요.</p>
+            <a href="miracleshot.html" class="action-btn miracle-btn" onclick="event.stopPropagation()" data-i18n="btn_readmore">Read More</a>
         </section>
     </div>
 
@@ -183,7 +174,7 @@
 
             <!-- Miracle Shot -->
             <div>
-                <h3 style="font-family:'Cinzel',serif; color:#e8d08a; font-size:1rem; letter-spacing:1.5px; margin-bottom:14px;">MIRACLE SHOT — 미라클 샷 <span style="font-size:0.75rem; color:#c9a84c; background:rgba(201,168,76,0.12); border-radius:20px; padding:3px 10px; margin-left:8px; letter-spacing:1px;">COMING SOON</span></h3>
+                <h3 style="font-family:'Cinzel',serif; color:#e8d08a; font-size:1rem; letter-spacing:1.5px; margin-bottom:14px;">MIRACLE SHOT — 미라클 샷</h3>
                 <p style="color:#c0bcb4; font-size:0.92rem; line-height:1.9; margin-bottom:14px; word-break:keep-all; text-align:left;">
                     <strong style="color:#e8d08a;">Miracle Shot</strong>은 풋살을 통해 성장하는 네 소년과 그들을 이끄는 이코치의 이야기입니다. 실패와 좌절 속에서도 포기하지 않는 아이들이 기적 같은 한 발을 쏘아 올리는 <strong style="color:#c9a84c;">스포츠 판타지 소설</strong>입니다.
                 </p>
@@ -201,7 +192,7 @@
                     </div>
                     <div style="background:rgba(201,168,76,0.07); border-radius:10px; padding:12px 14px;">
                         <div style="color:#c9a84c; font-size:0.75rem; font-family:'Cinzel',serif; letter-spacing:1px; margin-bottom:6px;">상태</div>
-                        <div style="color:#b0acaa; font-size:0.85rem;">집필 중 (2026)</div>
+                        <div style="color:#b0acaa; font-size:0.85rem;">출간 완료 (2026)</div>
                     </div>
                     <div style="background:rgba(201,168,76,0.07); border-radius:10px; padding:12px 14px;">
                         <div style="color:#c9a84c; font-size:0.75rem; font-family:'Cinzel',serif; letter-spacing:1px; margin-bottom:6px;">작가</div>
@@ -211,7 +202,7 @@
             </div>
 
             <p style="color:#666; font-size:0.82rem; line-height:1.8; margin-top:28px; padding-top:20px; border-top:1px solid rgba(255,255,255,0.05);">
-                두 작품 모두 <strong style="color:#c9a84c;">Chris LEE.PAPA</strong>가 직접 기획·집필하는 오리지널 창작 IP입니다.
+                두 작품 모두 <strong style="color:#c9a84c;">Chris LEE.PAPA</strong>가 직접 기획·집필한 오리지널 창작 IP입니다.
                 두 딸 율이, 정이와 함께 상상하고, 아이들의 눈높이에서 바라본 세상을 이야기로 엮어 나갑니다.
                 신작 소식은 이 페이지에서 가장 먼저 공개됩니다.
             </p>
@@ -232,9 +223,8 @@
                 sister_title:     'SISTER SQUAD',
                 sister_desc:      '책 속 마법 세계로 들어간 언니와 동생!<br>어둠에 맞서며 진정한 용기와<br> 가족의 사랑을 깨닫는 환상적인 모험.<br>사랑하는 두 딸에게서 영감을 받아<br> 탄생한 따뜻한 판타지 소설 입니다.',
                 btn_readmore:     'Read More',
-                teaser_badge:     'COMING SOON',
                 teaser_title:     'Miracle Shot',
-                teaser_desc:      '개성이 넘치는 아이들과 함께 실패에서<br>기적을 쏘아 올리는 이코치의 이야기.<br>최강 골레이로 \'영\', 불꽃슈터 \'황\'<br> 슈퍼소닉 \'길\', 패스마스터 \'고\'<br>네 소년의 환상의 풋살 판타지를 만나세요.'
+                teaser_desc:      '개성이 넘치는 아이들과 함께 실패에서<br>기적을 쏘아 올리는 이코치의 이야기.<br>최강 골레이로 \'영\', 불꽃슈터 \'황\'<br> 슈퍼소닉 \'길\', 패스마스터 \'고\'<br>네 소년의 환상적인 풋살 판타지, 지금 만나보세요.'
             },
             en: {
                 share_desc:       'Share this magical imaginary universe with your loved ones.',
@@ -243,9 +233,8 @@
                 sister_title:     'SISTER SQUAD',
                 sister_desc:      'Two sisters who entered a magical world in a book!<br>A fantastic adventure of facing darkness<br>and realizing true courage and family love.<br>A heartwarming fantasy novel inspired by<br>my two beloved daughters.',
                 btn_readmore:     'Read More',
-                teaser_badge:     'COMING SOON',
                 teaser_title:     'Miracle Shot',
-                teaser_desc:      'The story of Coach Lee shooting a miracle<br>out of failure with kids full of personality.<br>The strongest Goleiro \'Young\', Flame Shooter \'Hwang\',<br>Supersonic \'Gil\', Pass Master \'Go\'.<br>Meet the fantastic futsal fantasy of four boys.'
+                teaser_desc:      'The story of Coach Lee shooting a miracle<br>out of failure with kids full of personality.<br>The strongest Goleiro \'Young\', Flame Shooter \'Hwang\',<br>Supersonic \'Gil\', Pass Master \'Go\'.<br>Now available — meet the fantastic futsal fantasy of four boys.'
             }
         };
 

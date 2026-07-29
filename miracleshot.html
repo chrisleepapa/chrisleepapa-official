@@ -125,9 +125,17 @@
         .video-item { position: relative; width: 100%; padding-bottom: 56.25%; border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 10px 25px rgba(0,0,0,0.4); background: #000; }
         .video-item video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
         .photo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
-        .photo-item { border-radius: 16px; overflow: hidden; aspect-ratio: 4 / 3; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
+        .photo-item { border-radius: 16px; overflow: hidden; aspect-ratio: 4 / 3; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 10px 25px rgba(0,0,0,0.4); cursor: zoom-in; }
         .photo-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: 0.5s ease; }
         .photo-item:hover img { transform: scale(1.08); }
+
+        /* ── 라이트박스 ── */
+        .lightbox-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.92); display: flex; align-items: center; justify-content: center; z-index: 9999; opacity: 0; visibility: hidden; transition: opacity 0.3s ease; padding: 30px; }
+        .lightbox-overlay.active { opacity: 1; visibility: visible; }
+        .lightbox-overlay img { max-width: 92vw; max-height: 88vh; border-radius: 12px; box-shadow: 0 30px 80px rgba(0,0,0,0.8); animation: lightboxIn 0.3s ease; }
+        @keyframes lightboxIn { from { opacity: 0; transform: scale(0.94); } to { opacity: 1; transform: scale(1); } }
+        .lightbox-close { position: absolute; top: 24px; right: 32px; font-size: 2.2rem; color: #fff; cursor: pointer; line-height: 1; user-select: none; transition: 0.2s; }
+        .lightbox-close:hover { color: var(--accent); transform: scale(1.1); }
 
         /* ── 구매하기 ── */
         .buy-section { margin-bottom: 100px; }
@@ -196,8 +204,8 @@
         <div class="character-grid">
             <div class="char-card" style="cursor:default;">
                 <div class="char-img-area">
-                    <img class="char-photo" src="images/y00.png" alt="영 (Young) — Miracle Shot The Ultimate Goalkeeper 캐릭터">
-                    <img class="bible-photo" src="images/y01.png" alt="영과 닮은 성경 속 인물 바울">
+                    <img class="char-photo" src="images/y00.jpg" loading="eager" decoding="async" alt="영 (Young) — Miracle Shot The Ultimate Goalkeeper 캐릭터">
+                    <img class="bible-photo" src="images/y01.jpg" loading="lazy" decoding="async" alt="영과 닮은 성경 속 인물 바울">
                 </div>
                 <div class="char-content">
                     <span class="char-tag">The Ultimate Goalkeeper</span>
@@ -212,8 +220,8 @@
             </div>
             <div class="char-card" style="cursor:default;">
                 <div class="char-img-area">
-                    <img class="char-photo" src="images/h00.png" alt="황 (Hwang) — Miracle Shot The Flame Shooter 캐릭터">
-                    <img class="bible-photo" src="images/h01.png" alt="황과 닮은 성경 속 인물 다윗">
+                    <img class="char-photo" src="images/h00.jpg" loading="eager" decoding="async" alt="황 (Hwang) — Miracle Shot The Flame Shooter 캐릭터">
+                    <img class="bible-photo" src="images/h01.jpg" loading="lazy" decoding="async" alt="황과 닮은 성경 속 인물 다윗">
                 </div>
                 <div class="char-content">
                     <span class="char-tag">The Flame Shooter</span>
@@ -228,8 +236,8 @@
             </div>
             <div class="char-card" style="cursor:default;">
                 <div class="char-img-area">
-                    <img class="char-photo" src="images/g00.png" alt="길 (Gil) — Miracle Shot Supersonic 캐릭터">
-                    <img class="bible-photo" src="images/g01.png" alt="길과 닮은 성경 속 인물 삼손">
+                    <img class="char-photo" src="images/g00.jpg" loading="eager" decoding="async" alt="길 (Gil) — Miracle Shot Supersonic 캐릭터">
+                    <img class="bible-photo" src="images/g01.jpg" loading="lazy" decoding="async" alt="길과 닮은 성경 속 인물 삼손">
                 </div>
                 <div class="char-content">
                     <span class="char-tag">Supersonic</span>
@@ -244,8 +252,8 @@
             </div>
             <div class="char-card" style="cursor:default;">
                 <div class="char-img-area">
-                    <img class="char-photo" src="images/k00.png" alt="고 (Go) — Miracle Shot The Pass Master 캐릭터">
-                    <img class="bible-photo" src="images/k01.png" alt="고와 닮은 성경 속 인물 에스더">
+                    <img class="char-photo" src="images/k00.jpg" loading="eager" decoding="async" alt="고 (Go) — Miracle Shot The Pass Master 캐릭터">
+                    <img class="bible-photo" src="images/k01.jpg" loading="lazy" decoding="async" alt="고와 닮은 성경 속 인물 에스더">
                 </div>
                 <div class="char-content">
                     <span class="char-tag">The Pass Master</span>
@@ -263,24 +271,24 @@
         <h2 class="section-title" data-i18n="media_sec_title">Highlights: Photos</h2>
         <section class="media-section">
             <div class="photo-grid">
-                <div class="photo-item"><img src="images/m00.jpg" alt="Miracle Shot 하이라이트 사진 1"></div>
-                <div class="photo-item"><img src="images/m01.jpg" alt="Miracle Shot 하이라이트 사진 2"></div>
-                <div class="photo-item"><img src="images/m02.png" alt="Miracle Shot 하이라이트 사진 3"></div>
-                <div class="photo-item"><img src="images/m03.png" alt="Miracle Shot 하이라이트 사진 4"></div>
-                <div class="photo-item"><img src="images/m04.jpg" alt="Miracle Shot 하이라이트 사진 5"></div>
-                <div class="photo-item"><img src="images/m05.jpg" alt="Miracle Shot 하이라이트 사진 6"></div>
-                <div class="photo-item"><img src="images/m06.jpg" alt="Miracle Shot 하이라이트 사진 7"></div>
-                <div class="photo-item"><img src="images/m07.jpg" alt="Miracle Shot 하이라이트 사진 8"></div>
-                <div class="photo-item"><img src="images/m08.jpg" alt="Miracle Shot 하이라이트 사진 9"></div>
-                <div class="photo-item"><img src="images/m09.jpg" alt="Miracle Shot 하이라이트 사진 10"></div>
-                <div class="photo-item"><img src="images/m10.png" alt="Miracle Shot 하이라이트 사진 11"></div>
-                <div class="photo-item"><img src="images/m11.png" alt="Miracle Shot 하이라이트 사진 12"></div>
-                <div class="photo-item"><img src="images/m12.png" alt="Miracle Shot 하이라이트 사진 13"></div>
-                <div class="photo-item"><img src="images/m13.png" alt="Miracle Shot 하이라이트 사진 14"></div>
-                <div class="photo-item"><img src="images/m23.png" alt="Miracle Shot 하이라이트 사진 24"></div>
-                <div class="photo-item"><img src="images/m25.png" alt="Miracle Shot 하이라이트 사진 26"></div>
-                <div class="photo-item"><img src="images/m27.png" alt="Miracle Shot 하이라이트 사진 28"></div>
-                <div class="photo-item"><img src="images/m29.png" alt="Miracle Shot 하이라이트 사진 29"></div>
+                <div class="photo-item"><img src="images/m00.jpg" alt="Miracle Shot 하이라이트 사진 1" loading="lazy" decoding="async"></div>
+                <div class="photo-item"><img src="images/m01.jpg" alt="Miracle Shot 하이라이트 사진 2" loading="lazy" decoding="async"></div>
+                <div class="photo-item"><img src="images/m02.png" alt="Miracle Shot 하이라이트 사진 3" loading="lazy" decoding="async"></div>
+                <div class="photo-item"><img src="images/m03.png" alt="Miracle Shot 하이라이트 사진 4" loading="lazy" decoding="async"></div>
+                <div class="photo-item"><img src="images/m04.jpg" alt="Miracle Shot 하이라이트 사진 5" loading="lazy" decoding="async"></div>
+                <div class="photo-item"><img src="images/m05.jpg" alt="Miracle Shot 하이라이트 사진 6" loading="lazy" decoding="async"></div>
+                <div class="photo-item"><img src="images/m06.jpg" alt="Miracle Shot 하이라이트 사진 7" loading="lazy" decoding="async"></div>
+                <div class="photo-item"><img src="images/m07.jpg" alt="Miracle Shot 하이라이트 사진 8" loading="lazy" decoding="async"></div>
+                <div class="photo-item"><img src="images/m08.jpg" alt="Miracle Shot 하이라이트 사진 9" loading="lazy" decoding="async"></div>
+                <div class="photo-item"><img src="images/m09.jpg" alt="Miracle Shot 하이라이트 사진 10" loading="lazy" decoding="async"></div>
+                <div class="photo-item"><img src="images/m10.png" alt="Miracle Shot 하이라이트 사진 11" loading="lazy" decoding="async"></div>
+                <div class="photo-item"><img src="images/m11.png" alt="Miracle Shot 하이라이트 사진 12" loading="lazy" decoding="async"></div>
+                <div class="photo-item"><img src="images/m12.png" alt="Miracle Shot 하이라이트 사진 13" loading="lazy" decoding="async"></div>
+                <div class="photo-item"><img src="images/m13.png" alt="Miracle Shot 하이라이트 사진 14" loading="lazy" decoding="async"></div>
+                <div class="photo-item"><img src="images/m23.png" alt="Miracle Shot 하이라이트 사진 24" loading="lazy" decoding="async"></div>
+                <div class="photo-item"><img src="images/m25.png" alt="Miracle Shot 하이라이트 사진 26" loading="lazy" decoding="async"></div>
+                <div class="photo-item"><img src="images/m27.png" alt="Miracle Shot 하이라이트 사진 28" loading="lazy" decoding="async"></div>
+                <div class="photo-item"><img src="images/m29.png" alt="Miracle Shot 하이라이트 사진 29" loading="lazy" decoding="async"></div>
             </div>
         </section>
 
@@ -375,6 +383,12 @@
 
     </div>
 
+    <!-- ★ 라이트박스 (하이라이트 사진 확대) -->
+    <div class="lightbox-overlay" id="lightbox-overlay" onclick="closeLightbox(event)">
+        <span class="lightbox-close" onclick="closeLightbox(event)">&times;</span>
+        <img id="lightbox-img" src="" alt="" onclick="event.stopPropagation()">
+    </div>
+
     <!-- ★ 공통 푸터 -->
     <div id="site-footer"></div>
 
@@ -461,6 +475,31 @@
         };
 
         function safeNavigate(url) { if (url && url.trim() !== '') window.location.assign(url); }
+
+        function openLightbox(src, alt) {
+            const overlay = document.getElementById('lightbox-overlay');
+            const img = document.getElementById('lightbox-img');
+            img.src = src;
+            img.alt = alt || '';
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeLightbox(event) {
+            if (event) event.stopPropagation();
+            const overlay = document.getElementById('lightbox-overlay');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeLightbox();
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.photo-item img').forEach(function(img) {
+                img.addEventListener('click', function() {
+                    openLightbox(img.src, img.alt);
+                });
+            });
+        });
 
         function injectIframe(element, url) {
             const container = element && element.parentElement;

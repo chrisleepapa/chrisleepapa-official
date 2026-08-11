@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#030305">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="images/favicon.png">
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3207219520058740"
+     crossorigin="anonymous"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NBGELYQ4TZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-NBGELYQ4TZ');
+      gtag('config', 'GT-5MJDBTR2');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <link rel="icon" href="images/favicon.png" type="image/png">
+
+    <meta name="description" content="속성 스위치 — 얼음과 불꽃, 쌍둥이 그리핀의 관문을 통과하라. Chris LEE.PAPA가 만든 반사신경 미니게임. 같은 속성의 문만 살아남는다.">
+    <meta property="og:title" content="속성 스위치 – Chris LEE.PAPA">
+    <meta property="og:description" content="얼음 그리핀과 불꽃 그리핀, 두 관문 사이에서 속성을 전환하며 살아남으세요. 탭 한 번으로 얼음과 불꽃을 오가는 초고속 반사신경 게임.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://chrisleepapa-official.vercel.app/switch">
+    <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/griffin-fire.png">
+    <link rel="canonical" href="https://chrisleepapa-official.vercel.app/switch">
+
+    <title>속성 스위치 - Chris LEE.PAPA</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css">
+
+    <!-- ★ 공통 스타일 -->
+    <link rel="stylesheet" href="css/common.css">
+
+    <style>
+        /* ── switch.html 전용 스타일 ── */
+
+        :root{
+            --ice-core:   #8fd3ff;
+            --ice-glow:   rgba(143,211,255,0.55);
+            --ice-deep:   #1b3a52;
+            --fire-core:  #ff8a4c;
+            --fire-glow:  rgba(255,106,64,0.55);
+            --fire-deep:  #4a1712;
+        }
+
+        body {
+            font-family: 'Pretendard', 'Noto Serif KR', serif;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overscroll-behavior: none;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 900;
+            opacity: 0.4;
+        }
+
+        #stars-canvas {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+        }
+
+        /* ── 헤딩 ── */
+        .switch-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 110px 20px 70px;
+            z-index: 10;
+        }
+
+        .section-heading-tag {
+            font-family: 'Cinzel', serif;
+            font-size: 0.8rem;
+            letter-spacing: 4px;
+            color: rgba(201,168,76,0.6);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            text-align: center;
+            animation: fadeIn 1s ease 0.2s forwards;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        .section-heading-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 300;
+            color: rgba(240,236,228,0.9);
+            letter-spacing: 0.08em;
+            text-align: center;
+            margin-bottom: 8px;
+            animation: fadeIn 1s ease 0.4s forwards;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        .section-heading-sub {
+            font-size: 0.85rem;
+            color: #8a8698;
+            text-align: center;
+            margin-bottom: 44px;
+            letter-spacing: 0.3px;
+            animation: fadeIn 1s ease 0.55s forwards;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        /* ── 게임 무대: 얼음 그리핀 · 게임패널 · 불꽃 그리핀 ── */
+        .game-stage {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(8px, 3vw, 46px);
+            width: 100%;
+            max-width: 1080px;
+            opacity: 0;
+            transform: translateY(24px);
+            animation: slideUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.75s forwards;
+        }
+
+        .griffin-side {
+            flex: 0 0 auto;
+            width: 168px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            transition: filter 0.35s ease, transform 0.35s ease, opacity 0.35s ease;
+            opacity: 0.5;
+        }
+        .griffin-side .griffin-portrait {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 3 / 4;
+            border-radius: 18px;
+            overflow: hidden;
+            -webkit-mask-image: radial-gradient(ellipse 78% 82% at 50% 48%, #000 62%, transparent 100%);
+            mask-image: radial-gradient(ellipse 78% 82% at 50% 48%, #000 62%, transparent 100%);
+        }
+        .griffin-side img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            filter: saturate(1.05) brightness(0.92);
+            transition: filter 0.35s ease, transform 0.6s ease;
+            transform: scale(1.02);
+        }
+        .griffin-side .griffin-name {
+            font-family: 'Cinzel', serif;
+            font-size: 0.68rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .griffin-ice .griffin-name { color: var(--ice-core); }
+        .griffin-fire .griffin-name { color: var(--fire-core); }
+
+        .griffin-side.active-side {
+            opacity: 1;
+            transform: translateY(-4px) scale(1.04);
+        }
+        .griffin-ice.active-side .griffin-portrait { box-shadow: 0 0 30px 4px var(--ice-glow); }
+        .griffin-fire.active-side .griffin-portrait { box-shadow: 0 0 30px 4px var(--fire-glow); }
+        .griffin-ice.active-side img,
+        .griffin-fire.active-side img { filter: saturate(1.2) brightness(1.05); transform: scale(1.06); }
+
+        @media (max-width: 860px) {
+            .griffin-side { display: none; }
+        }
+
+        /* ── 게임 패널 ── */
+        .game-panel {
+            position: relative;
+            width: min(94vw, 400px);
+            border: 1px solid rgba(201,168,76,0.28);
+            border-radius: 22px;
+            background: linear-gradient(180deg, rgba(14,14,20,0.92), rgba(4,4,7,0.96));
+            box-shadow: 0 20px 60px rgba(0,0,0,0.55);
+            padding: 16px 16px 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .hud-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 2px 6px 12px;
+            font-family: 'Cinzel', serif;
+        }
+        .hud-label { font-size: 0.62rem; letter-spacing: 2px; color: #7d7a8c; text-transform: uppercase; }
+        .hud-score { font-size: 1.4rem; color: #f0ece4; margin-top: 2px; }
+        .hud-best  { font-size: 1.0rem; color: rgba(201,168,76,0.85); margin-top: 2px; text-align: right; }
+
+        #switch-canvas {
+            display: block;
+            width: 100%;
+            aspect-ratio: 5 / 7;
+            border-radius: 14px;
+            background: radial-gradient(circle at 50% 30%, #131320 0%, #05050a 78%);
+            touch-action: none;
+            cursor: pointer;
+        }
+
+        .switch-overlay {
+            position: absolute;
+            inset: 16px 16px 78px;
+            border-radius: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-align: center;
+            background: rgba(3,3,6,0.72);
+            backdrop-filter: blur(3px);
+            padding: 24px;
+            transition: opacity 0.3s ease;
+        }
+        .switch-overlay.hidden { opacity: 0; pointer-events: none; }
+        .overlay-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.15rem;
+            letter-spacing: 1.5px;
+            color: #e8d08a;
+        }
+        .overlay-desc {
+            font-size: 0.85rem;
+            color: #b0acac;
+            line-height: 1.7;
+            max-width: 260px;
+        }
+        .overlay-score {
+            font-family: 'Cinzel', serif;
+            font-size: 2.2rem;
+            color: #f0ece4;
+            margin: 4px 0 2px;
+        }
+        .overlay-best-tag {
+            font-size: 0.75rem;
+            color: rgba(201,168,76,0.85);
+            letter-spacing: 1px;
+        }
+        .overlay-btn {
+            margin-top: 10px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #030305;
+            background: linear-gradient(135deg, #f0dca0, #c9a84c);
+            border: none;
+            border-radius: 30px;
+            padding: 12px 30px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .overlay-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,168,76,0.35); }
+        .overlay-btn:active { transform: translateY(0); }
+
+        .attr-toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 14px;
+        }
+        .attr-chip {
+            flex: 1;
+            text-align: center;
+            padding: 10px 8px;
+            border-radius: 12px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.68rem;
+            letter-spacing: 1.5px;
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #8a8698;
+            transition: all 0.25s ease;
+        }
+        .attr-chip.chip-ice.is-active {
+            color: #eaf7ff;
+            border-color: var(--ice-core);
+            background: linear-gradient(135deg, rgba(143,211,255,0.22), rgba(27,58,82,0.35));
+            box-shadow: 0 0 16px rgba(143,211,255,0.25) inset;
+        }
+        .attr-chip.chip-fire.is-active {
+            color: #fff1e8;
+            border-color: var(--fire-core);
+            background: linear-gradient(135deg, rgba(255,138,76,0.22), rgba(74,23,18,0.35));
+            box-shadow: 0 0 16px rgba(255,106,64,0.25) inset;
+        }
+        .hint-row {
+            text-align: center;
+            font-size: 0.72rem;
+            color: #6b6878;
+            margin-top: 10px;
+            letter-spacing: 0.3px;
+        }
+        .hint-row kbd {
+            font-family: 'Cinzel', serif;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 5px;
+            padding: 1px 7px;
+            font-size: 0.68rem;
+        }
+
+        /* ── 안내 섹션 (SEO 겸 설명) ── */
+        .switch-guide {
+            max-width: 780px;
+            margin: 56px auto 0;
+            padding: 0 20px;
+            width: 100%;
+        }
+        .switch-guide-box {
+            border: 1px solid rgba(201,168,76,0.15);
+            border-radius: 20px;
+            padding: 32px 36px;
+            background: rgba(10,10,18,0.7);
+        }
+        .switch-guide-box h2 {
+            font-family: 'Cinzel', serif;
+            color: #c9a84c;
+            font-size: 1.0rem;
+            letter-spacing: 2px;
+            margin-bottom: 18px;
+        }
+        .switch-guide-box p {
+            color: #b0acac;
+            font-size: 0.88rem;
+            line-height: 1.9;
+            word-break: keep-all;
+        }
+        .switch-guide-box p + p { margin-top: 12px; }
+
+        @keyframes fadeIn  { to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <!-- ① 공용 nav placeholder -->
+    <div id="site-nav"></div>
+
+    <!-- 전체화면 별 배경 캔버스 -->
+    <canvas id="stars-canvas"></canvas>
+
+    <main class="switch-wrapper">
+        <span class="section-heading-tag">✦   ATTRIBUTE SWITCH   ✦</span>
+        <h2 class="section-heading-title">속성 스위치</h2>
+        <p class="section-heading-sub">얼음과 불꽃, 쌍둥이 그리핀의 관문을 지나라 — 같은 속성만이 살아남는다</p>
+
+        <div class="game-stage">
+            <!-- 얼음 그리핀 -->
+            <div class="griffin-side griffin-ice" id="griffin-ice-side">
+                <div class="griffin-portrait">
+                    <img src="images/griffin-ice.png" alt="얼음 그리핀 — Ice Griffin" loading="lazy">
+                </div>
+                <span class="griffin-name">Ice Griffin</span>
+            </div>
+
+            <!-- 게임 패널 -->
+            <div class="game-panel">
+                <div class="hud-row">
+                    <div>
+                        <div class="hud-label">Score</div>
+                        <div class="hud-score" id="hud-score">0</div>
+                    </div>
+                    <div>
+                        <div class="hud-label" style="text-align:right;">Best</div>
+                        <div class="hud-best" id="hud-best">0</div>
+                    </div>
+                </div>
+
+                <div style="position:relative;">
+                    <canvas id="switch-canvas"></canvas>
+
+                    <div class="switch-overlay" id="overlay-start">
+                        <div class="overlay-title">쌍둥이 그리핀의 관문</div>
+                        <p class="overlay-desc">얼음문은 얼음 속성일 때, 불꽃문은 불꽃 속성일 때만 통과할 수 있어요. 화면을 탭하거나 스페이스바로 속성을 전환하세요.</p>
+                        <button class="overlay-btn" id="btn-start">시작하기</button>
+                    </div>
+
+                    <div class="switch-overlay hidden" id="overlay-over">
+                        <div class="overlay-title">관문이 무너졌습니다</div>
+                        <div class="overlay-score" id="final-score">0</div>
+                        <div class="overlay-best-tag" id="best-tag">BEST 0</div>
+                        <button class="overlay-btn" id="btn-restart">다시 도전</button>
+                    </div>
+                </div>
+
+                <div class="attr-toggle-row">
+                    <div class="attr-chip chip-ice" id="chip-ice">ICE</div>
+                    <div class="attr-chip chip-fire" id="chip-fire">FIRE</div>
+                </div>
+                <div class="hint-row">탭 · 클릭 또는 <kbd>Space</kbd> 로 속성 전환</div>
+            </div>
+
+            <!-- 불꽃 그리핀 -->
+            <div class="griffin-side griffin-fire" id="griffin-fire-side">
+                <div class="griffin-portrait">
+                    <img src="images/griffin-fire.png" alt="불꽃 그리핀 — Fire Griffin" loading="lazy">
+                </div>
+                <span class="griffin-name">Fire Griffin</span>
+            </div>
+        </div>
+
+        <!-- ── 안내 섹션 ── -->
+        <div class="switch-guide">
+            <div class="switch-guide-box">
+                <h2>✦ &nbsp; HOW TO PLAY</h2>
+                <p>화면 위로 얼음문(파란색)과 불꽃문(주황색)이 번갈아 솟아오릅니다. 내 캐릭터의 현재 속성과 같은 색의 문만 통과할 수 있어요. 다른 속성의 문에 부딪히면 게임이 끝납니다.</p>
+                <p>화면을 탭하거나 <strong style="color:#e8d08a;">스페이스바</strong>를 눌러 언제든 얼음 ↔ 불꽃 속성을 전환하세요. 문을 통과할 때마다 점수가 오르고, 점수가 쌓일수록 관문의 속도가 점점 빨라집니다.</p>
+                <p>쌍둥이 그리핀은 서로 다른 속성을 지키는 문지기입니다 — 얼음 그리핀 쪽에 가까울수록 화면이 파랗게, 불꽃 그리핀 쪽에 가까울수록 화면이 붉게 물듭니다. 최고 기록에 도전해 보세요!</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- ② 공용 footer placeholder — guestbook.js 가 이 앞에 방명록을 자동 삽입합니다 -->
+    <div id="site-footer"></div>
+
+    <!-- ③ 이 페이지 전용 i18n 키 등록 -->
+    <script>
+        window.PAGE_I18N = {
+            ko: {
+                game_tag:    '✦   ATTRIBUTE SWITCH   ✦',
+                game_title:  '속성 스위치',
+                game_sub:    '얼음과 불꽃, 쌍둥이 그리핀의 관문을 지나라 — 같은 속성만이 살아남는다',
+                start_title: '쌍둥이 그리핀의 관문',
+                start_desc:  '얼음문은 얼음 속성일 때, 불꽃문은 불꽃 속성일 때만 통과할 수 있어요. 화면을 탭하거나 스페이스바로 속성을 전환하세요.',
+                start_btn:   '시작하기',
+                over_title:  '관문이 무너졌습니다',
+                restart_btn: '다시 도전'
+            },
+            en: {
+                game_tag:    '✦   ATTRIBUTE SWITCH   ✦',
+                game_title:  'Attribute Switch',
+                game_sub:    'Pass through the gates of the Twin Griffins — only matching attributes survive',
+                start_title: 'Gate of the Twin Griffins',
+                start_desc:  'Ice gates open only in Ice form, Fire gates only in Fire form. Tap or press Space to switch.',
+                start_btn:   'Start',
+                over_title:  'The gate has fallen',
+                restart_btn: 'Try Again'
+            }
+        };
+
+        // ④ 컴포넌트 삽입 완료 후 실행할 페이지 전용 콜백
+        window.onMainReady = function() {
+            initStarsCanvas();
+            initSwitchGame();
+        };
+    </script>
+
+    <!-- ⑤ 별 캔버스 로직 -->
+    <script>
+        function initStarsCanvas() {
+            const canvas = document.getElementById('stars-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let stars = [], shootingStars = [];
+
+            function resize() {
+                canvas.width  = window.innerWidth;
+                canvas.height = window.innerHeight;
+                initStars();
+            }
+            function initStars() {
+                stars = [];
+                const count = Math.floor((canvas.width * canvas.height) / 6000);
+                for (let i = 0; i < count; i++) {
+                    stars.push({
+                        x:       Math.random() * canvas.width,
+                        y:       Math.random() * canvas.height,
+                        size:    Math.random() * 1.6 + 0.2,
+                        opacity: Math.random(),
+                        speed:   Math.random() * 0.015 + 0.003
+                    });
+                }
+            }
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                stars.forEach(s => {
+                    s.opacity += s.speed;
+                    if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed;
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255,255,255,${Math.max(0, s.opacity)})`;
+                    ctx.fill();
+                });
+                if (Math.random() < 0.01) {
+                    shootingStars.push({
+                        x:       Math.random() * canvas.width * 0.8 + canvas.width * 0.1,
+                        y:       Math.random() * canvas.height * 0.35,
+                        len:     Math.random() * 90 + 60,
+                        speed:   Math.random() * 9 + 5,
+                        opacity: 1
+                    });
+                }
+                shootingStars.forEach((ss, i) => {
+                    ss.x -= ss.speed * 0.8;
+                    ss.y += ss.speed * 0.5;
+                    ss.opacity -= 0.015;
+                    const grad = ctx.createLinearGradient(ss.x, ss.y, ss.x + ss.len, ss.y - ss.len * 0.6);
+                    grad.addColorStop(0, `rgba(255,255,255,${ss.opacity})`);
+                    grad.addColorStop(1, 'transparent');
+                    ctx.beginPath();
+                    ctx.strokeStyle = grad;
+                    ctx.lineWidth = 1.5;
+                    ctx.moveTo(ss.x, ss.y);
+                    ctx.lineTo(ss.x + ss.len, ss.y - ss.len * 0.6);
+                    ctx.stroke();
+                    if (ss.opacity <= 0 || ss.x < -ss.len || ss.y > canvas.height + ss.len) {
+                        shootingStars.splice(i, 1);
+                    }
+                });
+                requestAnimationFrame(draw);
+            }
+            window.addEventListener('resize', resize);
+            resize();
+            draw();
+        }
+    </script>
+
+    <!-- ⑥ 속성 스위치 게임 로직 -->
+    <script>
+        function initSwitchGame() {
+            const canvas = document.getElementById('switch-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            const hudScoreEl  = document.getElementById('hud-score');
+            const hudBestEl   = document.getElementById('hud-best');
+            const overlayStart= document.getElementById('overlay-start');
+            const overlayOver = document.getElementById('overlay-over');
+            const finalScoreEl= document.getElementById('final-score');
+            const bestTagEl   = document.getElementById('best-tag');
+            const btnStart    = document.getElementById('btn-start');
+            const btnRestart  = document.getElementById('btn-restart');
+            const chipIce     = document.getElementById('chip-ice');
+            const chipFire    = document.getElementById('chip-fire');
+            const griffinIceSide  = document.getElementById('griffin-ice-side');
+            const griffinFireSide = document.getElementById('griffin-fire-side');
+
+            const COLORS = {
+                ice:  { core: '#8fd3ff', deep: '#123146', glow: 'rgba(143,211,255,0.55)' },
+                fire: { core: '#ff8a4c', deep: '#3a140f', glow: 'rgba(255,106,64,0.55)' }
+            };
+
+            const STORAGE_KEY = 'switch_griffin_best_score';
+            let bestScore = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10);
+            hudBestEl.textContent = bestScore;
+
+            let dpr = Math.max(1, window.devicePixelRatio || 1);
+            let cw = 0, ch = 0;
+
+            function resizeCanvas() {
+                const rect = canvas.getBoundingClientRect();
+                cw = rect.width;
+                ch = rect.height;
+                canvas.width  = Math.round(cw * dpr);
+                canvas.height = Math.round(ch * dpr);
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            }
+
+            let state = 'ready'; // ready | playing | over
+            let attribute = 'ice';
+            let score = 0;
+            let gates = [];
+            let spawnTimer = 0;
+            let spawnInterval = 1450;
+            let gateSpeed = 150; // px / sec
+            let elapsedMs = 0;
+            let lastTime = 0;
+            let particles = [];
+            let shakeMs = 0;
+
+            const player = { xRatio: 0.28, r: 13 };
+
+            function resetGame() {
+                score = 0;
+                gates = [];
+                particles = [];
+                spawnTimer = 0;
+                spawnInterval = 1450;
+                gateSpeed = 150;
+                elapsedMs = 0;
+                shakeMs = 0;
+                attribute = 'ice';
+                updateAttrUI();
+                hudScoreEl.textContent = '0';
+            }
+
+            function updateAttrUI() {
+                chipIce.classList.toggle('is-active', attribute === 'ice');
+                chipFire.classList.toggle('is-active', attribute === 'fire');
+                griffinIceSide.classList.toggle('active-side', attribute === 'ice');
+                griffinFireSide.classList.toggle('active-side', attribute === 'fire');
+            }
+
+            function toggleAttribute() {
+                if (state !== 'playing') return;
+                attribute = attribute === 'ice' ? 'fire' : 'ice';
+                updateAttrUI();
+                spawnBurst(player.xRatio * cw, ch * 0.5, COLORS[attribute].core, 10);
+            }
+
+            function spawnGate() {
+                const color = Math.random() < 0.5 ? 'ice' : 'fire';
+                const gapH = Math.max(ch * 0.30, 120 - score * 0.6);
+                const gapY = Math.random() * (ch - gapH - 60) + 30;
+                gates.push({
+                    x: cw + 30,
+                    width: 26,
+                    color: color,
+                    gapY: gapY,
+                    gapH: gapH,
+                    passed: false
+                });
+            }
+
+            function spawnBurst(x, y, color, n) {
+                for (let i = 0; i < n; i++) {
+                    const ang = Math.random() * Math.PI * 2;
+                    const spd = Math.random() * 90 + 40;
+                    particles.push({
+                        x, y,
+                        vx: Math.cos(ang) * spd,
+                        vy: Math.sin(ang) * spd,
+                        life: 500,
+                        maxLife: 500,
+                        color
+                    });
+                }
+            }
+
+            function endGame() {
+                state = 'over';
+                if (score > bestScore) {
+                    bestScore = score;
+                    localStorage.setItem(STORAGE_KEY, String(bestScore));
+                }
+                hudBestEl.textContent = bestScore;
+                finalScoreEl.textContent = score;
+                bestTagEl.textContent = 'BEST ' + bestScore;
+                overlayOver.classList.remove('hidden');
+                shakeMs = 260;
+            }
+
+            function startGame() {
+                resetGame();
+                state = 'playing';
+                overlayStart.classList.add('hidden');
+                overlayOver.classList.add('hidden');
+                lastTime = performance.now();
+                requestAnimationFrame(loop);
+            }
+
+            function loop(now) {
+                if (state !== 'playing') return;
+                let dt = now - lastTime;
+                lastTime = now;
+                if (dt > 60) dt = 60; // clamp for tab-switch jumps
+                elapsedMs += dt;
+
+                update(dt);
+                render();
+
+                requestAnimationFrame(loop);
+            }
+
+            function update(dt) {
+                // difficulty ramp
+                gateSpeed = Math.min(150 + elapsedMs / 1000 * 6, 380);
+                spawnInterval = Math.max(1450 - elapsedMs / 1000 * 22, 620);
+
+                spawnTimer += dt;
+                if (spawnTimer >= spawnInterval) {
+                    spawnTimer = 0;
+                    spawnGate();
+                }
+
+                const px = player.xRatio * cw;
+                const py = ch * 0.5;
+
+                for (let i = gates.length - 1; i >= 0; i--) {
+                    const g = gates[i];
+                    g.x -= gateSpeed * dt / 1000;
+
+                    // collision window: gate body spans [g.x, g.x+g.width]
+                    if (!g.passed && px + player.r > g.x && px - player.r < g.x + g.width) {
+                        const inGap = py > g.gapY && py < g.gapY + g.gapH;
+                        const safe = inGap && attribute === g.color;
+                        if (!safe) {
+                            spawnBurst(px, py, '#ff4d4d', 18);
+                            endGame();
+                            return;
+                        }
+                    }
+                    if (!g.passed && g.x + g.width < px - player.r) {
+                        g.passed = true;
+                        score += 1;
+                        hudScoreEl.textContent = score;
+                        spawnBurst(px, py, COLORS[attribute].core, 6);
+                    }
+                    if (g.x + g.width < -40) gates.splice(i, 1);
+                }
+
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    const p = particles[i];
+                    p.life -= dt;
+                    p.x += p.vx * dt / 1000;
+                    p.y += p.vy * dt / 1000;
+                    p.vx *= 0.96;
+                    p.vy *= 0.96;
+                    if (p.life <= 0) particles.splice(i, 1);
+                }
+
+                if (shakeMs > 0) shakeMs -= dt;
+            }
+
+            function render() {
+                ctx.clearRect(0, 0, cw, ch);
+
+                let ox = 0, oy = 0;
+                if (shakeMs > 0) {
+                    ox = (Math.random() - 0.5) * 8;
+                    oy = (Math.random() - 0.5) * 8;
+                }
+                ctx.save();
+                ctx.translate(ox, oy);
+
+                // ambient split background tinted toward current attribute
+                const tint = COLORS[attribute];
+                const bgGrad = ctx.createRadialGradient(cw*0.3, ch*0.5, 10, cw*0.3, ch*0.5, cw*0.9);
+                bgGrad.addColorStop(0, tint.deep + '55');
+                bgGrad.addColorStop(1, 'transparent');
+                ctx.fillStyle = bgGrad;
+                ctx.fillRect(0, 0, cw, ch);
+
+                // gates
+                gates.forEach(g => {
+                    const c = COLORS[g.color];
+                    ctx.fillStyle = c.deep;
+                    ctx.strokeStyle = c.core;
+                    ctx.lineWidth = 2;
+                    ctx.shadowColor = c.glow;
+                    ctx.shadowBlur = 12;
+
+                    // top block
+                    ctx.beginPath();
+                    ctx.roundRect(g.x, 0, g.width, g.gapY, 6);
+                    ctx.fill(); ctx.stroke();
+
+                    // bottom block
+                    ctx.beginPath();
+                    ctx.roundRect(g.x, g.gapY + g.gapH, g.width, ch - (g.gapY + g.gapH), 6);
+                    ctx.fill(); ctx.stroke();
+
+                    ctx.shadowBlur = 0;
+                });
+
+                // particles
+                particles.forEach(p => {
+                    const alpha = Math.max(0, p.life / p.maxLife);
+                    ctx.globalAlpha = alpha;
+                    ctx.fillStyle = p.color;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, 2.4, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                ctx.globalAlpha = 1;
+
+                // player orb
+                const px = player.xRatio * cw;
+                const py = ch * 0.5;
+                const pc = COLORS[attribute];
+                ctx.shadowColor = pc.glow;
+                ctx.shadowBlur = 22;
+                const grad = ctx.createRadialGradient(px, py, 1, px, py, player.r);
+                grad.addColorStop(0, '#ffffff');
+                grad.addColorStop(0.4, pc.core);
+                grad.addColorStop(1, pc.deep);
+                ctx.fillStyle = grad;
+                ctx.beginPath();
+                ctx.arc(px, py, player.r, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+
+                ctx.restore();
+            }
+
+            // ── 입력 처리 ──
+            canvas.addEventListener('pointerdown', (e) => {
+                e.preventDefault();
+                if (state === 'ready') { startGame(); return; }
+                toggleAttribute();
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.code === 'Space' || e.code === 'ArrowUp') {
+                    e.preventDefault();
+                    if (state === 'ready') { startGame(); return; }
+                    if (state === 'over') { startGame(); return; }
+                    toggleAttribute();
+                }
+            });
+            btnStart.addEventListener('click', startGame);
+            btnRestart.addEventListener('click', startGame);
+
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden && state === 'playing') {
+                    state = 'over-paused-hidden';
+                }
+            });
+
+            window.addEventListener('resize', () => {
+                dpr = Math.max(1, window.devicePixelRatio || 1);
+                resizeCanvas();
+            });
+
+            // 초기 세팅
+            resizeCanvas();
+            updateAttrUI();
+            render();
+        }
+    </script>
+
+    <!-- ⑦ 공용 스크립트 & 공통 방명록 -->
+    <script src="js/main.js"></script>
+    <script src="js/guestbook.js"></script>
+</body>
+</html>

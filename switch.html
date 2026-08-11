@@ -161,6 +161,67 @@
         .hud-label { font-size: 0.62rem; letter-spacing: 2px; color: #7d7a8c; text-transform: uppercase; }
         .hud-score { font-size: 1.4rem; color: #f0ece4; margin-top: 2px; }
         .hud-best  { font-size: 1.0rem; color: rgba(201,168,76,0.85); margin-top: 2px; text-align: right; }
+        .hud-lives-wrap { text-align: center; }
+        .hud-lives { font-size: 1.05rem; letter-spacing: 3px; margin-top: 4px; }
+
+        /* ── 이니셜 입력 ── */
+        .initials-input {
+            width: 130px;
+            text-align: center;
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 0.25em;
+            padding: 9px 6px;
+            border-radius: 12px;
+            background: rgba(0,0,0,0.4);
+            color: #f0dca0;
+            border: 2px solid rgba(201,168,76,0.4);
+            outline: none;
+            text-transform: uppercase;
+            transition: 0.25s;
+        }
+        .initials-input:focus {
+            border-color: #f0dca0;
+            box-shadow: 0 0 20px rgba(201,168,76,0.3);
+        }
+        .initials-input.shake { animation: inputShake 0.4s; border-color: #ff6a6a; }
+        @keyframes inputShake {
+            0%,100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+        }
+
+        /* ── 미니 리더보드 (시작 화면) ── */
+        .leaderboard-mini {
+            width: 100%;
+            max-width: 270px;
+            margin-top: 8px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+        .lb-mini-title {
+            font-family: 'Cinzel', serif;
+            font-size: 0.68rem;
+            letter-spacing: 2px;
+            color: rgba(201,168,76,0.85);
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .lb-mini-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            color: #cfcbd8;
+            padding: 4px 10px;
+            border-radius: 8px;
+        }
+        .lb-mini-row:nth-child(odd) { background: rgba(255,255,255,0.03); }
+        .lb-mini-row .rank { color: #f0dca0; width: 22px; font-family: 'Cinzel', serif; }
+        .lb-mini-row .initials { flex: 1; text-align: left; letter-spacing: 0.15em; font-weight: 600; margin-left: 4px; }
+        .lb-mini-row .score { color: rgba(201,168,76,0.9); font-weight: 700; }
+        .lb-mini-empty { text-align:center; font-size:0.75rem; color:#6b6878; padding:6px; }
 
         #switch-canvas {
             touch-action: none;
@@ -188,6 +249,7 @@
             backdrop-filter: blur(3px);
             padding: 24px;
             transition: opacity 0.3s ease;
+            overflow-y: auto;
         }
         .switch-overlay.hidden { opacity: 0; pointer-events: none; }
         .overlay-title {
@@ -313,6 +375,10 @@
                         <div class="hud-label">Score</div>
                         <div class="hud-score" id="hud-score">0</div>
                     </div>
+                    <div class="hud-lives-wrap">
+                        <div class="hud-label">Energy</div>
+                        <div class="hud-lives" id="hud-lives">💗💗💗</div>
+                    </div>
                     <div>
                         <div class="hud-label" style="text-align:right;">Best</div>
                         <div class="hud-best" id="hud-best">0</div>
@@ -326,18 +392,24 @@
                         <div class="overlay-title">하늘에서 쏟아지는 것들</div>
                         <p class="overlay-desc">손가락으로 화면을 좌우로 드래그해서 요정을 움직이세요. 음식은 받아먹고, 나머지는 피해야 해요.</p>
                         <div class="overlay-legend">
-                            <span class="tag">🔥 불덩이 — 피하기</span>
-                            <span class="tag">❄️ 얼음덩이 — 피하기</span>
-                            <span class="tag">🗑️ 쓰레기 — 피하기</span>
-                            <span class="tag">🍎 음식 — 받아먹기</span>
+                            <span class="tag">🔥❄️🗑️ 위험 — 피하기</span>
+                            <span class="tag">🍎🍇🍓🍪🍩🍬 음식 — 받아먹기</span>
+                            <span class="tag">💗 에너지 3 — 다 닳으면 게임오버</span>
                         </div>
+                        <input id="initials-input" class="initials-input" maxlength="3" placeholder="AAA" autocomplete="off"/>
                         <button class="overlay-btn" id="btn-start">시작하기</button>
+
+                        <div class="leaderboard-mini">
+                            <div class="lb-mini-title">🏆 HALL OF FAME — TOP 5</div>
+                            <div id="lb-mini-list"><div class="lb-mini-empty">불러오는 중...</div></div>
+                        </div>
                     </div>
 
                     <div class="switch-overlay hidden" id="overlay-over">
                         <div class="overlay-title">요정이 정신을 잃었어요</div>
                         <div class="overlay-score" id="final-score">0</div>
                         <div class="overlay-best-tag" id="best-tag">BEST 0</div>
+                        <div style="font-size:0.75rem; color:rgba(201,168,76,0.85); margin-top:2px;" id="save-status"></div>
                         <button class="overlay-btn" id="btn-restart">다시 도전</button>
                     </div>
                 </div>
@@ -471,12 +543,16 @@
 
             const hudScoreEl  = document.getElementById('hud-score');
             const hudBestEl   = document.getElementById('hud-best');
+            const hudLivesEl  = document.getElementById('hud-lives');
             const overlayStart= document.getElementById('overlay-start');
             const overlayOver = document.getElementById('overlay-over');
             const finalScoreEl= document.getElementById('final-score');
             const bestTagEl   = document.getElementById('best-tag');
             const btnStart    = document.getElementById('btn-start');
             const btnRestart  = document.getElementById('btn-restart');
+            const initialsInput = document.getElementById('initials-input');
+            const saveStatusEl  = document.getElementById('save-status');
+            const lbMiniListEl  = document.getElementById('lb-mini-list');
 
             function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
 
@@ -486,15 +562,112 @@
                 trash: '#a9b79b'
             };
             const FOOD_COLORS = {
-                apple: '#ff5f5f',
-                candy: '#ffd76a',
-                donut: '#e8b98a'
+                apple:      '#ff5f5f',
+                candy:      '#ffd76a',
+                donut:      '#e8b98a',
+                grape:      '#9a6fd8',
+                strawberry: '#ff4d6d',
+                cookie:     '#c68958'
             };
-            const FOOD_TYPES = ['apple', 'candy', 'donut'];
+            const FOOD_TYPES = ['apple', 'candy', 'donut', 'grape', 'strawberry', 'cookie'];
 
             const STORAGE_KEY = 'skyfairy_best_score';
             let bestScore = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10);
             hudBestEl.textContent = bestScore;
+
+            // ── 에너지(생명력) ──
+            const MAX_ENERGY = 3;
+            let energy = MAX_ENERGY;
+            let invulnerableMs = 0;
+
+            function updateLivesUI() {
+                let hearts = '';
+                for (let i = 0; i < MAX_ENERGY; i++) hearts += (i < energy) ? '💗' : '🖤';
+                hudLivesEl.textContent = hearts;
+            }
+
+            // ══════════════════════════════════════
+            // SUPABASE 연동 (이니셜 + TOP 5 리더보드)
+            // ══════════════════════════════════════
+            const SUPA_URL = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
+            const SUPA_KEY = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
+            const TABLE_NAME = 'skyfairy_ranking';
+            const INITIALS_KEY = 'skyfairy_initials';
+
+            let playerInitials = localStorage.getItem(INITIALS_KEY) || '';
+            if (playerInitials) initialsInput.value = playerInitials;
+
+            initialsInput.addEventListener('input', () => {
+                initialsInput.value = initialsInput.value.toUpperCase().replace(/[^A-Z]/g, '');
+            });
+
+            function validateInitials() {
+                const val = initialsInput.value.trim();
+                if (val.length < 1) {
+                    initialsInput.classList.remove('shake');
+                    void initialsInput.offsetWidth;
+                    initialsInput.classList.add('shake');
+                    return false;
+                }
+                playerInitials = val;
+                localStorage.setItem(INITIALS_KEY, playerInitials);
+                return true;
+            }
+
+            async function loadLeaderboard() {
+                try {
+                    const res = await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?select=*&order=score.desc&limit=5`, {
+                        headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` }
+                    });
+                    const data = await res.json();
+                    if (!data || !data.length) {
+                        lbMiniListEl.innerHTML = '<div class="lb-mini-empty">아직 기록이 없습니다.</div>';
+                        return;
+                    }
+                    const medals = ['🥇','🥈','🥉','4','5'];
+                    lbMiniListEl.innerHTML = data.map((e, i) => `
+                        <div class="lb-mini-row">
+                            <span class="rank">${medals[i]}</span>
+                            <span class="initials">${e.initials}</span>
+                            <span class="score">${e.score}</span>
+                        </div>`).join('');
+                } catch (e) {
+                    lbMiniListEl.innerHTML = '<div class="lb-mini-empty">⚠ DB 연결 실패</div>';
+                }
+            }
+
+            async function recordScore(finalScore) {
+                if (!playerInitials || finalScore <= 0) return;
+                if (saveStatusEl) saveStatusEl.textContent = '기록 동기화 중...';
+                try {
+                    const r = await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?initials=eq.${playerInitials}`, {
+                        headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` }
+                    });
+                    const existing = await r.json();
+                    let isNewBest = true;
+                    if (existing && existing.length > 0) {
+                        if (finalScore > existing[0].score) {
+                            await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?initials=eq.${playerInitials}`, {
+                                method: 'PATCH',
+                                headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+                                body: JSON.stringify({ score: finalScore })
+                            });
+                        } else {
+                            isNewBest = false;
+                        }
+                    } else {
+                        await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}`, {
+                            method: 'POST',
+                            headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+                            body: JSON.stringify({ initials: playerInitials, score: finalScore })
+                        });
+                    }
+                    if (saveStatusEl) saveStatusEl.textContent = isNewBest ? '🏆 개인 최고 기록 저장 완료!' : '기록 저장됨';
+                    loadLeaderboard();
+                } catch (e) {
+                    if (saveStatusEl) saveStatusEl.textContent = '⚠ 기록 저장 실패';
+                }
+            }
 
             let dpr = Math.max(1, window.devicePixelRatio || 1);
             let cw = 0, ch = 0;
@@ -529,12 +702,15 @@
                 spawnTimer = 0; spawnInterval = 850; fallSpeed = 160;
                 elapsedMs = 0;
                 shakeMs = 0;
+                energy = MAX_ENERGY;
+                invulnerableMs = 0;
                 player.x = cw * 0.5;
                 player.targetX = player.x;
                 player.prevX = player.x;
                 player.vx = 0;
                 player.y = ch - 66;
                 hudScoreEl.textContent = '0';
+                updateLivesUI();
             }
 
             function initClouds() {
@@ -595,8 +771,10 @@
                 hudBestEl.textContent = bestScore;
                 finalScoreEl.textContent = score;
                 bestTagEl.textContent = 'BEST ' + bestScore;
+                if (saveStatusEl) saveStatusEl.textContent = '';
                 overlayOver.classList.remove('hidden');
                 shakeMs = 260;
+                recordScore(score);
             }
 
             function startGame() {
@@ -657,13 +835,22 @@
                             items.splice(i, 1);
                             continue;
                         } else {
-                            spawnBurst(it.x, it.y, HAZARD_COLORS[it.type], 22);
-                            endGame();
-                            return;
+                            items.splice(i, 1);
+                            if (invulnerableMs <= 0) {
+                                energy -= 1;
+                                updateLivesUI();
+                                spawnBurst(it.x, it.y, HAZARD_COLORS[it.type], 22);
+                                shakeMs = 200;
+                                invulnerableMs = 1000;
+                                if (energy <= 0) { endGame(); return; }
+                            }
+                            continue;
                         }
                     }
                     if (it.y - it.r > ch + 20) items.splice(i, 1);
                 }
+
+                if (invulnerableMs > 0) invulnerableMs -= dt;
 
                 for (let i = particles.length - 1; i >= 0; i--) {
                     const p = particles[i];
@@ -799,7 +986,7 @@
                     ctx.lineTo(it.r * 1.25, it.r * 0.25);
                     ctx.lineTo(it.r * 0.8, it.r * 0.5);
                     ctx.closePath(); ctx.fill();
-                } else { // donut
+                } else if (it.food === 'donut') {
                     ctx.strokeStyle = '#8a5a34';
                     ctx.lineWidth = it.r * 0.62;
                     ctx.beginPath();
@@ -817,6 +1004,67 @@
                         ctx.arc(Math.cos(ang) * it.r * 0.55, Math.sin(ang) * it.r * 0.55, it.r * 0.08, 0, Math.PI * 2);
                         ctx.fill();
                     }
+                } else if (it.food === 'grape') {
+                    const g = ctx.createRadialGradient(-it.r * 0.2, -it.r * 0.2, 1, 0, 0, it.r * 0.4);
+                    g.addColorStop(0, '#d3b3f7');
+                    g.addColorStop(1, '#6a3fa0');
+                    const positions = [[-0.32,-0.2],[0.32,-0.2],[0,-0.5],[-0.38,0.28],[0.38,0.28],[0,0.58]];
+                    positions.forEach(([px, py]) => {
+                        ctx.fillStyle = g;
+                        ctx.beginPath();
+                        ctx.arc(px * it.r, py * it.r, it.r * 0.32, 0, Math.PI * 2);
+                        ctx.fill();
+                    });
+                    ctx.strokeStyle = '#4a7a3a';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(0, -it.r * 0.8);
+                    ctx.lineTo(0, -it.r * 1.05);
+                    ctx.stroke();
+                } else if (it.food === 'strawberry') {
+                    const g = ctx.createRadialGradient(-it.r * 0.2, -it.r * 0.1, 1, 0, 0, it.r);
+                    g.addColorStop(0, '#ff8ba0');
+                    g.addColorStop(0.5, '#ff4d6d');
+                    g.addColorStop(1, '#b0173a');
+                    ctx.fillStyle = g;
+                    ctx.beginPath();
+                    ctx.moveTo(0, it.r * 0.95);
+                    ctx.bezierCurveTo(-it.r, it.r * 0.5, -it.r * 0.9, -it.r * 0.5, 0, -it.r * 0.15);
+                    ctx.bezierCurveTo(it.r * 0.9, -it.r * 0.5, it.r, it.r * 0.5, 0, it.r * 0.95);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.fillStyle = 'rgba(255,255,200,0.85)';
+                    for (let a = 0; a < 6; a++) {
+                        const ang = a / 6 * Math.PI * 2;
+                        ctx.beginPath();
+                        ctx.arc(Math.cos(ang) * it.r * 0.4, it.r * 0.15 + Math.sin(ang) * it.r * 0.4, it.r * 0.06, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                    ctx.fillStyle = '#4a9a3a';
+                    ctx.beginPath();
+                    ctx.moveTo(-it.r * 0.4, -it.r * 0.15);
+                    ctx.lineTo(0, -it.r * 0.5);
+                    ctx.lineTo(it.r * 0.4, -it.r * 0.15);
+                    ctx.lineTo(it.r * 0.15, -it.r * 0.05);
+                    ctx.lineTo(0, -it.r * 0.3);
+                    ctx.lineTo(-it.r * 0.15, -it.r * 0.05);
+                    ctx.closePath();
+                    ctx.fill();
+                } else { // cookie
+                    const g = ctx.createRadialGradient(-it.r * 0.2, -it.r * 0.2, 1, 0, 0, it.r);
+                    g.addColorStop(0, '#e0aa72');
+                    g.addColorStop(1, '#8a5a34');
+                    ctx.fillStyle = g;
+                    ctx.beginPath();
+                    ctx.arc(0, 0, it.r * 0.9, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.fillStyle = '#4a2f1a';
+                    const chipPos = [[-0.35,-0.3],[0.3,-0.35],[0,0.1],[-0.25,0.4],[0.4,0.25],[0.05,-0.55]];
+                    chipPos.forEach(([px, py]) => {
+                        ctx.beginPath();
+                        ctx.arc(px * it.r, py * it.r, it.r * 0.13, 0, Math.PI * 2);
+                        ctx.fill();
+                    });
                 }
                 ctx.restore();
             }
@@ -961,7 +1209,13 @@
                 });
                 ctx.globalAlpha = 1;
 
-                drawFairy(player.x, player.y);
+                if (invulnerableMs > 0 && Math.floor(elapsedMs / 80) % 2 === 0) {
+                    ctx.globalAlpha = 0.35;
+                    drawFairy(player.x, player.y);
+                    ctx.globalAlpha = 1;
+                } else {
+                    drawFairy(player.x, player.y);
+                }
 
                 ctx.restore();
             }
@@ -975,10 +1229,14 @@
             }
             function pressStart(e) {
                 if (e) e.preventDefault();
+                if (state === 'ready') {
+                    if (!validateInitials()) { initialsInput.focus(); return; }
+                    startGame();
+                    return;
+                }
                 dragging = true;
                 const clientX = e.touches ? e.touches[0].clientX : e.clientX;
                 setTargetFromClientX(clientX);
-                if (state === 'ready') { startGame(); }
             }
             function pressMove(e) {
                 if (!dragging) return;
@@ -1004,8 +1262,11 @@
             const keysHeld = {};
             document.addEventListener('keydown', (e) => {
                 if (['ArrowLeft','ArrowRight','Space'].includes(e.code)) {
+                    if (document.activeElement === initialsInput && e.code !== 'Space') return;
                     e.preventDefault();
-                    if (state === 'ready' && e.code !== 'Space') { startGame(); }
+                    if (state === 'ready' && e.code !== 'Space') {
+                        if (validateInitials()) startGame(); else initialsInput.focus();
+                    }
                     if (state === 'over' && e.code === 'Space') { startGame(); return; }
                     keysHeld[e.code] = true;
                 }
@@ -1033,7 +1294,9 @@
                 el.addEventListener('click', wrapped);
             }
 
-            bindTap(btnStart, startGame);
+            bindTap(btnStart, () => {
+                if (validateInitials()) startGame(); else initialsInput.focus();
+            });
             bindTap(btnRestart, startGame);
 
             document.addEventListener('visibilitychange', () => {
@@ -1057,6 +1320,8 @@
             player.prevX = player.x;
             player.y = ch - 66;
             initClouds();
+            updateLivesUI();
+            loadLeaderboard();
             render();
         }
     </script>

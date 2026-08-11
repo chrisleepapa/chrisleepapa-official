@@ -214,6 +214,8 @@
         .hud-best  { font-size: 1.0rem; color: rgba(201,168,76,0.85); margin-top: 2px; text-align: right; }
 
         #switch-canvas {
+            touch-action: none;
+            -webkit-tap-highlight-color: transparent;
             display: block;
             width: 100%;
             aspect-ratio: 5 / 7;
@@ -278,6 +280,63 @@
         }
         .overlay-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,168,76,0.35); }
         .overlay-btn:active { transform: translateY(0); }
+
+        /* ── 캐릭터 선택 ── */
+        .char-select-grid {
+            display: flex;
+            gap: 14px;
+            margin-top: 4px;
+        }
+        .char-card {
+            width: 118px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 10px 14px;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.03);
+            cursor: pointer;
+            transition: all 0.22s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .char-card:active { transform: scale(0.96); }
+        .char-card.char-yul:hover,
+        .char-card.char-yul.is-picked { border-color: var(--fire-core); box-shadow: 0 0 18px rgba(255,106,64,0.3); background: rgba(255,106,64,0.08); }
+        .char-card.char-jeong:hover,
+        .char-card.char-jeong.is-picked { border-color: #ffd76a; box-shadow: 0 0 18px rgba(255,215,106,0.3); background: rgba(255,215,106,0.08); }
+        .char-thumb {
+            width: 78px;
+            height: 96px;
+            background-repeat: no-repeat;
+            image-rendering: -webkit-optimize-contrast;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .char-name {
+            font-family: 'Cinzel', serif;
+            font-size: 0.78rem;
+            letter-spacing: 1px;
+            color: #e8d08a;
+        }
+        .char-tag {
+            font-size: 0.68rem;
+            color: #8a8698;
+        }
+        .change-char-btn {
+            margin-top: 10px;
+            font-size: 0.72rem;
+            color: #8a8698;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            letter-spacing: 0.3px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .change-char-btn:hover { color: #e8d08a; }
 
         .attr-toggle-row {
             display: flex;
@@ -396,10 +455,27 @@
                 <div style="position:relative;">
                     <canvas id="switch-canvas"></canvas>
 
-                    <div class="switch-overlay" id="overlay-start">
+                    <div class="switch-overlay" id="overlay-select">
+                        <div class="overlay-title">캐릭터를 선택하세요</div>
+                        <div class="char-select-grid">
+                            <div class="char-card char-yul" id="card-yul" data-char="yul">
+                                <div class="char-thumb" id="thumb-yul"></div>
+                                <div class="char-name">율이</div>
+                                <div class="char-tag">Fire</div>
+                            </div>
+                            <div class="char-card char-jeong" id="card-jeong" data-char="jeong">
+                                <div class="char-thumb" id="thumb-jeong"></div>
+                                <div class="char-name">정이</div>
+                                <div class="char-tag">Shield</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="switch-overlay hidden" id="overlay-start">
                         <div class="overlay-title">쌍둥이 그리핀의 관문</div>
-                        <p class="overlay-desc">얼음문은 얼음 속성일 때, 불꽃문은 불꽃 속성일 때만 통과할 수 있어요. 화면을 탭하거나 스페이스바로 속성을 전환하세요.</p>
+                        <p class="overlay-desc" id="start-desc">얼음문은 얼음 속성일 때, 불꽃문은 불꽃 속성일 때만 통과할 수 있어요. 화면을 탭하거나 스페이스바로 속성을 전환하세요.</p>
                         <button class="overlay-btn" id="btn-start">시작하기</button>
+                        <button class="change-char-btn" id="btn-change-char">캐릭터 변경</button>
                     </div>
 
                     <div class="switch-overlay hidden" id="overlay-over">
@@ -407,6 +483,7 @@
                         <div class="overlay-score" id="final-score">0</div>
                         <div class="overlay-best-tag" id="best-tag">BEST 0</div>
                         <button class="overlay-btn" id="btn-restart">다시 도전</button>
+                        <button class="change-char-btn" id="btn-change-char-2">캐릭터 변경</button>
                     </div>
                 </div>
 
@@ -430,7 +507,7 @@
         <div class="switch-guide">
             <div class="switch-guide-box">
                 <h2>✦ &nbsp; HOW TO PLAY</h2>
-                <p>화면 위로 얼음문(파란색)과 불꽃문(주황색)이 번갈아 솟아오릅니다. 내 캐릭터의 현재 속성과 같은 색의 문만 통과할 수 있어요. 다른 속성의 문에 부딪히면 게임이 끝납니다.</p>
+                <p>시작 전 <strong style="color:#e8d08a;">율이</strong> 또는 <strong style="color:#e8d08a;">정이</strong> 캐릭터를 선택하세요. 화면 위로 얼음문(파란색)과 불꽃문(주황색)이 번갈아 솟아오릅니다. 내 캐릭터의 현재 속성과 같은 색의 문만 통과할 수 있어요. 다른 속성의 문에 부딪히면 게임이 끝납니다.</p>
                 <p>화면을 탭하거나 <strong style="color:#e8d08a;">스페이스바</strong>를 눌러 언제든 얼음 ↔ 불꽃 속성을 전환하세요. 문을 통과할 때마다 점수가 오르고, 점수가 쌓일수록 관문의 속도가 점점 빨라집니다.</p>
                 <p>쌍둥이 그리핀은 서로 다른 속성을 지키는 문지기입니다 — 얼음 그리핀 쪽에 가까울수록 화면이 파랗게, 불꽃 그리핀 쪽에 가까울수록 화면이 붉게 물듭니다. 최고 기록에 도전해 보세요!</p>
             </div>
@@ -562,10 +639,88 @@
             const griffinIceSide  = document.getElementById('griffin-ice-side');
             const griffinFireSide = document.getElementById('griffin-fire-side');
 
+            const overlaySelect   = document.getElementById('overlay-select');
+            const cardYul         = document.getElementById('card-yul');
+            const cardJeong       = document.getElementById('card-jeong');
+            const thumbYul        = document.getElementById('thumb-yul');
+            const thumbJeong      = document.getElementById('thumb-jeong');
+            const startDescEl     = document.getElementById('start-desc');
+            const btnChangeChar   = document.getElementById('btn-change-char');
+            const btnChangeChar2  = document.getElementById('btn-change-char-2');
+
             const COLORS = {
                 ice:  { core: '#8fd3ff', deep: '#123146', glow: 'rgba(143,211,255,0.55)' },
                 fire: { core: '#ff8a4c', deep: '#3a140f', glow: 'rgba(255,106,64,0.55)' }
             };
+
+            // ── 캐릭터 스프라이트 데이터 ──
+            // 각 프레임: [x, y, w, h] (스프라이트시트 원본 픽셀 기준)
+            const CHAR_DATA = {
+                yul: {
+                    name: '율이',
+                    desc: '율이는 불꽃 화염구를 다루는 몸놀림이 빠른 캐릭터예요. 얼음문은 얼음 속성일 때, 불꽃문은 불꽃 속성일 때만 통과할 수 있어요. 화면을 탭하거나 스페이스바로 속성을 전환하세요.',
+                    src: 'images/yul_spritesheet.png',
+                    sheetW: 1883, sheetH: 480,
+                    frames: [
+                        [0, 18, 276, 445],
+                        [294, 19, 359, 443],
+                        [670, 19, 362, 443],
+                        [1050, 19, 397, 443],
+                        [1466, 19, 417, 443]
+                    ],
+                    img: new Image()
+                },
+                jeong: {
+                    name: '정이',
+                    desc: '정이는 빛나는 보호막을 두르는 든든한 캐릭터예요. 얼음문은 얼음 속성일 때, 불꽃문은 불꽃 속성일 때만 통과할 수 있어요. 화면을 탭하거나 스페이스바로 속성을 전환하세요.',
+                    src: 'images/jeong_spritesheet.png',
+                    sheetW: 2113, sheetH: 480,
+                    frames: [
+                        [9, 33, 259, 418],
+                        [408, 33, 341, 418],
+                        [829, 33, 372, 417],
+                        [1250, 33, 390, 417],
+                        [1709, 18, 404, 443]
+                    ],
+                    img: new Image()
+                }
+            };
+            CHAR_DATA.yul.img.src = CHAR_DATA.yul.src;
+            CHAR_DATA.jeong.img.src = CHAR_DATA.jeong.src;
+
+            let selectedChar = null; // 'yul' | 'jeong'
+
+            function setThumb(el, key) {
+                const d = CHAR_DATA[key];
+                const f = d.frames[0];
+                const targetH = 96;
+                const scale = targetH / f[3];
+                el.style.width  = Math.round(f[2] * scale) + 'px';
+                el.style.height = targetH + 'px';
+                el.style.backgroundImage = `url('${d.src}')`;
+                el.style.backgroundSize = Math.round(d.sheetW * scale) + 'px ' + Math.round(d.sheetH * scale) + 'px';
+                el.style.backgroundPosition = (-Math.round(f[0] * scale)) + 'px ' + (-Math.round(f[1] * scale)) + 'px';
+            }
+            setThumb(thumbYul, 'yul');
+            setThumb(thumbJeong, 'jeong');
+
+            function pickCharacter(key) {
+                selectedChar = key;
+                cardYul.classList.toggle('is-picked', key === 'yul');
+                cardJeong.classList.toggle('is-picked', key === 'jeong');
+                startDescEl.textContent = CHAR_DATA[key].desc;
+                overlaySelect.classList.add('hidden');
+                overlayOver.classList.add('hidden');
+                overlayStart.classList.remove('hidden');
+                state = 'ready';
+            }
+
+            function showSelect() {
+                state = 'select';
+                overlayStart.classList.add('hidden');
+                overlayOver.classList.add('hidden');
+                overlaySelect.classList.remove('hidden');
+            }
 
             const STORAGE_KEY = 'switch_griffin_best_score';
             let bestScore = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10);
@@ -583,7 +738,7 @@
                 ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
             }
 
-            let state = 'ready'; // ready | playing | over
+            let state = 'select'; // select | ready | playing | over
             let attribute = 'ice';
             let score = 0;
             let gates = [];
@@ -595,7 +750,11 @@
             let particles = [];
             let shakeMs = 0;
 
-            const player = { xRatio: 0.28, r: 13 };
+            const player = {
+                xRatio: 0.28, r: 15,
+                runFrame: 0, runTimer: 0,
+                casting: false, castFrame: 2, castTimer: 0
+            };
 
             function resetGame() {
                 score = 0;
@@ -607,6 +766,11 @@
                 elapsedMs = 0;
                 shakeMs = 0;
                 attribute = 'ice';
+                player.runFrame = 0;
+                player.runTimer = 0;
+                player.casting = false;
+                player.castFrame = 2;
+                player.castTimer = 0;
                 updateAttrUI();
                 hudScoreEl.textContent = '0';
             }
@@ -623,6 +787,9 @@
                 attribute = attribute === 'ice' ? 'fire' : 'ice';
                 updateAttrUI();
                 spawnBurst(player.xRatio * cw, ch * 0.5, COLORS[attribute].core, 10);
+                player.casting = true;
+                player.castFrame = 2;
+                player.castTimer = 0;
             }
 
             function spawnGate() {
@@ -736,6 +903,26 @@
                     if (p.life <= 0) particles.splice(i, 1);
                 }
 
+                // 캐릭터 애니메이션
+                if (player.casting) {
+                    player.castTimer += dt;
+                    if (player.castTimer >= 90) {
+                        player.castTimer = 0;
+                        player.castFrame += 1;
+                        if (player.castFrame > 4) {
+                            player.casting = false;
+                            player.runFrame = 0;
+                            player.runTimer = 0;
+                        }
+                    }
+                } else {
+                    player.runTimer += dt;
+                    if (player.runTimer >= 150) {
+                        player.runTimer = 0;
+                        player.runFrame = player.runFrame === 0 ? 1 : 0;
+                    }
+                }
+
                 if (shakeMs > 0) shakeMs -= dt;
             }
 
@@ -791,31 +978,69 @@
                 });
                 ctx.globalAlpha = 1;
 
-                // player orb
+                // player
                 const px = player.xRatio * cw;
                 const py = ch * 0.5;
                 const pc = COLORS[attribute];
+
+                // 속성 오라 (글로우)
                 ctx.shadowColor = pc.glow;
-                ctx.shadowBlur = 22;
-                const grad = ctx.createRadialGradient(px, py, 1, px, py, player.r);
-                grad.addColorStop(0, '#ffffff');
-                grad.addColorStop(0.4, pc.core);
-                grad.addColorStop(1, pc.deep);
+                ctx.shadowBlur = 26;
+                const grad = ctx.createRadialGradient(px, py, 1, px, py, player.r * 1.6);
+                grad.addColorStop(0, pc.core + 'aa');
+                grad.addColorStop(1, 'transparent');
                 ctx.fillStyle = grad;
                 ctx.beginPath();
-                ctx.arc(px, py, player.r, 0, Math.PI * 2);
+                ctx.arc(px, py, player.r * 1.6, 0, Math.PI * 2);
                 ctx.fill();
+
+                // 캐릭터 스프라이트
+                const cd = selectedChar ? CHAR_DATA[selectedChar] : null;
+                if (cd && cd.img.complete && cd.img.naturalWidth > 0) {
+                    const frameIdx = player.casting ? player.castFrame : player.runFrame;
+                    const f = cd.frames[frameIdx];
+                    const spriteH = player.r * 6.2;
+                    const spriteW = spriteH * (f[2] / f[3]);
+                    ctx.filter = `drop-shadow(0 0 8px ${pc.glow})`;
+                    ctx.drawImage(
+                        cd.img,
+                        f[0], f[1], f[2], f[3],
+                        px - spriteW / 2, py - spriteH / 2, spriteW, spriteH
+                    );
+                    ctx.filter = 'none';
+                } else {
+                    // 스프라이트 로딩 전 대체 도형
+                    ctx.shadowBlur = 22;
+                    const g2 = ctx.createRadialGradient(px, py, 1, px, py, player.r);
+                    g2.addColorStop(0, '#ffffff');
+                    g2.addColorStop(0.4, pc.core);
+                    g2.addColorStop(1, pc.deep);
+                    ctx.fillStyle = g2;
+                    ctx.beginPath();
+                    ctx.arc(px, py, player.r, 0, Math.PI * 2);
+                    ctx.fill();
+                }
                 ctx.shadowBlur = 0;
 
                 ctx.restore();
             }
 
-            // ── 입력 처리 ──
-            canvas.addEventListener('pointerdown', (e) => {
-                e.preventDefault();
+            // ── 입력 처리 (모바일 대응) ──
+            // 일부 모바일 브라우저는 pointerdown이 불안정하거나 click과 중복 발화될 수 있어
+            // touchstart / pointerdown / click을 모두 열어두고 짧은 시간 내 중복 입력만 걸러낸다.
+            let lastTapAt = 0;
+            function handleCanvasTap(e) {
+                if (e) e.preventDefault();
+                const now = Date.now();
+                if (now - lastTapAt < 120) return; // 중복 이벤트(터치+클릭) 방지
+                lastTapAt = now;
                 if (state === 'ready') { startGame(); return; }
-                toggleAttribute();
-            });
+                if (state === 'playing') { toggleAttribute(); }
+            }
+            canvas.addEventListener('touchstart', handleCanvasTap, { passive: false });
+            canvas.addEventListener('pointerdown', handleCanvasTap);
+            canvas.addEventListener('click', handleCanvasTap);
+
             document.addEventListener('keydown', (e) => {
                 if (e.code === 'Space' || e.code === 'ArrowUp') {
                     e.preventDefault();
@@ -824,8 +1049,27 @@
                     toggleAttribute();
                 }
             });
-            btnStart.addEventListener('click', startGame);
-            btnRestart.addEventListener('click', startGame);
+
+            function bindTap(el, handler) {
+                let last = 0;
+                const wrapped = (e) => {
+                    if (e) e.preventDefault();
+                    const now = Date.now();
+                    if (now - last < 120) return;
+                    last = now;
+                    handler();
+                };
+                el.addEventListener('touchstart', wrapped, { passive: false });
+                el.addEventListener('pointerdown', wrapped);
+                el.addEventListener('click', wrapped);
+            }
+
+            bindTap(btnStart, startGame);
+            bindTap(btnRestart, startGame);
+            bindTap(cardYul, () => pickCharacter('yul'));
+            bindTap(cardJeong, () => pickCharacter('jeong'));
+            bindTap(btnChangeChar, showSelect);
+            bindTap(btnChangeChar2, showSelect);
 
             document.addEventListener('visibilitychange', () => {
                 if (document.hidden && state === 'playing') {

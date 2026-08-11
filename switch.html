@@ -22,15 +22,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <link rel="icon" href="images/favicon.png" type="image/png">
 
-    <meta name="description" content="속성 스위치 — 얼음과 불꽃, 쌍둥이 그리핀의 관문을 통과하라. Chris LEE.PAPA가 만든 반사신경 미니게임. 같은 속성의 문만 살아남는다.">
-    <meta property="og:title" content="속성 스위치 – Chris LEE.PAPA">
-    <meta property="og:description" content="얼음 그리핀과 불꽃 그리핀, 두 관문 사이에서 속성을 전환하며 살아남으세요. 탭 한 번으로 얼음과 불꽃을 오가는 초고속 반사신경 게임.">
+    <meta name="description" content="얼음 덩이와 불덩이를 피하고, 솟아오른 산을 넘어라 — 쌍둥이 그리핀의 협곡을 날아가는 반사신경 미니게임. 화면을 길게 눌러 상승, 손을 떼면 하강. Chris LEE.PAPA가 만든 게임.">
+    <meta property="og:title" content="그리핀 협곡 – Chris LEE.PAPA">
+    <meta property="og:description" content="얼음 그리핀과 불꽃 그리핀이 지키는 협곡을 날아가세요. 얼음 덩이, 불덩이, 솟아오른 산을 피해 살아남는 원터치 반사신경 게임.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://chrisleepapa-official.vercel.app/switch">
     <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/griffin-fire.png">
     <link rel="canonical" href="https://chrisleepapa-official.vercel.app/switch">
 
-    <title>속성 스위치 - Chris LEE.PAPA</title>
+    <title>그리핀 협곡 - Chris LEE.PAPA</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -338,42 +338,11 @@
         }
         .change-char-btn:hover { color: #e8d08a; }
 
-        .attr-toggle-row {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 14px;
-        }
-        .attr-chip {
-            flex: 1;
-            text-align: center;
-            padding: 10px 8px;
-            border-radius: 12px;
-            font-family: 'Cinzel', serif;
-            font-size: 0.68rem;
-            letter-spacing: 1.5px;
-            border: 1px solid rgba(255,255,255,0.08);
-            color: #8a8698;
-            transition: all 0.25s ease;
-        }
-        .attr-chip.chip-ice.is-active {
-            color: #eaf7ff;
-            border-color: var(--ice-core);
-            background: linear-gradient(135deg, rgba(143,211,255,0.22), rgba(27,58,82,0.35));
-            box-shadow: 0 0 16px rgba(143,211,255,0.25) inset;
-        }
-        .attr-chip.chip-fire.is-active {
-            color: #fff1e8;
-            border-color: var(--fire-core);
-            background: linear-gradient(135deg, rgba(255,138,76,0.22), rgba(74,23,18,0.35));
-            box-shadow: 0 0 16px rgba(255,106,64,0.25) inset;
-        }
         .hint-row {
             text-align: center;
             font-size: 0.72rem;
             color: #6b6878;
-            margin-top: 10px;
+            margin-top: 14px;
             letter-spacing: 0.3px;
         }
         .hint-row kbd {
@@ -426,9 +395,9 @@
     <canvas id="stars-canvas"></canvas>
 
     <main class="switch-wrapper">
-        <span class="section-heading-tag">✦   ATTRIBUTE SWITCH   ✦</span>
-        <h2 class="section-heading-title">속성 스위치</h2>
-        <p class="section-heading-sub">얼음과 불꽃, 쌍둥이 그리핀의 관문을 지나라 — 같은 속성만이 살아남는다</p>
+        <span class="section-heading-tag">✦   GRIFFIN CANYON   ✦</span>
+        <h2 class="section-heading-title">그리핀 협곡</h2>
+        <p class="section-heading-sub">얼음과 불꽃, 솟아오른 산을 피하라 — 쌍둥이 그리핀의 협곡을 끝까지 날아라</p>
 
         <div class="game-stage">
             <!-- 얼음 그리핀 -->
@@ -472,14 +441,14 @@
                     </div>
 
                     <div class="switch-overlay hidden" id="overlay-start">
-                        <div class="overlay-title">쌍둥이 그리핀의 관문</div>
-                        <p class="overlay-desc" id="start-desc">얼음문은 얼음 속성일 때, 불꽃문은 불꽃 속성일 때만 통과할 수 있어요. 화면을 탭하거나 스페이스바로 속성을 전환하세요.</p>
+                        <div class="overlay-title">쌍둥이 그리핀의 협곡</div>
+                        <p class="overlay-desc" id="start-desc">화면을 길게 누르면 위로 떠오르고, 손을 떼면 아래로 떨어져요. 얼음 덩이, 불덩이, 솟아오른 산을 피해 살아남으세요.</p>
                         <button class="overlay-btn" id="btn-start">시작하기</button>
                         <button class="change-char-btn" id="btn-change-char">캐릭터 변경</button>
                     </div>
 
                     <div class="switch-overlay hidden" id="overlay-over">
-                        <div class="overlay-title">관문이 무너졌습니다</div>
+                        <div class="overlay-title">협곡에서 추락했습니다</div>
                         <div class="overlay-score" id="final-score">0</div>
                         <div class="overlay-best-tag" id="best-tag">BEST 0</div>
                         <button class="overlay-btn" id="btn-restart">다시 도전</button>
@@ -487,11 +456,7 @@
                     </div>
                 </div>
 
-                <div class="attr-toggle-row">
-                    <div class="attr-chip chip-ice" id="chip-ice">ICE</div>
-                    <div class="attr-chip chip-fire" id="chip-fire">FIRE</div>
-                </div>
-                <div class="hint-row">탭 · 클릭 또는 <kbd>Space</kbd> 로 속성 전환</div>
+                <div class="hint-row">화면을 길게 눌러 상승 · 손을 떼면 하강 · <kbd>Space</kbd> 로도 조작 가능</div>
             </div>
 
             <!-- 불꽃 그리핀 -->
@@ -507,9 +472,9 @@
         <div class="switch-guide">
             <div class="switch-guide-box">
                 <h2>✦ &nbsp; HOW TO PLAY</h2>
-                <p>시작 전 <strong style="color:#e8d08a;">율이</strong> 또는 <strong style="color:#e8d08a;">정이</strong> 캐릭터를 선택하세요. 화면 위로 얼음문(파란색)과 불꽃문(주황색)이 번갈아 솟아오릅니다. 내 캐릭터의 현재 속성과 같은 색의 문만 통과할 수 있어요. 다른 속성의 문에 부딪히면 게임이 끝납니다.</p>
-                <p>화면을 탭하거나 <strong style="color:#e8d08a;">스페이스바</strong>를 눌러 언제든 얼음 ↔ 불꽃 속성을 전환하세요. 문을 통과할 때마다 점수가 오르고, 점수가 쌓일수록 관문의 속도가 점점 빨라집니다.</p>
-                <p>쌍둥이 그리핀은 서로 다른 속성을 지키는 문지기입니다 — 얼음 그리핀 쪽에 가까울수록 화면이 파랗게, 불꽃 그리핀 쪽에 가까울수록 화면이 붉게 물듭니다. 최고 기록에 도전해 보세요!</p>
+                <p>시작 전 <strong style="color:#e8d08a;">율이</strong> 또는 <strong style="color:#e8d08a;">정이</strong> 캐릭터를 선택하세요. 화면을 길게 누르고 있으면 위로 떠오르고, 손을 떼면 중력에 의해 아래로 떨어집니다. 이 상승과 하강을 오가며 앞에서 다가오는 장애물을 피해야 해요.</p>
+                <p>협곡 위아래로 솟아오른 산과, 그리핀들이 날리는 얼음 덩이·불덩이가 차례로 다가옵니다. 무엇에든 부딪히면 게임이 끝나요. 산 사이의 좁은 틈을 통과하거나 날아오는 덩어리를 피할 때마다 점수가 올라갑니다.</p>
+                <p>쌍둥이 그리핀은 협곡의 수호자입니다 — 위쪽 얼음 그리핀에 가까워질수록 화면이 차갑게, 아래쪽 불꽃 그리핀에 가까워질수록 화면이 뜨겁게 물듭니다. 점수가 쌓일수록 속도가 점점 빨라지니 최고 기록에 도전해 보세요!</p>
             </div>
         </div>
     </main>
@@ -521,23 +486,23 @@
     <script>
         window.PAGE_I18N = {
             ko: {
-                game_tag:    '✦   ATTRIBUTE SWITCH   ✦',
-                game_title:  '속성 스위치',
-                game_sub:    '얼음과 불꽃, 쌍둥이 그리핀의 관문을 지나라 — 같은 속성만이 살아남는다',
-                start_title: '쌍둥이 그리핀의 관문',
-                start_desc:  '얼음문은 얼음 속성일 때, 불꽃문은 불꽃 속성일 때만 통과할 수 있어요. 화면을 탭하거나 스페이스바로 속성을 전환하세요.',
+                game_tag:    '✦   GRIFFIN CANYON   ✦',
+                game_title:  '그리핀 협곡',
+                game_sub:    '얼음과 불꽃, 솟아오른 산을 피하라 — 쌍둥이 그리핀의 협곡을 끝까지 날아라',
+                start_title: '쌍둥이 그리핀의 협곡',
+                start_desc:  '화면을 길게 누르면 위로 떠오르고, 손을 떼면 아래로 떨어져요. 얼음 덩이, 불덩이, 솟아오른 산을 피해 살아남으세요.',
                 start_btn:   '시작하기',
-                over_title:  '관문이 무너졌습니다',
+                over_title:  '협곡에서 추락했습니다',
                 restart_btn: '다시 도전'
             },
             en: {
-                game_tag:    '✦   ATTRIBUTE SWITCH   ✦',
-                game_title:  'Attribute Switch',
-                game_sub:    'Pass through the gates of the Twin Griffins — only matching attributes survive',
-                start_title: 'Gate of the Twin Griffins',
-                start_desc:  'Ice gates open only in Ice form, Fire gates only in Fire form. Tap or press Space to switch.',
+                game_tag:    '✦   GRIFFIN CANYON   ✦',
+                game_title:  'Griffin Canyon',
+                game_sub:    'Dodge ice, fire, and rising mountains — fly the canyon of the Twin Griffins',
+                start_title: 'Canyon of the Twin Griffins',
+                start_desc:  'Hold to rise, release to fall. Dodge ice chunks, fireballs, and rising mountains to survive.',
                 start_btn:   'Start',
-                over_title:  'The gate has fallen',
+                over_title:  'You fell in the canyon',
                 restart_btn: 'Try Again'
             }
         };
@@ -619,7 +584,7 @@
         }
     </script>
 
-    <!-- ⑥ 속성 스위치 게임 로직 -->
+    <!-- ⑥ 그리핀 협곡 게임 로직 -->
     <script>
         function initSwitchGame() {
             const canvas = document.getElementById('switch-canvas');
@@ -634,8 +599,6 @@
             const bestTagEl   = document.getElementById('best-tag');
             const btnStart    = document.getElementById('btn-start');
             const btnRestart  = document.getElementById('btn-restart');
-            const chipIce     = document.getElementById('chip-ice');
-            const chipFire    = document.getElementById('chip-fire');
             const griffinIceSide  = document.getElementById('griffin-ice-side');
             const griffinFireSide = document.getElementById('griffin-fire-side');
 
@@ -649,16 +612,24 @@
             const btnChangeChar2  = document.getElementById('btn-change-char-2');
 
             const COLORS = {
-                ice:  { core: '#8fd3ff', deep: '#123146', glow: 'rgba(143,211,255,0.55)' },
-                fire: { core: '#ff8a4c', deep: '#3a140f', glow: 'rgba(255,106,64,0.55)' }
+                ice:  { core: '#8fd3ff', deep: '#123146', glow: 'rgba(143,211,255,0.55)', rgb: [143,211,255] },
+                fire: { core: '#ff8a4c', deep: '#3a140f', glow: 'rgba(255,106,64,0.55)', rgb: [255,138,76] }
             };
+
+            function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
+            function lerpColor(a, b, t) {
+                const r = Math.round(a[0] + (b[0]-a[0])*t);
+                const g = Math.round(a[1] + (b[1]-a[1])*t);
+                const bl= Math.round(a[2] + (b[2]-a[2])*t);
+                return `rgb(${r},${g},${bl})`;
+            }
 
             // ── 캐릭터 스프라이트 데이터 ──
             // 각 프레임: [x, y, w, h] (스프라이트시트 원본 픽셀 기준)
             const CHAR_DATA = {
                 yul: {
                     name: '율이',
-                    desc: '율이는 불꽃 화염구를 다루는 몸놀림이 빠른 캐릭터예요. 얼음문은 얼음 속성일 때, 불꽃문은 불꽃 속성일 때만 통과할 수 있어요. 화면을 탭하거나 스페이스바로 속성을 전환하세요.',
+                    desc: '율이는 몸놀림이 빠른 캐릭터예요. 화면을 길게 눌러 위로 떠오르고, 손을 떼면 아래로 떨어져요. 얼음 덩이, 불덩이, 솟아오른 산을 피해 최대한 멀리 날아가 보세요.',
                     src: 'images/yul_spritesheet.png',
                     sheetW: 1883, sheetH: 480,
                     frames: [
@@ -672,7 +643,7 @@
                 },
                 jeong: {
                     name: '정이',
-                    desc: '정이는 빛나는 보호막을 두르는 든든한 캐릭터예요. 얼음문은 얼음 속성일 때, 불꽃문은 불꽃 속성일 때만 통과할 수 있어요. 화면을 탭하거나 스페이스바로 속성을 전환하세요.',
+                    desc: '정이는 든든한 보호막을 두른 캐릭터예요. 화면을 길게 눌러 위로 떠오르고, 손을 떼면 아래로 떨어져요. 얼음 덩이, 불덩이, 솟아오른 산을 피해 최대한 멀리 날아가 보세요.',
                     src: 'images/jeong_spritesheet.png',
                     sheetW: 2113, sheetH: 480,
                     frames: [
@@ -739,69 +710,68 @@
             }
 
             let state = 'select'; // select | ready | playing | over
-            let attribute = 'ice';
             let score = 0;
-            let gates = [];
-            let spawnTimer = 0;
-            let spawnInterval = 1450;
-            let gateSpeed = 150; // px / sec
+            let mountains = [];
+            let hazards = [];
+            let mSpawnTimer = 0, mSpawnInterval = 2200, mSpeed = 150;
+            let hSpawnTimer = 0, hSpawnInterval = 950, hSpeed = 190;
             let elapsedMs = 0;
             let lastTime = 0;
             let particles = [];
             let shakeMs = 0;
+            let holding = false;
+
+            const GRAVITY = 1500;   // px / s^2, always pulling down
+            const THRUST  = -3100;  // px / s^2, extra upward force while holding
+            const MAX_VY  = 620;
+            const MIN_VY  = -560;
 
             const player = {
-                xRatio: 0.28, r: 15,
-                runFrame: 0, runTimer: 0,
-                casting: false, castFrame: 2, castTimer: 0
+                xRatio: 0.26, r: 15,
+                y: 0, vy: 0,
+                frame: 0, frameTimer: 0
             };
 
             function resetGame() {
                 score = 0;
-                gates = [];
+                mountains = [];
+                hazards = [];
                 particles = [];
-                spawnTimer = 0;
-                spawnInterval = 1450;
-                gateSpeed = 150;
+                mSpawnTimer = 0; mSpawnInterval = 2200; mSpeed = 150;
+                hSpawnTimer = 0; hSpawnInterval = 950; hSpeed = 190;
                 elapsedMs = 0;
                 shakeMs = 0;
-                attribute = 'ice';
-                player.runFrame = 0;
-                player.runTimer = 0;
-                player.casting = false;
-                player.castFrame = 2;
-                player.castTimer = 0;
-                updateAttrUI();
+                holding = false;
+                player.y = ch * 0.5;
+                player.vy = 0;
+                player.frame = 0;
+                player.frameTimer = 0;
                 hudScoreEl.textContent = '0';
             }
 
-            function updateAttrUI() {
-                chipIce.classList.toggle('is-active', attribute === 'ice');
-                chipFire.classList.toggle('is-active', attribute === 'fire');
-                griffinIceSide.classList.toggle('active-side', attribute === 'ice');
-                griffinFireSide.classList.toggle('active-side', attribute === 'fire');
+            function updateSideGlow(py) {
+                const t = ch > 0 ? py / ch : 0.5;
+                griffinIceSide.classList.toggle('active-side', t < 0.38);
+                griffinFireSide.classList.toggle('active-side', t > 0.62);
             }
 
-            function toggleAttribute() {
-                if (state !== 'playing') return;
-                attribute = attribute === 'ice' ? 'fire' : 'ice';
-                updateAttrUI();
-                spawnBurst(player.xRatio * cw, ch * 0.5, COLORS[attribute].core, 10);
-                player.casting = true;
-                player.castFrame = 2;
-                player.castTimer = 0;
+            function spawnMountain() {
+                const width = 80 + Math.random() * 30;
+                const gapH = Math.max(ch * 0.32, 190 - score * 1.1);
+                const gapY = Math.random() * (ch - gapH - 70) + 35;
+                const jitter = [];
+                for (let i = 0; i < 5; i++) jitter.push(0.4 + Math.random() * 0.6);
+                mountains.push({ x: cw + 20, width, gapY, gapH, jitter, passed: false });
             }
 
-            function spawnGate() {
-                const color = Math.random() < 0.5 ? 'ice' : 'fire';
-                const gapH = Math.max(ch * 0.30, 120 - score * 0.6);
-                const gapY = Math.random() * (ch - gapH - 60) + 30;
-                gates.push({
-                    x: cw + 30,
-                    width: 26,
-                    color: color,
-                    gapY: gapY,
-                    gapH: gapH,
+            function spawnHazard() {
+                const type = Math.random() < 0.5 ? 'ice' : 'fire';
+                const r = type === 'ice' ? (9 + Math.random() * 5) : (10 + Math.random() * 6);
+                const y = Math.random() * (ch - 60) + 30;
+                hazards.push({
+                    x: cw + 20, y, r, type,
+                    rot: Math.random() * Math.PI * 2,
+                    wob: Math.random() * Math.PI * 2,
                     passed: false
                 });
             }
@@ -858,39 +828,73 @@
 
             function update(dt) {
                 // difficulty ramp
-                gateSpeed = Math.min(150 + elapsedMs / 1000 * 6, 380);
-                spawnInterval = Math.max(1450 - elapsedMs / 1000 * 22, 620);
+                mSpeed = Math.min(150 + elapsedMs / 1000 * 7, 340);
+                hSpeed = Math.min(190 + elapsedMs / 1000 * 9, 420);
+                mSpawnInterval = Math.max(2200 - elapsedMs / 1000 * 30, 1150);
+                hSpawnInterval = Math.max(950 - elapsedMs / 1000 * 14, 430);
 
-                spawnTimer += dt;
-                if (spawnTimer >= spawnInterval) {
-                    spawnTimer = 0;
-                    spawnGate();
-                }
+                mSpawnTimer += dt;
+                if (mSpawnTimer >= mSpawnInterval) { mSpawnTimer = 0; spawnMountain(); }
+                hSpawnTimer += dt;
+                if (hSpawnTimer >= hSpawnInterval) { hSpawnTimer = 0; spawnHazard(); }
+
+                // player physics: hold to rise, release to fall
+                const accel = GRAVITY + (holding ? THRUST : 0);
+                player.vy += accel * dt / 1000;
+                player.vy = clamp(player.vy, MIN_VY, MAX_VY);
+                player.y += player.vy * dt / 1000;
+                if (player.y < player.r) { player.y = player.r; player.vy = 0; }
+                if (player.y > ch - player.r) { player.y = ch - player.r; player.vy = 0; }
+
+                updateSideGlow(player.y);
 
                 const px = player.xRatio * cw;
-                const py = ch * 0.5;
+                const py = player.y;
 
-                for (let i = gates.length - 1; i >= 0; i--) {
-                    const g = gates[i];
-                    g.x -= gateSpeed * dt / 1000;
+                // mountains
+                for (let i = mountains.length - 1; i >= 0; i--) {
+                    const m = mountains[i];
+                    m.x -= mSpeed * dt / 1000;
 
-                    // collision window: gate body spans [g.x, g.x+g.width]
-                    if (!g.passed && px + player.r > g.x && px - player.r < g.x + g.width) {
-                        const inGap = py > g.gapY && py < g.gapY + g.gapH;
-                        const safe = inGap && attribute === g.color;
-                        if (!safe) {
-                            spawnBurst(px, py, '#ff4d4d', 18);
+                    if (px + player.r > m.x && px - player.r < m.x + m.width) {
+                        const inGap = py - player.r > m.gapY && py + player.r < m.gapY + m.gapH;
+                        if (!inGap) {
+                            spawnBurst(px, py, '#ff4d4d', 20);
                             endGame();
                             return;
                         }
                     }
-                    if (!g.passed && g.x + g.width < px - player.r) {
-                        g.passed = true;
+                    if (!m.passed && m.x + m.width < px - player.r) {
+                        m.passed = true;
+                        score += 2;
+                        hudScoreEl.textContent = score;
+                        spawnBurst(px, py, '#e8d08a', 6);
+                    }
+                    if (m.x + m.width < -40) mountains.splice(i, 1);
+                }
+
+                // hazards (ice chunks & fireballs)
+                for (let i = hazards.length - 1; i >= 0; i--) {
+                    const h = hazards[i];
+                    h.x -= hSpeed * dt / 1000;
+                    h.wob += dt / 1000 * 4;
+                    h.y += Math.sin(h.wob) * (h.type === 'fire' ? 20 : 7) * dt / 1000;
+                    h.y = clamp(h.y, h.r, ch - h.r);
+                    h.rot += dt / 1000 * (h.type === 'ice' ? 1.4 : 2.4);
+
+                    const dx = px - h.x, dy = py - h.y;
+                    const dist = Math.sqrt(dx*dx + dy*dy);
+                    if (dist < player.r + h.r) {
+                        spawnBurst(px, py, h.type === 'ice' ? COLORS.ice.core : COLORS.fire.core, 20);
+                        endGame();
+                        return;
+                    }
+                    if (!h.passed && h.x + h.r < px - player.r) {
+                        h.passed = true;
                         score += 1;
                         hudScoreEl.textContent = score;
-                        spawnBurst(px, py, COLORS[attribute].core, 6);
                     }
-                    if (g.x + g.width < -40) gates.splice(i, 1);
+                    if (h.x < -40) hazards.splice(i, 1);
                 }
 
                 for (let i = particles.length - 1; i >= 0; i--) {
@@ -903,27 +907,105 @@
                     if (p.life <= 0) particles.splice(i, 1);
                 }
 
-                // 캐릭터 애니메이션
-                if (player.casting) {
-                    player.castTimer += dt;
-                    if (player.castTimer >= 90) {
-                        player.castTimer = 0;
-                        player.castFrame += 1;
-                        if (player.castFrame > 4) {
-                            player.casting = false;
-                            player.runFrame = 0;
-                            player.runTimer = 0;
-                        }
-                    }
-                } else {
-                    player.runTimer += dt;
-                    if (player.runTimer >= 150) {
-                        player.runTimer = 0;
-                        player.runFrame = player.runFrame === 0 ? 1 : 0;
-                    }
+                // 캐릭터 애니메이션 (계속 순환)
+                player.frameTimer += dt;
+                if (player.frameTimer >= 110) {
+                    player.frameTimer = 0;
+                    player.frame = (player.frame + 1) % 5;
                 }
 
                 if (shakeMs > 0) shakeMs -= dt;
+            }
+
+            function drawMountain(m) {
+                ctx.fillStyle = '#1d1d29';
+                ctx.strokeStyle = 'rgba(201,168,76,0.45)';
+                ctx.lineWidth = 2;
+                ctx.shadowColor = 'rgba(0,0,0,0.6)';
+                ctx.shadowBlur = 10;
+
+                // top block (매치되는 충돌 영역과 동일)
+                ctx.beginPath();
+                ctx.roundRect(m.x, 0, m.width, m.gapY, 6);
+                ctx.fill(); ctx.stroke();
+
+                // bottom block
+                ctx.beginPath();
+                ctx.roundRect(m.x, m.gapY + m.gapH, m.width, ch - (m.gapY + m.gapH), 6);
+                ctx.fill(); ctx.stroke();
+                ctx.shadowBlur = 0;
+
+                // 산봉우리 느낌의 톱니 실루엣 (충돌 영역 안쪽에만 그려서 판정과 어긋나지 않음)
+                ctx.fillStyle = 'rgba(58,58,80,0.9)';
+                const n = m.jitter.length;
+                const peakH = Math.min(28, m.gapY * 0.7);
+                ctx.beginPath();
+                ctx.moveTo(m.x, m.gapY);
+                for (let i = 0; i < n; i++) {
+                    const fx = m.x + m.width * (i / (n - 1));
+                    const fy = m.gapY - peakH * m.jitter[i];
+                    ctx.lineTo(fx, fy);
+                }
+                ctx.lineTo(m.x + m.width, m.gapY);
+                ctx.closePath();
+                ctx.fill();
+
+                const baseY = m.gapY + m.gapH;
+                const peakH2 = Math.min(28, (ch - baseY) * 0.7);
+                ctx.beginPath();
+                ctx.moveTo(m.x, baseY);
+                for (let i = 0; i < n; i++) {
+                    const fx = m.x + m.width * (i / (n - 1));
+                    const fy = baseY + peakH2 * m.jitter[n - 1 - i];
+                    ctx.lineTo(fx, fy);
+                }
+                ctx.lineTo(m.x + m.width, baseY);
+                ctx.closePath();
+                ctx.fill();
+            }
+
+            function drawHazard(h) {
+                if (h.type === 'ice') {
+                    ctx.save();
+                    ctx.translate(h.x, h.y);
+                    ctx.rotate(h.rot);
+                    ctx.shadowColor = COLORS.ice.glow;
+                    ctx.shadowBlur = 14;
+                    const g = ctx.createLinearGradient(-h.r, -h.r, h.r, h.r);
+                    g.addColorStop(0, '#e8f7ff');
+                    g.addColorStop(0.5, COLORS.ice.core);
+                    g.addColorStop(1, COLORS.ice.deep);
+                    ctx.fillStyle = g;
+                    ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+                    ctx.lineWidth = 1.5;
+                    ctx.beginPath();
+                    ctx.moveTo(0, -h.r);
+                    ctx.lineTo(h.r * 0.72, 0);
+                    ctx.lineTo(0, h.r);
+                    ctx.lineTo(-h.r * 0.72, 0);
+                    ctx.closePath();
+                    ctx.fill(); ctx.stroke();
+                    ctx.restore();
+                } else {
+                    ctx.save();
+                    ctx.shadowColor = COLORS.fire.glow;
+                    ctx.shadowBlur = 18;
+                    const g = ctx.createRadialGradient(h.x, h.y, 1, h.x, h.y, h.r * 1.3);
+                    g.addColorStop(0, '#fff3d6');
+                    g.addColorStop(0.35, COLORS.fire.core);
+                    g.addColorStop(1, COLORS.fire.deep);
+                    ctx.fillStyle = g;
+                    ctx.beginPath();
+                    ctx.arc(h.x, h.y, h.r, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.fillStyle = 'rgba(255,180,90,0.7)';
+                    ctx.beginPath();
+                    ctx.moveTo(h.x - h.r * 0.4, h.y - h.r * 0.2);
+                    ctx.quadraticCurveTo(h.x - h.r * 1.3, h.y - h.r * 0.1, h.x - h.r * 0.9, h.y + h.r * 0.5);
+                    ctx.quadraticCurveTo(h.x - h.r * 0.6, h.y + h.r * 0.15, h.x - h.r * 0.4, h.y - h.r * 0.2);
+                    ctx.fill();
+                    ctx.restore();
+                }
             }
 
             function render() {
@@ -937,35 +1019,20 @@
                 ctx.save();
                 ctx.translate(ox, oy);
 
-                // ambient split background tinted toward current attribute
-                const tint = COLORS[attribute];
-                const bgGrad = ctx.createRadialGradient(cw*0.3, ch*0.5, 10, cw*0.3, ch*0.5, cw*0.9);
-                bgGrad.addColorStop(0, tint.deep + '55');
+                // 플레이어 높이에 따라 차갑거나(위) 뜨거운(아래) 협곡 앰비언트
+                const t = ch > 0 ? clamp(player.y / ch, 0, 1) : 0.5;
+                const tint = lerpColor(COLORS.ice.rgb, COLORS.fire.rgb, t);
+                const bgGrad = ctx.createRadialGradient(cw * 0.3, player.y, 10, cw * 0.3, player.y, cw * 0.95);
+                bgGrad.addColorStop(0, tint.replace('rgb', 'rgba').replace(')', ',0.28)'));
                 bgGrad.addColorStop(1, 'transparent');
                 ctx.fillStyle = bgGrad;
                 ctx.fillRect(0, 0, cw, ch);
 
-                // gates
-                gates.forEach(g => {
-                    const c = COLORS[g.color];
-                    ctx.fillStyle = c.deep;
-                    ctx.strokeStyle = c.core;
-                    ctx.lineWidth = 2;
-                    ctx.shadowColor = c.glow;
-                    ctx.shadowBlur = 12;
+                // mountains
+                mountains.forEach(m => drawMountain(m));
 
-                    // top block
-                    ctx.beginPath();
-                    ctx.roundRect(g.x, 0, g.width, g.gapY, 6);
-                    ctx.fill(); ctx.stroke();
-
-                    // bottom block
-                    ctx.beginPath();
-                    ctx.roundRect(g.x, g.gapY + g.gapH, g.width, ch - (g.gapY + g.gapH), 6);
-                    ctx.fill(); ctx.stroke();
-
-                    ctx.shadowBlur = 0;
-                });
+                // hazards
+                hazards.forEach(h => drawHazard(h));
 
                 // particles
                 particles.forEach(p => {
@@ -980,41 +1047,42 @@
 
                 // player
                 const px = player.xRatio * cw;
-                const py = ch * 0.5;
-                const pc = COLORS[attribute];
+                const py = player.y;
 
-                // 속성 오라 (글로우)
-                ctx.shadowColor = pc.glow;
+                ctx.shadowColor = tint;
                 ctx.shadowBlur = 26;
                 const grad = ctx.createRadialGradient(px, py, 1, px, py, player.r * 1.6);
-                grad.addColorStop(0, pc.core + 'aa');
+                grad.addColorStop(0, tint);
                 grad.addColorStop(1, 'transparent');
                 ctx.fillStyle = grad;
                 ctx.beginPath();
                 ctx.arc(px, py, player.r * 1.6, 0, Math.PI * 2);
                 ctx.fill();
 
-                // 캐릭터 스프라이트
                 const cd = selectedChar ? CHAR_DATA[selectedChar] : null;
                 if (cd && cd.img.complete && cd.img.naturalWidth > 0) {
-                    const frameIdx = player.casting ? player.castFrame : player.runFrame;
-                    const f = cd.frames[frameIdx];
+                    const f = cd.frames[player.frame];
                     const spriteH = player.r * 6.2;
                     const spriteW = spriteH * (f[2] / f[3]);
-                    ctx.filter = `drop-shadow(0 0 8px ${pc.glow})`;
+                    const tilt = clamp(player.vy / MAX_VY, -1, 1) * 0.32;
+                    ctx.save();
+                    ctx.translate(px, py);
+                    ctx.rotate(tilt);
+                    ctx.filter = `drop-shadow(0 0 8px ${tint})`;
                     ctx.drawImage(
                         cd.img,
                         f[0], f[1], f[2], f[3],
-                        px - spriteW / 2, py - spriteH / 2, spriteW, spriteH
+                        -spriteW / 2, -spriteH / 2, spriteW, spriteH
                     );
                     ctx.filter = 'none';
+                    ctx.restore();
                 } else {
                     // 스프라이트 로딩 전 대체 도형
                     ctx.shadowBlur = 22;
                     const g2 = ctx.createRadialGradient(px, py, 1, px, py, player.r);
                     g2.addColorStop(0, '#ffffff');
-                    g2.addColorStop(0.4, pc.core);
-                    g2.addColorStop(1, pc.deep);
+                    g2.addColorStop(0.4, tint);
+                    g2.addColorStop(1, COLORS.ice.deep);
                     ctx.fillStyle = g2;
                     ctx.beginPath();
                     ctx.arc(px, py, player.r, 0, Math.PI * 2);
@@ -1026,27 +1094,38 @@
             }
 
             // ── 입력 처리 (모바일 대응) ──
-            // 일부 모바일 브라우저는 pointerdown이 불안정하거나 click과 중복 발화될 수 있어
-            // touchstart / pointerdown / click을 모두 열어두고 짧은 시간 내 중복 입력만 걸러낸다.
-            let lastTapAt = 0;
-            function handleCanvasTap(e) {
+            // 화면을 누르고 있으면 상승(holding=true), 손을 떼면 하강(holding=false).
+            // touchstart/pointerdown/keydown 을 모두 열어 기기별 차이를 흡수한다.
+            function pressStart(e) {
                 if (e) e.preventDefault();
-                const now = Date.now();
-                if (now - lastTapAt < 120) return; // 중복 이벤트(터치+클릭) 방지
-                lastTapAt = now;
-                if (state === 'ready') { startGame(); return; }
-                if (state === 'playing') { toggleAttribute(); }
+                if (state === 'ready') { startGame(); }
+                if (state === 'playing') { holding = true; }
             }
-            canvas.addEventListener('touchstart', handleCanvasTap, { passive: false });
-            canvas.addEventListener('pointerdown', handleCanvasTap);
-            canvas.addEventListener('click', handleCanvasTap);
+            function pressEnd(e) {
+                if (e) e.preventDefault();
+                holding = false;
+            }
+
+            canvas.addEventListener('touchstart', pressStart, { passive: false });
+            canvas.addEventListener('touchend', pressEnd, { passive: false });
+            canvas.addEventListener('touchcancel', pressEnd, { passive: false });
+            canvas.addEventListener('pointerdown', pressStart);
+            canvas.addEventListener('pointerup', pressEnd);
+            canvas.addEventListener('pointercancel', pressEnd);
+            canvas.addEventListener('mouseleave', pressEnd);
 
             document.addEventListener('keydown', (e) => {
                 if (e.code === 'Space' || e.code === 'ArrowUp') {
                     e.preventDefault();
-                    if (state === 'ready') { startGame(); return; }
+                    if (state === 'ready') { startGame(); }
                     if (state === 'over') { startGame(); return; }
-                    toggleAttribute();
+                    holding = true;
+                }
+            });
+            document.addEventListener('keyup', (e) => {
+                if (e.code === 'Space' || e.code === 'ArrowUp') {
+                    e.preventDefault();
+                    holding = false;
                 }
             });
 
@@ -1073,6 +1152,7 @@
 
             document.addEventListener('visibilitychange', () => {
                 if (document.hidden && state === 'playing') {
+                    holding = false;
                     state = 'over-paused-hidden';
                 }
             });
@@ -1084,7 +1164,8 @@
 
             // 초기 세팅
             resizeCanvas();
-            updateAttrUI();
+            player.y = ch * 0.5;
+            updateSideGlow(player.y);
             render();
         }
     </script>

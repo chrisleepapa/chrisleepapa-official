@@ -22,9 +22,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="images/favicon.png" type="image/png">
 
-    <meta name="description" content="Game Center — 부르마블 보드게임, 책 쌓기 마스터, Dynamic Omok 오목, 매직 컬링, 테트리스, 바둑 EASY까지. Chris LEE.PAPA가 직접 제작한 6가지 무료 온라인 미니게임을 지금 바로 즐겨보세요.">
+    <meta name="description" content="Game Center — 부르마블 보드게임, 책 쌓기 마스터, Dynamic Omok 오목, 매직 컬링, 테트리스, 바둑 EASY, 엘리멘탈 스위치까지. Chris LEE.PAPA가 직접 제작한 7가지 무료 온라인 미니게임을 지금 바로 즐겨보세요.">
     <meta property="og:title" content="Game Center – Chris LEE.PAPA">
-    <meta property="og:description" content="아빠가 두 딸을 위해 직접 만든 6가지 온라인 미니게임. 보드게임·오목·컬링·테트리스·책쌓기·바둑EASY까지 무료로 즐기세요.">
+    <meta property="og:description" content="아빠가 두 딸을 위해 직접 만든 7가지 온라인 미니게임. 보드게임·오목·컬링·테트리스·책쌓기·바둑EASY·엘리멘탈 스위치까지 무료로 즐기세요.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://chrisleepapa-official.vercel.app/gameinfo">
     <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/dynamicomok.png">
@@ -146,6 +146,7 @@
         .game-card:nth-child(4) { animation-delay: 1.2s; }
         .game-card:nth-child(5) { animation-delay: 1.4s; }
         .game-card:nth-child(6) { animation-delay: 1.6s; }
+        .game-card:nth-child(7) { animation-delay: 1.8s; }
 
         .game-card-image-mode {
             justify-content: flex-end;
@@ -182,6 +183,7 @@
         .bg-dynamicomok {}
         .bg-magiccurling {}
         .bg-tetris {}
+        .bg-switch {}
 
         .game-card-image-mode .card-overlay {
             position: absolute;
@@ -240,6 +242,7 @@
         .tag-omok        { background: rgba(97,67,255,0.16);   border: 1px solid rgba(180,156,255,0.42); color: #d9d1ff; }
         .tag-tetris      { background: rgba(255,0,127,0.15);   border: 1px solid rgba(255,0,127,0.4); color: #ff80c0; }
         .tag-baduk       { background: rgba(40,180,100,0.15);  border: 1px solid rgba(80,220,140,0.4); color: #80ffb8; }
+        .tag-switch      { background: linear-gradient(90deg, rgba(255,90,30,0.18), rgba(60,150,255,0.18)); border: 1px solid rgba(255,150,80,0.45); color: #ffcf9e; }
 
         /* ── 키프레임 ── */
         @keyframes fadeIn  { to { opacity: 1; transform: translateY(0); } }
@@ -267,7 +270,7 @@
         <!-- ── SEO 정적 소개 블록 ── -->
         <div style="max-width:860px; margin:0 auto 48px; padding:0 20px; text-align:center;">
             <p style="color:#a0a0b5; font-size:0.95rem; line-height:1.9; letter-spacing:0.3px; word-break:keep-all; text-align:center;">
-                <strong style="color:#e8d08a;">Chris LEE.PAPA Game Center</strong>는 아빠가 두 딸 <strong style="color:#c9a84c;">율이와 정이</strong>를 위해 직접 기획하고 개발한 <strong style="color:#e8d08a;">6가지 무료 온라인 미니게임</strong> 모음입니다. 전략 보드게임부터 오목, 컬링, 테트리스, 물리 퍼즐까지 — 온 가족이 함께 즐길 수 있는 게임들을 만나보세요.
+                <strong style="color:#e8d08a;">Chris LEE.PAPA Game Center</strong>는 아빠가 두 딸 <strong style="color:#c9a84c;">율이와 정이</strong>를 위해 직접 기획하고 개발한 <strong style="color:#e8d08a;">7가지 무료 온라인 미니게임</strong> 모음입니다. 전략 보드게임부터 오목, 컬링, 테트리스, 물리 퍼즐, 원소 액션까지 — 온 가족이 함께 즐길 수 있는 게임들을 만나보세요.
             </p>
         </div>
 
@@ -349,6 +352,19 @@
                     <p class="game-card-desc" style="word-break:keep-all;">놀라운 자매들과 함께 괴물 글루톤을 무찌르고 죽음의 늪에서 빠져나와요!! 5x5, 7x7, 9x9의 다양한 바둑 게임을 쉽고 재미있게 즐겨요!</p>
                 </div>
             </a>
+
+            <!-- Game 7 -->
+            <a href="switch.html" class="game-card game-card-image-mode">
+                <div class="card-image-bg bg-switch">
+                    <img src="images/switchgame.jpg" alt="엘리멘탈 스위치 — Chris LEE.PAPA 불과 얼음 원소 액션 게임" loading="lazy">
+                </div>
+                <div class="card-overlay"></div>
+                <div class="game-tag tag-switch">Action / Elemental</div>
+                <div class="game-card-content-wrap">
+                    <h3 class="game-card-title">엘리멘탈 스위치</h3>
+                    <p class="game-card-desc" style="word-break:keep-all;">얼음 수호수와 불꽃 수호수가 맞서는 밤, 검을 든 언니와 불화살을 겨눈 동생이 원소의 힘을 자유자재로 전환하며 맞섭니다. 불과 얼음, 두 속성을 오가는 전략 액션으로 승부하세요.</p>
+                </div>
+            </a>
         </div>
 
         <!-- ── SEO 게임 상세 소개 섹션 ── -->
@@ -405,6 +421,14 @@
                             승리 시 이니셜로 TOP5 랭킹에 도전할 수 있습니다.
                         </p>
                     </div>
+                    <div>
+                        <h3 style="font-family:'Cinzel',serif; color:#e8d08a; font-size:0.9rem; letter-spacing:1px; margin-bottom:8px;">⑦ 엘리멘탈 스위치 — Action / Elemental</h3>
+                        <p style="color:#b0acac; font-size:0.88rem; line-height:1.9;">
+                            얼음과 불, 상반된 두 원소 수호수가 맞서는 세계를 배경으로 한 액션 게임입니다.
+                            검을 다루는 언니와 활을 쏘는 동생, 두 자매가 힘을 합쳐 얼음과 불 속성을 자유자재로 전환하며 전투를 펼칩니다.
+                            타이밍에 맞춰 속성을 스위치하는 전략이 승패를 가르는 판타지 액션 게임입니다.
+                        </p>
+                    </div>
                 </div>
 
                 <p style="color:#666; font-size:0.82rem; line-height:1.8; margin-top:28px; padding-top:20px; border-top:1px solid rgba(255,255,255,0.05);">
@@ -444,7 +468,10 @@
                 tetris_desc:  '클래식의 귀환! 네온 불빛 아래에서 블록을 쌓고 라인을 클리어하며 최고의 기록에 도전하는 퍼즐 게임입니다.',
                 baduk_tag:    'Strategy / Go',
                 baduk_title:  '바둑 EASY',
-                baduk_desc:   '9×9 캐주얼 바둑! 집 계산 자동, 코미 6.5집. 한 수 한 수 생각하는 즐거움을 느껴보세요.'
+                baduk_desc:   '9×9 캐주얼 바둑! 집 계산 자동, 코미 6.5집. 한 수 한 수 생각하는 즐거움을 느껴보세요.',
+                switch_tag:   'Action / Elemental',
+                switch_title: '엘리멘탈 스위치',
+                switch_desc:  '얼음과 불, 두 원소의 힘을 자유자재로 전환하며 맞서는 자매의 판타지 액션 게임입니다.'
             },
             en: {
                 share_title:  'SHARE GAME CENTER',
@@ -468,7 +495,10 @@
                 tetris_desc:  'The return of a classic! Stack blocks and clear lines under neon lights to challenge the ultimate record.',
                 baduk_tag:    'Strategy / Go',
                 baduk_title:  'Baduk EASY',
-                baduk_desc:   '9×9 casual Go game! Automatic territory counting, 6.5 komi. Enjoy the fun of thinking move by move.'
+                baduk_desc:   '9×9 casual Go game! Automatic territory counting, 6.5 komi. Enjoy the fun of thinking move by move.',
+                switch_tag:   'Action / Elemental',
+                switch_title: 'Elemental Switch',
+                switch_desc:  'A fantasy action game where two sisters freely switch between ice and fire powers to battle their foes.'
             }
         };
 

@@ -181,9 +181,14 @@ header .htitle{font-family:'Jua',sans-serif;font-size:14px;color:var(--toxic);te
 /* CONFETTI */
 .confetti-piece{position:fixed;top:-30px;font-size:22px;z-index:400;pointer-events:none;animation:fall linear forwards;}
 @keyframes fall{to{transform:translateY(110vh) rotate(540deg);opacity:.15;}}
+
+/* YOUTUBE BGM PLAYER (숨김) */
+#yt-player-container{position:fixed;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;z-index:-1;}
 </style>
 </head>
 <body>
+<!-- 🎵 숨겨진 유튜브 BGM 플레이어 -->
+<div id="yt-player-container"></div>
 <div id="bg-photo"></div>
 <div id="blobs">
   <span style="width:260px;height:260px;background:var(--murk);top:6%;left:-60px;"></span>
@@ -355,6 +360,56 @@ const TABLE   = 'baduk_easy_ranking';
 let sb = null;
 try { sb = supabase.createClient(SB_URL, SB_ANON); } catch(e) {}
 
+/* ══════════════════════════════════════════════════════
+   YOUTUBE BGM PLAYER (게임 진행시 백그라운드 재생)
+   ══════════════════════════════════════════════════════ */
+var ytPlayer;
+var isYtReady = false;
+
+var ytTag = document.createElement('script');
+ytTag.src = "https://www.youtube.com/iframe_api";
+var ytFirstScriptTag = document.getElementsByTagName('script')[0];
+ytFirstScriptTag.parentNode.insertBefore(ytTag, ytFirstScriptTag);
+
+window.onYouTubeIframeAPIReady = function() {
+    ytPlayer = new YT.Player('yt-player-container', {
+        height: '0',
+        width: '0',
+        playerVars: {
+            'autoplay': 0,
+            'controls': 0,
+            'disablekb': 1,
+            'listType': 'playlist',
+            'list': 'OLAK5uy_l3U9R17KJHI7S9KmNghpZB4x0UwQZ7Ays',
+            'playsinline': 1
+        },
+        events: {
+            'onReady': function(event) {
+                isYtReady = true;
+                event.target.setVolume(25);
+            },
+            'onStateChange': function(event) {
+                if (event.data === YT.PlayerState.ENDED) {
+                    ytPlayer.nextVideo();
+                }
+            }
+        }
+    });
+};
+
+function bgmPlay(){
+  if (isYtReady && ytPlayer) {
+    try{
+      ytPlayer.setShuffle(true);
+      ytPlayer.setLoop(true);
+      ytPlayer.playVideo();
+    }catch(e){}
+  }
+}
+function bgmPause(){
+  if (isYtReady && ytPlayer) { try{ ytPlayer.pauseVideo(); }catch(e){} }
+}
+
 /* ===== SOUND (WebAudio, no external files) ===== */
 let actx=null, soundOn=true;
 function ensureAudio(){ if(!actx){ try{ actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } }
@@ -508,6 +563,7 @@ function startGame(){
   document.getElementById('setup').classList.remove('active');
   document.getElementById('gs').classList.add('active');
   ensureAudio();
+  bgmPlay();
   initGame();
 }
 
@@ -814,6 +870,7 @@ function endByPass(){
 
 async function showResult(win,desc){
   gameOver=true;
+  bgmPause();
   clearInterval(turnTimer);clearInterval(totalTimer);
   document.getElementById('remoj').textContent=win?'🏆':(gOpp&&gOpp.boss?'💀':'😨');
   document.getElementById('rtit').textContent=win?`${CHARS[gCh].name} 생존!`:`${gOpp.name}에게 패배...`;
@@ -849,11 +906,12 @@ async function recordWin(){
   }
 }
 
-function rematch(){document.getElementById('rov').classList.remove('on');initGame();}
+function rematch(){document.getElementById('rov').classList.remove('on');bgmPlay();initGame();}
 function goSetup(){
   document.getElementById('rov').classList.remove('on');
   document.getElementById('gs').classList.remove('active');
   document.getElementById('setup').classList.add('active');
+  bgmPause();
   loadTop5();
 }
 

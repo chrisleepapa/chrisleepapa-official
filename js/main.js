@@ -253,6 +253,14 @@ function setLanguage(lang) {
         const ogDesc = document.querySelector('meta[property="og:description"]');
         if (ogDesc) ogDesc.setAttribute('content', dict.og_description);
     }
+    if (dict.twitter_title) {
+        const twTitle = document.querySelector('meta[name="twitter:title"]');
+        if (twTitle) twTitle.setAttribute('content', dict.twitter_title);
+    }
+    if (dict.twitter_description) {
+        const twDesc = document.querySelector('meta[name="twitter:description"]');
+        if (twDesc) twDesc.setAttribute('content', dict.twitter_description);
+    }
 
     /* 언어 버튼 active 상태 */
     document.querySelectorAll('.lang-btn').forEach(btn => {

@@ -17,6 +17,71 @@
   const TABLE     = 'guestbook';   // Supabase 테이블명
 
   /* ══════════════════════════════════════
+     i18n — main.js 의 언어 전환(setLanguage)과 연동
+     (guestbook.js 는 DOM을 직접 생성하므로 data-i18n 대신
+      자체 사전을 두고 window.onLangChange 훅으로 갱신합니다)
+     ══════════════════════════════════════ */
+  const GB_I18N = {
+    ko: {
+      tag:            '✦ &nbsp; Guestbook &nbsp; ✦',
+      title:          '당신의 <span>발자국</span>을 남겨주세요',
+      label_nickname: 'Nickname',
+      label_message:  'Message',
+      name_hint_default: '영문 3글자',
+      name_hint_more:    n => `${n}글자 더 입력해주세요`,
+      name_hint_done:    '✓ 완성',
+      message_placeholder: '이곳에 방문한 소감, 응원의 말을 남겨주세요 ✦',
+      submit_btn:     '남기기',
+      list_label:     'Messages',
+      empty_text:     '가장 먼저 방명록에 메시지를 남겨보세요',
+      load_more:      '더 보기',
+      aria_label:     '방명록',
+      toast_invalid_name: '✦  닉네임은 영문 3글자여야 합니다',
+      toast_empty_msg:    '✦  메시지를 입력해주세요',
+      toast_short_msg:    '✦  내용을 좀 더 입력해주세요',
+      toast_success:      '✦  방명록에 기록되었습니다 🙏',
+      toast_fail:         '✦  저장에 실패했습니다. 다시 시도해주세요',
+    },
+    en: {
+      tag:            '✦ &nbsp; Guestbook &nbsp; ✦',
+      title:           'Leave your <span>footprint</span> here',
+      label_nickname: 'Nickname',
+      label_message:  'Message',
+      name_hint_default: '3 English letters',
+      name_hint_more:    n => `${n} more letter${n > 1 ? 's' : ''} needed`,
+      name_hint_done:    '✓ Complete',
+      message_placeholder: 'Share your thoughts or a word of support here ✦',
+      submit_btn:     'Submit',
+      list_label:     'Messages',
+      empty_text:     'Be the first to leave a message',
+      load_more:      'Load More',
+      aria_label:     'Guestbook',
+      toast_invalid_name: '✦  Nickname must be 3 English letters',
+      toast_empty_msg:    '✦  Please enter a message',
+      toast_short_msg:    '✦  Please write a bit more',
+      toast_success:      '✦  Your message has been recorded 🙏',
+      toast_fail:         '✦  Failed to save. Please try again',
+    },
+  };
+
+  /** 현재 언어 (main.js 와 동일한 localStorage 키 공유) */
+  function getSavedLang() {
+    try {
+      return localStorage.getItem('pref-lang') === 'en' ? 'en' : 'ko';
+    } catch (_) {
+      return 'ko';
+    }
+  }
+
+  let gbLang = getSavedLang();
+
+  /** 번역 헬퍼 */
+  function t(key) {
+    const dict = GB_I18N[gbLang] || GB_I18N.ko;
+    return dict[key] !== undefined ? dict[key] : GB_I18N.ko[key];
+  }
+
+  /* ══════════════════════════════════════
      CSS 주입
      ══════════════════════════════════════ */
   const style = document.createElement('style');
@@ -588,7 +653,7 @@
       container.innerHTML = `
         <div class="gb-empty">
           <span class="gb-empty-icon">✦</span>
-          <p>Be the first to leave a message</p>
+          <p>${sanitize(t('empty_text'))}</p>
         </div>`;
       if (moreBtn) moreBtn.style.display = 'none';
       return;
@@ -618,6 +683,7 @@
     }).join('');
 
     if (moreBtn) {
+      moreBtn.textContent  = t('load_more');
       moreBtn.style.display = displayCount >= total ? 'none' : '';
     }
   }
@@ -627,12 +693,12 @@
      ══════════════════════════════════════ */
   function buildGuestbookHTML() {
     return `
-      <section id="guestbook-section" aria-label="방명록">
+      <section id="guestbook-section" aria-label="${t('aria_label')}">
         <div class="gb-inner">
 
           <div class="gb-header">
-            <span class="gb-tag">✦ &nbsp; Guestbook &nbsp; ✦</span>
-            <h2 class="gb-title">당신의 <span>발자국</span>을 남겨주세요</h2>
+            <span class="gb-tag" id="gb-tag">${t('tag')}</span>
+            <h2 class="gb-title" id="gb-title-text">${t('title')}</h2>
             <div class="gb-divider"></div>
           </div>
 
@@ -642,7 +708,7 @@
             <div class="gb-form-row">
               <!-- 닉네임: 영문 3글자 -->
               <div class="gb-field">
-                <label class="gb-label" for="gb-name">Nickname</label>
+                <label class="gb-label" for="gb-name" id="gb-label-nickname">${t('label_nickname')}</label>
                 <input
                   id="gb-name"
                   class="gb-input"
@@ -653,16 +719,16 @@
                   spellcheck="false"
                   inputmode="text"
                 />
-                <span class="gb-name-hint" id="gb-name-hint">영문 3글자</span>
+                <span class="gb-name-hint" id="gb-name-hint">${t('name_hint_default')}</span>
               </div>
 
               <!-- 메시지 -->
               <div class="gb-field">
-                <label class="gb-label" for="gb-message">Message</label>
+                <label class="gb-label" for="gb-message" id="gb-label-message">${t('label_message')}</label>
                 <textarea
                   id="gb-message"
                   class="gb-textarea"
-                  placeholder="이곳에 방문한 소감, 응원의 말을 남겨주세요 ✦"
+                  placeholder="${t('message_placeholder')}"
                   maxlength="300"
                 ></textarea>
               </div>
@@ -671,7 +737,7 @@
             <div class="gb-form-footer">
               <span class="gb-char-count" id="gb-char-count">0 / 300</span>
               <button class="gb-submit-btn" id="gb-submit-btn" type="button">
-                <span>남기기</span>
+                <span id="gb-submit-btn-text">${t('submit_btn')}</span>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                   <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
@@ -681,7 +747,7 @@
 
           <!-- 목록 헤더 -->
           <div class="gb-list-header">
-            <span class="gb-list-label">Messages</span>
+            <span class="gb-list-label" id="gb-list-label">${t('list_label')}</span>
             <span class="gb-count-badge" id="gb-count">0</span>
           </div>
 
@@ -692,7 +758,7 @@
 
           <div class="gb-load-more">
             <button class="gb-load-more-btn" id="gb-load-more-btn" type="button" style="display:none">
-              더 보기 · Load More
+              ${t('load_more')}
             </button>
           </div>
 
@@ -717,6 +783,56 @@
       document.body.appendChild(section);
     }
 
+    /* ── 언어 전환 연동 ──
+       main.js 의 setLanguage() 가 호출하는 window.onLangChange 를
+       가로채어(체이닝) 방명록 UI 도 함께 갱신합니다. */
+    function updateGbLanguage(lang) {
+      gbLang = (lang === 'en') ? 'en' : 'ko';
+
+      section.setAttribute('aria-label', t('aria_label'));
+
+      const tagEl   = document.getElementById('gb-tag');
+      const titleEl = document.getElementById('gb-title-text');
+      const nickLbl = document.getElementById('gb-label-nickname');
+      const msgLbl  = document.getElementById('gb-label-message');
+      const submitTxt = document.getElementById('gb-submit-btn-text');
+      const listLbl = document.getElementById('gb-list-label');
+      const msgInput = document.getElementById('gb-message');
+      const nickInput = document.getElementById('gb-name');
+      const hintEl  = document.getElementById('gb-name-hint');
+
+      if (tagEl)   tagEl.innerHTML   = t('tag');
+      if (titleEl) titleEl.innerHTML = t('title');
+      if (nickLbl) nickLbl.textContent = t('label_nickname');
+      if (msgLbl)  msgLbl.textContent  = t('label_message');
+      if (submitTxt) submitTxt.textContent = t('submit_btn');
+      if (listLbl) listLbl.textContent = t('list_label');
+      if (msgInput) msgInput.setAttribute('placeholder', t('message_placeholder'));
+
+      /* 닉네임 힌트는 현재 입력 상태에 맞춰 재계산 */
+      if (hintEl && nickInput) {
+        const len = nickInput.value.length;
+        if (len === 0) {
+          hintEl.textContent = t('name_hint_default');
+        } else if (len < 3) {
+          hintEl.textContent = t('name_hint_more')(3 - len);
+        } else {
+          hintEl.textContent = t('name_hint_done');
+        }
+      }
+
+      /* 빈 상태 문구 · 더 보기 버튼 문구 갱신 */
+      renderEntries();
+    }
+
+    const existingOnLangChange = window.onLangChange;
+    window.onLangChange = function (lang) {
+      if (typeof existingOnLangChange === 'function') {
+        try { existingOnLangChange(lang); } catch (e) { console.error('[Guestbook] onLangChange chain error:', e); }
+      }
+      updateGbLanguage(lang);
+    };
+
     /* ── 데이터 로드 ── */
     try {
       allEntries = await fetchEntries();
@@ -736,15 +852,15 @@
 
       const len = nameInput.value.length;
       if (len === 0) {
-        nameHint.textContent = '영문 3글자';
+        nameHint.textContent = t('name_hint_default');
         nameHint.className   = 'gb-name-hint';
         nameInput.classList.remove('invalid');
       } else if (len < 3) {
-        nameHint.textContent = `${3 - len}글자 더 입력해주세요`;
+        nameHint.textContent = t('name_hint_more')(3 - len);
         nameHint.className   = 'gb-name-hint error';
         nameInput.classList.add('invalid');
       } else {
-        nameHint.textContent = '✓ 완성';
+        nameHint.textContent = t('name_hint_done');
         nameHint.className   = 'gb-name-hint';
         nameInput.classList.remove('invalid');
       }
@@ -775,7 +891,7 @@
 
       /* 닉네임 유효성 검사 */
       if (!isValidNickname(nickname)) {
-        showGbToast('✦  닉네임은 영문 3글자여야 합니다');
+        showGbToast(t('toast_invalid_name'));
         nameInput.classList.add('invalid');
         nameInput.focus();
         return;
@@ -783,12 +899,12 @@
 
       /* 메시지 유효성 검사 */
       if (!message) {
-        showGbToast('✦  메시지를 입력해주세요');
+        showGbToast(t('toast_empty_msg'));
         msgEl.focus();
         return;
       }
       if (message.length < 2) {
-        showGbToast('✦  내용을 좀 더 입력해주세요');
+        showGbToast(t('toast_short_msg'));
         msgEl.focus();
         return;
       }
@@ -802,12 +918,12 @@
         nameInput.value      = '';
         msgEl.value          = '';
         countEl.textContent  = '0 / 300';
-        nameHint.textContent = '영문 3글자';
+        nameHint.textContent = t('name_hint_default');
         nameHint.className   = 'gb-name-hint';
         nameInput.classList.remove('invalid');
         displayCount = PAGE_SIZE;
 
-        showGbToast('✦  방명록에 기록되었습니다 🙏');
+        showGbToast(t('toast_success'));
 
         /* 목록 새로고침 */
         allEntries = await fetchEntries();
@@ -816,7 +932,7 @@
 
       } catch (e) {
         console.error('[Guestbook] insertEntry error:', e);
-        showGbToast('✦  저장에 실패했습니다. 다시 시도해주세요');
+        showGbToast(t('toast_fail'));
       } finally {
         btn.classList.remove('loading');
       }

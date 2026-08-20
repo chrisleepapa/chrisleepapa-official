@@ -238,6 +238,22 @@ function setLanguage(lang) {
         if (i18n[lang][key] !== undefined) el.innerHTML = i18n[lang][key];
     });
 
+    /* ── SEO 메타 태그 업데이트 (페이지가 PAGE_I18N 에 meta_* 키를 정의한 경우) ── */
+    const dict = i18n[lang];
+    if (dict.meta_title) document.title = dict.meta_title;
+    if (dict.meta_description) {
+        const metaDesc = document.querySelector('meta[name="description"]');
+        if (metaDesc) metaDesc.setAttribute('content', dict.meta_description);
+    }
+    if (dict.og_title) {
+        const ogTitle = document.querySelector('meta[property="og:title"]');
+        if (ogTitle) ogTitle.setAttribute('content', dict.og_title);
+    }
+    if (dict.og_description) {
+        const ogDesc = document.querySelector('meta[property="og:description"]');
+        if (ogDesc) ogDesc.setAttribute('content', dict.og_description);
+    }
+
     /* 언어 버튼 active 상태 */
     document.querySelectorAll('.lang-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.lang === lang);

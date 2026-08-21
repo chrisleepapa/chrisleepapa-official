@@ -123,6 +123,19 @@
         .ost-platforms { display: flex; justify-content: center; gap: 14px; margin-top: 18px; flex-wrap: wrap; }
         .ost-pill { font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 1px; padding: 7px 18px; border-radius: 20px; border: 1px solid var(--spotify); color: var(--spotify); text-transform: uppercase; }
 
+        /* ── 주요 장면 갤러리 ── */
+        .photo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 90px; }
+        .photo-item { border-radius: 16px; overflow: hidden; aspect-ratio: 4 / 3; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 10px 25px rgba(0,0,0,0.4); cursor: zoom-in; }
+        .photo-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: 0.5s ease; }
+        .photo-item:hover img { transform: scale(1.08); }
+
+        .lightbox-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.92); display: flex; align-items: center; justify-content: center; z-index: 9999; opacity: 0; visibility: hidden; transition: opacity 0.3s ease; padding: 30px; }
+        .lightbox-overlay.active { opacity: 1; visibility: visible; }
+        .lightbox-overlay img { max-width: 92vw; max-height: 88vh; border-radius: 12px; box-shadow: 0 30px 80px rgba(0,0,0,0.8); animation: lightboxIn 0.3s ease; }
+        @keyframes lightboxIn { from { opacity: 0; transform: scale(0.94); } to { opacity: 1; transform: scale(1); } }
+        .lightbox-close { position: absolute; top: 24px; right: 32px; font-size: 2.2rem; color: #fff; cursor: pointer; line-height: 1; user-select: none; transition: 0.2s; }
+        .lightbox-close:hover { color: var(--gold-light); transform: scale(1.1); }
+
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
         @media (max-width: 900px) {
@@ -193,7 +206,7 @@
             </div>
         </div>
 
-        <h2 class="section-title" data-i18n="ally_sec_title">Villain & Fairies</h2>
+        <h2 class="section-title" data-i18n="ally_sec_title">Allies & Fairies</h2>
         <div class="faction-grid">
             <div class="faction-item ally">
                 <div class="faction-name" data-i18n="ally_popo_name">포포 · 행운 요정</div>
@@ -231,6 +244,28 @@
             </div>
         </div>
 
+        <h2 class="section-title" data-i18n="media_sec_title">주요 장면</h2>
+        <section class="media-section">
+            <div class="photo-grid">
+                <div class="photo-item"><img src="images/ss2_scene01.jpg" alt="Sister Squad 2 주요 장면 1" loading="lazy" decoding="async"></div>
+                <div class="photo-item"><img src="images/ss2_scene02.jpg" alt="Sister Squad 2 주요 장면 2" loading="lazy" decoding="async"></div>
+                <div class="photo-item"><img src="images/ss2_scene03.jpg" alt="Sister Squad 2 주요 장면 3" loading="lazy" decoding="async"></div>
+                <div class="photo-item"><img src="images/ss2_scene04.jpg" alt="Sister Squad 2 주요 장면 4" loading="lazy" decoding="async"></div>
+                <div class="photo-item"><img src="images/ss2_scene05.jpg" alt="Sister Squad 2 주요 장면 5" loading="lazy" decoding="async"></div>
+                <div class="photo-item"><img src="images/ss2_scene06.jpg" alt="Sister Squad 2 주요 장면 6" loading="lazy" decoding="async"></div>
+                <div class="photo-item"><img src="images/ss2_scene07.jpg" alt="Sister Squad 2 주요 장면 7" loading="lazy" decoding="async"></div>
+                <div class="photo-item"><img src="images/ss2_scene08.jpg" alt="Sister Squad 2 주요 장면 8" loading="lazy" decoding="async"></div>
+                <div class="photo-item"><img src="images/ss2_scene09.jpg" alt="Sister Squad 2 주요 장면 9" loading="lazy" decoding="async"></div>
+                <div class="photo-item"><img src="images/ss2_scene10.jpg" alt="Sister Squad 2 주요 장면 10" loading="lazy" decoding="async"></div>
+                <div class="photo-item"><img src="images/ss2_scene11.jpg" alt="Sister Squad 2 주요 장면 11" loading="lazy" decoding="async"></div>
+                <div class="photo-item"><img src="images/ss2_scene12.jpg" alt="Sister Squad 2 주요 장면 12" loading="lazy" decoding="async"></div>
+                <div class="photo-item"><img src="images/ss2_scene13.jpg" alt="Sister Squad 2 주요 장면 13" loading="lazy" decoding="async"></div>
+                <div class="photo-item"><img src="images/ss2_scene14.jpg" alt="Sister Squad 2 주요 장면 14" loading="lazy" decoding="async"></div>
+                <div class="photo-item"><img src="images/ss2_scene15.jpg" alt="Sister Squad 2 주요 장면 15" loading="lazy" decoding="async"></div>
+                <div class="photo-item"><img src="images/ss2_scene16.jpg" alt="Sister Squad 2 주요 장면 16" loading="lazy" decoding="async"></div>
+            </div>
+        </section>
+
         <!-- ── SEO 상세 소개 블록 ── -->
         <section style="max-width:900px; margin:0 auto;">
             <div style="border:1px solid rgba(201,168,76,0.15); border-radius:20px; padding:36px 40px; background:rgba(10,10,18,0.7);">
@@ -255,6 +290,12 @@
 
     </div>
 
+    <!-- ★ 이미지 라이트박스 -->
+    <div class="lightbox-overlay" id="lightbox-overlay" onclick="closeLightbox(event)">
+        <span class="lightbox-close" onclick="closeLightbox(event)">&times;</span>
+        <img id="lightbox-img" src="" alt="" onclick="event.stopPropagation()">
+    </div>
+
     <!-- ★ 공통 푸터 -->
     <div id="site-footer"></div>
 
@@ -268,7 +309,7 @@
                 back_link:        '‹ 라이브러리로 돌아가기',
                 story_label:      'THE STORY',
                 char_sec_title:   'Family',
-                ally_sec_title:   'Villain & Fairies',
+                ally_sec_title:   'Allies & Fairies',
                 ost_sec_title:    'Original Soundtrack',
                 char_yul_tag:     '흔들리는 짜증쟁이',
                 char_yul_name:    '언니 율이 (12세)',
@@ -299,6 +340,7 @@
                 villain_griffin_name: '쌍둥이 그리핀, 스콜 &amp; 게일',
                 villain_griffin_desc: '전설의 약초 \'월광초\'를 지키는 냉기와 화염의 수호자. 생명과 감각이 서로 이어져 있어 완벽한 팀워크로만 공략할 수 있다.',
                 ost_note_p:       'SISTER SQUAD 2의 놀라운 오리지널 사운드트랙을 지금 만나보세요. 유튜브, 애플뮤직, 스포티파이 등 주요 스트리밍 플랫폼에 출시되었습니다.',
+                media_sec_title:  '주요 장면',
                 story_desc:       '요정 마을 루미나에 평화를 찾아줬던 두 영웅, 율이와 정이는 평범한 일상으로 돌아옵니다.<br>하지만 <b>율이는 뾰족한 사춘기 소녀</b>가, <b>정이는 독립심 강한 초등학생</b>이 되어 자매 사이엔 미묘한 긴장감이 흐릅니다.<br><br>그러던 어느 날, 루미나에서 온 구조 신호. 숨겨진 과거와 트라우마를 간직한 아빠와 함께 다시 \'속삭임의 책\'을 펼치지만, 그들을 맞이한 루미나는 <b>잿빛의 폐허</b>였습니다.<br><br>자매는 저주의 근원을 파헤치기 위한 두 번째 여정을 시작합니다. 매번 충돌하면서도 진정한 자매애를 깨달아가는 율이와 정이, 그리고 과거의 실패를 마주하며 딸들을 지키기 위해 비장한 희생을 선택하는 아빠. 절망 속에서도 유머를 잃지 않는 조력자들과 함께, <b>\'함께\'라는 힘의 위대함</b>을 증명하는 감동적이고 유쾌한 여정입니다.',
                 seo_story_desc:   '1편에서 요정 마을을 구했던 <strong style="color:#e8d08a;">율이와 정이</strong>는 각자 사춘기와 초등학생 시절을 지나며 새로운 갈등을 마주합니다. 잿빛으로 물든 루미나를 되살리기 위해 <strong style="color:#c9a84c;">죽음의 늪</strong>, <strong style="color:#c9a84c;">거인의 등뼈</strong>, <strong style="color:#c9a84c;">고요의 계곡</strong>을 지나 고대 도시 아르카디아까지 향하는 여정 속에서, 자매는 이성과 감성이 다르지 않고 서로를 완성한다는 것을 배웁니다.',
                 seo_author_desc:  '<strong style="color:#e8d08a;">Chris LEE.PAPA</strong>는 두 딸 <strong style="color:#c9a84c;">율이와 정이</strong>가 자라나는 모습을 담아 Sister Squad 세계관을 이어가고 있습니다. 첫 번째 모험이 자매의 탄생을 그렸다면, 두 번째 모험은 성장통 속에서도 결국 서로를 지켜내는 <strong style="color:#e8d08a;">진짜 가족의 사랑</strong>을 이야기합니다.'
@@ -310,7 +352,7 @@
                 back_link:        '‹ Back to Library',
                 story_label:      'THE STORY',
                 char_sec_title:   'Family',
-                ally_sec_title:   'Villain & Fairies',
+                ally_sec_title:   'Allies & Fairies',
                 ost_sec_title:    'Original Soundtrack',
                 char_yul_tag:     'The Restless Grump',
                 char_yul_name:    'Yul, Age 12',
@@ -341,6 +383,7 @@
                 villain_griffin_name: 'Twin Griffins, Squall & Gale',
                 villain_griffin_desc: 'The final guardians of the legendary Moonlight Herb, wielding frost and flame. Their lives and senses are linked — only perfect teamwork can defeat them.',
                 ost_note_p:       'Discover the amazing original soundtrack of Sister Squad 2, now streaming on YouTube, Apple Music, Spotify and more.',
+                media_sec_title:  'Highlights: Key Scenes',
                 story_desc:       'Yul and Jung, the two heroes who once brought peace to the fairy village of Lumina, return to ordinary life.<br>But <b>Yul has become a prickly teenager</b>, and <b>Jung a fiercely independent grade-schooler</b> — a quiet tension now runs between the sisters.<br><br>Then one day, a distress signal arrives from Lumina. Together with their father, who hides a past full of secrets and trauma, they open the \'Whispering Book\' once more — only to find Lumina reduced to ash-grey ruins.<br><br>The sisters set out on a second journey to uncover the root of the curse. Clashing again and again, Yul and Jung come to understand true sisterhood, while their father confronts his past failures and chooses a solemn sacrifice to protect his daughters. With the help of allies who never lose their humor even in despair, they prove the power of standing <b>together</b> — a moving, joyful adventure once more.',
                 seo_story_desc:   'Having saved the fairy village once, <strong style="color:#e8d08a;">Yul and Jung</strong> now face new conflicts as they grow through adolescence and grade school. On the way to the ancient city of Arcadia — through the <strong style="color:#c9a84c;">Swamp of Death</strong>, the <strong style="color:#c9a84c;">Giant\'s Spine</strong>, and the <strong style="color:#c9a84c;">Valley of Silence</strong> — the sisters learn that reason and heart aren\'t opposites, but two halves that complete each other.',
                 seo_author_desc:  '<strong style="color:#e8d08a;">Chris LEE.PAPA</strong> continues the Sister Squad universe, capturing how his two daughters <strong style="color:#c9a84c;">Yul and Jung</strong> are growing up. If the first adventure was about the sisters\' birth as heroes, the second is about the <strong style="color:#e8d08a;">real love of family</strong> that endures through growing pains.'
@@ -391,6 +434,31 @@
         };
 
         function safeNavigate(url) { if (url && url.trim() !== '') window.location.assign(url); }
+
+        function openLightbox(src, alt) {
+            const overlay = document.getElementById('lightbox-overlay');
+            const img = document.getElementById('lightbox-img');
+            img.src = src;
+            img.alt = alt || '';
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeLightbox(event) {
+            if (event) event.stopPropagation();
+            const overlay = document.getElementById('lightbox-overlay');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeLightbox();
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.photo-item img').forEach(function(img) {
+                img.addEventListener('click', function() {
+                    openLightbox(img.src, img.alt);
+                });
+            });
+        });
     </script>
 
     <!-- ★ 공통 스크립트 -->

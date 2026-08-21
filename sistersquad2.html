@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#030305">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="images/favicon.png">
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3207219520058740" crossorigin="anonymous"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NBGELYQ4TZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-NBGELYQ4TZ');
+      gtag('config', 'GT-5MJDBTR2');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="images/favicon.png">
+
+    <meta name="description" content="Sister Squad 2: 저주받은 요정마을 — 사춘기 소녀가 된 언니 율이와 독립심 강한 초등학생 동생 정이, 그리고 아빠 크리스가 잿빛으로 변한 요정마을 루미나를 구하기 위해 떠나는 두 번째 모험. Chris LEE.PAPA 원작 판타지 소설.">
+    <meta property="og:title" content="SISTER SQUAD 2 – Chris LEE.PAPA">
+    <meta property="og:description" content="저주받은 요정마을을 구하기 위한 자매의 두 번째 여정. 진정한 자매애와 가족의 사랑을 다시 한번 깨닫는 감동의 판타지 속편.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://chrisleepapa-official.vercel.app/sistersquad2">
+    <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/sistersquad2_poster.jpg">
+    <meta property="og:locale" content="ko_KR">
+    <meta property="og:locale:alternate" content="en_US">
+    <meta property="og:site_name" content="Chris LEE.PAPA">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="SISTER SQUAD 2 – Chris LEE.PAPA">
+    <meta name="twitter:description" content="저주받은 요정마을을 구하기 위한 자매의 두 번째 여정.">
+    <meta name="twitter:image" content="https://chrisleepapa-official.vercel.app/images/sistersquad2_poster.jpg">
+
+    <link rel="canonical" href="https://chrisleepapa-official.vercel.app/sistersquad2">
+
+    <title>SISTER SQUAD 2 – Chris LEE.PAPA</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Cormorant+Garamond:wght@600&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
+
+    <link rel="stylesheet" href="css/common.css">
+
+    <style>
+        /* ── sistersquad2.html 전용 스타일 ── */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --gold: #c9a84c; --gold-light: #e8d08a;
+            --bg: #030305; --text: #f0ece4; --nav-height: 70px;
+            --ice: #6fd7ff; --ice-glow: rgba(111, 215, 255, 0.4);
+            --fire: #ff6a3d; --fire-glow: rgba(255, 106, 61, 0.4);
+            --youtube: #FF0000; --spotify: #1DB954;
+        }
+        html { scroll-behavior: smooth; background-color: var(--bg); }
+        body {
+            background-color: var(--bg); color: var(--text);
+            font-family: 'Pretendard', 'Noto Serif KR', serif;
+            line-height: 1.7; overflow-x: hidden;
+            background-image:
+                radial-gradient(circle at top left, rgba(20, 50, 80, 0.7), transparent 60%),
+                radial-gradient(circle at bottom right, rgba(80, 25, 15, 0.6), transparent 60%);
+            -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
+        }
+        img { -webkit-user-drag: none; }
+        body::before {
+            content: ''; position: fixed; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
+            pointer-events: none; z-index: 900; opacity: 0.3;
+        }
+        a { text-decoration: none; color: inherit; }
+        button { appearance: none; background: none; border: 0; padding: 0; font: inherit; color: inherit; }
+
+        /* ── 페이지 헤더 ── */
+        .page-header { position: relative; width: 100%; height: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; padding-top: var(--nav-height); }
+        #stars-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
+        .header-content { position: relative; z-index: 3; text-align: center; animation: fadeUp 1.2s ease both; }
+        .header-title { font-family: 'Cinzel', serif; font-size: clamp(2.2rem, 8vw, 4.2rem); font-weight: 700; letter-spacing: 0.15em; background: linear-gradient(90deg, var(--ice), var(--gold-light) 45%, var(--fire) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: none; margin-bottom: 15px; }
+        .header-slogan { font-family: 'Cormorant Garamond', serif; font-size: clamp(0.9rem, 2.5vw, 1.2rem); letter-spacing: 0.3em; color: #cdd6f4; font-style: italic; }
+
+        /* ── 본문 ── */
+        .container { max-width: 1100px; margin: 0 auto; padding: 10px 20px 100px; position: relative; z-index: 10; }
+        .back-link { display: inline-flex; align-items: center; gap: 8px; font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 0.2em; color: var(--gold-light); margin-bottom: 40px; transition: 0.3s; text-transform: uppercase; cursor: pointer; }
+        .back-link:hover { text-shadow: 0 0 10px var(--gold-light); transform: translateX(-5px); }
+
+        .section-title { font-family: 'Cinzel', serif; font-size: 1.4rem; color: var(--gold); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 40px; padding-bottom: 15px; border-bottom: 1px solid rgba(201,168,76,0.2); text-align: center; }
+
+        .poster-wrapper { width: 100%; max-width: 480px; margin: 0 auto 60px; border-radius: 20px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 30px 60px rgba(0,0,0,0.6), 0 0 50px rgba(111,215,255,0.15); background: #000; animation: fadeUp 1s ease both; }
+        .poster-wrapper img { width: 100%; height: auto; display: block; }
+
+        .synopsis-section { background: rgba(15, 15, 20, 0.4); border: 1px solid rgba(111, 215, 255, 0.15); border-radius: 24px; padding: 50px 30px; margin-bottom: 90px; backdrop-filter: blur(10px); animation: fadeUp 1s ease 0.2s both; }
+        .section-label { font-family: 'Cinzel', serif; color: var(--ice); font-size: 0.8rem; letter-spacing: 4px; display: block; margin-bottom: 20px; text-align: center; }
+        .synopsis-text { font-size: clamp(0.9rem, 2.5vw, 1.05rem); line-height: 2.2; text-align: center; color: #e0e0ff; word-break: keep-all; font-weight: 300; max-width: 900px; margin: 0 auto; }
+        .synopsis-text b { color: var(--ice); font-weight: 500; }
+
+        /* ── 캐릭터 ── */
+        .character-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 90px; }
+        .char-card { display: block; color: inherit; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 20px; padding: 28px 26px; transition: 0.4s ease; backdrop-filter: blur(5px); }
+        .char-card:hover { transform: translateY(-8px); border-color: var(--ice); box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 25px var(--ice-glow); }
+        .char-card.fire:hover { border-color: var(--fire); box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 25px var(--fire-glow); }
+        .char-tag { font-size: 0.7rem; color: var(--ice); border: 1px solid var(--ice); padding: 3px 14px; border-radius: 20px; margin-bottom: 15px; display: inline-block; text-transform: uppercase; letter-spacing: 1px; }
+        .char-card.fire .char-tag { color: var(--fire); border-color: var(--fire); }
+        .char-name { font-family: 'Cinzel', serif; font-size: 1.4rem; font-weight: 700; color: #fff; margin-bottom: 12px; }
+        .char-desc { font-size: 0.92rem; color: #a0a0b5; line-height: 1.85; word-break: keep-all; font-weight: 300; }
+        .char-quote { margin-top: 16px; padding-top: 14px; border-top: 1px dashed rgba(255,255,255,0.1); font-size: 0.85rem; color: #cdd6f4; font-style: italic; word-break: keep-all; }
+
+        /* ── 세력 / 조력자 ── */
+        .faction-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; margin-bottom: 90px; }
+        .faction-item { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 16px; padding: 22px 24px; transition: 0.3s; }
+        .faction-item.villain:hover { border-color: #a03030; }
+        .faction-item.ally:hover { border-color: var(--gold); }
+        .faction-name { font-family: 'Cinzel', serif; font-size: 0.95rem; color: var(--gold-light); margin-bottom: 8px; letter-spacing: 0.5px; }
+        .faction-desc { font-size: 0.85rem; color: #a0a0a8; line-height: 1.75; word-break: keep-all; }
+
+        /* ── OST ── */
+        .ost-note { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(29,185,84,0.2); border-radius: 20px; padding: 34px 30px; text-align: center; margin-bottom: 90px; }
+        .ost-note p { color: #cdd6f4; font-size: 0.95rem; line-height: 1.9; word-break: keep-all; }
+        .ost-platforms { display: flex; justify-content: center; gap: 14px; margin-top: 18px; flex-wrap: wrap; }
+        .ost-pill { font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 1px; padding: 7px 18px; border-radius: 20px; border: 1px solid var(--spotify); color: var(--spotify); text-transform: uppercase; }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 900px) {
+            .character-grid { grid-template-columns: 1fr; }
+            .synopsis-section { padding: 35px 20px; }
+            .container { padding-bottom: 60px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ★ 공통 헤더 -->
+    <div id="site-nav"></div>
+
+    <header class="page-header">
+        <canvas id="stars-canvas"></canvas>
+        <div class="header-content">
+            <h1 class="header-title" data-i18n="header_title">SISTER SQUAD 2</h1>
+            <p class="header-slogan" data-i18n="header_slogan">저주받은 요정마을</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <a href="book.html" class="back-link" onclick="safeNavigate('book.html'); return false;" data-i18n="back_link">‹ 라이브러리로 돌아가기</a>
+
+        <div class="poster-wrapper">
+            <img src="images/sistersquad2_poster.jpg" alt="Sister Squad 2: 저주받은 요정마을 — 얼음 그리핀과 불꽃 그리핀 사이에 선 율이와 정이 표지">
+        </div>
+
+        <section class="synopsis-section">
+            <span class="section-label" data-i18n="story_label">THE STORY</span>
+            <p class="synopsis-text" data-i18n="story_desc" style="word-break:keep-all;">
+                요정 마을 루미나에 평화를 찾아줬던 두 영웅, 율이와 정이는 평범한 일상으로 돌아옵니다.
+                하지만 <b>율이는 뾰족한 사춘기 소녀</b>가, <b>정이는 독립심 강한 초등학생</b>이 되어 자매 사이엔 미묘한 긴장감이 흐릅니다.
+                그러던 어느 날, 루미나에서 온 구조 신호. 숨겨진 과거와 트라우마를 간직한 아빠와 함께 다시 '속삭임의 책'을 펼치지만,
+                그들을 맞이한 루미나는 <b>잿빛의 폐허</b>였습니다. 자매는 저주의 근원을 파헤치기 위한 두 번째 여정을 시작합니다.
+                매번 충돌하면서도 진정한 자매애를 깨달아가는 율이와 정이, 그리고 과거의 실패를 마주하며 딸들을 지키기 위해
+                비장한 희생을 선택하는 아빠. 절망 속에서도 유머를 잃지 않는 조력자들과 함께, '함께'라는 힘의 위대함을
+                증명하는 감동적이고 유쾌한 여정입니다.
+            </p>
+        </section>
+
+        <h2 class="section-title" data-i18n="char_sec_title">Family</h2>
+        <div class="character-grid">
+            <div class="char-card">
+                <span class="char-tag" data-i18n="char_yul_tag">흔들리는 짜증쟁이</span>
+                <h3 class="char-name" data-i18n="char_yul_name">언니 율이 (12세)</h3>
+                <p class="char-desc" data-i18n="char_yul_desc">1년 전 얻었던 자신감과 염력의 힘은 사춘기라는 폭풍 앞에 사그라들었다. 모든 상황에 짜증을 내며 동생을 통제하려 하지만, 진정한 승리는 완벽한 계획이 아닌 서로의 다름을 인정하는 것임을 깨달아간다.</p>
+                <p class="char-quote" data-i18n="char_yul_quote">"나 혼자도 힘들어. 정아, 제발 계획 좀 따르라고! …아니, 거기 말고!"</p>
+            </div>
+            <div class="char-card fire">
+                <span class="char-tag" data-i18n="char_jung_tag">독립을 꿈꾸는 초딩</span>
+                <h3 class="char-name" data-i18n="char_jung_name">동생 정이 (8세)</h3>
+                <p class="char-desc" data-i18n="char_jung_desc">과보호 속에서 독립하고 싶은 마음이 커졌다. 순수함이 때로 위험을 부르지만, 가장 결정적인 순간 모두를 구하는 열쇠가 된다.</p>
+                <p class="char-quote" data-i18n="char_jung_quote">"언니 말만 맞는 건 아니야! 내 목소리가, 내 마음이 이쪽으로 가라고 하고 있어!"</p>
+            </div>
+            <div class="char-card">
+                <span class="char-tag" data-i18n="char_dad_tag">트라우마가 있는 딸바보</span>
+                <h3 class="char-name" data-i18n="char_dad_name">아빠 크리스</h3>
+                <p class="char-desc" data-i18n="char_dad_desc">과거 동료를 잃은 트라우마를 숨긴 채, 딸들을 지키기 위해 시간을 다루는 힘을 다시 꺼내 든다. 대가가 끔찍하다는 걸 알면서도, 사랑을 위해 모든 것을 쏟아붓는다.</p>
+                <p class="char-quote" data-i18n="char_dad_quote">"너희는 모른다. 세상이 얼마나 위험한데… 하.. 그래 알았다. 가보자, 아빠가 지켜줄테니 해보자."</p>
+            </div>
+            <div class="char-card fire">
+                <span class="char-tag" data-i18n="char_mom_tag">현실 최종 보스</span>
+                <h3 class="char-name" data-i18n="char_mom_name">엄마 제인</h3>
+                <p class="char-desc" data-i18n="char_mom_desc">마법 세계는 모르지만 가족의 보이지 않는 긴장을 신기하게 잘 감지한다. 그녀가 지키는 '집'이라는 일상은 가족이 반드시 돌아와야 할 이유이자 가장 강력한 안식처다.</p>
+                <p class="char-quote" data-i18n="char_mom_quote">"엄마 몰래 탐험대? 하.. 나가는 길에 음식물 쓰레기 좀 버리고 가."</p>
+            </div>
+        </div>
+
+        <h2 class="section-title" data-i18n="ally_sec_title">Allies & Fairies</h2>
+        <div class="faction-grid">
+            <div class="faction-item ally">
+                <div class="faction-name" data-i18n="ally_popo_name">포포 · 행운 요정</div>
+                <div class="faction-desc" data-i18n="ally_popo_desc">희망과 웃음을 먹고 사는 반짝 요정. 눈치 없는 실수투성이지만, 그 어이없는 실수가 종종 상상치 못한 행운을 불러온다.</div>
+            </div>
+            <div class="faction-item ally">
+                <div class="faction-name" data-i18n="ally_pretty_name">프리티 · 요정 리더</div>
+                <div class="faction-desc" data-i18n="ally_pretty_desc">저주의 근원을 파헤치기 위해 고대 도시 아르카디아로 홀로 떠난 요정 마을의 리더. 거대한 미스터리를 향한 여정을 이끈다.</div>
+            </div>
+            <div class="faction-item ally">
+                <div class="faction-name" data-i18n="ally_brock_name">브록 · 대장장이</div>
+                <div class="faction-desc" data-i18n="ally_brock_desc">절망 속에서도 '희망 시장'을 열어 생존자들의 웃음을 지켜내는 낭만적인 대장장이. 자매와 아빠에게 결정적인 도움을 준다.</div>
+            </div>
+            <div class="faction-item villain">
+                <div class="faction-name" data-i18n="villain_cutie_name">좀비가 된 큐티</div>
+                <div class="faction-desc" data-i18n="villain_cutie_desc">한때 루미나의 희망이었던 요정. 오래된 상처에 깃든 저주가 좀비 바이러스의 숙주로 만들어버렸다.</div>
+            </div>
+            <div class="faction-item villain">
+                <div class="faction-name" data-i18n="villain_glutton_name">진흙의 포식자, 글루톤</div>
+                <div class="faction-desc" data-i18n="villain_glutton_desc">'죽음의 늪'의 수호자. 도전자의 지혜와 협동심, 내면의 공포를 마주할 용기를 시험하는 첫 번째 관문.</div>
+            </div>
+            <div class="faction-item villain">
+                <div class="faction-name" data-i18n="villain_griffin_name">쌍둥이 그리핀, 스콜 &amp; 게일</div>
+                <div class="faction-desc" data-i18n="villain_griffin_desc">전설의 약초 '월광초'를 지키는 냉기와 화염의 수호자. 생명과 감각이 서로 이어져 있어 완벽한 팀워크로만 공략할 수 있다.</div>
+            </div>
+        </div>
+
+        <h2 class="section-title" data-i18n="ost_sec_title">Original Soundtrack</h2>
+        <div class="ost-note">
+            <p data-i18n="ost_note_p">SISTER SQUAD 2의 놀라운 오리지널 사운드트랙을 지금 만나보세요. 유튜브, 애플뮤직, 스포티파이 등 주요 스트리밍 플랫폼에 출시되었습니다.</p>
+            <div class="ost-platforms">
+                <span class="ost-pill">YouTube</span>
+                <span class="ost-pill">Apple Music</span>
+                <span class="ost-pill">Spotify</span>
+            </div>
+        </div>
+
+        <!-- ── SEO 상세 소개 블록 ── -->
+        <section style="max-width:900px; margin:0 auto;">
+            <div style="border:1px solid rgba(201,168,76,0.15); border-radius:20px; padding:36px 40px; background:rgba(10,10,18,0.7);">
+                <h2 style="font-family:'Cinzel',serif; color:#c9a84c; font-size:1.05rem; letter-spacing:2px; margin-bottom:24px;">✦ &nbsp; ABOUT SISTER SQUAD 2</h2>
+
+                <div style="margin-bottom:28px; padding-bottom:24px; border-bottom:1px solid rgba(255,255,255,0.06);">
+                    <h3 style="font-family:'Cinzel',serif; color:#e8d08a; font-size:0.88rem; letter-spacing:1.5px; margin-bottom:14px;">📖 THE JOURNEY CONTINUES</h3>
+                    <p style="color:#c0bcb4; font-size:0.92rem; line-height:1.9; word-break:keep-all; text-align:left;" data-i18n="seo_story_desc">
+                        1편에서 요정 마을을 구했던 <strong style="color:#e8d08a;">율이와 정이</strong>는 각자 사춘기와 초등학생 시절을 지나며 새로운 갈등을 마주합니다. 잿빛으로 물든 루미나를 되살리기 위해 <strong style="color:#c9a84c;">죽음의 늪</strong>, <strong style="color:#c9a84c;">거인의 등뼈</strong>, <strong style="color:#c9a84c;">고요의 계곡</strong>을 지나 고대 도시 아르카디아까지 향하는 여정 속에서, 자매는 이성과 감성이 다르지 않고 서로를 완성한다는 것을 배웁니다.
+                    </p>
+                </div>
+
+                <div style="background:rgba(201,168,76,0.05); border-radius:14px; padding:22px 26px;">
+                    <h3 style="font-family:'Cinzel',serif; color:#c9a84c; font-size:0.85rem; letter-spacing:2px; margin-bottom:12px;">✦ &nbsp; ABOUT THE AUTHOR</h3>
+                    <p style="color:#a0a0b5; font-size:0.88rem; line-height:1.9; word-break:keep-all; text-align:left;" data-i18n="seo_author_desc">
+                        <strong style="color:#e8d08a;">Chris LEE.PAPA</strong>는 두 딸 <strong style="color:#c9a84c;">율이와 정이</strong>가 자라나는 모습을 담아 Sister Squad 세계관을 이어가고 있습니다. 첫 번째 모험이 자매의 탄생을 그렸다면, 두 번째 모험은 성장통 속에서도 결국 서로를 지켜내는 <strong style="color:#e8d08a;">진짜 가족의 사랑</strong>을 이야기합니다.
+                    </p>
+                </div>
+            </div>
+        </section>
+        <!-- ── SEO 블록 끝 ── -->
+
+    </div>
+
+    <!-- ★ 공통 푸터 -->
+    <div id="site-footer"></div>
+
+    <!-- ★ 페이지 전용 i18n -->
+    <script>
+        window.PAGE_I18N = {
+            ko: {
+                share_desc:       '잿빛으로 물든 요정마을을 구하는 자매의 두 번째 여정을 소중한 사람들에게 전하세요.',
+                header_title:     'SISTER SQUAD 2',
+                header_slogan:    '저주받은 요정마을',
+                back_link:        '‹ 라이브러리로 돌아가기',
+                story_label:      'THE STORY',
+                char_sec_title:   'Family',
+                ally_sec_title:   'Allies & Fairies',
+                ost_sec_title:    'Original Soundtrack',
+                char_yul_tag:     '흔들리는 짜증쟁이',
+                char_yul_name:    '언니 율이 (12세)',
+                char_yul_desc:    '1년 전 얻었던 자신감과 염력의 힘은 사춘기라는 폭풍 앞에 사그라들었다. 모든 상황에 짜증을 내며 동생을 통제하려 하지만, 진정한 승리는 완벽한 계획이 아닌 서로의 다름을 인정하는 것임을 깨달아간다.',
+                char_yul_quote:   '"나 혼자도 힘들어. 정아, 제발 계획 좀 따르라고! …아니, 거기 말고!"',
+                char_jung_tag:    '독립을 꿈꾸는 초딩',
+                char_jung_name:   '동생 정이 (8세)',
+                char_jung_desc:   '과보호 속에서 독립하고 싶은 마음이 커졌다. 순수함이 때로 위험을 부르지만, 가장 결정적인 순간 모두를 구하는 열쇠가 된다.',
+                char_jung_quote:  '"언니 말만 맞는 건 아니야! 내 목소리가, 내 마음이 이쪽으로 가라고 하고 있어!"',
+                char_dad_tag:     '트라우마가 있는 딸바보',
+                char_dad_name:    '아빠 크리스',
+                char_dad_desc:    '과거 동료를 잃은 트라우마를 숨긴 채, 딸들을 지키기 위해 시간을 다루는 힘을 다시 꺼내 든다. 대가가 끔찍하다는 걸 알면서도, 사랑을 위해 모든 것을 쏟아붓는다.',
+                char_dad_quote:   '"너희는 모른다. 세상이 얼마나 위험한데… 하.. 그래 알았다. 가보자, 아빠가 지켜줄테니 해보자."',
+                char_mom_tag:     '현실 최종 보스',
+                char_mom_name:    '엄마 제인',
+                char_mom_desc:    '마법 세계는 모르지만 가족의 보이지 않는 긴장을 신기하게 잘 감지한다. 그녀가 지키는 \\'집\\'이라는 일상은 가족이 반드시 돌아와야 할 이유이자 가장 강력한 안식처다.',
+                char_mom_quote:   '"엄마 몰래 탐험대? 하.. 나가는 길에 음식물 쓰레기 좀 버리고 가."',
+                ally_popo_name:   '포포 · 행운 요정',
+                ally_popo_desc:   '희망과 웃음을 먹고 사는 반짝 요정. 눈치 없는 실수투성이지만, 그 어이없는 실수가 종종 상상치 못한 행운을 불러온다.',
+                ally_pretty_name: '프리티 · 요정 리더',
+                ally_pretty_desc: '저주의 근원을 파헤치기 위해 고대 도시 아르카디아로 홀로 떠난 요정 마을의 리더. 거대한 미스터리를 향한 여정을 이끈다.',
+                ally_brock_name:  '브록 · 대장장이',
+                ally_brock_desc:  '절망 속에서도 \\'희망 시장\\'을 열어 생존자들의 웃음을 지켜내는 낭만적인 대장장이. 자매와 아빠에게 결정적인 도움을 준다.',
+                villain_cutie_name:   '좀비가 된 큐티',
+                villain_cutie_desc:   '한때 루미나의 희망이었던 요정. 오래된 상처에 깃든 저주가 좀비 바이러스의 숙주로 만들어버렸다.',
+                villain_glutton_name: '진흙의 포식자, 글루톤',
+                villain_glutton_desc: '\\'죽음의 늪\\'의 수호자. 도전자의 지혜와 협동심, 내면의 공포를 마주할 용기를 시험하는 첫 번째 관문.',
+                villain_griffin_name: '쌍둥이 그리핀, 스콜 &amp; 게일',
+                villain_griffin_desc: '전설의 약초 \\'월광초\\'를 지키는 냉기와 화염의 수호자. 생명과 감각이 서로 이어져 있어 완벽한 팀워크로만 공략할 수 있다.',
+                ost_note_p:       'SISTER SQUAD 2의 놀라운 오리지널 사운드트랙을 지금 만나보세요. 유튜브, 애플뮤직, 스포티파이 등 주요 스트리밍 플랫폼에 출시되었습니다.',
+                story_desc:       '요정 마을 루미나에 평화를 찾아줬던 두 영웅, 율이와 정이는 평범한 일상으로 돌아옵니다.<br>하지만 <b>율이는 뾰족한 사춘기 소녀</b>가, <b>정이는 독립심 강한 초등학생</b>이 되어 자매 사이엔 미묘한 긴장감이 흐릅니다.<br><br>그러던 어느 날, 루미나에서 온 구조 신호. 숨겨진 과거와 트라우마를 간직한 아빠와 함께 다시 \\'속삭임의 책\\'을 펼치지만, 그들을 맞이한 루미나는 <b>잿빛의 폐허</b>였습니다.<br><br>자매는 저주의 근원을 파헤치기 위한 두 번째 여정을 시작합니다. 매번 충돌하면서도 진정한 자매애를 깨달아가는 율이와 정이, 그리고 과거의 실패를 마주하며 딸들을 지키기 위해 비장한 희생을 선택하는 아빠. 절망 속에서도 유머를 잃지 않는 조력자들과 함께, <b>\\'함께\\'라는 힘의 위대함</b>을 증명하는 감동적이고 유쾌한 여정입니다.',
+                seo_story_desc:   '1편에서 요정 마을을 구했던 <strong style="color:#e8d08a;">율이와 정이</strong>는 각자 사춘기와 초등학생 시절을 지나며 새로운 갈등을 마주합니다. 잿빛으로 물든 루미나를 되살리기 위해 <strong style="color:#c9a84c;">죽음의 늪</strong>, <strong style="color:#c9a84c;">거인의 등뼈</strong>, <strong style="color:#c9a84c;">고요의 계곡</strong>을 지나 고대 도시 아르카디아까지 향하는 여정 속에서, 자매는 이성과 감성이 다르지 않고 서로를 완성한다는 것을 배웁니다.',
+                seo_author_desc:  '<strong style="color:#e8d08a;">Chris LEE.PAPA</strong>는 두 딸 <strong style="color:#c9a84c;">율이와 정이</strong>가 자라나는 모습을 담아 Sister Squad 세계관을 이어가고 있습니다. 첫 번째 모험이 자매의 탄생을 그렸다면, 두 번째 모험은 성장통 속에서도 결국 서로를 지켜내는 <strong style="color:#e8d08a;">진짜 가족의 사랑</strong>을 이야기합니다.'
+            },
+            en: {
+                share_desc:       'Share the sisters\\' second journey to save a cursed fairy village.',
+                header_title:     'SISTER SQUAD 2',
+                header_slogan:    'The Cursed Fairy Village',
+                back_link:        '‹ Back to Library',
+                story_label:      'THE STORY',
+                char_sec_title:   'Family',
+                ally_sec_title:   'Allies & Fairies',
+                ost_sec_title:    'Original Soundtrack',
+                char_yul_tag:     'The Restless Grump',
+                char_yul_name:    'Yul, Age 12',
+                char_yul_desc:    'The confidence and telekinesis she gained a year ago have faded before the storm of adolescence. She tries to control her sister out of worry, but slowly learns true victory isn\\'t a perfect plan — it\\'s trusting each other\\'s differences.',
+                char_yul_quote:   '"It\\'s hard enough on my own. Jung, please just follow the plan! …No, not there!"',
+                char_jung_tag:    'The Aspiring Independent',
+                char_jung_name:   'Jung, Age 8',
+                char_jung_desc:   'Overprotected at home, her desire for independence has grown. Her purity sometimes invites danger, but becomes the key that saves everyone at the most decisive moment.',
+                char_jung_quote:  '"Being the older sister doesn\\'t mean you\\'re always right! My voice, my heart, is telling me to go this way!"',
+                char_dad_tag:     'The Traumatized Softie',
+                char_dad_name:    'Dad, Chris',
+                char_dad_desc:    'Hiding the trauma of losing a companion in the past, he draws on his time-bending power once more to protect his daughters — fully aware of the terrible price it demands.',
+                char_dad_quote:   '"You don\\'t know how dangerous the world can be… Ugh, alright. Let\\'s go — Dad will keep you safe."',
+                char_mom_tag:     'The Real-World Final Boss',
+                char_mom_name:    'Mom, Jane',
+                char_mom_desc:    'She knows nothing of the magical world, yet somehow senses every unspoken tension at home. The ordinary life she protects — \\'home\\' — is the reason the family always has to come back, and the strongest sanctuary of all.',
+                char_mom_quote:   '"An expedition behind Mom\\'s back? Ugh… take out the food waste on your way out."',
+                ally_popo_name:   'Popo · Fairy of Luck',
+                ally_popo_desc:   'A tiny glowing fairy who feeds on hope and laughter. Clumsy and oblivious, but her ridiculous mistakes often spark unimaginable luck.',
+                ally_pretty_name: 'Pretty · Fairy Leader',
+                ally_pretty_desc: 'The leader of the fairy village who set out alone for the ancient city of Arcadia to uncover the source of the curse — leading the group toward a grand mystery.',
+                ally_brock_name:  'Brock · The Blacksmith',
+                ally_brock_desc:  'A romantic blacksmith who keeps hope alive by secretly running a "Hope Market" even in despair — providing the sisters and their father decisive help.',
+                villain_cutie_name:   'Zombified Cutie',
+                villain_cutie_desc:   'Once the symbol of hope in Lumina, an old wound and its dormant curse turned her into the host of a zombie plague.',
+                villain_glutton_name: 'Glutton, the Mud Devourer',
+                villain_glutton_desc: 'Guardian of the Swamp of Death — the first trial testing the travelers\\' wisdom, teamwork, and courage to face their inner fears.',
+                villain_griffin_name: 'Twin Griffins, Squall & Gale',
+                villain_griffin_desc: 'The final guardians of the legendary Moonlight Herb, wielding frost and flame. Their lives and senses are linked — only perfect teamwork can defeat them.',
+                ost_note_p:       'Discover the amazing original soundtrack of Sister Squad 2, now streaming on YouTube, Apple Music, Spotify and more.',
+                story_desc:       'Yul and Jung, the two heroes who once brought peace to the fairy village of Lumina, return to ordinary life.<br>But <b>Yul has become a prickly teenager</b>, and <b>Jung a fiercely independent grade-schooler</b> — a quiet tension now runs between the sisters.<br><br>Then one day, a distress signal arrives from Lumina. Together with their father, who hides a past full of secrets and trauma, they open the \\'Whispering Book\\' once more — only to find Lumina reduced to ash-grey ruins.<br><br>The sisters set out on a second journey to uncover the root of the curse. Clashing again and again, Yul and Jung come to understand true sisterhood, while their father confronts his past failures and chooses a solemn sacrifice to protect his daughters. With the help of allies who never lose their humor even in despair, they prove the power of standing <b>together</b> — a moving, joyful adventure once more.',
+                seo_story_desc:   'Having saved the fairy village once, <strong style="color:#e8d08a;">Yul and Jung</strong> now face new conflicts as they grow through adolescence and grade school. On the way to the ancient city of Arcadia — through the <strong style="color:#c9a84c;">Swamp of Death</strong>, the <strong style="color:#c9a84c;">Giant\\'s Spine</strong>, and the <strong style="color:#c9a84c;">Valley of Silence</strong> — the sisters learn that reason and heart aren\\'t opposites, but two halves that complete each other.',
+                seo_author_desc:  '<strong style="color:#e8d08a;">Chris LEE.PAPA</strong> continues the Sister Squad universe, capturing how his two daughters <strong style="color:#c9a84c;">Yul and Jung</strong> are growing up. If the first adventure was about the sisters\\' birth as heroes, the second is about the <strong style="color:#e8d08a;">real love of family</strong> that endures through growing pains.'
+            }
+        };
+
+        window.onMainReady = function() {
+            const canvas = document.getElementById('stars-canvas');
+            const ctx = canvas ? canvas.getContext('2d') : null;
+            let stars = [];
+            function resize() {
+                if (!canvas) return;
+                canvas.width = window.innerWidth;
+                canvas.height = 400;
+                initStars();
+            }
+            function initStars() {
+                if (!canvas) return;
+                stars = [];
+                const count = (canvas.width * canvas.height) / 7000;
+                for (let i = 0; i < count; i++) {
+                    stars.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        size: Math.random() * 1.5 + 0.2,
+                        opacity: Math.random(),
+                        speed: Math.random() * 0.015 + 0.005,
+                        color: Math.random() > 0.5 ? '111, 215, 255' : '255, 106, 61'
+                    });
+                }
+            }
+            function draw() {
+                if (!canvas || !ctx) return;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                stars.forEach(s => {
+                    s.opacity += s.speed;
+                    if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed;
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(${s.color}, ${Math.max(0, s.opacity)})`;
+                    ctx.fill();
+                });
+                requestAnimationFrame(draw);
+            }
+            window.addEventListener('resize', resize);
+            resize();
+            draw();
+        };
+
+        function safeNavigate(url) { if (url && url.trim() !== '') window.location.assign(url); }
+    </script>
+
+    <!-- ★ 공통 스크립트 -->
+    <script src="js/main.js"></script>
+
+</body>
+</html>

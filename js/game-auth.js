@@ -5,6 +5,8 @@
     const page = (location.pathname.split('/').pop() || 'index').replace(/\.html$/i, '').toLowerCase();
     if (!GAME_PAGES.has(page)) return;
 
+    let accountInitials = '';
+
     function loadAuth() {
         if (window.CLPAuth) return Promise.resolve();
         return new Promise((resolve, reject) => {
@@ -16,32 +18,54 @@
         });
     }
 
-    function markAccountField(input, initials) {
-        if (!input || input.id === 'clp-game-initials') return;
-        input.value = initials;
+    function isAccountField(el) {
+        if (!el || el.tagName !== 'INPUT' || el.type === 'hidden') return false;
+        if (el.id === 'clp-game-login-initials' || el.id === 'clp-game-login-pin') return false;
+        return !!el.matches('#player-initial, #player-initials, #initialsInput, #playerInitials, [name="initial"], [name="initials"], .initials-input, input[id*="initial" i], input[name*="initial" i]');
+    }
+
+    function findAccountFields() {
+        return Array.from(document.querySelectorAll('input')).filter(isAccountField);
+    }
+
+    function markAccountField(input) {
+        if (!input || !accountInitials) return;
+        input.value = accountInitials;
         input.readOnly = true;
         input.setAttribute('readonly', 'readonly');
         input.setAttribute('aria-readonly', 'true');
         input.setAttribute('tabindex', '-1');
         input.setAttribute('title', '로그인된 계정 이니셜');
-        input.style.caretColor = 'transparent';
-        input.style.cursor = 'default';
-        input.style.userSelect = 'none';
-        input.style.pointerEvents = 'none';
+        input.style.setProperty('caret-color', 'transparent', 'important');
+        input.style.setProperty('cursor', 'default', 'important');
+        input.style.setProperty('user-select', 'none', 'important');
+        input.style.setProperty('-webkit-user-select', 'none', 'important');
+        input.style.setProperty('pointer-events', 'none', 'important');
         input.classList.add('clp-account-initials');
     }
 
-    function findAccountFields() {
-        return Array.from(document.querySelectorAll(
-            '#player-initial, #player-initials, #initialsInput, #playerInitials,' +
-            '[name="initial"], [name="initials"], .initials-input,' +
-            'input[id*="initial" i], input[name*="initial" i]'
-        )).filter(el => el.tagName === 'INPUT' && el.type !== 'hidden');
+    function protectAccountFields() {
+        if (!accountInitials) return;
+        findAccountFields().forEach(markAccountField);
     }
 
-    function protectAccountFields(initials) {
-        findAccountFields().forEach(input => markAccountField(input, initials));
+    /* 실제 입력 이벤트가 발생하기 전에 계정 표시칸의 사용자 편집만 차단합니다. */
+    function blockUserEditing(event) {
+        const target = event.target;
+        if (!isAccountField(target)) return;
+        if (event.type === 'focusin') {
+            markAccountField(target);
+            target.blur();
+            return;
+        }
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        markAccountField(target);
     }
+
+    ['beforeinput', 'input', 'keydown', 'paste', 'cut', 'drop', 'mousedown', 'mouseup', 'click', 'focusin'].forEach(type => {
+        document.addEventListener(type, blockUserEditing, true);
+    });
 
     function showLogin() {
         const wrap = document.createElement('div');
@@ -66,11 +90,10 @@
             await loadAuth();
             if (!window.CLPAuth || !window.CLPAuth.isLoggedIn()) { showLogin(); return; }
             const user = window.CLPAuth.getUser();
-            const initials = String(user?.initials || '').trim().toUpperCase();
-            if (!initials) return;
+            accountInitials = String(user?.initials || '').trim().toUpperCase();
+            if (!accountInitials) return;
 
-            /* 게임 DOM이 만들어진 뒤 한 번만 적용합니다. 게임 로직을 감시/변조하지 않습니다. */
-            const apply = () => protectAccountFields(initials);
+            const apply = () => protectAccountFields();
             if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', apply, {once:true});
             else apply();
             setTimeout(apply, 300);

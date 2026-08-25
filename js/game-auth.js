@@ -5,15 +5,15 @@
 'use strict';
 
 (() => {
+    // 실제 게임 페이지만 인증 대상입니다.
+    // gameinfo / miracleshot은 게임 인증 대상에서 제외합니다.
     const GAME_PAGES = new Set([
-        'gameinfo',
         'game',
         'booktop',
         'fiveinrow',
         'curling',
         'tetris',
-        'switch',
-        'miracleshot'
+        'switch'
     ]);
 
     const page = (location.pathname.split('/').pop() || 'index')
@@ -29,8 +29,8 @@
         return new Promise((resolve, reject) => {
             const existing = document.querySelector('script[data-clp-auth]');
             if (existing) {
-                existing.addEventListener('load', resolve, { once:true });
-                existing.addEventListener('error', reject, { once:true });
+                existing.addEventListener('load', resolve, { once: true });
+                existing.addEventListener('error', reject, { once: true });
                 return;
             }
             const script = document.createElement('script');
@@ -74,8 +74,6 @@
                 background:#c9a84c; color:#080808; font-weight:700; cursor:pointer;
             }
             #clp-game-auth .error { min-height:22px; margin-top:10px; color:#e88b8b; font-size:.82rem; }
-            #clp-game-auth .user { margin-top:16px; color:#999; font-size:.78rem; }
-            #clp-game-auth .logout { margin-top:10px; background:transparent; color:#bbb; border:1px solid rgba(255,255,255,.15); }
         `;
         document.head.appendChild(style);
     }
@@ -116,7 +114,8 @@
             }
             overlay.remove();
             document.body.classList.remove('clp-game-locked');
-            window.dispatchEvent(new CustomEvent('clp-game-auth-ready', { detail:result.user }));
+            showUserBadge();
+            window.dispatchEvent(new CustomEvent('clp-game-auth-ready', { detail: result.user }));
         });
     }
 
@@ -152,7 +151,7 @@
     }
 
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init, { once:true });
+        document.addEventListener('DOMContentLoaded', init, { once: true });
     } else {
         init();
     }

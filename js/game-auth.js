@@ -39,7 +39,7 @@
         style.id = 'clp-game-auth-style';
         style.textContent = `
             body.clp-game-locked > * { visibility:hidden !important; }
-            /* 로그인된 이니셜은 완전한 계정 정보 표시 전용 */
+            /* 게임의 이니셜은 로그인 계정 표시 전용 */
             input.clp-account-initials,
             input.clp-account-initials:focus {
                 pointer-events:none !important;
@@ -100,41 +100,39 @@
     }
 
     function findInitialInputs() {
+        /* 실제 게임 파일마다 ID가 달라서 대표 ID + initial 이름 + 3자리 입력창을 모두 탐색합니다. */
         return Array.from(document.querySelectorAll([
-            '#initialsInput', '#playerInitials', '#player-initials',
-            '[name="initials"]', '.initials-input',
-            'input[id*="initial" i]', 'input[name*="initial" i]'
-        ].join(','))).filter(input => input.type !== 'hidden');
+            '#initialsInput', '#playerInitials', '#player-initials', '#player-initial',
+            '[name="initials"]', '[name="initial"]', '.initials-input',
+            'input[id*="initial" i]', 'input[name*="initial" i]',
+            'input[maxlength="3"]'
+        ].join(','))).filter(input => {
+            if (input.type === 'hidden') return false;
+            if (input.id === 'clp-game-initials' || input.id === 'clp-game-pin') return false;
+            return input.type === 'text' || input.type === '';
+        });
     }
 
     function lockInput(input) {
         if (!input || !accountInitials) return;
 
-        /* 값은 게임 로직에서 읽을 수 있도록 유지하되 사용자는 절대 수정하지 못하게 합니다. */
-        if (input.value !== accountInitials) input.value = accountInitials;
-
+        /* 값은 게임 코드가 읽을 수 있게 유지하고, 사용자의 편집만 차단합니다. */
+        input.value = accountInitials;
+        input.defaultValue = accountInitials;
         input.classList.add('clp-account-initials');
         input.readOnly = true;
         input.setAttribute('readonly', 'readonly');
         input.setAttribute('aria-readonly', 'true');
         input.setAttribute('tabindex', '-1');
         input.setAttribute('title', '로그인된 계정 이니셜');
+        input.setAttribute('aria-label', `로그인된 계정 이니셜 ${accountInitials}`);
         input.autocomplete = 'off';
-
-        /* readonly가 게임 코드에 의해 풀려도 즉시 다시 잠급니다. */
-        if (!input.disabled) {
-            input.disabled = true;
-            input.setAttribute('aria-disabled', 'true');
-        }
-
         input.blur();
     }
 
     function lockAndFillInitials() {
         if (!accountInitials) return;
-
-        const inputs = findInitialInputs();
-        inputs.forEach(lockInput);
+        findInitialInputs().forEach(lockInput);
 
         if (!initialObserver) {
             initialObserver = new MutationObserver(() => {
@@ -144,7 +142,7 @@
                 subtree:true,
                 childList:true,
                 attributes:true,
-                attributeFilter:['readonly','disabled','class','value']
+                attributeFilter:['readonly','disabled','class','id','name','maxlength']
             });
         }
     }

@@ -37,6 +37,19 @@
         style.id = 'clp-game-auth-style';
         style.textContent = `
             body.clp-game-locked > * { visibility:hidden !important; }
+            /* 게임 페이지의 기존 이니셜 칸은 계정 정보 표시 전용 */
+            input.clp-account-initials {
+                pointer-events:none !important;
+                user-select:none !important;
+                -webkit-user-select:none !important;
+                caret-color:transparent !important;
+                cursor:default !important;
+                opacity:.9;
+            }
+            input.clp-account-initials:focus {
+                outline:none !important;
+                box-shadow:none !important;
+            }
             #clp-game-auth { position:fixed; inset:0; z-index:2147483647; display:flex; align-items:center; justify-content:center; padding:24px; background:rgba(3,3,5,.96); font-family:Pretendard,Arial,sans-serif; }
             #clp-game-auth .box { width:min(420px,100%); padding:34px 28px; border:1px solid rgba(201,168,76,.35); border-radius:22px; background:linear-gradient(145deg,rgba(20,20,28,.98),rgba(6,6,10,.98)); box-shadow:0 24px 80px rgba(0,0,0,.55); text-align:center; }
             #clp-game-auth h2 { margin:0 0 8px; color:#f0ece4; font-size:1.5rem; }
@@ -85,7 +98,6 @@
         document.body.appendChild(badge);
     }
 
-    /* 게임마다 다른 입력 id/class를 모두 지원합니다. 기존 게임 로직은 건드리지 않습니다. */
     function findInitialInputs() {
         return Array.from(document.querySelectorAll([
             '#initialsInput', '#playerInitials', '#player-initials',
@@ -104,9 +116,15 @@
             if (inputs.length) {
                 inputs.forEach(input => {
                     input.value = initials;
+                    input.classList.add('clp-account-initials');
+                    input.readOnly = true;
+                    input.setAttribute('readonly', 'readonly');
+                    input.setAttribute('aria-readonly', 'true');
+                    input.setAttribute('tabindex', '-1');
+                    input.setAttribute('title', '로그인된 계정 이니셜');
                     input.dispatchEvent(new Event('input', { bubbles:true }));
                     input.dispatchEvent(new Event('change', { bubbles:true }));
-                    input.dispatchEvent(new Event('blur', { bubbles:true }));
+                    input.blur();
                 });
                 clearInterval(timer);
             }

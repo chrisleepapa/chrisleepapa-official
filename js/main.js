@@ -1,437 +1,2232 @@
 /**
  * js/main.js — Chris LEE.PAPA 공식 사이트 공통 스크립트
  * =======================================================
- * 모든 페이지에서 중복되던 로직을 하나로 통합합니다.
- *
- * [사용법] 각 페이지 </body> 직전에 아래 두 줄 추가:
- *
- *   <div id="site-nav"></div>    ← <body> 최상단 (nav 주입 위치)
- *   <div id="site-footer"></div> ← </body> 직전 (footer 주입 위치)
- *   <script src="js/main.js"></script>
- *
- * [페이지별 i18n 확장] main.js 로드 전에 window.PAGE_I18N 정의:
- *
- *   <script>
- *     window.PAGE_I18N = {
- *       ko: { share_desc: "이 페이지만의 공유 문구" },
- *       en: { share_desc: "Page-specific share text" }
- *     };
- *   </script>
- *
- * [현재 페이지 active 링크] 파일명으로 자동 감지합니다. (별도 설정 불필요)
+ * Desktop Navigation
+ * Mobile Bottom Navigation
+ * Language / Share / Scroll / Footer / Security
+ * =======================================================
  */
 
 'use strict';
 
-/* ─────────────────────────────────────────────
-   1. 공통 i18n 사전 (nav / share modal / footer)
-   페이지별 문자열은 window.PAGE_I18N 으로 병합됩니다.
-───────────────────────────────────────────── */
+
+/* =====================================================
+   1. 공통 i18n 사전
+   ===================================================== */
+
 const BASE_I18N = {
+
     ko: {
+
         nav_home:    'Home',
-        nav_bible:   'Bible',
-        nav_worship: 'Worship',
-        nav_music:   'Music',
-        nav_book:    'Books',
-        nav_movie:   'Movies',
-        nav_game:    'Game',
+        nav_works:   'Works',
+        nav_faith:   'Faith',
+        nav_squad:   'Sister Squad',
+        nav_play:    'Play',
+        nav_journal: 'Journal',
         nav_about:   'About',
 
+        nav_music:   'Music',
+        nav_movie:   'Movies',
+        nav_book:    'Books',
+
+        nav_bible:   'Bible',
+        nav_worship: 'Worship',
+
+       nav_squad_short: 'SQUAD',
+
+nav_squad_1: 'SISTER SQUAD',
+nav_squad_2: 'SISTER SQUAD 2',
+nav_game: 'GAME',
+       
         share_title: 'SHARE ARCHIVE',
+        share_desc:  '이곳의 기록과 영감을 소중한 사람들에게 전하세요.',
         share_copy:  'COPY LINK',
         share_sns:   'SNS SHARE',
         share_close: 'Close',
 
-        footer_text: '© 2026 Chris LEE.PAPA — The Creative Archive. All rights reserved.',
-        footer_privacy: '개인정보처리방침',
-        footer_terms:   '이용약관',
+        footer_text:
+            '© 2026 Chris LEE.PAPA — The Creative Archive. All rights reserved.',
 
-        toast_copy:  '링크가 복사되었습니다 ✓',
-        toast_error: '지원하지 않는 브라우저입니다.',
+        footer_privacy:
+            '개인정보처리방침',
+
+        footer_terms:
+            '이용약관',
+
+        toast_copy:
+            '링크가 복사되었습니다 ✓',
+
+        toast_error:
+            '지원하지 않는 브라우저입니다.'
     },
+
+
     en: {
+
         nav_home:    'Home',
-        nav_bible:   'Bible',
-        nav_worship: 'Worship',
-        nav_music:   'Music',
-        nav_book:    'Books',
-        nav_movie:   'Movies',
-        nav_game:    'Game',
+        nav_works:   'Works',
+        nav_faith:   'Faith',
+        nav_squad:   'Sister Squad',
+        nav_play:    'Play',
+        nav_journal: 'Journal',
         nav_about:   'About',
 
+        nav_music:   'Music',
+        nav_movie:   'Movies',
+        nav_book:    'Books',
+
+        nav_bible:   'Bible',
+        nav_worship: 'Worship',
+
+nav_squad_short: 'SQUAD',
+
+nav_squad_1: 'SISTER SQUAD',
+nav_squad_2: 'SISTER SQUAD 2',
+nav_game: 'GAME',
+       
         share_title: 'SHARE ARCHIVE',
-        share_desc:  'Share the records and inspiration here with your loved ones.',
+        share_desc:
+            'Share the records and inspiration here with your loved ones.',
+
         share_copy:  'COPY LINK',
         share_sns:   'SNS SHARE',
         share_close: 'Close',
 
-        footer_text: '© 2026 Chris LEE.PAPA — The Creative Archive. All rights reserved.',
-        footer_privacy: 'Privacy Policy',
-        footer_terms:   'Terms of Use',
+        footer_text:
+            '© 2026 Chris LEE.PAPA — The Creative Archive. All rights reserved.',
 
-        toast_copy:  'Link copied ✓',
-        toast_error: 'Sharing is not supported in this browser.',
-    },
+        footer_privacy:
+            'Privacy Policy',
+
+        footer_terms:
+            'Terms of Use',
+
+        toast_copy:
+            'Link copied ✓',
+
+        toast_error:
+            'Sharing is not supported in this browser.'
+    }
+
 };
 
-/* 런타임에 병합된 최종 사전 */
-let i18n = { ko: { ...BASE_I18N.ko }, en: { ...BASE_I18N.en } };
+
+/* 런타임에 병합되는 최종 사전 */
+
+let i18n = {
+    ko: { ...BASE_I18N.ko },
+    en: { ...BASE_I18N.en }
+};
+
 let currentLang = 'ko';
 
-/* ─────────────────────────────────────────────
-   2. 컴포넌트 로더 (header / footer fetch)
-───────────────────────────────────────────── */
+
+
+/* =====================================================
+   2. COMPONENT LOADER
+   ===================================================== */
 
 /**
- * HTML 파일을 fetch 하여 대상 요소의 innerHTML 에 주입합니다.
- * 실패해도 조용히 처리합니다 (오프라인 / 로컬 환경 대비).
+ * HTML 파일을 fetch하여 대상 요소에 삽입
  */
 async function loadComponent(targetId, url) {
+
     const target = document.getElementById(targetId);
+
     if (!target) return;
+
+
     try {
+
         const res = await fetch(url);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+        if (!res.ok) {
+            throw new Error(`HTTP ${res.status}`);
+        }
+
         target.innerHTML = await res.text();
+
     } catch (err) {
-        console.warn(`[main.js] 컴포넌트 로드 실패: ${url}`, err);
+
+        console.warn(
+            `[main.js] 컴포넌트 로드 실패: ${url}`,
+            err
+        );
+
     }
+
 }
 
+
 /**
- * header + footer 를 병렬로 로드한 뒤 전체 초기화를 실행합니다.
+ * Header + Footer를 병렬로 로드한 뒤
+ * 모든 기능을 초기화
  */
 async function loadComponents() {
-    /* PAGE_I18N 이 있으면 BASE_I18N 에 병합 */
+
+    /* ---------------------------------------------
+       PAGE_I18N 병합
+       --------------------------------------------- */
+
     if (window.PAGE_I18N) {
-        i18n.ko = { ...BASE_I18N.ko, ...window.PAGE_I18N.ko };
-        i18n.en = { ...BASE_I18N.en, ...window.PAGE_I18N.en };
+
+        i18n.ko = {
+            ...BASE_I18N.ko,
+            ...(window.PAGE_I18N.ko || {})
+        };
+
+        i18n.en = {
+            ...BASE_I18N.en,
+            ...(window.PAGE_I18N.en || {})
+        };
+
     }
+
+
+    /* ---------------------------------------------
+       Header / Footer 로드
+       --------------------------------------------- */
 
     await Promise.all([
-        loadComponent('site-nav',    'components/header.html'),
-        loadComponent('site-footer', 'components/footer.html'),
+
+        loadComponent(
+            'site-nav',
+            'components/header.html'
+        ),
+
+        loadComponent(
+            'site-footer',
+            'components/footer.html'
+        )
+
     ]);
 
-    /* 컴포넌트가 DOM 에 삽입된 뒤 모든 기능 초기화 */
+
+    /* ---------------------------------------------
+       공통 기능 초기화
+       --------------------------------------------- */
+
     initScrollProgress();
+
     initNavScroll();
+
     initMobileMenu();
+
+    initDesktopDropdowns();
+
     initActiveNavLink();
+
     initLangDropdown();
+
     initShareModal();
+
     initSecurity();
+
     initMouseOrb();
 
-    /* 저장된 언어 적용 (DOMContentLoaded 이미 지났을 수 있으므로 직접 호출) */
+
+    /* ---------------------------------------------
+       저장된 언어 적용
+       --------------------------------------------- */
+
     let savedLang = 'ko';
-    try { savedLang = localStorage.getItem('pref-lang') || 'ko'; } catch (_) {}
+
+    try {
+
+        savedLang =
+            localStorage.getItem('pref-lang') || 'ko';
+
+    } catch (_) {}
+
+
     setLanguage(savedLang);
 
-    /* 페이지별 초기화 콜백이 있으면 실행 */
+
+    /* ---------------------------------------------
+       페이지별 초기화 콜백
+       --------------------------------------------- */
+
     if (typeof window.onMainReady === 'function') {
+
         window.onMainReady();
+
     }
+
 }
 
-/* ─────────────────────────────────────────────
-   3. 스크롤 진행 바
-───────────────────────────────────────────── */
+
+
+/* =====================================================
+   3. SCROLL PROGRESS
+   ===================================================== */
+
 function initScrollProgress() {
-    const bar = document.getElementById('scroll-progress');
+
+    const bar =
+        document.getElementById('scroll-progress');
+
     if (!bar) return;
-    window.addEventListener('scroll', () => {
-        const scrolled  = window.scrollY;
-        const maxScroll = document.body.scrollHeight - window.innerHeight;
-        bar.style.width = (scrolled / (maxScroll || 1) * 100) + '%';
-    }, { passive: true });
+
+
+    function updateProgress() {
+
+        const scrolled =
+            window.scrollY || window.pageYOffset || 0;
+
+        const maxScroll =
+            document.documentElement.scrollHeight -
+            window.innerHeight;
+
+
+        const percentage =
+            maxScroll > 0
+                ? (scrolled / maxScroll) * 100
+                : 0;
+
+
+        bar.style.width =
+            Math.min(100, Math.max(0, percentage)) + '%';
+
+    }
+
+
+    window.addEventListener(
+        'scroll',
+        updateProgress,
+        { passive: true }
+    );
+
+
+    updateProgress();
+
 }
 
-/* ─────────────────────────────────────────────
-   4. 내비게이션 스크롤 효과
-───────────────────────────────────────────── */
+
+
+/* =====================================================
+   4. NAVIGATION SCROLL EFFECT
+   ===================================================== */
+
 function initNavScroll() {
-    const nav = document.getElementById('main-nav');
+
+    const nav =
+        document.getElementById('main-nav');
+
     if (!nav) return;
-    window.addEventListener('scroll', () => {
-        nav.classList.toggle('scrolled', window.scrollY > 40);
-    }, { passive: true });
+
+
+    function updateNav() {
+
+        nav.classList.toggle(
+            'scrolled',
+            window.scrollY > 40
+        );
+
+    }
+
+
+    window.addEventListener(
+        'scroll',
+        updateNav,
+        { passive: true }
+    );
+
+
+    updateNav();
+
 }
 
-/* ─────────────────────────────────────────────
-   5. 모바일 햄버거 메뉴
-───────────────────────────────────────────── */
-function initMobileMenu() {
-    const toggle   = document.getElementById('mobile-menu');
-    const navLinks = document.getElementById('navLinks');
-    if (!toggle || !navLinks) return;
 
-    toggle.addEventListener('click', () => {
-        const isOpen = toggle.classList.toggle('active');
-        navLinks.classList.toggle('active', isOpen);
-        toggle.setAttribute('aria-expanded', String(isOpen));
-    });
 
-    /* 링크 클릭 시 메뉴 닫기 */
-    navLinks.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-            toggle.classList.remove('active');
-            navLinks.classList.remove('active');
-            toggle.setAttribute('aria-expanded', 'false');
-        });
-    });
-}
-
-/* ─────────────────────────────────────────────
-   6. 현재 페이지 active 링크 자동 감지
-───────────────────────────────────────────── */
-function initActiveNavLink() {
-    /* 파일명 추출: "/bible.html" → "bible", "/" → "index" */
-    const path     = window.location.pathname;
-    const filename = path.split('/').pop().replace('.html', '') || 'index';
-
-    document.querySelectorAll('#navLinks a[data-page]').forEach(link => {
-        link.classList.toggle('active', link.dataset.page === filename);
-    });
-}
-
-/* ─────────────────────────────────────────────
-   7. 언어 드롭다운 & 다국어 처리
-───────────────────────────────────────────── */
-function initLangDropdown() {
-    const wrapper  = document.getElementById('langWrapper');
-    const toggleBtn = document.getElementById('langToggleBtn');
-    if (!wrapper || !toggleBtn) return;
-
-    toggleBtn.addEventListener('click', () => {
-        const isOpen = wrapper.classList.toggle('active');
-        toggleBtn.setAttribute('aria-expanded', String(isOpen));
-    });
-
-    /* 드롭다운 외부 클릭 시 닫기 */
-    document.addEventListener('click', e => {
-        if (!wrapper.contains(e.target)) {
-            wrapper.classList.remove('active');
-            toggleBtn.setAttribute('aria-expanded', 'false');
-        }
-    });
-
-    /* 언어 버튼 클릭 */
-    wrapper.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
-    });
-}
+/* =====================================================
+   5. MOBILE NAVIGATION
+   ===================================================== */
 
 /**
- * 언어를 변경하고 data-i18n 속성을 가진 모든 요소를 업데이트합니다.
- * @param {string} lang - 'ko' | 'en'
+ * 새로운 모바일 하단 메뉴
+ *
+ * HOME
+ * WORKS
+ * FAITH
+ * SQUAD
+ * MORE
  */
+function initMobileMenu() {
+
+    const moreBtn =
+        document.getElementById('mobileMoreBtn');
+
+    const moreOverlay =
+        document.getElementById('mobileMoreOverlay');
+
+    const moreClose =
+        document.getElementById('mobileMoreClose');
+
+
+    const worksBtn =
+        document.querySelector(
+            '[data-mobile-menu="works"]'
+        );
+
+    const faithBtn =
+        document.querySelector(
+            '[data-mobile-menu="faith"]'
+        );
+const squadBtn =
+    document.querySelector(
+        '[data-mobile-menu="squad"]'
+    );
+
+    const worksOverlay =
+        document.getElementById('mobileWorksMenu');
+
+    const faithOverlay =
+        document.getElementById('mobileFaithMenu');
+const squadOverlay =
+    document.getElementById('mobileSquadMenu');
+
+    /* ---------------------------------------------
+       공통 패널 닫기
+       --------------------------------------------- */
+
+    function closeAllPanels() {
+
+        [
+           moreOverlay,
+    worksOverlay,
+    faithOverlay,
+    squadOverlay
+        ].forEach(panel => {
+
+            if (!panel) return;
+
+            panel.classList.remove('active');
+
+            panel.setAttribute(
+                'aria-hidden',
+                'true'
+            );
+
+        });
+
+
+        [
+             moreBtn,
+    worksBtn,
+    faithBtn,
+    squadBtn
+        ].forEach(button => {
+
+            if (!button) return;
+
+            button.setAttribute(
+                'aria-expanded',
+                'false'
+            );
+
+        });
+
+
+        document.body.classList.remove(
+            'mobile-panel-open'
+        );
+
+    }
+
+
+    /* ---------------------------------------------
+       패널 열기
+       --------------------------------------------- */
+
+    function openPanel(panel, button) {
+
+        if (!panel) return;
+
+
+        closeAllPanels();
+
+
+        panel.classList.add('active');
+
+        panel.setAttribute(
+            'aria-hidden',
+            'false'
+        );
+
+
+        if (button) {
+
+            button.setAttribute(
+                'aria-expanded',
+                'true'
+            );
+
+        }
+
+
+        document.body.classList.add(
+            'mobile-panel-open'
+        );
+
+    }
+
+
+    /* ---------------------------------------------
+       MORE
+       --------------------------------------------- */
+
+    if (moreBtn && moreOverlay) {
+
+        moreBtn.addEventListener(
+            'click',
+            event => {
+
+                event.stopPropagation();
+
+                const isOpen =
+                    moreOverlay.classList.contains(
+                        'active'
+                    );
+
+
+                if (isOpen) {
+
+                    closeAllPanels();
+
+                } else {
+
+                    openPanel(
+                        moreOverlay,
+                        moreBtn
+                    );
+
+                }
+
+            }
+        );
+
+    }
+
+   if (squadBtn && squadOverlay) {
+
+    squadBtn.addEventListener(
+        'click',
+        event => {
+
+            event.stopPropagation();
+
+            const isOpen =
+                squadOverlay.classList.contains(
+                    'active'
+                );
+
+            if (isOpen) {
+
+                closeAllPanels();
+
+            } else {
+
+                openPanel(
+                    squadOverlay,
+                    squadBtn
+                );
+
+            }
+
+        }
+    );
+
+}
+
+    /* ---------------------------------------------
+       MORE 닫기
+       --------------------------------------------- */
+
+    if (moreClose) {
+
+        moreClose.addEventListener(
+            'click',
+            closeAllPanels
+        );
+
+    }
+
+
+    /* ---------------------------------------------
+       WORKS
+       --------------------------------------------- */
+
+    if (worksBtn && worksOverlay) {
+
+        worksBtn.addEventListener(
+            'click',
+            event => {
+
+                event.stopPropagation();
+
+                const isOpen =
+                    worksOverlay.classList.contains(
+                        'active'
+                    );
+
+
+                if (isOpen) {
+
+                    closeAllPanels();
+
+                } else {
+
+                    openPanel(
+                        worksOverlay,
+                        worksBtn
+                    );
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* ---------------------------------------------
+       FAITH
+       --------------------------------------------- */
+
+    if (faithBtn && faithOverlay) {
+
+        faithBtn.addEventListener(
+            'click',
+            event => {
+
+                event.stopPropagation();
+
+                const isOpen =
+                    faithOverlay.classList.contains(
+                        'active'
+                    );
+
+
+                if (isOpen) {
+
+                    closeAllPanels();
+
+                } else {
+
+                    openPanel(
+                        faithOverlay,
+                        faithBtn
+                    );
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* ---------------------------------------------
+       Overlay 배경 클릭
+       --------------------------------------------- */
+
+    [
+        moreOverlay,
+    worksOverlay,
+    faithOverlay,
+    squadOverlay
+    ].forEach(overlay => {
+
+        if (!overlay) return;
+
+
+        overlay.addEventListener(
+            'click',
+            event => {
+
+                if (event.target === overlay) {
+
+                    closeAllPanels();
+
+                }
+
+            }
+        );
+
+    });
+
+
+    /* ---------------------------------------------
+       패널 안 링크 클릭
+       --------------------------------------------- */
+
+    [
+        moreOverlay,
+        worksOverlay,
+        faithOverlay
+    ].forEach(panel => {
+
+        if (!panel) return;
+
+
+        panel.querySelectorAll('a').forEach(link => {
+
+            link.addEventListener(
+                'click',
+                () => {
+
+                    closeAllPanels();
+
+                }
+            );
+
+        });
+
+    });
+
+
+    /* ---------------------------------------------
+       ESC로 닫기
+       --------------------------------------------- */
+
+    document.addEventListener(
+        'keydown',
+        event => {
+
+            if (
+                event.key === 'Escape' &&
+                (
+                    moreOverlay?.classList.contains('active') ||
+                    worksOverlay?.classList.contains('active') ||
+                    faithOverlay?.classList.contains('active')
+                )
+            ) {
+
+                closeAllPanels();
+
+            }
+
+        }
+    );
+
+
+    /* ---------------------------------------------
+       화면이 PC로 전환되면 모바일 패널 닫기
+       --------------------------------------------- */
+
+    window.addEventListener(
+        'resize',
+        () => {
+
+            if (window.innerWidth > 900) {
+
+                closeAllPanels();
+
+            }
+
+        }
+    );
+
+}
+
+
+
+/* =====================================================
+   6. DESKTOP DROPDOWN
+   ===================================================== */
+
+/**
+ * WORKS / FAITH 드롭다운
+ *
+ * PC 마우스 hover는 CSS가 담당하고
+ * 키보드/터치/접근성은 JS가 담당합니다.
+ */
+function initDesktopDropdowns() {
+
+    const wrappers =
+        document.querySelectorAll(
+            '.nav-dropdown-wrapper'
+        );
+
+
+    if (!wrappers.length) return;
+
+
+    wrappers.forEach(wrapper => {
+
+        const trigger =
+            wrapper.querySelector(
+                '.nav-dropdown-trigger'
+            );
+
+
+        if (!trigger) return;
+
+
+        trigger.addEventListener(
+            'click',
+            event => {
+
+                event.preventDefault();
+
+                const isOpen =
+                    wrapper.classList.contains(
+                        'active'
+                    );
+
+
+                /* 다른 dropdown 닫기 */
+
+                wrappers.forEach(other => {
+
+                    if (other !== wrapper) {
+
+                        other.classList.remove(
+                            'active'
+                        );
+
+                        const otherTrigger =
+                            other.querySelector(
+                                '.nav-dropdown-trigger'
+                            );
+
+
+                        if (otherTrigger) {
+
+                            otherTrigger.setAttribute(
+                                'aria-expanded',
+                                'false'
+                            );
+
+                        }
+
+                    }
+
+                });
+
+
+                /* 현재 dropdown */
+
+                wrapper.classList.toggle(
+                    'active',
+                    !isOpen
+                );
+
+
+                trigger.setAttribute(
+                    'aria-expanded',
+                    String(!isOpen)
+                );
+
+            }
+        );
+
+    });
+
+
+    /* ---------------------------------------------
+       외부 클릭 시 dropdown 닫기
+       --------------------------------------------- */
+
+    document.addEventListener(
+        'click',
+        event => {
+
+            if (
+                !event.target.closest(
+                    '.nav-dropdown-wrapper'
+                )
+            ) {
+
+                wrappers.forEach(wrapper => {
+
+                    wrapper.classList.remove(
+                        'active'
+                    );
+
+
+                    const trigger =
+                        wrapper.querySelector(
+                            '.nav-dropdown-trigger'
+                        );
+
+
+                    if (trigger) {
+
+                        trigger.setAttribute(
+                            'aria-expanded',
+                            'false'
+                        );
+
+                    }
+
+                });
+
+            }
+
+        }
+    );
+
+
+    /* ---------------------------------------------
+       ESC
+       --------------------------------------------- */
+
+    document.addEventListener(
+        'keydown',
+        event => {
+
+            if (event.key !== 'Escape') return;
+
+
+            wrappers.forEach(wrapper => {
+
+                wrapper.classList.remove(
+                    'active'
+                );
+
+
+                const trigger =
+                    wrapper.querySelector(
+                        '.nav-dropdown-trigger'
+                    );
+
+
+                if (trigger) {
+
+                    trigger.setAttribute(
+                        'aria-expanded',
+                        'false'
+                    );
+
+                }
+
+            });
+
+        }
+    );
+
+}
+
+
+
+/* =====================================================
+   7. CURRENT PAGE ACTIVE NAVIGATION
+   ===================================================== */
+
+/**
+ * 현재 URL을 기준으로 메뉴 자동 활성화
+ *
+ * /
+ * /music
+ * /movie
+ * /book
+ * /bible
+ * /worship
+ * /sistersquad
+ * /sistersquad2
+ * /gameinfo
+ * /journal
+ * /about
+ */
+function getCurrentPageKey() {
+
+    let path =
+        window.location.pathname || '/';
+
+
+    /* query / hash 제거 */
+
+    path =
+        path.split('?')[0]
+            .split('#')[0];
+
+
+    /* 마지막 slash 제거 */
+
+    path =
+        path.replace(/\/+$/, '');
+
+
+    /* 홈페이지 */
+
+    if (
+        path === '' ||
+        path === '/'
+    ) {
+
+        return 'index';
+
+    }
+
+
+    /* 마지막 경로 */
+
+    let filename =
+        path.split('/').pop() || 'index';
+
+
+    /* .html 제거 */
+
+    filename =
+        filename.replace(
+            /\.html$/i,
+            ''
+        );
+
+
+    return filename.toLowerCase();
+
+}
+
+
+function initActiveNavLink() {
+
+    const currentPage =
+        getCurrentPageKey();
+
+
+    /* ---------------------------------------------
+       모든 active 초기화
+       --------------------------------------------- */
+
+    document
+        .querySelectorAll(
+            '[data-page]'
+        )
+        .forEach(link => {
+
+            link.classList.remove(
+                'active'
+            );
+
+        });
+
+
+    /* ---------------------------------------------
+       직접 연결된 페이지
+       --------------------------------------------- */
+
+    document
+        .querySelectorAll(
+            '[data-page]'
+        )
+        .forEach(link => {
+
+            const page =
+                (
+                    link.dataset.page || ''
+                ).toLowerCase();
+
+
+            if (page === currentPage) {
+
+                link.classList.add(
+                    'active'
+                );
+
+            }
+
+        });
+
+
+    /* ---------------------------------------------
+       WORKS 하위 페이지
+       --------------------------------------------- */
+
+    const worksPages = [
+        'music',
+        'movie',
+        'book'
+    ];
+
+
+    if (
+        worksPages.includes(
+            currentPage
+        )
+    ) {
+
+        const worksWrapper =
+            document.querySelector(
+                '.nav-dropdown-wrapper:has([href="/music"])'
+            );
+
+
+        if (worksWrapper) {
+
+            worksWrapper.classList.add(
+                'active'
+            );
+
+        }
+
+    }
+
+
+    /* ---------------------------------------------
+       FAITH 하위 페이지
+       --------------------------------------------- */
+
+    const faithPages = [
+        'bible',
+        'worship'
+    ];
+
+
+    if (
+        faithPages.includes(
+            currentPage
+        )
+    ) {
+
+        const faithWrapper =
+            document.querySelector(
+                '.nav-dropdown-wrapper:has([href="/bible"])'
+            );
+
+
+        if (faithWrapper) {
+
+            faithWrapper.classList.add(
+                'active'
+            );
+
+        }
+
+    }
+
+
+    /* ---------------------------------------------
+       SISTER SQUAD
+       --------------------------------------------- */
+
+    if (
+        currentPage === 'sistersquad' ||
+        currentPage === 'sistersquad2' ||
+        currentPage === 'sister-squad'
+    ) {
+
+        document
+            .querySelectorAll(
+                '[data-page="sistersquad"]'
+            )
+            .forEach(link => {
+
+                link.classList.add(
+                    'active'
+                );
+
+            });
+
+    }
+
+
+    /* ---------------------------------------------
+       모바일 WORKS / FAITH 버튼
+       --------------------------------------------- */
+
+    const mobileWorks =
+        document.querySelector(
+            '[data-mobile-menu="works"]'
+        );
+
+
+    const mobileFaith =
+        document.querySelector(
+            '[data-mobile-menu="faith"]'
+        );
+
+
+    if (
+        mobileWorks &&
+        worksPages.includes(currentPage)
+    ) {
+
+        mobileWorks.classList.add(
+            'active'
+        );
+
+    }
+
+
+    if (
+        mobileFaith &&
+        faithPages.includes(currentPage)
+    ) {
+
+        mobileFaith.classList.add(
+            'active'
+        );
+
+    }
+
+
+    /* ---------------------------------------------
+       모바일 MORE 내부 페이지
+       --------------------------------------------- */
+
+    const morePages = [
+        'gameinfo',
+        'journal',
+        'about',
+        'privacy',
+        'terms'
+    ];
+
+
+    if (
+        morePages.includes(
+            currentPage
+        )
+    ) {
+
+        const moreButton =
+            document.getElementById(
+                'mobileMoreBtn'
+            );
+
+
+        if (moreButton) {
+
+            moreButton.classList.add(
+                'active'
+            );
+
+        }
+
+    }
+
+}
+
+
+
+/* =====================================================
+   8. LANGUAGE DROPDOWN
+   ===================================================== */
+
+function initLangDropdown() {
+
+    const wrapper =
+        document.getElementById(
+            'langWrapper'
+        );
+
+
+    const toggleBtn =
+        document.getElementById(
+            'langToggleBtn'
+        );
+
+
+    if (
+        !wrapper ||
+        !toggleBtn
+    ) {
+
+        return;
+
+    }
+
+
+    /* ---------------------------------------------
+       Toggle
+       --------------------------------------------- */
+
+    toggleBtn.addEventListener(
+        'click',
+        event => {
+
+            event.stopPropagation();
+
+
+            const isOpen =
+                wrapper.classList.toggle(
+                    'active'
+                );
+
+
+            toggleBtn.setAttribute(
+                'aria-expanded',
+                String(isOpen)
+            );
+
+        }
+    );
+
+
+    /* ---------------------------------------------
+       외부 클릭
+       --------------------------------------------- */
+
+    document.addEventListener(
+        'click',
+        event => {
+
+            if (
+                !wrapper.contains(
+                    event.target
+                )
+            ) {
+
+                wrapper.classList.remove(
+                    'active'
+                );
+
+
+                toggleBtn.setAttribute(
+                    'aria-expanded',
+                    'false'
+                );
+
+            }
+
+        }
+    );
+
+
+    /* ---------------------------------------------
+       언어 버튼
+       --------------------------------------------- */
+
+    wrapper
+        .querySelectorAll(
+            '.lang-btn'
+        )
+        .forEach(btn => {
+
+            btn.addEventListener(
+                'click',
+                () => {
+
+                    setLanguage(
+                        btn.dataset.lang
+                    );
+
+                }
+            );
+
+        });
+
+}
+
+
+
+/* =====================================================
+   9. LANGUAGE SETTER
+   ===================================================== */
+
 function setLanguage(lang) {
-    currentLang = i18n[lang] ? lang : 'ko';
+
+    currentLang =
+        i18n[lang]
+            ? lang
+            : 'ko';
+
+
     lang = currentLang;
 
-    document.documentElement.lang = lang;
-    try { localStorage.setItem('pref-lang', lang); } catch (_) {}
 
-    /* data-i18n 요소 일괄 업데이트 */
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.dataset.i18n;
-        if (i18n[lang][key] !== undefined) el.innerHTML = i18n[lang][key];
-    });
+    /* ---------------------------------------------
+       HTML lang
+       --------------------------------------------- */
 
-    /* ── SEO 메타 태그 업데이트 (페이지가 PAGE_I18N 에 meta_* 키를 정의한 경우) ── */
-    const dict = i18n[lang];
-    if (dict.meta_title) document.title = dict.meta_title;
+    document.documentElement.lang =
+        lang;
+
+
+    /* ---------------------------------------------
+       Local Storage
+       --------------------------------------------- */
+
+    try {
+
+        localStorage.setItem(
+            'pref-lang',
+            lang
+        );
+
+    } catch (_) {}
+
+
+    /* ---------------------------------------------
+       data-i18n
+       --------------------------------------------- */
+
+    document
+        .querySelectorAll(
+            '[data-i18n]'
+        )
+        .forEach(el => {
+
+            const key =
+                el.dataset.i18n;
+
+
+            if (
+                i18n[lang][key] !== undefined
+            ) {
+
+                el.innerHTML =
+                    i18n[lang][key];
+
+            }
+
+        });
+
+
+    /* ---------------------------------------------
+       SEO META
+       --------------------------------------------- */
+
+    const dict =
+        i18n[lang];
+
+
+    if (dict.meta_title) {
+
+        document.title =
+            dict.meta_title;
+
+    }
+
+
     if (dict.meta_description) {
-        const metaDesc = document.querySelector('meta[name="description"]');
-        if (metaDesc) metaDesc.setAttribute('content', dict.meta_description);
+
+        const metaDesc =
+            document.querySelector(
+                'meta[name="description"]'
+            );
+
+
+        if (metaDesc) {
+
+            metaDesc.setAttribute(
+                'content',
+                dict.meta_description
+            );
+
+        }
+
     }
+
+
     if (dict.og_title) {
-        const ogTitle = document.querySelector('meta[property="og:title"]');
-        if (ogTitle) ogTitle.setAttribute('content', dict.og_title);
+
+        const ogTitle =
+            document.querySelector(
+                'meta[property="og:title"]'
+            );
+
+
+        if (ogTitle) {
+
+            ogTitle.setAttribute(
+                'content',
+                dict.og_title
+            );
+
+        }
+
     }
+
+
     if (dict.og_description) {
-        const ogDesc = document.querySelector('meta[property="og:description"]');
-        if (ogDesc) ogDesc.setAttribute('content', dict.og_description);
+
+        const ogDesc =
+            document.querySelector(
+                'meta[property="og:description"]'
+            );
+
+
+        if (ogDesc) {
+
+            ogDesc.setAttribute(
+                'content',
+                dict.og_description
+            );
+
+        }
+
     }
+
+
     if (dict.twitter_title) {
-        const twTitle = document.querySelector('meta[name="twitter:title"]');
-        if (twTitle) twTitle.setAttribute('content', dict.twitter_title);
+
+        const twTitle =
+            document.querySelector(
+                'meta[name="twitter:title"]'
+            );
+
+
+        if (twTitle) {
+
+            twTitle.setAttribute(
+                'content',
+                dict.twitter_title
+            );
+
+        }
+
     }
+
+
     if (dict.twitter_description) {
-        const twDesc = document.querySelector('meta[name="twitter:description"]');
-        if (twDesc) twDesc.setAttribute('content', dict.twitter_description);
+
+        const twDesc =
+            document.querySelector(
+                'meta[name="twitter:description"]'
+            );
+
+
+        if (twDesc) {
+
+            twDesc.setAttribute(
+                'content',
+                dict.twitter_description
+            );
+
+        }
+
     }
 
-    /* 언어 버튼 active 상태 */
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.lang === lang);
-    });
 
-    /* 현재 언어 표시 텍스트 */
-    const display = document.getElementById('currentLangText');
-    if (display) display.textContent = lang === 'ko' ? 'KOR' : 'ENG';
+    /* ---------------------------------------------
+       언어 버튼 active
+       --------------------------------------------- */
 
-    /* 드롭다운 닫기 */
-    const wrapper  = document.getElementById('langWrapper');
-    const toggleBtn = document.getElementById('langToggleBtn');
-    if (wrapper)   wrapper.classList.remove('active');
-    if (toggleBtn) toggleBtn.setAttribute('aria-expanded', 'false');
+    document
+        .querySelectorAll(
+            '.lang-btn'
+        )
+        .forEach(btn => {
 
-    /* 페이지별 언어 콜백 */
-    if (typeof window.onLangChange === 'function') {
+            btn.classList.toggle(
+                'active',
+                btn.dataset.lang === lang
+            );
+
+        });
+
+
+    /* ---------------------------------------------
+       현재 언어 표시
+       --------------------------------------------- */
+
+    const display =
+        document.getElementById(
+            'currentLangText'
+        );
+
+
+    if (display) {
+
+        display.textContent =
+            lang === 'ko'
+                ? 'KOR'
+                : 'ENG';
+
+    }
+
+
+    /* ---------------------------------------------
+       언어 메뉴 닫기
+       --------------------------------------------- */
+
+    const wrapper =
+        document.getElementById(
+            'langWrapper'
+        );
+
+
+    const toggleBtn =
+        document.getElementById(
+            'langToggleBtn'
+        );
+
+
+    if (wrapper) {
+
+        wrapper.classList.remove(
+            'active'
+        );
+
+    }
+
+
+    if (toggleBtn) {
+
+        toggleBtn.setAttribute(
+            'aria-expanded',
+            'false'
+        );
+
+    }
+
+
+    /* ---------------------------------------------
+       페이지별 언어 콜백
+       --------------------------------------------- */
+
+    if (
+        typeof window.onLangChange ===
+        'function'
+    ) {
+
         window.onLangChange(lang);
+
     }
+
 }
 
-/* 외부에서 호출 가능하도록 전역 노출 */
-window.setLanguage = setLanguage;
-window.getCurrentLang = () => currentLang;
 
-/* ─────────────────────────────────────────────
-   8. 공유 모달
-───────────────────────────────────────────── */
+/* 외부 호출 */
+
+window.setLanguage =
+    setLanguage;
+
+
+window.getCurrentLang =
+    () => currentLang;
+
+
+
+/* =====================================================
+   10. SHARE MODAL
+   ===================================================== */
+
 function initShareModal() {
-    const overlay   = document.getElementById('shareOverlay');
-    const openBtn   = document.getElementById('shareOpenBtn');
-    const copyBtn   = document.getElementById('shareCopyBtn');
-    const snsBtn    = document.getElementById('shareSNSBtn');
-    const closeBtn  = document.getElementById('shareCloseBtn');
+
+    const overlay =
+        document.getElementById(
+            'shareOverlay'
+        );
+
+
+    const openBtn =
+        document.getElementById(
+            'shareOpenBtn'
+        );
+
+
+    const copyBtn =
+        document.getElementById(
+            'shareCopyBtn'
+        );
+
+
+    const snsBtn =
+        document.getElementById(
+            'shareSNSBtn'
+        );
+
+
+    const closeBtn =
+        document.getElementById(
+            'shareCloseBtn'
+        );
+
+
     if (!overlay) return;
 
+
+    /* ---------------------------------------------
+       Open
+       --------------------------------------------- */
+
     function openModal() {
-        overlay.style.display = 'flex';
-        overlay.setAttribute('aria-hidden', 'false');
-        setTimeout(() => overlay.classList.add('active'), 10);
+
+        overlay.style.display =
+            'flex';
+
+
+        overlay.setAttribute(
+            'aria-hidden',
+            'false'
+        );
+
+
+        setTimeout(
+            () => {
+
+                overlay.classList.add(
+                    'active'
+                );
+
+            },
+            10
+        );
+
     }
+
+
+    /* ---------------------------------------------
+       Close
+       --------------------------------------------- */
 
     function closeModal() {
-        overlay.classList.remove('active');
-        overlay.setAttribute('aria-hidden', 'true');
-        setTimeout(() => overlay.style.display = 'none', 300);
+
+        overlay.classList.remove(
+            'active'
+        );
+
+
+        overlay.setAttribute(
+            'aria-hidden',
+            'true'
+        );
+
+
+        setTimeout(
+            () => {
+
+                overlay.style.display =
+                    'none';
+
+            },
+            300
+        );
+
     }
 
-    if (openBtn)  openBtn.addEventListener('click', openModal);
-    if (closeBtn) closeBtn.addEventListener('click', closeModal);
 
-    /* 오버레이 배경 클릭 시 닫기 */
-    overlay.addEventListener('click', e => {
-        if (e.target === overlay) closeModal();
-    });
+    /* ---------------------------------------------
+       Open button
+       --------------------------------------------- */
 
-    /* ESC 키로 닫기 */
-    document.addEventListener('keydown', e => {
-        if (e.key === 'Escape' && overlay.classList.contains('active')) closeModal();
-    });
+    if (openBtn) {
+
+        openBtn.addEventListener(
+            'click',
+            openModal
+        );
+
+    }
+
+
+    /* ---------------------------------------------
+       Close button
+       --------------------------------------------- */
+
+    if (closeBtn) {
+
+        closeBtn.addEventListener(
+            'click',
+            closeModal
+        );
+
+    }
+
+
+    /* ---------------------------------------------
+       Overlay click
+       --------------------------------------------- */
+
+    overlay.addEventListener(
+        'click',
+        event => {
+
+            if (
+                event.target === overlay
+            ) {
+
+                closeModal();
+
+            }
+
+        }
+    );
+
+
+    /* ---------------------------------------------
+       ESC
+       --------------------------------------------- */
+
+    document.addEventListener(
+        'keydown',
+        event => {
+
+            if (
+                event.key === 'Escape' &&
+                overlay.classList.contains(
+                    'active'
+                )
+            ) {
+
+                closeModal();
+
+            }
+
+        }
+    );
+
+
+    /* ---------------------------------------------
+       COPY LINK
+       --------------------------------------------- */
 
     if (copyBtn) {
-        copyBtn.addEventListener('click', async () => {
-            const url = window.location.href;
-            let ok = false;
-            if (navigator.clipboard && window.isSecureContext) {
-                try { await navigator.clipboard.writeText(url); ok = true; } catch (_) {}
+
+        copyBtn.addEventListener(
+            'click',
+            async () => {
+
+                const url =
+                    window.location.href;
+
+
+                let ok = false;
+
+
+                /* Clipboard API */
+
+                if (
+                    navigator.clipboard &&
+                    window.isSecureContext
+                ) {
+
+                    try {
+
+                        await navigator.clipboard.writeText(
+                            url
+                        );
+
+                        ok = true;
+
+                    } catch (_) {}
+
+                }
+
+
+                /* Fallback */
+
+                if (!ok) {
+
+                    const ta =
+                        document.createElement(
+                            'textarea'
+                        );
+
+
+                    ta.value =
+                        url;
+
+
+                    ta.id =
+                        'temp-copy-area';
+
+
+                    ta.style.cssText =
+                        'position:fixed;left:-9999px;top:0;opacity:0';
+
+
+                    document.body.appendChild(
+                        ta
+                    );
+
+
+                    ta.focus();
+                    ta.select();
+
+
+                    try {
+
+                        ok =
+                            document.execCommand(
+                                'copy'
+                            );
+
+                    } catch (_) {}
+
+
+                    document.body.removeChild(
+                        ta
+                    );
+
+                }
+
+
+                if (ok) {
+
+                    showToast(
+                        i18n[currentLang]
+                            .toast_copy
+                    );
+
+                }
+
+
+                closeModal();
+
             }
-            if (!ok) {
-                const ta = document.createElement('textarea');
-                ta.value = url;
-                ta.id = 'temp-copy-area';
-                ta.style.cssText = 'position:fixed;left:-9999px';
-                document.body.appendChild(ta);
-                ta.focus(); ta.select();
-                try { ok = document.execCommand('copy'); } catch (_) {}
-                document.body.removeChild(ta);
-            }
-            if (ok) showToast(i18n[currentLang].toast_copy);
-            closeModal();
-        });
+        );
+
     }
+
+
+    /* ---------------------------------------------
+       SNS SHARE
+       --------------------------------------------- */
 
     if (snsBtn) {
-        snsBtn.addEventListener('click', () => {
-            if (navigator.share) {
-                navigator.share({ title: 'Chris LEE.PAPA', url: window.location.href });
-            } else {
-                showToast(i18n[currentLang].toast_error);
+
+        snsBtn.addEventListener(
+            'click',
+            async () => {
+
+                if (
+                    navigator.share
+                ) {
+
+                    try {
+
+                        await navigator.share({
+
+                            title:
+                                document.title ||
+                                'Chris LEE.PAPA',
+
+                            text:
+                                'Chris LEE.PAPA',
+
+                            url:
+                                window.location.href
+
+                        });
+
+                    } catch (_) {
+
+                        /* 사용자가 공유창을 닫은 경우
+                           오류 메시지를 표시하지 않음 */
+
+                    }
+
+                } else {
+
+                    showToast(
+                        i18n[currentLang]
+                            .toast_error
+                    );
+
+                }
+
             }
-        });
+        );
+
     }
+
 }
+
+
+
+/* =====================================================
+   11. TOAST
+   ===================================================== */
+
+function showToast(msg) {
+
+    const toast =
+        document.getElementById(
+            'toast'
+        );
+
+
+    if (!toast) return;
+
+
+    toast.textContent =
+        msg;
+
+
+    toast.style.display =
+        'block';
+
+
+    clearTimeout(
+        showToast._timer
+    );
+
+
+    showToast._timer =
+        setTimeout(
+            () => {
+
+                toast.style.display =
+                    'none';
+
+            },
+            2500
+        );
+
+}
+
+
+window.showToast =
+    showToast;
+
+
+
+/* =====================================================
+   12. SECURITY
+   ===================================================== */
 
 /**
- * 토스트 메시지를 표시합니다.
- * @param {string} msg
+ * 기존 사이트의 보호 기능 유지
+ *
+ * 주의:
+ * 이 기능은 콘텐츠 보호 목적이며
+ * 완벽한 보안 기능은 아닙니다.
  */
-function showToast(msg) {
-    const toast = document.getElementById('toast');
-    if (!toast) return;
-    toast.textContent = msg;
-    toast.style.display = 'block';
-    clearTimeout(showToast._timer);
-    showToast._timer = setTimeout(() => { toast.style.display = 'none'; }, 2500);
-}
-
-window.showToast = showToast;
-
-/* ─────────────────────────────────────────────
-   9. 보안 스크립트 (우클릭 / 복사 / 단축키 방지)
-───────────────────────────────────────────── */
 function initSecurity() {
-    document.addEventListener('contextmenu', e => e.preventDefault());
 
-    document.addEventListener('copy', e => {
-        if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) {
-            e.preventDefault();
-        }
-    });
+    /* ---------------------------------------------
+       우클릭 방지
+       --------------------------------------------- */
 
-    document.addEventListener('keydown', e => {
-        /* F12, Ctrl+Shift+I/J, Ctrl+U */
-        if (
-            e.key === 'F12' ||
-            (e.ctrlKey && e.shiftKey && ['I', 'J'].includes(e.key)) ||
-            (e.ctrlKey && e.key === 'U')
-        ) {
-            e.preventDefault();
+    document.addEventListener(
+        'contextmenu',
+        event => {
+
+            event.preventDefault();
+
         }
-        /* Ctrl+C/S/P (선택 텍스트 있을 때만) */
-        if (e.ctrlKey && ['c', 's', 'p'].includes(e.key)) {
-            if (e.target.id !== 'temp-copy-area' && window.getSelection().toString().length > 0) {
-                e.preventDefault();
+    );
+
+
+    /* ---------------------------------------------
+       Copy
+       --------------------------------------------- */
+
+    document.addEventListener(
+        'copy',
+        event => {
+
+            const target =
+                event.target;
+
+
+            const isCopyArea =
+                target &&
+                target.id ===
+                'temp-copy-area';
+
+
+            if (
+                !isCopyArea &&
+                window.getSelection &&
+                window.getSelection()
+                    .toString()
+                    .length > 0
+            ) {
+
+                event.preventDefault();
+
             }
+
         }
-    });
+    );
+
+
+    /* ---------------------------------------------
+       Keyboard protection
+       --------------------------------------------- */
+
+    document.addEventListener(
+        'keydown',
+        event => {
+
+            const key =
+                String(
+                    event.key || ''
+                ).toUpperCase();
+
+
+            const target =
+                event.target;
+
+
+            const isCopyArea =
+                target &&
+                target.id ===
+                'temp-copy-area';
+
+
+            /* -----------------------------------------
+               개발자 도구 / 소스 보기
+               ----------------------------------------- */
+
+            if (
+
+                key === 'F12' ||
+
+                (
+                    event.ctrlKey &&
+                    event.shiftKey &&
+                    (
+                        key === 'I' ||
+                        key === 'J'
+                    )
+                ) ||
+
+                (
+                    event.ctrlKey &&
+                    key === 'U'
+                )
+
+            ) {
+
+                event.preventDefault();
+
+                return;
+
+            }
+
+
+            /* -----------------------------------------
+               선택 텍스트가 있는 경우
+               Ctrl+C / Ctrl+S / Ctrl+P 제한
+               ----------------------------------------- */
+
+            if (
+
+                event.ctrlKey &&
+
+                (
+                    key === 'C' ||
+                    key === 'S' ||
+                    key === 'P'
+                ) &&
+
+                !isCopyArea &&
+
+                window.getSelection &&
+                window.getSelection()
+                    .toString()
+                    .length > 0
+
+            ) {
+
+                event.preventDefault();
+
+            }
+
+        }
+    );
+
 }
 
-/* ─────────────────────────────────────────────
-   10. 마우스 오브 (데스크톱 황금빛 글로우)
-───────────────────────────────────────────── */
+
+
+/* =====================================================
+   13. MOUSE ORB
+   ===================================================== */
+
 function initMouseOrb() {
-    const orb = document.getElementById('mouse-orb');
+
+    const orb =
+        document.getElementById(
+            'mouse-orb'
+        );
+
+
     if (!orb) return;
-    document.addEventListener('mousemove', e => {
-        orb.style.left = e.clientX + 'px';
-        orb.style.top  = e.clientY + 'px';
-    }, { passive: true });
+
+
+    /* 모바일에서는 불필요 */
+
+    if (
+        window.matchMedia &&
+        window.matchMedia(
+            '(max-width: 900px)'
+        ).matches
+    ) {
+
+        return;
+
+    }
+
+
+    document.addEventListener(
+        'mousemove',
+        event => {
+
+            orb.style.left =
+                event.clientX + 'px';
+
+
+            orb.style.top =
+                event.clientY + 'px';
+
+        },
+        {
+            passive: true
+        }
+    );
+
 }
 
-/* ─────────────────────────────────────────────
-   11. Service Worker 등록
-───────────────────────────────────────────── */
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-            .then(() => console.log('[main.js] ServiceWorker registered'))
-            .catch(err => console.warn('[main.js] ServiceWorker failed', err));
-    });
+
+
+/* =====================================================
+   14. SERVICE WORKER
+   ===================================================== */
+
+if (
+    'serviceWorker' in navigator
+) {
+
+    window.addEventListener(
+        'load',
+        () => {
+
+            navigator.serviceWorker
+                .register('/sw.js')
+
+                .then(
+                    () => {
+
+                        console.log(
+                            '[main.js] ServiceWorker registered'
+                        );
+
+                    }
+                )
+
+                .catch(
+                    err => {
+
+                        console.warn(
+                            '[main.js] ServiceWorker failed',
+                            err
+                        );
+
+                    }
+                );
+
+        }
+    );
+
 }
 
-/* ─────────────────────────────────────────────
-   12. 진입점 — DOM 준비 후 컴포넌트 로드 시작
-───────────────────────────────────────────── */
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', loadComponents);
+
+
+/* =====================================================
+   15. ENTRY POINT
+   ===================================================== */
+
+if (
+    document.readyState ===
+    'loading'
+) {
+
+    document.addEventListener(
+        'DOMContentLoaded',
+        loadComponents
+    );
+
 } else {
-    /* 이미 로드 완료된 경우 (script defer 등) */
+
     loadComponents();
+
 }

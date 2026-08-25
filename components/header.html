@@ -1,77 +1,650 @@
 <!--
   components/header.html
   =====================
-  공유 헤더 컴포넌트입니다.
-  js/main.js 의 loadComponents() 가 fetch 로 읽어 #site-nav 에 주입합니다.
-  이 파일을 직접 열지 마세요 — 항상 개별 페이지를 통해 렌더됩니다.
+  Chris LEE.PAPA Official Site
+  Desktop / Mobile Responsive Navigation
 -->
 
+<!-- 스크롤 진행 바 -->
 <div id="scroll-progress"></div>
+
+<!-- 데스크톱 마우스 오브 -->
 <div id="mouse-orb"></div>
 
+
+<!-- =====================================================
+     MAIN NAVIGATION
+     ===================================================== -->
 <nav id="main-nav">
-    <a href="/" class="brand-logo">Chris LEE.PAPA</a>
-    <div class="nav-right">
-        <div class="nav-links" id="navLinks">
-            <a href="/"          data-i18n="nav_home"    data-page="index">Home</a>
-            <a href="/about"     data-i18n="nav_about"   data-page="about">About</a>
-            <a href="/bible"     data-i18n="nav_bible"   data-page="bible">Bible</a>
-            <a href="/worship"   data-i18n="nav_worship" data-page="worship">Worship</a>
-            <a href="/music"     data-i18n="nav_music"   data-page="music">Music</a>
-            <a href="/book"      data-i18n="nav_book"    data-page="book">Books</a>
-            <a href="/movie"     data-i18n="nav_movie"   data-page="movie">Movies</a>
-            <a href="/gameinfo"  data-i18n="nav_game"    data-page="gameinfo">Game</a>
-        </div>
 
-        <!-- 언어 선택 드롭다운 -->
-        <div class="lang-dropdown-wrapper" id="langWrapper">
-            <button type="button" class="lang-current" id="langToggleBtn"
-                    aria-expanded="false" aria-controls="langMenu" aria-label="Change language">
-                <span id="currentLangText">KOR</span>
-                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
+    <!-- LOGO -->
+    <a href="/" class="brand-logo" aria-label="Chris LEE.PAPA Home">
+        Chris LEE.PAPA
+    </a>
+
+
+    <!-- =================================================
+         DESKTOP NAVIGATION
+         PC / TABLET
+         ================================================= -->
+    <div class="desktop-nav" id="desktopNav">
+
+        <!-- WORKS -->
+        <div class="nav-dropdown-wrapper">
+
+            <button
+                type="button"
+                class="desktop-nav-link nav-dropdown-trigger"
+                aria-expanded="false"
+                aria-haspopup="true">
+                WORKS
+                <span class="nav-arrow">⌄</span>
             </button>
-            <div class="lang-dropdown-menu" id="langMenu" role="menu">
-                <button type="button" class="lang-btn active" data-lang="ko" role="menuitem">KOR</button>
-                <button type="button" class="lang-btn"        data-lang="en" role="menuitem">ENG</button>
+
+            <div class="nav-dropdown-menu" role="menu">
+
+                <a
+                    href="/music"
+                    data-page="music"
+                    role="menuitem">
+                    MUSIC
+                </a>
+
+                <a
+                    href="/movie"
+                    data-page="movie"
+                    role="menuitem">
+                    MOVIE
+                </a>
+
+                <a
+                    href="/book"
+                    data-page="book"
+                    role="menuitem">
+                    BOOK
+                </a>
+
             </div>
+
         </div>
 
-        <!-- 공유 버튼 -->
-        <button type="button" class="share-trigger" id="shareOpenBtn"
-                title="Share" aria-label="Share this page">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                 stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                <circle cx="18" cy="5"  r="3"></circle>
-                <circle cx="6"  cy="12" r="3"></circle>
+
+        <!-- FAITH -->
+        <div class="nav-dropdown-wrapper">
+
+            <button
+                type="button"
+                class="desktop-nav-link nav-dropdown-trigger"
+                aria-expanded="false"
+                aria-haspopup="true">
+                FAITH
+                <span class="nav-arrow">⌄</span>
+            </button>
+
+            <div class="nav-dropdown-menu" role="menu">
+
+                <a
+                    href="/bible"
+                    data-page="bible"
+                    role="menuitem">
+                    BIBLE
+                </a>
+
+                <a
+                    href="/worship"
+                    data-page="worship"
+                    role="menuitem">
+                    WORSHIP
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- SISTER SQUAD -->
+<div class="nav-dropdown-wrapper">
+
+    <button
+        class="desktop-nav-link nav-dropdown-trigger"
+        type="button"
+        aria-expanded="false"
+    >
+        <span data-i18n="nav_squad">SISTER SQUAD</span>
+        <span class="nav-arrow">⌄</span>
+    </button>
+
+    <div class="nav-dropdown-menu">
+
+        <a
+            href="/sistersquad.html"
+            data-page="sistersquad"
+        >
+            <span data-i18n="nav_squad_1">
+                SISTER SQUAD
+            </span>
+        </a>
+
+        <a
+            href="/sistersquad2.html"
+            data-page="sistersquad2"
+        >
+            <span data-i18n="nav_squad_2">
+                SISTER SQUAD 2
+            </span>
+        </a>
+
+        <a
+            href="/gameinfo.html"
+            data-page="game"
+        >
+            <span data-i18n="nav_game">
+                GAME
+            </span>
+        </a>
+
+    </div>
+
+</div>
+
+
+        <!-- PLAY -->
+        <a
+            href="/gameinfo"
+            class="desktop-nav-link"
+            data-page="gameinfo">
+            PLAY
+        </a>
+
+
+        <!-- JOURNAL -->
+        <a
+            href="/journal"
+            class="desktop-nav-link"
+            data-page="journal">
+            JOURNAL
+        </a>
+
+
+        <!-- ABOUT -->
+        <a
+            href="/about"
+            class="desktop-nav-link"
+            data-page="about">
+            ABOUT
+        </a>
+
+    </div>
+
+
+    <!-- =================================================
+         RIGHT SIDE
+         Language / Share
+         ================================================= -->
+    <div class="nav-right">
+
+        <!-- 언어 선택 -->
+        <div
+            class="lang-dropdown-wrapper"
+            id="langWrapper">
+
+            <button
+                type="button"
+                class="lang-current"
+                id="langToggleBtn"
+                aria-expanded="false"
+                aria-controls="langMenu"
+                aria-label="Change language">
+
+                <span id="currentLangText">KOR</span>
+
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2">
+
+                    <polyline points="6 9 12 15 18 9"></polyline>
+
+                </svg>
+
+            </button>
+
+
+            <div
+                class="lang-dropdown-menu"
+                id="langMenu"
+                role="menu">
+
+                <button
+                    type="button"
+                    class="lang-btn active"
+                    data-lang="ko"
+                    role="menuitem">
+                    KOR
+                </button>
+
+                <button
+                    type="button"
+                    class="lang-btn"
+                    data-lang="en"
+                    role="menuitem">
+                    ENG
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- 공유 -->
+        <button
+            type="button"
+            class="share-trigger"
+            id="shareOpenBtn"
+            title="Share"
+            aria-label="Share this page">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2">
+
+                <circle cx="18" cy="5" r="3"></circle>
+                <circle cx="6" cy="12" r="3"></circle>
                 <circle cx="18" cy="19" r="3"></circle>
-                <line x1="8.59"  y1="13.51" x2="15.42" y2="17.49"></line>
-                <line x1="15.41" y1="6.51"  x2="8.59"  y2="10.49"></line>
+
+                <line
+                    x1="8.59"
+                    y1="13.51"
+                    x2="15.42"
+                    y2="17.49">
+                </line>
+
+                <line
+                    x1="15.41"
+                    y1="6.51"
+                    x2="8.59"
+                    y2="10.49">
+                </line>
+
             </svg>
+
         </button>
 
-        <!-- 모바일 햄버거 버튼 -->
-        <button type="button" class="menu-toggle" id="mobile-menu"
-                aria-label="Open navigation menu" aria-expanded="false" aria-controls="navLinks">
-            <span></span><span></span><span></span>
-        </button>
     </div>
+
 </nav>
 
-<!-- 공유 모달 -->
-<div class="modal-overlay" id="shareOverlay" role="dialog"
-     aria-modal="true" aria-labelledby="shareModalTitle" aria-hidden="true">
-    <div class="share-modal" onclick="event.stopPropagation()">
-        <h3 id="shareModalTitle" data-i18n="share_title">SHARE ARCHIVE</h3>
-        <p data-i18n="share_desc">이곳의 기록과 영감을 소중한 사람들에게 전하세요.</p>
-        <div class="share-buttons">
-            <button class="modal-btn btn-copy" id="shareCopyBtn" data-i18n="share_copy">COPY LINK</button>
-            <button class="modal-btn btn-sns"  id="shareSNSBtn"  data-i18n="share_sns">SNS SHARE</button>
+
+<!-- =====================================================
+     MOBILE BOTTOM NAVIGATION
+     ===================================================== -->
+<nav
+    class="mobile-bottom-nav"
+    id="mobileBottomNav"
+    aria-label="Mobile Navigation">
+
+
+    <!-- HOME -->
+    <a
+        href="/"
+        class="mobile-nav-item"
+        data-page="index">
+
+        <span class="mobile-nav-icon">⌂</span>
+        <span class="mobile-nav-label">HOME</span>
+
+    </a>
+
+
+    <!-- WORKS -->
+    <button
+        type="button"
+        class="mobile-nav-item mobile-nav-button"
+        data-mobile-menu="works"
+        aria-expanded="false">
+
+        <span class="mobile-nav-icon">✦</span>
+        <span class="mobile-nav-label">WORKS</span>
+
+    </button>
+
+
+    <!-- FAITH -->
+    <button
+        type="button"
+        class="mobile-nav-item mobile-nav-button"
+        data-mobile-menu="faith"
+        aria-expanded="false">
+
+        <span class="mobile-nav-icon">◈</span>
+        <span class="mobile-nav-label">FAITH</span>
+
+    </button>
+
+
+    <!-- SQUAD -->
+<button
+    class="mobile-nav-item"
+    id="mobileSquadBtn"
+    type="button"
+    data-mobile-menu="squad"
+    aria-expanded="false"
+>
+    <span class="mobile-nav-icon">✦</span>
+    <span
+        class="mobile-nav-label"
+        data-i18n="nav_squad_short"
+    >
+        SQUAD
+    </span>
+</button>
+
+  <div
+    class="mobile-submenu-overlay"
+    id="mobileSquadMenu"
+    aria-hidden="true"
+>
+    <div class="mobile-submenu-panel">
+
+        <div class="mobile-more-header">
+
+            <span data-i18n="nav_squad">
+                SISTER SQUAD
+            </span>
+
+            <button
+                type="button"
+                id="mobileSquadClose"
+                aria-label="Close"
+            >
+                ×
+            </button>
+
         </div>
-        <button class="btn-close" id="shareCloseBtn" data-i18n="share_close">Close</button>
+
+
+        <div class="mobile-more-links">
+
+            <a
+                href="/sistersquad.html"
+                data-page="sistersquad"
+            >
+                <span data-i18n="nav_squad_1">
+                    SISTER SQUAD
+                </span>
+
+                <small>
+                    The Amazing Sisters
+                </small>
+            </a>
+
+
+            <a
+                href="/sistersquad2.html"
+                data-page="sistersquad2"
+            >
+                <span data-i18n="nav_squad_2">
+                    SISTER SQUAD 2
+                </span>
+
+                <small>
+                    The next adventure
+                </small>
+            </a>
+
+
+            <a
+                href="/game.html"
+                data-page="game"
+            >
+                <span data-i18n="nav_game">
+                    GAME
+                </span>
+
+                <small>
+                    Play with Sister Squad
+                </small>
+            </a>
+
+        </div>
+
     </div>
 </div>
 
-<!-- 토스트 메시지 -->
-<div class="toast-msg" id="toast" role="status" aria-live="polite"></div>
+    <!-- MORE -->
+    <button
+        type="button"
+        class="mobile-nav-item mobile-nav-button"
+        id="mobileMoreBtn"
+        aria-expanded="false"
+        aria-controls="mobileMorePanel">
+
+        <span class="mobile-nav-icon">•••</span>
+        <span class="mobile-nav-label">MORE</span>
+
+    </button>
+
+</nav>
+
+
+<!-- =====================================================
+     MOBILE MORE PANEL
+     ===================================================== -->
+<div
+    class="mobile-more-overlay"
+    id="mobileMoreOverlay"
+    aria-hidden="true">
+
+    <div
+        class="mobile-more-panel"
+        id="mobileMorePanel">
+
+        <div class="mobile-more-header">
+
+            <span>MORE</span>
+
+            <button
+                type="button"
+                id="mobileMoreClose"
+                aria-label="Close menu">
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="mobile-more-links">
+
+            <a href="/gameinfo">
+                <span>PLAY</span>
+                <small>Games & Interactive</small>
+            </a>
+
+            <a href="/journal">
+                <span>JOURNAL</span>
+                <small>Creative Journal</small>
+            </a>
+
+            <a href="/about">
+                <span>ABOUT</span>
+                <small>About Chris LEE.PAPA</small>
+            </a>
+
+            <div class="mobile-more-divider"></div>
+
+            <a href="/privacy">
+                <span>PRIVACY</span>
+                <small>Privacy Policy</small>
+            </a>
+
+            <a href="/terms">
+                <span>TERMS</span>
+                <small>Terms of Use</small>
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     MOBILE WORKS PANEL
+     ===================================================== -->
+<div
+    class="mobile-submenu-overlay"
+    id="mobileWorksMenu"
+    aria-hidden="true">
+
+    <div class="mobile-submenu-panel">
+
+        <div class="mobile-more-header">
+
+            <span>WORKS</span>
+
+            <button
+                type="button"
+                class="mobile-submenu-close"
+                aria-label="Close menu">
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="mobile-more-links">
+
+            <a href="/music">
+                <span>MUSIC</span>
+                <small>Music & Albums</small>
+            </a>
+
+            <a href="/movie">
+                <span>MOVIE</span>
+                <small>Films & Videos</small>
+            </a>
+
+            <a href="/book">
+                <span>BOOK</span>
+                <small>Books & Stories</small>
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     MOBILE FAITH PANEL
+     ===================================================== -->
+<div
+    class="mobile-submenu-overlay"
+    id="mobileFaithMenu"
+    aria-hidden="true">
+
+    <div class="mobile-submenu-panel">
+
+        <div class="mobile-more-header">
+
+            <span>FAITH</span>
+
+            <button
+                type="button"
+                class="mobile-submenu-close"
+                aria-label="Close menu">
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="mobile-more-links">
+
+            <a href="/bible">
+                <span>BIBLE</span>
+                <small>Daily Word & Scripture</small>
+            </a>
+
+            <a href="/worship">
+                <span>WORSHIP</span>
+                <small>Worship Music</small>
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     SHARE MODAL
+     ===================================================== -->
+<div
+    class="modal-overlay"
+    id="shareOverlay"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="shareModalTitle"
+    aria-hidden="true">
+
+    <div
+        class="share-modal"
+        onclick="event.stopPropagation()">
+
+        <h3
+            id="shareModalTitle"
+            data-i18n="share_title">
+            SHARE ARCHIVE
+        </h3>
+
+        <p data-i18n="share_desc">
+            이곳의 기록과 영감을 소중한 사람들에게 전하세요.
+        </p>
+
+        <div class="share-buttons">
+
+            <button
+                class="modal-btn btn-copy"
+                id="shareCopyBtn"
+                data-i18n="share_copy">
+                COPY LINK
+            </button>
+
+            <button
+                class="modal-btn btn-sns"
+                id="shareSNSBtn"
+                data-i18n="share_sns">
+                SNS SHARE
+            </button>
+
+        </div>
+
+        <button
+            class="btn-close"
+            id="shareCloseBtn"
+            data-i18n="share_close">
+            Close
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- 토스트 -->
+<div
+    class="toast-msg"
+    id="toast"
+    role="status"
+    aria-live="polite">
+</div>

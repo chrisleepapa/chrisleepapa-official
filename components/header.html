@@ -103,12 +103,49 @@
 
 
         <!-- SISTER SQUAD -->
+<div class="nav-dropdown-wrapper">
+
+    <button
+        class="desktop-nav-link nav-dropdown-trigger"
+        type="button"
+        aria-expanded="false"
+    >
+        <span data-i18n="nav_squad">SISTER SQUAD</span>
+        <span class="nav-arrow">⌄</span>
+    </button>
+
+    <div class="nav-dropdown-menu">
+
         <a
-            href="/sistersquad"
-            class="desktop-nav-link"
-            data-page="sistersquad">
-            SISTER SQUAD
+            href="/sistersquad.html"
+            data-page="sistersquad"
+        >
+            <span data-i18n="nav_squad_1">
+                SISTER SQUAD
+            </span>
         </a>
+
+        <a
+            href="/sistersquad2.html"
+            data-page="sistersquad2"
+        >
+            <span data-i18n="nav_squad_2">
+                SISTER SQUAD 2
+            </span>
+        </a>
+
+        <a
+            href="/gameinfo.html"
+            data-page="game"
+        >
+            <span data-i18n="nav_game">
+                GAME
+            </span>
+        </a>
+
+    </div>
+
+</div>
 
 
         <!-- PLAY -->
@@ -292,16 +329,93 @@
 
 
     <!-- SQUAD -->
-    <a
-        href="/sistersquad"
-        class="mobile-nav-item"
-        data-page="sistersquad">
+<button
+    class="mobile-nav-item"
+    id="mobileSquadBtn"
+    type="button"
+    data-mobile-menu="squad"
+    aria-expanded="false"
+>
+    <span class="mobile-nav-icon">✦</span>
+    <span
+        class="mobile-nav-label"
+        data-i18n="nav_squad_short"
+    >
+        SQUAD
+    </span>
+</button>
 
-        <span class="mobile-nav-icon">♡</span>
-        <span class="mobile-nav-label">SQUAD</span>
+  <div
+    class="mobile-submenu-overlay"
+    id="mobileSquadMenu"
+    aria-hidden="true"
+>
+    <div class="mobile-submenu-panel">
 
-    </a>
+        <div class="mobile-more-header">
 
+            <span data-i18n="nav_squad">
+                SISTER SQUAD
+            </span>
+
+            <button
+                type="button"
+                id="mobileSquadClose"
+                aria-label="Close"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="mobile-more-links">
+
+            <a
+                href="/sistersquad.html"
+                data-page="sistersquad"
+            >
+                <span data-i18n="nav_squad_1">
+                    SISTER SQUAD
+                </span>
+
+                <small>
+                    The Amazing Sisters
+                </small>
+            </a>
+
+
+            <a
+                href="/sistersquad2.html"
+                data-page="sistersquad2"
+            >
+                <span data-i18n="nav_squad_2">
+                    SISTER SQUAD 2
+                </span>
+
+                <small>
+                    The next adventure
+                </small>
+            </a>
+
+
+            <a
+                href="/game.html"
+                data-page="game"
+            >
+                <span data-i18n="nav_game">
+                    GAME
+                </span>
+
+                <small>
+                    Play with Sister Squad
+                </small>
+            </a>
+
+        </div>
+
+    </div>
+</div>
 
     <!-- MORE -->
     <button

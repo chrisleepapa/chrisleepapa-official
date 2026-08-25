@@ -1,0 +1,54 @@
+name: Apply shared BIBLE auth gate
+
+on:
+  push:
+    paths:
+      - 'js/bible-auth-gate.js'
+      - '.github/workflows/apply-bible-auth.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Inject BIBLE auth gate
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('bible.html')
+          text = p.read_text(encoding='utf-8')
+          tag = '<script src="js/bible-auth-gate.js" defer></script>'
+          if tag not in text:
+              marker = '<script src="js/main.js"'
+              pos = text.find(marker)
+              if pos == -1:
+                  raise SystemExit('js/main.js script tag not found in bible.html')
+              end = text.find('>', pos)
+              if end == -1:
+                  raise SystemExit('main.js script tag is malformed')
+              end += 1
+              text = text[:end] + '\n    ' + tag + text[end:]
+              p.write_text(text, encoding='utf-8')
+          else:
+              print('BIBLE auth gate already installed')
+
+      - name: Commit BIBLE auth gate
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add bible.html
+          if git diff --cached --quiet; then
+            echo 'No BIBLE changes needed.'
+            exit 0
+          fi
+          git commit -m 'Add shared auth gate to BIBLE [skip ci]'
+          git push origin HEAD:main

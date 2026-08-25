@@ -777,7 +777,7 @@
             }
         }
 
-        async function initAppAfterAuth() {
+        async function initAppAfterAuth() { initBibleLogout();
             const spinner = document.getElementById('loadingSpinner');
             try {
                 await loadSupabaseData();

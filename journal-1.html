@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#030305">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="images/favicon.png">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NBGELYQ4TZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-NBGELYQ4TZ');
+      gtag('config', 'GT-5MJDBTR2');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="언젠가는 꼭 해봐야지 다짐만 하고 서랍 깊숙이 넣어둔 이야기, 평범한 아빠였던 제가 AI와 두 딸의 손을 잡고 판타지 그림 소설을 완성하기까지의 출발점을 들려드립니다.">
+    <meta property="og:title" content="오랫동안 품어온 나만의 이야기, 있으신가요?">
+    <meta property="og:description" content="언젠가는 꼭 해봐야지 다짐만 하고 서랍 깊숙이 넣어둔 이야기, 평범한 아빠였던 제가 AI와 두 딸의 손을 잡고 판타지 그림 소설을 완성하기까지의 출발점을 들려드립니다.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://chrisleepapa-official.vercel.app/journal-1">
+    <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1">
+    <link rel="canonical" href="https://chrisleepapa-official.vercel.app/journal-1">
+    <link rel="icon" href="images/favicon.png">
+    <title>오랫동안 품어온 나만의 이야기, 있으신가요? - Chris LEE.PAPA Journal</title>
+
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- 공통 CSS -->
+    <link rel="stylesheet" href="css/common.css">
+
+    <style>
+        :root {
+            --gold: #c9a84c;
+            --gold-light: #e8d08a;
+            --bg: #030305;
+            --text: #f0ece4;
+            --nav-height: 70px;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Pretendard', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+        img { -webkit-user-drag: none; }
+        a { text-decoration: none; color: inherit; }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 900;
+            opacity: 0.35;
+        }
+
+        .page-wrapper {
+            flex: 1;
+            padding: calc(var(--nav-height) + 60px) 20px 80px;
+            max-width: 760px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+            opacity: 0;
+            transform: translateY(24px);
+            animation: fadeUp 0.9s ease 0.2s forwards;
+        }
+        .page-header-tag {
+            font-family: 'Cinzel', serif;
+            font-size: 0.7rem;
+            letter-spacing: 4px;
+            color: rgba(201,168,76,0.5);
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 14px;
+        }
+        .article-meta-row {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            font-family: 'Pretendard', sans-serif;
+            font-size: 0.78rem;
+            color: rgba(232,208,138,0.6);
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+        .article-meta-row .cat {
+            padding: 3px 12px;
+            border: 1px solid rgba(201,168,76,0.3);
+            border-radius: 20px;
+            color: var(--gold-light);
+        }
+        .page-title {
+            font-family: 'Noto Serif KR', serif;
+            font-size: clamp(1.6rem, 5vw, 2.3rem);
+            font-weight: 600;
+            line-height: 1.4;
+            color: #fff;
+            word-break: keep-all;
+            margin-bottom: 20px;
+        }
+        .page-header-divider {
+            width: 80px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 0 auto;
+        }
+
+        .article-card {
+            background: rgba(12, 12, 18, 0.6);
+            border: 1px solid rgba(201,168,76,0.2);
+            border-radius: 24px;
+            padding: 50px 45px;
+            margin-bottom: 32px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4), inset 0 0 40px rgba(201,168,76,0.03);
+            opacity: 0;
+            transform: translateY(28px);
+            animation: fadeUp 0.9s ease 0.4s forwards;
+        }
+
+        .journal-body p { font-family: 'Noto Serif KR', serif; font-size: 1rem; line-height: 2; color: rgba(240,236,228,0.85); word-break: keep-all; margin-bottom: 20px; }
+        .journal-body p:last-child { margin-bottom: 0; }
+        .journal-body strong { color: var(--gold-light); font-weight: 600; }
+        .journal-body .journal-quote { padding: 18px 22px; border-left: 2px solid var(--gold); background: rgba(201,168,76,0.06); font-style: italic; color: rgba(240,236,228,0.7); font-size: 0.92rem; }
+        .journal-subhead { font-family: 'Noto Serif KR', serif; font-weight: 600; font-size: 1.1rem; color: var(--gold-light); margin: 34px 0 14px; padding-left: 14px; border-left: 3px solid var(--gold); word-break: keep-all; }
+        .journal-body > .journal-subhead:first-child { margin-top: 4px; }
+        .journal-table-wrap { overflow-x: auto; margin: 16px 0 26px; -webkit-overflow-scrolling: touch; }
+        .journal-table { width: 100%; min-width: 460px; border-collapse: collapse; font-size: 0.85rem; font-family: 'Pretendard', sans-serif; }
+        .journal-table th, .journal-table td { border: 1px solid rgba(255,255,255,0.1); padding: 10px 14px; text-align: left; color: rgba(240,236,228,0.8); word-break: keep-all; }
+        .journal-table th { background: rgba(201,168,76,0.08); color: var(--gold-light); font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 1px; text-transform: uppercase; }
+        .journal-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+        .journal-prompt { background: #0a0a10; border: 1px solid rgba(201,168,76,0.2); border-radius: 8px; padding: 22px 24px; font-size: 0.85rem; line-height: 1.85; color: rgba(240,236,228,0.75); font-family: 'Pretendard', sans-serif; margin: 16px 0 26px; word-break: keep-all; }
+        .journal-prompt-label { font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 2px; color: rgba(201,168,76,0.6); text-transform: uppercase; display: block; margin-bottom: 12px; }
+        .journal-prompt p { margin: 0 0 10px; font-size: 0.85rem; line-height: 1.85; color: rgba(240,236,228,0.75); }
+        .journal-prompt p:last-child { margin-bottom: 0; }
+        .journal-dialogue { font-style: italic; color: rgba(240,236,228,0.65); border-left: 2px solid rgba(201,168,76,0.4); padding-left: 16px; margin: 16px 0; font-size: 0.92rem; }
+
+        .article-footer {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding-top: 26px;
+            margin-top: 26px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            font-size: 0.85rem;
+            color: rgba(200,196,188,0.6);
+        }
+        .article-footer .cta a { color: var(--gold-light); text-decoration: underline; text-underline-offset: 3px; }
+
+        .journal-nav {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 40px;
+            opacity: 0;
+            transform: translateY(28px);
+            animation: fadeUp 0.9s ease 0.55s forwards;
+        }
+        .journal-nav a {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding: 18px 20px;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px;
+            background: rgba(12,12,18,0.5);
+            transition: 0.3s;
+        }
+        .journal-nav a:hover { border-color: rgba(201,168,76,0.35); background: rgba(20,18,30,0.7); }
+        .journal-nav .dir { font-family: 'Cinzel', serif; font-size: 0.62rem; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; }
+        .journal-nav .ttl { font-family: 'Noto Serif KR', serif; font-size: 0.9rem; color: #fff; word-break: keep-all; line-height: 1.4; }
+        .journal-nav .next { text-align: right; }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            font-size: 0.85rem;
+            color: rgba(200,196,188,0.55);
+            margin-bottom: 20px;
+        }
+        .back-link:hover { color: var(--gold-light); }
+
+        @keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+
+        @media (max-width: 700px) {
+            .article-card { padding: 30px 22px; }
+            .journal-nav { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- ① nav placeholder — components/header.html 이 자동 삽입됨 -->
+    <div id="site-nav"></div>
+
+    <!-- ── 본문 시작 ── -->
+    <div class="page-wrapper">
+
+        <a class="back-link" href="/">← Chris's Journal 전체 목록으로</a>
+
+        <div class="page-header">
+            <span class="page-header-tag">✦ &nbsp; Chris's Journal &nbsp; ✦</span>
+            <div class="article-meta-row">
+                <span>2026.08 · Sister Squad 창작기 #1</span>
+                <span class="cat">에세이 · 창작 후기</span>
+            </div>
+            <h1 class="page-title">오랫동안 품어온 나만의 이야기, 있으신가요?</h1>
+            <div class="page-header-divider"></div>
+        </div>
+
+        <article class="article-card">
+            <div class="journal-body">
+                <p>언젠가는 꼭 해봐야지, 다짐만 하고 서랍 깊숙이 넣어둔 생각 같은 거요. 저 역시 그런 생각을 가진 평범한 아저씨입니다. 글쓰기는커녕 책과도 거리가 멀었고, 회사와 집을 오가며 살고 있었죠. 그런데 어느 날 아주 특별한 도전을 하게 되고, 몇 달 후 판타지 그림 소설을 만들었습니다.</p>
+
+                <p>오늘은 그 믿기지 않는 이야기의 출발점이 된 프롤로그를 여러분께 공개하려고 합니다. 바로 인공지능 AI와 사랑하는 두 딸과 함께 써 내려간 소소한 이야기의 서막입니다.</p>
+
+                <p>모든 것은 이 작은 생각 하나에서 시작되었어요. 눈에 넣어도 아프지 않을 두 딸이 재잘거리는 모습을 보는데, 마치 한 편의 동화처럼 느껴졌거든요. <strong>'이 사랑스러운 아이들의 이야기를 만들어볼까?'</strong></p>
+
+                <p>하지만 저는 책을 읽지도 않고 글쓰기도 해본 적 없는, 열심히 일만 하던 평범한 아빠였습니다. 그런데 무언가 꿈틀거리기 시작했습니다. 회사 업무 때문에 사용해봤던 AI 툴, 그리고 딸들에게 잊지 못할 어린 시절을 선물해 주고 싶은 마음. 이 두 가지가 제 안에서 점점 커져갔습니다. 이런 마음이 드는 순간, 더 이상 망설일 수가 없었습니다. 그렇게 저의 무모하지만 가슴 뛰는 도전이 시작되었습니다.</p>
+
+                <p>'이게 어떻게 가능한가? 관련 전문가도 아닌데 이게 된다고?' 바로 그 질문에 대한 소소한 대답을 다음에 올릴 글부터 자세히 하려고 합니다. 인공지능 AI라는 강력한 도구를 만나 사랑하는 딸들과 함께 생각을 현실로 만들어나간 기록입니다.</p>
+
+                <p>솔직히 이걸로 경제적인 부를 얻었거나 대단한 명작이 된 것은 절대 아닙니다. 수익은 거의 제로에 가깝습니다. 저희 가족들만의 소중한 책이 되었고, 아름다운 노래들은 저와 딸들만의 추억으로 남았습니다. 하지만 저에게 이 이야기는 단순히 책 한 권을 만든 과정이 아닙니다. AI 기술이 어떻게 우리의 생각과 행동을 확장하고 실현시키는지 겪은 소중한 경험이었습니다.</p>
+
+                <p>그리고 가장 중요했던 것은 바로 딸들과 함께한 시간이었습니다. 캐릭터의 얼굴을 정하고, 옷 색깔을 정하고, 무기를 고르고 깔깔거렸던 모든 순간들. 그 시간들을 통해 잠시나마 하나가 되었던 아빠와 딸들이었습니다.</p>
+
+                <p class="journal-quote">"자신이 갖지 못했던 다정한 아빠와의 관계를 그림으로 표현했다." — 우크라이나의 예술가 스네자나 수쉬(Snezhana Soosh)</p>
+
+                <p>저 또한 딸들에게 넘어지고 쓰러져도 다시 일어나 나아갈 수만 있다면 세상에 못할 건 없다는 것과, 너희들의 도전을 아빠와 엄마가 항상 함께할 것이라는 다짐을 가득 담았습니다.</p>
+
+                <p>완성된 책을 품에 안고 기뻐하던 딸들의 모습, 주인공이 마왕을 이겼을 때 환호하는 모습, 노래하고 춤추는 모습을 보았을 때, 저는 세상에서 가장 행복한 아빠가 되어 있었습니다.</p>
+            </div>
+
+            <div class="article-footer">
+                <span class="note">다음 편 · AI와 함께 그림 소설을 만든 방법</span>
+                <span class="cta">완성된 이야기가 궁금하다면 <a href="book">BOOK 아카이브</a>에서 만나보세요 →</span>
+            </div>
+        </article>
+
+        <nav class="journal-nav" aria-label="이전글 다음글">
+            <span></span>
+            <a class="next" href="/journal-2">
+                <span class="dir">다음 글 →</span>
+                <span class="ttl">제가 사용한 AI 도구, Skywork로 그림 소설을 만든 과정</span>
+            </a>
+
+        </nav>
+
+    </div>
+    <!-- ── 본문 끝 ── -->
+
+    <!-- ② footer placeholder + main.js 로드 -->
+    <div id="site-footer"></div>
+
+    <script>
+        window.PAGE_I18N = {
+            ko: {
+                meta_title: "오랫동안 품어온 나만의 이야기, 있으신가요? - Chris LEE.PAPA Journal",
+                meta_description: "언젠가는 꼭 해봐야지 다짐만 하고 서랍 깊숙이 넣어둔 이야기, 평범한 아빠였던 제가 AI와 두 딸의 손을 잡고 판타지 그림 소설을 완성하기까지의 출발점을 들려드립니다."
+            },
+            en: {
+                meta_title: "오랫동안 품어온 나만의 이야기, 있으신가요? - Chris LEE.PAPA Journal",
+                meta_description: "언젠가는 꼭 해봐야지 다짐만 하고 서랍 깊숙이 넣어둔 이야기, 평범한 아빠였던 제가 AI와 두 딸의 손을 잡고 판타지 그림 소설을 완성하기까지의 출발점을 들려드립니다."
+            }
+        };
+    </script>
+    <script src="js/main.js"></script>
+</body>
+</html>

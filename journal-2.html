@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#030305">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="images/favicon.png">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NBGELYQ4TZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-NBGELYQ4TZ');
+      gtag('config', 'GT-5MJDBTR2');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="제가 실제로 사용한 AI 도구 Skywork는 무엇이고, 첫 프롬프트부터 퇴고까지 어떻게 협업했는지 처음부터 자세히 정리했습니다.">
+    <meta property="og:title" content="제가 사용한 AI 도구, Skywork로 그림 소설을 만든 과정">
+    <meta property="og:description" content="제가 실제로 사용한 AI 도구 Skywork는 무엇이고, 첫 프롬프트부터 퇴고까지 어떻게 협업했는지 처음부터 자세히 정리했습니다.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://chrisleepapa-official.vercel.app/journal-2">
+    <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1">
+    <link rel="canonical" href="https://chrisleepapa-official.vercel.app/journal-2">
+    <link rel="icon" href="images/favicon.png">
+    <title>제가 사용한 AI 도구, Skywork로 그림 소설을 만든 과정 - Chris LEE.PAPA Journal</title>
+
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- 공통 CSS -->
+    <link rel="stylesheet" href="css/common.css">
+
+    <style>
+        :root {
+            --gold: #c9a84c;
+            --gold-light: #e8d08a;
+            --bg: #030305;
+            --text: #f0ece4;
+            --nav-height: 70px;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Pretendard', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+        img { -webkit-user-drag: none; }
+        a { text-decoration: none; color: inherit; }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 900;
+            opacity: 0.35;
+        }
+
+        .page-wrapper {
+            flex: 1;
+            padding: calc(var(--nav-height) + 60px) 20px 80px;
+            max-width: 760px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+            opacity: 0;
+            transform: translateY(24px);
+            animation: fadeUp 0.9s ease 0.2s forwards;
+        }
+        .page-header-tag {
+            font-family: 'Cinzel', serif;
+            font-size: 0.7rem;
+            letter-spacing: 4px;
+            color: rgba(201,168,76,0.5);
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 14px;
+        }
+        .article-meta-row {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            font-family: 'Pretendard', sans-serif;
+            font-size: 0.78rem;
+            color: rgba(232,208,138,0.6);
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+        .article-meta-row .cat {
+            padding: 3px 12px;
+            border: 1px solid rgba(201,168,76,0.3);
+            border-radius: 20px;
+            color: var(--gold-light);
+        }
+        .page-title {
+            font-family: 'Noto Serif KR', serif;
+            font-size: clamp(1.6rem, 5vw, 2.3rem);
+            font-weight: 600;
+            line-height: 1.4;
+            color: #fff;
+            word-break: keep-all;
+            margin-bottom: 20px;
+        }
+        .page-header-divider {
+            width: 80px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 0 auto;
+        }
+
+        .article-card {
+            background: rgba(12, 12, 18, 0.6);
+            border: 1px solid rgba(201,168,76,0.2);
+            border-radius: 24px;
+            padding: 50px 45px;
+            margin-bottom: 32px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4), inset 0 0 40px rgba(201,168,76,0.03);
+            opacity: 0;
+            transform: translateY(28px);
+            animation: fadeUp 0.9s ease 0.4s forwards;
+        }
+
+        .journal-body p { font-family: 'Noto Serif KR', serif; font-size: 1rem; line-height: 2; color: rgba(240,236,228,0.85); word-break: keep-all; margin-bottom: 20px; }
+        .journal-body p:last-child { margin-bottom: 0; }
+        .journal-body strong { color: var(--gold-light); font-weight: 600; }
+        .journal-body .journal-quote { padding: 18px 22px; border-left: 2px solid var(--gold); background: rgba(201,168,76,0.06); font-style: italic; color: rgba(240,236,228,0.7); font-size: 0.92rem; }
+        .journal-subhead { font-family: 'Noto Serif KR', serif; font-weight: 600; font-size: 1.1rem; color: var(--gold-light); margin: 34px 0 14px; padding-left: 14px; border-left: 3px solid var(--gold); word-break: keep-all; }
+        .journal-body > .journal-subhead:first-child { margin-top: 4px; }
+        .journal-table-wrap { overflow-x: auto; margin: 16px 0 26px; -webkit-overflow-scrolling: touch; }
+        .journal-table { width: 100%; min-width: 460px; border-collapse: collapse; font-size: 0.85rem; font-family: 'Pretendard', sans-serif; }
+        .journal-table th, .journal-table td { border: 1px solid rgba(255,255,255,0.1); padding: 10px 14px; text-align: left; color: rgba(240,236,228,0.8); word-break: keep-all; }
+        .journal-table th { background: rgba(201,168,76,0.08); color: var(--gold-light); font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 1px; text-transform: uppercase; }
+        .journal-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+        .journal-prompt { background: #0a0a10; border: 1px solid rgba(201,168,76,0.2); border-radius: 8px; padding: 22px 24px; font-size: 0.85rem; line-height: 1.85; color: rgba(240,236,228,0.75); font-family: 'Pretendard', sans-serif; margin: 16px 0 26px; word-break: keep-all; }
+        .journal-prompt-label { font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 2px; color: rgba(201,168,76,0.6); text-transform: uppercase; display: block; margin-bottom: 12px; }
+        .journal-prompt p { margin: 0 0 10px; font-size: 0.85rem; line-height: 1.85; color: rgba(240,236,228,0.75); }
+        .journal-prompt p:last-child { margin-bottom: 0; }
+        .journal-dialogue { font-style: italic; color: rgba(240,236,228,0.65); border-left: 2px solid rgba(201,168,76,0.4); padding-left: 16px; margin: 16px 0; font-size: 0.92rem; }
+
+        .article-footer {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding-top: 26px;
+            margin-top: 26px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            font-size: 0.85rem;
+            color: rgba(200,196,188,0.6);
+        }
+        .article-footer .cta a { color: var(--gold-light); text-decoration: underline; text-underline-offset: 3px; }
+
+        .journal-nav {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 40px;
+            opacity: 0;
+            transform: translateY(28px);
+            animation: fadeUp 0.9s ease 0.55s forwards;
+        }
+        .journal-nav a {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding: 18px 20px;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px;
+            background: rgba(12,12,18,0.5);
+            transition: 0.3s;
+        }
+        .journal-nav a:hover { border-color: rgba(201,168,76,0.35); background: rgba(20,18,30,0.7); }
+        .journal-nav .dir { font-family: 'Cinzel', serif; font-size: 0.62rem; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; }
+        .journal-nav .ttl { font-family: 'Noto Serif KR', serif; font-size: 0.9rem; color: #fff; word-break: keep-all; line-height: 1.4; }
+        .journal-nav .next { text-align: right; }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            font-size: 0.85rem;
+            color: rgba(200,196,188,0.55);
+            margin-bottom: 20px;
+        }
+        .back-link:hover { color: var(--gold-light); }
+
+        @keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+
+        @media (max-width: 700px) {
+            .article-card { padding: 30px 22px; }
+            .journal-nav { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- ① nav placeholder — components/header.html 이 자동 삽입됨 -->
+    <div id="site-nav"></div>
+
+    <!-- ── 본문 시작 ── -->
+    <div class="page-wrapper">
+
+        <a class="back-link" href="/">← Chris's Journal 전체 목록으로</a>
+
+        <div class="page-header">
+            <span class="page-header-tag">✦ &nbsp; Chris's Journal &nbsp; ✦</span>
+            <div class="article-meta-row">
+                <span>2026.08 · Sister Squad 창작기 #2</span>
+                <span class="cat">튜토리얼 · AI 툴 리뷰</span>
+            </div>
+            <h1 class="page-title">제가 사용한 AI 도구, Skywork로 그림 소설을 만든 과정</h1>
+            <div class="page-header-divider"></div>
+        </div>
+
+        <article class="article-card">
+            <div class="journal-body">
+                <p>지난 글에서 딸들과 함께 판타지 그림 소설 &lt;Sister Squad&gt;를 만들게 된 계기를 말씀드렸는데요, 오늘은 그때 제가 실제로 사용한 AI 도구인 <strong>Skywork</strong>가 무엇이고, 어떻게 이 책을 만들었는지 처음부터 자세히 적어보려고 합니다. Let's Go~</p>
+
+                <div class="journal-subhead">1. Skywork AI란 무엇인가?</div>
+                <p>Skywork AI는 문서, 슬라이드, 웹페이지 제작에 특화된 AI 기반 생산성 플랫폼입니다. 단순히 답변만 생성하는 AI 도구와는 달리, 깊이 있는 리서치를 바탕으로 결과물을 만들어내고 출처를 명확히 밝혀 신뢰도를 높이는 것이 특징이에요. 또한 작업이 진행되는 과정을 실시간으로 보여주는데, 저에게는 단순한 AI 도구를 넘어 똘똘하고 일 잘하는 수십 명의 보조 작가이자 컨설턴트 같은 존재였습니다.</p>
+                <p>Skywork AI는 싱가포르에 본사를 둔 <a href="https://www.dnb.com/business-directory/company-profiles.skywork_ai_pte_ltd.fe015009821fe631f992957d49dd43fd.html" target="_blank" rel="noopener noreferrer">Skywork AI PTE. LTD.</a>가 개발했으며, 2022년에서 2023년 사이에 설립되어 2025년 5월 정식으로 플랫폼을 출시했습니다. 스스로를 'DeepResearch 기반 워크스페이스'라고 소개하는 도구예요.</p>
+
+                <div class="journal-subhead">2. 주요 특징 및 기능</div>
+                <div class="journal-table-wrap">
+                    <table class="journal-table">
+                        <tr><th>구분</th><th>내용</th></tr>
+                        <tr><td>DeepResearch</td><td>웹·학술자료·뉴스 등을 종합해 신뢰도 높은 멀티 콘텐츠를 생성</td></tr>
+                        <tr><td>슈퍼 에이전트</td><td>문서·슬라이드·엑셀 등에 특화된 에이전트가 체계적으로 결과물을 정리</td></tr>
+                        <tr><td>장점</td><td>정확성과 신뢰도, 복잡한 작업 처리 능력, 시간 절약</td></tr>
+                        <tr><td>단점</td><td>다소 느린 반응 속도, 작동 방식에 대한 학습 필요, 창의성의 한계</td></tr>
+                    </table>
+                </div>
+                <p>가격 면에서는 GPT, Gemini 같은 다른 AI 도구들과 비교해볼 만합니다.</p>
+                <div class="journal-table-wrap">
+                    <table class="journal-table">
+                        <tr><th>도구</th><th>무료 플랜</th><th>유료 요금제</th></tr>
+                        <tr><td>Skywork</td><td>첫 달은 매일 500크레딧, 이후 매주 500크레딧 제공</td><td>$16.99~</td></tr>
+                        <tr><td>GPT</td><td>최신 기능 제한, 사용량·속도 제한</td><td>$20~</td></tr>
+                        <tr><td>Gemini</td><td>최신 기능 제한, 사용량·속도 제한</td><td>$19.99~</td></tr>
+                    </table>
+                </div>
+
+                <div class="journal-subhead">3. 처음 AI에게 입력한 프롬프트</div>
+                <p>고민 끝에 저는 이런 프롬프트로 첫 대화를 시작했습니다.</p>
+                <div class="journal-prompt">
+                    <span class="journal-prompt-label">My First Prompt</span>
+                    <p>판타지 소설을 만들거야.</p>
+                    <p><strong>1. 목표</strong>: 어린이를 위한 판타지 소설<br>
+                    <strong>2. 대상</strong>: 어린이(초등~중등)<br>
+                    <strong>3. 제목</strong>: SISTER SQUAD (놀라운 자매들)</p>
+                    <p><strong>4. 등장인물</strong>: 자매, 부모님, 요정들, 어둠의 세력<br>
+                    1) 율이(언니): 이성적인 T 성향, 동생을 아끼지만 현실적인 타입<br>
+                    2) 정이(동생): 감성적인 F 성향, 호기심 많고 정이 많음<br>
+                    3) 아빠: 자상하고 유머러스하며 딸들의 모험에 단서를 제공함<br>
+                    4) 엄마: 따뜻하고 현명하며 딸들의 정신적 지주임<br>
+                    5) 요정 프리티: 용감한 요정들의 리더<br>
+                    6) 큐티: 귀여운 개구쟁이 요정<br>
+                    7) 요정 장로: 요정 마을의 지도자<br>
+                    8) 요정 대장장이: 무뚝뚝한 대장장이<br>
+                    9) 어둠의 마왕: 강력한 최종 보스<br>
+                    10) 어둠의 검신: 마왕의 오른팔<br>
+                    11) 어둠의 기사단: 마왕의 병사들</p>
+                    <p><strong>5. 전체 줄거리</strong>: 평범한 어느 날 저녁, 율이와 정이 자매는 숨바꼭질을 하다가 출입금지인 아빠의 서재에서 먼지 쌓인 비밀의 방을 발견한다. 그 방 중앙에는 낡고 신비로운 책이 놓여 있다. 정이가 호기심에 책을 펼치고, 강력한 빛과 함께 자매는 책 속으로 빨려 들어가 요정 마을에 떨어진다. 그곳에서 프리티와 큐티를 만나 요정 마을로 가서 환영을 받는다. 이후 어둠의 세력의 공격을 받고 무너진 자매는 훈련을 한다. 훈련을 마치고 어둠의 마왕을 무찌르기 위해 출전한다.</p>
+                    <p><strong>6. 핵심 교훈</strong>: 둘도 없는 자매의 우정과 사랑. 넘어지고 좌절하더라도, 포기하지 않고 힘을 합치면 무엇이든 극복할 수 있다.</p>
+                    <p><strong>7. 요청사항</strong>: 책의 목차부터 만들어 주고, 등장인물 소개 장표도 만들고, 상세한 줄거리를 작성해줘. 아이들이 이해하기 쉬운 단어, 재미있는 표현도 넣어줘.</p>
+                </div>
+
+                <div class="journal-subhead">4. AI와 협업, 다듬기</div>
+                <p>첫 프롬프트를 입력하고 잠시 후, Skywork AI는 놀랍게도 5개 챕터의 목차와 이야기 초안을 생성해냈습니다. 너무나 훌륭했지만 어디까지나 '초안'이었기에, 계속해서 보완하기 위해 AI와 대화를 이어가며 작업했습니다.</p>
+                <p class="journal-dialogue">"제시해준 결과는 훌륭해. 정이가 마법책을 만지려고 하고 율이가 짜증을 내며 말리는 장면을 1장에 추가해줘. 정이는 F 행동파, 율이는 T 현실파, 하지만 나중에는 서로 인정하고 화해하는 마무리로 발전시킬거야."</p>
+                <p class="journal-dialogue">"'율이는 이해가 안됐다'는 표현을 바꿔줘. '율이는 아니 검이랑 어떻게 대화를 해요, 검은 말을 못하는데 어이없네' 이렇게 바꿔줘."</p>
+                <p>이런 식으로 한 문장 한 문장을 다 살펴보고, 저의 의도와 딸들의 성향에 맞게 계속 수정하고 추가해나갔습니다.</p>
+
+                <div class="journal-subhead">5. 퇴고 및 마무리</div>
+                <p>모든 챕터의 내용이 완성되고 이야기의 큰 줄기가 잡혔지만, 아직 끝이 아니었습니다. 전문 작가가 아닌 제가 쓴 글에는 분명 많은 오류가 존재할 것이기 때문입니다. 글의 완성도를 높이기 위한 '퇴고' 과정이 남아있었죠.</p>
+                <p class="journal-dialogue">"원고 전체를 검토해서, 맞춤법이 틀린 부분, 문법적으로 어색한 부분을 모두 찾아서 수정해줘."</p>
+                <p>AI와의 협업을 통한 퇴고 과정은 글쓰기에 자신 없던 저에게 큰 힘이 되었습니다. 상상도 못할 작업을 단 몇 시간 만에 마칠 수 있었고, 덕분에 책 출판에 대한 자신감도 얻게 되었습니다.</p>
+
+                <div class="journal-subhead">6. 결론</div>
+                <p>AI는 놀랍습니다. 그러나 신이 아닙니다. 스스로 생각하고 행동하는 AI가 나온다고 해도, 사람도 완벽하지 않기에 AI도 완벽할 수 없습니다. 현재의 AI는 생활과 작업의 파트너로서, 함께 생각하고 서로 보완하며 같이 발전시켜가는 존재로 보여집니다.</p>
+            </div>
+
+            <div class="article-footer">
+                <span class="note">다음 편 · 나도 작가! POD로 직접 책을 출판하는 법</span>
+                <span class="cta">완성된 이야기가 궁금하다면 <a href="book">BOOK 아카이브</a>에서 만나보세요 →</span>
+            </div>
+        </article>
+
+        <nav class="journal-nav" aria-label="이전글 다음글">
+            <a class="prev" href="/journal-1">
+                <span class="dir">← 이전 글</span>
+                <span class="ttl">오랫동안 품어온 나만의 이야기, 있으신가요?</span>
+            </a>
+            <a class="next" href="/journal-3">
+                <span class="dir">다음 글 →</span>
+                <span class="ttl">나도 작가! POD로 직접 책을 출판하는 법</span>
+            </a>
+
+        </nav>
+
+    </div>
+    <!-- ── 본문 끝 ── -->
+
+    <!-- ② footer placeholder + main.js 로드 -->
+    <div id="site-footer"></div>
+
+    <script>
+        window.PAGE_I18N = {
+            ko: {
+                meta_title: "제가 사용한 AI 도구, Skywork로 그림 소설을 만든 과정 - Chris LEE.PAPA Journal",
+                meta_description: "제가 실제로 사용한 AI 도구 Skywork는 무엇이고, 첫 프롬프트부터 퇴고까지 어떻게 협업했는지 처음부터 자세히 정리했습니다."
+            },
+            en: {
+                meta_title: "제가 사용한 AI 도구, Skywork로 그림 소설을 만든 과정 - Chris LEE.PAPA Journal",
+                meta_description: "제가 실제로 사용한 AI 도구 Skywork는 무엇이고, 첫 프롬프트부터 퇴고까지 어떻게 협업했는지 처음부터 자세히 정리했습니다."
+            }
+        };
+    </script>
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -164,12 +164,12 @@ async function loadComponents() {
 
         loadComponent(
             'site-nav',
-            'components/header.html'
+            '/components/header.html'
         ),
 
         loadComponent(
             'site-footer',
-            'components/footer.html'
+            '/components/footer.html'
         )
 
     ]);

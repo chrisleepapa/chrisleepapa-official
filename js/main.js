@@ -5,6 +5,7 @@
  * Mobile Bottom Navigation
  * Language / Share / Scroll / Footer / Security
  * Sister Squad Navigation
+ * Bible logout control
  * =======================================================
  */
 
@@ -134,6 +135,7 @@ async function loadComponents() {
     initShareModal();
     initSecurity();
     initMouseOrb();
+    initBibleLogout();
 
     let savedLang = 'ko';
     try {
@@ -591,7 +593,80 @@ function showToast(msg) {
 window.showToast = showToast;
 
 /* =====================================================
-   12. SECURITY
+   12. BIBLE LOGOUT
+   ===================================================== */
+
+function initBibleLogout() {
+    const isBiblePage = /(?:^|\/)bible(?:\.html)?\/?$/i.test(window.location.pathname || '');
+    if (!isBiblePage) return;
+
+    // bible.html은 자체 인증을 사용하므로, 인증 키가 없는 상태에서는 버튼을 만들지 않습니다.
+    let userId = null;
+    try {
+        userId = localStorage.getItem('bible_user_id');
+    } catch (_) {}
+
+    if (!userId) return;
+
+    // Bible 페이지의 상태 표시 영역을 기준으로 안전하게 버튼을 추가합니다.
+    const status = document.querySelector('.cloud-status');
+    if (!status || document.getElementById('bibleLogoutBtn')) return;
+
+    const button = document.createElement('button');
+    button.id = 'bibleLogoutBtn';
+    button.type = 'button';
+    button.textContent = 'LOGOUT';
+    button.setAttribute('aria-label', 'Bible 로그아웃');
+    button.style.cssText = [
+        'margin-left:12px',
+        'padding:5px 11px',
+        'border:1px solid rgba(201,168,76,0.45)',
+        'border-radius:14px',
+        'background:rgba(255,255,255,0.04)',
+        'color:#c9a84c',
+        'font-size:0.72rem',
+        'font-family:Pretendard,sans-serif',
+        'letter-spacing:0.08em',
+        'cursor:pointer',
+        'transition:all .2s ease'
+    ].join(';');
+
+    button.addEventListener('mouseenter', () => {
+        button.style.background = 'rgba(201,168,76,0.12)';
+        button.style.color = '#e8d08a';
+    });
+
+    button.addEventListener('mouseleave', () => {
+        button.style.background = 'rgba(255,255,255,0.04)';
+        button.style.color = '#c9a84c';
+    });
+
+    button.addEventListener('click', () => {
+        const confirmed = window.confirm('성경 계정에서 로그아웃하시겠습니까?');
+        if (!confirmed) return;
+
+        try {
+            localStorage.removeItem('bible_user_id');
+            localStorage.removeItem('bible_pin_hash');
+        } catch (_) {}
+
+        // bible.html의 checkAuth()가 다시 로그인 화면을 표시하도록 새로고침합니다.
+        window.location.reload();
+    });
+
+    status.appendChild(button);
+}
+
+window.bibleLogout = function () {
+    try {
+        localStorage.removeItem('bible_user_id');
+        localStorage.removeItem('bible_pin_hash');
+    } catch (_) {}
+    window.location.reload();
+};
+
+/* =====================================================
+   13. SECURITY
    ===================================================== */
 
 function initSecurity() {
@@ -632,7 +707,7 @@ function initSecurity() {
 }
 
 /* =====================================================
-   13. MOUSE ORB
+   14. MOUSE ORB
    ===================================================== */
 
 function initMouseOrb() {
@@ -648,7 +723,7 @@ function initMouseOrb() {
 }
 
 /* =====================================================
-   14. SERVICE WORKER
+   15. SERVICE WORKER
    ===================================================== */
 
 if ('serviceWorker' in navigator) {
@@ -661,7 +736,7 @@ if ('serviceWorker' in navigator) {
 }
 
 /* =====================================================
-   15. ENTRY POINT
+   16. ENTRY POINT
    ===================================================== */
 
 if (document.readyState === 'loading') {

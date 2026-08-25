@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Chris LEE.PAPA TODAY — 오늘의 성경말씀, 할 일, 메모와 기도를 기록하는 Daily Dashboard.">
+    <meta name="robots" content="index, follow">
+    <link rel="icon" href="images/favicon.png" type="image/png">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800&family=Cormorant+Garamond:wght@300;400;500;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --today-gold:#c9a84c; --today-bg:#030305; }
+        body { background:var(--today-bg); color:#eee; min-height:100vh; padding-top:100px; padding-bottom:60px; }
+        .today-wrap { width:min(1100px,92vw); margin:0 auto; }
+        .today-hero { text-align:center; padding:35px 0 45px; }
+        .today-kicker { font:600 .68rem 'Cinzel',serif; letter-spacing:.35em; color:var(--today-gold); margin-bottom:14px; }
+        .today-title { font:600 clamp(2.6rem,8vw,5.5rem) 'Cormorant Garamond',serif; letter-spacing:.08em; color:#f3e6bd; }
+        .today-date { margin-top:8px; color:rgba(238,238,238,.48); font:400 .9rem 'Noto Sans KR',sans-serif; }
+        .today-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }
+        .today-card { background:linear-gradient(145deg,rgba(18,16,14,.96),rgba(8,8,11,.96)); border:1px solid rgba(201,168,76,.18); border-radius:20px; padding:26px; box-shadow:0 18px 50px rgba(0,0,0,.25); }
+        .today-card.featured { border-color:rgba(201,168,76,.4); }
+        .today-card h2 { font:600 1rem 'Cinzel',serif; letter-spacing:.12em; color:var(--today-gold); margin-bottom:18px; }
+        .verse { font:500 1.15rem/1.8 'Noto Sans KR',sans-serif; color:#f2eee5; }
+        .verse-ref { display:block; margin-top:14px; color:rgba(201,168,76,.8); font:600 .78rem 'Cinzel',serif; letter-spacing:.08em; }
+        .today-form { display:flex; gap:8px; margin-bottom:14px; }
+        .today-form input,.today-card textarea { width:100%; background:rgba(255,255,255,.035); border:1px solid rgba(255,255,255,.12); border-radius:10px; color:#eee; padding:11px 12px; outline:none; }
+        .today-form input:focus,.today-card textarea:focus { border-color:rgba(201,168,76,.55); }
+        .today-btn { border:1px solid rgba(201,168,76,.4); border-radius:10px; padding:0 15px; color:var(--today-gold); cursor:pointer; white-space:nowrap; }
+        .today-btn:hover { background:rgba(201,168,76,.1); }
+        .todo-list { display:flex; flex-direction:column; gap:8px; }
+        .todo-item { display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid rgba(255,255,255,.06); font:400 .92rem 'Noto Sans KR',sans-serif; }
+        .todo-item input { accent-color:var(--today-gold); }
+        .todo-item.done span { text-decoration:line-through; opacity:.35; }
+        .empty { color:rgba(238,238,238,.35); font:.85rem 'Noto Sans KR',sans-serif; padding:5px 0; }
+        .today-footer { text-align:center; margin-top:35px; color:rgba(238,238,238,.32); font:.78rem 'Noto Sans KR',sans-serif; }
+        .today-link { display:inline-block; margin-top:18px; color:var(--today-gold); font:600 .7rem 'Cinzel',serif; letter-spacing:.12em; }
+        @media(max-width:700px){ .today-grid{grid-template-columns:1fr;} body{padding-top:82px;padding-bottom:90px;} .today-card{padding:21px;} }
+    </style>
+</head>
+<body>
+    <div id="site-nav"></div>
+    <main class="today-wrap">
+        <header class="today-hero">
+            <div class="today-kicker">YOUR DAILY ARCHIVE</div>
+            <h1 class="today-title">TODAY</h1>
+            <div class="today-date" id="todayDate"></div>
+        </header>
+
+        <section class="today-grid">
+            <article class="today-card featured">
+                <h2>📖 TODAY'S WORD</h2>
+                <p class="verse" id="todayVerse"></p>
+                <span class="verse-ref" id="todayRef"></span>
+                <a class="today-link" href="/bible">READ BIBLE →</a>
+            </article>
+
+            <article class="today-card">
+                <h2>✅ TODAY'S TASKS</h2>
+                <form class="today-form" id="todoForm">
+                    <input id="todoInput" type="text" maxlength="120" placeholder="오늘 할 일을 적어보세요" autocomplete="off">
+                    <button class="today-btn" type="submit">ADD</button>
+                </form>
+                <div class="todo-list" id="todoList"></div>
+            </article>
+
+            <article class="today-card">
+                <h2>📝 TODAY'S MEMO</h2>
+                <textarea id="todayMemo" rows="7" maxlength="3000" placeholder="오늘 기억하고 싶은 생각을 적어보세요."></textarea>
+            </article>
+
+            <article class="today-card">
+                <h2>🙏 TODAY'S PRAYER</h2>
+                <textarea id="todayPrayer" rows="7" maxlength="3000" placeholder="오늘 하나님께 드리고 싶은 기도를 적어보세요."></textarea>
+            </article>
+        </section>
+        <div class="today-footer">Your notes are saved in this browser and are not sent to the server.</div>
+    </main>
+    <div id="site-footer"></div>
+
+    <script>
+    window.PAGE_I18N = { ko:{}, en:{} };
+    const TODAY_KEY = new Date().toISOString().slice(0,10);
+    const verses = [
+      ['내가 너와 함께 함이라 내가 너를 굳세게 하리라 참으로 너를 도와주리라','이사야 41:10'],
+      ['여호와는 나의 목자시니 내게 부족함이 없으리로다','시편 23:1'],
+      ['내게 능력 주시는 자 안에서 내가 모든 것을 할 수 있느니라','빌립보서 4:13'],
+      ['너의 길을 여호와께 맡기라 그를 의지하면 그가 이루시고','시편 37:5'],
+      ['아무 것도 염려하지 말고 다만 모든 일에 기도와 간구로 너희 구할 것을 하나님께 아뢰라','빌립보서 4:6']
+    ];
+    const verse = verses[Math.floor((Date.now()/86400000)) % verses.length];
+    document.getElementById('todayVerse').textContent = '“' + verse[0] + '”';
+    document.getElementById('todayRef').textContent = verse[1];
+    document.getElementById('todayDate').textContent = new Intl.DateTimeFormat('ko-KR',{dateStyle:'full'}).format(new Date());
+
+    const storage = (key, fallback) => { try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch(e){ return fallback; } };
+    const save = (key,value) => { try { localStorage.setItem(key,JSON.stringify(value)); } catch(e){} };
+    const todoKey='chrisleepapa-today-todos-'+TODAY_KEY, memoKey='chrisleepapa-today-memo-'+TODAY_KEY, prayerKey='chrisleepapa-today-prayer-'+TODAY_KEY;
+    let todos=storage(todoKey,[]);
+    const list=document.getElementById('todoList');
+    function renderTodos(){ list.innerHTML=''; if(!todos.length){ list.innerHTML='<div class="empty">아직 등록한 할 일이 없습니다.</div>'; return; } todos.forEach((item,i)=>{ const row=document.createElement('label'); row.className='todo-item'+(item.done?' done':''); const cb=document.createElement('input'); cb.type='checkbox'; cb.checked=!!item.done; cb.addEventListener('change',()=>{todos[i].done=cb.checked;save(todoKey,todos);renderTodos();}); const text=document.createElement('span'); text.textContent=item.text; row.append(cb,text); list.appendChild(row); }); }
+    document.getElementById('todoForm').addEventListener('submit',e=>{e.preventDefault();const input=document.getElementById('todoInput');const text=input.value.trim();if(!text)return;todos.push({text,done:false});save(todoKey,todos);input.value='';renderTodos();});
+    const memo=document.getElementById('todayMemo'), prayer=document.getElementById('todayPrayer'); memo.value=storage(memoKey,''); prayer.value=storage(prayerKey,''); memo.addEventListener('input',()=>save(memoKey,memo.value)); prayer.addEventListener('input',()=>save(prayerKey,prayer.value)); renderTodos();
+    </script>
+    <script src="js/main.js"></script>
+</body>
+</html>

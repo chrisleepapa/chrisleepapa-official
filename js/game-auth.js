@@ -1,12 +1,11 @@
 /**
  * js/game-auth.js — Shared login gate for Game Center
  * Uses the same CLPAuth account/session as TODAY and BIBLE.
+ * Game pages reuse the logged-in account initials automatically.
  */
 'use strict';
 
 (() => {
-    // 실제 게임 페이지만 인증 대상입니다.
-    // gameinfo / miracleshot은 게임 인증 대상에서 제외합니다.
     const GAME_PAGES = new Set([
         'game',
         'booktop',
@@ -115,6 +114,7 @@
             overlay.remove();
             document.body.classList.remove('clp-game-locked');
             showUserBadge();
+            autoEnterGame(result.user);
             window.dispatchEvent(new CustomEvent('clp-game-auth-ready', { detail: result.user }));
         });
     }
@@ -133,6 +133,52 @@
         document.body.appendChild(badge);
     }
 
+    /*
+     * 기존 게임 코드는 수정하지 않습니다.
+     * 각 게임의 기존 PLAYER INITIALS 입력값에 공통 계정 이니셜을
+     * 자동으로 넣고, 기존 시작 함수를 호출합니다.
+     * 따라서 사용자는 게임마다 이니셜을 다시 입력하지 않습니다.
+     */
+    function autoEnterGame(user) {
+        const initials = String(user?.initials || '').toUpperCase();
+        if (!initials) return;
+
+        let attempts = 0;
+        const timer = setInterval(() => {
+            attempts++;
+
+            const input = document.querySelector(
+                '#initialsInput, #playerInitials, #player-initials, [name="initials"]'
+            );
+
+            if (input) {
+                input.value = initials;
+                input.dispatchEvent(new Event('input', { bubbles: true }));
+                input.dispatchEvent(new Event('change', { bubbles: true }));
+
+                const onclick = input.closest('form, .glass-panel, .panel, .screen')?.querySelector('[onclick]');
+                if (typeof window.enterArena === 'function') {
+                    try {
+                        window.enterArena();
+                        clearInterval(timer);
+                        return;
+                    } catch (_) {}
+                }
+
+                if (onclick && onclick !== input) {
+                    try {
+                        onclick.click();
+                        clearInterval(timer);
+                        return;
+                    } catch (_) {}
+                }
+            }
+
+            /* 일부 게임은 별도 이름 입력이 없으므로 바로 시작하지 않습니다. */
+            if (attempts >= 50) clearInterval(timer);
+        }, 100);
+    }
+
     async function init() {
         addStyles();
         document.body.classList.add('clp-game-locked');
@@ -140,7 +186,9 @@
             await loadAuth();
             if (window.CLPAuth && window.CLPAuth.isLoggedIn()) {
                 document.body.classList.remove('clp-game-locked');
+                const user = window.CLPAuth.getUser();
                 showUserBadge();
+                autoEnterGame(user);
             } else {
                 showLogin();
             }

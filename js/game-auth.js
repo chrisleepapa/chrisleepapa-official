@@ -11,6 +11,8 @@
     if (!GAME_PAGES.has(page)) return;
 
     const AUTH_SRC = '/js/auth.js';
+    let accountInitials = '';
+    let initialObserver = null;
 
     function loadAuth() {
         if (window.CLPAuth) return Promise.resolve();
@@ -37,16 +39,14 @@
         style.id = 'clp-game-auth-style';
         style.textContent = `
             body.clp-game-locked > * { visibility:hidden !important; }
-            /* 게임 페이지의 기존 이니셜 칸은 계정 정보 표시 전용 */
-            input.clp-account-initials {
+            /* 로그인된 이니셜은 완전한 계정 정보 표시 전용 */
+            input.clp-account-initials,
+            input.clp-account-initials:focus {
                 pointer-events:none !important;
                 user-select:none !important;
                 -webkit-user-select:none !important;
                 caret-color:transparent !important;
                 cursor:default !important;
-                opacity:.9;
-            }
-            input.clp-account-initials:focus {
                 outline:none !important;
                 box-shadow:none !important;
             }
@@ -82,7 +82,8 @@
             overlay.remove();
             document.body.classList.remove('clp-game-locked');
             showUserBadge();
-            autoFillInitials(result.user);
+            accountInitials = String(result.user?.initials || '').trim().toUpperCase();
+            lockAndFillInitials();
             window.dispatchEvent(new CustomEvent('clp-game-auth-ready', { detail:result.user }));
         });
     }
@@ -106,30 +107,46 @@
         ].join(','))).filter(input => input.type !== 'hidden');
     }
 
-    function autoFillInitials(user) {
-        const initials = String(user?.initials || '').trim().toUpperCase();
-        if (!initials) return;
-        let attempts = 0;
-        const timer = setInterval(() => {
-            attempts++;
-            const inputs = findInitialInputs();
-            if (inputs.length) {
-                inputs.forEach(input => {
-                    input.value = initials;
-                    input.classList.add('clp-account-initials');
-                    input.readOnly = true;
-                    input.setAttribute('readonly', 'readonly');
-                    input.setAttribute('aria-readonly', 'true');
-                    input.setAttribute('tabindex', '-1');
-                    input.setAttribute('title', '로그인된 계정 이니셜');
-                    input.dispatchEvent(new Event('input', { bubbles:true }));
-                    input.dispatchEvent(new Event('change', { bubbles:true }));
-                    input.blur();
-                });
-                clearInterval(timer);
-            }
-            if (attempts >= 50) clearInterval(timer);
-        }, 100);
+    function lockInput(input) {
+        if (!input || !accountInitials) return;
+
+        /* 값은 게임 로직에서 읽을 수 있도록 유지하되 사용자는 절대 수정하지 못하게 합니다. */
+        if (input.value !== accountInitials) input.value = accountInitials;
+
+        input.classList.add('clp-account-initials');
+        input.readOnly = true;
+        input.setAttribute('readonly', 'readonly');
+        input.setAttribute('aria-readonly', 'true');
+        input.setAttribute('tabindex', '-1');
+        input.setAttribute('title', '로그인된 계정 이니셜');
+        input.autocomplete = 'off';
+
+        /* readonly가 게임 코드에 의해 풀려도 즉시 다시 잠급니다. */
+        if (!input.disabled) {
+            input.disabled = true;
+            input.setAttribute('aria-disabled', 'true');
+        }
+
+        input.blur();
+    }
+
+    function lockAndFillInitials() {
+        if (!accountInitials) return;
+
+        const inputs = findInitialInputs();
+        inputs.forEach(lockInput);
+
+        if (!initialObserver) {
+            initialObserver = new MutationObserver(() => {
+                findInitialInputs().forEach(lockInput);
+            });
+            initialObserver.observe(document.documentElement, {
+                subtree:true,
+                childList:true,
+                attributes:true,
+                attributeFilter:['readonly','disabled','class','value']
+            });
+        }
     }
 
     async function init() {
@@ -140,9 +157,12 @@
             if (window.CLPAuth && window.CLPAuth.isLoggedIn()) {
                 document.body.classList.remove('clp-game-locked');
                 const user = window.CLPAuth.getUser();
+                accountInitials = String(user?.initials || '').trim().toUpperCase();
                 showUserBadge();
-                autoFillInitials(user);
-            } else showLogin();
+                lockAndFillInitials();
+            } else {
+                showLogin();
+            }
         } catch (error) {
             console.error('[game-auth] auth.js failed', error);
             document.body.classList.remove('clp-game-locked');

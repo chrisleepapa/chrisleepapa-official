@@ -2,12 +2,13 @@
  * js/auth.js — Chris LEE.PAPA shared site authentication
  * One account per site: 3 English initials + 4 digit PIN.
  * Session is shared by all pages on the same browser.
+ * v3: authentication storage reset for unified TODAY / BIBLE / GAME login.
  */
 'use strict';
 
 (() => {
-    const ACCOUNT_PREFIX = 'chrisleepapa-account-v2-';
-    const SESSION_KEY = 'chrisleepapa-auth-session-v2';
+    const ACCOUNT_PREFIX = 'chrisleepapa-account-v3-';
+    const SESSION_KEY = 'chrisleepapa-auth-session-v3';
 
     const read = (key, fallback = null) => {
         try {
@@ -121,7 +122,6 @@
         sessionKey:SESSION_KEY
     };
 
-    // 기존 TODAY 로그인 세션이 있으면 새 공통 세션으로 승격합니다.
     try {
         const legacy = localStorage.getItem('chrisleepapa-today-session');
         const current = localStorage.getItem(SESSION_KEY);

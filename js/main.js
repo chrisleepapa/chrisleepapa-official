@@ -33,6 +33,12 @@ const BASE_I18N = {
         nav_bible:   'Bible',
         nav_worship: 'Worship',
 
+       nav_squad_short: 'SQUAD',
+
+nav_squad_1: 'SISTER SQUAD',
+nav_squad_2: 'SISTER SQUAD 2',
+nav_game: 'GAME',
+       
         share_title: 'SHARE ARCHIVE',
         share_desc:  '이곳의 기록과 영감을 소중한 사람들에게 전하세요.',
         share_copy:  'COPY LINK',
@@ -73,6 +79,12 @@ const BASE_I18N = {
         nav_bible:   'Bible',
         nav_worship: 'Worship',
 
+nav_squad_short: 'SQUAD',
+
+nav_squad_1: 'SISTER SQUAD',
+nav_squad_2: 'SISTER SQUAD 2',
+nav_game: 'GAME',
+       
         share_title: 'SHARE ARCHIVE',
         share_desc:
             'Share the records and inspiration here with your loved ones.',
@@ -361,14 +373,18 @@ function initMobileMenu() {
         document.querySelector(
             '[data-mobile-menu="faith"]'
         );
-
+const squadBtn =
+    document.querySelector(
+        '[data-mobile-menu="squad"]'
+    );
 
     const worksOverlay =
         document.getElementById('mobileWorksMenu');
 
     const faithOverlay =
         document.getElementById('mobileFaithMenu');
-
+const squadOverlay =
+    document.getElementById('mobileSquadMenu');
 
     /* ---------------------------------------------
        공통 패널 닫기
@@ -377,9 +393,10 @@ function initMobileMenu() {
     function closeAllPanels() {
 
         [
-            moreOverlay,
-            worksOverlay,
-            faithOverlay
+           moreOverlay,
+    worksOverlay,
+    faithOverlay,
+    squadOverlay
         ].forEach(panel => {
 
             if (!panel) return;
@@ -395,9 +412,10 @@ function initMobileMenu() {
 
 
         [
-            moreBtn,
-            worksBtn,
-            faithBtn
+             moreBtn,
+    worksBtn,
+    faithBtn,
+    squadBtn
         ].forEach(button => {
 
             if (!button) return;
@@ -490,6 +508,36 @@ function initMobileMenu() {
 
     }
 
+   if (squadBtn && squadOverlay) {
+
+    squadBtn.addEventListener(
+        'click',
+        event => {
+
+            event.stopPropagation();
+
+            const isOpen =
+                squadOverlay.classList.contains(
+                    'active'
+                );
+
+            if (isOpen) {
+
+                closeAllPanels();
+
+            } else {
+
+                openPanel(
+                    squadOverlay,
+                    squadBtn
+                );
+
+            }
+
+        }
+    );
+
+}
 
     /* ---------------------------------------------
        MORE 닫기
@@ -585,8 +633,9 @@ function initMobileMenu() {
 
     [
         moreOverlay,
-        worksOverlay,
-        faithOverlay
+    worksOverlay,
+    faithOverlay,
+    squadOverlay
     ].forEach(overlay => {
 
         if (!overlay) return;

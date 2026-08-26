@@ -3,6 +3,17 @@
 (() => {
     const GAME_PAGES = new Set(['game','booktop','fiveinrow','curling','tetris','switch']);
     const page=(location.pathname.split('/').pop()||'index').replace(/\.html$/i,'').toLowerCase();
+
+    // Miracle Shot is a WORKS detail page, not a game. This file is already
+    // loaded by the page, so use the same entry point to load its enhancement.
+    if(page==='miracleshot'){
+        const s=document.createElement('script');
+        s.src='/js/work-miracle-shot.js';
+        s.defer=true;
+        document.head.appendChild(s);
+        return;
+    }
+
     if(!GAME_PAGES.has(page))return;
     let accountInitials='';
     function loadAuth(){if(window.CLPAuth)return Promise.resolve();return new Promise((resolve,reject)=>{const s=document.createElement('script');s.src='/js/auth.js';s.onload=resolve;s.onerror=reject;document.head.appendChild(s)})}

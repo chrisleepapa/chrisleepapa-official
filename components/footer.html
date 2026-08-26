@@ -5,6 +5,21 @@
   js/main.js 의 loadComponents() 가 fetch 로 읽어 #site-footer 에 주입합니다.
 -->
 
+<style>
+/* SISTER SQUAD hub project cards: visual backgrounds */
+.sq-links .sq-link{position:relative;overflow:hidden;min-height:190px;isolation:isolate;background-size:cover;background-position:center;border-color:rgba(255,255,255,.14)}
+.sq-links .sq-link::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(3,3,5,.18) 0%,rgba(3,3,5,.45) 48%,rgba(3,3,5,.92) 100%)}
+.sq-links .sq-link::after{content:"";position:absolute;inset:0;z-index:-2;background:inherit;transform:scale(1.01);transition:transform .35s ease,filter .35s ease}
+.sq-links .sq-link:hover::after{transform:scale(1.06);filter:saturate(1.08) brightness(1.05)}
+.sq-links .sq-link:nth-child(1){background-image:url('/images/sistersquad1.png')}
+.sq-links .sq-link:nth-child(2){background-image:url('/images/sistersquad2_poster.jpg')}
+.sq-links .sq-link:nth-child(3){background-image:url('/images/game.png')}
+.sq-links .sq-link b,.sq-links .sq-link small{position:relative;z-index:1;text-shadow:0 2px 12px rgba(0,0,0,.75)}
+.sq-links .sq-link b{color:#fff}
+.sq-links .sq-link small{color:rgba(255,255,255,.82)}
+@media(max-width:760px){.sq-links .sq-link{min-height:165px}}
+</style>
+
 <footer>
     <p data-i18n="footer_text">© 2026 Chris LEE.PAPA — The Creative Archive</p>
     <p class="footer-policy">

@@ -27,6 +27,12 @@ async function loadComponents(){
     ostScript.defer=true;
     document.head.appendChild(ostScript);
   }
+  if((window.location.pathname||'').toLowerCase().includes('sistersquad') && !(window.location.pathname||'').toLowerCase().includes('sistersquad2')){
+    const contentScript=document.createElement('script');
+    contentScript.src='/js/sistersquad1-content.js?v=20260826';
+    contentScript.defer=true;
+    document.head.appendChild(contentScript);
+  }
 }
 function initScrollProgress(){const bar=document.getElementById('scroll-progress');if(!bar)return;const update=()=>{const scroll=window.scrollY||window.pageYOffset||0;const max=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=`${max>0?Math.max(0,Math.min(100,(scroll/max)*100)):0}%`};window.addEventListener('scroll',update,{passive:true});window.addEventListener('resize',update,{passive:true});update()}
 function initNavScroll(){const nav=document.getElementById('main-nav');if(!nav)return;const update=()=>nav.classList.toggle('scrolled',(window.scrollY||0)>40);window.addEventListener('scroll',update,{passive:true});update()}

@@ -33,6 +33,11 @@ async function loadComponents(){
     contentScript.defer=true;
     document.head.appendChild(contentScript);
   }
+  // SISTER SQUAD HUB: force the requested SISTER SQUAD 1 artwork and bypass stale browser/CDN image cache.
+  if((window.location.pathname||'').toLowerCase().includes('sistersquad-hub')){
+    const squad1Card=document.querySelector('.sq-links .sq-link:nth-child(1)');
+    if(squad1Card){squad1Card.style.backgroundImage="url('/images/sistersquad1.png?v=20260827')";}
+  }
 }
 function initScrollProgress(){const bar=document.getElementById('scroll-progress');if(!bar)return;const update=()=>{const scroll=window.scrollY||window.pageYOffset||0;const max=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=`${max>0?Math.max(0,Math.min(100,(scroll/max)*100)):0}%`};window.addEventListener('scroll',update,{passive:true});window.addEventListener('resize',update,{passive:true});update()}
 function initNavScroll(){const nav=document.getElementById('main-nav');if(!nav)return;const update=()=>nav.classList.toggle('scrolled',(window.scrollY||0)>40);window.addEventListener('scroll',update,{passive:true});update()}

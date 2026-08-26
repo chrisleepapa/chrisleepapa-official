@@ -3,6 +3,7 @@
  * BIBLE uses the same CLPAuth session as TODAY and GAME.
  * Legacy BIBLE keys are mirrored only for compatibility with the existing
  * BIBLE data layer; no separate BIBLE login is required.
+ * v2026-08-27: keep the shared gate active after the page's inline app code loads.
  */
 'use strict';
 (() => {
@@ -67,6 +68,13 @@
         document.head.appendChild(style);
     }
 
+    function hideLegacyAuthModal() {
+        const modal = document.getElementById('authModal');
+        if (!modal) return;
+        modal.classList.remove('active');
+        modal.style.display = 'none';
+    }
+
     function showGate() {
         styles();
         if (document.getElementById(MODAL_ID)) return;
@@ -104,6 +112,7 @@
             mirrorLegacySession(result.user);
             modal.remove();
             document.documentElement.classList.remove('clp-auth-required');
+            hideLegacyAuthModal();
             if (typeof window.checkAuth === 'function') window.checkAuth();
             else window.dispatchEvent(new CustomEvent('chrisleepapa-auth-ready', { detail:{user:result.user} }));
         });
@@ -115,6 +124,7 @@
             const session = getSession();
             if (session) {
                 mirrorLegacySession(session);
+                hideLegacyAuthModal();
                 return;
             }
             document.documentElement.classList.add('clp-auth-required');
@@ -126,7 +136,10 @@
 
     window.addEventListener('chrisleepapa-auth-change', event => {
         const session = event.detail?.user || getSession();
-        if (session) mirrorLegacySession(session);
+        if (session) {
+            mirrorLegacySession(session);
+            hideLegacyAuthModal();
+        }
     });
 
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once:true });

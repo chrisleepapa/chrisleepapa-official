@@ -20,28 +20,41 @@ jobs:
           ref: main
           fetch-depth: 0
 
-      - name: Inject BIBLE auth gate
+      - name: Repair and inject BIBLE auth gate
         shell: python
         run: |
           from pathlib import Path
           p = Path('bible.html')
           text = p.read_text(encoding='utf-8')
-          tag = '<script src="js/bible-auth-gate.js" defer></script>'
-          if tag not in text:
-              marker = '<script src="js/main.js"'
-              pos = text.find(marker)
-              if pos == -1:
-                  raise SystemExit('js/main.js script tag not found in bible.html')
-              end = text.find('>', pos)
-              if end == -1:
-                  raise SystemExit('main.js script tag is malformed')
-              end += 1
-              text = text[:end] + '\n    ' + tag + text[end:]
-              p.write_text(text, encoding='utf-8')
+          malformed = '<script src="js/main.js">\n    <script src="js/bible-auth-gate.js" defer></script></script>'
+          correct = '<script src="js/main.js"></script>\n    <script src="js/bible-auth-gate.js" defer></script>'
+          if malformed in text:
+              text = text.replace(malformed, correct, 1)
           else:
-              print('BIBLE auth gate already installed')
+              tag = '<script src="js/bible-auth-gate.js" defer></script>'
+              if tag not in text:
+                  marker = '<script src="js/main.js"'
+                  pos = text.find(marker)
+                  if pos == -1:
+                      raise SystemExit('js/main.js script tag not found in bible.html')
+                  end = text.find('>', pos)
+                  if end == -1:
+                      raise SystemExit('main.js script tag is malformed')
+                  end += 1
+                  text = text[:end] + '\n    ' + tag + text[end:]
+          p.write_text(text, encoding='utf-8')
 
-      - name: Commit BIBLE auth gate
+      - name: Verify BIBLE script tags
+        shell: python
+        run: |
+          from pathlib import Path
+          text = Path('bible.html').read_text(encoding='utf-8')
+          assert '<script src="js/main.js"></script>' in text, 'main.js script tag is not valid'
+          assert '<script src="js/bible-auth-gate.js" defer></script>' in text, 'bible auth gate tag missing'
+          assert '<script src="js/main.js">\n    <script src="js/bible-auth-gate.js"' not in text, 'nested script tag remains'
+          print('BIBLE auth script tags verified')
+
+      - name: Commit BIBLE auth gate repair
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
@@ -50,5 +63,5 @@ jobs:
             echo 'No BIBLE changes needed.'
             exit 0
           fi
-          git commit -m 'Add shared auth gate to BIBLE [skip ci]'
+          git commit -m 'Repair BIBLE shared auth integration [skip ci]'
           git push origin HEAD:main

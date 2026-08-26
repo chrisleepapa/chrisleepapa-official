@@ -3,6 +3,8 @@
  * BIBLE uses the same CLPAuth session as TODAY and GAME.
  * Legacy BIBLE keys are mirrored only for compatibility with the existing
  * BIBLE data layer; no separate BIBLE login is required.
+ * v2026-08-27: reset old client-side BIBLE data once and bind new data to the
+ * currently authenticated CLPAuth initials.
  */
 'use strict';
 (() => {
@@ -12,15 +14,29 @@
     const SESSION_KEY = 'chrisleepapa-auth-session-v3';
     const LEGACY_USER_KEY = 'bible_user_id';
     const LEGACY_PIN_KEY = 'bible_pin_hash';
+    const DATA_RESET_KEY = 'clp-bible-data-reset-v20260827';
 
     function getSession() {
         try {
             const raw = localStorage.getItem(SESSION_KEY);
             const session = raw ? JSON.parse(raw) : null;
-            // Authentication state is established by the shared CLPAuth session.
-            // Do not require pinHash here; that was causing TODAY -> BIBLE to fail.
             return session && session.initials ? session : null;
         } catch (_) { return null; }
+    }
+
+    function resetLegacyClientDataOnce() {
+        try {
+            if (localStorage.getItem(DATA_RESET_KEY) === '1') return;
+            const keys = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (!key) continue;
+                const lower = key.toLowerCase();
+                if (lower.includes('bible') && key !== SESSION_KEY) keys.push(key);
+            }
+            keys.forEach(key => localStorage.removeItem(key));
+            localStorage.setItem(DATA_RESET_KEY, '1');
+        } catch (_) {}
     }
 
     function mirrorLegacySession(session) {
@@ -122,6 +138,7 @@
     async function init() {
         try {
             await loadAuth();
+            resetLegacyClientDataOnce();
             const session = getSession();
             if (session) {
                 mirrorLegacySession(session);

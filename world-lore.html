@@ -7,107 +7,56 @@
   <meta name="description" content="SISTER SQUAD 1·2권을 하나로 연결하는 공식 세계관, 등장인물, 장소, 마법과 역사 아카이브.">
   <link rel="stylesheet" href="css/common.css">
   <style>
-    .lore-wrap{max-width:1100px;margin:0 auto;padding:72px 20px 100px}
-    .lore-hero{text-align:center;margin-bottom:64px}
-    .lore-kicker{letter-spacing:.18em;font-size:.75rem;opacity:.65}
-    .lore-hero h1{font-size:clamp(2.4rem,7vw,5rem);margin:.3em 0 .15em}
-    .lore-hero p{max-width:760px;margin:auto;line-height:1.8;opacity:.8}
-    .lore-nav{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:28px}
-    .lore-nav a{padding:10px 16px;border:1px solid rgba(255,255,255,.16);border-radius:999px;color:inherit;text-decoration:none}
-    .lore-section{margin:70px 0}
-    .lore-section h2{font-size:1.7rem;margin-bottom:24px;border-bottom:1px solid rgba(255,255,255,.12);padding-bottom:12px}
-    .lore-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
-    .lore-card{padding:22px;border:1px solid rgba(255,255,255,.12);border-radius:16px;background:rgba(255,255,255,.035)}
-    .lore-card h3{margin:0 0 8px}.lore-card p{margin:0;line-height:1.7;opacity:.78;font-size:.94rem}
-    .tag{font-size:.7rem;letter-spacing:.1em;opacity:.55;display:block;margin-bottom:8px}
-    .timeline{border-left:1px solid rgba(255,255,255,.18);padding-left:24px;display:grid;gap:20px}
-    .timeline-item h3{margin:0 0 5px}.timeline-item p{margin:0;line-height:1.7;opacity:.78}
-    .lore-note{text-align:center;margin-top:60px;padding:30px;border:1px solid rgba(255,255,255,.12);border-radius:18px;line-height:1.9}
-    @media(max-width:600px){.lore-wrap{padding-top:48px}.lore-section{margin:52px 0}}
+    .lore-wrap{max-width:1100px;margin:0 auto;padding:72px 20px 100px}.lore-hero{text-align:center;margin-bottom:64px}.lore-kicker{letter-spacing:.18em;font-size:.75rem;opacity:.65}.lore-hero h1{font-size:clamp(2.4rem,7vw,5rem);margin:.3em 0 .15em}.lore-hero p{max-width:760px;margin:auto;line-height:1.8;opacity:.8}.lore-nav{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:28px}.lore-nav a{padding:10px 16px;border:1px solid rgba(255,255,255,.16);border-radius:999px;color:inherit;text-decoration:none}.lore-section{margin:70px 0}.lore-section h2{font-size:1.7rem;margin-bottom:24px;border-bottom:1px solid rgba(255,255,255,.12);padding-bottom:12px}.lore-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}.lore-card{padding:22px;border:1px solid rgba(255,255,255,.12);border-radius:16px;background:rgba(255,255,255,.035)}.lore-card h3{margin:0 0 8px}.lore-card p{margin:0;line-height:1.7;opacity:.78;font-size:.94rem}.tag{font-size:.7rem;letter-spacing:.1em;opacity:.55;display:block;margin-bottom:8px}.timeline{border-left:1px solid rgba(255,255,255,.18);padding-left:24px;display:grid;gap:20px}.timeline-item h3{margin:0 0 5px}.timeline-item p{margin:0;line-height:1.7;opacity:.78}.lore-note{text-align:center;margin-top:60px;padding:30px;border:1px solid rgba(255,255,255,.12);border-radius:18px;line-height:1.9}.lore-cover{width:100%;max-width:1100px;height:300px;object-fit:cover;border-radius:22px;margin:0 auto 38px;display:block;box-shadow:0 18px 60px rgba(0,0,0,.35)}@media(max-width:600px){.lore-wrap{padding-top:48px}.lore-section{margin:52px 0}.lore-cover{height:210px;border-radius:16px}}
   </style>
 </head>
 <body>
 <div id="site-nav"></div>
 <main class="lore-wrap">
   <header class="lore-hero">
+    <img class="lore-cover" src="images/fairytown.jpeg" alt="SISTER SQUAD Fairy Town — World Lore">
     <span class="lore-kicker">SISTER SQUAD · OFFICIAL WORLD LORE</span>
     <h1>WORLD LORE</h1>
     <p>두 권의 모험을 하나의 세계로 연결하는 SISTER SQUAD 공식 설정집. 가족, 요정과 조력자, 어둠의 세력과 몬스터, 장소와 마법, 그리고 그 모든 사건의 역사를 한곳에서 만납니다.</p>
-    <nav class="lore-nav" aria-label="World Lore navigation">
-      <a href="sistersquad1.html">SISTER SQUAD 1</a>
-      <a href="sistersquad2.html">SISTER SQUAD 2</a>
-      <a href="#characters">CHARACTERS</a>
-      <a href="#world">WORLD</a>
-      <a href="#magic">MAGIC</a>
-      <a href="#history">HISTORY</a>
-    </nav>
+    <nav class="lore-nav" aria-label="World Lore navigation"><a href="sistersquad1.html">SISTER SQUAD 1</a><a href="sistersquad2.html">SISTER SQUAD 2</a><a href="#characters">CHARACTERS</a><a href="#world">WORLD</a><a href="#magic">MAGIC</a><a href="#history">HISTORY</a></nav>
   </header>
 
-  <section id="characters" class="lore-section">
-    <h2>CHARACTERS · 등장인물</h2>
-    <div class="lore-grid">
-      <article class="lore-card"><span class="tag">FAMILY · SISTER SQUAD</span><h3>율이</h3><p>11세에서 12세로 성장한 언니. 논리와 분석을 중시하며 염력을 다루는 ‘이성의 검’의 주인이다. 2권에서는 통제보다 신뢰를 배우며 정이와 함께 성장한다.</p></article>
-      <article class="lore-card"><span class="tag">FAMILY · SISTER SQUAD</span><h3>정이</h3><p>7세에서 8세로 성장한 동생. 모든 생명과 소통하는 ‘교감의 활’을 사용한다. 2권에서는 독립심과 직관을 바탕으로 태고의 야생 영혼까지 깨우는 테이밍 마스터가 된다.</p></article>
-      <article class="lore-card"><span class="tag">FAMILY</span><h3>크리스 · 아빠</h3><p>마법 세계를 경험했던 과거를 숨긴 아버지. 카이를 잃은 시간 마법의 트라우마를 안고 있으며, 딸들을 위해 생명력을 대가로 타임 브레이크를 사용한다.</p></article>
-      <article class="lore-card"><span class="tag">FAMILY</span><h3>제인 · 엄마</h3><p>마법 세계의 존재를 모르지만 가족의 변화를 누구보다 잘 감지한다. 언제든 돌아올 수 있는 현실의 안식처이자 가족을 지탱하는 든든한 존재다.</p></article>
+  <section id="characters" class="lore-section"><h2>CHARACTERS · 등장인물</h2><div class="lore-grid">
+    <article class="lore-card"><span class="tag">FAMILY · SISTER SQUAD</span><h3>율이</h3><p>11세에서 12세로 성장한 언니. 논리와 분석을 중시하며 염력을 다루는 ‘이성의 검’의 주인이다. 2권에서는 통제보다 신뢰를 배우며 정이와 함께 성장한다.</p></article>
+    <article class="lore-card"><span class="tag">FAMILY · SISTER SQUAD</span><h3>정이</h3><p>7세에서 8세로 성장한 동생. 모든 생명과 소통하는 ‘교감의 활’을 사용한다. 2권에서는 독립심과 직관을 바탕으로 태고의 야생 영혼까지 깨우는 테이밍 마스터가 된다.</p></article>
+    <article class="lore-card"><span class="tag">FAMILY</span><h3>크리스 · 아빠</h3><p>마법 세계를 경험했던 과거를 숨긴 아버지. 카이를 잃은 시간 마법의 트라우마를 안고 있으며, 딸들을 위해 생명력을 대가로 타임 브레이크를 사용한다.</p></article>
+    <article class="lore-card"><span class="tag">FAMILY</span><h3>제인 · 엄마</h3><p>마법 세계의 존재를 모르지만 가족의 변화를 누구보다 잘 감지한다. 언제든 돌아올 수 있는 현실의 안식처이자 가족을 지탱하는 든든한 존재다.</p></article>
+    <article class="lore-card"><span class="tag">FAIRY · ALLY</span><h3>프리티</h3><p>루미나를 이끄는 정의롭고 카리스마 있는 요정. 2권에서는 월광초를 찾기 위해 아르카디아로 향하며 자매와 다시 운명을 함께한다.</p></article>
+    <article class="lore-card"><span class="tag">FAIRY · ALLY</span><h3>큐티</h3><p>장난기 많고 활기찬 분위기 메이커. 1권의 상처에 고대의 저주가 스며들어 2권에서는 좀비 바이러스의 숙주가 되는 비극을 겪는다.</p></article>
+    <article class="lore-card"><span class="tag">FAIRY · ALLY</span><h3>브록</h3><p>무뚝뚝하지만 정이 많은 대장장이 요정. 자매의 무기를 만들며, 2권에서는 폐허가 된 루미나 지하에 ‘희망 시장’을 열어 생존자들에게 희망을 준다.</p></article>
+    <article class="lore-card"><span class="tag">FAIRY · ELDER</span><h3>엘리온 · 장로</h3><p>세계의 비밀을 알고 있는 최고령 장로. 2권의 좀비 요정 습격에서 생존자들을 대피시키기 위해 스스로 희생한다.</p></article>
+    <article class="lore-card"><span class="tag">FAIRY · NEW IN BOOK 2</span><h3>포포</h3><p>희망과 긍정 에너지를 먹고 사는 행운 요정. 엉뚱한 행동을 하지만 결정적인 순간 글루톤의 약점을 찾고 크리스에게 생명력을 나누는 행운을 가져온다.</p></article>
+    <article class="lore-card"><span class="tag">DARKNESS · BOOK 1</span><h3>어둠의 마왕 크라운</h3><p>빛을 증오하고 세상을 어둠으로 덮으려 했던 타락한 고대 요정. 1권의 최종 보스로 자매와 프리티의 활약으로 소멸한다.</p></article>
+    <article class="lore-card"><span class="tag">DARKNESS · BOOK 1</span><h3>어둠의 검신 베인</h3><p>크라운에게 충성하며 어둠의 기사단을 이끌었던 냉혹한 사령관.</p></article>
+    <article class="lore-card"><span class="tag">DARKNESS · FACTION</span><h3>어둠의 기사단</h3><p>어둠의 마왕을 따르며 루미나를 위협했던 어둠의 세력.</p></article>
+    <article class="lore-card"><span class="tag">CORRUPTED FAIRY · BOOK 2</span><h3>좀비 큐티</h3><p>고대의 저주에 감염되어 변해버린 큐티. 1권과 2권을 연결하는 가장 비극적인 인물 중 하나다.</p></article>
+    <article class="lore-card"><span class="tag">CORRUPTED CREATURES · BOOK 2</span><h3>좀비 요정들</h3><p>저주에 잠식되어 영혼 없이 잿빛 루미나를 배회하는 요정들. 비극적인 피해자이자 루미나의 타락을 상징한다.</p></article>
+    <article class="lore-card"><span class="tag">MONSTER · DEATH SWAMP</span><h3>글루톤</h3><p>죽음의 늪의 지배자이자 진흙의 포식자. 도전자들의 트라우마를 환영으로 보여주며 정신과 공포를 시험한다.</p></article>
+    <article class="lore-card"><span class="tag">GUARDIANS · BOOK 2</span><h3>스콜 &amp; 게일</h3><p>고요의 계곡에서 월광초를 지키는 쌍둥이 그리핀. 스콜은 냉기, 게일은 화염을 다루며 서로의 생명과 감각이 연결되어 있다.</p></article>
+    <article class="lore-card"><span class="tag">HISTORY · BOOK 2</span><h3>카이</h3><p>크리스의 과거와 시간 마법의 트라우마를 연결하는 동료. 그의 상실은 2권에서 크리스가 다시 시간의 힘을 마주하는 이유가 된다.</p></article>
+  </div></section>
 
-      <article class="lore-card"><span class="tag">FAIRY · ALLY</span><h3>프리티</h3><p>루미나를 이끄는 정의롭고 카리스마 있는 요정. 2권에서는 월광초를 찾기 위해 아르카디아로 향하며 자매와 다시 운명을 함께한다.</p></article>
-      <article class="lore-card"><span class="tag">FAIRY · ALLY</span><h3>큐티</h3><p>장난기 많고 활기찬 분위기 메이커. 1권의 상처에 고대의 저주가 스며들어 2권에서는 좀비 바이러스의 숙주가 되는 비극을 겪는다.</p></article>
-      <article class="lore-card"><span class="tag">FAIRY · ALLY</span><h3>브록</h3><p>무뚝뚝하지만 정이 많은 대장장이 요정. 자매의 무기를 만들며, 2권에서는 폐허가 된 루미나 지하에 ‘희망 시장’을 열어 생존자들에게 희망을 준다.</p></article>
-      <article class="lore-card"><span class="tag">FAIRY · ELDER</span><h3>엘리온 · 장로</h3><p>세계의 비밀을 알고 있는 최고령 장로. 2권의 좀비 요정 습격에서 생존자들을 대피시키기 위해 스스로 희생한다.</p></article>
-      <article class="lore-card"><span class="tag">FAIRY · NEW IN BOOK 2</span><h3>포포</h3><p>희망과 긍정 에너지를 먹고 사는 행운 요정. 엉뚱한 행동을 하지만 결정적인 순간 글루톤의 약점을 찾고 크리스에게 생명력을 나누는 행운을 가져온다.</p></article>
+  <section id="world" class="lore-section"><h2>WORLD · 장소</h2><div class="lore-grid">
+    <article class="lore-card"><h3>루미나 · LUMINA</h3><p>자매가 1권에서 지켜냈던 요정 마을. 2권에서는 고대의 저주와 혼돈의 시간 파편으로 생명력을 잃고 잿빛 폐허가 된다.</p></article>
+    <article class="lore-card"><h3>아르카디아 · ARCADIA</h3><p>고대의 비밀과 괴물이 넘쳐나는 미지의 도시. 루미나의 저주를 풀 유일한 희망인 월광초를 찾기 위한 여정의 목적지다.</p></article>
+    <article class="lore-card"><h3>죽음의 늪 · DEATH SWAMP</h3><p>시간 왜곡과 환영이 뒤섞인 위험한 장소. 글루톤과 맞서며 각자의 두려움과 트라우마를 마주하는 곳이다.</p></article>
+    <article class="lore-card"><h3>거인의 등뼈 · GIANT’S SPINE</h3><p>고대 거인의 등뼈로 이루어진 유적. 자매가 이성과 감성을 조화시키고 서로를 믿어야 통과할 수 있는 시험이 기다린다.</p></article>
+    <article class="lore-card"><h3>고요의 계곡 · VALLEY OF SILENCE</h3><p>월광초가 숨겨진 마지막 관문. 쌍둥이 그리핀 스콜과 게일이 이를 지키고 있다.</p></article>
+    <article class="lore-card"><h3>희망 시장 · HOPE MARKET</h3><p>폐허가 된 루미나의 지하에서 브록이 운영하는 생존자들의 은신처. 절망 속에서도 희망을 이어가는 공간이다.</p></article>
+  </div></section>
 
-      <article class="lore-card"><span class="tag">DARKNESS · BOOK 1</span><h3>어둠의 마왕 크라운</h3><p>빛을 증오하고 세상을 어둠으로 덮으려 했던 타락한 고대 요정. 1권의 최종 보스로 자매와 프리티의 활약으로 소멸한다.</p></article>
-      <article class="lore-card"><span class="tag">DARKNESS · BOOK 1</span><h3>어둠의 검신 베인</h3><p>크라운에게 충성하며 어둠의 기사단을 이끌었던 냉혹한 사령관.</p></article>
-      <article class="lore-card"><span class="tag">DARKNESS · FACTION</span><h3>어둠의 기사단</h3><p>어둠의 마왕을 따르며 루미나를 위협했던 어둠의 세력.</p></article>
-      <article class="lore-card"><span class="tag">CORRUPTED FAIRY · BOOK 2</span><h3>좀비 큐티</h3><p>고대의 저주에 감염되어 변해버린 큐티. 1권과 2권을 연결하는 가장 비극적인 인물 중 하나다.</p></article>
-      <article class="lore-card"><span class="tag">CORRUPTED CREATURES · BOOK 2</span><h3>좀비 요정들</h3><p>저주에 잠식되어 영혼 없이 잿빛 루미나를 배회하는 요정들. 비극적인 피해자이자 루미나의 타락을 상징한다.</p></article>
-      <article class="lore-card"><span class="tag">MONSTER · DEATH SWAMP</span><h3>글루톤</h3><p>죽음의 늪의 지배자이자 진흙의 포식자. 도전자들의 트라우마를 환영으로 보여주며 정신과 공포를 시험한다.</p></article>
-      <article class="lore-card"><span class="tag">GUARDIANS · BOOK 2</span><h3>스콜 &amp; 게일</h3><p>고요의 계곡에서 월광초를 지키는 쌍둥이 그리핀. 스콜은 냉기, 게일은 화염을 다루며 서로의 생명과 감각이 연결되어 있다.</p></article>
-      <article class="lore-card"><span class="tag">HISTORY · BOOK 2</span><h3>카이</h3><p>크리스의 과거와 시간 마법의 트라우마를 연결하는 동료. 그의 상실은 2권에서 크리스가 다시 시간의 힘을 마주하는 이유가 된다.</p></article>
-    </div>
-  </section>
+  <section id="magic" class="lore-section"><h2>MAGIC &amp; ARTIFACTS · 마법과 유물</h2><div class="lore-grid">
+    <article class="lore-card"><h3>이성의 검</h3><p>율이가 사용하는 힘의 상징. 논리와 분석, 염력을 통해 위기를 해결한다.</p></article><article class="lore-card"><h3>교감의 활</h3><p>정이가 사용하는 무기. 생명과 교감하고 마음을 연결하는 힘을 상징한다.</p></article><article class="lore-card"><h3>혼돈의 시간</h3><p>두 권의 이야기를 관통하는 시간의 힘과 위기의 근원. 2권에서는 그 파편이 고대의 저주와 결합해 루미나를 타락시킨다.</p></article><article class="lore-card"><h3>시간 마법 · TIME MAGIC</h3><p>크리스의 과거와 카이의 상실을 연결하는 위험한 힘. 강력하지만 사용할수록 치명적인 대가를 요구한다.</p></article><article class="lore-card"><h3>타임 브레이크</h3><p>크리스가 딸들을 지키기 위해 사용하는 궁극의 시간 마법. 자신의 생명력과 젊음을 대가로 시간을 뒤흔든다.</p></article><article class="lore-card"><h3>월광초 · MOONLIGHT HERB</h3><p>루미나에 드리운 저주를 풀 수 있는 전설의 약초. 2권의 모험 전체를 움직이는 핵심 희망이다.</p></article><article class="lore-card"><h3>생명의 샘</h3><p>루미나의 생명력을 상징하는 장소. 월광초와 요정들의 희망 에너지로 다시 정화되며 회복의 중심이 된다.</p></article>
+  </div></section>
 
-  <section id="world" class="lore-section">
-    <h2>WORLD · 장소</h2>
-    <div class="lore-grid">
-      <article class="lore-card"><h3>루미나 · LUMINA</h3><p>자매가 1권에서 지켜냈던 요정 마을. 2권에서는 고대의 저주와 혼돈의 시간 파편으로 생명력을 잃고 잿빛 폐허가 된다.</p></article>
-      <article class="lore-card"><h3>아르카디아 · ARCADIA</h3><p>고대의 비밀과 괴물이 넘쳐나는 미지의 도시. 루미나의 저주를 풀 유일한 희망인 월광초를 찾기 위한 여정의 목적지다.</p></article>
-      <article class="lore-card"><h3>죽음의 늪 · DEATH SWAMP</h3><p>시간 왜곡과 환영이 뒤섞인 위험한 장소. 글루톤과 맞서며 각자의 두려움과 트라우마를 마주하는 곳이다.</p></article>
-      <article class="lore-card"><h3>거인의 등뼈 · GIANT’S SPINE</h3><p>고대 거인의 등뼈로 이루어진 유적. 자매가 이성과 감성을 조화시키고 서로를 믿어야 통과할 수 있는 시험이 기다린다.</p></article>
-      <article class="lore-card"><h3>고요의 계곡 · VALLEY OF SILENCE</h3><p>월광초가 숨겨진 마지막 관문. 쌍둥이 그리핀 스콜과 게일이 이를 지키고 있다.</p></article>
-      <article class="lore-card"><h3>희망 시장 · HOPE MARKET</h3><p>폐허가 된 루미나의 지하에서 브록이 운영하는 생존자들의 은신처. 절망 속에서도 희망을 이어가는 공간이다.</p></article>
-    </div>
-  </section>
-
-  <section id="magic" class="lore-section">
-    <h2>MAGIC &amp; ARTIFACTS · 마법과 유물</h2>
-    <div class="lore-grid">
-      <article class="lore-card"><h3>이성의 검</h3><p>율이가 사용하는 힘의 상징. 논리와 분석, 염력을 통해 위기를 해결한다.</p></article>
-      <article class="lore-card"><h3>교감의 활</h3><p>정이가 사용하는 무기. 생명과 교감하고 마음을 연결하는 힘을 상징한다.</p></article>
-      <article class="lore-card"><h3>혼돈의 시간</h3><p>두 권의 이야기를 관통하는 시간의 힘과 위기의 근원. 2권에서는 그 파편이 고대의 저주와 결합해 루미나를 타락시킨다.</p></article>
-      <article class="lore-card"><h3>시간 마법 · TIME MAGIC</h3><p>크리스의 과거와 카이의 상실을 연결하는 위험한 힘. 강력하지만 사용할수록 치명적인 대가를 요구한다.</p></article>
-      <article class="lore-card"><h3>타임 브레이크</h3><p>크리스가 딸들을 지키기 위해 사용하는 궁극의 시간 마법. 자신의 생명력과 젊음을 대가로 시간을 뒤흔든다.</p></article>
-      <article class="lore-card"><h3>월광초 · MOONLIGHT HERB</h3><p>루미나에 드리운 저주를 풀 수 있는 전설의 약초. 2권의 모험 전체를 움직이는 핵심 희망이다.</p></article>
-      <article class="lore-card"><h3>생명의 샘</h3><p>루미나의 생명력을 상징하는 장소. 월광초와 요정들의 희망 에너지로 다시 정화되며 회복의 중심이 된다.</p></article>
-    </div>
-  </section>
-
-  <section id="history" class="lore-section">
-    <h2>HISTORY · TIMELINE</h2>
-    <div class="timeline">
-      <div class="timeline-item"><h3>01 · 고대의 시대</h3><p>마법과 시간의 힘이 존재하던 오래된 시대. 고대의 저주와 혼돈의 시간에 관한 비밀이 남겨진다.</p></div>
-      <div class="timeline-item"><h3>02 · SISTER SQUAD 1</h3><p>율이와 정이는 루미나를 위협하는 어둠의 세력과 맞서고, 프리티와 요정들을 도와 마왕 크라운의 위협을 끝낸다.</p></div>
-      <div class="timeline-item"><h3>03 · 1년 후</h3><p>자매는 평범한 일상으로 돌아간다. 그러나 루미나에는 다시 위기가 시작되고 구조 신호가 가족에게 도착한다.</p></div>
-      <div class="timeline-item"><h3>04 · SISTER SQUAD 2</h3><p>저주와 혼돈의 시간 파편으로 루미나가 잿빛 폐허가 된다. 자매와 크리스는 월광초를 찾아 아르카디아로 향한다.</p></div>
-      <div class="timeline-item"><h3>05 · 마지막 관문</h3><p>죽음의 늪, 거인의 등뼈, 고요의 계곡을 지나 자매는 쌍둥이 그리핀과 맞선다. 크리스는 타임 브레이크로 희생을 감수한다.</p></div>
-      <div class="timeline-item"><h3>06 · RETURN TO LUMINA</h3><p>월광초로 큐티와 생명의 샘을 정화하고, 포포와 요정들의 희망 에너지가 쓰러진 크리스를 살린다. 가족은 다시 일상으로 돌아간다.</p></div>
-    </div>
-  </section>
-
+  <section id="history" class="lore-section"><h2>HISTORY · TIMELINE</h2><div class="timeline">
+    <div class="timeline-item"><h3>01 · 고대의 시대</h3><p>마법과 시간의 힘이 존재하던 오래된 시대. 고대의 저주와 혼돈의 시간에 관한 비밀이 남겨진다.</p></div><div class="timeline-item"><h3>02 · SISTER SQUAD 1</h3><p>율이와 정이는 루미나를 위협하는 어둠의 세력과 맞서고, 프리티와 요정들을 도와 마왕 크라운의 위협을 끝낸다.</p></div><div class="timeline-item"><h3>03 · 1년 후</h3><p>자매는 평범한 일상으로 돌아간다. 그러나 루미나에는 다시 위기가 시작되고 구조 신호가 가족에게 도착한다.</p></div><div class="timeline-item"><h3>04 · SISTER SQUAD 2</h3><p>저주와 혼돈의 시간 파편으로 루미나가 잿빛 폐허가 된다. 자매와 크리스는 월광초를 찾아 아르카디아로 향한다.</p></div><div class="timeline-item"><h3>05 · 마지막 관문</h3><p>죽음의 늪, 거인의 등뼈, 고요의 계곡을 지나 자매는 쌍둥이 그리핀과 맞선다. 크리스는 타임 브레이크로 희생을 감수한다.</p></div><div class="timeline-item"><h3>06 · RETURN TO LUMINA</h3><p>월광초로 큐티와 생명의 샘을 정화하고, 포포와 요정들의 희망 에너지가 쓰러진 크리스를 살린다. 가족은 다시 일상으로 돌아간다.</p></div>
+  </div></section>
   <div class="lore-note"><strong>THE GREATEST MAGIC</strong><br>세상을 구하는 거대한 마법보다, 함께 흙먼지를 털어내고 다시 웃을 수 있는 평범한 일상이야말로 지켜내야 할 가장 위대한 기적이다.</div>
-</main>
-<div id="site-footer"></div>
-<script src="js/main.js"></script>
-</body>
-</html>
+</main><div id="site-footer"></div><script src="js/main.js"></script>
+</body></html>

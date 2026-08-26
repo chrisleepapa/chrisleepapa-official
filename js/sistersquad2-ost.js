@@ -18,6 +18,7 @@
 
     const section=document.createElement('section');
     section.id='ss2-embedded-ost';
+    section.setAttribute('aria-labelledby','ss2-ost-title');
     section.innerHTML=`
       <style>
         #ss2-embedded-ost{max-width:1000px;margin:0 auto 90px;padding:0 4px}
@@ -31,7 +32,7 @@
         #ss2-embedded-ost .ss2-ost-current strong{display:block;color:#fff;font-family:Cinzel,serif;font-size:.9rem;letter-spacing:.08em}
         #ss2-embedded-ost .ss2-ost-current span{display:block;color:#8f94a5;font-size:.7rem;margin-top:3px}
         #ss2-embedded-ost .ss2-ost-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-        #ss2-embedded-ost .ss2-ost-card{cursor:pointer;text-align:left;min-height:150px;padding:22px 20px;border-radius:18px;border:1px solid rgba(255,255,255,.09);background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.015));transition:.3s;position:relative}
+        #ss2-embedded-ost .ss2-ost-card{cursor:pointer;text-align:left;min-height:150px;padding:22px 20px;border-radius:18px;border:1px solid rgba(255,255,255,.09);background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.015));transition:transform .3s,border-color .3s,box-shadow .3s;position:relative;color:inherit;font:inherit}
         #ss2-embedded-ost .ss2-ost-card:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:0 15px 35px rgba(0,0,0,.35)}
         #ss2-embedded-ost .ss2-ost-card.active{border-color:var(--accent);box-shadow:0 0 25px rgba(255,255,255,.06),inset 0 0 25px rgba(255,255,255,.025)}
         #ss2-embedded-ost .main{--accent:#e8d08a}.inst{--accent:#6fd7ff}.eng{--accent:#ff8a65}
@@ -42,20 +43,22 @@
       </style>
       <div class="ss2-ost-heading">
         <span class="ss2-ost-kicker">ORIGINAL SOUNDTRACK</span>
-        <h2 class="ss2-ost-title">SISTER SQUAD 2 OST</h2>
+        <h2 id="ss2-ost-title" class="ss2-ost-title">SISTER SQUAD 2 OST</h2>
         <p class="ss2-ost-desc">페이지를 떠나지 않고 SISTER SQUAD 2의 OST를 바로 감상할 수 있습니다.</p>
       </div>
       <div class="ss2-ost-player">
-        <iframe id="ss2-ost-frame" class="ss2-ost-frame" title="SISTER SQUAD 2 Original Soundtrack" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+        <iframe id="ss2-ost-frame" class="ss2-ost-frame" title="SISTER SQUAD 2 Original Soundtrack" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
         <div class="ss2-ost-current"><strong id="ss2-ost-current-title">SISTER SQUAD 2</strong><span id="ss2-ost-current-desc">Original Soundtrack · Main Edition</span></div>
       </div>
-      <div class="ss2-ost-grid">
-        <button type="button" class="ss2-ost-card main active" data-ost="main"><span class="ss2-ost-type">MAIN</span><h3>SISTER SQUAD 2</h3><p>Original Soundtrack · Main Edition</p></button>
-        <button type="button" class="ss2-ost-card inst" data-ost="inst"><span class="ss2-ost-type">INST</span><h3>INSTRUMENTAL</h3><p>Original Soundtrack · Instrumental Edition</p></button>
-        <button type="button" class="ss2-ost-card eng" data-ost="eng"><span class="ss2-ost-type">ENG</span><h3>ENGLISH EDITION</h3><p>Original Soundtrack · English Edition</p></button>
+      <div class="ss2-ost-grid" role="tablist" aria-label="SISTER SQUAD 2 OST editions">
+        <button type="button" class="ss2-ost-card main active" data-ost="main" role="tab" aria-selected="true"><span class="ss2-ost-type">MAIN</span><h3>SISTER SQUAD 2</h3><p>Original Soundtrack · Main Edition</p></button>
+        <button type="button" class="ss2-ost-card inst" data-ost="inst" role="tab" aria-selected="false"><span class="ss2-ost-type">INST</span><h3>INSTRUMENTAL</h3><p>Original Soundtrack · Instrumental Edition</p></button>
+        <button type="button" class="ss2-ost-card eng" data-ost="eng" role="tab" aria-selected="false"><span class="ss2-ost-type">ENG</span><h3>ENGLISH EDITION</h3><p>Original Soundtrack · English Edition</p></button>
       </div>`;
 
-    if(oldNote){oldNote.replaceWith(section)} else {anchor.insertAdjacentElement('afterend',section)}
+    /* Replace the old text-only OST block so only the new embedded player remains. */
+    if(oldNote) oldNote.replaceWith(section);
+    else anchor.insertAdjacentElement('afterend',section);
 
     const frame=section.querySelector('#ss2-ost-frame');
     const title=section.querySelector('#ss2-ost-current-title');
@@ -66,11 +69,17 @@
       frame.src=`https://www.youtube.com/embed/videoseries?list=${item.playlist}&rel=0`;
       title.textContent=item.title;
       desc.textContent=item.desc;
-      cards.forEach(card=>card.classList.toggle('active',card.dataset.ost===key));
+      cards.forEach(card=>{
+        const active=card.dataset.ost===key;
+        card.classList.toggle('active',active);
+        card.setAttribute('aria-selected',String(active));
+      });
     };
     cards.forEach(card=>card.addEventListener('click',()=>select(card.dataset.ost)));
     select('main');
   };
 
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true}); else init();
+  const run=()=>init();
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',run,{once:true});
+  else run();
 })();

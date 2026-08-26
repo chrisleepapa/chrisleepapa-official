@@ -30,21 +30,26 @@ jobs:
           correct = '<script src="js/main.js"></script>\n    <script src="js/bible-auth-gate.js" defer></script>'
           if malformed in text:
               text = text.replace(malformed, correct, 1)
-          else:
-              tag = '<script src="js/bible-auth-gate.js" defer></script>'
-              if tag not in text:
-                  marker = '<script src="js/main.js"'
-                  pos = text.find(marker)
-                  if pos == -1:
-                      raise SystemExit('js/main.js script tag not found in bible.html')
-                  end = text.find('>', pos)
-                  if end == -1:
-                      raise SystemExit('main.js script tag is malformed')
-                  end += 1
-                  text = text[:end] + '\n    ' + tag + text[end:]
+
+          old_ready = '''window.onMainReady = function() {\n            checkAuth();\n        };'''
+          new_ready = '''window.onMainReady = function() {\n            try {\n                const session = window.CLPAuth && window.CLPAuth.getUser ? window.CLPAuth.getUser() : null;\n                if (session && session.initials && session.pinHash) {\n                    localStorage.setItem('bible_user_id', session.initials);\n                    localStorage.setItem('bible_pin_hash', session.pinHash);\n                }\n            } catch (_) {}\n            checkAuth();\n        };'''
+          if old_ready in text:
+              text = text.replace(old_ready, new_ready, 1)
+
+          tag = '<script src="js/bible-auth-gate.js" defer></script>'
+          if tag not in text:
+              marker = '<script src="js/main.js"'
+              pos = text.find(marker)
+              if pos == -1:
+                  raise SystemExit('js/main.js script tag not found in bible.html')
+              end = text.find('>', pos)
+              if end == -1:
+                  raise SystemExit('main.js script tag is malformed')
+              end += 1
+              text = text[:end] + '\n    ' + tag + text[end:]
           p.write_text(text, encoding='utf-8')
 
-      - name: Verify BIBLE script tags
+      - name: Verify BIBLE auth integration
         shell: python
         run: |
           from pathlib import Path
@@ -52,7 +57,8 @@ jobs:
           assert '<script src="js/main.js"></script>' in text, 'main.js script tag is not valid'
           assert '<script src="js/bible-auth-gate.js" defer></script>' in text, 'bible auth gate tag missing'
           assert '<script src="js/main.js">\n    <script src="js/bible-auth-gate.js"' not in text, 'nested script tag remains'
-          print('BIBLE auth script tags verified')
+          assert "window.CLPAuth && window.CLPAuth.getUser" in text, 'shared auth bridge missing'
+          print('BIBLE shared auth integration verified')
 
       - name: Commit BIBLE auth gate repair
         run: |

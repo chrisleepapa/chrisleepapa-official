@@ -1,13 +1,33 @@
 /*
  * BIBLE shared account gate.
- * A visitor may enter BIBLE directly; TODAY is not required first.
- * Uses the same CLPAuth session as TODAY and GAME pages.
+ * BIBLE uses the same CLPAuth session as TODAY and GAME.
+ * Legacy BIBLE keys are mirrored only for compatibility with the existing
+ * BIBLE data layer; no separate BIBLE login is required.
  */
 'use strict';
 (() => {
     const AUTH_SRC = '/js/auth.js';
     const STYLE_ID = 'clp-bible-auth-gate-style';
     const MODAL_ID = 'clp-bible-auth-gate';
+    const SESSION_KEY = 'chrisleepapa-auth-session-v3';
+    const LEGACY_USER_KEY = 'bible_user_id';
+    const LEGACY_PIN_KEY = 'bible_pin_hash';
+
+    function getSession() {
+        try {
+            const raw = localStorage.getItem(SESSION_KEY);
+            const session = raw ? JSON.parse(raw) : null;
+            return session && session.initials && session.pinHash ? session : null;
+        } catch (_) { return null; }
+    }
+
+    function mirrorLegacySession(session) {
+        if (!session) return;
+        try {
+            localStorage.setItem(LEGACY_USER_KEY, session.initials);
+            localStorage.setItem(LEGACY_PIN_KEY, session.pinHash);
+        } catch (_) {}
+    }
 
     function loadAuth() {
         if (window.CLPAuth) return Promise.resolve();
@@ -57,7 +77,7 @@
         modal.innerHTML = `
             <div class="clp-bible-auth-box">
                 <h2>BIBLE LOGIN</h2>
-                <p>성경 기록을 개인 계정에 저장하려면 로그인하세요.<br>영문 이니셜 3자리 + 숫자 비밀번호 4자리</p>
+                <p>사이트 공통 계정으로 로그인하세요.<br>영문 이니셜 3자리 + 숫자 비밀번호 4자리</p>
                 <form autocomplete="on">
                     <input id="clp-bible-login-initials" maxlength="3" minlength="3" pattern="[A-Za-z]{3}" placeholder="INITIALS" autocomplete="username" autocapitalize="characters" required>
                     <input id="clp-bible-login-pin" maxlength="4" minlength="4" pattern="[0-9]{4}" inputmode="numeric" type="password" placeholder="4-DIGIT PIN" autocomplete="current-password" required>
@@ -81,22 +101,33 @@
                 error.textContent = result.error || '로그인할 수 없습니다.';
                 return;
             }
+            mirrorLegacySession(result.user);
             modal.remove();
             document.documentElement.classList.remove('clp-auth-required');
-            window.dispatchEvent(new CustomEvent('chrisleepapa-auth-ready', { detail:{user:result.user} }));
+            if (typeof window.checkAuth === 'function') window.checkAuth();
+            else window.dispatchEvent(new CustomEvent('chrisleepapa-auth-ready', { detail:{user:result.user} }));
         });
     }
 
     async function init() {
         try {
             await loadAuth();
-            if (window.CLPAuth?.isLoggedIn?.()) return;
+            const session = getSession();
+            if (session) {
+                mirrorLegacySession(session);
+                return;
+            }
             document.documentElement.classList.add('clp-auth-required');
             showGate();
         } catch (error) {
             console.error('[bible-auth-gate]', error);
         }
     }
+
+    window.addEventListener('chrisleepapa-auth-change', event => {
+        const session = event.detail?.user || getSession();
+        if (session) mirrorLegacySession(session);
+    });
 
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once:true });
     else init();

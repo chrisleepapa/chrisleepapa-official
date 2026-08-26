@@ -42,14 +42,35 @@
         <a href="/journal" class="desktop-nav-link" data-page="journal">JOURNAL</a>
         <a href="/about" class="desktop-nav-link" data-page="about">ABOUT</a>
     </div>
+
     <div class="nav-right">
         <div class="lang-dropdown-wrapper" id="langWrapper">
-            <button type="button" class="lang-current" id="langToggleBtn" aria-expanded="false" aria-controls="langMenu" aria-label="Change language"><span id="currentLangText">KOR</span><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-            <div class="lang-dropdown-menu" id="langMenu" role="menu"><button type="button" class="lang-btn active" data-lang="ko" role="menuitem">KOR</button><button type="button" class="lang-btn" data-lang="en" role="menuitem">ENG</button></div>
+            <button type="button" class="lang-current" id="langToggleBtn" aria-expanded="false" aria-controls="langMenu" aria-label="Change language">
+                <span id="currentLangText">KOR</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="lang-dropdown-menu" id="langMenu" role="menu">
+                <button type="button" class="lang-btn active" data-lang="ko" role="menuitem">KOR</button>
+                <button type="button" class="lang-btn" data-lang="en" role="menuitem">ENG</button>
+            </div>
         </div>
         <button type="button" class="share-trigger" id="shareOpenBtn" title="Share" aria-label="Share this page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg></button>
     </div>
 </nav>
+
+<!-- Mobile header language control: intentionally placed beside the logo, not inside MORE. -->
+<div class="mobile-header-tools" id="mobileHeaderTools">
+    <div class="lang-dropdown-wrapper mobile-lang-wrapper" id="mobileLangWrapper">
+        <button type="button" class="lang-current" id="mobileLangToggleBtn" aria-expanded="false" aria-controls="mobileLangMenu" aria-label="Change language">
+            <span id="mobileCurrentLangText">KOR</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        <div class="lang-dropdown-menu" id="mobileLangMenu" role="menu">
+            <button type="button" class="lang-btn active" data-lang="ko" role="menuitem">KOR</button>
+            <button type="button" class="lang-btn" data-lang="en" role="menuitem">ENG</button>
+        </div>
+    </div>
+</div>
 
 <nav class="mobile-bottom-nav" id="mobileBottomNav" aria-label="Mobile Navigation">
     <a href="/" class="mobile-nav-item" data-page="index"><span class="mobile-nav-icon">⌂</span><span class="mobile-nav-label">HOME</span></a>
@@ -91,14 +112,6 @@
         <div class="mobile-more-links">
             <a href="/journal"><span>JOURNAL</span><small>Creative Journal</small></a>
             <a href="/about"><span>ABOUT</span><small>About Chris LEE.PAPA</small></a>
-            <div class="mobile-more-divider"></div>
-            <div class="mobile-language-setting" aria-label="Language selection">
-                <span class="mobile-language-title">LANGUAGE</span>
-                <div class="mobile-language-buttons">
-                    <button type="button" class="lang-btn active" data-lang="ko">KOR</button>
-                    <button type="button" class="lang-btn" data-lang="en">ENG</button>
-                </div>
-            </div>
             <div class="mobile-more-divider"></div>
             <a href="/privacy"><span>PRIVACY</span><small>Privacy Policy</small></a>
             <a href="/terms"><span>TERMS</span><small>Terms of Use</small></a>

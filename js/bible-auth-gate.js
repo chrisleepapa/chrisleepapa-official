@@ -3,7 +3,6 @@
  * BIBLE uses the same CLPAuth session as TODAY and GAME.
  * Legacy BIBLE keys are mirrored only for compatibility with the existing
  * BIBLE data layer; no separate BIBLE login is required.
- * v2026-08-27: keep the shared gate active after the page's inline app code loads.
  */
 'use strict';
 (() => {
@@ -18,7 +17,9 @@
         try {
             const raw = localStorage.getItem(SESSION_KEY);
             const session = raw ? JSON.parse(raw) : null;
-            return session && session.initials && session.pinHash ? session : null;
+            // Authentication state is established by the shared CLPAuth session.
+            // Do not require pinHash here; that was causing TODAY -> BIBLE to fail.
+            return session && session.initials ? session : null;
         } catch (_) { return null; }
     }
 
@@ -26,7 +27,7 @@
         if (!session) return;
         try {
             localStorage.setItem(LEGACY_USER_KEY, session.initials);
-            localStorage.setItem(LEGACY_PIN_KEY, session.pinHash);
+            if (session.pinHash) localStorage.setItem(LEGACY_PIN_KEY, session.pinHash);
         } catch (_) {}
     }
 

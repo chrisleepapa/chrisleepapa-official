@@ -21,6 +21,12 @@ async function loadComponents(){
   initScrollProgress();initNavScroll();initMobileMenu();initDesktopDropdowns();initActiveNavLink();initLangDropdown();initShareModal();initBibleLogout();initSecurity();initMouseOrb();
   setLanguage(getSavedLanguage());
   if(typeof window.onMainReady==='function')window.onMainReady();
+  if((window.location.pathname||'').toLowerCase().includes('sistersquad2')){
+    const ostScript=document.createElement('script');
+    ostScript.src='/js/sistersquad2-ost.js?v=20260826';
+    ostScript.defer=true;
+    document.head.appendChild(ostScript);
+  }
 }
 function initScrollProgress(){const bar=document.getElementById('scroll-progress');if(!bar)return;const update=()=>{const scroll=window.scrollY||window.pageYOffset||0;const max=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=`${max>0?Math.max(0,Math.min(100,(scroll/max)*100)):0}%`};window.addEventListener('scroll',update,{passive:true});window.addEventListener('resize',update,{passive:true});update()}
 function initNavScroll(){const nav=document.getElementById('main-nav');if(!nav)return;const update=()=>nav.classList.toggle('scrolled',(window.scrollY||0)>40);window.addEventListener('scroll',update,{passive:true});update()}

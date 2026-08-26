@@ -14,7 +14,7 @@ jobs:
   apply:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout main
+      - name: Checkout latest main
         uses: actions/checkout@v4
         with:
           ref: main
@@ -60,7 +60,7 @@ jobs:
           assert "window.CLPAuth && window.CLPAuth.getUser" in text, 'shared auth bridge missing'
           print('BIBLE shared auth integration verified')
 
-      - name: Commit BIBLE auth gate repair
+      - name: Commit BIBLE auth gate repair safely
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'

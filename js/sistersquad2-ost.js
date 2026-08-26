@@ -1,8 +1,17 @@
-/* SISTER SQUAD 2 — Embedded Original Soundtrack Player */
+/* SISTER SQUAD 2 — Embedded Original Soundtrack Player + Story Enhancement */
 'use strict';
 (() => {
   const page=(location.pathname.split('/').pop()||'').replace(/\.html$/i,'').toLowerCase();
   if(page!=='sistersquad2') return;
+
+  const loadStory=()=>{
+    if(document.querySelector('script[data-ss2-story]')) return;
+    const s=document.createElement('script');
+    s.src='/js/sistersquad2-story.js?v=20260827';
+    s.defer=true;
+    s.dataset.ss2Story='true';
+    document.head.appendChild(s);
+  };
 
   const tracks={
     main:{label:'MAIN',title:'SISTER SQUAD 2',desc:'Original Soundtrack · Main Edition',playlist:'OLAK5uy_l3U9R17KJHI7S9KmNghpZB4x0UwQZ7Ays',spotify:'https://open.spotify.com/album/0I7RHUq69cULsANnEFvQ4k?si=dBKTAPeVR3utuy4J2uvSwA'},
@@ -11,6 +20,7 @@
   };
 
   const init=()=>{
+    loadStory();
     if(document.getElementById('ss2-embedded-ost')) return;
     const oldNote=document.querySelector('.ost-note');
     const anchor=oldNote||document.querySelector('.section-title[data-i18n="ost_sec_title"]');

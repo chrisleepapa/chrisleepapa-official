@@ -18,38 +18,14 @@
 .sq-links .sq-link{position:relative;overflow:hidden;isolation:isolate;min-height:190px;background-color:#15151b!important;background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important;border-color:rgba(255,255,255,.14);box-shadow:0 10px 30px rgba(0,0,0,.22)}
 .sq-links .sq-link::before{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,rgba(3,3,5,.06) 0%,rgba(3,3,5,.30) 40%,rgba(3,3,5,.94) 100%);pointer-events:none}
 .sq-links .sq-link b,.sq-links .sq-link small{position:relative;z-index:1;text-shadow:0 2px 16px rgba(0,0,0,.95)}
-.sq-links .sq-link b{color:#fff}.sq-links .sq-link small{color:rgba(255,255,255,.9)}
-.sq-links .sq-link:hover{transform:translateY(-5px);border-color:var(--gold);box-shadow:0 18px 42px rgba(0,0,0,.38)}
-@media(max-width:760px){.sq-links .sq-link{min-height:165px}}
 
-/* Miracle Shot: mobile touch devices must not retain the desktop :hover flip state.
-   On mobile, .flipped is the only state that shows the biblical figure. */
-@media (hover: none) and (pointer: coarse){
-  .char-card:not(.flipped):hover{
-    transform:none;
-    border-color:rgba(255,255,255,.06);
-    box-shadow:none;
-  }
-  .char-card:not(.flipped):hover .char-photo{opacity:1;}
-  .char-card:not(.flipped):hover .bible-photo{opacity:0;}
-}
-
-/* ==============================================
-   Global content readability — content areas only
-   Header / navigation / footer intentionally excluded.
-   ============================================== */
-main,article,section{min-width:0}
-main p,article p,section p,main li,article li,section li{overflow-wrap:break-word;word-break:keep-all}
-main h1,main h2,main h3,main h4,article h1,article h2,article h3,article h4,section h1,section h2,section h3,section h4{overflow-wrap:break-word;word-break:keep-all}
-main p,article p,section p{line-height:1.78}
-main h1,article h1,section h1{line-height:1.18}
-main h2,article h2,section h2{line-height:1.28}
-main h3,main h4,article h3,article h4,section h3,section h4{line-height:1.4}
-main a,article a,section a{overflow-wrap:break-word}
-main pre,article pre,section pre{max-width:100%;overflow-x:auto}
-@media(max-width:760px){
-  main p,article p,section p{line-height:1.85}
-  main h1,article h1,section h1{line-height:1.2}
-  main h2,article h2,section h2{line-height:1.32}
-  main h3,main h4,article h3,article h4,section h3,section h4{line-height:1.45}
-}
+/* =========================================================
+   SISTER SQUAD responsive readability layer
+   Scoped to SISTER SQUAD page components only.
+   Header / navigation / footer are intentionally untouched.
+   ========================================================= */
+@import url('sistersquad-hub-responsive.css');
+@import url('sistersquad-responsive.css');
+@import url('sistersquad2-responsive.css');
+@import url('world-lore-responsive.css');
+@import url('game-responsive.css');

@@ -1,0 +1,24 @@
+/* SISTER SQUAD responsive readability layer
+   Loaded by pages through the existing global JS loader when present.
+   No header/footer rules. No content changes. */
+.sq-content,.squad-content,.lore-wrap,.game-wrap{min-width:0;max-width:100%;}
+.sq-content p,.squad-content p,.lore-wrap p,.game-wrap p,.sq-copy,.lore-card,.lore-card p{word-break:keep-all;overflow-wrap:break-word;text-wrap:pretty;}
+.sq-content h1,.sq-content h2,.sq-content h3,.squad-content h1,.squad-content h2,.squad-content h3,.lore-wrap h1,.lore-wrap h2,.lore-wrap h3,.game-wrap h1,.game-wrap h2,.game-wrap h3{text-wrap:balance;overflow-wrap:break-word;}
+@media (max-width:900px){
+ .sq-content,.squad-content,.lore-wrap,.game-wrap{width:calc(100% - 40px);margin-inline:auto;}
+ .sq-content p,.squad-content p,.lore-wrap p,.game-wrap p{font-size:clamp(.88rem,1.8vw,.98rem);line-height:1.85;}
+ .lore-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+@media (max-width:760px){
+ .sq-content,.squad-content,.lore-wrap,.game-wrap{width:calc(100% - 32px);}
+ .sq-content p,.squad-content p,.lore-wrap p,.game-wrap p{font-size:clamp(.86rem,3.7vw,.96rem);line-height:1.9;}
+ .sq-content h1,.squad-content h1,.lore-wrap h1,.game-wrap h1{font-size:clamp(2rem,10vw,4rem);line-height:1.15;}
+ .sq-content h2,.squad-content h2,.lore-wrap h2,.game-wrap h2{font-size:clamp(1.25rem,6vw,1.8rem);line-height:1.35;}
+ .lore-grid{grid-template-columns:1fr;gap:12px;}
+ .lore-card{padding:20px;}
+ .lore-card p{font-size:clamp(.84rem,3.5vw,.92rem);line-height:1.85;}
+}
+@media (max-width:380px){
+ .sq-content,.squad-content,.lore-wrap,.game-wrap{width:calc(100% - 24px);}
+ .lore-card{padding:17px;}
+}

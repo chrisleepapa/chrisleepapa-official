@@ -1,7 +1,17 @@
 /* TODAY uses the same shared login modal as GAME and BIBLE. */
 'use strict';
 (() => {
+    function loadReadabilityLayer() {
+        if (document.querySelector('link[data-today-readability]')) return;
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'css/today-readability.css?v=20260828';
+        link.dataset.todayReadability = 'true';
+        document.head.appendChild(link);
+    }
+
     function init() {
+        loadReadabilityLayer();
         const legacy = document.getElementById('todayAuth');
         if (legacy) {
             legacy.style.display = 'none';

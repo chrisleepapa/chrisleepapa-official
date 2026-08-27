@@ -44,7 +44,26 @@ function initDesktopDropdowns(){document.querySelectorAll('.nav-dropdown-wrapper
 function getCurrentPageKey(){let path=(window.location.pathname||'/').split('?')[0].split('#')[0].replace(/\/+$/,'');if(!path)return'index';return((path.split('/').pop()||'index').replace(/\.html$/i,'')||'index').toLowerCase()}
 function markActivePage(page){document.querySelectorAll('[data-page]').forEach(link=>link.classList.toggle('active',(link.dataset.page||'').toLowerCase()===page))}
 function activateDropdownContaining(selector){document.querySelectorAll('.nav-dropdown-wrapper').forEach(w=>{const t=w.querySelector('.nav-dropdown-trigger'),active=!!w.querySelector(selector);w.classList.toggle('active',active);if(t){t.classList.toggle('active',active);t.setAttribute('aria-expanded',String(active))}})}
-function initActiveNavLink(){const page=getCurrentPageKey();markActivePage(page);if(['bible','worship'].includes(page))activateDropdownContaining(`[data-page="${page}"]`);if(['sistersquad','sistersquad2','sister-squad','game','gameinfo','miracleshot','miracleshot-ost'].includes(page))activateDropdownContaining(`[data-page="${page}"], [href*="sistersquad"], [href*="sister-squad"], [href*="gameinfo"], [href*="miracleshot"]`);if(page==='today')document.querySelectorAll('[data-page="today"]').forEach(l=>l.classList.add('active'));}
+function initActiveNavLink(){
+  const page=getCurrentPageKey();
+  markActivePage(page);
+  const projectPages=['sistersquad-hub','sistersquad','sistersquad2','world-lore','game','gameinfo','miracleshot','miracleshot-ost','music','movie'];
+  const faithPages=['bible','worship'];
+  const morePages=['journal','about','privacy','terms'];
+  const projectActive=projectPages.includes(page);
+  const faithActive=faithPages.includes(page);
+  const moreActive=morePages.includes(page);
+  if(projectActive)activateDropdownContaining(`[data-page="${page}"], [href*="sistersquad"], [href*="world-lore"], [href*="gameinfo"], [href*="miracleshot"], [href*="music"], [href*="movie"]`);
+  if(faithActive)activateDropdownContaining(`[data-page="${page}"]`);
+  document.querySelectorAll('[data-mobile-menu="squad"]').forEach(b=>b.classList.toggle('active',projectActive));
+  document.querySelectorAll('[data-mobile-menu="faith"]').forEach(b=>b.classList.toggle('active',faithActive));
+  document.querySelectorAll('#mobileMoreBtn').forEach(b=>b.classList.toggle('active',moreActive));
+  document.querySelectorAll('#mobileSquadMenu [href],#mobileFaithMenu [href],#mobileMoreOverlay [href]').forEach(link=>{
+    const href=(link.getAttribute('href')||'').replace(/^\//,'').replace(/\.html$/i,'').replace(/\/$/,'').toLowerCase();
+    link.classList.toggle('active',href===page);
+  });
+  if(page==='today')document.querySelectorAll('[data-page="today"]').forEach(l=>l.classList.add('active'));
+}
 function initLangDropdown(){[['langWrapper','langToggleBtn'],['mobileLangWrapper','mobileLangToggleBtn']].forEach(([wrapperId,toggleId])=>{const wrapper=document.getElementById(wrapperId),toggle=document.getElementById(toggleId);if(!wrapper||!toggle)return;toggle.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();const open=!wrapper.classList.contains('active');document.querySelectorAll('.lang-dropdown-wrapper').forEach(w=>w.classList.remove('active'));wrapper.classList.toggle('active',open);toggle.setAttribute('aria-expanded',String(open))});wrapper.querySelectorAll('.lang-btn').forEach(button=>button.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();setLanguage(button.dataset.lang)}))});document.addEventListener('click',e=>{document.querySelectorAll('.lang-dropdown-wrapper').forEach(w=>{if(!w.contains(e.target)){w.classList.remove('active');const t=w.querySelector('.lang-current');if(t)t.setAttribute('aria-expanded','false')}})})}
 function setLanguage(lang){currentLang=i18n[lang]?lang:'ko';document.documentElement.lang=currentLang;try{localStorage.setItem('pref-lang',currentLang)}catch(_){}document.querySelectorAll('[data-i18n]').forEach(el=>{const key=el.dataset.i18n;if(i18n[currentLang][key]!==undefined)el.innerHTML=i18n[currentLang][key]});const dict=i18n[currentLang];if(dict.meta_title)document.title=dict.meta_title;[['meta[name="description"]','meta_description'],['meta[property="og:title"]','og_title'],['meta[property="og:description"]','og_description'],['meta[name="twitter:title"]','twitter_title'],['meta[name="twitter:description"]','twitter_description']].forEach(([selector,key])=>{const el=document.querySelector(selector);if(el&&dict[key])el.setAttribute('content',dict[key])});document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===currentLang));const text=currentLang==='ko'?'KOR':'ENG';const desktop=document.getElementById('currentLangText');if(desktop)desktop.textContent=text;const mobile=document.getElementById('mobileCurrentLangText');if(mobile)mobile.textContent=text;document.querySelectorAll('.lang-dropdown-wrapper').forEach(w=>w.classList.remove('active'));document.querySelectorAll('.lang-current').forEach(t=>t.setAttribute('aria-expanded','false'));if(typeof window.onLangChange==='function')window.onLangChange(currentLang)}
 window.setLanguage=setLanguage;window.getCurrentLang=()=>currentLang;

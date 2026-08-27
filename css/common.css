@@ -21,3 +21,15 @@
 .sq-links .sq-link b{color:#fff}.sq-links .sq-link small{color:rgba(255,255,255,.9)}
 .sq-links .sq-link:hover{transform:translateY(-5px);border-color:var(--gold);box-shadow:0 18px 42px rgba(0,0,0,.38)}
 @media(max-width:760px){.sq-links .sq-link{min-height:165px}}
+
+/* Miracle Shot: mobile touch devices must not retain the desktop :hover flip state.
+   On mobile, .flipped is the only state that shows the biblical figure. */
+@media (hover: none) and (pointer: coarse){
+  .char-card:not(.flipped):hover{
+    transform:none;
+    border-color:rgba(255,255,255,.06);
+    box-shadow:none;
+  }
+  .char-card:not(.flipped):hover .char-photo{opacity:1;}
+  .char-card:not(.flipped):hover .bible-photo{opacity:0;}
+}

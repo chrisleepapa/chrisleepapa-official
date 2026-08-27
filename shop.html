@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#030305">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="images/favicon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="images/favicon.png">
+    <meta name="description" content="Chris LEE.PAPA 작품 구매 안내 — Sister Squad 1, Sister Squad 2, 컬러링북, 오디오북, Miracle Shot의 종이책과 전자책을 한곳에서 만나보세요.">
+    <meta property="og:title" content="SHOP – Chris LEE.PAPA">
+    <meta property="og:description" content="Sister Squad와 Miracle Shot의 책, 전자책, 컬러링북, 오디오북 구매 링크를 한곳에서 확인하세요.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://chrisleepapa-official.vercel.app/shop">
+    <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/sistersquad2_poster.jpg">
+    <meta property="og:locale" content="ko_KR">
+    <meta property="og:locale:alternate" content="en_US">
+    <title>SHOP – Chris LEE.PAPA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Cormorant+Garamond:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/common.css">
+    <style>
+        * { box-sizing: border-box; }
+        :root { --gold:#c9a84c; --gold-light:#e8d08a; --bg:#030305; --text:#f0ece4; }
+        html { background:var(--bg); scroll-behavior:smooth; }
+        body {
+            margin:0; color:var(--text); background:var(--bg); overflow-x:hidden;
+            font-family:'Pretendard','Noto Serif KR',serif; line-height:1.7;
+            background-image:radial-gradient(circle at top left,rgba(20,50,80,.55),transparent 55%),radial-gradient(circle at bottom right,rgba(80,25,15,.45),transparent 55%);
+        }
+        a { color:inherit; text-decoration:none; }
+        .shop-hero { padding:150px 20px 70px; text-align:center; }
+        .shop-kicker { font-family:'Cinzel',serif; color:var(--gold); font-size:.78rem; letter-spacing:.35em; margin-bottom:16px; }
+        .shop-title { margin:0 0 14px; font-family:'Cinzel',serif; font-size:clamp(2.4rem,7vw,4.5rem); letter-spacing:.12em; background:linear-gradient(90deg,#6fd7ff,var(--gold-light),#ff8a63); -webkit-background-clip:text; background-clip:text; color:transparent; }
+        .shop-subtitle { max-width:680px; margin:0 auto; color:#cdd6f4; font-size:1rem; }
+        .shop-container { max-width:1100px; margin:0 auto; padding:0 20px 110px; }
+        .shop-section { margin-bottom:70px; }
+        .shop-section-title { font-family:'Cinzel',serif; font-size:1.15rem; letter-spacing:.18em; color:var(--gold-light); text-align:center; margin:0 0 28px; }
+        .shop-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:22px; }
+        .shop-card { padding:28px; border:1px solid rgba(201,168,76,.18); border-radius:20px; background:rgba(255,255,255,.035); backdrop-filter:blur(8px); }
+        .shop-card h3 { margin:0 0 5px; font-family:'Cinzel',serif; color:#fff; font-size:1.15rem; }
+        .shop-card p { margin:0 0 20px; color:#aeb0bf; font-size:.9rem; }
+        .shop-links { display:flex; flex-wrap:wrap; gap:10px; }
+        .shop-button { display:inline-flex; align-items:center; justify-content:center; min-width:120px; padding:10px 16px; border:1px solid rgba(232,208,138,.45); border-radius:999px; color:var(--gold-light); font-family:'Cinzel',serif; font-size:.72rem; letter-spacing:.08em; transition:.25s; }
+        .shop-button:hover { transform:translateY(-2px); border-color:var(--gold-light); background:rgba(201,168,76,.1); box-shadow:0 8px 24px rgba(0,0,0,.35); }
+        .shop-note { text-align:center; color:#777b8e; font-size:.78rem; margin-top:34px; }
+        @media(max-width:700px) { .shop-hero{padding:125px 18px 55px}.shop-grid{grid-template-columns:1fr}.shop-card{padding:23px}.shop-section{margin-bottom:55px} }
+    </style>
+</head>
+<body>
+<div id="site-nav"></div>
+
+<header class="shop-hero">
+    <div class="shop-kicker" data-i18n="shop_kicker">THE CREATIVE ARCHIVE</div>
+    <h1 class="shop-title" data-i18n="shop_title">SHOP</h1>
+    <p class="shop-subtitle" data-i18n="shop_subtitle">Chris LEE.PAPA의 작품을 한곳에서 만나고 구매할 수 있습니다.</p>
+</header>
+
+<main class="shop-container">
+    <section class="shop-section">
+        <h2 class="shop-section-title" data-i18n="sister_squad_title">SISTER SQUAD</h2>
+        <div class="shop-grid">
+            <article class="shop-card">
+                <h3>SISTER SQUAD 1</h3>
+                <p data-i18n="ss1_desc">놀라운 자매들의 첫 번째 모험</p>
+                <div class="shop-links">
+                    <a class="shop-button" href="https://m.yes24.com/goods/detail/155292789" target="_blank" rel="noopener noreferrer" data-i18n="paper_book">종이책</a>
+                    <a class="shop-button" href="https://m.yes24.com/goods/detail/154234770" target="_blank" rel="noopener noreferrer" data-i18n="ebook">전자책</a>
+                    <a class="shop-button" href="https://play.google.com/store/audiobooks/details/Chris_Lee_Sister_Squad_%EB%86%80%EB%9D%BC%EC%9A%B4_%EC%9E%90%EB%A7%A4%EB%93%A4?id=AQAAAEBqoTPhSM" target="_blank" rel="noopener noreferrer" data-i18n="audiobook">오디오북</a>
+                </div>
+            </article>
+            <article class="shop-card">
+                <h3>SISTER SQUAD 2</h3>
+                <p data-i18n="ss2_desc">저주받은 요정마을 — 두 번째 여정</p>
+                <div class="shop-links">
+                    <a class="shop-button" href="https://m.yes24.com/goods/detail/195412514" target="_blank" rel="noopener noreferrer" data-i18n="paper_book">종이책</a>
+                    <a class="shop-button" href="https://m.yes24.com/goods/detail/195273310" target="_blank" rel="noopener noreferrer" data-i18n="ebook">전자책</a>
+                </div>
+            </article>
+            <article class="shop-card">
+                <h3 data-i18n="coloring_title">SISTER SQUAD COLORING BOOK</h3>
+                <p data-i18n="coloring_desc">자매와 함께 즐기는 컬러링북</p>
+                <div class="shop-links">
+                    <a class="shop-button" href="https://m.yes24.com/goods/detail/165140479" target="_blank" rel="noopener noreferrer" data-i18n="paper_book">구매하기</a>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section class="shop-section">
+        <h2 class="shop-section-title">MIRACLE SHOT</h2>
+        <div class="shop-grid">
+            <article class="shop-card">
+                <h3>MIRACLE SHOT</h3>
+                <p data-i18n="miracle_desc">이야기와 기억, 그리고 메시지</p>
+                <div class="shop-links">
+                    <a class="shop-button" href="https://m.yes24.com/goods/detail/193866386" target="_blank" rel="noopener noreferrer" data-i18n="paper_book">종이책</a>
+                    <a class="shop-button" href="https://m.yes24.com/goods/detail/194490242" target="_blank" rel="noopener noreferrer" data-i18n="ebook">전자책</a>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <p class="shop-note" data-i18n="shop_note">각 구매 버튼을 누르면 해당 판매처의 상품 페이지로 이동합니다.</p>
+</main>
+
+<div id="site-footer"></div>
+
+<script>
+window.PAGE_I18N = {
+    ko: {
+        shop_kicker:'THE CREATIVE ARCHIVE', shop_title:'SHOP', shop_subtitle:'Chris LEE.PAPA의 작품을 한곳에서 만나고 구매할 수 있습니다.',
+        sister_squad_title:'SISTER SQUAD', ss1_desc:'놀라운 자매들의 첫 번째 모험', ss2_desc:'저주받은 요정마을 — 두 번째 여정',
+        coloring_title:'SISTER SQUAD 컬러링북', coloring_desc:'자매와 함께 즐기는 컬러링북', miracle_desc:'이야기와 기억, 그리고 메시지',
+        paper_book:'종이책', ebook:'전자책', audiobook:'오디오북', shop_note:'각 구매 버튼을 누르면 해당 판매처의 상품 페이지로 이동합니다.'
+    },
+    en: {
+        shop_kicker:'THE CREATIVE ARCHIVE', shop_title:'SHOP', shop_subtitle:'Discover and purchase Chris LEE.PAPA\'s works in one place.',
+        sister_squad_title:'SISTER SQUAD', ss1_desc:'The first adventure of the amazing sisters', ss2_desc:'The Cursed Fairy Village — The Second Journey',
+        coloring_title:'SISTER SQUAD COLORING BOOK', coloring_desc:'A coloring book for the sisters and their adventures', miracle_desc:'A story, a memory, a message',
+        paper_book:'PRINT BOOK', ebook:'E-BOOK', audiobook:'AUDIOBOOK', shop_note:'Each button opens the corresponding product page at the retailer.'
+    }
+};
+</script>
+<script src="js/main.js"></script>
+</body>
+</html>

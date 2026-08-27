@@ -29,7 +29,7 @@ async function loadComponents(){
   }
   if((window.location.pathname||'').toLowerCase().includes('sistersquad-hub')){
     const squad1Card=document.querySelector('.sq-links .sq-link:nth-child(1)');
-    if(squad1Card)squad1Card.style.backgroundImage="url('/images/sistersquad1.png?v=20260827')";
+    if(squad1Card)squad1Card.style.backgroundImage="url('/images/sistersquad1.png')";
     const hubLangScript=document.createElement('script');
     hubLangScript.src='/js/sistersquad-hub-i18n.js?v=20260827';
     hubLangScript.defer=true;

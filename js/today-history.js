@@ -23,11 +23,12 @@
         const s=document.createElement('style'); s.id='today-history-style'; s.textContent=`
             .today-history{margin:22px 0 0;padding:24px;background:linear-gradient(145deg,rgba(18,16,14,.96),rgba(8,8,11,.96));border:1px solid rgba(201,168,76,.18);border-radius:20px;min-width:0}
             .today-history h2{font:600 1rem 'Cinzel',serif;letter-spacing:.12em;color:#c9a84c;margin:0 0 7px;overflow-wrap:normal!important;word-break:keep-all!important;white-space:normal}
-            .history-description{margin:0 0 16px;color:rgba(238,238,238,.52);font:400 .78rem/1.7 'Noto Sans KR',sans-serif;letter-spacing:0;word-break:keep-all!important;overflow-wrap:normal!important;white-space:normal!important;max-width:42rem}
+            .history-description{margin:0 0 16px;color:rgba(238,238,238,.52);font:400 .78rem/1.7 'Noto Sans KR',sans-serif;letter-spacing:0;word-break:keep-all!important;overflow-wrap:normal!important;white-space:normal!important;max-width:42rem;text-wrap:pretty}
+            .history-description .keep-phrase{white-space:nowrap}
             .history-tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;min-width:0}.history-tools input,.history-tools select{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.12);border-radius:9px;color:#eee;padding:10px 11px;min-width:0}.history-tools input{flex:1;min-width:180px}.history-tools button{border:1px solid rgba(201,168,76,.4);border-radius:9px;background:transparent;color:#c9a84c;padding:9px 13px;cursor:pointer}.history-list{display:flex;flex-direction:column;gap:9px;min-width:0}.history-item{padding:13px;border:1px solid rgba(255,255,255,.08);border-radius:12px;background:rgba(255,255,255,.025);min-width:0}.history-date{color:#c9a84c;font-size:.76rem;margin-bottom:7px;overflow-wrap:normal;word-break:keep-all}.history-preview{color:#ddd;font:.84rem/1.55 'Noto Sans KR',sans-serif;white-space:pre-wrap;word-break:keep-all;overflow-wrap:normal;min-width:0}.history-actions{display:flex;gap:7px;margin-top:9px;flex-wrap:wrap}.history-actions button{border:1px solid rgba(255,255,255,.12);background:transparent;color:#aaa;border-radius:7px;padding:5px 9px;cursor:pointer;white-space:normal;word-break:keep-all}.history-empty{color:rgba(238,238,238,.4);font-size:.84rem;padding:10px 0;word-break:keep-all}
             @media(max-width:760px){
                 .today-history{margin-top:18px;padding:20px 16px;border-radius:18px}
-                .history-description{font-size:.76rem;line-height:1.8;max-width:100%;padding-right:2px}
+                .history-description{font-size:clamp(.73rem,2.95vw,.76rem);line-height:1.8;max-width:100%;padding-right:0;text-wrap:pretty}
                 .history-tools{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
                 .history-tools input,.history-tools select,.history-tools button{width:100%;min-width:0;max-width:100%;font-size:.8rem}
                 .history-preview{font-size:.82rem;line-height:1.7}
@@ -36,13 +37,13 @@
             }
             @media(max-width:380px){
                 .today-history{padding-left:14px;padding-right:14px}
-                .history-description{font-size:.73rem;line-height:1.85}
+                .history-description{font-size:clamp(.7rem,3.05vw,.73rem);line-height:1.85}
                 .history-preview{font-size:.8rem}
                 .history-actions{grid-template-columns:minmax(0,1fr)}
             }
             @media(max-width:340px){
                 .today-history{padding-left:12px;padding-right:12px}
-                .history-description{font-size:.71rem}
+                .history-description{font-size:clamp(.68rem,3.15vw,.71rem)}
             }
         `; document.head.appendChild(s);
     }
@@ -51,7 +52,7 @@
         if(document.getElementById('todayHistory')) return;
         const main=document.getElementById('todayApp'); if(!main) return;
         const section=document.createElement('section'); section.className='today-history'; section.id='todayHistory';
-        section.innerHTML=`<h2>📚 MY DAILY ARCHIVE</h2><p class="history-description">날짜별 메모와 기도를 저장하고 검색, 수정, 삭제할 수 있습니다.</p><div class="history-tools"><input id="historySearch" type="search" placeholder="메모·기도 검색"><input id="historyDate" type="date"><button id="historyClear">전체 보기</button></div><div class="history-list" id="historyList"></div>`;
+        section.innerHTML=`<h2>📚 MY DAILY ARCHIVE</h2><p class="history-description">날짜별 메모와 기도를 저장하고 검색, 수정, <span class="keep-phrase">삭제할 수 있습니다.</span></p><div class="history-tools"><input id="historySearch" type="search" placeholder="메모·기도 검색"><input id="historyDate" type="date"><button id="historyClear">전체 보기</button></div><div class="history-list" id="historyList"></div>`;
         main.appendChild(section);
         document.getElementById('historySearch').addEventListener('input',render);
         document.getElementById('historyDate').addEventListener('change',render);

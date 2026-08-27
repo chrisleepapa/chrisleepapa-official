@@ -4,4 +4,24 @@
 @media(max-height:620px) and (orientation:landscape){.board{max-height:94dvh}.wr{padding:1dvh 8px}.cp{gap:.5%!important}.rbtn{padding:4px 8px!important}}
 
 /* Game Center guide readability */
-@import url('gameinfo-responsive.css');
+@media (max-width: 760px) {
+  .game-selection-wrapper .game-guide,
+  .game-selection-wrapper [class*="guide"] { min-width:0!important; max-width:100%!important; }
+  .game-selection-wrapper .game-guide h2,
+  .game-selection-wrapper .game-guide h3,
+  .game-selection-wrapper [class*="guide"] h2,
+  .game-selection-wrapper [class*="guide"] h3 {
+    white-space:normal!important; word-break:keep-all!important; overflow-wrap:normal!important;
+    line-break:strict!important; letter-spacing:0!important; text-wrap:pretty!important;
+  }
+  .game-selection-wrapper .game-guide p,
+  .game-selection-wrapper [class*="guide"] p {
+    white-space:normal!important; word-break:keep-all!important; overflow-wrap:normal!important;
+    line-break:strict!important; text-wrap:pretty!important;
+  }
+}
+@media (max-width:420px) {
+  .game-selection-wrapper .game-guide h2,.game-selection-wrapper .game-guide h3,
+  .game-selection-wrapper [class*="guide"] h2,.game-selection-wrapper [class*="guide"] h3 {font-size:clamp(.86rem,4vw,1rem)!important;line-height:1.55!important}
+  .game-selection-wrapper .game-guide p,.game-selection-wrapper [class*="guide"] p {font-size:clamp(.82rem,3.7vw,.92rem)!important;line-height:1.8!important}
+}

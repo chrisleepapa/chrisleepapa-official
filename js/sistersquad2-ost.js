@@ -95,7 +95,31 @@
     select('main');
   };
 
-  const run=()=>init();
+  const applySecondJourneyLanguage=()=>{
+    const lang = typeof window.getCurrentLang === 'function' ? window.getCurrentLang() : (localStorage.getItem('pref-lang') || 'ko');
+    const heading = document.querySelector('h3[data-second-journey]');
+    if (heading) heading.textContent = lang === 'en' ? 'THE SECOND JOURNEY' : '두 번째 여정';
+  };
+
+  const ensureSecondJourneyHook=()=>{
+    const headings=[...document.querySelectorAll('h3')];
+    const heading=headings.find(el=>el.textContent.trim()==='THE JOURNEY CONTINUES' || el.textContent.trim()==='THE SECOND JOURNEY' || el.textContent.trim()==='두 번째 여정');
+    if(heading){
+      heading.dataset.secondJourney='true';
+      applySecondJourneyLanguage();
+    }
+  };
+
+  window.onLangChange = function(){
+    ensureSecondJourneyHook();
+    applySecondJourneyLanguage();
+  };
+
+  const run=()=>{
+    init();
+    ensureSecondJourneyHook();
+    applySecondJourneyLanguage();
+  };
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',run,{once:true});
   else run();
 })();

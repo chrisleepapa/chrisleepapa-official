@@ -1,0 +1,84 @@
+/* ==============================================
+   gameinfo-responsive.css
+   Game Center — mobile guide readability
+   ============================================== */
+
+/* Korean text should wrap between words, not inside words. */
+.game-selection-wrapper [data-i18n^="guide"] {
+    word-break: keep-all;
+    overflow-wrap: normal;
+    line-break: strict;
+    hyphens: none;
+}
+
+/* Guide headings: keep Korean words intact while allowing natural line wrapping. */
+.game-selection-wrapper h3[data-i18n^="guide"] {
+    white-space: normal;
+    max-width: 100%;
+    line-height: 1.55;
+}
+
+/* Guide paragraphs: readable measure and line height across widths. */
+.game-selection-wrapper p[data-i18n^="guide"] {
+    max-width: 100%;
+    line-height: 1.9;
+    text-align: left;
+}
+
+@media (max-width: 760px) {
+    .game-selection-wrapper > div[style*="max-width:860px"] {
+        width: 100%;
+        padding-left: 14px !important;
+        padding-right: 14px !important;
+        margin-bottom: 40px !important;
+    }
+
+    .game-selection-wrapper > div[style*="max-width:860px"] > div[style*="border:1px"] {
+        padding: 26px 18px !important;
+        border-radius: 18px !important;
+    }
+
+    .game-selection-wrapper h2 + div + .game-cards + div h2 {
+        font-size: clamp(.9rem, 3.4vw, 1.05rem) !important;
+        line-height: 1.5 !important;
+        letter-spacing: 1.2px !important;
+        word-break: keep-all;
+    }
+
+    .game-selection-wrapper h3[data-i18n^="guide"] {
+        font-size: clamp(.82rem, 3.5vw, .9rem) !important;
+        line-height: 1.6 !important;
+        letter-spacing: .4px !important;
+        margin-bottom: 9px !important;
+    }
+
+    .game-selection-wrapper p[data-i18n^="guide"] {
+        font-size: clamp(.82rem, 3.5vw, .88rem) !important;
+        line-height: 1.9 !important;
+        letter-spacing: 0 !important;
+        word-break: keep-all !important;
+        overflow-wrap: normal !important;
+    }
+
+    .game-selection-wrapper p[data-i18n="guide_footer_note"] {
+        font-size: clamp(.78rem, 3.2vw, .82rem) !important;
+        line-height: 1.85 !important;
+        word-break: keep-all !important;
+    }
+}
+
+@media (max-width: 380px) {
+    .game-selection-wrapper > div[style*="max-width:860px"] > div[style*="border:1px"] {
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
+
+    .game-selection-wrapper h3[data-i18n^="guide"] {
+        font-size: .8rem !important;
+    }
+
+    .game-selection-wrapper p[data-i18n^="guide"] {
+        font-size: .8rem !important;
+        line-height: 1.88 !important;
+    }
+}

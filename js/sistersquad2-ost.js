@@ -96,14 +96,17 @@
   };
 
   const applySecondJourneyLanguage=()=>{
-    const lang = typeof window.getCurrentLang === 'function' ? window.getCurrentLang() : (localStorage.getItem('pref-lang') || 'ko');
+    const lang = document.documentElement.lang === 'en' ? 'en' : 'ko';
     const heading = document.querySelector('h3[data-second-journey]');
     if (heading) heading.textContent = lang === 'en' ? 'THE SECOND JOURNEY' : '두 번째 여정';
   };
 
   const ensureSecondJourneyHook=()=>{
     const headings=[...document.querySelectorAll('h3')];
-    const heading=headings.find(el=>el.textContent.trim()==='THE JOURNEY CONTINUES' || el.textContent.trim()==='THE SECOND JOURNEY' || el.textContent.trim()==='두 번째 여정');
+    const heading=headings.find(el=>{
+      const text=el.textContent.trim();
+      return text==='THE JOURNEY CONTINUES' || text==='THE SECOND JOURNEY' || text==='두 번째 여정';
+    });
     if(heading){
       heading.dataset.secondJourney='true';
       applySecondJourneyLanguage();
@@ -115,10 +118,21 @@
     applySecondJourneyLanguage();
   };
 
+  const observeLanguage=()=>{
+    const root=document.documentElement;
+    if(!root) return;
+    const observer=new MutationObserver(()=>{
+      ensureSecondJourneyHook();
+      applySecondJourneyLanguage();
+    });
+    observer.observe(root,{attributes:true,attributeFilter:['lang']});
+  };
+
   const run=()=>{
     init();
     ensureSecondJourneyHook();
     applySecondJourneyLanguage();
+    observeLanguage();
   };
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',run,{once:true});
   else run();

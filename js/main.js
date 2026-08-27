@@ -22,21 +22,18 @@ async function loadComponents(){
   setLanguage(getSavedLanguage());
   if(typeof window.onMainReady==='function')window.onMainReady();
   if((window.location.pathname||'').toLowerCase().includes('sistersquad2')){
-    const ostScript=document.createElement('script');
-    ostScript.src='/js/sistersquad2-ost.js?v=20260826';
-    ostScript.defer=true;
-    document.head.appendChild(ostScript);
+    const ostScript=document.createElement('script');ostScript.src='/js/sistersquad2-ost.js?v=20260826';ostScript.defer=true;document.head.appendChild(ostScript);
   }
   if((window.location.pathname||'').toLowerCase().includes('sistersquad') && !(window.location.pathname||'').toLowerCase().includes('sistersquad2')){
-    const contentScript=document.createElement('script');
-    contentScript.src='/js/sistersquad1-content.js?v=20260826';
-    contentScript.defer=true;
-    document.head.appendChild(contentScript);
+    const contentScript=document.createElement('script');contentScript.src='/js/sistersquad1-content.js?v=20260826';contentScript.defer=true;document.head.appendChild(contentScript);
   }
-  // SISTER SQUAD HUB: force the requested SISTER SQUAD 1 artwork and bypass stale browser/CDN image cache.
   if((window.location.pathname||'').toLowerCase().includes('sistersquad-hub')){
     const squad1Card=document.querySelector('.sq-links .sq-link:nth-child(1)');
-    if(squad1Card){squad1Card.style.backgroundImage="url('/images/sistersquad1.png?v=20260827')";}
+    if(squad1Card)squad1Card.style.backgroundImage="url('/images/sistersquad1.png?v=20260827')";
+    const hubLangScript=document.createElement('script');
+    hubLangScript.src='/js/sistersquad-hub-i18n.js?v=20260827';
+    hubLangScript.defer=true;
+    document.head.appendChild(hubLangScript);
   }
 }
 function initScrollProgress(){const bar=document.getElementById('scroll-progress');if(!bar)return;const update=()=>{const scroll=window.scrollY||window.pageYOffset||0;const max=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=`${max>0?Math.max(0,Math.min(100,(scroll/max)*100)):0}%`};window.addEventListener('scroll',update,{passive:true});window.addEventListener('resize',update,{passive:true});update()}

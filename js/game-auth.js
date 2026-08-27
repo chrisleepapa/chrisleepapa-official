@@ -1,7 +1,7 @@
 /** Shared account auth for game pages. Uses the common auth.js login modal. */
 'use strict';
 (() => {
-    const GAME_PAGES = new Set(['game','booktop','fiveinrow','curling','tetris','switch','baduk_easy']);
+    const GAME_PAGES = new Set(['game','booktop','fiveinrow','curling','tetris','switch']);
     const page=(location.pathname.split('/').pop()||'index').replace(/\.html$/i,'').toLowerCase();
 
     if(page==='gameinfo'){

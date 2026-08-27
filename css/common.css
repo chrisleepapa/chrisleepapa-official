@@ -33,3 +33,23 @@
   .char-card:not(.flipped):hover .char-photo{opacity:1;}
   .char-card:not(.flipped):hover .bible-photo{opacity:0;}
 }
+
+/* ==============================================
+   Global content readability — content areas only
+   Header / navigation / footer intentionally excluded.
+   ============================================== */
+main,article,section{min-width:0}
+main p,article p,section p,main li,article li,section li{overflow-wrap:break-word;word-break:keep-all}
+main h1,main h2,main h3,main h4,article h1,article h2,article h3,article h4,section h1,section h2,section h3,section h4{overflow-wrap:break-word;word-break:keep-all}
+main p,article p,section p{line-height:1.78}
+main h1,article h1,section h1{line-height:1.18}
+main h2,article h2,section h2{line-height:1.28}
+main h3,main h4,article h3,article h4,section h3,section h4{line-height:1.4}
+main a,article a,section a{overflow-wrap:break-word}
+main pre,article pre,section pre{max-width:100%;overflow-x:auto}
+@media(max-width:760px){
+  main p,article p,section p{line-height:1.85}
+  main h1,article h1,section h1{line-height:1.2}
+  main h2,article h2,section h2{line-height:1.32}
+  main h3,main h4,article h3,article h4,section h3,section h4{line-height:1.45}
+}

@@ -4,12 +4,9 @@
     const GAME_PAGES = new Set(['game','booktop','fiveinrow','curling','tetris','switch']);
     const page=(location.pathname.split('/').pop()||'index').replace(/\.html$/i,'').toLowerCase();
 
-    if(page==='gameinfo'){
-        const s=document.createElement('script');
-        s.src='/js/gameinfo-title-fix.js?v=20260827';
-        s.defer=true;
-        document.head.appendChild(s);
-    }
+    // gameinfo is only the game selection page. It must NOT load game-auth
+    // helpers, login UI, or the removed gameinfo-title-fix.js script.
+    if(page==='gameinfo') return;
 
     if(page==='miracleshot'){
         const s=document.createElement('script');

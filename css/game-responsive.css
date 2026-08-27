@@ -4,24 +4,33 @@
 @media(max-height:620px) and (orientation:landscape){.board{max-height:94dvh}.wr{padding:1dvh 8px}.cp{gap:.5%!important}.rbtn{padding:4px 8px!important}}
 
 /* Game Center guide readability */
-@media (max-width: 760px) {
-  .game-selection-wrapper .game-guide,
-  .game-selection-wrapper [class*="guide"] { min-width:0!important; max-width:100%!important; }
-  .game-selection-wrapper .game-guide h2,
-  .game-selection-wrapper .game-guide h3,
-  .game-selection-wrapper [class*="guide"] h2,
-  .game-selection-wrapper [class*="guide"] h3 {
-    white-space:normal!important; word-break:keep-all!important; overflow-wrap:normal!important;
-    line-break:strict!important; letter-spacing:0!important; text-wrap:pretty!important;
-  }
-  .game-selection-wrapper .game-guide p,
-  .game-selection-wrapper [class*="guide"] p {
-    white-space:normal!important; word-break:keep-all!important; overflow-wrap:normal!important;
-    line-break:strict!important; text-wrap:pretty!important;
-  }
+@media (max-width:760px){
+  .game-selection-wrapper [data-i18n^="guide"]{min-width:0!important;max-width:100%!important;white-space:normal!important;word-break:keep-all!important;overflow-wrap:normal!important;line-break:strict!important;text-wrap:pretty!important}
+  .game-selection-wrapper [data-i18n^="guide"]{font-size:clamp(.82rem,3.7vw,.96rem)!important;line-height:1.8!important}
 }
-@media (max-width:420px) {
-  .game-selection-wrapper .game-guide h2,.game-selection-wrapper .game-guide h3,
-  .game-selection-wrapper [class*="guide"] h2,.game-selection-wrapper [class*="guide"] h3 {font-size:clamp(.86rem,4vw,1rem)!important;line-height:1.55!important}
-  .game-selection-wrapper .game-guide p,.game-selection-wrapper [class*="guide"] p {font-size:clamp(.82rem,3.7vw,.92rem)!important;line-height:1.8!important}
+
+/* ALL GAME GUIDE — show exactly one localized title, never KOR + ENG together. */
+.game-selection-wrapper [data-i18n="guide1_heading"],
+.game-selection-wrapper [data-i18n="guide2_heading"],
+.game-selection-wrapper [data-i18n="guide3_heading"],
+.game-selection-wrapper [data-i18n="guide4_heading"],
+.game-selection-wrapper [data-i18n="guide5_heading"],
+.game-selection-wrapper [data-i18n="guide6_heading"],
+.game-selection-wrapper [data-i18n="guide7_heading"]{
+  font-size:0!important;white-space:nowrap!important;word-break:keep-all!important;overflow-wrap:normal!important;
 }
+.game-selection-wrapper [data-i18n="guide1_heading"]::before{content:"① 부르마블 게임"}
+.game-selection-wrapper [data-i18n="guide2_heading"]::before{content:"② 책 쌓기 마스터"}
+.game-selection-wrapper [data-i18n="guide3_heading"]::before{content:"③ 전략 오목"}
+.game-selection-wrapper [data-i18n="guide4_heading"]::before{content:"④ 매직 컬링"}
+.game-selection-wrapper [data-i18n="guide5_heading"]::before{content:"⑤ 독수리의 테트리스"}
+.game-selection-wrapper [data-i18n="guide6_heading"]::before{content:"⑥ 바둑 EASY"}
+.game-selection-wrapper [data-i18n="guide7_heading"]::before{content:"⑦ 요정 포포의 여정"}
+html[lang="en"] .game-selection-wrapper [data-i18n="guide1_heading"]::before{content:"① Blue Marble Game"}
+html[lang="en"] .game-selection-wrapper [data-i18n="guide2_heading"]::before{content:"② Book Stacking Master"}
+html[lang="en"] .game-selection-wrapper [data-i18n="guide3_heading"]::before{content:"③ Dynamic Omok"}
+html[lang="en"] .game-selection-wrapper [data-i18n="guide4_heading"]::before{content:"④ Magic Curling"}
+html[lang="en"] .game-selection-wrapper [data-i18n="guide5_heading"]::before{content:"⑤ Eagle's Tetris"}
+html[lang="en"] .game-selection-wrapper [data-i18n="guide6_heading"]::before{content:"⑥ Baduk EASY"}
+html[lang="en"] .game-selection-wrapper [data-i18n="guide7_heading"]::before{content:"⑦ Popo the Fairy's Journey"}
+.game-selection-wrapper [data-i18n^="guide"][data-i18n$="_heading"]::before{font-size:clamp(.86rem,3.9vw,1rem);line-height:1.55;letter-spacing:0}

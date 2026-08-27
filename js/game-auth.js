@@ -4,8 +4,13 @@
     const GAME_PAGES = new Set(['game','booktop','fiveinrow','curling','tetris','switch']);
     const page=(location.pathname.split('/').pop()||'index').replace(/\.html$/i,'').toLowerCase();
 
-    // Miracle Shot is a WORKS detail page, not a game. This file is already
-    // loaded by the page, so use the same entry point to load its enhancement.
+    if(page==='gameinfo'){
+        const s=document.createElement('script');
+        s.src='/js/gameinfo-title-fix.js?v=20260827';
+        s.defer=true;
+        document.head.appendChild(s);
+    }
+
     if(page==='miracleshot'){
         const s=document.createElement('script');
         s.src='/js/work-miracle-shot.js';

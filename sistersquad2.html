@@ -157,6 +157,55 @@
         height: 220px;
     }
         }
+/* =====================================================
+   GET THE BOOK
+   ===================================================== */
+
+.get-book-section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 60px 0 20px;
+}
+
+.get-book-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    min-width: 240px;
+    padding: 16px 30px;
+    border: 1px solid var(--gold);
+    color: var(--gold-light);
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    background: rgba(201, 168, 76, 0.05);
+    transition:
+        transform 0.3s ease,
+        background 0.3s ease,
+        box-shadow 0.3s ease,
+        color 0.3s ease;
+}
+
+.get-book-button:hover {
+    transform: translateY(-3px);
+    background: rgba(201, 168, 76, 0.12);
+    color: #fff;
+    box-shadow: 0 0 25px rgba(201, 168, 76, 0.2);
+}
+
+.get-book-arrow {
+    font-size: 1.1rem;
+    transition: transform 0.3s ease;
+}
+
+.get-book-button:hover .get-book-arrow {
+    transform: translateX(5px);
+}
+        
     </style>
 </head>
 <body>
@@ -311,6 +360,23 @@
         </section>
         <!-- ── SEO 블록 끝 ── -->
 
+<!-- =========================================================
+             GET THE BOOK
+             ========================================================= -->
+
+        <section class="get-book-section" aria-label="Get the Book">
+
+            <a
+                href="/shop.html"
+                class="get-book-button"
+            >
+                <span>GET THE BOOK</span>
+                <span class="get-book-arrow">→</span>
+            </a>
+
+        </section>
+
+        
     </div>
 
     <!-- ★ 이미지 라이트박스 -->

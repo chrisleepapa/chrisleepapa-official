@@ -971,70 +971,55 @@
         }
 
 
-        /* =====================================================
-           BOOK PURCHASE SECTION
-           NOTE:
-           This section will later be changed to a single
-           GET THE BOOK → SHOP link.
-           ===================================================== */
+    /* =====================================================
+   GET THE BOOK
+   ===================================================== */
 
-        .buy-section {
-            margin-bottom: 100px;
-        }
+.get-book-section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 60px 0 20px;
+}
 
-        .buy-grid {
-            display: grid;
+.get-book-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    min-width: 240px;
+    padding: 16px 30px;
+    border: 1px solid var(--gold);
+    color: var(--gold-light);
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    background: rgba(201, 168, 76, 0.05);
+    transition:
+        transform 0.3s ease,
+        background 0.3s ease,
+        box-shadow 0.3s ease,
+        color 0.3s ease;
+}
 
-            grid-template-columns: 1fr 1fr;
+.get-book-button:hover {
+    transform: translateY(-3px);
+    background: rgba(201, 168, 76, 0.12);
+    color: #fff;
+    box-shadow: 0 0 25px rgba(201, 168, 76, 0.2);
+}
 
-            gap: 20px;
-        }
+.get-book-arrow {
+    font-size: 1.1rem;
+    transition: transform 0.3s ease;
+}
 
-        .buy-card {
-            display: flex;
-
-            flex-direction: column;
-
-            align-items: center;
-            justify-content: center;
-
-            gap: 8px;
-
-            padding: 28px;
-
-            border: 1px solid rgba(201, 168, 76, .2);
-
-            border-radius: 18px;
-
-            background: rgba(255, 255, 255, .02);
-
-            transition: .3s;
-        }
-
-        .buy-card:hover {
-            border-color: var(--gold);
-
-            transform: translateY(-4px);
-        }
-
-        .buy-icon {
-            font-size: 1.7rem;
-        }
-
-        .buy-label {
-            color: #eee;
-
-            font-size: .95rem;
-        }
-
-        .buy-btn {
-            font-size: .72rem;
-
-            color: var(--gold-light);
-
-            letter-spacing: 1px;
-        }
-
+.get-book-button:hover .get-book-arrow {
+    transform: translateX(5px);
+}
+  
 
         /* =====================================================
            SEO CONTENT
@@ -2304,35 +2289,23 @@
             </div>
 
         </section>
-<h2 class="section-title" data-i18n="shop_sec_title">
-    SHOP
-</h2>
 
-<section class="buy-section">
-    <div class="buy-grid">
+<!-- =========================================================
+     GET THE BOOK
+     ========================================================= -->
 
-        <a href="shop.html"
-           class="buy-card"
-           onclick="safeNavigate('shop.html'); return false;">
+<section class="get-book-section" aria-label="Get the Book">
 
-            <span class="buy-icon">🛍️</span>
+    <a
+        href="/shop.html"
+        class="get-book-button"
+    >
+        <span>GET THE BOOK</span>
+        <span class="get-book-arrow">→</span>
+    </a>
 
-            <span class="buy-label" data-i18n="shop_link_label">
-                Miracle Shot 구매하기
-            </span>
-
-            <span class="buy-btn" data-i18n="shop_link_btn">
-                SHOP에서 보기 ›
-            </span>
-
-        </a>
-
-    </div>
 </section>
 
-        <!-- =====================================================
-             BOOK PURCHASE
-             ===================================================== -->
 
 
         <!-- =====================================================
@@ -2637,10 +2610,6 @@
                 ost_btn_yt:
                     'YouTube 재생목록 ›',
 
-              shop_sec_title:'SHOP',
-shop_link_label:'Miracle Shot 구매하기',
-shop_link_btn:'SHOP에서 보기 ›',
-
                 seo_world_title:
                     '🌟 THE MESSAGE — 누구에게나 빛이 있다',
 
@@ -2823,10 +2792,7 @@ shop_link_btn:'SHOP에서 보기 ›',
                 ost_btn_yt:
                     'YouTube Playlist ›',
 
-shop_sec_title:'SHOP',
-shop_link_label:'Get Miracle Shot',
-shop_link_btn:'View in SHOP ›',
-                
+            
                 seo_world_title:
                     '🌟 THE MESSAGE — Everyone Has a Light',
 

@@ -1,19 +1,44 @@
-/* Home: Chris's Pick — explicitly selected featured content */
+/* Home: Chris's Pick — one deterministic random work per day */
 'use strict';
 (() => {
-  const PICK = {
-    type: 'BOOK',
-    icon: '✦',
-    title: 'SISTER SQUAD 1',
-    sub: 'The Book of Whispers · Book 1',
-    desc: {
-      ko: '율이와 정이의 첫 번째 모험. 요정 마을 루미나에서 시작된 두 자매의 판타지 이야기와 가족, 우정, 용기를 만나보세요.',
-      en: 'The first adventure of Yuli and Jeong-i. Enter the fantasy world of Lumina and discover a story of sisters, family, friendship, and courage.'
+  const PICKS = [
+    {
+      type: 'MUSIC', icon: '♫', title: 'Miracle Shot', sub: 'Chris LEE.PAPA · Single',
+      desc: {
+        ko: '음악으로 만나는 새로운 이야기.',
+        en: 'A new story told through music.'
+      },
+      image: 'https://i.scdn.co/image/ab67616d0000b2739ca1fa71b9788981b26ad329',
+      href: 'miracleshot.html', action: { ko: '작품 보기', en: 'View Work' }
     },
-    image: '/images/sistersquad1.png?v=20260828',
-    href: 'sistersquad.html',
-    action: { ko: '1권 보러가기', en: 'Read Book 1' }
-  };
+    {
+      type: 'BOOK', icon: '✦', title: 'SISTER SQUAD 1', sub: 'The Book of Whispers · Book 1',
+      desc: {
+        ko: '율이와 정이의 첫 번째 모험. 요정 마을 루미나에서 시작된 두 자매의 판타지 이야기.',
+        en: 'The first adventure of Yuli and Jeong-i in the fantasy world of Lumina.'
+      },
+      image: '/images/sistersquad1.png?v=20260828',
+      href: 'sistersquad.html', action: { ko: '1권 보러가기', en: 'Read Book 1' }
+    },
+    {
+      type: 'BOOK', icon: '✦', title: 'SISTER SQUAD 2', sub: 'The Cursed Fairy Village · Book 2',
+      desc: {
+        ko: '율이와 정이, 그리고 아빠 크리스가 저주받은 요정 마을을 구하기 위해 떠나는 두 번째 모험.',
+        en: 'The second adventure of Yuli, Jeong-i and Chris as they set out to save the cursed fairy village.'
+      },
+      image: '/images/sistersquad2_poster.jpg',
+      href: 'sistersquad2.html', action: { ko: '2권 보러가기', en: 'Read Book 2' }
+    },
+    {
+      type: 'WORSHIP', icon: '♩', title: '승리하리라', sub: 'Worship · CCM',
+      desc: {
+        ko: '다시 일어설 용기와 믿음을 노래합니다.',
+        en: 'A worship song about courage, faith, and rising again.'
+      },
+      image: '/images/My hymn3.jpg',
+      href: 'worship.html', action: { ko: '워십 보기', en: 'View Worship' }
+    }
+  ];
 
   const style = document.createElement('style');
   style.textContent = `
@@ -46,32 +71,52 @@
   `;
   document.head.appendChild(style);
 
+  function getTodayKey() {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  }
+
+  // Date-seeded selection: random-looking, but identical for everyone on the same day.
+  function getDailyPick() {
+    const key = getTodayKey();
+    let hash = 2166136261;
+    for (let i = 0; i < key.length; i++) {
+      hash ^= key.charCodeAt(i);
+      hash = Math.imul(hash, 16777619);
+    }
+    hash >>>= 0;
+    return PICKS[hash % PICKS.length];
+  }
+
   function render() {
     const target = document.getElementById('chris-pick');
     if (!target) return;
+
     const lang = window.getCurrentLang ? window.getCurrentLang() : 'ko';
     const d = new Date();
     const date = `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+    const pick = getDailyPick();
+
     target.innerHTML = `
       <div class="clp-pick-content">
         <h1 class="clp-pick-heading">Chris's Pick</h1>
-        <div class="clp-pick-date">${date} · ${lang==='ko'?'선정 작품':'FEATURED WORK'}</div>
+        <div class="clp-pick-date">${date} · ${lang==='ko'?'오늘의 선정 작품':'TODAY’S FEATURED WORK'}</div>
         <div class="clp-pick-card">
           <div class="clp-pick-art">
-            <img src="${PICK.image}" alt="${PICK.title}" loading="eager">
-            <span class="clp-pick-mark">${PICK.icon}</span>
+            <img src="${pick.image}" alt="${pick.title}" loading="eager">
+            <span class="clp-pick-mark">${pick.icon}</span>
           </div>
           <div class="clp-pick-body">
-            <div class="clp-pick-type">${PICK.type}</div>
-            <h2 class="clp-pick-title">${PICK.title}</h2>
-            <div class="clp-pick-sub">${PICK.sub}</div>
-            <p class="clp-pick-desc">${PICK.desc[lang]}</p>
+            <div class="clp-pick-type">${pick.type}</div>
+            <h2 class="clp-pick-title">${pick.title}</h2>
+            <div class="clp-pick-sub">${pick.sub}</div>
+            <p class="clp-pick-desc">${pick.desc[lang]}</p>
             <div class="clp-pick-actions">
-              <a class="clp-pick-main" href="${PICK.href}">${PICK.action[lang]} →</a>
+              <a class="clp-pick-main" href="${pick.href}">${pick.action[lang]} →</a>
             </div>
           </div>
         </div>
-        <div class="clp-pick-next">${lang==='ko'?'Chris가 직접 선정한 작품입니다.':'A work personally selected by Chris.'}</div>
+        <div class="clp-pick-next">${lang==='ko'?'매일 전체 작품 중 하나를 자동으로 선정합니다.':'One work is automatically selected from the full featured collection each day.'}</div>
       </div>`;
   }
 

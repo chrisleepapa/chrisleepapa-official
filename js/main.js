@@ -14,7 +14,7 @@ const BASE_I18N = {
   ko: {
     nav_home: 'Home', nav_works: 'Works', nav_faith: 'Faith', nav_squad: 'Sister Squad',
     nav_play: 'Play', nav_journal: 'Journal', nav_about: 'About', nav_music: 'Music',
-    nav_movie: 'Movies', nav_book: 'Books', nav_bible: 'Bible', nav_worship: 'Worship',
+    nav_movie: 'Movies', nav_bible: 'Bible', nav_worship: 'Worship',
     nav_today: 'Today', nav_squad_short: 'SQUAD', nav_squad_1: 'SISTER SQUAD',
     nav_squad_2: 'SISTER SQUAD 2', nav_game: 'GAME', share_title: 'SHARE ARCHIVE',
     share_desc: '이곳의 기록과 영감을 소중한 사람들에게 전하세요.', share_copy: 'COPY LINK',
@@ -25,7 +25,7 @@ const BASE_I18N = {
   en: {
     nav_home: 'Home', nav_works: 'Works', nav_faith: 'Faith', nav_squad: 'Sister Squad',
     nav_play: 'Play', nav_journal: 'Journal', nav_about: 'About', nav_music: 'Music',
-    nav_movie: 'Movies', nav_book: 'Books', nav_bible: 'Bible', nav_worship: 'Worship',
+    nav_movie: 'Movies', nav_bible: 'Bible', nav_worship: 'Worship',
     nav_today: 'Today', nav_squad_short: 'SQUAD', nav_squad_1: 'SISTER SQUAD',
     nav_squad_2: 'SISTER SQUAD 2', nav_game: 'GAME', share_title: 'SHARE ARCHIVE',
     share_desc: 'Share the records and inspiration here with your loved ones.', share_copy: 'COPY LINK',
@@ -325,7 +325,7 @@ function initActiveNavLink() {
 
   const projectPages = [
     'sistersquad-hub', 'sistersquad', 'sistersquad2', 'world-lore',
-    'game', 'gameinfo', 'miracleshot', 'miracleshot-ost', 'music', 'movie'
+    'game', 'gameinfo', 'miracleshot', 'music', 'movie'
   ];
   const faithPages = ['bible', 'worship'];
   const morePages = ['journal', 'about', 'privacy', 'terms'];

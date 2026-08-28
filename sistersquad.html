@@ -1844,6 +1844,57 @@
             }
         }
 
+        /* =====================================================
+       GET THE BOOK
+       ===================================================== */
+
+    .get-book-section {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 60px 0 20px;
+    }
+
+    .get-book-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 18px;
+        min-width: 240px;
+        padding: 16px 30px;
+        border: 1px solid var(--gold);
+        color: var(--gold-light);
+        font-family: 'Cinzel', serif;
+        font-size: 0.85rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        background: rgba(201, 168, 76, 0.05);
+        transition:
+            transform 0.3s ease,
+            background 0.3s ease,
+            box-shadow 0.3s ease,
+            color 0.3s ease;
+    }
+
+    .get-book-button:hover {
+        transform: translateY(-3px);
+        background: rgba(201, 168, 76, 0.12);
+        color: #fff;
+        box-shadow: 0 0 25px rgba(201, 168, 76, 0.2);
+    }
+
+    .get-book-arrow {
+        font-size: 1.1rem;
+        transition: transform 0.3s ease;
+    }
+
+    .get-book-button:hover .get-book-arrow {
+        transform: translateX(5px);
+    }
+
+
+        
     </style>
 </head>
 
@@ -1899,14 +1950,9 @@
     <main class="container">
 
         <!-- Back -->
-        <a
-            href="book.html"
-            class="back-link"
-            onclick="safeNavigate('book.html'); return false;"
-            data-i18n="back_link"
-        >
-            ‹ 라이브러리로 돌아가기
-        </a>
+<a href="sistersquad-hub.html" class="back-link">
+    ‹ SISTER SQUAD
+</a>
 
 
         <!-- =====================================================
@@ -2334,129 +2380,21 @@
         </section>
 
 
-        <!-- =====================================================
-             BOOK PURCHASE
-             ===================================================== -->
+<!-- =========================================================
+     GET THE BOOK
+     ========================================================= -->
 
-        <section
-            aria-labelledby="book-heading"
-        >
+<section class="get-book-section" aria-label="Get the Book">
 
-            <h2
-                id="book-heading"
-                class="section-title"
-                data-i18n="buy_sec_title"
-            >
-                도서 구매
-            </h2>
+    <a
+        href="/shop.html"
+        class="get-book-button"
+    >
+        <span>GET THE BOOK</span>
+        <span class="get-book-arrow">→</span>
+    </a>
 
-
-            <div class="buy-grid">
-
-                <!-- PAPERBACK -->
-                <article class="buy-card">
-
-                    <div class="book-img-wrap">
-
-                        <img
-                            src="images/sister01.png"
-                            alt="Sister Squad Vol.1 Paperback"
-                            class="book-img"
-                            width="750"
-                            height="1000"
-                            loading="lazy"
-                            decoding="async"
-                        >
-
-                    </div>
-
-                    <span class="book-type-label">
-                        Paperback
-                    </span>
-
-                    <a
-                        href="https://www.yes24.com/product/goods/155292789"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="buy-btn btn-paper"
-                        data-i18n="buy_paper"
-                    >
-                        종이책 구매 (YES24)
-                    </a>
-
-                </article>
-
-
-                <!-- EBOOK -->
-                <article class="buy-card">
-
-                    <div class="book-img-wrap">
-
-                        <img
-                            src="images/sister02.png"
-                            alt="Sister Squad Vol.1 E-Book"
-                            class="book-img"
-                            width="750"
-                            height="1000"
-                            loading="lazy"
-                            decoding="async"
-                        >
-
-                    </div>
-
-                    <span class="book-type-label">
-                        E-Book
-                    </span>
-
-                    <a
-                        href="https://www.yes24.com/product/goods/154234770"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="buy-btn btn-ebook"
-                        data-i18n="buy_ebook"
-                    >
-                        전자책 구매 (YES24)
-                    </a>
-
-                </article>
-
-
-                <!-- COLORING BOOK -->
-                <article class="buy-card">
-
-                    <div class="book-img-wrap">
-
-                        <img
-                            src="images/sister03.png"
-                            alt="Sister Squad Coloring Book"
-                            class="book-img"
-                            width="750"
-                            height="1000"
-                            loading="lazy"
-                            decoding="async"
-                        >
-
-                    </div>
-
-                    <span class="book-type-label">
-                        Coloring Book
-                    </span>
-
-                    <a
-                        href="https://www.yes24.com/product/goods/165140479"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="buy-btn btn-coloring"
-                        data-i18n="buy_coloring"
-                    >
-                        컬러링북 구매 (YES24)
-                    </a>
-
-                </article>
-
-            </div>
-
-        </section>
+</section>
 
 
         <!-- =====================================================

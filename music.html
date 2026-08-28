@@ -25,7 +25,7 @@ const musicData=[
 {title:'To Rise',type:'Instrumental',id:'2OSKuof7gooLElmFYvoygK',youtube:'https://youtube.com/playlist?list=OLAK5uy_ndXJukqI1ePIzltvjzIf4Vt2_KQroYszo&si=HTtRpOX2HqtGd0DD',tracks:['To Rise','Morning Breeze','Last Vibrato','Never Stop']},
 {title:'영역전개',type:'Album',id:'6rZBdEFTJ5mLwINtn9C8KZ',youtube:'https://youtube.com/playlist?list=OLAK5uy_kEiTfwxIvjPCWweGFa2U0-xykLgQ000EI&si=8fCyOOXfj_mneWZ6',tracks:['영역전개','영역전개_inst']},
 {title:'벽력일섬',type:'Album',id:'25T549XyXnmiZhqGn7p4x4',youtube:'https://youtube.com/playlist?list=OLAK5uy_lEWXJuSa8EXqjqnXVHZ5s5_dLw8Nucza8&si=2McCMqkCvnL_0vVp',tracks:['벽력일섬_Hekireki Issen','Rev It Up_kor','Rev It Up_eng','Hekireki Issen_Inst']},
-{title:'2026 앨범',type:'Album',id:'2AzUPgjWYDodUqFTNjPU1l',youtube:'https://youtube.com/playlist?list=OLAK5uy_nSgyIsRm-YJyjjKOcNH9iN43bBxgQQgDQ&si=jpNOamkNkEwUTjaNW',tracks:['난리났어','2026','2026_Inst','Tonight_Inst','Flash Bang','Blow It Up']},
+{title:'2026 앨범',type:'Album',id:'2AzUPgjWYDodUqFTNjPU1l',youtube:'https://youtube.com/playlist?list=OLAK5uy_nSgyIsRm-YJyjjKOcNH9iN43bBxgQQgDQ&si=jpNOamkNkO7egSxP',tracks:['난리났어','2026','2026_Inst','Tonight_Inst','Flash Bang','Blow It Up']},
 {title:'Spotify Release',type:'Album',id:'7F4P40iGbLcUceu1mTNdCF',youtube:'https://youtube.com/playlist?list=OLAK5uy_k9CYtBP5F8jnbb0I95tBvA2vTbuHF_eeE&si=RkW9R5WIRQNaXz_s',tracks:[]},
 {title:'사랑한다고',type:'Vocal',id:'2s7tJtoaxDT8KUkJ3OL8DD',youtube:'https://youtube.com/playlist?list=OLAK5uy_m0lR-fY4rgZkgHvH4Wis2e7AfKyZGhtw0&si=PynL7dMkEwUTjaNW',tracks:['사랑한다고','Saying I love you','Winter\'s Symphony']}
 ];
@@ -33,12 +33,88 @@ const spotify=id=>`https://open.spotify.com/album/${id}`;
 const embed=id=>`https://open.spotify.com/embed/album/${id}?utm_source=generator&theme=0`;
 const oembed=id=>`https://open.spotify.com/oembed?url=${encodeURIComponent(spotify(id))}`;
 let active=0;const coverCache={};
-async function loadCover(album){if(coverCache[album.id])return coverCache[album.id];try{const r=await fetch(oembed(album.id));if(!r.ok)throw new Error('oEmbed failed');const d=await r.json();if(d.thumbnail_url){coverCache[album.id]=d.thumbnail_url;return d.thumbnail_url}}catch(e){console.warn('Spotify cover unavailable:',album.title)}return ''}
-async function hydrateCovers(){await Promise.all(musicData.map(async a=>{const url=await loadCover(a);if(!url)return;document.querySelectorAll(`[data-album-id="${a.id}"]`).forEach(el=>{el.src=url});}));renderActive()}
-function renderPlaylist(){const box=document.getElementById('playlist-container');box.innerHTML='';musicData.forEach((a,i)=>{const count=a.trackCount||a.tracks.length;const item=document.createElement('div');item.className='track-item'+(i===active?' active':'');item.onclick=()=>{active=i;renderPlaylist();renderActive()};item.innerHTML=`<img class="track-thumb" data-album-id="${a.id}" alt="${a.title} album cover"><div class="track-details"><h4>${a.title}</h4><p>${a.type} · ${count} TRACK${count===1?'':'S'}</p></div>`;box.appendChild(item)})}
-function renderActive(){const a=musicData[active];document.getElementById('main-title').textContent=a.title;document.getElementById('main-type').textContent=a.type;document.getElementById('main-external-link').href=spotify(a.id);const y=document.getElementById('main-youtube-link');y.href=a.youtube;y.hidden=!a.youtube;document.getElementById('spotify-container').innerHTML=`<iframe src="${embed(a.id)}" title="${a.title} Spotify player" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>`;const cover=coverCache[a.id];document.getElementById('main-cover').style.backgroundImage=cover?`url("${cover}")`:'';document.querySelectorAll('.track-item').forEach((el,i)=>el.classList.toggle('active',i===active))}
+
+async function loadCover(album){
+  if(coverCache[album.id])return coverCache[album.id];
+  try{
+    const r=await fetch(oembed(album.id),{cache:'force-cache'});
+    if(!r.ok)throw new Error('oEmbed failed');
+    const d=await r.json();
+    if(d.thumbnail_url){coverCache[album.id]=d.thumbnail_url;return d.thumbnail_url}
+  }catch(e){console.warn('Spotify cover unavailable:',album.title,e)}
+  return '';
+}
+
+function setImageSource(img,album){
+  const url=coverCache[album.id];
+  if(url){
+    img.src=url;
+    img.style.visibility='visible';
+  }else{
+    img.removeAttribute('src');
+    img.style.visibility='hidden';
+  }
+  img.onerror=()=>{
+    img.removeAttribute('src');
+    img.style.visibility='hidden';
+  };
+}
+
+async function hydrateCovers(){
+  await Promise.all(musicData.map(a=>loadCover(a)));
+  // Important: clicking an album rebuilds the list. Re-apply the cached
+  // cover URLs to the newly-created thumbnail elements so they never lose
+  // their image after selection.
+  renderPlaylist();
+  renderActive();
+}
+
+function renderPlaylist(){
+  const box=document.getElementById('playlist-container');
+  box.innerHTML='';
+  musicData.forEach((a,i)=>{
+    const count=a.trackCount||a.tracks.length;
+    const item=document.createElement('div');
+    item.className='track-item'+(i===active?' active':'');
+    item.onclick=()=>{
+      active=i;
+      renderPlaylist();
+      renderActive();
+    };
+    const img=document.createElement('img');
+    img.className='track-thumb';
+    img.dataset.albumId=a.id;
+    img.alt=`${a.title} album cover`;
+    setImageSource(img,a);
+    item.appendChild(img);
+    const details=document.createElement('div');
+    details.className='track-details';
+    details.innerHTML=`<h4>${a.title}</h4><p>${a.type} · ${count} TRACK${count===1?'':'S'}</p>`;
+    item.appendChild(details);
+    box.appendChild(item);
+  });
+}
+
+function renderActive(){
+  const a=musicData[active];
+  document.getElementById('main-title').textContent=a.title;
+  document.getElementById('main-type').textContent=a.type;
+  document.getElementById('main-external-link').href=spotify(a.id);
+  const y=document.getElementById('main-youtube-link');
+  y.href=a.youtube;
+  y.hidden=!a.youtube;
+  document.getElementById('spotify-container').innerHTML=`<iframe src="${embed(a.id)}" title="${a.title} Spotify player" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>`;
+  const cover=coverCache[a.id];
+  document.getElementById('main-cover').style.backgroundImage=cover?`url("${cover}")`:'';
+  document.querySelectorAll('.track-item').forEach((el,i)=>el.classList.toggle('active',i===active));
+}
+
 function renderArchive(){const box=document.getElementById('archive-list');let total=0;box.innerHTML=musicData.map(a=>{const count=a.trackCount||a.tracks.length;total+=count;const shown=a.tracks.length?`<div class="archive-tracks">${a.tracks.map((t,i)=>`<div class="archive-track"><b>${i+1}</b>${t}</div>`).join('')}</div>`:`<div class="archive-track">Tracklist available on Spotify</div>`;return `<div class="archive-album"><div class="archive-album-title">${a.title} · ${a.type} · ${count} TRACK${count===1?'':'S'}</div>${shown}</div>`}).join('');document.getElementById('archive-total').textContent=`TOTAL ${total} TRACKS`}
-renderPlaylist();renderArchive();renderActive();hydrateCovers();
+
+renderPlaylist();
+renderArchive();
+renderActive();
+hydrateCovers();
 </script>
 <script src="js/main.js"></script>
 </body></html>

@@ -14,33 +14,35 @@ jobs:
         with:
           ref: develop
           fetch-depth: 0
-      - name: Update MUSIC, WORSHIP and Chris Pick
-        shell: python
+      - name: Update archive files
         run: |
+          python3 <<'PY'
           from pathlib import Path
-          import re
 
-          music = Path('music.html')
-          s = music.read_text(encoding='utf-8')
-          if 'title_ko: \'Run it back\'' not in s:
-              needle = "            { title_ko: 'We own the Cup',"
-              pos = s.find(needle)
-              if pos < 0: raise SystemExit('music anchor not found')
-              line_end = s.find('\n', pos)
+          # MUSIC: add Run it back to the canonical musicData catalog.
+          p = Path('music.html')
+          s = p.read_text(encoding='utf-8')
+          if "title_ko: 'Run it back'" not in s:
+              marker = "            { title_ko: 'We own the Cup',"
+              i = s.find(marker)
+              if i < 0:
+                  raise SystemExit('musicData marker not found')
               entry = "            { title_ko: 'Run it back', title_en: 'Run It Back', type_ko: '싱글', type_en: 'Single', albumId: '6zhb0e3KvoFY5pcefQUHA6', cover: 'images/music.jpg', embedUrl: 'https://open.spotify.com/embed/artist/6zhb0e3KvoFY5pcefQUHA6', externalUrl: 'https://open.spotify.com/artist/6zhb0e3KvoFY5pcefQUHA6' },\n"
-              s = s[:pos] + entry + s[pos:]
+              s = s[:i] + entry + s[i:]
           s = s.replace('등 9개 앨범 41곡.', '등 10개 작품 42곡.')
           s = s.replace('9 albums, 41 tracks.', '10 works, 42 tracks.')
-          # Make the external button use an explicit URL when provided.
           s = s.replace("mainExternalLink.href = `https://open.spotify.com/album/${track.albumId}`;", "mainExternalLink.href = track.externalUrl || `https://open.spotify.com/album/${track.albumId}`;")
-          music.write_text(s, encoding='utf-8')
+          p.write_text(s, encoding='utf-8')
 
-          worship = Path('worship.html')
-          w = worship.read_text(encoding='utf-8')
-          if 'images/My hymn3.jpg' not in w:
-              grid = w.find('<div class="albums-grid">')
-              if grid < 0: raise SystemExit('worship grid not found')
-              insert_at = w.find('\n', grid) + 1
+          # WORSHIP: add Vol.3 as a separate card; never alter/remove SHOUT.
+          p = Path('worship.html')
+          s = p.read_text(encoding='utf-8')
+          if 'aria-label="나의 찬양 Vol. 3 Spotify"' not in s:
+              marker = '<div class="albums-grid">'
+              i = s.find(marker)
+              if i < 0:
+                  raise SystemExit('worship albums-grid marker not found')
+              i = s.find('\n', i) + 1
               card = '''<a class="album-card" href="https://open.spotify.com/artist/6zhb0e3KvoFY5pcefQUHA6" target="_blank" rel="noopener" aria-label="나의 찬양 Vol. 3 Spotify">
   <img class="album-cover" src="images/My hymn3.jpg" alt="나의 찬양 Vol. 3" loading="lazy">
   <div class="album-cover-overlay"></div>
@@ -51,30 +53,33 @@ jobs:
   </div>
 </a>
 '''
-              w = w[:insert_at] + card + w[insert_at:]
-          w = w.replace('Vol.1(The First Confession), Vol.2(2nd Confession).', 'Vol.1(The First Confession), Vol.2(2nd Confession), Vol.3, SHOUT.')
-          w = w.replace('나의 찬양 Vol.1 · Vol.2.', '나의 찬양 Vol.1 · Vol.2 · Vol.3 · SHOUT.')
-          worship.write_text(w, encoding='utf-8')
+              s = s[:i] + card + s[i:]
+          s = s.replace('Vol.1(The First Confession), Vol.2(2nd Confession).', 'Vol.1(The First Confession), Vol.2(2nd Confession), Vol.3, SHOUT.')
+          s = s.replace('나의 찬양 Vol.1 · Vol.2.', '나의 찬양 Vol.1 · Vol.2 · Vol.3 · SHOUT.')
+          p.write_text(s, encoding='utf-8')
 
-          pick = Path('js/home-chris-pick-v2.js')
-          p = pick.read_text(encoding='utf-8')
-          if "title:'Shout'" not in p:
-              anchor = "    {type:'WORSHIP',icon:'♩',title:'나의 찬양 Vol.3'"
-              pos = p.find(anchor)
-              if pos < 0: raise SystemExit('Chris Pick Vol.3 anchor not found')
-              line_end = p.find('\n', pos)
+          # CHRIS PICK: preserve existing Vol.3 and add SHOUT if missing.
+          p = Path('js/home-chris-pick-v2.js')
+          s = p.read_text(encoding='utf-8')
+          if "title:'Shout'" not in s:
+              marker = "    {type:'WORSHIP',icon:'♩',title:'나의 찬양 Vol.3'"
+              i = s.find(marker)
+              if i < 0:
+                  raise SystemExit('Chris Pick Vol.3 marker not found')
+              i = s.find('\n', i) + 1
               shout = "    {type:'WORSHIP',icon:'♩',title:'Shout',sub:'English Worship',desc:{ko:'영어로 함께 외치는 찬양과 예배의 메시지를 담은 워십 작품입니다.',en:'An English worship work carrying a message of praise and worship to be sung together.'},image:'/images/og_share.png',href:'worship.html',action:{ko:'워십 보기',en:'View Worship'}},\n"
-              p = p[:line_end+1] + shout + p[line_end+1:]
-          pick.write_text(p, encoding='utf-8')
-
-          print('Archive content updated: Run it back, 나의 찬양 Vol.3, SHOUT preserved.')
-      - name: Validate
+              s = s[:i] + shout + s[i:]
+          p.write_text(s, encoding='utf-8')
+          print('Updated MUSIC, WORSHIP and CHRIS PICK.')
+          PY
+      - name: Validate required content
         run: |
           grep -q "Run it back" music.html
           grep -q "나의 찬양 Vol. 3" worship.html
           grep -q "images/My hymn3.jpg" worship.html
           grep -q "title:'Shout'" js/home-chris-pick-v2.js
-      - name: Commit
+          grep -q "title:'나의 찬양 Vol.3'" js/home-chris-pick-v2.js
+      - name: Commit archive changes
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'

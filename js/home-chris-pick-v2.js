@@ -3,33 +3,38 @@
 (() => {
   /*
    * Individual content catalog.
-   * A project can have multiple independent entries: e.g. Miracle Shot BOOK
-   * and Miracle Shot OST. The daily selector chooses exactly ONE entry from
-   * this complete featured-content pool.
+   * A project may have multiple independent entries: BOOK, OST, MUSIC, VIDEO,
+   * and WORSHIP are separate candidates. Exactly ONE candidate is selected
+   * from the complete verified creative-content pool each day.
    */
   const PICKS = [
-    {type:'BOOK',icon:'✦',title:'SISTER SQUAD 1',sub:'The Book of Whispers · Book 1',desc:{ko:'율이와 정이의 첫 번째 모험. 요정 마을 루미나에서 시작된 두 자매의 판타지 이야기와 가족, 우정, 용기를 만나보세요.',en:'The first adventure of Yuli and Jeong-i. Enter the fantasy world of Lumina and discover a story of sisters, family, friendship, and courage.'},image:'/images/sistersquad1.png?v=20260828',href:'sistersquad.html',action:{ko:'1권 보러가기',en:'Read Book 1'}},
-    {type:'BOOK',icon:'✦',title:'SISTER SQUAD 2',sub:'The Cursed Fairy Village · Book 2',desc:{ko:'율이와 정이, 그리고 아빠 크리스가 저주받은 요정 마을을 구하기 위해 떠나는 두 번째 모험.',en:'The second adventure of Yuli, Jeong-i and Chris as they set out to save the cursed fairy village.'},image:'/images/sistersquad2_poster.jpg',href:'sistersquad2.html',action:{ko:'2권 보러가기',en:'Read Book 2'}},
+    // BOOK
+    {type:'BOOK',icon:'✦',title:'SISTER SQUAD 1',sub:'The Book of Whispers · Book 1',desc:{ko:'율과 정, 두 자매가 신비로운 마법 세계 페어리 타운에서 펼치는 첫 번째 판타지 모험입니다. 소설과 컬러링북, OST로 이어지는 SISTER SQUAD의 시작을 만나보세요.',en:'The first fantasy adventure of two sisters, Yul and Jung, in the mysterious Fairy Town. The beginning of the SISTER SQUAD story world, expanded through fiction, coloring books, and an OST.'},image:'/images/sistersquad1.png?v=20260828',href:'sistersquad.html',action:{ko:'1권 보러가기',en:'Read Book 1'}},
+    {type:'BOOK',icon:'✦',title:'SISTER SQUAD 2',sub:'저주받은 요정마을 · Book 2',desc:{ko:'사춘기 소녀가 된 율과 독립심 강한 정, 그리고 아빠 크리스가 잿빛으로 변한 요정마을 루미나를 구하기 위해 떠나는 두 번째 모험입니다.',en:'The second adventure of Yul, Jung, and their father Chris as they set out to save Lumina, a fairy village turned gray by a curse.'},image:'/images/sistersquad2_poster.jpg',href:'sistersquad2.html',action:{ko:'2권 보러가기',en:'Read Book 2'}},
     {type:'BOOK',icon:'✦',title:'Miracle Shot',sub:'Story · Book',desc:{ko:'풋살을 통해 서로 다른 아이들이 자신의 재능과 빛을 발견해가는 Miracle Shot의 이야기입니다.',en:'The Miracle Shot story of children discovering their gifts and their own light through futsal.'},image:'/images/og_share.png',href:'miracleshot.html',action:{ko:'작품 보기',en:'View Work'}},
 
-    {type:'MUSIC',icon:'♫',title:'When the City Stood Still',sub:'Music Archive',desc:{ko:'Chris LEE.PAPA의 창작 음악 아카이브에 수록된 작품입니다.',en:'A work from the Chris LEE.PAPA creative music archive.'},image:'/images/og_share.png',href:'music.html',action:{ko:'음악 보기',en:'View Music'}},
-    {type:'MUSIC',icon:'♫',title:'To The Space',sub:'Music Archive',desc:{ko:'Chris LEE.PAPA의 창작 음악 아카이브에 수록된 작품입니다.',en:'A work from the Chris LEE.PAPA creative music archive.'},image:'/images/og_share.png',href:'music.html',action:{ko:'음악 보기',en:'View Music'}},
-    {type:'MUSIC',icon:'♫',title:'Ensemble',sub:'Music Archive',desc:{ko:'Chris LEE.PAPA의 창작 음악 아카이브에 수록된 작품입니다.',en:'A work from the Chris LEE.PAPA creative music archive.'},image:'/images/og_share.png',href:'music.html',action:{ko:'음악 보기',en:'View Music'}},
-    {type:'MUSIC',icon:'♫',title:'To Rise',sub:'Music Archive',desc:{ko:'Chris LEE.PAPA의 창작 음악 아카이브에 수록된 작품입니다.',en:'A work from the Chris LEE.PAPA creative music archive.'},image:'/images/og_share.png',href:'music.html',action:{ko:'음악 보기',en:'View Music'}},
-    {type:'MUSIC',icon:'♫',title:'사랑한다고',sub:'Music Archive',desc:{ko:'Chris LEE.PAPA의 창작 음악 아카이브에 수록된 작품입니다.',en:'A work from the Chris LEE.PAPA creative music archive.'},image:'/images/og_share.png',href:'music.html',action:{ko:'음악 보기',en:'View Music'}},
-    {type:'MUSIC',icon:'♫',title:'2026 난리났어',sub:'Music Archive',desc:{ko:'Chris LEE.PAPA의 창작 음악 아카이브에 수록된 작품입니다.',en:'A work from the Chris LEE.PAPA creative music archive.'},image:'/images/og_share.png',href:'music.html',action:{ko:'음악 보기',en:'View Music'}},
-    {type:'MUSIC',icon:'♫',title:'벽력일섬',sub:'Music Archive',desc:{ko:'Chris LEE.PAPA의 창작 음악 아카이브에 수록된 작품입니다.',en:'A work from the Chris LEE.PAPA creative music archive.'},image:'/images/og_share.png',href:'music.html',action:{ko:'음악 보기',en:'View Music'}},
-    {type:'MUSIC',icon:'♫',title:'영역전개',sub:'Music Archive',desc:{ko:'Chris LEE.PAPA의 창작 음악 아카이브에 수록된 작품입니다.',en:'A work from the Chris LEE.PAPA creative music archive.'},image:'/images/og_share.png',href:'music.html',action:{ko:'음악 보기',en:'View Music'}},
-    {type:'MUSIC',icon:'♫',title:'We own the Cup',sub:'Music Archive',desc:{ko:'Chris LEE.PAPA의 창작 음악 아카이브에 수록된 작품입니다.',en:'A work from the Chris LEE.PAPA creative music archive.'},image:'/images/og_share.png',href:'music.html',action:{ko:'음악 보기',en:'View Music'}},
-    {type:'MUSIC',icon:'♫',title:'Miracle Shot OST',sub:'Miracle Shot · Original Soundtrack',desc:{ko:'Miracle Shot 세계관의 이야기를 음악으로 만나는 오리지널 사운드트랙입니다.',en:'The original soundtrack bringing the world and story of Miracle Shot to life through music.'},image:'/images/og_share.png',href:'miracleshot.html',action:{ko:'OST 보기',en:'View OST'}},
+    // MUSIC — the music archive currently presents 9 albums / 41 tracks
+    {type:'MUSIC',icon:'♫',title:'When the City Stood Still',sub:'Music Archive',desc:{ko:'Chris LEE.PAPA MUSIC ARCHIVE에 수록된 창작 음악 작품입니다.',en:'A creative music work from the Chris LEE.PAPA MUSIC ARCHIVE.'},image:'/images/og_share.png',href:'music.html',action:{ko:'음악 보기',en:'View Music'}},
+    {type:'MUSIC',icon:'♫',title:'To The Space',sub:'Music Archive',desc:{ko:'Chris LEE.PAPA MUSIC ARCHIVE에 수록된 창작 음악 작품입니다.',en:'A creative music work from the Chris LEE.PAPA MUSIC ARCHIVE.'},image:'/images/og_share.png',href:'music.html',action:{ko:'음악 보기',en:'View Music'}},
+    {type:'MUSIC',icon:'♫',title:'Ensemble',sub:'Music Archive',desc:{ko:'Chris LEE.PAPA MUSIC ARCHIVE에 수록된 창작 음악 작품입니다.',en:'A creative music work from the Chris LEE.PAPA MUSIC ARCHIVE.'},image:'/images/og_share.png',href:'music.html',action:{ko:'음악 보기',en:'View Music'}},
+    {type:'MUSIC',icon:'♫',title:'To Rise',sub:'Music Archive',desc:{ko:'Chris LEE.PAPA MUSIC ARCHIVE에 수록된 창작 음악 작품입니다.',en:'A creative music work from the Chris LEE.PAPA MUSIC ARCHIVE.'},image:'/images/og_share.png',href:'music.html',action:{ko:'음악 보기',en:'View Music'}},
+    {type:'MUSIC',icon:'♫',title:'사랑한다고',sub:'Music Archive',desc:{ko:'Chris LEE.PAPA MUSIC ARCHIVE에 수록된 창작 음악 작품입니다.',en:'A creative music work from the Chris LEE.PAPA MUSIC ARCHIVE.'},image:'/images/og_share.png',href:'music.html',action:{ko:'음악 보기',en:'View Music'}},
+    {type:'MUSIC',icon:'♫',title:'2026 난리났어',sub:'Music Archive',desc:{ko:'Chris LEE.PAPA MUSIC ARCHIVE에 수록된 창작 음악 작품입니다.',en:'A creative music work from the Chris LEE.PAPA MUSIC ARCHIVE.'},image:'/images/og_share.png',href:'music.html',action:{ko:'음악 보기',en:'View Music'}},
+    {type:'MUSIC',icon:'♫',title:'벽력일섬',sub:'Music Archive',desc:{ko:'Chris LEE.PAPA MUSIC ARCHIVE에 수록된 창작 음악 작품입니다.',en:'A creative music work from the Chris LEE.PAPA MUSIC ARCHIVE.'},image:'/images/og_share.png',href:'music.html',action:{ko:'음악 보기',en:'View Music'}},
+    {type:'MUSIC',icon:'♫',title:'영역전개',sub:'Music Archive',desc:{ko:'Chris LEE.PAPA MUSIC ARCHIVE에 수록된 창작 음악 작품입니다.',en:'A creative music work from the Chris LEE.PAPA MUSIC ARCHIVE.'},image:'/images/og_share.png',href:'music.html',action:{ko:'음악 보기',en:'View Music'}},
+    {type:'MUSIC',icon:'♫',title:'We own the Cup',sub:'Music Archive',desc:{ko:'Chris LEE.PAPA MUSIC ARCHIVE에 수록된 창작 음악 작품입니다.',en:'A creative music work from the Chris LEE.PAPA MUSIC ARCHIVE.'},image:'/images/og_share.png',href:'music.html',action:{ko:'음악 보기',en:'View Music'}},
+    {type:'MUSIC',icon:'♫',title:'Miracle Shot OST',sub:'Miracle Shot · Original Soundtrack',desc:{ko:'Miracle Shot의 세계와 이야기를 음악으로 확장한 오리지널 사운드트랙입니다.',en:'The original soundtrack expanding the world and story of Miracle Shot through music.'},image:'/images/og_share.png',href:'miracleshot.html',action:{ko:'OST 보기',en:'View OST'}},
     {type:'MUSIC',icon:'♫',title:'SISTER SQUAD 2 OST',sub:'SISTER SQUAD 2 · Original Soundtrack',desc:{ko:'SISTER SQUAD 2의 세계와 이야기를 음악으로 확장한 오리지널 사운드트랙입니다.',en:'The original soundtrack expanding the world and story of SISTER SQUAD 2 through music.'},image:'/images/sistersquad2_poster.jpg',href:'sistersquad2.html',action:{ko:'OST 보기',en:'View OST'}},
 
+    // VIDEO — only verified works retained here; unverified entries removed
     {type:'VIDEO',icon:'▶',title:'FURIOUS',sub:'AI Music Video',desc:{ko:'생성형 AI 비주얼과 음악으로 제작한 Chris LEE.PAPA의 오리지널 영상 작품입니다.',en:'An original Chris LEE.PAPA video work created with generative AI visuals and music.'},image:'/images/og_share.png',href:'movie.html',action:{ko:'영상 보기',en:'Watch Video'}},
     {type:'VIDEO',icon:'▶',title:'사랑한다고 MV',sub:'Music Video',desc:{ko:'창작 음악 사랑한다고를 영상으로 확장한 오리지널 뮤직비디오입니다.',en:'An original music video expanding the creative work 사랑한다고 into moving images.'},image:'/images/og_share.png',href:'movie.html',action:{ko:'영상 보기',en:'Watch Video'}},
-    {type:'VIDEO',icon:'▶',title:'예수님의 이야기',sub:'AI Video',desc:{ko:'예수님의 이야기를 생성형 AI 영상으로 표현한 작품입니다.',en:'A generative-AI video work depicting the story of Jesus.'},image:'/images/og_share.png',href:'movie.html',action:{ko:'영상 보기',en:'Watch Video'}},
-    {type:'VIDEO',icon:'▶',title:'다큐 예고편',sub:'Documentary Trailer',desc:{ko:'Chris LEE.PAPA의 영상 아카이브에 수록된 다큐멘터리 예고편입니다.',en:'A documentary trailer from the Chris LEE.PAPA video archive.'},image:'/images/og_share.png',href:'movie.html',action:{ko:'영상 보기',en:'Watch Video'}},
+    {type:'VIDEO',icon:'▶',title:'SISTER SQUAD Cinematic Trailer',sub:'Official Trailer',desc:{ko:'두 자매 율과 정이의 마법 세계 모험을 소개하는 SISTER SQUAD 공식 시네마틱 트레일러입니다.',en:'The official cinematic trailer introducing Yul and Jung’s adventure in the magical world of SISTER SQUAD.'},image:'/images/og_share.png',href:'sistersquad.html',action:{ko:'트레일러 보기',en:'Watch Trailer'}},
 
-    {type:'WORSHIP',icon:'♩',title:'승리하리라',sub:'Worship · CCM',desc:{ko:'다시 일어설 용기와 믿음을 노래하는 예배 음악입니다.',en:'A worship song about courage, faith, and rising again.'},image:'/images/My hymn3.jpg',href:'worship.html',action:{ko:'워십 보기',en:'View Worship'}}
+    // WORSHIP
+    {type:'WORSHIP',icon:'♩',title:'나의 찬양 Vol.1',sub:'The First Confession',desc:{ko:'영혼 깊은 곳에서 올려드리는 고백과 찬양을 담은 첫 번째 워십 앨범입니다.',en:'The first worship album, a record of confession and praise offered from deep within the soul.'},image:'/images/My hymn3.jpg',href:'worship.html',action:{ko:'워십 보기',en:'View Worship'}},
+    {type:'WORSHIP',icon:'♩',title:'나의 찬양 Vol.2',sub:'2nd Confession',desc:{ko:'첫 번째 고백에 이어 이어지는 두 번째 찬양의 기록입니다.',en:'The second record of worship and confession following the first collection.'},image:'/images/My hymn3.jpg',href:'worship.html',action:{ko:'워십 보기',en:'View Worship'}},
+    {type:'WORSHIP',icon:'♩',title:'승리하리라',sub:'Worship · CCM',desc:{ko:'다시 일어설 용기와 믿음을 노래하는 찬양 작품입니다.',en:'A worship song about courage, faith, and rising again.'},image:'/images/My hymn3.jpg',href:'worship.html',action:{ko:'워십 보기',en:'View Worship'}}
   ];
 
   const style=document.createElement('style');

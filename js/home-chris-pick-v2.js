@@ -5,8 +5,8 @@
     {
       type: 'MUSIC', icon: '♫', title: 'Miracle Shot', sub: 'Chris LEE.PAPA · Single',
       desc: {
-        ko: '음악으로 만나는 새로운 이야기.',
-        en: 'A new story told through music.'
+        ko: '남들과 조금 다르다는 이유로 소외받던 아이들이 풋살 공동체를 통해 하나님이 주신 달란트와 자신만의 빛을 발견해가는 성장 드라마를 음악으로 담았습니다. 각자의 상처와 재능을 가진 네 아이가 풋살 공동체 안에서 서로의 다름을 받아들이고, 자신의 진짜 빛을 발견해가는 이야기입니다.',
+        en: 'A musical story about four children who, after being isolated for being different, discover their God-given gifts and their own light through a futsal community. Each child carries different wounds and talents, and together they learn to embrace their differences and discover who they truly are.'
       },
       image: 'https://i.scdn.co/image/ab67616d0000b2739ca1fa71b9788981b26ad329',
       href: 'miracleshot.html', action: { ko: '작품 보기', en: 'View Work' }
@@ -76,7 +76,6 @@
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   }
 
-  // Date-seeded selection: random-looking, but identical for everyone on the same day.
   function getDailyPick() {
     const key = getTodayKey();
     let hash = 2166136261;
@@ -91,12 +90,10 @@
   function render() {
     const target = document.getElementById('chris-pick');
     if (!target) return;
-
     const lang = window.getCurrentLang ? window.getCurrentLang() : 'ko';
     const d = new Date();
     const date = `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
     const pick = getDailyPick();
-
     target.innerHTML = `
       <div class="clp-pick-content">
         <h1 class="clp-pick-heading">Chris's Pick</h1>

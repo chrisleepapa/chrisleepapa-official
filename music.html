@@ -61,6 +61,7 @@ a{text-decoration:none;color:inherit}
 .archive-tracks{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:7px;margin-top:10px}
 .archive-track{color:#aaa;padding:6px 9px;background:rgba(201,168,76,.04);border-radius:7px;font-size:.82rem}
 .archive-total{text-align:center;color:#777;font-size:.8rem;margin-top:25px}
+.music-story-text{color:#c8c4bc;margin:8px 0 0;line-height:1.8}
 @media(max-width:900px){.interactive-player-wrapper{flex-direction:column;padding:0 10px}.player-focus{padding:25px 15px}.playlist-sidebar{max-height:none}.spotify-container{height:400px}}
 </style>
 </head>
@@ -94,7 +95,7 @@ a{text-decoration:none;color:inherit}
 <div class="archive-box">
 <h2>✦ MUSIC ARCHIVE</h2>
 <p class="archive-intro" data-i18n="music_archive_intro">Chris LEE.PAPA의 음악 작업과 글로벌 플랫폼 발매 작품을 한 곳에서 소개합니다.</p>
-<h3>✦ ALBUMS &amp; TRACKLIST</h3>
+<h3>✦ 앨범에 담긴 이야기</h3>
 <div class="archive-list" id="archive-list"></div>
 <p class="archive-total" id="archive-total"></p>
 </div>
@@ -153,6 +154,7 @@ music_archive_intro:'Explore Chris LEE.PAPA’s music projects and works release
 type_Album:'Album',type_EP:'EP',type_Single:'Single',type_Instrumental:'Instrumental',type_Vocal:'Vocal'
 }
 };
+window.PAGE_I18N=MUSIC_I18N;
 
 function musicLang(){return document.documentElement.lang==='en'?'en':'ko'}
 function musicT(key){return MUSIC_I18N[musicLang()][key]??key}
@@ -213,6 +215,53 @@ renderPlaylist();renderArchive();renderActive();hydrateCovers();
 let lastMusicLang=musicLang();
 const musicLangObserver=new MutationObserver(()=>{const next=musicLang();if(next!==lastMusicLang){lastMusicLang=next;refreshMusicLanguage()}});
 musicLangObserver.observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+</script>
+<script>
+(function(){
+const MUSIC_STORIES={
+ko:{
+'When the city stood still':'사랑하는 사람과의 추억이 담긴 도시의 시간이 멈춰버린 사랑처럼, 잠시 멈춘 듯한 순간들을 음악으로 기록한 작품. 애절하고 애틋한 그리움이 담긴 앨범.',
+'We own the Cup':'경쟁과 승리의 순간이 가진 에너지에서 출발한 작품. 스포츠와 젊음, 뜨거운 여름의 분위기를 음악으로 표현한 앨범.',
+'Run it back':'아이돌 음악의 감성을 담은 곡들로 구성된 EP. 한 번 지나간 순간을 다시 되돌리고 싶은 마음에서 출발한 작품.',
+'To The Space':'SpaceX의 상장과 우주산업의 새로운 시대에 대한 기대를 담은 싱글. 더 넓은 미래와 미지의 세계를 향한 설렘을 음악으로 표현한 작품.',
+'Ensemble':'오케스트라의 선율을 중심으로 피아노, 바이올린 등 다양한 악기의 협주가 돋보이는 연주곡 앨범. 여러 악기가 하나의 음악으로 어우러지는 조화를 담았다.',
+'To Rise':'다시 일어나 앞으로 나아가는 순간을 담은 instrumental 작품. 멈춰 있던 마음을 일으켜 다시 한 걸음 내딛는 순간의 감정을 음악으로 표현했다.',
+'영역전개':'《주술회전》의 캐릭터와 강렬한 기술에서 영감을 받아 제작한 앨범. 압도적인 힘과 긴장감, 폭발적인 에너지를 음악으로 표현한 작품. 료이키텐카이!',
+'벽력일섬':'《귀멸의 칼날》의 주(柱)들과 그들이 보여주는 강력한 카리스마에서 영감을 받은 앨범. 날카롭고 빠르게 몰아치는 에너지와 강렬한 존재감을 음악으로 담아냈다.',
+'2026 앨범':'2026년의 힘찬 시작을 알리는 기대와 설렘이 공존하는 앨범. 새로운 한 해를 향한 긍정적인 에너지와 앞으로 펼쳐질 이야기에 대한 기대를 담았다.',
+'사랑한다고':'소중한 사람을 잃은 아픔과 그리움을 담은 노래. 전하지 못했던 마음과 사랑한다는 말을 음악으로 전하는 작품.'
+},
+en:{
+'When the city stood still':'A work that records moments when a city filled with memories of someone you love seems to stand still, like a love that has suddenly stopped in time. An album filled with aching, tender longing.',
+'We own the Cup':'A work born from the energy of competition and victory. It captures the spirit of sports, youth and a hot summer through music.',
+'Run it back':'An EP built around idol-inspired songs, born from the desire to turn back time and relive a moment that has already passed.',
+'To The Space':'A single inspired by anticipation for SpaceX’s public offering and the coming era of the space industry. It expresses excitement for a wider future and the unknown world beyond.',
+'Ensemble':'An instrumental album highlighted by orchestral melodies and the interplay of piano, violin and other instruments. It captures the harmony created when different sounds become one.',
+'To Rise':'An instrumental work about rising again and moving forward. It expresses the feeling of lifting a heart that had been still and taking another step ahead.',
+'영역전개':'An album inspired by the characters and powerful techniques of Jujutsu Kaisen. It turns overwhelming power, tension and explosive energy into music. RYOIKI TENKAI!',
+'벽력일섬':'An album inspired by the Hashira of Demon Slayer and their powerful charisma. It captures sharp, fast-moving energy and an intense sense of presence.',
+'2026 앨범':'An album filled with anticipation and excitement, announcing a powerful beginning to 2026. It carries positive energy for a new year and anticipation for the stories still to come.',
+'사랑한다고':'A song about the pain and longing of losing someone precious. It is a musical expression of feelings left unsaid and the words, “I love you.”'
+}
+};
+function renderMusicStories(){
+ const list=document.getElementById('archive-list');
+ const heading=document.querySelector('.archive-box h3');
+ if(!list||!heading)return;
+ const lang=document.documentElement.lang==='en'?'en':'ko';
+ heading.textContent=lang==='en'?'✦ THE STORY BEHIND THE MUSIC':'✦ 앨범에 담긴 이야기';
+ list.innerHTML=musicData.map(a=>{
+   const story=MUSIC_STORIES[lang][a.title];
+   if(!story)return '';
+   return `<article class="archive-album"><div class="archive-album-title">${a.title}</div><p class="music-story-text">${story}</p></article>`;
+ }).join('');
+ const total=document.getElementById('archive-total');
+ if(total)total.textContent='';
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',renderMusicStories);else renderMusicStories();
+let last=document.documentElement.lang;
+new MutationObserver(()=>{const next=document.documentElement.lang;if(next!==last){last=next;renderMusicStories()}}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+})();
 </script>
 <script src="js/main.js"></script>
 </body>

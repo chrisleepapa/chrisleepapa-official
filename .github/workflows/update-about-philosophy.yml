@@ -1,0 +1,75 @@
+name: Update About Creative Philosophy
+
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-about:
+    if: ${{ !contains(github.event.head_commit.message, 'Update About Creative Philosophy content') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout develop
+        uses: actions/checkout@v4
+        with:
+          ref: develop
+          fetch-depth: 0
+
+      - name: Update philosophy copy
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path('about.html')
+          text = path.read_text(encoding='utf-8')
+
+          old_ko_1 = '이 사이트 <span class="gold">The Creative Archive</span>는 단순한 포트폴리오가 아닙니다. 신앙, 음악, 문학, 영상, 그리고 게임이 하나의 우주 안에서 공존하는 공간입니다.'
+          new_ko_1 = '이곳은 <span class="gold">The Creative Archive</span>입니다. 단순히 작품을 모아놓은 포트폴리오가 아니라, 생각과 믿음, 이야기와 음악, 그리고 새로운 상상을 직접 만들고 기록해가는 창작 아카이브입니다.'
+
+          old_ko_2 = '<span class="hl">Bible in my hand</span>는 성경 1189장을 매일 묵상할 수 있는 온라인 성경 앱입니다. 구약과 신약 전체를 읽고, 형광펜과 북마크, 메모를 남기며 말씀을 삶 속에 새기는 도구입니다. <span class="hl">찬양 프로젝트(Worship)</span>는 영혼 깊은 곳에서 올려드리는 고백이며, 나의 찬양 Vol.1과 Vol.2를 Spotify에서 만나볼 수 있습니다.'
+          new_ko_2 = '<span class="hl">Bible</span>과 <span class="hl">Worship</span>은 믿음에서 시작된 기록이고, <span class="hl">Music</span>은 그 마음을 노래로 표현하는 공간입니다. <span class="hl">SISTER SQUAD</span>는 두 딸의 이야기에서 시작된 오리지널 IP로, 책과 캐릭터, 노래와 다양한 콘텐츠로 세계를 확장해가고 있습니다. <span class="hl">MIRACLE SHOT</span> 역시 새로운 이야기와 세계를 만들어가는 창작 프로젝트입니다.'
+
+          old_ko_3 = '시련이 있었습니다. 넘어지고 쓰러지는 시간이 있었습니다. 하지만 어두운 밤이 지나면 반드시 별빛이 보입니다. 저는 그 별빛을 믿고, 오늘도 <span class="gold">창작을 멈추지 않습니다.</span>'
+          new_ko_3 = '서로 다른 메뉴와 프로젝트처럼 보이지만, 그 중심에는 하나의 질문이 있습니다. <span class="hl">“내가 가진 생각과 믿음, 그리고 상상을 어떻게 나만의 창작으로 표현할 것인가?”</span> 음악이 이야기가 되고, 이야기가 영상과 이미지로 확장되며, 때로는 게임과 새로운 프로젝트로 이어집니다. 저는 그 연결을 믿고 오늘도 <span class="gold">창작을 멈추지 않습니다.</span>'
+
+          old_en_1 = 'This site, <span class="gold">The Creative Archive</span>, is more than a portfolio. It is a creative space where faith, music, literature, video, and games coexist within one universe.'
+          new_en_1 = 'This is <span class="gold">The Creative Archive</span> — more than a portfolio. It is a creative archive where faith, ideas, stories, music, and imagination are created, connected, and recorded.'
+
+          old_en_2 = '<span class="hl">Bible in my hand</span> is an online Bible reading and reflection app designed to help readers engage with all 1,189 chapters of Scripture. Users can read the Old and New Testament while highlighting, bookmarking, and taking notes. <span class="hl">The Worship Project</span> is a collection of songs offered as personal expressions of faith, including Worship Vol. 1 and Vol. 2.'
+          new_en_2 = '<span class="hl">Bible</span> and <span class="hl">Worship</span> are records born from faith, while <span class="hl">Music</span> gives those thoughts a voice through song. <span class="hl">SISTER SQUAD</span> is an original IP inspired by my two daughters, expanding from their story into books, characters, songs, and other creative works. <span class="hl">MIRACLE SHOT</span> is another creative project through which I continue to build new stories and worlds.'
+
+          old_en_3 = 'There have been trials. There were times when I fell and struggled. But after the darkest night, starlight appears again. I believe in that starlight, and today I <span class="gold">keep creating.</span>'
+          new_en_3 = 'These menus and projects may look different, but they share one question: <span class="hl">“How can I express what I believe, think, and imagine through my own creative work?”</span> Music can become a story, a story can expand into video and images, and sometimes it becomes a game or an entirely new project. I believe in those connections, and I <span class="gold">keep creating.</span>'
+
+          replacements = [
+              (old_ko_1, new_ko_1), (old_ko_2, new_ko_2), (old_ko_3, new_ko_3),
+              (old_en_1, new_en_1), (old_en_2, new_en_2), (old_en_3, new_en_3),
+          ]
+
+          changed = False
+          for old, new in replacements:
+              if old in text:
+                  text = text.replace(old, new, 1)
+                  changed = True
+
+          if not changed:
+              print('No old philosophy copy found; nothing to change.')
+              raise SystemExit(0)
+
+          path.write_text(text, encoding='utf-8')
+          print('Creative Philosophy updated.')
+
+      - name: Commit updated About page
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add about.html
+          git diff --cached --quiet && exit 0
+          git commit -m "Update About Creative Philosophy content"
+          git push origin HEAD:develop

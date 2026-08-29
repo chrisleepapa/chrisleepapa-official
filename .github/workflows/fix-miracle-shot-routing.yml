@@ -3,14 +3,14 @@ name: Fix Miracle Shot page routing
 on:
   push:
     branches: [develop]
-  workflow_dispatch:
+    paths:
+      - '.github/workflows/fix-miracle-shot-routing.yml'
 
 permissions:
   contents: write
 
 jobs:
   patch:
-    if: github.event_name == 'workflow_dispatch' || !contains(github.event.head_commit.message, 'chore: enable Miracle Shot page script routing')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

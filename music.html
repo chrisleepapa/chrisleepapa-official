@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#030305"><link rel="icon" href="images/favicon.png"><link rel="stylesheet" href="css/common.css">
-<meta name="description" content="Chris LEE.PAPA의 공식 MUSIC ARCHIVE. Spotify와 YouTube에서 발매된 AI 음악, 앨범, EP, 싱글과 다양한 창작 음악을 한곳에서 소개합니다.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#030305">
+<link rel="icon" href="images/favicon.png">
+<link rel="stylesheet" href="css/common.css">
+<meta name="description" data-i18n="music_meta_description" content="Chris LEE.PAPA의 공식 MUSIC ARCHIVE. Spotify와 YouTube에서 발매된 AI 음악, 앨범, EP, 싱글과 다양한 창작 음악을 한곳에서 소개합니다.">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <link rel="canonical" href="https://chrisleepapa-official.vercel.app/music">
-<meta property="og:title" content="MUSIC ARCHIVE – Chris LEE.PAPA">
-<meta property="og:description" content="Chris LEE.PAPA의 AI 음악, 앨범, EP, 싱글과 다양한 창작 음악을 한곳에서 만나보세요.">
+<meta property="og:title" data-i18n="music_meta_title" content="MUSIC ARCHIVE – Chris LEE.PAPA">
+<meta property="og:description" data-i18n="music_meta_description_short" content="Chris LEE.PAPA의 AI 음악, 앨범, EP, 싱글과 다양한 창작 음악을 한곳에서 만나보세요.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://chrisleepapa-official.vercel.app/music">
 <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1">
@@ -15,19 +19,86 @@
 <meta property="og:locale:alternate" content="en_US">
 <meta property="og:site_name" content="Chris LEE.PAPA">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="MUSIC ARCHIVE – Chris LEE.PAPA">
-<meta name="twitter:description" content="Chris LEE.PAPA의 AI 음악과 글로벌 플랫폼 발매 작품을 감상하세요.">
+<meta name="twitter:title" data-i18n="music_meta_title" content="MUSIC ARCHIVE – Chris LEE.PAPA">
+<meta name="twitter:description" data-i18n="music_twitter_description" content="Chris LEE.PAPA의 AI 음악과 글로벌 플랫폼 발매 작품을 감상하세요.">
 <meta name="twitter:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1">
-<title>MUSIC ARCHIVE – Chris LEE.PAPA</title>
+<title data-i18n="music_meta_title">MUSIC ARCHIVE – Chris LEE.PAPA</title>
 <style>
-:root{--gold:#c9a84c;--gold-light:#e8d08a;--bg:#030305;--text:#f0ece4;--dim:#9a9490;--green:#1DB954}html,body{background:var(--bg);color:var(--text)}body{margin:0;font-family:Pretendard,'Noto Serif KR',sans-serif;line-height:1.6;overflow-x:hidden}a{text-decoration:none;color:inherit}.page-header{height:270px;display:flex;align-items:center;justify-content:center;text-align:center;padding-top:60px}.header-title{font-family:serif;font-size:clamp(2rem,8vw,3.5rem);letter-spacing:.15em;color:#fff}.header-slogan{color:var(--dim)}.interactive-player-wrapper{max-width:1200px;margin:0 auto 70px;padding:0 20px;display:flex;gap:35px}.player-focus,.playlist-sidebar{background:rgba(15,15,20,.55);border:1px solid rgba(255,255,255,.07);border-radius:24px}.player-focus{flex:1.5;padding:40px}.playlist-sidebar{flex:1;padding:25px;max-height:650px;overflow:auto}.album-art-large{width:min(280px,70vw);aspect-ratio:1;margin:0 auto 30px;border-radius:18px;background:#111 center/cover no-repeat;box-shadow:0 20px 50px rgba(0,0,0,.55)}.active-info{text-align:center}.active-info h2{font-size:2rem;margin:0 0 8px}.active-badge{display:inline-block;padding:5px 15px;border:1px solid rgba(29,185,84,.35);border-radius:20px;color:var(--green);font-size:.75rem}.spotify-container{height:380px;margin-top:22px;border-radius:16px;overflow:hidden;background:#0a0a0f}.spotify-container iframe{width:100%;height:100%;border:0}.external-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.external-link-btn{padding:11px 18px;border-radius:24px;color:var(--green);background:rgba(29,185,84,.08);border:1px solid rgba(29,185,84,.3);font-size:.85rem}.youtube-link{color:#ff6666;background:rgba(255,60,60,.08);border-color:rgba(255,60,60,.3)}.playlist-header{font-family:serif;color:var(--gold);letter-spacing:.15em;font-size:1.1rem;padding-bottom:15px;border-bottom:1px solid rgba(201,168,76,.2);margin-bottom:15px}.track-item{display:flex;gap:13px;align-items:center;padding:12px;border-radius:14px;cursor:pointer;border:1px solid transparent;margin-bottom:8px}.track-item:hover,.track-item.active{background:rgba(29,185,84,.07);border-color:rgba(29,185,84,.2)}.track-thumb{width:58px;height:58px;object-fit:cover;border-radius:10px;background:#111;flex:none}.track-details{min-width:0}.track-details h4{margin:0;color:#fff;font-size:.95rem;font-weight:500}.track-details p{margin:3px 0 0;color:#888;font-size:.75rem}.archive{max-width:960px;margin:0 auto 60px;padding:0 20px}.archive-box{border:1px solid rgba(201,168,76,.15);border-radius:20px;padding:30px;background:rgba(10,10,18,.7)}.archive h2,.archive h3{font-family:serif;color:var(--gold)}.archive-intro{color:#c8c4bc}.archive-list{display:flex;flex-direction:column;gap:15px}.archive-album{padding:18px;border:1px solid rgba(255,255,255,.07);border-radius:14px}.archive-album-title{color:var(--gold-light);font-weight:600}.archive-tracks{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:7px;margin-top:10px}.archive-track{color:#aaa;padding:6px 9px;background:rgba(201,168,76,.04);border-radius:7px;font-size:.82rem}.archive-total{text-align:center;color:#777;font-size:.8rem;margin-top:25px}@media(max-width:900px){.interactive-player-wrapper{flex-direction:column;padding:0 10px}.player-focus{padding:25px 15px}.playlist-sidebar{max-height:none}.spotify-container{height:400px}}
+:root{--gold:#c9a84c;--gold-light:#e8d08a;--bg:#030305;--text:#f0ece4;--dim:#9a9490;--green:#1DB954}
+html,body{background:var(--bg);color:var(--text)}
+body{margin:0;font-family:Pretendard,'Noto Serif KR',sans-serif;line-height:1.6;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+.page-header{height:270px;display:flex;align-items:center;justify-content:center;text-align:center;padding-top:60px}
+.header-title{font-family:serif;font-size:clamp(2rem,8vw,3.5rem);letter-spacing:.15em;color:#fff}
+.header-slogan{color:var(--dim)}
+.interactive-player-wrapper{max-width:1200px;margin:0 auto 70px;padding:0 20px;display:flex;gap:35px}
+.player-focus,.playlist-sidebar{background:rgba(15,15,20,.55);border:1px solid rgba(255,255,255,.07);border-radius:24px}
+.player-focus{flex:1.5;padding:40px}
+.playlist-sidebar{flex:1;padding:25px;max-height:650px;overflow:auto}
+.album-art-large{width:min(280px,70vw);aspect-ratio:1;margin:0 auto 30px;border-radius:18px;background:#111 center/cover no-repeat;box-shadow:0 20px 50px rgba(0,0,0,.55)}
+.active-info{text-align:center}
+.active-info h2{font-size:2rem;margin:0 0 8px}
+.active-badge{display:inline-block;padding:5px 15px;border:1px solid rgba(29,185,84,.35);border-radius:20px;color:var(--green);font-size:.75rem}
+.spotify-container{height:380px;margin-top:22px;border-radius:16px;overflow:hidden;background:#0a0a0f}
+.spotify-container iframe{width:100%;height:100%;border:0}
+.external-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.external-link-btn{padding:11px 18px;border-radius:24px;color:var(--green);background:rgba(29,185,84,.08);border:1px solid rgba(29,185,84,.3);font-size:.85rem}
+.youtube-link{color:#ff6666;background:rgba(255,60,60,.08);border-color:rgba(255,60,60,.3)}
+.playlist-header{font-family:serif;color:var(--gold);letter-spacing:.15em;font-size:1.1rem;padding-bottom:15px;border-bottom:1px solid rgba(201,168,76,.2);margin-bottom:15px}
+.track-item{display:flex;gap:13px;align-items:center;padding:12px;border-radius:14px;cursor:pointer;border:1px solid transparent;margin-bottom:8px}
+.track-item:hover,.track-item.active{background:rgba(29,185,84,.07);border-color:rgba(29,185,84,.2)}
+.track-thumb{width:58px;height:58px;object-fit:cover;border-radius:10px;background:#111;flex:none}
+.track-details{min-width:0}
+.track-details h4{margin:0;color:#fff;font-size:.95rem;font-weight:500}
+.track-details p{margin:3px 0 0;color:#888;font-size:.75rem}
+.archive{max-width:960px;margin:0 auto 60px;padding:0 20px}
+.archive-box{border:1px solid rgba(201,168,76,.15);border-radius:20px;padding:30px;background:rgba(10,10,18,.7)}
+.archive h2,.archive h3{font-family:serif;color:var(--gold)}
+.archive-intro{color:#c8c4bc}
+.archive-list{display:flex;flex-direction:column;gap:15px}
+.archive-album{padding:18px;border:1px solid rgba(255,255,255,.07);border-radius:14px}
+.archive-album-title{color:var(--gold-light);font-weight:600}
+.archive-tracks{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:7px;margin-top:10px}
+.archive-track{color:#aaa;padding:6px 9px;background:rgba(201,168,76,.04);border-radius:7px;font-size:.82rem}
+.archive-total{text-align:center;color:#777;font-size:.8rem;margin-top:25px}
+@media(max-width:900px){.interactive-player-wrapper{flex-direction:column;padding:0 10px}.player-focus{padding:25px 15px}.playlist-sidebar{max-height:none}.spotify-container{height:400px}}
 </style>
 </head>
 <body>
 <div id="site-nav"></div>
-<header class="page-header"><div><h1 class="header-title">MUSIC ARCHIVE</h1><p class="header-slogan">AI가 만들어낸 선율, 영혼을 울리는 멜로디</p></div></header>
-<main class="interactive-player-wrapper"><section class="player-focus"><div class="album-art-large" id="main-cover"></div><div class="active-info"><h2 id="main-title"></h2><span class="active-badge" id="main-type"></span></div><div class="spotify-container" id="spotify-container"></div><div class="external-row"><a id="main-external-link" class="external-link-btn" target="_blank" rel="noopener">Spotify에서 앨범 듣기 ›</a><a id="main-youtube-link" class="external-link-btn youtube-link" target="_blank" rel="noopener">YouTube에서 듣기 ›</a></div></section><aside class="playlist-sidebar"><div class="playlist-header">ALBUMS</div><div id="playlist-container"></div></aside></main>
-<section class="archive"><div class="archive-box"><h2>✦ MUSIC ARCHIVE</h2><p class="archive-intro">Chris LEE.PAPA의 음악 작업과 글로벌 플랫폼 발매 작품을 한 곳에서 소개합니다.</p><h3>✦ ALBUMS & TRACKLIST</h3><div class="archive-list" id="archive-list"></div><p class="archive-total" id="archive-total"></p></div></section>
+<header class="page-header">
+<div>
+<h1 class="header-title">MUSIC ARCHIVE</h1>
+<p class="header-slogan" data-i18n="music_header_slogan">AI가 만들어낸 선율, 영혼을 울리는 멜로디</p>
+</div>
+</header>
+<main class="interactive-player-wrapper">
+<section class="player-focus">
+<div class="album-art-large" id="main-cover"></div>
+<div class="active-info">
+<h2 id="main-title"></h2>
+<span class="active-badge" id="main-type"></span>
+</div>
+<div class="spotify-container" id="spotify-container"></div>
+<div class="external-row">
+<a id="main-external-link" class="external-link-btn" target="_blank" rel="noopener" data-i18n="music_spotify_album">Spotify에서 앨범 듣기 ›</a>
+<a id="main-youtube-link" class="external-link-btn youtube-link" target="_blank" rel="noopener" data-i18n="music_youtube_listen">YouTube에서 듣기 ›</a>
+</div>
+</section>
+<aside class="playlist-sidebar">
+<div class="playlist-header" data-i18n="music_albums">ALBUMS</div>
+<div id="playlist-container"></div>
+</aside>
+</main>
+<section class="archive">
+<div class="archive-box">
+<h2>✦ MUSIC ARCHIVE</h2>
+<p class="archive-intro" data-i18n="music_archive_intro">Chris LEE.PAPA의 음악 작업과 글로벌 플랫폼 발매 작품을 한 곳에서 소개합니다.</p>
+<h3>✦ ALBUMS &amp; TRACKLIST</h3>
+<div class="archive-list" id="archive-list"></div>
+<p class="archive-total" id="archive-total"></p>
+</div>
+</section>
 <div id="site-footer"></div>
 <script>
 const musicData=[
@@ -51,28 +122,47 @@ const oembed=id=>`https://open.spotify.com/oembed?url=${encodeURIComponent(spoti
 function getInitialActiveIndex(){
   const params=new URLSearchParams(window.location.search);
   const requested=params.get('album')||params.get('id');
-  if(requested){
-    const index=musicData.findIndex(a=>a.id===requested);
-    if(index>=0)return index;
-  }
+  if(requested){const index=musicData.findIndex(a=>a.id===requested);if(index>=0)return index}
   const hash=decodeURIComponent((window.location.hash||'').replace(/^#/,'')).trim();
-  if(hash){
-    const index=musicData.findIndex(a=>a.id===hash||a.title.toLowerCase().replace(/\s+/g,'-')===hash.toLowerCase());
-    if(index>=0)return index;
-  }
+  if(hash){const index=musicData.findIndex(a=>a.id===hash||a.title.toLowerCase().replace(/\s+/g,'-')===hash.toLowerCase());if(index>=0)return index}
   return 0;
 }
 
-let active=getInitialActiveIndex();const coverCache={};
+let active=getInitialActiveIndex();
+const coverCache={};
+
+const MUSIC_I18N={
+ko:{
+music_meta_title:'MUSIC ARCHIVE – Chris LEE.PAPA',
+music_meta_description:'Chris LEE.PAPA의 공식 MUSIC ARCHIVE. Spotify와 YouTube에서 발매된 AI 음악, 앨범, EP, 싱글과 다양한 창작 음악을 한곳에서 소개합니다.',
+music_meta_description_short:'Chris LEE.PAPA의 AI 음악, 앨범, EP, 싱글과 다양한 창작 음악을 한곳에서 만나보세요.',
+music_twitter_description:'Chris LEE.PAPA의 AI 음악과 글로벌 플랫폼 발매 작품을 감상하세요.',
+music_header_slogan:'AI가 만들어낸 선율, 영혼을 울리는 멜로디',
+music_spotify_album:'Spotify에서 앨범 듣기 ›',music_youtube_listen:'YouTube에서 듣기 ›',music_albums:'ALBUMS',
+music_archive_intro:'Chris LEE.PAPA의 음악 작업과 글로벌 플랫폼 발매 작품을 한 곳에서 소개합니다.',music_track:'TRACK',music_tracks:'TRACKS',music_tracklist_spotify:'Spotify에서 트랙리스트 확인',music_total:'TOTAL',
+type_Album:'Album',type_EP:'EP',type_Single:'Single',type_Instrumental:'Instrumental',type_Vocal:'Vocal'
+},
+en:{
+music_meta_title:'MUSIC ARCHIVE – Chris LEE.PAPA',
+music_meta_description:'Official MUSIC ARCHIVE of Chris LEE.PAPA. Explore AI-generated music, albums, EPs, singles and creative works released on Spotify and YouTube.',
+music_meta_description_short:'Discover Chris LEE.PAPA’s AI music, albums, EPs, singles and creative works in one place.',
+music_twitter_description:'Listen to Chris LEE.PAPA’s AI music and works released on global music platforms.',
+music_header_slogan:'Melodies created by AI, music that resonates with the soul',
+music_spotify_album:'Listen to the album on Spotify ›',music_youtube_listen:'Listen on YouTube ›',music_albums:'ALBUMS',
+music_archive_intro:'Explore Chris LEE.PAPA’s music projects and works released on global platforms in one place.',music_track:'TRACK',music_tracks:'TRACKS',music_tracklist_spotify:'View tracklist on Spotify',music_total:'TOTAL',
+type_Album:'Album',type_EP:'EP',type_Single:'Single',type_Instrumental:'Instrumental',type_Vocal:'Vocal'
+}
+};
+
+function musicLang(){return document.documentElement.lang==='en'?'en':'ko'}
+function musicT(key){return MUSIC_I18N[musicLang()][key]??key}
+function musicType(type){return musicT(`type_${type}`)}
+function musicTrackLabel(count){return count===1?musicT('music_track'):musicT('music_tracks')}
 
 async function loadCover(album){
   if(coverCache[album.id])return coverCache[album.id];
-  try{
-    const r=await fetch(oembed(album.id),{cache:'force-cache'});
-    if(!r.ok)throw new Error('oEmbed failed');
-    const d=await r.json();
-    if(d.thumbnail_url){coverCache[album.id]=d.thumbnail_url;return d.thumbnail_url}
-  }catch(e){console.warn('Spotify cover unavailable:',album.title,e)}
+  try{const r=await fetch(oembed(album.id),{cache:'force-cache'});if(!r.ok)throw new Error('oEmbed failed');const d=await r.json();if(d.thumbnail_url){coverCache[album.id]=d.thumbnail_url;return d.thumbnail_url}}
+  catch(e){console.warn('Spotify cover unavailable:',album.title,e)}
   return '';
 }
 
@@ -82,40 +172,48 @@ function setImageSource(img,album){
   img.onerror=()=>{img.removeAttribute('src');img.style.visibility='hidden'};
 }
 
-async function hydrateCovers(){
-  await Promise.all(musicData.map(a=>loadCover(a)));
-  renderPlaylist();
-  renderActive();
-}
+async function hydrateCovers(){await Promise.all(musicData.map(a=>loadCover(a)));renderPlaylist();renderActive()}
 
 function renderPlaylist(){
-  const box=document.getElementById('playlist-container');
-  box.innerHTML='';
+  const box=document.getElementById('playlist-container');box.innerHTML='';
   musicData.forEach((a,i)=>{
     const count=a.trackCount||a.tracks.length;
-    const item=document.createElement('div');
-    item.className='track-item'+(i===active?' active':'');
-    item.onclick=()=>{active=i;renderPlaylist();renderActive();};
-    const img=document.createElement('img');
-    img.className='track-thumb';img.dataset.albumId=a.id;img.alt=`${a.title} album cover`;setImageSource(img,a);item.appendChild(img);
-    const details=document.createElement('div');details.className='track-details';details.innerHTML=`<h4>${a.title}</h4><p>${a.type} · ${count} TRACK${count===1?'':'S'}</p>`;item.appendChild(details);box.appendChild(item);
+    const item=document.createElement('div');item.className='track-item'+(i===active?' active':'');
+    item.onclick=()=>{active=i;renderPlaylist();renderActive()};
+    const img=document.createElement('img');img.className='track-thumb';img.dataset.albumId=a.id;img.alt=`${a.title} album cover`;img.title=`${a.title} album cover`;setImageSource(img,a);item.appendChild(img);
+    const details=document.createElement('div');details.className='track-details';details.innerHTML=`<h4>${a.title}</h4><p>${musicType(a.type)} · ${count} ${musicTrackLabel(count)}</p>`;item.appendChild(details);box.appendChild(item);
   });
 }
 
 function renderActive(){
   const a=musicData[active];
   document.getElementById('main-title').textContent=a.title;
-  document.getElementById('main-type').textContent=a.type;
+  document.getElementById('main-type').textContent=musicType(a.type);
   document.getElementById('main-external-link').href=spotify(a.id);
   const y=document.getElementById('main-youtube-link');y.href=a.youtube;y.hidden=!a.youtube;
   document.getElementById('spotify-container').innerHTML=`<iframe src="${embed(a.id)}" title="${a.title} Spotify player" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>`;
   const cover=coverCache[a.id];document.getElementById('main-cover').style.backgroundImage=cover?`url("${cover}")`:'';
+  document.getElementById('main-cover').setAttribute('aria-label',`${a.title} album cover`);
   document.querySelectorAll('.track-item').forEach((el,i)=>el.classList.toggle('active',i===active));
 }
 
-function renderArchive(){const box=document.getElementById('archive-list');let total=0;box.innerHTML=musicData.map(a=>{const count=a.trackCount||a.tracks.length;total+=count;const shown=a.tracks.length?`<div class="archive-tracks">${a.tracks.map((t,i)=>`<div class="archive-track"><b>${i+1}</b>${t}</div>`).join('')}</div>`:`<div class="archive-track">Tracklist available on Spotify</div>`;return `<div class="archive-album"><div class="archive-album-title">${a.title} · ${a.type} · ${count} TRACK${count===1?'':'S'}</div>${shown}</div>`}).join('');document.getElementById('archive-total').textContent=`TOTAL ${total} TRACKS`}
+function renderArchive(){
+  const box=document.getElementById('archive-list');let total=0;box.innerHTML=musicData.map(a=>{
+    const count=a.trackCount||a.tracks.length;total+=count;
+    const shown=a.tracks.length?`<div class="archive-tracks">${a.tracks.map((t,i)=>`<div class="archive-track"><b>${i+1}</b> ${t}</div>`).join('')}</div>`:`<div class="archive-track">${musicT('music_tracklist_spotify')}</div>`;
+    return `<div class="archive-album"><div class="archive-album-title">${a.title} · ${musicType(a.type)} · ${count} ${musicTrackLabel(count)}</div>${shown}</div>`;
+  }).join('');
+  document.getElementById('archive-total').textContent=`${musicT('music_total')} ${total} ${musicT('music_tracks')}`;
+}
+
+function refreshMusicLanguage(){renderPlaylist();renderArchive();renderActive()}
 
 renderPlaylist();renderArchive();renderActive();hydrateCovers();
+
+let lastMusicLang=musicLang();
+const musicLangObserver=new MutationObserver(()=>{const next=musicLang();if(next!==lastMusicLang){lastMusicLang=next;refreshMusicLanguage()}});
+musicLangObserver.observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 </script>
 <script src="js/main.js"></script>
-</body></html>
+</body>
+</html>

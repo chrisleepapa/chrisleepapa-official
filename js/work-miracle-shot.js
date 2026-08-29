@@ -10,7 +10,7 @@
     if (document.getElementById('mshot-story-script')) return;
     const s = document.createElement('script');
     s.id = 'mshot-story-script';
-    s.src = '/js/miracle-shot-story-v2.js?v=20260829-3';
+    s.src = '/js/miracle-shot-story-v2.js?v=20260829-4';
     s.onload = () => {
       if (typeof window.renderMiracleShotStory === 'function') window.renderMiracleShotStory();
     };
@@ -49,7 +49,11 @@
         .char-card:hover .bible-photo { opacity: 1 !important; }
       }
       @media (max-width: 768px) {
-        .char-card { cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+        .char-card {
+          cursor: pointer;
+          -webkit-tap-highlight-color: transparent;
+          touch-action: manipulation;
+        }
         .char-card:hover { transform: none !important; }
         .char-card:not(.flipped) .char-photo { opacity: 1 !important; }
         .char-card:not(.flipped) .bible-photo { opacity: 0 !important; }
@@ -66,22 +70,44 @@
   }
 
   function installMobileCardEvents() {
-    if (document.documentElement.dataset.miracleCardEvents === '2') return;
-    document.documentElement.dataset.miracleCardEvents = '2';
+    if (document.documentElement.dataset.miracleCardEvents === '4') return;
+    document.documentElement.dataset.miracleCardEvents = '4';
 
     const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
+    let lastTouchCard = null;
+    let lastTouchTime = 0;
 
-    // Use pointerdown in capture phase so the card toggles before any other
-    // page-level click handler can interfere. This is the mobile interaction
-    // only; desktop keeps the original CSS hover behavior.
-    document.addEventListener('pointerdown', event => {
+    // A normal short tap should immediately flip the card.  Use touchend
+    // rather than pointerdown + preventDefault so mobile browsers are not
+    // forced into long-press behavior.  Event delegation keeps this working
+    // even if the story/card DOM is rebuilt after a language change.
+    document.addEventListener('touchend', event => {
       if (!isMobile()) return;
-      const card = event.target instanceof Element ? event.target.closest('.char-card') : null;
-      if (!card || event.pointerType === 'mouse') return;
-      if (event.target.closest('a,button')) return;
-      event.preventDefault();
+      const target = event.target instanceof Element ? event.target : event.target?.parentElement;
+      const card = target ? target.closest('.char-card') : null;
+      if (!card || target.closest('a,button')) return;
+
       card.classList.toggle('flipped');
-    }, { capture: true, passive: false });
+      lastTouchCard = card;
+      lastTouchTime = Date.now();
+    }, { capture: true, passive: true });
+
+    // Desktop remains hover-only. This click fallback also covers mobile
+    // browsers/environments where touchend is not exposed, while preventing
+    // the synthetic click that follows touchend from flipping twice.
+    document.addEventListener('click', event => {
+      if (!isMobile()) return;
+      const target = event.target instanceof Element ? event.target : event.target?.parentElement;
+      const card = target ? target.closest('.char-card') : null;
+      if (!card || target.closest('a,button')) return;
+
+      if (lastTouchCard === card && Date.now() - lastTouchTime < 700) {
+        lastTouchCard = null;
+        return;
+      }
+
+      card.classList.toggle('flipped');
+    }, { capture: true });
   }
 
   function start() {

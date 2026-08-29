@@ -4,6 +4,13 @@
   const page=(location.pathname.split('/').pop()||'').replace(/\.html$/i,'').toLowerCase();
   if(page!=='miracleshot') return;
 
+  // main.js uses pref-lang. The story layer historically used siteLang and
+  // listened for a custom langchange event, so bridge the two systems here.
+  window.onLangChange = function(lang){
+    try { localStorage.setItem('siteLang', lang); } catch (_) {}
+    window.dispatchEvent(new CustomEvent('langchange', { detail: { lang } }));
+  };
+
   const load=()=>{
     if(document.getElementById('mshot-story-script')) return;
     const s=document.createElement('script');

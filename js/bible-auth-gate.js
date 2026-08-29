@@ -181,7 +181,6 @@
     }
 
     async function loadBibleDataResilient(spinner) {
-        // 1) Live structured dataset — the site's original public Bible DB.
         for (const url of BIBLE_DATA_URLS) {
             try {
                 if (spinner) spinner.innerHTML = 'LOADING BIBLE...<br><small>성경 본문을 불러오는 중입니다.</small>';
@@ -196,7 +195,6 @@
             }
         }
 
-        // 2) Last known good local cache — protects the reader from a temporary CDN/GitHub outage.
         try {
             const cached = JSON.parse(localStorage.getItem(BIBLE_CACHE_KEY) || 'null');
             if (cached && validateBibleData(cached.data)) {
@@ -212,11 +210,10 @@
     }
 
     function installBibleDataRecovery() {
-        if (window.__clpBibleRecoveryInstalled) return;
-        if (typeof window.initAppAfterAuth !== 'function') return;
+        if (window.__clpBibleRecoveryInstalled) return true;
+        if (typeof window.initAppAfterAuth !== 'function') return false;
         window.__clpBibleRecoveryInstalled = true;
 
-        const originalInit = window.initAppAfterAuth;
         window.initAppAfterAuth = async function() {
             initBibleLogout();
             const spinner = document.getElementById('loadingSpinner');
@@ -234,6 +231,7 @@
             }
         };
         console.info('[Bible] resilient data loader installed');
+        return true;
     }
 
     async function init() {
@@ -249,9 +247,12 @@
                 showGate();
             }
 
-            // bible.html defines initAppAfterAuth in a later inline script.
-            // Defer one tick so this recovery layer can safely replace it.
-            setTimeout(installBibleDataRecovery, 0);
+            // bible.html's inline app code has already been parsed when this
+            // deferred script runs. Install the replacement before main.js can
+            // complete the page-ready callback and call checkAuth().
+            if (!installBibleDataRecovery()) {
+                setTimeout(installBibleDataRecovery, 0);
+            }
         } catch (error) {
             console.error('[bible-auth-gate]', error);
         }

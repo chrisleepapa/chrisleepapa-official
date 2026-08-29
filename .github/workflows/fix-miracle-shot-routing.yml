@@ -1,0 +1,50 @@
+name: Fix Miracle Shot page routing
+
+on:
+  push:
+    branches: [develop]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.event_name == 'workflow_dispatch' || !contains(github.event.head_commit.message, 'chore: enable Miracle Shot page script routing')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: develop
+          fetch-depth: 1
+
+      - name: Patch main.js
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('js/main.js')
+          s = p.read_text(encoding='utf-8')
+          marker = "  // SISTER SQUAD 1 intentionally has no dynamic content script here.\n  // Its page content is already present in sistersquad.html.\n"
+          insert = marker + "\n  // MIRACLE SHOT only.\n  if (page === 'miracleshot') {\n    loadScriptOnce('/js/work-miracle-shot.js?v=20260829', 'work-miracle-shot');\n    return;\n  }\n"
+          if "work-miracle-shot.js" in s:
+              print('Miracle Shot routing already present; nothing to do.')
+          elif marker not in s:
+              raise SystemExit('Routing marker not found; aborting without changes.')
+          else:
+              p.write_text(s.replace(marker, insert, 1), encoding='utf-8')
+              print('Patched main.js')
+          PY
+
+      - name: Commit and push
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo "No changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add js/main.js
+          git commit -m "chore: enable Miracle Shot page script routing"
+          git push origin HEAD:develop

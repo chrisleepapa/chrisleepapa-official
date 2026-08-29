@@ -1,80 +1,99 @@
-// Miracle Shot — language + responsive character interaction fix
+// Miracle Shot — responsive character flip + Story language support
 (function () {
-  const translations = {
+  const STORY = {
     ko: {
-      worldTitle: '평범한 아이들이 빛을 찾는 이야기',
-      storyLabel: '스토리'
+      label: '스토리',
+      title: '평범한 아이들이 빛을 찾는 이야기'
     },
     en: {
-      worldTitle: 'A Story of Ordinary Children Finding Their Light',
-      storyLabel: 'THE STORY'
+      label: 'THE STORY',
+      title: 'A Story of Ordinary Children Finding Their Light'
     }
   };
 
-  function getLang() {
-    return document.documentElement.lang === 'en' ? 'en' : 'ko';
-  }
+  const getLang = () => document.documentElement.lang === 'en' ? 'en' : 'ko';
 
   function applyStoryLanguage() {
-    const t = translations[getLang()];
+    const t = STORY[getLang()];
+
+    // Support both the intended i18n hook and the existing static Story markup.
     document.querySelectorAll('[data-i18n="world_title"]').forEach(el => {
-      el.textContent = t.worldTitle;
+      el.textContent = t.title;
     });
+
     document.querySelectorAll('.world-grid .info-card').forEach(card => {
       const label = card.querySelector('.info-label');
       if (!label) return;
-      if (/^(THE STORY|스토리)$/i.test(label.textContent.trim())) {
-        label.textContent = t.storyLabel;
+      const value = label.textContent.trim().toUpperCase();
+      if (value === 'THE STORY' || value === 'STORY' || value === '스토리') {
+        label.textContent = t.label;
+      }
+    });
+
+    // If the page uses a section heading rather than .info-label, translate it too.
+    document.querySelectorAll('.world-grid h2, .world-grid h3').forEach(el => {
+      const value = el.textContent.trim();
+      if (value === '평범한 아이들이 빛을 찾는 이야기' || value === 'A Story of Ordinary Children Finding Their Light') {
+        el.textContent = t.title;
       }
     });
   }
 
-  function initCharacterClickFlip() {
-    if (!document.getElementById('miracle-shot-click-flip-style')) {
-      const style = document.createElement('style');
-      style.id = 'miracle-shot-click-flip-style';
-      style.textContent = `
-        /* Desktop: preserve the original hover behavior. */
-        @media (min-width: 769px) {
-          .char-card:not(.flipped):hover .char-photo { opacity: 0 !important; }
-          .char-card:not(.flipped):hover .bible-photo { opacity: 1 !important; }
-          .char-card.flipped:hover .char-photo { opacity: 0 !important; }
-          .char-card.flipped:hover .bible-photo { opacity: 1 !important; }
-        }
-        /* Mobile: no hover dependency; tap toggles character/Bible person. */
-        @media (max-width: 768px) {
-          .char-card:hover .char-photo,
-          .char-card:hover .bible-photo { opacity: initial; }
-          .char-card:not(.flipped) .char-photo { opacity: 1 !important; }
-          .char-card:not(.flipped) .bible-photo { opacity: 0 !important; }
-          .char-card.flipped .char-photo { opacity: 0 !important; }
-          .char-card.flipped .bible-photo { opacity: 1 !important; }
-        }
-      `;
-      document.head.appendChild(style);
-    }
+  function addMobileFlipCSS() {
+    if (document.getElementById('miracle-shot-mobile-flip-style')) return;
+    const style = document.createElement('style');
+    style.id = 'miracle-shot-mobile-flip-style';
+    style.textContent = `
+      /* PC: original hover behavior remains intact. */
+      @media (min-width: 769px) {
+        .char-card:hover .char-photo { opacity: 0 !important; }
+        .char-card:hover .bible-photo { opacity: 1 !important; }
+      }
 
+      /* Mobile: hover must never control the image. Tap toggles it. */
+      @media (max-width: 768px) {
+        .char-card:not(.flipped) .char-photo,
+        .char-card:not(.flipped):hover .char-photo { opacity: 1 !important; }
+        .char-card:not(.flipped) .bible-photo,
+        .char-card:not(.flipped):hover .bible-photo { opacity: 0 !important; }
+        .char-card.flipped .char-photo,
+        .char-card.flipped:hover .char-photo { opacity: 0 !important; }
+        .char-card.flipped .bible-photo,
+        .char-card.flipped:hover .bible-photo { opacity: 1 !important; }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  function initMobileFlip() {
+    addMobileFlipCSS();
     document.querySelectorAll('.char-card').forEach(card => {
-      if (card.dataset.clickFlipInitialized === 'true') return;
-      card.dataset.clickFlipInitialized = 'true';
+      if (card.dataset.miracleFlip === '1') return;
+      card.dataset.miracleFlip = '1';
 
-      card.addEventListener('click', function (event) {
+      card.addEventListener('click', event => {
+        if (!window.matchMedia('(max-width: 768px)').matches) return;
         if (event.target.closest('a, button')) return;
-        if (window.matchMedia('(max-width: 768px)').matches) {
-          card.classList.toggle('flipped');
-        }
+        card.classList.toggle('flipped');
       });
     });
   }
 
   function applyAll() {
     applyStoryLanguage();
-    initCharacterClickFlip();
+    initMobileFlip();
   }
 
   document.addEventListener('DOMContentLoaded', applyAll);
-  window.addEventListener('languageChanged', applyAll);
 
+  // main.js uses onLangChange (not a languageChanged event).
+  const previousOnLangChange = window.onLangChange;
+  window.onLangChange = function (lang) {
+    if (typeof previousOnLangChange === 'function') previousOnLangChange(lang);
+    applyStoryLanguage();
+  };
+
+  // Also catch direct <html lang> changes.
   const html = document.documentElement;
   if (html) {
     new MutationObserver(applyStoryLanguage).observe(html, {
@@ -83,18 +102,20 @@
     });
   }
 
-  function startBodyObserver() {
-    if (!document.body) {
-      requestAnimationFrame(startBodyObserver);
-      return;
-    }
-    const bodyObserver = new MutationObserver(() => {
-      applyStoryLanguage();
-      initCharacterClickFlip();
-    });
-    bodyObserver.observe(document.body, { childList: true, subtree: true });
+  // Character cards are static, but retry after shared components finish loading.
+  const start = () => {
     applyAll();
-  }
+    if (document.body) {
+      new MutationObserver(() => {
+        applyStoryLanguage();
+        initMobileFlip();
+      }).observe(document.body, { childList: true, subtree: true });
+    }
+  };
 
-  startBodyObserver();
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start, { once: true });
+  } else {
+    start();
+  }
 })();

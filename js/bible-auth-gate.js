@@ -5,6 +5,7 @@
  * BIBLE data layer; no separate BIBLE login is required.
  * v2026-08-27: reset old client-side BIBLE data once and bind new data to the
  * currently authenticated CLPAuth initials.
+ * v2026-08-29: resilient Bible data loader with GitHub raw fallback + cache.
  */
 'use strict';
 (() => {
@@ -15,6 +16,11 @@
     const LEGACY_USER_KEY = 'bible_user_id';
     const LEGACY_PIN_KEY = 'bible_pin_hash';
     const DATA_RESET_KEY = 'clp-bible-data-reset-v20260827';
+    const BIBLE_CACHE_KEY = 'clp-bible-structured-cache-v1';
+    const BIBLE_DATA_URLS = [
+        'https://raw.githubusercontent.com/stranger828/bibleAPI/main/bible_structured.json',
+        'https://raw.githubusercontent.com/stranger828/bibleAPI/main/bible.json'
+    ];
 
     function getSession() {
         try {
@@ -135,6 +141,99 @@
         });
     }
 
+    function normalizeBiblePayload(payload) {
+        if (Array.isArray(payload)) return payload;
+        if (!payload || typeof payload !== 'object') return null;
+        if (Array.isArray(payload.data)) return payload.data;
+        if (Array.isArray(payload.verses)) return payload.verses;
+        if (Array.isArray(payload.bible)) return payload.bible;
+        return null;
+    }
+
+    function validateBibleData(data) {
+        if (!Array.isArray(data) || data.length < 30000) return false;
+        const sample = data.slice(0, 100);
+        return sample.some(v => v && v.book != null && v.chapter != null && v.verse != null && (v.content || v.text));
+    }
+
+    function setBibleData(data, source) {
+        if (!validateBibleData(data)) throw new Error('Bible data validation failed');
+        globalBibleData = data;
+        isDataReady = true;
+        try {
+            localStorage.setItem(BIBLE_CACHE_KEY, JSON.stringify({ savedAt: Date.now(), data }));
+        } catch (_) {
+            // Mobile browsers may reject a large localStorage value; live data still works.
+        }
+        console.info('[Bible] data ready:', data.length, 'verses from', source);
+    }
+
+    async function fetchWithTimeout(url, timeoutMs = 12000) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), timeoutMs);
+        try {
+            const response = await fetch(url, { cache: 'no-store', signal: controller.signal });
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            return await response.json();
+        } finally {
+            clearTimeout(timer);
+        }
+    }
+
+    async function loadBibleDataResilient(spinner) {
+        for (const url of BIBLE_DATA_URLS) {
+            try {
+                if (spinner) spinner.innerHTML = 'LOADING BIBLE...<br><small>성경 본문을 불러오는 중입니다.</small>';
+                const payload = await fetchWithTimeout(url);
+                const data = normalizeBiblePayload(payload);
+                if (validateBibleData(data)) {
+                    setBibleData(data, url);
+                    return;
+                }
+            } catch (error) {
+                console.warn('[Bible] source failed:', url, error);
+            }
+        }
+
+        try {
+            const cached = JSON.parse(localStorage.getItem(BIBLE_CACHE_KEY) || 'null');
+            if (cached && validateBibleData(cached.data)) {
+                setBibleData(cached.data, 'local cache');
+                console.warn('[Bible] using last known good cached dataset');
+                return;
+            }
+        } catch (error) {
+            console.warn('[Bible] cache unavailable:', error);
+        }
+
+        throw new Error('No valid Bible dataset available');
+    }
+
+    function installBibleDataRecovery() {
+        if (window.__clpBibleRecoveryInstalled) return true;
+        if (typeof window.initAppAfterAuth !== 'function') return false;
+        window.__clpBibleRecoveryInstalled = true;
+
+        window.initAppAfterAuth = async function() {
+            initBibleLogout();
+            const spinner = document.getElementById('loadingSpinner');
+            try {
+                await loadSupabaseData();
+                await loadBibleDataResilient(spinner);
+                if (spinner) spinner.style.display = 'none';
+                renderBooks('ot');
+                selectBook(1, false);
+                setupNotifications();
+                updateOverallProgress();
+            } catch (error) {
+                console.error('[Bible] data initialization failed:', error);
+                if (spinner) spinner.innerHTML = 'CONNECTION FAILED.<br><small>성경 본문을 불러오지 못했습니다. 잠시 후 새로고침해 주세요.</small>';
+            }
+        };
+        console.info('[Bible] resilient data loader installed');
+        return true;
+    }
+
     async function init() {
         try {
             await loadAuth();
@@ -143,10 +242,17 @@
             if (session) {
                 mirrorLegacySession(session);
                 hideLegacyAuthModal();
-                return;
+            } else {
+                document.documentElement.classList.add('clp-auth-required');
+                showGate();
             }
-            document.documentElement.classList.add('clp-auth-required');
-            showGate();
+
+            // bible.html's inline app code has already been parsed when this
+            // deferred script runs. Install the replacement before main.js can
+            // complete the page-ready callback and call checkAuth().
+            if (!installBibleDataRecovery()) {
+                setTimeout(installBibleDataRecovery, 0);
+            }
         } catch (error) {
             console.error('[bible-auth-gate]', error);
         }

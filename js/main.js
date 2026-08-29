@@ -131,6 +131,12 @@ function loadPageSpecificScripts() {
 
   // SISTER SQUAD 1 intentionally has no dynamic content script here.
   // Its page content is already present in sistersquad.html.
+
+  // MIRACLE SHOT only.
+  if (page === 'miracleshot') {
+    loadScriptOnce('/js/work-miracle-shot.js?v=20260829', 'work-miracle-shot');
+    return;
+  }
 }
 
 /* =========================================================

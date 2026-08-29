@@ -22,3 +22,15 @@
 .sq-links .sq-link{position:relative;overflow:hidden;isolation:isolate;min-height:190px;background-color:#15151b!important;background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important;border-color:rgba(255,255,255,.14);box-shadow:0 10px 30px rgba(0,0,0,.22)}
 .sq-links .sq-link::before{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,rgba(3,3,5,.06) 0%,rgba(3,3,5,.30) 40%,rgba(3,3,5,.94) 100%);pointer-events:none}
 .sq-links .sq-link b,.sq-links .sq-link small{position:relative;z-index:1;text-shadow:0 2px 16px rgba(0,0,0,.95)}
+
+/* Miracle Shot: restore the proven mobile-only character card behavior.
+   Desktop hover behavior remains unchanged. */
+@media (hover: none) and (pointer: coarse){
+  .char-card:not(.flipped):hover{
+    transform:none;
+    border-color:rgba(255,255,255,.06);
+    box-shadow:none;
+  }
+  .char-card:not(.flipped):hover .char-photo{opacity:1;}
+  .char-card:not(.flipped):hover .bible-photo{opacity:0;}
+}

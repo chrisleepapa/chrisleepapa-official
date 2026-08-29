@@ -12,4 +12,38 @@
 <header id="site-nav"><a class="home-static-brand" href="/" aria-label="Chris LEE.PAPA Home"><span>CHRIS LEE.PAPA</span><small>CREATIVE ARCHIVE</small></a></header>
 <main><section id="chris-pick" aria-label="Chris's Pick"></section><section id="chris-note" aria-label="Chris's Note"></section></main><footer id="site-footer"></footer>
 <script src="js/common.js" defer></script><script src="js/main.js" defer></script><script src="js/home-chris-pick-v2.js" defer></script><script src="js/home-chris-note.js" defer></script>
+<script>
+// Chris's Pick must open the selected work, not the generic archive.
+// The pick renderer owns the visible CTA, so resolve its album ID from the
+// rendered card title and route music picks through the Music Archive's
+// album deep-link parameter.
+document.addEventListener('DOMContentLoaded',()=>{
+  const musicIds={
+    'When the City Stood Still':'5qWOsYCJgw1bmXqvko7Thv',
+    'To The Space':'1JyYgZ8VTbh5mASNezCTcJ',
+    'Ensemble':'2X3dnf8vnhCSQ0c7H9oZht',
+    'To Rise':'2OSKuof7gooLElmFYvoygK',
+    '사랑한다고':'2s7tJtoaxDT8KUkJ3OL8DD',
+    '2026 난리났어':'2AzUPgjWYDodUqFTNjPU1l',
+    '벽력일섬':'25T549XyXnmiZhqGn7p4x4',
+    '영역전개':'6rZBdEFTJ5mLwINtn9C8KZ',
+    'We own the Cup':'0sR4hKvhzN4U2GaQKx6Qek',
+    'Run It Back':'1VCjArWmxZJakdawRkEeCi'
+  };
+  const apply=()=>{
+    const root=document.getElementById('chris-pick');
+    if(!root)return;
+    const title=root.querySelector('.clp-pick-title');
+    const button=root.querySelector('.clp-pick-main');
+    if(!title||!button)return;
+    const id=musicIds[title.textContent.trim()];
+    if(!id)return;
+    button.href=`music.html?album=${encodeURIComponent(id)}`;
+  };
+  const observer=new MutationObserver(apply);
+  const root=document.getElementById('chris-pick');
+  if(root)observer.observe(root,{childList:true,subtree:true});
+  apply();
+});
+</script>
 </body></html>

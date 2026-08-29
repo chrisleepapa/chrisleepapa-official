@@ -1,4 +1,4 @@
-// Miracle Shot — language + character interaction fix
+// Miracle Shot — language + responsive character interaction fix
 (function () {
   const translations = {
     ko: {
@@ -17,17 +17,14 @@
 
   function applyStoryLanguage() {
     const t = translations[getLang()];
-
     document.querySelectorAll('[data-i18n="world_title"]').forEach(el => {
-      if (el.textContent !== t.worldTitle) el.textContent = t.worldTitle;
+      el.textContent = t.worldTitle;
     });
-
     document.querySelectorAll('.world-grid .info-card').forEach(card => {
       const label = card.querySelector('.info-label');
       if (!label) return;
-      const text = label.textContent.trim();
-      if (/^THE STORY$/i.test(text) || /^스토리$/.test(text)) {
-        if (label.textContent !== t.storyLabel) label.textContent = t.storyLabel;
+      if (/^(THE STORY|스토리)$/i.test(label.textContent.trim())) {
+        label.textContent = t.storyLabel;
       }
     });
   }
@@ -37,11 +34,22 @@
       const style = document.createElement('style');
       style.id = 'miracle-shot-click-flip-style';
       style.textContent = `
-        /* Character cards flip only after a click. */
-        .char-card:not(.flipped):hover .char-photo { opacity: 1 !important; }
-        .char-card:not(.flipped):hover .bible-photo { opacity: 0 !important; }
-        .char-card.flipped .char-photo { opacity: 0 !important; }
-        .char-card.flipped .bible-photo { opacity: 1 !important; }
+        /* Desktop: preserve the original hover behavior. */
+        @media (min-width: 769px) {
+          .char-card:not(.flipped):hover .char-photo { opacity: 0 !important; }
+          .char-card:not(.flipped):hover .bible-photo { opacity: 1 !important; }
+          .char-card.flipped:hover .char-photo { opacity: 0 !important; }
+          .char-card.flipped:hover .bible-photo { opacity: 1 !important; }
+        }
+        /* Mobile: no hover dependency; tap toggles character/Bible person. */
+        @media (max-width: 768px) {
+          .char-card:hover .char-photo,
+          .char-card:hover .bible-photo { opacity: initial; }
+          .char-card:not(.flipped) .char-photo { opacity: 1 !important; }
+          .char-card:not(.flipped) .bible-photo { opacity: 0 !important; }
+          .char-card.flipped .char-photo { opacity: 0 !important; }
+          .char-card.flipped .bible-photo { opacity: 1 !important; }
+        }
       `;
       document.head.appendChild(style);
     }
@@ -52,7 +60,9 @@
 
       card.addEventListener('click', function (event) {
         if (event.target.closest('a, button')) return;
-        card.classList.toggle('flipped');
+        if (window.matchMedia('(max-width: 768px)').matches) {
+          card.classList.toggle('flipped');
+        }
       });
     });
   }
@@ -78,12 +88,10 @@
       requestAnimationFrame(startBodyObserver);
       return;
     }
-
     const bodyObserver = new MutationObserver(() => {
       applyStoryLanguage();
       initCharacterClickFlip();
     });
-
     bodyObserver.observe(document.body, { childList: true, subtree: true });
     applyAll();
   }

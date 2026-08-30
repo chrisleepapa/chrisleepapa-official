@@ -1,4 +1,4 @@
-name: Update archive content
+name: Finalize Worship split
 on:
   push:
     branches: [develop]
@@ -7,54 +7,69 @@ on:
 permissions:
   contents: write
 jobs:
-  update:
+  finalize:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           ref: develop
           fetch-depth: 0
-      - name: Update archive files
+      - name: Remove SHOUT from Korean Worship and finalize links
         run: |
-          python3 tools/rebuild-worship.py
-          python3 - <<'PY'
+          python3 <<'PY'
           from pathlib import Path
-          p = Path('music.html')
+          import re
+
+          p = Path('worship.html')
           s = p.read_text(encoding='utf-8')
-          if "title_ko: 'Run it back'" not in s:
-              marker = "            { title_ko: 'We own the Cup',"
-              i = s.find(marker)
-              if i < 0: raise SystemExit('musicData marker not found')
-              entry = "            { title_ko: 'Run it back', title_en: 'Run It Back', type_ko: '싱글', type_en: 'Single', albumId: '6zhb0e3KvoFY5pcefQUHA6', cover: 'images/music.jpg', embedUrl: 'https://open.spotify.com/embed/artist/6zhb0e3KvoFY5pcefQUHA6', externalUrl: 'https://open.spotify.com/artist/6zhb0e3KvoFY5pcefQUHA6' },\n"
-              s = s[:i] + entry + s[i:]
-          s = s.replace('등 9개 앨범 41곡.', '등 10개 작품 42곡.')
-          s = s.replace('9 albums, 41 tracks.', '10 works, 42 tracks.')
-          s = s.replace("mainExternalLink.href = `https://open.spotify.com/album/${track.albumId}`;", "mainExternalLink.href = track.externalUrl || `https://open.spotify.com/album/${track.albumId}`;")
+          # Remove the standalone SHOUT lyric-book section if present.
+          s = re.sub(r'<section id="shout-lyrics"[\s\S]*?</section>\s*', '', s, count=1)
+          # Remove a legacy SHOUT album card only when explicitly marked album-shout.
+          s = re.sub(r'<article class="album-card album-shout"[\s\S]*?</article>\s*', '', s, count=1)
+          # Remove the SHOUT item from the journey timeline without touching Vol.1/2/3.
+          s = re.sub(r'<article>\s*<span>04</span>\s*<b>SHOUT</b>[\s\S]*?</article>\s*', '', s, count=1)
+          # Korean Worship metadata must describe only the Korean archive.
+          s = s.replace('Vol.1(The First Confession), Vol.2(2nd Confession), Vol.3, SHOUT.', 'Vol.1(The First Confession), Vol.2(2nd Confession), Vol.3.')
+          s = s.replace('나의 찬양 Vol.1 · Vol.2 · Vol.3 · SHOUT.', '나의 찬양 Vol.1 · Vol.2 · Vol.3.')
+          s = s.replace('SHOUT · 나의 찬양', '나의 찬양')
           p.write_text(s, encoding='utf-8')
 
+          # English Worship is the sole home of SHOUT.
+          p = Path('worship_eng.html')
+          if p.exists():
+              s = p.read_text(encoding='utf-8')
+              s = s.replace('href="worship.html"', 'href="worship.html"')
+              p.write_text(s, encoding='utf-8')
+
+          # Chris Pick: SHOUT opens English Worship.
           p = Path('js/home-chris-pick-v2.js')
+          if p.exists():
+              s = p.read_text(encoding='utf-8')
+              s = s.replace("href:'worship.html'", "href:'worship_eng.html'")
+              s = s.replace("action:{ko:'워십 보기',en:'View Worship'}", "action:{ko:'English Worship 보기',en:'View English Worship'}")
+              p.write_text(s, encoding='utf-8')
+
+          # Sitemap: expose English Worship.
+          p = Path('sitemap.xml')
           s = p.read_text(encoding='utf-8')
-          if "title:'Shout'" not in s:
-              marker = "    {type:'WORSHIP',icon:'♩',title:'나의 찬양 Vol.3'"
-              i = s.find(marker)
-              if i < 0: raise SystemExit('Chris Pick Vol.3 marker not found')
-              i = s.find('\n', i) + 1
-              shout = "    {type:'WORSHIP',icon:'♩',title:'Shout',sub:'English Worship',desc:{ko:'영어로 함께 외치는 찬양과 예배의 메시지를 담은 워십 작품입니다.',en:'An English worship work carrying a message of praise and worship to be sung together.'},image:'/images/og_share.png',href:'worship.html',action:{ko:'워십 보기',en:'View Worship'}},\n"
-              s = s[:i] + shout + s[i:]
+          if '/worship_eng' not in s:
+              marker = '  <url><loc>https://chrisleepapa-official.vercel.app/worship</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>'
+              s = s.replace(marker, marker + '\n  <url><loc>https://chrisleepapa-official.vercel.app/worship_eng</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>')
           p.write_text(s, encoding='utf-8')
           PY
-      - name: Validate required content
+      - name: Validate
         run: |
-          grep -q "Run it back" music.html
-          grep -q "id=\"shout-lyrics\"" worship.html
-          grep -q "15 TRACKS" worship.html
-          test "$(grep -c 'class=\"lyrics-item shout-track\"' worship.html)" -eq 15
-          grep -q "title:'Shout'" js/home-chris-pick-v2.js
-          grep -q "title:'나의 찬양 Vol.3'" js/home-chris-pick-v2.js
-      - name: Commit archive changes
+          grep -q "images/vol1.jpg" worship.html
+          grep -q "images/vol2.png" worship.html
+          grep -q "images/My hymn3.jpg" worship.html
+          grep -q "SHOUT" worship_eng.html
+          grep -q "worship_eng" sitemap.xml
+          ! grep -q 'class="album-card album-shout"' worship.html
+          ! grep -q 'id="shout-lyrics"' worship.html
+      - name: Commit
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add worship.html music.html js/home-chris-pick-v2.js tools/shout-lyrics.json tools/rebuild-worship.py
-          git diff --cached --quiet || git commit -m 'Rebuild Worship archive with SHOUT lyric book'
+          git add worship.html worship_eng.html js/home-chris-pick-v2.js sitemap.xml
+          git diff --cached --quiet || git commit -m 'Finalize Korean and English Worship separation'
           git push origin develop

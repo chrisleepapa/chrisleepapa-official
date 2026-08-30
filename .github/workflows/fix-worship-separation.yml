@@ -1,0 +1,65 @@
+name: One-time Worship separation fix
+
+on:
+  push:
+    branches: [develop]
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    if: ${{ !contains(github.event.head_commit.message, 'Fix Korean/English Worship separation') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: develop
+          fetch-depth: 1
+
+      - name: Remove SHOUT from Korean Worship
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          p = Path('worship.html')
+          s = p.read_text(encoding='utf-8')
+          original = s
+
+          # Korean Worship metadata must describe only Vol.1–3.
+          s = s.replace(
+              'Chris LEE.PAPA의 Worship Archive. 나의 찬양 Vol.1, Vol.2, Vol.3과 Shout의 앨범 이야기, 제작 과정, 가사집과 공식 스트리밍 링크를 기록합니다.',
+              'Chris LEE.PAPA의 Korean Worship Archive. 나의 찬양 Vol.1, Vol.2, Vol.3의 앨범 이야기, 제작 과정, 가사집과 공식 스트리밍 링크를 기록합니다.'
+          )
+          s = s.replace(
+              '나의 찬양 Vol.1 · Vol.2 · Vol.3 · Shout. 앨범을 만들게 된 이야기와 예배의 고백, 가사 아카이브를 한곳에 기록합니다.',
+              '나의 찬양 Vol.1 · Vol.2 · Vol.3. 앨범을 만들게 된 이야기와 예배의 고백, 가사 아카이브를 한곳에 기록합니다.'
+          )
+
+          # Remove the SHOUT album card without touching Vol.1–3.
+          s, n_card = re.subn(
+              r'\s*<article class="album-card">(?:(?!</article>).)*?(?:shout_title|WORSHIP · SHOUT|>Shout<).*?</article>',
+              '', s, count=1, flags=re.S | re.I
+          )
+
+          # Remove any SHOUT lyric item from the Korean lyric book.
+          s, n_lyrics = re.subn(
+              r'\s*<details class="lyrics-item">(?:(?!</details>).)*?(?:lyrics-title[^>]*>\s*Shout\b|>\s*Shout\s*<).*?</details>',
+              '', s, count=1, flags=re.S | re.I
+          )
+
+          if s == original:
+              raise SystemExit('No Worship separation changes were made; aborting safely.')
+
+          p.write_text(s, encoding='utf-8')
+          print(f'album_card_removed={n_card}, lyrics_item_removed={n_lyrics}')
+
+      - name: Commit and remove one-time workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add worship.html
+          git rm .github/workflows/fix-worship-separation.yml
+          git commit -m "Fix Korean/English Worship separation" || exit 0
+          git push origin HEAD:develop

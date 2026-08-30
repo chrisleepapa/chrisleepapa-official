@@ -14,32 +14,51 @@ jobs:
         with:
           ref: develop
           fetch-depth: 0
-      - name: Remove SHOUT from Korean Worship and finalize links
+      - name: Finalize Korean and English Worship pages
         run: |
           python3 <<'PY'
           from pathlib import Path
           import re
 
+          # Korean Worship: remove only legacy SHOUT sections/cards/timeline/metadata.
           p = Path('worship.html')
           s = p.read_text(encoding='utf-8')
-          # Remove the standalone SHOUT lyric-book section if present.
           s = re.sub(r'<section id="shout-lyrics"[\s\S]*?</section>\s*', '', s, count=1)
-          # Remove a legacy SHOUT album card only when explicitly marked album-shout.
           s = re.sub(r'<article class="album-card album-shout"[\s\S]*?</article>\s*', '', s, count=1)
-          # Remove the SHOUT item from the journey timeline without touching Vol.1/2/3.
           s = re.sub(r'<article>\s*<span>04</span>\s*<b>SHOUT</b>[\s\S]*?</article>\s*', '', s, count=1)
-          # Korean Worship metadata must describe only the Korean archive.
           s = s.replace('Vol.1(The First Confession), Vol.2(2nd Confession), Vol.3, SHOUT.', 'Vol.1(The First Confession), Vol.2(2nd Confession), Vol.3.')
           s = s.replace('나의 찬양 Vol.1 · Vol.2 · Vol.3 · SHOUT.', '나의 찬양 Vol.1 · Vol.2 · Vol.3.')
           s = s.replace('SHOUT · 나의 찬양', '나의 찬양')
           p.write_text(s, encoding='utf-8')
 
-          # English Worship is the sole home of SHOUT.
+          # English Worship: preserve every existing lyric and inject the shared site shell.
           p = Path('worship_eng.html')
-          if p.exists():
-              s = p.read_text(encoding='utf-8')
-              s = s.replace('href="worship.html"', 'href="worship.html"')
-              p.write_text(s, encoding='utf-8')
+          s = p.read_text(encoding='utf-8')
+          if 'id="site-nav"' not in s:
+              s = re.sub(r'(<body[^>]*>)', r'\1\n<div id="site-nav"></div>', s, count=1, flags=re.I)
+          if 'id="site-footer"' not in s:
+              if re.search(r'<script[^>]+main\.js', s, flags=re.I):
+                  s = re.sub(r'(<script[^>]+main\.js[^>]*></script>)', r'<div id="site-footer"></div>\n\1', s, count=1, flags=re.I)
+              else:
+                  s = s.replace('</body>', '<div id="site-footer"></div>\n<script src="main.js" defer></script>\n</body>')
+
+          yt = 'https://youtube.com/playlist?list=OLAK5uy_lVpXPP4Cea1qi6WA-lmwIOXkOKrijaT0Y&si=Er078V4z_pm5QyZ2'
+          sp = 'https://open.spotify.com/album/3XaG1yonPrJiyVPwExgVBm?si=fFwcC8tmSQqO7SGPJja17w&utm_source=copy-link'
+          s = re.sub(r'href="https://youtube\.com/playlist\?[^\"]+"', f'href="{yt}"', s, count=1)
+          s = re.sub(r'href="https://open\.spotify\.com/album/[^\"]+"', f'href="{sp}"', s, count=1)
+
+          # Use Spotify's official album embed so the exact released SHOUT artwork is shown;
+          # do not substitute a guessed local image.
+          if 'class="shout-album"' not in s:
+              embed = f'''<section class="section shout-album"><h2>SHOUT · OFFICIAL ALBUM</h2><div class="album-grid"><div class="album-art"><iframe src="https://open.spotify.com/embed/album/3XaG1yonPrJiyVPwExgVBm?utm_source=generator&theme=0" width="100%" height="380" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="SHOUT official album on Spotify"></iframe></div><div class="album-copy"><p class="intro">SHOUT</p><p>English Worship by Chris LEE.PAPA.</p><div class="meta"><span class="pill">ENGLISH WORSHIP</span><span class="pill">15 TRACKS</span><span class="pill">2026</span></div><div class="stream-links"><a href="{yt}" target="_blank" rel="noopener">YouTube Album</a><a href="{sp}" target="_blank" rel="noopener">Spotify Album</a></div></div></div></section>'''
+              pattern = r'<section class="section"><h2>THE PROJECT</h2>.*?</section>'
+              if re.search(pattern, s, flags=re.S):
+                  s = re.sub(pattern, embed, s, count=1, flags=re.S)
+              else:
+                  s = s.replace('<section class="section stream">', embed + '\n<section class="section stream">', 1)
+              css = '''<style id="worship-eng-fix">.shout-album .album-grid{display:grid;grid-template-columns:minmax(280px,480px) 1fr;gap:40px;align-items:center}.album-art iframe{display:block;width:100%;max-width:480px;border:0;border-radius:16px;box-shadow:0 24px 70px rgba(0,0,0,.55);background:#111}.album-copy .intro{margin-bottom:12px}.stream-links{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}.stream-links a{display:inline-block;padding:11px 18px;border:1px solid var(--line);border-radius:999px;color:#ddd;text-decoration:none}@media(max-width:760px){.shout-album .album-grid{grid-template-columns:1fr;gap:24px}.album-art iframe{max-width:100%;height:352px}}</style>'''
+              s = s.replace('</head>', css + '</head>', 1)
+          p.write_text(s, encoding='utf-8')
 
           # Chris Pick: SHOUT opens English Worship.
           p = Path('js/home-chris-pick-v2.js')
@@ -64,6 +83,8 @@ jobs:
           grep -q "images/My hymn3.jpg" worship.html
           grep -q "SHOUT" worship_eng.html
           grep -q "worship_eng" sitemap.xml
+          grep -q 'id="site-nav"' worship_eng.html
+          grep -q 'open.spotify.com/embed/album/3XaG1yonPrJiyVPwExgVBm' worship_eng.html
           ! grep -q 'class="album-card album-shout"' worship.html
           ! grep -q 'id="shout-lyrics"' worship.html
       - name: Commit

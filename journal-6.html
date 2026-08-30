@@ -3,6 +3,9 @@
 <head>
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#030305">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="images/favicon.png">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="나의 찬양에 담긴 고백을 바탕으로, 두려움 속에서도 주님을 바라보고 담대하게 걸어가겠다는 진솔한 기도입니다.">
@@ -11,6 +14,10 @@
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://chrisleepapa-official.vercel.app/journal-6">
   <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/My%20hymn3.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="나의 찬양에서 드리는 기도 - Chris LEE.PAPA Journal">
+  <meta name="twitter:description" content="두려워하지 말고 떨지 말고 담대하게 걸어가겠다는 고백과 기도를 담았습니다.">
+  <meta name="twitter:image" content="https://chrisleepapa-official.vercel.app/images/My%20hymn3.jpg">
   <link rel="canonical" href="https://chrisleepapa-official.vercel.app/journal-6">
   <link rel="icon" href="images/favicon.png">
   <title>나의 찬양에서 드리는 기도 - Chris LEE.PAPA Journal</title>
@@ -26,21 +33,27 @@
     .back-link{display:block;text-align:center;font-size:.85rem;color:rgba(200,196,188,.55);margin-bottom:28px}.back-link:hover{color:var(--gold-light)}
     .page-header{text-align:center;margin-bottom:40px}.tag{font-family:Cinzel,serif;font-size:.7rem;letter-spacing:4px;color:rgba(201,168,76,.6);display:block;margin-bottom:14px}.meta{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;font-size:.78rem;color:rgba(232,208,138,.6);margin-bottom:18px}.cat{padding:3px 12px;border:1px solid rgba(201,168,76,.3);border-radius:20px;color:var(--gold-light)}h1{font-family:'Noto Serif KR',serif;font-size:clamp(1.65rem,5vw,2.35rem);font-weight:600;line-height:1.45;color:#fff;word-break:keep-all;margin:0 0 20px}.divider{width:80px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:auto}
     .article-card{background:rgba(12,12,18,.6);border:1px solid rgba(201,168,76,.2);border-radius:24px;padding:50px 45px;margin-bottom:32px;backdrop-filter:blur(15px);box-shadow:0 20px 50px rgba(0,0,0,.4)}.journal-body p{font-family:'Noto Serif KR',serif;font-size:1rem;line-height:2.05;color:rgba(240,236,228,.86);word-break:keep-all;margin:0 0 22px}.journal-body p:last-child{margin-bottom:0}.journal-body strong{color:var(--gold-light);font-weight:600}.quote{padding:20px 22px;border-left:2px solid var(--gold);background:rgba(201,168,76,.06);font-family:'Noto Serif KR',serif;font-style:italic;color:rgba(240,236,228,.72);line-height:1.9;margin:28px 0;word-break:keep-all}.article-footer{padding-top:26px;margin-top:30px;border-top:1px solid rgba(255,255,255,.08);font-size:.85rem;color:rgba(200,196,188,.6);line-height:1.8}.journal-nav{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:40px}.journal-nav a{display:flex;flex-direction:column;gap:6px;padding:18px 20px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(12,12,18,.5)}.dir{font-family:Cinzel,serif;font-size:.62rem;letter-spacing:2px;color:var(--gold);text-transform:uppercase}.ttl{font-family:'Noto Serif KR',serif;font-size:.9rem;color:#fff;line-height:1.4;word-break:keep-all}.next{text-align:right}
+    .lang-panel{display:none}.lang-panel.active{display:block}
     @media(max-width:700px){.article-card{padding:30px 22px}.journal-nav{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
   <div id="site-nav"></div>
   <main class="page-wrapper">
-    <a class="back-link" href="/journal">← Chris's Journal 전체 목록으로</a>
+    <a class="back-link" href="/journal" data-ko="← Chris's Journal 전체 목록으로" data-en="← Back to Chris's Journal">← Chris's Journal 전체 목록으로</a>
+
     <header class="page-header">
       <span class="tag">✦ &nbsp; Chris's Journal &nbsp; ✦</span>
-      <div class="meta"><span>2026.08 · 신앙 · 기도</span><span class="cat">Worship · 기도</span></div>
-      <h1>나의 찬양에서 드리는 기도</h1>
+      <div class="meta">
+        <span data-ko="2026.08 · 신앙 · 기도" data-en="2026.08 · Faith · Prayer">2026.08 · 신앙 · 기도</span>
+        <span class="cat" data-ko="Worship · 기도" data-en="Worship · Prayer">Worship · 기도</span>
+      </div>
+      <h1 data-ko="나의 찬양에서 드리는 기도" data-en="A Prayer from My Hymn">나의 찬양에서 드리는 기도</h1>
       <div class="divider"></div>
     </header>
+
     <article class="article-card">
-      <div class="journal-body">
+      <div class="journal-body lang-panel active" data-lang="ko">
         <p>하나님 아버지,</p>
         <p>오늘도 주님 앞에 섭니다.</p>
         <p>잘해서 오는 것도 아니고,<br>무언가를 다 알고 있어서 오는 것도 아닙니다.</p>
@@ -73,13 +86,89 @@
         <p>아멘.</p>
         <div class="article-footer">나의 찬양에 담긴 고백에서 시작된 기도입니다.<br>완벽하지 않은 사람으로서, 주님을 바라보고 다시 한 걸음 내딛겠다는 고백을 기록합니다.</div>
       </div>
+
+      <div class="journal-body lang-panel" data-lang="en">
+        <p>Heavenly Father,</p>
+        <p>Today, I come before You again.</p>
+        <p>Not because I have done everything well,<br>and not because I understand everything.</p>
+        <p>I am still far from perfect,<br>and there are many times when I do not know what is right.</p>
+        <p>Sometimes I waver,<br>sometimes I am afraid,<br>and sometimes I lose confidence in the path I am taking.</p>
+        <p><strong>Lord, I look to You again.</strong></p>
+        <p>Because You are the One who called me.</p>
+        <p>Lord,<br>please keep me from being shaken too easily by the voices of the world.</p>
+        <p>Rather than worrying about what people say,<br>help me slowly learn to recognize<br>what You are saying to me.</p>
+        <p><strong>Before I spend my heart on the people and things of this world,<br>help me look to You first.</strong></p>
+        <p>Help me remember that<br>I am walking with You today.</p>
+        <p>When fear comes,<br>keep me from running away.</p>
+        <p>When I fall,<br>keep me from giving up where I am.</p>
+        <p>When I make mistakes,<br>keep me from hating myself too much,<br>and help me rise again<br>and hold on to Your hand.</p>
+        <p>Make me honest even in the smallest things,<br>and when no one notices,<br>help me believe that You are watching over me.</p>
+        <p>The songs I make,<br>the words I write,<br>and everything I am creating—</p>
+        <p>let none of it be for my own glory.<br>Instead, let it become a small way<br>of sharing with the world the heart You have given me.</p>
+        <p>And please protect the people I love.</p>
+        <p>Protect my family,<br>and let my children know God's love<br>before they learn to measure themselves by the standards of the world.</p>
+        <p>Before I try to teach my children anything,<br>help me first show them<br>what it means to live by faith.</p>
+        <p>Whatever path lies before me today,<br>I will not be overwhelmed by fear.</p>
+        <div class="quote">“If the Lord is with me,<br>I can rise again.”</div>
+        <p>Please do not let go of my hand today.</p>
+        <p>Hold me when I waver,<br>bring me back when I lose my way,</p>
+        <p>and when I begin walking down the wrong path,<br><strong>help me recognize it.</strong></p>
+        <p>And until the very end,<br>help me keep walking with my eyes fixed on You.</p>
+        <p><strong>Let my song become my confession,<br>and let my confession become my life.</strong></p>
+        <p><strong>Today, according to Your command,<br>I will not be afraid, I will not tremble,<br>but I will walk forward with courage.</strong></p>
+        <p>In the name of Jesus, I pray.</p>
+        <p>Amen.</p>
+        <div class="article-footer">A prayer that began with the confession found in my hymn.<br>As an imperfect person, I record my commitment to look to the Lord and take one more step forward.</div>
+      </div>
     </article>
+
     <nav class="journal-nav" aria-label="Journal navigation">
-      <a href="/journal-5"><span class="dir">← Previous</span><span class="ttl">퇴근 후, 나는 다시 창작자가 된다</span></a>
-      <a href="/journal"><span class="dir next">Journal Index →</span><span class="ttl next">전체 Journal 보기</span></a>
+      <a href="/journal-5">
+        <span class="dir" data-ko="← 이전 글" data-en="← Previous">← 이전 글</span>
+        <span class="ttl" data-ko="퇴근 후, 나는 다시 창작자가 된다" data-en="After Work, I Become a Creator Again">퇴근 후, 나는 다시 창작자가 된다</span>
+      </a>
+      <a href="/journal">
+        <span class="dir next" data-ko="Journal 전체 보기 →" data-en="Journal Index →">Journal 전체 보기 →</span>
+        <span class="ttl next" data-ko="전체 Journal 보기" data-en="View All Journal Entries">전체 Journal 보기</span>
+      </a>
     </nav>
   </main>
   <div id="site-footer"></div>
+
+  <script>
+    window.PAGE_I18N = {
+      ko: {
+        meta_title: "나의 찬양에서 드리는 기도 - Chris LEE.PAPA Journal",
+        meta_description: "나의 찬양에 담긴 고백을 바탕으로, 두려움 속에서도 주님을 바라보고 담대하게 걸어가겠다는 진솔한 기도입니다."
+      },
+      en: {
+        meta_title: "A Prayer from My Hymn - Chris LEE.PAPA Journal",
+        meta_description: "A sincere prayer about looking to the Lord and walking forward with courage even in the midst of fear."
+      }
+    };
+
+    (function () {
+      const savedLang = localStorage.getItem('siteLanguage') || localStorage.getItem('language') || 'ko';
+      const lang = savedLang === 'en' ? 'en' : 'ko';
+      document.documentElement.lang = lang;
+
+      document.querySelectorAll('[data-ko][data-en]').forEach(function (el) {
+        const value = el.getAttribute('data-' + lang);
+        if (value !== null) el.innerHTML = value;
+      });
+
+      document.querySelectorAll('.lang-panel').forEach(function (panel) {
+        panel.classList.toggle('active', panel.getAttribute('data-lang') === lang);
+      });
+
+      const meta = window.PAGE_I18N[lang];
+      if (meta) {
+        document.title = meta.meta_title;
+        const description = document.querySelector('meta[name="description"]');
+        if (description) description.setAttribute('content', meta.meta_description);
+      }
+    })();
+  </script>
   <script src="js/main.js"></script>
 </body>
 </html>

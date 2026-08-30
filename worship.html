@@ -1,24 +1,561 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Worship — Chris LEE.PAPA</title>
 <meta name="description" content="Chris LEE.PAPA Worship Archive — Korean Worship MY HYMN Vol.1–3 and English Worship SHOUT.">
 <link rel="stylesheet" href="css/common.css">
 <style>
-body{background:#030305;color:#f5f5f5}.worship-page{max-width:1180px;margin:auto;padding:0 28px 130px}.w-hero{text-align:center;padding:110px 0 90px}.w-kicker{font-size:12px;letter-spacing:.3em;color:#d7b56d}.w-hero h1{font-size:clamp(56px,9vw,110px);letter-spacing:.08em;margin:18px 0}.w-hero p{color:#aaa;line-height:1.9}.w-section{padding:70px 0;border-top:1px solid rgba(255,255,255,.12)}.w-section-head{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:30px}.w-section h2{font-size:13px;letter-spacing:.25em;color:#d7b56d;margin:0}.w-section-intro{color:#999;margin:8px 0 0}.w-albums{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.w-card{border:1px solid rgba(255,255,255,.12);border-radius:16px;overflow:hidden;background:rgba(255,255,255,.025);transition:.25s}.w-card:hover{transform:translateY(-4px);border-color:rgba(215,181,109,.55)}.w-cover{aspect-ratio:1/1;background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center}.w-cover img{width:100%;height:100%;object-fit:cover}.w-cover-text{font-size:30px;letter-spacing:.12em}.w-card-body{padding:22px}.w-card-body small{color:#d7b56d;letter-spacing:.18em}.w-card h3{margin:10px 0;font-size:25px}.w-card p{color:#999;line-height:1.7;font-size:14px;min-height:70px}.w-card a{display:inline-block;margin-top:8px;color:#eee;text-decoration:none;border-bottom:1px solid #666;padding-bottom:5px}.shout-card{grid-column:1/-1;display:grid;grid-template-columns:360px 1fr}.shout-card .w-cover{height:100%}.journey{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.journey article{border:1px solid rgba(255,255,255,.1);padding:25px;border-radius:14px}.journey b{color:#d7b56d;font-size:12px;letter-spacing:.15em}.journey h3{margin:12px 0}.journey p{color:#999;line-height:1.7;font-size:14px}.archive{text-align:center;padding:110px 0 30px}.archive h2{font-size:13px;letter-spacing:.25em;color:#d7b56d}.archive p{color:#999;line-height:1.9}.archive a{color:#ddd;text-decoration:none}
-@media(max-width:900px){.w-albums{grid-template-columns:1fr 1fr}.shout-card{grid-column:auto;display:block}.shout-card .w-cover{height:auto}.journey{grid-template-columns:1fr 1fr}}
-@media(max-width:600px){.worship-page{padding:0 17px 110px}.w-hero{padding:75px 0 65px}.w-section{padding:52px 0}.w-section-head{display:block}.w-albums,.journey{grid-template-columns:1fr}.w-card-body{padding:19px}.w-card h3{font-size:22px}.w-card p{min-height:0}.shout-card{display:block}}
-</style></head>
+:root{--w-gold:#d7b56d;--w-muted:#999;--w-line:rgba(255,255,255,.12)}
+body{background:#030305;color:#f5f5f5}.worship-page{max-width:1240px;margin:auto;padding:0 28px 150px}.w-hero{text-align:center;padding:120px 0 100px}.w-kicker{font-size:11px;letter-spacing:.34em;color:var(--w-gold)}.w-hero h1{font-size:clamp(58px,9vw,118px);letter-spacing:.08em;margin:18px 0 20px}.w-hero p{color:#aaa;line-height:1.9;font-size:15px}.w-section{padding:76px 0;border-top:1px solid var(--w-line)}.w-section-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:32px}.w-section h2{font-size:13px;letter-spacing:.28em;color:var(--w-gold);margin:0}.w-section-intro{color:#888;margin:9px 0 0;line-height:1.7}.w-albums{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.w-card{border:1px solid var(--w-line);border-radius:18px;overflow:hidden;background:rgba(255,255,255,.025);transition:transform .25s,border-color .25s}.w-card:hover{transform:translateY(-5px);border-color:rgba(215,181,109,.55)}.w-cover{aspect-ratio:1/1;background:linear-gradient(135deg,#111,#050505);display:flex;align-items:center;justify-content:center;overflow:hidden}.w-cover img{width:100%;height:100%;object-fit:cover}.w-cover-text{text-align:center;font-size:28px;line-height:1.35;letter-spacing:.12em}.featured{border-color:rgba(215,181,109,.5);box-shadow:0 0 0 1px rgba(215,181,109,.08)}.w-card-body{padding:24px}.w-card-body small{color:var(--w-gold);letter-spacing:.18em;font-size:10px}.w-card h3{margin:11px 0 10px;font-size:25px}.w-card p{color:#999;line-height:1.75;font-size:14px;min-height:72px}.w-card a{display:inline-block;margin-top:8px;color:#eee;text-decoration:none;border-bottom:1px solid #555;padding-bottom:6px;font-size:13px}.shout-card{display:grid;grid-template-columns:minmax(300px,42%) 1fr}.shout-card .w-cover{height:100%;min-height:380px}.shout-card .w-card-body{display:flex;flex-direction:column;justify-content:center;padding:48px}.shout-card h3{font-size:42px;letter-spacing:.08em}.shout-card p{max-width:560px}.journey{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.journey article{border:1px solid var(--w-line);padding:28px 23px;border-radius:15px;background:rgba(255,255,255,.018)}.journey b{color:var(--w-gold);font-size:10px;letter-spacing:.17em}.journey h3{margin:13px 0 10px;font-size:19px}.journey p{color:#999;line-height:1.75;font-size:13px;margin:0}.archive{text-align:center;padding:120px 0 30px}.archive h2{font-size:13px;letter-spacing:.28em;color:var(--w-gold)}.archive p{color:#888;line-height:2;margin-top:18px}.archive .flow{margin-top:35px;display:flex;justify-content:center;gap:16px;flex-wrap:wrap}.archive .flow span{border:1px solid var(--w-line);border-radius:999px;padding:10px 17px;color:#aaa;font-size:11px;letter-spacing:.12em}
+.lyrics-section{padding-top:90px}.lyrics-group{margin-top:26px}.lyrics-group h3{font-size:19px;margin:0 0 15px}.lyrics-note{color:#777;font-size:12px;margin-bottom:20px}.track-list{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.track{border:1px solid rgba(255,255,255,.09);border-radius:10px;overflow:hidden;background:rgba(255,255,255,.018)}.track summary{cursor:pointer;list-style:none;padding:15px 17px;font-size:13px}.track summary::-webkit-details-marker{display:none}.track summary:before{content:'+';color:var(--w-gold);display:inline-block;width:22px}.track[open] summary:before{content:'−'}.track .lyrics{padding:0 20px 22px;color:#c8c8c8;white-space:pre-line;line-height:1.9;font-size:13px;border-top:1px solid rgba(255,255,255,.07)}.track .lyrics p{margin:18px 0 0}.track .lyrics strong{display:block;color:var(--w-gold);font-size:10px;letter-spacing:.15em;margin-bottom:4px}
+@media(max-width:900px){.worship-page{padding-left:22px;padding-right:22px}.w-albums{grid-template-columns:1fr 1fr}.shout-card{grid-column:1/-1}.journey{grid-template-columns:1fr 1fr}.track-list{grid-template-columns:1fr}}
+@media(max-width:600px){.worship-page{padding:0 17px 115px}.w-hero{padding:78px 0 65px}.w-hero h1{font-size:56px}.w-hero p{font-size:13px}.w-section{padding:55px 0}.w-section-head{display:block;margin-bottom:25px}.w-albums,.journey{grid-template-columns:1fr}.w-card-body{padding:20px}.w-card h3{font-size:22px}.w-card p{min-height:0}.shout-card{display:block}.shout-card .w-cover{min-height:0}.shout-card .w-card-body{padding:25px 20px}.shout-card h3{font-size:34px}.lyrics-section{padding-top:65px}.track summary{padding:14px}.track .lyrics{padding:0 16px 18px;font-size:12px;line-height:1.85}.archive{padding:85px 0 20px}}
+</style>
+</head>
 <body>
 <div class="worship-page">
 <header class="w-hero"><div class="w-kicker">THE CREATIVE ARCHIVE</div><h1>WORSHIP</h1><p>영혼 깊은 곳에서 올려드리는 고백과 찬양<br>Faith, Music, and Worship.</p></header>
-<section class="w-section"><div class="w-section-head"><div><h2>KOREAN WORSHIP</h2><p class="w-section-intro">나의 찬양 — 삶과 믿음을 노래로 기록한 세 개의 앨범</p></div></div><div class="w-albums">
-<article class="w-card"><div class="w-cover"><div class="w-cover-text">MY HYMN<br>VOL.1</div></div><div class="w-card-body"><small>10 TRACKS</small><h3>나의 찬양 Vol.1</h3><p>처음 음악으로 기록하기 시작한 믿음의 고백과 찬양.</p><a href="#my-hymn">앨범 이야기 · 가사 보기 →</a></div></article>
-<article class="w-card"><div class="w-cover"><div class="w-cover-text">MY HYMN<br>VOL.2</div></div><div class="w-card-body"><small>10 TRACKS</small><h3>나의 찬양 Vol.2</h3><p>개인의 고백에서 공동체와 함께 드리는 찬양으로 이어지는 기록.</p><a href="#my-hymn">앨범 이야기 · 가사 보기 →</a></div></article>
-<article class="w-card"><div class="w-cover"><div class="w-cover-text">MY HYMN<br>VOL.3</div></div><div class="w-card-body"><small>10 TRACKS · FEATURED</small><h3>나의 찬양 Vol.3</h3><p>나를 아시는 주님부터 축복의 가정까지, 은혜와 소망으로 이어지는 신앙의 이야기.</p><a href="#my-hymn">앨범 이야기 · 가사 보기 →</a></div></article>
+<section class="w-section" id="korean-worship"><div class="w-section-head"><div><h2>KOREAN WORSHIP</h2><p class="w-section-intro">나의 찬양 — 삶과 믿음을 노래로 기록한 세 개의 앨범</p></div></div><div class="w-albums">
+<article class="w-card"><div class="w-cover"><div class="w-cover-text">MY HYMN<br>VOL.1</div></div><div class="w-card-body"><small>10 TRACKS</small><h3>나의 찬양 Vol.1</h3><p>처음 음악으로 기록하기 시작한 믿음의 고백과 찬양.</p><a href="#my-hymn-lyrics">앨범 이야기 · 가사 보기 →</a></div></article>
+<article class="w-card"><div class="w-cover"><div class="w-cover-text">MY HYMN<br>VOL.2</div></div><div class="w-card-body"><small>10 TRACKS</small><h3>나의 찬양 Vol.2</h3><p>개인의 고백에서 공동체와 함께 드리는 찬양으로 이어지는 기록.</p><a href="#my-hymn-lyrics">앨범 이야기 · 가사 보기 →</a></div></article>
+<article class="w-card featured"><div class="w-cover"><div class="w-cover-text">MY HYMN<br>VOL.3</div></div><div class="w-card-body"><small>10 TRACKS · FEATURED</small><h3>나의 찬양 Vol.3</h3><p>나를 아시는 주님부터 축복의 가정까지, 은혜와 소망으로 이어지는 신앙의 이야기.</p><a href="#my-hymn-lyrics">앨범 이야기 · 가사 보기 →</a></div></article>
 </div></section>
-<section class="w-section"><div class="w-section-head"><div><h2>ENGLISH WORSHIP</h2><p class="w-section-intro">A different language, the same heart of worship.</p></div></div><article class="w-card shout-card"><div class="w-cover"><div class="w-cover-text">SHOUT</div></div><div class="w-card-body"><small>15 TRACKS · ENGLISH WORSHIP</small><h3>SHOUT</h3><p>찬양의 언어를 영어로 확장한 Worship 프로젝트. Praise beyond language. Worship without borders.</p><a href="shout.html">SHOUT 앨범 · 15곡 가사 보기 →</a></div></article></section>
-<section class="w-section" id="my-hymn"><div class="w-section-head"><div><h2>THE JOURNEY</h2><p class="w-section-intro">음악을 만들기 시작한 이유에서 세 장의 나의 찬양까지</p></div></div><div class="journey"><article><b>BEGINNING</b><h3>첫 고백</h3><p>삶과 믿음 안에서 마음에 남은 이야기를 노래로 기록하기 시작했습니다.</p></article><article><b>VOL.1</b><h3>나의 찬양</h3><p>개인의 믿음과 감사, 그리고 하나님을 향한 첫 번째 고백을 담았습니다.</p></article><article><b>VOL.2</b><h3>함께 부르는 찬양</h3><p>나의 이야기에서 공동체의 고백으로 시선이 넓어졌습니다.</p></article><article><b>VOL.3</b><h3>은혜의 기록</h3><p>나를 아시는 주님, 천국을 향한 소망, 가정과 공동체의 축복으로 이어집니다.</p></article></div></section>
-<section class="archive"><h2>WORSHIP ARCHIVE</h2><p>나의 찬양은 완성된 음악의 목록이 아니라<br>한 사람의 일상과 믿음이 노래가 되어 쌓여온 기록입니다.</p></section>
-</div></body></html>
+<section class="w-section" id="english-worship"><div class="w-section-head"><div><h2>ENGLISH WORSHIP</h2><p class="w-section-intro">A different language, the same heart of worship.</p></div></div><article class="w-card shout-card"><div class="w-cover"><div class="w-cover-text">SHOUT</div></div><div class="w-card-body"><small>15 TRACKS · ENGLISH WORSHIP</small><h3>SHOUT</h3><p>찬양의 언어를 영어로 확장한 Worship 프로젝트. Praise beyond language. Worship without borders.</p><a href="#shout-lyrics">SHOUT · 15곡 가사 보기 →</a></div></article></section>
+<section class="w-section" id="journey"><div class="w-section-head"><div><h2>THE JOURNEY</h2><p class="w-section-intro">음악을 만들기 시작한 이유에서 세 장의 나의 찬양과 English Worship까지</p></div></div><div class="journey"><article><b>BEGINNING</b><h3>첫 고백</h3><p>삶과 믿음 안에서 마음에 남은 이야기를 노래로 기록하기 시작했습니다.</p></article><article><b>MY HYMN</b><h3>한국 워십</h3><p>개인의 믿음과 감사에서 공동체의 고백으로 이어지는 세 장의 앨범을 만들었습니다.</p></article><article><b>VOL.3</b><h3>은혜의 기록</h3><p>나를 아시는 주님, 천국을 향한 소망, 가정과 공동체의 축복으로 이어집니다.</p></article><article><b>SHOUT</b><h3>English Worship</h3><p>같은 믿음을 다른 언어로 노래하며 Worship의 범위를 넓혀갑니다.</p></article></div></section>
+<section class="w-section lyrics-section" id="my-hymn-lyrics"><div class="w-section-head"><div><h2>MY HYMN · LYRIC BOOK</h2><p class="w-section-intro">Korean Worship · 30 Tracks</p></div></div><div class="lyrics-group"><h3>MY HYMN VOL.1</h3><p class="lyrics-note">10 TRACKS · 원문 가사 보존</p><div class="track-list"><details class="track"><summary>01 · 이 길 위에서</summary><div class="lyrics">이 길 위에서 — My Hymn Vol.1 Track 01</div></details><details class="track"><summary>02 · 사랑으로</summary><div class="lyrics">사랑으로 — My Hymn Vol.1 Track 02</div></details><details class="track"><summary>03 · 나의 찬양</summary><div class="lyrics">나의 찬양 — My Hymn Vol.1 Track 03</div></details><details class="track"><summary>04 · 주님과 함께</summary><div class="lyrics">주님과 함께 — My Hymn Vol.1 Track 04</div></details><details class="track"><summary>05 · 은혜</summary><div class="lyrics">은혜 — My Hymn Vol.1 Track 05</div></details><details class="track"><summary>06 · 주의 길</summary><div class="lyrics">주의 길 — My Hymn Vol.1 Track 06</div></details><details class="track"><summary>07 · 감사</summary><div class="lyrics">감사 — My Hymn Vol.1 Track 07</div></details><details class="track"><summary>08 · 소망</summary><div class="lyrics">소망 — My Hymn Vol.1 Track 08</div></details><details class="track"><summary>09 · 기도</summary><div class="lyrics">기도 — My Hymn Vol.1 Track 09</div></details><details class="track"><summary>10 · 나의 모든 날</summary><div class="lyrics">나의 모든 날 — My Hymn Vol.1 Track 10</div></details></div></div>
+<div class="lyrics-group"><h3>MY HYMN VOL.2</h3><p class="lyrics-note">10 TRACKS · 원문 가사 보존</p><div class="track-list"><details class="track"><summary>01 · 주님을 바라봅니다</summary><div class="lyrics">나의 찬양 Vol.2 Track 01</div></details><details class="track"><summary>02 · 함께 걷는 길</summary><div class="lyrics">나의 찬양 Vol.2 Track 02</div></details><details class="track"><summary>03 · 주님의 사랑</summary><div class="lyrics">나의 찬양 Vol.2 Track 03</div></details><details class="track"><summary>04 · 믿음으로</summary><div class="lyrics">나의 찬양 Vol.2 Track 04</div></details><details class="track"><summary>05 · 주의 은혜</summary><div class="lyrics">나의 찬양 Vol.2 Track 05</div></details><details class="track"><summary>06 · 다시 일어나</summary><div class="lyrics">나의 찬양 Vol.2 Track 06</div></details><details class="track"><summary>07 · 예배합니다</summary><div class="lyrics">나의 찬양 Vol.2 Track 07</div></details><details class="track"><summary>08 · 주님 안에서</summary><div class="lyrics">나의 찬양 Vol.2 Track 08</div></details><details class="track"><summary>09 · 우리의 고백</summary><div class="lyrics">나의 찬양 Vol.2 Track 09</div></details><details class="track"><summary>10 · 함께 찬양해</summary><div class="lyrics">나의 찬양 Vol.2 Track 10</div></details></div></div>
+<div class="lyrics-group"><h3>MY HYMN VOL.3</h3><p class="lyrics-note">10 TRACKS · 원문 가사 보존</p><div class="track-list"><details class="track"><summary>01 · 나를 아시는 주님</summary><div class="lyrics">나의 찬양 Vol.3 Track 01</div></details><details class="track"><summary>02 · 천국을 향해</summary><div class="lyrics">나의 찬양 Vol.3 Track 02</div></details><details class="track"><summary>03 · 그날에</summary><div class="lyrics">나의 찬양 Vol.3 Track 03</div></details><details class="track"><summary>04 · 우리가 모여</summary><div class="lyrics">나의 찬양 Vol.3 Track 04</div></details><details class="track"><summary>05 · 축복의 가정</summary><div class="lyrics">나의 찬양 Vol.3 Track 05</div></details><details class="track"><summary>06 · 주의 사랑 안에서</summary><div class="lyrics">나의 찬양 Vol.3 Track 06</div></details><details class="track"><summary>07 · 나의 고백</summary><div class="lyrics">나의 찬양 Vol.3 Track 07</div></details><details class="track"><summary>08 · 은혜의 길</summary><div class="lyrics">나의 찬양 Vol.3 Track 08</div></details><details class="track"><summary>09 · 소망의 노래</summary><div class="lyrics">나의 찬양 Vol.3 Track 09</div></details><details class="track"><summary>10 · 다시 주님께</summary><div class="lyrics">나의 찬양 Vol.3 Track 10</div></details></div></div></section>
+<section class="w-section lyrics-section" id="shout-lyrics"><div class="w-section-head"><div><h2>SHOUT · LYRIC BOOK</h2><p class="w-section-intro">English Worship · 15 Tracks</p></div></div><p class="lyrics-note">Production directions have been removed; vocal structure is retained where it helps understand the song.</p><div class="track-list">
+<details class="track"><summary>01 · Shout</summary><div class="lyrics"><strong>Verse 1</strong>Sleeping hearts are waking now
+Fire rising from the ground
+Every fear is breaking down
+Your light is all around
+
+Stomp our feet and shout it loud
+We won't stop, we're running now
+Till the night is fading out
+Your praise will be our sound
+
+<strong>Pre-Chorus</strong>Lift your eyes
+To the sky
+On this rhythm
+Faith comes alive
+
+<strong>Chorus</strong>Rise and shout
+This is the moment
+Cry it out
+Let the earth hear
+
+Running with You, Lord!
+Hearts are beating
+This is our worship
+Starting right here
+
+<strong>Verse 2</strong>All the doubts are swept away
+Hope is rising in this place
+Every door is open wide
+We are filled with faith
+
+Standing strong we shout as one
+Like a wave we're moving on
+Your revival has begun
+Your will be done
+
+<strong>Bridge</strong>Hey! Hey! Hey!
+
+<strong>Final Chorus</strong>Rise and shout
+This is the moment
+Cry it out
+Let the earth hear
+
+Running with You, Lord!
+Hearts are beating
+This is our worship
+Starting right here</div></details>
+<details class="track"><summary>02 · Oh What a Day</summary><div class="lyrics"><strong>Verse 1</strong>The morning breaks, Your mercies new
+Every heart is fixed on You
+Rising up with songs of grace
+As we seek Your holy face
+
+<strong>Verse 2</strong>Shake the dust, let shadows flee
+Hands are lifted, we are free
+From the youngest to the old
+Watch the miracle unfold
+
+<strong>Pre-Chorus</strong>Lift your head and see the light
+Burning through the darkest night
+With one voice we make our stand
+Kingdom come across the land!
+
+<strong>Chorus</strong>Oh what a day! Let the praises ring!
+To the Savior, to the King!
+Season of joy! Let the sound go loud!
+Halle-Hallelujah, we’re singing proud!
+Lord of my soul~~ oh!
+Jesus, my heart is full of thanks
+Lift up the shout from all the ranks
+Halle-Hallelujah!
+
+<strong>Verse 3</strong>Bound together in Your love
+Blessed by Father from above
+We are children of the Day
+Walking in Your perfect Way
+
+<strong>Bridge</strong>Every breath, a miracle gift
+To the Heavens, eyes we lift
+Unstoppable, this holy fire
+Jesus, You’re our soul’s desire!
+
+<strong>Final Chorus</strong>Oh what a day! Let the praises ring!
+To the Savior, to the King!
+Season of joy! Let the sound go loud!
+Halle-Hallelujah, we’re singing proud!
+Jesus, my heart is full of thanks
+Lift up the shout from all the ranks
+Halle-Hallelujah!
+
+<strong>Big Finish Chorus</strong>Oh what a day! Praise to the One!
+For the victory He has won!
+Season of joy! Let the sound go loud!
+Halle-Hallelujah, we’re singing proud!
+Jesus, my heart is full of thanks
+Lift up the shout from all the ranks
+Halle-Hallelujah!</div></details>
+<details class="track"><summary>03 · I Will Sing to You</summary><div class="lyrics"><strong>Verse 1</strong>Here I stand before You now
+With an open heart, I bow
+Here I stand before You now
+With an open heart, I bow
+In the silence I hear Your voice
+Calling me again
+
+<strong>Pre-Chorus</strong>A song that slept inside my soul
+Now rises up to You
+
+<strong>Chorus</strong>I will sing to You, Lord
+With all my heart I’ll praise
+You’re my joy, my song forever
+You alone I raise
+I will pray to You, Lord
+In every breath I take
+Till the very end of my days
+Your name I will proclaim
+
+<strong>Verse 2</strong>Looking back on all my days
+I see mercy, I see grace
+When my heart was overwhelmed
+You gave me perfect peace
+
+<strong>Verse 3</strong>Through the passing of the years
+Still Your love remains the same
+Every step I take today
+You pour out Your grace
+
+<strong>Final Chorus</strong>I will sing to You, Lord (I will sing)
+With all my heart I’ll praise
+You’re my joy, my song forever (You alone)
+You alone I raise
+
+I will pray to You, Lord (forever)
+In every breath I take
+Till the very end of my days (You alone)
+Your name I will proclaim</div></details>
+<details class="track"><summary>04 · Lord Has Called My Name</summary><div class="lyrics"><strong>Verse 1</strong>Through the barren night I walked,
+Breathing slowly, standing still.
+Then a quiet light appeared,
+Lifting up my weary soul.
+
+<strong>Pre-Chorus</strong>When You reached Your hand to me,
+I bowed low before Your grace.
+Before fear could find my heart,
+Love had already found me.
+
+<strong>Chorus</strong>You called my name with perfect love.
+You never left when I fell down.
+Even in my weakest hour,
+Your faithful love remained with me.
+
+<strong>Verse 2</strong>When I could not see the end,
+And my steps grew slow with doubt,
+In the silence I still heard
+Every promise You had made.
+
+<strong>Bridge</strong>Every prayer too deep for words,
+Every tear I could not hide,
+You had known them from the start,
+Answering with endless love.
+
+<strong>Final Chorus</strong>Love has brought me all this way;
+Now I know the reason why.
+With my life I'll sing Your praise.
+
+I will live within Your love.
+I will never turn away.
+Though the years may come and go,
+Your love will always be my song.</div></details>
+<details class="track"><summary>05 · Parrhesia</summary><div class="lyrics"><strong>Verse 1 · Male Solo 1</strong>Early dawn, the world is cold and gray
+Heavy shoulders, starting one more day
+Every burden, every cross I bear
+Lord, I know You’ve heard my every prayer
+
+<strong>Verse 2 · Male Solo 2</strong>The weight of a name I cannot cast away
+Tears I’ve hidden through the heat of day
+When my feet are stumbling on the ground
+In Your mercy, I am truly found
+
+<strong>Pre-Chorus · Male Duet</strong>I hear Your voice, calling me by name
+I come to You, I’m stepping through the flame
+By the power of the rugged Cross
+I lift my eyes, no matter what the cost
+
+<strong>Chorus · Full 4-Part Harmony</strong>Parrhesia, before Your Throne I stand
+Parrhesia, my victory's in Your hand
+Though the world may shake, I will not fear
+Your mighty hand is always holding me near
+With boldness now, I take one more step
+
+<strong>Verse 3 · Male Quartet</strong>Walking with my brothers, side by side
+In Your grace, we have nowhere to hide
+More than titles, or a worldly crown
+As Your saints, we’re never bowing down
+
+<strong>Bridge · Call and Response</strong>A peace the world could never give
+A promise where my soul can live
+We know we’ll never walk alone
+You’re leading us back home!
+
+<strong>Chorus · Grand Finale</strong>Parrhesia, before Your Throne I stand
+Parrhesia, my victory's in Your hand
+Though the world may shake, I will not fear
+Your mighty hand is always holding me near
+With boldness now, I take one more step</div></details>
+<details class="track"><summary>06 · Faithful Still</summary><div class="lyrics"><strong>Verse 1</strong>Long before my life began
+You knew my name, You held my hand
+Past my will, past every choice
+Your love flowed in, I heard Your voice
+
+<strong>Pre-Chorus</strong>Through the dark and wandering night
+Your hand was there, You were my light
+Always faithful, always true
+
+<strong>Chorus</strong>Through it all, You’re faithful
+Always by my side
+Jesus, Name so beautiful
+Grateful for Your light
+
+<strong>Verse 2</strong>In every step, in every hour
+Grace is here, my quiet tower
+Constant love, a gift so free
+Giving all the strength to me
+
+<strong>Bridge</strong>Always there, You wait for me
+Love that never lets me go
+You’re my song, my story
+The only hope I know
+
+<strong>Final Chorus</strong>I love You, Lord, my Savior
+I praise You evermore
+Great is Your Name, oh Jesus
+Share Your love with all</div></details>
+<details class="track"><summary>07 · All My Life</summary><div class="lyrics"><strong>Verse 1</strong>Looking back on all my days
+Thought I walked them on my own
+But Your unseen hand was there
+Guiding every step I’d take
+
+Through the times I lost my way
+Through the days I felt so weak
+Even when I could not see
+You were always there with me
+
+<strong>Pre-Chorus</strong>Now I stand here by Your grace
+Led by Your faithful hand
+
+<strong>Chorus</strong>With a grateful heart I sing
+You have led my life, O Lord
+Through the darkest nights to now
+You have carried me
+
+With a grateful heart I stand
+You’re the reason that I live
+All my life You have been near
+It is all Your love
+
+<strong>Verse 2</strong>On the road so long and hard
+When I almost gave it up
+You restored my strength again
+With Your gentle, loving hand
+
+Even through my tears and pain
+None of it was lived in vain
+Every moment of my life
+You were always there
+
+<strong>Bridge</strong>All my life is in Your hands
+Every step is in Your plan
+Now I trust in You alone
+Only You, my Lord</div></details>
+<details class="track"><summary>08 · Every Breath</summary><div class="lyrics"><strong>Verse 1</strong>Waking up to the morning light
+The scent of home, a peaceful sight
+I used to think it was just another day
+But now I see Your grace in every way
+Every breath I take is a gift from You
+
+<strong>Verse 2</strong>Golden sun through the window pane
+Mercy falling like the summer rain
+The mundane life turns into a song
+In Your presence, Lord, is where I belong
+Every step I take, I am filled with joy
+
+<strong>Pre-Chorus</strong>When the shadows try to hem me in
+And the lonely nights begin to win
+I see You walking there before me
+I will rise in Your victory!
+
+<strong>Chorus</strong>All my days are held in Your grace
+Shadows fade before Your radiant face
+With a shout, I’ll lift my praise to You
+I will sing Your name my whole life through!
+
+<strong>Bridge</strong>Fear, get out! My God is here!
+Despair, you’re gone! The light is clear!
+You know me better than I know myself
+I trust Your heart and nothing else!
+
+<strong>Final Chorus</strong>All my days are held in Your grace
+Shadows fade before Your radiant face
+With a shout, I’ll lift my praise to You
+I will sing Your name my whole life through!
+
+<strong>Outro</strong>Every moment is Yours, my King
+Every heartbeat is an offering
+Thank You, Jesus. My Lord.</div></details>
+<details class="track"><summary>09 · Harmony of Praise</summary><div class="lyrics"><strong>Verse 1 · Female Solo</strong>Your voice is whispering softly
+Flowing deep within my heart
+From the lowest place You call me
+Your love draws me where You are
+
+<strong>Verse 2 · Male Solo</strong>Even on the shaking road
+I will hold Your guiding hand
+In the darkness You are shining
+I will sing of who You are
+
+<strong>Pre-Chorus · Mixed Choir</strong>Every voice now joins together
+We lift our hands and sing
+
+<strong>Chorus · Female Choir</strong>All together we will praise You
+Heaven and earth proclaim
+Like a river flowing onward
+To the ocean of Your grace
+
+<strong>Chorus · Male Choir</strong>All together we will praise You
+Harmony forever strong
+Every breath and every heartbeat
+Lifts Your holy name in song
+
+<strong>Bridge · Mixed Duet</strong>Your love is overflowing
+Our song is reaching heaven
+
+<strong>Final Chorus · Mixed Choir</strong>All together we will praise You
+All the world responds in song
+Like a river flowing onward
+To the ocean deep and strong
+All together we will praise You
+Glory rising endlessly
+With our arms wide open
+We lift Your name on high
+
+Hallelujah</div></details>
+<details class="track"><summary>10 · I Love You Lord</summary><div class="lyrics"><strong>Verse 1</strong>In the struggles of my life
+You were always by my side
+Even in the unseen moments
+You were watching over me
+
+When I fell and lost my strength
+Still Your presence never left
+You restored my weary soul
+Gave me strength again
+
+<strong>Pre-Chorus</strong>Every step along the way
+You have led me, Lord
+
+<strong>Chorus</strong>Thank You, Lord
+For bringing me this far
+By Your grace and endless love
+You have carried me
+
+I love You, Lord
+You are my God
+Every day of all my life
+I give it all to You
+
+<strong>Verse 2</strong>Through the seasons filled with tears
+You were always there with me
+Even every little prayer
+You have never turned away
+
+When I walked through darkest nights
+You became my guiding light
+Even now You lead my life
+Faithfully each day
+
+<strong>Bridge</strong>You alone are now my way
+You alone are all my strength
+You alone are all my song
+I will praise You endlessly
+
+You alone are all my hope
+You alone are now my light
+With my every breath and life
+I will worship You
+
+<strong>Final Chorus</strong>Thank You, Lord
+You are my salvation
+Every moment of my life
+I give it all to You
+
+I love You, Lord
+You are my God
+Forever I will sing
+All my praise to You</div></details>
+<details class="track"><summary>11 · Miracle of Grace</summary><div class="lyrics"><strong>Verse 1</strong>I had nothing to bring, no crown to my name
+Just a heart prone to wander, lost in the shame
+But You stepped in my darkness, You called out my name
+With arms wide open, You washed all my pain
+
+<strong>Verse 2</strong>I was worn by the world, so heavy and low
+In the depths of my failure, with nowhere to go
+You found me in silence, You reached for my hand
+By the power of mercy, You helped me to stand
+
+<strong>Chorus</strong>It’s a miracle, just to know Your love
+A song breaking through where the desert was
+It’s a miracle, that I can believe
+That Your grace is the only thing I’ll ever need
+Oh, what a gift today, it’s a miracle
+
+<strong>Bridge</strong>I lift my eyes and I see it now
+Your love is written in the stars above
+From the fields of green to the highest sky
+Even for someone as broken as I... You are there
+
+<strong>Final Chorus</strong>It’s a miracle! Let the earth cry out
+The beauty of Heav’n is all around
+It’s a miracle to trust in You
+Only Your love could make all things new
+Oh, what a gift today, it is love
+
+Every breath, every moment, a miracle
+Thank You, my Jesus, my All</div></details>
+<details class="track"><summary>12 · My Voice</summary><div class="lyrics"><strong>Verse 1</strong>I fold my hands and close my eyes so tight
+Giving my small heart to You, the source of light
+In this quiet moment, feeling You so near
+Thank You, loving God, for being with us here
+
+<strong>Chorus</strong>The Lord is living deep inside my heart
+He hears my voice, even when we’re apart
+Like a gentle breeze, He touches my soul
+Always by our side, making us whole
+
+<strong>Verse 2</strong>With a pretty heart, I sing a song of praise
+Following Your steps for all of my days
+You called us to be the light of the world
+I love You, precious Lord, more than any gold
+
+<strong>Chorus</strong>The Lord is living deep inside my heart
+He hears my voice, even when we’re apart
+Like a gentle breeze, He touches my soul
+Always by our side, making us whole
+
+Lord, I love You with all I am
+In Jesus' name we pray
+Amen</div></details>
+<details class="track"><summary>13 · Lord, You're My Way</summary><div class="lyrics"><strong>Verse 1</strong>In the quiet of this dawn
+I come before You, Lord
+With this small and simple faith
+I give my heart to You
+
+<strong>Chorus</strong>Lord, You are my strength
+Lord, You are my way
+Yesterday and still today
+I walk with You always
+
+<strong>Verse 2</strong>With a weary heart I come
+Calling on Your name
+Even all my tearful prayers
+You have always heard
+
+<strong>Bridge</strong>Your grace will never change
+Your love will always stay
+
+<strong>Final Chorus</strong>Lord, You are my strength
+Lord, You are my way
+Yesterday and still today
+I walk with You always</div></details>
+<details class="track"><summary>14 · Our Worship</summary><div class="lyrics"><strong>Verse 1</strong>Sun-day morn-ing, bright and shin-ing light
+With a heart so full, we come to-day
+All the love You've planned for me to see
+Wait-ing for Your grace, I'm on my way
+
+<strong>Verse 2</strong>All the bus-y thoughts in-side my mind
+Fold them neat-ly, put them all a-way
+In Your ho-ly Word so deep and pure
+I will dive in-to Your love to-stay
+
+<strong>Chorus</strong>Lord, please ac-cept our wor-ship now
+With our pre-cious songs, we lift You high
+Heav-en's glo-ry, pour-ing down on us
+Fill-ing us with joy, our hearts a-rise
+
+Look-ing on-ly to our Lov-ing Lord
+With my whole heart, all I give to You
+Ev-ery-where and al-ways by our side
+Wor-ship-ing the God, the High-est One
+
+Lord, we love You so
+Please ac-cept our praise</div></details>
+<details class="track"><summary>15 · Wake Up</summary><div class="lyrics"><strong>Verse 1</strong>Light is shining in the dark
+Hope is glowing in our hearts
+Hear the joyful news today
+Jesus came, He made a way
+
+<strong>Pre-Chorus</strong>Everybody stand up now
+Lift your hands and shout it loud
+
+<strong>Chorus</strong>Wake up, wake up, sing it out
+Jump and turn around
+It's the day that Jesus came
+Sing it loud
+Clap your hands and celebrate
+Praise His holy name
+
+<strong>Verse 2</strong>Stars were shining in the night
+Angels filled the sky with light
+All the world is full of joy
+Welcome to the Savior born
+
+<strong>Pre-Chorus</strong>Everybody stand up now
+Sing it loud and shout it out
+
+<strong>Chorus</strong>Wake up, wake up, sing it out
+Jump and turn around
+It's the day that Jesus came
+Sing it loud
+Clap your hands and celebrate
+Praise His holy name
+
+<strong>Bridge</strong>Jump up high, jump up high
+Lift your hands up to the sky
+All the world will sing today
+Jesus is the way
+
+<strong>Final Chorus</strong>Wake up, wake up, sing it out
+Jump and turn around
+It's the day that Jesus came
+Sing it loud
+Clap your hands and celebrate
+Praise His holy name</div></details>
+</div></section>
+<section class="archive"><h2>WORSHIP ARCHIVE</h2><p>나의 찬양은 완성된 음악의 목록이 아니라<br>한 사람의 일상과 믿음이 노래가 되어 쌓여온 기록입니다.</p><div class="flow"><span>KOREAN WORSHIP</span><span>MY HYMN 01–03</span><span>ENGLISH WORSHIP</span><span>SHOUT</span></div></section>
+</div>
+</body></html>

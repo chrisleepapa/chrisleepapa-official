@@ -3,128 +3,1606 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#030305">
+<link rel="manifest" href="/manifest.json">
 <link rel="icon" href="images/favicon.png">
-<meta name="description" content="Chris LEE.PAPA Worship Archive — 나의 찬양 Vol.1, Vol.2, Vol.3 그리고 Shout. AI로 제작한 한국어 CCM과 워십 음악의 기록.">
-<meta property="og:title" content="WORSHIP – Chris LEE.PAPA">
-<meta property="og:description" content="영혼 깊은 곳에서 올려드리는 고백과 찬양의 기록. 나의 찬양 Vol.1 · Vol.2 · Vol.3 · Shout.">
+<meta name="author" content="Chris LEE.PAPA">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+<meta name="description" content="Chris LEE.PAPA의 Korean Worship Archive. 나의 찬양 Vol.1, Vol.2, Vol.3의 앨범 이야기, 제작 과정, 가사집과 공식 스트리밍 링크를 기록합니다.">
 <meta property="og:type" content="website">
+<meta property="og:title" content="WORSHIP – 나의 찬양 앨범 이야기와 가사집 | Chris LEE.PAPA">
+<meta property="og:description" content="나의 찬양 Vol.1 · Vol.2 · Vol.3. 앨범을 만들게 된 이야기와 예배의 고백, 가사 아카이브를 한곳에 기록합니다.">
 <meta property="og:url" content="https://chrisleepapa-official.vercel.app/worship">
 <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/My%20hymn3.jpg">
 <link rel="canonical" href="https://chrisleepapa-official.vercel.app/worship">
-<title>WORSHIP – Chris LEE.PAPA</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
+<title>WORSHIP – 나의 찬양 앨범 이야기와 가사집 | Chris LEE.PAPA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Noto+Serif+KR:wght@300;400;600&display=swap">
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css">
 <link rel="stylesheet" href="css/common.css">
 <style>
-:root{--gold:#c9a84c;--gold-light:#e8d08a;--bg:#030305;--text:#f0ece4}
-html,body{background:var(--bg);color:var(--text)}
-body{margin:0;font-family:Pretendard,'Noto Serif KR',serif;line-height:1.7;overflow-x:hidden;background-image:radial-gradient(circle at top center,rgba(60,30,80,.4),transparent 60%),radial-gradient(circle at bottom,rgba(40,30,10,.6),transparent 70%)}
-a{text-decoration:none;color:inherit}
-.page-header{position:relative;height:360px;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding-top:70px}
-.page-header canvas{position:absolute;inset:0;width:100%;height:100%}
-.header-content{position:relative;z-index:2}
-.header-title{font-family:Cinzel,serif;font-size:clamp(3rem,10vw,5rem);letter-spacing:.15em;color:var(--gold-light)}
-.header-slogan{color:#cdd6f4;letter-spacing:2px}
-.container{max-width:1100px;margin:0 auto;padding:45px 20px 110px}
-.intro{text-align:center;max-width:760px;margin:0 auto 55px}
-.intro-kicker{font-family:Cinzel,serif;color:var(--gold);letter-spacing:.3em;font-size:.72rem}
-.intro h2{font-size:clamp(1.7rem,4vw,2.5rem);font-weight:400;color:#fff}
-.intro p{color:#99949c;font-size:.95rem}
-.albums-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:34px}
-.album-card{position:relative;min-height:430px;border-radius:20px;overflow:hidden;background:#0a0a12;border:1px solid rgba(201,168,76,.15);box-shadow:0 20px 60px rgba(0,0,0,.7)}
-.album-cover{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top}
-.album-cover-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0) 25%,rgba(5,3,15,.45) 48%,rgba(5,3,15,.96) 77%,#05030f 100%)}
-.album-info{position:absolute;left:0;right:0;bottom:0;z-index:3;padding:30px 28px}
-.album-vol-badge{display:block;color:var(--gold);font-family:Cinzel,serif;font-size:.68rem;letter-spacing:.32em;margin-bottom:8px}
-.album-title{color:#fff;font-size:1.55rem;font-weight:600;margin:0 0 18px}
-.album-desc{color:#b4afb8;font-size:.86rem;line-height:1.75;margin:0 0 22px}
-.stream-row{display:flex;flex-wrap:wrap;gap:9px}
-.stream-btn{display:inline-flex;align-items:center;padding:9px 16px;border-radius:24px;border:1px solid rgba(255,255,255,.15);font-size:.78rem;font-weight:700}
-.btn-spotify{color:#1DB954;border-color:rgba(29,185,84,.4);background:rgba(29,185,84,.07)}
-.btn-youtube{color:#ff4d4d;border-color:rgba(255,60,60,.4);background:rgba(255,60,60,.07)}
-.shout-card{border-color:rgba(201,168,76,.3)}
-.archive-note{margin:60px auto 0;max-width:820px;padding:30px;border:1px solid rgba(201,168,76,.15);border-radius:18px;background:rgba(10,10,18,.7);text-align:center}
-.archive-note h3{font-family:Cinzel,serif;color:var(--gold);font-size:.85rem;letter-spacing:.22em}
-.archive-note p{color:#aaa5ad;font-size:.9rem}
-@media(max-width:700px){.page-header{height:300px}.container{padding:30px 14px 90px}.albums-grid{grid-template-columns:1fr;gap:24px}}
+:root{--gold:#c9a84c;--gold-light:#e8d08a;--bg:#030305;--text:#f0ece4;--muted:#aaa5ad;--panel:rgba(12,12,18,.74)}*{box-sizing:border-box}html,body{background:var(--bg);color:var(--text)}body{margin:0;font-family:Pretendard,'Noto Serif KR',sans-serif;line-height:1.75;overflow-x:hidden;background-image:radial-gradient(circle at 50% 0,rgba(60,30,80,.38),transparent 58%),radial-gradient(circle at 50% 100%,rgba(40,30,10,.48),transparent 70%)}a{text-decoration:none;color:inherit}.page-header{position:relative;min-height:370px;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding:70px 20px 30px}.page-header canvas{position:absolute;inset:0;width:100%;height:100%}.header-content{position:relative;z-index:2}.kicker,.section-kicker{font-family:Cinzel,serif;color:var(--gold);letter-spacing:.3em;font-size:.72rem}.header-title{margin:8px 0 4px;font-family:Cinzel,serif;font-size:clamp(3rem,10vw,5.2rem);letter-spacing:.15em;color:var(--gold-light)}.header-slogan{margin:0;color:#cdd6f4;letter-spacing:2px}.container{max-width:1120px;margin:0 auto;padding:50px 20px 110px}.intro{text-align:center;max-width:790px;margin:0 auto 58px}.intro h2,.section-heading h2{font-family:'Noto Serif KR',serif;color:#fff}.intro h2{font-size:clamp(1.7rem,4vw,2.45rem);font-weight:400;margin:12px 0 15px}.intro p,.section-heading p{color:var(--muted);line-height:2;word-break:keep-all}.section-heading{text-align:center;margin:78px auto 30px}.section-heading h2{font-size:clamp(1.45rem,3.5vw,2rem);font-weight:600;margin:8px 0}.section-heading p{max-width:720px;margin:0 auto;font-size:.88rem}.albums-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}.album-card{position:relative;min-height:440px;border-radius:22px;overflow:hidden;background:#090910;border:1px solid rgba(201,168,76,.16);box-shadow:0 20px 60px rgba(0,0,0,.65)}.album-cover{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.album-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.02) 20%,rgba(5,3,15,.42) 45%,rgba(5,3,15,.96) 73%,#05030f 100%)}.album-info{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:30px}.album-badge{display:block;color:var(--gold);font-family:Cinzel,serif;font-size:.65rem;letter-spacing:.27em;margin-bottom:8px}.album-title{margin:0 0 12px;color:#fff;font-family:'Noto Serif KR',serif;font-size:1.45rem}.album-desc{margin:0 0 20px;color:#bbb5bf;font-size:.86rem;line-height:1.8;word-break:keep-all}.stream-row{display:flex;flex-wrap:wrap;gap:9px}.stream-btn{display:inline-flex;align-items:center;padding:8px 15px;border-radius:24px;border:1px solid rgba(255,255,255,.15);font-size:.76rem;font-weight:700}.spotify{color:#1DB954;border-color:rgba(29,185,84,.4);background:rgba(29,185,84,.07)}.youtube{color:#ff5b5b;border-color:rgba(255,70,70,.4);background:rgba(255,70,70,.07)}.story-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.story-card{padding:28px;border:1px solid rgba(201,168,76,.13);border-radius:18px;background:var(--panel)}.story-number{font-family:Cinzel,serif;color:var(--gold);font-size:.65rem;letter-spacing:.22em}.story-card h3{font-family:'Noto Serif KR',serif;color:#fff;font-size:1.25rem;margin:9px 0 14px}.story-card p{color:#aaa5ad;font-size:.9rem;line-height:1.95;margin:0;word-break:keep-all}.lyrics-intro{padding:28px 30px;margin-bottom:20px;border:1px solid rgba(201,168,76,.16);border-radius:18px;background:rgba(10,10,16,.7);color:#aaa5ad;text-align:center;font-size:.9rem;line-height:1.9}.lyrics-intro strong{color:var(--gold-light)}.lyrics-book{display:grid;gap:14px}.lyrics-item{border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(10,10,16,.68);overflow:hidden}.lyrics-item[open]{border-color:rgba(201,168,76,.28)}.lyrics-item summary{list-style:none;cursor:pointer;padding:20px 22px;display:flex;justify-content:space-between;align-items:center;gap:16px;color:#fff}.lyrics-item summary::-webkit-details-marker{display:none}.lyrics-title{font-family:'Noto Serif KR',serif;font-weight:600}.lyrics-meta{display:block;color:#77727a;font-size:.72rem;margin-top:4px}.lyrics-arrow{color:var(--gold)}.lyrics-body{padding:0 22px 24px;border-top:1px solid rgba(255,255,255,.06);color:#aaa5ad;font-size:.9rem;line-height:1.95}.lyrics-body p{margin:18px 0 0;white-space:pre-line;word-break:keep-all}.final-note{margin:70px auto 0;max-width:850px;padding:30px;border:1px solid rgba(201,168,76,.14);border-radius:18px;background:rgba(10,10,18,.72);text-align:center}.final-note h3{font-family:Cinzel,serif;color:var(--gold);font-size:.75rem;letter-spacing:.22em}.final-note p{color:#aaa5ad;font-size:.88rem;line-height:1.9;word-break:keep-all}@media(max-width:760px){.page-header{min-height:310px}.container{padding:35px 14px 85px}.albums-grid,.story-grid{grid-template-columns:1fr}.album-card{min-height:420px}.album-info{padding:25px}.lyrics-item summary{padding:18px}.lyrics-body{padding:0 18px 20px}}
 </style>
 </head>
 <body>
 <div id="site-nav"></div>
-<header class="page-header">
-<canvas id="stars-canvas"></canvas>
-<div class="header-content">
-<div class="intro-kicker">CHRIS LEE.PAPA</div>
-<h1 class="header-title">WORSHIP</h1>
-<p class="header-slogan" data-i18n="worship_header_slogan">영혼 깊은 곳에서 올려드리는 고백과 찬양</p>
-</div>
-</header>
+<header class="page-header"><canvas id="stars-canvas" aria-hidden="true"></canvas><div class="header-content"><div class="kicker">CHRIS LEE.PAPA</div><h1 class="header-title">WORSHIP</h1><p class="header-slogan" data-i18n="worship_header_slogan">영혼 깊은 곳에서 올려드리는 고백과 찬양</p></div></header>
 <main class="container">
-<section class="intro">
-<div class="intro-kicker">WORSHIP ARCHIVE</div>
-<h2 data-i18n="worship_intro_title">나의 찬양, 그리고 나의 예배</h2>
-<p data-i18n="worship_intro_desc">음악을 통해 하나님께 올려드린 고백과 찬양을 한곳에 기록합니다. 기존 작품은 그대로 보존하고 새로운 예배의 노래를 계속 추가합니다.</p>
-</section>
-<section class="albums-grid">
-<article class="album-card">
-<img class="album-cover" src="images/vol1.jpg" alt="나의 찬양 Vol.1 앨범 커버" title="나의 찬양 Vol.1 앨범 커버" loading="lazy">
-<div class="album-cover-overlay"></div><div class="album-info"><span class="album-vol-badge">VOL. 01 · THE FIRST CONFESSION</span>
-<h2 class="album-title" data-i18n="worship_vol1_title">나의 찬양 Vol.1</h2><p class="album-desc" data-i18n="worship_vol1_desc">처음 드리는 고백처럼, 하나님을 향한 마음을 담은 첫 번째 찬양의 기록.</p>
-<div class="stream-row"><a class="stream-btn btn-spotify" href="https://open.spotify.com/album/0ctoLQNWCmiPEkySv05PAM" target="_blank" rel="noopener">Spotify</a></div></div></article>
-<article class="album-card">
-<img class="album-cover" src="images/vol2.png" alt="나의 찬양 Vol.2 앨범 커버" title="나의 찬양 Vol.2 앨범 커버" loading="lazy">
-<div class="album-cover-overlay"></div><div class="album-info"><span class="album-vol-badge">VOL. 02 · 2ND CONFESSION</span>
-<h2 class="album-title" data-i18n="worship_vol2_title">나의 찬양 Vol.2</h2><p class="album-desc" data-i18n="worship_vol2_desc">첫 고백에 이어 더 깊어진 믿음과 감사의 마음을 담은 두 번째 찬양.</p>
-<div class="stream-row"><a class="stream-btn btn-spotify" href="https://open.spotify.com/album/0yhn8oEojOqsI864an6Qki" target="_blank" rel="noopener">Spotify</a><a class="stream-btn btn-youtube" href="https://youtube.com/playlist?list=OLAK5uy_k9AXYTzto2kBSstq07DrX3o4byN30pwAg&amp;si=UN-nK9ECWZhEs5WV" target="_blank" rel="noopener">YouTube</a></div></div></article>
-<article class="album-card">
-<img class="album-cover" src="images/My hymn3.jpg" alt="나의 찬양 Vol.3 앨범 커버" title="나의 찬양 Vol.3 앨범 커버" loading="lazy">
-<div class="album-cover-overlay"></div><div class="album-info"><span class="album-vol-badge">VOL. 03 · MY HYMN</span>
-<h2 class="album-title" data-i18n="worship_vol3_title">나의 찬양 Vol.3</h2><p class="album-desc" data-i18n="worship_vol3_desc">연약하고 부족한 나의 진솔하고 담백한 고백</p>
-<div class="stream-row"><a class="stream-btn btn-spotify" href="https://open.spotify.com/album/0V6TlwkCCisLAXpbuw0N4o" target="_blank" rel="noopener">Spotify</a><a class="stream-btn btn-youtube" href="https://youtube.com/playlist?list=OLAK5uy_mt0jCgG_cqI_suzK5d7Hhk74S804JU_S0&amp;si=FdReg5mEmY5pBOnV" target="_blank" rel="noopener">YouTube</a></div></div></article>
-<article class="album-card shout-card">
-<img class="album-cover" src="images/vol3.jpg" alt="Shout 워십 앨범 커버" title="Shout 워십 앨범 커버" loading="lazy">
-<div class="album-cover-overlay"></div><div class="album-info"><span class="album-vol-badge">WORSHIP · SHOUT</span>
-<h2 class="album-title">Shout</h2><p class="album-desc" data-i18n="worship_shout_desc">기존 Worship 아카이브에서 유지하는 작품입니다. 새 작품이 추가되어도 삭제하지 않습니다.</p>
-<div class="stream-row"><a class="stream-btn btn-spotify" href="https://open.spotify.com/album/3XaG1yonPrJiyVPwExgVBm" target="_blank" rel="noopener">Spotify</a><a class="stream-btn btn-youtube" href="https://youtube.com/playlist?list=OLAK5uy_lVpXPP4Cea1qi6WA-lmwIOXkOKrijaT0Y&amp;si=_HNmdIJU4zniokP9" target="_blank" rel="noopener">YouTube</a></div></div></article>
-</section>
-<section class="archive-note"><h3>✦ STREAMING ARCHIVE</h3><p data-i18n="worship_archive_desc">Spotify는 각 작품의 실제 앨범 페이지로 연결합니다. YouTube는 작품별 공식 플레이리스트가 제공되는 경우 해당 플레이리스트를 사용합니다.</p></section>
+<section class="intro"><div class="kicker">WORSHIP ARCHIVE</div><h2 data-i18n="worship_intro_title">나의 찬양, 그리고 나의 예배</h2><p data-i18n="worship_intro_desc">이곳은 단순히 음악을 모아놓은 페이지가 아니라, 하나님께 드리고 싶었던 마음을 노래로 기록해 온 예배의 아카이브입니다. 완성된 음원뿐 아니라 왜 만들었는지, 어떤 마음으로 만들었는지, 그리고 그 노래에 담긴 고백까지 함께 기록합니다.</p></section>
+<section><div class="section-heading"><span class="section-kicker">MY HYMN COLLECTION</span><h2 data-i18n="albums_heading">나의 찬양 앨범</h2><p data-i18n="albums_intro">한 장씩 쌓여온 찬양의 기록입니다. 각 앨범의 이야기를 읽고 음악을 들어보세요.</p></div><div class="albums-grid">
+<article class="album-card"><img class="album-cover" src="images/vol1.jpg" alt="나의 찬양 Vol.1 앨범 커버" loading="lazy"><div class="album-overlay"></div><div class="album-info"><span class="album-badge">VOL. 01 · THE FIRST CONFESSION</span><h3 class="album-title" data-i18n="vol1_title">나의 찬양 Vol.1</h3><p class="album-desc" data-i18n="vol1_card">처음 드리는 고백처럼, 하나님을 향한 마음을 담은 첫 번째 찬양의 기록.</p><div class="stream-row"><a class="stream-btn spotify" href="https://open.spotify.com/album/0ctoLQNWCmiPEkySv05PAM" target="_blank" rel="noopener">Spotify</a></div></div></article>
+<article class="album-card"><img class="album-cover" src="images/vol2.png" alt="나의 찬양 Vol.2 앨범 커버" loading="lazy"><div class="album-overlay"></div><div class="album-info"><span class="album-badge">VOL. 02 · 2ND CONFESSION</span><h3 class="album-title" data-i18n="vol2_title">나의 찬양 Vol.2</h3><p class="album-desc" data-i18n="vol2_card">첫 고백에 이어 더 깊어진 믿음과 감사의 마음을 담은 두 번째 찬양.</p><div class="stream-row"><a class="stream-btn spotify" href="https://open.spotify.com/album/0yhn8oEojOqsI864an6Qki" target="_blank" rel="noopener">Spotify</a><a class="stream-btn youtube" href="https://youtube.com/playlist?list=OLAK5uy_k9AXYTzto2kBSstq07DrX3o4byN30pwAg&amp;si=UN-nK9ECWZhEs5WV" target="_blank" rel="noopener">YouTube</a></div></div></article>
+<article class="album-card"><img class="album-cover" src="images/My hymn3.jpg" alt="나의 찬양 Vol.3 앨범 커버" loading="lazy"><div class="album-overlay"></div><div class="album-info"><span class="album-badge">VOL. 03 · MY HYMN</span><h3 class="album-title" data-i18n="vol3_title">나의 찬양 Vol.3</h3><p class="album-desc" data-i18n="vol3_card">연약하고 부족한 나의 진솔하고 담백한 고백. 완벽한 사람이 아니라 주님을 바라보며 다시 일어나는 사람의 노래입니다.</p><div class="stream-row"><a class="stream-btn spotify" href="https://open.spotify.com/album/0V6TlwkCCisLAXpbuw0N4o" target="_blank" rel="noopener">Spotify</a><a class="stream-btn youtube" href="https://youtube.com/playlist?list=OLAK5uy_mt0jCgG_cqI_suzK5d7Hhk74S804JU_S0&amp;si=FdReg5mEmY5pBOnV" target="_blank" rel="noopener">YouTube</a></div></div></article>
+</div></section>
+<section><div class="section-heading"><span class="section-kicker">THE STORY BEHIND THE SONGS</span><h2 data-i18n="story_heading">앨범을 만들게 된 이야기</h2><p data-i18n="story_intro">이 음원들은 거창한 음악 프로젝트에서 시작된 것이 아니라, 일상 속에서 하나님께 드리고 싶었던 마음을 한 곡씩 기록하면서 시작되었습니다.</p></div><div class="story-grid">
+<article class="story-card"><span class="story-number">01 · FIRST SONGS</span><h3>노래를 만들기 시작한 이유</h3><p>처음에는 좋은 음악을 만들고 싶다는 마음보다 하나님께 드리고 싶은 마음을 노래로 남기고 싶었습니다. 한 곡씩 만들다 보니 음악은 결과물이 아니라 믿음과 일상을 기록하는 방법이 되었습니다.</p></article>
+<article class="story-card"><span class="story-number">02 · VOL.1</span><h3>첫 번째 고백</h3><p>Vol.1은 완성된 사람의 찬양이 아니라 부족하고 흔들리는 사람이 주님을 바라보며 다시 걸어가는 고백입니다. 평범한 하루와 가족, 두려움과 감사가 노래의 출발점이 되었습니다.</p></article>
+<article class="story-card"><span class="story-number">03 · VOL.2</span><h3>더 넓어진 예배</h3><p>Vol.2에서는 개인의 고백을 넘어 함께 노래하고 예배하는 기쁨을 담았습니다. 힘 있게 외치는 찬양부터 조용한 고백, 어린이와 공동체를 위한 노래까지 예배의 폭을 넓혔습니다.</p></article>
+<article class="story-card"><span class="story-number">04 · VOL.3</span><h3>나를 아시는 주님</h3><p>Vol.3은 지나온 시간을 돌아보며 결국 모든 것이 은혜였음을 고백하는 앨범입니다. 어린 믿음, 가족, 공동체, 천국의 소망과 마지막까지 주님을 바라보겠다는 믿음을 여러 형태의 보컬과 예배 음악으로 기록했습니다.</p></article>
+</div></section>
+<section><div class="section-heading"><span class="section-kicker">LYRICS BOOK</span><h2>나의 찬양 Vol.1 · Vol.2 · Vol.3 가사집</h2><p>직접 만든 찬양의 가사를 앨범과 트랙 순서대로 기록합니다. Intro와 Outro 같은 제작 지시는 제외하고, 곡의 가사와 Verse·Chorus·Bridge 등의 구조 표시는 보존했습니다.</p></div>
+<div class="lyrics-intro"><strong>MY HYMN VOL.1 · 10 TRACKS</strong><br>첫 번째 앨범의 전체 가사입니다.</div>
+<div class="lyrics-book">
+<details class="lyrics-item"><summary><span><span class="lyrics-title">01. 이 길 위에서</span><span class="lyrics-meta">나의 찬양 Vol.1</span></span><span class="lyrics-arrow">＋</span></summary><div class="lyrics-body"><p>[1절]
+빛나는 태양이 저물어 갈 때 조용히 내 마음 돌아봅니다
+채우려 할수록 비워지는 밤 가만히 두 눈을 감아봅니다
+
+[프리코러스]
+작은 한숨조차 기도가 되어 나의 곁에 계신 주를 느낄 때
+두렵기만 했던 나의 하루를 다시 시작할 힘을 얻습니다
+
+[후렴]
+오늘도 걷는 이 길 위에서 한없이 부족한 나를 위해서
+말없이 다가와 손 잡아주신 그 따뜻한 품에 기대어 갑니다
+
+[2절]
+어제와 똑같은 오늘이어도 마음은 유난히 어두웠는데
+나의 연약함을 아시는 주님 내 곁에 다가와 안아주시네
+
+[프리코러스]
+작은 소리조차 찬양이 되어 나를 감싸주는 빛이 비칠 때
+흔들릴 것 같던 나의 목소리 다시 소리칠 힘을 얻습니다
+
+[후렴]
+오늘도 걷는 이 길 위에서 한없이 부족한 나를 위해서
+조용히 다가와 손 잡아주신 그 인자한 손 잡고 나아갑니다
+
+[브릿지]
+화려한 믿음은 아닐지라도 소박한 진심을 아시는 주님
+매일 마주하는 나의 일상에 주의 은혜가 스며듭니다
+
+[후렴]
+오늘도 걷는 이 길 위에서 (길 위에서) 한없이 부족한 나를 위해서 (날 위해서)
+조용히 다가와 손 잡아주신 (나의 주님) 그 손 잡고 나아갑니다
+
+[마지막 후렴]
+오늘도 걷는 이 길 위에서 (길에서) 한없이 부족한 나를 위해서 (나를 위해)
+한없이 부족한 나를 위해서 (나를 위해)
+말없이 다가와 손 잡아주신 (나의 주님) 그 따뜻한 품에 기대어 갑니다</p></div></details>
+<details class="lyrics-item"><summary><span><span class="lyrics-title">02. 사랑으로</span><span class="lyrics-meta">나의 찬양 Vol.1</span></span><span class="lyrics-arrow">＋</span></summary><div class="lyrics-body"><p>[1절]
+메마른 밤을 지나
+
+[후렴]
+사랑으로 날 부르신 주
+사랑으로 날 부르신 주
+숨을 고르며 서 있던 나
+넘어질 때도 어둠 속에도 길이 되신 분
+떠나지 않고 내가 약해진 그 자리에도
+말없이 비춰 오던 빛 나를 다시 일으켜
+
+[프리코러스]
+손 내밀어 주신 음성 고개 숙인 그 순간
+두려움보다 먼저 사랑이 다가왔네
+
+[후렴]
+사랑으로 날 부르신 주
+넘어질 때도 떠나지 않고
+내가 약해진 그 자리에도
+주 사랑은 남아 있네
+주 사랑은 남아 있네
+
+[2절]
+끝이 보이지 않아 걸음이 느려질 때도
+기다림 속에 흐르던 신실한 그 약속
+
+[프리코러스]
+돌아서려 했던 마음 수없이 흔들릴 때
+말없이 나를 안아 다시 걷게 하셨네
+내가 멈춰 선 그 시간에도 주 사랑은 나를 붙드네
+
+[브릿지]
+말로 다 못한 기도 눈물로 남겨진 고백
+주님은 이미 알고 계셔 사랑으로 응답하셨네
+
+[후렴]
+사랑으로 날 부르신 주 오늘도 나를 포기 안 해
+시간이 흘러 변해도 주 사랑은 여기 있네
+
+[후렴]
+사랑으로 날 여기까지 이끄신 그 이유
+이제는 내가 노래하네
+
+[마지막 후렴]
+주 사랑으로 살아가리 이제는 내가 포기 안 해
+시간이 흘러도 내 사랑은 여기 있네</p></div></details>
+<details class="lyrics-item"><summary><span><span class="lyrics-title">03. 나의 찬양</span><span class="lyrics-meta">나의 찬양 Vol.1</span></span><span class="lyrics-arrow">＋</span></summary><div class="lyrics-body"><p>[1절]
+내 생명 갖기 전부터 주님은 날 아셨죠
+내 의지 상관없이 사랑은 흘렀네요
+
+[프리코러스]
+길 잃은 밤에도 날 비춘 그 손길 변치 않는 신실함
+
+[후렴]
+한결같이 날 지키신 주 늘 곁에 계셨네
+아름다운 그 이름 찬양해 깊은 감사뿐이죠
+
+[후렴]
+한결같이 날 지키신 주 (지키시고) 한결같이 날 지키신 주 (지키시고)
+늘 곁에 계셨네 (함께하시네)
+
+[후렴]
+한결같이 날 지키신 주 늘 곁에 계셨네
+아름다운 그 이름 찬양해 아름다운 그 이름 찬양해
+깊은 감사뿐이죠 깊은 감사뿐이죠
+
+[2절]
+내 모든 걸음 속에 당신의 은혜가
+변함없는 그 사랑 선물이 되었네
+
+[프리코러스]
+외로운 밤에도 날 안은 그 손길 나를 향한 신실함
+
+[브릿지]
+언제나 그 자리에 나를 기다린 사랑
+나의 노래 됩니다 내 믿음 소망이 되네
+늘 곁에 계셨네 (함께하시네)
+아름다운 그 이름 찬양해 (소리 높여) 깊은 감사뿐이죠
+
+[후렴]
+사랑합니다 나의 주님 (나의 주) 영원히 찬양합니다 (찬양해요)
+위대하신 그 이름 전해 (소리 높여) 사랑을 나눠요</p></div></details>
+<details class="lyrics-item"><summary><span><span class="lyrics-title">04. 기적입니다</span><span class="lyrics-meta">나의 찬양 Vol.1</span></span><span class="lyrics-arrow">＋</span></summary><div class="lyrics-body"><p>[1절]
+자랑할 것 하나 없는 나인데
+날마다 넘어지고 죄만 지었었는데
+이런 나를 먼저 찾아와 주시고
+따스한 손길로 꼭 안아주셨죠
+
+[2절]
+세상 속에 찌들었던 나인데
+힘없이 무너지고 좌절했었는데
+조용히 나를 찾아와 주시고
+구원의 손길로 날 건져주셨죠
+
+[후렴]
+기적입니다 주를 만난 건 메마른 내 삶에 피어난 노래
+기적입니다 내가 믿는 건 주의 은혜 아니면 안 되는 일들
+참 감사한 오늘 기적입니다
+
+[브릿지]
+눈을 들어 온 세상을 보니 주의 사랑이 느껴지네요
+들판의 풀과 하늘의 별까지 보잘것없는 나도~~
+
+[후렴]
+사랑입니다 날 부르신 것 끝없는 죄에서 건져주신 사랑
+기적입니다 주와 걷는 것 주의 사랑 아니면 안 되는 일들
+참 감사한 오늘 사랑입니다
+
+[후렴]
+기적입니다 온 땅과 만물 (찬양해) 주님이 만드신 아름다운 세상
+기적입니다 (기적이죠) 주를 믿는 것 주의 사랑 아니면 안 되는 일들
+참 감사한 오늘 사랑입니다</p></div></details>
+<details class="lyrics-item"><summary><span><span class="lyrics-title">05. 파레시아</span><span class="lyrics-meta">나의 찬양 Vol.1</span></span><span class="lyrics-arrow">＋</span></summary><div class="lyrics-body"><p>[1절]
+새벽 길 위, 무거운 어깨 오늘 하루, 또 시작되네
+맡겨진 짐, 다 지고 가는 나의 삶은, 주가 아시네
+
+[2절]
+떨칠 수 없는, 이름의 무게 혼자 참아온, 남모를 눈물
+흔들거리는, 나의 발걸음 주님 오늘, 붙드소서
+
+[프리코러스]
+나를 부르네, 주의 음성 내 모습 이대로, 나갑니다
+십자가 사랑, 그 힘을 믿고 고개 들어, 하늘 보네
+
+[후렴]
+파레시아, 주 앞에 가리라 파레시아, 나의 승리야
+험한 세상도, 두렵지 않네 주의 강한 손, 날 붙드니까
+당당하게, 한 걸음 더
+
+[3절]
+함께 걷는, 형제의 고백 서로를 위해, 손을 잡으리
+세상의 이름, 그보다 귀한 주의 성도로, 일어서리
+
+[브릿지]
+세상이 줄 수 없는 평안 주님이 약속하신 평화
+우리는 결코 혼자가 아냐 주와 함께 걷는 이 길
+
+[후렴]
+파레시아, 주 앞에 가리라 파레시아, 나의 승리야
+험한 세상도, 두렵지 않네 주의 강한 손, 날 붙드니까
+당당하게, 한 걸음 더</p></div></details>
+<details class="lyrics-item"><summary><span><span class="lyrics-title">06. 나의 목소리</span><span class="lyrics-meta">나의 찬양 Vol.1</span></span><span class="lyrics-arrow">＋</span></summary><div class="lyrics-body"><p>[1절]
+두 손을 모으고 눈을 감아요 작은 내 마음을 주님께 드려요
+조용한 이 시간 우리와 함께하시는 사랑의 하나님 참 감사합니다
+
+[후렴]
+내 마음속에 계신 하나님 나의 목소리 들으시는 주님
+잔잔한 바람처럼 내 맘 만지시고 언제나 우리와 함께하셔요
+
+[2절]
+예쁜 마음 모아 노래 불러요 작은 내 발걸음 주님만 따라가요
+세상의 빛으로 우리를 부르신 귀하신 하나님 사랑합니다
+
+[후렴]
+내 마음속에 계신 하나님 나의 목소리 들으시는 주님
+잔잔한 바람처럼 내 맘 만지시고 언제나 우리와 함께하셔요</p></div></details>
+<details class="lyrics-item"><summary><span><span class="lyrics-title">07. 오 기쁜 날</span><span class="lyrics-meta">나의 찬양 Vol.1</span></span><span class="lyrics-arrow">＋</span></summary><div class="lyrics-body"><p>[1절]
+아침 햇살, 반짝이며 주님 사랑, 노래해요
+우리 마음, 가득하게 주의 은혜, 넘쳐나요
+
+[2절]
+슬픈 생각, 모두 잊고 두 손 높이, 들어봐요
+어린아이, 할아버지 모두 함께, 춤을 추어요
+
+[프리코러스]
+가슴 펴고, 하늘 봐요 우리 소리, 하나 되어
+주를 향해, 고백해요 지금 바로, 시작해요!
+
+[후렴]
+오 기쁜 날! 주 찬양해! 온 세상에, 울려라!
+축복의 날! 주 노래해! 할렐루 할렐루야!
+사랑의 주~~오! 나의 주님, 감사해!
+우리 함께, 소리 높여 할렐루 할렐루야! 오 기쁜 날! 주 찬양해!
+
+[3절]
+사랑으로, 하나 되어 서로 보며, 축복해요
+오 기쁜 날! 주 찬양해! 온 세상에, 울려라! 온 세상에, 울려라
+축복의 날! 주 노래해! 축복의 날! 주 노래해!
+할렐루 할렐루야! 할렐루 할렐루야!
+우린 모두, 주의 자녀 행복하게, 걸어가요
+
+[브릿지]
+기적 같은, 이 하루를 소중하게, 보낼래요
+사랑해요, 고마워요 멈출 수 없는 찬양! (One, Two, Three, Jump!)
+
+[후렴]
+오 기쁜 날! 주 찬양해! 온 세상에, 울려라!
+축복의 날! 주 노래해! 할렐루 할렐루야!
+사랑의 주위우예! 나의 주님, 감사해!
+우리 함께, 소리 높여 할렐루 할렐루야!
+사랑의 주워우예! (참 좋으신) 사랑의 주~~오우워! (영광의 주)
+나의 주님, 감사해! 우리 함께, 소리 높여 할렐루 할렐루야!
+
+[후렴]
+오 기쁜 날! 주 찬양해! 온 세상에, 울려라!
+축복의 날 주 노래해! 할렐루 할렐루야!
+사랑의 주~~오우워! (영광의 주) 나의 주님, 감사해!
+우리 함께, 소리 높여 할렐루 할렐루야!</p></div></details>
+<details class="lyrics-item"><summary><span><span class="lyrics-title">08. 우리의 예배</span><span class="lyrics-meta">나의 찬양 Vol.1</span></span><span class="lyrics-arrow">＋</span></summary><div class="lyrics-body"><p>[1절]
+주일 아침 환한 햇살 아래 설레는 맘으로 모였어요
+나를 위해 준비하신 사랑 오늘도 기대하며 나아가요
+
+[2절]
+세상 속의 바쁜 마음들은 모두 다 예쁘게 접어두고
+하나님의 귀한 말씀 속에 내 마음 깊이 잠겨볼래요
+
+[후렴]
+우리의 예배를 받아주세요 가장 귀한 노래로 주님만 높여요
+하늘의 은혜가 가득 내려와 우리를 기쁨으로 채워주시네
+
+[후렴]
+사랑의 주님만 바라봅니다 온 맘 다해 정성을 모두 드려요
+언제나 우리와 함께하시는 하나님만 높여 예배해요</p></div></details>
+<details class="lyrics-item"><summary><span><span class="lyrics-title">09. 우리의 마음</span><span class="lyrics-meta">나의 찬양 Vol.1</span></span><span class="lyrics-arrow">＋</span></summary><div class="lyrics-body"><p>[1절]
+햇살 반짝! 들려오는 소리 두 손 모아 기도드려요
+작은 마음 사랑 가득히 하나님께 노래할래요
+
+[후렴]
+예수님 사랑해요 (사랑해요!) 내 마음 가득히 (가득히!)
+맑고 고운 소리 (찬송해요!) 우리 마음 (받아주세요!)
+
+[2절]
+어제보다 주님 닮아요 친구들과 예배드려요
+걸음걸음 인도하시니 행복한 나 주의 자녀들
+
+[후렴]
+예수님 사랑해요 (사랑해요!) 내 마음 가득히 (가득히!)
+맑고 고운 소리 (찬송해요!) 우리 마음 (받아주세요!)
+
+[브릿지]
+언제 어디서나 함께하시는 주님께 드려요 작은 노래
+
+[후렴]
+예수님 사랑해요 (사랑해요!) 내 마음 가득히 (가득히!)
+맑고 고운 소리 (찬송해요!) 우리 마음 (받아주세요!)</p></div></details>
+<details class="lyrics-item"><summary><span><span class="lyrics-title">10. 나의 모든 날</span><span class="lyrics-meta">나의 찬양 Vol.1</span></span><span class="lyrics-arrow">＋</span></summary><div class="lyrics-body"><p>[1절]
+눈 비비며 일어나는 평범한 아침
+보글보글 찌개 소리 즐거운 우리 집
+당연한 줄 알았더니 모든 게 선물이라
+주님 주신 은혜 속에 오늘 내가 사네.
+
+[2절]
+덜컹거리는 버스 창가 햇살 비치고
+스치는 바람 속에 주의 사랑 느끼네.
+지루했던 일상들이 노래가 되어 터지니
+나의 모든 걸음마다 기쁨 가득하네.
+
+[프리코러스]
+때로는 시련의 벽이 날 막아설 때
+
+[후렴]
+슬픔에 밤을 새며 혼자 울 때
+나보다 앞서가는 주님 믿고
+담대히 나아갑니다.
+나의 모든 날들이 주님의 은혜라
+어두운 밤 지나고 찬란한 빛 비추네.
+박수치며 찬양해 기쁨의 노래를
+나의 평생 주님만 노래하리라.
+
+[브릿지]
+시련아 물러가라. 주님 내 곁에 계신다.
+절망아 물러가라. 승리는 나의 것이다.
+나보다 나를 더 잘 아시는 주님
+그 계획을 신뢰합니다.
+
+[후렴]
+나의 모든 날들이 주님의 은혜라 (은혜라)
+어두운 밤 지나고 찬란한 빛 비추네
+박수치며 찬양해 기쁨의 노래를 (노래를)
+나의 평생 주님만 노래하리라
+
+[후렴]
+나의 모든 날들이(모든 날) 주님의 은혜라 (amen)
+어두운 밤 지나고(지나가) 찬란한 빛 비추네
+박수치며 찬양해(찬양해) 기쁨의 노래를 (Jesus)
+나의 평생 주님만 노래하리라(노래해)
+
+[아웃트로 제외]</p></div></details>
+</div>
+<div class="lyrics-intro" style="margin-top:55px"><strong>MY HYMN VOL.2 · 10 TRACKS</strong><br>두 번째 앨범의 전체 가사입니다.</div>
+<div class="lyrics-book">
+<details class="lyrics-item"><summary><span><span class="lyrics-title">01. 모두찬양해</span><span class="lyrics-meta">나의 찬양 Vol.2</span></span><span class="lyrics-arrow">＋</span></summary><div class="lyrics-body"><p>[Verse 1 - Female Solo]
+주의 말씀 귀에 들려
+내 마음 깊이 흐르네
+낮은 곳에서 부르시는
+그 사랑 나를 이끄네
+
+[Verse 2 - Male Solo]
+흔들리는 길 위에서도
+주 손 잡고 걸어가
+어둠 속에서도 빛 되신
+그 사랑 노래하리
+
+[Pre-Chorus - Mixed Choir]
+모든 음이 하나 되어
+두팔 벌려 찬양해
+
+[Chorus - Female Choir]
+모두 찬양해 온 맘 다해
+하늘과 땅이 노래하네
+강물처럼 이어져
+큰 바다로 퍼져가
+
+[Chorus - Male Choir]
+모두 찬양해 영원토록
+사랑의 화음 울리네
+우리의 숨결 모여서
+주의 이름 높이네
+
+[Bridge - Mixed Duet]
+주 사랑 넘쳐 흐르고
+우리의 노래 하늘에 닿네
+
+[Final Chorus - Mixed Choir]
+모두 찬양해 온 맘 다해
+온 세상이 화답하네
+강물처럼 이어져
+큰 바다로 퍼져가
+
+모두 찬양해 영원토록
+영광의 화음 울리네
+두팔 벌려 찬양해
+주의 이름 높이네</p></div></details>
+<details class="lyrics-item"><summary><span><span class="lyrics-title">02. 일어나 외쳐</span><span class="lyrics-meta">나의 찬양 Vol.2</span></span><span class="lyrics-arrow">＋</span></summary><div class="lyrics-body"><p>[Verse 1]
+잠들어 있던 심장이
+지금 깨어나
+꺼지지 않던 불꽃이
+다시 타올라
+
+발을 구르며 외쳐
+멈출 수 없어
+이 밤이 끝날 때까지
+우린 달려가
+
+[Pre-Chorus]
+고개를 들어
+하늘을 향해
+이 리듬 위에
+믿음이 살아나
+
+[Chorus]
+일어나 외쳐
+지금 이 순간
+더 크게 소리쳐
+온 땅이 울려
+
+주님과 함께 달려!
+심장이 뛰어
+우리의 예배
+지금 시작돼
+
+[Verse 2]
+두려움은 사라져
+빛이 비춰와
+닫혀 있던 문들이
+모두 열려가
+
+하나 되어 외쳐
+세상을 흔들어
+믿음의 파도가
+지금 일어나
+
+[Bridge]
+Hey! Hey! Hey!
+
+[Final Chorus]
+일어나 외쳐
+지금 이 순간
+더 크게 소리쳐
+온 땅이 울려
+
+주님과 함께 달려!
+심장이 뛰어
+우리의 예배
+지금 시작돼</p></div></details>
+<details class="lyrics-item"><summary><span><span class="lyrics-title">03. 주를 향해 노래하리</span><span class="lyrics-meta">나의 찬양 Vol.2</span></span><span class="lyrics-arrow">＋</span></summary><div class="lyrics-body"><p>[Verse 1]
+주 앞에 서 있는 이 시간
+내 마음 열어 드립니다
+조용히 들려오는 음성
+나를 부르십니다
+
+[Pre-Chorus]
+내 안에 잠들던 노래가
+이제 주께 향하네
+
+[Chorus]
+주를 향해 노래하리
+온 마음 다해 부르리
+나의 기쁨 나의 노래
+주님 한 분뿐이라
+주를 향해 기도하리
+내 삶의 모든 순간
+내 호흡이 있는 날까지
+주 이름 높이리
+
+[Verse 2]
+걸어온 시간을 돌아보면
+은혜가 가득했고
+무거운 마음 내려놓을 때
+평안을 주셨네
+
+[Pre-Chorus]
+내 안에 다시 피어나는
+감사의 멜로디
+
+[Chorus]
+주를 향해 노래하리
+온 마음 다해 부르리
+나의 기쁨 나의 노래
+주님 한 분뿐이라
+주를 향해 기도하리
+내 삶의 모든 순간
+내 호흡이 있는 날까지
+주 이름 높이리
+
+[Verse 3]
+흐르는 세월 속에서
+주 사랑 변함없고
+오늘의 걸음 위에
+은혜를 더하시네
+
+[Pre-Chorus]
+내 영혼 깊은 곳에서
+찬양이 울려 퍼져
+
+[Chorus]
+주를 향해 노래하리
+온 마음 다해 부르리
+나의 기쁨 나의 노래
+주님 한 분뿐이라
+주를 향해 기도하리
+내 삶의 모든 순간
+내 호흡이 있는 날까지
+주 이름 높이리
+
+[Final Chorus]
+주를 향해 노래하리 (노래해)
+온 마음 다해 부르리
+나의 기쁨 나의 노래 (오직)
+주님 한 분뿐이
+
+주를 향해 기도하리 (영원히)
+내 삶의 모든 순간
+내 호흡이 있는 날까지 (오직)
+주 이름 높이리
+
+[Chorus]
+주를 향해 노래하리
+온 마음 다해 부르리
+나의 기쁨 나의 노래
+주님 한 분뿐이라
+
+주를 향해 기도하리
+내 삶의 모든 순간
+내 호흡이 있는 날까지
+주 이름 높이리
+
+[Chorus]
+주를 향해 노래하리
+온 마음 다해 부르리
+나의 기쁨 나의 노래
+주님 한 분뿐이라
+
+주를 향해 기도하리
+내 삶의 모든 순간
+내 호흡이 있는 날까지
+주 이름 높이리</p></div></details>
+<details class="lyrics-item"><summary><span><span class="lyrics-title">04. 사랑합니다 주님</span><span class="lyrics-meta">나의 찬양 Vol.2</span></span><span class="lyrics-arrow">＋</span></summary><div class="lyrics-body"><p>[Verse 1]
+쉽지않던 나의 삶에
+주님 함께 하셨네
+알지 못한 순간에도
+나를 지켜주셨네
+
+넘어지고 지친 날도
+주가 곁에 계셨고
+다시 일어설 힘을
+내게 주셨네
+
+[Pre-Chorus]
+지금까지 걸어온 길
+주가 인도하셨네
+
+[Chorus]
+감사합니다 주님
+나를 여기까지
+주의 사랑으로
+이끄셨네
+
+사랑합니다 주님
+나의 하나님
+내 삶의 모든 날
+주께 드립니다
+
+[Verse 2]
+눈물 많던 시간도
+주가 알고 계셨고
+작은 나의 기도도
+외면하지 않으셨네
+
+어둠 속을 걸을 때
+빛이 되어 주시고
+오늘도 내 삶을
+인도하시네
+
+[Pre-Chorus]
+돌아보면 모든 길이
+주의 사랑이었네
+
+[Chorus]
+감사합니다 주님
+나를 여기까지
+주의 사랑으로
+이끄셨네
+
+사랑합니다 주님
+나의 하나님
+내 삶의 모든 날
+주께 드립니다
+
+[Bridge]
+주님만이 나의 길
+주님만이 나의 힘
+주님만이 나의 노래
+영원히 찬양해
+
+주님만이 나의 소망
+주님만이 나의 빛
+나의 모든 삶으로
+주를 찬양해
+
+[Final Chorus]
+감사합니다 주님
+나의 구원 되신 주
+내 삶의 모든 순간
+주께 드립니다
+
+사랑합니다 주님
+나의 하나님
+영원토록 주만
+찬양합니다</p></div></details>
+<details class="lyrics-item"><summary><span><span class="lyrics-title">05. 돌아보면 모든 날이</span><span class="lyrics-meta">나의 찬양 Vol.2</span></span><span class="lyrics-arrow">＋</span></summary><div class="lyrics-body"><p>[Verse 1]
+돌아보면 모든 날이
+내 힘으로 산 것 같았지만
+보이지 않던 주의 손이
+나의 길을 지키셨네
+
+넘어지고 흔들리던
+수많았던 시간 속에도
+말없이 나와 함께 하신
+주의 사랑 있었네
+
+[Pre-Chorus]
+지금 여기 서 있는 건
+주님의 인도하심
+
+[Chorus]
+감사로 노래합니다
+내 삶을 이끄신 주
+어둔 밤을 지나 오늘까지
+나를 붙드셨네
+
+감사로 고백합니다
+나의 모든 이유는
+지금까지 지켜주신
+주님의 사랑
+
+[Verse 2]
+멀고 험한 길 위에서
+지쳐 주저앉던 날에도
+다시 일어설 힘을 주신
+주의 따뜻한 손길
+
+눈물로 지나온 날도
+헛된 시간 아니었네
+그 모든 길의 순간마다
+주가 함께 하셨네
+
+[Bridge]
+내 모든 삶이
+주의 손 안에
+내 모든 길이
+주의 계획 안에
+
+이제는 믿습니다
+주님 한 분만을
+
+[Chorus]
+감사로 노래합니다
+내 삶을 이끄신 주
+어둔 밤을 지나 오늘까지
+나를 붙드셨네
+
+감사로 고백합니다
+나의 모든 이유는
+지금까지 지켜주신
+주님의 사랑</p></div></details>
+<details class="lyrics-item"><summary><span><span class="lyrics-title">06. 주님 나의 힘</span><span class="lyrics-meta">나의 찬양 Vol.2</span></span><span class="lyrics-arrow">＋</span></summary><div class="lyrics-body"><p>[Verse 1]
+조용한 이 새벽에
+주님 앞에 나옵니다
+작은 믿음 이 마음
+주님께 드립니다
+
+[Chorus]
+주님 나의 힘 되시고
+주님 나의 길 되시네
+어제도 오늘도
+주와 함께 걸어가네
+
+[Verse 2]
+지친 마음 안고서
+주님 이름 부릅니다
+눈물 속의 기도도
+주님께서 들으시네
+
+[Chorus]
+주님 나의 힘 되시고
+주님 나의 길 되시네
+어제도 오늘도
+주와 함께 걸어가네
+
+[Bridge]
+주의 은혜 변함없네
+주의 사랑 영원하네
+
+[Final Chorus]
+주님 나의 힘 되시고
+주님 나의 길 되시네
+어제도 오늘도
+주와 함께 걸어가네</p></div></details>
+<details class="lyrics-item"><summary><span><span class="lyrics-title">07. 조용히 외쳐</span><span class="lyrics-meta">나의 찬양 Vol.2</span></span><span class="lyrics-arrow">＋</span></summary><div class="lyrics-body"><p>[Verse 1 - Husky Male Solo]
+잠들어 있던 심장이
+조용히 깨어나
+작은 빛의 숨결이
+내 안에 흐르네
+
+발걸음을 멈춰 서서
+주를 바라봐
+이 밤의 별빛 속에
+주를 노래해
+
+[Pre-Chorus - Husky Male]
+고개를 들어
+하늘을 향해
+잔잔한 이 리듬에
+믿음이 살아나
+
+[Chorus - Male Lead + Soft Female Harmony]
+조용히 외쳐
+지금 이 순간
+담대히 소리쳐
+온 땅이 울려
+
+주님과 함께 걸어
+두려움 버리고
+우리의 예배
+지금 시작돼
+
+[Verse 2 - Husky Male Solo]
+두려움은 사라져
+평안이 와
+닫혀 있던 마음이
+다시 열려가
+
+하나 되어 외쳐
+세상을 움직여
+믿음의 물결이
+잔잔히 흐르네
+
+[Bridge - Soft Humming Female + Guitar]
+Hmm... Hmm...
+
+[Final Chorus - Male Lead + Soft Female Harmony Wider]
+조용히 외쳐
+지금 이 순간
+담대히 소리쳐
+온 땅이 울려
+
+주님과 함께 걸어
+두려움 버리고
+우리의 예배
+지금 시작돼</p></div></details>
+<details class="lyrics-item"><summary><span><span class="lyrics-title">08. 깨어 노래해</span><span class="lyrics-meta">나의 찬양 Vol.2</span></span><span class="lyrics-arrow">＋</span></summary><div class="lyrics-body"><p>[Verse 1]
+어둠 속에 빛이 와
+온 세상을 비추네
+기쁜 소식 들려와
+예수님이 오셨네
+
+[Pre-Chorus]
+이제 모두 일어나
+두 손 높이 들고서
+
+[Chorus]
+깨어나 깨어 노래해
+기쁘게 외쳐
+예수님 오신 날
+함께 뛰어
+더크게 소리쳐
+주님을 찬양해
+
+[Verse 2]
+별이 비춘 그 밤에
+천사 노래 울리고
+온 세상이 기뻐해
+구주께서 오셨네
+
+[Pre-Chorus]
+이제 모두 일어나
+소리 높여 노래해
+
+[Chorus]
+깨어나 깨어 노래해
+기쁘게 외쳐
+예수님 오신 날
+함께 뛰어
+더크게 소리쳐
+주님을 찬양해
+
+[Bridge – Dance Break]
+하늘 높이 점프해
+손을 들어 찬양해
+온 세상이 노래해
+예수님 사랑해
+
+[Final Chorus]
+깨어나 깨어 노래해
+기쁘게 외쳐
+예수님 오신 날
+함께 뛰어
+더크게 소리쳐
+주님을 찬양해</p></div></details>
+<details class="lyrics-item"><summary><span><span class="lyrics-title">09. 예수님 사랑</span><span class="lyrics-meta">나의 찬양 Vol.2</span></span><span class="lyrics-arrow">＋</span></summary><div class="lyrics-body"><p>[Verse 1]
+밝은 아침 햇살처럼
+내 마음 비추는 빛
+예수님의 따뜻한 사랑
+나를 다시 일으켜
+
+[Pre-Chorus]
+작은 친절 하나로
+세상은 달라져
+주님이 보여주신
+사랑을 따라가
+
+[Chorus]
+예수님 사랑으로
+우리 함께 걸어가
+너와 나 손을 잡고
+기쁨으로 노래해
+예수님 사랑으로
+세상을 밝히는 빛
+우리 삶 속에서
+주 사랑 전해요
+
+[Verse 2]
+친구가 힘들 때에도
+곁에 있어 줄게
+예수님의 사랑처럼
+서로를 안아줘
+
+[Pre-Chorus]
+작은 미소 하나가
+큰 힘이 될 때
+주님이 주신 사랑
+세상에 나누어
+
+[Chorus]
+예수님 사랑으로
+우리 함께 걸어가
+너와 나 손을 잡고
+기쁨으로 노래해
+예수님 사랑으로
+세상을 밝히는 빛
+우리 삶 속에서
+주 사랑 전해요
+
+[Bridge]
+손을 들어 찬양해 (주님께)
+기쁨으로 노래해 (소리쳐)
+예수님 사랑
+우리의 힘이야
+
+[Final Chorus]
+예수님 사랑으로
+우리 함께 걸어가
+세상 어디서나
+주 사랑 전해요</p></div></details>
+<details class="lyrics-item"><summary><span><span class="lyrics-title">10. 예수님 최고</span><span class="lyrics-meta">나의 찬양 Vol.2</span></span><span class="lyrics-arrow">＋</span></summary><div class="lyrics-body"><p>[Verse 1]
+예수님 함께 걸어요
+예수님 손을 잡아요
+기쁘게 웃으면서
+찬양을 불러요
+
+[Pre-Chorus]
+왼쪽으로 한 걸음
+오른쪽으로 한 걸음
+빙글빙글 돌아요
+
+[Chorus]
+예수님과 함께해요 (Yeah!)
+기쁜 마음 가득해 (Hey!)
+손뼉 치며 노래해요
+랄라랄라 기뻐요
+
+예수님과 함께해요 (Yeah!)
+우리 모두 하나돼 (Hey!)
+점프 점프 뛰면서
+찬양을 불러요
+
+[Verse 2]
+친구와 손을 맞잡고
+웃으며 걸어가요
+예수님 사랑 안에서
+행복이 넘쳐요
+
+[Chorus]
+예수님과 함께해요 (Yeah!)
+기쁜 마음 가득해 (Hey!)
+손뼉 치며 노래해요
+랄라랄라 기뻐요
+
+예수님과 함께해요 (Yeah!)
+우리 모두 하나돼 (Hey!)
+점프 점프 뛰면서
+찬양을 불러요</p></div></details>
+</div>
+<div class="lyrics-intro" style="margin-top:55px"><strong>MY HYMN VOL.3 · 10 TRACKS</strong><br>세 번째 앨범의 전체 가사를 추가했습니다. 각 곡의 보컬 구성과 예배적 흐름을 보존했습니다.</div>
+<div class="lyrics-book">
+<details class="lyrics-item"><summary><span><span class="lyrics-title">01. 나를 아시는 주님</span><span class="lyrics-meta">Solo · 나의 찬양 Vol.3</span></span><span class="lyrics-arrow">＋</span></summary><div class="lyrics-body"><p>[Verse 1]
+나만의 하나님 나의 주님
+오늘도 내 곁에 계시네요
+아직은 어린 믿음이지만
+늘 기다려 주시는 주
+
+말씀을 다 알지 못해도
+기도가 서툴기만 해도
+변함없이 나를 바라보시는
+그 사랑이 참 따뜻해요
+
+[Pre-Chorus]
+못난 나를 안아주시고
+내 이름 불러주시네
+나를 고치고 살리신
+주님의 사랑
+
+[Chorus]
+나를 아시는 주님
+나의 하나님
+나보다 나를 더 사랑하시고
+
+셀 수 없는 은혜로
+오늘도 품어주시니
+감사로 주를 찬양합니다
+
+[Verse 2]
+때로는 넘어지고 흔들려도
+주님은 나를 놓지 않으시네
+내 생각은 너무 짧았지만
+주의 길은 언제나 옳았네
+
+서툰 기도도 들으시고
+흘린 눈물도 기억하시네
+말할 수 없는 그 은혜 앞에
+오늘도 두 손 모읍니다
+
+[Bridge]
+내가 주를 알기 전에
+먼저 나를 찾아오신 사랑
+
+내가 주를 사랑하기 전에
+먼저 사랑하신 하나님
+
+[Chorus]
+[Harmony]
+나를 아시는 주님
+나의 하나님
+평생토록 감사하며 노래합니다
+
+한없이 크신 사랑
+끝없는 은혜 안에서
+오늘도 주만 바라봅니다
+
+[Final Chorus]
+나를 아시는 주님
+나의 하나님
+나보다 나를 더 사랑하시고
+
+셀 수 없는 은혜로
+오늘도 품어주시니
+감사로 주를 찬양합니다</p></div></details>
+<details class="lyrics-item"><summary><span><span class="lyrics-title">02. 모든걸 주께 맡겨요</span><span class="lyrics-meta">나의 찬양 Vol.3</span></span><span class="lyrics-arrow">＋</span></summary><div class="lyrics-body"><p>[Verse 1]
+돌고돌아 지친 하루 끝에서
+괜히 한숨만 커져가고
+웃고 있어도 마음 한편엔
+말 못 할 걱정이 남아
+
+친구와도 엇갈리는 마음
+집에서는 또 문을 닫아
+이런 나를 누가 알까 했는데
+주님은 이미 아신대요
+
+[Pre-Chorus]
+숨겨둔 눈물까지
+들어주시는 주님
+
+오늘도 두 손 모아
+주를 바라봅니다
+
+[Chorus]
+모든 걸 주께 맡겨요
+기쁨도 눈물도 모두
+내 작은 노래 하나에도
+주님은 함께하시죠
+
+모든 걸 주께 올려요
+걱정도 두려움도 다
+예배하는 이 시간 속에
+내 마음 다시 살아나요
+
+[Verse 2]
+앞이 보이지 않는 길도
+혼자인 것 같은 날도
+주님 손을 꼭 붙잡으면
+다시 걸어갈 수 있어
+
+내일이 조금 두렵더라도
+앞서 가신 주님 계시니까
+작은 믿음 하나 품고서
+다시 웃어봅니다
+
+[Bridge]
+작은 소리의 기도도
+주님은 듣고 계시죠
+
+중얼 거리는 찬양도
+하늘에 닿는 예배죠
+
+[Final Chorus]
+모든 걸 주께 맡겨요
+내 삶을 주께 드려요
+내 모든 순간 모든 이유
+주님만 바라봅니다
+
+오늘도 내일도 언제나
+주님을 노래할게요
+내 마음의 모든 이야기
+주께 다 올려드립니다</p></div></details>
+<details class="lyrics-item"><summary><span><span class="lyrics-title">03. 빛을 따라가</span><span class="lyrics-meta">나의 찬양 Vol.3</span></span><span class="lyrics-arrow">＋</span></summary><div class="lyrics-body"><p>[Verse 1]
+괜히 웃고 있었지
+괜찮은 척했었지
+그런 나를 아시고
+먼저 와 안아주셨네
+
+조용했던 내 맘에
+작은 빛이 비추네
+한 걸음 또 한 걸음
+주와 함께 걸어가
+
+[Pre-Chorus]
+다시 일어나
+다시 웃어봐
+주님 손을 잡으면
+난 괜찮아
+
+[Chorus]
+난 달려가
+빛을 따라가
+예수만 바라보며
+노래해
+
+Whoa Oh Oh
+함께 외쳐
+
+Whoa Oh Oh
+주님은 나의 힘
+
+손을 높이
+기쁨 가득
+오늘도 난
+주와 함께
+
+[Verse 2]
+넘어졌던 어제도
+후회했던 시간도
+주님 안에 다시 또
+새로운 시작이 돼
+
+작은 믿음 하나도
+귀하게 봐 주시네
+오늘 여기 이 순간
+주와 함께 노래해
+
+[Bridge]
+두렵지 않아
+혼자 아냐
+주님 함께 걸으면
+웃게 돼
+
+예수 내 노래
+예수 내 길
+영원토록
+나의 소망
+
+[Final Chorus]
+난 달려가
+빛을 따라가
+예수만 바라보며
+노래해
+
+Whoa Oh Oh
+모두 함께
+
+Whoa Oh Oh
+크게 외쳐
+
+손을 높이
+발을 맞춰
+기쁨으로
+주를 찬양해
+
+[Instrumental Outro 제외]</p></div></details>
+<details class="lyrics-item"><summary><span><span class="lyrics-title">04. 바라보라</span><span class="lyrics-meta">나의 찬양 Vol.3</span></span><span class="lyrics-arrow">＋</span></summary><div class="lyrics-body"><p>[Verse 1]
+길이 보이지 않을 때에도
+앞이 캄캄할 때에도
+걱정과 두려움 밀려와도
+눈을 들어 주를 바라보라
+
+[Pre-Chorus]
+두려워 말아라
+주님이 함께하신다
+어떤 순간에도
+주님만 바라보라
+
+[Chorus 1]
+바라보라 (주만) 바라보라 (오직)
+우리의 주 하나님 바라보라
+손을 높이 들고 찬양하며
+믿음으로 주를 바라보라
+
+[Verse 2]
+파도가 크게 일어나도
+세상의 소리가 커져도
+내 힘으로 할 수 없을 때
+주님의 손을 꼭 붙들어라
+
+[Pre-Chorus]
+두려워 말아라
+주님이 함께하신다
+어떤 순간에도
+주님과 나아가라
+
+[Chorus 2]
+나아가라 (주께) 나아가라 (오직)
+주님의 손을 잡고 나아가라
+두려움 내려놓고 찬양하며
+믿음으로 한 걸음 나아가라
+
+[Verse 3]
+산을 향하여 눈을 들리라
+나의 도움이 어디서 올까
+천지를 지으신 우리 하나님
+나의 도움이 되어 주시네
+
+[Pre-Chorus]
+두려워 말아라
+주님이 함께하신다
+어떤 순간에도
+담대히 일어나라
+
+[Chorus 3]
+일어나라 (깨어) 일어나라 (오직)
+우리의 주 하나님 의지하라
+넘어져도 다시 일어나서
+믿음으로 힘차게 일어나라
+
+[Verse 4]
+주님 말씀 의지하여서
+한 걸음씩 앞으로 나가자
+우리와 함께하시는 하나님
+끝까지 우리를 일으키네
+
+[Pre-Chorus]
+환경을 바라보지 말고
+사람을 바라보지 말고
+나보다 크신 하나님
+오직 주님을 바라보라!
+
+[Chorus 4]
+바라보라 (주만) 바라보라 (오직)
+우리의 주 하나님 바라보라
+넘어져도 다시 일어나
+믿음으로 주를 바라보라
+
+[Final Chorus - Full Choir, Joyful]
+바라보라 (주를) 바라보라 (오직)
+기쁠 때나 힘들 때에도
+우리의 소망 되시는 주님
+영원히 주를 바라보라!</p></div></details>
+<details class="lyrics-item"><summary><span><span class="lyrics-title">05. 나를 아시는 주님</span><span class="lyrics-meta">여성 중창 · 나의 찬양 Vol.3</span></span><span class="lyrics-arrow">＋</span></summary><div class="lyrics-body"><p>[Verse 1]
+[Female Vocal]
+나만의 하나님 나의 주님
+오늘도 내 곁에 계시네요
+아직은 어린 믿음이지만
+늘 기다려 주시는 주
+
+[Duet]
+말씀을 다 알지 못해도
+기도가 서툴기만 해도
+변함없이 나를 바라보시는
+그 사랑이 참 따뜻해요
+
+[Pre-Chorus]
+[Duet]
+못난 나를 안아주시고
+내 이름 불러주시네
+나를 고치고 살리신
+주님의 사랑
+
+[Chorus]
+[Harmony]
+나를 아시는 주님
+나의 하나님
+나보다 나를 더 사랑하시고
+
+[Duet]
+셀 수 없는 은혜로
+오늘도 품어주시니
+감사로 주를 찬양합니다
+
+[Verse 2]
+[Female Vocal]
+때로는 넘어지고 흔들려도
+주님은 나를 놓지 않으시네
+내 생각은 너무 짧았지만
+주의 길은 언제나 옳았네
+
+[Duet]
+서툰 기도도 들으시고
+흘린 눈물도 기억하시네
+말할 수 없는 그 은혜 앞에
+오늘도 두 손 모읍니다
+
+[Bridge]
+[Duet]
+내가 주를 알기 전에
+먼저 나를 찾아오신 사랑
+내가 주를 사랑하기 전에
+먼저 사랑하신 하나님
+
+[Chorus]
+[Harmony]
+나를 아시는 주님
+나의 하나님
+평생토록 감사하며 노래합니다
+한없이 크신 사랑
+끝없는 은혜 안에서
+오늘도 주만 바라봅니다
+
+[Final Chorus]
+[Harmony]
+나를 아시는 주님
+나의 하나님
+나보다 나를 더 사랑하시고
+셀 수 없는 은혜로
+오늘도 품어주시니
+감사로 주를 찬양합니다</p></div></details>
+<details class="lyrics-item"><summary><span><span class="lyrics-title">06. 천국을 향해</span><span class="lyrics-meta">남성 중창 · 나의 찬양 Vol.3</span></span><span class="lyrics-arrow">＋</span></summary><div class="lyrics-body"><p>[Verse 1 - Bass 2 Solo, Low and Warm]
+굽이굽이 지나온 인생의 길에
+바람도 불어오고 고난도 있었네
+그러나 주께서 함께 걸으시며
+나의 손 붙잡아 인도하셨네
+
+[Tenor 1 Solo - Comfortable Middle Range, No High Notes]
+높은 산 깊은 골짜기 지나며
+때로는 지쳐 쓰러질 때에도
+
+[Full Quartet - Soft Natural TTBB Harmony]
+주님의 전신갑주 나를 감싸사
+다시 일어나 걷게 하셨네
+
+[Tenor 2 and Bass 1 Duet - Gentle and Natural]
+내 삶을 잠시 되돌아보니
+눈물도 모두 사랑이었네
+
+[Full Quartet - Warm Harmony]
+나의 고된 수고와 열심의 흔적들
+주께서 기억하시리
+
+[Chorus - Full Quartet, Comfortable Range, No High Notes]
+천국을 향해 걸어가리라
+주님의 손을 의지하리라
+긴 세월 흘러 여기까지 온 것은
+오직 주님의 은혜라
+
+[Verse 2 - Tenor 2 Solo - Comfortable Middle Range]
+새벽을 깨우던 작은 기도와
+어둠 속 밝혀주던 주의 말씀
+
+[Bass 1 Solo - Deep and Natural]
+두뺨에 흐르던 수많은 눈물이
+은혜의 강물 되어 흐르네
+
+[Bass 1 and Bass 2 Duet - Simple Low Harmony]
+내게 맡겨주신 사명의 자리
+묵묵히 걸어온 믿음의 길
+
+[Full Quartet - Warm and Gentle]
+사랑으로 지낸 소망의 세월
+주 은혜로 열매 맺었네
+
+[Tenor 1 and Bass 2 Harmony - Comfortable Range]
+지나온 길을 뒤돌아보니
+모든 것이 은혜였네
+
+[Full Quartet - Soft Harmony]
+기쁨도 아픔도 눈물도 모두
+주님의 손길이었네
+
+[Chorus - Full Quartet, Moderate and Comfortable]
+천국을 향해 걸어가리라
+영원한 본향 바라보리라
+거친 세상 지나온 모든 발걸음
+주께서 함께하셨네
+
+[Bridge - Bass 2 Solo - Quiet Prayer]
+오 주님 나를 기억하여 주소서
+부족한 종을 품어 주소서
+
+[Tenor 2 and Bass 1 Harmony - Soft]
+남은 날들도 주의 뜻 안에서
+평안히 걷게 하소서
+
+[Final Chorus - Full Quartet, Mostly Comfortable]
+천국을 향해 걸어가리라
+믿음의 길을 걸어가리라
+마지막 호흡 다하는 그날까지
+주님만 찬양하리라
+
+[Final Climax - Tenor 1 Solo, ONE Deep Resonant Classical High Note Only]
+주님만 찬양하리라
+
+[Full Quartet - Warm TTBB Harmony]
+천국을 향해 걸어가리라
+주님의 손을 의지하리라
+긴 세월 흘러 여기까지 온 것은
+오직 주님의 은혜라
+
+[Ending - Soft Quartet, Gentle Sustained Harmony]
+오직 주님의 은혜라...</p></div></details>
+<details class="lyrics-item"><summary><span><span class="lyrics-title">07. 그날에</span><span class="lyrics-meta">나의 찬양 Vol.3</span></span><span class="lyrics-arrow">＋</span></summary><div class="lyrics-body"><p>[Verse 1 - Female Solo]
+태초에 뜻하신 주님의 섭리
+역사 가운데 이루어졌도다
+공의로 세상을 다스리시며
+언약의 말씀 세우셨도다
+
+[Verse 1B - Male Solo]
+선지자 통해 외친 그날
+주 권능 온 땅에 나타나리
+악한 것 모두 물리치시고
+주의 백성 구원하시리
+
+[Chorus - Female and Male Duet]
+그날에 그날에
+주의 뜻이 이루어지리
+그날에 그날에
+만민이 주를 찬양하리
+
+믿음으로 기다리며
+소망으로 살아가리
+신실하신 우리 하나님
+약속 이루시리
+
+[Verse 2 - Male Solo]
+주 다시 오실 그날 이르면
+나팔 소리 널리 울리리
+잠든 자 모두 일어나
+기쁨으로 주를 맞으리
+
+[Verse 2B - Female Solo with Harmony]
+눈물과 탄식 거두시고
+참된 평안 베푸시리니
+주 품 안에 함께 모여
+기쁜 노래 부르리라
+
+[Chorus - Full SATB Choir]
+그날에 그날에
+주의 뜻이 이루어지리
+그날에 그날에
+온 땅이 주를 경배하리
+
+믿음으로 기다리며
+소망으로 살아가리
+신실하신 우리 하나님
+약속 이루시리
+
+[Bridge - Choir]
+깨어 있으라 (주께~)
+항상 기도하라
+
+[Male and Female Harmony]
+믿음 품고 나아가라
+
+[Full Choir]
+도적 같이 오리라 (그날에~)
+모두 드러나리라
+
+[Final Chorus - Grand SATB Choir]
+그날에 그날에
+주의 뜻이 이루어지리
+그날에 그날에
+온 땅이 주를 경배하리
+
+처음과 나중 되신 주
+세세토록 찬송하세
+주의 크신 사랑 안에
+기쁨으로 살아가리
+
+[Layered Choir]
+할렐루 할렐루
+할렐루 할렐루야
+할렐루 할렐루
+할렐루야~ 아~멘</p></div></details>
+<details class="lyrics-item"><summary><span><span class="lyrics-title">08. 천국을 향해</span><span class="lyrics-meta">혼성 듀엣 · 나의 찬양 Vol.3</span></span><span class="lyrics-arrow">＋</span></summary><div class="lyrics-body"><p>[Verse 1]
+굽이굽이 지나온 인생의 길에
+바람도 불어오고 고난도 있었네
+그러나 주께서 함께 걸으시며
+나의 손 붙잡아 인도하셨네
+
+높은 산 깊은 골짜기 지나며
+때로는 지쳐 쓰러질 때에도
+주님의 전신갑주 나를 감싸사
+다시 일어나 걷게 하셨네
+
+[Pre-Chorus]
+내 삶을 잠시 되돌아보니
+눈물도 모두 사랑이었네
+나의 고된 수고와 열심의 흔적들
+주께서 기억하시리
+
+[Chorus]
+천국을 향해 걸어가리라
+주님의 손을 의지하리라
+긴 세월 흘러 여기까지 온 것은
+오직 주님의 은혜라
+
+[Verse 2]
+새벽을 깨우던 작은 기도와
+어둠 속 밝혀주던 주의 말씀
+두뺨에 흐르던 수많은 눈물이
+은혜의 강물 되어 흐르네
+
+내게 맡겨주신 사명의 자리
+묵묵히 걸어온 믿음의 길
+사랑으로 지낸 소망의 세월
+주 은혜로 열매 맺었네
+
+[Pre-Chorus]
+지나온 길을 뒤돌아보니
+모든 것이 은혜였네
+기쁨도 아픔도 눈물도 모두
+주님의 손길이었네
+
+[Chorus]
+천국을 향해 걸어가리라
+영원한 본향 바라보리라
+거친 세상 지나온 모든 발걸음
+주께서 함께하셨네
+
+[Bridge]
+오 주님 나를 기억하여 주소서
+부족한 종을 품어 주소서
+남은 날들도 주의 뜻 안에서
+평안히 걷게 하소서
+
+[Final Chorus]
+천국을 향해 걸어가리라
+믿음의 길을 걸어가리라
+마지막 호흡 다하는 그날까지
+주님만 찬양하리라
+
+[Hook]
+천국을 향해 걸어가리라
+주님의 손을 의지하리라
+긴 세월 흘러 여기까지 온 것은
+오직 주님의 은혜라
+
+오직 주님의 은혜라..</p></div></details>
+<details class="lyrics-item"><summary><span><span class="lyrics-title">09. 우리가 모여</span><span class="lyrics-meta">나의 찬양 Vol.3</span></span><span class="lyrics-arrow">＋</span></summary><div class="lyrics-body"><p>[Verse 1]
+주님의 은혜로 우리가 모여
+기쁨의 노래를 함께 부르네
+서로 다른 모습 가진 우리지만
+주 안에서 하나 되어가네
+
+오늘의 만남도 주의 계획 안에
+걸음마다 인도하신 사랑
+웃음과 감사가 넘치는 이 자리
+주님께 찬양을 올려드리네
+
+[Pre-Chorus]
+우리의 마음을 모아
+우리의 목소리 높여
+주님이 주신 사랑 안에서
+함께 나아가리
+
+[Chorus]
+함께 노래해 주를 찬양하리
+기쁨으로 손을 높여 불러요
+주 안에서 우리는 하나 되어
+사랑으로 세상을 향해 가리
+
+함께 예배해요 주를 높이리
+감사의 마음 모두 드려요
+우리의 기도와 우리의 삶이
+주님의 영광 되리라
+
+[Verse 2]
+교회 안에서도 삶의 자리에도
+주님의 빛을 따라 걸어가네
+작은 사랑으로 서로를 세우며
+믿음의 길 함께 걸어가네
+
+힘든 날에도 서로 기도하며
+넘어질 때 손을 잡아주네
+주님이 허락하신 우리 만남
+끝까지 함께하리라
+
+[Pre-Chorus]
+우리의 마음을 모아
+우리의 목소리 높여
+주님이 주신 사랑 안에서
+함께 나아가리
+
+[Chorus]
+함께 노래해 주를 찬양하리
+기쁨으로 손을 높여 불러요
+주 안에서 우리는 하나 되어
+사랑으로 세상을 향해 가리
+
+함께 예배해요 주를 높이리
+감사의 마음 모두 드려요
+우리의 기도와 우리의 삶이
+주님의 영광 되리라
+
+[Final Chorus]
+함께 노래해 주를 찬양하리
+기쁨으로 손을 높여 불러요
+주 안에서 우리는 하나 되어
+사랑으로 세상을 향해 가리
+
+함께 예배해요 주를 높이리
+감사의 마음 모두 드려요
+우리의 기도와 우리의 삶이
+주님의 영광 되리라</p></div></details>
+<details class="lyrics-item"><summary><span><span class="lyrics-title">10. 축복의 가정</span><span class="lyrics-meta">나의 찬양 Vol.3</span></span><span class="lyrics-arrow">＋</span></summary><div class="lyrics-body"><p>[Verse 1]
+하나님 지으신 귀한 우리 가정
+사랑의 은혜로 세워주시네
+남편과 아내가 서로 의지하며
+그리스도 사랑을 닮아가리
+
+기쁠 때 감사의 찬송 드리고
+어려울 때 믿음으로 기도하며
+서로의 손잡고 함께 걸어가는
+복된 가정 이루어 가리
+
+[Chorus]
+사랑으로 하나 된 우리 가정
+찬송과 감사가 넘쳐 흘러
+은혜로 세워지는 우리 모두
+주 안에서 함께 걸어가리
+
+서로 사랑하고 서로 용서하며
+서로 위로하고 서로 안아주며
+찬송과 기도가 끊이지 않는
+축복의 가정 되게 하소서
+
+[Verse 2]
+부모의 사랑을 마음에 새기고
+자녀는 말씀 따라 자라가며
+주의 교훈과 사랑 안에서
+하나님 기쁘시게 살아가리
+
+작은 말에도 사랑을 담아서
+상한 마음 따뜻하게 품어주며
+넘어진 모습도 감싸 안아주는
+사랑의 가정 되게 하소서
+
+[Chorus]
+사랑으로 하나 된 우리 가정
+찬송과 감사가 넘쳐 흘러
+은혜로 세워지는 우리 모두
+주 안에서 함께 걸어가리
+
+서로 사랑하고 서로 용서하며
+서로 위로하고 서로 안아주며
+찬송과 기도가 끊이지 않는
+축복의 가정 되게 하소서
+
+[Bridge]
+구름기둥 불기둥 보내사
+우리 길 항상 인도하시고
+어둠 속에서도 빛이 되어
+우리 가정 지켜주소서
+
+[Pre-Chorus]
+나와 내 집은 주를 섬기리
+우리의 고백 변하지 않으리
+날마다 예배하는 가정 되어
+영원히 주를 찬양하리
+
+[Final Chorus]
+사랑으로 하나 된 우리 가정
+은혜로 가득한 우리 가정
+서로 응원하고 서로 붙잡으며
+기쁨으로 함께 걸어가리
+
+찬송과 감사가 넘치는 가정
+말씀 안에 굳게 서는 가정
+하나님의 사랑 안에 살아가는
+복된 우리 가정 되게 하소서</p></div></details>
+</div></section>
+<section class="final-note"><h3>WORSHIP ARCHIVE</h3><p>나의 찬양은 한 번에 완성된 프로젝트가 아니라, 일상과 믿음 속에서 한 곡씩 쌓아온 기록입니다. Vol.1의 첫 고백에서 Vol.2의 공동체적 찬양을 지나 Vol.3에서는 나를 아시는 주님, 천국의 소망, 공동체와 가정의 축복까지 더 넓은 예배의 이야기를 담았습니다.</p></section>
 </main>
 <div id="site-footer"></div>
-<script>
-function initStarsCanvas(){const c=document.getElementById('stars-canvas'),x=c.getContext('2d');function r(){c.width=innerWidth;c.height=360}r();let s=Array.from({length:120},()=>({x:Math.random()*innerWidth,y:Math.random()*360,r:Math.random()*1.4+.2,o:Math.random()}));function d(){x.clearRect(0,0,c.width,c.height);s.forEach(a=>{a.o+=.01;if(a.o>1)a.o=0;x.beginPath();x.arc(a.x,a.y,a.r,0,Math.PI*2);x.fillStyle=`rgba(255,255,255,${a.o})`;x.fill()});requestAnimationFrame(d)}addEventListener('resize',r);d()}window.onMainReady=function(){initStarsCanvas()};
-</script>
 <script src="js/main.js"></script>
-<script src="js/guestbook.js"></script>
 <script>
-window.PAGE_I18N={
-ko:{worship_header_slogan:'영혼 깊은 곳에서 올려드리는 고백과 찬양',worship_intro_title:'나의 찬양, 그리고 나의 예배',worship_intro_desc:'음악을 통해 하나님께 올려드린 고백과 찬양을 한곳에 기록합니다. 기존 작품은 그대로 보존하고 새로운 예배의 노래를 계속 추가합니다.',worship_vol1_title:'나의 찬양 Vol.1',worship_vol1_desc:'처음 드리는 고백처럼, 하나님을 향한 마음을 담은 첫 번째 찬양의 기록.',worship_vol1_alt:'나의 찬양 Vol.1 앨범 커버',worship_vol2_title:'나의 찬양 Vol.2',worship_vol2_desc:'첫 고백에 이어 더 깊어진 믿음과 감사의 마음을 담은 두 번째 찬양.',worship_vol2_alt:'나의 찬양 Vol.2 앨범 커버',worship_vol3_title:'나의 찬양 Vol.3',worship_vol3_desc:'연약하고 부족한 나의 진솔하고 담백한 고백',worship_vol3_alt:'나의 찬양 Vol.3 앨범 커버',worship_shout_alt:'Shout 워십 앨범 커버',worship_shout_desc:'기존 Worship 아카이브에서 유지하는 작품입니다. 새 작품이 추가되어도 삭제하지 않습니다.',worship_archive_desc:'Spotify는 각 작품의 실제 앨범 페이지로 연결합니다. YouTube는 작품별 공식 플레이리스트가 제공되는 경우 해당 플레이리스트를 사용합니다.'},
-en:{worship_header_slogan:'Confessions and songs of worship offered from the depths of my soul',worship_intro_title:'My Hymns, and My Worship',worship_intro_desc:'A collection of confessions and songs of worship offered to God through music. Existing works are preserved while new songs of worship continue to be added.',worship_vol1_title:'My Hymn Vol.1',worship_vol1_desc:'Like a first confession, this first worship recording carries my heart toward God.',worship_vol1_alt:'My Hymn Vol.1 album cover',worship_vol2_title:'My Hymn Vol.2',worship_vol2_desc:'A second worship recording filled with deeper faith and gratitude following the first confession.',worship_vol2_alt:'My Hymn Vol.2 album cover',worship_vol3_title:'My Hymn Vol.3',worship_vol3_desc:'A sincere and simple confession from one who is weak and imperfect.',worship_vol3_alt:'My Hymn Vol.3 album cover',worship_shout_alt:'Shout worship album cover',worship_shout_desc:'A work preserved in the existing Worship Archive. It will remain even as new works are added.',worship_archive_desc:'Spotify links to each work’s official album page. YouTube links to the official playlist when one is available.'}
-};
-
-(function(){
-const metaKeys={description:'worship_meta_description',ogTitle:'worship_meta_title',ogDescription:'worship_meta_description_short'};
-function applySeoLanguage(){
-const lang=document.documentElement.lang==='en'?'en':'ko';
-const dict=window.PAGE_I18N&&window.PAGE_I18N[lang];
-if(!dict)return;
-const desc=document.querySelector('meta[name="description"]');
-const ogTitle=document.querySelector('meta[property="og:title"]');
-const ogDesc=document.querySelector('meta[property="og:description"]');
-const title=document.querySelector('title');
-if(desc&&dict[metaKeys.description])desc.setAttribute('content',dict[metaKeys.description]);
-if(ogTitle&&dict[metaKeys.ogTitle])ogTitle.setAttribute('content',dict[metaKeys.ogTitle]);
-if(ogDesc&&dict[metaKeys.ogDescription])ogDesc.setAttribute('content',dict[metaKeys.ogDescription]);
-if(title&&dict[metaKeys.ogTitle])title.textContent=dict[metaKeys.ogTitle];
-document.querySelectorAll('[data-i18n-alt]').forEach(img=>{const key=img.dataset.i18nAlt;if(dict[key])img.setAttribute('alt',dict[key]);});
-document.querySelectorAll('[data-i18n-title]').forEach(el=>{const key=el.dataset.i18nTitle;if(dict[key])el.setAttribute('title',dict[key]);});
-}
-applySeoLanguage();
-new MutationObserver(applySeoLanguage).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
-})();
+(function(){const c=document.getElementById('stars-canvas');if(!c)return;const x=c.getContext('2d');let w,h,d=[];function r(){w=c.width=c.offsetWidth*devicePixelRatio;h=c.height=c.offsetHeight*devicePixelRatio;x.scale(devicePixelRatio,devicePixelRatio);d=Array.from({length:90},()=>({x:Math.random()*c.offsetWidth,y:Math.random()*c.offsetHeight,r:Math.random()*1.2+.2,a:Math.random()*.65+.15}))}function draw(){x.clearRect(0,0,c.offsetWidth,c.offsetHeight);d.forEach(s=>{x.globalAlpha=s.a;x.fillStyle='#e8d08a';x.beginPath();x.arc(s.x,s.y,s.r,0,Math.PI*2);x.fill()});requestAnimationFrame(draw)}addEventListener('resize',r);r();draw()})();
 </script>
 </body>
 </html>

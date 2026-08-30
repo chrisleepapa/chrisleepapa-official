@@ -1,4 +1,4 @@
-name: Update archive content
+name: Finalize Worship split
 on:
   push:
     branches: [develop]
@@ -7,82 +7,90 @@ on:
 permissions:
   contents: write
 jobs:
-  update:
+  finalize:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           ref: develop
           fetch-depth: 0
-      - name: Update archive files
+      - name: Finalize Korean and English Worship pages
         run: |
           python3 <<'PY'
           from pathlib import Path
+          import re
 
-          # MUSIC: add Run it back to the canonical musicData catalog.
-          p = Path('music.html')
-          s = p.read_text(encoding='utf-8')
-          if "title_ko: 'Run it back'" not in s:
-              marker = "            { title_ko: 'We own the Cup',"
-              i = s.find(marker)
-              if i < 0:
-                  raise SystemExit('musicData marker not found')
-              entry = "            { title_ko: 'Run it back', title_en: 'Run It Back', type_ko: '싱글', type_en: 'Single', albumId: '6zhb0e3KvoFY5pcefQUHA6', cover: 'images/music.jpg', embedUrl: 'https://open.spotify.com/embed/artist/6zhb0e3KvoFY5pcefQUHA6', externalUrl: 'https://open.spotify.com/artist/6zhb0e3KvoFY5pcefQUHA6' },\n"
-              s = s[:i] + entry + s[i:]
-          s = s.replace('등 9개 앨범 41곡.', '등 10개 작품 42곡.')
-          s = s.replace('9 albums, 41 tracks.', '10 works, 42 tracks.')
-          s = s.replace("mainExternalLink.href = `https://open.spotify.com/album/${track.albumId}`;", "mainExternalLink.href = track.externalUrl || `https://open.spotify.com/album/${track.albumId}`;")
-          p.write_text(s, encoding='utf-8')
-
-          # WORSHIP: add Vol.3 as a separate card; never alter/remove SHOUT.
+          # Korean Worship: remove only legacy SHOUT sections/cards/timeline/metadata.
           p = Path('worship.html')
           s = p.read_text(encoding='utf-8')
-          if 'aria-label="나의 찬양 Vol. 3 Spotify"' not in s:
-              marker = '<div class="albums-grid">'
-              i = s.find(marker)
-              if i < 0:
-                  raise SystemExit('worship albums-grid marker not found')
-              i = s.find('\n', i) + 1
-              card = '''<a class="album-card" href="https://open.spotify.com/artist/6zhb0e3KvoFY5pcefQUHA6" target="_blank" rel="noopener" aria-label="나의 찬양 Vol. 3 Spotify">
-  <img class="album-cover" src="images/My hymn3.jpg" alt="나의 찬양 Vol. 3" loading="lazy">
-  <div class="album-cover-overlay"></div>
-  <div class="album-info">
-    <span class="album-vol-badge">Vol. 3 · Korean Worship</span>
-    <div class="album-title">나의 찬양 Vol. 3</div>
-    <div class="album-cta"><span>Spotify에서 듣기</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></div>
-  </div>
-</a>
-'''
-              s = s[:i] + card + s[i:]
-          s = s.replace('Vol.1(The First Confession), Vol.2(2nd Confession).', 'Vol.1(The First Confession), Vol.2(2nd Confession), Vol.3, SHOUT.')
-          s = s.replace('나의 찬양 Vol.1 · Vol.2.', '나의 찬양 Vol.1 · Vol.2 · Vol.3 · SHOUT.')
+          s = re.sub(r'<section id="shout-lyrics"[\s\S]*?</section>\s*', '', s, count=1)
+          s = re.sub(r'<article class="album-card album-shout"[\s\S]*?</article>\s*', '', s, count=1)
+          s = re.sub(r'<article>\s*<span>04</span>\s*<b>SHOUT</b>[\s\S]*?</article>\s*', '', s, count=1)
+          s = s.replace('Vol.1(The First Confession), Vol.2(2nd Confession), Vol.3, SHOUT.', 'Vol.1(The First Confession), Vol.2(2nd Confession), Vol.3.')
+          s = s.replace('나의 찬양 Vol.1 · Vol.2 · Vol.3 · SHOUT.', '나의 찬양 Vol.1 · Vol.2 · Vol.3.')
+          s = s.replace('SHOUT · 나의 찬양', '나의 찬양')
           p.write_text(s, encoding='utf-8')
 
-          # CHRIS PICK: preserve existing Vol.3 and add SHOUT if missing.
-          p = Path('js/home-chris-pick-v2.js')
+          # English Worship: preserve every existing lyric and inject the shared site shell.
+          p = Path('worship_eng.html')
           s = p.read_text(encoding='utf-8')
-          if "title:'Shout'" not in s:
-              marker = "    {type:'WORSHIP',icon:'♩',title:'나의 찬양 Vol.3'"
-              i = s.find(marker)
-              if i < 0:
-                  raise SystemExit('Chris Pick Vol.3 marker not found')
-              i = s.find('\n', i) + 1
-              shout = "    {type:'WORSHIP',icon:'♩',title:'Shout',sub:'English Worship',desc:{ko:'영어로 함께 외치는 찬양과 예배의 메시지를 담은 워십 작품입니다.',en:'An English worship work carrying a message of praise and worship to be sung together.'},image:'/images/og_share.png',href:'worship.html',action:{ko:'워십 보기',en:'View Worship'}},\n"
-              s = s[:i] + shout + s[i:]
+          if 'id="site-nav"' not in s:
+              s = re.sub(r'(<body[^>]*>)', r'\1\n<div id="site-nav"></div>', s, count=1, flags=re.I)
+          if 'id="site-footer"' not in s:
+              if re.search(r'<script[^>]+main\.js', s, flags=re.I):
+                  s = re.sub(r'(<script[^>]+main\.js[^>]*></script>)', r'<div id="site-footer"></div>\n\1', s, count=1, flags=re.I)
+              else:
+                  s = s.replace('</body>', '<div id="site-footer"></div>\n<script src="main.js" defer></script>\n</body>')
+
+          yt = 'https://youtube.com/playlist?list=OLAK5uy_lVpXPP4Cea1qi6WA-lmwIOXkOKrijaT0Y&si=Er078V4z_pm5QyZ2'
+          sp = 'https://open.spotify.com/album/3XaG1yonPrJiyVPwExgVBm?si=fFwcC8tmSQqO7SGPJja17w&utm_source=copy-link'
+          s = re.sub(r'href="https://youtube\.com/playlist\?[^\"]+"', f'href="{yt}"', s, count=1)
+          s = re.sub(r'href="https://open\.spotify\.com/album/[^\"]+"', f'href="{sp}"', s, count=1)
+
+          # Use Spotify's official album embed so the exact released SHOUT artwork is shown;
+          # do not substitute a guessed local image.
+          if 'class="shout-album"' not in s:
+              embed = f'''<section class="section shout-album"><h2>SHOUT · OFFICIAL ALBUM</h2><div class="album-grid"><div class="album-art"><iframe src="https://open.spotify.com/embed/album/3XaG1yonPrJiyVPwExgVBm?utm_source=generator&theme=0" width="100%" height="380" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="SHOUT official album on Spotify"></iframe></div><div class="album-copy"><p class="intro">SHOUT</p><p>English Worship by Chris LEE.PAPA.</p><div class="meta"><span class="pill">ENGLISH WORSHIP</span><span class="pill">15 TRACKS</span><span class="pill">2026</span></div><div class="stream-links"><a href="{yt}" target="_blank" rel="noopener">YouTube Album</a><a href="{sp}" target="_blank" rel="noopener">Spotify Album</a></div></div></div></section>'''
+              pattern = r'<section class="section"><h2>THE PROJECT</h2>.*?</section>'
+              if re.search(pattern, s, flags=re.S):
+                  s = re.sub(pattern, embed, s, count=1, flags=re.S)
+              else:
+                  s = s.replace('<section class="section stream">', embed + '\n<section class="section stream">', 1)
+              css = '''<style id="worship-eng-fix">.shout-album .album-grid{display:grid;grid-template-columns:minmax(280px,480px) 1fr;gap:40px;align-items:center}.album-art iframe{display:block;width:100%;max-width:480px;border:0;border-radius:16px;box-shadow:0 24px 70px rgba(0,0,0,.55);background:#111}.album-copy .intro{margin-bottom:12px}.stream-links{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}.stream-links a{display:inline-block;padding:11px 18px;border:1px solid var(--line);border-radius:999px;color:#ddd;text-decoration:none}@media(max-width:760px){.shout-album .album-grid{grid-template-columns:1fr;gap:24px}.album-art iframe{max-width:100%;height:352px}}</style>'''
+              s = s.replace('</head>', css + '</head>', 1)
           p.write_text(s, encoding='utf-8')
-          print('Updated MUSIC, WORSHIP and CHRIS PICK.')
+
+          # Chris Pick: SHOUT opens English Worship.
+          p = Path('js/home-chris-pick-v2.js')
+          if p.exists():
+              s = p.read_text(encoding='utf-8')
+              s = s.replace("href:'worship.html'", "href:'worship_eng.html'")
+              s = s.replace("action:{ko:'워십 보기',en:'View Worship'}", "action:{ko:'English Worship 보기',en:'View English Worship'}")
+              p.write_text(s, encoding='utf-8')
+
+          # Sitemap: expose English Worship.
+          p = Path('sitemap.xml')
+          s = p.read_text(encoding='utf-8')
+          if '/worship_eng' not in s:
+              marker = '  <url><loc>https://chrisleepapa-official.vercel.app/worship</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>'
+              s = s.replace(marker, marker + '\n  <url><loc>https://chrisleepapa-official.vercel.app/worship_eng</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>')
+          p.write_text(s, encoding='utf-8')
           PY
-      - name: Validate required content
+      - name: Validate
         run: |
-          grep -q "Run it back" music.html
-          grep -q "나의 찬양 Vol. 3" worship.html
+          grep -q "images/vol1.jpg" worship.html
+          grep -q "images/vol2.png" worship.html
           grep -q "images/My hymn3.jpg" worship.html
-          grep -q "title:'Shout'" js/home-chris-pick-v2.js
-          grep -q "title:'나의 찬양 Vol.3'" js/home-chris-pick-v2.js
-      - name: Commit archive changes
+          grep -q "SHOUT" worship_eng.html
+          grep -q "worship_eng" sitemap.xml
+          grep -q 'id="site-nav"' worship_eng.html
+          grep -q 'open.spotify.com/embed/album/3XaG1yonPrJiyVPwExgVBm' worship_eng.html
+          ! grep -q 'class="album-card album-shout"' worship.html
+          ! grep -q 'id="shout-lyrics"' worship.html
+      - name: Commit
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add music.html worship.html js/home-chris-pick-v2.js
-          git diff --cached --quiet || git commit -m 'Add Run it back and Worship Vol.3'
+          git add worship.html worship_eng.html js/home-chris-pick-v2.js sitemap.xml
+          git diff --cached --quiet || git commit -m 'Finalize Korean and English Worship separation'
           git push origin develop

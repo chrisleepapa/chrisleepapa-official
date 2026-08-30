@@ -1,0 +1,43 @@
+name: Update SHOUT album links
+on:
+  push:
+    branches: [develop]
+    paths: ['.shout-links-trigger']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: develop
+          fetch-depth: 0
+      - name: Update SHOUT links
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('worship_eng.html')
+          s = p.read_text(encoding='utf-8')
+          youtube = 'https://youtube.com/playlist?list=OLAK5uy_lVpXPP4Cea1qi6WA-lmwIOXkOKrijaT0Y&si=Er078V4z_pm5QyZ2'
+          spotify = 'https://open.spotify.com/album/3XaG1yonPrJiyVPwExgVBm?si=fFwcC8tmSQqO7SGPJja17w&utm_source=copy-link'
+          links = f'''<section class="section stream"><h2>OFFICIAL ALBUM</h2><a href="{youtube}" target="_blank" rel="noopener">YouTube</a><a href="{spotify}" target="_blank" rel="noopener">Spotify</a></section>'''
+          import re
+          s = re.sub(r'<section class="section stream">.*?</section>', links, s, count=1, flags=re.S)
+          if '<section class="section stream">' not in s:
+              marker = '<section class="section"><h2>THE JOURNEY</h2>'
+              s = s.replace(marker, links + '\n' + marker, 1)
+          p.write_text(s, encoding='utf-8')
+          PY
+      - name: Validate
+        run: |
+          grep -q 'OLAK5uy_lVpXPP4Cea1qi6WA-lmwIOXkOKrijaT0Y' worship_eng.html
+          grep -q '3XaG1yonPrJiyVPwExgVBm' worship_eng.html
+      - name: Commit
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add worship_eng.html
+          git diff --cached --quiet || git commit -m 'Set official SHOUT album links'
+          git push origin develop

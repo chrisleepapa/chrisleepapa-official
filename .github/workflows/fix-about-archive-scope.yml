@@ -1,0 +1,40 @@
+name: Fix About archive scope
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-about-archive-scope.yml'
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: develop
+          fetch-depth: 0
+      - name: Correct current Worship archive scope
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('about.html')
+          s=p.read_text(encoding='utf-8')
+          old='''<span class="hl">찬양 프로젝트(Worship)</span>는\\n                영혼 깊은 곳에서 올려드리는 고백이며,\\n                나의 찬양 Vol.1과 Vol.2를\\n                Spotify에서 만나볼 수 있습니다.'''
+          new='''<span class="hl">찬양 프로젝트(Worship)</span>는\\n                영혼 깊은 곳에서 올려드리는 고백입니다.\\n                나의 찬양 Vol.1, Vol.2, Vol.3와\\n                English Worship <span class="gold">Shout</span>를 통해\\n                서로 다른 형태의 찬양을 기록하고 있습니다.'''
+          if old not in s:
+              raise SystemExit('About Worship scope text not found')
+          s=s.replace(old,new,1)
+          old2='''<span class=\\\"hl\\\">찬양 프로젝트(Worship)</span> is a collection of songs offered as personal expressions of faith, including Worship Vol. 1 and Vol. 2.'''
+          new2='''<span class=\\\"hl\\\">The Worship Project</span> is a collection of songs offered as personal expressions of faith, including Worship Vol. 1, Vol. 2, Vol. 3, and the English Worship project <span class=\\\"gold\\\">Shout</span>.'''
+          if old2 not in s:
+              raise SystemExit('About English Worship scope text not found')
+          s=s.replace(old2,new2,1)
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Commit correction and remove workflow
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add about.html .github/workflows/fix-about-archive-scope.yml
+          git commit -m "Update About worship archive scope"
+          git push origin HEAD:develop

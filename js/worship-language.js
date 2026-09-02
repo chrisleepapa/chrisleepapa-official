@@ -19,6 +19,7 @@
   function clearCookie(name){
     document.cookie=name+'=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; SameSite=Lax';
   }
+  function hasEnglishCookie(){return /(?:^|; )googtrans=\/ko\/en(?:;|$)/.test(document.cookie);}
   function saved(){
     try{return localStorage.getItem('pref-lang')||'ko';}catch(e){return'ko';}
   }
@@ -43,12 +44,16 @@
     var script=document.createElement('script');script.id='google-translate-script';script.src='https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';script.defer=true;document.body.appendChild(script);
   }
 
-  /* The shared header calls this after its KOR/ENG button changes pref-lang. */
+  /* The shared header calls this after its KOR/ENG button changes pref-lang.
+     Do not reload when the requested state is already active; main.js calls
+     setLanguage() during every /worship initialization. */
   window.onLangChange=function(lang){
     if(lang==='en'){
+      if(hasEnglishCookie()) return;
       cookie('googtrans','/ko/en',30);
       window.location.reload();
     }else{
+      if(!hasEnglishCookie()) return;
       clearCookie('googtrans');
       window.location.reload();
     }
@@ -56,8 +61,11 @@
 
   function boot(){
     metadata();
-    if(saved()==='en' && !document.cookie.match(/(?:^|; )googtrans=\/ko\/en/)){
+    if(saved()==='en' && !hasEnglishCookie()){
       cookie('googtrans','/ko/en',30);window.location.reload();return;
+    }
+    if(saved()!=='en' && hasEnglishCookie()){
+      clearCookie('googtrans');window.location.reload();return;
     }
     ensureGoogle();
   }

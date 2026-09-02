@@ -8,16 +8,11 @@
     // without loading any game-auth helpers or the removed title-fix script.
     if(page==='gameinfo'){
         const removeBaduk = () => {
-            // Remove the Baduk card by its unique destination.
             document.querySelectorAll('a.game-card[href*="baduk_easy"]').forEach(card => card.remove());
-
-            // Remove the Baduk guide block by its i18n key.
             document.querySelectorAll('[data-i18n="guide6_heading"]').forEach(heading => {
                 const block = heading.closest('div[style*="border-bottom"], div[style*="padding-bottom"]');
                 if(block) block.remove();
             });
-
-            // Remove remaining Baduk wording from page metadata and update the count.
             document.querySelectorAll('meta[name="description"], meta[property="og:description"]').forEach(meta => {
                 if(meta.content){
                     meta.content = meta.content
@@ -43,6 +38,24 @@
     }
 
     if(!GAME_PAGES.has(page))return;
+
+    // Full-screen game pages intentionally do not use the archive header.
+    // Provide a consistent way back to the Game Center without covering gameplay controls.
+    function addGameCenterLink(){
+        if(document.getElementById('game-center-back'))return;
+        const link=document.createElement('a');
+        link.id='game-center-back';
+        link.href='/gameinfo';
+        link.textContent='← GAME CENTER';
+        link.setAttribute('aria-label','Back to Game Center');
+        link.style.cssText='position:fixed;top:12px;left:12px;z-index:10000;display:inline-flex;align-items:center;padding:8px 13px;border:1px solid rgba(255,215,0,.45);border-radius:999px;background:rgba(8,4,22,.82);backdrop-filter:blur(8px);color:#FFD700;font:700 12px/1.2 Arial,sans-serif;letter-spacing:.08em;text-decoration:none;box-shadow:0 4px 18px rgba(0,0,0,.45);transition:transform .2s ease,background .2s ease;';
+        link.addEventListener('mouseenter',()=>{link.style.transform='translateY(-1px)';link.style.background='rgba(20,10,45,.95)';});
+        link.addEventListener('mouseleave',()=>{link.style.transform='';link.style.background='rgba(8,4,22,.82)';});
+        (document.body||document.documentElement).appendChild(link);
+    }
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',addGameCenterLink,{once:true});
+    else addGameCenterLink();
+
     let accountInitials='';
     function loadAuth(){if(window.CLPAuth)return Promise.resolve();return new Promise((resolve,reject)=>{const s=document.createElement('script');s.src='/js/auth.js';s.onload=resolve;s.onerror=reject;document.head.appendChild(s)})}
     function isAccountField(el){if(!el||el.tagName!=='INPUT'||el.type==='hidden')return false;if(el.id==='clp-game-login-initials'||el.id==='clp-game-login-pin')return false;return !!el.matches('#player-initial,#player-initials,#initialsInput,#playerInitials,#ini,[name="initial"],[name="initials"],.initials-input,input[id*="initial" i],input[name*="initial" i]')}

@@ -1,7 +1,8 @@
 name: Update About Timeline 202610
 
 on:
-  push:
+  pull_request:
+    types: [opened, synchronize]
     branches: [develop]
 
 permissions:
@@ -9,7 +10,7 @@ permissions:
 
 jobs:
   update:
-    if: github.event.head_commit.message != 'Remove temporary 202610 timeline workflow'
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'temp-timeline-202610'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -69,4 +70,4 @@ jobs:
           git add about.html
           git diff --cached --quiet && exit 0
           git commit -m "Add October 2026 About Timeline entry"
-          git push
+          git push origin HEAD:temp-timeline-202610

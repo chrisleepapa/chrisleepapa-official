@@ -19,33 +19,51 @@ jobs:
         with:
           ref: develop
           fetch-depth: 1
-      - name: Patch worship_eng.html without touching lyrics
+      - name: Match SHOUT album card to Korean Worship
         shell: python
         run: |
           from pathlib import Path
           import re
           p = Path('worship_eng.html')
           s = p.read_text(encoding='utf-8')
-          if 'id="site-nav"' not in s:
-              s = re.sub(r'(<body[^>]*>)', r'\1\n<div id="site-nav"></div>', s, count=1, flags=re.I)
-          if 'id="site-footer"' not in s:
-              if re.search(r'<script[^>]+main\.js', s, flags=re.I):
-                  s = re.sub(r'(<script[^>]+main\.js[^>]*></script>)', r'<div id="site-footer"></div>\n\1', s, count=1, flags=re.I)
-              else:
-                  s = s.replace('</body>', '<div id="site-footer"></div>\n<script src="main.js" defer></script>\n</body>')
-          yt = 'https://youtube.com/playlist?list=OLAK5uy_lVpXPP4Cea1qi6WA-lmwIOXkOKrijaT0Y&si=Er078V4z_pm5QyZ2'
-          sp = 'https://open.spotify.com/album/3XaG1yonPrJiyVPwExgVBm?si=fFwcC8tmSQqO7SGPJja17w&utm_source=copy-link'
-          s = re.sub(r'href="https://youtube\.com/playlist\?[^\"]+"', f'href="{yt}"', s, count=1)
-          s = re.sub(r'href="https://open\.spotify\.com/album/[^\"]+"', f'href="{sp}"', s, count=1)
-          embed = f'''<section class="section shout-album"><h2>SHOUT · OFFICIAL ALBUM</h2><div class="album-grid"><div class="album-art"><iframe src="https://open.spotify.com/embed/album/3XaG1yonPrJiyVPwExgVBm?utm_source=generator&theme=0" width="100%" height="380" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="SHOUT official album on Spotify"></iframe></div><div class="album-copy"><p class="intro">SHOUT</p><p>English Worship by Chris LEE.PAPA.</p><div class="meta"><span class="pill">ENGLISH WORSHIP</span><span class="pill">15 TRACKS</span><span class="pill">2026</span></div><div class="stream-links"><a href="{yt}" target="_blank" rel="noopener">YouTube Album</a><a href="{sp}" target="_blank" rel="noopener">Spotify Album</a></div></div></div></section>'''
-          pattern = r'<section class="section"><h2>THE PROJECT</h2>.*?</section>'
-          if re.search(pattern, s, flags=re.S):
-              s = re.sub(pattern, embed, s, count=1, flags=re.S)
-          elif 'SHOUT · OFFICIAL ALBUM' not in s:
-              s = s.replace('<section class="section stream">', embed + '\n<section class="section stream">', 1)
-          extra_css = '''\n<style id="worship-eng-fix">\n.shout-album .album-grid{display:grid;grid-template-columns:minmax(280px,480px) 1fr;gap:40px;align-items:center}.album-art iframe{display:block;width:100%;max-width:480px;border:0;border-radius:16px;box-shadow:0 24px 70px rgba(0,0,0,.55);background:#111}.album-copy .intro{margin-bottom:12px}.stream-links{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}.stream-links a{display:inline-block;padding:11px 18px;border:1px solid var(--line);border-radius:999px;color:#ddd;text-decoration:none}@media(max-width:760px){.shout-album .album-grid{grid-template-columns:1fr;gap:24px}.album-art iframe{max-width:100%;height:352px}}\n</style>\n'''
-          if 'id="worship-eng-fix"' not in s:
-              s = s.replace('</head>', extra_css + '</head>', 1)
+
+          # Keep the existing SHOUT artwork and streaming links, but make the
+          # English page use the same image-first album-card pattern as /worship.
+          s = s.replace(
+              '.albums-grid{display:grid;grid-template-columns:1fr;gap:28px}',
+              '.albums-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}'
+          )
+          s = s.replace(
+              '.album-card{position:relative;min-height:620px;',
+              '.album-card{position:relative;min-height:440px;'
+          )
+          s = s.replace(
+              '.album-title{margin:0 0 12px;color:#fff;font-family:\'Noto Serif\',serif;font-size:1.7rem}',
+              '.album-title{margin:0 0 12px;color:#fff;font-family:\'Noto Serif\',serif;font-size:1.45rem}'
+          )
+          s = s.replace(
+              '.album-card{min-height:560px}',
+              '.album-card{min-height:420px}'
+          )
+
+          # Replace the Spotify embed area with the actual SHOUT cover image.
+          # vol3.jpg is present in the develop image tree and is the existing
+          # SHOUT artwork used by the worship rebuild tooling.
+          cover = '<img class="album-cover" src="images/vol3.jpg" alt="SHOUT English Worship album cover" loading="lazy">'
+          s = re.sub(
+              r'<div class="cover-frame">.*?</div><div class="album-overlay">',
+              cover + '<div class="album-overlay">',
+              s,
+              count=1,
+              flags=re.S
+          )
+
+          # Remove the obsolete iframe positioning from this card while keeping
+          # the rest of the page and the complete 15-track lyric archive intact.
+          s = re.sub(r'\.cover-frame\{.*?\}', '', s, count=1)
+          s = re.sub(r'\.cover-frame iframe\{.*?\}', '', s, count=1)
+          s = s.replace('.cover-frame{padding:20px 20px 235px}', '')
+
           p.write_text(s, encoding='utf-8')
       - name: Commit and push
         shell: bash
@@ -54,6 +72,5 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add worship_eng.html
           git diff --cached --quiet && exit 0
-          git commit -m 'Fix English Worship navigation and SHOUT album cover'
+          git commit -m 'Match SHOUT album card to Korean Worship'
           git push origin HEAD:develop
-# trigger repair

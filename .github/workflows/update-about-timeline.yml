@@ -146,32 +146,21 @@ jobs:
               'time8_desc': 'I reorganized my creations and completely rebuilt The Creative Archive.'
           }
 
-          # Replace existing translation values for time1-time8; create missing keys after time7/time8 area if necessary.
-          def replace_key(text, key, value):
-              pat = re.compile(r'(^\s*' + re.escape(key) + r':\s*)[\"\'].*?([\"\'],?\s*$)', re.M)
-              return pat.sub(lambda m: m.group(1) + '"' + value.replace('"', '\\"') + '"' + (',' if m.group(2).lstrip().startswith('"') and m.group(2).rstrip().endswith(',') else ''), text, count=1)
-
-          # Simpler exact block replacement for the two translation objects.
-          for lang, vals in [('ko', ko), ('en', en)]:
-              marker = 'const PAGE_I18N' if 'const PAGE_I18N' in s2 else 'PAGE_I18N'
-              # locate each key globally; keys are unique within each language object, so sequential replacement works.
-              start = 0
-              if lang == 'ko':
-                  start = s2.find('const PAGE_I18N')
-              else:
-                  start = s2.find('en:', s2.find('const PAGE_I18N'))
+          # Update the two language sections by locating each key within its object.
+          for section_start_marker, vals in [('ko:', ko), ('en:', en)]:
+              start = s2.find(section_start_marker)
               if start < 0:
-                  raise SystemExit(f'{lang} translation section not found')
-              end = s2.find('};', start)
-              section = s2[start:end if end >= 0 else len(s2)]
+                  raise SystemExit(f'{section_start_marker} section not found')
+              end = s2.find('\n            }', start)
+              if end < 0:
+                  raise SystemExit(f'{section_start_marker} section end not found')
+              section = s2[start:end]
               for key, value in vals.items():
-                  section, count = re.subn(r'(\b' + re.escape(key) + r'\s*:\s*)["\'](?:[^"\']|\\.)*["\']', lambda m, v=value: m.group(1) + '"' + v.replace('"','\\"') + '"', section, count=1)
+                  pattern_key = re.compile(r'(\b' + re.escape(key) + r'\s*:\s*)["\'](?:[^"\']|\\.)*["\']')
+                  section, count = pattern_key.subn(lambda m, v=value: m.group(1) + '"' + v.replace('"', '\\"') + '"', section, count=1)
                   if count != 1:
-                      # Insert missing key after the timeline_label line in the relevant section.
-                      section = section.replace('timeline_label:\n', 'timeline_label:\n', 1)
-                      section += '\n'
-                      section = section.rstrip() + f'\n                {key}: "{value}",\n'
-              s2 = s2[:start] + section + s2[end if end >= 0 else len(s2):]
+                      raise SystemExit(f'{section_start_marker}{key} not found')
+              s2 = s2[:start] + section + s2[end:]
 
           p.write_text(s2, encoding='utf-8')
           PY

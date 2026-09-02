@@ -1,0 +1,186 @@
+name: Update About Timeline
+
+on:
+  push:
+    branches: [develop]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-timeline:
+    runs-on: ubuntu-latest
+    if: github.event.head_commit.message != 'Update About timeline content'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: develop
+          fetch-depth: 1
+
+      - name: Replace timeline and translations
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          p = Path('about.html')
+          s = p.read_text(encoding='utf-8')
+
+          timeline = '''            <div class="timeline-items">
+
+                <!-- 2025.07 -->
+                <article class="timeline-item">
+                    <div class="timeline-year">2025.07</div>
+                    <div class="timeline-content">
+                        <strong data-i18n="time1_title">THE BEGINNING</strong>
+                        <p data-i18n="time1_desc">AI를 활용한 창작을 처음 시도하며 새로운 창작의 가능성을 발견했습니다.</p>
+                    </div>
+                </article>
+
+                <!-- 2025.09 -->
+                <article class="timeline-item">
+                    <div class="timeline-year">2025.09</div>
+                    <div class="timeline-content">
+                        <strong data-i18n="time2_title">SISTER SQUAD 1</strong>
+                        <p data-i18n="time2_desc">첫 번째 오리지널 IP, SISTER SQUAD가 탄생했습니다.</p>
+                    </div>
+                </article>
+
+                <!-- 2025.10 -->
+                <article class="timeline-item">
+                    <div class="timeline-year">2025.10</div>
+                    <div class="timeline-content">
+                        <strong data-i18n="time3_title">MUSIC PRODUCING</strong>
+                        <p data-i18n="time3_desc">AI를 활용한 음악 제작을 본격적으로 시작했습니다.</p>
+                    </div>
+                </article>
+
+                <!-- 2026.01 -->
+                <article class="timeline-item">
+                    <div class="timeline-year">2026.01</div>
+                    <div class="timeline-content">
+                        <strong data-i18n="time4_title">MY FAITH JOURNEY</strong>
+                        <p data-i18n="time4_desc">나의 믿음의 여정을 음악에 담기 시작하며 Worship 프로젝트를 시작했습니다.</p>
+                    </div>
+                </article>
+
+                <!-- 2026.05 -->
+                <article class="timeline-item">
+                    <div class="timeline-year">2026.05</div>
+                    <div class="timeline-content">
+                        <strong data-i18n="time5_title">THE CREATIVE ARCHIVE</strong>
+                        <p data-i18n="time5_desc">음악, 문학, 영상, 게임, 신앙 등 창작물을 하나의 공간에 모으기 시작했습니다.</p>
+                    </div>
+                </article>
+
+                <!-- 2026.07 -->
+                <article class="timeline-item">
+                    <div class="timeline-year">2026.07</div>
+                    <div class="timeline-content">
+                        <strong data-i18n="time6_title">MIRACLE SHOT</strong>
+                        <p data-i18n="time6_desc">새로운 오리지널 스토리 IP, Miracle Shot이 탄생했습니다.</p>
+                    </div>
+                </article>
+
+                <!-- 2026.08 -->
+                <article class="timeline-item">
+                    <div class="timeline-year">2026.08</div>
+                    <div class="timeline-content">
+                        <strong data-i18n="time7_title">SISTER SQUAD 2</strong>
+                        <p data-i18n="time7_desc">SISTER SQUAD의 새로운 이야기로 시리즈를 이어갔습니다.</p>
+                    </div>
+                </article>
+
+                <!-- 2026.09 -->
+                <article class="timeline-item">
+                    <div class="timeline-year">2026.09</div>
+                    <div class="timeline-content">
+                        <strong data-i18n="time8_title">CREATIVE ARCHIVE REBUILT</strong>
+                        <p data-i18n="time8_desc">지금까지의 창작물을 다시 정리하고 The Creative Archive를 전면 재개편했습니다.</p>
+                    </div>
+                </article>
+
+            </div>'''
+
+          pattern = re.compile(r'            <div class="timeline-items">.*?            </div>\n\n\n        </div>', re.S)
+          replacement = timeline + '\n\n\n        </div>'
+          s2, n = pattern.subn(replacement, s, count=1)
+          if n != 1:
+              raise SystemExit(f'timeline block replacement count={n}')
+
+          ko = {
+              'time1_title': 'THE BEGINNING',
+              'time1_desc': 'AI를 활용한 창작을 처음 시도하며 새로운 창작의 가능성을 발견했습니다.',
+              'time2_title': 'SISTER SQUAD 1',
+              'time2_desc': '첫 번째 오리지널 IP, SISTER SQUAD가 탄생했습니다.',
+              'time3_title': 'MUSIC PRODUCING',
+              'time3_desc': 'AI를 활용한 음악 제작을 본격적으로 시작했습니다.',
+              'time4_title': 'MY FAITH JOURNEY',
+              'time4_desc': '나의 믿음의 여정을 음악에 담기 시작하며 Worship 프로젝트를 시작했습니다.',
+              'time5_title': 'THE CREATIVE ARCHIVE',
+              'time5_desc': '음악, 문학, 영상, 게임, 신앙 등 창작물을 하나의 공간에 모으기 시작했습니다.',
+              'time6_title': 'MIRACLE SHOT',
+              'time6_desc': '새로운 오리지널 스토리 IP, Miracle Shot이 탄생했습니다.',
+              'time7_title': 'SISTER SQUAD 2',
+              'time7_desc': 'SISTER SQUAD의 새로운 이야기로 시리즈를 이어갔습니다.',
+              'time8_title': 'CREATIVE ARCHIVE REBUILT',
+              'time8_desc': '지금까지의 창작물을 다시 정리하고 The Creative Archive를 전면 재개편했습니다.'
+          }
+          en = {
+              'time1_title': 'THE BEGINNING',
+              'time1_desc': 'I first began exploring AI as a creative tool and discovered new possibilities for making things.',
+              'time2_title': 'SISTER SQUAD 1',
+              'time2_desc': 'My first original IP, SISTER SQUAD, was born.',
+              'time3_title': 'MUSIC PRODUCING',
+              'time3_desc': 'I began producing music with AI in earnest.',
+              'time4_title': 'MY FAITH JOURNEY',
+              'time4_desc': 'I began putting my faith journey into music and started the Worship project.',
+              'time5_title': 'THE CREATIVE ARCHIVE',
+              'time5_desc': 'I began bringing together my music, literature, video, games, and faith-related creations in one place.',
+              'time6_title': 'MIRACLE SHOT',
+              'time6_desc': 'A new original story IP, Miracle Shot, was born.',
+              'time7_title': 'SISTER SQUAD 2',
+              'time7_desc': 'I continued the SISTER SQUAD series with a new story.',
+              'time8_title': 'CREATIVE ARCHIVE REBUILT',
+              'time8_desc': 'I reorganized my creations and completely rebuilt The Creative Archive.'
+          }
+
+          # Replace existing translation values for time1-time8; create missing keys after time7/time8 area if necessary.
+          def replace_key(text, key, value):
+              pat = re.compile(r'(^\s*' + re.escape(key) + r':\s*)[\"\'].*?([\"\'],?\s*$)', re.M)
+              return pat.sub(lambda m: m.group(1) + '"' + value.replace('"', '\\"') + '"' + (',' if m.group(2).lstrip().startswith('"') and m.group(2).rstrip().endswith(',') else ''), text, count=1)
+
+          # Simpler exact block replacement for the two translation objects.
+          for lang, vals in [('ko', ko), ('en', en)]:
+              marker = 'const PAGE_I18N' if 'const PAGE_I18N' in s2 else 'PAGE_I18N'
+              # locate each key globally; keys are unique within each language object, so sequential replacement works.
+              start = 0
+              if lang == 'ko':
+                  start = s2.find('const PAGE_I18N')
+              else:
+                  start = s2.find('en:', s2.find('const PAGE_I18N'))
+              if start < 0:
+                  raise SystemExit(f'{lang} translation section not found')
+              end = s2.find('};', start)
+              section = s2[start:end if end >= 0 else len(s2)]
+              for key, value in vals.items():
+                  section, count = re.subn(r'(\b' + re.escape(key) + r'\s*:\s*)["\'](?:[^"\']|\\.)*["\']', lambda m, v=value: m.group(1) + '"' + v.replace('"','\\"') + '"', section, count=1)
+                  if count != 1:
+                      # Insert missing key after the timeline_label line in the relevant section.
+                      section = section.replace('timeline_label:\n', 'timeline_label:\n', 1)
+                      section += '\n'
+                      section = section.rstrip() + f'\n                {key}: "{value}",\n'
+              s2 = s2[:start] + section + s2[end if end >= 0 else len(s2):]
+
+          p.write_text(s2, encoding='utf-8')
+          PY
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add about.html
+          git diff --cached --check
+          git commit -m "Update About timeline content"
+          git push origin HEAD:develop

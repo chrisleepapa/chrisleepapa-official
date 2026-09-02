@@ -13,7 +13,7 @@ const WORSHIP_I18N = {
     og_title:'WORSHIP – 나의 찬양 앨범 이야기와 가사집 | Chris LEE.PAPA',
     og_description:'나의 찬양 Vol.1 · Vol.2 · Vol.3. 앨범을 만들게 된 이야기와 예배의 고백, 가사 아카이브를 한곳에 기록합니다.',
     worship_header_slogan:'영혼 깊은 곳에서 올려드리는 고백과 찬양',
-    worship_intro_title:'나의 찬양, 그리고 나의 예배',
+    worship_intro_title:'나의 찬양, 나의 예배',
     worship_intro_desc:'이곳은 단순히 음악을 모아놓은 페이지가 아니라, 하나님께 드리고 싶었던 마음을 노래로 기록해 온 예배의 아카이브입니다. 완성된 음원뿐 아니라 왜 만들었는지, 어떤 마음으로 만들었는지, 그리고 그 노래에 담긴 고백까지 함께 기록합니다.',
     albums_heading:'나의 찬양 앨범',
     albums_intro:'한 장씩 쌓여온 찬양의 기록입니다. 각 앨범의 이야기를 읽고 음악을 들어보세요.',

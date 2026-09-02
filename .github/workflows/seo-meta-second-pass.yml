@@ -21,7 +21,8 @@ jobs:
           import re
 
           BASE = 'https://chrisleepapa-official.vercel.app'
-          files = sorted(Path('.').glob('*.html'))
+          # Exclude the Naver verification file; it is not a content page.
+          files = sorted(p for p in Path('.').glob('*.html') if not p.name.startswith('naver'))
 
           titles = {
               'index': 'Chris LEE.PAPA — The Creative Archive',
@@ -101,13 +102,11 @@ jobs:
               if not desc:
                   desc = f'{title}. Chris LEE.PAPA의 The Creative Archive 콘텐츠 페이지입니다.'
 
-              # Title is authoritative; keep page-specific titles already defined above.
               if not re.search(r'<title[^>]*>', text, re.I):
                   text = re.sub(r'</head>', f'  <title>{esc(title)}</title>\n</head>', text, count=1, flags=re.I)
               else:
                   text = re.sub(r'<title[^>]*>.*?</title>', f'<title>{esc(title)}</title>', text, count=1, flags=re.I|re.S)
 
-              # Ensure the core SEO signals exist.
               if has_meta(text, 'name', 'description'):
                   text = replace_meta(text, 'name', 'description', desc)
               else:
@@ -124,7 +123,6 @@ jobs:
               else:
                   text = add_meta(text, f'<link rel="canonical" href="{canonical}">')
 
-              # Open Graph: always present and synchronized with the page identity.
               if has_meta(text, 'property', 'og:title'):
                   text = replace_meta(text, 'property', 'og:title', title)
               else:
@@ -142,7 +140,6 @@ jobs:
               if not has_meta(text, 'property', 'og:image'):
                   text = add_meta(text, f'<meta property="og:image" content="{BASE}/images/og_share.png">')
 
-              # Twitter summary metadata.
               if not has_meta(text, 'name', 'twitter:card'):
                   text = add_meta(text, '<meta name="twitter:card" content="summary_large_image">')
               if has_meta(text, 'name', 'twitter:title'):
@@ -158,7 +155,6 @@ jobs:
 
               p.write_text(text, encoding='utf-8')
 
-          # Validation: every HTML page must have the complete core set.
           required = [
               r'<title[^>]*>.+?</title>',
               r'<meta\s+[^>]*name=["\']description["\'][^>]*content=["\'].+?["\']',
@@ -176,7 +172,7 @@ jobs:
               if any(not re.search(x,t,re.I|re.S) for x in required): bad.append(p.name)
           if bad:
               raise SystemExit('Metadata validation failed: '+', '.join(bad))
-          print(f'Validated {len(files)} HTML pages.')
+          print(f'Validated {len(files)} content HTML pages.')
           PY
 
       - name: Commit metadata changes

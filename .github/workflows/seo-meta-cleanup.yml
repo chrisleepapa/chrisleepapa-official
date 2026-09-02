@@ -1,0 +1,118 @@
+name: SEO metadata cleanup
+on:
+  push:
+    branches: [develop]
+    paths: ['.seo-meta-trigger']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: develop
+          fetch-depth: 0
+      - name: Normalize page metadata
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+          import re
+
+          descriptions = {
+              'index.html': 'Chris LEE.PAPA의 공식 창작 아카이브. 음악, 워십, 성경, 문학, 영상, SISTER SQUAD와 다양한 창작 프로젝트를 소개합니다.',
+              'about.html': 'Chris LEE.PAPA의 창작 여정과 음악, 문학, 영상, 성경, Sister Squad IP, Worship 프로젝트를 소개합니다.',
+              'music.html': 'Chris LEE.PAPA가 만든 음악을 모아 소개하는 공식 Music Archive입니다. 앨범, EP, 싱글과 Spotify 및 YouTube 감상 정보를 제공합니다.',
+              'movie.html': 'Chris LEE.PAPA의 영상과 영화 프로젝트를 기록하는 공식 Movie Archive입니다. 작품과 관련된 영상 정보를 소개합니다.',
+              'worship.html': 'Chris LEE.PAPA의 한국어 워십 아카이브입니다. 나의 찬양 1집, 2집, 3집의 앨범 정보와 가사집을 제공합니다.',
+              'worship_eng.html': 'SHOUT를 중심으로 한 Chris LEE.PAPA의 English Worship Archive입니다. 영어 워십 프로젝트와 앨범 및 가사를 소개합니다.',
+              'shout.html': 'SHOUT는 Chris LEE.PAPA의 English Worship 프로젝트입니다. 영어로 만든 찬양과 앨범 정보를 소개합니다.',
+              'sistersquad-hub.html': 'SISTER SQUAD는 두 자매의 모험과 세계관을 담은 Chris LEE.PAPA의 창작 IP입니다. 작품, 캐릭터, 세계관과 관련 프로젝트를 소개합니다.',
+              'sistersquad.html': 'SISTER SQUAD 첫 번째 이야기와 세계관을 소개합니다. 자매 율이와 정이의 모험을 담은 Chris LEE.PAPA의 창작 프로젝트입니다.',
+              'sistersquad2.html': 'SISTER SQUAD 2의 이야기와 작품 정보를 소개합니다. 율이와 정이의 새로운 모험을 담은 Chris LEE.PAPA의 창작 프로젝트입니다.',
+              'world-lore.html': 'SISTER SQUAD 세계관의 인물, 장소와 설정을 정리한 World Lore입니다.',
+              'miracleshot.html': 'Miracle Shot은 Chris LEE.PAPA의 창작 프로젝트를 소개하는 작품 아카이브입니다.',
+              'bible.html': 'Chris LEE.PAPA의 온라인 성경 프로젝트 Bible in my hand를 소개합니다.',
+              'journal.html': 'Chris LEE.PAPA의 창작 기록과 프로젝트 이야기를 담은 공식 Journal입니다.',
+              'journal-1.html': 'Chris LEE.PAPA의 창작 과정을 기록한 Journal 첫 번째 글입니다.',
+              'journal-2.html': 'Chris LEE.PAPA의 창작 과정을 기록한 Journal 두 번째 글입니다.',
+              'journal-3.html': 'Chris LEE.PAPA의 창작 과정을 기록한 Journal 세 번째 글입니다.',
+              'journal-4.html': 'Chris LEE.PAPA의 창작 과정을 기록한 Journal 네 번째 글입니다.',
+              'journal-5.html': 'Chris LEE.PAPA의 창작 과정을 기록한 Journal 다섯 번째 글입니다.',
+              'journal-6.html': '나의 찬양에서 드리는 기도와 워십의 의미를 기록한 Chris LEE.PAPA의 Journal입니다.',
+              'gameinfo.html': 'SISTER SQUAD와 함께 즐길 수 있는 게임 프로젝트와 게임 정보를 소개합니다.',
+              'game.html': 'SISTER SQUAD의 세계관을 바탕으로 즐기는 게임 프로젝트입니다.',
+              'booktop.html': 'SISTER SQUAD 관련 게임 프로젝트를 소개합니다.',
+              'fiveinrow.html': 'SISTER SQUAD의 게임 프로젝트 Five in a Row를 소개합니다.',
+              'curling.html': 'SISTER SQUAD의 게임 프로젝트 Curling을 소개합니다.',
+              'tetris.html': 'SISTER SQUAD의 게임 프로젝트 Tetris를 소개합니다.',
+              'switch.html': 'SISTER SQUAD의 게임 프로젝트 Switch를 소개합니다.',
+              'yul.html': 'SISTER SQUAD의 캐릭터 율이(Yul) 프로필과 캐릭터 정보를 소개합니다.',
+              'jung.html': 'SISTER SQUAD의 캐릭터 정(Jung) 프로필과 캐릭터 정보를 소개합니다.',
+              'guestbook.html': 'Chris LEE.PAPA 공식 창작 아카이브에 방문한 독자가 메시지를 남길 수 있는 Guestbook입니다.',
+              'contact.html': 'Chris LEE.PAPA와 창작 프로젝트 및 사이트 관련 문의를 위한 Contact 페이지입니다.',
+              'shop.html': 'Chris LEE.PAPA의 창작 프로젝트와 관련된 상품 및 콘텐츠를 소개하는 공식 Shop입니다.',
+              'privacy.html': 'Chris LEE.PAPA 공식 사이트의 개인정보 처리방침을 안내합니다.',
+              'terms.html': 'Chris LEE.PAPA 공식 사이트의 이용약관을 안내합니다.',
+          }
+
+          def replace_meta(s, name, content):
+              pat = rf'(<meta\\s+name=["\']{re.escape(name)}["\']\\s+content=["\'])[^"\']*(["\'])'
+              if re.search(pat, s, flags=re.I):
+                  return re.sub(pat, rf'\\g<1>{content}\\g<2>', s, count=1, flags=re.I)
+              return s
+
+          def replace_prop(s, prop, content):
+              pat = rf'(<meta\\s+property=["\']{re.escape(prop)}["\']\\s+content=["\'])[^"\']*(["\'])'
+              if re.search(pat, s, flags=re.I):
+                  return re.sub(pat, rf'\\g<1>{content}\\g<2>', s, count=1, flags=re.I)
+              return s
+
+          for p in Path('.').glob('*.html'):
+              s = p.read_text(encoding='utf-8')
+              m = re.search(r'<title>([\\s\\S]*?)</title>', s, flags=re.I)
+              if not m:
+                  continue
+              title = re.sub(r'\\s+', ' ', m.group(1)).strip()
+              if p.name == 'index.html':
+                  canonical_title = 'Chris LEE.PAPA — The Creative Archive'
+                  s = re.sub(r'<title>[\\s\\S]*?</title>', f'<title>{canonical_title}</title>', s, count=1, flags=re.I)
+                  title = canonical_title
+              elif 'Chris LEE.PAPA' not in title:
+                  title = title.rstrip(' -–—|') + ' | Chris LEE.PAPA'
+                  s = re.sub(r'<title>[\\s\\S]*?</title>', f'<title>{title}</title>', s, count=1, flags=re.I)
+
+              desc = descriptions.get(p.name)
+              if desc:
+                  s = replace_meta(s, 'description', desc)
+
+              # Keep social metadata synchronized with the actual page title/description.
+              s = replace_prop(s, 'og:title', title)
+              s = replace_meta(s, 'twitter:title', title)
+              if desc:
+                  s = replace_prop(s, 'og:description', desc)
+                  s = replace_meta(s, 'twitter:description', desc)
+
+              p.write_text(s, encoding='utf-8')
+          PY
+      - name: Validate metadata
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+          import re
+          for p in Path('.').glob('*.html'):
+              s = p.read_text(encoding='utf-8')
+              if not re.search(r'<title>[^<]+Chris LEE\\.PAPA[^<]*</title>', s, re.I) and p.name != 'index.html':
+                  print('TITLE CHECK:', p)
+              if not re.search(r'<meta\\s+name=["\']description["\']\\s+content=["\'][^"\']{60,}["\']', s, re.I):
+                  print('DESCRIPTION CHECK:', p)
+          PY
+      - name: Commit and remove one-time workflow
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          rm -f .seo-meta-trigger .github/workflows/seo-meta-cleanup.yml
+          git add '*.html' .seo-meta-trigger .github/workflows/seo-meta-cleanup.yml
+          git diff --cached --quiet || git commit -m 'Normalize SEO metadata across pages'
+          git push origin develop

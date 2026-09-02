@@ -130,32 +130,51 @@ jobs:
               'time8_desc': ('지금까지의 창작물을 다시 정리하고 The Creative Archive를 전면 재개편했습니다.', 'I reorganized my creations and completely rebuilt The Creative Archive.')
           }
 
-          # Existing timeline translation keys are present twice (KO and EN).
-          # Replace the first occurrence with Korean and the second with English.
-          for key, (ko, en) in values.items():
+          # Update existing time1-time5 entries (KO then EN).
+          for key in [k for k in values if int(re.search(r'\d+', k).group()) <= 5]:
+              ko, en = values[key]
               pat = re.compile(r'(\b' + re.escape(key) + r'\s*:\s*)["\'](?:[^"\']|\\.)*["\']')
               matches = list(pat.finditer(s))
-              if len(matches) < 2:
-                  raise SystemExit(f'{key}: expected 2 translation entries, found {len(matches)}')
-              replacement_en = en.replace('"', '\\"')
-              replacement_ko = ko.replace('"', '\\"')
-              parts = []
+              if len(matches) != 2:
+                  raise SystemExit(f'{key}: expected 2 entries, found {len(matches)}')
+              out = []
               last = 0
               for i, m in enumerate(matches):
-                  parts.append(s[last:m.start()])
-                  value = replacement_ko if i == 0 else replacement_en
-                  parts.append(m.group(1) + '"' + value + '"')
+                  out.append(s[last:m.start()])
+                  value = ko if i == 0 else en
+                  out.append(m.group(1) + '"' + value.replace('"','\\"') + '"')
                   last = m.end()
-              parts.append(s[last:])
-              s = ''.join(parts)
+              out.append(s[last:])
+              s = ''.join(out)
 
-          # Add new time6-time8 keys to both language objects if they are not already present.
+          # Insert time6-time8 into both language objects immediately after each time5_desc entry.
+          additions = [
+              ('time6_title', 'MIRACLE SHOT'), ('time6_desc', None),
+              ('time7_title', 'SISTER SQUAD 2'), ('time7_desc', None),
+              ('time8_title', 'CREATIVE ARCHIVE REBUILT'), ('time8_desc', None)
+          ]
+          ko_add = '\n'.join([
+              '                time6_title: "MIRACLE SHOT",',
+              '                time6_desc: "새로운 오리지널 스토리 IP, Miracle Shot이 탄생했습니다.",',
+              '                time7_title: "SISTER SQUAD 2",',
+              '                time7_desc: "SISTER SQUAD의 새로운 이야기로 시리즈를 이어갔습니다.",',
+              '                time8_title: "CREATIVE ARCHIVE REBUILT",',
+              '                time8_desc: "지금까지의 창작물을 다시 정리하고 The Creative Archive를 전면 재개편했습니다.",' 
+          ])
+          en_add = '\n'.join([
+              '                time6_title: "MIRACLE SHOT",',
+              '                time6_desc: "A new original story IP, Miracle Shot, was born.",',
+              '                time7_title: "SISTER SQUAD 2",',
+              '                time7_desc: "I continued the SISTER SQUAD series with a new story.",',
+              '                time8_title: "CREATIVE ARCHIVE REBUILT",',
+              '                time8_desc: "I reorganized my creations and completely rebuilt The Creative Archive.",' 
+          ])
           if 'time6_title:' not in s:
-              anchor = re.compile(r'(\n\s*time5_desc:\s*"(?:[^"\\]|\\.)*",)')
-              insert = '\n\n                time6_title: "MIRACLE SHOT",\n                time6_desc: "A new original story IP, Miracle Shot, was born.",\n                time7_title: "SISTER SQUAD 2",\n                time7_desc: "I continued the SISTER SQUAD series with a new story.",\n                time8_title: "CREATIVE ARCHIVE REBUILT",\n                time8_desc: "I reorganized my creations and completely rebuilt The Creative Archive.",'
-              # This branch should not be reached because the HTML block contains data-i18n keys, not object keys.
-              # Keep explicit failure rather than silently corrupting the page.
-              raise SystemExit('New timeline translation keys were not found; aborting safely')
+              positions = [m.end() for m in re.finditer(r'^\s*time5_desc:\s*".*",\s*$', s, re.M)]
+              if len(positions) != 2:
+                  raise SystemExit(f'time5_desc anchors expected 2, found {len(positions)}')
+              for pos, addition in reversed(list(zip(positions, [ko_add, en_add]))):
+                  s = s[:pos] + '\n\n' + addition + s[pos:]
 
           p.write_text(s, encoding='utf-8')
           PY

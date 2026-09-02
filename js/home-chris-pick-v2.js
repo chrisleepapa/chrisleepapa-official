@@ -23,9 +23,9 @@
     {type:'VIDEO',icon:'▶',title:'사랑한다고 MV',sub:'Music Video',desc:{ko:'창작 음악 사랑한다고를 영상으로 확장한 오리지널 뮤직비디오입니다.',en:'An original music video expanding 사랑한다고 into moving images.'},image:'/images/og_share.png',href:'movie.html#saranghandago',action:{ko:'영상 보기',en:'Watch Video'}},
     {type:'VIDEO',icon:'▶',title:'SISTER SQUAD Cinematic Trailer',sub:'Official Trailer',desc:{ko:'두 자매 율과 정이의 마법 세계 모험을 소개하는 공식 시네마틱 트레일러입니다.',en:'The official cinematic trailer introducing Yul and Jung’s adventure.'},image:'/images/og_share.png',href:'sistersquad.html',action:{ko:'트레일러 보기',en:'Watch Trailer'}},
     {type:'WORSHIP',icon:'♩',title:'나의 찬양 Vol.1',sub:'The First Confession',desc:{ko:'영혼 깊은 곳에서 올려드리는 고백과 찬양을 담은 첫 번째 워십 앨범입니다.',en:'The first worship album, a record of confession and praise.'},image:'/images/My hymn1.jpg',href:'worship.html#vol1',action:{ko:'작품 보기',en:'View Work'}},
-    {type:'WORSHIP',icon:'♩',title:'나의 찬양 Vol.2',sub:'2nd Confession',desc:{ko:'첫 번째 고백에 이어 이어지는 두 번째 찬양의 기록입니다.',en:'The second record of worship and confession.'},image:'/images/My hymn2.jpg',href:'worship.html#vol2',action:{ko:'작품 보기',en:'View Work'}},
+    {type:'WORSHIP',icon:'♩',title:'나의 찬양 Vol.2',sub:'2nd Confession',desc:{ko:'첫 번째 고백에 이어 이어지는 두 번째 찬양의 기록입니다.',en:'The second record of worship and confession.'},image:'/images/My hymn2.png',href:'worship.html#vol2',action:{ko:'작품 보기',en:'View Work'}},
     {type:'WORSHIP',icon:'♩',title:'나의 찬양 Vol.3',sub:'3rd Confession',desc:{ko:'연약하고 부족한 나의 진솔하고 담백한 고백',en:'A sincere and simple confession from one who is weak and lacking.'},image:'/images/My hymn3.jpg',href:'worship.html#vol3',action:{ko:'작품 보기',en:'View Work'}},
-    {type:'WORSHIP',icon:'♩',title:'Shout',sub:'Worship · Praise',desc:{ko:'주님을 향한 외침과 찬양을 담은 Worship 작품입니다.',en:'A worship work of praise and a heartfelt shout toward God.'},image:'/images/vol3.jpg',href:'worship_eng.html',action:{ko:'English Worship 보기',en:'View English Worship'}}
+    {type:'WORSHIP',icon:'♩',title:'Shout',sub:'Worship · Praise',desc:{ko:'주님을 향한 외침과 찬양을 담은 Worship 작품입니다.',en:'A worship work of praise and a heartfelt shout toward God.'},image:'/images/shout.jpg',href:'worship_eng.html',action:{ko:'English Worship 보기',en:'View English Worship'}}
   ];
 
   const style=document.createElement('style');

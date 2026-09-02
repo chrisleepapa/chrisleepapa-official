@@ -29,6 +29,11 @@ jobs:
           s = s.replace('Vol.1(The First Confession), Vol.2(2nd Confession), Vol.3, SHOUT.', 'Vol.1(The First Confession), Vol.2(2nd Confession), Vol.3.')
           s = s.replace('나의 찬양 Vol.1 · Vol.2 · Vol.3 · SHOUT.', '나의 찬양 Vol.1 · Vol.2 · Vol.3.')
           s = s.replace('SHOUT · 나의 찬양', '나의 찬양')
+
+          # Korean Worship remains one canonical URL, but now offers a KO/EN switch.
+          lang_script = '<script src="js/worship-language.js?v=20260902" defer></script>'
+          if 'js/worship-language.js' not in s:
+              s = s.replace('<script src="js/main.js"></script>', lang_script + '\n<script src="js/main.js"></script>', 1)
           p.write_text(s, encoding='utf-8')
 
           # English Worship: preserve every existing lyric and inject the shared site shell.
@@ -81,6 +86,7 @@ jobs:
           grep -q "images/vol1.jpg" worship.html
           grep -q "images/vol2.png" worship.html
           grep -q "images/My hymn3.jpg" worship.html
+          grep -q "js/worship-language.js" worship.html
           grep -q "SHOUT" worship_eng.html
           grep -q "worship_eng" sitemap.xml
           grep -q 'id="site-nav"' worship_eng.html

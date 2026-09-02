@@ -1,0 +1,47 @@
+name: Update About timeline
+
+on:
+  push:
+    branches: [develop]
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: develop
+          fetch-depth: 1
+      - name: Update timeline
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          from pathlib import Path
+          p = Path('about.html')
+          s = p.read_text(encoding='utf-8')
+          old_ko = 'time8_desc: "지금까지의 창작물을 다시 정리하고 The Creative Archive를 전면 재개편했습니다.",'
+          new_ko = 'time8_desc: "Creative Archive를 전면 업데이트하고, SISTER SQUAD 1 영문판 제작 및 유통을 준비하고 있습니다. J-POP 음악 제작과 론칭도 준비하고 있습니다.",'
+          old_en = 'time8_desc: "I reorganized my creations and completely rebuilt The Creative Archive.",'
+          new_en = 'time8_desc: "I am fully updating the Creative Archive, preparing the English edition of SISTER SQUAD 1 for production and distribution, and preparing for J-POP music production and launch.",'
+          if old_ko not in s:
+              raise SystemExit('Korean time8_desc not found')
+          if old_en not in s:
+              raise SystemExit('English time8_desc not found')
+          s = s.replace(old_ko, new_ko, 1).replace(old_en, new_en, 1)
+          p.write_text(s, encoding='utf-8')
+          PY
+      - name: Commit and remove temporary workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add about.html
+          git rm .github/workflows/update-about-timeline.yml
+          git commit -m "Update About timeline for September 2026"
+          git push origin develop

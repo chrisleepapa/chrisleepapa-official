@@ -1,0 +1,42 @@
+name: Repair About Timeline
+
+on:
+  push:
+    branches: [develop]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    if: github.event.head_commit.message != 'Repair About timeline copy'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: develop
+          fetch-depth: 1
+
+      - name: Repair malformed timeline copy
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('about.html')
+          s = p.read_text(encoding='utf-8')
+          bad = '"I began producing music with AI in earnest."s ministry, I produced Worship Vol. 1.",'
+          good = '"I began producing music with AI in earnest.",'
+          if bad not in s:
+              raise SystemExit('Expected malformed timeline copy not found; aborting safely')
+          s = s.replace(bad, good, 1)
+          p.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Commit repair
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add about.html
+          git diff --cached --check
+          git commit -m "Repair About timeline copy"
+          git push origin HEAD:develop

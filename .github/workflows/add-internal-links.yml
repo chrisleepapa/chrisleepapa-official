@@ -30,47 +30,19 @@ jobs:
               p.write_text(s.replace(old, new, 1), encoding='utf-8')
               return True
 
-          # SISTER SQUAD 2 -> WORLD LORE / GAME
-          replace_once(
-              'sistersquad2.html',
-              '<!-- =========================================================\n             GET THE BOOK',
-              '''<section aria-label="Related Sister Squad content" style="max-width:900px;margin:70px auto 20px;text-align:center;">\n            <div style="border:1px solid rgba(111,215,255,.18);border-radius:18px;padding:26px 24px;background:rgba(10,10,18,.62);">\n                <div style="font-family:Cinzel,serif;color:#c9a84c;font-size:.72rem;letter-spacing:.22em;margin-bottom:16px;">EXPLORE SISTER SQUAD</div>\n                <p style="color:#a0a0b5;font-size:.88rem;line-height:1.8;margin:0 0 18px;">SISTER SQUAD 2의 이야기와 연결된 세계관과 게임을 더 만나보세요.</p>\n                <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;">\n                    <a href="/world-lore" style="display:inline-flex;align-items:center;padding:9px 16px;border:1px solid rgba(111,215,255,.35);border-radius:999px;color:#6fd7ff;font-size:.78rem;">WORLD LORE →</a>\n                    <a href="/gameinfo" style="display:inline-flex;align-items:center;padding:9px 16px;border:1px solid rgba(201,168,76,.35);border-radius:999px;color:#e8d08a;font-size:.78rem;">GAME →</a>\n                </div>\n            </div>\n        </section>\n\n<!-- =========================================================\n             GET THE BOOK'''
-          )
+          replace_once('sistersquad2.html','<!-- =========================================================\n             GET THE BOOK','''<section aria-label="Related Sister Squad content" style="max-width:900px;margin:70px auto 20px;text-align:center;">\n<div style="border:1px solid rgba(111,215,255,.18);border-radius:18px;padding:26px 24px;background:rgba(10,10,18,.62);">\n<div style="font-family:Cinzel,serif;color:#c9a84c;font-size:.72rem;letter-spacing:.22em;margin-bottom:16px;">EXPLORE SISTER SQUAD</div>\n<p style="color:#a0a0b5;font-size:.88rem;line-height:1.8;margin:0 0 18px;">SISTER SQUAD 2의 이야기와 연결된 세계관과 게임을 더 만나보세요.</p>\n<div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;">\n<a href="/world-lore" style="display:inline-flex;align-items:center;padding:9px 16px;border:1px solid rgba(111,215,255,.35);border-radius:999px;color:#6fd7ff;font-size:.78rem;">WORLD LORE →</a>\n<a href="/gameinfo" style="display:inline-flex;align-items:center;padding:9px 16px;border:1px solid rgba(201,168,76,.35);border-radius:999px;color:#e8d08a;font-size:.78rem;">GAME →</a>\n</div></div></section>\n\n<!-- =========================================================\n             GET THE BOOK''')
 
-          # WORLD LORE -> SISTER SQUAD 2 / GAME
-          replace_once(
-              'world-lore.html',
-              '<nav class="lore-nav"><a href="/sistersquad" data-i18n="lore_book1">SISTER SQUAD 1</a><a href="/sistersquad2" data-i18n="lore_book2">SISTER SQUAD 2</a>',
-              '<nav class="lore-nav"><a href="/sistersquad" data-i18n="lore_book1">SISTER SQUAD 1</a><a href="/sistersquad2" data-i18n="lore_book2">SISTER SQUAD 2</a><a href="/gameinfo">GAME</a>'
-          )
+          replace_once('world-lore.html','<nav class="lore-nav"><a href="/sistersquad" data-i18n="lore_book1">SISTER SQUAD 1</a><a href="/sistersquad2" data-i18n="lore_book2">SISTER SQUAD 2</a>','<nav class="lore-nav"><a href="/sistersquad" data-i18n="lore_book1">SISTER SQUAD 1</a><a href="/sistersquad2" data-i18n="lore_book2">SISTER SQUAD 2</a><a href="/gameinfo">GAME</a>')
 
-          # GAME CENTER -> SISTER SQUAD 2
-          replace_once(
-              'gameinfo.html',
-              '    </main>\n\n    <footer',
-              '''    <section aria-label="Related Sister Squad content" style="width:100%;max-width:860px;margin:40px auto 0;padding:0 20px;text-align:center;">\n        <a href="/sistersquad2" style="display:inline-flex;align-items:center;justify-content:center;padding:12px 20px;border:1px solid rgba(201,168,76,.28);border-radius:999px;color:#e8d08a;font-size:.8rem;letter-spacing:.08em;">SISTER SQUAD 2 STORY →</a>\n    </section>\n\n    </main>\n\n    <footer'''
-          )
+          replace_once('gameinfo.html','    <!-- ② 공용 footer placeholder — guestbook.js 가 이 앞에 방명록을 자동 삽입합니다 -->','''    <section aria-label="Related Sister Squad content" style="width:100%;max-width:860px;margin:40px auto 0;padding:0 20px;text-align:center;">\n        <a href="/sistersquad2" style="display:inline-flex;align-items:center;justify-content:center;padding:12px 20px;border:1px solid rgba(201,168,76,.28);border-radius:999px;color:#e8d08a;font-size:.8rem;letter-spacing:.08em;">SISTER SQUAD 2 STORY →</a>\n    </section>\n\n    <!-- ② 공용 footer placeholder — guestbook.js 가 이 앞에 방명록을 자동 삽입합니다 -->''')
 
-          # WORSHIP -> JOURNAL-6
-          replace_once(
-              'worship.html',
-              '<section class="final-note"><h3>WORSHIP ARCHIVE</h3>',
-              '''<section aria-label="Related journal" style="max-width:850px;margin:50px auto 0;padding:26px 24px;border:1px solid rgba(201,168,76,.14);border-radius:18px;background:rgba(10,10,18,.62);text-align:center;">\n  <h3 style="font-family:Cinzel,serif;color:var(--gold);font-size:.75rem;letter-spacing:.22em;margin:0 0 12px;">FROM THE JOURNAL</h3>\n  <p style="color:#aaa5ad;font-size:.88rem;line-height:1.9;margin:0 0 16px;">나의 찬양에 담긴 고백과 기도의 이야기도 함께 읽어보세요.</p>\n  <a href="/journal-6" style="display:inline-flex;align-items:center;padding:9px 16px;border:1px solid rgba(201,168,76,.3);border-radius:999px;color:var(--gold-light);font-size:.78rem;">JOURNAL-6 · 나의 찬양에서 드리는 기도 →</a>\n</section>\n<section class="final-note"><h3>WORSHIP ARCHIVE</h3>'''
-          )
+          replace_once('worship.html','<section class="final-note"><h3>WORSHIP ARCHIVE</h3>','''<section aria-label="Related journal" style="max-width:850px;margin:50px auto 0;padding:26px 24px;border:1px solid rgba(201,168,76,.14);border-radius:18px;background:rgba(10,10,18,.62);text-align:center;">\n  <h3 style="font-family:Cinzel,serif;color:var(--gold);font-size:.75rem;letter-spacing:.22em;margin:0 0 12px;">FROM THE JOURNAL</h3>\n  <p style="color:#aaa5ad;font-size:.88rem;line-height:1.9;margin:0 0 16px;">나의 찬양에 담긴 고백과 기도의 이야기도 함께 읽어보세요.</p>\n  <a href="/journal-6" style="display:inline-flex;align-items:center;padding:9px 16px;border:1px solid rgba(201,168,76,.3);border-radius:999px;color:var(--gold-light);font-size:.78rem;">JOURNAL-6 · 나의 찬양에서 드리는 기도 →</a>\n</section>\n<section class="final-note"><h3>WORSHIP ARCHIVE</h3>''')
 
-          # JOURNAL-6 -> WORSHIP
-          replace_once(
-              'journal-6.html',
-              '    <nav class="journal-nav" aria-label="Journal navigation">',
-              '''    <section aria-label="Related worship" style="margin:42px 0 32px;padding:26px 24px;border:1px solid rgba(201,168,76,.14);border-radius:18px;background:rgba(10,10,18,.62);text-align:center;">\n      <div style="font-family:Cinzel,serif;color:#c9a84c;font-size:.72rem;letter-spacing:.22em;margin-bottom:12px;">RELATED WORSHIP</div>\n      <p style="color:rgba(240,236,228,.72);font-size:.88rem;line-height:1.9;margin:0 0 16px;">이 기도가 시작된 곳, 나의 찬양 Worship Archive를 함께 만나보세요.</p>\n      <a href="/worship" style="display:inline-flex;align-items:center;padding:9px 16px;border:1px solid rgba(201,168,76,.3);border-radius:999px;color:#e8d08a;font-size:.78rem;">WORSHIP ARCHIVE →</a>\n    </section>\n    <nav class="journal-nav" aria-label="Journal navigation">'''
-          )
+          replace_once('journal-6.html','    <nav class="journal-nav" aria-label="Journal navigation">','''    <section aria-label="Related worship" style="margin:42px 0 32px;padding:26px 24px;border:1px solid rgba(201,168,76,.14);border-radius:18px;background:rgba(10,10,18,.62);text-align:center;">\n      <div style="font-family:Cinzel,serif;color:#c9a84c;font-size:.72rem;letter-spacing:.22em;margin-bottom:12px;">RELATED WORSHIP</div>\n      <p style="color:rgba(240,236,228,.72);font-size:.88rem;line-height:1.9;margin:0 0 16px;">이 기도가 시작된 곳, 나의 찬양 Worship Archive를 함께 만나보세요.</p>\n      <a href="/worship" style="display:inline-flex;align-items:center;padding:9px 16px;border:1px solid rgba(201,168,76,.3);border-radius:999px;color:#e8d08a;font-size:.78rem;">WORSHIP ARCHIVE →</a>\n    </section>\n    <nav class="journal-nav" aria-label="Journal navigation">''')
           PY
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add sistersquad2.html world-lore.html gameinfo.html worship.html journal-6.html
-          if git diff --cached --quiet; then
-            echo "No changes needed"
-            exit 0
-          fi
+          if git diff --cached --quiet; then exit 0; fi
           git commit -m "Strengthen internal content links"
           git push origin HEAD:develop

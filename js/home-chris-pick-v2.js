@@ -28,41 +28,6 @@
     {type:'WORSHIP',icon:'♩',title:'Shout',sub:'Worship · Praise',desc:{ko:'주님을 향한 외침과 찬양을 담은 Worship 작품입니다.',en:'A worship work of praise and a heartfelt shout toward God.'},image:'/images/vol3.jpg',href:'worship_eng.html',action:{ko:'English Worship 보기',en:'View English Worship'}}
   ];
 
-  async function discoverWorshipPicks(){
-    const discovered=[];
-    for(const page of ['worship.html','worship_eng.html']){
-      try{
-        const response=await fetch(page,{cache:'no-store'});
-        if(!response.ok)continue;
-        const html=await response.text();
-        const doc=new DOMParser().parseFromString(html,'text/html');
-        doc.querySelectorAll('.album-card').forEach(card=>{
-          const titleEl=card.querySelector('.album-title');
-          const title=titleEl?.textContent.trim();
-          if(!title)return;
-          const imageEl=card.querySelector('.album-cover');
-          const src=imageEl?.getAttribute('src');
-          const image=src?new URL(src,location.href).pathname+new URL(src,location.href).search:'';
-          const sub=card.querySelector('.album-badge')?.textContent.trim()||'Worship · Praise';
-          const description=card.querySelector('.album-desc')?.textContent.trim()||'Worship archive work by Chris LEE.PAPA.';
-          const isShout=/^shout$/i.test(title);
-          discovered.push({type:'WORSHIP',icon:'♩',title,sub,desc:{ko:description,en:description},image,href:isShout?'worship_eng.html':page,action:{ko:isShout?'English Worship 보기':'작품 보기',en:isShout?'View English Worship':'View Work'}});
-        });
-      }catch(error){console.warn('Worship discovery unavailable:',page,error);}
-    }
-    return discovered;
-  }
-
-  function mergeWorshipPicks(discovered){
-    const merged=[...PICKS];
-    const existing=new Set(merged.filter(p=>p.type==='WORSHIP').map(p=>p.title.trim().toLowerCase()));
-    for(const pick of discovered){
-      const key=pick.title.trim().toLowerCase();
-      if(!existing.has(key)){merged.push(pick);existing.add(key);}
-    }
-    return merged;
-  }
-
   const style=document.createElement('style');
   style.textContent=`#chris-pick{width:100%;box-sizing:border-box;padding:105px 20px 80px;background:radial-gradient(circle at 50% 35%,rgba(201,168,76,.08),transparent 38%),linear-gradient(180deg,#030305,#08080d);overflow:hidden}#chris-pick .clp-pick-content{width:100%;max-width:880px;margin:0 auto;box-sizing:border-box;text-align:center}.clp-pick-heading{margin:0;color:#f8f3e8;font:600 clamp(2.4rem,7vw,4.8rem)/1.05 'Cormorant Garamond',serif}.clp-pick-date{margin:12px 0 30px;color:rgba(240,236,228,.42);font:.72rem Pretendard,sans-serif;letter-spacing:.2em}.clp-pick-card{display:grid;grid-template-columns:300px minmax(0,1fr);width:100%;max-width:780px;margin:0 auto;overflow:hidden;border:1px solid rgba(201,168,76,.34);border-radius:24px;background:rgba(8,8,13,.88);box-shadow:0 30px 90px rgba(0,0,0,.6);text-align:left;box-sizing:border-box}.clp-pick-art{position:relative;min-height:300px;background:#111;overflow:hidden}.clp-pick-art img{display:block;width:100%;height:100%;object-fit:cover}.clp-pick-body{padding:34px;display:flex;flex-direction:column;justify-content:center;min-width:0}.clp-pick-type{color:#c9a84c;font:700 .65rem Cinzel,serif;letter-spacing:.22em;margin-bottom:14px}.clp-pick-title{margin:0;color:#fff;font:600 clamp(2rem,4vw,3rem)/1.1 'Cormorant Garamond',serif;overflow-wrap:break-word;word-break:keep-all}.clp-pick-sub{margin:10px 0 15px;color:#e8d08a;font:.72rem Pretendard,sans-serif}.clp-pick-desc{margin:0;color:rgba(240,236,228,.62);font:.9rem/1.75 Pretendard,sans-serif;word-break:keep-all}.clp-pick-actions{display:flex;gap:9px;margin-top:25px;flex-wrap:wrap}.clp-pick-main{display:inline-flex;align-items:center;justify-content:center;padding:11px 18px;border-radius:22px;min-width:125px;background:#c9a84c;color:#090909;font:700 .76rem Pretendard,sans-serif;text-align:center}.clp-pick-next{margin-top:18px;color:rgba(240,236,228,.34);font:.68rem/1.6 Pretendard,sans-serif}@media(max-width:700px){#chris-pick{padding:95px 15px 65px}.clp-pick-card{grid-template-columns:1fr}.clp-pick-art{min-height:235px;max-height:300px}.clp-pick-body{padding:25px 22px 24px}.clp-pick-heading{font-size:3rem}.clp-pick-actions{flex-direction:column}.clp-pick-main{width:100%;box-sizing:border-box}.clp-pick-desc{font-size:.88rem;line-height:1.8}}`;
   document.head.appendChild(style);
@@ -85,18 +50,19 @@
 
   function getTodayKey(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
   function getDailyPick(picks){let hash=2166136261;const key=getTodayKey();for(let i=0;i<key.length;i++){hash^=key.charCodeAt(i);hash=Math.imul(hash,16777619);}return picks[(hash>>>0)%picks.length];}
+
   async function render(){
     const target=document.getElementById('chris-pick');
     if(!target)return;
     const lang=window.getCurrentLang?window.getCurrentLang():'ko';
     const d=new Date();
     const date=`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
-    const discovered=await discoverWorshipPicks();
-    const eligiblePicks=mergeWorshipPicks(discovered);
-    const pick=getDailyPick(eligiblePicks);
+    const pick=getDailyPick(PICKS);
     const image=pick.spotifyAlbumId ? (await getSpotifyCover(pick.spotifyAlbumId) || pick.image || '/images/og_share.png') : (pick.image || '/images/og_share.png');
     target.innerHTML=`<div class="clp-pick-content"><h1 class="clp-pick-heading">Chris's Pick</h1><div class="clp-pick-date">${date} · ${lang==='ko'?'오늘의 선정 작품':'TODAY’S FEATURED WORK'}</div><div class="clp-pick-card"><div class="clp-pick-art"><img src="${image}" alt="${pick.title}" loading="eager" decoding="async"></div><div class="clp-pick-body"><div class="clp-pick-type">${pick.type}</div><h2 class="clp-pick-title">${pick.title}</h2><div class="clp-pick-sub">${pick.sub}</div><p class="clp-pick-desc">${pick.desc[lang]}</p><div class="clp-pick-actions"><a class="clp-pick-main" href="${pick.href}">${pick.action[lang]} →</a></div></div></div><div class="clp-pick-next">${lang==='ko'?'매일 전체 작품 중 하나를 자동으로 선정합니다.':'One work is automatically selected from the full featured collection each day.'}</div></div>`;
   }
-  const previous=window.onLangChange;window.onLangChange=function(lang){if(typeof previous==='function')previous(lang);render();};
+
+  const previous=window.onLangChange;
+  window.onLangChange=function(lang){if(typeof previous==='function')previous(lang);render();};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',render,{once:true});else render();
 })();

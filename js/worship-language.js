@@ -1,5 +1,6 @@
 /* Korean Worship bilingual language layer
    /worship remains the canonical Korean Worship URL.
+   Language selection is handled by the shared header KOR/ENG control.
    English mode uses Google Website Translator so all existing page copy and all 30 lyrics are translated without duplicating the lyric source. */
 (function(){
   'use strict';
@@ -18,39 +19,10 @@
   function clearCookie(name){
     document.cookie=name+'=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; SameSite=Lax';
   }
-  function setEnglish(){
-    try{localStorage.setItem('worship-lang','en');}catch(e){}
-    cookie('googtrans','/ko/en',30);
-    cookie('googtrans','/ko/en',30);
-    window.location.reload();
+  function saved(){
+    try{return localStorage.getItem('pref-lang')||'ko';}catch(e){return'ko';}
   }
-  function setKorean(){
-    try{localStorage.setItem('worship-lang','ko');}catch(e){}
-    clearCookie('googtrans');
-    window.location.reload();
-  }
-  function saved(){try{return localStorage.getItem('worship-lang')||'ko';}catch(e){return'ko';}}
 
-  function addStyles(){
-    if(document.getElementById('worship-language-style')) return;
-    var s=document.createElement('style');s.id='worship-language-style';
-    s.textContent='.worship-lang-switch{position:absolute;right:20px;top:22px;z-index:20;display:flex;gap:4px;padding:4px;border:1px solid rgba(201,168,76,.35);border-radius:999px;background:rgba(3,3,5,.78);backdrop-filter:blur(10px)}.worship-lang-switch button{appearance:none;border:0;background:transparent;color:#aaa5ad;padding:6px 11px;border-radius:999px;font:700 .7rem Pretendard,sans-serif;letter-spacing:.08em;cursor:pointer}.worship-lang-switch button.active{background:rgba(201,168,76,.2);color:#e8d08a}.worship-lang-switch button:focus-visible{outline:2px solid #e8d08a;outline-offset:2px}.goog-te-banner-frame,.skiptranslate iframe{display:none!important}body{top:0!important}.goog-te-gadget{display:none!important}@media(max-width:760px){.worship-lang-switch{right:12px;top:12px}.worship-lang-switch button{padding:5px 9px}}';
-    document.head.appendChild(s);
-  }
-  function addSwitch(){
-    addStyles();
-    if(document.getElementById('worship-lang-switch')) return;
-    var h=document.querySelector('.page-header'); if(!h) return;
-    var wrap=document.createElement('div');wrap.id='worship-lang-switch';wrap.className='worship-lang-switch';wrap.setAttribute('aria-label','Worship language');
-    wrap.innerHTML='<button type="button" data-lang="ko">KO</button><button type="button" data-lang="en">EN</button>';
-    wrap.querySelector('[data-lang="ko"]').addEventListener('click',setKorean);
-    wrap.querySelector('[data-lang="en"]').addEventListener('click',setEnglish);
-    h.appendChild(wrap);
-    mark();
-  }
-  function mark(){
-    var lang=saved();document.querySelectorAll('#worship-lang-switch button').forEach(function(b){b.classList.toggle('active',b.dataset.lang===lang);});
-  }
   function metadata(){
     var en=saved()==='en';
     document.documentElement.lang=en?'en':'ko';
@@ -59,11 +31,11 @@
     var ogt=document.querySelector('meta[property="og:title"]');if(ogt)ogt.setAttribute('content',en?EN_TITLE:KO_TITLE);
     var ogd=document.querySelector('meta[property="og:description"]');if(ogd)ogd.setAttribute('content',en?EN_DESC:KO_DESC);
   }
+
   function ensureGoogle(){
     window.googleTranslateElementInit=function(){
       if(!window.google||!google.translate||!google.translate.TranslateElement)return;
       try{new google.translate.TranslateElement({pageLanguage:'ko',includedLanguages:'en',autoDisplay:false,multilanguagePage:true},'google_translate_element');}catch(e){}
-      mark();
     };
     if(document.getElementById('google-translate-script')) return;
     var hidden=document.createElement('div');hidden.id='google_translate_element';hidden.setAttribute('aria-hidden','true');hidden.style.cssText='position:absolute;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none';
@@ -71,8 +43,19 @@
     var script=document.createElement('script');script.id='google-translate-script';script.src='https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';script.defer=true;document.body.appendChild(script);
   }
 
+  /* The shared header calls this after its KOR/ENG button changes pref-lang. */
+  window.onLangChange=function(lang){
+    if(lang==='en'){
+      cookie('googtrans','/ko/en',30);
+      window.location.reload();
+    }else{
+      clearCookie('googtrans');
+      window.location.reload();
+    }
+  };
+
   function boot(){
-    addSwitch();metadata();
+    metadata();
     if(saved()==='en' && !document.cookie.match(/(?:^|; )googtrans=\/ko\/en/)){
       cookie('googtrans','/ko/en',30);window.location.reload();return;
     }

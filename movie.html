@@ -6,6 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="images/favicon.png">
+
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3207219520058740" crossorigin="anonymous"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-NBGELYQ4TZ"></script>
     <script>
@@ -15,34 +16,446 @@
       gtag('config', 'G-NBGELYQ4TZ');
       gtag('config', 'GT-5MJDBTR2');
     </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="images/favicon.png" type="image/png">
-    <meta name="description" content="Chris LEE.PAPA의 AI 영상 창작 아카이브. FURIOUS, 사랑한다고, 귀멸의 칼날 촬영현장과 다양한 AI Shorts 작품을 소개합니다.">
-    <link rel="canonical" href="https://chrisleepapa-official.vercel.app/movie.html">
-    <title>Movie | Chris LEE.PAPA</title>
+
+    <meta name="description" content="Chris LEE.PAPA Movie Archive — AI 뮤직비디오 FURIOUS, 다큐 예고편, 사랑한다고 MV, 예수님의 이야기 등 YouTube 영상 아카이브. Suno AI·생성형 AI 비주얼로 제작한 오리지널 영상 콘텐츠.">
+    <meta property="og:title" content="MOVIE ARCHIVE — Chris LEE.PAPA">
+    <meta property="og:description" content="Chris LEE.PAPA Movie Archive — AI 뮤직비디오 FURIOUS, 다큐 예고편, 사랑한다고 MV, 예수님의 이야기 등 YouTube 영상 아카이브. Suno AI·생성형 AI 비주얼로 제작한 오리지널 영상 콘텐츠.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://chrisleepapa-official.vercel.app/movie">
+    <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1">
+    <meta property="og:locale" content="ko_KR">
+    <meta property="og:locale:alternate" content="en_US">
+    <meta property="og:site_name" content="Chris LEE.PAPA">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MOVIE ARCHIVE — Chris LEE.PAPA">
+    <meta name="twitter:description" content="Chris LEE.PAPA Movie Archive — AI 뮤직비디오 FURIOUS, 다큐 예고편, 사랑한다고 MV, 예수님의 이야기 등 YouTube 영상 아카이브. Suno AI·생성형 AI 비주얼로 제작한 오리지널 영상 콘텐츠.">
+    <meta name="twitter:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1">
+
+    <link rel="canonical" href="https://chrisleepapa-official.vercel.app/movie">
+
+    <title>MOVIE ARCHIVE — Chris LEE.PAPA</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Cormorant+Garamond:wght@600&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
+
     <link rel="stylesheet" href="css/common.css">
-    <link rel="stylesheet" href="css/movie.css">
+
+    <style>
+        /* ── movie.html 전용 스타일 ── */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --gold: #c9a84c; --gold-light: #e8d08a; --cyan: #4a90e2;
+            --bg: #030305; --text: #f0ece4; --text-dim: #9a9490;
+            --nav-height: 70px;
+        }
+        html { scroll-behavior: smooth; background-color: var(--bg); }
+        body {
+            background-color: var(--bg); color: var(--text);
+            font-family: 'Pretendard', 'Noto Serif KR', serif;
+            line-height: 1.6; overflow-x: hidden;
+            background-image:
+                radial-gradient(circle at top left, rgba(20, 20, 40, 0.8), transparent 60%),
+                radial-gradient(circle at bottom right, rgba(10, 10, 25, 0.9), transparent 60%);
+            -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
+        }
+        img { -webkit-user-drag: none; }
+        a { text-decoration: none; color: inherit; }
+        button { appearance: none; background: none; border: 0; padding: 0; font: inherit; color: inherit; }
+        body::before {
+            content: ''; position: fixed; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none; z-index: 900; opacity: 0.3;
+        }
+
+        /* ── 페이지 헤더 ── */
+        .page-header { position: relative; width: 100%; height: 350px; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; padding-top: var(--nav-height); }
+        #stars-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
+        .header-content { position: relative; z-index: 3; text-align: center; animation: fadeUp 1.2s ease both; }
+        .header-title { font-family: 'Cinzel', serif; font-size: clamp(2rem, 8vw, 3.5rem); font-weight: 700; letter-spacing: 0.15em; color: #ffffff; text-shadow: 0 0 20px rgba(255, 255, 255, 0.3); margin-bottom: 10px; }
+        .header-slogan { font-size: clamp(0.85rem, 2vw, 1rem); color: var(--text-dim); letter-spacing: 1px; }
+
+        /* ── 메인 씨어터 ── */
+        .theater-wrapper { max-width: 1100px; margin: 0 auto 40px; padding: 0 20px; animation: fadeUp 1s ease 0.2s both; position: relative; z-index: 10; }
+        .main-screen { position: relative; width: 100%; padding-bottom: 56.25%; background: #000; border-radius: 16px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.8); z-index: 10; }
+        .main-screen iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        .expand-landscape-btn {
+            position: absolute; top: 15px; right: 15px;
+            background: rgba(0, 0, 0, 0.7); color: #fff;
+            border: 1px solid rgba(255,255,255,0.4); padding: 8px 16px;
+            border-radius: 8px; font-size: 0.85rem; font-weight: 700;
+            cursor: pointer; z-index: 20; backdrop-filter: blur(5px);
+            transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            display: flex; align-items: center; gap: 6px;
+        }
+        .expand-landscape-btn:hover { background: var(--cyan); border-color: #fff; transform: scale(1.05); }
+        .screen-info {
+            margin-top: -20px; padding: 50px 40px 40px;
+            background: rgba(15, 15, 20, 0.4); border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 0 0 24px 24px; backdrop-filter: blur(20px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4); position: relative; z-index: 5;
+            display: flex; flex-direction: column; gap: 10px;
+        }
+        .video-badge { align-self: flex-start; padding: 6px 16px; background: rgba(74, 144, 226, 0.1); color: #4a90e2; border: 1px solid rgba(74, 144, 226, 0.3); border-radius: 20px; font-size: 0.85rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
+        .video-title { font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 700; color: #ffffff; line-height: 1.4; }
+        .video-desc { font-size: 1.05rem; color: #a0a0b5; font-weight: 300; line-height: 1.8; max-width: 850px; word-break: keep-all; }
+
+        /* ── 캐러셀 ── */
+        .carousel-section { max-width: 1100px; margin: 0 auto 80px; padding: 0 20px; position: relative; z-index: 10; }
+        .carousel-heading { font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--gold); margin-bottom: 20px; font-weight: 600; letter-spacing: 0.15em; border-bottom: 1px solid rgba(201,168,76,0.2); padding-bottom: 15px; }
+        .carousel-container { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 20px; scroll-snap-type: x mandatory; }
+        .carousel-container::-webkit-scrollbar { height: 4px; }
+        .carousel-container::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
+        .thumbnail-card { flex: 0 0 280px; scroll-snap-align: start; cursor: pointer; border-radius: 16px; overflow: hidden; position: relative; transition: all 0.3s ease; border: 2px solid transparent; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+        .thumbnail-card.active { border-color: #4a90e2; box-shadow: 0 0 25px rgba(74, 144, 226, 0.4); transform: scale(0.98); }
+        .thumb-img { width: 100%; height: 158px; background-size: cover; background-position: center; transition: 0.5s ease; }
+        .thumb-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0.1)); display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; opacity: 0.8; }
+        .thumb-title { color: #fff; font-size: 0.95rem; font-weight: 500; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; }
+
+        /* ── 쇼츠 ── */
+        .shorts-section { max-width: 1100px; margin: 0 auto 100px; padding: 50px 30px; background: rgba(255,255,255,0.01); border-radius: 24px; border: 1px solid rgba(255,255,255,0.03); backdrop-filter: blur(10px); position: relative; z-index: 10; }
+        .shorts-heading { font-family: 'Cinzel', serif; font-size: 1.4rem; letter-spacing: 2px; color: #e0e0ff; margin-bottom: 40px; text-align: center; font-weight: 700; }
+        .shorts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 25px; }
+        .shorts-link { position: relative; width: 100%; padding-bottom: 177.78%; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 30px rgba(0,0,0,0.6); transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease; border: 1px solid rgba(255,255,255,0.1); display: block; text-decoration: none; cursor: pointer; }
+        .shorts-link:hover { transform: translateY(-10px) scale(1.02); border-color: #dc2626; box-shadow: 0 20px 40px rgba(220, 38, 38, 0.4); }
+        .shorts-thumb { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.8); transition: transform 0.6s ease, filter 0.4s ease; display: block; }
+        .shorts-link:hover .shorts-thumb { filter: brightness(1.1); transform: scale(1.08); }
+        .shorts-play-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.2); transition: 0.3s; }
+        .shorts-play-overlay span { width: 50px; height: 50px; background: rgba(220, 38, 38, 0.85); backdrop-filter: blur(5px); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.2rem; border: none; transition: 0.3s; }
+        .shorts-link:hover .shorts-play-overlay span { transform: scale(1.2); background: #ff0000; box-shadow: 0 0 15px rgba(255, 0, 0, 0.6); }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 900px) {
+            .page-header { height: 250px; }
+            .screen-info { padding: 30px 20px; }
+            .shorts-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+            .shorts-section { padding: 40px 15px; }
+        }
+    </style>
+  <meta name="robots" content="index, follow">
 </head>
 <body>
-    <div id="site-header"></div>
-    <main class="movie-page">
-        <section class="page-hero">
-            <p class="eyebrow">MOVIE</p>
-            <h1>AI VIDEO ARCHIVE</h1>
-            <p class="hero-description">AI를 활용해 음악과 이야기, 상상 속 장면을 영상으로 구현하고 새로운 표현 방식을 실험해온 영상 창작 아카이브입니다.</p>
-        </section>
-        <section class="movie-intro"><div class="section-label">MAIN MOVIE</div><h2>Works</h2></section>
-        <section class="featured-work" aria-label="Featured movie works"><div class="theater-wrapper"><div class="main-screen" id="main-screen"></div><div class="screen-info" id="screen-info"></div></div></section>
-        <section class="work-descriptions" aria-label="Movie work descriptions">
-            <article class="work-description"><p class="section-label">FURIOUS</p><h2>FURIOUS</h2><h3>ABOUT THIS WORK</h3><p>FURIOUS는 강대국들의 전쟁과 갈등으로 병들어가는 세계의 모습을 바라보며 만든 뮤직비디오 작품입니다. 현대 사회에서는 국가와 집단 사이의 충돌이 반복되고 있으며, 그 과정에서 수많은 사람들이 목숨을 잃고 삶의 터전과 재산을 잃고 있습니다. 이 작품은 이러한 현실을 바라보며 느낀 분노와 안타까움을 음악과 영상으로 표현하고자 했습니다.</p><h3>CREATOR'S NOTE</h3><p>뉴스를 통해 접하는 전쟁의 장면을 넘어, 그 뒤에 존재하는 사람들의 삶과 상처를 생각하며 영상을 기획했습니다. 음악이 가진 감정의 힘과 AI 영상 기술을 결합해 전쟁이 남기는 두려움과 슬픔, 그리고 평화를 바라는 마음을 시각적으로 표현하고자 했습니다.</p></article>
-            <article class="work-description"><p class="section-label">사랑한다고</p><h2>사랑한다고</h2><h3>ABOUT THIS WORK</h3><p>사랑한다고는 소중한 가족, 친구, 연인을 먼저 떠나보낸 사람들이 느끼는 말로 다 표현할 수 없는 감정을 담아낸 노래의 뮤직비디오입니다. 사랑하는 사람과의 이별은 시간이 지나도 쉽게 사라지지 않는 기억과 그리움을 남깁니다. 이 작품은 그 깊은 슬픔 속에서도 여전히 마음속에 남아 있는 사랑과 추억을 영상으로 표현하고자 했습니다.</p><h3>CREATOR'S NOTE</h3><p>누군가를 잃은 경험과 그리움은 사람마다 다른 모습으로 남지만, 사랑했던 기억은 오래도록 마음속에 존재한다고 생각했습니다. 그래서 이 작품에서는 이별의 슬픔만을 보여주기보다, 떠난 사람에게 끝내 전하지 못했거나 계속 전하고 싶은 마음을 음악과 영상에 담아내고자 했습니다.</p></article>
-            <article class="work-description"><p class="section-label">귀멸의 칼날 촬영현장</p><h2>귀멸의 칼날 촬영현장</h2><h3>ABOUT THIS WORK</h3><p>귀멸의 칼날 촬영현장은 인기 일본 애니메이션 귀멸의 칼날에 등장하는 캐릭터들이 실제 영화나 드라마의 촬영 현장에 존재한다면 어떤 모습일지를 상상하며 제작한 AI 영상 작품입니다. 익숙한 애니메이션 캐릭터를 현실적인 촬영 공간과 결합해, 애니메이션과 실사의 경계를 넘나드는 새로운 장면을 만들어보았습니다.</p><h3>CREATOR'S NOTE</h3><p>AI 기술을 활용하면 현실에서는 존재하지 않는 상황도 구체적으로 상상하고 영상으로 구현할 수 있다는 점에 주목했습니다. 단순히 캐릭터를 실사화하는 데 그치지 않고, 실제 배우와 제작진이 촬영을 준비하고 장면을 만들어가는 현장의 분위기를 상상하며 표현했습니다. AI를 활용한 영상 창작의 가능성을 가볍게 실험해본 프로젝트이기도 합니다.</p></article>
-        </section>
-        <section class="carousel-section"><div class="section-label">MORE MOVIE WORKS</div><div class="carousel" id="movie-carousel"></div></section>
-        <section class="shorts-section"><div class="section-label">SHORTS</div><h2>AI SHORTS ARCHIVE</h2><div class="shorts-intro"><h3>ABOUT SHORTS</h3><p>AI를 활용하고 다양한 아이디어를 기획하며, 새로운 영상 표현 방식을 실험하고 적용해본 작품들입니다. 애니메이션 캐릭터의 실사 촬영현장부터 직접 만든 뮤직비디오, 일반적인 재미있는 영상까지 다양한 형태의 콘텐츠를 짧은 영상 형식으로 제작하여 YouTube, TikTok 등 여러 플랫폼에 선보였습니다.</p><h3>CREATOR'S NOTE</h3><p>Shorts는 짧은 시간 안에 새로운 아이디어를 시도하고 다양한 영상 표현 방식을 실험할 수 있는 창작 공간입니다. AI 기술과 상상력을 결합해 현실에서는 쉽게 만들기 어려운 장면을 구현하거나 음악과 영상의 새로운 조합을 시도하면서, 하나의 아이디어가 영상으로 발전하는 과정을 즐기고 있습니다.</p></div><div class="shorts-grid" id="shorts-grid"></div></section>
+
+    <!-- ★ 공통 헤더 -->
+    <div id="site-nav"></div>
+
+    <header class="page-header">
+        <canvas id="stars-canvas"></canvas>
+        <div class="header-content">
+            <h1 class="header-title" data-i18n="header_title">MOVIE ARCHIVE</h1>
+            <p class="header-slogan" data-i18n="header_slogan">프레임에 담긴 무한한 세계</p>
+        </div>
+    </header>
+
+    <main class="theater-wrapper">
+        <div class="main-screen" id="main-video-container">
+            <iframe id="main-video-player"
+                src="https://www.youtube.com/embed/kAkGg2t1Ats?autoplay=0&enablejsapi=1"
+                title="Main Video" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                allowfullscreen></iframe>
+            <button class="expand-landscape-btn" type="button" onclick="expandToLandscape()" data-i18n="expand_btn">⛶ 전체화면 (가로)</button>
+        </div>
+        <div class="screen-info">
+            <span class="video-badge" id="main-video-badge">FEATURED</span>
+            <h2 class="video-title" id="main-video-title">이게 AI 로 되네? 그냥 만들어본 뮤직비디오 'FURIOUS 💥'</h2>
+            <p class="video-desc" id="main-video-desc">직접 제작한 AI 기반 오리지널 뮤직비디오입니다. 역동적인 템포와 생성형 AI 비주얼이 결합된 강렬한 세계를 감상해 보세요.</p>
+        </div>
     </main>
+
+    <section class="carousel-section">
+        <h3 class="carousel-heading" data-i18n="carousel_heading">UP NEXT</h3>
+        <div class="carousel-container" id="carousel-list">
+            <div class="thumbnail-card active" onclick="loadMainVideo(0)">
+                <img class="thumb-img" src="https://img.youtube.com/vi/kAkGg2t1Ats/hqdefault.jpg" alt="이게 AI 로 되네? 그냥 만들어본 뮤직비디오 FURIOUS — AI 뮤직비디오" loading="lazy" style="width:100%;height:158px;object-fit:cover;display:block;">
+                <div class="thumb-overlay">
+                    <span class="thumb-title">이게 AI 로 되네? 그냥 만들어본 뮤직비디오 'FURIOUS 💥'</span>
+                </div>
+            </div>
+            <div class="thumbnail-card" onclick="loadMainVideo(1)">
+                <img class="thumb-img" src="https://img.youtube.com/vi/byxLKvBHULk/hqdefault.jpg" alt="역대급 출연진 귀멸의칼날 실사 촬영 현장 — AI 시네마틱 영상" loading="lazy" style="width:100%;height:158px;object-fit:cover;display:block;">
+                <div class="thumb-overlay">
+                    <span class="thumb-title">역대급 출연진 귀칼 실사 촬영 현장 #귀멸의칼날</span>
+                </div>
+            </div>
+            <div class="thumbnail-card" onclick="loadMainVideo(2)">
+                <img class="thumb-img" src="https://img.youtube.com/vi/vlt7VfCA8bM/hqdefault.jpg" alt="사랑한다고 뮤직비디오 — Chris LEE.PAPA" loading="lazy" style="width:100%;height:158px;object-fit:cover;display:block;">
+                <div class="thumb-overlay">
+                    <span class="thumb-title">사랑한다고 뮤직비디오</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="shorts-section">
+        <h3 class="shorts-heading" data-i18n="shorts_heading">VERTICAL ARCHIVES</h3>
+        <div class="shorts-grid">
+            <a href="https://www.youtube.com/shorts/gQ4Ip6cyr1U" target="_blank" rel="noopener" class="shorts-link" aria-label="AI 생성 영상 쇼츠 1 — Chris LEE.PAPA YouTube Shorts">
+                <img class="shorts-thumb" src="https://img.youtube.com/vi/gQ4Ip6cyr1U/maxresdefault.jpg" alt="AI 생성 영상 쇼츠 1 — Chris LEE.PAPA YouTube Shorts" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.8);">
+                <div class="shorts-play-overlay"><span>▶</span></div>
+            </a>
+            <a href="https://www.youtube.com/shorts/z-2LOBuWos8" target="_blank" rel="noopener" class="shorts-link" aria-label="AI 생성 영상 쇼츠 2 — Chris LEE.PAPA YouTube Shorts">
+                <img class="shorts-thumb" src="https://img.youtube.com/vi/z-2LOBuWos8/maxresdefault.jpg" alt="AI 생성 영상 쇼츠 2 — Chris LEE.PAPA YouTube Shorts" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.8);">
+                <div class="shorts-play-overlay"><span>▶</span></div>
+            </a>
+            <a href="https://www.youtube.com/shorts/pGibrT9Pp3I" target="_blank" rel="noopener" class="shorts-link" aria-label="AI 생성 영상 쇼츠 3 — Chris LEE.PAPA YouTube Shorts">
+                <img class="shorts-thumb" src="https://img.youtube.com/vi/pGibrT9Pp3I/maxresdefault.jpg" alt="AI 생성 영상 쇼츠 3 — Chris LEE.PAPA YouTube Shorts" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.8);">
+                <div class="shorts-play-overlay"><span>▶</span></div>
+            </a>
+            <a href="https://www.youtube.com/shorts/VXWdSOXGwKQ" target="_blank" rel="noopener" class="shorts-link" aria-label="AI 생성 영상 쇼츠 4 — Chris LEE.PAPA YouTube Shorts">
+                <img class="shorts-thumb" src="https://img.youtube.com/vi/VXWdSOXGwKQ/maxresdefault.jpg" alt="AI 생성 영상 쇼츠 4 — Chris LEE.PAPA YouTube Shorts" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.8);">
+                <div class="shorts-play-overlay"><span>▶</span></div>
+            </a>
+            <a href="https://www.youtube.com/shorts/XjSUJRduAzI" target="_blank" rel="noopener" class="shorts-link" aria-label="AI 생성 영상 쇼츠 5 — Chris LEE.PAPA YouTube Shorts">
+                <img class="shorts-thumb" src="https://img.youtube.com/vi/XjSUJRduAzI/maxresdefault.jpg" alt="AI 생성 영상 쇼츠 5 — Chris LEE.PAPA YouTube Shorts" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.8);">
+                <div class="shorts-play-overlay"><span>▶</span></div>
+            </a>
+            <a href="https://www.youtube.com/shorts/MYlAYewAdu4" target="_blank" rel="noopener" class="shorts-link" aria-label="AI 생성 영상 쇼츠 6 — Chris LEE.PAPA YouTube Shorts">
+                <img class="shorts-thumb" src="https://img.youtube.com/vi/MYlAYewAdu4/maxresdefault.jpg" alt="AI 생성 영상 쇼츠 6 — Chris LEE.PAPA YouTube Shorts" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.8);">
+                <div class="shorts-play-overlay"><span>▶</span></div>
+            </a>
+            <a href="https://www.youtube.com/shorts/0d-rUizVukQ" target="_blank" rel="noopener" class="shorts-link" aria-label="AI 생성 영상 쇼츠 7 — Chris LEE.PAPA YouTube Shorts">
+                <img class="shorts-thumb" src="https://img.youtube.com/vi/0d-rUizVukQ/maxresdefault.jpg" alt="AI 생성 영상 쇼츠 7 — Chris LEE.PAPA YouTube Shorts" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.8);">
+                <div class="shorts-play-overlay"><span>▶</span></div>
+            </a>
+            <a href="https://www.youtube.com/shorts/tgR1Kq3fGWE" target="_blank" rel="noopener" class="shorts-link" aria-label="AI 생성 영상 쇼츠 8 — Chris LEE.PAPA YouTube Shorts">
+                <img class="shorts-thumb" src="https://img.youtube.com/vi/tgR1Kq3fGWE/maxresdefault.jpg" alt="AI 생성 영상 쇼츠 8 — Chris LEE.PAPA YouTube Shorts" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.8);">
+                <div class="shorts-play-overlay"><span>▶</span></div>
+            </a>
+        </div>
+    </section>
+
+    <!-- ── SEO 영상 소개 블록 ── -->
+    <section style="max-width:960px; margin:0 auto 60px; padding:0 24px;">
+        <div style="border:1px solid rgba(201,168,76,0.15); border-radius:20px; padding:36px 40px; background:rgba(10,10,18,0.7);">
+            <h2 style="font-family:'Cinzel',serif; color:#c9a84c; font-size:1.05rem; letter-spacing:2px; margin-bottom:8px;">✦ &nbsp; MOVIE ARCHIVE</h2>
+            <p style="color:#888; font-size:0.82rem; letter-spacing:1px; margin-bottom:24px; font-family:'Cinzel',serif;">CHRIS LEE.PAPA · YOUTUBE CHANNEL</p>
+            <p style="color:#c8c4bc; font-size:0.93rem; line-height:1.9; margin-bottom:32px; word-break:keep-all; text-align:left;" class="i18n-ko">
+                <strong style="color:#e8d08a;">Chris LEE.PAPA</strong>의 영상 아카이브입니다. 생성형 AI 비주얼과 Suno AI 음악을 결합한 <strong style="color:#c9a84c;">오리지널 뮤직비디오</strong>, 신앙과 예술이 만나는 <strong style="color:#c9a84c;">시네마틱 단편 영상</strong>, YouTube 쇼츠까지 모든 영상을 이 페이지에서 감상할 수 있습니다.
+            </p>
+            <p style="color:#c8c4bc; font-size:0.93rem; line-height:1.9; margin-bottom:32px; word-break:keep-all; text-align:left;" class="i18n-en">
+                This is the video archive of <strong style="color:#e8d08a;">Chris LEE.PAPA</strong>. Watch everything here — <strong style="color:#c9a84c;">original music videos</strong> combining generative AI visuals with Suno AI music, <strong style="color:#c9a84c;">cinematic short films</strong> where faith meets art, and YouTube Shorts.
+            </p>
+
+            <h3 style="font-family:'Cinzel',serif; color:#c9a84c; font-size:0.85rem; letter-spacing:2px; margin-bottom:18px;">✦ &nbsp; VIDEO LIST</h3>
+            <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:32px;">
+                <a href="https://www.youtube.com/watch?v=kAkGg2t1Ats" target="_blank" rel="noopener"
+                   style="display:flex; align-items:center; gap:16px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.07); border-radius:12px; padding:14px 18px; text-decoration:none; transition:border-color 0.2s;"
+                   onmouseover="this.style.borderColor='rgba(201,168,76,0.3)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.07)'">
+                    <img src="https://img.youtube.com/vi/kAkGg2t1Ats/mqdefault.jpg" alt="FURIOUS Music Video" style="width:100px; height:56px; object-fit:cover; border-radius:8px; flex-shrink:0;">
+                    <div>
+                        <div style="color:#e8d08a; font-size:0.88rem; margin-bottom:4px;" class="i18n-ko">이게 AI 로 되네? 그냥 만들어본 뮤직비디오 'FURIOUS 💥'</div>
+                        <div style="color:#e8d08a; font-size:0.88rem; margin-bottom:4px;" class="i18n-en">Is this AI? Music Video 'FURIOUS 💥'</div>
+                        <div style="color:#666; font-size:0.78rem;" class="i18n-ko">AI 뮤직비디오 · FEATURED · YouTube</div>
+                        <div style="color:#666; font-size:0.78rem;" class="i18n-en">AI Music Video · FEATURED · YouTube</div>
+                    </div>
+                </a>
+                <a href="https://www.youtube.com/watch?v=byxLKvBHULk" target="_blank" rel="noopener"
+                   style="display:flex; align-items:center; gap:16px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.07); border-radius:12px; padding:14px 18px; text-decoration:none; transition:border-color 0.2s;"
+                   onmouseover="this.style.borderColor='rgba(201,168,76,0.3)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.07)'">
+                    <img src="https://img.youtube.com/vi/byxLKvBHULk/mqdefault.jpg" alt="Demon Slayer Live-Action Behind the Scenes" style="width:100px; height:56px; object-fit:cover; border-radius:8px; flex-shrink:0;">
+                    <div>
+                        <div style="color:#e8d08a; font-size:0.88rem; margin-bottom:4px;" class="i18n-ko">역대급 출연진 귀칼 실사 촬영 현장 #귀멸의칼날</div>
+                        <div style="color:#e8d08a; font-size:0.88rem; margin-bottom:4px;" class="i18n-en">Behind the Scenes of Demon Slayer Live-Action</div>
+                        <div style="color:#666; font-size:0.78rem;" class="i18n-ko">AI 실사 영상 · CINEMATIC · YouTube</div>
+                        <div style="color:#666; font-size:0.78rem;" class="i18n-en">AI Live-Action Video · CINEMATIC · YouTube</div>
+                    </div>
+                </a>
+                <a href="https://www.youtube.com/watch?v=vlt7VfCA8bM" target="_blank" rel="noopener"
+                   style="display:flex; align-items:center; gap:16px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.07); border-radius:12px; padding:14px 18px; text-decoration:none; transition:border-color 0.2s;"
+                   onmouseover="this.style.borderColor='rgba(201,168,76,0.3)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.07)'">
+                    <img src="https://img.youtube.com/vi/vlt7VfCA8bM/mqdefault.jpg" alt="Love Song Music Video" style="width:100px; height:56px; object-fit:cover; border-radius:8px; flex-shrink:0;">
+                    <div>
+                        <div style="color:#e8d08a; font-size:0.88rem; margin-bottom:4px;" class="i18n-ko">사랑한다고 뮤직비디오</div>
+                        <div style="color:#e8d08a; font-size:0.88rem; margin-bottom:4px;" class="i18n-en">Love Song Music Video</div>
+                        <div style="color:#666; font-size:0.78rem;" class="i18n-ko">뮤직비디오 · CINEMATIC · YouTube</div>
+                        <div style="color:#666; font-size:0.78rem;" class="i18n-en">Music Video · CINEMATIC · YouTube</div>
+                    </div>
+                </a>
+            </div>
+
+            <div style="background:rgba(201,168,76,0.05); border-radius:14px; padding:24px 28px;">
+                <h3 style="font-family:'Cinzel',serif; color:#c9a84c; font-size:0.85rem; letter-spacing:2px; margin-bottom:14px;">✦ &nbsp; HOW IT'S MADE</h3>
+                <p style="color:#a0a0b5; font-size:0.88rem; line-height:1.9; word-break:keep-all; text-align:left;" class="i18n-ko">
+                    Chris LEE.PAPA의 모든 영상은 <strong style="color:#e8d08a;">생성형 AI 비주얼</strong>과 <strong style="color:#e8d08a;">Suno AI 음악</strong>을 결합해 제작됩니다. 스토리보드 기획부터 AI 이미지 생성, 영상 편집, 음악 믹싱까지 Chris LEE.PAPA가 단독으로 프로듀싱하는 완전한 독립 창작물입니다. 신앙, 판타지, 스포츠, 감성 등 다양한 장르를 넘나들며 AI라는 새로운 언어로 이야기를 전합니다. 모든 영상은 <strong style="color:#c9a84c;">YouTube 채널 @chrisleepapaofficial</strong>에서 무료로 감상할 수 있습니다.
+                </p>
+                <p style="color:#a0a0b5; font-size:0.88rem; line-height:1.9; word-break:keep-all; text-align:left;" class="i18n-en">
+                    Every video by Chris LEE.PAPA is made by combining <strong style="color:#e8d08a;">generative AI visuals</strong> with <strong style="color:#e8d08a;">Suno AI music</strong>. From storyboarding to AI image generation, video editing, and music mixing, each piece is a fully independent creation produced solo by Chris LEE.PAPA. Spanning genres from faith and fantasy to sports and emotion, these stories are told through the new language of AI. All videos can be watched for free on the <strong style="color:#c9a84c;">YouTube channel @chrisleepapaofficial</strong>.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ★ 공통 푸터 — guestbook.js 가 이 앞에 공통 방명록을 자동 삽입합니다 -->
     <div id="site-footer"></div>
-    <script src="js/main.js" defer></script><script src="js/movie.js" defer></script>
+
+    <!-- ★ 페이지 전용 i18n -->
+    <script>
+        window.PAGE_I18N = {
+            ko: {
+                meta_description: 'Chris LEE.PAPA Movie Archive — AI 뮤직비디오 FURIOUS, 다큐 예고편, 사랑한다고 MV, 예수님의 이야기 등 YouTube 영상 아카이브. Suno AI·생성형 AI 비주얼로 제작한 오리지널 영상 콘텐츠.',
+                og_description: 'AI 뮤직비디오·단편 영화·쇼츠까지. Chris LEE.PAPA의 생성형 AI 영상 아카이브를 YouTube에서 감상하세요.',
+                twitter_description: '프레임에 담긴 무한한 세계, 크리스리의 영상 아카이브를 감상해보세요.',
+                share_desc:       '크리스리의 시네마틱 세계관을 소중한 사람들과 나누세요.',
+                header_title:     'MOVIE ARCHIVE',
+                header_slogan:    '프레임에 담긴 무한한 세계',
+                expand_btn:       '⛶ 전체화면 (가로)',
+                carousel_heading: 'UP NEXT',
+                shorts_heading:   'VERTICAL ARCHIVES'
+            },
+            en: {
+                meta_description: "Chris LEE.PAPA Movie Archive — AI music video FURIOUS, documentary trailer, Love Song MV, the story of Jesus, and more on YouTube. Original video content produced with Suno AI and generative AI visuals.",
+                og_description: "From AI music videos to short films and shorts. Watch Chris LEE.PAPA's generative AI video archive on YouTube.",
+                twitter_description: "An infinite world captured in a frame — explore Chris Lee's video archive.",
+                share_desc:       "Share Chris Lee's cinematic universe with your loved ones.",
+                header_title:     'MOVIE ARCHIVE',
+                header_slogan:    'An infinite world captured in a frame',
+                expand_btn:       '⛶ Fullscreen (Landscape)',
+                carousel_heading: 'UP NEXT',
+                shorts_heading:   'VERTICAL ARCHIVES'
+            }
+        };
+
+        window.onLangChange = function(lang) {
+            updateMainVideoInfo();
+            renderCarousel();
+        };
+
+        window.onMainReady = function() {
+            /* 별 캔버스 */
+            const canvas = document.getElementById('stars-canvas');
+            const ctx = canvas ? canvas.getContext('2d') : null;
+            let stars = [];
+            function resize() {
+                if (!canvas) return;
+                canvas.width = window.innerWidth;
+                canvas.height = 350;
+                initStars();
+            }
+            function initStars() {
+                if (!canvas) return;
+                stars = [];
+                const count = (canvas.width * canvas.height) / 6000;
+                for (let i = 0; i < count; i++) {
+                    stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 1.5 + 0.2, opacity: Math.random(), speed: Math.random() * 0.02 + 0.005 });
+                }
+            }
+            function draw() {
+                if (!canvas || !ctx) return;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                stars.forEach(s => {
+                    s.opacity += s.speed;
+                    if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed;
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0, s.opacity)})`;
+                    ctx.fill();
+                });
+                requestAnimationFrame(draw);
+            }
+            window.addEventListener('resize', resize);
+            resize();
+            draw();
+
+            updateMainVideoInfo();
+            renderCarousel();
+        };
+
+        /* ── 영상 데이터 ── */
+        const videoData = [
+            {
+                id: 'kAkGg2t1Ats',
+                title_ko: "이게 AI 로 되네? 그냥 만들어본 뮤직비디오 'FURIOUS 💥'",
+                title_en: "Is this AI? Music Video 'FURIOUS 💥'",
+                badge_ko: 'FEATURED', badge_en: 'FEATURED',
+                desc_ko: '직접 제작한 AI 기반 오리지널 뮤직비디오입니다. 역동적인 템포와 생성형 AI 비주얼이 결합된 강렬한 세계를 감상해 보세요.',
+                desc_en: 'An original AI-based music video. Enjoy a powerful world where dynamic tempo meets generative AI visuals.'
+            },
+            {
+                id: 'byxLKvBHULk',
+                title_ko: '역대급 출연진 귀칼 실사 촬영 현장 #귀멸의칼날',
+                title_en: 'Behind the Scenes of Demon Slayer Live-Action',
+                badge_ko: 'CINEMATIC', badge_en: 'CINEMATIC',
+                desc_ko: '끝없는 상상력을 바탕으로 렌더링된 실사 아트워크 영상입니다.',
+                desc_en: 'Ultra-high-definition cinematic artwork rendered with endless imagination.'
+            },
+            {
+                id: 'vlt7VfCA8bM',
+                title_ko: '사랑한다고 뮤직비디오',
+                title_en: 'Love Song Music Video',
+                badge_ko: 'CINEMATIC', badge_en: 'CINEMATIC',
+                desc_ko: '아름다운 사랑과 이별의 노래에 대한 뮤직비디오',
+                desc_en: 'A music video about a beautiful song of love and farewell.'
+            }
+        ];
+
+        let activeVideoIndex = 0;
+
+        function expandToLandscape() {
+            const iframe = document.getElementById('main-video-player');
+            if (!iframe) return;
+            if (iframe.requestFullscreen) iframe.requestFullscreen().then(lockLandscape);
+            else if (iframe.webkitRequestFullscreen) { iframe.webkitRequestFullscreen(); lockLandscape(); }
+        }
+        function lockLandscape() {
+            if (window.screen && screen.orientation && screen.orientation.lock) {
+                screen.orientation.lock('landscape').catch(() => {});
+            }
+        }
+
+        function updateMainVideoInfo() {
+            const lang = (typeof window.getCurrentLang === 'function') ? window.getCurrentLang() : 'ko';
+            const v = videoData[activeVideoIndex];
+            if (!v) return;
+            const mainTitle = document.getElementById('main-video-title');
+            const mainBadge = document.getElementById('main-video-badge');
+            const mainDesc  = document.getElementById('main-video-desc');
+            if (mainTitle) mainTitle.textContent = v[`title_${lang}`];
+            if (mainBadge) mainBadge.textContent = v[`badge_${lang}`];
+            if (mainDesc)  mainDesc.textContent  = v[`desc_${lang}`];
+        }
+
+        function renderCarousel() {
+            const lang = (typeof window.getCurrentLang === 'function') ? window.getCurrentLang() : 'ko';
+            // HTML에 직접 렌더링된 카드의 active 클래스 및 언어별 텍스트 업데이트 (SEO용 HTML 구조 유지)
+            const cards = document.querySelectorAll('#carousel-list .thumbnail-card');
+            cards.forEach((card, i) => {
+                card.classList.toggle('active', i === activeVideoIndex);
+                const v = videoData[i];
+                if (!v) return;
+                const titleEl = card.querySelector('.thumb-title');
+                if (titleEl) titleEl.textContent = v[`title_${lang}`];
+                const img = card.querySelector('.thumb-img');
+                if (img) img.alt = `${v[`title_${lang}`]} — ${v[`badge_${lang}`]}`;
+            });
+        }
+
+        function loadMainVideo(i) {
+            activeVideoIndex = i;
+            const v = videoData[i];
+            const mainPlayer = document.getElementById('main-video-player');
+            if (mainPlayer && mainPlayer.src.indexOf(v.id) === -1) {
+                mainPlayer.src = `https://www.youtube.com/embed/${v.id}?autoplay=1&enablejsapi=1`;
+            }
+            updateMainVideoInfo();
+            renderCarousel();
+            const tw = document.querySelector('.theater-wrapper');
+            if (tw) window.scrollTo({ top: tw.offsetTop - 120, behavior: 'smooth' });
+        }
+
+        function safeNavigate(url) { if (url && url.trim() !== '') window.location.assign(url); }
+    </script>
+
+    <!-- ★ 공통 스크립트 & 공통 방명록 -->
+    <script src="js/main.js"></script>
+    <script src="js/guestbook.js"></script>
+
 </body>
 </html>

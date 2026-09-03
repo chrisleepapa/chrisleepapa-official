@@ -18,82 +18,84 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="images/favicon.png" type="image/png">
-    <meta name="description" content="Chris LEE.PAPA Movie Archive — FURIOUS, 사랑한다고, 귀멸의 칼날 촬영현장 등 AI를 활용해 기획하고 제작한 오리지널 영상 작품과 YouTube Shorts 아카이브.">
-    <meta property="og:title" content="MOVIE ARCHIVE — Chris LEE.PAPA">
-    <meta property="og:description" content="FURIOUS, 사랑한다고, 귀멸의 칼날 촬영현장 등 AI를 활용해 기획하고 제작한 오리지널 영상 작품과 YouTube Shorts 아카이브.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://chrisleepapa-official.vercel.app/movie">
-    <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1">
-    <meta property="og:locale" content="ko_KR">
-    <meta property="og:locale:alternate" content="en_US">
-    <meta property="og:site_name" content="Chris LEE.PAPA">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="MOVIE ARCHIVE — Chris LEE.PAPA">
-    <meta name="twitter:description" content="FURIOUS, 사랑한다고, 귀멸의 칼날 촬영현장 등 AI를 활용해 기획하고 제작한 오리지널 영상 작품과 YouTube Shorts 아카이브.">
-    <meta name="twitter:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1">
-    <link rel="canonical" href="https://chrisleepapa-official.vercel.app/movie">
-    <meta name="robots" content="index, follow">
-    <title>MOVIE ARCHIVE — Chris LEE.PAPA</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Cormorant+Garamond:wght@600&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css">
+    <meta name="description" content="Chris LEE.PAPA의 AI 영상 창작 아카이브. FURIOUS, 사랑한다고, 귀멸의 칼날 촬영현장과 다양한 AI Shorts 작품을 소개합니다.">
+    <link rel="canonical" href="https://chrisleepapa-official.vercel.app/movie.html">
+    <title>Movie | Chris LEE.PAPA</title>
     <link rel="stylesheet" href="css/common.css">
-    <style>
-      *{margin:0;padding:0;box-sizing:border-box} :root{--gold:#c9a84c;--gold-light:#e8d08a;--cyan:#4a90e2;--bg:#030305;--text:#f0ece4;--text-dim:#9a9490;--nav-height:70px}
-      html{scroll-behavior:smooth;background:var(--bg)} body{background:var(--bg);color:var(--text);font-family:Pretendard,'Noto Serif KR',serif;line-height:1.6;overflow-x:hidden;background-image:radial-gradient(circle at top left,rgba(20,20,40,.8),transparent 60%),radial-gradient(circle at bottom right,rgba(10,10,25,.9),transparent 60%)}
-      body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:900;opacity:.3;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E")}
-      a{text-decoration:none;color:inherit}.page-header{position:relative;width:100%;height:350px;display:flex;align-items:center;justify-content:center;overflow:hidden;padding-top:var(--nav-height)}#stars-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:1}.header-content{position:relative;z-index:3;text-align:center;animation:fadeUp 1.2s ease both}.header-title{font-family:Cinzel,serif;font-size:clamp(2rem,8vw,3.5rem);letter-spacing:.15em;color:#fff;margin-bottom:10px}.header-slogan{font-size:clamp(.85rem,2vw,1rem);color:var(--text-dim);letter-spacing:1px}
-      .theater-wrapper{max-width:1100px;margin:0 auto 40px;padding:0 20px;animation:fadeUp 1s ease .2s both;position:relative;z-index:10}.main-screen{position:relative;width:100%;padding-bottom:56.25%;background:#000;border-radius:16px;overflow:hidden;box-shadow:0 30px 60px rgba(0,0,0,.8)}.main-screen iframe{position:absolute;inset:0;width:100%;height:100%;border:0}.expand-landscape-btn{position:absolute;top:15px;right:15px;background:rgba(0,0,0,.7);color:#fff;border:1px solid rgba(255,255,255,.4);padding:8px 16px;border-radius:8px;font-size:.85rem;font-weight:700;cursor:pointer;z-index:20}.screen-info{margin-top:-20px;padding:50px 40px 40px;background:rgba(15,15,20,.4);border:1px solid rgba(255,255,255,.08);border-radius:0 0 24px 24px;backdrop-filter:blur(20px);display:flex;flex-direction:column;gap:10px}.video-badge{align-self:flex-start;padding:6px 16px;background:rgba(74,144,226,.1);color:#4a90e2;border:1px solid rgba(74,144,226,.3);border-radius:20px;font-size:.85rem;font-weight:700;letter-spacing:1.5px}.video-title{font-size:clamp(1.4rem,4vw,2rem);color:#fff}.video-desc{font-size:1.05rem;color:#a0a0b5;font-weight:300;line-height:1.8;max-width:900px;word-break:keep-all}
-      .carousel-section{max-width:1100px;margin:0 auto 70px;padding:0 20px;position:relative;z-index:10}.carousel-heading,.shorts-heading,.works-heading{font-family:Cinzel,serif;color:var(--gold);letter-spacing:.15em}.carousel-heading{font-size:1.2rem;margin-bottom:20px;border-bottom:1px solid rgba(201,168,76,.2);padding-bottom:15px}.carousel-container{display:flex;gap:20px;overflow-x:auto;padding-bottom:20px;scroll-snap-type:x mandatory}.thumbnail-card{flex:0 0 280px;scroll-snap-align:start;cursor:pointer;border-radius:16px;overflow:hidden;position:relative;border:2px solid transparent;box-shadow:0 10px 20px rgba(0,0,0,.5)}.thumbnail-card.active{border-color:#4a90e2}.thumb-img{width:100%;height:158px;object-fit:cover;display:block}.thumb-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.95),rgba(0,0,0,.1));display:flex;align-items:flex-end;padding:20px}.thumb-title{color:#fff;font-size:.95rem;line-height:1.4}
-      .works-section{max-width:1000px;margin:0 auto 80px;padding:0 24px}.works-intro{background:rgba(10,10,18,.72);border:1px solid rgba(201,168,76,.15);border-radius:20px;padding:36px 40px}.works-heading{font-size:1.05rem;margin-bottom:18px}.works-intro p{color:#c8c4bc;font-size:.95rem;line-height:1.9;word-break:keep-all}.work-list{display:grid;gap:18px;margin-top:26px}.work-item{padding:24px 26px;border-radius:16px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07)}.work-item h3{color:#e8d08a;font-size:1.05rem;margin-bottom:10px}.work-item p{color:#aaa6a0;font-size:.92rem;line-height:1.9;word-break:keep-all}.work-link{display:inline-block;margin-top:14px;color:#777;font-size:.8rem}
-      .shorts-section{max-width:1100px;margin:0 auto 100px;padding:50px 30px;background:rgba(255,255,255,.01);border-radius:24px;border:1px solid rgba(255,255,255,.03);position:relative;z-index:10}.shorts-heading{text-align:center;font-size:1.4rem;margin-bottom:16px}.shorts-description{max-width:850px;margin:0 auto 40px;text-align:center;color:#aaa6a0;font-size:.92rem;line-height:1.9;word-break:keep-all}.shorts-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:25px}.shorts-link{position:relative;width:100%;padding-bottom:177.78%;border-radius:12px;overflow:hidden;box-shadow:0 15px 30px rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.1);display:block}.shorts-thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.8)}.shorts-play-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.2)}.shorts-play-overlay span{width:50px;height:50px;background:rgba(220,38,38,.85);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.2rem}
-      @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}} @media(max-width:900px){.page-header{height:250px}.screen-info{padding:30px 20px}.shorts-grid{grid-template-columns:repeat(2,1fr);gap:15px}.shorts-section{padding:40px 15px}.works-intro{padding:28px 22px}}
-    </style>
+    <link rel="stylesheet" href="css/movie.css">
 </head>
 <body>
-<div id="site-nav"></div>
-<header class="page-header"><canvas id="stars-canvas"></canvas><div class="header-content"><h1 class="header-title" data-i18n="header_title">MOVIE ARCHIVE</h1><p class="header-slogan" data-i18n="header_slogan">프레임에 담긴 무한한 세계</p></div></header>
-<main class="theater-wrapper">
-  <div class="main-screen" id="main-video-container"><iframe id="main-video-player" src="https://www.youtube.com/embed/kAkGg2t1Ats?autoplay=0&enablejsapi=1" title="FURIOUS Music Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe><button class="expand-landscape-btn" type="button" onclick="expandToLandscape()" data-i18n="expand_btn">⛶ 전체화면 (가로)</button></div>
-  <div class="screen-info"><span class="video-badge" id="main-video-badge">FEATURED</span><h2 class="video-title" id="main-video-title">FURIOUS</h2><p class="video-desc" id="main-video-desc">강대국들의 전쟁과 싸움으로 세계가 병들어가고 심각한 인명, 재산 피해가 급증하는 현실을 바라보는 노래의 뮤직비디오입니다.</p></div>
-</main>
-<section class="carousel-section"><h3 class="carousel-heading" data-i18n="carousel_heading">UP NEXT</h3><div class="carousel-container" id="carousel-list">
-  <div class="thumbnail-card active" onclick="loadMainVideo(0)"><img class="thumb-img" src="https://img.youtube.com/vi/kAkGg2t1Ats/hqdefault.jpg" alt="FURIOUS" loading="lazy"><div class="thumb-overlay"><span class="thumb-title">FURIOUS</span></div></div>
-  <div class="thumbnail-card" onclick="loadMainVideo(1)"><img class="thumb-img" src="https://img.youtube.com/vi/byxLKvBHULk/hqdefault.jpg" alt="귀멸의 칼날 촬영현장" loading="lazy"><div class="thumb-overlay"><span class="thumb-title">귀멸의 칼날 촬영현장</span></div></div>
-  <div class="thumbnail-card" onclick="loadMainVideo(2)"><img class="thumb-img" src="https://img.youtube.com/vi/vlt7VfCA8bM/hqdefault.jpg" alt="사랑한다고" loading="lazy"><div class="thumb-overlay"><span class="thumb-title">사랑한다고</span></div></div>
-</div></section>
-<section class="works-section"><div class="works-intro"><h2 class="works-heading">✦ &nbsp; MOVIE WORKS</h2><p class="i18n-ko">Chris LEE.PAPA가 AI를 활용해 기획하고 제작한 영상 작품들입니다. 각 작품은 음악과 영상, 이미지 생성 기술을 결합해 하나의 아이디어를 영상으로 표현한 창작물입니다.</p><p class="i18n-en">Original video works planned and produced by Chris LEE.PAPA using AI. Each piece combines music, video, and generative imagery to turn an idea into a visual work.</p><div class="work-list">
-  <article class="work-item"><h3>FURIOUS</h3><p class="i18n-ko">강대국들의 전쟁과 싸움으로 세계가 병들어가고 심각한 인명, 재산 피해가 급증하는 현실을 바라보는 노래의 뮤직비디오입니다.</p><p class="i18n-en">A music video for a song looking at a world becoming sickened by wars and conflicts between powerful nations, where severe loss of life and property damage continue to increase.</p><a class="work-link" href="https://www.youtube.com/watch?v=kAkGg2t1Ats" target="_blank" rel="noopener">YouTube</a></article>
-  <article class="work-item"><h3>사랑한다고</h3><p class="i18n-ko">소중한 가족, 친구, 연인을 먼저 떠나보낸 이들의 말로 다 할 수 없는 감정을 표현하고자 했던 노래의 뮤직비디오입니다.</p><p class="i18n-en">A music video for a song created to express the feelings that cannot be fully put into words by those who have lost a beloved family member, friend, or partner.</p><a class="work-link" href="https://www.youtube.com/watch?v=vlt7VfCA8bM" target="_blank" rel="noopener">YouTube</a></article>
-  <article class="work-item"><h3>귀멸의 칼날 촬영현장</h3><p class="i18n-ko">인기 일본 애니메이션 귀멸의 칼날 등장인물들의 실사 촬영현장 영상을 AI로 만들어본 작품입니다.</p><p class="i18n-en">An AI-created work imagining a live-action filming set featuring characters from the popular Japanese anime Demon Slayer.</p><a class="work-link" href="https://www.youtube.com/watch?v=byxLKvBHULk" target="_blank" rel="noopener">YouTube</a></article>
-</div></div></section>
-<section class="shorts-section"><h2 class="shorts-heading">VERTICAL ARCHIVES</h2><p class="shorts-description i18n-ko">AI를 활용하고 다양한 아이디어를 기획하며 새로운 영상 표현 방식을 실험하고 적용해본 작품들입니다. 애니메이션 캐릭터의 실사 촬영현장부터 직접 만든 뮤직비디오, 일반적인 재미있는 영상까지 다양한 형태의 콘텐츠를 YouTube Shorts 등의 짧은 영상 형식으로 제작하여 YouTube, TikTok 등 여러 플랫폼에 선보였습니다.</p><p class="shorts-description i18n-en">These are works created by using AI to plan and experiment with diverse ideas and new ways of visual expression. They include imagined live-action sets for animated characters, music videos I created, and simply entertaining videos, produced in short-form formats such as YouTube Shorts and shared across platforms including YouTube and TikTok.</p><div class="shorts-grid">
-  <a href="https://www.youtube.com/shorts/gQ4Ip6cyr1U" target="_blank" rel="noopener" class="shorts-link"><img class="shorts-thumb" src="https://img.youtube.com/vi/gQ4Ip6cyr1U/maxresdefault.jpg" alt="YouTube Shorts 1" loading="lazy"><div class="shorts-play-overlay"><span>▶</span></div></a>
-  <a href="https://www.youtube.com/shorts/z-2LOBuWos8" target="_blank" rel="noopener" class="shorts-link"><img class="shorts-thumb" src="https://img.youtube.com/vi/z-2LOBuWos8/maxresdefault.jpg" alt="YouTube Shorts 2" loading="lazy"><div class="shorts-play-overlay"><span>▶</span></div></a>
-  <a href="https://www.youtube.com/shorts/pGibrT9Pp3I" target="_blank" rel="noopener" class="shorts-link"><img class="shorts-thumb" src="https://img.youtube.com/vi/pGibrT9Pp3I/maxresdefault.jpg" alt="YouTube Shorts 3" loading="lazy"><div class="shorts-play-overlay"><span>▶</span></div></a>
-  <a href="https://www.youtube.com/shorts/VXWdSOXGwKQ" target="_blank" rel="noopener" class="shorts-link"><img class="shorts-thumb" src="https://img.youtube.com/vi/VXWdSOXGwKQ/maxresdefault.jpg" alt="YouTube Shorts 4" loading="lazy"><div class="shorts-play-overlay"><span>▶</span></div></a>
-  <a href="https://www.youtube.com/shorts/XjSUJRduAzI" target="_blank" rel="noopener" class="shorts-link"><img class="shorts-thumb" src="https://img.youtube.com/vi/XjSUJRduAzI/maxresdefault.jpg" alt="YouTube Shorts 5" loading="lazy"><div class="shorts-play-overlay"><span>▶</span></div></a>
-  <a href="https://www.youtube.com/shorts/MYlAYewAdu4" target="_blank" rel="noopener" class="shorts-link"><img class="shorts-thumb" src="https://img.youtube.com/vi/MYlAYewAdu4/maxresdefault.jpg" alt="YouTube Shorts 6" loading="lazy"><div class="shorts-play-overlay"><span>▶</span></div></a>
-  <a href="https://www.youtube.com/shorts/0d-rUizVukQ" target="_blank" rel="noopener" class="shorts-link"><img class="shorts-thumb" src="https://img.youtube.com/vi/0d-rUizVukQ/maxresdefault.jpg" alt="YouTube Shorts 7" loading="lazy"><div class="shorts-play-overlay"><span>▶</span></div></a>
-  <a href="https://www.youtube.com/shorts/tgR1Kq3fGWE" target="_blank" rel="noopener" class="shorts-link"><img class="shorts-thumb" src="https://img.youtube.com/vi/tgR1Kq3fGWE/maxresdefault.jpg" alt="YouTube Shorts 8" loading="lazy"><div class="shorts-play-overlay"><span>▶</span></div></a>
-</div></section>
-<div id="site-footer"></div>
-<script>
-window.PAGE_I18N={ko:{meta_description:'Chris LEE.PAPA Movie Archive — FURIOUS, 사랑한다고, 귀멸의 칼날 촬영현장 등 AI를 활용해 기획하고 제작한 오리지널 영상 작품과 YouTube Shorts 아카이브.',og_description:'FURIOUS, 사랑한다고, 귀멸의 칼날 촬영현장 등 AI를 활용해 기획하고 제작한 오리지널 영상 작품과 YouTube Shorts 아카이브.',twitter_description:'AI를 활용해 기획하고 제작한 Chris LEE.PAPA의 오리지널 영상 작품과 Shorts 아카이브.',share_desc:'Chris LEE.PAPA의 다양한 AI 영상 작품을 만나보세요.',header_title:'MOVIE ARCHIVE',header_slogan:'프레임에 담긴 무한한 세계',expand_btn:'⛶ 전체화면 (가로)',carousel_heading:'UP NEXT'},en:{meta_description:'Chris LEE.PAPA Movie Archive — original video works and YouTube Shorts created and planned with AI, including FURIOUS, Love Song, and a Demon Slayer live-action set.',og_description:'Original AI-assisted video works and Shorts by Chris LEE.PAPA.',twitter_description:'Explore Chris LEE.PAPA original video works and Shorts created with AI.',share_desc:'Explore Chris LEE.PAPA’s diverse AI video works.',header_title:'MOVIE ARCHIVE',header_slogan:'An infinite world captured in a frame',expand_btn:'⛶ Fullscreen (Landscape)',carousel_heading:'UP NEXT'}};
-const videoData=[
-{id:'kAkGg2t1Ats',title_ko:'FURIOUS',title_en:'FURIOUS',badge_ko:'FEATURED',badge_en:'FEATURED',desc_ko:'강대국들의 전쟁과 싸움으로 세계가 병들어가고 심각한 인명, 재산 피해가 급증하는 현실을 바라보는 노래의 뮤직비디오입니다.',desc_en:'A music video for a song looking at a world becoming sickened by wars and conflicts between powerful nations, where severe loss of life and property damage continue to increase.'},
-{id:'byxLKvBHULk',title_ko:'귀멸의 칼날 촬영현장',title_en:'Demon Slayer Live-Action Behind the Scenes',badge_ko:'CINEMATIC',badge_en:'CINEMATIC',desc_ko:'인기 일본 애니메이션 귀멸의 칼날 등장인물들의 실사 촬영현장 영상을 AI로 만들어본 작품입니다.',desc_en:'An AI-created work imagining a live-action filming set featuring characters from the popular Japanese anime Demon Slayer.'},
-{id:'vlt7VfCA8bM',title_ko:'사랑한다고',title_en:'Love Song',badge_ko:'CINEMATIC',badge_en:'CINEMATIC',desc_ko:'소중한 가족, 친구, 연인을 먼저 떠나보낸 이들의 말로 다 할 수 없는 감정을 표현하고자 했던 노래의 뮤직비디오입니다.',desc_en:'A music video for a song created to express the feelings that cannot be fully put into words by those who have lost a beloved family member, friend, or partner.'}];
-let activeVideoIndex=0;
-function expandToLandscape(){const iframe=document.getElementById('main-video-player');if(!iframe)return;if(iframe.requestFullscreen)iframe.requestFullscreen().then(()=>{if(screen.orientation&&screen.orientation.lock)screen.orientation.lock('landscape').catch(()=>{})});}
-function updateMainVideoInfo(){const lang=typeof window.getCurrentLang==='function'?window.getCurrentLang():'ko',v=videoData[activeVideoIndex];if(!v)return;document.getElementById('main-video-title').textContent=v['title_'+lang];document.getElementById('main-video-badge').textContent=v['badge_'+lang];document.getElementById('main-video-desc').textContent=v['desc_'+lang];}
-function renderCarousel(){const lang=typeof window.getCurrentLang==='function'?window.getCurrentLang():'ko';document.querySelectorAll('#carousel-list .thumbnail-card').forEach((card,i)=>{card.classList.toggle('active',i===activeVideoIndex);const v=videoData[i];if(v){card.querySelector('.thumb-title').textContent=v['title_'+lang];card.querySelector('.thumb-img').alt=v['title_'+lang];}});}
-function loadMainVideo(i){activeVideoIndex=i;const v=videoData[i],p=document.getElementById('main-video-player');if(p)p.src='https://www.youtube.com/embed/'+v.id+'?autoplay=1&enablejsapi=1';updateMainVideoInfo();renderCarousel();window.scrollTo({top:document.querySelector('.theater-wrapper').offsetTop-120,behavior:'smooth'});}
-window.onLangChange=function(){updateMainVideoInfo();renderCarousel();};
-window.onMainReady=function(){const c=document.getElementById('stars-canvas'),x=c&&c.getContext('2d');let s=[];function r(){if(!c)return;c.width=innerWidth;c.height=350;s=[];for(let i=0;i<c.width*c.height/6000;i++)s.push({x:Math.random()*c.width,y:Math.random()*c.height,size:Math.random()*1.5+.2,o:Math.random(),sp:Math.random()*.02+.005})}function d(){if(!x)return;x.clearRect(0,0,c.width,c.height);s.forEach(a=>{a.o+=a.sp;if(a.o>1||a.o<0)a.sp=-a.sp;x.beginPath();x.arc(a.x,a.y,a.size,0,Math.PI*2);x.fillStyle='rgba(255,255,255,'+Math.max(0,a.o)+')';x.fill()});requestAnimationFrame(d)}addEventListener('resize',r);r();d();updateMainVideoInfo();renderCarousel();};
-</script>
-<script src="js/main.js"></script>
-<script src="js/guestbook.js"></script>
+    <div id="site-header"></div>
+
+    <main class="movie-page">
+        <section class="page-hero">
+            <p class="eyebrow">MOVIE</p>
+            <h1>AI VIDEO ARCHIVE</h1>
+            <p class="hero-description">AI를 활용해 음악과 이야기, 상상 속 장면을 영상으로 구현하고 새로운 표현 방식을 실험해온 영상 창작 아카이브입니다.</p>
+        </section>
+
+        <section class="movie-intro">
+            <div class="section-label">MAIN MOVIE</div>
+            <h2>Works</h2>
+        </section>
+
+        <section class="featured-work" aria-label="Featured movie works">
+            <div class="theater-wrapper">
+                <div class="main-screen" id="main-screen"></div>
+                <div class="screen-info" id="screen-info"></div>
+            </div>
+        </section>
+
+        <section class="work-descriptions" aria-label="Movie work descriptions">
+            <article class="work-description">
+                <p class="section-label">FURIOUS</p>
+                <h2>FURIOUS</h2>
+                <h3>ABOUT THIS WORK</h3>
+                <p>FURIOUS는 강대국들의 전쟁과 갈등으로 병들어가는 세계의 모습을 바라보며 만든 뮤직비디오 작품입니다. 현대 사회에서는 국가와 집단 사이의 충돌이 반복되고 있으며, 그 과정에서 수많은 사람들이 목숨을 잃고 삶의 터전과 재산을 잃고 있습니다. 이 작품은 이러한 현실을 바라보며 느낀 분노와 안타까움을 음악과 영상으로 표현하고자 했습니다.</p>
+                <h3>CREATOR'S NOTE</h3>
+                <p>뉴스를 통해 접하는 전쟁의 장면을 넘어, 그 뒤에 존재하는 사람들의 삶과 상처를 생각하며 영상을 기획했습니다. 음악이 가진 감정의 힘과 AI 영상 기술을 결합해 전쟁이 남기는 두려움과 슬픔, 그리고 평화를 바라는 마음을 시각적으로 표현하고자 했습니다.</p>
+            </article>
+
+            <article class="work-description">
+                <p class="section-label">사랑한다고</p>
+                <h2>사랑한다고</h2>
+                <h3>ABOUT THIS WORK</h3>
+                <p>사랑한다고는 소중한 가족, 친구, 연인을 먼저 떠나보낸 사람들이 느끼는 말로 다 표현할 수 없는 감정을 담아낸 노래의 뮤직비디오입니다. 사랑하는 사람과의 이별은 시간이 지나도 쉽게 사라지지 않는 기억과 그리움을 남깁니다. 이 작품은 그 깊은 슬픔 속에서도 여전히 마음속에 남아 있는 사랑과 추억을 영상으로 표현하고자 했습니다.</p>
+                <h3>CREATOR'S NOTE</h3>
+                <p>누군가를 잃은 경험과 그리움은 사람마다 다른 모습으로 남지만, 사랑했던 기억은 오래도록 마음속에 존재한다고 생각했습니다. 그래서 이 작품에서는 이별의 슬픔만을 보여주기보다, 떠난 사람에게 끝내 전하지 못했거나 계속 전하고 싶은 마음을 음악과 영상에 담아내고자 했습니다.</p>
+            </article>
+
+            <article class="work-description">
+                <p class="section-label">귀멸의 칼날 촬영현장</p>
+                <h2>귀멸의 칼날 촬영현장</h2>
+                <h3>ABOUT THIS WORK</h3>
+                <p>귀멸의 칼날 촬영현장은 인기 일본 애니메이션 귀멸의 칼날에 등장하는 캐릭터들이 실제 영화나 드라마의 촬영 현장에 존재한다면 어떤 모습일지를 상상하며 제작한 AI 영상 작품입니다. 익숙한 애니메이션 캐릭터를 현실적인 촬영 공간과 결합해, 애니메이션과 실사의 경계를 넘나드는 새로운 장면을 만들어보았습니다.</p>
+                <h3>CREATOR'S NOTE</h3>
+                <p>AI 기술을 활용하면 현실에서는 존재하지 않는 상황도 구체적으로 상상하고 영상으로 구현할 수 있다는 점에 주목했습니다. 단순히 캐릭터를 실사화하는 데 그치지 않고, 실제 배우와 제작진이 촬영을 준비하고 장면을 만들어가는 현장의 분위기를 상상하며 표현했습니다. AI를 활용한 영상 창작의 가능성을 가볍게 실험해본 프로젝트이기도 합니다.</p>
+            </article>
+        </section>
+
+        <section class="carousel-section">
+            <div class="section-label">MORE MOVIE WORKS</div>
+            <div class="carousel" id="movie-carousel"></div>
+        </section>
+
+        <section class="shorts-section">
+            <div class="section-label">SHORTS</div>
+            <h2>AI SHORTS ARCHIVE</h2>
+            <div class="shorts-intro">
+                <h3>ABOUT SHORTS</h3>
+                <p>AI를 활용하고 다양한 아이디어를 기획하며, 새로운 영상 표현 방식을 실험하고 적용해본 작품들입니다. 애니메이션 캐릭터의 실사 촬영현장부터 직접 만든 뮤직비디오, 일반적인 재미있는 영상까지 다양한 형태의 콘텐츠를 짧은 영상 형식으로 제작하여 YouTube, TikTok 등 여러 플랫폼에 선보였습니다.</p>
+                <h3>CREATOR'S NOTE</h3>
+                <p>Shorts는 짧은 시간 안에 새로운 아이디어를 시도하고 다양한 영상 표현 방식을 실험할 수 있는 창작 공간입니다. AI 기술과 상상력을 결합해 현실에서는 쉽게 만들기 어려운 장면을 구현하거나 음악과 영상의 새로운 조합을 시도하면서, 하나의 아이디어가 영상으로 발전하는 과정을 즐기고 있습니다.</p>
+            </div>
+            <div class="shorts-grid" id="shorts-grid"></div>
+        </section>
+    </main>
+
+    <div id="site-footer"></div>
+
+    <script src="js/main.js" defer></script>
+    <script src="js/movie.js" defer></script>
 </body>
 </html>

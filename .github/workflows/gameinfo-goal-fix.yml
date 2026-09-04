@@ -24,6 +24,9 @@ jobs:
           from pathlib import Path
           p = Path('gameinfo.html')
           s = p.read_text(encoding='utf-8')
+          if 'href="goal.html"' in s:
+              print('GOAL already present; nothing to patch.')
+              raise SystemExit(0)
           s2 = s.replace('.bg-switch {}', '.bg-switch {}\n        .bg-goal {}', 1)
           s2 = s2.replace('<!-- Game 7 -->\n            <a href="switch.html"', '<!-- Game 6 -->\n            <a href="switch.html"', 1)
           marker = '''            </a>\n        </div>'''
@@ -31,8 +34,6 @@ jobs:
           if marker not in s2:
               raise SystemExit('game card container marker not found')
           s2 = s2.replace(marker, goal, 1)
-          if 'data-i18n="goal_title"' not in s2:
-              raise SystemExit('GOAL card insertion failed')
           s2 = s2.replace("switch_desc:  '귀여운 요정 포포가", "goal_tag:    'MIRACLE SHOT GAME',\n                goal_title:  '골이예요 GOAL',\n                goal_desc:   'MIRACLE SHOT의 네 주인공 중 한 명을 선택해 거대한 점수벽을 향해 슛을 날리고, 맞힌 점수를 누적해 승부를 겨루는 1:1 축구 게임입니다.',\n                switch_desc:  '귀여운 요정 포포가", 1)
           s2 = s2.replace("switch_desc:  'Choose the cute fairy Popo", "goal_tag:    'MIRACLE SHOT GAME',\n                goal_title:  'GOAL',\n                goal_desc:   'Choose one of four MIRACLE SHOT heroes, shoot toward the giant scoring wall, and compete in a 1:1 soccer game by accumulating your points.',\n                switch_desc:  'Choose the cute fairy Popo", 1)
           p.write_text(s2, encoding='utf-8')
@@ -49,6 +50,10 @@ jobs:
 
       - name: Commit patched file
         run: |
+          if git diff --quiet -- gameinfo.html; then
+            echo 'No gameinfo.html changes; nothing to commit.'
+            exit 0
+          fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add gameinfo.html

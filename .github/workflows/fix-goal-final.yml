@@ -1,0 +1,92 @@
+name: Apply final GOAL guide fix
+
+on:
+  push:
+    branches: [develop]
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    if: ${{ !startsWith(github.event.head_commit.message, '[auto-fix]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: develop
+          fetch-depth: 0
+
+      - name: Patch files
+        shell: python
+        run: |
+          from pathlib import Path
+
+          # game-auth.js: remove only retired Baduk card; keep guide #6 and 7-game count.
+          p = Path('js/game-auth.js')
+          s = p.read_text(encoding='utf-8')
+          old = '''            document.querySelectorAll('a.game-card[href*="baduk_easy"]').forEach(card => card.remove());
+            document.querySelectorAll('[data-i18n="guide6_heading"]').forEach(heading => {
+                const block = heading.closest('div[style*="border-bottom"], div[style*="padding-bottom"]');
+                if (block) block.remove();
+            });
+            document.querySelectorAll('meta[name="description"], meta[property="og:description"]').forEach(meta => {
+                if (meta.content) meta.content = meta.content.replace(/,?\\s*바둑 EASY/g,'').replace(/·바둑EASY/g,'').replace(/7가지/g,'6가지');
+            });
+            const intro = document.querySelector('[data-i18n="game_intro_desc"]');
+            if (intro) intro.innerHTML = intro.innerHTML.replace(/<strong style="color:#e8d08a;">7가지 무료 온라인 미니게임<\\/strong>/g,'<strong style="color:#e8d08a;">6가지 무료 온라인 미니게임</strong>');'''
+          new = '''            document.querySelectorAll('a.game-card[href*="baduk_easy"]').forEach(card => card.remove());'''
+          if old not in s:
+              raise SystemExit('game-auth target not found')
+          p.write_text(s.replace(old, new, 1), encoding='utf-8')
+
+          # gameinfo.html: Popo is #6; append GOAL as #7 directly after Popo.
+          p = Path('gameinfo.html')
+          s = p.read_text(encoding='utf-8')
+          if '/goal.html' not in s:
+              marker = '''            </a>\n        </div>\n\n        <!-- ── SEO 게임 상세 소개 섹션 ── -->'''
+              goal = '''            </a>\n\n            <!-- Game 7 -->\n            <a href="/goal.html" class="game-card game-card-image-mode goal-game-card">\n                <div class="card-image-bg bg-goal">\n                    <img src="/images/goal.png" alt="골이예요 GOAL" loading="lazy">\n                </div>\n                <div class="card-overlay"></div>\n                <div class="game-tag tag-switch">MIRACLE SHOT GAME</div>\n                <div class="game-card-content-wrap">\n                    <h3 class="game-card-title">골이예요 GOAL</h3>\n                    <p class="game-card-desc" style="word-break:keep-all;">MIRACLE SHOT의 네 주인공 중 한 명을 선택해 거대한 점수벽을 향해 슛을 날리고, 맞힌 점수를 누적해 승부를 겨루는 1:1 축구 게임입니다.</p>\n                </div>\n            </a>\n        </div>\n\n        <!-- ── SEO 게임 상세 소개 섹션 ── -->'''
+              if marker not in s:
+                  raise SystemExit('game card insertion marker not found')
+              s = s.replace(marker, goal, 1)
+
+          s = s.replace('data-i18n="guide7_heading">⑦ 요정 포포의 여정 — Action / Elemental', 'data-i18n="guide6_heading">⑥ 요정 포포의 여정 — Action / Elemental', 1)
+          s = s.replace('data-i18n="guide7_desc">', 'data-i18n="guide6_desc">', 1)
+          s = s.replace("guide7_heading: '⑦ 요정 포포의 여정 — Action / Elemental'", "guide6_heading: '⑥ 요정 포포의 여정 — Action / Elemental'", 1)
+          s = s.replace('guide7_desc: `귀여운 요정 포포가', 'guide6_desc: `귀여운 요정 포포가', 1)
+
+          guide_marker = '''                    <div>\n                        <h3 style="font-family:'Cinzel',serif; color:#e8d08a; font-size:0.9rem; letter-spacing:1px; margin-bottom:8px;" data-i18n="guide6_heading">⑥ 요정 포포의 여정 — Action / Elemental</h3>\n                        <p style="color:#b0acac; font-size:0.88rem; line-height:1.9;" data-i18n="guide6_desc">\n                            귀여운 요정 포포가 하늘에서 떨어지는 얼음, 불 그리핀의 공격을 좌우로 피하고 맛있는 음식을 먹을 수 있게 해주세요!\n                            기회는 세번!\n                        </p>\n                    </div>'''
+          goal_guide = '''                    <div>\n                        <h3 style="font-family:'Cinzel',serif; color:#e8d08a; font-size:0.9rem; letter-spacing:1px; margin-bottom:8px;">⑦ 골이예요 — MIRACLE SHOT GAME</h3>\n                        <p style="color:#b0acac; font-size:0.88rem; line-height:1.9;">\n                            MIRACLE SHOT의 네 주인공 중 한 명을 선택해 거대한 점수벽을 향해 슛을 날리고, 맞힌 점수를 누적해 승부를 겨루는 1:1 축구 게임입니다.\n                        </p>\n                    </div>'''
+          if '⑦ 골이예요 — MIRACLE SHOT GAME' not in s:
+              if guide_marker not in s:
+                  raise SystemExit('guide insertion marker not found')
+              s = s.replace(guide_marker, guide_marker + '\n' + goal_guide, 1)
+          p.write_text(s, encoding='utf-8')
+
+          # responsive numbering: 6 Popo, 7 GOAL.
+          p = Path('css/game-responsive.css')
+          s = p.read_text(encoding='utf-8')
+          s = s.replace('content:"⑥ 바둑 EASY"', 'content:"⑥ 요정 포포의 여정"')
+          s = s.replace('content:"⑦ 요정 포포의 여정"', 'content:"⑦ 골이예요"')
+          p.write_text(s, encoding='utf-8')
+
+          # Ensure GOAL card gets the exact same hover/focus behavior.
+          p = Path('gameinfo.html')
+          s = p.read_text(encoding='utf-8')
+          hover = '''        .game-card-image-mode:hover .card-image-bg { transform: scale(1.08); }'''
+          goal_hover = '''        .game-card-image-mode:hover .card-image-bg { transform: scale(1.08); }\n        .goal-game-card:focus-visible {\n            transform: translateY(-12px) scale(1.02);\n            border-color: var(--gold-light);\n            box-shadow: 0 20px 60px rgba(201,168,76,0.25);\n        }\n        .goal-game-card:focus-visible .card-image-bg { transform: scale(1.08); }'''
+          if '.goal-game-card:focus-visible' not in s:
+              if hover not in s:
+                  raise SystemExit('hover marker not found')
+              p.write_text(s.replace(hover, goal_hover, 1), encoding='utf-8')
+
+      - name: Commit and remove workflow
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add gameinfo.html js/game-auth.js css/game-responsive.css
+          git rm .github/workflows/fix-goal-final.yml
+          git diff --cached --quiet && exit 0
+          git commit -m "[auto-fix] Finalize GOAL game guide and card"
+          git push origin HEAD:develop

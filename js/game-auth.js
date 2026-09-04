@@ -4,8 +4,6 @@
     const GAME_PAGES = new Set(['game','booktop','fiveinrow','curling','tetris','switch']);
     const page=(location.pathname.split('/').pop()||'index').replace(/\.html$/i,'').toLowerCase();
 
-    // gameinfo is the game selection page. Remove the retired Baduk entry
-    // without loading any game-auth helpers or the removed title-fix script.
     if(page==='gameinfo'){
         const removeBaduk = () => {
             document.querySelectorAll('a.game-card[href*="baduk_easy"]').forEach(card => card.remove());
@@ -15,10 +13,7 @@
             });
             document.querySelectorAll('meta[name="description"], meta[property="og:description"]').forEach(meta => {
                 if(meta.content){
-                    meta.content = meta.content
-                        .replace(/,?\s*바둑 EASY/g,'')
-                        .replace(/·바둑EASY/g,'')
-                        .replace(/7가지/g,'6가지');
+                    meta.content = meta.content.replace(/,?\s*바둑 EASY/g,'').replace(/·바둑EASY/g,'').replace(/7가지/g,'6가지');
                 }
             });
             const intro = document.querySelector('[data-i18n="game_intro_desc"]');
@@ -39,8 +34,6 @@
 
     if(!GAME_PAGES.has(page))return;
 
-    // Full-screen game pages intentionally do not use the archive header.
-    // Provide a consistent way back to the Game Center without covering gameplay controls.
     function addGameCenterLink(){
         if(document.getElementById('game-center-back'))return;
         const link=document.createElement('a');
@@ -53,38 +46,127 @@
         link.addEventListener('mouseleave',()=>{link.style.transform='';link.style.background='rgba(8,4,22,.82)';});
         (document.body||document.documentElement).appendChild(link);
     }
-    function addGameLogout(){
-        if(document.getElementById('game-logout-btn'))return;
-        const button=document.createElement('button');
-        button.type='button';
-        button.id='game-logout-btn';
-        button.textContent='LOG OUT';
-        button.setAttribute('aria-label','Log out');
-        button.style.cssText='position:fixed;top:12px;right:12px;z-index:10000;display:inline-flex;align-items:center;justify-content:center;padding:8px 13px;border:1px solid rgba(255,215,0,.45);border-radius:999px;background:rgba(8,4,22,.82);backdrop-filter:blur(8px);color:#FFD700;font:700 12px/1.2 Arial,sans-serif;letter-spacing:.08em;text-decoration:none;box-shadow:0 4px 18px rgba(0,0,0,.45);cursor:pointer;transition:transform .2s ease,background .2s ease;';
-        button.addEventListener('mouseenter',()=>{button.style.transform='translateY(-1px)';button.style.background='rgba(20,10,45,.95)';});
-        button.addEventListener('mouseleave',()=>{button.style.transform='';button.style.background='rgba(8,4,22,.82)';});
-        button.addEventListener('click',()=>{
-            if(window.CLPAuth&&typeof window.CLPAuth.logout==='function'){
-                window.CLPAuth.logout();
-            }else{
-                try{localStorage.removeItem('chrisleepapa-auth-session-v3');}catch(_){}
-                location.reload();
-            }
-        });
-        (document.body||document.documentElement).appendChild(button);
-    }
-    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{addGameCenterLink();addGameLogout();},{once:true});
-    else{addGameCenterLink();addGameLogout();}
 
     let accountInitials='';
+
+    function addAccountBar(target){
+        if(!target||!accountInitials)return;
+        let bar=target.querySelector(':scope > .clp-game-account');
+        if(!bar){
+            bar=document.createElement('div');
+            bar.className='clp-game-account';
+            bar.innerHTML='<span class="clp-game-account-id">👤 <strong></strong></span><button type="button" class="clp-game-logout">LOG OUT</button>';
+            const input=findAccountFields(target)[0];
+            if(input) input.insertAdjacentElement('beforebegin',bar); else target.prepend(bar);
+        }
+        bar.querySelector('strong').textContent=accountInitials;
+        const button=bar.querySelector('.clp-game-logout');
+        if(button&&!button.dataset.bound){
+            button.dataset.bound='true';
+            button.addEventListener('click',event=>{
+                event.preventDefault();
+                event.stopPropagation();
+                if(window.CLPAuth&&typeof window.CLPAuth.logout==='function') window.CLPAuth.logout();
+                else { try{localStorage.removeItem('chrisleepapa-auth-session-v3')}catch(_){}; location.reload(); }
+            });
+        }
+    }
+
+    function removeAccountBars(){document.querySelectorAll('.clp-game-account').forEach(el=>el.remove());}
+
+    function addGameAccountBar(){
+        removeAccountBars();
+        const fields=findAccountFields();
+        if(fields.length){
+            fields.forEach(input=>{
+                input.classList.add('clp-account-initials');
+                input.value=accountInitials;
+                input.readOnly=true;
+                input.setAttribute('aria-readonly','true');
+                input.style.setProperty('display','none','important');
+                const label=input.previousElementSibling;
+                if(label&&/INITIALS|이니셜/i.test(label.textContent||'')) label.style.setProperty('display','none','important');
+                addAccountBar(input.parentElement||document.body);
+            });
+        } else {
+            let bar=document.getElementById('clp-game-account-fixed');
+            if(!bar){
+                bar=document.createElement('div');
+                bar.id='clp-game-account-fixed';
+                bar.className='clp-game-account clp-game-account-fixed';
+                bar.innerHTML='<span class="clp-game-account-id">👤 <strong></strong></span><button type="button" class="clp-game-logout">LOG OUT</button>';
+                document.body.appendChild(bar);
+            }
+            bar.querySelector('strong').textContent=accountInitials;
+            const button=bar.querySelector('.clp-game-logout');
+            if(button&&!button.dataset.bound){
+                button.dataset.bound='true';
+                button.addEventListener('click',event=>{
+                    event.preventDefault();event.stopPropagation();
+                    if(window.CLPAuth&&typeof window.CLPAuth.logout==='function')window.CLPAuth.logout();
+                    else {try{localStorage.removeItem('chrisleepapa-auth-session-v3')}catch(_){};location.reload();}
+                });
+            }
+        }
+    }
+
+    function injectAccountStyle(){
+        if(document.getElementById('clp-game-account-style'))return;
+        const style=document.createElement('style');
+        style.id='clp-game-account-style';
+        style.textContent=`
+.clp-game-account{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;margin:0 0 12px;padding:7px 0;box-sizing:border-box}
+.clp-game-account-id{display:inline-flex;align-items:center;justify-content:center;padding:7px 11px;border:1px solid rgba(255,215,0,.28);border-radius:999px;background:rgba(255,255,255,.045);color:#fff;font:700 12px/1.1 Arial,sans-serif;letter-spacing:.08em;white-space:nowrap}
+.clp-game-account-id strong{color:#FFD700;margin-left:3px}
+.clp-game-logout{display:inline-flex;align-items:center;justify-content:center;padding:7px 11px;border:1px solid rgba(255,215,0,.32);border-radius:999px;background:rgba(255,255,255,.045);color:#FFD700;font:700 12px/1.1 Arial,sans-serif;letter-spacing:.05em;cursor:pointer;white-space:nowrap}
+.clp-game-logout:hover{background:rgba(255,215,0,.10)}
+.clp-game-account-fixed{position:fixed;top:12px;right:12px;z-index:10000;width:auto;margin:0;padding:0}
+@media(max-width:600px){.clp-game-account-fixed{top:8px;right:8px}.clp-game-account-fixed .clp-game-account-id,.clp-game-account-fixed .clp-game-logout{padding:6px 9px;font-size:10px}}
+        `;
+        document.head.appendChild(style);
+    }
+
     function loadAuth(){if(window.CLPAuth)return Promise.resolve();return new Promise((resolve,reject)=>{const s=document.createElement('script');s.src='/js/auth.js';s.onload=resolve;s.onerror=reject;document.head.appendChild(s)})}
     function isAccountField(el){if(!el||el.tagName!=='INPUT'||el.type==='hidden')return false;if(el.id==='clp-game-login-initials'||el.id==='clp-game-login-pin')return false;return !!el.matches('#player-initial,#player-initials,#initialsInput,#playerInitials,#ini,[name="initial"],[name="initials"],.initials-input,input[id*="initial" i],input[name*="initial" i]')}
-    function findAccountFields(){return Array.from(document.querySelectorAll('input')).filter(isAccountField)}
-    function markAccountField(input){if(!input||!accountInitials)return;input.value=accountInitials;input.readOnly=true;input.setAttribute('readonly','readonly');input.setAttribute('aria-readonly','true');input.setAttribute('tabindex','-1');input.setAttribute('title','로그인된 계정 이니셜');input.style.setProperty('caret-color','transparent','important');input.style.setProperty('cursor','default','important');input.style.setProperty('user-select','none','important');input.style.setProperty('-webkit-user-select','none','important');input.style.setProperty('pointer-events','none','important');input.classList.add('clp-account-initials')}
-    function protectAccountFields(){if(accountInitials)findAccountFields().forEach(markAccountField)}
-    function blockUserEditing(event){const target=event.target;if(!isAccountField(target))return;if(event.type==='focusin'){markAccountField(target);target.blur();return}event.preventDefault();event.stopImmediatePropagation();markAccountField(target)}
+    function findAccountFields(root=document){return Array.from(root.querySelectorAll('input')).filter(isAccountField)}
+    function protectAccountFields(){if(!accountInitials)return;findAccountFields().forEach(input=>{input.value=accountInitials;input.readOnly=true;input.setAttribute('readonly','readonly');input.setAttribute('aria-readonly','true');input.setAttribute('tabindex','-1');input.setAttribute('title','로그인된 계정 이니셜');input.style.setProperty('caret-color','transparent','important');input.style.setProperty('cursor','default','important');input.style.setProperty('user-select','none','important');input.style.setProperty('-webkit-user-select','none','important');input.style.setProperty('pointer-events','none','important');input.classList.add('clp-account-initials')})}
+    function blockUserEditing(event){const target=event.target;if(!isAccountField(target))return;event.preventDefault();event.stopImmediatePropagation();if(accountInitials){target.value=accountInitials;target.blur()}}
     ['beforeinput','input','keydown','paste','cut','drop','mousedown','mouseup','click','focusin'].forEach(type=>document.addEventListener(type,blockUserEditing,true));
-    function showLogin(){window.CLPAuth.showLoginModal({prefix:'clp-game-login',onSuccess:()=>location.reload()})}
-    async function init(){try{await loadAuth();if(!window.CLPAuth||!window.CLPAuth.isLoggedIn()){showLogin();return}const user=window.CLPAuth.getUser();accountInitials=String(user?.initials||'').trim().toUpperCase();if(!accountInitials)return;const apply=()=>protectAccountFields();if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();setTimeout(apply,300);setTimeout(apply,1000)}catch(e){console.error('[game-auth]',e)}}
+
+    function showLogin(){
+        if(window.CLPAuth&&typeof window.CLPAuth.showLoginModal==='function'){
+            window.CLPAuth.showLoginModal({prefix:'clp-game-login',onSuccess:()=>location.reload()});
+        }
+    }
+
+    function onAuthChange(event){
+        if(event?.detail?.user){
+            accountInitials=String(event.detail.user.initials||'').trim().toUpperCase();
+            setTimeout(()=>{injectAccountStyle();protectAccountFields();addGameAccountBar()},0);
+        }else{
+            accountInitials='';
+            removeAccountBars();
+            showLogin();
+        }
+    }
+    window.addEventListener('chrisleepapa-auth-change',onAuthChange);
+
+    async function init(){
+        try{
+            await loadAuth();
+            injectAccountStyle();
+            if(!window.CLPAuth||!window.CLPAuth.isLoggedIn()){showLogin();return}
+            const user=window.CLPAuth.getUser();
+            accountInitials=String(user?.initials||'').trim().toUpperCase();
+            if(!accountInitials)return;
+            const apply=()=>{protectAccountFields();addGameAccountBar()};
+            if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});
+            else apply();
+            setTimeout(apply,300);setTimeout(apply,1000);
+        }catch(e){console.error('[game-auth]',e)}
+    }
+
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',addGameCenterLink,{once:true});
+    else addGameCenterLink();
     init();
 })();

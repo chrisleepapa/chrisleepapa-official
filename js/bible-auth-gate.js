@@ -45,9 +45,42 @@
     function validateBibleData(data){if(!Array.isArray(data)||data.length<30000)return false;const sample=data.slice(0,100);return sample.some(v=>v&&v.book!=null&&v.chapter!=null&&v.verse!=null&&(v.content||v.text))}
     function setBibleData(data,source){if(!validateBibleData(data))throw new Error('Bible data validation failed');globalBibleData=data;isDataReady=true;try{localStorage.setItem(BIBLE_CACHE_KEY,JSON.stringify({savedAt:Date.now(),data}))}catch(_){}console.info('[Bible] data ready:',data.length,'verses from',source)}
     async function fetchWithTimeout(url,timeoutMs=12000){const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),timeoutMs);try{const response=await fetch(url,{cache:'no-store',signal:controller.signal});if(!response.ok)throw new Error(`HTTP ${response.status}`);return await response.json()}finally{clearTimeout(timer)}}
-    async function loadBibleDataResilient(spinner){for(const url of BIBLE_DATA_URLS){try{if(spinner)spinner.innerHTML='LOADING BIBLE...<br><small>성경 본문을 불러오는 중입니다.</small>';const payload=await fetchWithTimeout(url);const data=normalizeBiblePayload(payload);if(validateBibleData(data)){setBibleData(data,url);return}}catch(error){console.warn('[Bible] source failed:',url,error)}}try{const cached=JSON.parse(localStorage.getItem(BIBLE_CACHE_KEY)||'null');if(cached&&validateBibleData(cached.data)){setBibleData(cached.data,'local cache');return}}catch(error){console.warn('[Bible] cache unavailable:',error)}throw new Error('No valid Bible dataset available')}
-    function installBibleDataRecovery(){if(window.__clpBibleRecoveryInstalled)return true;if(typeof window.initAppAfterAuth!=='function')return false;window.__clpBibleRecoveryInstalled=true;window.initAppAfterAuth=async function(){if(typeof initBibleLogout==='function')initBibleLogout();ensureBibleAccountBar();const spinner=document.getElementById('loadingSpinner');try{await loadSupabaseData();await loadBibleDataResilient(spinner);if(spinner)spinner.style.display='none';renderBooks('ot');selectBook(1,false);setupNotifications();updateOverallProgress()}catch(error){console.error('[Bible] data initialization failed:',error);if(spinner)spinner.innerHTML='CONNECTION FAILED.<br><small>성경 본문을 불러오지 못했습니다. 잠시 후 새로고침해 주세요.</small>'}};return true}
-    async function init(){try{await loadAuth();resetLegacyClientDataOnce();const session=getSession();if(session){mirrorLegacySession(session);hideLegacyAuthModal();ensureBibleAccountBar()}else showSharedLogin();if(!installBibleDataRecovery())setTimeout(installBibleDataRecovery,0)}catch(error){console.error('[bible-auth-gate]',error)}}
+    function getCachedBibleData(){try{const cached=JSON.parse(localStorage.getItem(BIBLE_CACHE_KEY)||'null');if(cached&&validateBibleData(cached.data))return cached.data}catch(error){console.warn('[Bible] cache unavailable:',error)}return null}
+    async function loadBibleDataResilient(spinner){
+        const cached=getCachedBibleData();
+        if(cached){setBibleData(cached,'local cache');if(spinner)spinner.innerHTML='UPDATING BIBLE...<br><small>최신 본문을 확인하는 중입니다.</small>';}
+        for(const url of BIBLE_DATA_URLS){
+            try{
+                if(!cached&&spinner)spinner.innerHTML='LOADING BIBLE...<br><small>성경 본문을 불러오는 중입니다.</small>';
+                const payload=await fetchWithTimeout(url);const data=normalizeBiblePayload(payload);
+                if(validateBibleData(data)){setBibleData(data,url);return}
+            }catch(error){console.warn('[Bible] source failed:',url,error)}
+        }
+        if(cached)return;
+        throw new Error('No valid Bible dataset available');
+    }
+    function installBibleDataRecovery(){
+        if(window.__clpBibleRecoveryInstalled)return true;
+        if(typeof window.initAppAfterAuth!=='function')return false;
+        window.__clpBibleRecoveryInstalled=true;
+        window.initAppAfterAuth=async function(){
+            initBibleLogout();ensureBibleAccountBar();
+            const spinner=document.getElementById('loadingSpinner');
+            try{await loadSupabaseData();await loadBibleDataResilient(spinner);if(spinner)spinner.style.display='none';renderBooks('ot');selectBook(1,false);setupNotifications();updateOverallProgress()}
+            catch(error){console.error('[Bible] data initialization failed:',error);if(spinner)spinner.innerHTML='CONNECTION FAILED.<br><small>성경 본문을 불러오지 못했습니다. 잠시 후 새로고침해 주세요.</small>'}
+        };
+        window.__clpBibleGateReady=true;
+        window.dispatchEvent(new CustomEvent('clp-bible-gate-ready'));
+        return true;
+    }
+    async function init(){
+        try{
+            await loadAuth();resetLegacyClientDataOnce();
+            const session=getSession();
+            if(session){mirrorLegacySession(session);hideLegacyAuthModal();ensureBibleAccountBar()}else showSharedLogin();
+            if(!installBibleDataRecovery())setTimeout(()=>{if(!installBibleDataRecovery())window.dispatchEvent(new CustomEvent('clp-bible-gate-ready'))},0);
+        }catch(error){console.error('[bible-auth-gate]',error)}
+    }
     window.addEventListener('chrisleepapa-auth-change',event=>{const session=event.detail?.user||getSession();if(session){mirrorLegacySession(session);hideLegacyAuthModal();ensureBibleAccountBar()}else{hideLegacyAuthModal();location.reload()}});
     if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();

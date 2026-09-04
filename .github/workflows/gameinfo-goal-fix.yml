@@ -27,16 +27,51 @@ jobs:
           if 'href="goal.html"' in s:
               print('GOAL already present; nothing to patch.')
               raise SystemExit(0)
-          s2 = s.replace('.bg-switch {}', '.bg-switch {}\n        .bg-goal {}', 1)
-          s2 = s2.replace('<!-- Game 7 -->\n            <a href="switch.html"', '<!-- Game 6 -->\n            <a href="switch.html"', 1)
+
+          s = s.replace('.bg-switch {}', '.bg-switch {}\n        .bg-goal {}', 1)
+          s = s.replace('<!-- Game 7 -->\n            <a href="switch.html"', '<!-- Game 6 -->\n            <a href="switch.html"', 1)
+
           marker = '''            </a>\n        </div>'''
           goal = '''            </a>\n\n            <!-- Game 7 -->\n            <a href="goal.html" class="game-card game-card-image-mode">\n                <div class="card-image-bg bg-goal">\n                    <img src="images/goal.png"\n                         alt="골이예요 GOAL — MIRACLE SHOT GAME"\n                         loading="lazy">\n                </div>\n                <div class="card-overlay"></div>\n                <div class="game-tag tag-switch" data-i18n="goal_tag">MIRACLE SHOT GAME</div>\n                <div class="game-card-content-wrap">\n                    <h3 class="game-card-title" data-i18n="goal_title">골이예요 GOAL</h3>\n                    <p class="game-card-desc" style="word-break:keep-all;" data-i18n="goal_desc">\n                        MIRACLE SHOT의 네 주인공 중 한 명을 선택해 거대한 점수벽을 향해 슛을 날리고,\n                        맞힌 점수를 누적해 승부를 겨루는 1:1 축구 게임입니다.\n                    </p>\n                </div>\n            </a>\n        </div>'''
-          if marker not in s2:
+          if marker not in s:
               raise SystemExit('game card container marker not found')
-          s2 = s2.replace(marker, goal, 1)
-          s2 = s2.replace("switch_desc:  '귀여운 요정 포포가", "goal_tag:    'MIRACLE SHOT GAME',\n                goal_title:  '골이예요 GOAL',\n                goal_desc:   'MIRACLE SHOT의 네 주인공 중 한 명을 선택해 거대한 점수벽을 향해 슛을 날리고, 맞힌 점수를 누적해 승부를 겨루는 1:1 축구 게임입니다.',\n                switch_desc:  '귀여운 요정 포포가", 1)
-          s2 = s2.replace("switch_desc:  'Choose the cute fairy Popo", "goal_tag:    'MIRACLE SHOT GAME',\n                goal_title:  'GOAL',\n                goal_desc:   'Choose one of four MIRACLE SHOT heroes, shoot toward the giant scoring wall, and compete in a 1:1 soccer game by accumulating your points.',\n                switch_desc:  'Choose the cute fairy Popo", 1)
-          p.write_text(s2, encoding='utf-8')
+          s = s.replace(marker, goal, 1)
+
+          ko_marker = "                switch_desc:  '귀여운 요정 포포가 하늘에서 떨어지는 얼음, 불 그리핀의 공격을 좌우로 피하고 맛있는 음식을 먹을 수 있게 해주세요! 기회는 세번!',"
+          ko_add = ko_marker + "\n                goal_tag:    'MIRACLE SHOT GAME',\n                goal_title:  '골이예요 GOAL',\n                goal_desc:   'MIRACLE SHOT의 네 주인공 중 한 명을 선택해 거대한 점수벽을 향해 슛을 날리고, 맞힌 점수를 누적해 승부를 겨루는 1:1 축구 게임입니다.',"
+          if ko_marker not in s:
+              raise SystemExit('Korean i18n marker not found')
+          s = s.replace(ko_marker, ko_add, 1)
+
+          en_marker = '                switch_desc:  "Help the adorable fairy Popo dodge ice and fire griffin attacks falling from the sky, moving left and right, while grabbing tasty food along the way! You get three chances!",'
+          en_add = en_marker + "\n                goal_tag:    'MIRACLE SHOT GAME',\n                goal_title:  'GOAL',\n                goal_desc:   'Choose one of four MIRACLE SHOT heroes, shoot toward the giant scoring wall, and compete in a 1:1 soccer game by accumulating your points.',"
+          if en_marker not in s:
+              raise SystemExit('English i18n marker not found')
+          s = s.replace(en_marker, en_add, 1)
+
+          ko_guide = """                guide7_heading: '⑦ 요정 포포의 여정 — Action / Elemental',
+                guide7_desc: `귀여운 요정 포포가 하늘에서 떨어지는 얼음, 불 그리핀의 공격을 좌우로 피하고 맛있는 음식을 먹을 수 있게 해주세요!\n                            기회는 세번!`,"""
+          ko_guide_new = """                guide6_heading: '⑥ 요정 포포의 여정 — Action / Elemental',
+                guide6_desc: `귀여운 요정 포포가 하늘에서 떨어지는 얼음, 불 그리핀의 공격을 좌우로 피하고 맛있는 음식을 먹을 수 있게 해주세요!\n                            기회는 세번!`,
+
+                guide7_heading: '⑦ 골이예요 GOAL — MIRACLE SHOT GAME',
+                guide7_desc: `MIRACLE SHOT의 네 주인공 중 한 명을 선택해 거대한 점수벽을 향해 슛을 날리고, 맞힌 점수를 누적해 승부를 겨루는 1:1 축구 게임입니다.`,"""
+          if ko_guide not in s:
+              raise SystemExit('Korean guide marker not found')
+          s = s.replace(ko_guide, ko_guide_new, 1)
+
+          en_guide = """                guide7_heading: \"⑦ Popo the Fairy's Journey — Action / Elemental\",
+                guide7_desc: `Help the adorable fairy Popo dodge ice and fire griffin attacks falling from the sky by moving left and right, while grabbing tasty food along the way!\n                            You get three chances!`,"""
+          en_guide_new = """                guide6_heading: \"⑥ Popo the Fairy's Journey — Action / Elemental\",
+                guide6_desc: `Help the adorable fairy Popo dodge ice and fire griffin attacks falling from the sky by moving left and right, while grabbing tasty food along the way!\n                            You get three chances!`,
+
+                guide7_heading: '⑦ GOAL — MIRACLE SHOT GAME',
+                guide7_desc: `Choose one of four MIRACLE SHOT heroes, shoot toward the giant scoring wall, and compete in a 1:1 soccer game by accumulating your points.`,"""
+          if en_guide not in s:
+              raise SystemExit('English guide marker not found')
+          s = s.replace(en_guide, en_guide_new, 1)
+
+          p.write_text(s, encoding='utf-8')
           PY
 
       - name: Verify patch
@@ -47,6 +82,8 @@ jobs:
           grep -Fq 'class="bg-goal"' gameinfo.html
           grep -Fq "goal_tag:" gameinfo.html
           grep -Fq "goal_desc:" gameinfo.html
+          grep -Fq "guide6_heading:" gameinfo.html
+          grep -Fq "guide7_heading:" gameinfo.html
 
       - name: Commit patched file
         run: |

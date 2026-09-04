@@ -53,8 +53,28 @@
         link.addEventListener('mouseleave',()=>{link.style.transform='';link.style.background='rgba(8,4,22,.82)';});
         (document.body||document.documentElement).appendChild(link);
     }
-    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',addGameCenterLink,{once:true});
-    else addGameCenterLink();
+    function addGameLogout(){
+        if(document.getElementById('game-logout-btn'))return;
+        const button=document.createElement('button');
+        button.type='button';
+        button.id='game-logout-btn';
+        button.textContent='LOG OUT';
+        button.setAttribute('aria-label','Log out');
+        button.style.cssText='position:fixed;top:12px;right:12px;z-index:10000;display:inline-flex;align-items:center;justify-content:center;padding:8px 13px;border:1px solid rgba(255,215,0,.45);border-radius:999px;background:rgba(8,4,22,.82);backdrop-filter:blur(8px);color:#FFD700;font:700 12px/1.2 Arial,sans-serif;letter-spacing:.08em;text-decoration:none;box-shadow:0 4px 18px rgba(0,0,0,.45);cursor:pointer;transition:transform .2s ease,background .2s ease;';
+        button.addEventListener('mouseenter',()=>{button.style.transform='translateY(-1px)';button.style.background='rgba(20,10,45,.95)';});
+        button.addEventListener('mouseleave',()=>{button.style.transform='';button.style.background='rgba(8,4,22,.82)';});
+        button.addEventListener('click',()=>{
+            if(window.CLPAuth&&typeof window.CLPAuth.logout==='function'){
+                window.CLPAuth.logout();
+            }else{
+                try{localStorage.removeItem('chrisleepapa-auth-session-v3');}catch(_){}
+                location.reload();
+            }
+        });
+        (document.body||document.documentElement).appendChild(button);
+    }
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{addGameCenterLink();addGameLogout();},{once:true});
+    else{addGameCenterLink();addGameLogout();}
 
     let accountInitials='';
     function loadAuth(){if(window.CLPAuth)return Promise.resolve();return new Promise((resolve,reject)=>{const s=document.createElement('script');s.src='/js/auth.js';s.onload=resolve;s.onerror=reject;document.head.appendChild(s)})}

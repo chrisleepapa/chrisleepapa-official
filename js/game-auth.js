@@ -126,6 +126,26 @@
         document.head.appendChild(style);
     }
 
+    function injectMobileGamePerformanceStyle(){
+        if(page!=='game'||document.getElementById('clp-mobile-game-performance'))return;
+        const style=document.createElement('style');
+        style.id='clp-mobile-game-performance';
+        style.textContent=`
+@media(max-width:600px){
+  .board{animation:none!important;box-shadow:0 0 24px rgba(155,89,182,.28)!important;}
+  .board::before{animation:none!important;background-size:100% 100%!important;background-position:50% 50%!important;}
+  .board::after{animation:none!important;mix-blend-mode:normal!important;opacity:.38!important;}
+  .tok.a0,.tok.a1{filter:none!important;animation:tbounce .8s ease-in-out infinite!important;}
+  .cell{transition:none!important;}
+  .cell:hover{transform:none!important;box-shadow:none!important;}
+}
+@media(prefers-reduced-motion:reduce){
+  .board,.board::before,.board::after,.tok.a0,.tok.a1{animation:none!important;}
+}
+        `;
+        document.head.appendChild(style);
+    }
+
     function loadAuth(){if(window.CLPAuth)return Promise.resolve();return new Promise((resolve,reject)=>{const s=document.createElement('script');s.src='/js/auth.js';s.onload=resolve;s.onerror=reject;document.head.appendChild(s)})}
     function isAccountField(el){if(!el||el.tagName!=='INPUT'||el.type==='hidden')return false;if(el.id==='clp-game-login-initials'||el.id==='clp-game-login-pin')return false;return !!el.matches('#player-initial,#player-initials,#initialsInput,#playerInitials,#ini,[name="initial"],[name="initials"],.initials-input,input[id*="initial" i],input[name*="initial" i]')}
     function findAccountFields(root=document){return Array.from(root.querySelectorAll('input')).filter(isAccountField)}
@@ -142,7 +162,7 @@
     function onAuthChange(event){
         if(event?.detail?.user){
             accountInitials=String(event.detail.user.initials||'').trim().toUpperCase();
-            setTimeout(()=>{injectAccountStyle();protectAccountFields();addGameAccountBar()},0);
+            setTimeout(()=>{injectAccountStyle();injectMobileGamePerformanceStyle();protectAccountFields();addGameAccountBar()},0);
         }else{
             accountInitials='';
             removeAccountBars();
@@ -155,6 +175,7 @@
         try{
             await loadAuth();
             injectAccountStyle();
+            injectMobileGamePerformanceStyle();
             if(!window.CLPAuth||!window.CLPAuth.isLoggedIn()){showLogin();return}
             const user=window.CLPAuth.getUser();
             accountInitials=String(user?.initials||'').trim().toUpperCase();

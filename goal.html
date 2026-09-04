@@ -12,24 +12,34 @@
 <body>
 <div id="goalApp">
   <header class="goal-top">
-    <a href="/miracleshot.html" class="back-link">← MIRACLE SHOT</a>
+    <a href="/miracleshot" class="back-link">← MIRACLE SHOT</a>
     <div class="brand">MIRACLE SHOT <span>GOAL</span></div>
     <div id="accountBadge" class="account-badge"></div>
   </header>
   <main>
     <section id="setupScreen" class="screen active">
-      <div class="hero-copy"><div class="eyebrow">MIRACLE SHOT IP GAME</div><h1>GOAL</h1><p>거대한 점수벽을 향해 공을 차라.<br>각도, 세기, 커브를 읽고 최고의 점수를 노려라.</p></div>
+      <div class="hero-copy"><div class="eyebrow">MIRACLE SHOT IP GAME</div><h1>GOAL</h1><p>미라클 샷의 네 주인공 중 한 명을 선택하고,<br>거대한 점수벽을 향해 최고의 슛을 날려라.</p></div>
       <div class="setup-card">
         <div class="step-title">01. BATTLE MODE</div>
         <div class="mode-grid"><button class="mode-btn selected" data-mode="cpu">🤖 COMPUTER</button><button class="mode-btn" data-mode="human">👤 PLAYER 2</button></div>
-        <div class="step-title">02. CHOOSE YOUR PLAYER</div>
+        <div class="step-title">02. PLAYER 1 — CHOOSE YOUR PLAYER</div>
         <div id="characterGrid" class="character-grid">
           <button class="character-card" data-character="g" data-name="길"><img src="/images/g00.jpg" alt="길"><strong>길</strong></button>
           <button class="character-card selected" data-character="h" data-name="황"><img src="/images/h00.jpg" alt="황"><strong>황</strong></button>
           <button class="character-card" data-character="k" data-name="고"><img src="/images/k00.jpg" alt="고"><strong>고</strong></button>
           <button class="character-card" data-character="y" data-name="영"><img src="/images/y00.jpg" alt="영"><strong>영</strong></button>
         </div>
-        <div class="opponent-row"><span>PLAYER 2</span><strong id="opponentName">COMPUTER</strong></div>
+        <div id="opponentSelectArea" class="opponent-select-area is-cpu">
+          <div class="step-title">03. PLAYER 2 — CHOOSE YOUR PLAYER</div>
+          <div class="opponent-cpu-note" id="opponentCpuNote">COMPUTER WILL SELECT RANDOMLY</div>
+          <div id="opponentCharacterGrid" class="character-grid opponent-character-grid" aria-label="Player 2 character selection">
+            <button class="character-card opponent-card" data-opponent="g"><img src="/images/g00.jpg" alt="길"><strong>길</strong></button>
+            <button class="character-card opponent-card" data-opponent="h"><img src="/images/h00.jpg" alt="황"><strong>황</strong></button>
+            <button class="character-card opponent-card" data-opponent="k"><img src="/images/k00.jpg" alt="고"><strong>고</strong></button>
+            <button class="character-card opponent-card" data-opponent="y"><img src="/images/y00.jpg" alt="영"><strong>영</strong></button>
+          </div>
+        </div>
+        <div class="opponent-row"><span>PLAYER 2</span><strong id="opponentName">COMPUTER · RANDOM</strong></div>
         <button id="battleStart" class="primary-btn">BATTLE START</button>
       </div>
     </section>

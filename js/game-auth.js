@@ -147,6 +147,15 @@ input[id*="initial" i]:not(#clp-game-login-initials),input[name*="initial" i]:no
             const apply=()=>{protectAccountFields();addGameAccountBar()};
             if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();
             setTimeout(apply,300);setTimeout(apply,1000);
+            if(page==='tetris'){
+                const enterTetrisArena=()=>{
+                    const input=document.getElementById('initialsInput');
+                    if(input && !input.value) input.value=accountInitials;
+                    if(typeof window.enterArena==='function') window.enterArena();
+                };
+                if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>setTimeout(enterTetrisArena,150),{once:true});
+                else setTimeout(enterTetrisArena,150);
+            }
         }catch(e){console.error('[game-auth]',e)}
     }
     if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',addGameCenterLink,{once:true});else addGameCenterLink();

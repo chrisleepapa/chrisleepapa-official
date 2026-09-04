@@ -38,3 +38,12 @@ html[lang="en"] .game-selection-wrapper [data-i18n="guide5_heading"]::before{con
 html[lang="en"] .game-selection-wrapper [data-i18n="guide6_heading"]::before{content:"⑥ Popo the Fairy's Journey"}
 html[lang="en"] .game-selection-wrapper [data-i18n="guide7_heading"]::before{content:"⑦ GOAL — MIRACLE SHOT GAME"}
 .game-selection-wrapper [data-i18n^="guide"][data-i18n$="_heading"]::before{font-size:clamp(.86rem,3.9vw,1rem);line-height:1.55;letter-spacing:0}
+
+/* Final guide-heading visibility fix: use the actual localized h3 text. */
+.game-selection-wrapper [data-i18n^="guide"][data-i18n$="_heading"]{
+  font-size:clamp(.86rem,3.9vw,1rem)!important;
+  line-height:1.55!important;
+  white-space:normal!important;
+  overflow-wrap:normal!important;
+}
+.game-selection-wrapper [data-i18n^="guide"][data-i18n$="_heading"]::before{content:none!important;}

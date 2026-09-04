@@ -32,31 +32,37 @@
     if (!isGameInfo()) return;
     if (document.querySelector('[data-goal-game-guide="true"]')) return;
 
-    const headings = [...document.querySelectorAll('h1,h2,h3,h4,h5,h6,strong,div,span')];
-    const guideHeading = headings.find(el => {
-      const text = (el.textContent || '').replace(/\s+/g, ' ').trim();
-      return text === '게임 가이드' || text === 'GAME GUIDE' || text === 'ALL GAMES GUIDE' || text.includes('게임 가이드') || text.includes('GAME GUIDE') || text.includes('ALL GAMES GUIDE');
-    });
-    if (!guideHeading) return;
+    // game-auth removes the retired Baduk EASY guide (guide 6), so the
+    // existing Fairy Popo guide (guide 7) becomes the sixth guide.
+    const popoHeading = document.querySelector('[data-i18n="guide7_heading"]');
+    if (!popoHeading) return;
 
-    // The existing guide is a bordered container. Prefer that exact container,
-    // then fall back to the heading's nearest section/parent.
-    const guideSection = guideHeading.closest('div[style*="border"], section') || guideHeading.parentElement;
-    if (!guideSection) return;
+    const popoBlock = popoHeading.closest('div[style*="border-bottom"], div[style*="padding-bottom"]');
+    if (!popoBlock) return;
 
-    const item = document.createElement('article');
+    // Renumber Fairy Popo from ⑦ to ⑥ while keeping its original formatting.
+    const popoHeadingText = (popoHeading.textContent || '').replace(/^⑦\s*/, '');
+    popoHeading.textContent = `⑥ ${popoHeadingText}`;
+    popoHeading.removeAttribute('data-i18n');
+
+    // Clone the real guide item so GOAL uses exactly the same structure,
+    // spacing, borders and typography as the existing All Games Guide items.
+    const item = popoBlock.cloneNode(true);
     item.dataset.goalGameGuide = 'true';
-    item.className = 'goal-game-guide-item';
-    item.innerHTML = `
-      <div class="goal-guide-kicker">MIRACLE SHOT · GAME</div>
-      <h3>골이예요 GOAL</h3>
-      <p><strong>골이예요 GOAL</strong>은 MIRACLE SHOT의 네 주인공 <strong>황·길·고·영</strong> 중 한 명을 선택해 거대한 점수벽을 향해 슛을 날리는 1:1 축구 게임입니다.</p>
-      <p><strong>COMPUTER</strong> 또는 <strong>PLAYER 2</strong>와 대결할 수 있으며, 각 세트마다 양쪽이 한 번씩 슛을 시도합니다. 총 <strong>5세트의 누적 점수</strong>로 승부를 결정하고, 동점이면 승부가 날 때까지 연장 슛을 진행합니다.</p>
-      <p>공을 터치한 뒤 드래그하여 <strong>방향·세기·커브·각도</strong>를 조절하세요. 거대한 점수벽에는 <strong>-100부터 +100</strong>까지의 점수판이 무작위로 배치되며, 맞힌 점수가 그대로 누적됩니다.</p>
-      <p>높은 점수판을 노리는 것만이 전부가 아닙니다. 공의 거리와 방향, 힘과 커브를 계산해 정확한 슛을 만드는 것이 승리의 핵심입니다.</p>
-      <a href="/goal.html" class="goal-guide-link">PLAY GOAL →</a>`;
 
-    guideSection.appendChild(item);
+    const heading = item.querySelector('[data-i18n="guide7_heading"]');
+    if (heading) {
+      heading.textContent = '⑦ 골이예요 GOAL — MIRACLE SHOT / Sports';
+      heading.removeAttribute('data-i18n');
+    }
+
+    const desc = item.querySelector('[data-i18n="guide7_desc"]');
+    if (desc) {
+      desc.textContent = `MIRACLE SHOT의 네 주인공 황·길·고·영 중 한 명을 선택해 거대한 점수벽을 향해 슛을 날리는 1:1 축구 게임입니다.\n                            COMPUTER 또는 PLAYER 2와 대결할 수 있으며, 각 세트마다 양쪽이 한 번씩 슛을 시도합니다. 총 5세트의 누적 점수로 승부를 결정하고, 동점이면 승부가 날 때까지 연장 슛을 진행합니다.\n                            공을 터치한 뒤 드래그하여 방향·세기·커브·각도를 조절하세요. 거대한 점수벽에는 -100부터 +100까지의 점수판이 무작위로 배치되며, 맞힌 점수가 그대로 누적됩니다. 정확한 슛과 전략적인 조준으로 최고의 점수에 도전하세요.`;
+      desc.removeAttribute('data-i18n');
+    }
+
+    popoBlock.insertAdjacentElement('afterend', item);
   }
 
   function init() {
@@ -69,12 +75,6 @@
         .goal-game-card-image { overflow:hidden; background:#050509; aspect-ratio:16/9; }
         .goal-game-card-image img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .45s ease; }
         .goal-game-card:hover .goal-game-card-image img { transform:scale(1.05); }
-        .goal-game-guide-item { margin-top:28px; padding:28px 30px; border:1px solid rgba(201,168,76,.22); border-radius:18px; background:linear-gradient(145deg,rgba(15,15,22,.78),rgba(5,5,8,.88)); color:rgba(240,236,228,.78); text-align:left; line-height:1.8; }
-        .goal-game-guide-item h3 { margin:6px 0 12px; color:#fff; font-size:1.35rem; }
-        .goal-game-guide-item p { margin:8px 0; }
-        .goal-guide-kicker { color:#c9a84c; font-size:.68rem; font-weight:700; letter-spacing:2px; }
-        .goal-guide-link { display:inline-block; margin-top:14px; color:#e8d08a; font-weight:700; text-decoration:none; letter-spacing:1px; }
-        .goal-guide-link:hover { text-decoration:underline; }
       `;
       document.head.appendChild(style);
     }

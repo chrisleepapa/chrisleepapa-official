@@ -165,6 +165,38 @@
         }
         canvas { width: 100%; height: 100%; display: block; }
 
+        /* ─── 게임 시작 오버레이 ─── */
+        #game-start-overlay {
+            position: absolute; inset: 0; z-index: 80;
+            display: flex; align-items: center; justify-content: center;
+            padding: 25px;
+            background: rgba(3,3,5,0.62);
+            backdrop-filter: blur(6px);
+            transition: opacity 0.3s ease;
+        }
+        #game-start-overlay.hidden { opacity: 0; pointer-events: none; }
+        #game-start-overlay .start-card {
+            width: min(330px, 90%);
+            padding: 28px 22px;
+            text-align: center;
+            background: rgba(10,5,20,0.88);
+            border: 1px solid rgba(255,255,255,0.18);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.65), 0 0 30px rgba(255,0,127,0.18);
+        }
+        #game-start-overlay .start-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.65rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+        #game-start-overlay .start-desc {
+            font-size: 0.78rem;
+            color: #aaa;
+            margin-bottom: 8px;
+        }
+
         /* ─── 거대 투명 컨트롤러 ─── */
         #touch-dpad {
             position: absolute; inset: 0;
@@ -251,16 +283,13 @@
   <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="TETRIS — Chris LEE.PAPA">
-  <meta name="twitter:description" content="TETRIS — Chris LEE.PAPA. Chris LEE.PAPA의 The Creative Archive 콘텐츠 페이지입니다.">
+  <meta name="twitter:description" content="TETRIS — Chris LEE.PAPA의 The Creative Archive 콘텐츠 페이지입니다.">
   <meta name="twitter:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png">
 </head>
 <body>
 
 <div id="gameWrap">
-    <!-- 🦅 독수리 이벤트 -->
     <div id="eagle-wrap">🦅</div>
-    
-    <!-- 🎵 숨겨진 유튜브 플레이어 -->
     <div id="yt-player-container"></div>
 
     <!-- 1. 메인 로그인 화면 -->
@@ -297,17 +326,13 @@
             <div class="hud-label">Player</div>
             <div id="hudInit" class="hud-val">---</div>
         </div>
-        
-        <!-- NEXT 미리보기 캔버스 -->
         <div class="hud-item" style="flex: 1; text-align: center; margin: 0 10px;">
             <div class="hud-label">NEXT</div>
             <canvas id="nextCanvas" width="60" height="90" style="margin: 0 auto; display: block;"></canvas>
         </div>
-
         <div class="hud-item" style="flex: 1; text-align: right; display: flex; flex-direction: column; align-items: flex-end;">
             <div class="hud-label">LEVEL</div>
             <div id="hudLevel" class="hud-val">1</div>
-            <!-- 일시정지 버튼 -->
             <button id="btn-pause" onclick="togglePause()">⏸️</button>
         </div>
     </div>
@@ -316,8 +341,17 @@
     <main id="mainGameArea">
         <div class="canvas-wrapper">
             <canvas id="tetris"></canvas>
+
+            <!-- 로그인 후 게임 화면에서 사용자가 직접 시작 -->
+            <div id="game-start-overlay">
+                <div class="start-card">
+                    <div class="start-title">READY?</div>
+                    <div class="start-desc">배틀 필드에 입장했습니다.</div>
+                    <div class="start-desc">게임 시작 버튼을 누르면 플레이가 시작됩니다.</div>
+                    <button id="startGameBtn" class="btn-magic" onclick="startGame()">게임 시작</button>
+                </div>
+            </div>
             
-            <!-- 4. 영역 분할 컨트롤러 -->
             <div id="touch-dpad">
                 <div class="t-btn" id="t-left">◀</div>
                 <div class="t-btn btn-action" id="t-up">↻</div>
@@ -328,29 +362,21 @@
         </div>
     </main>
 
-    <!-- 5. 게임 오버 -->
+    <!-- 4. 게임 오버 -->
     <div id="gameover">
         <div class="gameover-card">
             <div style="font-size: 3rem; margin-bottom: 10px;">💀</div>
             <div class="title-main" style="font-size: 2rem; color: #ff007f; -webkit-text-fill-color: #ff007f;">GAME OVER</div>
             <div style="font-size: 1.1rem; margin-bottom: 25px; opacity: 0.8;">최종 도달: <span style="color:var(--c-gold); font-weight:900;">LV.<span id="finalLevel">1</span></span></div>
-            
-            <!-- 다시도전 버튼 (저장 완료 전까지 클릭 방지) -->
             <button id="retryBtn" class="btn-magic" onclick="location.reload()">다시 도전</button>
-            
-            <!-- ★ DB 에러 출력 영역 (저장 실패 시 원인 파악용) -->
             <div id="dbErrorLog" style="display:none; color:#ff007f; font-size:0.7rem; margin-top:15px; background:rgba(0,0,0,0.5); padding:8px; border-radius:8px; word-break:break-all;"></div>
         </div>
     </div>
 </div>
 
 <script>
-    // ══════════════════════════════════════════════════════
-    // YOUTUBE BGM PLAYER (유튜브 플레이리스트 완벽 지원 및 랜덤 셔플)
-    // ══════════════════════════════════════════════════════
     let ytPlayer;
     let isYtReady = false;
-
     const tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
     const firstScriptTag = document.getElementsByTagName('script')[0];
@@ -358,121 +384,51 @@
 
     window.onYouTubeIframeAPIReady = function() {
         ytPlayer = new YT.Player('yt-player-container', {
-            height: '0',
-            width: '0',
-            playerVars: {
-                'autoplay': 0, 
-                'controls': 0,
-                'disablekb': 1,
-                'listType': 'playlist', // ★ 플레이리스트 타입 선언
-                'list': 'PL3p0Se-Sm12SdPoWcevuXVd5pAMfpOGxY', // ★ 전달해주신 플레이리스트 ID
-                'playsinline': 1
-            },
+            height: '0', width: '0',
+            playerVars: { 'autoplay': 0, 'controls': 0, 'disablekb': 1, 'listType': 'playlist', 'list': 'PL3p0Se-Sm12SdPoWcevuXVd5pAMfpOGxY', 'playsinline': 1 },
             events: {
-                'onReady': function(event) {
-                    isYtReady = true;
-                    event.target.setVolume(25); // 기본 볼륨 설정
-                },
-                'onStateChange': function(event) {
-                    // ★ 혹시라도 유튜브 정책상 멈추는 경우를 대비해, 영상이 끝나면 강제로 다음 곡으로 넘기는 안전장치
-                    if (event.data === YT.PlayerState.ENDED) {
-                        ytPlayer.nextVideo();
-                    }
-                }
+                'onReady': function(event) { isYtReady = true; event.target.setVolume(25); },
+                'onStateChange': function(event) { if (event.data === YT.PlayerState.ENDED) ytPlayer.nextVideo(); }
             }
         });
     };
 
-    // ══════════════════════════════════════════════════════
-    // SOUND & REACTION
-    // ══════════════════════════════════════════════════════
     let audioCtx;
     const REACTIONS = ["폼 미쳤다!", "나이스!", "오우예!", "찢었다!", "GOAT!", "완벽해!", "깔끔쓰✨"];
-
     function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
-
     function playSound(type) {
         if (!audioCtx) return;
         const t = audioCtx.currentTime;
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
+        const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
         osc.connect(gain); gain.connect(audioCtx.destination);
-        if (type === 'move') {
-            osc.type = 'sine'; osc.frequency.setValueAtTime(200, t);
-            gain.gain.setValueAtTime(0.05, t); osc.start(t); osc.stop(t + 0.05);
-        } else if (type === 'rotate') {
-            osc.type = 'triangle'; osc.frequency.setValueAtTime(400, t);
-            gain.gain.setValueAtTime(0.05, t); osc.start(t); osc.stop(t + 0.1);
-        } else if (type === 'drop') {
-            osc.type = 'square'; osc.frequency.setValueAtTime(150, t);
-            gain.gain.setValueAtTime(0.1, t); osc.start(t); osc.stop(t + 0.1);
-        } else if (type === 'clear') {
-            [440, 659].forEach((f, i) => {
-                const o = audioCtx.createOscillator(); const g = audioCtx.createGain();
-                o.connect(g); g.connect(audioCtx.destination);
-                o.frequency.setValueAtTime(f, t + i * 0.1);
-                g.gain.setValueAtTime(0.05, t + i * 0.1); o.start(t + i * 0.1); o.stop(t + i * 0.1 + 0.2);
-            });
+        if (type === 'move') { osc.type = 'sine'; osc.frequency.setValueAtTime(200, t); gain.gain.setValueAtTime(0.05, t); osc.start(t); osc.stop(t + 0.05); }
+        else if (type === 'rotate') { osc.type = 'triangle'; osc.frequency.setValueAtTime(400, t); gain.gain.setValueAtTime(0.05, t); osc.start(t); osc.stop(t + 0.1); }
+        else if (type === 'drop') { osc.type = 'square'; osc.frequency.setValueAtTime(150, t); gain.gain.setValueAtTime(0.1, t); osc.start(t); osc.stop(t + 0.1); }
+        else if (type === 'clear') {
+            [440, 659].forEach((f, i) => { const o = audioCtx.createOscillator(); const g = audioCtx.createGain(); o.connect(g); g.connect(audioCtx.destination); o.frequency.setValueAtTime(f, t + i * 0.1); g.gain.setValueAtTime(0.05, t + i * 0.1); o.start(t + i * 0.1); o.stop(t + i * 0.1 + 0.2); });
         } else if (type === 'levelup') {
-            [440, 554, 659, 880].forEach((f, i) => {
-                const o = audioCtx.createOscillator(); const g = audioCtx.createGain();
-                o.type = 'triangle'; o.connect(g); g.connect(audioCtx.destination);
-                o.frequency.setValueAtTime(f, t + i * 0.15);
-                g.gain.setValueAtTime(0.1, t + i * 0.15); o.start(t + i * 0.15); o.stop(t + i * 0.15 + 0.3);
-            });
+            [440, 554, 659, 880].forEach((f, i) => { const o = audioCtx.createOscillator(); const g = audioCtx.createGain(); o.type = 'triangle'; o.connect(g); g.connect(audioCtx.destination); o.frequency.setValueAtTime(f, t + i * 0.15); g.gain.setValueAtTime(0.1, t + i * 0.15); o.start(t + i * 0.15); o.stop(t + i * 0.15 + 0.3); });
         }
     }
-
     function showReaction(text) {
-        const el = document.createElement('div');
-        el.className = 'floating-reaction';
-        el.textContent = text || REACTIONS[Math.floor(Math.random() * REACTIONS.length)];
-        document.getElementById('mainGameArea').appendChild(el);
-        el.style.animation = 'float-reaction 1.2s ease-out forwards';
-        setTimeout(() => el.remove(), 1300);
+        const el = document.createElement('div'); el.className = 'floating-reaction'; el.textContent = text || REACTIONS[Math.floor(Math.random() * REACTIONS.length)];
+        document.getElementById('mainGameArea').appendChild(el); el.style.animation = 'float-reaction 1.2s ease-out forwards'; setTimeout(() => el.remove(), 1300);
     }
-
     function showLevelUpAnimation(level) {
         playSound('levelup');
-        const el = document.createElement('div');
-        el.className = 'level-up-anim';
-        el.innerHTML = `LEVEL UP!<br><span style="font-size:4rem">${level}</span>`;
-        document.getElementById('gameWrap').appendChild(el);
-        
-        const hud = document.getElementById('hudLevel');
-        const hudRect = hud.getBoundingClientRect();
-        const wrapRect = document.getElementById('gameWrap').getBoundingClientRect();
-        
-        const targetX = (hudRect.left - wrapRect.left) + (hudRect.width / 2);
-        const targetY = (hudRect.top - wrapRect.top) + (hudRect.height / 2);
-        const startX = wrapRect.width / 2;
-        const startY = wrapRect.height / 2;
-        
-        el.style.left = startX + 'px';
-        el.style.top = startY + 'px';
-        
+        const el = document.createElement('div'); el.className = 'level-up-anim'; el.innerHTML = `LEVEL UP!<br><span style="font-size:4rem">${level}</span>`; document.getElementById('gameWrap').appendChild(el);
+        const hud = document.getElementById('hudLevel'); const hudRect = hud.getBoundingClientRect(); const wrapRect = document.getElementById('gameWrap').getBoundingClientRect();
+        const targetX = (hudRect.left - wrapRect.left) + (hudRect.width / 2); const targetY = (hudRect.top - wrapRect.top) + (hudRect.height / 2); const startX = wrapRect.width / 2; const startY = wrapRect.height / 2;
+        el.style.left = startX + 'px'; el.style.top = startY + 'px';
         const anim = el.animate([
             { transform: 'translate(-50%, -50%) scale(0)', opacity: 0, offset: 0 },
             { transform: 'translate(-50%, -50%) scale(1.2)', opacity: 1, offset: 0.15 },
             { transform: 'translate(-50%, -50%) scale(1)', opacity: 1, offset: 0.7 },
             { transform: `translate(calc(-50% + ${targetX - startX}px), calc(-50% + ${targetY - startY}px)) scale(0.2)`, opacity: 0.5, offset: 1 }
         ], { duration: 1800, easing: 'ease-in-out' });
-        
-        anim.onfinish = () => {
-            el.remove();
-            hud.innerText = level;
-            hud.style.color = '#ffcf00';
-            hud.style.transform = 'scale(1.5)';
-            setTimeout(() => {
-                hud.style.transform = 'scale(1)';
-                hud.style.color = 'var(--c-cyan)';
-            }, 300);
-        };
+        anim.onfinish = () => { el.remove(); hud.innerText = level; hud.style.color = '#ffcf00'; hud.style.transform = 'scale(1.5)'; setTimeout(() => { hud.style.transform = 'scale(1)'; hud.style.color = 'var(--c-cyan)'; }, 300); };
     }
 
-    // ══════════════════════════════════════════════════════
-    // SUPABASE & CONFIG
-    // ══════════════════════════════════════════════════════
     const SUPA_URL = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
     const SUPA_KEY = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
     const TABLE_NAME = 'tetris_scores';
@@ -484,105 +440,59 @@
     async function loadLeaderboard() {
         const lbSpinner = document.getElementById('lbSpinner');
         try {
-            const res = await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?select=initials,level&order=level.desc,timestamp.asc&limit=5`, {
+            const res = await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?select=initials,level&order=level.desc,timestamp.asc&limit=3`, {
                 headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` }
             });
-            
-            if (!res.ok) {
-                if (lbSpinner) lbSpinner.textContent = '⚠ DB 에러 (RLS 확인 필요)';
-                return;
-            }
-
+            if (!res.ok) { if (lbSpinner) lbSpinner.textContent = '⚠ DB 에러 (RLS 확인 필요)'; return; }
             const data = await res.json();
             if (lbSpinner) lbSpinner.style.display = 'none';
-            const list = document.getElementById('leaderboardList');
-            list.innerHTML = '';
-            const medals = ['🥇', '🥈', '🥉', '4', '5'];
+            const list = document.getElementById('leaderboardList'); list.innerHTML = '';
+            const medals = ['🥇', '🥈', '🥉'];
             if (Array.isArray(data)) {
-                data.forEach((e, i) => {
-                    list.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:3px; background:rgba(0,0,0,0.2); padding:5px 10px; border-radius:5px;"><span>${medals[i] || ''} <b>${e.initials}</b></span><span style="color:var(--c-gold); font-weight:900;">LV.${e.level}</span></div>`;
+                data.slice(0, 3).forEach((e, i) => {
+                    list.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:3px; background:rgba(0,0,0,0.2); padding:5px 10px; border-radius:5px;"><span>${medals[i]} <b>${e.initials}</b></span><span style="color:var(--c-gold); font-weight:900;">LV.${e.level}</span></div>`;
                 });
             }
-        } catch (e) { 
-            if (lbSpinner) lbSpinner.textContent = '⚠'; 
-        }
+        } catch (e) { if (lbSpinner) lbSpinner.textContent = '⚠'; }
     }
 
     async function saveScore(level) {
         if (!currentInitials) return false;
         try {
-            const checkRes = await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?select=level&initials=eq.${currentInitials}`, {
-                headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` }
-            });
-            
+            const checkRes = await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?select=level&initials=eq.${currentInitials}`, { headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` } });
             if (!checkRes.ok) throw new Error("데이터 조회 거부: " + await checkRes.text());
-
-            const existing = await checkRes.json();
-            let res;
-
+            const existing = await checkRes.json(); let res;
             if (Array.isArray(existing) && existing.length > 0) {
                 if (Number(level) > Number(existing[0].level)) {
-                    res = await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?initials=eq.${currentInitials}`, {
-                        method: 'PATCH',
-                        headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ level: Number(level), timestamp: new Date().toISOString() })
-                    });
-                } else {
-                    return true; 
-                }
+                    res = await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?initials=eq.${currentInitials}`, { method: 'PATCH', headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ level: Number(level), timestamp: new Date().toISOString() }) });
+                } else { return true; }
             } else {
-                res = await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}`, {
-                    method: 'POST',
-                    headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ initials: currentInitials, level: Number(level), timestamp: new Date().toISOString() })
-                });
+                res = await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}`, { method: 'POST', headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ initials: currentInitials, level: Number(level), timestamp: new Date().toISOString() }) });
             }
-
-            if (res && !res.ok) {
-                throw new Error("저장 실패: " + await res.text());
-            }
+            if (res && !res.ok) throw new Error("저장 실패: " + await res.text());
             return true;
-        } catch (e) { 
-            console.error("Save Error", e);
-            const errLog = document.getElementById('dbErrorLog');
-            if (errLog) {
-                errLog.style.display = 'block';
-                errLog.innerText = "[에러 원인] " + e.message;
-            }
+        } catch (e) {
+            console.error("Save Error", e); const errLog = document.getElementById('dbErrorLog');
+            if (errLog) { errLog.style.display = 'block'; errLog.innerText = "[에러 원인] " + e.message; }
             return false;
         }
     }
 
-    // ══════════════════════════════════════════════════════
-    // TETRIS ENGINE
-    // ══════════════════════════════════════════════════════
     const COLS = 10, ROWS = 20, BLOCK_SIZE = 30;
     let arena = Array.from({length: ROWS}, () => Array(COLS).fill(0));
     let player = { pos: {x: 0, y: 0}, matrix: null, lines: 0, level: 1, gameOver: true };
-    
     const BASE_DROP_INTERVAL = 2000;
     const LINE_SPEED_STEP = 500;
     const MIN_DROP_INTERVAL = 100;
-
     let dropCounter = 0, dropInterval = BASE_DROP_INTERVAL, lastTime = 0;
-    
     let isIntro = false;
-    let isPaused = false; 
-
+    let isPaused = false;
     let nextPieces = [];
 
- function getDropIntervalForLines(lines) {
-    return Math.max(
-        MIN_DROP_INTERVAL,
-        BASE_DROP_INTERVAL - (lines * LINE_SPEED_STEP)
-    );
-}
-
-    function getRandomPieceMatrix() {
-        const pieces = 'ILJOTSZ';
-        return createPiece(pieces[pieces.length * Math.random() | 0]);
+    function getDropIntervalForLines(lines) {
+        return Math.max(MIN_DROP_INTERVAL, BASE_DROP_INTERVAL - (lines * LINE_SPEED_STEP));
     }
-
+    function getRandomPieceMatrix() { const pieces = 'ILJOTSZ'; return createPiece(pieces[pieces.length * Math.random() | 0]); }
     function createPiece(type) {
         if (type === 'I') return [[0,1,0,0],[0,1,0,0],[0,1,0,0],[0,1,0,0]];
         if (type === 'L') return [[0,2,0],[0,2,0],[0,2,2]];
@@ -592,241 +502,111 @@
         if (type === 'S') return [[0,6,6],[6,6,0],[0,0,0]];
         if (type === 'T') return [[0,7,0],[7,7,7],[0,0,0]];
     }
-
     const colors = [null, '#00e5ff', '#ff8e0d', '#3877ff', '#ffdd00', '#ff007f', '#00ff66', '#b300ff'];
 
     function drawNextPieces() {
-        const nc = document.getElementById('nextCanvas');
-        const nctx = nc.getContext('2d');
-        nctx.clearRect(0, 0, nc.width, nc.height);
-        
-        const bSize = 12; 
+        const nc = document.getElementById('nextCanvas'); const nctx = nc.getContext('2d'); nctx.clearRect(0, 0, nc.width, nc.height);
+        const bSize = 12;
         nextPieces.forEach((matrix, index) => {
-            const offsetY = index * 45; 
-            const offsetX = (nc.width - matrix[0].length * bSize) / 2; 
-            
-            matrix.forEach((row, y) => {
-                row.forEach((value, x) => {
-                    if (value !== 0) {
-                        const px = offsetX + x * bSize;
-                        const py = offsetY + y * bSize;
-                        nctx.fillStyle = colors[value];
-                        nctx.shadowBlur = 5; nctx.shadowColor = colors[value];
-                        nctx.fillRect(px, py, bSize - 1, bSize - 1);
-                        nctx.shadowBlur = 0;
-                    }
-                });
-            });
+            const offsetY = index * 45; const offsetX = (nc.width - matrix[0].length * bSize) / 2;
+            matrix.forEach((row, y) => row.forEach((value, x) => {
+                if (value !== 0) { const px = offsetX + x * bSize; const py = offsetY + y * bSize; nctx.fillStyle = colors[value]; nctx.shadowBlur = 5; nctx.shadowColor = colors[value]; nctx.fillRect(px, py, bSize - 1, bSize - 1); nctx.shadowBlur = 0; }
+            }));
         });
     }
-
     function draw() {
-        const wrapper = document.querySelector('.canvas-wrapper');
-        canvas.width = wrapper.clientWidth;
-        canvas.height = wrapper.clientHeight;
-
-        const scale = Math.min(canvas.width / (COLS * BLOCK_SIZE), canvas.height / (ROWS * BLOCK_SIZE));
-        const offsetX = (canvas.width - COLS * BLOCK_SIZE * scale) / 2;
-        const offsetY = (canvas.height - ROWS * BLOCK_SIZE * scale) / 2;
-        
-        ctx.fillStyle = '#000'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.save(); ctx.translate(offsetX, offsetY); ctx.scale(scale, scale);
-        
+        const wrapper = document.querySelector('.canvas-wrapper'); canvas.width = wrapper.clientWidth; canvas.height = wrapper.clientHeight;
+        const scale = Math.min(canvas.width / (COLS * BLOCK_SIZE), canvas.height / (ROWS * BLOCK_SIZE)); const offsetX = (canvas.width - COLS * BLOCK_SIZE * scale) / 2; const offsetY = (canvas.height - ROWS * BLOCK_SIZE * scale) / 2;
+        ctx.fillStyle = '#000'; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.save(); ctx.translate(offsetX, offsetY); ctx.scale(scale, scale);
         ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)'; ctx.lineWidth = 0.5;
         for(let x=0; x<=COLS; x++) { ctx.beginPath(); ctx.moveTo(x*BLOCK_SIZE, 0); ctx.lineTo(x*BLOCK_SIZE, ROWS*BLOCK_SIZE); ctx.stroke(); }
         for(let y=0; y<=ROWS; y++) { ctx.beginPath(); ctx.moveTo(0, y*BLOCK_SIZE); ctx.lineTo(COLS*BLOCK_SIZE, y*BLOCK_SIZE); ctx.stroke(); }
-        
-        drawMatrix(arena, {x: 0, y: 0});
-        if (player.matrix) drawMatrix(player.matrix, player.pos);
-        ctx.restore();
+        drawMatrix(arena, {x: 0, y: 0}); if (player.matrix) drawMatrix(player.matrix, player.pos); ctx.restore();
     }
-
     function drawMatrix(matrix, offset) {
-        matrix.forEach((row, y) => {
-            row.forEach((value, x) => {
-                if (value !== 0) {
-                    const px = (x + offset.x) * BLOCK_SIZE, py = (y + offset.y) * BLOCK_SIZE;
-                    ctx.fillStyle = colors[value];
-                    ctx.shadowBlur = 10; ctx.shadowColor = colors[value];
-                    ctx.fillRect(px + 1, py + 1, BLOCK_SIZE - 2, BLOCK_SIZE - 2);
-                    ctx.shadowBlur = 0;
-                    ctx.fillStyle = 'rgba(255,255,255,0.2)'; ctx.fillRect(px+1, py+1, BLOCK_SIZE-2, 4);
-                }
-            });
-        });
+        matrix.forEach((row, y) => row.forEach((value, x) => {
+            if (value !== 0) { const px = (x + offset.x) * BLOCK_SIZE, py = (y + offset.y) * BLOCK_SIZE; ctx.fillStyle = colors[value]; ctx.shadowBlur = 10; ctx.shadowColor = colors[value]; ctx.fillRect(px + 1, py + 1, BLOCK_SIZE - 2, BLOCK_SIZE - 2); ctx.shadowBlur = 0; ctx.fillStyle = 'rgba(255,255,255,0.2)'; ctx.fillRect(px+1, py+1, BLOCK_SIZE-2, 4); }
+        }));
     }
-
     function collide(arena, player) {
         const [m, o] = [player.matrix, player.pos];
-        for (let y = 0; y < m.length; ++y) {
-            for (let x = 0; x < m[y].length; ++x) {
-                if (m[y][x] !== 0 && (arena[y + o.y] && arena[y + o.y][x + o.x]) !== 0) return true;
-            }
-        }
+        for (let y = 0; y < m.length; ++y) for (let x = 0; x < m[y].length; ++x) if (m[y][x] !== 0 && (arena[y + o.y] && arena[y + o.y][x + o.x]) !== 0) return true;
         return false;
     }
+    function merge(arena, player) { player.matrix.forEach((row, y) => row.forEach((value, x) => { if (value !== 0) arena[y + player.pos.y][x + player.pos.x] = value; })); }
 
-    function merge(arena, player) {
-        player.matrix.forEach((row, y) => {
-            row.forEach((value, x) => {
-                if (value !== 0) arena[y + player.pos.y][x + player.pos.x] = value;
-            });
-        });
-    }
-
-function arenaSweep() {
-    let totalCleared = 0;
-
-    for (let y = ROWS - 1; y >= 0; y--) {
-        let isFull = true;
-        for (let x = 0; x < COLS; x++) {
-            if (arena[y][x] === 0) { isFull = false; break; }
+    function arenaSweep() {
+        let totalCleared = 0;
+        for (let y = ROWS - 1; y >= 0; y--) {
+            let isFull = true;
+            for (let x = 0; x < COLS; x++) { if (arena[y][x] === 0) { isFull = false; break; } }
+            if (isFull) { arena.splice(y, 1); arena.unshift(Array(COLS).fill(0)); totalCleared++; y++; }
         }
-        if (isFull) {
-            // 꽉 찬 줄 제거 후, 위 줄들을 한 칸씩 아래로
-            arena.splice(y, 1);
-            arena.unshift(Array(COLS).fill(0));
-            totalCleared++;
-            y++; // 같은 y 위치 재검사
+        if (totalCleared > 0) {
+            const oldLevel = player.level;
+            player.lines += totalCleared;
+            dropInterval = getDropIntervalForLines(player.lines);
+            player.level = Math.floor(player.lines / 5) + 1;
+            maxReachedLevel = Math.max(maxReachedLevel, player.level);
+            if (player.level > oldLevel) showLevelUpAnimation(player.level); else { playSound('clear'); showReaction(); }
         }
     }
-
-    if (totalCleared > 0) {
-        const oldLevel = player.level;
-   player.lines += totalCleared;
-dropInterval = getDropIntervalForLines(player.lines);
-player.level = Math.floor(player.lines / 5) + 1;
-        maxReachedLevel = Math.max(maxReachedLevel, player.level);
-
-        if (player.level > oldLevel) {
-            showLevelUpAnimation(player.level);
-        } else {
-            playSound('clear');
-            showReaction();
-        }
-    }
-}
-
     function playerDrop() {
         if (isIntro || isPaused) return;
         player.pos.y++;
-        if (collide(arena, player)) {
-            player.pos.y--; 
-            merge(arena, player); 
-            arenaSweep(); 
-            playerReset(); 
-        }
+        if (collide(arena, player)) { player.pos.y--; merge(arena, player); arenaSweep(); playerReset(); }
         dropCounter = 0;
     }
-
     function hardDrop() {
         if (player.gameOver || isIntro || isPaused) return;
-        while (!collide(arena, player)) { player.pos.y++; }
-        player.pos.y--; 
-        merge(arena, player); 
-        arenaSweep(); 
-        playerReset(); 
-        dropCounter = 0; playSound('drop'); draw();
+        while (!collide(arena, player)) player.pos.y++;
+        player.pos.y--; merge(arena, player); arenaSweep(); playerReset(); dropCounter = 0; playSound('drop'); draw();
     }
-
     function playerMove(dir) {
         if (player.gameOver || isIntro || isPaused) return;
-        player.pos.x += dir;
-        if (collide(arena, player)) player.pos.x -= dir;
-        else { playSound('move'); draw(); }
+        player.pos.x += dir; if (collide(arena, player)) player.pos.x -= dir; else { playSound('move'); draw(); }
     }
-
     function playerRotate() {
         if (player.gameOver || isIntro || isPaused) return;
-        const pos = player.pos.x; let offset = 1;
-        rotate(player.matrix);
-        while (collide(arena, player)) {
-            player.pos.x += offset;
-            offset = -(offset + (offset > 0 ? 1 : -1));
-            if (offset > player.matrix[0].length) { rotate(player.matrix, -1); player.pos.x = pos; return; }
-        }
+        const pos = player.pos.x; let offset = 1; rotate(player.matrix);
+        while (collide(arena, player)) { player.pos.x += offset; offset = -(offset + (offset > 0 ? 1 : -1)); if (offset > player.matrix[0].length) { rotate(player.matrix, -1); player.pos.x = pos; return; } }
         playSound('rotate'); draw();
     }
-
     function rotate(matrix, dir = 1) {
-        for (let y = 0; y < matrix.length; ++y) {
-            for (let x = 0; x < y; ++x) [matrix[x][y], matrix[y][x]] = [matrix[y][x], matrix[x][y]];
-        }
+        for (let y = 0; y < matrix.length; ++y) for (let x = 0; x < y; ++x) [matrix[x][y], matrix[y][x]] = [matrix[y][x], matrix[x][y]];
         if (dir > 0) matrix.forEach(row => row.reverse()); else matrix.reverse();
     }
-
     function playerReset() {
-        while(nextPieces.length < 2) {
-            nextPieces.push(getRandomPieceMatrix());
-        }
-        player.matrix = nextPieces.shift();
-        nextPieces.push(getRandomPieceMatrix());
-        drawNextPieces(); 
-
+        while(nextPieces.length < 2) nextPieces.push(getRandomPieceMatrix());
+        player.matrix = nextPieces.shift(); nextPieces.push(getRandomPieceMatrix()); drawNextPieces();
         player.pos.y = 0; player.pos.x = (COLS / 2 | 0) - (player.matrix[0].length / 2 | 0);
         if (collide(arena, player)) { player.gameOver = true; finishGame(); }
     }
-
     async function finishGame() {
-        playSound('gameover');
-        if (isYtReady && ytPlayer) ytPlayer.pauseVideo();
-        
-        document.getElementById('gameover').style.display = 'flex';
-        document.getElementById('finalLevel').innerText = maxReachedLevel;
-        
+        playSound('gameover'); if (isYtReady && ytPlayer) ytPlayer.pauseVideo();
+        document.getElementById('gameover').style.display = 'flex'; document.getElementById('finalLevel').innerText = maxReachedLevel;
         const retryBtn = document.getElementById('retryBtn');
-        if (retryBtn) {
-            retryBtn.innerText = "기록 저장 중... ⏳";
-            retryBtn.disabled = true;
-            retryBtn.style.opacity = "0.5";
-            retryBtn.style.pointerEvents = "none";
-        }
-
+        if (retryBtn) { retryBtn.innerText = "기록 저장 중... ⏳"; retryBtn.disabled = true; retryBtn.style.opacity = "0.5"; retryBtn.style.pointerEvents = "none"; }
         await saveScore(maxReachedLevel);
-        
-        if (retryBtn) {
-            retryBtn.innerText = "다시 도전";
-            retryBtn.disabled = false;
-            retryBtn.style.opacity = "1";
-            retryBtn.style.pointerEvents = "auto";
-        }
+        if (retryBtn) { retryBtn.innerText = "다시 도전"; retryBtn.disabled = false; retryBtn.style.opacity = "1"; retryBtn.style.pointerEvents = "auto"; }
     }
-
     function togglePause() {
         if (player.gameOver || isIntro) return;
-        isPaused = !isPaused;
-        document.getElementById('btn-pause').innerText = isPaused ? '▶️' : '⏸️';
-        
-        if (isPaused) {
-            showReaction("PAUSE ⏸️");
-            if (isYtReady && ytPlayer) ytPlayer.pauseVideo();
-        } else {
-            lastTime = performance.now(); 
-            update();
-            if (isYtReady && ytPlayer) ytPlayer.playVideo();
-        }
+        isPaused = !isPaused; document.getElementById('btn-pause').innerText = isPaused ? '▶️' : '⏸️';
+        if (isPaused) { showReaction("PAUSE ⏸️"); if (isYtReady && ytPlayer) ytPlayer.pauseVideo(); }
+        else { lastTime = performance.now(); update(); if (isYtReady && ytPlayer) ytPlayer.playVideo(); }
     }
-
     function update(time = 0) {
-        if (player.gameOver || isIntro || isPaused) return; 
-        const deltaTime = time - lastTime; lastTime = time;
-        
-        dropCounter += deltaTime;
+        if (player.gameOver || isIntro || isPaused) return;
+        const deltaTime = time - lastTime; lastTime = time; dropCounter += deltaTime;
         if (dropCounter > dropInterval) playerDrop();
-        
-        draw(); 
-        requestAnimationFrame(update);
+        draw(); requestAnimationFrame(update);
     }
-
     function startEagleIntro() {
-        isIntro = true;
-        const eagle = document.getElementById('eagle-wrap');
-        eagle.style.display = 'block';
+        isIntro = true; const eagle = document.getElementById('eagle-wrap'); eagle.style.display = 'block';
         eagle.animate([{ left: '-100px' }, { left: '45%' }], { duration: 1500, fill: 'forwards' }).onfinish = () => {
             playerReset(); draw(); playSound('drop'); showReaction("START! 🦅");
-            eagle.animate([{ left: '45%' }, { left: '120%' }], { duration: 1000, fill: 'forwards', easing: 'ease-in' }).onfinish = () => {
-                eagle.style.display = 'none'; isIntro = false; lastTime = performance.now(); update();
-            };
+            eagle.animate([{ left: '45%' }, { left: '120%' }], { duration: 1000, fill: 'forwards', easing: 'ease-in' }).onfinish = () => { eagle.style.display = 'none'; isIntro = false; lastTime = performance.now(); update(); };
         };
     }
 
@@ -837,80 +617,42 @@ player.level = Math.floor(player.lines / 5) + 1;
         currentInitials = val; document.getElementById('hudInit').innerText = currentInitials;
         document.getElementById('s-login').classList.add('hidden');
         document.getElementById('hud').style.opacity = '1';
-        
-        document.getElementById('touch-dpad').style.opacity = '1';
-        document.getElementById('touch-dpad').style.pointerEvents = 'auto';
-
-        // ★ 입장 시 플레이리스트를 셔플(랜덤 섞기)하고 무한반복 설정 후 재생!
-        if (isYtReady && ytPlayer) {
-            ytPlayer.setShuffle(true);
-            ytPlayer.setLoop(true);
-            ytPlayer.nextVideo(); // 섞은 플레이리스트의 새로운 랜덤 곡으로 넘김
-            ytPlayer.playVideo();
-        }
-        
-        setTimeout(startGame, 500); 
+        document.getElementById('game-start-overlay').classList.remove('hidden');
+        document.getElementById('touch-dpad').style.opacity = '0';
+        document.getElementById('touch-dpad').style.pointerEvents = 'none';
     }
 
     function startGame() {
+        if (!player.gameOver && !isPaused) return;
         arena = Array.from({length: ROWS}, () => Array(COLS).fill(0));
-        player.lines = 0; 
-        player.level = 1; 
-        maxReachedLevel = 1; 
-        player.gameOver = false; 
-        isPaused = false;
+        player.lines = 0; player.level = 1; maxReachedLevel = 1; player.gameOver = false; isPaused = false;
         document.getElementById('btn-pause').innerText = '⏸️';
-        
-        dropInterval = getDropIntervalForLines(0);
-        nextPieces = []; 
-        
+        dropInterval = getDropIntervalForLines(0); nextPieces = [];
         document.getElementById('hudLevel').innerText = '1';
-        draw();
-        startEagleIntro();
+        document.getElementById('game-start-overlay').classList.add('hidden');
+        document.getElementById('touch-dpad').style.opacity = '1';
+        document.getElementById('touch-dpad').style.pointerEvents = 'auto';
+        if (isYtReady && ytPlayer) { ytPlayer.setShuffle(true); ytPlayer.setLoop(true); ytPlayer.nextVideo(); ytPlayer.playVideo(); }
+        draw(); startEagleIntro();
     }
 
     window.addEventListener('keydown', e => {
         if (e.key.toLowerCase() === 'p' || e.key === 'Escape') togglePause();
-        
         if (player.gameOver || isIntro || isPaused) return;
         if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', ' '].includes(e.key)) e.preventDefault();
-        
-        if (e.key === 'ArrowLeft') playerMove(-1);
-        else if (e.key === 'ArrowRight') playerMove(1);
-        else if (e.key === 'ArrowDown') playerDrop();
-        else if (e.key === 'ArrowUp') playerRotate();
-        else if (e.key === ' ') hardDrop();
+        if (e.key === 'ArrowLeft') playerMove(-1); else if (e.key === 'ArrowRight') playerMove(1); else if (e.key === 'ArrowUp') playerRotate(); else if (e.key === 'ArrowDown') playerDrop(); else if (e.key === ' ') hardDrop();
     });
-
     function bindBtn(id, action, repeat = false) {
-        const btn = document.getElementById(id);
-        let timer = null;
-        let timeout = null;
-        const start = (e) => {
-            e.preventDefault(); if(player.gameOver || isIntro || isPaused) return;
-            action(); 
-            if(repeat) { 
-                clearTimeout(timeout);
-                clearInterval(timer);
-                timeout = setTimeout(() => {
-                    timer = setInterval(action, 40); 
-                }, 150);
-            }
-        };
+        const btn = document.getElementById(id); let timer = null; let timeout = null;
+        const start = (e) => { e.preventDefault(); if(player.gameOver || isIntro || isPaused) return; action(); if(repeat) { clearTimeout(timeout); clearInterval(timer); timeout = setTimeout(() => { timer = setInterval(action, 40); }, 150); } };
         const end = () => { clearTimeout(timeout); clearInterval(timer); };
-        
-        btn.addEventListener('pointerdown', start);
-        btn.addEventListener('pointerup', end);
-        btn.addEventListener('pointerleave', end);
-        btn.addEventListener('pointercancel', end);
+        btn.addEventListener('pointerdown', start); btn.addEventListener('pointerup', end); btn.addEventListener('pointerleave', end); btn.addEventListener('pointercancel', end);
     }
-
     bindBtn('t-left', () => playerMove(-1), true);
     bindBtn('t-right', () => playerMove(1), true);
     bindBtn('t-down', () => playerDrop(), true);
     bindBtn('t-up', () => playerRotate());
     bindBtn('t-space', () => hardDrop());
-
     window.addEventListener('resize', () => { draw(); });
     loadLeaderboard();
 </script>

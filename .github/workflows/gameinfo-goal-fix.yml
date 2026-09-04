@@ -1,0 +1,67 @@
+name: Add GOAL game to Game Center
+
+on:
+  push:
+    branches:
+      - develop
+
+permissions:
+  contents: write
+
+jobs:
+  patch-gameinfo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout develop
+        uses: actions/checkout@v4
+        with:
+          ref: develop
+          fetch-depth: 0
+
+      - name: Patch gameinfo.html
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('gameinfo.html')
+          s = p.read_text(encoding='utf-8')
+
+          s2 = s.replace('.bg-switch {}', '.bg-switch {}\n        .bg-goal {}', 1)
+
+          s2 = s2.replace('<!-- Game 7 -->\n            <a href="switch.html"', '<!-- Game 6 -->\n            <a href="switch.html"', 1)
+          s2 = s2.replace('<div class="game-tag tag-switch" data-i18n="switch_tag">', '<div class="game-tag tag-switch" data-i18n="switch_tag">', 1)
+
+          marker = '''            </a>\n        </div>'''
+          goal = '''            </a>\n\n            <!-- Game 7 -->\n            <a href="goal.html" class="game-card game-card-image-mode">\n                <div class="card-image-bg bg-goal">\n                    <img src="images/goal.png"\n                         alt="골이예요 GOAL — MIRACLE SHOT GAME"\n                         loading="lazy">\n                </div>\n                <div class="card-overlay"></div>\n                <div class="game-tag tag-switch" data-i18n="goal_tag">MIRACLE SHOT GAME</div>\n                <div class="game-card-content-wrap">\n                    <h3 class="game-card-title" data-i18n="goal_title">골이예요 GOAL</h3>\n                    <p class="game-card-desc" style="word-break:keep-all;" data-i18n="goal_desc">\n                        MIRACLE SHOT의 네 주인공 중 한 명을 선택해 거대한 점수벽을 향해 슛을 날리고,\n                        맞힌 점수를 누적해 승부를 겨루는 1:1 축구 게임입니다.\n                    </p>\n                </div>\n            </a>\n        </div>'''
+          if marker not in s2:
+              raise SystemExit('game card container marker not found')
+          s2 = s2.replace(marker, goal, 1)
+
+          if 'data-i18n="goal_title"' not in s2:
+              raise SystemExit('GOAL card insertion failed')
+
+          s2 = s2.replace("switch_desc:  '귀여운 요정 포포가", "goal_tag:    'MIRACLE SHOT GAME',\n  goal_title:  '골이예요 GOAL',\n  goal_desc:   'MIRACLE SHOT의 네 주인공 중 한 명을 선택해 거대한 점수벽을 향해 슛을 날리고, 맞힌 점수를 누적해 승부를 겨루는 1:1 축구 게임입니다.',\n\n  switch_desc:  '귀여운 요정 포포가", 1)
+
+          s2 = s2.replace("switch_desc:  'Choose the cute fairy Popo", "goal_tag:    'MIRACLE SHOT GAME',\n  goal_title:  'GOAL',\n  goal_desc:   'Choose one of four MIRACLE SHOT heroes, shoot toward the giant scoring wall, and compete in a 1:1 soccer game by accumulating your points.',\n\n  switch_desc:  'Choose the cute fairy Popo", 1)
+
+          s2 = s2.replace('⑦', '⑥', 1)
+          guide_marker = '⑥'
+          if 'goal_title' not in s2:
+              raise SystemExit('GOAL i18n insertion failed')
+
+          p.write_text(s2, encoding='utf-8')
+          PY
+
+      - name: Verify patch
+        run: |
+          test "$(grep -o 'href=\"goal.html\"' gameinfo.html | wc -l)" -eq 1
+          test "$(grep -o 'data-i18n=\"goal_title\"' gameinfo.html | wc -l)" -eq 1
+          test "$(grep -o 'images/goal.png' gameinfo.html | wc -l)" -eq 1
+          test "$(grep -o 'class=\"bg-goal\"' gameinfo.html | wc -l)" -eq 1
+
+      - name: Commit patched file
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add gameinfo.html
+          git commit -m "feat: add GOAL to Game Center"
+          git push origin HEAD:develop

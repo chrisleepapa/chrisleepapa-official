@@ -147,8 +147,82 @@ input[id*="initial" i]:not(#clp-game-login-initials),input[name*="initial" i]:no
             const apply=()=>{protectAccountFields();addGameAccountBar()};
             if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();
             setTimeout(apply,300);setTimeout(apply,1000);
+            if(page==='tetris'){
+                const enterTetrisArena=()=>{
+                    const input=document.getElementById('initialsInput');
+                    if(input && !input.value) input.value=accountInitials;
+                    if(typeof window.enterArena==='function') window.enterArena();
+                };
+                if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>setTimeout(enterTetrisArena,150),{once:true});
+                else setTimeout(enterTetrisArena,150);
+            }
         }catch(e){console.error('[game-auth]',e)}
     }
     if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',addGameCenterLink,{once:true});else addGameCenterLink();
     init();
+
+    /* TETRIS: reliable manual start screen.
+       This is intentionally isolated to /tetris and does not touch auth or ranking logic. */
+    if (page === 'tetris') {
+        const initTetrisStartScreen = () => {
+            if (document.getElementById('clp-tetris-start-screen')) return;
+            const login = document.getElementById('s-login');
+            const gameWrap = document.getElementById('gameWrap');
+            if (!login || !gameWrap) return;
+
+            const style = document.createElement('style');
+            style.id = 'clp-tetris-start-style';
+            style.textContent = `
+#clp-tetris-start-screen{
+ position:absolute;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;
+ padding:28px;background:rgba(3,3,5,.94);backdrop-filter:blur(14px);text-align:center;
+}
+#clp-tetris-start-screen.visible{display:flex!important}
+#clp-tetris-start-screen .clp-tetris-start-card{
+ width:min(360px,88vw);padding:30px 24px;border:1px solid rgba(255,255,255,.2);border-radius:26px;
+ background:rgba(10,5,20,.96);box-shadow:0 24px 70px rgba(0,0,0,.72),0 0 36px rgba(255,0,127,.22);
+}
+#clp-tetris-start-screen .clp-tetris-start-icon{font-size:3.2rem;line-height:1;margin-bottom:14px}
+#clp-tetris-start-screen .clp-tetris-start-title{font-family:'Cinzel',serif;font-size:1.8rem;font-weight:900;letter-spacing:2px}
+#clp-tetris-start-screen .clp-tetris-start-player{margin:10px 0 6px;color:#00e5ff;font-family:'Exo 2',sans-serif;font-size:1.05rem;font-weight:900;letter-spacing:2px}
+#clp-tetris-start-screen .clp-tetris-start-desc{font-size:.8rem;color:#aaa;margin-bottom:8px}
+#clp-tetris-start-screen button{display:block!important;visibility:visible!important;opacity:1!important;position:relative;z-index:10000}
+`;
+            document.head.appendChild(style);
+
+            const screen = document.createElement('div');
+            screen.id = 'clp-tetris-start-screen';
+            screen.innerHTML = `
+<div class="clp-tetris-start-card">
+  <div class="clp-tetris-start-icon">🎮</div>
+  <div class="clp-tetris-start-title">READY?</div>
+  <div class="clp-tetris-start-player">PLAYER <span id="clp-tetris-ready-initials">---</span></div>
+  <div class="clp-tetris-start-desc">배틀 필드에 입장했습니다.</div>
+  <div class="clp-tetris-start-desc">준비가 되면 게임을 시작하세요.</div>
+  <button id="clp-tetris-start-button" class="btn-magic" type="button">게임 시작</button>
+</div>`;
+            gameWrap.appendChild(screen);
+
+            const sync = () => {
+                const visible = login.classList.contains('hidden');
+                const initials = document.getElementById('hudInit')?.innerText || '---';
+                const ready = document.getElementById('clp-tetris-ready-initials');
+                if (ready) ready.textContent = initials || '---';
+                screen.classList.toggle('visible', visible);
+            };
+
+            document.getElementById('clp-tetris-start-button').addEventListener('click', () => {
+                screen.classList.remove('visible');
+                const legacy = document.getElementById('game-start-overlay');
+                if (legacy) legacy.classList.add('hidden');
+                if (typeof window.startGame === 'function') window.startGame();
+            });
+
+            const observer = new MutationObserver(sync);
+            observer.observe(login, {attributes:true,attributeFilter:['class']});
+            sync();
+        };
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initTetrisStartScreen, {once:true});
+        else initTetrisStartScreen();
+    }
 })();

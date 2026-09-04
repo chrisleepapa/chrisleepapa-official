@@ -8,6 +8,10 @@
         const fixGameCenter = () => {
             document.querySelectorAll('a.game-card[href*="baduk_easy"]').forEach(card => card.remove());
             const popoCard = document.querySelector('a.game-card[href="switch.html"], a.game-card[href="/switch.html"]');
+            if (popoCard) {
+                const popoImage = popoCard.querySelector('.card-image-bg img');
+                if (popoImage) { popoImage.src='/images/pops.jpg'; popoImage.alt='요정 포포의 여정'; }
+            }
             if (popoCard && !document.querySelector('a.goal-game-card')) {
                 const card = popoCard.cloneNode(true);
                 card.classList.add('goal-game-card');

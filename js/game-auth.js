@@ -3,52 +3,6 @@
 (() => {
     const GAME_PAGES = new Set(['game','booktop','fiveinrow','curling','tetris','switch','goal']);
     const page = (location.pathname.split('/').pop() || 'index').replace(/\.html$/i,'').toLowerCase();
-
-    if (page === 'gameinfo') {
-        const fixGameCenter = () => {
-            document.querySelectorAll('a.game-card[href*="baduk_easy"]').forEach(card => card.remove());
-            const popoCard = document.querySelector('a.game-card[href="switch.html"], a.game-card[href="/switch.html"]');
-            if (popoCard) {
-                const popoImage = popoCard.querySelector('.card-image-bg img');
-                if (popoImage) { popoImage.src='/images/pops.jpg'; popoImage.alt='요정 포포의 여정'; }
-            }
-            if (popoCard && !document.querySelector('a.goal-game-card')) {
-                const card = popoCard.cloneNode(true);
-                card.classList.add('goal-game-card');
-                card.href = '/goal.html';
-                card.setAttribute('aria-label','골이예요 GOAL');
-                const image = card.querySelector('.card-image-bg img');
-                if (image) { image.src='/images/goal.png'; image.alt='골이예요 GOAL'; }
-                const tag = card.querySelector('.game-tag'); if (tag) { tag.textContent='MIRACLE SHOT GAME'; tag.className='game-tag tag-switch'; }
-                const title = card.querySelector('.game-card-title'); if (title) { title.textContent='골이예요 GOAL'; title.removeAttribute('data-i18n'); }
-                const desc = card.querySelector('.game-card-desc'); if (desc) { desc.textContent='MIRACLE SHOT의 네 주인공 중 한 명을 선택해 거대한 점수벽을 향해 슛을 날리고, 맞힌 점수를 누적해 승부를 겨루는 1:1 축구 게임입니다.'; desc.removeAttribute('data-i18n'); }
-                popoCard.insertAdjacentElement('afterend',card);
-            }
-            const popoHeading = document.querySelector('[data-i18n="guide7_heading"]');
-            if (popoHeading) {
-                popoHeading.textContent = '⑥ 요정 포포의 여정 — Action / Elemental';
-                popoHeading.setAttribute('data-i18n','guide6_heading');
-                const popoDesc = document.querySelector('[data-i18n="guide7_desc"]');
-                if (popoDesc) popoDesc.setAttribute('data-i18n','guide6_desc');
-                const block = popoHeading.closest('div[style*="border-bottom"],div[style*="padding-bottom"]');
-                if (block && !document.querySelector('[data-goal-game-guide="true"]')) {
-                    const item = block.cloneNode(true);
-                    item.dataset.goalGameGuide='true';
-                    const h = item.querySelector('[data-i18n="guide6_heading"],h3'); if (h) { h.textContent='⑦ 골이예요 — MIRACLE SHOT GAME'; h.removeAttribute('data-i18n'); }
-                    const d = item.querySelector('[data-i18n="guide6_desc"],p'); if (d) { d.textContent='MIRACLE SHOT의 네 주인공 중 한 명을 선택해 거대한 점수벽을 향해 슛을 날리고, 맞힌 점수를 누적해 승부를 겨루는 1:1 축구 게임입니다.'; d.removeAttribute('data-i18n'); }
-                    block.insertAdjacentElement('afterend',item);
-                }
-            }
-            document.querySelectorAll('meta[name="description"],meta[property="og:description"],meta[name="twitter:description"]').forEach(meta=>{ if(meta.content) meta.content=meta.content.replace(/6가지/g,'7가지'); });
-            const intro=document.querySelector('[data-i18n="game_intro_desc"]'); if(intro) intro.innerHTML=intro.innerHTML.replace(/6가지 무료 온라인 미니게임/g,'7가지 무료 온라인 미니게임');
-            if(!document.getElementById('clp-goal-gameinfo-style')){
-                const style=document.createElement('style'); style.id='clp-goal-gameinfo-style'; style.textContent=`.goal-game-card.game-card-image-mode:hover,.goal-game-card.game-card-image-mode:focus-visible{transform:translateY(-12px) scale(1.02);border-color:var(--gold-light);box-shadow:0 20px 60px rgba(201,168,76,.25)}.goal-game-card.game-card-image-mode:hover .card-image-bg,.goal-game-card.game-card-image-mode:focus-visible .card-image-bg{transform:scale(1.08)}.bg-goal{background:#050509}@media(max-width:900px){.game-card:nth-child(6)::after{content:'⑥ 요정 포포의 여정'}.game-card:nth-child(7)::after{content:'⑦ 골이예요'}}`;
-                document.head.appendChild(style);
-            }
-        };
-        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded',fixGameCenter,{once:true}); else fixGameCenter();
-        return;
-    }
     if (page === 'miracleshot') {
         const s = document.createElement('script'); s.src = '/js/work-miracle-shot.js'; s.defer = true; document.head.appendChild(s); return;
     }

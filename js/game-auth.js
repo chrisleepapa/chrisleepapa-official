@@ -58,23 +58,28 @@ input[id*="initial" i]:not(#clp-game-login-initials),input[name*="initial" i]:no
     }
 
     let accountInitials = '';
-    function addAccountBar(target) {
-        if (!target || !accountInitials) return;
-        let bar = target.querySelector(':scope > .clp-game-account');
+    function addAccountBar() {
+        if (!accountInitials) return;
+        let bar = document.getElementById('clp-game-account-fixed');
         if (!bar) {
-            bar = document.createElement('div'); bar.className = 'clp-game-account';
+            bar = document.createElement('div');
+            bar.id = 'clp-game-account-fixed';
+            bar.className = 'clp-game-account clp-game-account-fixed';
             bar.innerHTML = '<span class="clp-game-account-id">👤 <strong></strong></span><button type="button" class="clp-game-logout">LOG OUT</button>';
-            const input = findAccountFields(target)[0];
-            if (input) input.insertAdjacentElement('beforebegin',bar); else target.prepend(bar);
+            document.body.appendChild(bar);
         }
         bar.querySelector('strong').textContent = accountInitials;
         const button = bar.querySelector('.clp-game-logout');
         if (button && !button.dataset.bound) {
             button.dataset.bound = 'true';
             button.addEventListener('click', event => {
-                event.preventDefault(); event.stopPropagation();
+                event.preventDefault();
+                event.stopPropagation();
                 if (window.CLPAuth && typeof window.CLPAuth.logout === 'function') window.CLPAuth.logout();
-                else { try { localStorage.removeItem('chrisleepapa-auth-session-v3'); } catch (_) {} location.reload(); }
+                else {
+                    try { localStorage.removeItem('chrisleepapa-auth-session-v3'); } catch (_) {}
+                    location.reload();
+                }
             });
         }
     }
@@ -84,25 +89,16 @@ input[id*="initial" i]:not(#clp-game-login-initials),input[name*="initial" i]:no
         const fields = findAccountFields();
         if (fields.length) {
             fields.forEach(input => {
-                input.classList.add('clp-account-initials'); input.value = accountInitials; input.readOnly = true;
-                input.setAttribute('aria-readonly','true'); input.style.setProperty('display','none','important');
+                input.classList.add('clp-account-initials');
+                input.value = accountInitials;
+                input.readOnly = true;
+                input.setAttribute('aria-readonly','true');
+                input.style.setProperty('display','none','important');
                 const label = input.previousElementSibling;
                 if (label && /INITIALS|이니셜/i.test(label.textContent || '')) label.style.setProperty('display','none','important');
-                addAccountBar(input.parentElement || document.body);
             });
-        } else {
-            let bar = document.getElementById('clp-game-account-fixed');
-            if (!bar) {
-                bar = document.createElement('div'); bar.id='clp-game-account-fixed'; bar.className='clp-game-account clp-game-account-fixed';
-                bar.innerHTML='<span class="clp-game-account-id">👤 <strong></strong></span><button type="button" class="clp-game-logout">LOG OUT</button>'; document.body.appendChild(bar);
-            }
-            bar.querySelector('strong').textContent = accountInitials;
-            const button = bar.querySelector('.clp-game-logout');
-            if (button && !button.dataset.bound) {
-                button.dataset.bound='true';
-                button.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();if(window.CLPAuth&&typeof window.CLPAuth.logout==='function')window.CLPAuth.logout();else{try{localStorage.removeItem('chrisleepapa-auth-session-v3')}catch(_){}location.reload()}});
-            }
         }
+        addAccountBar();
     }
     function injectAccountStyle() {
         if (document.getElementById('clp-game-account-style')) return;

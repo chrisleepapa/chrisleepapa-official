@@ -25,14 +25,8 @@
     }
     if (!GAME_PAGES.has(page)) return;
 
-    /*
-     * Legacy ranking inputs must remain in the DOM because each game still
-     * uses them internally. They must never be visible to the player now
-     * that CLPAuth owns the account UI. This style is inserted synchronously
-     * from the <head> before the game body is parsed.
-     * IMPORTANT: do not target #clp-game-login-initials / #clp-game-login-pin;
-     * those are the inputs of the common YOUR ID modal.
-     */
+    /* Legacy ranking inputs stay in the DOM for the games' internal ranking logic,
+       but the common YOUR ID modal must remain completely visible. */
     function injectLegacyAccountPrehideStyle() {
         if (document.getElementById('clp-game-legacy-account-prehide')) return;
         const style = document.createElement('style');
@@ -40,7 +34,7 @@
         style.textContent = `
 #player-initial,#player-initials,#initialsInput,#playerInitials,#ini,#initials-input,
 [name="initial"],[name="initials"],.initials-input,
-input[id*="initial" i],input[name*="initial" i]{display:none!important;visibility:hidden!important;opacity:0!important}
+input[id*="initial" i]:not(#clp-game-login-initials),input[name*="initial" i]:not(#clp-game-login-initials){display:none!important;visibility:hidden!important;opacity:0!important}
 #initialForm:has(input),.initial-form-container:has(input[id*="initial" i]),
 .initial-form-container:has(.initials-input){display:none!important;visibility:hidden!important;opacity:0!important}
 #s-login #initialsInput + button,

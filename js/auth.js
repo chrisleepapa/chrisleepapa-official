@@ -49,6 +49,4 @@
 
     window.CLPAuth={login,logout,getUser,isLoggedIn,normalizeInitials,validInitials,validPin,clearLegacyTodaySession,sessionKey:SESSION_KEY,supabaseUrl:SUPA_URL,backend:'supabase',showLoginModal};
     try{const legacy=localStorage.getItem('chrisleepapa-today-session'),current=localStorage.getItem(SESSION_KEY);if(!current&&legacy){const initials=normalizeInitials(legacy);if(validInitials(initials))write(SESSION_KEY,{initials,loginAt:new Date().toISOString(),migrated:true})}}catch(_){ }
-    function autoResumeToday(){if(!isLoggedIn())return;const button=document.getElementById('authSubmit'),initials=document.getElementById('authInitials'),pin=document.getElementById('authPin');if(!button||!initials||!pin)return;const session=getUser();initials.value=session.initials;pin.value='';if(typeof window.startToday==='function'){try{window.startToday();return}catch(_){}}window.dispatchEvent(new CustomEvent('chrisleepapa-auth-ready',{detail:{user:session,autoResume:true}}))}
-    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(autoResumeToday,0),{once:true});else setTimeout(autoResumeToday,0);
 })();

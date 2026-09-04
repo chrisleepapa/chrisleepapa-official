@@ -1,0 +1,48 @@
+name: temp-tetris-start-fix
+on:
+  push:
+    branches: [develop]
+    paths: ['.github/workflows/_tmp_tetris_start_fix.yml']
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch Tetris start flow
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('js/game-auth.js')
+          s = p.read_text()
+          old = '''            const apply=()=>{protectAccountFields();addGameAccountBar()};
+            if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();
+            setTimeout(apply,300);setTimeout(apply,1000);'''
+          new = '''            const apply=()=>{protectAccountFields();addGameAccountBar()};
+            if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();
+            setTimeout(apply,300);setTimeout(apply,1000);
+            if(page==='tetris'){
+                const enterTetrisArena=()=>{
+                    const input=document.getElementById('initialsInput');
+                    if(input && !input.value) input.value=accountInitials;
+                    if(typeof window.enterArena==='function') window.enterArena();
+                };
+                if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>setTimeout(enterTetrisArena,150),{once:true});
+                else setTimeout(enterTetrisArena,150);
+            }'''
+          if old not in s:
+              raise SystemExit('expected init block not found')
+          if 'const enterTetrisArena=' in s:
+              raise SystemExit('patch already present')
+          p.write_text(s.replace(old,new,1))
+          PY
+      - name: Commit patch and remove temporary workflow
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add js/game-auth.js
+          git commit -m "Fix Tetris login to manual start flow [skip ci]"
+          git rm .github/workflows/_tmp_tetris_start_fix.yml
+          git commit -m "chore: remove temporary Tetris fix workflow [skip ci]"
+          git push

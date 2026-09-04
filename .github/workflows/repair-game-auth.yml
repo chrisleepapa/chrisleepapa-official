@@ -1,0 +1,54 @@
+name: Repair game-auth GOAL
+on:
+  push:
+    branches: [develop]
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore and patch game-auth
+        shell: python
+        run: |
+          import subprocess
+          from pathlib import Path
+          p=Path('js/game-auth.js')
+          parent='5569cc3d3ccbfc7afd317f5a07e786760b3d1c6d'
+          s=subprocess.check_output(['git','show',parent+':js/game-auth.js'],text=True)
+          old="""    if (page === 'gameinfo') {
+        const removeBaduk = () => {
+            document.querySelectorAll('a.game-card[href*=\"baduk_easy\"]').forEach(card => card.remove());
+            document.querySelectorAll('[data-i18n=\"guide6_heading\"]').forEach(heading => {
+                const block = heading.closest('div[style*=\"border-bottom\"], div[style*=\"padding-bottom\"]');
+                if (block) block.remove();
+            });
+            document.querySelectorAll('meta[name=\"description\"], meta[property=\"og:description\"]').forEach(meta => {
+                if (meta.content) meta.content = meta.content.replace(/,?\\s*바둑 EASY/g,'').replace(/·바둑EASY/g,'').replace(/7가지/g,'6가지');
+            });
+            const intro = document.querySelector('[data-i18n=\"game_intro_desc\"]');
+            if (intro) intro.innerHTML = intro.innerHTML.replace(/<strong style=\"color:#e8d08a;\">7가지 무료 온라인 미니게임<\\/strong>/g,'<strong style=\"color:#e8d08a;\">6가지 무료 온라인 미니게임</strong>');
+        };
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', removeBaduk, {once:true}); else removeBaduk();
+        return;
+    }
+"""
+          new=old.replace("            document.querySelectorAll('[data-i18n=\"guide6_heading\"]').forEach(heading => {\n                const block = heading.closest('div[style*=\"border-bottom\"], div[style*=\"padding-bottom\"]');\n                if (block) block.remove();\n            });\n            document.querySelectorAll('meta[name=\"description\"], meta[property=\"og:description\"]').forEach(meta => {\n                if (meta.content) meta.content = meta.content.replace(/,?\\s*바둑 EASY/g,'').replace(/·바둑EASY/g,'').replace(/7가지/g,'6가지');\n            });\n            const intro = document.querySelector('[data-i18n=\"game_intro_desc\"]');\n            if (intro) intro.innerHTML = intro.innerHTML.replace(/<strong style=\"color:#e8d08a;\">7가지 무료 온라인 미니게임<\\/strong>/g,'<strong style=\"color:#e8d08a;\">6가지 무료 온라인 미니게임</strong>');\n",'')
+          new=new.replace("    const GAME_PAGES = new Set(['game','booktop','fiveinrow','curling','tetris','switch']);","    const GAME_PAGES = new Set(['game','booktop','fiveinrow','curling','tetris','switch','goal']);")
+          if old not in s: raise SystemExit('parent target mismatch')
+          p.write_text(s.replace(old,new,1),encoding='utf-8')
+      - name: Verify
+        run: |
+          grep -q "'goal'" js/game-auth.js
+          grep -q 'a.game-card[href*=\"baduk_easy\"]' js/game-auth.js
+          ! grep -q 'guide6_heading.*remove' js/game-auth.js
+      - name: Commit repair and remove workflow
+        shell: bash
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add js/game-auth.js
+          git commit -m 'Repair game-auth after GOAL guide fix' || true
+          git push
+          git rm .github/workflows/repair-game-auth.yml
+          git commit -m 'Remove temporary game-auth repair workflow'
+          git push

@@ -1,0 +1,46 @@
+name: Temporary Tetris Speed Update
+
+on:
+  push:
+    branches: [develop]
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    if: startsWith(github.event.head_commit.message, 'TEMP: prepare Tetris speed update')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update Tetris speed rules
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('tetris.html')
+          s = p.read_text(encoding='utf-8')
+          old = "let dropCounter = 0, dropInterval = 1000, lastTime = 0;"
+          new = "const BASE_DROP_INTERVAL = 2000;\n    const LINE_SPEED_STEP = 500;\n    const MIN_DROP_INTERVAL = 100;\n    let dropCounter = 0, dropInterval = BASE_DROP_INTERVAL, lastTime = 0;"
+          assert old in s, 'drop timer declaration not found'
+          s = s.replace(old, new, 1)
+          old = '''function getDropIntervalForLevel(level) {\n        let speedLv;\n        if (level <= 5) speedLv = 1;\n        else if (level <= 8) speedLv = 2;\n        else if (level <= 10) speedLv = 3;\n        else if (level <= 12) speedLv = 4;\n        else if (level <= 15) speedLv = 5;\n        else speedLv = 5 + (level - 15); \n\n        if (speedLv === 1) return 1000;\n        if (speedLv === 2) return 700;\n        if (speedLv === 3) return 450;\n        if (speedLv === 4) return 250;\n        if (speedLv === 5) return 120;\n        return Math.max(20, 120 - (speedLv - 5) * 15); \n    }'''
+          new = '''function getDropIntervalForLines(lines) {\n        return Math.max(\n            MIN_DROP_INTERVAL,\n            BASE_DROP_INTERVAL - (lines * LINE_SPEED_STEP)\n        );\n    }'''
+          assert old in s, 'speed function not found'
+          s = s.replace(old, new, 1)
+          old = "        player.lines += totalCleared;\n        player.level = Math.floor(player.lines / 5) + 1;"
+          new = "        player.lines += totalCleared;\n        dropInterval = getDropIntervalForLines(player.lines);\n        player.level = Math.floor(player.lines / 5) + 1;"
+          assert old in s, 'line-clear update point not found'
+          s = s.replace(old, new, 1)
+          old = "        dropInterval = getDropIntervalForLevel(1);"
+          new = "        dropInterval = getDropIntervalForLines(0);"
+          assert old in s, 'start-game speed initialization not found'
+          s = s.replace(old, new, 1)
+          p.write_text(s, encoding='utf-8')
+      - name: Commit and remove temporary workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tetris.html .github/workflows/_temp_tetris_speed.yml
+          git rm .github/workflows/_temp_tetris_speed.yml
+          git commit -m "Adjust Tetris speed by cleared lines"
+          git push origin develop

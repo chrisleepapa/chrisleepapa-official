@@ -35,11 +35,13 @@
     const headings = [...document.querySelectorAll('h1,h2,h3,h4,h5,h6,strong,div,span')];
     const guideHeading = headings.find(el => {
       const text = (el.textContent || '').replace(/\s+/g, ' ').trim();
-      return text === '게임 가이드' || text === 'GAME GUIDE' || text.includes('게임 가이드') || text.includes('GAME GUIDE');
+      return text === '게임 가이드' || text === 'GAME GUIDE' || text === 'ALL GAMES GUIDE' || text.includes('게임 가이드') || text.includes('GAME GUIDE') || text.includes('ALL GAMES GUIDE');
     });
     if (!guideHeading) return;
 
-    const guideSection = guideHeading.closest('section') || guideHeading.parentElement;
+    // The existing guide is a bordered container. Prefer that exact container,
+    // then fall back to the heading's nearest section/parent.
+    const guideSection = guideHeading.closest('div[style*="border"], section') || guideHeading.parentElement;
     if (!guideSection) return;
 
     const item = document.createElement('article');
@@ -49,9 +51,9 @@
       <div class="goal-guide-kicker">MIRACLE SHOT · GAME</div>
       <h3>골이예요 GOAL</h3>
       <p><strong>골이예요 GOAL</strong>은 MIRACLE SHOT의 네 주인공 <strong>황·길·고·영</strong> 중 한 명을 선택해 거대한 점수벽을 향해 슛을 날리는 1:1 축구 게임입니다.</p>
-      <p>컴퓨터 또는 PLAYER 2와 대결할 수 있으며, 각 세트마다 한 번씩 슛을 시도해 <strong>5세트 누적 점수</strong>로 승부합니다. 동점이면 승부가 날 때까지 연장 슛을 진행합니다.</p>
-      <p>공을 터치한 뒤 드래그하여 <strong>방향·세기·커브·각도</strong>를 조절하세요. 점수벽에는 <strong>-100부터 +100</strong>까지의 다양한 점수판이 무작위로 배치되며, 맞힌 점수가 그대로 누적됩니다.</p>
-      <p>높은 점수판을 정확하게 노리는 것뿐 아니라, 거리와 각도를 계산해 최고의 슛을 만들어내는 것이 핵심입니다.</p>
+      <p><strong>COMPUTER</strong> 또는 <strong>PLAYER 2</strong>와 대결할 수 있으며, 각 세트마다 양쪽이 한 번씩 슛을 시도합니다. 총 <strong>5세트의 누적 점수</strong>로 승부를 결정하고, 동점이면 승부가 날 때까지 연장 슛을 진행합니다.</p>
+      <p>공을 터치한 뒤 드래그하여 <strong>방향·세기·커브·각도</strong>를 조절하세요. 거대한 점수벽에는 <strong>-100부터 +100</strong>까지의 점수판이 무작위로 배치되며, 맞힌 점수가 그대로 누적됩니다.</p>
+      <p>높은 점수판을 노리는 것만이 전부가 아닙니다. 공의 거리와 방향, 힘과 커브를 계산해 정확한 슛을 만드는 것이 승리의 핵심입니다.</p>
       <a href="/goal.html" class="goal-guide-link">PLAY GOAL →</a>`;
 
     guideSection.appendChild(item);

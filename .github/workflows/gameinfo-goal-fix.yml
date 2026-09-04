@@ -2,8 +2,7 @@ name: Add GOAL game to Game Center
 
 on:
   push:
-    branches:
-      - develop
+    branches: [develop]
 
 permissions:
   contents: write
@@ -12,8 +11,7 @@ jobs:
   patch-gameinfo:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout develop
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           ref: develop
           fetch-depth: 0
@@ -22,68 +20,78 @@ jobs:
         run: |
           python3 - <<'PY'
           from pathlib import Path
+          import re
           p = Path('gameinfo.html')
           s = p.read_text(encoding='utf-8')
-          if 'href="goal.html"' in s:
-              print('GOAL already present; nothing to patch.')
-              raise SystemExit(0)
+          if 'href="goal.html"' not in s:
+              s = s.replace('.bg-switch {}', '.bg-switch {}\n        .bg-goal {}', 1)
+              popo = re.compile(r'(\s*<!-- Game 7 -->\s*<a href="switch\.html".*?</a>)', re.S)
+              m = popo.search(s)
+              if not m:
+                  raise SystemExit('Popo card not found')
+              popo_card = m.group(1).replace('<!-- Game 7 -->', '<!-- Game 6 -->', 1)
+              goal = '''\n\n            <!-- Game 7 -->\n            <a href="goal.html" class="game-card game-card-image-mode">\n                <div class="card-image-bg bg-goal">\n                    <img src="images/goal.png"\n                         alt="골이예요 GOAL — MIRACLE SHOT GAME"\n                         loading="lazy">\n                </div>\n                <div class="card-overlay"></div>\n                <div class="game-tag tag-switch" data-i18n="goal_tag">MIRACLE SHOT GAME</div>\n                <div class="game-card-content-wrap">\n                    <h3 class="game-card-title" data-i18n="goal_title">골이예요 GOAL</h3>\n                    <p class="game-card-desc" style="word-break:keep-all;" data-i18n="goal_desc">\n                        MIRACLE SHOT의 네 주인공 중 한 명을 선택해 거대한 점수벽을 향해 슛을 날리고,\n                        맞힌 점수를 누적해 승부를 겨루는 1:1 축구 게임입니다.\n                    </p>\n                </div>\n            </a>'''
+              s = s[:m.start()] + popo_card + goal + s[m.end():]
 
-          s = s.replace('.bg-switch {}', '.bg-switch {}\n        .bg-goal {}', 1)
-          s = s.replace('<!-- Game 7 -->\n            <a href="switch.html"', '<!-- Game 6 -->\n            <a href="switch.html"', 1)
+              ko = "                switch_desc:  '귀여운 요정 포포가 하늘에서 떨어지는 얼음, 불 그리핀의 공격을 좌우로 피하고 맛있는 음식을 먹을 수 있게 해주세요! 기회는 세번!',"
+              ko_add = ko + "\n                goal_tag:    'MIRACLE SHOT GAME',\n                goal_title:  '골이예요 GOAL',\n                goal_desc:   'MIRACLE SHOT의 네 주인공 중 한 명을 선택해 거대한 점수벽을 향해 슛을 날리고, 맞힌 점수를 누적해 승부를 겨루는 1:1 축구 게임입니다.',"
+              if ko not in s: raise SystemExit('KO i18n marker not found')
+              s = s.replace(ko, ko_add, 1)
 
-          marker = '''            </a>\n        </div>'''
-          goal = '''            </a>\n\n            <!-- Game 7 -->\n            <a href="goal.html" class="game-card game-card-image-mode">\n                <div class="card-image-bg bg-goal">\n                    <img src="images/goal.png"\n                         alt="골이예요 GOAL — MIRACLE SHOT GAME"\n                         loading="lazy">\n                </div>\n                <div class="card-overlay"></div>\n                <div class="game-tag tag-switch" data-i18n="goal_tag">MIRACLE SHOT GAME</div>\n                <div class="game-card-content-wrap">\n                    <h3 class="game-card-title" data-i18n="goal_title">골이예요 GOAL</h3>\n                    <p class="game-card-desc" style="word-break:keep-all;" data-i18n="goal_desc">\n                        MIRACLE SHOT의 네 주인공 중 한 명을 선택해 거대한 점수벽을 향해 슛을 날리고,\n                        맞힌 점수를 누적해 승부를 겨루는 1:1 축구 게임입니다.\n                    </p>\n                </div>\n            </a>\n        </div>'''
-          if marker not in s:
-              raise SystemExit('game card container marker not found')
-          s = s.replace(marker, goal, 1)
+              en = '                switch_desc:  "Help the adorable fairy Popo dodge ice and fire griffin attacks falling from the sky, moving left and right, while grabbing tasty food along the way! You get three chances!",'
+              en_add = en + "\n                goal_tag:    'MIRACLE SHOT GAME',\n                goal_title:  'GOAL',\n                goal_desc:   'Choose one of four MIRACLE SHOT heroes, shoot toward the giant scoring wall, and compete in a 1:1 soccer game by accumulating your points.',"
+              if en not in s: raise SystemExit('EN i18n marker not found')
+              s = s.replace(en, en_add, 1)
 
-          ko_marker = "                switch_desc:  '귀여운 요정 포포가 하늘에서 떨어지는 얼음, 불 그리핀의 공격을 좌우로 피하고 맛있는 음식을 먹을 수 있게 해주세요! 기회는 세번!',"
-          ko_add = ko_marker + "\n                goal_tag:    'MIRACLE SHOT GAME',\n                goal_title:  '골이예요 GOAL',\n                goal_desc:   'MIRACLE SHOT의 네 주인공 중 한 명을 선택해 거대한 점수벽을 향해 슛을 날리고, 맞힌 점수를 누적해 승부를 겨루는 1:1 축구 게임입니다.',"
-          if ko_marker not in s:
-              raise SystemExit('Korean i18n marker not found')
-          s = s.replace(ko_marker, ko_add, 1)
-
-          en_marker = '                switch_desc:  "Help the adorable fairy Popo dodge ice and fire griffin attacks falling from the sky, moving left and right, while grabbing tasty food along the way! You get three chances!",'
-          en_add = en_marker + "\n                goal_tag:    'MIRACLE SHOT GAME',\n                goal_title:  'GOAL',\n                goal_desc:   'Choose one of four MIRACLE SHOT heroes, shoot toward the giant scoring wall, and compete in a 1:1 soccer game by accumulating your points.',"
-          if en_marker not in s:
-              raise SystemExit('English i18n marker not found')
-          s = s.replace(en_marker, en_add, 1)
-
-          ko_guide = """                guide7_heading: '⑦ 요정 포포의 여정 — Action / Elemental',
-                guide7_desc: `귀여운 요정 포포가 하늘에서 떨어지는 얼음, 불 그리핀의 공격을 좌우로 피하고 맛있는 음식을 먹을 수 있게 해주세요!\n                            기회는 세번!`,"""
-          ko_guide_new = """                guide6_heading: '⑥ 요정 포포의 여정 — Action / Elemental',
-                guide6_desc: `귀여운 요정 포포가 하늘에서 떨어지는 얼음, 불 그리핀의 공격을 좌우로 피하고 맛있는 음식을 먹을 수 있게 해주세요!\n                            기회는 세번!`,
+              ko_g = """                guide7_heading: '⑦ 요정 포포의 여정 — Action / Elemental',
+                guide7_desc: `귀여운 요정 포포가 하늘에서 떨어지는 얼음, 불 그리핀의 공격을 좌우로 피하고 맛있는 음식을 먹을 수 있게 해주세요!
+                            기회는 세번!`,"""
+              ko_g_new = """                guide6_heading: '⑥ 요정 포포의 여정 — Action / Elemental',
+                guide6_desc: `귀여운 요정 포포가 하늘에서 떨어지는 얼음, 불 그리핀의 공격을 좌우로 피하고 맛있는 음식을 먹을 수 있게 해주세요!
+                            기회는 세번!`,
 
                 guide7_heading: '⑦ 골이예요 GOAL — MIRACLE SHOT GAME',
                 guide7_desc: `MIRACLE SHOT의 네 주인공 중 한 명을 선택해 거대한 점수벽을 향해 슛을 날리고, 맞힌 점수를 누적해 승부를 겨루는 1:1 축구 게임입니다.`,"""
-          if ko_guide not in s:
-              raise SystemExit('Korean guide marker not found')
-          s = s.replace(ko_guide, ko_guide_new, 1)
+              if ko_g not in s: raise SystemExit('KO guide marker not found')
+              s = s.replace(ko_g, ko_g_new, 1)
 
-          en_guide = """                guide7_heading: \"⑦ Popo the Fairy's Journey — Action / Elemental\",
-                guide7_desc: `Help the adorable fairy Popo dodge ice and fire griffin attacks falling from the sky by moving left and right, while grabbing tasty food along the way!\n                            You get three chances!`,"""
-          en_guide_new = """                guide6_heading: \"⑥ Popo the Fairy's Journey — Action / Elemental\",
+              en_g = """                guide7_heading: \"⑦ Popo the Fairy's Journey — Action / Elemental\",
+                guide7_desc: `Help the adorable fairy Popo dodge ice and fire griffin attacks falling from the sky by moving left and right, while grabbing tasty food along the way!
+                            You get three chances!`,"""
+              en_g_new = """                guide6_heading: \"⑥ Popo the Fairy's Journey — Action / Elemental\",
                 guide6_desc: `Help the adorable fairy Popo dodge ice and fire griffin attacks falling from the sky by moving left and right, while grabbing tasty food along the way!\n                            You get three chances!`,
 
                 guide7_heading: '⑦ GOAL — MIRACLE SHOT GAME',
                 guide7_desc: `Choose one of four MIRACLE SHOT heroes, shoot toward the giant scoring wall, and compete in a 1:1 soccer game by accumulating your points.`,"""
-          if en_guide not in s:
-              raise SystemExit('English guide marker not found')
-          s = s.replace(en_guide, en_guide_new, 1)
-
-          p.write_text(s, encoding='utf-8')
+              if en_g not in s: raise SystemExit('EN guide marker not found')
+              s = s.replace(en_g, en_g_new, 1)
+              p.write_text(s, encoding='utf-8')
+          else:
+              print('GOAL already present; no patch needed')
           PY
 
-      - name: Verify patch
+      - name: Verify GOAL
         run: |
-          grep -Fq 'href="goal.html"' gameinfo.html
-          grep -Fq 'data-i18n="goal_title"' gameinfo.html
-          grep -Fq 'images/goal.png' gameinfo.html
-          grep -Fq 'class="bg-goal"' gameinfo.html
-          grep -Fq "goal_tag:" gameinfo.html
-          grep -Fq "goal_desc:" gameinfo.html
-          grep -Fq "guide6_heading:" gameinfo.html
-          grep -Fq "guide7_heading:" gameinfo.html
+          python3 - <<'PY'
+          from pathlib import Path
+          s = Path('gameinfo.html').read_text(encoding='utf-8')
+          checks = {
+            'goal href': 'href="goal.html"',
+            'goal image': 'images/goal.png',
+            'goal class': 'class="bg-goal"',
+            'goal title': 'data-i18n="goal_title"',
+            'goal tag': 'goal_tag:',
+            'goal desc': 'goal_desc:',
+            'guide6': 'guide6_heading:',
+            'guide7': 'guide7_heading:'
+          }
+          for name, text in checks.items():
+              print(name, s.count(text))
+              if text not in s:
+                  raise SystemExit('Missing ' + name)
+          if s.count('href="goal.html"') != 1:
+              raise SystemExit('GOAL card count is not 1')
+          PY
 
       - name: Commit patched file
         run: |

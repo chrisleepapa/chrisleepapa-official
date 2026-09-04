@@ -560,29 +560,23 @@
     let arena = Array.from({length: ROWS}, () => Array(COLS).fill(0));
     let player = { pos: {x: 0, y: 0}, matrix: null, lines: 0, level: 1, gameOver: true };
     
-    let dropCounter = 0, dropInterval = 1000, lastTime = 0;
+    const BASE_DROP_INTERVAL = 2000;
+    const LINE_SPEED_STEP = 500;
+    const MIN_DROP_INTERVAL = 100;
+
+    let dropCounter = 0, dropInterval = BASE_DROP_INTERVAL, lastTime = 0;
     
     let isIntro = false;
     let isPaused = false; 
 
     let nextPieces = [];
 
-    function getDropIntervalForLevel(level) {
-        let speedLv;
-        if (level <= 5) speedLv = 1;
-        else if (level <= 8) speedLv = 2;
-        else if (level <= 10) speedLv = 3;
-        else if (level <= 12) speedLv = 4;
-        else if (level <= 15) speedLv = 5;
-        else speedLv = 5 + (level - 15); 
-
-        if (speedLv === 1) return 1000;
-        if (speedLv === 2) return 700;
-        if (speedLv === 3) return 450;
-        if (speedLv === 4) return 250;
-        if (speedLv === 5) return 120;
-        return Math.max(20, 120 - (speedLv - 5) * 15); 
-    }
+ function getDropIntervalForLines(lines) {
+    return Math.max(
+        MIN_DROP_INTERVAL,
+        BASE_DROP_INTERVAL - (lines * LINE_SPEED_STEP)
+    );
+}
 
     function getRandomPieceMatrix() {
         const pieces = 'ILJOTSZ';
@@ -699,12 +693,12 @@ function arenaSweep() {
 
     if (totalCleared > 0) {
         const oldLevel = player.level;
-        player.lines += totalCleared;
-        player.level = Math.floor(player.lines / 5) + 1;
+   player.lines += totalCleared;
+dropInterval = getDropIntervalForLines(player.lines);
+player.level = Math.floor(player.lines / 5) + 1;
         maxReachedLevel = Math.max(maxReachedLevel, player.level);
 
         if (player.level > oldLevel) {
-            dropInterval = getDropIntervalForLevel(player.level);
             showLevelUpAnimation(player.level);
         } else {
             playSound('clear');
@@ -867,7 +861,7 @@ function arenaSweep() {
         isPaused = false;
         document.getElementById('btn-pause').innerText = '⏸️';
         
-        dropInterval = getDropIntervalForLevel(1); 
+        dropInterval = getDropIntervalForLines(0);
         nextPieces = []; 
         
         document.getElementById('hudLevel').innerText = '1';

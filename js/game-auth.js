@@ -34,6 +34,23 @@
 
     if(!GAME_PAGES.has(page))return;
 
+    // Hide legacy ranking-ID controls immediately. game-auth.js is loaded in <head>,
+    // so this style is applied before the game body is parsed/painted. The controls
+    // themselves remain in the DOM because the individual game logic still uses their
+    // IDs when submitting ranking records; they are populated from CLPAuth instead.
+    function injectLegacyAccountPrehideStyle(){
+        if(document.getElementById('clp-game-legacy-account-prehide'))return;
+        const style=document.createElement('style');
+        style.id='clp-game-legacy-account-prehide';
+        style.textContent=`
+#clp-game-login-initials,#clp-game-login-pin{display:none!important}
+#player-initial,#player-initials,#initialsInput,#playerInitials,#ini,[name="initial"],[name="initials"],.initials-input{display:none!important}
+.initial-form-container:has(#initialsInput),.glass-panel:has(#initialsInput),.glass-panel:has(#player-initial),.glass-panel:has(#player-initials),.glass-panel:has(#playerInitials){display:none!important}
+`;
+        document.head.appendChild(style);
+    }
+    injectLegacyAccountPrehideStyle();
+
     function addGameCenterLink(){
         if(document.getElementById('game-center-back'))return;
         const link=document.createElement('a');

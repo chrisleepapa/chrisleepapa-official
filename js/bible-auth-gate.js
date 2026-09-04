@@ -1,17 +1,7 @@
-/*
- * BIBLE shared account gate.
- * BIBLE uses the same CLPAuth session as TODAY and GAME.
- * Legacy BIBLE keys are mirrored only for compatibility with the existing
- * BIBLE data layer; no separate BIBLE login is required.
- * v2026-08-27: reset old client-side BIBLE data once and bind new data to the
- * currently authenticated CLPAuth initials.
- * v2026-08-29: resilient Bible data loader with GitHub raw fallback + cache.
- */
+/** BIBLE auth gate: uses the same CLPAuth account and shared login modal as TODAY and GAME. */
 'use strict';
 (() => {
     const AUTH_SRC = '/js/auth.js';
-    const STYLE_ID = 'clp-bible-auth-gate-style';
-    const MODAL_ID = 'clp-bible-auth-gate';
     const SESSION_KEY = 'chrisleepapa-auth-session-v3';
     const LEGACY_USER_KEY = 'bible_user_id';
     const LEGACY_PIN_KEY = 'bible_pin_hash';
@@ -72,25 +62,6 @@
         });
     }
 
-    function styles() {
-        if (document.getElementById(STYLE_ID)) return;
-        const style = document.createElement('style');
-        style.id = STYLE_ID;
-        style.textContent = `
-            #${MODAL_ID}{position:fixed;inset:0;z-index:2147483000;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(3,3,5,.94);backdrop-filter:blur(12px)}
-            #${MODAL_ID}[hidden]{display:none}
-            #${MODAL_ID} .clp-bible-auth-box{width:min(420px,100%);box-sizing:border-box;padding:32px 26px;border:1px solid rgba(201,168,76,.38);border-radius:22px;background:linear-gradient(145deg,#17151a,#08080c);box-shadow:0 30px 90px rgba(0,0,0,.7);text-align:center;font-family:Pretendard,Arial,sans-serif}
-            #${MODAL_ID} h2{margin:0 0 8px;color:#e8d08a;font-family:Cinzel,serif;letter-spacing:.08em;font-size:1.45rem}
-            #${MODAL_ID} p{margin:0 0 22px;color:#aaa8b3;font-size:.88rem;line-height:1.65}
-            #${MODAL_ID} input{width:100%;height:48px;box-sizing:border-box;margin:6px 0;padding:0 14px;border:1px solid rgba(255,255,255,.12);border-radius:10px;background:rgba(255,255,255,.05);color:#fff;text-align:center;outline:none;font-size:1rem;letter-spacing:.16em}
-            #${MODAL_ID} input:focus{border-color:#c9a84c}
-            #${MODAL_ID} input[type=password]{letter-spacing:.35em}
-            #${MODAL_ID} button{width:100%;height:48px;margin-top:10px;border:0;border-radius:10px;background:#c9a84c;color:#080808;font-weight:700;cursor:pointer}
-            #${MODAL_ID} .clp-bible-auth-error{min-height:22px;margin-top:10px;color:#e88b8b;font-size:.82rem}
-        `;
-        document.head.appendChild(style);
-    }
-
     function hideLegacyAuthModal() {
         const modal = document.getElementById('authModal');
         if (!modal) return;
@@ -98,46 +69,18 @@
         modal.style.display = 'none';
     }
 
-    function showGate() {
-        styles();
-        if (document.getElementById(MODAL_ID)) return;
-        const modal = document.createElement('div');
-        modal.id = MODAL_ID;
-        modal.setAttribute('role','dialog');
-        modal.setAttribute('aria-modal','true');
-        modal.innerHTML = `
-            <div class="clp-bible-auth-box">
-                <h2>BIBLE LOGIN</h2>
-                <p>사이트 공통 계정으로 로그인하세요.<br>영문 이니셜 3자리 + 숫자 비밀번호 4자리</p>
-                <form autocomplete="on">
-                    <input id="clp-bible-login-initials" maxlength="3" minlength="3" pattern="[A-Za-z]{3}" placeholder="INITIALS" autocomplete="username" autocapitalize="characters" required>
-                    <input id="clp-bible-login-pin" maxlength="4" minlength="4" pattern="[0-9]{4}" inputmode="numeric" type="password" placeholder="4-DIGIT PIN" autocomplete="current-password" required>
-                    <button type="submit">LOGIN</button>
-                    <div class="clp-bible-auth-error" aria-live="polite"></div>
-                </form>
-            </div>`;
-        document.body.appendChild(modal);
-
-        const form = modal.querySelector('form');
-        const initials = modal.querySelector('#clp-bible-login-initials');
-        const pin = modal.querySelector('#clp-bible-login-pin');
-        const error = modal.querySelector('.clp-bible-auth-error');
-        initials.focus();
-
-        form.addEventListener('submit', async event => {
-            event.preventDefault();
-            error.textContent = '';
-            const result = await window.CLPAuth.login(initials.value, pin.value, true);
-            if (!result.ok) {
-                error.textContent = result.error || '로그인할 수 없습니다.';
-                return;
+    function showSharedLogin() {
+        if (!window.CLPAuth || typeof window.CLPAuth.showLoginModal !== 'function') return;
+        document.documentElement.classList.add('clp-auth-required');
+        window.CLPAuth.showLoginModal({
+            prefix: 'bible-shared',
+            onSuccess: user => {
+                mirrorLegacySession(user);
+                document.documentElement.classList.remove('clp-auth-required');
+                hideLegacyAuthModal();
+                if (typeof window.checkAuth === 'function') window.checkAuth();
+                else window.dispatchEvent(new CustomEvent('chrisleepapa-auth-ready', { detail:{user} }));
             }
-            mirrorLegacySession(result.user);
-            modal.remove();
-            document.documentElement.classList.remove('clp-auth-required');
-            hideLegacyAuthModal();
-            if (typeof window.checkAuth === 'function') window.checkAuth();
-            else window.dispatchEvent(new CustomEvent('chrisleepapa-auth-ready', { detail:{user:result.user} }));
         });
     }
 
@@ -162,9 +105,7 @@
         isDataReady = true;
         try {
             localStorage.setItem(BIBLE_CACHE_KEY, JSON.stringify({ savedAt: Date.now(), data }));
-        } catch (_) {
-            // Mobile browsers may reject a large localStorage value; live data still works.
-        }
+        } catch (_) {}
         console.info('[Bible] data ready:', data.length, 'verses from', source);
     }
 
@@ -194,18 +135,15 @@
                 console.warn('[Bible] source failed:', url, error);
             }
         }
-
         try {
             const cached = JSON.parse(localStorage.getItem(BIBLE_CACHE_KEY) || 'null');
             if (cached && validateBibleData(cached.data)) {
                 setBibleData(cached.data, 'local cache');
-                console.warn('[Bible] using last known good cached dataset');
                 return;
             }
         } catch (error) {
             console.warn('[Bible] cache unavailable:', error);
         }
-
         throw new Error('No valid Bible dataset available');
     }
 
@@ -213,9 +151,8 @@
         if (window.__clpBibleRecoveryInstalled) return true;
         if (typeof window.initAppAfterAuth !== 'function') return false;
         window.__clpBibleRecoveryInstalled = true;
-
         window.initAppAfterAuth = async function() {
-            initBibleLogout();
+            if (typeof initBibleLogout === 'function') initBibleLogout();
             const spinner = document.getElementById('loadingSpinner');
             try {
                 await loadSupabaseData();
@@ -230,7 +167,6 @@
                 if (spinner) spinner.innerHTML = 'CONNECTION FAILED.<br><small>성경 본문을 불러오지 못했습니다. 잠시 후 새로고침해 주세요.</small>';
             }
         };
-        console.info('[Bible] resilient data loader installed');
         return true;
     }
 
@@ -243,16 +179,9 @@
                 mirrorLegacySession(session);
                 hideLegacyAuthModal();
             } else {
-                document.documentElement.classList.add('clp-auth-required');
-                showGate();
+                showSharedLogin();
             }
-
-            // bible.html's inline app code has already been parsed when this
-            // deferred script runs. Install the replacement before main.js can
-            // complete the page-ready callback and call checkAuth().
-            if (!installBibleDataRecovery()) {
-                setTimeout(installBibleDataRecovery, 0);
-            }
+            if (!installBibleDataRecovery()) setTimeout(installBibleDataRecovery, 0);
         } catch (error) {
             console.error('[bible-auth-gate]', error);
         }

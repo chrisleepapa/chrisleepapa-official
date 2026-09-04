@@ -17,6 +17,7 @@
     return false;
   }
   function randomScore(){return Math.floor(Math.random()*21)*10-100}
+  function randomCharacter(){const keys=Object.keys(chars);return keys[Math.floor(Math.random()*keys.length)]}
   function buildWall(){
     const wall=$('targetWall'); wall.innerHTML=''; state.targets=[];
     for(let i=0;i<63;i++){
@@ -33,14 +34,41 @@
     $('p1Total').textContent=state.total[0];$('p2Total').textContent=state.total[1];
     const c=chars[state.turn?state.p2:state.p1];$('turnLabel').textContent=`PLAYER ${state.turn+1} · ${c.name} TURN`;
   }
+  function updateOpponentUI(){
+    const area=$('opponentSelectArea');
+    area.classList.toggle('is-cpu',state.mode==='cpu');
+    $('opponentName').textContent=state.mode==='cpu'?'COMPUTER · RANDOM':`PLAYER 2 · ${chars[state.p2].name}`;
+    document.querySelectorAll('.opponent-card').forEach(card=>card.classList.toggle('selected',state.mode==='human'&&card.dataset.opponent===state.p2));
+  }
   function selectSetup(){
-    document.querySelectorAll('.mode-btn').forEach(b=>b.onclick=()=>{document.querySelectorAll('.mode-btn').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');state.mode=b.dataset.mode;$('opponentName').textContent=state.mode==='cpu'?'COMPUTER':'PLAYER 2';});
-    document.querySelectorAll('.character-card').forEach(card=>card.onclick=()=>{document.querySelectorAll('.character-card').forEach(x=>x.classList.remove('selected'));card.classList.add('selected');state.p1=card.dataset.character;});
-    $('battleStart').onclick=()=>{if(requireLogin())startMatch()};
-    $('againBtn').onclick=()=>{state.set=1;state.total=[0,0];state.shots=[0,0];state.locked=false;show(screens.setup)};
+    document.querySelectorAll('.mode-btn').forEach(b=>b.onclick=()=>{
+      document.querySelectorAll('.mode-btn').forEach(x=>x.classList.remove('selected'));
+      b.classList.add('selected');
+      state.mode=b.dataset.mode;
+      if(state.mode==='cpu')state.p2=randomCharacter();
+      updateOpponentUI();
+    });
+    document.querySelectorAll('.character-card:not(.opponent-card)').forEach(card=>card.onclick=()=>{
+      document.querySelectorAll('#characterGrid .character-card').forEach(x=>x.classList.remove('selected'));
+      card.classList.add('selected');
+      state.p1=card.dataset.character;
+    });
+    document.querySelectorAll('.opponent-card').forEach(card=>card.onclick=()=>{
+      if(state.mode!=='human')return;
+      document.querySelectorAll('.opponent-card').forEach(x=>x.classList.remove('selected'));
+      card.classList.add('selected');
+      state.p2=card.dataset.opponent;
+      $('opponentName').textContent=`PLAYER 2 · ${chars[state.p2].name}`;
+    });
+    $('battleStart').onclick=()=>{
+      if(state.mode==='cpu')state.p2=randomCharacter();
+      if(requireLogin())startMatch();
+    };
+    $('againBtn').onclick=()=>{state.set=1;state.total=[0,0];state.shots=[0,0];state.turn=0;state.locked=false;show(screens.setup);if(state.mode==='cpu')state.p2=randomCharacter();updateOpponentUI()};
+    updateOpponentUI();
   }
   function startMatch(){state.set=1;state.total=[0,0];state.shots=[0,0];state.turn=0;show(screens.game);applyProfiles();buildWall();resetBall();updateHeader()}
-  function applyProfiles(){const a=chars[state.p1];$('p1Img').src=a.img;$('p1Label').textContent=`PLAYER 1 · ${a.name}`;$('p2Label').textContent=state.mode==='cpu'?'COMPUTER':'PLAYER 2';$('p2Img').src=state.mode==='cpu'?chars[state.p2].img:chars.g.img;$('accountBadge').textContent=String(window.CLPAuth?.getUser?.()?.initials||'').toUpperCase()}
+  function applyProfiles(){const a=chars[state.p1],b=chars[state.p2];$('p1Img').src=a.img;$('p1Label').textContent=`PLAYER 1 · ${a.name}`;$('p2Label').textContent=`PLAYER 2 · ${b.name}`;$('p2Img').src=b.img;$('accountBadge').textContent=String(window.CLPAuth?.getUser?.()?.initials||'').toUpperCase()}
   function resetBall(){const b=$('ball');b.textContent='⚽';b.style.left='50%';b.style.bottom='9%';b.style.transform='translateX(-50%) scale(1)';b.style.opacity='1';b.style.transition='';$('flightLine').style.width='0';$('flightLine').style.transform='none';state.aim={power:0,curve:0,angle:0};state.locked=false;updateAim();$('kickBtn').disabled=state.mode==='cpu'&&state.turn===1}
   function updateAim(){$('powerValue').textContent=state.aim.power+'%';$('curveValue').textContent=(state.aim.curve>0?'+':'')+state.aim.curve;$('angleValue').textContent=(state.aim.angle>0?'+':'')+state.aim.angle+'°'}
   function chooseTarget(power,angle,curve){const available=state.targets.filter(t=>!t.classList.contains('hit'));if(!available.length)return null;const bias=(angle+curve*.35)/100;const idx=Math.max(0,Math.min(available.length-1,Math.floor((.5+bias*.42)*available.length+(power-50)/180*available.length)));return available[idx]}
@@ -67,7 +95,7 @@
     const b=$('ball');let start=null;
     const move=e=>{if(!start||state.locked)return;const p=e.touches?e.touches[0]:e,dx=p.clientX-start.x,dy=p.clientY-start.y;state.aim.power=Math.min(100,Math.max(0,Math.round(Math.hypot(dx,dy)*.8)));state.aim.angle=Math.max(-45,Math.min(45,Math.round(dx*.22)));state.aim.curve=Math.max(-100,Math.min(100,Math.round(-dy*.55)));updateAim()};
     const end=()=>{if(!start)return;start=null;if(state.aim.power<12){b.classList.remove('dragging');return}humanKick()};
-    b.addEventListener('pointerdown',e=>{if(state.turn===1&&state.mode==='cpu'||state.locked)return;start={x:e.clientX,y:e.clientY};b.classList.add('dragging');e.preventDefault()});window.addEventListener('pointermove',move,{passive:false});window.addEventListener('pointerup',end);$('kickBtn').onclick=()=>{if(state.aim.power>=12)humanKick()}
+    b.addEventListener('pointerdown',e=>{if((state.turn===1&&state.mode==='cpu')||state.locked)return;start={x:e.clientX,y:e.clientY};b.classList.add('dragging');e.preventDefault()});window.addEventListener('pointermove',move,{passive:false});window.addEventListener('pointerup',end);$('kickBtn').onclick=()=>{if(state.aim.power>=12)humanKick()}
   }
   selectSetup();bindDrag();
   if(window.CLPAuth?.isLoggedIn?.())$('accountBadge').textContent=String(window.CLPAuth.getUser?.()?.initials||'').toUpperCase();else if(window.CLPAuth?.showLoginModal)setTimeout(()=>window.CLPAuth.showLoginModal({prefix:'clp-goal-login',onSuccess:()=>location.reload()}),50);

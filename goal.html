@@ -8,6 +8,18 @@
 <link rel="icon" href="/images/favicon.png" type="image/png">
 <link rel="stylesheet" href="/css/common.css">
 <link rel="stylesheet" href="/css/miracleshot/goal.css">
+<style>
+/* GOAL score header: keep each character beside that player's shot counter. */
+.score-header > .player-mini img { grid-row: 2 / span 2; align-self: center; }
+.score-header > .player-mini.right img { grid-column: 2; grid-row: 2 / span 2; justify-self: end; }
+.score-header > .player-mini span { grid-row: 1; }
+.score-header > .player-mini b { grid-row: 2; }
+.score-header > .player-mini small { grid-row: 3; }
+@media (max-width:650px) {
+  .score-header > .player-mini img { grid-row: 2 / span 2; }
+  .score-header > .player-mini.right img { grid-column: 2; grid-row: 2 / span 2; }
+}
+</style>
 </head>
 <body>
 <div id="goalApp">

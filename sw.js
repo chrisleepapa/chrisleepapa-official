@@ -43,6 +43,26 @@ self.addEventListener('fetch', (event) => {
         }
       }
 
+      // Game Info: inject the GOAL card fix without touching gameinfo.html.
+      if (url.pathname === '/gameinfo' || url.pathname === '/gameinfo.html') {
+        if (type.includes('text/html')) {
+          const html = await response.text();
+          const script = '<script src="/js/gameinfo-goal-fix.js?v=20260904"></script>';
+          if (!html.includes('/js/gameinfo-goal-fix.js')) {
+            const mainScript = '<script src="js/main.js"></script>';
+            const patched = html.includes(mainScript)
+              ? html.replace(mainScript, `${script}${mainScript}`)
+              : html.replace('</body>', `${script}</body>`);
+
+            return new Response(patched, {
+              status: response.status,
+              statusText: response.statusText,
+              headers: response.headers
+            });
+          }
+        }
+      }
+
       return response;
     } catch (error) {
       return new Response('인터넷 연결이 원활하지 않습니다.', {

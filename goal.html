@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#050509">
+<title>MIRACLE SHOT — GOAL</title>
+<link rel="icon" href="/images/favicon.png" type="image/png">
+<link rel="stylesheet" href="/css/common.css">
+<link rel="stylesheet" href="/css/miracleshot/goal.css">
+<style>
+/* GOAL score header: keep each character beside that player's shot counter. */
+.score-header > .player-mini img { grid-row: 2 / span 2; align-self: center; }
+.score-header > .player-mini.right img { grid-column: 2; grid-row: 2 / span 2; justify-self: end; }
+.score-header > .player-mini span { grid-row: 1; }
+.score-header > .player-mini b { grid-row: 2; }
+.score-header > .player-mini small { grid-row: 3; }
+@media (max-width:650px) {
+  .score-header > .player-mini img { grid-row: 2 / span 2; }
+  .score-header > .player-mini.right img { grid-column: 2; grid-row: 2 / span 2; }
+}
+</style>
+</head>
+<body>
+<div id="goalApp">
+  <header class="goal-top">
+    <a href="/miracleshot" class="back-link">← MIRACLE SHOT</a>
+    <div class="brand">MIRACLE SHOT <span>GOAL</span></div>
+  </header>
+  <main>
+    <section id="setupScreen" class="screen active">
+      <div class="hero-copy"><div class="eyebrow">MIRACLE SHOT IP GAME</div><h1>GOAL</h1><p>미라클 샷의 네 주인공 중 한 명을 선택하고,<br>거대한 점수벽을 향해 최고의 슛을 날려라.</p></div>
+      <div class="setup-card">
+        <div class="step-title">01. BATTLE MODE</div>
+        <div class="mode-grid"><button class="mode-btn selected" data-mode="cpu">🤖 COMPUTER</button><button class="mode-btn" data-mode="human">👤 PLAYER 2</button></div>
+        <div class="step-title">02. PLAYER 1 — CHOOSE YOUR PLAYER</div>
+        <div id="characterGrid" class="character-grid">
+          <button class="character-card" data-character="g" data-name="길"><img src="/images/g00.jpg" alt="길"><strong>길</strong></button>
+          <button class="character-card selected" data-character="h" data-name="황"><img src="/images/h00.jpg" alt="황"><strong>황</strong></button>
+          <button class="character-card" data-character="k" data-name="고"><img src="/images/k00.jpg" alt="고"><strong>고</strong></button>
+          <button class="character-card" data-character="y" data-name="영"><img src="/images/y00.jpg" alt="영"><strong>영</strong></button>
+        </div>
+        <div id="opponentSelectArea" class="opponent-select-area is-cpu">
+          <div class="step-title">03. PLAYER 2 — CHOOSE YOUR PLAYER</div>
+          <div class="opponent-cpu-note" id="opponentCpuNote">COMPUTER WILL SELECT RANDOMLY</div>
+          <div id="opponentCharacterGrid" class="character-grid opponent-character-grid" aria-label="Player 2 character selection">
+            <button class="character-card opponent-card" data-opponent="g"><img src="/images/g00.jpg" alt="길"><strong>길</strong></button>
+            <button class="character-card opponent-card" data-opponent="h"><img src="/images/h00.jpg" alt="황"><strong>황</strong></button>
+            <button class="character-card opponent-card" data-opponent="k"><img src="/images/k00.jpg" alt="고"><strong>고</strong></button>
+            <button class="character-card opponent-card" data-opponent="y"><img src="/images/y00.jpg" alt="영"><strong>영</strong></button>
+          </div>
+        </div>
+        <div class="opponent-row"><span>PLAYER 2</span><strong id="opponentName">COMPUTER · RANDOM</strong></div>
+        <button id="battleStart" class="primary-btn">BATTLE START</button>
+      </div>
+    </section>
+    <section id="gameScreen" class="screen">
+      <div class="score-header">
+        <div class="player-mini"><img id="p1Img" src="/images/h00.jpg" alt=""><span id="p1Label">PLAYER 1 · 황</span><b id="p1Total">0</b><small id="p1Shots">0/10 SHOTS</small></div>
+        <div class="round-info"><small>ROUND</small><strong id="setNumber">1</strong><em>/ 3</em><div id="roundTitle">ROUND 1</div><span id="turnLabel">PLAYER 1 TURN</span></div>
+        <div class="player-mini right"><img id="p2Img" src="/images/g00.jpg" alt=""><span id="p2Label">PLAYER 2</span><b id="p2Total">0</b><small id="p2Shots">0/10 SHOTS</small></div>
+      </div>
+      <div id="wallStage" class="wall-stage"><div class="distance-label">TARGET WALL · AIM FOR YOUR SCORE</div><div id="targetWall" class="target-wall"></div><div class="wall-ground"></div><div id="ball" class="ball">⚽</div></div>
+      <div id="aimPanel" class="aim-panel"><div class="aim-hint">공을 누른 채 게이지를 채우고, 원하는 방향으로 드래그한 뒤 손을 떼세요</div><div class="power-meter"><div id="powerFill" class="power-fill"></div></div><div class="meters"><div><span>POWER</span><b id="powerValue">0%</b></div><div><span>CURVE</span><b id="curveValue">0</b></div><div><span>ANGLE</span><b id="angleValue">0°</b></div></div><button id="kickBtn" class="kick-btn" disabled>HOLD + DRAG THE BALL TO KICK</button></div>
+    </section>
+    <section id="resultScreen" class="screen result-screen"><div class="eyebrow">MATCH COMPLETE</div><h2 id="resultTitle">WINNER</h2><div class="final-score"><div><span>PLAYER 1</span><strong id="finalP1">0</strong></div><i>:</i><div><span>PLAYER 2</span><strong id="finalP2">0</strong></div></div><div id="roundWins" class="round-wins"></div><div id="resultMessage"></div><button id="againBtn" class="primary-btn">PLAY AGAIN</button></section>
+  </main>
+</div>
+<script src="/js/auth.js"></script>
+<script src="/js/game-auth.js"></script>
+<script src="/js/miracleshot/goal.js"></script>
+<script src="/js/miracleshot/goal-result.js"></script>
+</body>
+</html>

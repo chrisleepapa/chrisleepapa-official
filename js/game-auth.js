@@ -6,6 +6,16 @@
     if (page === 'miracleshot') {
         const s = document.createElement('script'); s.src = '/js/work-miracle-shot.js'; s.defer = true; document.head.appendChild(s); return;
     }
+    if (page === 'gameinfo') {
+        const fixPopoImage = () => {
+            document.querySelectorAll('a.game-card[href="switch.html"] img, a.game-card[href="/switch.html"] img').forEach(img => {
+                img.src = '/images/popo.jpg';
+            });
+        };
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fixPopoImage, { once: true });
+        else fixPopoImage();
+        return;
+    }
     if (!GAME_PAGES.has(page)) return;
     function injectLegacyAccountPrehideStyle() {
         if (document.getElementById('clp-game-legacy-account-prehide')) return;

@@ -1,158 +1,58 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#030305">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="평범한 직장인, 두 딸의 아빠이자 한 여자의 남편으로 살아가며 출퇴근길과 잠들기 전 휴대폰으로 창작을 이어가는 이야기를 기록합니다.">
-  <meta property="og:title" content="퇴근 후, 나는 다시 창작자가 된다 — Chris LEE.PAPA Journal">
-  <meta property="og:description" content="평범한 직장인, 두 딸의 아빠이자 한 여자의 남편으로 살아가며 출퇴근길과 잠들기 전 휴대폰으로 창작을 이어가는 이야기를 기록합니다.">
-  <meta property="og:type" content="article">
-  <meta property="og:url" content="https://chrisleepapa-official.vercel.app/journal-5">
-  <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1">
-  <meta property="og:site_name" content="Chris LEE.PAPA">
-  <meta property="og:locale" content="ko_KR">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="퇴근 후, 나는 다시 창작자가 된다 — Chris LEE.PAPA Journal">
-  <meta name="twitter:description" content="평범한 직장인, 두 딸의 아빠이자 한 여자의 남편으로 살아가며 출퇴근길과 잠들기 전 휴대폰으로 창작을 이어가는 이야기를 기록합니다.">
-  <meta name="twitter:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1">
-  <link rel="canonical" href="https://chrisleepapa-official.vercel.app/journal-5">
-  <link rel="icon" href="images/favicon.png">
-  <title>퇴근 후, 나는 다시 창작자가 된다 — Chris LEE.PAPA Journal</title>
-  <link rel="stylesheet" href="css/common.css">
-  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
-  <style>
-    :root{--gold:#c9a84c;--gold-light:#e8d08a;--bg:#030305;--text:#f0ece4;--nav-height:70px}
-    body{margin:0;background:var(--bg);color:var(--text);font-family:Pretendard,sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
-    a{text-decoration:none;color:inherit}.page-wrapper{flex:1;padding:calc(var(--nav-height) + 60px) 20px 80px;max-width:760px;margin:0 auto;width:100%;box-sizing:border-box}
-    .back-link{display:block;text-align:center;font-size:.85rem;color:rgba(200,196,188,.55);margin-bottom:28px}.back-link:hover{color:var(--gold-light)}
-    .page-header{text-align:center;margin-bottom:40px}.tag{font-family:Cinzel,serif;font-size:.7rem;letter-spacing:4px;color:rgba(201,168,76,.6);display:block;margin-bottom:14px}.meta{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;font-size:.78rem;color:rgba(232,208,138,.6);margin-bottom:18px}.cat{padding:3px 12px;border:1px solid rgba(201,168,76,.3);border-radius:20px;color:var(--gold-light)}h1{font-family:'Noto Serif KR',serif;font-size:clamp(1.65rem,5vw,2.35rem);font-weight:600;line-height:1.45;color:#fff;word-break:keep-all;margin:0 0 20px}.divider{width:80px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:auto}
-    .article-card{background:rgba(12,12,18,.6);border:1px solid rgba(201,168,76,.2);border-radius:24px;padding:50px 45px;margin-bottom:32px;backdrop-filter:blur(15px);box-shadow:0 20px 50px rgba(0,0,0,.4)}.journal-body p{font-family:'Noto Serif KR',serif;font-size:1rem;line-height:2.05;color:rgba(240,236,228,.86);word-break:keep-all;margin:0 0 22px}.journal-body p:last-child{margin-bottom:0}.journal-body strong{color:var(--gold-light);font-weight:600}.subhead{font-family:'Noto Serif KR',serif;font-weight:600;font-size:1.12rem;color:var(--gold-light);margin:38px 0 15px;padding-left:14px;border-left:3px solid var(--gold);word-break:keep-all}.quote{padding:20px 22px;border-left:2px solid var(--gold);background:rgba(201,168,76,.06);font-family:'Noto Serif KR',serif;font-style:italic;color:rgba(240,236,228,.72);line-height:1.9;margin:28px 0;word-break:keep-all}.article-footer{padding-top:26px;margin-top:30px;border-top:1px solid rgba(255,255,255,.08);font-size:.85rem;color:rgba(200,196,188,.6);line-height:1.8}.article-footer a{color:var(--gold-light);text-decoration:underline;text-underline-offset:3px}.journal-nav{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:40px}.journal-nav a{display:flex;flex-direction:column;gap:6px;padding:18px 20px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(12,12,18,.5)}.dir{font-family:Cinzel,serif;font-size:.62rem;letter-spacing:2px;color:var(--gold);text-transform:uppercase}.ttl{font-family:'Noto Serif KR',serif;font-size:.9rem;color:#fff;line-height:1.4;word-break:keep-all}.next{text-align:right}
-    @media(max-width:700px){.article-card{padding:30px 22px}.journal-nav{grid-template-columns:1fr}}
-  </style>
-  <meta name="robots" content="index, follow">
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#030305"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><link rel="apple-touch-icon" href="images/favicon.png">
+<script async src="https://pagead2.googlesyndication.com/pagead/js?id=ca-pub-3207219520058740" crossorigin="anonymous"></script><script async src="https://www.googletagmanager.com/gtag/js?id=G-NBGELYQ4TZ"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-NBGELYQ4TZ');gtag('config','GT-5MJDBTR2');</script>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="평범한 직장인으로 일하면서 가족과 창작을 함께 이어가기 위해 시간을 쪼개고 우선순위를 정했던 실제 작업 방식과 시행착오를 기록합니다."><meta property="og:title" content="퇴근 후, 나는 다시 창작자가 된다 — Chris LEE.PAPA Journal"><meta property="og:description" content="출퇴근길과 잠들기 전의 짧은 시간을 모아 음악, 글, 영상과 다양한 창작 프로젝트를 이어간 실제 경험을 기록합니다."><meta property="og:type" content="article"><meta property="og:url" content="https://chrisleepapa-official.vercel.app/journal-5"><meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1"><meta property="og:site_name" content="Chris LEE.PAPA"><meta property="og:locale" content="ko_KR"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="퇴근 후, 나는 다시 창작자가 된다 — Chris LEE.PAPA Journal"><meta name="twitter:description" content="출퇴근길과 잠들기 전의 짧은 시간을 모아 음악, 글, 영상과 다양한 창작 프로젝트를 이어간 실제 경험을 기록합니다."><meta name="twitter:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1"><link rel="canonical" href="https://chrisleepapa-official.vercel.app/journal-5"><link rel="icon" href="images/favicon.png"><title>퇴근 후, 나는 다시 창작자가 된다 — Chris LEE.PAPA Journal</title>
+<link rel="stylesheet" href="css/common.css"><link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#c9a84c;--gold-light:#e8d08a;--bg:#030305;--text:#f0ece4;--nav-height:70px}body{margin:0;background:var(--bg);color:var(--text);font-family:Pretendard,sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}a{text-decoration:none;color:inherit}.page-wrapper{flex:1;padding:calc(var(--nav-height) + 60px) 20px 80px;max-width:760px;margin:0 auto;width:100%;box-sizing:border-box}.back-link{display:block;text-align:center;font-size:.85rem;color:rgba(200,196,188,.55);margin-bottom:28px}.back-link:hover{color:var(--gold-light)}.page-header{text-align:center;margin-bottom:40px}.tag{font-family:Cinzel,serif;font-size:.7rem;letter-spacing:4px;color:rgba(201,168,76,.6);display:block;margin-bottom:14px}.meta{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;font-size:.78rem;color:rgba(232,208,138,.6);margin-bottom:18px}.cat{padding:3px 12px;border:1px solid rgba(201,168,76,.3);border-radius:20px;color:var(--gold-light)}h1{font-family:'Noto Serif KR',serif;font-size:clamp(1.65rem,5vw,2.35rem);font-weight:600;line-height:1.45;color:#fff;word-break:keep-all;margin:0 0 20px}.divider{width:80px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:auto}.article-card{background:rgba(12,12,18,.6);border:1px solid rgba(201,168,76,.2);border-radius:24px;padding:50px 45px;margin-bottom:32px;backdrop-filter:blur(15px);box-shadow:0 20px 50px rgba(0,0,0,.4)}.journal-body p{font-family:'Noto Serif KR',serif;font-size:1rem;line-height:2.05;color:rgba(240,236,228,.86);word-break:keep-all;margin:0 0 22px}.journal-body p:last-child{margin-bottom:0}.journal-body strong{color:var(--gold-light);font-weight:600}.subhead{font-family:'Noto Serif KR',serif;font-weight:600;font-size:1.12rem;color:var(--gold-light);margin:38px 0 15px;padding-left:14px;border-left:3px solid var(--gold);word-break:keep-all}.quote{padding:20px 22px;border-left:2px solid var(--gold);background:rgba(201,168,76,.06);font-family:'Noto Serif KR',serif;font-style:italic;color:rgba(240,236,228,.72);line-height:1.9;margin:28px 0;word-break:keep-all}.journal-check{padding:18px 20px;margin:24px 0;border:1px solid rgba(201,168,76,.18);border-radius:14px;background:rgba(201,168,76,.04);font-family:'Noto Serif KR',serif;font-size:.94rem;line-height:1.9;color:rgba(240,236,228,.78)}.journal-check strong{display:block;margin-bottom:6px}.journal-table{width:100%;border-collapse:collapse;margin:20px 0 28px;font-size:.9rem}.journal-table th,.journal-table td{border:1px solid rgba(255,255,255,.1);padding:11px 12px;text-align:left;vertical-align:top;line-height:1.7}.journal-table th{color:var(--gold-light);background:rgba(201,168,76,.05);font-weight:600}.article-footer{padding-top:26px;margin-top:30px;border-top:1px solid rgba(255,255,255,.08);font-size:.85rem;color:rgba(200,196,188,.6);line-height:1.8}.article-footer a{color:var(--gold-light);text-decoration:underline;text-underline-offset:3px}.journal-nav{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:40px}.journal-nav a{display:flex;flex-direction:column;gap:6px;padding:18px 20px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(12,12,18,.5)}.dir{font-family:Cinzel,serif;font-size:.62rem;letter-spacing:2px;color:var(--gold);text-transform:uppercase}.ttl{font-family:'Noto Serif KR',serif;font-size:.9rem;color:#fff;line-height:1.4;word-break:keep-all}.next{text-align:right}@media(max-width:700px){.article-card{padding:30px 22px}.journal-nav{grid-template-columns:1fr}.journal-table{font-size:.82rem}.journal-table th,.journal-table td{padding:9px 8px}}
+</style><meta name="robots" content="index, follow">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"퇴근 후, 나는 다시 창작자가 된다","description":"평범한 직장인으로 일하면서 가족과 창작을 함께 이어가기 위해 시간을 쪼개고 우선순위를 정했던 실제 작업 방식과 시행착오를 기록합니다.","author":{"@type":"Person","name":"Chris LEE.PAPA"},"datePublished":"2026-08-01","dateModified":"2026-09-11","mainEntityOfPage":{"@type":"WebPage","@id":"https://chrisleepapa-official.vercel.app/journal-5"}}</script>
 </head>
-<body>
-  <div id="site-nav"></div>
-  <main class="page-wrapper">
-    <a class="back-link" href="/journal" data-i18n="journal_back">← Chris's Journal 전체 목록으로</a>
-    <header class="page-header">
-      <span class="tag">✦ &nbsp; Chris's Journal &nbsp; ✦</span>
-      <div class="meta"><span data-i18n="journal_meta">2026.08 · 창작의 기록</span><span class="cat" data-i18n="journal_category">창작 · 일상</span></div>
-      <h1 data-i18n="journal_title">퇴근 후, 나는 다시 창작자가 된다</h1>
-      <div class="divider"></div>
-    </header>
-    <article class="article-card">
-      <div class="journal-body">
-        <p data-i18n="j5_p1">나는 특별한 직업을 가진 사람이 아니다. <strong>내 생업은 평범한 직장인, 월급쟁이</strong>다. 아침이면 출근하고 회사에서 하루를 보내고, 퇴근하면 집으로 돌아간다.</p>
-        <p data-i18n="j5_p2">집에서는 두 딸의 아빠이고, 한 여자의 남편이다. 가족과 함께 저녁을 먹고 아이들의 이야기를 듣고, 평범한 하루를 살아간다. 그리고 하루가 거의 끝났을 때, 나는 다시 휴대폰을 꺼낸다.</p>
-        <div class="subhead" data-i18n="j5_h1">만원 지하철 안에서 시작되는 작업</div>
-        <p data-i18n="j5_p3">내게는 멋진 작업실이 없다. 커다란 모니터도, 언제든 앉을 수 있는 전용 책상도 없다.</p>
-        <p data-i18n="j5_p4">대부분의 작업은 <strong>내가 들고 다니는 휴대폰 하나</strong>에서 시작된다. 출퇴근길 만원 지하철 안에서 떠오른 생각을 메모하고, 가사를 고치고, 이야기를 쓰고, 음악을 듣는다.</p>
-        <p data-i18n="j5_p5">사람들로 가득 찬 지하철에서 작은 화면을 들여다보며 다음 장면을 생각한다. 누군가에게는 그저 출근하는 시간이지만, 나에게는 그 안에 조금씩 작품을 만들어가는 시간이 들어 있다.</p>
-        <div class="subhead" data-i18n="j5_h2">아이들이 잠든 뒤</div>
-        <p data-i18n="j5_p6">퇴근하고 집에 돌아오면 창작보다 먼저 해야 할 일이 있다. 가족과 함께하는 시간이다.</p>
-        <p data-i18n="j5_p7">나는 그 시간을 소중하게 생각한다. 내가 만드는 모든 것보다 가족이 먼저이기 때문이다. 그래서 창작은 늘 남는 시간에 한다.</p>
-        <p data-i18n="j5_p8">아이들이 잠들고 하루의 소리가 조금씩 잦아들면 침대 위에서 다시 휴대폰을 켠다. 오늘 지하철에서 적어놓은 문장을 다시 읽고, 음악을 조금 더 다듬고, 다음 이야기를 생각한다.</p>
-        <div class="quote" data-i18n="j5_quote">“시간이 남아서 만드는 것이 아니다. 시간이 없기 때문에, 내가 가진 작은 시간을 모아서 만든다.”</div>
-        <div class="subhead" data-i18n="j5_h3">AI를 만나면서 달라진 것</div>
-        <p data-i18n="j5_p9">예전에는 머릿속에 있는 생각을 실제 작품으로 만드는 데 많은 시간과 기술이 필요했다. 지금은 AI라는 새로운 도구가 그 거리를 크게 줄여주었다.</p>
-        <p data-i18n="j5_p10">하지만 AI가 대신 살아주지는 않는다. 어떤 이야기를 만들지, 어떤 음악을 만들지, 무엇을 남길지는 여전히 내가 결정해야 한다.</p>
-        <p data-i18n="j5_p11">그래서 나에게 AI는 창작자를 대신하는 존재라기보다 <strong>시간이 부족한 사람이 자신의 생각을 현실로 옮길 수 있게 도와주는 도구</strong>에 가깝다.</p>
-        <div class="subhead" data-i18n="j5_h4">그래서 계속 만든다</div>
-        <p data-i18n="j5_p12">나는 아직도 평범한 직장인이다. 내일 아침이면 다시 출근할 것이고, 다시 만원 지하철을 탈 것이다. 집으로 돌아오면 다시 두 딸의 아빠이고 한 여자의 남편이 된다.</p>
-        <p data-i18n="j5_p13">그 삶을 버리고 다른 사람이 되고 싶은 것은 아니다. 오히려 지금의 삶 속에서 내가 할 수 있는 것을 계속 만들어보고 싶다.</p>
-        <p data-i18n="j5_p14">그래서 내 작업실은 때로는 지하철이고, 때로는 침대 위다. 그리고 내 손에 있는 작은 휴대폰이 때로는 악보가 되고, 때로는 노트가 되고, 때로는 영화 편집실이 된다.</p>
-        <p data-i18n="j5_p15">거창하지 않아도 괜찮다. 완벽하지 않아도 괜찮다.</p>
-        <p data-i18n="j5_p16"><strong>오늘도 조금 만들고, 내일도 조금 만든다.</strong></p>
-        <p data-i18n="j5_p17">아마 이것이 내가 창작을 계속하는 방법일 것이다.</p>
-        <div class="article-footer" data-i18n="j5_footer">Chris LEE.PAPA의 창작 기록입니다.<br>평범한 일상 속에서도 만들고 싶은 이야기가 있다면, 작은 시간부터 시작해보려고 합니다.</div>
-      </div>
-    </article>
-    <nav class="journal-nav" aria-label="Journal navigation">
-      <a href="/journal-4"><span class="dir" data-i18n="journal_prev">← Previous</span><span class="ttl" data-i18n="journal_prev_title">신앙과 창작이 함께 숨 쉬는 공간</span></a>
-      <a href="/journal"><span class="dir next" data-i18n="journal_index">Journal Index →</span><span class="ttl next" data-i18n="journal_index_title">전체 Journal 보기</span></a>
-    </nav>
-  </main>
-  <div id="site-footer"></div>
-  <script>
-    window.PAGE_I18N = {
-      ko: {
-        meta_title: "퇴근 후, 나는 다시 창작자가 된다 - Chris LEE.PAPA Journal",
-        meta_description: "평범한 직장인, 두 딸의 아빠이자 한 여자의 남편으로 살아가며 출퇴근길과 잠들기 전 휴대폰으로 창작을 이어가는 이야기.",
-        journal_back: "← Chris's Journal 전체 목록으로",
-        journal_meta: "2026.08 · 창작의 기록",
-        journal_category: "창작 · 일상",
-        journal_title: "퇴근 후, 나는 다시 창작자가 된다",
-        j5_h1: "만원 지하철 안에서 시작되는 작업",
-        j5_h2: "아이들이 잠든 뒤",
-        j5_h3: "AI를 만나면서 달라진 것",
-        j5_h4: "그래서 계속 만든다",
-        j5_p1: "나는 특별한 직업을 가진 사람이 아니다. <strong>내 생업은 평범한 직장인, 월급쟁이</strong>다. 아침이면 출근하고 회사에서 하루를 보내고, 퇴근하면 집으로 돌아간다.",
-        j5_p2: "집에서는 두 딸의 아빠이고, 한 여자의 남편이다. 가족과 함께 저녁을 먹고 아이들의 이야기를 듣고, 평범한 하루를 살아간다. 그리고 하루가 거의 끝났을 때, 나는 다시 휴대폰을 꺼낸다.",
-        j5_p3: "내게는 멋진 작업실이 없다. 커다란 모니터도, 언제든 앉을 수 있는 전용 책상도 없다.",
-        j5_p4: "대부분의 작업은 <strong>내가 들고 다니는 휴대폰 하나</strong>에서 시작된다. 출퇴근길 만원 지하철 안에서 떠오른 생각을 메모하고, 가사를 고치고, 이야기를 쓰고, 음악을 듣는다.",
-        j5_p5: "사람들로 가득 찬 지하철에서 작은 화면을 들여다보며 다음 장면을 생각한다. 누군가에게는 그저 출근하는 시간이지만, 나에게는 그 안에 조금씩 작품을 만들어가는 시간이 들어 있다.",
-        j5_p6: "퇴근하고 집에 돌아오면 창작보다 먼저 해야 할 일이 있다. 가족과 함께하는 시간이다.",
-        j5_p7: "나는 그 시간을 소중하게 생각한다. 내가 만드는 모든 것보다 가족이 먼저이기 때문이다. 그래서 창작은 늘 남는 시간에 한다.",
-        j5_p8: "아이들이 잠들고 하루의 소리가 조금씩 잦아들면 침대 위에서 다시 휴대폰을 켠다. 오늘 지하철에서 적어놓은 문장을 다시 읽고, 음악을 조금 더 다듬고, 다음 이야기를 생각한다.",
-        j5_quote: "“시간이 남아서 만드는 것이 아니다. 시간이 없기 때문에, 내가 가진 작은 시간을 모아서 만든다.”",
-        j5_p9: "예전에는 머릿속에 있는 생각을 실제 작품으로 만드는 데 많은 시간과 기술이 필요했다. 지금은 AI라는 새로운 도구가 그 거리를 크게 줄여주었다.",
-        j5_p10: "하지만 AI가 대신 살아주지는 않는다. 어떤 이야기를 만들지, 어떤 음악을 만들지, 무엇을 남길지는 여전히 내가 결정해야 한다.",
-        j5_p11: "그래서 나에게 AI는 창작자를 대신하는 존재라기보다 <strong>시간이 부족한 사람이 자신의 생각을 현실로 옮길 수 있게 도와주는 도구</strong>에 가깝다.",
-        j5_p12: "나는 아직도 평범한 직장인이다. 내일 아침이면 다시 출근할 것이고, 다시 만원 지하철을 탈 것이다. 집으로 돌아오면 다시 두 딸의 아빠이고 한 여자의 남편이 된다.",
-        j5_p13: "그 삶을 버리고 다른 사람이 되고 싶은 것은 아니다. 오히려 지금의 삶 속에서 내가 할 수 있는 것을 계속 만들어보고 싶다.",
-        j5_p14: "그래서 내 작업실은 때로는 지하철이고, 때로는 침대 위다. 그리고 내 손에 있는 작은 휴대폰이 때로는 악보가 되고, 때로는 노트가 되고, 때로는 영화 편집실이 된다.",
-        j5_p15: "거창하지 않아도 괜찮다. 완벽하지 않아도 괜찮다.",
-        j5_p16: "<strong>오늘도 조금 만들고, 내일도 조금 만든다.</strong>",
-        j5_p17: "아마 이것이 내가 창작을 계속하는 방법일 것이다.",
-        j5_footer: "Chris LEE.PAPA의 창작 기록입니다.<br>평범한 일상 속에서도 만들고 싶은 이야기가 있다면, 작은 시간부터 시작해보려고 합니다.",
-        journal_prev: "← Previous",
-        journal_prev_title: "신앙과 창작이 함께 숨 쉬는 공간",
-        journal_index: "Journal Index →",
-        journal_index_title: "전체 Journal 보기"
-      },
-      en: {
-        meta_title: "After Work, I Become a Creator Again - Chris LEE.PAPA Journal",
-        meta_description: "A personal journal about continuing to create on a phone during crowded commutes and late nights after work, as an ordinary office worker, father, and husband.",
-        journal_back: "← Back to Chris's Journal",
-        journal_meta: "2026.08 · A Creator's Journal",
-        journal_category: "CREATION · DAILY LIFE",
-        journal_title: "After Work, I Become a Creator Again",
-        j5_h1: "Creating on a Crowded Subway",
-        j5_h2: "After the Kids Fall Asleep",
-        j5_h3: "What Changed After I Met AI",
-        j5_h4: "So I Keep Creating",
-        j5_p1: "I don't have a special profession. <strong>My livelihood is that of an ordinary office worker.</strong> I go to work in the morning, spend the day at the office, and return home after work.",
-        j5_p2: "At home, I am a father to two daughters and a husband. I have dinner with my family, listen to my children's stories, and live an ordinary day. And when the day is almost over, I pick up my phone again.",
-        j5_p3: "I don't have a beautiful studio. I don't have a large monitor or a dedicated desk waiting for me whenever I want to sit down.",
-        j5_p4: "Most of my work begins with <strong>the one phone I carry with me.</strong> On crowded commutes, I write down ideas, revise lyrics, write stories, and listen to music.",
-        j5_p5: "On a subway packed with people, I look at a small screen and imagine the next scene. For someone else, it may simply be the time spent commuting to work. For me, it is time to slowly build something.",
-        j5_p6: "When I get home from work, there is something that comes before creating: time with my family.",
-        j5_p7: "I value that time. My family comes before everything I make. So I create in whatever time remains.",
-        j5_p8: "When the children fall asleep and the sounds of the day begin to fade, I turn my phone on again from my bed. I reread the sentences I wrote on the subway, refine a little more music, and think about the next story.",
-        j5_quote: "“I don't create because I have time left. I create because I gather the small pieces of time I have.”",
-        j5_p9: "In the past, turning an idea in my head into a real work required a lot of time and technical skill. Today, AI has greatly shortened that distance.",
-        j5_p10: "But AI cannot live my life for me. I still have to decide what stories to tell, what music to make, and what I want to leave behind.",
-        j5_p11: "So to me, AI is less a replacement for a creator and more <strong>a tool that helps someone with limited time turn their ideas into reality.</strong>",
-        j5_p12: "I am still an ordinary office worker. Tomorrow morning, I will go to work again and take the crowded subway again. When I return home, I will once again be a father to two daughters and a husband.",
-        j5_p13: "I don't want to abandon that life and become someone else. Rather, I want to keep creating what I can within the life I have now.",
-        j5_p14: "So my studio is sometimes the subway, and sometimes my bed. The small phone in my hand can become sheet music, a notebook, or even a film editing room.",
-        j5_p15: "It doesn't have to be grand. It doesn't have to be perfect.",
-        j5_p16: "<strong>I make a little today, and a little more tomorrow.</strong>",
-        j5_p17: "Maybe this is how I will keep creating.",
-        j5_footer: "A creative journal by Chris LEE.PAPA.<br>Even in an ordinary life, if there is a story I want to make, I will start with the small moments I have.",
-        journal_prev: "← Previous",
-        journal_prev_title: "A Space Where Faith and Creativity Breathe Together",
-        journal_index: "Journal Index →",
-        journal_index_title: "View All Journal Entries"
-      }
-    };
-  </script>
-  <script src="js/main.js"></script>
-</body>
-</html>
+<body><div id="site-nav"></div><main class="page-wrapper">
+<a class="back-link" href="/" data-i18n="journal_back">← Chris's Journal 전체 목록으로</a>
+<header class="page-header"><span class="tag">✦ &nbsp; Chris's Journal &nbsp; ✦</span><div class="meta"><span data-i18n="journal_meta">2026.08 · 창작의 기록</span><span class="cat" data-i18n="journal_category">창작 · 일상</span></div><h1 data-i18n="journal_title">퇴근 후, 나는 다시 창작자가 된다</h1><div class="divider"></div></header>
+<article class="article-card"><div class="journal-body" data-i18n="body">
+<p>나는 특별한 직업을 가진 사람이 아니다. <strong>내 생업은 평범한 직장인</strong>이다. 아침이면 출근하고 회사에서 하루를 보내고, 퇴근하면 집으로 돌아온다. 집에서는 두 딸의 아빠이고 한 여자의 남편이다. 가족과 함께 저녁을 먹고 아이들의 이야기를 듣는 평범한 하루가 먼저다.</p>
+<p>그런데 하루가 거의 끝났을 때 나는 다시 휴대폰을 꺼낸다. 어떤 날에는 가사를 고치고, 어떤 날에는 이야기를 쓰고, 어떤 날에는 음악을 듣거나 영상의 다음 장면을 정리한다. 내가 창작을 시작하는 시간은 거창한 ‘작업 시작’ 버튼을 누르는 순간이 아니라, <strong>남은 몇 분을 그냥 흘려보내지 않기로 결정하는 순간</strong>에 더 가깝다.</p>
+<div class="subhead">1. 내게는 전용 작업실이 없었다</div>
+<p>내게는 처음부터 멋진 작업실이 있었던 것이 아니다. 커다란 모니터와 전문 장비를 갖춘 공간도 없었다. 그래서 자연스럽게 내가 이미 가지고 있던 도구부터 활용했다. 가장 자주 사용하는 것은 휴대폰이고, 필요한 작업은 그때그때 가능한 범위에서 나눠서 했다.</p>
+<p>출퇴근길에는 아이디어를 메모하거나 이미 만든 내용을 읽어본다. 집에서는 가족과 시간을 보낸 뒤 조금 더 집중해야 하는 작업을 한다. 짧은 시간에는 문장 하나를 고치고, 여유가 있는 날에는 한 곡이나 한 장면처럼 조금 큰 단위의 작업을 한다.</p>
+<div class="journal-check"><strong>내가 시간을 나누는 가장 단순한 기준</strong>이동 중에는 아이디어와 검토, 짧은 시간에는 수정, 집중할 수 있는 시간에는 제작과 정리. 모든 작업을 모든 장소에서 하려고 하지 않는 것이 생각보다 중요했다.</div>
+<div class="subhead">2. 가장 먼저 바꾼 것은 ‘시간이 없다’는 생각이었다</div>
+<p>직장과 가족이 있는 상태에서는 하루에 몇 시간씩 창작 시간을 확보하기가 쉽지 않다. 처음에는 충분한 시간이 생길 때까지 기다리기도 했다. 그런데 그렇게 기다리면 시작 자체가 늦어졌다.</p>
+<p>그래서 <strong>작품을 완성하는 데 필요한 시간을 작은 단위로 쪼개는 방식</strong>으로 바꿨다. 10분이면 메모 하나를 정리하고, 20분이면 가사를 다듬고, 조금 더 긴 시간이 생기면 한 번에 여러 작업을 연결한다. 중요한 것은 매일 거창한 결과를 만드는 것이 아니라 다음 작업으로 넘어갈 수 있는 상태를 만들어 놓는 것이었다.</p>
+<table class="journal-table"><thead><tr><th>확보한 시간</th><th>내가 하기 좋은 작업</th><th>목표</th></tr></thead><tbody><tr><td>10분 안팎</td><td>아이디어 메모 · 문장 수정</td><td>생각을 잃지 않기</td></tr><tr><td>20~40분</td><td>가사 · 스토리 · 프롬프트 수정</td><td>작품의 한 부분 완성</td></tr><tr><td>1시간 이상</td><td>음악 · 영상 · 페이지 제작과 검토</td><td>여러 작업을 연결해 진도 내기</td></tr></tbody></table>
+<div class="subhead">3. 여러 프로젝트를 동시에 하면서 생긴 시행착오</div>
+<p>음악도 만들고, 책도 만들고, 영상도 만들고, 웹사이트도 만들다 보니 또 다른 문제가 생겼다. 하고 싶은 것이 많으면 오히려 아무것도 끝내지 못할 수 있다는 것이다.</p>
+<p>그래서 지금은 <strong>‘새로운 것을 시작하는 것’보다 ‘진행 중인 것을 하나씩 끝내는 것’</strong>을 더 중요하게 생각한다. 아이디어가 떠올라도 바로 프로젝트를 추가하기보다 메모해 두고, 현재 작업의 한 단계를 끝낸 뒤 다시 꺼내본다.</p>
+<div class="quote">“시간이 남아서 만드는 것이 아니다. 내가 가진 작은 시간을 모아 하나의 결과물로 연결한다.”</div>
+<div class="subhead">4. AI를 만나면서 달라진 것은 속도보다 가능성이었다</div>
+<p>AI를 사용하기 전에는 머릿속에 있는 생각을 실제 결과물로 옮기는 과정이 지금보다 훨씬 무겁게 느껴졌다. 음악을 만들려면 작곡과 편곡을, 이미지를 만들려면 그림과 디자인을, 영상을 만들려면 촬영과 편집을 각각 공부해야 했다.</p>
+<p>AI는 이 진입 장벽을 낮춰주었다. 나는 실제로 Suno 같은 AI 음악 도구를 활용해 음악을 만들고, 이미지·영상 제작 과정에서도 AI를 사용한다. 하지만 AI가 작품의 방향을 결정해 주는 것은 아니다. <strong>무엇을 만들 것인지, 어떤 결과를 남길 것인지, 무엇을 버릴 것인지는 여전히 사람이 판단해야 한다.</strong></p>
+<p>오히려 AI를 사용하면서 검토하는 시간이 중요해졌다. 여러 결과가 빠르게 나오기 때문에 모두 사용하는 것이 아니라, 목적에 맞는 결과를 고르고 수정하고 다시 만드는 과정이 필요했다. 나에게 AI는 ‘자동 완성 버튼’보다 <strong>혼자서는 시도하기 어려웠던 아이디어를 실제 형태로 시험해 보는 창작 도구</strong>에 가까웠다.</p>
+<div class="subhead">5. 가족과 창작의 우선순위를 바꾸지는 않았다</div>
+<p>창작을 계속하고 싶다고 해서 가족과의 시간을 줄이고 싶지는 않았다. 오히려 가족과 함께하는 시간이 있었기 때문에 내가 왜 이런 이야기를 만들고 있는지도 더 분명해졌다. Sister Squad 역시 두 딸을 바라보며 시작된 프로젝트였다.</p>
+<p>그래서 창작은 가족을 밀어내고 확보하는 시간이 아니라 <strong>가족과 일상을 지킨 뒤 남은 시간에서 이어가는 활동</strong>이 되었다. 시간이 적어서 답답한 날도 있지만, 그 제한이 오히려 내가 무엇을 정말 만들고 싶은지 선택하게 해주기도 했다.</p>
+<div class="subhead">6. 내가 실제로 지키려고 하는 다섯 가지</div>
+<p><strong>첫째, 생각이 떠오르면 바로 기록한다.</strong> 완성된 문장을 기다리지 않는다.</p>
+<p><strong>둘째, 짧은 시간에도 할 수 있는 일을 따로 만든다.</strong> 시간이 없다는 이유로 작업 전체를 멈추지 않는다.</p>
+<p><strong>셋째, 한 번에 너무 많은 프로젝트를 진행하지 않는다.</strong> 새 아이디어는 기록하고 현재 작업을 먼저 끝낸다.</p>
+<p><strong>넷째, AI 결과를 그대로 작품으로 사용하지 않는다.</strong> 선택하고, 비교하고, 수정하는 사람의 판단을 남긴다.</p>
+<p><strong>다섯째, 완성한 결과를 실제로 공개한다.</strong> 책이면 출판하고, 음악이면 배포하고, 웹 프로젝트라면 실제 사이트에 올린다. 공개해야 다음 개선점도 보이기 때문이다.</p>
+<div class="subhead">7. 그래서 오늘도 조금 만든다</div>
+<p>나는 여전히 평범한 직장인이고, 내일 아침이면 다시 출근한다. 퇴근하면 다시 두 딸의 아빠이고 한 여자의 남편이다. 그 삶을 버리고 다른 사람이 되고 싶은 것은 아니다.</p>
+<p>오히려 지금의 삶 안에서 내가 할 수 있는 것을 계속 만들어보고 싶다. 그래서 내 작업실은 때로는 지하철이고, 때로는 침대 위이며, 내 휴대폰은 어떤 날에는 노트가 되고 어떤 날에는 음악 작업실이 되고 어떤 날에는 편집 화면이 된다.</p>
+<p>거창하지 않아도 괜찮다. 완벽하지 않아도 괜찮다. <strong>오늘 조금 만들고, 내일 다시 이어가면 된다.</strong></p>
+<p>돌아보면 지금의 Creative Archive도 그렇게 조금씩 쌓인 결과다. 한 번에 완성된 것이 아니라 음악, 책, 영상, 성경 프로젝트, 게임과 웹사이트를 하나씩 만들어 실제 결과물로 남기면서 지금의 형태가 되었다.</p>
+<p>아마 이것이 내가 창작을 계속하는 방법일 것이다. 시간이 부족한 사람도 자신에게 맞는 작은 단위를 찾으면 무언가를 만들 수 있다는 것. 그리고 그 작은 결과가 다음 작업의 출발점이 된다는 것을, 나는 계속 직접 확인하고 있다.</p>
+<div class="article-footer">Chris LEE.PAPA의 창작 기록입니다.<br>평범한 일상 속에서도 만들고 싶은 이야기가 있다면, 거창한 시간을 기다리기보다 오늘 사용할 수 있는 작은 시간부터 시작해보려고 합니다.</div>
+</div></article>
+<nav class="journal-nav" aria-label="Journal navigation"><a href="/journal-4"><span class="dir" data-i18n="journal_prev">← Previous</span><span class="ttl" data-i18n="journal_prev_title">캐릭터 디자인과 삽화, 딸들과 함께한 시간</span></a><a href="/" ><span class="dir next" data-i18n="journal_index">Journal Home →</span><span class="ttl next" data-i18n="journal_index_title">홈에서 Chris's Journal 보기</span></a></nav>
+</main><div id="site-footer"></div>
+<script>
+window.PAGE_I18N={ko:{meta_title:"퇴근 후, 나는 다시 창작자가 된다 - Chris LEE.PAPA Journal",meta_description:"평범한 직장인으로 일하면서 가족과 창작을 함께 이어가기 위해 시간을 쪼개고 우선순위를 정했던 실제 작업 방식과 시행착오를 기록합니다.",journal_back:"← Chris's Journal 전체 목록으로",journal_meta:"2026.08 · 창작의 기록",journal_category:"창작 · 일상",journal_title:"퇴근 후, 나는 다시 창작자가 된다",journal_prev:"← Previous",journal_prev_title:"캐릭터 디자인과 삽화, 딸들과 함께한 시간",journal_index:"Journal Home →",journal_index_title:"홈에서 Chris's Journal 보기"},en:{meta_title:"After Work, I Become a Creator Again - Chris LEE.PAPA Journal",meta_description:"How I continue creating music, stories, videos, and digital projects while working full-time and taking care of my family.",journal_back:"← Back to Chris's Journal",journal_meta:"Aug. 2026 · Creative Life",journal_category:"Creative Work · Daily Life",journal_title:"After Work, I Become a Creator Again",journal_prev:"← Previous",journal_prev_title:"Character Design, Illustrations, and Time with My Daughters",journal_index:"Journal Home →",journal_index_title:"Explore Chris's Journal from Home"}};
+</script><script src="js/main.js"></script>
+</body></html>

@@ -1,4 +1,4 @@
-/* Chris's Pick media thumbnails: Spotify album art + YouTube thumbnails */
+/* Chris's Pick media thumbnails: image separate from text action card */
 'use strict';
 (() => {
   const SPOTIFY_BY_TITLE = {
@@ -22,8 +22,13 @@
 
   const addThumb = (card, src, alt) => {
     if (!card || !src || rendered.has(card)) return;
-    const old = card.querySelector('.clp-pick-media-thumb');
+
+    const old = card.parentElement?.querySelector(':scope > .clp-pick-media-wrap > .clp-pick-media-thumb');
     if (old) { rendered.add(card); return; }
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'clp-pick-media-wrap';
+
     const img = document.createElement('img');
     img.className = 'clp-pick-media-thumb';
     img.src = src;
@@ -31,8 +36,14 @@
     img.loading = 'eager';
     img.decoding = 'async';
     img.referrerPolicy = 'no-referrer';
-    img.addEventListener('error', () => img.remove(), {once:true});
-    card.prepend(img);
+    img.addEventListener('error', () => wrapper.remove(), {once:true});
+
+    const parent = card.parentElement;
+    if (!parent) return;
+
+    parent.insertBefore(wrapper, card);
+    wrapper.appendChild(img);
+    wrapper.appendChild(card);
     rendered.add(card);
   };
 
@@ -77,20 +88,27 @@
 
   const style = document.createElement('style');
   style.textContent = `
-    #chris-pick .clp-pick-main { overflow:hidden; }
+    #chris-pick .clp-pick-media-wrap {
+      width:100%;
+      margin:0 0 22px;
+    }
     #chris-pick .clp-pick-media-thumb {
       display:block;
       width:100%;
       aspect-ratio:16/9;
       object-fit:cover;
       object-position:center;
-      margin:0 0 22px;
+      margin:0;
       border-radius:inherit;
       background:#111;
       box-shadow:0 14px 35px rgba(0,0,0,.28);
     }
+    #chris-pick .clp-pick-media-wrap > .clp-pick-main {
+      margin-top:22px;
+    }
     @media (max-width:700px){
-      #chris-pick .clp-pick-media-thumb { margin-bottom:16px; }
+      #chris-pick .clp-pick-media-wrap { margin-bottom:16px; }
+      #chris-pick .clp-pick-media-wrap > .clp-pick-main { margin-top:16px; }
     }
   `;
   document.head.appendChild(style);

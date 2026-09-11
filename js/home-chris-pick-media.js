@@ -1,7 +1,7 @@
 /* Chris's Pick media thumbnails: Spotify album art + YouTube thumbnails */
 'use strict';
 (() => {
-  const SPOTIFY = {
+  const SPOTIFY_BY_TITLE = {
     'When the City Stood Still':'5qWOsYCJgw1bmXqvko7Thv',
     'To The Space':'1JyYgZ8VTbh5mASNezCTcJ',
     'Ensemble':'2X3dnf8vnhCSQ0c7H9oZht',
@@ -11,8 +11,7 @@
     '벽력일섬':'25T549XyXnmiZhqGn7p4x4',
     '영역전개':'6rZBdEFTJ5mLwINtn9C8KZ',
     'We own the Cup':'0sR4hKvhzN4U2GaQKx6Qek',
-    'Run It Back':'1VCjArWmxZJakdawRkEeCi',
-    'Spotify Release':'1K2UDyLeDFF7Ti5KzMknWN'
+    'Run It Back':'1VCjArWmxZJakdawRkEeCi'
   };
   const YOUTUBE = {
     'FURIOUS':'kAkGg2t1Ats',
@@ -37,6 +36,12 @@
     rendered.add(card);
   };
 
+  const albumIdFromCard = (card, title) => {
+    const href = card.getAttribute('href') || '';
+    const match = href.match(/[?&]album=([^&#]+)/);
+    return match ? decodeURIComponent(match[1]) : SPOTIFY_BY_TITLE[title] || '';
+  };
+
   const apply = () => {
     const root = document.getElementById('chris-pick');
     if (!root) return;
@@ -51,7 +56,7 @@
       return;
     }
 
-    const albumId = SPOTIFY[title];
+    const albumId = albumIdFromCard(card, title);
     if (!albumId) return;
     const cacheKey = `clp-spotify-art-${albumId}`;
     const cached = sessionStorage.getItem(cacheKey);

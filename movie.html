@@ -510,6 +510,7 @@ Create a visually striking frame suitable for an original music video.</pre>
             }
             updateMainVideoInfo();
             renderCarousel();
+            window.dispatchEvent(new CustomEvent('movieVideoChanged', { detail: { index: i, id: v.id } }));
             const tw = document.querySelector('.theater-wrapper');
             if (tw) window.scrollTo({ top: tw.offsetTop - 120, behavior: 'smooth' });
         }

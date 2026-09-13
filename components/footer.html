@@ -18,14 +18,27 @@
 #site-footer .footer-policy a{color:rgba(232,208,138,.58);transition:color .25s ease,text-shadow .25s ease}
 #site-footer .footer-policy a:hover,#site-footer .footer-policy a:focus-visible{color:#e8d08a;text-shadow:0 0 12px rgba(201,168,76,.2)}
 #site-footer .footer-divider{color:rgba(201,168,76,.28);font-size:.6rem}
+#site-footer .movie-creation-cta{max-width:960px;margin:0 auto 38px;padding:28px 30px;text-align:center;border:1px solid rgba(201,168,76,.2);border-radius:18px;background:linear-gradient(135deg,rgba(201,168,76,.07),rgba(255,255,255,.015));box-shadow:0 12px 35px rgba(0,0,0,.28)}
+#site-footer .movie-creation-cta p{margin:0 0 16px;color:#a0a0b5;font-size:.82rem;line-height:1.8;word-break:keep-all}
+#site-footer .movie-creation-cta strong{display:block;margin-bottom:5px;color:#e8d08a;font-family:'Cinzel',serif;font-size:.9rem;letter-spacing:.12em}
+#site-footer .movie-creation-cta a{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border:1px solid rgba(232,208,138,.42);border-radius:10px;color:#e8d08a;font-family:'Noto Sans KR','Pretendard',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.06em;text-decoration:none;transition:all .25s ease}
+#site-footer .movie-creation-cta a:hover,#site-footer .movie-creation-cta a:focus-visible{border-color:#e8d08a;background:rgba(201,168,76,.1);color:#fff;transform:translateY(-1px)}
 @media(max-width:760px){
   #site-footer footer{padding:30px 18px calc(28px + env(safe-area-inset-bottom));border-top-color:rgba(201,168,76,.14)}
   #site-footer footer p:first-child{font-size:.7rem;letter-spacing:.045em;line-height:1.6}
   #site-footer .footer-policy{margin-top:9px;gap:10px;font-size:.62rem;line-height:1.6}
+  #site-footer .movie-creation-cta{margin:0 18px 28px;padding:24px 18px}
+  #site-footer .movie-creation-cta p{font-size:.74rem}
+  #site-footer .movie-creation-cta a{font-size:.64rem;padding:10px 16px}
 }
 </style>
 
 <footer>
+    <div class="movie-creation-cta" id="movieCreationCta" style="display:none">
+        <strong>✦ MOVIE CREATION NOTES</strong>
+        <p>영상의 아이디어부터 생성형 AI 활용, 제작 과정과 프롬프트까지 자세한 창작 기록을 확인해보세요.</p>
+        <a href="/movie-creation" aria-label="Movie Creation Notes — 영상 제작 과정과 제작 프롬프트">제작 과정 &amp; 프롬프트 보기 →</a>
+    </div>
     <p data-i18n="footer_text">© 2026 Chris LEE.PAPA — The Creative Archive</p>
     <p class="footer-policy">
         <a href="/privacy" data-i18n="footer_privacy">개인정보처리방침</a>
@@ -33,3 +46,10 @@
         <a href="/terms" data-i18n="footer_terms">이용약관</a>
     </p>
 </footer>
+
+<script>
+(function(){
+  var cta=document.getElementById('movieCreationCta');
+  if(cta && /^\/movie\/?$/i.test(window.location.pathname)) cta.style.display='block';
+})();
+</script>

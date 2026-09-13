@@ -18,10 +18,13 @@
 #site-footer .footer-policy a{color:rgba(232,208,138,.58);transition:color .25s ease,text-shadow .25s ease}
 #site-footer .footer-policy a:hover,#site-footer .footer-policy a:focus-visible{color:#e8d08a;text-shadow:0 0 12px rgba(201,168,76,.2)}
 #site-footer .footer-divider{color:rgba(201,168,76,.28);font-size:.6rem}
+#site-footer .movie-creation-link{display:none;margin:18px auto 0;width:max-content;max-width:100%;padding:9px 15px;border:1px solid rgba(201,168,76,.3);border-radius:10px;color:#e8d08a;font-family:'Noto Sans KR','Pretendard',sans-serif;font-size:.68rem;letter-spacing:.06em;text-decoration:none;transition:border-color .25s ease,background .25s ease,color .25s ease}
+#site-footer .movie-creation-link:hover,#site-footer .movie-creation-link:focus-visible{border-color:rgba(232,208,138,.65);background:rgba(201,168,76,.08);color:#fff}
 @media(max-width:760px){
   #site-footer footer{padding:30px 18px calc(28px + env(safe-area-inset-bottom));border-top-color:rgba(201,168,76,.14)}
   #site-footer footer p:first-child{font-size:.7rem;letter-spacing:.045em;line-height:1.6}
   #site-footer .footer-policy{margin-top:9px;gap:10px;font-size:.62rem;line-height:1.6}
+  #site-footer .movie-creation-link{margin-top:14px;font-size:.61rem}
 }
 </style>
 
@@ -32,4 +35,12 @@
         <span class="footer-divider">·</span>
         <a href="/terms" data-i18n="footer_terms">이용약관</a>
     </p>
+    <a class="movie-creation-link" href="/movie-creation" aria-label="Movie Creation Notes — 영상 제작 과정과 제작 프롬프트">✦ MOVIE CREATION NOTES · 제작 과정 &amp; 프롬프트</a>
 </footer>
+
+<script>
+(function(){
+  var link=document.querySelector('#site-footer .movie-creation-link');
+  if(link && /^\/movie\/?$/i.test(window.location.pathname)) link.style.display='block';
+})();
+</script>

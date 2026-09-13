@@ -25,22 +25,32 @@
 #site-footer .movie-creation-cta a:hover,#site-footer .movie-creation-cta a:focus-visible{border-color:#e8d08a;background:rgba(201,168,76,.1);color:#fff;transform:translateY(-1px)}
 
 /* =========================================================
-   MOVIE CREATION NOTES — editorial card treatment
-   카드 모음처럼 보이지 않고 하나의 창작 기록으로 읽히도록 구성
+   MOVIE CREATION NOTES — editorial record for additional works
+   영화 페이지에서만 표시되며, 카드 모음보다 하나의 창작 기록으로 읽히도록 구성
    ========================================================= */
-.creation-notes .creation-note-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1px solid rgba(201,168,76,.14);border-bottom:1px solid rgba(255,255,255,.06)}
-.creation-notes .creation-note{position:relative;padding:26px 24px 28px;border:0;border-radius:0;background:transparent;border-right:1px solid rgba(255,255,255,.07)}
-.creation-notes .creation-note:last-child{border-right:0}
-.creation-notes .creation-note::before{content:'';display:block;width:28px;height:2px;margin-bottom:18px;background:rgba(201,168,76,.65)}
-.creation-notes .creation-note h4{font-size:.9rem;line-height:1.5;letter-spacing:.04em;margin-bottom:12px;color:#e8d08a}
-.creation-notes .creation-note p{font-size:.94rem;line-height:1.95;color:#b7b2aa}
-.creation-notes .creation-prompt{margin-top:20px;padding:25px 0 0;border-top:1px solid rgba(255,255,255,.06)}
-.creation-notes .creation-prompt h4{font-size:.9rem;color:#e8d08a}
-.creation-notes .creation-prompt pre{margin-top:14px;padding:20px 22px;border-radius:12px;background:rgba(0,0,0,.32);border:1px solid rgba(201,168,76,.16);box-shadow:inset 0 0 30px rgba(0,0,0,.18);font-size:.8rem;line-height:1.8;color:#d8d3c8}
+.movie-extra-notes{max-width:1100px;margin:0 auto 80px;padding:0 20px;position:relative;z-index:10}
+.movie-extra-notes-inner{padding:42px 44px;border:1px solid rgba(201,168,76,.18);border-radius:22px;background:linear-gradient(145deg,rgba(201,168,76,.045),rgba(10,10,18,.72));box-shadow:0 18px 50px rgba(0,0,0,.35);text-align:left}
+.movie-extra-kicker{color:#c9a84c;font-family:'Cinzel',serif;font-size:.78rem;letter-spacing:2px;margin-bottom:10px}
+.movie-extra-title{color:#fff;font-family:'Cinzel',serif;font-size:clamp(1.35rem,3vw,1.85rem);letter-spacing:1px;margin-bottom:14px}
+.movie-extra-intro{color:#c8c4bc;font-size:1rem;line-height:1.95;max-width:900px;margin-bottom:32px;word-break:keep-all}
+.movie-work{padding:30px 0;border-top:1px solid rgba(255,255,255,.08)}
+.movie-work:first-of-type{border-top:0;padding-top:0}
+.movie-work:last-of-type{padding-bottom:0}
+.movie-work h3{margin:0 0 12px;color:#fff;font-family:'Cinzel','Noto Serif KR',serif;font-size:1.12rem;letter-spacing:.04em}
+.movie-work .work-lead{margin:0 0 24px;color:#bdb8b0;font-size:.95rem;line-height:1.9;word-break:keep-all}
+.movie-work-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1px solid rgba(201,168,76,.12);border-bottom:1px solid rgba(255,255,255,.06)}
+.movie-work-card{padding:24px 22px 26px;border-right:1px solid rgba(255,255,255,.07)}
+.movie-work-card:last-child{border-right:0}
+.movie-work-card::before{content:'';display:block;width:28px;height:2px;margin-bottom:16px;background:rgba(201,168,76,.65)}
+.movie-work-card h4{margin:0 0 11px;color:#e8d08a;font-size:.88rem;line-height:1.5;letter-spacing:.04em}
+.movie-work-card p{margin:0;color:#aaa6a0;font-size:.91rem;line-height:1.9;word-break:keep-all}
+.movie-work-prompt{margin-top:22px;padding:24px 0 0;border-top:1px solid rgba(255,255,255,.06)}
+.movie-work-prompt h4{margin:0 0 12px;color:#e8d08a;font-size:.88rem;letter-spacing:.04em}
+.movie-work-prompt pre{margin:0;padding:20px 22px;overflow-x:auto;border-radius:12px;background:rgba(0,0,0,.32);border:1px solid rgba(201,168,76,.16);box-shadow:inset 0 0 30px rgba(0,0,0,.18);font:0.8rem/1.8 'Pretendard',sans-serif;color:#d8d3c8;white-space:pre-wrap;word-break:break-word}
 @media(max-width:900px){
-  .creation-notes .creation-note-grid{grid-template-columns:1fr}
-  .creation-notes .creation-note{border-right:0;border-bottom:1px solid rgba(255,255,255,.07);padding:23px 0}
-  .creation-notes .creation-note:last-child{border-bottom:0}
+  .movie-work-grid{grid-template-columns:1fr}
+  .movie-work-card{border-right:0;border-bottom:1px solid rgba(255,255,255,.07);padding:23px 0}
+  .movie-work-card:last-child{border-bottom:0}
 }
 @media(max-width:760px){
   #site-footer footer{padding:30px 18px calc(28px + env(safe-area-inset-bottom));border-top-color:rgba(201,168,76,.14)}
@@ -49,9 +59,14 @@
   #site-footer .movie-creation-cta{margin:0 18px 28px;padding:24px 18px}
   #site-footer .movie-creation-cta p{font-size:.74rem}
   #site-footer .movie-creation-cta a{font-size:.64rem;padding:10px 16px}
-  .creation-notes .creation-note{padding:22px 0}
-  .creation-notes .creation-note p{font-size:.9rem;line-height:1.9}
-  .creation-notes .creation-prompt pre{padding:16px;font-size:.74rem;line-height:1.75}
+  .movie-extra-notes{margin-bottom:55px;padding:0 16px}
+  .movie-extra-notes-inner{padding:30px 20px}
+  .movie-extra-intro{font-size:.9rem;line-height:1.9}
+  .movie-work{padding:26px 0}
+  .movie-work .work-lead{font-size:.9rem;line-height:1.9}
+  .movie-work-card{padding:22px 0}
+  .movie-work-card p{font-size:.88rem;line-height:1.9}
+  .movie-work-prompt pre{padding:16px;font-size:.73rem;line-height:1.75}
 }
 </style>
 
@@ -74,5 +89,74 @@
   var isMovie = /^\/movie\/?$/i.test(window.location.pathname);
   var cta = document.getElementById('movieCreationCta');
   if(cta && isMovie) cta.style.display='block';
+  if(!isMovie) return;
+
+  var notes = document.createElement('section');
+  notes.className = 'movie-extra-notes';
+  notes.id = 'movieExtraCreationNotes';
+  notes.setAttribute('aria-label','Additional movie creation notes');
+  notes.innerHTML = `
+    <div class="movie-extra-notes-inner">
+      <div class="movie-extra-kicker i18n-ko">✦ ADDITIONAL CREATION RECORDS</div>
+      <div class="movie-extra-kicker i18n-en">✦ ADDITIONAL CREATION RECORDS</div>
+      <h2 class="movie-extra-title i18n-ko">다른 영상들의 제작 기록</h2>
+      <h2 class="movie-extra-title i18n-en">Creation Notes for Other Works</h2>
+      <p class="movie-extra-intro i18n-ko">FURIOUS와 마찬가지로 이 아카이브의 다른 영상들도 단순히 완성된 결과만 보여주는 데서 끝나지 않습니다. 각 작품에서 어떤 아이디어를 출발점으로 삼았는지, 생성형 AI를 왜 사용했는지, 장면을 어떤 방향으로 설계했는지를 기록합니다.</p>
+      <p class="movie-extra-intro i18n-en">Like FURIOUS, the other works in this archive are more than finished videos. These notes record the starting idea, why generative AI was used, and the visual direction chosen for each project.</p>
+
+      <article class="movie-work">
+        <h3>귀멸의 칼날 실사 촬영 현장</h3>
+        <p class="work-lead i18n-ko">애니메이션 캐릭터가 실제 영화 제작 현장에 존재한다면 어떤 모습일까라는 상상에서 출발했습니다. 단순히 캐릭터를 실사화하는 것보다 배우와 스태프, 카메라와 조명까지 존재하는 하나의 영화 세트를 만들어 ‘촬영 현장’이라는 이야기가 느껴지도록 구성했습니다.</p>
+        <p class="work-lead i18n-en">This project began with a simple question: what would these anime-inspired characters look like if they actually existed on a live-action film set? Instead of only converting the characters into realistic forms, the scene was designed as a complete production environment with actors, crew, cameras, and lighting.</p>
+        <div class="movie-work-grid">
+          <div class="movie-work-card"><h4 class="i18n-ko">01 · 아이디어</h4><h4 class="i18n-en">01 · IDEA</h4><p class="i18n-ko">애니메이션 속 세계와 실제 영화 제작 현장의 경계를 섞어, ‘영화 속 장면’이 아니라 ‘그 장면을 촬영하고 있는 순간’을 보여주는 데 초점을 맞췄습니다.</p><p class="i18n-en">The concept blends the anime world with a real film-production environment, focusing not on the finished scene but on the moment when that scene is being filmed.</p></div>
+          <div class="movie-work-card"><h4 class="i18n-ko">02 · 제작 방법</h4><h4 class="i18n-en">02 · PRODUCTION</h4><p class="i18n-ko">Gemini를 활용해 캐릭터의 의상과 헤어스타일, 색감 같은 정체성을 유지하면서 실제 배우처럼 보이는 인물과 영화 세트를 함께 설계했습니다. 이후 카메라, 조명, 소품 등의 요소를 추가해 촬영 현장의 분위기를 강화했습니다.</p><p class="i18n-en">Gemini was used to design believable live-action characters while retaining recognizable costumes, hairstyles, and color identities. Cameras, lighting, props, and crew elements were then incorporated to strengthen the feeling of a real production set.</p></div>
+          <div class="movie-work-card"><h4 class="i18n-ko">03 · AI를 사용한 이유</h4><h4 class="i18n-en">03 · WHY AI</h4><p class="i18n-ko">실제로 존재하지 않는 캐릭터와 영화 세트를 동시에 상상하고 하나의 장면으로 구성해야 했기 때문에 생성형 AI를 활용하면 아이디어를 빠르게 시각화하고 여러 방향으로 실험할 수 있었습니다.</p><p class="i18n-en">Because the project required imagining fictional characters and a film set that do not actually exist, generative AI made it possible to visualize the concept quickly and explore different directions.</p></div>
+        </div>
+        <div class="movie-work-prompt"><h4 class="i18n-ko">제작 프롬프트</h4><h4 class="i18n-en">PRODUCTION PROMPT</h4><pre>Create a photorealistic behind-the-scenes scene from a live-action Japanese fantasy sword-fighting movie.
+
+Transform anime-inspired characters into believable live-action actors while preserving their recognizable costume design, hairstyle, color palette and character identity.
+
+Show a professional film production set with cinema cameras, lighting equipment, crew members, practical props and a large cinematic set surrounding the actors.
+
+Realistic actors, detailed costumes, natural skin texture, realistic lighting, cinematic photography, Japanese period-fantasy atmosphere, documentary-style behind-the-scenes photography, high production value, photorealistic details.</pre></div>
+      </article>
+
+      <article class="movie-work">
+        <h3>사랑한다고</h3>
+        <p class="work-lead i18n-ko">이 작품은 사랑과 기억, 그리고 그리움이라는 감정을 영상으로 옮기는 데서 출발했습니다. 큰 사건을 보여주기보다 음악이 가진 감정을 인물의 표정과 공간, 거리감으로 전달하는 방향을 선택했습니다.</p>
+        <p class="work-lead i18n-en">This project began by translating feelings of love, memory, and longing into visual storytelling. Instead of relying on dramatic events, the visual direction focused on expressions, spaces, and distance to carry the emotion of the music.</p>
+        <div class="movie-work-grid">
+          <div class="movie-work-card"><h4 class="i18n-ko">01 · 아이디어</h4><h4 class="i18n-en">01 · IDEA</h4><p class="i18n-ko">음악을 들었을 때 떠오르는 사랑과 기억의 장면을 하나의 영화적 순간처럼 만들고, 말보다 표정과 분위기로 감정을 전달하는 것을 목표로 했습니다.</p><p class="i18n-en">The goal was to turn the feelings and memories evoked by the music into cinematic moments, allowing expressions and atmosphere to communicate more than dialogue.</p></div>
+          <div class="movie-work-card"><h4 class="i18n-ko">02 · 제작 방법</h4><h4 class="i18n-en">02 · PRODUCTION</h4><p class="i18n-ko">먼저 음악에서 핵심 감정을 정리한 뒤 Gemini를 활용해 인물과 공간의 분위기를 설계했습니다. 자연스러운 표정과 몸짓, 영화적인 조명과 얕은 심도를 중심으로 장면을 구성하고 음악의 흐름에 맞춰 연결했습니다.</p><p class="i18n-en">After identifying the emotional core of the music, Gemini was used to shape the characters and environments. Natural expressions, subtle body language, cinematic lighting, and shallow depth of field guided the scenes, which were then connected to the flow of the music.</p></div>
+          <div class="movie-work-card"><h4 class="i18n-ko">03 · AI를 사용한 이유</h4><h4 class="i18n-en">03 · WHY AI</h4><p class="i18n-ko">기억과 그리움처럼 눈에 보이지 않는 감정을 특정한 인물과 공간의 분위기로 시각화하고, 실제 촬영만으로는 반복하기 어려운 장면을 빠르게 실험하기 위해 활용했습니다.</p><p class="i18n-en">AI helped turn intangible emotions such as memory and longing into specific characters and environments, while making it easier to experiment with scenes that would be difficult to repeatedly film in reality.</p></div>
+        </div>
+        <div class="movie-work-prompt"><h4 class="i18n-ko">제작 프롬프트</h4><h4 class="i18n-en">PRODUCTION PROMPT</h4><pre>Create a cinematic emotional music-video scene about love, memories and longing.
+
+Show two people connected by a deep emotional relationship in a quiet and intimate atmosphere.
+
+Natural emotional expressions, subtle body language, realistic cinematic lighting, beautiful environmental details, shallow depth of field, poetic visual storytelling, realistic skin and clothing textures, emotionally powerful but understated.
+
+The scene should feel like a frame from an emotional feature film about remembering someone deeply loved.
+
+Photorealistic, cinematic composition, natural lighting, high-end film cinematography.</pre></div>
+      </article>
+    </div>
+  `;
+
+  var anchor = document.querySelector('.shorts-section') || document.querySelector('.carousel-section');
+  if(anchor && anchor.parentNode) anchor.parentNode.insertBefore(notes, anchor);
+
+  function refreshLang(){
+    var lang=(typeof window.getCurrentLang==='function') ? window.getCurrentLang() : (localStorage.getItem('pref-lang') || 'ko');
+    notes.querySelectorAll('.i18n-ko').forEach(function(el){el.style.display=lang==='ko'?'':'none';});
+    notes.querySelectorAll('.i18n-en').forEach(function(el){el.style.display=lang==='en'?'':'none';});
+  }
+  refreshLang();
+  var previous=window.onLangChange;
+  window.onLangChange=function(lang){
+    if(typeof previous==='function') previous(lang);
+    refreshLang();
+  };
 })();
 </script>

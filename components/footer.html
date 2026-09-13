@@ -23,16 +23,25 @@
 #site-footer .movie-creation-cta strong{display:block;margin-bottom:5px;color:#e8d08a;font-family:'Cinzel',serif;font-size:.9rem;letter-spacing:.12em}
 #site-footer .movie-creation-cta a{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border:1px solid rgba(232,208,138,.42);border-radius:10px;color:#e8d08a;font-family:'Noto Sans KR','Pretendard',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.06em;text-decoration:none;transition:all .25s ease}
 #site-footer .movie-creation-cta a:hover,#site-footer .movie-creation-cta a:focus-visible{border-color:#e8d08a;background:rgba(201,168,76,.1);color:#fff;transform:translateY(-1px)}
-#site-footer .furious-creation-note{max-width:1100px;margin:0 auto 42px;padding:34px 40px;text-align:left;border:1px solid rgba(201,168,76,.18);border-radius:20px;background:linear-gradient(135deg,rgba(201,168,76,.055),rgba(255,255,255,.012));box-shadow:0 14px 38px rgba(0,0,0,.25)}
-#site-footer .furious-creation-note h3{margin:0 0 10px;color:#e8d08a;font-family:'Cinzel',serif;font-size:1rem;letter-spacing:.12em}
-#site-footer .furious-creation-note .note-lead{margin:0 0 24px;color:#c8c4bc;font-size:.95rem;line-height:1.9;word-break:keep-all}
-#site-footer .furious-creation-note .note-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
-#site-footer .furious-creation-note .note-card{padding:20px;border-radius:14px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06)}
-#site-footer .furious-creation-note .note-card strong{display:block;margin-bottom:8px;color:#e8d08a;font-size:.78rem;letter-spacing:.08em}
-#site-footer .furious-creation-note .note-card p{color:#9999aa;font-size:.82rem;line-height:1.8;word-break:keep-all}
-#site-footer .furious-creation-note .note-prompt{margin-top:18px;padding:20px;border-left:2px solid rgba(201,168,76,.55);background:rgba(0,0,0,.16)}
-#site-footer .furious-creation-note .note-prompt strong{display:block;margin-bottom:8px;color:#c9a84c;font-size:.76rem;letter-spacing:.08em}
-#site-footer .furious-creation-note .note-prompt p{margin:0;color:#aaa9b4;font-size:.82rem;line-height:1.8;word-break:keep-all}
+
+/* =========================================================
+   MOVIE CREATION NOTES — editorial card treatment
+   카드 모음처럼 보이지 않고 하나의 창작 기록으로 읽히도록 구성
+   ========================================================= */
+.creation-notes .creation-note-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1px solid rgba(201,168,76,.14);border-bottom:1px solid rgba(255,255,255,.06)}
+.creation-notes .creation-note{position:relative;padding:26px 24px 28px;border:0;border-radius:0;background:transparent;border-right:1px solid rgba(255,255,255,.07)}
+.creation-notes .creation-note:last-child{border-right:0}
+.creation-notes .creation-note::before{content:'';display:block;width:28px;height:2px;margin-bottom:18px;background:rgba(201,168,76,.65)}
+.creation-notes .creation-note h4{font-size:.9rem;line-height:1.5;letter-spacing:.04em;margin-bottom:12px;color:#e8d08a}
+.creation-notes .creation-note p{font-size:.94rem;line-height:1.95;color:#b7b2aa}
+.creation-notes .creation-prompt{margin-top:20px;padding:25px 0 0;border-top:1px solid rgba(255,255,255,.06)}
+.creation-notes .creation-prompt h4{font-size:.9rem;color:#e8d08a}
+.creation-notes .creation-prompt pre{margin-top:14px;padding:20px 22px;border-radius:12px;background:rgba(0,0,0,.32);border:1px solid rgba(201,168,76,.16);box-shadow:inset 0 0 30px rgba(0,0,0,.18);font-size:.8rem;line-height:1.8;color:#d8d3c8}
+@media(max-width:900px){
+  .creation-notes .creation-note-grid{grid-template-columns:1fr}
+  .creation-notes .creation-note{border-right:0;border-bottom:1px solid rgba(255,255,255,.07);padding:23px 0}
+  .creation-notes .creation-note:last-child{border-bottom:0}
+}
 @media(max-width:760px){
   #site-footer footer{padding:30px 18px calc(28px + env(safe-area-inset-bottom));border-top-color:rgba(201,168,76,.14)}
   #site-footer footer p:first-child{font-size:.7rem;letter-spacing:.045em;line-height:1.6}
@@ -40,9 +49,9 @@
   #site-footer .movie-creation-cta{margin:0 18px 28px;padding:24px 18px}
   #site-footer .movie-creation-cta p{font-size:.74rem}
   #site-footer .movie-creation-cta a{font-size:.64rem;padding:10px 16px}
-  #site-footer .furious-creation-note{margin:0 18px 30px;padding:25px 20px}
-  #site-footer .furious-creation-note .note-grid{grid-template-columns:1fr;gap:12px}
-  #site-footer .furious-creation-note .note-card{padding:17px}
+  .creation-notes .creation-note{padding:22px 0}
+  .creation-notes .creation-note p{font-size:.9rem;line-height:1.9}
+  .creation-notes .creation-prompt pre{padding:16px;font-size:.74rem;line-height:1.75}
 }
 </style>
 
@@ -65,47 +74,5 @@
   var isMovie = /^\/movie\/?$/i.test(window.location.pathname);
   var cta = document.getElementById('movieCreationCta');
   if(cta && isMovie) cta.style.display='block';
-  if(!isMovie) return;
-
-  function addFuriousNote(){
-    if(document.getElementById('furiousCreationNote')) return;
-    var target=document.querySelector('.screen-info');
-    if(!target || !target.parentNode) return;
-
-    var section=document.createElement('section');
-    section.className='furious-creation-note';
-    section.id='furiousCreationNote';
-    section.setAttribute('aria-label','FURIOUS creation notes');
-    section.innerHTML=`
-      <h3 class="i18n-ko">✦ FURIOUS — 창작 기록</h3>
-      <h3 class="i18n-en">✦ FURIOUS — CREATION NOTES</h3>
-      <p class="note-lead i18n-ko">이 작품은 단순히 AI로 화려한 영상을 만드는 데서 출발하지 않았습니다. 전쟁과 갈등이 반복되는 현실을 바라보며 느낀 분노와 안타까움을 음악의 감정선에 담고, 그 감정을 시각적인 장면으로 확장하는 방식으로 뮤직비디오를 구성했습니다.</p>
-      <p class="note-lead i18n-en">This project did not begin with the goal of making flashy AI visuals. It began with anger and sorrow toward a world shaped by repeated war and conflict. I first carried those emotions into the music, then expanded them into visual scenes to build the music video.</p>
-      <div class="note-grid">
-        <div class="note-card"><strong class="i18n-ko">01 · 아이디어</strong><strong class="i18n-en">01 · IDEA</strong><p class="i18n-ko">뉴스와 현실에서 마주하는 전쟁과 충돌의 이미지에서 출발했습니다. 폭력을 과장하기보다 사람들이 삶의 터전과 일상을 잃는 무게를 전달하는 것이 핵심이었습니다.</p><p class="i18n-en">The starting point was the reality of war and conflict seen in the world around us. Rather than glorifying violence, the focus was on conveying the human weight of people losing their homes, safety, and ordinary lives.</p></div>
-        <div class="note-card"><strong class="i18n-ko">02 · 제작 방법</strong><strong class="i18n-en">02 · PRODUCTION</strong><p class="i18n-ko">먼저 음악의 분위기와 핵심 감정을 정리한 뒤, 장면별 이미지를 생성형 AI로 제작했습니다. 이후 장면을 연결하고 음악의 흐름과 리듬에 맞춰 편집하면서 하나의 뮤직비디오로 완성했습니다.</p><p class="i18n-en">After defining the mood and emotional core of the music, visual materials were generated scene by scene with generative AI. The scenes were then connected and edited to follow the flow and rhythm of the music.</p></div>
-        <div class="note-card"><strong class="i18n-ko">03 · AI를 사용한 이유</strong><strong class="i18n-en">03 · WHY AI</strong><p class="i18n-ko">현실에서 촬영하기 어려운 규모와 분위기의 장면을 빠르게 시각화하고, 음악에서 느껴지는 감정을 하나의 영화적 세계로 확장하기 위해 생성형 AI를 활용했습니다.</p><p class="i18n-en">Generative AI made it possible to visualize environments and moods that would be difficult to film conventionally, allowing the emotion of the music to expand into a cinematic visual world.</p></div>
-      </div>
-      <div class="note-prompt"><strong class="i18n-ko">제작 프롬프트의 방향</strong><strong class="i18n-en">PROMPT DIRECTION</strong><p class="i18n-ko">폐허가 된 현대적 환경, 연기와 파괴의 흔적, 긴장감과 슬픔이 공존하는 분위기, 사실적인 질감과 영화적 조명, 깊이감 있는 구도 등을 중심으로 장면을 설계했습니다. 중요한 기준은 전쟁 자체를 보여주는 것보다 그 결과가 남긴 감정적 무게를 전달하는 것이었습니다.</p><p class="i18n-en">The prompts focused on devastated modern environments, smoke and traces of destruction, tension and sorrow, realistic textures, cinematic lighting, and strong composition. The key principle was to communicate the emotional weight left by conflict rather than simply depicting war itself.</p></div>
-    `;
-    target.parentNode.insertBefore(section,target.nextSibling);
-  }
-
-  function refreshNoteLang(){
-    var note=document.getElementById('furiousCreationNote');
-    if(!note) return;
-    var lang=(typeof window.getCurrentLang==='function') ? window.getCurrentLang() : (localStorage.getItem('pref-lang') || 'ko');
-    note.querySelectorAll('.i18n-ko').forEach(function(el){el.style.display=lang==='ko'?'':'none';});
-    note.querySelectorAll('.i18n-en').forEach(function(el){el.style.display=lang==='en'?'':'none';});
-  }
-
-  addFuriousNote();
-  refreshNoteLang();
-
-  var previous=window.onLangChange;
-  window.onLangChange=function(lang){
-    if(typeof previous==='function') previous(lang);
-    refreshNoteLang();
-  };
 })();
 </script>

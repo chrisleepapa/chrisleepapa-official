@@ -81,7 +81,7 @@
           if(b && item.stepNames) b.textContent=item.stepNames[i];
           if(item.steps && item.steps[i]){
             var br=step.querySelector('br');
-            if(br) br.nextSibling.textContent=item.steps[i];
+            if(br && br.nextSibling) br.nextSibling.textContent=item.steps[i];
           }
         });
       }
@@ -99,6 +99,21 @@
     document.documentElement.lang=current;
   }
 
-  window.onLangChange = apply;
+  var previous = window.onLangChange;
+  window.onLangChange = function(lang){
+    if(typeof previous === 'function') previous(lang);
+    apply(lang);
+  };
+
+  /* main.js is loaded after this page script, so its own language handler can replace the chain above.
+     Capture the actual language-button click as a page-level fallback so this page always updates. */
+  document.addEventListener('click', function(event){
+    var button = event.target && event.target.closest ? event.target.closest('.lang-btn[data-lang]') : null;
+    if(!button) return;
+    var lang = button.getAttribute('data-lang') === 'en' ? 'en' : 'ko';
+    try{localStorage.setItem('pref-lang',lang);}catch(e){}
+    apply(lang);
+  }, true);
+
   apply((function(){try{return localStorage.getItem('pref-lang')||'ko';}catch(e){return 'ko';}})());
 })();

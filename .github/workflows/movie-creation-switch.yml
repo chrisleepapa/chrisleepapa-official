@@ -1,0 +1,38 @@
+name: Movie creation notes switch patch
+
+on:
+  push:
+    branches: [develop]
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout develop
+        uses: actions/checkout@v4
+        with:
+          ref: develop
+          fetch-depth: 0
+      - name: Patch movie selection event
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('movie.html')
+          s = p.read_text(encoding='utf-8')
+          needle = "            renderCarousel();\n            const tw = document.querySelector('.theater-wrapper');"
+          replacement = "            renderCarousel();\n            window.dispatchEvent(new CustomEvent('movieVideoChanged', { detail: { index: i, id: v.id } }));\n            const tw = document.querySelector('.theater-wrapper');"
+          if needle not in s:
+              raise SystemExit('movie.html target not found')
+          p.write_text(s.replace(needle, replacement, 1), encoding='utf-8')
+      - name: Commit patch and clean up
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          rm -f .github/workflows/movie-creation-switch.yml .movie-creation-switch-trigger
+          git add movie.html .github/workflows/movie-creation-switch.yml .movie-creation-switch-trigger
+          git commit -m "Switch Movie creation notes with selected video"
+          git push origin HEAD:develop

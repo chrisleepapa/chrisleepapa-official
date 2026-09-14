@@ -13,8 +13,12 @@
   const start = async () => {
     try {
       await load('/js/main-core.js?v=20260914', 'clp-main-core');
-      if ((location.pathname.split('/').pop() || '').replace(/\.html$/i,'').toLowerCase() === 'worship') {
+      const page = (location.pathname.split('/').pop() || '').replace(/\.html$/i,'').toLowerCase();
+      if (page === 'worship') {
         await load('/js/worship-origin-story.js?v=20260914', 'worship-origin-story-script');
+      }
+      if (page === 'journal-6') {
+        await load('/js/journal6-worship-link.js?v=20260914', 'journal6-worship-link-script');
       }
     } catch (error) {
       console.error('[main.js] loader failed:', error);

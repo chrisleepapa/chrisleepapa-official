@@ -63,6 +63,26 @@ self.addEventListener('fetch', (event) => {
         }
       }
 
+      // Worship only: force the Vol.2 cover to load eagerly and use an encoded URL.
+      if (url.pathname === '/worship' || url.pathname === '/worship.html') {
+        if (type.includes('text/html')) {
+          const html = await response.text();
+          const script = '<script src="/js/worship-vol2-cover-fix.js?v=20260914"></script>';
+          if (!html.includes('/js/worship-vol2-cover-fix.js')) {
+            const mainScript = '<script src="js/main.js"></script>';
+            const patched = html.includes(mainScript)
+              ? html.replace(mainScript, `${script}${mainScript}`)
+              : html.replace('</body>', `${script}</body>`);
+
+            return new Response(patched, {
+              status: response.status,
+              statusText: response.statusText,
+              headers: response.headers
+            });
+          }
+        }
+      }
+
       return response;
     } catch (error) {
       return new Response('인터넷 연결이 원활하지 않습니다.', {

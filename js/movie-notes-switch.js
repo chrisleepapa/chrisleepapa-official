@@ -12,7 +12,7 @@
     extra.innerHTML=`
       <div class="movie-extra-notes-inner">
         <div class="movie-extra-kicker">✦ CREATION RECORDS</div>
-        <h2 class="movie-extra-title">선택한 영상의 제작 기록</h2>
+        <h2 class="movie-extra-title"></h2>
         <article class="movie-work-live" data-video-index="1">
           <h3>귀멸의 칼날 촬영현장의 제작기록</h3>
           <p class="work-lead">애니메이션 캐릭터가 실제 영화 제작 현장에 존재한다면 어떤 모습일까라는 상상에서 출발했습니다. 단순히 캐릭터를 실사화하는 것보다 배우와 스태프, 카메라와 조명까지 존재하는 하나의 영화 세트를 만들어 ‘촬영 현장’이라는 이야기가 느껴지도록 구성했습니다.</p>
@@ -74,8 +74,16 @@ Photorealistic, cinematic composition, natural lighting, high-end film cinematog
 
     function switchNotes(index){
       var works=extra.querySelectorAll('.movie-work-live');
-      if(index===0){furious.style.display='block';extra.style.display='none';}
-      else{furious.style.display='none';extra.style.display='block';works.forEach(function(w){w.classList.toggle('is-active',Number(w.dataset.videoIndex)===index);});}
+      var title=extra.querySelector('.movie-extra-title');
+      if(index===0){
+        furious.style.display='block';
+        extra.style.display='none';
+      }else{
+        furious.style.display='none';
+        extra.style.display='block';
+        works.forEach(function(w){w.classList.toggle('is-active',Number(w.dataset.videoIndex)===index);});
+        if(title) title.textContent=index===1 ? '귀멸의 칼날 촬영현장의 제작기록' : '사랑한다고 뮤직비디오의 촬영현장';
+      }
     }
     switchNotes(0);
     window.addEventListener('movieVideoChanged',function(e){switchNotes(Number(e.detail&&e.detail.index)||0);});

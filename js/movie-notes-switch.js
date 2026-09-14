@@ -30,7 +30,7 @@ Show a professional film production set with cinema cameras, lighting equipment,
 Realistic actors, detailed costumes, natural skin texture, realistic lighting, cinematic photography, Japanese period-fantasy atmosphere, documentary-style behind-the-scenes photography, high production value, photorealistic details.</pre></div>
         </article>
         <article class="movie-work-live" data-video-index="2">
-          <h3>사랑한다고 뮤직비디오의 촬영현장</h3>
+          <h3>사랑한다고 뮤직비디오의 제작기록</h3>
           <p class="work-lead">이 작품은 사랑과 기억, 그리고 그리움이라는 감정을 영상으로 옮기는 데서 출발했습니다. 큰 사건을 보여주기보다 음악이 가진 감정을 인물의 표정과 공간, 거리감으로 전달하는 방향을 선택했습니다.</p>
           <div class="movie-work-grid">
             <div class="movie-work-card"><h4>01 · 아이디어</h4><p>음악을 들었을 때 떠오르는 사랑과 기억의 장면을 하나의 영화적 순간처럼 만들고, 말보다 표정과 분위기로 감정을 전달하는 것을 목표로 했습니다.</p></div>
@@ -82,7 +82,7 @@ Photorealistic, cinematic composition, natural lighting, high-end film cinematog
         furious.style.display='none';
         extra.style.display='block';
         works.forEach(function(w){w.classList.toggle('is-active',Number(w.dataset.videoIndex)===index);});
-        if(title) title.textContent=index===1 ? '귀멸의 칼날 촬영현장의 제작기록' : '사랑한다고 뮤직비디오의 촬영현장';
+        if(title) title.textContent=index===1 ? '귀멸의 칼날 촬영현장의 제작기록' : '사랑한다고 뮤직비디오의 제작기록';
       }
     }
     switchNotes(0);

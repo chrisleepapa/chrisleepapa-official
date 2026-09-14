@@ -45,19 +45,19 @@ self.addEventListener('fetch', (event) => {
         }
       }
 
-      // Worship only: keep the existing Vol.2 cover fix and add the Spotify background player.
+      // Worship only: keep the existing Vol.2 cover fix and add the beginning confession.
       if (url.pathname === '/worship' || url.pathname === '/worship.html') {
         if (type.includes('text/html')) {
           const html = await response.text();
           const coverScript = '<script src="/js/worship-vol2-cover-fix.js?v=20260914"></script>';
-          const musicScript = '<script src="/js/worship-background.js?v=20260914"></script>';
+          const confessionScript = '<script src="/js/worship-confession.js?v=20260914"></script>';
           let patched = html;
           if (!patched.includes('/js/worship-vol2-cover-fix.js')) {
             const mainScript = '<script src="js/main.js"></script>';
             patched = patched.includes(mainScript) ? patched.replace(mainScript, `${coverScript}${mainScript}`) : patched.replace('</body>', `${coverScript}</body>`);
           }
-          if (!patched.includes('/js/worship-background.js')) {
-            patched = patched.replace('</body>', `${musicScript}</body>`);
+          if (!patched.includes('/js/worship-confession.js')) {
+            patched = patched.replace('</body>', `${confessionScript}</body>`);
           }
           return new Response(patched, { status: response.status, statusText: response.statusText, headers: response.headers });
         }

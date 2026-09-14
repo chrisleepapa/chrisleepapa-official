@@ -62,206 +62,42 @@ a{text-decoration:none;color:inherit}
 .archive-track{color:#aaa;padding:6px 9px;background:rgba(201,168,76,.04);border-radius:7px;font-size:.82rem}
 .archive-total{text-align:center;color:#777;font-size:.8rem;margin-top:25px}
 .music-story-text{color:#c8c4bc;margin:8px 0 0;line-height:1.8}
+.music-creation-notes{max-width:960px;margin:0 auto 70px;padding:0 20px}
+.music-creation-box{border:1px solid rgba(201,168,76,.18);border-radius:20px;padding:34px;background:rgba(10,10,18,.72)}
+.music-creation-box h2,.music-creation-box h3{font-family:serif;color:var(--gold)}
+.music-creation-lead{color:#d5d0c8;font-size:1.02rem;line-height:1.85}
+.music-creation-note{margin:24px 0;padding:18px 20px;border-left:2px solid var(--gold);background:rgba(201,168,76,.05);color:#d5d0c8}
+.music-creation-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:20px}
+.music-creation-card{background:#0d0d12;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:20px;color:#c8c3bb;line-height:1.75}
+.music-creation-card strong{display:block;color:#fff;margin-bottom:6px}
+.music-creation-box p{color:#c8c3bb;line-height:1.8}
 @media(max-width:900px){.interactive-player-wrapper{flex-direction:column;padding:0 10px}.player-focus{padding:25px 15px}.playlist-sidebar{max-height:none}.spotify-container{height:400px}}
+@media(max-width:650px){.music-creation-grid{grid-template-columns:1fr}.music-creation-box{padding:24px 20px}}
 </style>
 </head>
 <body>
 <div id="site-nav"></div>
-<header class="page-header">
-<div>
-<h1 class="header-title">MUSIC ARCHIVE</h1>
-<p class="header-slogan" data-i18n="music_header_slogan">AI가 만들어낸 선율, 영혼을 울리는 멜로디</p>
-</div>
-</header>
-<main class="interactive-player-wrapper">
-<section class="player-focus">
-<div class="album-art-large" id="main-cover"></div>
-<div class="active-info">
-<h2 id="main-title"></h2>
-<span class="active-badge" id="main-type"></span>
-</div>
-<div class="spotify-container" id="spotify-container"></div>
-<div class="external-row">
-<a id="main-external-link" class="external-link-btn" target="_blank" rel="noopener" data-i18n="music_spotify_album">Spotify에서 앨범 듣기 ›</a>
-<a id="main-youtube-link" class="external-link-btn youtube-link" target="_blank" rel="noopener" data-i18n="music_youtube_listen">YouTube에서 듣기 ›</a>
-</div>
-</section>
-<aside class="playlist-sidebar">
-<div class="playlist-header" data-i18n="music_albums">ALBUMS</div>
-<div id="playlist-container"></div>
-</aside>
-</main>
-<section class="archive">
-<div class="archive-box">
-<h2>✦ MUSIC ARCHIVE</h2>
-<p class="archive-intro" data-i18n="music_archive_intro">Chris LEE.PAPA의 음악 작업과 글로벌 플랫폼 발매 작품을 한 곳에서 소개합니다.</p>
-<h3>✦ 앨범에 담긴 이야기</h3>
-<div class="archive-list" id="archive-list"></div>
-<p class="archive-total" id="archive-total"></p>
-</div>
-</section>
+<header class="page-header"><div><h1 class="header-title">MUSIC ARCHIVE</h1><p class="header-slogan" data-i18n="music_header_slogan">AI가 만들어낸 선율, 영혼을 울리는 멜로디</p></div></header>
+<main class="interactive-player-wrapper"><section class="player-focus"><div class="album-art-large" id="main-cover"></div><div class="active-info"><h2 id="main-title"></h2><span class="active-badge" id="main-type"></span></div><div class="spotify-container" id="spotify-container"></div><div class="external-row"><a id="main-external-link" class="external-link-btn" target="_blank" rel="noopener" data-i18n="music_spotify_album">Spotify에서 앨범 듣기 ›</a><a id="main-youtube-link" class="external-link-btn youtube-link" target="_blank" rel="noopener" data-i18n="music_youtube_listen">YouTube에서 듣기 ›</a></div></section><aside class="playlist-sidebar"><div class="playlist-header" data-i18n="music_albums">ALBUMS</div><div id="playlist-container"></div></aside></main>
+<section class="archive"><div class="archive-box"><h2>✦ MUSIC ARCHIVE</h2><p class="archive-intro" data-i18n="music_archive_intro">Chris LEE.PAPA의 음악 작업과 글로벌 플랫폼 발매 작품을 한 곳에서 소개합니다.</p><h3>✦ 앨범에 담긴 이야기</h3><div class="archive-list" id="archive-list"></div><p class="archive-total" id="archive-total"></p></div></section>
+<section class="music-creation-notes"><div class="music-creation-box"><h2>✦ 음악 제작 기록</h2><p class="music-creation-lead">완성된 음원을 소개하는 것에서 끝나지 않고, Chris LEE.PAPA가 음악을 만들면서 어떤 질문을 던지고 어떤 선택을 했는지 기록합니다. AI는 초안과 다양한 가능성을 빠르게 시험하게 해주는 도구이지만, 무엇을 남기고 버릴지 결정하는 것은 창작자의 몫입니다.</p><div class="music-creation-note">내가 중요하게 생각하는 것은 “AI가 무엇을 만들었는가”보다 “창작자가 무엇을 선택하고 왜 그렇게 선택했는가”입니다. 그래서 결과물뿐 아니라 판단과 수정의 과정도 하나의 창작 기록으로 남깁니다.</div><h3>1. 곡은 기술보다 이유에서 시작됩니다</h3><p>가장 먼저 정하는 것은 장르나 악기가 아니라 이 곡을 왜 만들어야 하는지입니다. 가족과 함께한 기억, 다시 일어나고 싶은 마음, 스포츠의 에너지, 새로운 미래에 대한 기대처럼 특정한 감정이나 장면에서 출발합니다. 출발점이 분명하면 같은 장르의 음악도 전혀 다른 방향으로 발전합니다.</p><h3>2. AI는 초안을 돕지만 결정은 창작자가 합니다</h3><div class="music-creation-grid"><div class="music-creation-card"><strong>아이디어</strong>곡의 감정, 장면, 메시지와 청자가 느꼈으면 하는 분위기를 먼저 정합니다.</div><div class="music-creation-card"><strong>생성</strong>여러 방향의 사운드를 만들어 보고 작품의 의도에 가까운 방향을 비교합니다.</div><div class="music-creation-card"><strong>선택</strong>멜로디, 보컬, 리듬, 악기 구성 중 사용할 요소와 버릴 요소를 결정합니다.</div><div class="music-creation-card"><strong>수정</strong>가사와 구조, 에너지의 흐름을 다시 살피고 필요하면 처음 단계로 돌아갑니다.</div></div><h3>3. 가사는 음악의 일부입니다</h3><p>글로 읽었을 때 자연스러운 문장이 반드시 노래로 불렀을 때 좋은 것은 아닙니다. 음절 수, 강세, 호흡, 반복되는 소리와 멜로디의 길이를 함께 확인하고 실제 보컬에 적용하면서 다시 고칩니다. 짧은 후렴은 기억에 남아야 하고 이야기형 곡은 한 절에서 다음 절로 감정이 이동해야 합니다.</p><h3>4. 편곡에서는 더 많이보다 무엇을 남길지가 중요합니다</h3><p>화려한 사운드를 추가하는 것보다 곡의 중심을 가리지 않는 선택이 중요합니다. 댄스곡에서는 킥과 베이스가 움직임을 만들고 신스와 기타가 훅을 만들 수 있으며, 발라드에서는 보컬의 감정과 여백이 더 중요할 수 있습니다. 워십에서는 사운드의 크기보다 가사와 고백이 먼저 들려야 합니다.</p><h3>5. 좋은 결과와 내가 원하는 결과를 구분합니다</h3><p>AI가 만든 결과 중 기술적으로 완성도가 높은 곡이라도 처음 세운 이야기와 감정이 사라졌다면 채택하지 않습니다. “이 부분은 정말 필요한가?”, “보컬이 가사의 감정을 전달하는가?”, “후렴이 기억되는가?” 같은 질문이 최종 선택의 기준이 됩니다.</p><h3>6. 여러 장르를 만드는 이유</h3><p>댄스, 팝, 인스트루멘털, 오케스트라적인 연주, 워십 등 서로 다른 작업을 하는 이유는 하나의 스타일에 음악을 가두고 싶지 않기 때문입니다. 공통점은 실제 경험이나 감정에서 출발해 그것을 어떤 소리로 표현할지 고민하고, 완성된 결과가 처음 의도와 얼마나 가까운지 다시 확인한다는 것입니다.</p><h3>7. 발매 후에도 창작은 계속됩니다</h3><p>Spotify와 YouTube에 공개한 뒤에도 어떤 부분이 기억에 남는지, 제목과 음악의 관계가 자연스러운지, 다음 작품에서 무엇을 다르게 할지 다시 생각합니다. MUSIC ARCHIVE는 단순한 발매 목록이 아니라 선택과 실패와 수정이 남는 작업의 기록입니다.</p><h3>8. 지금까지 배운 가장 큰 것</h3><p>AI를 사용하면서 음악을 만드는 속도는 빨라졌지만 좋은 작품을 고르는 일은 더 중요해졌습니다. 많은 결과를 빠르게 볼 수 있기 때문에 무엇을 선택하지 않을지 결정하는 능력이 필요합니다. 결국 어떤 이야기를 하고 싶은지, 누구에게 들려주고 싶은지, 어떤 감정을 남기고 싶은지는 창작자가 결정합니다.</p></div></section>
 <div id="site-footer"></div>
 <script>
-const musicData=[
-{title:'When the city stood still',type:'Album',id:'5qWOsYCJgw1bmXqvko7Thv',youtube:'https://youtube.com/playlist?list=OLAK5uy_kG2JbLRrBozj00d8VChsbBc11bzCEIfx8&si=kW47ZC7X99F9PXji',tracks:['When the city stood still','After the rain','When did the years go','Remember','Night Breeze','Disco reborn','Guitar Hero','Master Bassist']},
-{title:'We own the Cup',type:'Album',id:'0sR4hKvhzN4U2GaQKx6Qek',youtube:'https://youtube.com/playlist?list=OLAK5uy_mvAOU96N-lOaZhLlvjkxgskXZsiThl9w4&si=jE1OSt5P0IVLFr76',tracks:['Feel the Power','We own the Cup','Summer never dies','Feel the Power - Inst','We own the Cup - Inst','Summer never dies - Inst','여름끝까지 - Kor']},
-{title:'Winter town',type:'Album',id:'1K2UDyLeDFF7Ti5KzMknWN',youtube:'https://youtube.com/playlist?list=OLAK5uy_lJjcn058-VL0vQP20esgyZQgscxthJ7nA&si=KVGnzXp3Oe3qkOWY',tracks:[]},
-{title:'Run it back',type:'EP',id:'1VCjArWmxZJakdawRkEeCi',youtube:'https://youtube.com/playlist?list=OLAK5uy_kxF7pHc4VsbT__Vp2FQHidyD84EszOXDU&si=jNfGCn5a9EbU1fmr',trackCount:4,tracks:['Run it back']},
-{title:'To The Space',type:'Single',id:'1JyYgZ8VTbh5mASNezCTcJ',youtube:'https://youtube.com/playlist?list=OLAK5uy_lb1VjkTruoTa6uo8P8Y8Trc0jGqx0cJYk&si=CrM-fws1toWG9d8M',tracks:['To The Space']},
-{title:'Ensemble',type:'EP',id:'2X3dnf8vnhCSQ0c7H9oZht',youtube:'https://youtube.com/playlist?list=OLAK5uy_m4zm9Qq57sWlvBb_W7l57NPOkcrbAuLBo&si=6x4x7eT0FzIEf8OF',tracks:['Emotional','Ensemble','Climax','Groove','Impact','Energetic']},
-{title:'To Rise',type:'Instrumental',id:'2OSKuof7gooLElmFYvoygK',youtube:'https://youtube.com/playlist?list=OLAK5uy_ndXJukqI1ePIzltvjzIf4Vt2_KQroYszo&si=HTtRpOX2HqtGd0DD',tracks:['To Rise','Morning Breeze','Last Vibrato','Never Stop']},
-{title:'영역전개',type:'Album',id:'6rZBdEFTJ5mLwINtn9C8KZ',youtube:'https://youtube.com/playlist?list=OLAK5uy_kEiTfwxIvjPCWweGFa2U0-xykLgQ000EI&si=8fCyOOXfj_mneWZ6',tracks:['영역전개','영역전개_inst']},
-{title:'벽력일섬',type:'Album',id:'25T549XyXnmiZhqGn7p4x4',youtube:'https://youtube.com/playlist?list=OLAK5uy_lEWXJuSa8EXqjqnXVHZ5s5_dLw8Nucza8&si=2McCMqkCvnL_0vVp',tracks:['벽력일섬_Hekireki Issen','Rev It Up_kor','Rev It Up_eng','Hekireki Issen_Inst']},
-{title:'2026 앨범',type:'Album',id:'2AzUPgjWYDodUqFTNjPU1l',youtube:'https://youtube.com/playlist?list=OLAK5uy_nSgyIsRm-YJyjjKOcNH9iN43bBxgQQgDQ&si=jpNOamkNkO7egSxP',tracks:['난리났어','2026','2026_Inst','Tonight_Inst','Flash Bang','Blow It Up']},
-{title:'Winter groove',type:'Album',id:'7F4P40iGbLcUceu1mTNdCF',youtube:'https://youtube.com/playlist?list=OLAK5uy_k9CYtBP5F8jnbb0I95tBvA2vTbuHF_eeE&si=RkW9R5WIRQNaXz_s',tracks:[]},
-{title:'사랑한다고',type:'Vocal',id:'2s7tJtoaxDT8KUkJ3OL8DD',youtube:'https://youtube.com/playlist?list=OLAK5uy_m0lR-fY4rgZkgHvH4Wis2e7AfKyZGhtw0&si=PynL7dMkEwUTjaNW',tracks:['사랑한다고','Saying I love you','Winter\'s Symphony']}
-];
-const spotify=id=>`https://open.spotify.com/album/${id}`;
-const embed=id=>`https://open.spotify.com/embed/album/${id}?utm_source=generator&theme=0`;
-const oembed=id=>`https://open.spotify.com/oembed?url=${encodeURIComponent(spotify(id))}`;
-
-function getInitialActiveIndex(){
-  const params=new URLSearchParams(window.location.search);
-  const requested=params.get('album')||params.get('id');
-  if(requested){const index=musicData.findIndex(a=>a.id===requested);if(index>=0)return index}
-  const hash=decodeURIComponent((window.location.hash||'').replace(/^#/,'')).trim();
-  if(hash){const index=musicData.findIndex(a=>a.id===hash||a.title.toLowerCase().replace(/\s+/g,'-')===hash.toLowerCase());if(index>=0)return index}
-  return 0;
-}
-
-let active=getInitialActiveIndex();
-const coverCache={};
-
-const MUSIC_I18N={
-ko:{
-music_meta_title:'MUSIC ARCHIVE – Chris LEE.PAPA',
-music_meta_description:'Chris LEE.PAPA의 공식 MUSIC ARCHIVE. Spotify와 YouTube에서 발매된 AI 음악, 앨범, EP, 싱글과 다양한 창작 음악을 한곳에서 소개합니다.',
-music_meta_description_short:'Chris LEE.PAPA의 AI 음악, 앨범, EP, 싱글과 다양한 창작 음악을 한곳에서 만나보세요.',
-music_twitter_description:'Chris LEE.PAPA의 AI 음악과 글로벌 플랫폼 발매 작품을 감상하세요.',
-music_header_slogan:'AI가 만들어낸 선율, 영혼을 울리는 멜로디',
-music_spotify_album:'Spotify에서 앨범 듣기 ›',music_youtube_listen:'YouTube에서 듣기 ›',music_albums:'ALBUMS',
-music_archive_intro:'Chris LEE.PAPA의 음악 작업과 글로벌 플랫폼 발매 작품을 한 곳에서 소개합니다.',music_track:'TRACK',music_tracks:'TRACKS',music_tracklist_spotify:'Spotify에서 트랙리스트 확인',music_total:'TOTAL',
-type_Album:'Album',type_EP:'EP',type_Single:'Single',type_Instrumental:'Instrumental',type_Vocal:'Vocal'
-},
-en:{
-music_meta_title:'MUSIC ARCHIVE – Chris LEE.PAPA',
-music_meta_description:'Official MUSIC ARCHIVE of Chris LEE.PAPA. Explore AI-generated music, albums, EPs, singles and creative works released on Spotify and YouTube.',
-music_meta_description_short:'Discover Chris LEE.PAPA’s AI music, albums, EPs, singles and creative works in one place.',
-music_twitter_description:'Listen to Chris LEE.PAPA’s AI music and works released on global music platforms.',
-music_header_slogan:'Melodies created by AI, music that resonates with the soul',
-music_spotify_album:'Listen to the album on Spotify ›',music_youtube_listen:'Listen on YouTube ›',music_albums:'ALBUMS',
-music_archive_intro:'Explore Chris LEE.PAPA’s music projects and works released on global platforms in one place.',music_track:'TRACK',music_tracks:'TRACKS',music_tracklist_spotify:'View tracklist on Spotify',music_total:'TOTAL',
-type_Album:'Album',type_EP:'EP',type_Single:'Single',type_Instrumental:'Instrumental',type_Vocal:'Vocal'
-}
-};
-window.PAGE_I18N=MUSIC_I18N;
-
-function musicLang(){return document.documentElement.lang==='en'?'en':'ko'}
-function musicT(key){return MUSIC_I18N[musicLang()][key]??key}
-function musicType(type){return musicT(`type_${type}`)}
-function musicTrackLabel(count){return count===1?musicT('music_track'):musicT('music_tracks')}
-
-async function loadCover(album){
-  if(coverCache[album.id])return coverCache[album.id];
-  try{const r=await fetch(oembed(album.id),{cache:'force-cache'});if(!r.ok)throw new Error('oEmbed failed');const d=await r.json();if(d.thumbnail_url){coverCache[album.id]=d.thumbnail_url;return d.thumbnail_url}}
-  catch(e){console.warn('Spotify cover unavailable:',album.title,e)}
-  return '';
-}
-
-function setImageSource(img,album){
-  const url=coverCache[album.id];
-  if(url){img.src=url;img.style.visibility='visible'}else{img.removeAttribute('src');img.style.visibility='hidden'}
-  img.onerror=()=>{img.removeAttribute('src');img.style.visibility='hidden'};
-}
-
-async function hydrateCovers(){await Promise.all(musicData.map(a=>loadCover(a)));renderPlaylist();renderActive()}
-
-function renderPlaylist(){
-  const box=document.getElementById('playlist-container');box.innerHTML='';
-  musicData.forEach((a,i)=>{
-    const count=a.trackCount||a.tracks.length;
-    const item=document.createElement('div');item.className='track-item'+(i===active?' active':'');
-    item.onclick=()=>{active=i;renderPlaylist();renderActive()};
-    const img=document.createElement('img');img.className='track-thumb';img.dataset.albumId=a.id;img.alt=`${a.title} album cover`;img.title=`${a.title} album cover`;setImageSource(img,a);item.appendChild(img);
-    const details=document.createElement('div');details.className='track-details';details.innerHTML=`<h4>${a.title}</h4><p>${musicType(a.type)} · ${count} ${musicTrackLabel(count)}</p>`;item.appendChild(details);box.appendChild(item);
-  });
-}
-
-function renderActive(){
-  const a=musicData[active];
-  document.getElementById('main-title').textContent=a.title;
-  document.getElementById('main-type').textContent=musicType(a.type);
-  document.getElementById('main-external-link').href=spotify(a.id);
-  const y=document.getElementById('main-youtube-link');y.href=a.youtube;y.hidden=!a.youtube;
-  document.getElementById('spotify-container').innerHTML=`<iframe src="${embed(a.id)}" title="${a.title} Spotify player" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>`;
-  const cover=coverCache[a.id];document.getElementById('main-cover').style.backgroundImage=cover?`url("${cover}")`:'';
-  document.getElementById('main-cover').setAttribute('aria-label',`${a.title} album cover`);
-  document.querySelectorAll('.track-item').forEach((el,i)=>el.classList.toggle('active',i===active));
-}
-
-function renderArchive(){
-  const box=document.getElementById('archive-list');let total=0;box.innerHTML=musicData.map(a=>{
-    const count=a.trackCount||a.tracks.length;total+=count;
-    const shown=a.tracks.length?`<div class="archive-tracks">${a.tracks.map((t,i)=>`<div class="archive-track"><b>${i+1}</b> ${t}</div>`).join('')}</div>`:`<div class="archive-track">${musicT('music_tracklist_spotify')}</div>`;
-    return `<div class="archive-album"><div class="archive-album-title">${a.title} · ${musicType(a.type)} · ${count} ${musicTrackLabel(count)}</div>${shown}</div>`;
-  }).join('');
-  document.getElementById('archive-total').textContent=`${musicT('music_total')} ${total} ${musicT('music_tracks')}`;
-}
-
-function refreshMusicLanguage(){renderPlaylist();renderArchive();renderActive()}
-
-renderPlaylist();renderArchive();renderActive();hydrateCovers();
-
-let lastMusicLang=musicLang();
-const musicLangObserver=new MutationObserver(()=>{const next=musicLang();if(next!==lastMusicLang){lastMusicLang=next;refreshMusicLanguage()}});
-musicLangObserver.observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+const musicData=[{title:'When the city stood still',type:'Album',id:'5qWOsYCJgw1bmXqvko7Thv',youtube:'https://youtube.com/playlist?list=OLAK5uy_kG2JbLRrBozj00d8VChsbBc11bzCEIfx8&si=kW47ZC7X99F9PXji',tracks:['When the city stood still','After the rain','When did the years go','Remember','Night Breeze','Disco reborn','Guitar Hero','Master Bassist']},{title:'We own the Cup',type:'Album',id:'0sR4hKvhzN4U2GaQKx6Qek',youtube:'https://youtube.com/playlist?list=OLAK5uy_mvAOU96N-lOaZhLlvjkxgskXZsiThl9w4&si=jE1OSt5P0IVLFr76',tracks:['Feel the Power','We own the Cup','Summer never dies','Feel the Power - Inst','We own the Cup - Inst','Summer never dies - Inst','여름끝까지 - Kor']},{title:'Winter town',type:'Album',id:'1K2UDyLeDFF7Ti5KzMknWN',youtube:'https://youtube.com/playlist?list=OLAK5uy_lJjcn058-VL0vQP20esgyZQgscxthJ7nA&si=KVGnzXp3Oe3qkOWY',tracks:[]},{title:'Run it back',type:'EP',id:'1VCjArWmxZJakdawRkEeCi',youtube:'https://youtube.com/playlist?list=OLAK5uy_kxF7pHc4VsbT__Vp2FQHidyD84EszOXDU&si=jNfGCn5a9EbU1fmr',trackCount:4,tracks:['Run it back']},{title:'To The Space',type:'Single',id:'1JyYgZ8VTbh5mASNezCTcJ',youtube:'https://youtube.com/playlist?list=OLAK5uy_lb1VjkTruoTa6uo8P8Y8Trc0jGqx0cJYk&si=CrM-fws1toWG9d8M',tracks:['To The Space']},{title:'Ensemble',type:'EP',id:'2X3dnf8vnhCSQ0c7H9oZht',youtube:'https://youtube.com/playlist?list=OLAK5uy_m4zm9Qq57sWlvBb_W7l57NPOkcrbAuLBo&si=6x4x7eT0FzIEf8OF',tracks:['Emotional','Ensemble','Climax','Groove','Impact','Energetic']},{title:'To Rise',type:'Instrumental',id:'2OSKuof7gooLElmFYvoygK',youtube:'https://youtube.com/playlist?list=OLAK5uy_ndXJukqI1ePIzltvjzIf4Vt2_KQroYszo&si=HTtRpOX2HqtGd0DD',tracks:['To Rise','Morning Breeze','Last Vibrato','Never Stop']},{title:'영역전개',type:'Album',id:'6rZBdEFTJ5mLwINtn9C8KZ',youtube:'https://youtube.com/playlist?list=OLAK5uy_kEiTfwxIvjPCWweGFa2U0-xykLgQ000EI&si=8fCyOOXfj_mneWZ6',tracks:['영역전개','영역전개_inst']},{title:'벽력일섬',type:'Album',id:'25T549XyXnmiZhqGn7p4x4',youtube:'https://youtube.com/playlist?list=OLAK5uy_lEWXJuSa8EXqjqnXVHZ5s5_dLw8Nucza8&si=2McCMqkCvnL_0vVp',tracks:['벽력일섬_Hekireki Issen','Rev It Up_kor','Rev It Up_eng','Hekireki Issen_Inst']},{title:'2026 앨범',type:'Album',id:'2AzUPgjWYDodUqFTNjPU1l',youtube:'https://youtube.com/playlist?list=OLAK5uy_nSgyIsRm-YJyjjKOcNH9iN43bBxgQQgDQ&si=jpNOamkNkO7egSxP',tracks:['난리났어','2026','2026_Inst','Tonight_Inst','Flash Bang','Blow It Up']},{title:'Winter groove',type:'Album',id:'7F4P40iGbLcUceu1mTNdCF',youtube:'https://youtube.com/playlist?list=OLAK5uy_k9CYtBP5F8jnbb0I95tBvA2vTbuHF_eeE&si=RkW9R5WIRQNaXz_s',tracks:[]},{title:'사랑한다고',type:'Vocal',id:'2s7tJtoaxDT8KUkJ3OL8DD',youtube:'https://youtube.com/playlist?list=OLAK5uy_m0lR-fY4rgZkgHvH4Wis2e7AfKyZGhtw0&si=PynL7dMkEwUTjaNW',tracks:['사랑한다고','Saying I love you','Winter\'s Symphony']}];
+const spotify=id=>`https://open.spotify.com/album/${id}`;const embed=id=>`https://open.spotify.com/embed/album/${id}?utm_source=generator&theme=0`;const oembed=id=>`https://open.spotify.com/oembed?url=${encodeURIComponent(spotify(id))}`;
+function getInitialActiveIndex(){const params=new URLSearchParams(window.location.search);const requested=params.get('album')||params.get('id');if(requested){const index=musicData.findIndex(a=>a.id===requested);if(index>=0)return index}const hash=decodeURIComponent((window.location.hash||'').replace(/^#/,'')).trim();if(hash){const index=musicData.findIndex(a=>a.id===hash||a.title.toLowerCase().replace(/\s+/g,'-')===hash.toLowerCase());if(index>=0)return index}return 0}
+let active=getInitialActiveIndex();const coverCache={};
+const MUSIC_I18N={ko:{music_meta_title:'MUSIC ARCHIVE – Chris LEE.PAPA',music_meta_description:'Chris LEE.PAPA의 공식 MUSIC ARCHIVE. Spotify와 YouTube에서 발매된 AI 음악, 앨범, EP, 싱글과 다양한 창작 음악을 한곳에서 소개합니다.',music_meta_description_short:'Chris LEE.PAPA의 AI 음악, 앨범, EP, 싱글과 다양한 창작 음악을 한곳에서 만나보세요.',music_twitter_description:'Chris LEE.PAPA의 AI 음악과 글로벌 플랫폼 발매 작품을 감상하세요.',music_header_slogan:'AI가 만들어낸 선율, 영혼을 울리는 멜로디',music_spotify_album:'Spotify에서 앨범 듣기 ›',music_youtube_listen:'YouTube에서 듣기 ›',music_albums:'ALBUMS',music_archive_intro:'Chris LEE.PAPA의 음악 작업과 글로벌 플랫폼 발매 작품을 한 곳에서 소개합니다.',music_track:'TRACK',music_tracks:'TRACKS',music_tracklist_spotify:'Spotify에서 트랙리스트 확인',music_total:'TOTAL',type_Album:'Album',type_EP:'EP',type_Single:'Single',type_Instrumental:'Instrumental',type_Vocal:'Vocal'},en:{music_meta_title:'MUSIC ARCHIVE – Chris LEE.PAPA',music_meta_description:'Official MUSIC ARCHIVE of Chris LEE.PAPA. Explore AI-generated music, albums, EPs, singles and creative works released on Spotify and YouTube.',music_meta_description_short:'Discover Chris LEE.PAPA’s AI music, albums, EPs, singles and creative works in one place.',music_twitter_description:'Listen to Chris LEE.PAPA’s AI music and works released on global music platforms.',music_header_slogan:'Melodies created by AI, music that resonates with the soul',music_spotify_album:'Listen to the album on Spotify ›',music_youtube_listen:'Listen on YouTube ›',music_albums:'ALBUMS',music_archive_intro:'Explore Chris LEE.PAPA’s music projects and works released on global platforms in one place.',music_track:'TRACK',music_tracks:'TRACKS',music_tracklist_spotify:'View tracklist on Spotify',music_total:'TOTAL',type_Album:'Album',type_EP:'EP',type_Single:'Single',type_Instrumental:'Instrumental',type_Vocal:'Vocal'}};window.PAGE_I18N=MUSIC_I18N;
+function musicLang(){return document.documentElement.lang==='en'?'en':'ko'}function musicT(key){return MUSIC_I18N[musicLang()][key]??key}function musicType(type){return musicT(`type_${type}`)}function musicTrackLabel(count){return count===1?musicT('music_track'):musicT('music_tracks')}
+async function loadCover(album){if(coverCache[album.id])return coverCache[album.id];try{const r=await fetch(oembed(album.id),{cache:'force-cache'});if(!r.ok)throw new Error('oEmbed failed');const d=await r.json();if(d.thumbnail_url){coverCache[album.id]=d.thumbnail_url;return d.thumbnail_url}}catch(e){console.warn('Spotify cover unavailable:',album.title,e)}return ''}
+function setImageSource(img,album){const url=coverCache[album.id];if(url){img.src=url;img.style.visibility='visible'}else{img.removeAttribute('src');img.style.visibility='hidden'}img.onerror=()=>{img.removeAttribute('src');img.style.visibility='hidden'}}async function hydrateCovers(){await Promise.all(musicData.map(a=>loadCover(a)));renderPlaylist();renderActive()}
+function renderPlaylist(){const box=document.getElementById('playlist-container');box.innerHTML='';musicData.forEach((a,i)=>{const count=a.trackCount||a.tracks.length;const item=document.createElement('div');item.className='track-item'+(i===active?' active':'');item.onclick=()=>{active=i;renderPlaylist();renderActive()};const img=document.createElement('img');img.className='track-thumb';img.dataset.albumId=a.id;img.alt=`${a.title} album cover`;img.title=`${a.title} album cover`;setImageSource(img,a);item.appendChild(img);const details=document.createElement('div');details.className='track-details';details.innerHTML=`<h4>${a.title}</h4><p>${musicType(a.type)} · ${count} ${musicTrackLabel(count)}</p>`;item.appendChild(details);box.appendChild(item)})}
+function renderActive(){const a=musicData[active];document.getElementById('main-title').textContent=a.title;document.getElementById('main-type').textContent=musicType(a.type);document.getElementById('main-external-link').href=spotify(a.id);const y=document.getElementById('main-youtube-link');y.href=a.youtube;y.hidden=!a.youtube;document.getElementById('spotify-container').innerHTML=`<iframe src="${embed(a.id)}" title="${a.title} Spotify player" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>`;const cover=coverCache[a.id];document.getElementById('main-cover').style.backgroundImage=cover?`url("${cover}")`:'';document.getElementById('main-cover').setAttribute('aria-label',`${a.title} album cover`);document.querySelectorAll('.track-item').forEach((el,i)=>el.classList.toggle('active',i===active))}
+function renderArchive(){const box=document.getElementById('archive-list');let total=0;box.innerHTML=musicData.map(a=>{const count=a.trackCount||a.tracks.length;total+=count;const shown=a.tracks.length?`<div class="archive-tracks">${a.tracks.map((t,i)=>`<div class="archive-track"><b>${i+1}</b> ${t}</div>`).join('')}</div>`:`<div class="archive-track">${musicT('music_tracklist_spotify')}</div>`;return `<div class="archive-album"><div class="archive-album-title">${a.title} · ${musicType(a.type)} · ${count} ${musicTrackLabel(count)}</div>${shown}</div>`}).join('');document.getElementById('archive-total').textContent=`${musicT('music_total')} ${total} ${musicT('music_tracks')}`}
+function refreshMusicLanguage(){renderPlaylist();renderArchive();renderActive()}renderPlaylist();renderArchive();renderActive();hydrateCovers();let lastMusicLang=musicLang();new MutationObserver(()=>{const next=musicLang();if(next!==lastMusicLang){lastMusicLang=next;refreshMusicLanguage()}}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 </script>
 <script>
-(function(){
-const MUSIC_STORIES={
-ko:{
-'When the city stood still':'사랑하는 사람과의 추억이 담긴 도시의 시간이 멈춰버린 사랑처럼, 잠시 멈춘 듯한 순간들을 음악으로 기록한 작품. 애절하고 애틋한 그리움이 담긴 앨범.',
-'We own the Cup':'경쟁과 승리의 순간이 가진 에너지에서 출발한 작품. 스포츠와 젊음, 뜨거운 여름의 분위기를 음악으로 표현한 앨범.',
-'Run it back':'아이돌 음악의 감성을 담은 곡들로 구성된 EP. 한 번 지나간 순간을 다시 되돌리고 싶은 마음에서 출발한 작품.',
-'To The Space':'SpaceX의 상장과 우주산업의 새로운 시대에 대한 기대를 담은 싱글. 더 넓은 미래와 미지의 세계를 향한 설렘을 음악으로 표현한 작품.',
-'Ensemble':'오케스트라의 선율을 중심으로 피아노, 바이올린 등 다양한 악기의 협주가 돋보이는 연주곡 앨범. 여러 악기가 하나의 음악으로 어우러지는 조화를 담았다.',
-'To Rise':'다시 일어나 앞으로 나아가는 순간을 담은 instrumental 작품. 멈춰 있던 마음을 일으켜 다시 한 걸음 내딛는 순간의 감정을 음악으로 표현했다.',
-'영역전개':'《주술회전》의 캐릭터와 강렬한 기술에서 영감을 받아 제작한 앨범. 압도적인 힘과 긴장감, 폭발적인 에너지를 음악으로 표현한 작품. 료이키텐카이!',
-'벽력일섬':'《귀멸의 칼날》의 주(柱)들과 그들이 보여주는 강력한 카리스마에서 영감을 받은 앨범. 날카롭고 빠르게 몰아치는 에너지와 강렬한 존재감을 음악으로 담아냈다.',
-'2026 앨범':'2026년의 힘찬 시작을 알리는 기대와 설렘이 공존하는 앨범. 새로운 한 해를 향한 긍정적인 에너지와 앞으로 펼쳐질 이야기에 대한 기대를 담았다.',
-'사랑한다고':'소중한 사람을 잃은 아픔과 그리움을 담은 노래. 전하지 못했던 마음과 사랑한다는 말을 음악으로 전하는 작품.'
-},
-en:{
-'When the city stood still':'A work that records moments when a city filled with memories of someone you love seems to stand still, like a love that has suddenly stopped in time. An album filled with aching, tender longing.',
-'We own the Cup':'A work born from the energy of competition and victory. It captures the spirit of sports, youth and a hot summer through music.',
-'Run it back':'An EP built around idol-inspired songs, born from the desire to turn back time and relive a moment that has already passed.',
-'To The Space':'A single inspired by anticipation for SpaceX’s public offering and the coming era of the space industry. It expresses excitement for a wider future and the unknown world beyond.',
-'Ensemble':'An instrumental album highlighted by orchestral melodies and the interplay of piano, violin and other instruments. It captures the harmony created when different sounds become one.',
-'To Rise':'An instrumental work about rising again and moving forward. It expresses the feeling of lifting a heart that had been still and taking another step ahead.',
-'영역전개':'An album inspired by the characters and powerful techniques of Jujutsu Kaisen. It turns overwhelming power, tension and explosive energy into music. RYOIKI TENKAI!',
-'벽력일섬':'An album inspired by the Hashira of Demon Slayer and their powerful charisma. It captures sharp, fast-moving energy and an intense sense of presence.',
-'2026 앨범':'An album filled with anticipation and excitement, announcing a powerful beginning to 2026. It carries positive energy for a new year and anticipation for the stories still to come.',
-'사랑한다고':'A song about the pain and longing of losing someone precious. It is a musical expression of feelings left unsaid and the words, “I love you.”'
-}
-};
-function renderMusicStories(){
- const list=document.getElementById('archive-list');
- const heading=document.querySelector('.archive-box h3');
- if(!list||!heading)return;
- const lang=document.documentElement.lang==='en'?'en':'ko';
- heading.textContent=lang==='en'?'✦ THE STORY BEHIND THE MUSIC':'✦ 앨범에 담긴 이야기';
- list.innerHTML=musicData.map(a=>{
-   const story=MUSIC_STORIES[lang][a.title];
-   if(!story)return '';
-   return `<article class="archive-album"><div class="archive-album-title">${a.title}</div><p class="music-story-text">${story}</p></article>`;
- }).join('');
- const total=document.getElementById('archive-total');
- if(total)total.textContent='';
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',renderMusicStories);else renderMusicStories();
-let last=document.documentElement.lang;
-new MutationObserver(()=>{const next=document.documentElement.lang;if(next!==last){last=next;renderMusicStories()}}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
-})();
+(function(){const MUSIC_STORIES={ko:{'When the city stood still':'사랑하는 사람과의 추억이 담긴 도시의 시간이 멈춰버린 사랑처럼, 잠시 멈춘 듯한 순간들을 음악으로 기록한 작품. 애절하고 애틋한 그리움이 담긴 앨범.','We own the Cup':'경쟁과 승리의 순간이 가진 에너지에서 출발한 작품. 스포츠와 젊음, 뜨거운 여름의 분위기를 음악으로 표현한 앨범.','Run it back':'아이돌 음악의 감성을 담은 곡들로 구성된 EP. 한 번 지나간 순간을 다시 되돌리고 싶은 마음에서 출발한 작품.','To The Space':'SpaceX의 상장과 우주산업의 새로운 시대에 대한 기대를 담은 싱글. 더 넓은 미래와 미지의 세계를 향한 설렘을 음악으로 표현한 작품.','Ensemble':'오케스트라의 선율을 중심으로 피아노, 바이올린 등 다양한 악기의 협주가 돋보이는 연주곡 앨범. 여러 악기가 하나의 음악으로 어우러지는 조화를 담았다.','To Rise':'다시 일어나 앞으로 나아가는 순간을 담은 instrumental 작품. 멈춰 있던 마음을 일으켜 다시 한 걸음 내딛는 순간의 감정을 음악으로 표현했다.','영역전개':'《주술회전》의 캐릭터와 강렬한 기술에서 영감을 받아 제작한 앨범. 압도적인 힘과 긴장감, 폭발적인 에너지를 음악으로 표현한 작품. 료이키텐카이!','벽력일섬':'《귀멸의 칼날》의 주(柱)들과 그들이 보여주는 강력한 카리스마에서 영감을 받은 앨범. 날카롭고 빠르게 몰아치는 에너지와 강렬한 존재감을 음악으로 담아냈다.','2026 앨범':'2026년의 힘찬 시작을 알리는 기대와 설렘이 공존하는 앨범. 새로운 한 해를 향한 긍정적인 에너지와 앞으로 펼쳐질 이야기에 대한 기대를 담았다.','사랑한다고':'소중한 사람을 잃은 아픔과 그리움을 담은 노래. 전하지 못했던 마음과 사랑한다는 말을 음악으로 전하는 작품.'},en:{'When the city stood still':'A work that records moments when a city filled with memories of someone you love seems to stand still, like a love that has suddenly stopped in time. An album filled with aching, tender longing.','We own the Cup':'A work born from the energy of competition and victory. It captures the spirit of sports, youth and a hot summer through music.','Run it back':'An EP built around idol-inspired songs, born from the desire to turn back time and relive a moment that has already passed.','To The Space':'A single inspired by anticipation for SpaceX’s public offering and the coming era of the space industry. It expresses excitement for a wider future and the unknown world beyond.','Ensemble':'An instrumental album highlighted by orchestral melodies and the interplay of piano, violin and other instruments. It captures the harmony created when different sounds become one.','To Rise':'An instrumental work about rising again and moving forward. It expresses the feeling of lifting a heart that had been still and taking another step ahead.','영역전개':'An album inspired by the characters and powerful techniques of Jujutsu Kaisen. It turns overwhelming power, tension and explosive energy into music. RYOIKI TENKAI!','벽력일섬':'An album inspired by the Hashira of Demon Slayer and their powerful charisma. It captures sharp, fast-moving energy and an intense sense of presence.','2026 앨범':'An album filled with anticipation and excitement, announcing a powerful beginning to 2026. It carries positive energy for a new year and anticipation for the stories still to come.','사랑한다고':'A song about the pain and longing of losing someone precious. It is a musical expression of feelings left unsaid and the words, “I love you.”'}};function renderMusicStories(){const list=document.getElementById('archive-list');const heading=document.querySelector('.archive-box h3');if(!list||!heading)return;const lang=document.documentElement.lang==='en'?'en':'ko';heading.textContent=lang==='en'?'✦ THE STORY BEHIND THE MUSIC':'✦ 앨범에 담긴 이야기';list.innerHTML=musicData.map(a=>{const story=MUSIC_STORIES[lang][a.title];if(!story)return '';return `<article class="archive-album"><div class="archive-album-title">${a.title}</div><p class="music-story-text">${story}</p></article>`}).join('');const total=document.getElementById('archive-total');if(total)total.textContent=''}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',renderMusicStories);else renderMusicStories();let last=document.documentElement.lang;new MutationObserver(()=>{const next=document.documentElement.lang;if(next!==last){last=next;renderMusicStories()}}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']})})();
 </script>
 <script src="js/main.js"></script>
 </body>

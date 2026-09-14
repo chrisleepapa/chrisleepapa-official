@@ -14,7 +14,7 @@
         <div class="movie-extra-kicker">✦ CREATION RECORDS</div>
         <h2 class="movie-extra-title">선택한 영상의 제작 기록</h2>
         <article class="movie-work-live" data-video-index="1">
-          <h3>귀멸의 칼날 실사 촬영 현장</h3>
+          <h3>귀멸의 칼날 촬영현장의 제작기록</h3>
           <p class="work-lead">애니메이션 캐릭터가 실제 영화 제작 현장에 존재한다면 어떤 모습일까라는 상상에서 출발했습니다. 단순히 캐릭터를 실사화하는 것보다 배우와 스태프, 카메라와 조명까지 존재하는 하나의 영화 세트를 만들어 ‘촬영 현장’이라는 이야기가 느껴지도록 구성했습니다.</p>
           <div class="movie-work-grid">
             <div class="movie-work-card"><h4>01 · 아이디어</h4><p>애니메이션 속 세계와 실제 영화 제작 현장의 경계를 섞어, 완성된 장면보다 그 장면을 촬영하고 있는 순간을 보여주는 데 초점을 맞췄습니다.</p></div>
@@ -30,7 +30,7 @@ Show a professional film production set with cinema cameras, lighting equipment,
 Realistic actors, detailed costumes, natural skin texture, realistic lighting, cinematic photography, Japanese period-fantasy atmosphere, documentary-style behind-the-scenes photography, high production value, photorealistic details.</pre></div>
         </article>
         <article class="movie-work-live" data-video-index="2">
-          <h3>사랑한다고</h3>
+          <h3>사랑한다고 뮤직비디오의 촬영현장</h3>
           <p class="work-lead">이 작품은 사랑과 기억, 그리고 그리움이라는 감정을 영상으로 옮기는 데서 출발했습니다. 큰 사건을 보여주기보다 음악이 가진 감정을 인물의 표정과 공간, 거리감으로 전달하는 방향을 선택했습니다.</p>
           <div class="movie-work-grid">
             <div class="movie-work-card"><h4>01 · 아이디어</h4><p>음악을 들었을 때 떠오르는 사랑과 기억의 장면을 하나의 영화적 순간처럼 만들고, 말보다 표정과 분위기로 감정을 전달하는 것을 목표로 했습니다.</p></div>

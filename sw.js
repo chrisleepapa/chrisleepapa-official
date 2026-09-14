@@ -18,28 +18,17 @@ self.addEventListener('fetch', (event) => {
       const type = response.headers.get('content-type') || '';
 
       // Miracle Shot only: load the compatibility layer BEFORE main.js.
-      // This is important because main.js calls window.onLangChange() during
-      // its initial language application.
       if (url.pathname === '/miracleshot' || url.pathname === '/miracleshot.html') {
         if (type.includes('text/html')) {
           const html = await response.text();
           const script = '<script src="/js/miracleshot-ui-fix.js?v=20260830"></script>';
-
           let patched = html;
           if (!patched.includes('/js/miracleshot-ui-fix.js')) {
             const mainScript = '<script src="js/main.js"></script>';
-            if (patched.includes(mainScript)) {
-              patched = patched.replace(mainScript, `${script}${mainScript}`);
-            } else {
-              patched = patched.replace('</body>', `${script}</body>`);
-            }
+            if (patched.includes(mainScript)) patched = patched.replace(mainScript, `${script}${mainScript}`);
+            else patched = patched.replace('</body>', `${script}</body>`);
           }
-
-          return new Response(patched, {
-            status: response.status,
-            statusText: response.statusText,
-            headers: response.headers
-          });
+          return new Response(patched, { status: response.status, statusText: response.statusText, headers: response.headers });
         }
       }
 
@@ -50,44 +39,33 @@ self.addEventListener('fetch', (event) => {
           const script = '<script src="/js/gameinfo-goal-fix.js?v=20260904"></script>';
           if (!html.includes('/js/gameinfo-goal-fix.js')) {
             const mainScript = '<script src="js/main.js"></script>';
-            const patched = html.includes(mainScript)
-              ? html.replace(mainScript, `${script}${mainScript}`)
-              : html.replace('</body>', `${script}</body>`);
-
-            return new Response(patched, {
-              status: response.status,
-              statusText: response.statusText,
-              headers: response.headers
-            });
+            const patched = html.includes(mainScript) ? html.replace(mainScript, `${script}${mainScript}`) : html.replace('</body>', `${script}</body>`);
+            return new Response(patched, { status: response.status, statusText: response.statusText, headers: response.headers });
           }
         }
       }
 
-      // Worship only: force the Vol.2 cover to load eagerly and use an encoded URL.
+      // Worship only: keep the existing Vol.2 cover fix and add the Spotify background player.
       if (url.pathname === '/worship' || url.pathname === '/worship.html') {
         if (type.includes('text/html')) {
           const html = await response.text();
-          const script = '<script src="/js/worship-vol2-cover-fix.js?v=20260914"></script>';
-          if (!html.includes('/js/worship-vol2-cover-fix.js')) {
+          const coverScript = '<script src="/js/worship-vol2-cover-fix.js?v=20260914"></script>';
+          const musicScript = '<script src="/js/worship-background.js?v=20260914"></script>';
+          let patched = html;
+          if (!patched.includes('/js/worship-vol2-cover-fix.js')) {
             const mainScript = '<script src="js/main.js"></script>';
-            const patched = html.includes(mainScript)
-              ? html.replace(mainScript, `${script}${mainScript}`)
-              : html.replace('</body>', `${script}</body>`);
-
-            return new Response(patched, {
-              status: response.status,
-              statusText: response.statusText,
-              headers: response.headers
-            });
+            patched = patched.includes(mainScript) ? patched.replace(mainScript, `${coverScript}${mainScript}`) : patched.replace('</body>', `${coverScript}</body>`);
           }
+          if (!patched.includes('/js/worship-background.js')) {
+            patched = patched.replace('</body>', `${musicScript}</body>`);
+          }
+          return new Response(patched, { status: response.status, statusText: response.statusText, headers: response.headers });
         }
       }
 
       return response;
     } catch (error) {
-      return new Response('인터넷 연결이 원활하지 않습니다.', {
-        headers: { 'Content-Type': 'text/plain; charset=utf-8' }
-      });
+      return new Response('인터넷 연결이 원활하지 않습니다.', { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
     }
   })());
 });

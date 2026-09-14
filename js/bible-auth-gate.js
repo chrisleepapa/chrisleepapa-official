@@ -1,86 +1,22 @@
 /** BIBLE auth gate: uses the same CLPAuth account and shared login modal as TODAY and GAME. */
 'use strict';
 (() => {
-    const AUTH_SRC = '/js/auth.js';
-    const SESSION_KEY = 'chrisleepapa-auth-session-v3';
-    const LEGACY_USER_KEY = 'bible_user_id';
-    const LEGACY_PIN_KEY = 'bible_pin_hash';
-    const DATA_RESET_KEY = 'clp-bible-data-reset-v20260827';
-    const BIBLE_CACHE_KEY = 'clp-bible-structured-cache-v1';
-    const BIBLE_DATA_URLS = [
-        'https://raw.githubusercontent.com/stranger828/bibleAPI/main/bible_structured.json',
-        'https://raw.githubusercontent.com/stranger828/bibleAPI/main/bible.json'
-    ];
-    function getSession(){try{const raw=localStorage.getItem(SESSION_KEY);const session=raw?JSON.parse(raw):null;return session&&session.initials?session:null}catch(_){return null}}
-    function resetLegacyClientDataOnce(){try{if(localStorage.getItem(DATA_RESET_KEY)==='1')return;const keys=[];for(let i=0;i<localStorage.length;i++){const key=localStorage.key(i);if(!key)continue;const lower=key.toLowerCase();if(lower.includes('bible')&&key!==SESSION_KEY)keys.push(key)}keys.forEach(key=>localStorage.removeItem(key));localStorage.setItem(DATA_RESET_KEY,'1')}catch(_) {}}
-    function mirrorLegacySession(session){if(!session)return;try{localStorage.setItem(LEGACY_USER_KEY,session.initials);if(session.pinHash)localStorage.setItem(LEGACY_PIN_KEY,session.pinHash)}catch(_) {}}
-    function loadAuth(){if(window.CLPAuth)return Promise.resolve();return new Promise((resolve,reject)=>{const existing=document.querySelector('script[data-clp-auth-loader]');if(existing){existing.addEventListener('load',resolve,{once:true});existing.addEventListener('error',reject,{once:true});return}const script=document.createElement('script');script.src=AUTH_SRC;script.async=false;script.dataset.clpAuthLoader='true';script.onload=resolve;script.onerror=reject;document.head.appendChild(script)})}
-    function hideLegacyAuthModal(){const modal=document.getElementById('authModal');if(!modal)return;modal.classList.remove('active');modal.style.display='none'}
-    function ensureBibleAccountBar(){
-        if(!window.CLPAuth||!window.CLPAuth.isLoggedIn())return;
-        let bar=document.getElementById('bible-account-bar');
-        const cloud=document.getElementById('cloudStatusIcon');
-        if(!bar&&cloud){
-            bar=document.createElement('div');
-            bar.id='bible-account-bar';
-            bar.style.cssText='display:flex;align-items:center;justify-content:center;gap:10px;margin-top:10px;flex-wrap:wrap;';
-            cloud.insertAdjacentElement('afterend',bar);
-        }
-        if(!bar)return;
-        const session=window.CLPAuth.getUser?window.CLPAuth.getUser():getSession();
-        const initials=String(session?.initials||'').toUpperCase();
-        bar.innerHTML=`<span style="display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border:1px solid rgba(201,168,76,0.28);border-radius:20px;background:rgba(255,255,255,0.04);color:#e8d08a;font-family:'Cinzel',serif;font-size:0.78rem;letter-spacing:1px;">👤 ${initials}</span><button type="button" id="bible-logout-btn" style="padding:7px 13px;border:1px solid rgba(201,168,76,0.28);border-radius:20px;background:rgba(255,255,255,0.04);color:#a0a0b5;font-family:'Pretendard',sans-serif;font-size:0.78rem;cursor:pointer;">LOG OUT</button>`;
-        const button=document.getElementById('bible-logout-btn');
-        if(button&&!button.dataset.bound){
-            button.dataset.bound='true';
-            button.addEventListener('click',event=>{
-                event.preventDefault();
-                if(window.CLPAuth&&typeof window.CLPAuth.logout==='function')window.CLPAuth.logout();
-                else location.reload();
-            });
-        }
-    }
-    function showSharedLogin(){if(!window.CLPAuth||typeof window.CLPAuth.showLoginModal!=='function')return;hideLegacyAuthModal();document.documentElement.classList.add('clp-auth-required');window.CLPAuth.showLoginModal({prefix:'bible-shared',onSuccess:user=>{mirrorLegacySession(user);document.documentElement.classList.remove('clp-auth-required');hideLegacyAuthModal();ensureBibleAccountBar();if(typeof window.checkAuth==='function')window.checkAuth();else window.dispatchEvent(new CustomEvent('chrisleepapa-auth-ready',{detail:{user}}))}})}
-    function normalizeBiblePayload(payload){if(Array.isArray(payload))return payload;if(!payload||typeof payload!=='object')return null;if(Array.isArray(payload.data))return payload.data;if(Array.isArray(payload.verses))return payload.verses;if(Array.isArray(payload.bible))return payload.bible;return null}
-    function validateBibleData(data){if(!Array.isArray(data)||data.length<30000)return false;const sample=data.slice(0,100);return sample.some(v=>v&&v.book!=null&&v.chapter!=null&&v.verse!=null&&(v.content||v.text))}
-    function setBibleData(data,source){if(!validateBibleData(data))throw new Error('Bible data validation failed');globalBibleData=data;isDataReady=true;try{localStorage.setItem(BIBLE_CACHE_KEY,JSON.stringify({savedAt:Date.now(),data}))}catch(_){}console.info('[Bible] data ready:',data.length,'verses from',source)}
-    async function fetchWithTimeout(url,timeoutMs=12000){const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),timeoutMs);try{const response=await fetch(url,{cache:'no-store',signal:controller.signal});if(!response.ok)throw new Error(`HTTP ${response.status}`);return await response.json()}finally{clearTimeout(timer)}}
-    function getCachedBibleData(){try{const cached=JSON.parse(localStorage.getItem(BIBLE_CACHE_KEY)||'null');if(cached&&validateBibleData(cached.data))return cached.data}catch(error){console.warn('[Bible] cache unavailable:',error)}return null}
-    async function loadBibleDataResilient(spinner){
-        const cached=getCachedBibleData();
-        if(cached){setBibleData(cached,'local cache');if(spinner)spinner.innerHTML='UPDATING BIBLE...<br><small>최신 본문을 확인하는 중입니다.</small>';}
-        for(const url of BIBLE_DATA_URLS){
-            try{
-                if(!cached&&spinner)spinner.innerHTML='LOADING BIBLE...<br><small>성경 본문을 불러오는 중입니다.</small>';
-                const payload=await fetchWithTimeout(url);const data=normalizeBiblePayload(payload);
-                if(validateBibleData(data)){setBibleData(data,url);return}
-            }catch(error){console.warn('[Bible] source failed:',url,error)}
-        }
-        if(cached)return;
-        throw new Error('No valid Bible dataset available');
-    }
-    function installBibleDataRecovery(){
-        if(window.__clpBibleRecoveryInstalled)return true;
-        if(typeof window.initAppAfterAuth!=='function')return false;
-        window.__clpBibleRecoveryInstalled=true;
-        window.initAppAfterAuth=async function(){
-            initBibleLogout();ensureBibleAccountBar();
-            const spinner=document.getElementById('loadingSpinner');
-            try{await loadSupabaseData();await loadBibleDataResilient(spinner);if(spinner)spinner.style.display='none';renderBooks('ot');selectBook(1,false);setupNotifications();updateOverallProgress()}
-            catch(error){console.error('[Bible] data initialization failed:',error);if(spinner)spinner.innerHTML='CONNECTION FAILED.<br><small>성경 본문을 불러오지 못했습니다. 잠시 후 새로고침해 주세요.</small>'}
-        };
-        window.__clpBibleGateReady=true;
-        window.dispatchEvent(new CustomEvent('clp-bible-gate-ready'));
-        return true;
-    }
-    async function init(){
-        try{
-            await loadAuth();resetLegacyClientDataOnce();
-            const session=getSession();
-            if(session){mirrorLegacySession(session);hideLegacyAuthModal();ensureBibleAccountBar()}else showSharedLogin();
-            if(!installBibleDataRecovery())setTimeout(()=>{if(!installBibleDataRecovery())window.dispatchEvent(new CustomEvent('clp-bible-gate-ready'))},0);
-        }catch(error){console.error('[bible-auth-gate]',error)}
-    }
-    window.addEventListener('chrisleepapa-auth-change',event=>{const session=event.detail?.user||getSession();if(session){mirrorLegacySession(session);hideLegacyAuthModal();ensureBibleAccountBar()}else{hideLegacyAuthModal();location.reload()}});
-    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+const AUTH_SRC='/js/auth.js',SESSION_KEY='chrisleepapa-auth-session-v3',LEGACY_USER_KEY='bible_user_id',LEGACY_PIN_KEY='bible_pin_hash',DATA_RESET_KEY='clp-bible-data-reset-v20260827',BIBLE_CACHE_KEY='clp-bible-structured-cache-v1',BIBLE_DATA_URLS=['https://raw.githubusercontent.com/stranger828/bibleAPI/main/bible_structured.json','https://raw.githubusercontent.com/stranger828/bibleAPI/main/bible.json'];
+function getSession(){try{const raw=localStorage.getItem(SESSION_KEY);const session=raw?JSON.parse(raw):null;return session&&session.initials?session:null}catch(_){return null}}
+function resetLegacyClientDataOnce(){try{if(localStorage.getItem(DATA_RESET_KEY)==='1')return;const keys=[];for(let i=0;i<localStorage.length;i++){const key=localStorage.key(i);if(key&&key.toLowerCase().includes('bible')&&key!==SESSION_KEY)keys.push(key)}keys.forEach(key=>localStorage.removeItem(key));localStorage.setItem(DATA_RESET_KEY,'1')}catch(_) {}}
+function mirrorLegacySession(session){if(!session)return;try{localStorage.setItem(LEGACY_USER_KEY,session.initials);if(session.pinHash)localStorage.setItem(LEGACY_PIN_KEY,session.pinHash)}catch(_) {}}
+function loadAuth(){if(window.CLPAuth)return Promise.resolve();return new Promise((resolve,reject)=>{const existing=document.querySelector('script[data-clp-auth-loader]');if(existing){existing.addEventListener('load',resolve,{once:true});existing.addEventListener('error',reject,{once:true});return}const script=document.createElement('script');script.src=AUTH_SRC;script.async=false;script.dataset.clpAuthLoader='true';script.onload=resolve;script.onerror=reject;document.head.appendChild(script)})}
+function hideLegacyAuthModal(){const modal=document.getElementById('authModal');if(!modal)return;modal.classList.remove('active');modal.style.display='none'}
+function ensureBibleAccountBar(){if(!window.CLPAuth||!window.CLPAuth.isLoggedIn())return;let bar=document.getElementById('bible-account-bar'),cloud=document.getElementById('cloudStatusIcon');if(!bar&&cloud){bar=document.createElement('div');bar.id='bible-account-bar';bar.style.cssText='display:flex;align-items:center;justify-content:center;gap:10px;margin-top:10px;flex-wrap:wrap;';cloud.insertAdjacentElement('afterend',bar)}if(!bar)return;const session=window.CLPAuth.getUser?window.CLPAuth.getUser():getSession(),initials=String(session?.initials||'').toUpperCase();bar.innerHTML=`<span style="display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border:1px solid rgba(201,168,76,0.28);border-radius:20px;background:rgba(255,255,255,0.04);color:#e8d08a;font-family:'Cinzel',serif;font-size:.78rem;letter-spacing:1px;">${initials}</span><button type="button" id="bible-logout-btn" style="padding:7px 13px;border:1px solid rgba(201,168,76,0.28);border-radius:20px;background:rgba(255,255,255,0.04);color:#a0a0b5;font-family:'Pretendard',sans-serif;font-size:.78rem;cursor:pointer;">LOG OUT</button>`;const button=document.getElementById('bible-logout-btn');if(button&&!button.dataset.bound){button.dataset.bound='true';button.addEventListener('click',event=>{event.preventDefault();if(window.CLPAuth&&typeof window.CLPAuth.logout==='function')window.CLPAuth.logout();else location.reload()})}}
+function showSharedLogin(){if(!window.CLPAuth||typeof window.CLPAuth.showLoginModal!=='function')return;hideLegacyAuthModal();document.documentElement.classList.add('clp-auth-required');window.CLPAuth.showLoginModal({prefix:'bible-shared',onSuccess:user=>{mirrorLegacySession(user);document.documentElement.classList.remove('clp-auth-required');hideLegacyAuthModal();ensureBibleAccountBar();if(typeof window.checkAuth==='function')window.checkAuth();else window.dispatchEvent(new CustomEvent('chrisleepapa-auth-ready',{detail:{user}}))}})}
+function normalizeBiblePayload(payload){if(Array.isArray(payload))return payload;if(!payload||typeof payload!=='object')return null;if(Array.isArray(payload.data))return payload.data;if(Array.isArray(payload.verses))return payload.verses;if(Array.isArray(payload.bible))return payload.bible;return null}
+function validateBibleData(data){if(!Array.isArray(data)||data.length<30000)return false;const sample=data.slice(0,100);return sample.some(v=>v&&v.book!=null&&v.chapter!=null&&v.verse!=null&&(v.content||v.text))}
+function setBibleData(data,source){if(!validateBibleData(data))throw new Error('Bible data validation failed');globalBibleData=data;isDataReady=true;try{localStorage.setItem(BIBLE_CACHE_KEY,JSON.stringify({savedAt:Date.now(),data}))}catch(_){}console.info('[Bible] data ready:',data.length,'verses from',source)}
+async function fetchWithTimeout(url,timeoutMs=12000){const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),timeoutMs);try{const response=await fetch(url,{cache:'no-store',signal:controller.signal});if(!response.ok)throw new Error(`HTTP ${response.status}`);return await response.json()}finally{clearTimeout(timer)}}
+function getCachedBibleData(){try{const cached=JSON.parse(localStorage.getItem(BIBLE_CACHE_KEY)||'null');if(cached&&validateBibleData(cached.data))return cached.data}catch(error){console.warn('[Bible] cache unavailable:',error)}return null}
+async function loadBibleDataResilient(spinner){const cached=getCachedBibleData();if(cached){setBibleData(cached,'local cache');if(spinner)spinner.innerHTML='UPDATING BIBLE...<br><small>최신 본문을 확인하는 중입니다.</small>'}for(const url of BIBLE_DATA_URLS){try{if(!cached&&spinner)spinner.innerHTML='LOADING BIBLE...<br><small>성경 본문을 불러오는 중입니다.</small>';const payload=await fetchWithTimeout(url),data=normalizeBiblePayload(payload);if(validateBibleData(data)){setBibleData(data,url);return}}catch(error){console.warn('[Bible] source failed:',url,error)}}if(cached)return;throw new Error('No valid Bible dataset available')}
+function installBibleDataRecovery(){if(window.__clpBibleRecoveryInstalled)return true;if(typeof window.initAppAfterAuth!=='function')return false;window.__clpBibleRecoveryInstalled=true;window.initAppAfterAuth=async function(){initBibleLogout();ensureBibleAccountBar();const spinner=document.getElementById('loadingSpinner');try{await loadSupabaseData();await loadBibleDataResilient(spinner);if(spinner)spinner.style.display='none';renderBooks('ot');selectBook(1,false);setupNotifications();updateOverallProgress()}catch(error){console.error('[Bible] data initialization failed:',error);if(spinner)spinner.innerHTML='CONNECTION FAILED.<br><small>성경 본문을 불러오지 못했습니다. 잠시 후 새로고침해 주세요.</small>'}};window.__clpBibleGateReady=true;window.dispatchEvent(new CustomEvent('clp-bible-gate-ready'));return true}
+function addOriginalCreationContext(){if(document.getElementById('bible-creation-context'))return;const anchor=document.querySelector('.bible-container');if(!anchor)return;const section=document.createElement('section');section.id='bible-creation-context';section.style.cssText='max-width:900px;margin:0 auto 44px;padding:0 24px';section.innerHTML='<div style="border-top:1px solid rgba(201,168,76,.22);padding-top:34px"><h2 style="font-family:Cinzel,serif;color:#e8d08a;font-size:1.15rem;letter-spacing:2px;margin-bottom:18px">WHY I MADE BIBLE IN MY HAND</h2><p style="color:#d0ccc4;line-height:2;font-size:.96rem;margin:0 0 16px">이 페이지는 단순히 성경 본문을 화면에 옮겨 놓는 데서 끝내고 싶지 않아서 만들었습니다. 성경을 읽다가 마음에 남은 구절을 다시 찾고, 형광펜과 메모를 남기고, 다음에 읽을 때 그 기록을 이어갈 수 있는 개인적인 읽기 공간이 필요했습니다.</p><p style="color:#d0ccc4;line-height:2;font-size:.96rem;margin:0 0 16px"><strong style="color:#e8d08a">Bible in my hand</strong>는 많은 기능을 넣는 앱보다 말씀을 다시 읽게 만드는 흐름을 중심으로 설계했습니다. 책을 고르고 장을 선택한 뒤 본문을 읽고, 필요한 구절을 표시하고, 퀴즈로 방금 읽은 내용을 확인하고, 일독 진행률로 다음 읽기를 이어가는 구조입니다.</p><p style="color:#d0ccc4;line-height:2;font-size:.96rem;margin:0">두 딸과 교회 어린이 사역을 경험하면서 성경 읽기는 거창한 계획보다 <strong style="color:#e8d08a">오늘 한 장을 읽고 다시 돌아오는 습관</strong>에 가까워야 한다고 생각했습니다. 이 앱은 그 생각을 실제로 사용할 수 있는 작은 도구로 만들어 본 작업입니다.</p></div>';anchor.parentNode.insertBefore(section,anchor)}
+async function init(){try{await loadAuth();resetLegacyClientDataOnce();addOriginalCreationContext();const session=getSession();if(session){mirrorLegacySession(session);hideLegacyAuthModal();ensureBibleAccountBar()}else showSharedLogin();if(!installBibleDataRecovery())setTimeout(()=>{if(!installBibleDataRecovery())window.dispatchEvent(new CustomEvent('clp-bible-gate-ready'))},0)}catch(error){console.error('[bible-auth-gate]',error)}}
+window.addEventListener('chrisleepapa-auth-change',event=>{const session=event.detail?.user||getSession();if(session){mirrorLegacySession(session);hideLegacyAuthModal();ensureBibleAccountBar()}else{hideLegacyAuthModal();location.reload()}});if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();

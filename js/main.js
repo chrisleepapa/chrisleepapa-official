@@ -24,6 +24,7 @@
       console.error('[main.js] loader failed:', error);
     }
   };
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, {once:true});
-  else start();
+  // main-core.js owns the DOMContentLoaded lifecycle. It must be loaded
+  // before DOMContentLoaded fires so its existing initialization is preserved.
+  start();
 })();

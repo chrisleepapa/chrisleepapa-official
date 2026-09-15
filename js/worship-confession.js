@@ -196,7 +196,7 @@
     `;
 
     document.head.appendChild(style);
-    intro.insertAdjacentElement('afterend', section);
+    intro.replaceWith(section);
   }
 
   if (document.readyState === 'loading') {

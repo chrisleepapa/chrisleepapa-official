@@ -20,9 +20,21 @@
     document.head.appendChild(script);
   }
 
+  function loadPlayResponsive() {
+    const path = location.pathname.replace(/\/$/, '');
+    if (!['/music', '/movie', '/gameinfo'].includes(path)) return;
+    if (document.querySelector('script[data-clp-play-responsive]')) return;
+    const script = document.createElement('script');
+    script.src = '/js/play-mobile-responsive.js?v=20260915-1';
+    script.async = true;
+    script.dataset.clpPlayResponsive = 'true';
+    document.head.appendChild(script);
+  }
+
   function init() {
     loadPageBanners();
     loadGameCreatorNote();
+    loadPlayResponsive();
     if (window.__clpDesktopNavFixInitialized) return;
     const nav = document.getElementById('main-nav');
     if (!nav) return;

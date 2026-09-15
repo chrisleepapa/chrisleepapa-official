@@ -31,7 +31,10 @@
     removeDuplicateIntroBlocks();
 
     const story = document.getElementById('bible-creator-story');
-    if (!story || document.getElementById('bible-page-hero')) return;
+    if (!story || document.getElementById('bible-page-hero')) {
+      moveAccountBar();
+      return;
+    }
 
     const hero = document.createElement('section');
     hero.id = 'bible-page-hero';
@@ -67,8 +70,33 @@
       document.body.insertBefore(hero, document.body.firstChild);
     }
 
+    moveAccountBar();
+
     story.style.marginTop = '0';
     story.style.marginBottom = '64px';
+  }
+
+  function moveAccountBar() {
+    const accountBar = document.getElementById('bible-account-bar');
+    const bibleContainer = document.querySelector('.bible-container');
+    if (!accountBar || !bibleContainer) return;
+
+    // The old page-header is intentionally removed by this layout script.
+    // Keep the account controls in a stable position directly above the Bible tools.
+    if (accountBar.parentElement !== bibleContainer) {
+      bibleContainer.insertBefore(accountBar, bibleContainer.firstChild);
+    }
+    accountBar.style.cssText = [
+      'display:flex',
+      'align-items:center',
+      'justify-content:center',
+      'gap:10px',
+      'margin:0 auto 22px',
+      'padding:0 4px',
+      'flex-wrap:wrap',
+      'position:relative',
+      'z-index:20'
+    ].join(';');
   }
 
   function init() {

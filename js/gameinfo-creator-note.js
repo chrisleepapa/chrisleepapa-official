@@ -66,16 +66,22 @@
     }
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', insertCreatorNote, { once: true });
-  } else {
+  function start() {
     insertCreatorNote();
+    let attempts = 0;
+    const timer = setInterval(() => {
+      insertCreatorNote();
+      attempts += 1;
+      if (document.querySelector('[data-clp-game-creator-note]') || attempts >= 50) clearInterval(timer);
+    }, 200);
+
+    const observer = new MutationObserver(() => insertCreatorNote());
+    observer.observe(document.body, { childList: true, subtree: true });
   }
 
-  let attempts = 0;
-  const timer = setInterval(() => {
-    insertCreatorNote();
-    attempts += 1;
-    if (document.querySelector('[data-clp-game-creator-note]') || attempts >= 30) clearInterval(timer);
-  }, 200);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start, { once: true });
+  } else {
+    start();
+  }
 })();

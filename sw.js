@@ -63,15 +63,16 @@ self.addEventListener('fetch', (event) => {
         }
       }
 
-      // Bible only: add the long creator/making story without modifying bible.html.
+      // Bible only: add the creator story, then place it under the hero and above the reader.
       if (url.pathname === '/bible' || url.pathname === '/bible.html') {
         if (type.includes('text/html')) {
           const html = await response.text();
           const storyScript = '<script src="/js/bible-creator-story.js?v=20260915"></script>';
-          if (!html.includes('/js/bible-creator-story.js')) {
-            const patched = html.replace('</body>', `${storyScript}</body>`);
-            return new Response(patched, { status: response.status, statusText: response.statusText, headers: response.headers });
-          }
+          const layoutScript = '<script src="/js/bible-layout.js?v=20260915"></script>';
+          let patched = html;
+          if (!patched.includes('/js/bible-creator-story.js')) patched = patched.replace('</body>', `${storyScript}</body>`);
+          if (!patched.includes('/js/bible-layout.js')) patched = patched.replace('</body>', `${layoutScript}</body>`);
+          return new Response(patched, { status: response.status, statusText: response.statusText, headers: response.headers });
         }
       }
 

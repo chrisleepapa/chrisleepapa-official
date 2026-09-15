@@ -5,7 +5,7 @@
     '/sistersquad-hub': {image:'/images/banner_sister.jpg',kicker:'ORIGINAL IP · CHRIS LEE.PAPA',title:'SISTER SQUAD',subtitle:'A story about family, sisterhood, courage, and hope.',selector:'.sq-hero'},
     '/miracleshot': {image:'/images/miracleshot1.png',kicker:'ORIGINAL STORY · CHRIS LEE.PAPA',title:'MIRACLE SHOT',subtitle:'A story about finding your own light.',selector:'.page-header'},
     '/music': {image:'',kicker:'MUSIC · CHRIS LEE.PAPA',title:'MUSIC ARCHIVE',subtitle:'AI music, original songs, albums, and creative experiments.',selector:'.page-header'},
-    '/movie': {image:'/images/og_share.png',kicker:'MOVIE · CHRIS LEE.PAPA',title:'MOVIE ARCHIVE',subtitle:'Music, stories, and visual worlds created with generative AI.',selector:'.page-header'},
+    '/movie': {image:'https://i.ytimg.com/vi/kAkGg2t1Ats/hqdefault.jpg',kicker:'MOVIE · CHRIS LEE.PAPA',title:'MOVIE ARCHIVE',subtitle:'Music, stories, and visual worlds created with generative AI.',selector:'.page-header'},
     '/gameinfo': {image:'/images/goal.png',kicker:'PLAY · CHRIS LEE.PAPA',title:'GAME ARCHIVE',subtitle:'Playable stories, characters, and interactive worlds.',selector:'.page-header'}
   };
   const config = configs[page];

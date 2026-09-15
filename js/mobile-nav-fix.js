@@ -36,20 +36,22 @@
       document.body.classList.add('mobile-panel-open');
     };
 
-    // Remove older inline handlers. Use capture + stopImmediatePropagation so
-    // main.js's older mobile-menu listener cannot double-toggle Faith/More.
-    buttons.forEach(button => {
-      button.removeAttribute('onclick');
-      button.addEventListener('click', event => {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        const panel = document.getElementById(button.getAttribute('aria-controls'));
-        if (!panel) return;
-        const isOpen = panel.classList.contains('active');
-        if (isOpen) closeAll();
-        else openPanel(button, panel);
-      }, true);
-    });
+    // One controller only: intercept bottom-nav clicks during capture so
+    // legacy main.js/inline handlers cannot toggle the same panel a second time.
+    document.addEventListener('click', event => {
+      const button = event.target.closest('#mobileBottomNav .mobile-nav-button');
+      if (!button) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      const panel = document.getElementById(button.getAttribute('aria-controls'));
+      if (!panel) return;
+      const isOpen = panel.classList.contains('active');
+      if (isOpen) closeAll();
+      else openPanel(button, panel);
+    }, true);
+
+    // Remove legacy inline handlers after the new controller is installed.
+    buttons.forEach(button => button.removeAttribute('onclick'));
 
     document.querySelectorAll('.mobile-submenu-close, #mobileMoreClose').forEach(closeButton => {
       closeButton.addEventListener('click', event => {
@@ -81,6 +83,23 @@
     window.addEventListener('resize', () => {
       if (window.innerWidth > 760) closeAll();
     });
+
+    // Safety net: never allow two mobile panels to remain open at once.
+    const observer = new MutationObserver(() => {
+      const openPanels = panels.filter(panel => panel.classList.contains('active'));
+      if (openPanels.length > 1) {
+        const keep = openPanels[openPanels.length - 1];
+        openPanels.forEach(panel => {
+          if (panel !== keep) {
+            panel.classList.remove('active');
+            panel.setAttribute('aria-hidden', 'true');
+          }
+        });
+      }
+    });
+    observer.observe(document.body, { subtree: true, attributes: true, attributeFilter: ['class'] });
+
+    closeAll();
   }
 
   if (document.readyState === 'loading') {

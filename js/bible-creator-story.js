@@ -15,6 +15,123 @@
       'font-family:Pretendard, Noto Serif KR, sans-serif'
     ].join(';');
 
+    const responsiveStyle = document.createElement('style');
+    responsiveStyle.textContent = `
+      #bible-creator-story,
+      #bible-creator-story * { box-sizing:border-box; }
+      #bible-creator-story article { overflow-wrap:break-word; word-break:normal; }
+      #bible-creator-story p { margin:0 0 18px; }
+      #bible-creator-story h3 { word-break:keep-all; overflow-wrap:normal; }
+      #bible-creator-story > div > div:last-child { min-width:0; }
+
+      @media (max-width:700px) {
+        #bible-creator-story {
+          width:100%;
+          max-width:100%;
+          margin:46px auto 34px !important;
+          padding:0 14px !important;
+          overflow:hidden;
+        }
+        #bible-creator-story > div {
+          padding-top:30px !important;
+        }
+        #bible-creator-story > div > div:first-child {
+          font-size:.62rem !important;
+          line-height:1.5 !important;
+          letter-spacing:2px !important;
+          margin-bottom:10px !important;
+          word-break:keep-all;
+        }
+        #bible-creator-story-title {
+          font-size:1.28rem !important;
+          line-height:1.42 !important;
+          letter-spacing:.5px !important;
+          margin-bottom:22px !important;
+          word-break:keep-all;
+          overflow-wrap:normal;
+        }
+        #bible-creator-story article {
+          width:100%;
+          max-width:100%;
+          font-size:.9rem !important;
+          line-height:1.82 !important;
+          word-break:normal;
+          overflow-wrap:break-word;
+        }
+        #bible-creator-story article h3 {
+          font-size:1.05rem !important;
+          line-height:1.55 !important;
+          letter-spacing:0 !important;
+          margin:27px 0 11px !important;
+          word-break:keep-all;
+          overflow-wrap:normal;
+        }
+        #bible-creator-story article p {
+          margin:0 0 16px !important;
+          word-break:normal;
+          overflow-wrap:break-word;
+        }
+        #bible-creator-story article strong,
+        #bible-creator-story article code,
+        #bible-creator-story article a {
+          overflow-wrap:anywhere;
+        }
+        #bible-creator-story article > div {
+          width:100% !important;
+          max-width:100% !important;
+          grid-template-columns:1fr !important;
+          gap:10px !important;
+          margin:16px 0 22px !important;
+        }
+        #bible-creator-story article > div > div {
+          width:100% !important;
+          min-width:0 !important;
+          padding:15px 14px !important;
+          font-size:.84rem !important;
+          line-height:1.72 !important;
+          overflow-wrap:break-word;
+        }
+        #bible-creator-story article > div > div strong {
+          font-size:.92rem;
+        }
+        #bible-creator-story article > div[style*="border-left"] {
+          display:block !important;
+          padding:15px 14px !important;
+          font-size:.8rem !important;
+          line-height:1.72 !important;
+        }
+        #bible-creator-story article > div[style*="border-left"] p {
+          margin-bottom:8px !important;
+        }
+      }
+
+      @media (max-width:390px) {
+        #bible-creator-story {
+          padding-left:11px !important;
+          padding-right:11px !important;
+        }
+        #bible-creator-story > div {
+          padding-top:26px !important;
+        }
+        #bible-creator-story-title {
+          font-size:1.2rem !important;
+        }
+        #bible-creator-story article {
+          font-size:.86rem !important;
+          line-height:1.8 !important;
+        }
+        #bible-creator-story article h3 {
+          font-size:1rem !important;
+          line-height:1.52 !important;
+        }
+        #bible-creator-story article > div > div {
+          padding:14px 13px !important;
+          font-size:.81rem !important;
+        }
+      }
+    `;
+    document.head.appendChild(responsiveStyle);
+
     section.innerHTML = `
       <div style="border-top:1px solid rgba(201,168,76,.28);padding-top:46px">
         <div style="font-family:Cinzel,serif;color:#c9a84c;font-size:.78rem;letter-spacing:3px;margin-bottom:14px">THE MAKING OF BIBLE IN MY HAND</div>

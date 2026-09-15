@@ -65,4 +65,32 @@
     }
   `;
   document.head.appendChild(style);
+
+  // The sentence below is not tied to a stable class in the existing page markup.
+  // Target its actual rendered element so Korean text is never split inside the final word.
+  function fixDesignSentence(){
+    if (window.innerWidth > 700) return;
+    const target = '3. 주요 기능을 이렇게 설계했습니다.';
+    const normalize = value => String(value || '').replace(/\s+/g, ' ').trim();
+    const elements = Array.from(document.body.querySelectorAll('*'));
+    let match = elements.find(el => normalize(el.textContent) === target);
+    if (!match) {
+      match = elements.find(el => {
+        const text = normalize(el.textContent);
+        return text.includes(target);
+      });
+    }
+    if (!match) return;
+    match.style.setProperty('word-break', 'keep-all', 'important');
+    match.style.setProperty('overflow-wrap', 'normal', 'important');
+    match.style.setProperty('white-space', 'normal', 'important');
+    match.style.setProperty('text-wrap', 'balance', 'important');
+  }
+
+  fixDesignSentence();
+  if (document.readyState !== 'complete') {
+    window.addEventListener('load', fixDesignSentence, { once:true });
+  }
+  const observer = new MutationObserver(fixDesignSentence);
+  observer.observe(document.body, { childList:true, subtree:true });
 })();

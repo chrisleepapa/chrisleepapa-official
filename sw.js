@@ -63,6 +63,18 @@ self.addEventListener('fetch', (event) => {
         }
       }
 
+      // Bible only: add the long creator/making story without modifying bible.html.
+      if (url.pathname === '/bible' || url.pathname === '/bible.html') {
+        if (type.includes('text/html')) {
+          const html = await response.text();
+          const storyScript = '<script src="/js/bible-creator-story.js?v=20260915"></script>';
+          if (!html.includes('/js/bible-creator-story.js')) {
+            const patched = html.replace('</body>', `${storyScript}</body>`);
+            return new Response(patched, { status: response.status, statusText: response.statusText, headers: response.headers });
+          }
+        }
+      }
+
       return response;
     } catch (error) {
       return new Response('인터넷 연결이 원활하지 않습니다.', { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });

@@ -36,18 +36,19 @@
       document.body.classList.add('mobile-panel-open');
     };
 
-    // Remove the older inline handlers so every mobile item uses one click system.
+    // Remove older inline handlers. Use capture + stopImmediatePropagation so
+    // main.js's older mobile-menu listener cannot double-toggle Faith/More.
     buttons.forEach(button => {
       button.removeAttribute('onclick');
       button.addEventListener('click', event => {
         event.preventDefault();
-        event.stopPropagation();
+        event.stopImmediatePropagation();
         const panel = document.getElementById(button.getAttribute('aria-controls'));
         if (!panel) return;
         const isOpen = panel.classList.contains('active');
         if (isOpen) closeAll();
         else openPanel(button, panel);
-      });
+      }, true);
     });
 
     document.querySelectorAll('.mobile-submenu-close, #mobileMoreClose').forEach(closeButton => {

@@ -37,11 +37,20 @@
     script.dataset.clpFaithResponsive = 'true';
     document.head.appendChild(script);
   }
+  function loadSiteAuthUI() {
+    if (document.querySelector('script[data-clp-site-auth-ui]')) return;
+    const script = document.createElement('script');
+    script.src = '/js/site-auth-ui.js?v=20260915-1';
+    script.async = true;
+    script.dataset.clpSiteAuthUi = 'true';
+    document.head.appendChild(script);
+  }
   function init() {
     loadPageBanners();
     loadGameCreatorNote();
     loadPlayResponsive();
     loadFaithResponsive();
+    loadSiteAuthUI();
     if (window.__clpDesktopNavFixInitialized) return;
     const nav = document.getElementById('main-nav');
     if (!nav) return;

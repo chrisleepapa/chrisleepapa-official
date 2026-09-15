@@ -2,6 +2,46 @@
   'use strict';
 
   const page = (location.pathname || '').replace(/\/$/, '').toLowerCase();
+  const configs = {
+    '/sistersquad-hub': {
+      image: '/images/banner_sister.jpg',
+      kicker: 'ORIGINAL IP · CHRIS LEE.PAPA',
+      title: 'SISTER SQUAD',
+      subtitle: 'A story about family, sisterhood, courage, and hope.',
+      selector: '.sq-hero'
+    },
+    '/miracleshot': {
+      image: '/images/miracleshot1.png',
+      kicker: 'ORIGINAL STORY · CHRIS LEE.PAPA',
+      title: 'MIRACLE SHOT',
+      subtitle: 'A story about finding your own light.',
+      selector: '.page-header'
+    },
+    '/music': {
+      image: '/images/My hymn3.jpg',
+      kicker: 'MUSIC · CHRIS LEE.PAPA',
+      title: 'MUSIC ARCHIVE',
+      subtitle: 'AI music, original songs, albums, and creative experiments.',
+      selector: '.page-header'
+    },
+    '/movie': {
+      image: '/images/og_share.png',
+      kicker: 'MOVIE · CHRIS LEE.PAPA',
+      title: 'MOVIE ARCHIVE',
+      subtitle: 'Music, stories, and visual worlds created with generative AI.',
+      selector: '.page-header'
+    },
+    '/gameinfo': {
+      image: '/images/goal.png',
+      kicker: 'PLAY · CHRIS LEE.PAPA',
+      title: 'GAME ARCHIVE',
+      subtitle: 'Playable stories, characters, and interactive worlds.',
+      selector: '.page-header'
+    }
+  };
+
+  const config = configs[page];
+  if (!config) return;
 
   function addStyle() {
     if (document.getElementById('project-page-banner-style')) return;
@@ -21,39 +61,26 @@
     document.head.appendChild(style);
   }
 
-  function makeHero(image, kicker, title, subtitle, oldElement) {
+  function makeHero(oldElement) {
     if (document.getElementById('project-page-image-hero')) return true;
     if (!oldElement) return false;
     const hero = document.createElement('section');
     hero.id = 'project-page-image-hero';
     hero.className = 'project-page-image-hero' + (page === '/sistersquad-hub' ? ' sq-project-image-hero' : '');
     hero.setAttribute('aria-labelledby', 'project-page-image-hero-title');
-    hero.innerHTML = `<img src="${image}" alt="${title}" fetchpriority="high"><div class="project-page-image-hero-content"><div class="project-page-image-hero-kicker">${kicker}</div><h1 id="project-page-image-hero-title">${title}</h1><p>${subtitle}</p></div>`;
+    hero.innerHTML = `<img src="${config.image}" alt="${config.title}" fetchpriority="high"><div class="project-page-image-hero-content"><div class="project-page-image-hero-kicker">${config.kicker}</div><h1 id="project-page-image-hero-title">${config.title}</h1><p>${config.subtitle}</p></div>`;
     oldElement.replaceWith(hero);
     return true;
   }
 
-  function mountSisterSquad() {
-    const oldHero = document.querySelector('.sq-hero');
-    if (!oldHero) return false;
-    return makeHero('/images/banner_sister.jpg', 'ORIGINAL IP · CHRIS LEE.PAPA', 'SISTER SQUAD', 'A story about family, sisterhood, courage, and hope.', oldHero);
-  }
-
-  function mountMiracleShot() {
-    const oldHero = document.querySelector('.page-header');
-    if (!oldHero) return false;
-    return makeHero('/images/miracleshot1.png', 'ORIGINAL STORY · CHRIS LEE.PAPA', 'MIRACLE SHOT', 'A story about finding your own light.', oldHero);
-  }
-
   function boot() {
-    if (page !== '/sistersquad-hub' && page !== '/miracleshot') return;
     addStyle();
-    const mounted = page === '/sistersquad-hub' ? mountSisterSquad() : mountMiracleShot();
+    const mounted = makeHero(document.querySelector(config.selector));
     if (mounted) return;
     let tries = 0;
     const timer = setInterval(() => {
       tries += 1;
-      const done = page === '/sistersquad-hub' ? mountSisterSquad() : mountMiracleShot();
+      const done = makeHero(document.querySelector(config.selector));
       if (done || tries >= 50) clearInterval(timer);
     }, 200);
   }

@@ -1,7 +1,17 @@
 (() => {
   'use strict';
 
+  function loadPageBanners() {
+    if (document.querySelector('script[data-clp-page-banners]')) return;
+    const script = document.createElement('script');
+    script.src = '/js/project-page-banners.js?v=20260915-2';
+    script.async = true;
+    script.dataset.clpPageBanners = 'true';
+    document.head.appendChild(script);
+  }
+
   function init() {
+    loadPageBanners();
     if (window.__clpDesktopNavFixInitialized) return;
     const nav = document.getElementById('main-nav');
     if (!nav) return;

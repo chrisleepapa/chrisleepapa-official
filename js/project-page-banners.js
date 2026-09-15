@@ -36,7 +36,7 @@
   function mountSisterSquad() {
     const oldHero = document.querySelector('.sq-hero');
     if (!oldHero) return false;
-    return makeHero('/images/sistersquad1.png', 'ORIGINAL IP · CHRIS LEE.PAPA', 'SISTER SQUAD', 'A story about family, sisterhood, courage, and hope.', oldHero);
+    return makeHero('/images/banner_sister.jpg', 'ORIGINAL IP · CHRIS LEE.PAPA', 'SISTER SQUAD', 'A story about family, sisterhood, courage, and hope.', oldHero);
   }
 
   function mountMiracleShot() {

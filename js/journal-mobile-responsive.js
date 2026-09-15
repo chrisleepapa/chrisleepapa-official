@@ -3,9 +3,17 @@
 (() => {
   if (window.__clpJournalMobileResponsiveLoaded) return;
   window.__clpJournalMobileResponsiveLoaded = true;
+
+  /* Keep Journal pages at the device's normal 1:1 viewport scale. */
+  const viewport = document.querySelector('meta[name="viewport"]');
+  if (viewport) {
+    viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
+  }
+
   const style = document.createElement('style');
   style.textContent = `
     @media (max-width:700px){
+      html,body{width:100%;max-width:100%;min-width:0;overflow-x:hidden}
       .page-wrapper{padding:calc(var(--nav-height) + 34px) 14px 72px;width:auto;max-width:none}
       .page-header{margin-bottom:28px}
       .page-header-tag{font-size:.58rem;line-height:1.5;letter-spacing:.18em;white-space:normal;overflow-wrap:anywhere}

@@ -10,8 +10,19 @@
     document.head.appendChild(script);
   }
 
+  function loadGameCreatorNote() {
+    if (location.pathname.replace(/\/$/, '') !== '/gameinfo') return;
+    if (document.querySelector('script[data-clp-game-creator-note]')) return;
+    const script = document.createElement('script');
+    script.src = '/js/gameinfo-creator-note.js?v=20260915-1';
+    script.async = true;
+    script.dataset.clpGameCreatorNote = 'true';
+    document.head.appendChild(script);
+  }
+
   function init() {
     loadPageBanners();
+    loadGameCreatorNote();
     if (window.__clpDesktopNavFixInitialized) return;
     const nav = document.getElementById('main-nav');
     if (!nav) return;

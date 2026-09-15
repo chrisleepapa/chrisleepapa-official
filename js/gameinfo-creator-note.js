@@ -39,7 +39,23 @@
       .clp-game-creator-grid strong{display:block;margin-bottom:7px;color:#fff}
       .clp-game-creator-grid span{display:block;font-size:.88rem}
       .clp-game-creator-close{margin:22px 0 0;color:#aaa49b}
-      @media(max-width:700px){.clp-game-creator-note{padding:24px 20px;margin-bottom:36px}.clp-game-creator-grid{grid-template-columns:1fr}}
+      @media(max-width:700px){
+        .clp-game-creator-note{padding:22px 16px;margin:0 12px 32px;width:auto;border-radius:18px;line-height:1.72}
+        .clp-game-creator-kicker{font-size:.62rem;letter-spacing:.11em;line-height:1.5;white-space:normal;overflow-wrap:anywhere}
+        .clp-game-creator-note h2{font-size:1.35rem;line-height:1.45;margin-bottom:10px;word-break:keep-all}
+        .clp-game-creator-lead{font-size:.9rem;line-height:1.75;word-break:keep-all}
+        .clp-game-creator-grid{grid-template-columns:1fr;gap:10px;margin-top:18px}
+        .clp-game-creator-grid>div{padding:14px 15px;border-radius:13px}
+        .clp-game-creator-grid strong{font-size:.92rem;line-height:1.5;margin-bottom:5px;word-break:keep-all}
+        .clp-game-creator-grid span{font-size:.82rem;line-height:1.7;word-break:keep-all}
+        .clp-game-creator-close{font-size:.84rem;line-height:1.75;margin-top:17px;word-break:keep-all}
+      }
+      @media(max-width:390px){
+        .clp-game-creator-note{padding:20px 14px;margin-left:8px;margin-right:8px}
+        .clp-game-creator-note h2{font-size:1.25rem}
+        .clp-game-creator-lead{font-size:.86rem}
+        .clp-game-creator-grid span{font-size:.79rem}
+      }
     `;
 
     document.head.appendChild(style);

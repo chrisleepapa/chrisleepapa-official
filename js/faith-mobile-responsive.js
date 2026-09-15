@@ -19,8 +19,6 @@
       .tool-action-btn{flex:1 1 calc(50% - 6px)!important;min-width:0!important;padding:7px 6px!important;font-size:.68rem!important;line-height:1.4;white-space:normal!important;word-break:keep-all}
       .testament-row{gap:7px!important;margin-bottom:18px!important}
       .testament-tab{max-width:none!important;padding:9px 5px!important;font-size:.76rem!important;line-height:1.4}
-
-      /* Actual Bible book selector classes */
       .book-list-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important;padding:5px!important;max-height:360px!important;box-sizing:border-box}
       .book-item{min-width:0!important;padding:11px 10px!important;border-radius:12px!important;font-size:.82rem!important;line-height:1.45!important;gap:6px;word-break:keep-all;overflow:hidden}
       .book-item span{min-width:0;overflow-wrap:anywhere}
@@ -31,8 +29,6 @@
       .chapter-btn{width:100%!important;min-width:0!important;font-size:.82rem!important;border-radius:9px!important}
       .top5-leaderboard{margin-top:20px;padding-top:15px}
       .top5-leaderboard h4{font-size:.72rem!important}
-
-      /* Actual Bible reader classes */
       .bible-reader{width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box;padding:28px 15px!important;border-radius:18px!important;margin-bottom:35px!important;overflow:hidden}
       .chapter-heading{margin-bottom:25px!important}
       .chapter-heading h2{font-size:1.45rem!important;line-height:1.4;word-break:keep-all}
@@ -41,11 +37,7 @@
       .verse-text{font-size:.9rem!important;line-height:1.9!important;word-break:normal;overflow-wrap:break-word}
       .verse-actions{gap:5px;flex-wrap:wrap}
       .verse-actions button{font-size:.68rem!important;padding:5px 7px!important}
-
-      /* Keep Korean explanatory text from leaving a one-character orphan on the next line. */
       .bible-reader p,.bible-reader li,.bible-reader .description,.bible-reader .info-text{word-break:normal;overflow-wrap:normal;white-space:normal}
-
-      /* Any generated reading/table content must stay inside the viewport. */
       .bible-reader *{max-width:100%;box-sizing:border-box}
       table{width:100%!important;max-width:100%!important;min-width:0!important;table-layout:fixed}
       th,td{white-space:normal;word-break:break-word;overflow-wrap:anywhere}
@@ -66,23 +58,35 @@
   `;
   document.head.appendChild(style);
 
-  // Replace the old heading with the requested short, single-line wording.
+  // Replace the old heading wherever it actually appears in the rendered DOM.
   function fixDesignSentence(){
     if (window.innerWidth > 700) return;
     const oldText = '3. 주요 기능을 이렇게 설계했습니다.';
     const newText = '3. 주요 기능은 이렇습니다.';
     const normalize = value => String(value || '').replace(/\s+/g, ' ').trim();
-    const elements = Array.from(document.body.querySelectorAll('*'));
-    let match = elements.find(el => normalize(el.textContent) === oldText);
-    if (!match) {
-      match = elements.find(el => normalize(el.textContent) === newText);
-    }
-    if (!match) return;
-    if (normalize(match.textContent) === oldText) match.textContent = newText;
-    match.style.setProperty('word-break', 'keep-all', 'important');
-    match.style.setProperty('overflow-wrap', 'normal', 'important');
-    match.style.setProperty('white-space', 'nowrap', 'important');
-    match.style.setProperty('text-wrap', 'nowrap', 'important');
+
+    // First handle a complete text node. This also works when the sentence is generated dynamically.
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    const nodes = [];
+    let node;
+    while ((node = walker.nextNode())) nodes.push(node);
+    nodes.forEach(textNode => {
+      const text = normalize(textNode.nodeValue);
+      if (text === oldText) {
+        textNode.nodeValue = newText;
+      } else if (text.includes(oldText)) {
+        textNode.nodeValue = textNode.nodeValue.replace(oldText, newText);
+      }
+    });
+
+    // Apply single-line rendering to the actual sentence element after replacement.
+    Array.from(document.body.querySelectorAll('*')).forEach(el => {
+      if (normalize(el.textContent) === newText) {
+        el.style.setProperty('word-break', 'keep-all', 'important');
+        el.style.setProperty('overflow-wrap', 'normal', 'important');
+        el.style.setProperty('white-space', 'nowrap', 'important');
+      }
+    });
   }
 
   fixDesignSentence();
@@ -90,5 +94,5 @@
     window.addEventListener('load', fixDesignSentence, { once:true });
   }
   const observer = new MutationObserver(fixDesignSentence);
-  observer.observe(document.body, { childList:true, subtree:true });
+  observer.observe(document.body, { childList:true, subtree:true, characterData:true });
 })();

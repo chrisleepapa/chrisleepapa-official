@@ -11,7 +11,7 @@
         return;
       }
       const script = document.createElement('script');
-      script.src = '/js/auth.js?v=20260915-1';
+      script.src = '/js/auth.js?v=20260915-2';
       script.async = false;
       script.dataset.clpSharedAuth = 'true';
       script.onload = resolve;
@@ -51,15 +51,17 @@
   }
 
   function findInsertionPoint() {
-    const hero = document.getElementById('project-page-image-hero');
-    if (hero) return hero;
+    const banner = document.getElementById('project-page-image-hero');
+    if (banner) return banner;
     const sqHero = document.querySelector('.sq-hero');
     if (sqHero) return sqHero;
     return document.querySelector('.page-header');
   }
 
   function createBar() {
-    if (document.getElementById('clp-site-account-bar')) return document.getElementById('clp-site-account-bar');
+    const existing = document.getElementById('clp-site-account-bar');
+    if (existing) return existing;
+
     const point = findInsertionPoint();
     if (!point || !point.parentNode) return null;
 
@@ -101,12 +103,19 @@
 
   function initUI() {
     addStyles();
-    const bar = createBar();
-    if (!bar) {
-      setTimeout(initUI, 250);
-      return;
-    }
-    render();
+
+    const ensureBar = () => {
+      const bar = createBar();
+      if (bar) render();
+    };
+
+    ensureBar();
+
+    const observer = new MutationObserver(() => {
+      if (!document.getElementById('clp-site-account-bar')) ensureBar();
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+
     window.addEventListener('chrisleepapa-auth-change', render);
   }
 

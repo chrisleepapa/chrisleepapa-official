@@ -15,6 +15,16 @@
         section.remove();
       }
     });
+
+    // The original page also contains a short "ABOUT THIS APP" block.
+    // The creator story below the hero now covers the same information in much greater depth.
+    document.querySelectorAll('section, div').forEach(block => {
+      if (block.id === 'bible-page-hero' || block.id === 'bible-creator-story') return;
+      const heading = block.querySelector && block.querySelector('h2, h3, h4');
+      if (!heading) return;
+      const headingText = (heading.textContent || '').replace(/\s+/g, ' ').trim().toUpperCase();
+      if (headingText === 'ABOUT THIS APP') block.remove();
+    });
   }
 
   function applyBibleLayout() {

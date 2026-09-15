@@ -1,6 +1,5 @@
 (() => {
   'use strict';
-
   function loadPageBanners() {
     if (document.querySelector('script[data-clp-page-banners]')) return;
     const script = document.createElement('script');
@@ -9,7 +8,6 @@
     script.dataset.clpPageBanners = 'true';
     document.head.appendChild(script);
   }
-
   function loadGameCreatorNote() {
     if (location.pathname.replace(/\/$/, '') !== '/gameinfo') return;
     if (document.querySelector('script[data-clp-game-creator-note]')) return;
@@ -19,7 +17,6 @@
     script.dataset.clpGameCreatorNote = 'true';
     document.head.appendChild(script);
   }
-
   function loadPlayResponsive() {
     const path = location.pathname.replace(/\/$/, '');
     if (!['/music', '/movie', '/gameinfo'].includes(path)) return;
@@ -30,18 +27,26 @@
     script.dataset.clpPlayResponsive = 'true';
     document.head.appendChild(script);
   }
-
+  function loadFaithResponsive() {
+    const path = location.pathname.replace(/\/$/, '');
+    if (!['/bible', '/worship', '/worship_eng'].includes(path)) return;
+    if (document.querySelector('script[data-clp-faith-responsive]')) return;
+    const script = document.createElement('script');
+    script.src = '/js/faith-mobile-responsive.js?v=20260915-2';
+    script.async = true;
+    script.dataset.clpFaithResponsive = 'true';
+    document.head.appendChild(script);
+  }
   function init() {
     loadPageBanners();
     loadGameCreatorNote();
     loadPlayResponsive();
+    loadFaithResponsive();
     if (window.__clpDesktopNavFixInitialized) return;
     const nav = document.getElementById('main-nav');
     if (!nav) return;
     window.__clpDesktopNavFixInitialized = true;
-
     const wrappers = Array.from(nav.querySelectorAll('.nav-dropdown-wrapper'));
-
     const closeAll = () => {
       wrappers.forEach(wrapper => {
         wrapper.classList.remove('active');
@@ -52,7 +57,6 @@
         }
       });
     };
-
     const closeOthers = current => {
       wrappers.forEach(wrapper => {
         if (wrapper === current) return;
@@ -64,7 +68,6 @@
         }
       });
     };
-
     wrappers.forEach(wrapper => {
       wrapper.addEventListener('mouseenter', () => closeOthers(wrapper), true);
       wrapper.addEventListener('click', event => {
@@ -72,11 +75,9 @@
         if (link) closeAll();
       }, true);
     });
-
     document.addEventListener('click', event => {
       if (!event.target.closest('#main-nav')) closeAll();
     }, true);
-
     const observer = new MutationObserver(() => {
       const active = wrappers.filter(wrapper => wrapper.classList.contains('active'));
       if (active.length > 1) {
@@ -92,7 +93,6 @@
     });
     wrappers.forEach(wrapper => observer.observe(wrapper, { attributes: true, attributeFilter: ['class'] }));
   }
-
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init, { once: true });
   } else {

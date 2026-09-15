@@ -20,6 +20,13 @@
     });
   }
 
+  function openLogin(mobile) {
+    window.CLPAuth?.showLoginModal({
+      prefix: mobile ? 'clp-mobile-login' : 'clp-header-login',
+      onSuccess: () => window.location.reload()
+    });
+  }
+
   function addStyles() {
     if (document.getElementById('clp-site-auth-ui-style')) return;
     const style = document.createElement('style');
@@ -34,13 +41,8 @@
       #clp-mobile-account .clp-account-id{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:28px;padding:0 8px;border:1px solid rgba(201,168,76,.42);border-radius:14px;color:#c9a84c;background:rgba(201,168,76,.06);font:600 .62rem/1 'Noto Sans KR',sans-serif;letter-spacing:.1em}
       #clp-mobile-account button{height:28px;border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:0 8px;background:transparent;color:#aaa;font:500 .58rem/1 'Noto Sans KR',sans-serif;white-space:nowrap}
       #clp-mobile-account .clp-login-btn{color:#c9a84c;border-color:rgba(201,168,76,.35)}
-      @media(max-width:760px){
-        #clp-site-account{display:none}
-        #clp-mobile-account{display:flex}
-      }
-      @media(min-width:761px){
-        #clp-mobile-account{display:none}
-      }
+      @media(max-width:760px){#clp-site-account{display:none}#clp-mobile-account{display:flex}}
+      @media(min-width:761px){#clp-mobile-account{display:none}}
     `;
     document.head.appendChild(style);
   }
@@ -55,10 +57,7 @@
     button.type = 'button';
     button.className = 'clp-login-btn';
     button.textContent = 'LOGIN';
-    button.addEventListener('click', () => window.CLPAuth?.showLoginModal({
-      prefix: mobile ? 'clp-mobile-login' : 'clp-header-login',
-      onSuccess: render
-    }));
+    button.onclick = () => openLogin(mobile);
     container.append(id, button);
     container._clpId = id;
     container._clpButton = button;
@@ -78,17 +77,14 @@
         button.classList.remove('clp-login-btn');
         button.onclick = () => {
           window.CLPAuth.logout();
-          render();
+          window.location.reload();
         };
       } else {
         id.textContent = '';
         id.style.display = 'none';
         button.textContent = 'LOGIN';
         button.classList.add('clp-login-btn');
-        button.onclick = () => window.CLPAuth?.showLoginModal({
-          prefix: container.id === 'clp-mobile-account' ? 'clp-mobile-login' : 'clp-header-login',
-          onSuccess: render
-        });
+        button.onclick = () => openLogin(container.id === 'clp-mobile-account');
       }
     });
   }
@@ -113,13 +109,7 @@
     window.addEventListener('chrisleepapa-auth-change', render);
   }
 
-  function init() {
-    loadAuth().then(initUI).catch(() => {});
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init, { once: true });
-  } else {
-    init();
-  }
+  function init() { loadAuth().then(initUI).catch(() => {}); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
+  else init();
 })();

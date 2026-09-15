@@ -4,6 +4,37 @@
   if (window.__clpJournalMobileResponsiveLoaded) return;
   window.__clpJournalMobileResponsiveLoaded = true;
 
+  /* Journal 5 should continue directly to Journal 6. */
+  if (location.pathname === '/journal-5') {
+    const fixJournal5Next = () => {
+      const nav = document.querySelector('.journal-nav');
+      if (!nav) return;
+      const links = nav.querySelectorAll('a');
+      const next = links[links.length - 1];
+      if (!next) return;
+      next.href = '/journal-6';
+      const dir = next.querySelector('.dir');
+      const ttl = next.querySelector('.ttl');
+      if (dir) {
+        dir.removeAttribute('data-i18n');
+        dir.setAttribute('data-ko', '다음 글 →');
+        dir.setAttribute('data-en', 'Next Journal →');
+        dir.textContent = '다음 글 →';
+      }
+      if (ttl) {
+        ttl.removeAttribute('data-i18n');
+        ttl.setAttribute('data-ko', '나의 찬양에서 드리는 기도');
+        ttl.setAttribute('data-en', 'A Prayer from My Worship Songs');
+        ttl.textContent = '나의 찬양에서 드리는 기도';
+      }
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', fixJournal5Next, {once:true});
+    } else {
+      fixJournal5Next();
+    }
+  }
+
   /* Keep normal browser zoom/pinch-zoom behavior. The page itself must fit the phone viewport. */
   const style = document.createElement('style');
   style.textContent = `

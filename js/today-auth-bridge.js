@@ -31,9 +31,6 @@
         return initials;
     }
     function patchTodayProfile() {
-        // today.html keeps a legacy local `profile` variable. The shared auth modal
-        // lives outside that scope, so make the public data-key/display helpers
-        // resolve the authenticated initials directly from CLPAuth.
         if (typeof window.profileKey === 'function' && !window.profileKey.__sharedAuthPatched) {
             const original = window.profileKey;
             const patched = function() {
@@ -73,8 +70,9 @@
         });
         const legacy = document.getElementById('todayAuth');
         if (legacy) {
-            legacy.style.display = 'none';
-            legacy.setAttribute('aria-hidden', 'true');
+            // TODAY must use only the shared auth modal. Remove the old local modal
+            // so it cannot appear with the old lowercase-capable input.
+            legacy.remove();
         }
         patchTodayProfile();
         if (!window.CLPAuth) return;

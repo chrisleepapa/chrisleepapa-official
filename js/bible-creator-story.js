@@ -29,7 +29,7 @@
           <p>처음부터 거대한 성경 서비스나 복잡한 소셜 플랫폼을 만들려고 한 것은 아닙니다. 오히려 책을 선택하고, 장을 열고, 본문을 읽고, 마음에 남는 구절을 표시하고, 다음에 다시 돌아오는 흐름이 자연스럽게 이어지는 것을 중요하게 생각했습니다.</p>
           <p>그래서 기능도 읽기의 흐름을 방해하지 않는 방향으로 정리했습니다. 형광펜, 북마크, 메모, 퀴즈, 일독 진행률 같은 기능은 서로 따로 존재하는 기능이 아니라 <strong style="color:#e8d08a">읽기 → 기억하기 → 기록하기 → 다시 읽기</strong>라는 하나의 흐름을 만들기 위한 장치입니다.</p>
 
-          <h3 style="color:#e8d08a;font-family:Cormorant Garamond,Noto Serif KR,serif;font-size:1.35rem;margin:34px 0 12px">3. 주요 기능을 이렇게 설계했습니다</h3>
+          <h3 style="color:#e8d08a;font-family:Cormorant Garamond,Noto Serif KR,serif;font-size:1.35rem;margin:34px 0 12px">3. 주요 기능은 이렇습니다</h3>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:20px 0 24px">
             <div style="padding:20px;border:1px solid rgba(201,168,76,.16);background:rgba(255,255,255,.025)"><strong style="color:#e8d08a">형광펜</strong><br><span>다시 보고 싶은 구절을 눈에 남기는 기능입니다. 단순한 색칠보다 ‘나에게 중요한 말씀’을 다시 찾는 것을 목적으로 했습니다.</span></div>
             <div style="padding:20px;border:1px solid rgba(201,168,76,.16);background:rgba(255,255,255,.025)"><strong style="color:#e8d08a">북마크</strong><br><span>특정 구절을 나중에 다시 찾아가기 위한 개인적인 책갈피입니다. 읽기의 흐름을 끊지 않고 기억할 지점을 남기도록 했습니다.</span></div>

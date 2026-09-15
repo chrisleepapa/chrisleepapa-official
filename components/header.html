@@ -7,6 +7,12 @@
   #main-nav{justify-content:flex-start}
   #main-nav .brand-logo{position:absolute;left:18px;top:0;height:68px;align-items:flex-start;justify-content:center}
 }
+/* Desktop navigation: dropdowns open only by clicking the trigger. */
+@media(min-width:761px){
+  #main-nav .nav-dropdown-wrapper > .nav-dropdown-menu{opacity:0!important;visibility:hidden!important;pointer-events:none!important;transform:translateY(8px)!important}
+  #main-nav .nav-dropdown-wrapper:hover > .nav-dropdown-menu{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
+  #main-nav .nav-dropdown-wrapper.active > .nav-dropdown-menu{opacity:1!important;visibility:visible!important;pointer-events:auto!important;transform:translateY(0)!important}
+}
 </style>
 <div id="scroll-progress"></div>
 <div id="mouse-orb"></div>

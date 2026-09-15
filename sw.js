@@ -45,12 +45,13 @@ self.addEventListener('fetch', (event) => {
         }
       }
 
-      // Worship only: keep the existing Vol.2 cover fix and add the beginning confession.
+      // Worship only: keep the existing Vol.2 cover fix and confession, and add the hero banner.
       if (url.pathname === '/worship' || url.pathname === '/worship.html') {
         if (type.includes('text/html')) {
           const html = await response.text();
           const coverScript = '<script src="/js/worship-vol2-cover-fix.js?v=20260914"></script>';
           const confessionScript = '<script src="/js/worship-confession.js?v=20260914"></script>';
+          const bannerScript = '<script src="/js/worship-banner.js?v=20260915"></script>';
           let patched = html;
           if (!patched.includes('/js/worship-vol2-cover-fix.js')) {
             const mainScript = '<script src="js/main.js"></script>';
@@ -58,6 +59,9 @@ self.addEventListener('fetch', (event) => {
           }
           if (!patched.includes('/js/worship-confession.js')) {
             patched = patched.replace('</body>', `${confessionScript}</body>`);
+          }
+          if (!patched.includes('/js/worship-banner.js')) {
+            patched = patched.replace('</body>', `${bannerScript}</body>`);
           }
           return new Response(patched, { status: response.status, statusText: response.statusText, headers: response.headers });
         }

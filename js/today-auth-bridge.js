@@ -19,11 +19,50 @@
         link.dataset.todayReadability = 'true';
         document.head.appendChild(link);
     }
+    function normalizeProfile(user) {
+        return String(user?.initials || window.CLPAuth?.getUser?.()?.initials || '').trim().toUpperCase();
+    }
     function syncProfile(user) {
-        const initials = String(user?.initials || window.CLPAuth?.getUser?.()?.initials || '').trim().toUpperCase();
+        const initials = normalizeProfile(user);
         window.profile = initials;
+        try { sessionStorage.setItem('clp-today-profile', initials); } catch (_) {}
         const el = document.getElementById('profileInitials');
         if (el) el.textContent = initials;
+        return initials;
+    }
+    function patchTodayProfile() {
+        // today.html keeps a legacy local `profile` variable. The shared auth modal
+        // lives outside that scope, so make the public data-key/display helpers
+        // resolve the authenticated initials directly from CLPAuth.
+        if (typeof window.profileKey === 'function' && !window.profileKey.__sharedAuthPatched) {
+            const original = window.profileKey;
+            const patched = function() {
+                const initials = normalizeProfile(window.CLPAuth?.getUser?.());
+                if (initials) {
+                    try { sessionStorage.setItem('clp-today-profile', initials); } catch (_) {}
+                    const el = document.getElementById('profileInitials');
+                    if (el) el.textContent = initials;
+                    return 'chrisleepapa-today-' + initials + '-' + new Date().toISOString().slice(0,10);
+                }
+                return original();
+            };
+            patched.__sharedAuthPatched = true;
+            window.profileKey = patched;
+        }
+        if (typeof window.startToday === 'function' && !window.startToday.__sharedAuthPatched) {
+            const originalStart = window.startToday;
+            const patchedStart = function() {
+                const initials = normalizeProfile(window.CLPAuth?.getUser?.());
+                if (initials) {
+                    try { sessionStorage.setItem('clp-today-profile', initials); } catch (_) {}
+                    const el = document.getElementById('profileInitials');
+                    if (el) el.textContent = initials;
+                }
+                return originalStart.apply(this, arguments);
+            };
+            patchedStart.__sharedAuthPatched = true;
+            window.startToday = patchedStart;
+        }
     }
     function init() {
         loadReadabilityLayer();
@@ -37,10 +76,12 @@
             legacy.style.display = 'none';
             legacy.setAttribute('aria-hidden', 'true');
         }
+        patchTodayProfile();
         if (!window.CLPAuth) return;
         if (window.CLPAuth.isLoggedIn()) {
             const user = window.CLPAuth.getUser();
             syncProfile(user);
+            patchTodayProfile();
             if (typeof window.startToday === 'function') {
                 try { window.startToday(); } catch (_) {}
             }
@@ -49,8 +90,9 @@
         window.CLPAuth.showLoginModal({
             prefix: 'today-shared',
             onSuccess: user => {
-                syncProfile(user);
-                if (typeof window.startToday === 'function') window.startToday();
+                const initials = syncProfile(user);
+                patchTodayProfile();
+                if (initials && typeof window.startToday === 'function') window.startToday();
             }
         });
     }

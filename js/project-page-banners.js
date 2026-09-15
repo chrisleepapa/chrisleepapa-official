@@ -6,7 +6,7 @@
     '/miracleshot': {image:'/images/miracleshot1.png',kicker:'ORIGINAL STORY · CHRIS LEE.PAPA',title:'MIRACLE SHOT',subtitle:'A story about finding your own light.',selector:'.page-header'},
     '/music': {image:'',kicker:'MUSIC · CHRIS LEE.PAPA',title:'MUSIC ARCHIVE',subtitle:'AI music, original songs, albums, and creative experiments.',selector:'.page-header'},
     '/movie': {image:'https://i.ytimg.com/vi/kAkGg2t1Ats/hqdefault.jpg',kicker:'MOVIE · CHRIS LEE.PAPA',title:'MOVIE ARCHIVE',subtitle:'Music, stories, and visual worlds created with generative AI.',selector:'.page-header'},
-    '/gameinfo': {image:'/images/goal.png',kicker:'PLAY · CHRIS LEE.PAPA',title:'GAME ARCHIVE',subtitle:'Playable stories, characters, and interactive worlds.',selector:'.page-header'}
+    '/gameinfo': {image:'/images/goal.png',kicker:'PLAY · CHRIS LEE.PAPA',title:'GAME ARCHIVE',subtitle:'Playable stories, characters, and interactive worlds.',selector:'.game-selection-wrapper',insert:true}
   };
   const config = configs[page];
   if (!config) return;
@@ -46,7 +46,8 @@
     hero.className='project-page-image-hero'+(page==='/sistersquad-hub'?' sq-project-image-hero':'');
     hero.setAttribute('aria-labelledby','project-page-image-hero-title');
     hero.innerHTML=`<img src="${image}" alt="${config.title}" fetchpriority="high"><div class="project-page-image-hero-content"><div class="project-page-image-hero-kicker">${config.kicker}</div><h1 id="project-page-image-hero-title">${config.title}</h1><p>${config.subtitle}</p></div>`;
-    oldElement.replaceWith(hero); return true;
+    if(config.insert) oldElement.parentNode.insertBefore(hero,oldElement); else oldElement.replaceWith(hero);
+    return true;
   }
 
   async function boot(){

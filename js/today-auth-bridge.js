@@ -70,9 +70,8 @@
         });
         const legacy = document.getElementById('todayAuth');
         if (legacy) {
-            // TODAY must use only the shared auth modal. Remove the old local modal
-            // so it cannot appear with the old lowercase-capable input.
-            legacy.remove();
+            legacy.style.display = 'none';
+            legacy.setAttribute('aria-hidden', 'true');
         }
         patchTodayProfile();
         if (!window.CLPAuth) return;

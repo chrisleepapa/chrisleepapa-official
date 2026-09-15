@@ -30,6 +30,18 @@
         if (el) el.textContent = initials;
         return initials;
     }
+    function enableUppercaseInitials() {
+        if (document.documentElement.dataset.todayUppercaseInitials === 'true') return;
+        document.documentElement.dataset.todayUppercaseInitials = 'true';
+        document.addEventListener('input', event => {
+            const input = event.target;
+            if (!input || input.id !== 'authInitials') return;
+            const start = input.selectionStart;
+            const end = input.selectionEnd;
+            input.value = String(input.value || '').toUpperCase();
+            try { input.setSelectionRange(start, end); } catch (_) {}
+        }, true);
+    }
     function patchTodayProfile() {
         if (typeof window.profileKey === 'function' && !window.profileKey.__sharedAuthPatched) {
             const original = window.profileKey;
@@ -63,6 +75,7 @@
     }
     function init() {
         loadReadabilityLayer();
+        enableUppercaseInitials();
         loadScript('/js/main.js?v=20260916', 'today-main-js', () => {
             if (typeof window.loadComponents === 'function') {
                 try { window.loadComponents(); } catch (_) {}

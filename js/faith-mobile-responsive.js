@@ -38,9 +38,12 @@
       .chapter-heading h2{font-size:1.45rem!important;line-height:1.4;word-break:keep-all}
       .verse-main{gap:9px!important}
       .verse-number{font-size:.72rem!important;min-width:24px}
-      .verse-text{font-size:.9rem!important;line-height:1.9!important;word-break:keep-all;overflow-wrap:anywhere}
+      .verse-text{font-size:.9rem!important;line-height:1.9!important;word-break:normal;overflow-wrap:break-word}
       .verse-actions{gap:5px;flex-wrap:wrap}
       .verse-actions button{font-size:.68rem!important;padding:5px 7px!important}
+
+      /* Keep Korean explanatory text from leaving a one-character orphan on the next line. */
+      .bible-reader p,.bible-reader li,.bible-reader .description,.bible-reader .info-text{word-break:normal;overflow-wrap:normal;white-space:normal}
 
       /* Any generated reading/table content must stay inside the viewport. */
       .bible-reader *{max-width:100%;box-sizing:border-box}
@@ -58,6 +61,7 @@
       .bible-reader{padding:24px 12px!important}
       .chapter-heading h2{font-size:1.3rem!important}
       .verse-text{font-size:.86rem!important;line-height:1.85!important}
+      .bible-reader p,.bible-reader li,.bible-reader .description,.bible-reader .info-text{word-break:normal;overflow-wrap:normal}
     }
   `;
   document.head.appendChild(style);

@@ -12,7 +12,32 @@ function resetLegacyClientDataOnce(){try{if(localStorage.getItem(DATA_RESET_KEY)
 function mirrorLegacySession(session){if(!session)return;try{localStorage.setItem(LEGACY_USER_KEY,session.initials);if(session.pinHash)localStorage.setItem(LEGACY_PIN_KEY,session.pinHash)}catch(_) {}}
 function loadAuth(){if(window.CLPAuth)return Promise.resolve();return new Promise((resolve,reject)=>{const existing=document.querySelector('script[data-clp-auth-loader]');if(existing){existing.addEventListener('load',resolve,{once:true});existing.addEventListener('error',reject,{once:true});return}const script=document.createElement('script');script.src=AUTH_SRC;script.async=false;script.dataset.clpAuthLoader='true';script.onload=resolve;script.onerror=reject;document.head.appendChild(script)})}
 function hideLegacyAuthModal(){const modal=document.getElementById('authModal');if(!modal)return;modal.classList.remove('active');modal.style.display='none'}
-function ensureBibleAccountBar(){if(!window.CLPAuth||!window.CLPAuth.isLoggedIn())return;let bar=document.getElementById('bible-account-bar'),cloud=document.getElementById('cloudStatusIcon');if(!bar&&cloud){bar=document.createElement('div');bar.id='bible-account-bar';bar.style.cssText='display:flex;align-items:center;justify-content:center;gap:10px;margin-top:10px;flex-wrap:wrap;';cloud.insertAdjacentElement('afterend',bar)}if(!bar)return;const session=window.CLPAuth.getUser?window.CLPAuth.getUser():getSession(),initials=String(session?.initials||'').toUpperCase();bar.innerHTML=`<span style="display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border:1px solid rgba(201,168,76,0.28);border-radius:20px;background:rgba(255,255,255,0.04);color:#e8d08a;font-family:'Cinzel',serif;font-size:.78rem;letter-spacing:1px;">${initials}</span><button type="button" id="bible-logout-btn" style="padding:7px 13px;border:1px solid rgba(201,168,76,0.28);border-radius:20px;background:rgba(255,255,255,0.04);color:#a0a0b5;font-family:'Pretendard',sans-serif;font-size:.78rem;cursor:pointer;">LOG OUT</button>`;const button=document.getElementById('bible-logout-btn');if(button&&!button.dataset.bound){button.dataset.bound='true';button.addEventListener('click',event=>{event.preventDefault();if(window.CLPAuth&&typeof window.CLPAuth.logout==='function')window.CLPAuth.logout();else location.reload()})}}
+function ensureBibleAccountBar(){
+    if(!window.CLPAuth)return;
+    let bar=document.getElementById('bible-account-bar');
+    const cloud=document.getElementById('cloudStatusIcon');
+    const pageHeader=document.querySelector('.page-header');
+    if(!bar&&(cloud||pageHeader)){
+        bar=document.createElement('div');
+        bar.id='bible-account-bar';
+        bar.style.cssText='display:flex;align-items:center;justify-content:center;gap:10px;margin:14px auto 0;flex-wrap:wrap;position:relative;z-index:2;';
+        if(cloud)cloud.insertAdjacentElement('afterend',bar);
+        else pageHeader.appendChild(bar);
+    }
+    if(!bar)return;
+    const loggedIn=window.CLPAuth.isLoggedIn&&window.CLPAuth.isLoggedIn();
+    const session=window.CLPAuth.getUser?window.CLPAuth.getUser():getSession();
+    const initials=String(session?.initials||'').toUpperCase();
+    if(loggedIn){
+        bar.innerHTML=`<span style="display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border:1px solid rgba(201,168,76,0.38);border-radius:20px;background:rgba(255,255,255,0.06);color:#e8d08a;font-family:'Cinzel',serif;font-size:.78rem;letter-spacing:1px;">👤 ${initials}</span><button type="button" id="bible-logout-btn" style="padding:7px 13px;border:1px solid rgba(201,168,76,0.38);border-radius:20px;background:rgba(255,255,255,0.04);color:#e8d08a;font-family:'Pretendard',sans-serif;font-size:.78rem;cursor:pointer;">LOG OUT</button>`;
+        const button=document.getElementById('bible-logout-btn');
+        if(button&&!button.dataset.bound){button.dataset.bound='true';button.addEventListener('click',event=>{event.preventDefault();if(window.CLPAuth&&typeof window.CLPAuth.logout==='function')window.CLPAuth.logout();else location.reload()})}
+    }else{
+        bar.innerHTML='<button type="button" id="bible-login-btn" style="display:inline-flex;align-items:center;gap:6px;padding:7px 15px;border:1px solid rgba(201,168,76,0.38);border-radius:20px;background:rgba(255,255,255,0.04);color:#e8d08a;font-family:\'Pretendard\',sans-serif;font-size:.78rem;cursor:pointer;">LOGIN / CREATE ACCOUNT</button>';
+        const button=document.getElementById('bible-login-btn');
+        if(button&&!button.dataset.bound){button.dataset.bound='true';button.addEventListener('click',event=>{event.preventDefault();showSharedLogin()})}
+    }
+}
 function showSharedLogin(){if(!window.CLPAuth||typeof window.CLPAuth.showLoginModal!=='function')return;hideLegacyAuthModal();document.documentElement.classList.add('clp-auth-required');window.CLPAuth.showLoginModal({prefix:'bible-shared',onSuccess:user=>{mirrorLegacySession(user);document.documentElement.classList.remove('clp-auth-required');hideLegacyAuthModal();ensureBibleAccountBar();if(typeof window.checkAuth==='function')window.checkAuth();else window.dispatchEvent(new CustomEvent('chrisleepapa-auth-ready',{detail:{user}}))}})}
 function normalizeBiblePayload(payload){if(Array.isArray(payload))return payload;if(!payload||typeof payload!=='object')return null;if(Array.isArray(payload.data))return payload.data;if(Array.isArray(payload.verses))return payload.verses;if(Array.isArray(payload.bible))return payload.bible;return null}
 function validateBibleData(data){if(!Array.isArray(data)||data.length<30000)return false;const sample=data.slice(0,100);return sample.some(v=>v&&v.book!=null&&v.chapter!=null&&v.verse!=null&&(v.content||v.text))}
@@ -78,6 +103,6 @@ function loadBiblePresentationScripts(){
         document.head.appendChild(script);
     });
 }
-async function init(){try{await loadAuth();resetLegacyClientDataOnce();addOriginalCreationContext();loadBiblePresentationScripts();const session=getSession();if(session){mirrorLegacySession(session);hideLegacyAuthModal();ensureBibleAccountBar()}else showSharedLogin();if(!installBibleDataRecovery())setTimeout(()=>{if(!installBibleDataRecovery())window.dispatchEvent(new CustomEvent('clp-bible-gate-ready'));installJamesSupabaseLoader()},0);else setTimeout(installJamesSupabaseLoader,0)}catch(error){console.error('[bible-auth-gate]',error)}}
-window.addEventListener('chrisleepapa-auth-change',event=>{const session=event.detail?.user||getSession();if(session){mirrorLegacySession(session);hideLegacyAuthModal();ensureBibleAccountBar()}else{hideLegacyAuthModal();location.reload()}});if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+async function init(){try{await loadAuth();resetLegacyClientDataOnce();addOriginalCreationContext();loadBiblePresentationScripts();ensureBibleAccountBar();const session=getSession();if(session){mirrorLegacySession(session);hideLegacyAuthModal();ensureBibleAccountBar()}else showSharedLogin();if(!installBibleDataRecovery())setTimeout(()=>{if(!installBibleDataRecovery())window.dispatchEvent(new CustomEvent('clp-bible-gate-ready'));installJamesSupabaseLoader()},0);else setTimeout(installJamesSupabaseLoader,0)}catch(error){console.error('[bible-auth-gate]',error)}}
+window.addEventListener('chrisleepapa-auth-change',event=>{const session=event.detail?.user||getSession();ensureBibleAccountBar();if(session){mirrorLegacySession(session);hideLegacyAuthModal();ensureBibleAccountBar()}else{hideLegacyAuthModal();ensureBibleAccountBar()}});if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();

@@ -19,7 +19,7 @@
       const heading = section.querySelector('h2, h3, h4');
       const headingText = heading ? (heading.textContent || '').replace(/\s+/g, ' ').trim().toUpperCase() : '';
       if (
-        headingText === 'ABOUT THIS APP' ||
+        headingText.includes('ABOUT THIS APP') ||
         (text.includes('BIBLE IN MY HAND') && text.includes('주요 기능') && text.includes('만든 이유'))
       ) {
         section.remove();

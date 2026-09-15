@@ -8,22 +8,22 @@
     const creationContext = document.getElementById('bible-creation-context');
     if (creationContext) creationContext.remove();
 
+    // The banner is the only place where the page title should appear.
+    const pageHeader = document.querySelector('.page-header');
+    if (pageHeader) pageHeader.remove();
+
+    // Remove the old standalone ABOUT THIS APP / feature / creation-intro blocks.
     document.querySelectorAll('section').forEach(section => {
       if (section.id === 'bible-page-hero' || section.id === 'bible-creator-story') return;
       const text = (section.textContent || '').replace(/\s+/g, ' ').trim();
-      if (text.includes('BIBLE IN MY HAND') && text.includes('주요 기능') && text.includes('만든 이유')) {
+      const heading = section.querySelector('h2, h3, h4');
+      const headingText = heading ? (heading.textContent || '').replace(/\s+/g, ' ').trim().toUpperCase() : '';
+      if (
+        headingText === 'ABOUT THIS APP' ||
+        (text.includes('BIBLE IN MY HAND') && text.includes('주요 기능') && text.includes('만든 이유'))
+      ) {
         section.remove();
       }
-    });
-
-    // The original page also contains a short "ABOUT THIS APP" block.
-    // The creator story below the hero now covers the same information in much greater depth.
-    document.querySelectorAll('section, div').forEach(block => {
-      if (block.id === 'bible-page-hero' || block.id === 'bible-creator-story') return;
-      const heading = block.querySelector && block.querySelector('h2, h3, h4');
-      if (!heading) return;
-      const headingText = (heading.textContent || '').replace(/\s+/g, ' ').trim().toUpperCase();
-      if (headingText === 'ABOUT THIS APP') block.remove();
     });
   }
 
@@ -59,18 +59,12 @@
       </div>
     `;
 
-    const pageHeader = document.querySelector('.page-header');
     const bibleContainer = document.querySelector('.bible-container');
-    if (pageHeader && pageHeader.parentNode) {
-      pageHeader.parentNode.insertBefore(hero, pageHeader.nextSibling);
-    } else if (bibleContainer && bibleContainer.parentNode) {
+    if (bibleContainer && bibleContainer.parentNode) {
       bibleContainer.parentNode.insertBefore(hero, bibleContainer);
+      bibleContainer.parentNode.insertBefore(story, bibleContainer);
     } else {
       document.body.insertBefore(hero, document.body.firstChild);
-    }
-
-    if (bibleContainer && bibleContainer.parentNode) {
-      bibleContainer.parentNode.insertBefore(story, bibleContainer);
     }
 
     story.style.marginTop = '0';
@@ -79,10 +73,8 @@
 
   function init() {
     applyBibleLayout();
-    if (!document.getElementById('bible-page-hero')) {
-      setTimeout(applyBibleLayout, 500);
-      setTimeout(applyBibleLayout, 1500);
-    }
+    setTimeout(applyBibleLayout, 500);
+    setTimeout(applyBibleLayout, 1500);
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });

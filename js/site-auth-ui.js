@@ -20,9 +20,9 @@
     });
   }
 
-  function openLogin(mobile) {
+  function openLogin() {
     window.CLPAuth?.showLoginModal({
-      prefix: mobile ? 'clp-mobile-login' : 'clp-header-login',
+      prefix: 'clp-header-login',
       onSuccess: () => window.location.reload()
     });
   }
@@ -32,79 +32,80 @@
     const style = document.createElement('style');
     style.id = 'clp-site-auth-ui-style';
     style.textContent = `
-      #clp-site-account{display:flex;align-items:center;gap:7px;margin-left:8px}
-      #clp-site-account .clp-account-id{display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:30px;padding:0 9px;border:1px solid rgba(201,168,76,.42);border-radius:15px;color:#c9a84c;background:rgba(201,168,76,.06);font:600 .68rem/1 'Noto Sans KR',sans-serif;letter-spacing:.12em}
-      #clp-site-account button{height:30px;border:1px solid rgba(255,255,255,.14);border-radius:15px;padding:0 9px;background:transparent;color:#aaa;cursor:pointer;font:500 .62rem/1 'Noto Sans KR',sans-serif;letter-spacing:.05em;white-space:nowrap}
-      #clp-site-account button:hover{color:#eee;border-color:rgba(201,168,76,.35)}
-      #clp-site-account .clp-login-btn{color:#c9a84c;border-color:rgba(201,168,76,.35)}
-      #clp-mobile-account{display:none;align-items:center;gap:6px;margin-left:4px}
-      #clp-mobile-account .clp-account-id{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:28px;padding:0 8px;border:1px solid rgba(201,168,76,.42);border-radius:14px;color:#c9a84c;background:rgba(201,168,76,.06);font:600 .62rem/1 'Noto Sans KR',sans-serif;letter-spacing:.1em}
-      #clp-mobile-account button{height:28px;border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:0 8px;background:transparent;color:#aaa;font:500 .58rem/1 'Noto Sans KR',sans-serif;white-space:nowrap}
-      #clp-mobile-account .clp-login-btn{color:#c9a84c;border-color:rgba(201,168,76,.35)}
-      @media(max-width:760px){#clp-site-account{display:none}#clp-mobile-account{display:flex}}
-      @media(min-width:761px){#clp-mobile-account{display:none}}
+      #clp-site-account-bar{width:100%;box-sizing:border-box;display:flex;align-items:center;justify-content:center;padding:12px 16px;margin:0 auto;background:rgba(3,3,5,.72);border-top:1px solid rgba(201,168,76,.12);border-bottom:1px solid rgba(201,168,76,.12);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+      #clp-site-account-inner{width:min(900px,100%);display:flex;align-items:center;justify-content:flex-end;gap:8px;box-sizing:border-box}
+      #clp-site-account-label{margin-right:auto;color:#777;font:500 .62rem/1.5 'Noto Sans KR',sans-serif;letter-spacing:.12em}
+      #clp-site-account-id{display:none;align-items:center;justify-content:center;min-width:36px;height:30px;padding:0 10px;border:1px solid rgba(201,168,76,.42);border-radius:15px;color:#c9a84c;background:rgba(201,168,76,.06);font:600 .68rem/1 'Noto Sans KR',sans-serif;letter-spacing:.12em}
+      #clp-site-account-bar button{height:30px;border:1px solid rgba(255,255,255,.14);border-radius:15px;padding:0 12px;background:transparent;color:#aaa;cursor:pointer;font:500 .62rem/1 'Noto Sans KR',sans-serif;letter-spacing:.05em;white-space:nowrap}
+      #clp-site-account-bar button:hover{color:#eee;border-color:rgba(201,168,76,.35)}
+      #clp-site-account-bar .clp-login-btn{color:#c9a84c;border-color:rgba(201,168,76,.35)}
+      @media(max-width:700px){
+        #clp-site-account-bar{padding:10px 12px}
+        #clp-site-account-inner{justify-content:flex-end;gap:6px}
+        #clp-site-account-label{font-size:.56rem;letter-spacing:.07em}
+        #clp-site-account-bar button{height:28px;padding:0 9px;font-size:.58rem}
+        #clp-site-account-id{height:28px;min-width:32px;padding:0 8px;font-size:.6rem}
+      }
     `;
     document.head.appendChild(style);
   }
 
-  function makeAccount(containerId, mobile) {
-    const container = document.getElementById(containerId);
-    if (!container || container.querySelector('.clp-account-id, .clp-login-btn')) return;
-    const id = document.createElement('span');
-    id.className = 'clp-account-id';
-    id.setAttribute('aria-label', 'Account ID');
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.className = 'clp-login-btn';
-    button.textContent = 'LOGIN';
-    button.onclick = () => openLogin(mobile);
-    container.append(id, button);
-    container._clpId = id;
-    container._clpButton = button;
+  function findInsertionPoint() {
+    const hero = document.getElementById('project-page-image-hero');
+    if (hero) return hero;
+    const sqHero = document.querySelector('.sq-hero');
+    if (sqHero) return sqHero;
+    return document.querySelector('.page-header');
+  }
+
+  function createBar() {
+    if (document.getElementById('clp-site-account-bar')) return document.getElementById('clp-site-account-bar');
+    const point = findInsertionPoint();
+    if (!point || !point.parentNode) return null;
+
+    const bar = document.createElement('div');
+    bar.id = 'clp-site-account-bar';
+    bar.innerHTML = `
+      <div id="clp-site-account-inner">
+        <span id="clp-site-account-label">PERSONAL ACCOUNT</span>
+        <span id="clp-site-account-id" aria-label="Account ID"></span>
+        <button type="button" id="clp-site-account-btn" class="clp-login-btn">LOGIN</button>
+      </div>`;
+    point.parentNode.insertBefore(bar, point.nextSibling);
+    bar.querySelector('#clp-site-account-btn').onclick = openLogin;
+    return bar;
   }
 
   function render() {
+    const id = document.getElementById('clp-site-account-id');
+    const button = document.getElementById('clp-site-account-btn');
+    if (!id || !button) return;
     const user = window.CLPAuth?.getUser?.();
-    const containers = [document.getElementById('clp-site-account'), document.getElementById('clp-mobile-account')].filter(Boolean);
-    containers.forEach(container => {
-      const id = container._clpId;
-      const button = container._clpButton;
-      if (!id || !button) return;
-      if (user?.initials) {
-        id.textContent = user.initials;
-        id.style.display = 'inline-flex';
-        button.textContent = 'LOG OUT';
-        button.classList.remove('clp-login-btn');
-        button.onclick = () => {
-          window.CLPAuth.logout();
-          window.location.reload();
-        };
-      } else {
-        id.textContent = '';
-        id.style.display = 'none';
-        button.textContent = 'LOGIN';
-        button.classList.add('clp-login-btn');
-        button.onclick = () => openLogin(container.id === 'clp-mobile-account');
-      }
-    });
+    if (user?.initials) {
+      id.textContent = user.initials;
+      id.style.display = 'inline-flex';
+      button.textContent = 'LOG OUT';
+      button.classList.remove('clp-login-btn');
+      button.onclick = () => {
+        window.CLPAuth.logout();
+        window.location.reload();
+      };
+    } else {
+      id.textContent = '';
+      id.style.display = 'none';
+      button.textContent = 'LOGIN';
+      button.classList.add('clp-login-btn');
+      button.onclick = openLogin;
+    }
   }
 
   function initUI() {
     addStyles();
-    const navRight = document.querySelector('#main-nav .nav-right');
-    if (navRight && !document.getElementById('clp-site-account')) {
-      const account = document.createElement('div');
-      account.id = 'clp-site-account';
-      navRight.insertBefore(account, navRight.firstChild);
+    const bar = createBar();
+    if (!bar) {
+      setTimeout(initUI, 250);
+      return;
     }
-    const mobileTools = document.getElementById('mobileHeaderTools');
-    if (mobileTools && !document.getElementById('clp-mobile-account')) {
-      const account = document.createElement('div');
-      account.id = 'clp-mobile-account';
-      mobileTools.insertBefore(account, mobileTools.firstChild);
-    }
-    makeAccount('clp-site-account', false);
-    makeAccount('clp-mobile-account', true);
     render();
     window.addEventListener('chrisleepapa-auth-change', render);
   }

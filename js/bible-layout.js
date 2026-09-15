@@ -25,11 +25,11 @@
 
     const hero = document.createElement('section');
     hero.id = 'bible-page-hero';
-    hero.setAttribute('aria-label', 'Bible in my hand image');
+    hero.setAttribute('aria-label', 'Bible in my hand banner');
     hero.style.cssText = [
       'position:relative',
       'width:100%',
-      'height:clamp(240px,30vw,410px)',
+      'height:clamp(260px,32vw,430px)',
       'margin:0 0 52px',
       'overflow:hidden',
       'background:#030305',
@@ -40,10 +40,12 @@
 
     hero.innerHTML = `
       <img src="${HERO_IMAGE}" alt="Bible opened to Psalm 118" loading="eager" decoding="async" onerror="this.onerror=null;this.src='${FALLBACK_IMAGE}'" style="position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;object-position:center 58%;filter:saturate(.72) contrast(1.05);transform:scale(1.01)">
-      <div aria-hidden="true" style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(3,3,5,.72),rgba(3,3,5,.16) 48%,rgba(3,3,5,.72)),linear-gradient(180deg,rgba(3,3,5,.08),rgba(3,3,5,.78))"></div>
-      <div style="position:absolute;left:0;right:0;bottom:0;padding:22px 24px;text-align:center;z-index:1">
-        <div style="font-family:Cinzel,serif;color:#e8d08a;font-size:.72rem;letter-spacing:3px;text-shadow:0 2px 12px #000">FAITH ARCHIVE</div>
-        <div style="color:#ddd5c5;font-family:'Noto Serif KR',serif;font-size:.9rem;line-height:1.7;text-shadow:0 2px 12px #000">말씀을 읽고, 마음에 남기고, 다시 돌아오기 위해</div>
+      <div aria-hidden="true" style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(3,3,5,.74),rgba(3,3,5,.20) 50%,rgba(3,3,5,.74)),linear-gradient(180deg,rgba(3,3,5,.05),rgba(3,3,5,.80))"></div>
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;z-index:1">
+        <div>
+          <div style="font-family:Cinzel,serif;color:#e8d08a;font-size:clamp(1.8rem,5vw,4.2rem);font-weight:600;letter-spacing:clamp(3px,1vw,8px);line-height:1.1;text-shadow:0 3px 22px rgba(0,0,0,.85)">BIBLE IN MY HAND</div>
+          <div style="margin-top:16px;color:#f1eadc;font-family:'Noto Serif KR',serif;font-size:clamp(.85rem,1.6vw,1.05rem);line-height:1.8;text-shadow:0 2px 14px #000">말씀을 읽고, 마음에 남기고, 다시 돌아오기 위해 만든 나만의 성경 읽기 공간</div>
+        </div>
       </div>
     `;
 

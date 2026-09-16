@@ -1,6 +1,93 @@
 (() => {
   'use strict';
 
+  function installBibleCreatorStoryLanguage(section) {
+    const originalHTML = section.innerHTML;
+
+    const english = {
+      label: 'THE MAKING OF BIBLE IN MY HAND',
+      title: 'Why I Made Bible in my hand',
+      headings: [
+        '1. I did not want the Bible to end with simply reading it',
+        '2. I wanted a small Bible reading tool',
+        '3. These are the main features',
+        '4. The Bible text is connected using publicly accessible data',
+        '5. What mattered most while building it was the flow, not the number of features',
+        '6. What I learned while making it',
+        '7. What Bible in my hand means within my creative work'
+      ],
+      paragraphs: [
+        'Sometimes a verse stays in my heart long after I finish reading it. I turn the pages again to find it, mark the same passage, and write down what I was thinking at that moment. I believe these small records can become a personal record of faith over time.',
+        'When I made <strong style="color:#e8d08a">Bible in my hand</strong>, I did not want to stop at simply displaying the Bible text on a web page. I wanted to create a personal reading space where I could return not only to what I read today, but also to what stayed with me.',
+        'I was not trying to build a huge Bible service or a complicated social platform from the beginning. I cared more about making the flow of choosing a book, opening a chapter, reading the text, marking a meaningful passage, and coming back to it later feel natural.',
+        'So I organized the features in a way that would not interrupt the flow of reading. Highlights, bookmarks, notes, quizzes, and reading progress are not separate functions; they are tools for one continuous flow: <strong style="color:#e8d08a">read → remember → record → read again</strong>.',
+        'The purpose of a highlight is to leave an important passage visible so I can find the words that matter to me again, rather than simply coloring text.',
+        'A bookmark is a personal marker for returning to a specific passage later. I wanted to leave a place to remember without interrupting the flow of reading.',
+        'Notes allow me to record the thoughts and prayers I had while reading. I wanted the personal record to remain together with the passage that inspired it.',
+        'The quiz is a light way to look back at what I have read. It is less about testing knowledge and more about checking whether I still remember what I just read.',
+        'The reading progress turns all 1,189 chapters into a continuing journey rather than one overwhelming goal, so I can see where I am and continue with the next reading.',
+        'I did not translate or newly write the Bible text on this page. The basic Bible data is connected through structured JSON data from the public GitHub project <strong style="color:#e8d08a">stranger828/bibleAPI</strong>. Its README describes the Korean Revised Version data as JSON containing approximately 31,000 verses.',
+        'James 1–5 is also connected separately to a Supabase <code style="color:#e8d08a">bible_content</code> table and is fetched when a chapter is selected. In other words, the role of this site is not to create a Bible translation, but to connect publicly provided text data with reading, recording, and progress-management features.',
+        'Data source: <a href="https://github.com/stranger828/bibleAPI" target="_blank" rel="noopener noreferrer" style="color:#e8d08a">stranger828/bibleAPI — Bible Web Search</a>',
+        'The project README notes that the copyright of the Korean Revised Version data may belong to the Korean Bible Society and that commercial use should be checked. Therefore, this site identifies the data source and rights notice rather than claiming the Bible text itself as original creative work.',
+        'Displaying Bible text on the web is not difficult by itself. But for actual use, the data needs to load reliably, books and chapters need to be easy to select, and the reader needs to be able to continue where they left off. Because some text comes from external sources, loading failures and network conditions also had to be considered.',
+        'I therefore used caching so the text can be used after it has been loaded once, and arranged the flow so books and chapters render after the data is ready. As I added the separate database connection for selected chapters, the page developed from a static page into a small web app connecting <strong style="color:#e8d08a">data → screen → personal records</strong>.',
+        'At first I thought adding features one by one would make a good Bible app. But as I continued working, I learned that what matters is not the number of features, but what the user naturally does next.',
+        'So I still see this page not as a finished product, but as something I continue to refine. I keep looking at which features are actually needed, whether they interrupt the reading flow, and whether the records are useful enough to return to.',
+        'For me, this project is more than a single web feature. While making music, writing, and producing videos, it made me think about where I ultimately want to keep returning.',
+        'The heart I confessed through songs in <strong style="color:#e8d08a">WORSHIP</strong> and the thoughts I recorded in <strong style="color:#e8d08a">JOURNAL</strong> continue here in the form of reading and recording Scripture. They may look like different pages, but when you follow what I make and why I make it, they point in the same direction.',
+        'I did not want to build a service that simply shows more Bible content. I wanted to make a small space that helps one person sit down before Scripture again. That is the heart I put into the name <strong style="color:#e8d08a">Bible in my hand</strong>.'
+      ],
+      cards: ['Highlight', 'Bookmark', 'Notes', 'Quiz', 'Reading Progress'],
+      noteTitle: 'DATA SOURCE &amp; RIGHTS NOTE'
+    };
+
+    function applyLanguage(lang) {
+      if (!section || !document.body.contains(section)) return;
+      if (String(lang || '').toLowerCase() !== 'en') {
+        section.innerHTML = originalHTML;
+        return;
+      }
+
+      const root = section.firstElementChild;
+      if (!root) return;
+      const label = root.children[0];
+      const title = root.querySelector('#bible-creator-story-title');
+      const article = root.querySelector('article');
+      if (!article) return;
+
+      if (label) label.innerHTML = english.label;
+      if (title) title.textContent = english.title;
+
+      const headings = article.querySelectorAll('h3');
+      headings.forEach((el, i) => { if (english.headings[i]) el.textContent = english.headings[i]; });
+
+      const paragraphs = article.querySelectorAll('p');
+      paragraphs.forEach((el, i) => { if (english.paragraphs[i]) el.innerHTML = english.paragraphs[i]; });
+
+      const cards = article.querySelectorAll('div[style*="grid"] > div');
+      cards.forEach((card, i) => {
+        const strong = card.querySelector('strong');
+        if (strong && english.cards[i]) strong.textContent = english.cards[i];
+      });
+
+      const noteTitle = article.querySelector('div[style*="border-left"] > div');
+      if (noteTitle) noteTitle.innerHTML = english.noteTitle;
+    }
+
+    const previousOnLangChange = window.onLangChange;
+    window.onLangChange = function (lang) {
+      if (typeof previousOnLangChange === 'function') {
+        try { previousOnLangChange(lang); } catch (e) { console.error('[Bible Creator Story] previous language handler error:', e); }
+      }
+      applyLanguage(lang);
+    };
+
+    let initialLang = 'ko';
+    try { initialLang = localStorage.getItem('pref-lang') || 'ko'; } catch (_) {}
+    applyLanguage(initialLang);
+  }
+
   function injectBibleCreatorStory() {
     if (document.getElementById('bible-creator-story')) return;
 
@@ -182,6 +269,8 @@
 
     if (footer) footer.parentNode.insertBefore(section, footer);
     else document.body.appendChild(section);
+
+    installBibleCreatorStoryLanguage(section);
   }
 
   if (document.readyState === 'loading') {

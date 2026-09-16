@@ -19,7 +19,7 @@
   }
   function loadPlayResponsive() {
     const path = location.pathname.replace(/\/$/, '');
-    if (!['/music', '/movie', '/gameinfo'].includes(path)) return;
+    if (!['/music', '/movie', '/movie.html', '/gameinfo'].includes(path)) return;
     if (document.querySelector('script[data-clp-play-responsive]')) return;
     const script = document.createElement('script');
     script.src = '/js/play-mobile-responsive.js?v=20260915-1';
@@ -39,7 +39,7 @@
   }
   function syncMovieShortsLanguage() {
     const path = location.pathname.replace(/\/$/, '');
-    if (path !== '/movie') return;
+    if (!['/movie', '/movie.html'].includes(path)) return;
     const apply = () => {
       const lang = document.documentElement.lang === 'en' ? 'en' : 'ko';
       document.querySelectorAll('.shorts-title.i18n-ko').forEach(el => {

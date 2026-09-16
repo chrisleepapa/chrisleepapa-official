@@ -43,6 +43,33 @@
       else{furious.style.display='none';extra.style.display='block';works.forEach(function(w){w.classList.toggle('is-active',Number(w.dataset.videoIndex)===index);});if(title) title.textContent=index===1?'귀멸의 칼날 촬영현장의 제작기록':'사랑한다고 뮤직비디오의 제작기록';}
     }
     switchNotes(0); window.addEventListener('movieVideoChanged',function(e){switchNotes(Number(e.detail&&e.detail.index)||0);});
+
+    var shortsData=[
+      {title:'체인소맨 Rev It Up',desc:'체인소맨의 캐릭터들이 하나의 락밴드로 모여 강렬한 음악과 화려한 무대를 펼치는 상상 속 라이브 공연을 영상으로 표현했습니다.'},
+      {title:'주술회전 영역전개',desc:'주술회전의 캐릭터들이 격투와 퍼포먼스가 결합된 무대에서 강렬한 에너지와 화려한 액션을 선보이는 쇼케이스를 표현했습니다.'},
+      {title:'귀멸의칼날 벽력일섬',desc:'귀멸의칼날 캐릭터들의 빠르고 강렬한 움직임과 무술 퍼포먼스를 중심으로, 한순간의 긴장감과 에너지를 담아낸 영상입니다.'},
+      {title:'귀멸의칼날 난리났어',desc:'귀멸의칼날의 매력적인 여성 캐릭터들이 음악에 맞춰 화려한 퍼포먼스를 펼치는 모습을 유쾌하고 역동적인 댄스 영상으로 표현했습니다.'},
+      {title:'로봇전쟁 Final Round',desc:'자동차에서 거대한 로봇으로 변신하는 캐릭터들이 도심 한가운데에서 맞붙는 강렬한 결투를 역동적인 영상으로 표현했습니다.'},
+      {title:'귀멸의칼날 촬영준비',desc:'귀멸의칼날의 캐릭터들이 실제 영화 촬영을 준비하는 현장을 상상해, 본편에서는 볼 수 없는 실사 촬영 전의 모습을 스케치처럼 담아낸 영상입니다.'},
+      {title:'귀멸의칼날 촬영 비하인드',desc:'귀멸의칼날 캐릭터들이 실제 작품의 촬영을 마친 뒤 현장에서 이야기를 나누는 모습을 상상해 만든 유쾌한 비하인드 영상입니다.'},
+      {title:'귀멸의칼날 Flash bang',desc:'귀멸의칼날의 매력적인 여성 캐릭터들이 강렬한 음악과 함께 화려한 퍼포먼스를 펼치는 모습을 감각적인 댄스 영상으로 표현했습니다.'}
+    ];
+    var shorts=document.querySelectorAll('.shorts-section .shorts-link');
+    shorts.forEach(function(card,i){
+      var data=shortsData[i];
+      if(!data) return;
+      card.setAttribute('aria-label',data.title+' — Chris LEE.PAPA YouTube Shorts');
+      var img=card.querySelector('.shorts-thumb');
+      if(img) img.alt=data.title+' — Chris LEE.PAPA YouTube Shorts';
+      var label=document.createElement('div');
+      label.className='shorts-title-overlay';
+      label.textContent=data.title;
+      label.title=data.desc;
+      card.appendChild(label);
+    });
+    var shortsTitleStyle=document.createElement('style');
+    shortsTitleStyle.textContent='.shorts-title-overlay{position:absolute;left:0;right:0;bottom:0;padding:34px 12px 12px;background:linear-gradient(to top,rgba(0,0,0,.92),rgba(0,0,0,0));color:#fff;font:600 .82rem/1.35 Pretendard,sans-serif;text-align:left;word-break:keep-all;text-shadow:0 1px 3px rgba(0,0,0,.8);pointer-events:none}.shorts-link:hover .shorts-title-overlay{color:#e8d08a}@media(max-width:700px){.shorts-title-overlay{font-size:.76rem;padding:30px 10px 10px}}';
+    document.head.appendChild(shortsTitleStyle);
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
 })();

@@ -37,11 +37,34 @@
     script.dataset.clpFaithResponsive = 'true';
     document.head.appendChild(script);
   }
+  function syncMovieShortsLanguage() {
+    const path = location.pathname.replace(/\/$/, '');
+    if (path !== '/movie') return;
+    const apply = () => {
+      const lang = document.documentElement.lang === 'en' ? 'en' : 'ko';
+      document.querySelectorAll('.shorts-title.i18n-ko').forEach(el => {
+        el.style.display = lang === 'ko' ? '' : 'none';
+      });
+      document.querySelectorAll('.shorts-title.i18n-en').forEach(el => {
+        el.style.display = lang === 'en' ? '' : 'none';
+      });
+    };
+    apply();
+    new MutationObserver(apply).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+    if (typeof window.onLangChange === 'function') {
+      const previous = window.onLangChange;
+      window.onLangChange = function(lang) {
+        previous(lang);
+        apply();
+      };
+    }
+  }
   function init() {
     loadPageBanners();
     loadGameCreatorNote();
     loadPlayResponsive();
     loadFaithResponsive();
+    syncMovieShortsLanguage();
     if (window.__clpDesktopNavFixInitialized) return;
     const nav = document.getElementById('main-nav');
     if (!nav) return;

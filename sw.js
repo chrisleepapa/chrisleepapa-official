@@ -68,6 +68,14 @@ self.addEventListener('fetch', (event) => {
           let patched = html;
           if (!patched.includes('/js/bible-creator-story.js')) patched = patched.replace('</body>', `${storyScript}</body>`);
           if (!patched.includes('/js/bible-layout.js')) patched = patched.replace('</body>', `${layoutScript}</body>`);
+
+          // Bible auth gate is the single owner of initialization.
+          // Remove the legacy onMainReady -> checkAuth() call to prevent duplicate Supabase restores.
+          const duplicateAuthInit = `            checkAuth();\n        };\n    </script>`;
+          if (patched.includes(duplicateAuthInit)) {
+            patched = patched.replace(duplicateAuthInit, `            // Initialization is owned by bible-auth-gate.js.\n        };\n    </script>`);
+          }
+
           return new Response(patched, { status: response.status, statusText: response.statusText, headers: response.headers });
         }
       }

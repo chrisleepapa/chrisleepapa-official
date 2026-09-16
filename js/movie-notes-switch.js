@@ -4,7 +4,7 @@
   if(!/^\/movie(?:\.html)?\/?$/i.test(path)) return;
 
   var original=document.createElement('script');
-  original.src='/js/movie-notes-switch-original.js?v=20260916-2';
+  original.src='/js/movie-notes-switch-original.js?v=20260916-3';
   original.onload=fix;
   original.onerror=fix;
   document.head.appendChild(original);
@@ -13,7 +13,6 @@
 
   function fix(){
     var l=lang();
-
     document.querySelectorAll('.shorts-title.i18n-ko').forEach(function(e){e.style.display=l==='ko'?'block':'none';});
     document.querySelectorAll('.shorts-title.i18n-en').forEach(function(e){e.style.display=l==='en'?'block':'none';});
 
@@ -22,26 +21,17 @@
 
     var cards=document.querySelectorAll('.shorts-section .shorts-link');
     var titles=[
-      ['체인소맨 Rev It Up','Chainsaw Man Rev It Up'],
-      ['주술회전 영역전개','Jujutsu Kaisen Domain Expansion'],
-      ['귀멸의칼날 벽력일섬','Demon Slayer Thunderclap and Flash'],
-      ['귀멸의칼날 난리났어','Demon Slayer What a Riot'],
-      ['로봇전쟁 Final Round','Robot War Final Round'],
-      ['귀멸의칼날 촬영준비','Demon Slayer Preparing for the Shoot'],
-      ['귀멸의칼날 촬영 비하인드','Demon Slayer Behind the Scenes'],
-      ['귀멸의칼날 Flash bang','Demon Slayer Flash Bang']
+      ['체인소맨 Rev It Up','Chainsaw Man Rev It Up'],['주술회전 영역전개','Jujutsu Kaisen Domain Expansion'],
+      ['귀멸의칼날 벽력일섬','Demon Slayer Thunderclap and Flash'],['귀멸의칼날 난리났어','Demon Slayer What a Riot'],
+      ['로봇전쟁 Final Round','Robot War Final Round'],['귀멸의칼날 촬영준비','Demon Slayer Preparing for the Shoot'],
+      ['귀멸의칼날 촬영 비하인드','Demon Slayer Behind the Scenes'],['귀멸의칼날 Flash bang','Demon Slayer Flash Bang']
     ];
     cards.forEach(function(card,i){
       var t=titles[i]; if(!t)return;
       var label=card.querySelector('.shorts-title-overlay');
       if(!label){ label=document.createElement('div'); label.className='shorts-title-overlay'; card.appendChild(label); }
       label.textContent=t[l==='en'?1:0];
-      label.style.display='block';
-      label.style.position='absolute'; label.style.left='0'; label.style.right='0'; label.style.bottom='0';
-      label.style.padding='34px 12px 12px';
-      label.style.background='linear-gradient(to top,rgba(0,0,0,.92),rgba(0,0,0,0))';
-      label.style.color='#fff'; label.style.font='600 .82rem/1.35 Pretendard,sans-serif';
-      label.style.pointerEvents='none';
+      label.style.cssText='position:absolute;left:0;right:0;bottom:0;padding:34px 12px 12px;background:linear-gradient(to top,rgba(0,0,0,.92),rgba(0,0,0,0));color:#fff;font:600 .82rem/1.35 Pretendard,sans-serif;pointer-events:none;z-index:3';
       card.style.position='relative';
     });
 
@@ -72,8 +62,11 @@
       archive.querySelectorAll('.movie-editorial-points article').forEach(function(a,i){a.querySelector('h3').textContent=data.cards[i][0];a.querySelector('p').textContent=data.cards[i][1];});
     }
 
-    var old=window.onLangChange;
-    window.onLangChange=function(value){ if(typeof old==='function')old(value); setTimeout(fix,0); };
-    new MutationObserver(function(){fix();}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+    if(!window.__movieLanguageFixInstalled){
+      window.__movieLanguageFixInstalled=true;
+      var old=window.onLangChange;
+      window.onLangChange=function(value){if(typeof old==='function')old(value);setTimeout(fix,0);};
+      new MutationObserver(function(){fix();}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+    }
   }
 })();

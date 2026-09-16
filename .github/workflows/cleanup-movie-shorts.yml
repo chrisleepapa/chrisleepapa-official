@@ -1,0 +1,80 @@
+name: Cleanup Movie Shorts Titles
+
+on:
+  push:
+    branches: [develop]
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    if: "!contains(github.event.head_commit.message, 'Apply direct Movie Shorts titles')"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: develop
+          fetch-depth: 0
+
+      - name: Patch Movie Shorts markup
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          movie = Path('movie.html')
+          text = movie.read_text(encoding='utf-8')
+
+          titles = {
+              'gQ4Ip6cyr1U': ('체인소맨 Rev It Up', 'Chainsaw Man Rev It Up'),
+              'z-2LOBuWos8': ('주술회전 영역전개', 'Jujutsu Kaisen Domain Expansion'),
+              'pGibrT9Pp3I': ('귀멸의칼날 벽력일섬', 'Demon Slayer Thunderclap and Flash'),
+              'VXWdSOXGwKQ': ('귀멸의칼날 난리났어', 'Demon Slayer What a Riot'),
+              'XjSUJRduAzI': ('로봇전쟁 Final Round', 'Robot War Final Round'),
+              'MYlAYewAdu4': ('귀멸의칼날 촬영준비', 'Demon Slayer Preparing for the Shoot'),
+              '0d-rUizVukQ': ('귀멸의칼날 촬영 비하인드', 'Demon Slayer Behind the Scenes'),
+              'tgR1Kq3fGWE': ('귀멸의칼날 Flash bang', 'Demon Slayer Flash Bang'),
+          }
+
+          for vid, (ko, en) in titles.items():
+              pattern = re.compile(
+                  rf'(<a href="https://www\.youtube\.com/shorts/{re.escape(vid)}"[^>]*class="shorts-link"\s+)aria-label="[^"]*"([^>]*>\s*<img[^>]*?)alt="[^"]*"([^>]*>\s*)(<div class="shorts-play-overlay">)',
+                  re.S
+              )
+              def repl(m):
+                  return (
+                      m.group(1) + f'aria-label="{ko} — Chris LEE.PAPA YouTube Short"' + m.group(2) +
+                      f'alt="{ko} — Chris LEE.PAPA YouTube Short"' + m.group(3) +
+                      f'<div class="shorts-title i18n-ko">{ko}</div><div class="shorts-title i18n-en">{en}</div>' +
+                      m.group(4)
+                  )
+              text, count = pattern.subn(repl, text, count=1)
+              if count != 1:
+                  raise SystemExit(f'Expected exactly one Shorts card for {vid}, found {count}')
+
+          if 'AI 생성 영상 쇼츠 ' in text:
+              raise SystemExit('Generic Shorts labels still remain in movie.html')
+
+          movie.write_text(text, encoding='utf-8')
+
+          sw = Path('sw.js')
+          sw_text = sw.read_text(encoding='utf-8')
+          sw_pattern = re.compile(r'\n      if \(url\.pathname === \'/movie\' \|\| url\.pathname === \'/movie\.html\'\) \{.*?\n      \}\n', re.S)
+          sw_text, sw_count = sw_pattern.subn('\n', sw_text, count=1)
+          if sw_count != 1:
+              raise SystemExit(f'Expected one Movie service-worker block, found {sw_count}')
+          sw.write_text(sw_text, encoding='utf-8')
+          PY
+
+      - name: Remove temporary title script
+        run: |
+          git rm js/movie-short-titles.js
+
+      - name: Commit cleanup
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add movie.html sw.js
+          git commit -m "Apply direct Movie Shorts titles"
+          git push origin HEAD:develop

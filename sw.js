@@ -65,9 +65,11 @@ self.addEventListener('fetch', (event) => {
           const html = await response.text();
           const storyScript = '<script src="/js/bible-creator-story.js?v=20260915"></script>';
           const layoutScript = '<script src="/js/bible-layout.js?v=20260915"></script>';
+          const persistenceScript = '<script src="/js/bible-direct-persistence.js?v=20260917"></script>';
           let patched = html;
           if (!patched.includes('/js/bible-creator-story.js')) patched = patched.replace('</body>', `${storyScript}</body>`);
           if (!patched.includes('/js/bible-layout.js')) patched = patched.replace('</body>', `${layoutScript}</body>`);
+          if (!patched.includes('/js/bible-direct-persistence.js')) patched = patched.replace('</body>', `${persistenceScript}</body>`);
 
           // Bible auth gate is the single owner of initialization.
           // Remove the legacy onMainReady -> checkAuth() call to prevent duplicate Supabase restores.

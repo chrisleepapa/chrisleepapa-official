@@ -58,6 +58,21 @@
   `;
   document.head.appendChild(style);
 
+  function getLang(){
+    try { return localStorage.getItem('pref-lang') === 'en' ? 'en' : 'ko'; }
+    catch (_) { return 'ko'; }
+  }
+
+  function syncBibleCreatorFeatureHeading(){
+    const section = document.getElementById('bible-creator-story');
+    if (!section) return;
+    const heading = section.querySelector('article h3:nth-of-type(3)');
+    if (!heading) return;
+    heading.textContent = getLang() === 'en'
+      ? '3. These are the main features'
+      : '3. 주요 기능은 이렇습니다';
+  }
+
   // Replace the old heading wherever it actually appears in the rendered DOM.
   function fixDesignSentence(){
     if (window.innerWidth > 700) return;
@@ -65,7 +80,6 @@
     const newText = '3. 주요 기능은 이렇습니다.';
     const normalize = value => String(value || '').replace(/\s+/g, ' ').trim();
 
-    // First handle a complete text node. This also works when the sentence is generated dynamically.
     const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
     const nodes = [];
     let node;
@@ -79,7 +93,6 @@
       }
     });
 
-    // Apply single-line rendering to the actual sentence element after replacement.
     Array.from(document.body.querySelectorAll('*')).forEach(el => {
       if (normalize(el.textContent) === newText) {
         el.style.setProperty('word-break', 'keep-all', 'important');
@@ -87,7 +100,18 @@
         el.style.setProperty('white-space', 'nowrap', 'important');
       }
     });
+
+    syncBibleCreatorFeatureHeading();
   }
+
+  const previousOnLangChange = window.onLangChange;
+  window.onLangChange = function(lang){
+    if (typeof previousOnLangChange === 'function') {
+      try { previousOnLangChange(lang); } catch (_) {}
+    }
+    try { localStorage.setItem('pref-lang', lang); } catch (_) {}
+    syncBibleCreatorFeatureHeading();
+  };
 
   fixDesignSentence();
   if (document.readyState !== 'complete') {

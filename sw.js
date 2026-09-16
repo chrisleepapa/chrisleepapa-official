@@ -86,7 +86,7 @@ self.addEventListener('fetch', (event) => {
       if (url.pathname === '/movie' || url.pathname === '/movie.html') {
         if (type.includes('text/html')) {
           const html = await response.text();
-          const script = '<script src="/js/movie-short-titles.js?v=20260916"></script>';
+          const script = '<script src="/js/movie-short-titles.js?v=20260916-2"></script>';
           if (!html.includes('/js/movie-short-titles.js')) {
             const patched = html.replace('</body>', `${script}</body>`);
             return new Response(patched, { status: response.status, statusText: response.statusText, headers: response.headers });

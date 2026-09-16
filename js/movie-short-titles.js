@@ -1,4 +1,4 @@
-/* Movie Archive Shorts: bilingual titles without changing the existing card layout */
+/* Movie Archive Shorts: real bilingual titles for every Shorts card */
 'use strict';
 (() => {
   const TITLES = {
@@ -22,51 +22,64 @@
 
   const apply = (forcedLang) => {
     const lang = forcedLang === 'en' || forcedLang === 'ko' ? forcedLang : getLang();
+
     document.querySelectorAll('.shorts-link[href*="/shorts/"]').forEach(card => {
       const match = card.href.match(/\/shorts\/([^?&#/]+)/);
       const item = match && TITLES[match[1]];
       if (!item) return;
 
-      const title = item[lang];
+      const title = item[lang] || item.ko;
+      const label = `${title} — Chris LEE.PAPA YouTube Shorts`;
+
       card.dataset.shortTitle = title;
-      card.setAttribute('aria-label', `${title} — Chris LEE.PAPA YouTube Shorts`);
+      card.setAttribute('aria-label', label);
 
       const img = card.querySelector('.shorts-thumb');
-      if (img) img.alt = `${title} — Chris LEE.PAPA YouTube Shorts`;
+      if (img) img.alt = label;
+
+      // Replace any generic visible label that may already exist in the HTML.
+      card.querySelectorAll('*').forEach(node => {
+        if (node.children.length === 0 && /AI\s*생성\s*영상\s*쇼츠\s*[1-8]/.test(node.textContent || '')) {
+          node.textContent = title;
+        }
+      });
     });
   };
 
   const init = () => {
-    const style = document.createElement('style');
-    style.id = 'movie-short-titles-style';
-    style.textContent = `
-      .shorts-link[data-short-title]::after {
-        content: attr(data-short-title);
-        position: absolute;
-        left: 10px;
-        right: 10px;
-        bottom: 10px;
-        z-index: 5;
-        padding: 28px 8px 8px;
-        color: #fff;
-        font: 600 .88rem/1.35 Pretendard, sans-serif;
-        text-align: center;
-        word-break: keep-all;
-        pointer-events: none;
-        background: linear-gradient(to top, rgba(0,0,0,.88), rgba(0,0,0,0));
-      }
-      @media (max-width: 600px) {
+    let style = document.getElementById('movie-short-titles-style');
+    if (!style) {
+      style = document.createElement('style');
+      style.id = 'movie-short-titles-style';
+      style.textContent = `
         .shorts-link[data-short-title]::after {
-          left: 7px;
-          right: 7px;
-          bottom: 7px;
-          padding: 24px 5px 6px;
-          font-size: .76rem;
-          line-height: 1.3;
+          content: attr(data-short-title);
+          position: absolute;
+          left: 10px;
+          right: 10px;
+          bottom: 10px;
+          z-index: 5;
+          padding: 28px 8px 8px;
+          color: #fff;
+          font: 600 .88rem/1.35 Pretendard, sans-serif;
+          text-align: center;
+          word-break: keep-all;
+          pointer-events: none;
+          background: linear-gradient(to top, rgba(0,0,0,.88), rgba(0,0,0,0));
         }
-      }
-    `;
-    document.head.appendChild(style);
+        @media (max-width: 600px) {
+          .shorts-link[data-short-title]::after {
+            left: 7px;
+            right: 7px;
+            bottom: 7px;
+            padding: 24px 5px 6px;
+            font-size: .76rem;
+            line-height: 1.3;
+          }
+        }
+      `;
+      document.head.appendChild(style);
+    }
 
     apply();
 

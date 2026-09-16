@@ -40,17 +40,39 @@
   function syncMovieShortsLanguage() {
     const path = location.pathname.replace(/\/$/, '');
     if (!['/movie', '/movie.html'].includes(path)) return;
+
+    // CSS is the primary switch so the result does not depend on script timing.
+    if (!document.getElementById('clp-movie-shorts-lang-style')) {
+      const style = document.createElement('style');
+      style.id = 'clp-movie-shorts-lang-style';
+      style.textContent = `
+        html[lang="ko"] .shorts-title.i18n-en { display: none !important; }
+        html[lang="ko"] .shorts-title.i18n-ko { display: block !important; }
+        html[lang="en"] .shorts-title.i18n-ko { display: none !important; }
+        html[lang="en"] .shorts-title.i18n-en { display: block !important; }
+      `;
+      document.head.appendChild(style);
+    }
+
     const apply = () => {
       const lang = document.documentElement.lang === 'en' ? 'en' : 'ko';
       document.querySelectorAll('.shorts-title.i18n-ko').forEach(el => {
-        el.style.display = lang === 'ko' ? '' : 'none';
+        el.style.display = lang === 'ko' ? 'block' : 'none';
       });
       document.querySelectorAll('.shorts-title.i18n-en').forEach(el => {
-        el.style.display = lang === 'en' ? '' : 'none';
+        el.style.display = lang === 'en' ? 'block' : 'none';
       });
     };
     apply();
-    new MutationObserver(apply).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+
+    new MutationObserver(apply).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['lang']
+    });
+
+    // Re-apply if page content is inserted/re-rendered after initialization.
+    new MutationObserver(apply).observe(document.body, { childList: true, subtree: true });
+
     if (typeof window.onLangChange === 'function') {
       const previous = window.onLangChange;
       window.onLangChange = function(lang) {

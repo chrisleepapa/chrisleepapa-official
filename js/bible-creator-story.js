@@ -39,6 +39,13 @@
         'I did not want to build a service that simply shows more Bible content. I wanted to make a small space that helps one person sit down before Scripture again. That is the heart I put into the name <strong style="color:#e8d08a">Bible in my hand</strong>.'
       ],
       cards: ['Highlight', 'Bookmark', 'Notes', 'Quiz', 'Reading Progress'],
+      cardDescriptions: [
+        'A way to keep an important passage visible so I can find the words that matter to me again, rather than simply coloring text.',
+        'A personal marker for returning to a specific passage later, leaving a place to remember without interrupting the flow of reading.',
+        'A place to record the thoughts and prayers I had while reading, keeping the personal record together with the passage that inspired it.',
+        'A light way to look back at what I have read. It is less about testing knowledge and more about checking whether I still remember what I just read.',
+        'A way to turn all 1,189 chapters into a continuing journey, so I can see where I am and continue with the next reading.'
+      ],
       noteTitle: 'DATA SOURCE &amp; RIGHTS NOTE'
     };
 
@@ -68,7 +75,9 @@
       const cards = article.querySelectorAll('div[style*="grid"] > div');
       cards.forEach((card, i) => {
         const strong = card.querySelector('strong');
+        const span = card.querySelector('span');
         if (strong && english.cards[i]) strong.textContent = english.cards[i];
+        if (span && english.cardDescriptions[i]) span.textContent = english.cardDescriptions[i];
       });
 
       const noteTitle = article.querySelector('div[style*="border-left"] > div');

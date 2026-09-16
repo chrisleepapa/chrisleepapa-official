@@ -14,12 +14,42 @@
 </head>
 <body>
 <header id="site-nav"><a class="home-static-brand" href="/" aria-label="Chris LEE.PAPA Home"><span>CHRIS LEE.PAPA</span><small>CREATIVE ARCHIVE</small></a></header>
-<main><section id="chris-pick" aria-label="Chris's Pick"></section><section id="chris-note" aria-label="Chris's Note"></section></main><footer id="site-footer"></footer>
+<main>
+<section id="chris-pick" aria-label="Chris's Pick">
+  <noscript>
+    <h1>Chris LEE.PAPA — The Creative Archive</h1>
+    <p>음악, 워십, 성경, 문학, 영상, SISTER SQUAD와 다양한 창작 프로젝트를 기록하는 공식 창작 아카이브입니다.</p>
+    <p>일상의 경험과 두 딸과 함께 만든 이야기에서 출발한 창작 활동을 음악, 영상, 출판, 캐릭터와 게임으로 확장하고 있습니다.</p>
+  </noscript>
+</section>
+<section id="chris-note" aria-label="Chris's Note">
+  <div class="home-static-content">
+    <h2>Chris's Note</h2>
+    <p>나는 음악, 이야기, 영상, 워십을 각각 따로 만드는 것이 아니라 실제 삶에서 시작된 경험을 하나의 창작 기록으로 이어가고 있습니다. 이 아카이브에서는 완성된 작품뿐 아니라 그 작품이 왜 시작되었고 어떻게 만들어졌는지도 함께 기록합니다.</p>
+    <h3>THE CREATIVE ARCHIVE</h3>
+    <p>Chris LEE.PAPA의 창작은 평범한 아빠의 일상, 두 딸과 함께 만든 SISTER SQUAD, 음악과 워십, AI를 활용한 영상과 출판에서 출발합니다. 각 프로젝트의 결과물을 모아 보여주는 데 그치지 않고, 창작의 배경과 시행착오, 선택의 이유를 남기는 것이 이 사이트의 중심입니다.</p>
+    <nav aria-label="Creative Archive">
+      <a href="/sistersquad">SISTER SQUAD</a>
+      <a href="/music">Music Archive</a>
+      <a href="/worship">Worship Archive</a>
+    </nav>
+    <h3>Journal</h3>
+    <ul>
+      <li><a href="/journal-1">오랫동안 품어온 나만의 이야기</a></li>
+      <li><a href="/journal-2">Skywork로 그림소설 만들기</a></li>
+      <li><a href="/journal-3">POD로 직접 책을 출판하는 법</a></li>
+      <li><a href="/journal-4">캐릭터 디자인과 삽화, 딸들과 함께한 시간</a></li>
+      <li><a href="/journal-5">퇴근 후, 나는 다시 창작자가 된다</a></li>
+      <li><a href="/journal-6">나의 찬양에서 드리는 기도</a></li>
+    </ul>
+  </div>
+</section>
+</main><footer id="site-footer"></footer>
 <script src="js/main.js" defer></script><script src="js/home-chris-pick-v2.js" defer></script><script src="js/home-chris-note.js" defer></script><script src="js/home-mobile-responsive.js?v=20260915-1" defer></script>
 <script>
 document.addEventListener('DOMContentLoaded',()=>{
   const musicIds={
-    'When the City Stood Still':'5qWOsYCJgw1bmXqvko7Thv','To The Space':'1JyYgZ8VTbh5mASNezCTcJ','Ensemble':'2X3dnf8vnhCSQ0c7H9oZht','To Rise':'2OSKuof7gooLElmFYvoygK','사랑한다고':'2s7tJtoaxDT8KUkJ3OL8DD','2026 난리났어':'2AzUPgjWYDodUqFTNjPU1l','벽력일섬':'25T549XyXnmiZhqGn7p4x4','영역전개':'6rZBdEFTJ5mLwINtn9C8KZ','We own the Cup':'0sR4hKvhzN4U2GaQKx6Qek','Run It Back':'1VCjArWmxZJakdawRkEeCi'
+    'When the City Stood Still':'5qWOsYCJgw1bmXqvko7Thv','To The Space':'1JyYgZ8VTbh5mASNezCTcJ','Ensemble':'2X3dnf8vnhCSQ0c7H9oZht','To Rise':'2OSKuof7gooLElmFYvoygk','사랑한다고':'2s7tJtoaxDT8KUkJ3OL8DD','2026 난리났어':'2AzUPgjWYDodUqFTNjPU1l','벽력일섬':'25T549XyXnmiZhqGn7p4x4','영역전개':'6rZBdEFTJ5mLwINtn9C8KZ','We own the Cup':'0sR4hKvhzN4U2GaQKx6Qek','Run It Back':'1VCjArWmxZJakdawRkEeCi'
   };
   const apply=()=>{const root=document.getElementById('chris-pick');if(!root)return;const title=root.querySelector('.clp-pick-title');const button=root.querySelector('.clp-pick-main');if(!title||!button)return;const id=musicIds[title.textContent.trim()];if(!id)return;button.href=`music.html?album=${encodeURIComponent(id)}`;};
   const observer=new MutationObserver(apply);const root=document.getElementById('chris-pick');if(root)observer.observe(root,{childList:true,subtree:true});apply();

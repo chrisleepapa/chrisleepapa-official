@@ -1,4 +1,4 @@
-/** Restore chapter read checks from Supabase after Bible initialization. */
+/** Initialize the Bible app once and let the normal initializer restore persisted chapter checks. */
 'use strict';
 (() => {
   if (window.__clpBibleReadRecoveryInstalled) return;
@@ -6,25 +6,36 @@
 
   const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-  async function restore() {
-    for (let attempt = 0; attempt < 20; attempt++) {
-      if (typeof window.loadSupabaseData === 'function' &&
-          typeof window.renderChapterGrid === 'function' &&
-          typeof window.renderContent === 'function' &&
-          window.localUserId) {
-        try {
-          await window.loadSupabaseData();
-          window.renderChapterGrid();
-          window.renderContent();
-          console.info('[Bible] chapter read state restored');
-          return;
-        } catch (error) {
-          console.error('[Bible] chapter read state restore failed', error);
-        }
-      }
-      await wait(500);
+  function getSession() {
+    try {
+      const raw = localStorage.getItem('chrisleepapa-auth-session-v3');
+      const session = raw ? JSON.parse(raw) : null;
+      return session && session.initials ? session : null;
+    } catch (_) {
+      return null;
     }
   }
 
-  window.addEventListener('load', () => setTimeout(restore, 1200), { once: true });
+  async function restore() {
+    for (let attempt = 0; attempt < 30; attempt++) {
+      const session = getSession();
+      if (session && typeof window.initAppAfterAuth === 'function') {
+        if (window.__clpBibleRecoveryInitStarted) return;
+        window.__clpBibleRecoveryInitStarted = true;
+        try {
+          window.localUserId = session.initials;
+          window.localUserPin = session.pinHash || '';
+          await window.initAppAfterAuth();
+          console.info('[Bible] Bible initialization completed; persisted chapter state is restored by the normal loader');
+        } catch (error) {
+          window.__clpBibleRecoveryInitStarted = false;
+          console.error('[Bible] Bible initialization failed', error);
+        }
+        return;
+      }
+      await wait(300);
+    }
+  }
+
+  window.addEventListener('load', () => setTimeout(restore, 300), { once: true });
 })();

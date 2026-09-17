@@ -73,12 +73,10 @@ self.addEventListener('fetch', (event) => {
           if (!patched.includes('/js/bible-direct-persistence.js')) patched = patched.replace('</body>', `${persistenceScript}</body>`);
           if (!patched.includes('/js/bible-read-restore.js')) patched = patched.replace('</body>', `${restoreScript}</body>`);
 
-          // Bible auth gate is the single owner of initialization.
-          // Remove the legacy onMainReady -> checkAuth() call to prevent duplicate Supabase restores.
-          const duplicateAuthInit = `            checkAuth();\n        };\n    </script>`;
-          if (patched.includes(duplicateAuthInit)) {
-            patched = patched.replace(duplicateAuthInit, `            // Initialization is owned by bible-auth-gate.js.\n        };\n    </script>`);
-          }
+          // The shared auth gate is the single owner of Bible initialization.
+          // Remove only the legacy checkAuth() call inside window.onMainReady.
+          const onMainReadyPattern = /(window\.onMainReady\s*=\s*function\s*\(\)\s*\{[\s\S]*?)\n\s*checkAuth\(\);\s*\n(\s*\};)/;
+          patched = patched.replace(onMainReadyPattern, '$1\n            // Initialization is owned by bible-auth-gate.js.\n$2');
 
           return new Response(patched, { status: response.status, statusText: response.statusText, headers: response.headers });
         }

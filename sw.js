@@ -71,10 +71,19 @@ self.addEventListener('fetch', (event) => {
           if (!patched.includes('/js/bible-layout.js')) patched = patched.replace('</body>', `${layoutScript}</body>`);
           if (!patched.includes('/js/bible-direct-persistence.js')) patched = patched.replace('</body>', `${persistenceScript}</body>`);
 
-          // The shared auth gate is the single owner of Bible initialization.
-          // Remove only the legacy checkAuth() call inside window.onMainReady.
-          const onMainReadyPattern = /(window\.onMainReady\s*=\s*function\s*\(\)\s*\{[\s\S]*?)\n\s*checkAuth\(\);\s*\n(\s*\};)/;
-          patched = patched.replace(onMainReadyPattern, '$1\n            // Initialization is owned by bible-auth-gate.js.\n$2');
+          // Bible auth initialization is owned by bible-auth-gate.js.
+          // Remove the legacy checkAuth() call from the inline onMainReady hook.
+          const marker = 'window.onMainReady = function()';
+          const start = patched.indexOf(marker);
+          if (start !== -1) {
+            const end = patched.indexOf('};', start);
+            if (end !== -1) {
+              const blockEnd = end + 2;
+              const block = patched.slice(start, blockEnd);
+              const cleanedBlock = block.replace(/\s*checkAuth\(\);\s*/g, '\n');
+              patched = patched.slice(0, start) + cleanedBlock + patched.slice(blockEnd);
+            }
+          }
 
           return new Response(patched, { status: response.status, statusText: response.statusText, headers: response.headers });
         }

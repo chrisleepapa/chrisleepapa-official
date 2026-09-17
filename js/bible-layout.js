@@ -8,11 +8,9 @@
     const creationContext = document.getElementById('bible-creation-context');
     if (creationContext) creationContext.remove();
 
-    // The banner is the only place where the page title should appear.
     const pageHeader = document.querySelector('.page-header');
     if (pageHeader) pageHeader.remove();
 
-    // Remove the old standalone ABOUT THIS APP / feature / creation-intro blocks.
     document.querySelectorAll('section').forEach(section => {
       if (section.id === 'bible-page-hero' || section.id === 'bible-creator-story') return;
       const text = (section.textContent || '').replace(/\s+/g, ' ').trim();
@@ -81,8 +79,6 @@
     const bibleContainer = document.querySelector('.bible-container');
     if (!accountBar || !bibleContainer) return;
 
-    // The old page-header is intentionally removed by this layout script.
-    // Keep the account controls in a stable position directly above the Bible tools.
     if (accountBar.parentElement !== bibleContainer) {
       bibleContainer.insertBefore(accountBar, bibleContainer.firstChild);
     }
@@ -99,8 +95,48 @@
     ].join(';');
   }
 
+  function installTop5ProgressSync() {
+    if (window.__clpTop5ProgressSyncInstalled || typeof window.updateOverallProgress !== 'function') return;
+    const original = window.updateOverallProgress;
+    const SUPA_URL = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
+    const SUPA_KEY = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
+    const TOTAL_CHAPTERS = 1189;
+
+    window.updateOverallProgress = async function () {
+      try {
+        const pending = window.__clpBibleChapterSavePending;
+        if (pending) await pending;
+      } catch (_) {}
+
+      const session = window.CLPAuth?.getUser?.();
+      const userId = String(session?.initials || window.localUserId || localStorage.getItem('bible_user_id') || '').trim();
+      if (!userId) return original();
+
+      try {
+        const headers = { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` };
+        const chapterRes = await fetch(`${SUPA_URL}/rest/v1/bible?select=verse_key,is_read&user_id=eq.${encodeURIComponent(userId)}&verse_key=like.*-CH`, { cache: 'no-store', headers });
+        if (!chapterRes.ok) return original();
+        const rows = await chapterRes.json();
+        const totalRead = rows.filter(row => typeof row.verse_key === 'string' && row.verse_key.endsWith('-CH') && row.is_read === true).length;
+        const payload = { user_id: userId, verse_key: 'PROGRESS', is_read: true, memo_text: String(totalRead) };
+        const progressRes = await fetch(`${SUPA_URL}/rest/v1/bible?on_conflict=user_id,verse_key`, {
+          method: 'POST',
+          headers: { ...headers, 'Content-Type': 'application/json', Prefer: 'resolution=merge-duplicates, return=minimal' },
+          body: JSON.stringify(payload)
+        });
+        if (!progressRes.ok) return original();
+        if (typeof window.loadLeaderboard === 'function') await window.loadLeaderboard();
+        window.__clpBibleProgressUpdate = Promise.resolve();
+      } catch (_) {
+        return original();
+      }
+    };
+    window.__clpTop5ProgressSyncInstalled = true;
+  }
+
   function init() {
     applyBibleLayout();
+    installTop5ProgressSync();
     setTimeout(applyBibleLayout, 500);
     setTimeout(applyBibleLayout, 1500);
   }

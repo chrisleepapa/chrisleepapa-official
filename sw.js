@@ -60,19 +60,6 @@ self.addEventListener('fetch', (event) => {
         }
       }
 
-      if (url.pathname === '/bible' || url.pathname === '/bible.html') {
-        if (type.includes('text/html')) {
-          const html = await response.text();
-          const storyScript = '<script src="/js/bible-creator-story.js?v=20260915"></script>';
-          const layoutScript = '<script src="/js/bible-layout.js?v=20260915"></script>';
-          let patched = html;
-          if (!patched.includes('/js/bible-creator-story.js')) patched = patched.replace('</body>', `${storyScript}</body>`);
-          if (!patched.includes('/js/bible-layout.js')) patched = patched.replace('</body>', `${layoutScript}</body>`);
-
-          return new Response(patched, { status: response.status, statusText: response.statusText, headers: response.headers });
-        }
-      }
-
       if (url.pathname === '/' || url.pathname === '/index.html') {
         if (type.includes('text/html')) {
           const html = await response.text();

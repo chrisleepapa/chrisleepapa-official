@@ -1,4 +1,4 @@
-/** Initialize the Bible app once and let the normal initializer restore persisted chapter checks. */
+/** Start the Bible app through its original auth/init path once. */
 'use strict';
 (() => {
   if (window.__clpBibleReadRecoveryInstalled) return;
@@ -6,30 +6,17 @@
 
   const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-  function getSession() {
-    try {
-      const raw = localStorage.getItem('chrisleepapa-auth-session-v3');
-      const session = raw ? JSON.parse(raw) : null;
-      return session && session.initials ? session : null;
-    } catch (_) {
-      return null;
-    }
-  }
-
-  async function restore() {
+  async function start() {
     for (let attempt = 0; attempt < 30; attempt++) {
-      const session = getSession();
-      if (session && typeof window.initAppAfterAuth === 'function') {
+      if (typeof window.checkAuth === 'function') {
         if (window.__clpBibleRecoveryInitStarted) return;
         window.__clpBibleRecoveryInitStarted = true;
         try {
-          window.localUserId = session.initials;
-          window.localUserPin = session.pinHash || '';
-          await window.initAppAfterAuth();
-          console.info('[Bible] Bible initialization completed; persisted chapter state is restored by the normal loader');
+          window.checkAuth();
+          console.info('[Bible] original auth initialization started');
         } catch (error) {
           window.__clpBibleRecoveryInitStarted = false;
-          console.error('[Bible] Bible initialization failed', error);
+          console.error('[Bible] auth initialization failed', error);
         }
         return;
       }
@@ -37,5 +24,5 @@
     }
   }
 
-  window.addEventListener('load', () => setTimeout(restore, 300), { once: true });
+  window.addEventListener('load', () => setTimeout(start, 300), { once: true });
 })();

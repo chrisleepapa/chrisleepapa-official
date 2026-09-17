@@ -31,18 +31,6 @@ self.addEventListener('fetch', (event) => {
         }
       }
 
-      if (url.pathname === '/gameinfo' || url.pathname === '/gameinfo.html') {
-        if (type.includes('text/html')) {
-          const html = await response.text();
-          const script = '<script src="/js/gameinfo-goal-fix.js?v=20260904"></script>';
-          if (!html.includes('/js/gameinfo-goal-fix.js')) {
-            const mainScript = '<script src="js/main.js"></script>';
-            const patched = html.includes(mainScript) ? html.replace(mainScript, `${script}${mainScript}`) : html.replace('</body>', `${script}</body>`);
-            return new Response(patched, { status: response.status, statusText: response.statusText, headers: response.headers });
-          }
-        }
-      }
-
       if (url.pathname === '/worship' || url.pathname === '/worship.html') {
         if (type.includes('text/html')) {
           const html = await response.text();

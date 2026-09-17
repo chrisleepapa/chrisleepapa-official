@@ -63,6 +63,7 @@ self.addEventListener('fetch', (event) => {
       if (url.pathname === '/bible' || url.pathname === '/bible.html') {
         if (type.includes('text/html')) {
           const html = await response.text();
+          const recoveryScript = '<script src="/js/bible-read-state-recovery.js?v=20260917"></script>';
           const storyScript = '<script src="/js/bible-creator-story.js?v=20260915"></script>';
           const layoutScript = '<script src="/js/bible-layout.js?v=20260915"></script>';
           const persistenceScript = '<script src="/js/bible-direct-persistence.js?v=20260917"></script>';
@@ -70,6 +71,7 @@ self.addEventListener('fetch', (event) => {
           if (!patched.includes('/js/bible-creator-story.js')) patched = patched.replace('</body>', `${storyScript}</body>`);
           if (!patched.includes('/js/bible-layout.js')) patched = patched.replace('</body>', `${layoutScript}</body>`);
           if (!patched.includes('/js/bible-direct-persistence.js')) patched = patched.replace('</body>', `${persistenceScript}</body>`);
+          if (!patched.includes('/js/bible-read-state-recovery.js')) patched = patched.replace('</body>', `${recoveryScript}</body>`);
 
           // Bible auth initialization is owned by bible-auth-gate.js.
           // Remove the legacy checkAuth() call from the inline onMainReady hook.

@@ -68,6 +68,7 @@ self.addEventListener('fetch', (event) => {
           let patched = html;
           if (!patched.includes('/js/bible-creator-story.js')) patched = patched.replace('</body>', `${storyScript}</body>`);
           if (!patched.includes('/js/bible-layout.js')) patched = patched.replace('</body>', `${layoutScript}</body>`);
+
           return new Response(patched, { status: response.status, statusText: response.statusText, headers: response.headers });
         }
       }
@@ -82,7 +83,6 @@ self.addEventListener('fetch', (event) => {
           }
         }
       }
-
 
       return response;
     } catch (error) {

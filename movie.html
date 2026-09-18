@@ -501,26 +501,6 @@ Create a visually striking frame suitable for an original music video.</pre>
             });
         }
 
-        function syncMovieProductionNotes(index, attempts = 0) {
-            const furious = document.querySelector('.creation-notes');
-            const extra = document.getElementById('movieExtraCreationNotesLive');
-            if (!furious || !extra) {
-                if (attempts < 30) setTimeout(() => syncMovieProductionNotes(index, attempts + 1), 100);
-                return;
-            }
-            const works = extra.querySelectorAll('.movie-work-live');
-            if (index === 0) {
-                furious.style.display = 'block';
-                extra.style.display = 'none';
-            } else {
-                furious.style.display = 'none';
-                extra.style.display = 'block';
-                works.forEach(work => {
-                    work.classList.toggle('is-active', Number(work.dataset.videoIndex) === index);
-                });
-            }
-        }
-
         function loadMainVideo(i) {
             activeVideoIndex = i;
             const v = videoData[i];
@@ -533,8 +513,6 @@ Create a visually striking frame suitable for an original music video.</pre>
             renderCarousel();
             window.__movieActiveVideoIndex = i;
             window.dispatchEvent(new CustomEvent('movieVideoChanged', { detail: { index: i, id: v.id } }));
-            if (typeof window.updateMovieCreationNotes === 'function') window.updateMovieCreationNotes(i);
-            syncMovieProductionNotes(i);
             const tw = document.querySelector('.theater-wrapper');
             if (tw) window.scrollTo({ top: tw.offsetTop - 120, behavior: 'smooth' });
         }

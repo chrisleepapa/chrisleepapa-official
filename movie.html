@@ -106,6 +106,26 @@
         .video-title { font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 700; color: #ffffff; line-height: 1.4; }
         .video-desc { font-size: 1.05rem; color: #a0a0b5; font-weight: 300; line-height: 1.8; max-width: 850px; word-break: keep-all; }
 
+        /* ── FEATURED 영상 네비게이션 ── */
+        .featured-nav { max-width: 1100px; margin: 18px auto 0; padding: 0 20px; position: relative; z-index: 20; }
+        .featured-nav-inner { display: flex; align-items: center; gap: 12px; }
+        .featured-arrow { flex: 0 0 44px; width: 44px; height: 44px; border: 1px solid rgba(201,168,76,0.35); border-radius: 50%; color: #e8d08a; background: rgba(10,10,18,0.82); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; transition: all .25s ease; }
+        .featured-arrow:hover { background: rgba(201,168,76,0.14); border-color: #c9a84c; transform: scale(1.06); }
+        .featured-track { flex: 1; min-width: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+        .featured-card { min-width: 0; position: relative; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; overflow: hidden; background: #08080c; cursor: pointer; opacity: .58; transition: all .25s ease; }
+        .featured-card:hover { opacity: .9; transform: translateY(-2px); }
+        .featured-card.active { opacity: 1; border-color: #c9a84c; box-shadow: 0 0 20px rgba(201,168,76,.16); }
+        .featured-card img { display: block; width: 100%; aspect-ratio: 16 / 7; object-fit: cover; filter: brightness(.65); transition: filter .25s ease; }
+        .featured-card.active img, .featured-card:hover img { filter: brightness(.85); }
+        .featured-card-label { position: absolute; left: 0; right: 0; bottom: 0; padding: 24px 10px 9px; background: linear-gradient(to top, rgba(0,0,0,.9), transparent); color: #fff; font-size: .78rem; line-height: 1.35; text-align: left; }
+        @media (max-width: 700px) {
+            .featured-nav { padding: 0 14px; }
+            .featured-nav-inner { gap: 7px; }
+            .featured-arrow { flex-basis: 36px; width: 36px; height: 36px; font-size: 1rem; }
+            .featured-track { gap: 7px; }
+            .featured-card-label { font-size: .68rem; padding: 20px 7px 6px; }
+        }
+
         /* ── FURIOUS 제작 기록 ── */
         .creation-notes { max-width: 1100px; margin: 0 auto 80px; padding: 0 20px; position: relative; z-index: 10; }
         .creation-notes-inner { padding: 42px 44px; border: 1px solid rgba(201,168,76,0.18); border-radius: 22px; background: linear-gradient(145deg, rgba(201,168,76,0.06), rgba(10,10,18,0.72)); box-shadow: 0 18px 50px rgba(0,0,0,0.35); }
@@ -205,6 +225,13 @@
                 allowfullscreen></iframe>
             <button class="expand-landscape-btn" type="button" onclick="expandToLandscape()" data-i18n="expand_btn">⛶ 전체화면 (가로)</button>
         </div>
+            <div class="featured-nav" aria-label="Featured movies">
+                <div class="featured-nav-inner">
+                    <button class="featured-arrow" type="button" onclick="loadPreviousFeatured()" aria-label="이전 영상">‹</button>
+                    <div class="featured-track" id="featured-track"></div>
+                    <button class="featured-arrow" type="button" onclick="loadNextFeatured()" aria-label="다음 영상">›</button>
+                </div>
+            </div>
         <div class="screen-info">
             <span class="video-badge" id="main-video-badge">FEATURED</span>
             <h2 class="video-title" id="main-video-title">이게 AI 로 되네? 그냥 만들어본 뮤직비디오 'FURIOUS 💥'</h2>
@@ -475,6 +502,7 @@
         window.onLangChange = function(lang) {
             updateMainVideoInfo();
             renderCarousel();
+            renderFeaturedNav();
         };
 
         window.onMainReady = function() {
@@ -513,6 +541,7 @@
             draw();
             updateMainVideoInfo();
             renderCarousel();
+            renderFeaturedNav();
         };
 
         const videoData = [
@@ -582,6 +611,27 @@
             });
         }
 
+        function renderFeaturedNav() {
+            const lang = (typeof window.getCurrentLang === 'function') ? window.getCurrentLang() : 'ko';
+            const track = document.getElementById('featured-track');
+            if (!track) return;
+            track.innerHTML = videoData.map((v, i) => {
+                const title = v[`title_${lang}`];
+                return '<button type="button" class="featured-card' + (i === activeVideoIndex ? ' active' : '') + '" onclick="loadMainVideo(' + i + ')" aria-label="' + title.replace(/"/g, '&quot;') + '">' +
+                    '<img src="https://img.youtube.com/vi/' + v.id + '/mqdefault.jpg" alt="" loading="lazy">' +
+                    '<span class="featured-card-label">' + title + '</span>' +
+                '</button>';
+            }).join('');
+        }
+
+        function loadPreviousFeatured() {
+            loadMainVideo((activeVideoIndex - 1 + videoData.length) % videoData.length);
+        }
+
+        function loadNextFeatured() {
+            loadMainVideo((activeVideoIndex + 1) % videoData.length);
+        }
+
         function loadMainVideo(i) {
             activeVideoIndex = i;
             const v = videoData[i];
@@ -592,6 +642,7 @@
             }
             updateMainVideoInfo();
             renderCarousel();
+            renderFeaturedNav();
             window.__movieActiveVideoIndex = i;
             window.dispatchEvent(new CustomEvent('movieVideoChanged', { detail: { index: i, id: v.id } }));
             const tw = document.querySelector('.theater-wrapper');

@@ -1,6 +1,6 @@
 (function(){
   'use strict';
-  if(!/^\/movie\/?$/i.test(window.location.pathname)) return;
+  if(!/^\/movie(?:\.html)?\/?$/i.test(window.location.pathname)) return;
 
   function init(){
     var furious=document.querySelector('.creation-notes');
@@ -90,7 +90,9 @@
       else{furious.style.display='none';extra.style.display='block';works.forEach(function(w){w.classList.toggle('is-active',Number(w.dataset.videoIndex)===index);});if(title) title.textContent=index===1?'귀멸의 칼날 촬영현장의 제작기록':'사랑한다고 뮤직비디오의 제작기록';}
       setTimeout(applyLanguage,0);
     }
-    switchNotes(0); window.addEventListener('movieVideoChanged',function(e){switchNotes(Number(e.detail&&e.detail.index)||0);});
+    window.updateMovieCreationNotes=switchNotes;
+    switchNotes(Number(window.__movieActiveVideoIndex)||0);
+    window.addEventListener('movieVideoChanged',function(e){switchNotes(Number(e.detail&&e.detail.index)||0);});
 
     var oldLangChange=window.onLangChange;
     window.onLangChange=function(lang){if(typeof oldLangChange==='function')oldLangChange(lang);setTimeout(applyLanguage,0);};

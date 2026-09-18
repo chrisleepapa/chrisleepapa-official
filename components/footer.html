@@ -18,11 +18,6 @@
 #site-footer .footer-policy a{color:rgba(232,208,138,.58);transition:color .25s ease,text-shadow .25s ease}
 #site-footer .footer-policy a:hover,#site-footer .footer-policy a:focus-visible{color:#e8d08a;text-shadow:0 0 12px rgba(201,168,76,.2)}
 #site-footer .footer-divider{color:rgba(201,168,76,.28);font-size:.6rem}
-#site-footer .movie-creation-cta{max-width:960px;margin:0 auto 38px;padding:28px 30px;text-align:center;border:1px solid rgba(201,168,76,.2);border-radius:18px;background:linear-gradient(135deg,rgba(201,168,76,.07),rgba(255,255,255,.015));box-shadow:0 12px 35px rgba(0,0,0,.28)}
-#site-footer .movie-creation-cta p{margin:0 0 16px;color:#a0a0b5;font-size:.82rem;line-height:1.8;word-break:keep-all}
-#site-footer .movie-creation-cta strong{display:block;margin-bottom:5px;color:#e8d08a;font-family:'Cinzel',serif;font-size:.9rem;letter-spacing:.12em}
-#site-footer .movie-creation-cta a{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border:1px solid rgba(232,208,138,.42);border-radius:10px;color:#e8d08a;font-family:'Noto Sans KR','Pretendard',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.06em;text-decoration:none;transition:all .25s ease}
-#site-footer .movie-creation-cta a:hover,#site-footer .movie-creation-cta a:focus-visible{border-color:#e8d08a;background:rgba(201,168,76,.1);color:#fff;transform:translateY(-1px)}
 
 /* =========================================================
    MOVIE CREATION NOTES — editorial record for additional works
@@ -58,9 +53,6 @@
   #site-footer footer{padding:30px 18px calc(28px + env(safe-area-inset-bottom));border-top-color:rgba(201,168,76,.14)}
   #site-footer footer p:first-child{font-size:.7rem;letter-spacing:.045em;line-height:1.6}
   #site-footer .footer-policy{margin-top:9px;gap:10px;font-size:.62rem;line-height:1.6}
-  #site-footer .movie-creation-cta{margin:0 18px 28px;padding:24px 18px}
-  #site-footer .movie-creation-cta p{font-size:.74rem}
-  #site-footer .movie-creation-cta a{font-size:.64rem;padding:10px 16px}
   .movie-extra-notes{margin-bottom:55px;padding:0 16px}
   .movie-extra-notes-inner{padding:30px 20px}
   .movie-extra-intro{font-size:.9rem;line-height:1.9}
@@ -73,11 +65,6 @@
 </style>
 
 <footer>
-    <div class="movie-creation-cta" id="movieCreationCta" style="display:none">
-        <strong>✦ MOVIE CREATION NOTES</strong>
-        <p>영상의 아이디어부터 생성형 AI 활용, 제작 과정과 프롬프트까지 자세한 창작 기록을 확인해보세요.</p>
-        <a href="/movie-creation" aria-label="Movie Creation Notes — 영상 제작 과정과 제작 프롬프트">제작 과정 &amp; 프롬프트 보기 →</a>
-    </div>
     <p data-i18n="footer_text">© 2026 Chris LEE.PAPA — The Creative Archive</p>
     <p class="footer-policy">
         <a href="/privacy" data-i18n="footer_privacy">개인정보처리방침</a>
@@ -90,101 +77,6 @@
 (function(){
   var isMovie = /^\/movie\/?$/i.test(window.location.pathname);
   var cta = document.getElementById('movieCreationCta');
-  if(cta && isMovie) cta.style.display='block';
-  if(!isMovie) return;
-
-  var notes = document.createElement('section');
-  notes.className = 'movie-extra-notes is-hidden';
-  notes.id = 'movieExtraCreationNotes';
-  notes.setAttribute('aria-label','Additional movie creation notes');
-  notes.innerHTML = `
-    <div class="movie-extra-notes-inner">
-      <div class="movie-extra-kicker i18n-ko">✦ ADDITIONAL CREATION RECORDS</div>
-      <div class="movie-extra-kicker i18n-en">✦ ADDITIONAL CREATION RECORDS</div>
-      <h2 class="movie-extra-title i18n-ko">다른 영상들의 제작 기록</h2>
-      <h2 class="movie-extra-title i18n-en">Creation Notes for Other Works</h2>
-      <p class="movie-extra-intro i18n-ko">FURIOUS와 마찬가지로 이 아카이브의 다른 영상들도 단순히 완성된 결과만 보여주는 데서 끝나지 않습니다. 각 작품에서 어떤 아이디어를 출발점으로 삼았는지, 생성형 AI를 왜 사용했는지, 장면을 어떤 방향으로 설계했는지를 기록합니다.</p>
-      <p class="movie-extra-intro i18n-en">Like FURIOUS, the other works in this archive are more than finished videos. These notes record the starting idea, why generative AI was used, and the visual direction chosen for each project.</p>
-
-      <article class="movie-work">
-        <h3>귀멸의 칼날 실사 촬영 현장</h3>
-        <p class="work-lead i18n-ko">애니메이션 캐릭터가 실제 영화 제작 현장에 존재한다면 어떤 모습일까라는 상상에서 출발했습니다. 단순히 캐릭터를 실사화하는 것보다 배우와 스태프, 카메라와 조명까지 존재하는 하나의 영화 세트를 만들어 ‘촬영 현장’이라는 이야기가 느껴지도록 구성했습니다.</p>
-        <p class="work-lead i18n-en">This project began with a simple question: what would these anime-inspired characters look like if they actually existed on a live-action film set? Instead of only converting the characters into realistic forms, the scene was designed as a complete production environment with actors, crew, cameras, and lighting.</p>
-        <div class="movie-work-grid">
-          <div class="movie-work-card"><h4 class="i18n-ko">01 · 아이디어</h4><h4 class="i18n-en">01 · IDEA</h4><p class="i18n-ko">애니메이션 속 세계와 실제 영화 제작 현장의 경계를 섞어, ‘영화 속 장면’이 아니라 ‘그 장면을 촬영하고 있는 순간’을 보여주는 데 초점을 맞췄습니다.</p><p class="i18n-en">The concept blends the anime world with a real film-production environment, focusing not on the finished scene but on the moment when that scene is being filmed.</p></div>
-          <div class="movie-work-card"><h4 class="i18n-ko">02 · 제작 방법</h4><h4 class="i18n-en">02 · PRODUCTION</h4><p class="i18n-ko">Gemini를 활용해 캐릭터의 의상과 헤어스타일, 색감 같은 정체성을 유지하면서 실제 배우처럼 보이는 인물과 영화 세트를 함께 설계했습니다. 이후 카메라, 조명, 소품 등의 요소를 추가해 촬영 현장의 분위기를 강화했습니다.</p><p class="i18n-en">Gemini was used to design believable live-action characters while retaining recognizable costumes, hairstyles, and color identities. Cameras, lighting, props, and crew elements were then incorporated to strengthen the feeling of a real production set.</p></div>
-          <div class="movie-work-card"><h4 class="i18n-ko">03 · AI를 사용한 이유</h4><h4 class="i18n-en">03 · WHY AI</h4><p class="i18n-ko">실제로 존재하지 않는 캐릭터와 영화 세트를 동시에 상상하고 하나의 장면으로 구성해야 했기 때문에 생성형 AI를 활용하면 아이디어를 빠르게 시각화하고 여러 방향으로 실험할 수 있었습니다.</p><p class="i18n-en">Because the project required imagining fictional characters and a film set that do not actually exist, generative AI made it possible to visualize the concept quickly and explore different directions.</p></div>
-        </div>
-        <div class="movie-work-prompt"><h4 class="i18n-ko">제작 프롬프트</h4><h4 class="i18n-en">PRODUCTION PROMPT</h4><pre>Create a photorealistic behind-the-scenes scene from a live-action Japanese fantasy sword-fighting movie.
-
-Transform anime-inspired characters into believable live-action actors while preserving their recognizable costume design, hairstyle, color palette and character identity.
-
-Show a professional film production set with cinema cameras, lighting equipment, crew members, practical props and a large cinematic set surrounding the actors.
-
-Realistic actors, detailed costumes, natural skin texture, realistic lighting, cinematic photography, Japanese period-fantasy atmosphere, documentary-style behind-the-scenes photography, high production value, photorealistic details.</pre></div>
-      </article>
-
-      <article class="movie-work">
-        <h3>사랑한다고</h3>
-        <p class="work-lead i18n-ko">이 작품은 사랑과 기억, 그리고 그리움이라는 감정을 영상으로 옮기는 데서 출발했습니다. 큰 사건을 보여주기보다 음악이 가진 감정을 인물의 표정과 공간, 거리감으로 전달하는 방향을 선택했습니다.</p>
-        <p class="work-lead i18n-en">This project began by translating feelings of love, memory, and longing into visual storytelling. Instead of relying on dramatic events, the visual direction focused on expressions, spaces, and distance to carry the emotion of the music.</p>
-        <div class="movie-work-grid">
-          <div class="movie-work-card"><h4 class="i18n-ko">01 · 아이디어</h4><h4 class="i18n-en">01 · IDEA</h4><p class="i18n-ko">음악을 들었을 때 떠오르는 사랑과 기억의 장면을 하나의 영화적 순간처럼 만들고, 말보다 표정과 분위기로 감정을 전달하는 것을 목표로 했습니다.</p><p class="i18n-en">The goal was to turn the feelings and memories evoked by the music into cinematic moments, allowing expressions and atmosphere to communicate more than dialogue.</p></div>
-          <div class="movie-work-card"><h4 class="i18n-ko">02 · 제작 방법</h4><h4 class="i18n-en">02 · PRODUCTION</h4><p class="i18n-ko">먼저 음악에서 핵심 감정을 정리한 뒤 Gemini를 활용해 인물과 공간의 분위기를 설계했습니다. 자연스러운 표정과 몸짓, 영화적인 조명과 얕은 심도를 중심으로 장면을 구성하고 음악의 흐름에 맞춰 연결했습니다.</p><p class="i18n-en">After identifying the emotional core of the music, Gemini was used to shape the characters and environments. Natural expressions, subtle body language, cinematic lighting, and shallow depth of field guided the scenes, which were then connected to the flow of the music.</p></div>
-          <div class="movie-work-card"><h4 class="i18n-ko">03 · AI를 사용한 이유</h4><h4 class="i18n-en">03 · WHY AI</h4><p class="i18n-ko">기억과 그리움처럼 눈에 보이지 않는 감정을 특정한 인물과 공간의 분위기로 시각화하고, 실제 촬영만으로는 반복하기 어려운 장면을 빠르게 실험하기 위해 활용했습니다.</p><p class="i18n-en">AI helped turn intangible emotions such as memory and longing into specific characters and environments, while making it easier to experiment with scenes that would be difficult to repeatedly film in reality.</p></div>
-        </div>
-        <div class="movie-work-prompt"><h4 class="i18n-ko">제작 프롬프트</h4><h4 class="i18n-en">PRODUCTION PROMPT</h4><pre>Create a cinematic emotional music-video scene about love, memories and longing.
-
-Show two people connected by a deep emotional relationship in a quiet and intimate atmosphere.
-
-Natural emotional expressions, subtle body language, realistic cinematic lighting, beautiful environmental details, shallow depth of field, poetic visual storytelling, realistic skin and clothing textures, emotionally powerful but understated.
-
-The scene should feel like a frame from an emotional feature film about remembering someone deeply loved.
-
-Photorealistic, cinematic composition, natural lighting, high-end film cinematography.</pre></div>
-      </article>
-    </div>
-  `;
-
-  var anchor = document.querySelector('.shorts-section') || document.querySelector('.carousel-section');
-  if(anchor && anchor.parentNode) anchor.parentNode.insertBefore(notes, anchor);
-
-  function refreshLang(){
-    var lang=(typeof window.getCurrentLang==='function') ? window.getCurrentLang() : (localStorage.getItem('pref-lang') || 'ko');
-    notes.querySelectorAll('.i18n-ko').forEach(function(el){el.style.display=lang==='ko'?'':'none';});
-    notes.querySelectorAll('.i18n-en').forEach(function(el){el.style.display=lang==='en'?'':'none';});
-  }
-
-  function showCreationNotes(index){
-    var furious=document.querySelector('.creation-notes');
-    var extra=document.getElementById('movieExtraCreationNotes');
-    var works=extra ? extra.querySelectorAll('.movie-work') : [];
-    if(!furious || !extra) return;
-
-    if(index===0){
-      furious.style.display='block';
-      extra.classList.add('is-hidden');
-      works.forEach(function(work){work.classList.add('is-hidden');});
-    }else{
-      furious.style.display='none';
-      extra.classList.remove('is-hidden');
-      works.forEach(function(work,i){work.classList.toggle('is-hidden', i !== index-1);});
-    }
-  }
-
-  refreshLang();
-  showCreationNotes(0);
-
-  window.addEventListener('movieVideoChanged', function(event){
-    var index=event && event.detail ? Number(event.detail.index) : 0;
-    showCreationNotes(index);
-    refreshLang();
-  });
-
-  var previous=window.onLangChange;
-  window.onLangChange=function(lang){
-    if(typeof previous==='function') previous(lang);
-    refreshLang();
-  };
+  if(cta && isMovie) cta.style.display='none';
 })();
 </script>

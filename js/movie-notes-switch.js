@@ -4,7 +4,7 @@
   if(!/^\/movie(?:\.html)?\/?$/i.test(path)) return;
 
   var original=document.createElement('script');
-  original.src='/js/movie-notes-switch-original.js?v=20260916-3';
+  original.src='/js/movie-notes-switch-original.js?v=20260918-1';
   original.onload=fix;
   original.onerror=fix;
   document.head.appendChild(original);

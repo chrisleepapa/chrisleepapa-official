@@ -118,7 +118,14 @@
         .creation-note p { color: #aaa6a0; font-size: 0.9rem; line-height: 1.9; word-break: keep-all; }
         .movie-creation-grid { grid-template-columns: repeat(3, minmax(0,1fr)); align-items: stretch; }
         .movie-creation-card { overflow: hidden; }
-        .movie-creation-card > img { width: calc(100% + 48px); height: 170px; margin: -24px -24px 22px; object-fit: cover; display: block; filter: brightness(0.78); }
+        .movie-note-video { position: relative; display: block; width: calc(100% + 48px); height: 170px; margin: -24px -24px 22px; padding: 0; border: 0; overflow: hidden; cursor: pointer; background: #000; }
+        .movie-note-video img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.72); transition: filter .25s ease, transform .35s ease; }
+        .movie-note-video:hover img { filter: brightness(0.9); transform: scale(1.03); }
+        .movie-note-play { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 58px; height: 58px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(201,168,76,.92); color: #030305; font-size: 1.25rem; padding-left: 3px; box-shadow: 0 6px 24px rgba(0,0,0,.5); transition: transform .25s ease, background .25s ease; }
+        .movie-note-video:hover .movie-note-play { transform: translate(-50%,-50%) scale(1.1); background: #e8d08a; }
+        .movie-note-video.is-playing { cursor: default; }
+        .movie-note-video.is-playing .movie-note-play { display: none; }
+        .movie-note-video iframe { width: 100%; height: 100%; border: 0; display: block; }
         .movie-creation-card h3 { color: #fff; font-family: 'Cinzel', serif; font-size: 1.05rem; letter-spacing: 0.4px; margin-bottom: 12px; }
         .movie-creation-card h4 { margin-top: 18px; }
         .movie-note-lead { color: #d1cbc1 !important; font-size: 0.93rem !important; line-height: 1.85 !important; }
@@ -215,7 +222,7 @@
 
             <div class="creation-note-grid movie-creation-grid">
                 <article class="creation-note movie-creation-card">
-                    <img src="https://img.youtube.com/vi/kAkGg2t1Ats/hqdefault.jpg" alt="FURIOUS 제작 노트" loading="lazy">
+                    <button type="button" class="movie-note-video" data-video-id="kAkGg2t1Ats" aria-label="FURIOUS 제작 노트 영상 재생"><img src="https://img.youtube.com/vi/kAkGg2t1Ats/hqdefault.jpg" alt="FURIOUS 제작 노트" loading="lazy"><span class="movie-note-play" aria-hidden="true">▶</span></button>
                     <div class="i18n-ko">
                         <h3>FURIOUS — 제작 기록</h3>
                         <p class="movie-note-lead">전쟁과 갈등을 바라보며 느낀 분노와 안타까움을 음악과 영상으로 옮긴 AI 뮤직비디오입니다.</p>
@@ -239,7 +246,7 @@
                 </article>
 
                 <article class="creation-note movie-creation-card">
-                    <img src="https://img.youtube.com/vi/byxLKvBHULk/hqdefault.jpg" alt="귀멸의 칼날 실사 촬영 현장 제작 노트" loading="lazy">
+                    <button type="button" class="movie-note-video" data-video-id="byxLKvBHULk" aria-label="귀멸의 칼날 실사 촬영 현장 제작 노트 영상 재생"><img src="https://img.youtube.com/vi/byxLKvBHULk/hqdefault.jpg" alt="귀멸의 칼날 실사 촬영 현장 제작 노트" loading="lazy"><span class="movie-note-play" aria-hidden="true">▶</span></button>
                     <div class="i18n-ko">
                         <h3>귀멸의 칼날 — 제작 기록</h3>
                         <p class="movie-note-lead">애니메이션 캐릭터가 실제 영화 촬영장에 등장한다면 어떤 모습일지를 상상한 AI 실사 영상입니다.</p>
@@ -263,7 +270,7 @@
                 </article>
 
                 <article class="creation-note movie-creation-card">
-                    <img src="https://img.youtube.com/vi/vlt7VfCA8bM/hqdefault.jpg" alt="사랑한다고 뮤직비디오 제작 노트" loading="lazy">
+                    <button type="button" class="movie-note-video" data-video-id="vlt7VfCA8bM" aria-label="사랑한다고 뮤직비디오 제작 노트 영상 재생"><img src="https://img.youtube.com/vi/vlt7VfCA8bM/hqdefault.jpg" alt="사랑한다고 뮤직비디오 제작 노트" loading="lazy"><span class="movie-note-play" aria-hidden="true">▶</span></button>
                     <div class="i18n-ko">
                         <h3>사랑한다고 — 제작 기록</h3>
                         <p class="movie-note-lead">먼저 떠나보낸 소중한 사람을 향한 사랑과 그리움을 음악과 영상으로 표현한 뮤직비디오입니다.</p>
@@ -548,6 +555,24 @@
     </script>
 
     <!-- ★ 공통 스크립트 & 공통 방명록 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            document.querySelectorAll('.movie-note-video').forEach(function(btn){
+                btn.addEventListener('click', function(){
+                    if(btn.classList.contains('is-playing')) return;
+                    var id=btn.getAttribute('data-video-id');
+                    var iframe=document.createElement('iframe');
+                    iframe.src='https://www.youtube.com/embed/'+id+'?autoplay=1&rel=0';
+                    iframe.title='Movie production note video';
+                    iframe.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+                    iframe.allowFullscreen=true;
+                    btn.innerHTML='';
+                    btn.appendChild(iframe);
+                    btn.classList.add('is-playing');
+                });
+            });
+        });
+    </script>
     <script src="js/main.js"></script>
     <script src="js/guestbook.js"></script>
 

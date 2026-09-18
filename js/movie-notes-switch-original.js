@@ -1,6 +1,6 @@
 (function(){
   'use strict';
-  if(!/^\/movie\/?$/i.test(window.location.pathname)) return;
+  if(!/^\/movie(?:\.html)?\/?$/i.test(window.location.pathname)) return;
 
   function init(){
     var furious=document.querySelector('.creation-notes');

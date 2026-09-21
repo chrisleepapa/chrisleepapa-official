@@ -29,3 +29,5 @@ chris-portfolio/
 - **텍스트 수정**: `index.html` 내 카드 태그라인, 섹션 내용 수정
 - **이미지 교체**: 각 카드의 `.card-bg` 영역에 `background-image: url('이미지경로')` 추가
 - **연락처 수정**: Contact 섹션의 이메일, SNS 링크 교체
+
+<!-- deployment-trigger -->

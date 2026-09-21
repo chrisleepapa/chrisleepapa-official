@@ -1,6 +1,26 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<script>
+(function(){
+  if(!('serviceWorker' in navigator)) return;
+  navigator.serviceWorker.getRegistrations().then(function(registrations){
+    if(!registrations.length) return;
+    return Promise.all(registrations.map(function(reg){ return reg.unregister(); }))
+      .then(function(){
+        if('caches' in window) return caches.keys().then(function(keys){
+          return Promise.all(keys.map(function(key){ return caches.delete(key); }));
+        });
+      })
+      .then(function(){
+        if(!sessionStorage.getItem('legacy-sw-cleaned')){
+          sessionStorage.setItem('legacy-sw-cleaned','1');
+          location.reload();
+        }
+      });
+  }).catch(function(){});
+})();
+</script>
 <link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#030305"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><link rel="apple-touch-icon" href="images/favicon.png">
 <script async src="https://pagead2.googlesyndication.com/pagead/js?id=ca-pub-3207219520058740&client=ca-pub-3207219520058740" crossorigin="anonymous"></script><script async src="https://www.googletagmanager.com/gtag/js?id=G-NBGELYQ4TZ"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){gtag('js',new Date());gtag('config','G-NBGELYQ4TZ');gtag('config','GT-5MJDBTR2');}</script>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" href="images/favicon.png" type="image/png"><title>Chris LEE.PAPA — The Creative Archive</title><meta name="description" content="Chris LEE.PAPA의 공식 창작 아카이브. 음악, 워십, 성경, 문학, 영상, SISTER SQUAD와 다양한 창작 프로젝트를 소개합니다."><meta name="keywords" content="Chris LEE.PAPA, 크리스리파파, The Creative Archive, AI music, AI 음악, CCM, 워십, 성경, 문학, AI 영상, Sister Squad"><meta name="author" content="Chris LEE.PAPA"><meta name="robots" content="index, follow"><link rel="canonical" href="https://chrisleepapa-official.vercel.app/"><meta property="og:title" content="Chris LEE.PAPA — The Creative Archive"><meta property="og:description" content="Chris LEE.PAPA의 공식 창작 아카이브. 음악, 워십, 성경, 문학, 영상, SISTER SQUAD와 다양한 창작 프로젝트를 소개합니다."><meta property="og:type" content="website"><meta property="og:url" content="https://chrisleepapa-official.vercel.app/"><meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png"><meta property="og:locale" content="ko_KR">

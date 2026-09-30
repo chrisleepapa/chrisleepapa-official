@@ -1,0 +1,26 @@
+(() => {
+  'use strict';
+  const SET=[
+    {ko:{q:'성경의 첫 번째 책은 무엇일까요?',o:['출애굽기','창세기','레위기','민수기'],a:1,n:'창세기는 성경의 첫 번째 책이며 창조와 아브라함, 이삭, 야곱, 요셉의 이야기를 담고 있습니다.'},en:{q:'What is the first book of the Bible?',o:['Exodus','Genesis','Leviticus','Numbers'],a:1,n:'Genesis is the first book of the Bible and includes the stories of creation, Abraham, Isaac, Jacob, and Joseph.'}},
+    {ko:{q:'예수님께 세례를 베푼 사람은 누구일까요?',o:['베드로','세례 요한','바울','야고보'],a:1,n:'예수님은 요단강에서 세례 요한에게 세례를 받으셨습니다.'},en:{q:'Who baptized Jesus?',o:['Peter','John the Baptist','Paul','James'],a:1,n:'Jesus was baptized by John the Baptist in the Jordan River.'}},
+    {ko:{q:'다음 중 복음서가 아닌 것은 무엇일까요?',o:['마태복음','마가복음','사도행전','요한복음'],a:2,n:'사도행전은 복음서가 아니라 예수님의 승천 이후 초대 교회의 이야기를 기록한 책입니다.'},en:{q:'Which of these is not one of the four Gospels?',o:['Matthew','Mark','Acts','John'],a:2,n:'Acts is not a Gospel; it records the story of the early church after Jesus’ ascension.'}},
+    {ko:{q:'노아의 방주 이야기에서 홍수 후 언약의 표징은 무엇일까요?',o:['무지개','별','비둘기','구름'],a:0,n:'창세기에서 무지개는 홍수 후 언약의 표징으로 등장합니다.'},en:{q:'What sign did God give after the flood in Noah’s story?',o:['A rainbow','A star','A dove','A cloud'],a:0,n:'In Genesis, the rainbow is given as a sign of God’s covenant after the flood.'}},
+    {ko:{q:'예수님이 태어나신 곳으로 알려진 도시는 어디일까요?',o:['나사렛','베들레헴','예루살렘','가버나움'],a:1,n:'복음서의 기록에 따르면 예수님은 유대 베들레헴에서 태어나셨습니다.'},en:{q:'Which city is traditionally identified as the birthplace of Jesus?',o:['Nazareth','Bethlehem','Jerusalem','Capernaum'],a:1,n:'According to the Gospel accounts, Jesus was born in Bethlehem of Judea.'}},
+    {ko:{q:'구약성경에서 가장 긴 장으로 알려진 것은 무엇일까요?',o:['시편 23편','시편 119편','이사야 53장','창세기 1장'],a:1,n:'시편 119편은 성경에서 가장 긴 장으로 알려져 있습니다.'},en:{q:'Which chapter is known as the longest chapter in the Bible?',o:['Psalm 23','Psalm 119','Isaiah 53','Genesis 1'],a:1,n:'Psalm 119 is known as the longest chapter in the Bible.'}}
+  ];
+  const T={ko:{title:'오늘의 성경 퀴즈',desc:'성경을 얼마나 알고 있는지 가볍게 확인해보세요. 오늘은 3문제입니다.',start:'퀴즈 시작',q:'문제',next:'다음 문제',finish:'결과 보기',score:'오늘의 점수',again:'다시 도전',yes:'정답입니다 ✓',no:'아쉬워요',good:'잘했어요! 오늘의 말씀을 한 번 더 읽어보세요.',try:'좋아요. 틀린 문제의 말씀을 다시 찾아보세요.'},en:{title:'Today’s Bible Quiz',desc:'Test your Bible knowledge with three quick questions for today.',start:'START QUIZ',q:'Question',next:'NEXT QUESTION',finish:'SEE RESULT',score:'Today’s Score',again:'TRY AGAIN',yes:'Correct ✓',no:'Not quite',good:'Great job! Take another moment to read today’s Word.',try:'Good try. Look up the passages behind the questions you missed.'}};
+  let lang='ko',qs=[],i=0,score=0,locked=false;
+  const el=()=>document.getElementById('home-bible-quiz');
+  const getLang=()=>document.documentElement.lang==='en'?'en':'ko';
+  function pick(){const start=(Math.floor(Date.now()/86400000)*3)%SET.length;return[0,1,2].map(n=>SET[(start+n)%SET.length]);}
+  function render(){const r=el();if(!r)return;lang=getLang();const t=T[lang];
+    if(!qs.length){r.innerHTML='<div class="home-quiz-inner"><div class="home-quiz-copy"><span class="home-quiz-kicker">DAILY CHALLENGE</span><h2>'+t.title+'</h2><p>'+t.desc+'</p></div><button class="home-quiz-start" type="button">'+t.start+' <span>→</span></button></div>';r.querySelector('button').onclick=start;return;}
+    if(i>=qs.length){r.innerHTML='<div class="home-quiz-result"><span class="home-quiz-kicker">DAILY CHALLENGE</span><h2>'+t.score+'</h2><div class="home-quiz-score">'+score+' <small>/ '+qs.length+'</small></div><p>'+(score===qs.length?t.good:t.try)+'</p><button class="home-quiz-start" type="button">'+t.again+' <span>↻</span></button></div>';r.querySelector('button').onclick=start;return;}
+    const q=qs[i][lang];r.innerHTML='<div class="home-quiz-inner"><div class="home-quiz-top"><span>'+t.q+' '+(i+1)+' / '+qs.length+'</span><span>'+score+' PTS</span></div><div class="home-quiz-progress"><i style="width:'+((i)/qs.length*100)+'%"></i></div><div class="home-quiz-question"><h2>'+q.q+'</h2><div class="home-quiz-options">'+q.o.map((x,n)=>'<button type="button" data-n="'+n+'"><b>'+String.fromCharCode(65+n)+'</b><span>'+x+'</span></button>').join('')+'</div><div class="home-quiz-feedback" aria-live="polite"></div></div></div>';
+    r.querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>answer(+b.dataset.n));
+  }
+  function start(){qs=pick();i=0;score=0;locked=false;render();}
+  function answer(n){if(locked)return;locked=true;const q=qs[i][lang],buttons=el().querySelectorAll('[data-n]');buttons.forEach((b,k)=>{b.disabled=true;if(k===q.a)b.classList.add('is-correct');if(k===n&&n!==q.a)b.classList.add('is-wrong');});if(n===q.a)score++;const f=el().querySelector('.home-quiz-feedback'),t=T[lang];f.innerHTML='<strong>'+(n===q.a?t.yes:t.no)+'</strong><p>'+q.n+'</p><button class="home-quiz-next" type="button">'+(i===qs.length-1?t.finish:t.next)+' →</button>';f.classList.add('show');f.querySelector('button').onclick=()=>{i++;locked=false;render();};}
+  const old=window.onLangChange;window.onLangChange=function(l){if(typeof old==='function')old(l);lang=l;if(el())render();};
+  document.addEventListener('DOMContentLoaded',render);
+})();

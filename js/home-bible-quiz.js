@@ -116,7 +116,7 @@
     }catch(e){return null;}
   }
   function saveState(){
-    try{sessionStorage.setItem(STATE_KEY,JSON.stringify({date:todayKey(),qs:qs.map(q=>SET.indexOf(q)),i,score,locked}));}catch(e){}
+    try{sessionStorage.setItem(STATE_KEY,JSON.stringify({date:todayKey(),qs:qs.map(q=>SET.indexOf(q)),i,score}));}catch(e){}
   }
   function restoreState(){
     const state=getSavedState();
@@ -125,7 +125,7 @@
     if(qs.length!==5)return false;
     i=Math.min(Math.max(Number(state.i)||0,0),qs.length);
     score=Math.max(Number(state.score)||0,0);
-    locked=!!state.locked;
+    locked=false;
     return true;
   }
   function clearState(){try{sessionStorage.removeItem(STATE_KEY);}catch(e){}}
@@ -169,7 +169,9 @@
       r.querySelector('.home-quiz-complete').onclick=()=>{clearState();renderLauncher();closeModal();};return;
     }
     const q=qs[i][lang];
-    r.innerHTML='<div class="home-quiz-inner"><div class="home-quiz-top"><span>'+t.q+' '+(i+1)+' / '+qs.length+'</span><span>'+score+' PTS</span></div><div class="home-quiz-progress"><i style="width:'+((i)/qs.length*100)+'%"></i></div><div class="home-quiz-question"><h2>'+q.q+'</h2><div class="home-quiz-options">'+q.o.map((x,n)=>'<button type="button" data-n="'+n+'"><b>'+String.fromCharCode(65+n)+'</b><span>'+x+'</span></button>').join('')+'</div><div class="home-quiz-feedback" aria-live="polite"></div></div></div>';
+    const readHref=q.ref?'/bible?book='+q.ref[0]+'&chapter='+q.ref[1]:'';
+    const readLink=readHref?'<a class="home-quiz-read home-quiz-read-top" href="'+readHref+'" target="_self">'+t.read+'</a>':'';
+    r.innerHTML='<div class="home-quiz-inner"><div class="home-quiz-top"><span>'+t.q+' '+(i+1)+' / '+qs.length+'</span><span>'+score+' PTS</span></div><div class="home-quiz-progress"><i style="width:'+((i)/qs.length*100)+'%"></i></div><div class="home-quiz-question"><h2>'+q.q+'</h2>'+readLink+'<div class="home-quiz-options">'+q.o.map((x,n)=>'<button type="button" data-n="'+n+'"><b>'+String.fromCharCode(65+n)+'</b><span>'+x+'</span></button>').join('')+'</div><div class="home-quiz-feedback" aria-live="polite"></div></div></div>';
     r.querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>answer(+b.dataset.n));
   }
 
@@ -183,8 +185,7 @@
     saveState();
     renderLauncher();
     const f=modalEl().querySelector('.home-quiz-feedback'),t=T[lang];
-    const ref=q.ref; const readHref=ref?'/bible?book='+ref[0]+'&chapter='+ref[1]:'';
-    f.innerHTML='<strong>'+(n===q.a?t.yes:t.no)+'</strong><p>'+q.n+'</p>'+(readHref?'<a class="home-quiz-read" href="'+readHref+'" target="_self">'+t.read+'</a>':'')+'<button class="home-quiz-next" type="button">'+(i===qs.length-1?t.finish:t.next)+' →</button>';
+    f.innerHTML='<strong>'+(n===q.a?t.yes:t.no)+'</strong><p>'+q.n+'</p><button class="home-quiz-next" type="button">'+(i===qs.length-1?t.finish:t.next)+' →</button>';
     f.classList.add('show');
     f.querySelector('button').onclick=()=>{i++;locked=false;saveState();renderLauncher();render();};
   }

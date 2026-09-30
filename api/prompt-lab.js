@@ -44,7 +44,7 @@ ${context}`;
         'Authorization': `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        model: process.env.OPENAI_PROMPT_LAB_MODEL || 'gpt-5.6-luna',
+        model: process.env.OPENAI_PROMPT_LAB_MODEL || 'gpt-6-luna',
         instructions,
         input: 'Create the final prompt now.',
         max_output_tokens: 900,

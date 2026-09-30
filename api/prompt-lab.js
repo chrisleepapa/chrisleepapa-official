@@ -4,7 +4,7 @@ async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const apiKey = process.env.OPENAI_API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     return res.status(503).json({ error: 'Prompt Lab is not configured yet.' });
   }
@@ -37,30 +37,40 @@ Rules:
 USER INPUT:
 ${context}`;
 
-    const response = await fetch('https://api.openai.com/v1/responses', {
+    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
+        'x-goog-api-key': apiKey
       },
       body: JSON.stringify({
-        model: process.env.OPENAI_PROMPT_LAB_MODEL || 'gpt-6-luna',
-        instructions,
-        input: 'Create the final prompt now.',
-        max_output_tokens: 900,
-        store: false
+        system_instruction: {
+          parts: [{ text: instructions }]
+        },
+        contents: [
+          {
+            role: 'user',
+            parts: [{ text: 'Create the final prompt now.' }]
+          }
+        ],
+        generationConfig: {
+          maxOutputTokens: 900
+        }
       })
     });
 
     const data = await response.json();
     if (!response.ok) {
-      console.error('OpenAI Prompt Lab error:', data);
-      return res.status(502).json({ error: 'OpenAI request failed.' });
+      console.error('Gemini Prompt Lab error:', data);
+      return res.status(502).json({ error: 'Gemini request failed.' });
     }
 
-    const prompt = typeof data.output_text === 'string'
-      ? data.output_text.trim()
-      : (data.output || []).flatMap(item => item.content || []).filter(item => item.type === 'output_text').map(item => item.text).join('\n').trim();
+    const prompt = (data.candidates || [])
+      .flatMap(candidate => candidate.content?.parts || [])
+      .filter(part => typeof part.text === 'string')
+      .map(part => part.text)
+      .join('\n')
+      .trim();
 
     if (!prompt) return res.status(502).json({ error: 'No prompt returned.' });
     return res.status(200).json({ prompt });
@@ -69,6 +79,5 @@ ${context}`;
     return res.status(500).json({ error: 'Unexpected server error.' });
   }
 }
-
 
 module.exports = handler;

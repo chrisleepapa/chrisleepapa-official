@@ -11,8 +11,8 @@
   ];
 
   const T={
-    ko:{title:'오늘의 성경 퀴즈',desc:'성경을 얼마나 알고 있는지 가볍게 확인해보세요. 오늘은 3문제입니다.',start:'퀴즈 시작',q:'문제',next:'다음 문제',finish:'결과 보기',score:'오늘의 점수',again:'다시 도전',yes:'정답입니다 ✓',no:'아쉬워요',good:'잘했어요! 오늘의 말씀을 한 번 더 읽어보세요.',try:'좋아요. 틀린 문제의 말씀을 다시 찾아보세요.',close:'닫기'},
-    en:{title:'Today’s Bible Quiz',desc:'Test your Bible knowledge with three quick questions for today.',start:'START QUIZ',q:'Question',next:'NEXT QUESTION',finish:'SEE RESULT',score:'Today’s Score',again:'TRY AGAIN',yes:'Correct ✓',no:'Not quite',good:'Great job! Take another moment to read today’s Word.',try:'Good try. Look up the passages behind the questions you missed.',close:'Close'}
+    ko:{title:'오늘의 성경 퀴즈',desc:'매일 새로운 순서로 5문제가 출제됩니다. 오늘의 성경 지식을 확인해보세요.',start:'퀴즈 시작',q:'문제',next:'다음 문제',finish:'오늘의 퀴즈 완료',score:'오늘의 점수',yes:'정답입니다 ✓',no:'아쉬워요',good:'잘했어요! 오늘의 퀴즈를 완료했습니다.',try:'좋아요. 틀린 문제의 말씀을 다시 찾아보세요.',close:'닫기'},
+    en:{title:'Today’s Bible Quiz',desc:'Five questions are selected in a new order each day. Test your Bible knowledge today.',start:'START QUIZ',q:'Question',next:'NEXT QUESTION',finish:'COMPLETE TODAY’S QUIZ',score:'Today’s Score',yes:'Correct ✓',no:'Not quite',good:'Great job! You completed today’s quiz.',try:'Good try. Look up the passages behind the questions you missed.',close:'Close'}
   };
 
   let lang='ko',qs=[],i=0,score=0,locked=false;
@@ -55,7 +55,6 @@
       .home-quiz-result{text-align:center}
       .home-quiz-score{margin:18px 0 8px;color:#c9a96b;font:500 72px/.95 Cormorant Garamond,Georgia,serif}
       .home-quiz-score small{font-size:22px;color:#777}
-      .home-quiz-result .home-quiz-start{margin-top:3px}
       @media(max-width:560px){
         #home-bible-quiz{padding:24px 16px 60px}
         .home-quiz-inner,.home-quiz-result{padding:34px 22px 26px}
@@ -69,7 +68,18 @@
 
   const el=()=>document.getElementById('home-bible-quiz');
   const getLang=()=>document.documentElement.lang==='en'?'en':'ko';
-  function pick(){const start=(Math.floor(Date.now()/86400000)*3)%SET.length;return[0,1,2].map(n=>SET[(start+n)%SET.length]);}
+
+  function pick(){
+    const day=Math.floor(Date.now()/86400000);
+    const pool=SET.map((item,index)=>({item,index}));
+    let seed=(day*9301+49297)%233280;
+    const rand=()=>{seed=(seed*9301+49297)%233280;return seed/233280;};
+    for(let n=pool.length-1;n>0;n--){
+      const j=Math.floor(rand()*(n+1));
+      [pool[n],pool[j]]=[pool[j],pool[n]];
+    }
+    return pool.slice(0,5).map(x=>x.item);
+  }
 
   function renderLauncher(){
     const r=el();if(!r)return;
@@ -110,8 +120,8 @@
       r.querySelector('button').onclick=start;return;
     }
     if(i>=qs.length){
-      r.innerHTML='<div class="home-quiz-result"><span class="home-quiz-kicker">DAILY CHALLENGE</span><h2>'+t.score+'</h2><div class="home-quiz-score">'+score+' <small>/ '+qs.length+'</small></div><p>'+(score===qs.length?t.good:t.try)+'</p><button class="home-quiz-start" type="button">'+t.again+' <span>↻</span></button></div>';
-      r.querySelector('button').onclick=start;return;
+      r.innerHTML='<div class="home-quiz-result"><span class="home-quiz-kicker">DAILY CHALLENGE</span><h2>'+t.score+'</h2><div class="home-quiz-score">'+score+' <small>/ '+qs.length+'</small></div><p>'+(score===qs.length?t.good:t.try)+'</p><button class="home-quiz-start home-quiz-complete" type="button">'+t.finish+' ✓</button></div>';
+      r.querySelector('.home-quiz-complete').onclick=closeModal;return;
     }
     const q=qs[i][lang];
     r.innerHTML='<div class="home-quiz-inner"><div class="home-quiz-top"><span>'+t.q+' '+(i+1)+' / '+qs.length+'</span><span>'+score+' PTS</span></div><div class="home-quiz-progress"><i style="width:'+((i)/qs.length*100)+'%"></i></div><div class="home-quiz-question"><h2>'+q.q+'</h2><div class="home-quiz-options">'+q.o.map((x,n)=>'<button type="button" data-n="'+n+'"><b>'+String.fromCharCode(65+n)+'</b><span>'+x+'</span></button>').join('')+'</div><div class="home-quiz-feedback" aria-live="polite"></div></div></div>';

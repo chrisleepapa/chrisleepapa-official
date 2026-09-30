@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PROMPT LAB — Chris LEE.PAPA</title>
+  <meta name="description" content="아이디어와 목적을 입력하면 GPT가 하나의 완성된 프롬프트로 정리해주는 Chris LEE.PAPA의 Prompt Lab입니다.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://chrisleepapa-official.vercel.app/prompt-lab">
+  <meta property="og:title" content="PROMPT LAB — Chris LEE.PAPA">
+  <meta property="og:description" content="아이디어와 목적을 하나의 완성된 프롬프트로 정리해보세요.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://chrisleepapa-official.vercel.app/prompt-lab">
+  <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png">
+  <link rel="icon" href="/images/favicon.png" type="image/png">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;800;900&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--pl-gold:#c9a84c;--pl-gold-light:#e8d08a;--pl-bg:#030305;--pl-text:#f0ece4}
+    html,body{background:var(--pl-bg);color:var(--pl-text)}
+    .prompt-lab-page{min-height:calc(100vh - 82px);padding:110px 20px 90px}
+    .prompt-lab-wrap{max-width:980px;margin:0 auto}
+    .prompt-lab-hero{text-align:center;margin-bottom:54px}
+    .prompt-lab-kicker{margin:0 0 12px;color:var(--pl-gold-light);font:600 .68rem/1.4 Cinzel,serif;letter-spacing:.28em}
+    .prompt-lab-title{margin:0;color:#f6f1e7;font:700 clamp(2.1rem,5vw,3.7rem)/1.05 Cinzel,serif;letter-spacing:.055em}
+    .prompt-lab-lead{max-width:680px;margin:20px auto 0;color:rgba(240,236,228,.62);font:.92rem/1.9 Pretendard,'Noto Serif KR',sans-serif;word-break:keep-all}
+    .prompt-lab-card{padding:34px;border:1px solid rgba(201,168,76,.18);border-radius:24px;background:linear-gradient(145deg,rgba(201,168,76,.045),rgba(255,255,255,.012));box-shadow:0 24px 70px rgba(0,0,0,.28)}
+    .prompt-lab-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+    .prompt-field{display:flex;flex-direction:column;gap:9px}
+    .prompt-field.full{grid-column:1/-1}
+    .prompt-label{display:flex;align-items:baseline;justify-content:space-between;color:#e8d08a;font:600 .78rem/1.4 Pretendard,sans-serif;letter-spacing:.06em}
+    .prompt-label small{color:rgba(240,236,228,.36);font-size:.68rem;font-weight:400;letter-spacing:0}
+    .prompt-input,.prompt-select,.prompt-textarea{width:100%;box-sizing:border-box;border:1px solid rgba(255,255,255,.10);border-radius:13px;background:rgba(0,0,0,.24);color:#eee9df;outline:none;font:400 .9rem/1.65 Pretendard,'Noto Serif KR',sans-serif;transition:border-color .2s,background .2s,box-shadow .2s}
+    .prompt-input,.prompt-select{min-height:48px;padding:12px 14px}
+    .prompt-textarea{min-height:132px;padding:14px;resize:vertical}
+    .prompt-input::placeholder,.prompt-textarea::placeholder{color:rgba(240,236,228,.30)}
+    .prompt-input:focus,.prompt-select:focus,.prompt-textarea:focus{border-color:rgba(232,208,138,.55);background:rgba(201,168,76,.035);box-shadow:0 0 0 3px rgba(201,168,76,.06)}
+    .prompt-select{appearance:none}
+    .prompt-actions{display:flex;align-items:center;gap:14px;margin-top:24px}
+    .prompt-build{flex:1;min-height:52px;border:1px solid rgba(232,208,138,.55);border-radius:13px;background:linear-gradient(135deg,rgba(201,168,76,.18),rgba(201,168,76,.07));color:#f3df9f;font:700 .76rem/1 Pretendard,sans-serif;letter-spacing:.16em;cursor:pointer;transition:.2s}
+    .prompt-build:hover{background:rgba(201,168,76,.16);transform:translateY(-1px)}
+    .prompt-build:disabled{opacity:.55;cursor:wait;transform:none}
+    .prompt-limit{margin:0;color:rgba(240,236,228,.35);font:.68rem/1.5 Pretendard,sans-serif;text-align:right;white-space:nowrap}
+    .prompt-result{display:none;margin-top:26px;padding-top:26px;border-top:1px solid rgba(255,255,255,.08)}
+    .prompt-result.active{display:block}
+    .prompt-result-head{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:12px}
+    .prompt-result-title{margin:0;color:#f4efdf;font:600 1rem/1.4 'Noto Serif KR',serif}
+    .prompt-copy{border:1px solid rgba(232,208,138,.28);border-radius:9px;background:rgba(201,168,76,.06);color:#e8d08a;padding:8px 12px;font:600 .67rem/1 Pretendard,sans-serif;letter-spacing:.08em;cursor:pointer}
+    .prompt-output{margin:0;padding:20px 22px;min-height:180px;box-sizing:border-box;border:1px solid rgba(201,168,76,.15);border-radius:14px;background:rgba(0,0,0,.30);color:#ded9cf;font:.86rem/1.85 Pretendard,sans-serif;white-space:pre-wrap;word-break:break-word}
+    .prompt-status{min-height:20px;margin:12px 0 0;color:rgba(240,236,228,.42);font:.72rem/1.5 Pretendard,sans-serif}
+    .prompt-status.error{color:#e7a6a6}
+    .prompt-note{max-width:760px;margin:28px auto 0;color:rgba(240,236,228,.38);font:.72rem/1.8 Pretendard,sans-serif;text-align:center;word-break:keep-all}
+    @media(max-width:760px){
+      .prompt-lab-page{padding:82px 15px 65px}
+      .prompt-lab-hero{margin-bottom:34px}
+      .prompt-lab-lead{font-size:.84rem;line-height:1.8}
+      .prompt-lab-card{padding:22px 17px;border-radius:19px}
+      .prompt-lab-grid{grid-template-columns:1fr;gap:17px}
+      .prompt-field.full{grid-column:auto}
+      .prompt-actions{display:block}
+      .prompt-build{width:100%}
+      .prompt-limit{margin-top:9px;text-align:center}
+      .prompt-result-head{align-items:flex-start}
+      .prompt-output{padding:17px;font-size:.79rem;line-height:1.8}
+    }
+  </style>
+</head>
+<body>
+  <header id="site-nav"></header>
+  <main class="prompt-lab-page">
+    <div class="prompt-lab-wrap">
+      <header class="prompt-lab-hero">
+        <p class="prompt-lab-kicker">CREATIVE TOOL</p>
+        <h1 class="prompt-lab-title">PROMPT LAB</h1>
+        <p class="prompt-lab-lead" data-i18n="pl_lead">머릿속 아이디어와 목적을 적어주세요. Prompt Lab이 핵심 내용을 정리해 하나의 바로 사용할 수 있는 프롬프트로 만들어줍니다.</p>
+      </header>
+
+      <section class="prompt-lab-card" aria-labelledby="prompt-form-title">
+        <h2 id="prompt-form-title" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap">Prompt Builder</h2>
+        <div class="prompt-lab-grid">
+          <label class="prompt-field full">
+            <span class="prompt-label"><span data-i18n="pl_idea_label">무엇을 만들고 싶은가요?</span><small data-i18n="pl_required">필수</small></span>
+            <textarea id="plIdea" class="prompt-textarea" maxlength="3000" data-i18n-placeholder="pl_idea_placeholder" placeholder="예: 아이들이 좋아할 귀여운 공룡 캐릭터를 만들고 싶어요."></textarea>
+          </label>
+
+          <label class="prompt-field">
+            <span class="prompt-label" data-i18n="pl_purpose_label">목적 / 용도</span>
+            <input id="plPurpose" class="prompt-input" maxlength="500" data-i18n-placeholder="pl_purpose_placeholder" placeholder="예: 유튜브 쇼츠에 사용할 캐릭터">
+          </label>
+
+          <label class="prompt-field">
+            <span class="prompt-label" data-i18n="pl_style_label">스타일 / 분위기</span>
+            <input id="plStyle" class="prompt-input" maxlength="500" data-i18n-placeholder="pl_style_placeholder" placeholder="예: 밝고 따뜻한 3D 애니메이션">
+          </label>
+
+          <label class="prompt-field">
+            <span class="prompt-label" data-i18n="pl_audience_label">대상</span>
+            <input id="plAudience" class="prompt-input" maxlength="300" data-i18n-placeholder="pl_audience_placeholder" placeholder="예: 어린이와 가족">
+          </label>
+
+          <label class="prompt-field">
+            <span class="prompt-label" data-i18n="pl_output_label">출력 조건</span>
+            <input id="plOutput" class="prompt-input" maxlength="500" data-i18n-placeholder="pl_output_placeholder" placeholder="예: 영어, 9:16, 짧고 명확하게">
+          </label>
+
+          <label class="prompt-field full">
+            <span class="prompt-label"><span data-i18n="pl_other_label">기타 / 자유롭게 추가</span><small data-i18n="pl_optional">선택</small></span>
+            <textarea id="plOther" class="prompt-textarea" maxlength="2000" data-i18n-placeholder="pl_other_placeholder" placeholder="추가하고 싶은 조건이나 원하는 결과를 자유롭게 적어주세요."></textarea>
+          </label>
+        </div>
+
+        <div class="prompt-actions">
+          <button id="plBuild" class="prompt-build" type="button" data-i18n="pl_build">BUILD PROMPT →</button>
+          <p id="plLimit" class="prompt-limit"></p>
+        </div>
+
+        <div id="plResult" class="prompt-result" aria-live="polite">
+          <div class="prompt-result-head">
+            <h3 class="prompt-result-title" data-i18n="pl_result_title">YOUR PROMPT</h3>
+            <button id="plCopy" class="prompt-copy" type="button" data-i18n="pl_copy">COPY PROMPT</button>
+          </div>
+          <pre id="plOutput" class="prompt-output"></pre>
+          <p id="plStatus" class="prompt-status"></p>
+        </div>
+      </section>
+
+      <p class="prompt-note" data-i18n="pl_note">Prompt Lab은 이미지를 만들거나 영상을 생성하지 않습니다. 사용자의 생각을 정리해 다른 AI 도구에서 사용할 수 있는 하나의 프롬프트를 만드는 데 집중합니다.</p>
+    </div>
+  </main>
+  <footer id="site-footer"></footer>
+
+  <script src="/js/main.js" defer></script>
+  <script>
+  (() => {
+    const I18N = {
+      ko: {
+        pl_lead:'머릿속 아이디어와 목적을 적어주세요. Prompt Lab이 핵심 내용을 정리해 하나의 바로 사용할 수 있는 프롬프트로 만들어줍니다.',
+        pl_idea_label:'무엇을 만들고 싶은가요?',pl_required:'필수',
+        pl_idea_placeholder:'예: 아이들이 좋아할 귀여운 공룡 캐릭터를 만들고 싶어요.',
+        pl_purpose_label:'목적 / 용도',pl_purpose_placeholder:'예: 유튜브 쇼츠에 사용할 캐릭터',
+        pl_style_label:'스타일 / 분위기',pl_style_placeholder:'예: 밝고 따뜻한 3D 애니메이션',
+        pl_audience_label:'대상',pl_audience_placeholder:'예: 어린이와 가족',
+        pl_output_label:'출력 조건',pl_output_placeholder:'예: 영어, 9:16, 짧고 명확하게',
+        pl_other_label:'기타 / 자유롭게 추가',pl_optional:'선택',
+        pl_other_placeholder:'추가하고 싶은 조건이나 원하는 결과를 자유롭게 적어주세요.',
+        pl_build:'BUILD PROMPT →',pl_result_title:'YOUR PROMPT',pl_copy:'COPY PROMPT',
+        pl_note:'Prompt Lab은 이미지를 만들거나 영상을 생성하지 않습니다. 사용자의 생각을 정리해 다른 AI 도구에서 사용할 수 있는 하나의 프롬프트를 만드는 데 집중합니다.',
+        pl_empty:'먼저 무엇을 만들고 싶은지 입력해주세요.',pl_working:'GPT가 프롬프트를 정리하고 있습니다…',
+        pl_done:'완성된 프롬프트입니다.',pl_copied:'프롬프트가 복사되었습니다.',pl_error:'프롬프트를 만들지 못했습니다. 잠시 후 다시 시도해주세요.',
+        pl_limit:'오늘 남은 생성: {n}회'
+      },
+      en: {
+        pl_lead:'Describe your idea and purpose. Prompt Lab organizes the key details into one ready-to-use prompt.',
+        pl_idea_label:'What do you want to create?',pl_required:'Required',
+        pl_idea_placeholder:'Example: I want to create a cute dinosaur character that children will love.',
+        pl_purpose_label:'Purpose / Use',pl_purpose_placeholder:'Example: A character for YouTube Shorts',
+        pl_style_label:'Style / Mood',pl_style_placeholder:'Example: Bright and warm 3D animation',
+        pl_audience_label:'Audience',pl_audience_placeholder:'Example: Children and families',
+        pl_output_label:'Output Requirements',pl_output_placeholder:'Example: English, 9:16, short and clear',
+        pl_other_label:'Other / Add anything',pl_optional:'Optional',
+        pl_other_placeholder:'Add any extra conditions or describe the result you want.',
+        pl_build:'BUILD PROMPT →',pl_result_title:'YOUR PROMPT',pl_copy:'COPY PROMPT',
+        pl_note:'Prompt Lab does not create images or videos. It focuses on turning your ideas into one usable prompt for other AI tools.',
+        pl_empty:'Please describe what you want to create first.',pl_working:'GPT is organizing your prompt…',
+        pl_done:'Your prompt is ready.',pl_copied:'Prompt copied.',pl_error:'The prompt could not be created. Please try again.',
+        pl_limit:'Generations left today: {n}'
+      }
+    };
+    const $ = id => document.getElementById(id);
+    const dayKey = () => new Date().toISOString().slice(0,10);
+    const LIMIT = 5;
+    function lang(){ return document.documentElement.lang === 'en' ? 'en' : 'ko'; }
+    function t(key){ return I18N[lang()][key] || I18N.ko[key] || key; }
+    function applyLang(){
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key=el.dataset.i18n; if(I18N[lang()][key]) el.textContent=I18N[lang()][key];
+      });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key=el.dataset.i18nPlaceholder; if(I18N[lang()][key]) el.placeholder=I18N[lang()][key];
+      });
+      updateLimit();
+    }
+    function used(){
+      try{const raw=localStorage.getItem('prompt-lab-usage');const data=raw?JSON.parse(raw):{};return data.date===dayKey()?Number(data.count)||0:0;}catch(_){return 0;}
+    }
+    function addUse(){
+      try{localStorage.setItem('prompt-lab-usage',JSON.stringify({date:dayKey(),count:used()+1}));}catch(_){}
+    }
+    function updateLimit(){ $('plLimit').textContent=t('pl_limit').replace('{n}',Math.max(0,LIMIT-used())); }
+    function setStatus(message,error=false){const el=$('plStatus');el.textContent=message;el.classList.toggle('error',error);}
+    async function build(){
+      const idea=$('plIdea').value.trim();
+      if(!idea){setStatus(t('pl_empty'),true);$('plIdea').focus();return;}
+      if(used()>=LIMIT){setStatus(lang()==='en'?'Today’s generation limit has been reached.':'오늘의 생성 횟수를 모두 사용했습니다.',true);return;}
+      const button=$('plBuild');button.disabled=true;button.textContent=lang()==='en'?'BUILDING…':'생성 중…';setStatus(t('pl_working'));
+      $('plResult').classList.add('active');
+      try{
+        const payload={idea,purpose:$('plPurpose').value.trim(),style:$('plStyle').value.trim(),audience:$('plAudience').value.trim(),output:$('plOutput').value.trim(),other:$('plOther').value.trim(),language:lang()};
+        const response=await fetch('/api/prompt-lab',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+        const data=await response.json().catch(()=>({}));
+        if(!response.ok||!data.prompt)throw new Error(data.error||'generation_failed');
+        $('plOutput').textContent=data.prompt;addUse();updateLimit();setStatus(t('pl_done'));
+      }catch(error){setStatus(t('pl_error'),true);}
+      finally{button.disabled=false;button.textContent=t('pl_build');}
+    }
+    async function copyPrompt(){
+      const value=$('plOutput').textContent.trim();if(!value)return;
+      try{await navigator.clipboard.writeText(value);}catch(_){
+        const ta=document.createElement('textarea');ta.value=value;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();
+      }
+      setStatus(t('pl_copied'));
+    }
+    $('plBuild').addEventListener('click',build);$('plCopy').addEventListener('click',copyPrompt);
+    window.onLangChange=applyLang;
+    document.addEventListener('DOMContentLoaded',applyLang);
+  })();
+  </script>
+</body>
+</html>

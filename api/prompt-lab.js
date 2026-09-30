@@ -37,7 +37,7 @@ Rules:
 USER INPUT:
 ${context}`;
 
-    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-3.7-flash:generateContent', {
+    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -62,7 +62,11 @@ ${context}`;
     const data = await response.json();
     if (!response.ok) {
       console.error('Gemini Prompt Lab error:', data);
-      return res.status(502).json({ error: 'Gemini request failed.' });
+      const providerMessage = data?.error?.message || '';
+      if (response.status === 503) {
+        return res.status(503).json({ error: 'Gemini is temporarily busy. Please try again shortly.' });
+      }
+      return res.status(502).json({ error: providerMessage || 'Gemini request failed.' });
     }
 
     const prompt = (data.candidates || [])

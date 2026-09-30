@@ -121,7 +121,7 @@
             <h3 class="prompt-result-title" data-i18n="pl_result_title">YOUR PROMPT</h3>
             <button id="plCopy" class="prompt-copy" type="button" data-i18n="pl_copy">COPY PROMPT</button>
           </div>
-          <pre id="plOutput" class="prompt-output"></pre>
+          <pre id="plResultOutput" class="prompt-output"></pre>
           <p id="plStatus" class="prompt-status"></p>
         </div>
       </section>
@@ -201,12 +201,12 @@
         const response=await fetch('/api/prompt-lab',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
         const data=await response.json().catch(()=>({}));
         if(!response.ok||!data.prompt)throw new Error(data.error||'generation_failed');
-        $('plOutput').textContent=data.prompt;addUse();updateLimit();setStatus(t('pl_done'));
+        $('plResultOutput').textContent=data.prompt;addUse();updateLimit();setStatus(t('pl_done'));
       }catch(error){setStatus(t('pl_error'),true);}
       finally{button.disabled=false;button.textContent=t('pl_build');}
     }
     async function copyPrompt(){
-      const value=$('plOutput').textContent.trim();if(!value)return;
+      const value=$('plResultOutput').textContent.trim();if(!value)return;
       try{await navigator.clipboard.writeText(value);}catch(_){
         const ta=document.createElement('textarea');ta.value=value;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();
       }

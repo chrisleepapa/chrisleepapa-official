@@ -12,6 +12,9 @@ async function handler(req, res) {
   try {
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
     const fields = ['idea','purpose','style','audience','output','other'];
+    const categories = ['video','image','music','writing','other'];
+    const category = categories.includes(body.category) ? body.category : 'other';
+    const categoryName = typeof body.categoryName === 'string' ? body.categoryName.trim() : category;
     const values = Object.fromEntries(fields.map(key => [key, typeof body[key] === 'string' ? body[key].trim() : '']));
     if (!values.idea) return res.status(400).json({ error: 'idea is required' });
 
@@ -19,7 +22,7 @@ async function handler(req, res) {
     if (totalLength > 6500) return res.status(413).json({ error: 'Input is too long.' });
 
     const language = body.language === 'en' ? 'English' : 'Korean';
-    const context = fields.map(key => values[key] ? `${key.toUpperCase()}: ${values[key]}` : '').filter(Boolean).join('\n');
+    const context = `CATEGORY: ${categoryName}\n` + fields.map(key => values[key] ? `${key.toUpperCase()}: ${values[key]}` : '').filter(Boolean).join('\n');
 
     const instructions = `You are Prompt Lab, a prompt-writing assistant.
 Turn the user's rough idea and optional details into ONE polished, ready-to-use prompt.
@@ -29,6 +32,7 @@ Rules:
 - Preserve the user's intent. Do not invent specific facts, people, brands, copyrighted characters, or technical requirements that the user did not request.
 - Resolve ambiguity by making the prompt clearer and more actionable without changing the intended goal.
 - Combine the supplied purpose, style, audience, output requirements, and other notes naturally.
+- Tailor the prompt to the selected category (${categoryName}). For video, consider scene, motion, camera, timing, aspect ratio, and continuity when relevant. For image, consider composition, subject, lighting, lens, framing, and visual consistency when relevant. For music, consider genre, mood, instrumentation, structure, vocals, and tempo when relevant. For writing, consider audience, tone, structure, message, and length when relevant. For other, follow the user's intent without forcing a category-specific format.
 - Do not create an image, video, music, or other asset. Write the prompt that another AI tool could use.
 - The final prompt should be detailed enough to be useful but not padded with generic filler.
 - Write the final prompt in ${language}.

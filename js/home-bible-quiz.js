@@ -16,6 +16,9 @@
   };
 
   let lang='ko',qs=[],i=0,score=0,locked=false;
+  const STATE_KEY='chris_daily_bible_quiz_v2';
+  const todayKey=()=>new Date().toISOString().slice(0,10);
+  const isHome=()=>location.pathname==='/'||location.pathname==='/index.html';
 
   function installStyles(){
     if(document.getElementById('home-bible-quiz-modal-style'))return;
@@ -30,6 +33,8 @@
       .home-quiz-modal{position:relative;width:min(620px,100%);max-height:min(760px,calc(100vh - 40px));overflow:auto;border:1px solid rgba(201,169,107,.38);border-radius:22px;background:linear-gradient(145deg,#101014,#07070a);box-shadow:0 28px 90px rgba(0,0,0,.65),0 0 0 1px rgba(255,255,255,.025);color:#eee;text-align:left}
       .home-quiz-close{position:absolute;right:16px;top:14px;width:38px;height:38px;border:1px solid rgba(255,255,255,.1);border-radius:50%;background:rgba(255,255,255,.035);color:#aaa;font-size:20px;cursor:pointer}
       .home-quiz-close:hover{color:#d8bc83;border-color:rgba(201,169,107,.4)}
+      .home-quiz-fab{position:fixed;right:20px;bottom:20px;z-index:9998;display:inline-flex;align-items:center;gap:8px;padding:11px 15px;border:1px solid rgba(201,169,107,.48);border-radius:999px;background:rgba(10,10,12,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#d8bc83;font:600 10px/1 Pretendard,Arial,sans-serif;letter-spacing:.05em;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+      .home-quiz-fab:hover{border-color:#c9a96b;background:#14120e;transform:translateY(-1px)}
       .home-quiz-inner,.home-quiz-result{padding:42px 42px 38px}
       .home-quiz-kicker{display:block;margin-bottom:12px;color:#c9a96b;font:600 10px/1.2 Cinzel,serif;letter-spacing:.22em}
       .home-quiz-copy h2,.home-quiz-result h2{margin:0;color:#f4efe5;font:600 clamp(25px,5vw,36px)/1.15 Cormorant Garamond,Georgia,serif}
@@ -61,6 +66,7 @@
         .home-quiz-backdrop{padding:10px}
         .home-quiz-modal{max-height:calc(100vh - 20px);border-radius:18px}
         .home-quiz-question h2{font-size:25px}
+        .home-quiz-fab{right:14px;bottom:14px;padding:10px 13px}
       }
     `;
     document.head.appendChild(style);
@@ -82,14 +88,53 @@
   }
 
   function renderLauncher(){
-    const r=el();if(!r)return;
+    const r=el();
     lang=getLang();const t=T[lang];
-    r.innerHTML='<button class="home-quiz-launch" type="button" aria-haspopup="dialog">'+t.title+' <span>→</span></button>';
-    r.querySelector('button').onclick=openModal;
+    if(r){
+      r.innerHTML='<button class="home-quiz-launch" type="button" aria-haspopup="dialog">'+t.title+' <span>→</span></button>';
+      r.querySelector('button').onclick=openModal;
+    }
+    let fab=document.getElementById('home-quiz-fab');
+    if(!fab){
+      fab=document.createElement('button');
+      fab.id='home-quiz-fab';
+      fab.className='home-quiz-fab';
+      fab.type='button';
+      fab.setAttribute('aria-haspopup','dialog');
+      document.body.appendChild(fab);
+    }
+    fab.textContent=t.title+' · '+(getSavedState()?'CONTINUE':'OPEN');
+    fab.onclick=openModal;
   }
 
+  function getSavedState(){
+    try{
+      const raw=sessionStorage.getItem(STATE_KEY);
+      if(!raw)return null;
+      const state=JSON.parse(raw);
+      return state&&state.date===todayKey()&&Array.isArray(state.qs)&&state.qs.length===5?state:null;
+    }catch(e){return null;}
+  }
+  function saveState(){
+    try{sessionStorage.setItem(STATE_KEY,JSON.stringify({date:todayKey(),qs:qs.map(q=>SET.indexOf(q)),i,score,locked}));}catch(e){}
+  }
+  function restoreState(){
+    const state=getSavedState();
+    if(!state)return false;
+    qs=state.qs.map(n=>SET[n]).filter(Boolean);
+    if(qs.length!==5)return false;
+    i=Math.min(Math.max(Number(state.i)||0,0),qs.length);
+    score=Math.max(Number(state.score)||0,0);
+    locked=!!state.locked;
+    return true;
+  }
+  function clearState(){try{sessionStorage.removeItem(STATE_KEY);}catch(e){}}
+
   function openModal(){
-    lang=getLang();qs=[];i=0;score=0;locked=false;
+    lang=getLang();
+    const restored=restoreState();
+    if(!restored){qs=[];i=0;score=0;locked=false;}
+
     const backdrop=document.createElement('div');
     backdrop.className='home-quiz-backdrop';
     backdrop.setAttribute('role','dialog');
@@ -121,28 +166,34 @@
     }
     if(i>=qs.length){
       r.innerHTML='<div class="home-quiz-result"><span class="home-quiz-kicker">DAILY CHALLENGE</span><h2>'+t.score+'</h2><div class="home-quiz-score">'+score+' <small>/ '+qs.length+'</small></div><p>'+(score===qs.length?t.good:t.try)+'</p><button class="home-quiz-start home-quiz-complete" type="button">'+t.finish+' ✓</button></div>';
-      r.querySelector('.home-quiz-complete').onclick=closeModal;return;
+      r.querySelector('.home-quiz-complete').onclick=()=>{clearState();renderLauncher();closeModal();};return;
     }
     const q=qs[i][lang];
     r.innerHTML='<div class="home-quiz-inner"><div class="home-quiz-top"><span>'+t.q+' '+(i+1)+' / '+qs.length+'</span><span>'+score+' PTS</span></div><div class="home-quiz-progress"><i style="width:'+((i)/qs.length*100)+'%"></i></div><div class="home-quiz-question"><h2>'+q.q+'</h2><div class="home-quiz-options">'+q.o.map((x,n)=>'<button type="button" data-n="'+n+'"><b>'+String.fromCharCode(65+n)+'</b><span>'+x+'</span></button>').join('')+'</div><div class="home-quiz-feedback" aria-live="polite"></div></div></div>';
     r.querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>answer(+b.dataset.n));
   }
 
-  function start(){qs=pick();i=0;score=0;locked=false;render();}
+  function start(){qs=pick();i=0;score=0;locked=false;saveState();renderLauncher();render();}
   function answer(n){
     if(locked)return;
     locked=true;
     const q=qs[i][lang],buttons=modalEl().querySelectorAll('[data-n]');
     buttons.forEach((b,k)=>{b.disabled=true;if(k===q.a)b.classList.add('is-correct');if(k===n&&n!==q.a)b.classList.add('is-wrong');});
     if(n===q.a)score++;
+    saveState();
+    renderLauncher();
     const f=modalEl().querySelector('.home-quiz-feedback'),t=T[lang];
     const ref=q.ref; const readHref=ref?'/bible?book='+ref[0]+'&chapter='+ref[1]:'';
     f.innerHTML='<strong>'+(n===q.a?t.yes:t.no)+'</strong><p>'+q.n+'</p>'+(readHref?'<a class="home-quiz-read" href="'+readHref+'" target="_self">'+t.read+'</a>':'')+'<button class="home-quiz-next" type="button">'+(i===qs.length-1?t.finish:t.next)+' →</button>';
     f.classList.add('show');
-    f.querySelector('button').onclick=()=>{i++;locked=false;render();};
+    f.querySelector('button').onclick=()=>{i++;locked=false;saveState();renderLauncher();render();};
   }
 
   const old=window.onLangChange;
   window.onLangChange=function(l){if(typeof old==='function')old(l);lang=l;if(el()){renderLauncher();if(document.querySelector('.home-quiz-backdrop'))render();}};
-  document.addEventListener('DOMContentLoaded',()=>{installStyles();renderLauncher();});
+  document.addEventListener('DOMContentLoaded',()=>{
+    installStyles();
+    renderLauncher();
+    if(isHome()) setTimeout(()=>{if(!document.querySelector('.home-quiz-backdrop'))openModal();},700);
+  });
 })();

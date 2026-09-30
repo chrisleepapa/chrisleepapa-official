@@ -136,7 +136,8 @@
     buttons.forEach((b,k)=>{b.disabled=true;if(k===q.a)b.classList.add('is-correct');if(k===n&&n!==q.a)b.classList.add('is-wrong');});
     if(n===q.a)score++;
     const f=modalEl().querySelector('.home-quiz-feedback'),t=T[lang];
-    const ref=q.ref; const readHref=ref?'bible?book='+ref[0]+'&chapter='+ref[1]:'';\n    f.innerHTML='<strong>'+(n===q.a?t.yes:t.no)+'</strong><p>'+q.n+'</p>'+(readHref?'<a class="home-quiz-read" href="'+readHref+'" target="_self">'+t.read+'</a>':'')+'<button class="home-quiz-next" type="button">'+(i===qs.length-1?t.finish:t.next)+' →</button>';
+    const ref=q.ref; const readHref=ref?'bible?book='+ref[0]+'&chapter='+ref[1]:'';
+    f.innerHTML='<strong>'+(n===q.a?t.yes:t.no)+'</strong><p>'+q.n+'</p>'+(readHref?'<a class="home-quiz-read" href="'+readHref+'" target="_self">'+t.read+'</a>':'')+'<button class="home-quiz-next" type="button">'+(i===qs.length-1?t.finish:t.next)+' →</button>';
     f.classList.add('show');
     f.querySelector('button').onclick=()=>{i++;locked=false;render();};
   }

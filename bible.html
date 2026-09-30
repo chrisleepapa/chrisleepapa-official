@@ -807,9 +807,11 @@
                 if (requestedBookInfo) {
                     selectBook(requestedBook, false);
                     if (requestedChapter >= 1 && requestedChapter <= requestedBookInfo.max) {
-                        currentChapter = requestedChapter;
-                        renderChapterGrid();
-                        renderContent();
+                        setTimeout(() => {
+                            currentChapter = requestedChapter;
+                            renderChapterGrid();
+                            renderContent();
+                        }, 450);
                     }
                 } else {
                     selectBook(1, false);

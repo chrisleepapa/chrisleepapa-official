@@ -87,7 +87,7 @@
     const r=el();
     if(r){
       lang=getLang();
-      r.innerHTML='<div class="home-quiz-section"><span class="home-quiz-kicker">DAILY CHALLENGE</span><h2>'+T[lang].title+'</h2><p>'+T[lang].desc+'</p></div>';
+      r.innerHTML='<div class="home-quiz-section"><span class="home-quiz-kicker">DAILY CHALLENGE</span><h2>'+T[lang].title+'</h2><p>'+T[lang].desc+'</p><button class="home-quiz-launch" type="button" aria-haspopup="dialog">'+T[lang].title+' <span>→</span></button></div>'; r.querySelector('.home-quiz-launch').onclick=openModal;
     }
     const fab=document.getElementById('home-quiz-fab');
     if(fab) fab.remove();

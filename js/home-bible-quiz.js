@@ -25,7 +25,7 @@
     const style=document.createElement('style');
     style.id='home-bible-quiz-modal-style';
     style.textContent=`
-      #home-bible-quiz{padding:34px 20px 78px;background:#050508;text-align:center}
+      #home-bible-quiz{padding:28px 20px 42px;background:transparent;text-align:center}.home-quiz-section{max-width:720px;margin:0 auto;padding:24px 22px;border:1px solid rgba(201,169,107,.24);border-radius:18px;background:rgba(201,169,107,.035)}.home-quiz-section h2{margin:0;color:#f4efe5;font:600 clamp(25px,5vw,34px)/1.15 Cormorant Garamond,Georgia,serif}.home-quiz-section p{margin:10px auto 0;max-width:580px;color:#99999f;font:400 13px/1.7 Pretendard,Arial,sans-serif}
       .home-quiz-launch{display:inline-flex;align-items:center;gap:12px;padding:15px 24px;border:1px solid rgba(201,169,107,.48);border-radius:999px;background:rgba(201,169,107,.06);color:#d8bc83;font:600 12px/1 Cinzel,serif;letter-spacing:.16em;cursor:pointer;transition:.25s}
       .home-quiz-launch:hover{background:rgba(201,169,107,.14);border-color:#c9a96b;transform:translateY(-1px)}
       .home-quiz-launch span{font-size:18px;line-height:0}
@@ -58,7 +58,7 @@
       .home-quiz-score{margin:18px 0 8px;color:#c9a96b;font:500 72px/.95 Cormorant Garamond,Georgia,serif}
       .home-quiz-score small{font-size:22px;color:#777}
       @media(max-width:560px){
-        #home-bible-quiz{padding:24px 16px 60px}
+        #home-bible-quiz{padding:22px 16px 34px}
         .home-quiz-inner,.home-quiz-result{padding:34px 22px 26px}
         .home-quiz-backdrop{padding:10px}
         .home-quiz-modal{max-height:calc(100vh - 20px);border-radius:18px}
@@ -85,10 +85,14 @@
 
   function renderLauncher(){
     const r=el();
-    if(r) r.innerHTML='';
+    if(r){
+      lang=getLang();
+      r.innerHTML='<div class="home-quiz-section"><span class="home-quiz-kicker">DAILY CHALLENGE</span><h2>'+T[lang].title+'</h2><p>'+T[lang].desc+'</p></div>';
+    }
     const fab=document.getElementById('home-quiz-fab');
     if(fab) fab.remove();
   }
+  window.refreshBibleQuizSection=renderLauncher;
 
   function getSavedState(){
     try{

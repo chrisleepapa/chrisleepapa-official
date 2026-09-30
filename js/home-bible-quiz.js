@@ -33,8 +33,6 @@
       .home-quiz-modal{position:relative;width:min(620px,100%);max-height:min(760px,calc(100vh - 40px));overflow:auto;border:1px solid rgba(201,169,107,.38);border-radius:22px;background:linear-gradient(145deg,#101014,#07070a);box-shadow:0 28px 90px rgba(0,0,0,.65),0 0 0 1px rgba(255,255,255,.025);color:#eee;text-align:left}
       .home-quiz-close{position:absolute;right:16px;top:14px;width:38px;height:38px;border:1px solid rgba(255,255,255,.1);border-radius:50%;background:rgba(255,255,255,.035);color:#aaa;font-size:20px;cursor:pointer}
       .home-quiz-close:hover{color:#d8bc83;border-color:rgba(201,169,107,.4)}
-      .home-quiz-fab{position:fixed;right:20px;bottom:20px;z-index:9998;display:inline-flex;align-items:center;gap:8px;padding:11px 15px;border:1px solid rgba(201,169,107,.48);border-radius:999px;background:rgba(10,10,12,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#d8bc83;font:600 10px/1 Pretendard,Arial,sans-serif;letter-spacing:.05em;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.35)}
-      .home-quiz-fab:hover{border-color:#c9a96b;background:#14120e;transform:translateY(-1px)}
       .home-quiz-inner,.home-quiz-result{padding:42px 42px 38px}
       .home-quiz-kicker{display:block;margin-bottom:12px;color:#c9a96b;font:600 10px/1.2 Cinzel,serif;letter-spacing:.22em}
       .home-quiz-copy h2,.home-quiz-result h2{margin:0;color:#f4efe5;font:600 clamp(25px,5vw,36px)/1.15 Cormorant Garamond,Georgia,serif}
@@ -55,8 +53,7 @@
       .home-quiz-feedback{display:none;margin-top:20px;padding:17px;border-left:2px solid #c9a96b;background:rgba(201,169,107,.055)}
       .home-quiz-feedback.show{display:block}
       .home-quiz-feedback strong{color:#d8bc83;font:700 12px/1.4 Pretendard,Arial,sans-serif}
-      .home-quiz-feedback p{margin:7px 0 15px;color:#a9a9ae;font:400 13px/1.65 Pretendard,Arial,sans-serif}\n      .home-quiz-read{display:inline-flex;align-items:center;margin:0 0 12px;padding:9px 13px;border:1px solid rgba(201,169,107,.35);border-radius:999px;color:#d8bc83;background:rgba(201,169,107,.05);font:600 10px/1 Pretendard,Arial,sans-serif;letter-spacing:.04em;text-decoration:none}
-      .home-quiz-next{padding:10px 16px;font-size:10px}
+      .home-quiz-feedback p{margin:7px 0 15px;color:#a9a9ae;font:400 13px/1.65 Pretendard,Arial,sans-serif}\n      .home-quiz-next{padding:10px 16px;font-size:10px}
       .home-quiz-result{text-align:center}
       .home-quiz-score{margin:18px 0 8px;color:#c9a96b;font:500 72px/.95 Cormorant Garamond,Georgia,serif}
       .home-quiz-score small{font-size:22px;color:#777}
@@ -66,7 +63,6 @@
         .home-quiz-backdrop{padding:10px}
         .home-quiz-modal{max-height:calc(100vh - 20px);border-radius:18px}
         .home-quiz-question h2{font-size:25px}
-        .home-quiz-fab{right:12px;top:calc(72px + env(safe-area-inset-top));bottom:auto;padding:11px 14px;z-index:10001;font-size:10px;box-shadow:0 8px 24px rgba(0,0,0,.55)}
       }
     `;
     document.head.appendChild(style);
@@ -89,22 +85,9 @@
 
   function renderLauncher(){
     const r=el();
-    lang=getLang();const t=T[lang];
-    if(r){
-      r.innerHTML='<button class="home-quiz-launch" type="button" aria-haspopup="dialog">'+t.title+' <span>→</span></button>';
-      r.querySelector('button').onclick=openModal;
-    }
-    let fab=document.getElementById('home-quiz-fab');
-    if(!fab){
-      fab=document.createElement('button');
-      fab.id='home-quiz-fab';
-      fab.className='home-quiz-fab';
-      fab.type='button';
-      fab.setAttribute('aria-haspopup','dialog');
-      document.body.appendChild(fab);
-    }
-    fab.textContent=t.title+' · '+(getSavedState()?'CONTINUE':'OPEN');
-    fab.onclick=openModal;
+    if(r) r.innerHTML='';
+    const fab=document.getElementById('home-quiz-fab');
+    if(fab) fab.remove();
   }
 
   function getSavedState(){
@@ -169,9 +152,7 @@
       r.querySelector('.home-quiz-complete').onclick=()=>{clearState();renderLauncher();closeModal();};return;
     }
     const q=qs[i][lang];
-    const readHref=q.ref?'/bible?book='+q.ref[0]+'&chapter='+q.ref[1]:'';
-    const readLink=readHref?'<a class="home-quiz-read home-quiz-read-top" href="'+readHref+'" target="_self">'+t.read+'</a>':'';
-    r.innerHTML='<div class="home-quiz-inner"><div class="home-quiz-top"><span>'+t.q+' '+(i+1)+' / '+qs.length+'</span><span>'+score+' PTS</span></div><div class="home-quiz-progress"><i style="width:'+((i)/qs.length*100)+'%"></i></div><div class="home-quiz-question"><h2>'+q.q+'</h2>'+readLink+'<div class="home-quiz-options">'+q.o.map((x,n)=>'<button type="button" data-n="'+n+'"><b>'+String.fromCharCode(65+n)+'</b><span>'+x+'</span></button>').join('')+'</div><div class="home-quiz-feedback" aria-live="polite"></div></div></div>';
+    r.innerHTML='<div class="home-quiz-inner"><div class="home-quiz-top"><span>'+t.q+' '+(i+1)+' / '+qs.length+'</span><span>'+score+' PTS</span></div><div class="home-quiz-progress"><i style="width:'+((i)/qs.length*100)+'%"></i></div><div class="home-quiz-question"><h2>'+q.q+'</h2><div class="home-quiz-options">'+q.o.map((x,n)=>'<button type="button" data-n="'+n+'"><b>'+String.fromCharCode(65+n)+'</b><span>'+x+'</span></button>').join('')+'</div><div class="home-quiz-feedback" aria-live="polite"></div></div></div>';
     r.querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>answer(+b.dataset.n));
   }
 

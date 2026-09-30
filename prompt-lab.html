@@ -27,6 +27,7 @@
     .prompt-lab-title{margin:0;color:#f6f1e7;font:700 clamp(2.1rem,5vw,3.7rem)/1.05 Cinzel,serif;letter-spacing:.055em}
     .prompt-lab-lead{max-width:680px;margin:20px auto 0;color:rgba(240,236,228,.62);font:.92rem/1.9 Pretendard,'Noto Serif KR',sans-serif;word-break:keep-all}
     .prompt-lab-card{padding:34px;border:1px solid rgba(201,168,76,.18);border-radius:24px;background:linear-gradient(145deg,rgba(201,168,76,.045),rgba(255,255,255,.012));box-shadow:0 24px 70px rgba(0,0,0,.28)}
+    .prompt-categories{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:24px}.prompt-category{min-height:86px;padding:12px 9px;border:1px solid rgba(255,255,255,.08);border-radius:13px;background:rgba(0,0,0,.2);color:#d9d4ca;cursor:pointer;text-align:center;transition:.2s}.prompt-category span{display:block;font-size:1.15rem;margin-bottom:6px}.prompt-category strong{display:block;font:600 .75rem/1.3 Pretendard,sans-serif}.prompt-category small{display:block;margin-top:4px;color:rgba(240,236,228,.34);font:400 .58rem/1.3 Pretendard,sans-serif}.prompt-category.active{border-color:rgba(232,208,138,.5);background:rgba(201,168,76,.08);box-shadow:0 0 0 1px rgba(201,168,76,.08)}
     .prompt-lab-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
     .prompt-field{display:flex;flex-direction:column;gap:9px}
     .prompt-field.full{grid-column:1/-1}
@@ -57,7 +58,7 @@
       .prompt-lab-hero{margin-bottom:34px}
       .prompt-lab-lead{font-size:.84rem;line-height:1.8}
       .prompt-lab-card{padding:22px 17px;border-radius:19px}
-      .prompt-lab-grid{grid-template-columns:1fr;gap:17px}
+      .prompt-categories{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.prompt-category:last-child{grid-column:1/-1}.prompt-lab-grid{grid-template-columns:1fr;gap:17px}
       .prompt-field.full{grid-column:auto}
       .prompt-actions{display:block}
       .prompt-build{width:100%}
@@ -79,6 +80,13 @@
 
       <section class="prompt-lab-card" aria-labelledby="prompt-form-title">
         <h2 id="prompt-form-title" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap">Prompt Builder</h2>
+        <div class="prompt-categories" role="group" aria-label="Prompt category">
+          <button type="button" class="prompt-category active" data-category="video"><span>🎬</span><strong data-cat-ko="영상" data-cat-en="Video">영상</strong><small data-cat-ko="영상·쇼츠·애니메이션" data-cat-en="Video · Shorts · Animation">영상·쇼츠·애니메이션</small></button>
+          <button type="button" class="prompt-category" data-category="image"><span>🖼️</span><strong data-cat-ko="이미지" data-cat-en="Image">이미지</strong><small data-cat-ko="이미지·캐릭터·디자인" data-cat-en="Image · Character · Design">이미지·캐릭터·디자인</small></button>
+          <button type="button" class="prompt-category" data-category="music"><span>🎵</span><strong data-cat-ko="음악" data-cat-en="Music">음악</strong><small data-cat-ko="노래·BGM·사운드" data-cat-en="Song · BGM · Sound">노래·BGM·사운드</small></button>
+          <button type="button" class="prompt-category" data-category="writing"><span>✍️</span><strong data-cat-ko="글쓰기" data-cat-en="Writing">글쓰기</strong><small data-cat-ko="글·카피·스토리" data-cat-en="Copy · Story · Writing">글·카피·스토리</small></button>
+          <button type="button" class="prompt-category" data-category="other"><span>✨</span><strong data-cat-ko="기타" data-cat-en="Other">기타</strong><small data-cat-ko="자유롭게 입력" data-cat-en="Anything else">자유롭게 입력</small></button>
+        </div>
         <div class="prompt-lab-grid">
           <label class="prompt-field full">
             <span class="prompt-label"><span data-i18n="pl_idea_label">무엇을 만들고 싶은가요?</span><small data-i18n="pl_required">필수</small></span>
@@ -169,11 +177,14 @@
       }
     };
     const $ = id => document.getElementById(id);
+    let category='video';
+    const categoryNames={video:{ko:'영상',en:'Video'},image:{ko:'이미지',en:'Image'},music:{ko:'음악',en:'Music'},writing:{ko:'글쓰기',en:'Writing'},other:{ko:'기타',en:'Other'}};
     const dayKey = () => new Date().toISOString().slice(0,10);
     const LIMIT = 50;
     function lang(){ return document.documentElement.lang === 'en' ? 'en' : 'ko'; }
     function t(key){ return I18N[lang()][key] || I18N.ko[key] || key; }
     function applyLang(){
+      document.querySelectorAll('[data-cat-ko]').forEach(el=>el.textContent=el.dataset[`cat${lang()==='en'?'En':'Ko'}`]);
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key=el.dataset.i18n; if(I18N[lang()][key]) el.textContent=I18N[lang()][key];
       });
@@ -197,7 +208,7 @@
       const button=$('plBuild');button.disabled=true;button.textContent=lang()==='en'?'BUILDING…':'생성 중…';setStatus(t('pl_working'));
       $('plResult').classList.add('active');
       try{
-        const payload={idea,purpose:$('plPurpose').value.trim(),style:$('plStyle').value.trim(),audience:$('plAudience').value.trim(),output:$('plOutput').value.trim(),other:$('plOther').value.trim(),language:lang()};
+        const payload={category,categoryName:categoryNames[category][lang()],idea,purpose:$('plPurpose').value.trim(),style:$('plStyle').value.trim(),audience:$('plAudience').value.trim(),output:$('plOutput').value.trim(),other:$('plOther').value.trim(),language:lang()};
         const response=await fetch('/api/prompt-lab',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
         const data=await response.json().catch(()=>({}));
         if(!response.ok||!data.prompt)throw new Error(data.error||'generation_failed');
@@ -212,6 +223,7 @@
       }
       setStatus(t('pl_copied'));
     }
+    document.querySelectorAll('.prompt-category').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('.prompt-category').forEach(b=>b.classList.remove('active'));button.classList.add('active');category=button.dataset.category;}));
     $('plBuild').addEventListener('click',build);$('plCopy').addEventListener('click',copyPrompt);
     window.onLangChange=applyLang;
     document.addEventListener('DOMContentLoaded',applyLang);

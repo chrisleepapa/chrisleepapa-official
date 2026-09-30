@@ -180,6 +180,5 @@
   document.addEventListener('DOMContentLoaded',()=>{
     installStyles();
     renderLauncher();
-    if(isHome()) setTimeout(()=>{if(!document.querySelector('.home-quiz-backdrop'))openModal();},700);
   });
 })();

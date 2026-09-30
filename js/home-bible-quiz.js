@@ -66,7 +66,7 @@
         .home-quiz-backdrop{padding:10px}
         .home-quiz-modal{max-height:calc(100vh - 20px);border-radius:18px}
         .home-quiz-question h2{font-size:25px}
-        .home-quiz-fab{right:14px;bottom:14px;padding:10px 13px}
+        .home-quiz-fab{right:12px;top:calc(72px + env(safe-area-inset-top));bottom:auto;padding:11px 14px;z-index:10001;font-size:10px;box-shadow:0 8px 24px rgba(0,0,0,.55)}
       }
     `;
     document.head.appendChild(style);

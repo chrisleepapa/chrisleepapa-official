@@ -799,8 +799,21 @@
                 globalBibleData = await response.json();
                 isDataReady = true;
                 spinner.style.display = 'none';
-                renderBooks('ot');
-                selectBook(1, false); 
+                const params = new URLSearchParams(window.location.search);
+                const requestedBook = Number(params.get('book'));
+                const requestedChapter = Number(params.get('chapter'));
+                const requestedBookInfo = BIBLE_BOOKS.find(book => book.id === requestedBook);
+                renderBooks(requestedBookInfo?.type || 'ot');
+                if (requestedBookInfo) {
+                    selectBook(requestedBook, false);
+                    if (requestedChapter >= 1 && requestedChapter <= requestedBookInfo.max) {
+                        currentChapter = requestedChapter;
+                        renderChapterGrid();
+                        renderContent();
+                    }
+                } else {
+                    selectBook(1, false);
+                }
                 setupNotifications();
                 updateOverallProgress();
             } catch (e) {

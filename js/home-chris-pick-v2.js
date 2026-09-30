@@ -53,9 +53,22 @@
   function getTodayKey(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
   function getDailyPick(picks){let hash=2166136261;const key=getTodayKey();for(let i=0;i<key.length;i++){hash^=key.charCodeAt(i);hash=Math.imul(hash,16777619);}return picks[(hash>>>0)%picks.length];}
   function getLang(){return (window.getCurrentLang?window.getCurrentLang():document.documentElement.lang||'ko').toString().toLowerCase().startsWith('en')?'en':'ko';}
+  const EN_TITLE_MAP={
+    '사랑한다고':'I Love You','2026 난리났어':'2026 — It’s Wild','벽력일섬':'Thunderclap and Flash','영역전개':'Domain Expansion',
+    '역대급 출연진 귀칼 실사 촬영 현장 #귀멸의칼날':'Demon Slayer Live-Action Set — Behind the Scenes','사랑한다고 MV':'I Love You — Music Video',
+    '체인소맨 Rev It Up':'Chainsaw Man — Rev It Up','주술회전 영역전개':'Jujutsu Kaisen — Domain Expansion','귀멸의칼날 벽력일섬':'Demon Slayer — Thunderclap and Flash',
+    '귀멸의칼날 난리났어':'Demon Slayer — It’s Wild','로봇전쟁 Final Round':'Robot War — Final Round','귀멸의칼날 촬영준비':'Demon Slayer — Preparing to Film',
+    '귀멸의칼날 촬영 비하인드':'Demon Slayer — Behind the Scenes','귀멸의칼날 Flash bang':'Demon Slayer — Flash Bang'
+  };
+  const EN_SUB_MAP={'저주받은 요정마을 · Book 2':'Cursed Fairy Village · Book 2','Vertical Archive · YouTube Shorts':'Vertical Archive · YouTube Shorts'};
+  function localizePick(pick,lang){
+    if(lang!=='en')return {title:pick.title,sub:pick.sub};
+    return {title:EN_TITLE_MAP[pick.title]||pick.title,sub:EN_SUB_MAP[pick.sub]||pick.sub};
+  }
   function renderShell(target,lang,pick,date){
     const fallback=pick.image||'/images/og_share.png';
-    target.innerHTML=`<div class="clp-pick-content"><h1 class="clp-pick-heading">Chris's Pick</h1><div class="clp-pick-date">${date} · ${lang==='ko'?'오늘의 선정 작품':'TODAY’S FEATURED WORK'}</div><div class="clp-pick-card"><div class="clp-pick-art"><img src="${fallback}" alt="${pick.title}" loading="eager" decoding="async"></div><div class="clp-pick-body"><div class="clp-pick-type">${pick.type}</div><h2 class="clp-pick-title">${pick.title}</h2><div class="clp-pick-sub">${pick.sub}</div><p class="clp-pick-desc">${pick.desc[lang]||pick.desc.ko}</p><div class="clp-pick-actions"><a class="clp-pick-main" href="${pick.href}">${pick.action[lang]||pick.action.ko}</a></div></div></div><div class="clp-pick-next">${lang==='ko'?'매일 전체 작품 중 하나를 자동으로 선정합니다.':'One work is automatically selected from the full featured collection each day.'}</div></div>`;
+    const localized=localizePick(pick,lang);
+    target.innerHTML=`<div class="clp-pick-content"><h1 class="clp-pick-heading">Chris's Pick</h1><div class="clp-pick-date">${date} · ${lang==='ko'?'오늘의 선정 작품':'TODAY’S FEATURED WORK'}</div><div class="clp-pick-card"><div class="clp-pick-art"><img src="${fallback}" alt="${localized.title}" loading="eager" decoding="async"></div><div class="clp-pick-body"><div class="clp-pick-type">${pick.type}</div><h2 class="clp-pick-title">${localized.title}</h2><div class="clp-pick-sub">${localized.sub}</div><p class="clp-pick-desc">${pick.desc[lang]||pick.desc.ko}</p><div class="clp-pick-actions"><a class="clp-pick-main" href="${pick.href}">${pick.action[lang]||pick.action.ko}</a></div></div></div><div class="clp-pick-next">${lang==='ko'?'매일 전체 작품 중 하나를 자동으로 선정합니다.':'One work is automatically selected from the full featured collection each day.'}</div></div>`;
     if(pick.spotifyAlbumId)getSpotifyCover(pick.spotifyAlbumId).then(url=>{if(!url)return;const img=target.querySelector('.clp-pick-art img');if(img)img.src=url;});
   }
   function render(){const target=document.getElementById('chris-pick');if(!target)return;const d=new Date();const date=`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;renderShell(target,getLang(),getDailyPick(PICKS),date);}

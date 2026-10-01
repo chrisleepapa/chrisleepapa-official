@@ -54,6 +54,7 @@
         #ss2-embedded-ost p{margin:0;color:#8f94a5;font-size:.7rem;line-height:1.6}
         @media(max-width:760px){#ss2-embedded-ost{padding:0;margin-bottom:65px}#ss2-embedded-ost .ss2-ost-grid{grid-template-columns:1fr}#ss2-embedded-ost .ss2-ost-card{min-height:135px}}
       </style>
+      <div class="ss2-ost-story"><span>THE STORY CONTINUES THROUGH MUSIC</span><h3>이야기를 음악으로 이어가다</h3><p>SISTER SQUAD의 OST 역시 이 이야기의 중심에 있는 가족과 자매의 사랑, 그리고 함께 시련을 이겨내는 마음을 담았습니다.</p><p>책에서 표현하고 싶었던 감정과 메시지를 음악으로 다시 풀어내고, 이야기의 세계를 소리로 확장했습니다.</p></div>
       <div class="ss2-ost-heading">
         <span class="ss2-ost-kicker">ORIGINAL SOUNDTRACK</span>
         <h2 id="ss2-ost-title" class="ss2-ost-title">SISTER SQUAD 2 OST</h2>

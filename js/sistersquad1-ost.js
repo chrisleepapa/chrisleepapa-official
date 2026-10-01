@@ -22,6 +22,11 @@
     section.innerHTML=`\
       <style>
         #ss1-embedded-ost{max-width:1000px;margin:0 auto 90px;padding:0 4px}
+        #ss1-embedded-ost .ss1-ost-story{max-width:850px;margin:0 auto 34px;padding:26px 30px;border:1px solid rgba(232,208,138,.18);border-radius:18px;background:linear-gradient(145deg,rgba(232,208,138,.055),rgba(255,255,255,.018));box-shadow:0 12px 35px rgba(0,0,0,.18)}
+        #ss1-embedded-ost .ss1-ost-story span{display:block;color:#c9a84c;font-family:Cinzel,serif;font-size:.62rem;font-weight:700;letter-spacing:.22em;margin-bottom:9px}
+        #ss1-embedded-ost .ss1-ost-story h3{margin:0 0 13px;color:#f0ece4;font-family:'Noto Serif KR',serif;font-size:clamp(1.15rem,2.5vw,1.55rem);font-weight:600;letter-spacing:.03em}
+        #ss1-embedded-ost .ss1-ost-story p{margin:0 0 8px;color:#bfc1ca;font-family:Pretendard,'Noto Serif KR',sans-serif;font-size:.78rem;line-height:1.9;word-break:keep-all}
+        #ss1-embedded-ost .ss1-ost-story p:last-child{margin-bottom:0}
         #ss1-embedded-ost .ss1-ost-heading{text-align:center;margin-bottom:28px}
         #ss1-embedded-ost .ss1-ost-kicker{display:block;color:#e8d08a;font-family:Cinzel,serif;font-size:.7rem;letter-spacing:.25em;margin-bottom:9px}
         #ss1-embedded-ost .ss1-ost-title{margin:0;color:#fff;font-family:Cinzel,serif;font-size:clamp(1.35rem,3vw,1.9rem);letter-spacing:.12em}

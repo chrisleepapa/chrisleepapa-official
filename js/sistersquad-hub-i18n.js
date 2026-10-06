@@ -16,7 +16,7 @@
     sistersTitle:'현실에서 판타지로',sisters:['SISTER SQUAD의 두 주인공은 실제 두 딸의 모습을 바탕으로 만들어졌습니다. 실제 성격과 서로를 대하는 모습을 가능한 한 캐릭터에 담으려고 노력했습니다.','그 위에 판타지 세계와 모험을 더했습니다. 현실에서 시작된 가족에 대한 마음을 재미있게 읽을 수 있는 이야기로 확장하고, 두 자매가 다양한 시련을 함께 지나며 성장하는 모습을 그려냈습니다.'],
     yul:'실제 아이의 성격과 모습을 바탕으로 이야기를 이끌어가는 언니 캐릭터입니다.',jung:'실제 아이의 성격과 모습을 바탕으로 언니와 함께 모험을 만들어가는 동생 캐릭터입니다.',
     realTitle:'현실의 마음을 판타지에 담다',realCards:['가족의 사랑','두 자매의 모험','함께 극복하기'],realText:['실제 경험에서 느낀 가족의 사랑과 두 자매의 존재가 출발점이 되었습니다.','현실의 마음을 판타지 세계와 모험 속에 녹여냈습니다.','서로 의지하며 시련을 극복하고 한 걸음씩 나아가는 이야기를 담았습니다.'],
-    musicTitle:'이야기를 음악으로 이어가다',music:['SISTER SQUAD의 OST 역시 이 이야기의 중심에 있는 가족과 자매의 사랑, 그리고 함께 시련을 이겨내는 마음을 담았습니다.','책에서 표현하고 싶었던 감정과 메시지를 음악으로 다시 풀어내고, 이야기의 세계를 소리로 확장했습니다.'],
+    artTitle:'이야기를 그림으로 이어가다',art:['SISTER SQUAD의 그림은 이야기 속 캐릭터와 세계, 그리고 모험의 순간을 시각적으로 담아냅니다.','책에서 상상했던 장면과 감정을 그림으로 다시 표현하고, 이야기가 펼쳐지는 세계를 한눈에 느낄 수 있도록 확장했습니다.'],
     exploreTitle:'작품과 세계, 게임 만나보기',cards:['첫 번째 이야기 · 줄거리 · 캐릭터 · OST →','두 번째 이야기 · 줄거리 · 캐릭터 · OST →','두 권을 연결하는 공식 세계관 →','SISTER SQUAD 게임과 PLAY 콘텐츠 →'],note:'“가족이 서로에게 가장 든든한 편이 되어주기를.”',cite:'CREATOR’S NOTE · CHRIS LEE.PAPA',meta:'SISTER SQUAD의 탄생 배경과 창작 철학, 두 자매의 이야기, 작품과 OST, 게임으로 이어지는 오리지널 IP를 소개합니다.'
   };
 
@@ -28,7 +28,7 @@
     sistersTitle:'From Real Life to Fantasy',sisters:['The two protagonists of SISTER SQUAD are based on my two daughters. I tried to bring their real personalities and the way they relate to each other into the characters as honestly as possible.','Then I added a fantasy world and adventure. Feelings about family that began in real life were expanded into a story that can be enjoyed, while the sisters grow as they face many trials together.'],
     yul:'The older sister character, inspired by a real child’s personality and the way she sees the world.',jung:'The younger sister character, inspired by a real child’s personality and the way she creates adventures with her sister.',
     realTitle:'Turning Real Feelings into Fantasy',realCards:['Family Love','Two Sisters’ Adventure','Overcoming Together'],realText:['The love of family and the presence of two sisters, experienced in real life, became the starting point.','Those real feelings were woven into a fantasy world and an adventure.','The story is about relying on one another, overcoming trials, and moving forward one step at a time.'],
-    musicTitle:'The Story Continues Through Music',music:['The SISTER SQUAD OST also carries the heart of this story: family, sisterhood, and the courage to overcome trials together.','The emotions and messages I wanted to express in the books are reimagined through music, expanding the world of the story through sound.'],
+    artTitle:'The Story Continues Through Art',art:['SISTER SQUAD’s artwork brings its characters, world, and moments of adventure to life visually.','Scenes and emotions imagined in the books are reinterpreted through art, expanding the world of the story so it can be experienced at a glance.'],
     exploreTitle:'Explore the World of SISTER SQUAD',cards:['The first story · Story · Characters · OST →','The second story · Story · Characters · OST →','The official world lore connecting both books →','SISTER SQUAD games and PLAY content →'],note:'“May family always be each other’s strongest ally.”',cite:'CREATOR’S NOTE · CHRIS LEE.PAPA',meta:'Discover the origins and creative philosophy of SISTER SQUAD, the sisters’ story, and the original IP expanding through books, music, and games.'
   };
 
@@ -43,7 +43,7 @@
     if(sections[2]){setText(sections[2].querySelector('.sq-h2'),d.heartTitle);sections[2].querySelectorAll('.sq-theme span').forEach((e,i)=>setText(e,d.themes[i]));}
     if(sections[3]){setText(sections[3].querySelector('.sq-h2'),d.sistersTitle);setPs(sections[3].querySelector('.sq-copy'),d.sisters);setText(sections[3].querySelectorAll('.sq-person p')[0],d.yul);setText(sections[3].querySelectorAll('.sq-person p')[1],d.jung);}
     if(sections[4]){setText(sections[4].querySelector('.sq-h2'),d.realTitle);sections[4].querySelectorAll('.sq-card h3').forEach((e,i)=>setText(e,d.realCards[i]));sections[4].querySelectorAll('.sq-card p').forEach((e,i)=>setText(e,d.realText[i]));}
-    if(sections[5]){setText(sections[5].querySelector('.sq-h2'),d.musicTitle);setPs(sections[5].querySelector('.sq-copy'),d.music);}
+    if(sections[5]){setText(sections[5].querySelector('.sq-h2'),d.artTitle);setPs(sections[5].querySelector('.sq-copy'),d.art);}
     if(sections[6]){setText(sections[6].querySelector('.sq-h2'),d.exploreTitle);sections[6].querySelectorAll('.sq-link small').forEach((e,i)=>setText(e,d.cards[i]));}
     const note=document.querySelector('.sq-note');if(note){setText(note.querySelector('blockquote'),d.note);setText(note.querySelector('cite'),d.cite);}
     document.title='SISTER SQUAD | Chris LEE.PAPA';const meta=document.querySelector('meta[name="description"]');if(meta)meta.setAttribute('content',d.meta);

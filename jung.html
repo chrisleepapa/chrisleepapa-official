@@ -102,6 +102,38 @@
         .close-gallery { position: absolute; top: 30px; right: 40px; color: #fff; font-size: 40px; font-weight: 300; cursor: pointer; transition: 0.3s; z-index: 2001; }
         .close-gallery:hover { color: var(--char-accent); transform: scale(1.1); }
 
+        /* ── Light mode: keep the character-page typography readable ── */
+        html[data-theme="light"] { background-color: #f7f5f0; }
+        html[data-theme="light"] body {
+            background-color: #f7f5f0;
+            color: #29251f;
+            background-image: radial-gradient(circle at top left, rgba(255,255,255,0.95), transparent 60%), radial-gradient(circle at bottom right, rgba(232,208,138,0.16), transparent 60%);
+        }
+        html[data-theme="light"] .header-title {
+            color: #2b2721;
+            text-shadow: 0 0 24px var(--char-glow), 0 0 8px rgba(0,0,0,0.12);
+        }
+        html[data-theme="light"] .header-slogan { color: var(--char-accent); }
+        html[data-theme="light"] .back-link { color: #8a6a16; }
+        html[data-theme="light"] .profile-visual {
+            background: rgba(255,255,255,0.72);
+            border-color: rgba(0,0,0,0.10);
+            box-shadow: 0 18px 45px rgba(60,50,30,0.12);
+        }
+        html[data-theme="light"] .profile-img-wrap { border-color: rgba(0,0,0,0.08); }
+        html[data-theme="light"] .data-header { border-bottom-color: rgba(0,0,0,0.10); }
+        html[data-theme="light"] .name-ko { color: #29251f; }
+        html[data-theme="light"] .age { color: #706b62; }
+        html[data-theme="light"] .bio-block h3 { color: #8a6a16; }
+        html[data-theme="light"] .bio-block p { color: #4f4a42; }
+        html[data-theme="light"] .quote-box {
+            color: #332f29;
+            background: linear-gradient(135deg, rgba(255,255,255,0.82), rgba(255,255,255,0.35));
+        }
+        html[data-theme="light"] .section-title { color: #9a771b; border-bottom-color: rgba(154,119,27,0.22); }
+        html[data-theme="light"] .gallery-item { border-color: rgba(0,0,0,0.10); box-shadow: 0 12px 30px rgba(60,50,30,0.12); }
+        html[data-theme="light"] .close-gallery { color: #29251f; }
+
         @media (max-width: 900px) {
             .profile-layout { grid-template-columns: 1fr; gap: 40px; }
             .profile-visual { max-width: 500px; margin: 0 auto; }

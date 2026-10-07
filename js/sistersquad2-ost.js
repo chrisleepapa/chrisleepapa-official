@@ -56,6 +56,18 @@
         #ss2-embedded-ost .main{--accent:#e8d08a}.inst{--accent:#6fd7ff}.eng{--accent:#ff8a65}
         #ss2-embedded-ost .ss2-ost-type{display:inline-block;color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 60%,transparent);border-radius:999px;padding:4px 9px;font-family:Cinzel,serif;font-size:.55rem;letter-spacing:.16em}
         #ss2-embedded-ost h3{margin:17px 0 5px;color:#fff;font-family:Cinzel,serif;font-size:1rem;letter-spacing:.07em}
+        html[data-theme="light"] #ss2-embedded-ost .ss2-ost-story{background:linear-gradient(145deg,rgba(255,255,255,.92),rgba(255,255,255,.68));border-color:rgba(138,106,22,.22);box-shadow:0 12px 35px rgba(60,50,30,.10)}
+        html[data-theme="light"] #ss2-embedded-ost .ss2-ost-story span,html[data-theme="light"] #ss2-embedded-ost .ss2-ost-kicker{color:#8a6a16}
+        html[data-theme="light"] #ss2-embedded-ost .ss2-ost-story h3,html[data-theme="light"] #ss2-embedded-ost .ss2-ost-title,html[data-theme="light"] #ss2-embedded-ost h3{color:#29251f}
+        html[data-theme="light"] #ss2-embedded-ost .ss2-ost-story p,html[data-theme="light"] #ss2-embedded-ost .ss2-ost-desc,html[data-theme="light"] #ss2-embedded-ost p{color:#4a453d}
+        html[data-theme="light"] #ss2-embedded-ost .ss2-ost-current{background:#fff;border-top-color:rgba(0,0,0,.10)}
+        html[data-theme="light"] #ss2-embedded-ost .ss2-ost-current strong{color:#29251f}
+        html[data-theme="light"] #ss2-embedded-ost .ss2-ost-current span{color:#706b62}
+        html[data-theme="light"] #ss2-embedded-ost .ss2-ost-link{color:#4a453d;border-color:rgba(0,0,0,.14)}
+        html[data-theme="light"] #ss2-embedded-ost .ss2-ost-card{background:linear-gradient(145deg,rgba(255,255,255,.92),rgba(248,246,240,.88));border-color:rgba(60,50,30,.14);box-shadow:0 10px 25px rgba(60,50,30,.08)}
+        html[data-theme="light"] #ss2-embedded-ost .ss2-ost-card h3{color:#29251f}
+        html[data-theme="light"] #ss2-embedded-ost .ss2-ost-card p{color:#4a453d}
+        html[data-theme="light"] #ss2-embedded-ost .ss2-ost-player{box-shadow:0 18px 40px rgba(60,50,30,.14);border-color:rgba(0,0,0,.12)}
         #ss2-embedded-ost p{margin:0;color:#8f94a5;font-size:.7rem;line-height:1.6}
         @media(max-width:760px){#ss2-embedded-ost{padding:0;margin-bottom:65px}#ss2-embedded-ost .ss2-ost-grid{grid-template-columns:1fr}#ss2-embedded-ost .ss2-ost-card{min-height:135px}}
       </style>

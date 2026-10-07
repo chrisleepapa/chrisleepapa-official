@@ -98,6 +98,50 @@
       .english-worship-story-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:28px 0 36px}.english-worship-story-cards div{padding:22px 18px;border:1px solid rgba(201,168,76,.16);background:rgba(255,255,255,.025);text-align:center}.english-worship-story-cards strong{display:block;min-height:2.4em;margin-bottom:8px;font-family:Cinzel,'Noto Serif',serif;font-size:.78rem;letter-spacing:.04em}.english-worship-story-cards span{color:#aaaeb7;font-size:.88rem;line-height:1.7}
       .english-worship-story blockquote{position:relative;margin:46px 0 0;padding:30px 20px 0;border:0;color:#d9b95b;font-family:'Noto Serif',serif;font-size:clamp(1.05rem,2vw,1.3rem);line-height:1.9;font-weight:600;letter-spacing:-.015em;text-align:center;text-shadow:0 0 28px rgba(201,168,76,.13)}.english-worship-story blockquote::before{content:'';position:absolute;top:0;left:50%;width:90px;height:1px;transform:translateX(-50%);background:linear-gradient(90deg,transparent,rgba(201,168,76,.8),transparent)}
       @media(max-width:760px){.english-worship-confession{margin-bottom:56px;padding:60px 18px 66px}.english-worship-confession h2{margin-bottom:34px}.english-worship-story{font-size:.95rem}.english-worship-story h4{margin-top:36px}.english-worship-story-cards{grid-template-columns:1fr;gap:10px}.english-worship-story-cards div{padding:18px 16px}.english-worship-story-cards strong{min-height:0}.desktop-break{display:none}}
+
+      /* LIGHT MODE — dynamic English Worship presentation content */
+      html[data-theme="light"] .english-worship-confession{
+        background:#fff!important;
+        border-top-color:rgba(143,107,22,.18)!important;
+        border-bottom-color:rgba(143,107,22,.18)!important;
+      }
+      html[data-theme="light"] .english-worship-confession-kicker,
+      html[data-theme="light"] .english-worship-story h4,
+      html[data-theme="light"] .english-worship-story strong{
+        color:#8f6b16!important;
+        -webkit-text-fill-color:#8f6b16!important;
+        opacity:1!important;
+      }
+      html[data-theme="light"] .english-worship-confession h2,
+      html[data-theme="light"] .english-worship-story h3{
+        color:#29251f!important;
+        -webkit-text-fill-color:#29251f!important;
+        opacity:1!important;
+        text-shadow:none!important;
+      }
+      html[data-theme="light"] .english-worship-story,
+      html[data-theme="light"] .english-worship-story p{
+        color:#3f3b34!important;
+        opacity:1!important;
+      }
+      html[data-theme="light"] .english-worship-story-lead{
+        color:#302d28!important;
+      }
+      html[data-theme="light"] .english-worship-story-emphasis{
+        color:#4a4028!important;
+      }
+      html[data-theme="light"] .english-worship-story-cards div{
+        background:#faf7ed!important;
+        border-color:rgba(143,107,22,.18)!important;
+      }
+      html[data-theme="light"] .english-worship-story-cards span{
+        color:#4a463e!important;
+      }
+      html[data-theme="light"] .english-worship-story blockquote{
+        color:#8f6b16!important;
+        -webkit-text-fill-color:#8f6b16!important;
+        text-shadow:none!important;
+      }
     `;
     document.head.appendChild(style);
     intro.replaceWith(section);

@@ -8,9 +8,6 @@
     const creationContext = document.getElementById('bible-creation-context');
     if (creationContext) creationContext.remove();
 
-    const pageHeader = document.querySelector('.page-header');
-    if (pageHeader) pageHeader.remove();
-
     document.querySelectorAll('section').forEach(section => {
       if (section.id === 'bible-page-hero' || section.id === 'bible-creator-story') return;
       const text = (section.textContent || '').replace(/\s+/g, ' ').trim();

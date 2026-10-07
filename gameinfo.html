@@ -195,8 +195,58 @@
           .game-card-desc{font-size:.74rem!important}
         }
 
+        /* ── Card text panels: solid theme-aware surfaces ── */
+        .game-card-content-wrap{
+          background:rgba(7,7,11,.94);
+          border:1px solid rgba(232,208,138,.18);
+          border-left:0;
+          border-right:0;
+          border-bottom:0;
+          border-radius:0 0 22px 22px;
+          padding-top:24px;
+          backdrop-filter:blur(10px);
+        }
+        .game-card-title{
+          color:#fff!important;
+          background:transparent;
+          border-left:0;
+          padding:0;
+          margin-bottom:9px;
+          text-shadow:none;
+        }
+        .game-card-desc{
+          color:rgba(255,255,255,.78)!important;
+          background:transparent;
+          border:0;
+          padding:0;
+          text-shadow:none;
+        }
+        .game-tag{
+          background:rgba(7,7,11,.94)!important;
+          border-color:rgba(232,208,138,.5)!important;
+          color:#f2d98d!important;
+        }
+
         /* Light mode */
         html[data-theme="light"] .game-selection-wrapper{background:transparent}
+        html[data-theme="light"] .game-card-content-wrap{
+          background:rgba(255,255,255,.96);
+          border-color:rgba(45,40,35,.14);
+          box-shadow:0 -10px 30px rgba(0,0,0,.08);
+        }
+        html[data-theme="light"] .game-card-title{
+          color:#17151a!important;
+          text-shadow:none;
+        }
+        html[data-theme="light"] .game-card-desc{
+          color:#4a464d!important;
+          text-shadow:none;
+        }
+        html[data-theme="light"] .game-tag{
+          background:rgba(255,255,255,.96)!important;
+          border-color:rgba(130,100,35,.35)!important;
+          color:#6f5318!important;
+        }
         html[data-theme="light"] .game-hero-copy{color:#57535c}
         html[data-theme="light"] .game-hub-meta{color:#77727c}
         html[data-theme="light"] .game-card{box-shadow:0 16px 45px rgba(30,25,20,.15)}

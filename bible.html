@@ -366,6 +366,51 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
             color:#3f3b34!important;
             opacity:1!important;
         }
+
+        /* FINAL LIGHT OVERRIDE — Bible title + first intro/reason section */
+        html[data-theme="light"] body:has(.bible-container) .page-header .page-title[data-bible-title]{
+            color:#b58a24!important;
+            -webkit-text-fill-color:#b58a24!important;
+            opacity:1!important;
+            font-weight:800!important;
+            text-shadow:none!important;
+        }
+        html[data-theme="light"] body:has(.bible-container) .bible-intro-section > div{
+            background:#ffffff!important;
+            color:#2b2925!important;
+            border-color:rgba(181,138,36,.24)!important;
+            box-shadow:0 10px 30px rgba(35,30,20,.06)!important;
+        }
+        html[data-theme="light"] body:has(.bible-container) .bible-intro-section p[style*="color:#d0ccc4"],
+        html[data-theme="light"] body:has(.bible-container) .bible-intro-section p[style*="color:#a0a0b5"]{
+            color:#3f3b34!important;
+            opacity:1!important;
+        }
+        html[data-theme="light"] body:has(.bible-container) .bible-intro-section h2,
+        html[data-theme="light"] body:has(.bible-container) .bible-intro-section h3{
+            color:#8f6b16!important;
+            -webkit-text-fill-color:#8f6b16!important;
+            opacity:1!important;
+            text-shadow:none!important;
+            font-weight:800!important;
+        }
+        html[data-theme="light"] body:has(.bible-container) .bible-intro-section strong{
+            color:#8f6b16!important;
+            -webkit-text-fill-color:#8f6b16!important;
+            opacity:1!important;
+        }
+        html[data-theme="light"] body:has(.bible-container) .bible-intro-section div[style*="background:rgba(201,168,76"]{
+            background:#faf7ed!important;
+            border-color:rgba(143,107,22,.14)!important;
+        }
+        html[data-theme="light"] body:has(.bible-container) .bible-intro-section div[style*="color:#c8c4bc"],
+        html[data-theme="light"] body:has(.bible-container) .bible-intro-section div[style*="color:#a0a0b5"]{
+            color:#454039!important;
+            opacity:1!important;
+        }
+        html[data-theme="light"] body:has(.bible-container) .bible-intro-section div[style*="border-top"]{
+            border-top-color:rgba(37,37,37,.12)!important;
+        }
 </style>
   <meta name="robots" content="index, follow">
   <meta name="twitter:card" content="summary_large_image">
@@ -446,7 +491,7 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
 
     <!-- ── 본문 시작 ── -->
     <header class="page-header">
-        <h1 class="page-title">Bible in my hand</h1>
+        <h1 class="page-title" data-bible-title>Bible in my hand</h1>
         <div class="cloud-status" id="cloudStatusIcon">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
             <span id="cloudStatusText">로컬 저장 모드</span>
@@ -454,7 +499,7 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
     </header>
 
     <!-- ── SEO 정적 소개 블록 (구글 봇용 / 사용자에게도 자연스럽게 노출) ── -->
-    <section style="max-width:900px; margin:0 auto 32px; padding:0 24px;">
+    <section class="bible-intro-section" style="max-width:900px; margin:0 auto 32px; padding:0 24px;">
         <div style="border:1px solid rgba(201,168,76,0.2); border-radius:16px; padding:28px 32px; background:rgba(12,12,20,0.6); backdrop-filter:blur(10px);">
             <h2 style="font-family:'Cinzel',serif; color:#c9a84c; font-size:1.1rem; letter-spacing:2px; margin-bottom:16px;">✦ &nbsp; ABOUT THIS APP</h2>
             <p style="color:#d0ccc4; line-height:2; font-size:0.95rem; margin-bottom:20px;">

@@ -265,84 +265,44 @@ html[data-theme="light"] .game-card:hover .game-card-content-wrap{background:rgb
 @media(max-width:600px){.game-card-content-wrap{left:10px;right:10px;bottom:10px;padding:15px 15px 14px!important;border-radius:12px!important}.game-card-title{font-size:1.05rem!important}.game-card-desc{font-size:.73rem!important;-webkit-line-clamp:2!important}.game-card .game-tag{top:14px;left:14px}}
 
 /* ── Light mode: definitive game-card text treatment ── */
-html[data-theme="light"] .game-card-image-mode .game-card-content-wrap,
-html[data-theme="light"] .game-card .game-card-content-wrap{
-  background:#ffffff!important;
+html[data-theme="light"] .game-card-image-mode .game-card-content-wrap{
+  background:#fff!important;
   background-image:none!important;
-  border:1px solid rgba(30,26,20,.16)!important;
+  border:1px solid rgba(20,18,15,.16)!important;
   border-radius:14px!important;
   box-shadow:0 10px 28px rgba(20,18,15,.16)!important;
   backdrop-filter:none!important;
+  mix-blend-mode:normal!important;
 }
-html[data-theme="light"] .game-card-image-mode .game-card-title,
-html[data-theme="light"] .game-card .game-card-title{
-  color:#111111!important;
-  font-family:"Pretendard",sans-serif!important;
-  font-weight:800!important;
+html[data-theme="light"] .game-card-image-mode .game-card-content-wrap *{
   text-shadow:none!important;
   -webkit-text-stroke:0!important;
+  -webkit-text-fill-color:currentColor!important;
+  mix-blend-mode:normal!important;
 }
-html[data-theme="light"] .game-card-image-mode .game-card-desc,
-html[data-theme="light"] .game-card .game-card-desc{
+html[data-theme="light"] .game-card-image-mode .game-card-content-wrap .game-card-title{
+  color:#111!important;
+  font-family:"Pretendard",sans-serif!important;
+  font-weight:800!important;
+}
+html[data-theme="light"] .game-card-image-mode .game-card-content-wrap .game-card-desc{
   color:#34312d!important;
   font-family:"Pretendard",sans-serif!important;
   font-weight:500!important;
-  text-shadow:none!important;
   opacity:1!important;
 }
-html[data-theme="light"] .game-card-image-mode:hover .game-card-title,
-html[data-theme="light"] .game-card:hover .game-card-title{
+html[data-theme="light"] .game-card-image-mode:hover .game-card-content-wrap .game-card-title{
   color:#5b430d!important;
 }
-html[data-theme="light"] .game-card-image-mode:hover .game-card-desc,
-html[data-theme="light"] .game-card:hover .game-card-desc{
+html[data-theme="light"] .game-card-image-mode:hover .game-card-content-wrap .game-card-desc{
   color:#24211e!important;
 }
-html[data-theme="light"] .game-card .game-tag{
-  background:#ffffff!important;
+html[data-theme="light"] .game-card-image-mode .game-tag{
+  background:#fff!important;
   color:#4f3b0e!important;
   border:1px solid rgba(79,59,14,.24)!important;
   text-shadow:none!important;
-  box-shadow:0 4px 14px rgba(20,18,15,.12)!important;
-}
-
-/* ── Light mode: force high-contrast card typography ── */
-html[data-theme="light"] .game-card-title{color:#111!important;text-shadow:none!important}
-html[data-theme="light"] .game-card-desc{color:#333!important;text-shadow:none!important}
-html[data-theme="light"] .game-card:hover .game-card-title{color:#5b430d!important}
-html[data-theme="light"] .game-card:hover .game-card-desc{color:#222!important}
-
-        /* ── Game creator note: static section + light mode contrast ── */
-        .clp-game-creator-note{width:min(980px,100%);margin:0 auto 48px;padding:30px 34px;border:1px solid rgba(201,168,76,.18);border-radius:22px;background:rgba(10,10,18,.72);box-sizing:border-box;color:#c8c3bb;line-height:1.8;position:relative;z-index:2}
-        .clp-game-creator-kicker{margin:0 0 8px;color:#c9a84c;font:600 .72rem/1.4 Cinzel,serif;letter-spacing:.16em}
-        .clp-game-creator-note h2{margin:0 0 12px;color:#f0ece4;font:500 clamp(1.5rem,4vw,2.1rem)/1.3 'Cormorant Garamond','Noto Serif KR',serif}
-        .clp-game-creator-lead{margin:0;max-width:850px;color:#d5d0c8;font-size:1rem}
-        .clp-game-creator-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:22px}
-        .clp-game-creator-grid>div{padding:18px;border:1px solid rgba(255,255,255,.07);border-radius:16px;background:rgba(255,255,255,.025)}
-        .clp-game-creator-grid strong{display:block;margin-bottom:7px;color:#fff}
-        .clp-game-creator-grid span{display:block;font-size:.88rem;color:#c8c3bb}
-        .clp-game-creator-close{margin:22px 0 0;color:#aaa49b}
-        html[data-theme="light"] .clp-game-creator-note{background:#fff!important;border-color:rgba(93,72,24,.14)!important;box-shadow:0 12px 30px rgba(30,25,15,.06)!important;color:#29251f!important}
-        html[data-theme="light"] .clp-game-creator-kicker{color:#765b17!important}
-        html[data-theme="light"] .clp-game-creator-note h2{color:#171511!important;text-shadow:none!important}
-        html[data-theme="light"] .clp-game-creator-lead{color:#37332d!important}
-        html[data-theme="light"] .clp-game-creator-close{color:#514c44!important}
-        html[data-theme="light"] .clp-game-creator-grid>div{background:#f8f6f1!important;border-color:rgba(93,72,24,.12)!important}
-        html[data-theme="light"] .clp-game-creator-grid strong{color:#201d18!important}
-        html[data-theme="light"] .clp-game-creator-grid span{color:#4a4640!important}
-        @media(max-width:700px){
-          .clp-game-creator-note{padding:22px 16px;margin:0 12px 32px;width:auto;border-radius:18px;line-height:1.72}
-          .clp-game-creator-kicker{font-size:.62rem;letter-spacing:.11em;line-height:1.5;white-space:normal;overflow-wrap:anywhere}
-          .clp-game-creator-note h2{font-size:1.35rem;line-height:1.45;margin-bottom:10px;word-break:keep-all}
-          .clp-game-creator-lead{font-size:.9rem;line-height:1.75;word-break:keep-all}
-          .clp-game-creator-grid{grid-template-columns:1fr;gap:10px;margin-top:18px}
-          .clp-game-creator-grid>div{padding:14px 15px;border-radius:13px}
-          .clp-game-creator-grid strong{font-size:.92rem;line-height:1.5;margin-bottom:5px;word-break:keep-all}
-          .clp-game-creator-grid span{font-size:.82rem;line-height:1.7;word-break:keep-all}
-          .clp-game-creator-close{font-size:.84rem;line-height:1.75;margin-top:17px;word-break:keep-all}
-        }
-        @media(max-width:390px){.clp-game-creator-note{padding:20px 14px;margin-left:8px;margin-right:8px}.clp-game-creator-note h2{font-size:1.25rem}.clp-game-creator-lead{font-size:.86rem}.clp-game-creator-grid span{font-size:.79rem}}
-</style>
+}</style>
     <script src="/js/game-auth.js"></script>
     <meta name="robots" content="index, follow"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="GAME CENTER — Chris LEE.PAPA"><meta name="twitter:description" content="Game Center — Chris LEE.PAPA가 직접 제작한 7가지 무료 온라인 미니게임을 지금 바로 즐겨보세요."><meta name="twitter:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png">
 </head>

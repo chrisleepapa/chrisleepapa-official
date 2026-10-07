@@ -5,21 +5,10 @@
   const FALLBACK_IMAGE = 'https://www.publicdomainpictures.net/pictures/60000/velka/bible-open-to-psalm-118-1378400894gXP.jpg';
 
   function removeDuplicateIntroBlocks() {
+    // The Bible page now owns its static banner and explanatory sections.
+    // Do not remove the mid-page text blocks; they are intentional content.
     const creationContext = document.getElementById('bible-creation-context');
     if (creationContext) creationContext.remove();
-
-    document.querySelectorAll('section').forEach(section => {
-      if (section.id === 'bible-page-hero' || section.id === 'bible-creator-story') return;
-      const text = (section.textContent || '').replace(/\s+/g, ' ').trim();
-      const heading = section.querySelector('h2, h3, h4');
-      const headingText = heading ? (heading.textContent || '').replace(/\s+/g, ' ').trim().toUpperCase() : '';
-      if (
-        headingText.includes('ABOUT THIS APP') ||
-        (text.includes('BIBLE IN MY HAND') && text.includes('주요 기능') && text.includes('만든 이유'))
-      ) {
-        section.remove();
-      }
-    });
   }
 
   function applyBibleLayout() {

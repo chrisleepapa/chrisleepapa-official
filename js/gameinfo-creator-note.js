@@ -59,6 +59,7 @@
     `;
 
     document.head.appendChild(style);
+const light=document.createElement('style');light.textContent='html[data-theme="light"] body:has(.game-selection-wrapper) .clp-game-creator-note{background:#fff!important;border-color:rgba(93,72,24,.14)!important;box-shadow:0 12px 30px rgba(30,25,15,.06)!important;color:#29251f!important}html[data-theme="light"] body:has(.game-selection-wrapper) .clp-game-creator-kicker{color:#765b17!important}html[data-theme="light"] body:has(.game-selection-wrapper) .clp-game-creator-lead,html[data-theme="light"] body:has(.game-selection-wrapper) .clp-game-creator-close{color:#514c44!important}html[data-theme="light"] body:has(.game-selection-wrapper) .clp-game-creator-grid>div{background:#faf8f3!important;border-color:rgba(93,72,24,.10)!important}html[data-theme="light"] body:has(.game-selection-wrapper) .clp-game-creator-grid strong{color:#29251f!important}';document.head.appendChild(light);
     if (anchor && anchor.parentNode === wrapper) {
       wrapper.insertBefore(note, anchor.nextSibling);
     } else {

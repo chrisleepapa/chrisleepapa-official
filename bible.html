@@ -348,6 +348,25 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
             font-weight:800!important;
             text-shadow:0 1px 0 rgba(255,255,255,.8),0 4px 18px rgba(154,116,28,.16)!important;
         }
+        /* Bible hero title — match the main banner typography */
+        .bible-hero-title{
+            margin:8px 0 4px!important;
+            font-family:Cinzel,serif!important;
+            font-size:clamp(3rem,10vw,5.2rem)!important;
+            letter-spacing:.15em!important;
+            font-weight:400!important;
+            color:var(--gold-light)!important;
+            line-height:1.1!important;
+            white-space:nowrap!important;
+        }
+        @media (max-width:600px){
+            .bible-hero-title{
+                font-size:clamp(2rem,10vw,3rem)!important;
+                letter-spacing:.08em!important;
+                line-height:1.2!important;
+            }
+        }
+
         /* Bible hero title — match Worship page banner typography */
         .page-header .page-title[data-bible-title]{
             margin:8px 0 4px!important;
@@ -532,7 +551,7 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
         <div aria-hidden="true" style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(3,3,5,.74),rgba(3,3,5,.20) 50%,rgba(3,3,5,.74)),linear-gradient(180deg,rgba(3,3,5,.05),rgba(3,3,5,.80))"></div>
         <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;z-index:1">
             <div>
-                <div class="header-title bible-hero-title" style="margin:8px 0 4px;font-family:Cinzel,serif;font-size:clamp(3rem,10vw,5.2rem);letter-spacing:.15em;font-weight:400;color:#e8d08a;line-height:1.1;white-space:nowrap">BIBLE IN MY HAND</div>
+                <div class="header-title bible-hero-title">BIBLE IN MY HAND</div>
                 <div style="margin-top:16px;color:#f1eadc;font-family:'Noto Serif KR',serif;font-size:clamp(.85rem,1.6vw,1.05rem);line-height:1.8;text-shadow:0 2px 14px #000">말씀을 읽고, 마음에 남기고, 다시 돌아오기 위해 만든 나만의 성경 읽기 공간</div>
             </div>
         </div>

@@ -192,6 +192,30 @@
         .shorts-play-overlay span { width: 50px; height: 50px; background: rgba(220, 38, 38, 0.85); backdrop-filter: blur(5px); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.2rem; border: none; transition: 0.3s; }
         .shorts-link:hover .shorts-play-overlay span { transform: scale(1.2); background: #ff0000; box-shadow: 0 0 15px rgba(255, 0, 0, 0.6); }
 
+        /* ── Light Mode: Shorts readability ── */
+        html[data-theme="light"] .shorts-section {
+            background: rgba(255,255,255,0.72);
+            border-color: rgba(20,20,30,0.10);
+        }
+        html[data-theme="light"] .shorts-heading {
+            color: #24212a;
+        }
+        html[data-theme="light"] .shorts-intro {
+            color: #5d5963;
+        }
+        html[data-theme="light"] .shorts-link {
+            border-color: rgba(20,20,30,0.14);
+            box-shadow: 0 15px 30px rgba(20,20,30,0.18);
+        }
+        html[data-theme="light"] .shorts-title {
+            color: #ffffff !important;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.95), 0 0 10px rgba(0,0,0,0.35);
+            background: linear-gradient(to top, rgba(0,0,0,0.94), rgba(0,0,0,0.02));
+        }
+        html[data-theme="light"] .shorts-link:hover .shorts-title {
+            color: #ffe9a6 !important;
+        }
+
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
         @media (max-width: 900px) {

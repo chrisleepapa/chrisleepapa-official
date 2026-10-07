@@ -28,56 +28,83 @@
 html,body{background:var(--bg);color:var(--text)}
 body{margin:0;font-family:Pretendard,'Noto Serif KR',sans-serif;line-height:1.6;overflow-x:hidden}
 a{text-decoration:none;color:inherit}
-.page-header{height:270px;display:flex;align-items:center;justify-content:center;text-align:center;padding-top:60px}
-.header-title{font-family:serif;font-size:clamp(2rem,8vw,3.5rem);letter-spacing:.15em;color:#fff}
-.header-slogan{color:var(--dim)}
-.interactive-player-wrapper{max-width:1200px;margin:0 auto 70px;padding:0 20px;display:flex;gap:35px}
-.player-focus,.playlist-sidebar{background:rgba(15,15,20,.55);border:1px solid rgba(255,255,255,.07);border-radius:24px}
-.player-focus{flex:1.5;padding:40px}
-.playlist-sidebar{flex:1;padding:25px;max-height:650px;overflow:auto}
-.album-art-large{width:min(280px,70vw);aspect-ratio:1;margin:0 auto 30px;border-radius:18px;background:#111 center/cover no-repeat;box-shadow:0 20px 50px rgba(0,0,0,.55)}
-.active-info{text-align:center}
-.active-info h2{font-size:2rem;margin:0 0 8px}
-.active-badge{display:inline-block;padding:5px 15px;border:1px solid rgba(29,185,84,.35);border-radius:20px;color:var(--green);font-size:.75rem}
-.spotify-container{height:380px;margin-top:22px;border-radius:16px;overflow:hidden;background:#0a0a0f}
+.page-header{min-height:390px;box-sizing:border-box;display:flex;align-items:flex-end;padding:120px max(28px,calc((100vw - 1180px)/2)) 55px;text-align:left;position:relative;overflow:hidden}
+.page-header:before{content:"MUSIC";position:absolute;right:-30px;bottom:-95px;font-family:Cinzel,serif;font-size:clamp(8rem,22vw,18rem);font-weight:400;letter-spacing:-.06em;color:rgba(201,168,76,.055);pointer-events:none}
+.page-header>div{position:relative;z-index:1;max-width:760px}
+.header-title{font-family:Cinzel,Georgia,serif;font-size:clamp(3.2rem,9vw,6.6rem);letter-spacing:.04em;color:#fff;line-height:.95;margin:0}
+.header-slogan{color:var(--gold-light);margin:22px 0 0;font-size:1rem;letter-spacing:.08em}
+.interactive-player-wrapper{max-width:1180px;margin:0 auto 90px;padding:0 24px;display:block}
+.player-focus{position:relative;display:grid;grid-template-columns:minmax(250px,340px) 1fr;gap:42px;padding:42px;border-radius:30px;background:linear-gradient(135deg,rgba(255,255,255,.055),rgba(255,255,255,.018));border:1px solid rgba(201,168,76,.18);box-shadow:0 28px 80px rgba(0,0,0,.28)}
+.album-art-large{width:100%;max-width:330px;aspect-ratio:1;margin:0 auto;border-radius:22px;background:#111 center/cover no-repeat;box-shadow:0 28px 70px rgba(0,0,0,.5);position:relative;overflow:hidden}
+.album-art-large:after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,transparent 55%,rgba(201,168,76,.18));pointer-events:none}
+.active-info{text-align:left;align-self:end}
+.active-info h2{font-family:Cinzel,Georgia,serif;font-size:clamp(1.8rem,4vw,3.2rem);font-weight:400;line-height:1.1;margin:0 0 10px}
+.active-badge{display:inline-block;padding:5px 14px;border:1px solid rgba(201,168,76,.4);border-radius:20px;color:var(--gold-light);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase}
+.spotify-container{height:300px;margin-top:24px;border-radius:18px;overflow:hidden;background:#0a0a0f}
 .spotify-container iframe{width:100%;height:100%;border:0}
-.external-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
-.external-link-btn{padding:11px 18px;border-radius:24px;color:var(--green);background:rgba(29,185,84,.08);border:1px solid rgba(29,185,84,.3);font-size:.85rem}
-.youtube-link{color:#ff6666;background:rgba(255,60,60,.08);border-color:rgba(255,60,60,.3)}
-.playlist-header{font-family:serif;color:var(--gold);letter-spacing:.15em;font-size:1.1rem;padding-bottom:15px;border-bottom:1px solid rgba(201,168,76,.2);margin-bottom:15px}
-.track-item{display:flex;gap:13px;align-items:center;padding:12px;border-radius:14px;cursor:pointer;border:1px solid transparent;margin-bottom:8px}
-.track-item:hover,.track-item.active{background:rgba(29,185,84,.07);border-color:rgba(29,185,84,.2)}
-.track-thumb{width:58px;height:58px;object-fit:cover;border-radius:10px;background:#111;flex:none}
+.external-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.external-link-btn{padding:10px 17px;border-radius:24px;color:var(--green);background:rgba(29,185,84,.07);border:1px solid rgba(29,185,84,.28);font-size:.82rem}
+.youtube-link{color:#ff7777;background:rgba(255,60,60,.07);border-color:rgba(255,60,60,.25)}
+.playlist-sidebar{margin-top:34px;padding:0;background:transparent;border:0;max-height:none;overflow:visible}
+.playlist-header{display:flex;align-items:end;justify-content:space-between;font-family:Cinzel,Georgia,serif;color:var(--gold-light);letter-spacing:.14em;font-size:1rem;padding:0 2px 14px;border-bottom:1px solid rgba(201,168,76,.18);margin-bottom:15px}
+#playlist-container{display:flex;gap:12px;overflow-x:auto;padding:2px 2px 12px;scroll-snap-type:x proximity;scrollbar-width:thin}
+.track-item{display:flex;flex:0 0 250px;gap:13px;align-items:center;padding:10px;border-radius:16px;cursor:pointer;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.025);margin:0;scroll-snap-align:start;transition:.2s ease}
+.track-item:hover{transform:translateY(-2px);border-color:rgba(201,168,76,.3);background:rgba(201,168,76,.05)}
+.track-item.active{border-color:rgba(201,168,76,.5);background:rgba(201,168,76,.08);box-shadow:0 10px 30px rgba(0,0,0,.18)}
+.track-thumb{width:64px;height:64px;object-fit:cover;border-radius:11px;background:#111;flex:none}
 .track-details{min-width:0}
-.track-details h4{margin:0;color:#fff;font-size:.95rem;font-weight:500}
-.track-details p{margin:3px 0 0;color:#888;font-size:.75rem}
-.archive{max-width:960px;margin:0 auto 60px;padding:0 20px}
-.archive-box{border:1px solid rgba(201,168,76,.15);border-radius:20px;padding:30px;background:rgba(10,10,18,.7)}
-.archive h2,.archive h3{font-family:serif;color:var(--gold)}
-.archive-intro{color:#c8c4bc}
-.archive-list{display:flex;flex-direction:column;gap:15px}
-.archive-album{padding:18px;border:1px solid rgba(255,255,255,.07);border-radius:14px}
-.archive-album-title{color:var(--gold-light);font-weight:600}
+.track-details h4{margin:0;color:#fff;font-size:.9rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.track-details p{margin:3px 0 0;color:#888;font-size:.72rem}
+.archive{max-width:1180px;margin:0 auto 90px;padding:0 24px}
+.archive-box{padding:0;border:0;background:transparent}
+.archive h2{font-family:Cinzel,Georgia,serif;color:var(--gold-light);font-size:1.7rem;font-weight:400;letter-spacing:.08em;margin-bottom:10px}
+.archive h3{font-family:serif;color:var(--gold);font-weight:400;margin-top:48px}
+.archive-intro{color:#aaa39a;max-width:700px}
+.archive-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:20px}
+.archive-album{padding:22px 24px;border:1px solid rgba(255,255,255,.07);border-radius:20px;background:rgba(255,255,255,.025);transition:.2s}
+.archive-album:hover{border-color:rgba(201,168,76,.28);transform:translateY(-2px)}
+.archive-album-title{color:var(--gold-light);font-weight:500;font-size:1.05rem}
 .archive-tracks{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:7px;margin-top:10px}
 .archive-track{color:#aaa;padding:6px 9px;background:rgba(201,168,76,.04);border-radius:7px;font-size:.82rem}
-.archive-total{text-align:center;color:#777;font-size:.8rem;margin-top:25px}
-.music-story-text{color:#c8c4bc;margin:8px 0 0;line-height:1.8}
-.music-creation-notes{max-width:960px;margin:0 auto 70px;padding:0 20px}
-.music-creation-box{border:1px solid rgba(201,168,76,.18);border-radius:20px;padding:34px;background:rgba(10,10,18,.72)}
-.music-creation-box h2,.music-creation-box h3{font-family:serif;color:var(--gold)}
-.music-creation-lead{color:#d5d0c8;font-size:1.02rem;line-height:1.85}
-.music-creation-note{margin:24px 0;padding:18px 20px;border-left:2px solid var(--gold);background:rgba(201,168,76,.05);color:#d5d0c8}
+.archive-total{text-align:left;color:#777;font-size:.8rem;margin-top:18px}
+.music-story-text{color:#aaa39a;margin:8px 0 0;line-height:1.8}
+.music-creation-notes{max-width:1180px;margin:0 auto 90px;padding:0 24px}
+.music-creation-box{padding:45px 0 0;border-top:1px solid rgba(201,168,76,.2);background:transparent}
+.music-creation-box h2{font-family:Cinzel,Georgia,serif;color:var(--gold-light);font-weight:400;letter-spacing:.07em}
+.music-creation-lead{color:#aaa39a;max-width:760px;font-size:1rem;line-height:1.9}
+.music-creation-note{margin:30px 0;padding:22px 25px;border-left:2px solid var(--gold);background:linear-gradient(90deg,rgba(201,168,76,.07),transparent);color:#c8c3bb}
+.music-creation-box h3{font-family:serif;color:var(--gold);font-weight:400;margin-top:42px}
+.music-creation-box p{color:#aaa39a;line-height:1.9}
 .music-creation-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:20px}
-.music-creation-card{background:#0d0d12;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:20px;color:#c8c3bb;line-height:1.75}
-.music-creation-card strong{display:block;color:#fff;margin-bottom:6px}
-.music-creation-box p{color:#c8c3bb;line-height:1.8}
-@media(max-width:900px){.interactive-player-wrapper{flex-direction:column;padding:0 10px}.player-focus{padding:25px 15px}.playlist-sidebar{max-height:none}.spotify-container{height:400px}}
-@media(max-width:650px){.music-creation-grid{grid-template-columns:1fr}.music-creation-box{padding:24px 20px}}
+.music-creation-card{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:20px;color:#aaa39a;line-height:1.75}
+.music-creation-card strong{display:block;color:#f0ece4;margin-bottom:6px}
+@media(max-width:900px){.page-header{min-height:320px;padding:110px 20px 42px}.player-focus{grid-template-columns:1fr;padding:25px 20px;gap:25px}.album-art-large{max-width:300px}.active-info{text-align:center}.external-row{justify-content:center}.archive-list{grid-template-columns:1fr}}
+@media(max-width:650px){.header-title{font-size:clamp(2.8rem,15vw,4.2rem)}.header-slogan{font-size:.85rem}.interactive-player-wrapper,.archive,.music-creation-notes{padding:0 15px}.player-focus{border-radius:22px}.spotify-container{height:360px}.track-item{flex-basis:235px}.music-creation-grid{grid-template-columns:1fr}.music-creation-box{padding-top:35px}}
+html[data-theme="light"] body:has(.interactive-player-wrapper){background:#f4f1ea;color:#2c2924}
+html[data-theme="light"] body:has(.interactive-player-wrapper) .page-header{background:radial-gradient(circle at 80% 20%,rgba(201,168,76,.13),transparent 35%)}
+html[data-theme="light"] body:has(.interactive-player-wrapper) .page-header:before{color:rgba(111,84,22,.055)}
+html[data-theme="light"] body:has(.interactive-player-wrapper) .header-title{color:#25211b}
+html[data-theme="light"] body:has(.interactive-player-wrapper) .header-slogan{color:#765b17}
+html[data-theme="light"] body:has(.interactive-player-wrapper) .player-focus{background:linear-gradient(135deg,#fff,#f7f3eb);border-color:rgba(93,72,24,.15);box-shadow:0 25px 60px rgba(50,40,20,.1)}
+html[data-theme="light"] body:has(.interactive-player-wrapper) .active-info h2{color:#29251f}
+html[data-theme="light"] body:has(.interactive-player-wrapper) .active-badge{color:#765b17;border-color:rgba(93,72,24,.3)}
+html[data-theme="light"] body:has(.interactive-player-wrapper) .playlist-header{color:#765b17}
+html[data-theme="light"] body:has(.interactive-player-wrapper) .track-item{background:#fff;border-color:rgba(93,72,24,.11);box-shadow:0 5px 18px rgba(50,40,20,.04)}
+html[data-theme="light"] body:has(.interactive-player-wrapper) .track-item.active{background:#fbf6e8;border-color:rgba(93,72,24,.32)}
+html[data-theme="light"] body:has(.interactive-player-wrapper) .track-details h4{color:#29251f}
+html[data-theme="light"] body:has(.interactive-player-wrapper) .track-details p{color:#777066}
+html[data-theme="light"] body:has(.interactive-player-wrapper) .archive h2,html[data-theme="light"] body:has(.interactive-player-wrapper) .archive h3,html[data-theme="light"] body:has(.interactive-player-wrapper) .music-creation-box h2,html[data-theme="light"] body:has(.interactive-player-wrapper) .music-creation-box h3{color:#765b17}
+html[data-theme="light"] body:has(.interactive-player-wrapper) .archive-intro,html[data-theme="light"] body:has(.interactive-player-wrapper) .music-story-text,html[data-theme="light"] body:has(.interactive-player-wrapper) .music-creation-lead,html[data-theme="light"] body:has(.interactive-player-wrapper) .music-creation-box p{color:#575149}
+html[data-theme="light"] body:has(.interactive-player-wrapper) .archive-album,html[data-theme="light"] body:has(.interactive-player-wrapper) .music-creation-card{background:#fff;border-color:rgba(93,72,24,.11);box-shadow:0 8px 22px rgba(50,40,20,.04)}
+html[data-theme="light"] body:has(.interactive-player-wrapper) .archive-album-title{color:#765b17}
+html[data-theme="light"] body:has(.interactive-player-wrapper) .music-creation-note{background:linear-gradient(90deg,rgba(201,168,76,.12),transparent);color:#514c44}
+html[data-theme="light"] body:has(.interactive-player-wrapper) .music-creation-card{color:#575149}
+html[data-theme="light"] body:has(.interactive-player-wrapper) .music-creation-card strong{color:#29251f}
 </style>
 </head>
 <body>
 <div id="site-nav"></div>
-<header class="page-header"><div><h1 class="header-title">MUSIC ARCHIVE</h1><p class="header-slogan" data-i18n="music_header_slogan">AI가 만들어낸 선율, 영혼을 울리는 멜로디</p></div></header>
+<header class="page-header"><div><div style="color:var(--gold);font-size:.72rem;letter-spacing:.25em;margin-bottom:14px">CHRIS LEE.PAPA / MUSIC</div><h1 class="header-title">MUSIC</h1><p class="header-slogan" data-i18n="music_header_slogan">AI가 만들어낸 선율, 영혼을 울리는 멜로디</p></div></header>
 <main class="interactive-player-wrapper"><section class="player-focus"><div class="album-art-large" id="main-cover"></div><div class="active-info"><h2 id="main-title"></h2><span class="active-badge" id="main-type"></span></div><div class="spotify-container" id="spotify-container"></div><div class="external-row"><a id="main-external-link" class="external-link-btn" target="_blank" rel="noopener" data-i18n="music_spotify_album">Spotify에서 앨범 듣기 ›</a><a id="main-youtube-link" class="external-link-btn youtube-link" target="_blank" rel="noopener" data-i18n="music_youtube_listen">YouTube에서 듣기 ›</a></div></section><aside class="playlist-sidebar"><div class="playlist-header" data-i18n="music_albums">ALBUMS</div><div id="playlist-container"></div></aside></main>
 <section class="archive"><div class="archive-box"><h2>✦ MUSIC ARCHIVE</h2><p class="archive-intro" data-i18n="music_archive_intro">Chris LEE.PAPA의 음악 작업과 글로벌 플랫폼 발매 작품을 한 곳에서 소개합니다.</p><h3>✦ 앨범에 담긴 이야기</h3><div class="archive-list" id="archive-list"></div><p class="archive-total" id="archive-total"></p></div></section>
 <section class="music-creation-notes"><div class="music-creation-box"><h2>✦ 음악 제작 기록</h2><p class="music-creation-lead">완성된 음원을 소개하는 것에서 끝나지 않고, Chris LEE.PAPA가 음악을 만들면서 어떤 질문을 던지고 어떤 선택을 했는지 기록합니다. AI는 초안과 다양한 가능성을 빠르게 시험하게 해주는 도구이지만, 무엇을 남기고 버릴지 결정하는 것은 창작자의 몫입니다.</p><div class="music-creation-note">내가 중요하게 생각하는 것은 “AI가 무엇을 만들었는가”보다 “창작자가 무엇을 선택하고 왜 그렇게 선택했는가”입니다. 그래서 결과물뿐 아니라 판단과 수정의 과정도 하나의 창작 기록으로 남깁니다.</div><h3>1. 곡은 기술보다 이유에서 시작됩니다</h3><p>가장 먼저 정하는 것은 장르나 악기가 아니라 이 곡을 왜 만들어야 하는지입니다. 가족과 함께한 기억, 다시 일어나고 싶은 마음, 스포츠의 에너지, 새로운 미래에 대한 기대처럼 특정한 감정이나 장면에서 출발합니다. 출발점이 분명하면 같은 장르의 음악도 전혀 다른 방향으로 발전합니다.</p><h3>2. AI는 초안을 돕지만 결정은 창작자가 합니다</h3><div class="music-creation-grid"><div class="music-creation-card"><strong>아이디어</strong>곡의 감정, 장면, 메시지와 청자가 느꼈으면 하는 분위기를 먼저 정합니다.</div><div class="music-creation-card"><strong>생성</strong>여러 방향의 사운드를 만들어 보고 작품의 의도에 가까운 방향을 비교합니다.</div><div class="music-creation-card"><strong>선택</strong>멜로디, 보컬, 리듬, 악기 구성 중 사용할 요소와 버릴 요소를 결정합니다.</div><div class="music-creation-card"><strong>수정</strong>가사와 구조, 에너지의 흐름을 다시 살피고 필요하면 처음 단계로 돌아갑니다.</div></div><h3>3. 가사는 음악의 일부입니다</h3><p>글로 읽었을 때 자연스러운 문장이 반드시 노래로 불렀을 때 좋은 것은 아닙니다. 음절 수, 강세, 호흡, 반복되는 소리와 멜로디의 길이를 함께 확인하고 실제 보컬에 적용하면서 다시 고칩니다. 짧은 후렴은 기억에 남아야 하고 이야기형 곡은 한 절에서 다음 절로 감정이 이동해야 합니다.</p><h3>4. 편곡에서는 더 많이보다 무엇을 남길지가 중요합니다</h3><p>화려한 사운드를 추가하는 것보다 곡의 중심을 가리지 않는 선택이 중요합니다. 댄스곡에서는 킥과 베이스가 움직임을 만들고 신스와 기타가 훅을 만들 수 있으며, 발라드에서는 보컬의 감정과 여백이 더 중요할 수 있습니다. 워십에서는 사운드의 크기보다 가사와 고백이 먼저 들려야 합니다.</p><h3>5. 좋은 결과와 내가 원하는 결과를 구분합니다</h3><p>AI가 만든 결과 중 기술적으로 완성도가 높은 곡이라도 처음 세운 이야기와 감정이 사라졌다면 채택하지 않습니다. “이 부분은 정말 필요한가?”, “보컬이 가사의 감정을 전달하는가?”, “후렴이 기억되는가?” 같은 질문이 최종 선택의 기준이 됩니다.</p><h3>6. 여러 장르를 만드는 이유</h3><p>댄스, 팝, 인스트루멘털, 오케스트라적인 연주, 워십 등 서로 다른 작업을 하는 이유는 하나의 스타일에 음악을 가두고 싶지 않기 때문입니다. 공통점은 실제 경험이나 감정에서 출발해 그것을 어떤 소리로 표현할지 고민하고, 완성된 결과가 처음 의도와 얼마나 가까운지 다시 확인한다는 것입니다.</p><h3>7. 발매 후에도 창작은 계속됩니다</h3><p>Spotify와 YouTube에 공개한 뒤에도 어떤 부분이 기억에 남는지, 제목과 음악의 관계가 자연스러운지, 다음 작품에서 무엇을 다르게 할지 다시 생각합니다. MUSIC ARCHIVE는 단순한 발매 목록이 아니라 선택과 실패와 수정이 남는 작업의 기록입니다.</p><h3>8. 지금까지 배운 가장 큰 것</h3><p>AI를 사용하면서 음악을 만드는 속도는 빨라졌지만 좋은 작품을 고르는 일은 더 중요해졌습니다. 많은 결과를 빠르게 볼 수 있기 때문에 무엇을 선택하지 않을지 결정하는 능력이 필요합니다. 결국 어떤 이야기를 하고 싶은지, 누구에게 들려주고 싶은지, 어떤 감정을 남기고 싶은지는 창작자가 결정합니다.</p></div></section>

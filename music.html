@@ -71,7 +71,48 @@ function musicLang(){return document.documentElement.lang==='en'?'en':'ko'}funct
 async function loadCover(album){if(coverCache[album.id])return coverCache[album.id];try{const r=await fetch(oembed(album.id),{cache:'force-cache'});if(!r.ok)throw new Error('oEmbed failed');const d=await r.json();if(d.thumbnail_url){coverCache[album.id]=d.thumbnail_url;return d.thumbnail_url}}catch(e){console.warn('Spotify cover unavailable:',album.title,e)}return ''}
 function setImageSource(img,album){const url=coverCache[album.id];if(url){img.src=url;img.style.visibility='visible'}else{img.removeAttribute('src');img.style.visibility='hidden'}img.onerror=()=>{img.removeAttribute('src');img.style.visibility='hidden'}}async function hydrateCovers(){await Promise.all(musicData.map(a=>loadCover(a)));renderPlaylist();renderActive()}
 function renderPlaylist(){const box=document.getElementById('playlist-container');box.innerHTML='';musicData.forEach((a,i)=>{const count=a.trackCount||a.tracks.length;const item=document.createElement('div');item.className='track-item'+(i===active?' active':'');item.onclick=()=>{active=i;renderPlaylist();renderActive()};const img=document.createElement('img');img.className='track-thumb';img.dataset.albumId=a.id;img.alt=`${a.title} album cover`;img.title=`${a.title} album cover`;setImageSource(img,a);item.appendChild(img);const details=document.createElement('div');details.className='track-details';details.innerHTML=`<h4>${a.title}</h4><p>${musicType(a.type)} · ${count} ${musicTrackLabel(count)}</p>`;item.appendChild(details);box.appendChild(item)})}
-let spotifyController=null;let spotifyApi=null;let spotifyReady=false;function setRecordPlaying(playing){document.getElementById('main-cover')?.classList.toggle('is-playing',!!playing);document.querySelector('.vinyl-record')?.classList.toggle('is-playing',!!playing)}function createSpotifyEmbed(){if(!spotifyApi||spotifyController)return;const el=document.getElementById('spotify-embed');if(!el)return;spotifyApi.createController(el,{width:'100%',height:174,url:spotify(active).replace('https://open.spotify.com/','spotify:').replace('album/','album:')},controller=>{spotifyController=controller;controller.addListener('ready',()=>{spotifyReady=true});controller.addListener('playback_started',()=>setRecordPlaying(true));controller.addListener('playback_update',e=>setRecordPlaying(!e.data.isPaused&&!e.data.isBuffering));});}window.onSpotifyIframeApiReady=api=>{spotifyApi=api;createSpotifyEmbed();};function renderActive(){const a=musicData[active];setRecordPlaying(false);document.getElementById('main-title').textContent=a.title;document.getElementById('main-type').textContent=musicType(a.type);document.getElementById('main-external-link').href=spotify(a.id);const y=document.getElementById('main-youtube-link');y.href=a.youtube;y.hidden=!a.youtube;document.getElementById('spotify-container').innerHTML='<div id="spotify-embed"></div>';spotifyController=null;document.getElementById('main-cover').style.backgroundImage=coverCache[a.id]?`url("${coverCache[a.id]}")`:'';document.getElementById('main-cover').setAttribute('aria-label',`${a.title} album cover`);document.querySelectorAll('.track-item').forEach((el,i)=>el.classList.toggle('active',i===active));if(spotifyReady)createSpotifyEmbed()}
+let spotifyController=null;let spotifyApi=null;let spotifyReady=false;let spotifyApiTimer=null;
+function setRecordPlaying(playing){document.getElementById('main-cover')?.classList.toggle('is-playing',!!playing);document.querySelector('.vinyl-record')?.classList.toggle('is-playing',!!playing)}
+function fallbackSpotifyEmbed(album){
+  const box=document.getElementById('spotify-container');
+  if(!box)return;
+  box.innerHTML=`<iframe id="spotify-fallback" src="${embed(album.id)}" title="${album.title} Spotify player" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" style="width:100%;height:174px;border:0;border-radius:10px"></iframe>`;
+}
+function createSpotifyEmbed(){
+  if(!spotifyApi||spotifyController)return;
+  const el=document.getElementById('spotify-embed');
+  if(!el)return;
+  const album=musicData[active];
+  try{
+    spotifyApi.createController(el,{width:'100%',height:174,url:spotify(album.id)},controller=>{
+      spotifyController=controller;
+      clearTimeout(spotifyApiTimer);
+      controller.addListener('ready',()=>{spotifyReady=true;setRecordPlaying(false)});
+      controller.addListener('playback_started',()=>setRecordPlaying(true));
+      controller.addListener('playback_update',e=>setRecordPlaying(!e.data.isPaused&&!e.data.isBuffering));
+    });
+    spotifyApiTimer=setTimeout(()=>{if(!spotifyController)fallbackSpotifyEmbed(album)},3500);
+  }catch(err){
+    console.warn('Spotify iframe API failed:',err);
+    fallbackSpotifyEmbed(album);
+  }
+}
+window.onSpotifyIframeApiReady=api=>{spotifyApi=api;createSpotifyEmbed()};
+function renderActive(){
+  const a=musicData[active];
+  setRecordPlaying(false);
+  document.getElementById('main-title').textContent=a.title;
+  document.getElementById('main-type').textContent=musicType(a.type);
+  document.getElementById('main-external-link').href=spotify(a.id);
+  const y=document.getElementById('main-youtube-link');y.href=a.youtube;y.hidden=!a.youtube;
+  const box=document.getElementById('spotify-container');
+  box.innerHTML='<div id="spotify-embed"></div>';
+  spotifyController=null;
+  document.getElementById('main-cover').style.backgroundImage=coverCache[a.id]?`url("${coverCache[a.id]}")`:'';
+  document.getElementById('main-cover').setAttribute('aria-label',`${a.title} album cover`);
+  document.querySelectorAll('.track-item').forEach((el,i)=>el.classList.toggle('active',i===active));
+  if(spotifyReady)createSpotifyEmbed();else setTimeout(()=>{if(!spotifyController&&!document.querySelector('#spotify-fallback'))fallbackSpotifyEmbed(a)},1800);
+}
 function renderArchive(){const box=document.getElementById('archive-list');let total=0;box.innerHTML=musicData.map(a=>{const count=a.trackCount||a.tracks.length;total+=count;const shown=a.tracks.length?`<div class="archive-tracks">${a.tracks.map((t,i)=>`<div class="archive-track"><b>${i+1}</b> ${t}</div>`).join('')}</div>`:`<div class="archive-track">${musicT('music_tracklist_spotify')}</div>`;return `<div class="archive-album"><div class="archive-album-title">${a.title} · ${musicType(a.type)} · ${count} ${musicTrackLabel(count)}</div>${shown}</div>`}).join('');document.getElementById('archive-total').textContent=`${musicT('music_total')} ${total} ${musicT('music_tracks')}`}
 function refreshMusicLanguage(){renderPlaylist();renderArchive();renderActive()}renderPlaylist();renderArchive();renderActive();hydrateCovers();let lastMusicLang=musicLang();new MutationObserver(()=>{const next=musicLang();if(next!==lastMusicLang){lastMusicLang=next;refreshMusicLanguage()}}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 </script>

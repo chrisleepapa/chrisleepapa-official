@@ -358,6 +358,15 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
             line-height:1.15!important;
             white-space:normal!important;
         }
+        /* BIBLE hero title — same header-title style as the Worship page */
+        #bible-page-hero .header-title{
+            margin:8px 0 4px;
+            font-family:Cinzel,serif;
+            font-size:clamp(3rem,10vw,5.2rem);
+            letter-spacing:.15em;
+            color:var(--gold-light);
+            font-weight:400;
+        }
         /* Bible title is longer than WORSHIP, so keep the same visual style while fitting mobile screens */
         @media (max-width:600px){
             .page-header .page-title[data-bible-title]{
@@ -532,7 +541,7 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
         <div aria-hidden="true" style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(3,3,5,.74),rgba(3,3,5,.20) 50%,rgba(3,3,5,.74)),linear-gradient(180deg,rgba(3,3,5,.05),rgba(3,3,5,.80))"></div>
         <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;z-index:1">
             <div>
-                <div class="header-title bible-hero-title" style="margin:8px 0 4px;font-family:Cinzel,serif;font-size:clamp(3rem,10vw,5.2rem);letter-spacing:.15em;font-weight:400;color:#e8d08a;line-height:1.1;white-space:nowrap">BIBLE IN MY HAND</div>
+                <h1 class="header-title bible-hero-title">BIBLE IN MY HAND</h1>
                 <div style="margin-top:16px;color:#f1eadc;font-family:'Noto Serif KR',serif;font-size:clamp(.85rem,1.6vw,1.05rem);line-height:1.8;text-shadow:0 2px 14px #000">말씀을 읽고, 마음에 남기고, 다시 돌아오기 위해 만든 나만의 성경 읽기 공간</div>
             </div>
         </div>

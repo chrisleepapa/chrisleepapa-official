@@ -251,18 +251,6 @@
         @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* 모바일 — Bible hero title must fit narrow screens */
-        @media (max-width: 600px) {
-            .page-header .page-title[data-bible-title] {
-                font-size: clamp(2rem, 10vw, 2.8rem) !important;
-                letter-spacing: .07em !important;
-                line-height: 1.15 !important;
-                white-space: nowrap !important;
-                word-break: normal !important;
-                overflow-wrap: normal !important;
-            }
-        }
-
         /* 모바일 */
         @media (max-width: 900px) {
             .page-header { padding: 120px 20px 30px; }
@@ -360,13 +348,23 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
             font-weight:800!important;
             text-shadow:0 1px 0 rgba(255,255,255,.8),0 4px 18px rgba(154,116,28,.16)!important;
         }
-        /* Match Worship page hero title typography */
+        /* Bible hero title — match Worship page banner typography */
         .page-header .page-title[data-bible-title]{
             margin:8px 0 4px!important;
             font-family:Cinzel,serif!important;
             font-size:clamp(3rem,10vw,5.2rem)!important;
             letter-spacing:.15em!important;
             font-weight:400!important;
+            line-height:1.15!important;
+            white-space:normal!important;
+        }
+        /* Bible title is longer than WORSHIP, so keep the same visual style while fitting mobile screens */
+        @media (max-width:600px){
+            .page-header .page-title[data-bible-title]{
+                font-size:clamp(2rem,10vw,3rem)!important;
+                letter-spacing:.08em!important;
+                line-height:1.2!important;
+            }
         }
         html[data-theme="light"] body:has(.bible-container) .page-header .page-title[data-bible-title]{
             color:var(--gold-light)!important;

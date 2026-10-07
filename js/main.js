@@ -1,10 +1,10 @@
 
-/* Theme preference: default to the existing dark brand theme. */
+/* Theme preference: default to light mode; keep the user's saved choice. */
 (function(){
   try{
     const saved=localStorage.getItem('clp-theme');
-    document.documentElement.dataset.theme=saved==='light'?'light':'dark';
-  }catch(_){document.documentElement.dataset.theme='dark';}
+    document.documentElement.dataset.theme=saved==='dark'?'dark':'light';
+  }catch(_){document.documentElement.dataset.theme='light';}
 })();
 /* 3단계 UX / navigation layer */
 'use strict';

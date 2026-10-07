@@ -10,9 +10,10 @@
       img,video,canvas,iframe{max-width:100%}
 
       /* Bible */
-      .page-header{padding:92px 12px 24px!important;min-height:0!important;overflow:hidden}
-      .page-title:not([data-bible-title]){font-size:2rem!important;line-height:1.25!important;letter-spacing:.09em!important;word-break:keep-all}
-      .cloud-status{font-size:.7rem;line-height:1.5;flex-wrap:wrap}
+      /* Bible banner/title are owned by bible.html so they do not flash and get replaced after load. */
+      body:not(:has(.bible-container)) .page-header{padding:92px 12px 24px!important;min-height:0!important;overflow:hidden}
+      body:not(:has(.bible-container)) .page-title{font-size:2rem!important;line-height:1.25!important;letter-spacing:.09em!important;word-break:keep-all}
+      body:not(:has(.bible-container)) .cloud-status{font-size:.7rem;line-height:1.5;flex-wrap:wrap}
       .bible-container{width:100%;max-width:100%;min-width:0;padding:0 10px 80px!important;box-sizing:border-box;overflow:hidden}
       .selector-panel{width:100%;max-width:100%;min-width:0;padding:18px 11px!important;border-radius:18px!important;margin-bottom:24px!important;min-height:0!important;box-sizing:border-box;overflow:hidden}
       .panel-header-tools{gap:6px!important;margin-bottom:16px!important;flex-wrap:wrap!important}
@@ -43,8 +44,8 @@
       th,td{white-space:normal;word-break:break-word;overflow-wrap:anywhere}
     }
     @media (max-width:390px){
-      .page-header{padding-top:82px!important;padding-bottom:20px!important}
-      .page-title:not([data-bible-title]){font-size:1.8rem!important}
+      body:not(:has(.bible-container)) .page-header{padding-top:82px!important;padding-bottom:20px!important}
+      body:not(:has(.bible-container)) .page-title{font-size:1.8rem!important}
       .bible-container{padding-left:7px!important;padding-right:7px!important}
       .selector-panel{padding:16px 9px!important}
       .book-item{padding:10px 8px!important;font-size:.77rem!important}

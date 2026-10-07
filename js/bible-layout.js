@@ -15,7 +15,22 @@
     removeDuplicateIntroBlocks();
 
     const story = document.getElementById('bible-creator-story');
-    if (!story || document.getElementById('bible-page-hero')) {
+    const existingHero = document.getElementById('bible-page-hero');
+    const bibleContainer = document.querySelector('.bible-container');
+
+    // The banner is now static in bible.html. Even when it already exists,
+    // the creator story must still be placed directly beneath it.
+    if (existingHero) {
+      if (story && bibleContainer && bibleContainer.parentNode) {
+        bibleContainer.parentNode.insertBefore(story, bibleContainer);
+        story.style.marginTop = '0';
+        story.style.marginBottom = '64px';
+      }
+      moveAccountBar();
+      return;
+    }
+
+    if (!story) {
       moveAccountBar();
       return;
     }

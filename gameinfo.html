@@ -136,6 +136,65 @@
           .game-card-title{font-size:1.12rem!important}
           .game-card-desc{font-size:.75rem!important}
         }
+        /* ── Card typography / readability ── */
+        .game-card-content-wrap{
+          padding:0 24px 24px;
+          background:linear-gradient(180deg,transparent 0%,rgba(3,3,5,.72) 12%,rgba(3,3,5,.96) 100%);
+          border-radius:0 0 22px 22px;
+          padding-top:34px;
+        }
+        .game-card-title{
+          display:inline-block;
+          font-family:'Cinzel',serif;
+          font-size:1.22rem!important;
+          font-weight:700;
+          letter-spacing:.01em;
+          color:#fff!important;
+          background:rgba(3,3,5,.58);
+          border-left:3px solid #e8d08a;
+          padding:7px 12px 7px 11px;
+          border-radius:0 8px 8px 0;
+          text-shadow:0 2px 12px rgba(0,0,0,.95);
+          box-decoration-break:clone;
+          -webkit-box-decoration-break:clone;
+        }
+        .game-card-desc{
+          display:block;
+          margin-top:7px!important;
+          color:#f2eee7!important;
+          font-weight:500;
+          text-shadow:0 2px 10px rgba(0,0,0,.95);
+          background:rgba(3,3,5,.52);
+          padding:7px 10px;
+          border-radius:8px;
+          border:1px solid rgba(255,255,255,.08);
+        }
+        .game-tag{
+          background:rgba(3,3,5,.76)!important;
+          border-color:rgba(232,208,138,.62)!important;
+          color:#ffe7a3!important;
+          text-shadow:0 1px 8px rgba(0,0,0,.9);
+        }
+        .game-card::after{
+          background:rgba(3,3,5,.72);
+          border-color:rgba(232,208,138,.42);
+          color:#ffe7a3;
+        }
+        .game-card:hover .game-card-title{
+          color:#ffe7a3!important;
+          border-left-color:#fff;
+          background:rgba(3,3,5,.72);
+        }
+        .game-card:hover .game-card-desc{
+          color:#fff!important;
+          background:rgba(3,3,5,.66);
+        }
+        @media(max-width:600px){
+          .game-card-content-wrap{padding:30px 19px 19px}
+          .game-card-title{font-size:1.05rem!important}
+          .game-card-desc{font-size:.74rem!important}
+        }
+
         /* Light mode */
         html[data-theme="light"] .game-selection-wrapper{background:transparent}
         html[data-theme="light"] .game-hero-copy{color:#57535c}

@@ -535,6 +535,27 @@
       pointer-events: none;
     }
 
+    /* ── Dark Mode readability ── */
+    html[data-theme="dark"] .gb-tag{color:rgba(232,208,138,.85)}
+    html[data-theme="dark"] .gb-title{color:rgba(255,252,244,.94)}
+    html[data-theme="dark"] .gb-label{color:rgba(232,208,138,.82)}
+    html[data-theme="dark"] .gb-name-hint{color:rgba(220,216,208,.62)}
+    html[data-theme="dark"] .gb-name-hint.error{color:rgba(255,130,110,.9)}
+    html[data-theme="dark"] .gb-input,html[data-theme="dark"] .gb-textarea{color:rgba(255,252,244,.95)}
+    html[data-theme="dark"] .gb-input::placeholder,html[data-theme="dark"] .gb-textarea::placeholder{color:rgba(220,216,208,.58)}
+    html[data-theme="dark"] .gb-char-count{color:rgba(220,216,208,.62)}
+    html[data-theme="dark"] .gb-char-count.warn{color:rgba(255,165,110,.9)}
+    html[data-theme="dark"] .gb-list-label{color:rgba(232,208,138,.85)}
+    html[data-theme="dark"] .gb-count-badge{color:rgba(232,208,138,.9)}
+    html[data-theme="dark"] .gb-entry-name{color:rgba(255,252,244,.96)}
+    html[data-theme="dark"] .gb-entry-date{color:rgba(220,216,208,.62)}
+    html[data-theme="dark"] .gb-entry-page{color:rgba(232,208,138,.78);border-color:rgba(201,168,76,.24)}
+    html[data-theme="dark"] .gb-entry-text{color:rgba(255,252,244,.88)}
+    html[data-theme="dark"] .gb-empty{color:rgba(220,216,208,.55)}
+    html[data-theme="dark"] .gb-loading{color:rgba(232,208,138,.65)}
+    html[data-theme="dark"] .gb-load-more-btn{color:rgba(232,208,138,.75)}
+    html[data-theme="dark"] .gb-load-more-btn:hover{color:rgba(232,208,138,.95)}
+
     /* ── Light Mode ── */
     html[data-theme="light"] #guestbook-section{background:#f3eee5;border-top-color:rgba(118,91,23,.18)}
     html[data-theme="light"] #guestbook-section::before{background:linear-gradient(90deg,transparent,rgba(118,91,23,.45),transparent)}

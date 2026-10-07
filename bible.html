@@ -525,13 +525,16 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
     </div>
 
     <!-- ── 본문 시작 ── -->
-    <header class="page-header">
-        <h1 class="page-title" data-bible-title>Bible in my hand</h1>
-        <div class="cloud-status" id="cloudStatusIcon">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
-            <span id="cloudStatusText">로컬 저장 모드</span>
+    <section id="bible-page-hero" aria-label="Bible in my hand banner" style="position:relative;width:100%;height:clamp(260px,32vw,430px);margin:0 0 52px;overflow:hidden;background:#030305;border-top:1px solid rgba(201,168,76,.12);border-bottom:1px solid rgba(201,168,76,.25);box-shadow:0 18px 60px rgba(0,0,0,.45)">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Psalm_118.jpg/2560px-Psalm_118.jpg" alt="Bible opened to Psalm 118" loading="eager" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;object-position:center 58%;filter:saturate(.72) contrast(1.05);transform:scale(1.01)">
+        <div aria-hidden="true" style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(3,3,5,.74),rgba(3,3,5,.20) 50%,rgba(3,3,5,.74)),linear-gradient(180deg,rgba(3,3,5,.05),rgba(3,3,5,.80))"></div>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;z-index:1">
+            <div>
+                <div class="header-title bible-hero-title" style="margin:8px 0 4px;font-family:Cinzel,serif;font-size:clamp(3rem,10vw,5.2rem);letter-spacing:.15em;font-weight:400;color:#e8d08a;line-height:1.1;white-space:nowrap">BIBLE IN MY HAND</div>
+                <div style="margin-top:16px;color:#f1eadc;font-family:'Noto Serif KR',serif;font-size:clamp(.85rem,1.6vw,1.05rem);line-height:1.8;text-shadow:0 2px 14px #000">말씀을 읽고, 마음에 남기고, 다시 돌아오기 위해 만든 나만의 성경 읽기 공간</div>
+            </div>
         </div>
-    </header>
+    </section>
 
     <!-- ── SEO 정적 소개 블록 (구글 봇용 / 사용자에게도 자연스럽게 노출) ── -->
     <section class="bible-intro-section" style="max-width:900px; margin:0 auto 32px; padding:0 24px;">

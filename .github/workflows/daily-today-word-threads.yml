@@ -91,7 +91,7 @@ jobs:
 
           git fetch origin threads-media 2>/dev/null || true
           if git show-ref --verify --quiet refs/remotes/origin/threads-media; then
-            git checkout -B threads-media origin/threads-media
+            git checkout -B threads-media origin/threads-media --force
           else
             git checkout -B threads-media
           fi

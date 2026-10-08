@@ -66,6 +66,7 @@ html[data-theme="light"] .home-static-content h1{color:#2f2a22}html[data-theme="
 .chris-news-inner{max-width:1280px;margin:0 auto}.chris-news-head{display:flex;align-items:end;justify-content:space-between;gap:28px;margin-bottom:34px}
 .chris-news-kicker{margin:0 0 8px;color:#8b6a19;font:700 .62rem Cinzel,serif;letter-spacing:.32em;text-transform:uppercase}
 .chris-news-title{margin:0;color:#302a20;font:600 clamp(2rem,5vw,3.1rem)/1.05 'Cormorant Garamond','Noto Serif KR',serif}
+.chris-news-share{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;padding:10px 15px;border:1px solid rgba(139,106,25,.42);border-radius:999px;background:transparent;color:#8b6a19;font:700 .62rem Pretendard,sans-serif;letter-spacing:.08em;cursor:pointer;transition:all .2s ease}.chris-news-share:hover{background:#8b6a19;color:#fff;border-color:#8b6a19}.chris-news-share:active{transform:scale(.98)}.chris-news-share-icon{font-size:.9rem;line-height:1}@media(max-width:720px){.chris-news-share{margin-top:12px;padding:9px 13px}.chris-news-head{align-items:flex-start;flex-direction:column}.chris-news-desc{text-align:left}}
 .chris-news-desc{max-width:560px;margin:0;color:rgba(37,37,37,.58);font:.82rem/1.75 Pretendard,sans-serif;word-break:keep-all;text-align:right}
 .chris-news-grid{display:flex;gap:22px;overflow-x:auto;padding:5px 4px 28px;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:rgba(139,106,25,.45) transparent;cursor:grab;user-select:none}
 .chris-news-grid:active{cursor:grabbing}
@@ -101,11 +102,51 @@ html[data-theme="dark"] .chris-news-card-kicker,html[data-theme="dark"] .chris-n
     <p>일상의 경험과 두 딸과 함께 만든 이야기에서 출발한 창작 활동을 음악, 영상, 출판, 캐릭터와 게임으로 확장하고 있습니다.</p>
   </noscript>
 </section>
-
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+  const root=document.getElementById('chris-news');
+  const button=document.getElementById('chris-news-share');
+  if(!root||!button)return;
+  const getLang=()=>document.documentElement.lang==='en'?'en':'ko';
+  const value=(el,key)=>el?.getAttribute('data-'+key)||el?.textContent.trim()||'';
+  const buildShare=()=>{
+    const lang=getLang();
+    const cards=[...root.querySelectorAll('.chris-news-card')];
+    const date=cards[0]?.querySelector('.chris-news-card-date');
+    const lines=cards.map((card,i)=>{
+      const title=card.querySelector('h3');
+      const summary=card.querySelector('.chris-news-summary');
+      return (i+1)+'. '+value(title,lang)+'\n'+value(summary,lang);
+    });
+    const heading=lang==='en'?"Chris's News — Today's 6-card briefing":"Chris's News — 오늘의 전체 카드뉴스";
+    const intro=lang==='en'?'Six stories selected from major international coverage, with key context.':'전 세계 주요 외신을 바탕으로 정리한 오늘의 6개 카드뉴스입니다.';
+    const dateText=value(date,lang);
+    return heading+'\n'+(dateText?dateText+'\n':'')+intro+'\n\n'+lines.join('\n\n')+'\n\n'+location.href.split('#')[0]+'#chris-news';
+  };
+  const setLabel=()=>{
+    const lang=getLang();
+    const label=button.querySelector('.chris-news-share-label');
+    if(label)label.textContent=lang==='en'?'Share today\'s cards':'전체 카드뉴스 공유';
+    button.setAttribute('aria-label',lang==='en'?'Share all of today\'s Chris\'s News cards':'오늘의 Chris\'s News 전체 카드뉴스 공유');
+  };
+  button.addEventListener('click',async()=>{
+    const shareData={title:"Chris's News",text:buildShare(),url:location.href.split('#')[0]+'#chris-news'};
+    try{
+      if(navigator.share) await navigator.share(shareData);
+      else if(navigator.clipboard){await navigator.clipboard.writeText(shareData.text);alert(getLang()==='en'?'The news briefing was copied to your clipboard.':'오늘의 전체 카드뉴스 내용이 클립보드에 복사되었습니다.');}
+      else alert(getLang()==='en'?'Sharing is not supported on this browser.':'이 브라우저에서는 공유 기능을 지원하지 않습니다.');
+    }catch(error){
+      if(error?.name!=='AbortError') console.error('Chris News share failed:',error);
+    }
+  });
+  setLabel();
+  new MutationObserver(setLabel).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+});
+</script>
 <section id="chris-news" aria-labelledby="chris-news-title">
   <div class="chris-news-inner">
     <div class="chris-news-head">
-      <div><p class="chris-news-kicker" data-ko="세계 · 최신 · 큐레이션" data-en="WORLD · CURRENT · CURATED">세계 · 최신 · 큐레이션</p><h2 id="chris-news-title" class="chris-news-title">Chris's News</h2></div>
+      <div><p class="chris-news-kicker" data-ko="세계 · 최신 · 큐레이션" data-en="WORLD · CURRENT · CURATED">세계 · 최신 · 큐레이션</p><h2 id="chris-news-title" class="chris-news-title">Chris's News</h2><button type="button" class="chris-news-share" id="chris-news-share" data-ko="전체 카드뉴스 공유" data-en="Share today's cards"><span class="chris-news-share-icon" aria-hidden="true">↗</span><span class="chris-news-share-label">전체 카드뉴스 공유</span></button></div>
       <p class="chris-news-desc" data-ko="전날 전 세계 주요 언론의 보도를 교차 확인해 6개 분야에서 한 가지씩 골라 핵심과 맥락을 정리합니다." data-en="We cross-check major international reports from the previous day and select one story from each of six categories, with context and key points.">전날 전 세계 주요 언론의 보도를 교차 확인해 6개 분야에서 한 가지씩 골라 핵심과 맥락을 정리합니다.</p>
     </div>
     <div class="chris-news-grid">

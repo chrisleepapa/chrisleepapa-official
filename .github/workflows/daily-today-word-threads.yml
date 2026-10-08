@@ -1,0 +1,117 @@
+name: Daily Today Word to Threads
+
+on:
+  schedule:
+    # 07:00 KST = 22:00 UTC (previous day)
+    - cron: "0 22 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: daily-today-word-threads
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  post-today-word:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Production main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Playwright
+        run: |
+          npm init -y
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Render the exact Production Today’s Word image
+        env:
+          TODAY_URL: https://chrisleepapa-official.vercel.app/today
+        run: |
+          cat > /tmp/render-today-word.mjs <<'EOF'
+          import { chromium } from 'playwright';
+          import { writeFile } from 'node:fs/promises';
+
+          const browser = await chromium.launch({ headless: true });
+          const page = await browser.newPage({ viewport: { width: 1440, height: 1200 }, deviceScaleFactor: 1 });
+
+          await page.goto(process.env.TODAY_URL, { waitUntil: 'networkidle', timeout: 120000 });
+
+          await page.waitForFunction(() => typeof createTodayWordCard === 'function', null, { timeout: 30000 });
+          await page.waitForFunction(() => typeof bibleVerses !== 'undefined' && bibleVerses.length > 0, null, { timeout: 60000 });
+          await page.evaluate(async () => { await document.fonts.ready; });
+
+          const base64 = await page.evaluate(async () => {
+            // The public Production page normally follows the user's language setting.
+            // Threads should receive the Korean Today’s Word consistently.
+            window.getCurrentLang = () => 'ko';
+            const blob = await createTodayWordCard();
+            if (!blob) throw new Error('createTodayWordCard() returned no image');
+            const buffer = await blob.arrayBuffer();
+            let binary = '';
+            const bytes = new Uint8Array(buffer);
+            const chunk = 0x8000;
+            for (let i = 0; i < bytes.length; i += chunk) {
+              binary += String.fromCharCode(...bytes.subarray(i, i + chunk));
+            }
+            return btoa(binary);
+          });
+
+          await writeFile('automation/threads/todays-word.png', Buffer.from(base64, 'base64'));
+          await browser.close();
+          EOF
+
+          mkdir -p automation/threads
+          node /tmp/render-today-word.mjs
+
+      - name: Publish image to public GitHub URL
+        id: media
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git fetch origin threads-media 2>/dev/null || true
+          if git show-ref --verify --quiet refs/remotes/origin/threads-media; then
+            git checkout -B threads-media origin/threads-media
+          else
+            git checkout -B threads-media
+          fi
+
+          mkdir -p automation/threads
+          git add automation/threads/todays-word.png
+          git commit -m "Update daily Today’s Word image" || true
+          git push origin threads-media
+
+          COMMIT_SHA="$(git rev-parse HEAD)"
+          echo "image_url=https://raw.githubusercontent.com/chrisleepapa/chrisleepapa-official/$COMMIT_SHA/automation/threads/todays-word.png" >> "$GITHUB_OUTPUT"
+          echo "image_url=https://raw.githubusercontent.com/chrisleepapa/chrisleepapa-official/$COMMIT_SHA/automation/threads/todays-word.png"
+
+      - name: Publish to Threads
+        env:
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+          IMAGE_URL: ${{ steps.media.outputs.image_url }}
+        run: |
+          if [ -z "$THREADS_ACCESS_TOKEN" ]; then
+            echo "THREADS_ACCESS_TOKEN GitHub Secret is not configured."
+            exit 1
+          fi
+
+          CREATE_RESPONSE="$(curl --fail-with-body -sS -X POST "https://graph.threads.net/me/threads"             --data-urlencode "media_type=IMAGE"             --data-urlencode "image_url=$IMAGE_URL"             --data-urlencode "text=오늘의 말씀 📖"             --data-urlencode "alt_text=Chris LEE.PAPA 오늘의 말씀")"
+
+          echo "$CREATE_RESPONSE"
+
+          CONTAINER_ID="$(printf '%s' "$CREATE_RESPONSE" | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{const j=JSON.parse(s);if(!j.id)process.exit(1);process.stdout.write(j.id)})")"
+
+          curl --fail-with-body -sS -X POST "https://graph.threads.net/me/threads_publish"             --data-urlencode "creation_id=$CONTAINER_ID"             --data-urlencode "access_token=$THREADS_ACCESS_TOKEN"

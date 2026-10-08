@@ -18,13 +18,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Production main
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: main
           fetch-depth: 0
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 22
 
@@ -39,8 +39,12 @@ jobs:
           TODAY_URL: https://chrisleepapa-official.vercel.app/today
         run: |
           cat > /tmp/render-today-word.mjs <<'EOF'
-          import { chromium } from 'playwright';
+          import { createRequire } from 'node:module';
           import { writeFile } from 'node:fs/promises';
+
+          // The script lives in /tmp, so resolve Playwright from the GitHub workspace.
+          const require = createRequire(`${process.cwd()}/package.json`);
+          const { chromium } = require('playwright');
 
           const browser = await chromium.launch({ headless: true });
           const page = await browser.newPage({ viewport: { width: 1440, height: 1200 }, deviceScaleFactor: 1 });
@@ -52,7 +56,6 @@ jobs:
           await page.evaluate(async () => { await document.fonts.ready; });
 
           const base64 = await page.evaluate(async () => {
-            // The public Production page normally follows the user's language setting.
             // Threads should receive the Korean Today’s Word consistently.
             window.getCurrentLang = () => 'ko';
             const blob = await createTodayWordCard();
@@ -108,10 +111,17 @@ jobs:
             exit 1
           fi
 
-          CREATE_RESPONSE="$(curl --fail-with-body -sS -X POST "https://graph.threads.net/me/threads"             --data-urlencode "access_token=$THREADS_ACCESS_TOKEN"             --data-urlencode "media_type=IMAGE"             --data-urlencode "image_url=$IMAGE_URL"             --data-urlencode "text=오늘의 말씀 📖"             --data-urlencode "alt_text=Chris LEE.PAPA 오늘의 말씀")"
+          CREATE_RESPONSE="$(curl --fail-with-body -sS -X POST "https://graph.threads.net/me/threads" \
+            --data-urlencode "access_token=$THREADS_ACCESS_TOKEN" \
+            --data-urlencode "media_type=IMAGE" \
+            --data-urlencode "image_url=$IMAGE_URL" \
+            --data-urlencode "text=오늘의 말씀 📖" \
+            --data-urlencode "alt_text=Chris LEE.PAPA 오늘의 말씀")"
 
           echo "$CREATE_RESPONSE"
 
           CONTAINER_ID="$(printf '%s' "$CREATE_RESPONSE" | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{const j=JSON.parse(s);if(!j.id)process.exit(1);process.stdout.write(j.id)})")"
 
-          curl --fail-with-body -sS -X POST "https://graph.threads.net/me/threads_publish"             --data-urlencode "creation_id=$CONTAINER_ID"             --data-urlencode "access_token=$THREADS_ACCESS_TOKEN"
+          curl --fail-with-body -sS -X POST "https://graph.threads.net/me/threads_publish" \
+            --data-urlencode "creation_id=$CONTAINER_ID" \
+            --data-urlencode "access_token=$THREADS_ACCESS_TOKEN"

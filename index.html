@@ -66,7 +66,8 @@ html[data-theme="light"] .home-static-content h1{color:#2f2a22}html[data-theme="
 .chris-news-inner{max-width:1280px;margin:0 auto}.chris-news-head{display:flex;align-items:end;justify-content:space-between;gap:28px;margin-bottom:34px}
 .chris-news-kicker{margin:0 0 8px;color:#8b6a19;font:700 .62rem Cinzel,serif;letter-spacing:.32em;text-transform:uppercase}
 .chris-news-title{margin:0;color:#302a20;font:600 clamp(2rem,5vw,3.1rem)/1.05 'Cormorant Garamond','Noto Serif KR',serif}
-.chris-news-share{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;padding:10px 15px;border:1px solid rgba(139,106,25,.42);border-radius:999px;background:transparent;color:#8b6a19;font:700 .62rem Pretendard,sans-serif;letter-spacing:.08em;cursor:pointer;transition:all .2s ease}.chris-news-share:hover{background:#8b6a19;color:#fff;border-color:#8b6a19}.chris-news-share:active{transform:scale(.98)}.chris-news-share-icon{font-size:.9rem;line-height:1}@media(max-width:720px){.chris-news-share{margin-top:12px;padding:9px 13px}.chris-news-head{align-items:flex-start;flex-direction:column}.chris-news-desc{text-align:left}}
+.chris-news-share-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chris-news-share{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:0;padding:10px 15px;border:1px solid rgba(139,106,25,.42);border-radius:999px;background:transparent;color:#8b6a19;font:700 .62rem Pretendard,sans-serif;letter-spacing:.08em;cursor:pointer;transition:all .2s ease}.chris-news-share:hover{background:#8b6a19;color:#fff;border-color:#8b6a19}.chris-news-share:active{transform:scale(.98)}.chris-news-share-icon{font-size:.9rem;line-height:1}@media(max-width:720px){.chris-news-share-actions{margin-top:12px}.chris-news-share{padding:9px 13px}.chris-news-head{align-items:flex-start;flex-direction:column}.chris-news-desc{text-align:left}}
 .chris-news-desc{max-width:560px;margin:0;color:rgba(37,37,37,.58);font:.82rem/1.75 Pretendard,sans-serif;word-break:keep-all;text-align:right}
 .chris-news-grid{display:flex;gap:22px;overflow-x:auto;padding:5px 4px 28px;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:rgba(139,106,25,.45) transparent;cursor:grab;user-select:none}
 .chris-news-grid:active{cursor:grabbing}
@@ -106,9 +107,12 @@ html[data-theme="dark"] .chris-news-card-kicker,html[data-theme="dark"] .chris-n
 document.addEventListener('DOMContentLoaded',()=>{
   const root=document.getElementById('chris-news');
   const button=document.getElementById('chris-news-share');
-  if(!root||!button)return;
+  const imageButton=document.getElementById('chris-news-image');
+  if(!root||!button||!imageButton)return;
+
   const getLang=()=>document.documentElement.lang==='en'?'en':'ko';
   const value=(el,key)=>el?.getAttribute('data-'+key)||el?.textContent.trim()||'';
+
   const buildShare=()=>{
     const lang=getLang();
     const cards=[...root.querySelectorAll('.chris-news-card')];
@@ -123,30 +127,110 @@ document.addEventListener('DOMContentLoaded',()=>{
     const dateText=value(date,lang);
     return heading+'\n'+(dateText?dateText+'\n':'')+intro+'\n\n'+lines.join('\n\n')+'\n\n'+location.href.split('#')[0]+'#chris-news';
   };
-  const setLabel=()=>{
+
+  const getCards=()=>{
     const lang=getLang();
-    const label=button.querySelector('.chris-news-share-label');
-    if(label)label.textContent=lang==='en'?'Share today\'s cards':'전체 카드뉴스 공유';
-    button.setAttribute('aria-label',lang==='en'?'Share all of today\'s Chris\'s News cards':'오늘의 Chris\'s News 전체 카드뉴스 공유');
+    return [...root.querySelectorAll('.chris-news-card')].map((card,i)=>({
+      no:String(i+1).padStart(2,'0'),
+      date:value(card.querySelector('.chris-news-card-date'),lang),
+      kicker:value(card.querySelector('.chris-news-card-kicker'),lang),
+      title:value(card.querySelector('h3'),lang).replace(/<br\s*\/?\s*>/gi,' '),
+      summary:value(card.querySelector('.chris-news-summary'),lang),
+      points:[...card.querySelectorAll('.chris-news-point')].map(el=>value(el,lang)),
+      source:value(card.querySelector('.chris-news-source'),lang)
+    }));
   };
-  button.addEventListener('click',async()=>{
-    const shareData={title:"Chris's News",text:buildShare(),url:location.href.split('#')[0]+'#chris-news'};
+
+  const wrapText=(ctx,text,x,y,maxWidth,lineHeight,maxLines)=>{
+    const chars=[...text]; let line='',lines=[];
+    for(const ch of chars){
+      const test=line+ch;
+      if(ctx.measureText(test).width>maxWidth&&line){lines.push(line);line=ch;if(lines.length===maxLines)break;}
+      else line=test;
+    }
+    if(lines.length<maxLines&&line)lines.push(line);
+    if(lines.length===maxLines&&lines[maxLines-1]&&chars.join('').length>lines.join('').length) {
+      let last=lines[maxLines-1];
+      while(ctx.measureText(last+'…').width>maxWidth)last=last.slice(0,-1);
+      lines[maxLines-1]=last+'…';
+    }
+    lines.forEach((line,i)=>ctx.fillText(line,x,y+i*lineHeight));
+    return y+lines.length*lineHeight;
+  };
+
+  const makeNewsImage=async()=>{
+    const lang=getLang(), cards=getCards();
+    const W=1080,H=1920,totalH=H*cards.length;
+    const canvas=document.createElement('canvas'); canvas.width=W; canvas.height=totalH;
+    const ctx=canvas.getContext('2d');
+    ctx.textBaseline='top';
+    cards.forEach((card,i)=>{
+      const y=i*H;
+      ctx.fillStyle='#08080b';ctx.fillRect(0,y,W,H);
+      ctx.fillStyle='#c9a84c';ctx.fillRect(0,y,10,H);
+      ctx.fillStyle='#f4efe5';ctx.font='700 30px Arial';ctx.fillText("CHRIS LEE.PAPA",70,y+70);
+      ctx.fillStyle='#8b6a19';ctx.font='700 22px Arial';ctx.fillText('CHRIS\'S NEWS',70,y+120);
+      ctx.fillStyle='rgba(244,239,229,.5)';ctx.font='500 20px Arial';ctx.fillText(card.date,790,y+122);
+      ctx.fillStyle='#c9a84c';ctx.font='600 24px Arial';ctx.fillText('CARD '+card.no+'  ·  '+card.kicker,70,y+205);
+      ctx.fillStyle='#f8f3e8';ctx.font='700 58px Arial';wrapText(ctx,card.title,70,y+270,940,75,3);
+      ctx.fillStyle='#c9a84c';ctx.fillRect(70,y+525,940,2);
+      ctx.fillStyle='#ddd7cc';ctx.font='400 30px Arial';wrapText(ctx,card.summary,70,y+575,900,48,5);
+      let py=y+860;
+      ctx.fillStyle='#f8f3e8';ctx.font='700 25px Arial';ctx.fillText(lang==='en'?'KEY POINTS':'핵심 포인트',70,py);py+=55;
+      ctx.font='500 24px Arial';ctx.fillStyle='#bdb7ad';
+      card.points.forEach(p=>{ctx.fillStyle='#c9a84c';ctx.beginPath();ctx.arc(82,py+14,5,0,Math.PI*2);ctx.fill();ctx.fillStyle='#bdb7ad';py=wrapText(ctx,p,105,py,865,38,2)+24;});
+      ctx.fillStyle='rgba(244,239,229,.34)';ctx.font='500 18px Arial';ctx.fillText(card.source,70,y+1780);
+      ctx.fillStyle='rgba(244,239,229,.22)';ctx.font='400 18px Arial';ctx.fillText(lang==='en'?'Cross-checked international reporting · chrisleepapa-official.vercel.app':'주요 국제 언론 교차 확인 · chrisleepapa-official.vercel.app',70,y+1825);
+      ctx.fillStyle='rgba(244,239,229,.16)';ctx.fillRect(70,y+1870,940,1);
+    });
+    return new Promise(resolve=>canvas.toBlob(resolve,'image/png',1));
+  };
+
+  const downloadBlob=(blob)=>{
+    const url=URL.createObjectURL(blob),a=document.createElement('a');
+    a.href=url;a.download='chris-news-'+new Date().toISOString().slice(0,10)+'.png';
+    document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+  };
+
+  const setLabels=()=>{
+    const lang=getLang();
+    const label=button.querySelector('.chris-news-share-label'),save=imageButton.querySelector('.chris-news-share-label');
+    if(label)label.textContent=lang==='en'?"Share today's cards":'전체 카드뉴스 공유';
+    if(save)save.textContent=lang==='en'?'Save image':'이미지 저장';
+    button.setAttribute('aria-label',lang==='en'?"Share all of today's Chris's News cards":'오늘의 Chris\'s News 전체 카드뉴스 공유');
+    imageButton.setAttribute('aria-label',lang==='en'?'Save all six Chris\'s News cards as one image':'오늘의 Chris\'s News 6장을 하나의 이미지로 저장');
+  };
+
+  imageButton.addEventListener('click',async()=>{
+    imageButton.disabled=true;
     try{
-      if(navigator.share) await navigator.share(shareData);
-      else if(navigator.clipboard){await navigator.clipboard.writeText(shareData.text);alert(getLang()==='en'?'The news briefing was copied to your clipboard.':'오늘의 전체 카드뉴스 내용이 클립보드에 복사되었습니다.');}
+      const blob=await makeNewsImage();
+      if(blob)downloadBlob(blob);
+    }finally{imageButton.disabled=false;}
+  });
+
+  button.addEventListener('click',async()=>{
+    try{
+      const blob=await makeNewsImage();
+      const file=new File([blob],'chris-news-'+new Date().toISOString().slice(0,10)+'.png',{type:'image/png'});
+      const shareData={title:"Chris's News",text:buildShare(),files:[file]};
+      if(navigator.canShare?.({files:[file]})&&navigator.share) await navigator.share(shareData);
+      else if(navigator.share) await navigator.share({title:"Chris's News",text:buildShare(),url:location.href.split('#')[0]+'#chris-news'});
+      else if(navigator.clipboard){await navigator.clipboard.writeText(buildShare());alert(getLang()==='en'?'Image sharing is not available here. The briefing text was copied instead.':'이 환경에서는 이미지 공유를 지원하지 않아 뉴스 내용이 대신 클립보드에 복사되었습니다.');}
       else alert(getLang()==='en'?'Sharing is not supported on this browser.':'이 브라우저에서는 공유 기능을 지원하지 않습니다.');
     }catch(error){
-      if(error?.name!=='AbortError') console.error('Chris News share failed:',error);
+      if(error?.name!=='AbortError')console.error('Chris News image share failed:',error);
     }
   });
-  setLabel();
-  new MutationObserver(setLabel).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+
+  setLabels();
+  new MutationObserver(setLabels).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 });
 </script>
 <section id="chris-news" aria-labelledby="chris-news-title">
   <div class="chris-news-inner">
     <div class="chris-news-head">
-      <div><p class="chris-news-kicker" data-ko="세계 · 최신 · 큐레이션" data-en="WORLD · CURRENT · CURATED">세계 · 최신 · 큐레이션</p><h2 id="chris-news-title" class="chris-news-title">Chris's News</h2><button type="button" class="chris-news-share" id="chris-news-share" data-ko="전체 카드뉴스 공유" data-en="Share today's cards"><span class="chris-news-share-icon" aria-hidden="true">↗</span><span class="chris-news-share-label">전체 카드뉴스 공유</span></button></div>
+      <div><p class="chris-news-kicker" data-ko="세계 · 최신 · 큐레이션" data-en="WORLD · CURRENT · CURATED">세계 · 최신 · 큐레이션</p><h2 id="chris-news-title" class="chris-news-title">Chris's News</h2><div class="chris-news-share-actions"><button type="button" class="chris-news-share" id="chris-news-share" data-ko="전체 카드뉴스 공유" data-en="Share today's cards"><span class="chris-news-share-icon" aria-hidden="true">↗</span><span class="chris-news-share-label">전체 카드뉴스 공유</span></button><button type="button" class="chris-news-share chris-news-image-save" id="chris-news-image" data-ko="이미지 저장" data-en="Save image"><span class="chris-news-share-icon" aria-hidden="true">↓</span><span class="chris-news-share-label">이미지 저장</span></button></div></div>
       <p class="chris-news-desc" data-ko="전날 전 세계 주요 언론의 보도를 교차 확인해 6개 분야에서 한 가지씩 골라 핵심과 맥락을 정리합니다." data-en="We cross-check major international reports from the previous day and select one story from each of six categories, with context and key points.">전날 전 세계 주요 언론의 보도를 교차 확인해 6개 분야에서 한 가지씩 골라 핵심과 맥락을 정리합니다.</p>
     </div>
     <div class="chris-news-grid">

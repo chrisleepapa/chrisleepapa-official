@@ -108,7 +108,7 @@ jobs:
             exit 1
           fi
 
-          CREATE_RESPONSE="$(curl --fail-with-body -sS -X POST "https://graph.threads.net/me/threads"             --data-urlencode "media_type=IMAGE"             --data-urlencode "image_url=$IMAGE_URL"             --data-urlencode "text=오늘의 말씀 📖"             --data-urlencode "alt_text=Chris LEE.PAPA 오늘의 말씀")"
+          CREATE_RESPONSE="$(curl --fail-with-body -sS -X POST "https://graph.threads.net/me/threads"             --data-urlencode "access_token=$THREADS_ACCESS_TOKEN"             --data-urlencode "media_type=IMAGE"             --data-urlencode "image_url=$IMAGE_URL"             --data-urlencode "text=오늘의 말씀 📖"             --data-urlencode "alt_text=Chris LEE.PAPA 오늘의 말씀")"
 
           echo "$CREATE_RESPONSE"
 

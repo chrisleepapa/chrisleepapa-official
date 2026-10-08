@@ -38,6 +38,7 @@ jobs:
         env:
           TODAY_URL: https://chrisleepapa-official.vercel.app/today
         run: |
+          mkdir -p automation/threads
           cat > automation/render-today-word.mjs <<'EOF'
           import { createRequire } from 'node:module';
           import { writeFile } from 'node:fs/promises';
@@ -74,7 +75,6 @@ jobs:
           await browser.close();
           EOF
 
-          mkdir -p automation/threads
           node automation/render-today-word.mjs
 
       - name: Publish image to public GitHub URL

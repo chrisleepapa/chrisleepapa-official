@@ -122,6 +122,37 @@ jobs:
 
           CONTAINER_ID="$(printf '%s' "$CREATE_RESPONSE" | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{const j=JSON.parse(s);if(!j.id)process.exit(1);process.stdout.write(j.id)})")"
 
-          curl --fail-with-body -sS -X POST "https://graph.threads.net/me/threads_publish" \
+          # IMAGE containers are processed asynchronously by Threads.
+          # Wait until the same container reports FINISHED before publishing it.
+          for attempt in 1 2 3 4 5; do
+            STATUS_RESPONSE="$(curl --fail-with-body -sS \
+              --get "https://graph.threads.net/$CONTAINER_ID" \
+              --data-urlencode "fields=status,error_message" \
+              --data-urlencode "access_token=$THREADS_ACCESS_TOKEN")"
+
+            echo "Container status attempt $attempt: $STATUS_RESPONSE"
+
+            STATUS="$(printf '%s' "$STATUS_RESPONSE" | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{const j=JSON.parse(s);process.stdout.write(j.status||'')})")"
+
+            if [ "$STATUS" = "FINISHED" ]; then
+              break
+            fi
+
+            if [ "$STATUS" = "ERROR" ] || [ "$STATUS" = "EXPIRED" ]; then
+              echo "Threads container failed: $STATUS_RESPONSE"
+              exit 1
+            fi
+
+            if [ "$attempt" -eq 5 ]; then
+              echo "Threads container did not reach FINISHED within 5 minutes."
+              exit 1
+            fi
+
+            sleep 60
+          done
+
+          PUBLISH_RESPONSE="$(curl --fail-with-body -sS -X POST "https://graph.threads.net/me/threads_publish" \
             --data-urlencode "creation_id=$CONTAINER_ID" \
-            --data-urlencode "access_token=$THREADS_ACCESS_TOKEN"
+            --data-urlencode "access_token=$THREADS_ACCESS_TOKEN")"
+
+          echo "Threads publish response: $PUBLISH_RESPONSE"

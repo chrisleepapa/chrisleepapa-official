@@ -219,9 +219,19 @@ document.addEventListener('DOMContentLoaded',()=>{
       const shareData={title:"Chris's News",text:buildShare(),files:[file]};
       if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
         await navigator.share(shareData);
+      }else if(navigator.clipboard&&window.ClipboardItem){
+        try{
+          const item=new ClipboardItem({'image/png':blob});
+          await navigator.clipboard.write([item]);
+          alert(getLang()==='en'?'The six-card image was copied to your clipboard. Paste it directly into KakaoTalk or Threads.':'6장 카드뉴스 이미지가 클립보드에 복사되었습니다. 카카오톡이나 Threads에 Ctrl+V로 바로 붙여넣어 공유하세요.');
+        }catch(clipboardError){
+          console.warn('Chris News clipboard share unavailable:',clipboardError);
+          downloadBlob(blob);
+          alert(getLang()==='en'?'The image was saved. Attach the PNG to KakaoTalk or Threads.':'이미지가 저장되었습니다. PNG 파일을 카카오톡이나 Threads에 첨부해 공유하세요.');
+        }
       }else{
         downloadBlob(blob);
-        alert(getLang()==='en'?'The image was saved. You can attach it to KakaoTalk or Threads.':'카드뉴스 이미지가 저장되었습니다. 카카오톡이나 Threads에서 이 이미지를 첨부해 공유하세요.');
+        alert(getLang()==='en'?'The image was saved. Attach the PNG to KakaoTalk or Threads.':'이미지가 저장되었습니다. PNG 파일을 카카오톡이나 Threads에 첨부해 공유하세요.');
       }
     }catch(error){
       if(error?.name!=='AbortError'){

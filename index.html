@@ -158,14 +158,12 @@ document.addEventListener('DOMContentLoaded',()=>{
     return y+lines.length*lineHeight;
   };
 
-  const makeNewsImage=async()=>{
-    const lang=getLang(), cards=getCards();
-    const W=720,H=1280,totalH=H*cards.length;
-    const canvas=document.createElement('canvas'); canvas.width=W; canvas.height=totalH;
+  const drawNewsCard=async(card,lang)=>{
+    const W=720,H=1280;
+    const canvas=document.createElement('canvas'); canvas.width=W; canvas.height=H;
     const ctx=canvas.getContext('2d');
     ctx.textBaseline='top';
-    cards.forEach((card,i)=>{
-      const y=i*H;
+    const y=0;
       ctx.fillStyle='#08080b';ctx.fillRect(0,y,W,H);
       ctx.fillStyle='#c9a84c';ctx.fillRect(0,y,10,H);
       ctx.fillStyle='#f4efe5';ctx.font='700 22px Arial';ctx.fillText("CHRIS LEE.PAPA",46,y+48);
@@ -182,15 +180,21 @@ document.addEventListener('DOMContentLoaded',()=>{
       ctx.fillStyle='rgba(244,239,229,.34)';ctx.font='500 13px Arial';ctx.fillText(card.source,46,y+1168);
       ctx.fillStyle='rgba(244,239,229,.22)';ctx.font='400 13px Arial';ctx.fillText(lang==='en'?'Cross-checked international reporting · chrisleepapa-official.vercel.app':'주요 국제 언론 교차 확인 · chrisleepapa-official.vercel.app',46,y+1198);
       ctx.fillStyle='rgba(244,239,229,.16)';ctx.fillRect(46,y+1230,628,1);
-    });
     return new Promise((resolve,reject)=>{
       canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('PNG creation failed')),'image/png');
     });
   };
 
-  const downloadBlob=(blob)=>{
+  const makeNewsImages=async()=>{
+    const lang=getLang(), cards=getCards();
+    const blobs=[];
+    for(const card of cards) blobs.push(await drawNewsCard(card,lang));
+    return blobs;
+  };
+
+  const downloadBlob=(blob,filename)=>{
     const url=URL.createObjectURL(blob),a=document.createElement('a');
-    a.href=url;a.download='chris-news-'+new Date().toISOString().slice(0,10)+'.png';
+    a.href=url;a.download=filename||'chris-news-'+new Date().toISOString().slice(0,10)+'.png';
     document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
   };
 
@@ -206,16 +210,24 @@ document.addEventListener('DOMContentLoaded',()=>{
   imageButton.addEventListener('click',async()=>{
     imageButton.disabled=true;
     try{
-      const blob=await makeNewsImage();
-      if(blob)downloadBlob(blob);
+      const blobs=await makeNewsImages();
+      const date=new Date().toISOString().slice(0,10);
+      blobs.forEach((blob,i)=>{
+        setTimeout(()=>downloadBlob(blob,'chris-news-'+date+'-card-'+String(i+1).padStart(2,'0')+'.png'),i*350);
+      });
+      setTimeout(()=>alert(getLang()==='en'?'Six card images are being saved separately.':'6장의 카드 이미지가 각각 저장됩니다.'),100);
+    }catch(error){
+      console.error('Chris News image save failed:',error);
+      alert(getLang()==='en'?'The six card images could not be created. Please try again.':'6장의 카드 이미지를 만드는 중 문제가 발생했습니다. 다시 시도해주세요.');
     }finally{imageButton.disabled=false;}
   });
 
   button.addEventListener('click',async()=>{
     button.disabled=true;
     try{
-      const blob=await makeNewsImage();
-      const file=new File([blob],'chris-news-'+new Date().toISOString().slice(0,10)+'.png',{type:'image/png'});
+      const blobs=await makeNewsImages();
+      const blob=blobs[0];
+      const file=new File([blob],'chris-news-'+new Date().toISOString().slice(0,10)+'-card-01.png',{type:'image/png'});
       const shareData={title:"Chris's News",text:buildShare(),files:[file]};
       if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
         await navigator.share(shareData);

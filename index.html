@@ -223,92 +223,90 @@ document.addEventListener('DOMContentLoaded',()=>{
   });
 
   const isDesktop=()=>window.matchMedia('(min-width: 721px)').matches;
-  let preparedShareBlob=null;
-  let preparedShareUrl=null;
-
-  const createCombinedNewsImage=async()=>{
-    const blobs=await makeNewsImages();
-    const W=720,H=1280;
-    const canvas=document.createElement('canvas'); canvas.width=W; canvas.height=H*blobs.length;
-    const ctx=canvas.getContext('2d');
-    for(let i=0;i<blobs.length;i++){
-      const img=new Image();
-      const url=URL.createObjectURL(blobs[i]);
-      await new Promise((resolve,reject)=>{
-        img.onload=()=>{URL.revokeObjectURL(url);resolve();};
-        img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error('Image load failed'));};
-        img.src=url;
-      });
-      ctx.drawImage(img,0,i*H,W,H);
-    }
-    return new Promise((resolve,reject)=>{
-      canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('Combined PNG creation failed')),'image/png');
-    });
-  };
+  let shareBlobs=[];
 
   const showDesktopShare=async()=>{
-    const blob=await createCombinedNewsImage();
-    if(preparedShareUrl)URL.revokeObjectURL(preparedShareUrl);
-    preparedShareBlob=blob;
-    preparedShareUrl=URL.createObjectURL(blob);
+    shareBlobs=await makeNewsImages();
     let modal=document.getElementById('chris-news-share-modal');
     if(!modal){
       modal=document.createElement('div');
       modal.id='chris-news-share-modal';
       modal.innerHTML=`
         <div class="chris-news-share-backdrop"></div>
-        <div class="chris-news-share-dialog" role="dialog" aria-modal="true" aria-label="Chris's News share">
+        <div class="chris-news-share-dialog" role="dialog" aria-modal="true">
           <button type="button" class="chris-news-share-close" aria-label="Close">×</button>
-          <p class="chris-news-share-dialog-title">Chris's News</p>
-          <p class="chris-news-share-dialog-desc">6장 카드뉴스를 하나의 이미지로 준비했습니다.</p>
-          <img class="chris-news-share-preview" alt="Chris's News six-card preview">
+          <p class="chris-news-share-dialog-title">CHRIS'S NEWS</p>
+          <p class="chris-news-share-dialog-desc">PC에서는 브라우저가 여러 이미지를 직접 외부 앱으로 보내는 기능을 지원하지 않습니다.<br>아래에서 6장을 각각 복사하거나 한 번에 저장한 뒤 카카오톡·Threads에 붙여넣을 수 있습니다.</p>
+          <div class="chris-news-share-preview-grid"></div>
           <div class="chris-news-share-dialog-actions">
-            <button type="button" class="chris-news-share-copy">이미지 복사</button>
-            <button type="button" class="chris-news-share-download">이미지 저장</button>
+            <button type="button" class="chris-news-share-copy-all">6장 순서대로 복사</button>
+            <button type="button" class="chris-news-share-download-all">6장 모두 저장</button>
           </div>
-          <p class="chris-news-share-dialog-note">이미지 복사를 누른 뒤 카카오톡·Threads에서 Ctrl+V로 붙여넣으세요.</p>
+          <p class="chris-news-share-dialog-note">각 카드의 「복사」를 누르면 해당 카드가 클립보드에 들어갑니다. 카카오톡/Threads에서 Ctrl+V로 붙여넣으세요.</p>
         </div>`;
       document.body.appendChild(modal);
-      const close=()=>{modal.hidden=true;};
-      modal.querySelector('.chris-news-share-close').onclick=close;
-      modal.querySelector('.chris-news-share-backdrop').onclick=close;
-      modal.querySelector('.chris-news-share-download').onclick=()=>{
-        if(preparedShareBlob)downloadBlob(preparedShareBlob,'chris-news-'+new Date().toISOString().slice(0,10)+'.png');
+      modal.querySelector('.chris-news-share-close').onclick=()=>modal.hidden=true;
+      modal.querySelector('.chris-news-share-backdrop').onclick=()=>modal.hidden=true;
+      modal.querySelector('.chris-news-share-download-all').onclick=()=>{
+        const date=new Date().toISOString().slice(0,10);
+        shareBlobs.forEach((blob,i)=>setTimeout(()=>downloadBlob(blob,'chris-news-'+date+'-card-'+String(i+1).padStart(2,'0')+'.png'),i*350));
       };
-      modal.querySelector('.chris-news-share-copy').onclick=async()=>{
-        if(!preparedShareBlob)return;
+      modal.querySelector('.chris-news-share-copy-all').onclick=async()=>{
+        if(!navigator.clipboard||!window.ClipboardItem){
+          alert('이 PC 브라우저는 이미지 클립보드를 지원하지 않습니다. 각 카드의 저장 버튼을 이용해주세요.');
+          return;
+        }
         try{
-          if(navigator.clipboard&&window.ClipboardItem){
-            const item=new ClipboardItem({'image/png':preparedShareBlob});
+          for(let i=0;i<shareBlobs.length;i++){
+            const item=new ClipboardItem({'image/png':shareBlobs[i]});
             await navigator.clipboard.write([item]);
-            alert('6장 카드뉴스 이미지가 클립보드에 복사되었습니다. 카카오톡이나 Threads에서 Ctrl+V로 붙여넣으세요.');
-          }else{
-            downloadBlob(preparedShareBlob,'chris-news-'+new Date().toISOString().slice(0,10)+'.png');
-            alert('이 브라우저는 이미지 복사를 지원하지 않아 이미지 파일을 저장했습니다.');
+            if(i<shareBlobs.length-1) await new Promise(r=>setTimeout(r,900));
           }
+          alert('6장이 순서대로 클립보드에 복사되었습니다. 마지막 카드부터 붙여넣는 방식은 브라우저 제한이 있으니, 가장 확실한 방법은 각 카드의 「복사」 버튼을 사용하세요.');
         }catch(error){
-          console.error('Desktop image copy failed:',error);
-          downloadBlob(preparedShareBlob,'chris-news-'+new Date().toISOString().slice(0,10)+'.png');
-          alert('이미지 복사가 차단되어 PNG 파일을 저장했습니다. 저장된 이미지를 카카오톡이나 Threads에 첨부하세요.');
+          console.error('Desktop image copy sequence failed:',error);
+          alert('브라우저가 연속 이미지 복사를 차단했습니다. 각 카드의 「복사」 버튼을 이용해주세요.');
         }
       };
       const style=document.createElement('style');
       style.textContent=`
         #chris-news-share-modal{position:fixed;inset:0;z-index:99999}
-        .chris-news-share-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.68);backdrop-filter:blur(5px)}
-        .chris-news-share-dialog{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(92vw,520px);max-height:90vh;overflow:auto;box-sizing:border-box;padding:26px;border:1px solid rgba(201,168,76,.35);border-radius:22px;background:#101015;color:#f4efe5;box-shadow:0 30px 90px rgba(0,0,0,.5)}
-        .chris-news-share-close{position:absolute;right:14px;top:10px;border:0;background:transparent;color:#ddd;font-size:28px;cursor:pointer}
-        .chris-news-share-dialog-title{margin:0;color:#e8d08a;font:700 20px Cinzel,serif;letter-spacing:.08em}
-        .chris-news-share-dialog-desc{margin:7px 35px 16px 0;color:rgba(244,239,229,.68);font:14px/1.6 Pretendard,sans-serif}
-        .chris-news-share-preview{display:block;width:100%;height:auto;max-height:55vh;object-fit:contain;border-radius:12px;background:#08080b}
-        .chris-news-share-dialog-actions{display:flex;gap:9px;margin-top:15px}
+        .chris-news-share-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(6px)}
+        .chris-news-share-dialog{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(94vw,900px);max-height:92vh;overflow:auto;box-sizing:border-box;padding:26px;border:1px solid rgba(201,168,76,.35);border-radius:22px;background:#101015;color:#f4efe5;box-shadow:0 30px 90px rgba(0,0,0,.55)}
+        .chris-news-share-close{position:absolute;right:14px;top:8px;border:0;background:transparent;color:#ddd;font-size:30px;cursor:pointer}
+        .chris-news-share-dialog-title{margin:0;color:#e8d08a;font:700 20px Cinzel,serif;letter-spacing:.1em}
+        .chris-news-share-dialog-desc{margin:8px 40px 18px 0;color:rgba(244,239,229,.68);font:13px/1.7 Pretendard,sans-serif}
+        .chris-news-share-preview-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+        .chris-news-share-item{padding:10px;border:1px solid rgba(255,255,255,.1);border-radius:14px;background:#08080b}
+        .chris-news-share-item img{display:block;width:100%;height:330px;object-fit:contain;border-radius:8px;background:#050507}
+        .chris-news-share-item button{width:100%;margin-top:8px;padding:9px;border:1px solid rgba(201,168,76,.4);border-radius:999px;background:transparent;color:#e8d08a;font:700 12px Pretendard,sans-serif;cursor:pointer}
+        .chris-news-share-dialog-actions{display:flex;gap:9px;margin-top:16px}
         .chris-news-share-dialog-actions button{flex:1;padding:12px;border:1px solid rgba(201,168,76,.45);border-radius:999px;background:transparent;color:#e8d08a;font:700 13px Pretendard,sans-serif;cursor:pointer}
-        .chris-news-share-dialog-actions button:hover{background:#8b6a19;color:#fff}
         .chris-news-share-dialog-note{margin:12px 0 0;color:rgba(244,239,229,.42);font:12px/1.6 Pretendard,sans-serif}
+        @media(max-width:720px){.chris-news-share-preview-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.chris-news-share-item img{height:250px}}
       `;
       document.head.appendChild(style);
     }
-    modal.querySelector('.chris-news-share-preview').src=preparedShareUrl;
+    const grid=modal.querySelector('.chris-news-share-preview-grid');
+    grid.innerHTML='';
+    shareBlobs.forEach((blob,i)=>{
+      const item=document.createElement('div'); item.className='chris-news-share-item';
+      const img=document.createElement('img'); img.alt='Chris News card '+(i+1); img.src=URL.createObjectURL(blob);
+      const copy=document.createElement('button'); copy.type='button'; copy.textContent='카드 '+(i+1)+' 이미지 복사';
+      copy.onclick=async()=>{
+        try{
+          if(!navigator.clipboard||!window.ClipboardItem)throw new Error('Clipboard API unavailable');
+          await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);
+          copy.textContent='복사 완료 ✓';
+          setTimeout(()=>copy.textContent='카드 '+(i+1)+' 이미지 복사',1400);
+        }catch(error){
+          console.error('Card copy failed:',error);
+          downloadBlob(blob,'chris-news-'+new Date().toISOString().slice(0,10)+'-card-'+String(i+1).padStart(2,'0')+'.png');
+          alert('이미지 복사가 차단되어 카드 '+(i+1)+'을 PNG로 저장했습니다.');
+        }
+      };
+      item.append(img,copy); grid.appendChild(item);
+    });
     modal.hidden=false;
   };
 
@@ -321,17 +319,17 @@ document.addEventListener('DOMContentLoaded',()=>{
       }
       const blobs=await makeNewsImages();
       const files=blobs.map((blob,i)=>new File([blob],'chris-news-'+new Date().toISOString().slice(0,10)+'-card-'+String(i+1).padStart(2,'0')+'.png',{type:'image/png'}));
-      const shareData={title:"Chris's News",text:buildShare(),files};
       if(navigator.share&&navigator.canShare&&navigator.canShare({files})){
-        await navigator.share(shareData);
+        await navigator.share({title:"Chris's News",text:buildShare(),files});
       }else{
-        downloadBlob(files[0],'chris-news-'+new Date().toISOString().slice(0,10)+'-card-01.png');
-        alert(getLang()==='en'?'The first card was saved. You can share the six saved card images.':'첫 번째 카드 이미지가 저장되었습니다. 6장의 저장된 카드 이미지를 공유해주세요.');
+        const date=new Date().toISOString().slice(0,10);
+        blobs.forEach((blob,i)=>setTimeout(()=>downloadBlob(blob,'chris-news-'+date+'-card-'+String(i+1).padStart(2,'0')+'.png'),i*350));
+        alert(getLang()==='en'?'The six card images are being saved separately.':'6장의 카드 이미지가 각각 저장됩니다.');
       }
     }catch(error){
       if(error?.name!=='AbortError'){
         console.error('Chris News image share failed:',error);
-        alert(getLang()==='en'?'The card-news image could not be prepared. Please try again.':'카드뉴스 이미지를 준비하는 중 문제가 발생했습니다. 다시 시도해주세요.');
+        alert(getLang()==='en'?'The card-news images could not be prepared. Please try again.':'카드뉴스 이미지를 준비하는 중 문제가 발생했습니다. 다시 시도해주세요.');
       }
     }finally{button.disabled=false;}
   });

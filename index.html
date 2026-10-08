@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   const makeNewsImage=async()=>{
     const lang=getLang(), cards=getCards();
-    const W=1080,H=1920,totalH=H*cards.length;
+    const W=720,H=1280,totalH=H*cards.length;
     const canvas=document.createElement('canvas'); canvas.width=W; canvas.height=totalH;
     const ctx=canvas.getContext('2d');
     ctx.textBaseline='top';
@@ -168,22 +168,24 @@ document.addEventListener('DOMContentLoaded',()=>{
       const y=i*H;
       ctx.fillStyle='#08080b';ctx.fillRect(0,y,W,H);
       ctx.fillStyle='#c9a84c';ctx.fillRect(0,y,10,H);
-      ctx.fillStyle='#f4efe5';ctx.font='700 30px Arial';ctx.fillText("CHRIS LEE.PAPA",70,y+70);
-      ctx.fillStyle='#8b6a19';ctx.font='700 22px Arial';ctx.fillText('CHRIS\'S NEWS',70,y+120);
-      ctx.fillStyle='rgba(244,239,229,.5)';ctx.font='500 20px Arial';ctx.fillText(card.date,790,y+122);
-      ctx.fillStyle='#c9a84c';ctx.font='600 24px Arial';ctx.fillText('CARD '+card.no+'  ·  '+card.kicker,70,y+205);
-      ctx.fillStyle='#f8f3e8';ctx.font='700 58px Arial';wrapText(ctx,card.title,70,y+270,940,75,3);
-      ctx.fillStyle='#c9a84c';ctx.fillRect(70,y+525,940,2);
-      ctx.fillStyle='#ddd7cc';ctx.font='400 30px Arial';wrapText(ctx,card.summary,70,y+575,900,48,5);
-      let py=y+860;
-      ctx.fillStyle='#f8f3e8';ctx.font='700 25px Arial';ctx.fillText(lang==='en'?'KEY POINTS':'핵심 포인트',70,py);py+=55;
-      ctx.font='500 24px Arial';ctx.fillStyle='#bdb7ad';
-      card.points.forEach(p=>{ctx.fillStyle='#c9a84c';ctx.beginPath();ctx.arc(82,py+14,5,0,Math.PI*2);ctx.fill();ctx.fillStyle='#bdb7ad';py=wrapText(ctx,p,105,py,865,38,2)+24;});
-      ctx.fillStyle='rgba(244,239,229,.34)';ctx.font='500 18px Arial';ctx.fillText(card.source,70,y+1780);
-      ctx.fillStyle='rgba(244,239,229,.22)';ctx.font='400 18px Arial';ctx.fillText(lang==='en'?'Cross-checked international reporting · chrisleepapa-official.vercel.app':'주요 국제 언론 교차 확인 · chrisleepapa-official.vercel.app',70,y+1825);
-      ctx.fillStyle='rgba(244,239,229,.16)';ctx.fillRect(70,y+1870,940,1);
+      ctx.fillStyle='#f4efe5';ctx.font='700 22px Arial';ctx.fillText("CHRIS LEE.PAPA",46,y+48);
+      ctx.fillStyle='#8b6a19';ctx.font='700 17px Arial';ctx.fillText('CHRIS\'S NEWS',46,y+84);
+      ctx.fillStyle='rgba(244,239,229,.5)';ctx.font='500 15px Arial';ctx.fillText(card.date,520,y+86);
+      ctx.fillStyle='#c9a84c';ctx.font='600 18px Arial';ctx.fillText('CARD '+card.no+'  ·  '+card.kicker,46,y+140);
+      ctx.fillStyle='#f8f3e8';ctx.font='700 39px Arial';wrapText(ctx,card.title,46,y+185,628,50,3);
+      ctx.fillStyle='#c9a84c';ctx.fillRect(46,y+355,628,2);
+      ctx.fillStyle='#ddd7cc';ctx.font='400 20px Arial';wrapText(ctx,card.summary,46,y+390,600,32,5);
+      let py=y+575;
+      ctx.fillStyle='#f8f3e8';ctx.font='700 18px Arial';ctx.fillText(lang==='en'?'KEY POINTS':'핵심 포인트',46,py);py+=38;
+      ctx.font='500 17px Arial';ctx.fillStyle='#bdb7ad';
+      card.points.forEach(p=>{ctx.fillStyle='#c9a84c';ctx.beginPath();ctx.arc(56,py+10,3.5,0,Math.PI*2);ctx.fill();ctx.fillStyle='#bdb7ad';py=wrapText(ctx,p,72,py,600,27,2)+18;});
+      ctx.fillStyle='rgba(244,239,229,.34)';ctx.font='500 13px Arial';ctx.fillText(card.source,46,y+1168);
+      ctx.fillStyle='rgba(244,239,229,.22)';ctx.font='400 13px Arial';ctx.fillText(lang==='en'?'Cross-checked international reporting · chrisleepapa-official.vercel.app':'주요 국제 언론 교차 확인 · chrisleepapa-official.vercel.app',46,y+1198);
+      ctx.fillStyle='rgba(244,239,229,.16)';ctx.fillRect(46,y+1230,628,1);
     });
-    return new Promise(resolve=>canvas.toBlob(resolve,'image/png',1));
+    return new Promise((resolve,reject)=>{
+      canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('PNG creation failed')),'image/png');
+    });
   };
 
   const downloadBlob=(blob)=>{
@@ -210,17 +212,23 @@ document.addEventListener('DOMContentLoaded',()=>{
   });
 
   button.addEventListener('click',async()=>{
+    button.disabled=true;
     try{
       const blob=await makeNewsImage();
       const file=new File([blob],'chris-news-'+new Date().toISOString().slice(0,10)+'.png',{type:'image/png'});
       const shareData={title:"Chris's News",text:buildShare(),files:[file]};
-      if(navigator.canShare?.({files:[file]})&&navigator.share) await navigator.share(shareData);
-      else if(navigator.share) await navigator.share({title:"Chris's News",text:buildShare(),url:location.href.split('#')[0]+'#chris-news'});
-      else if(navigator.clipboard){await navigator.clipboard.writeText(buildShare());alert(getLang()==='en'?'Image sharing is not available here. The briefing text was copied instead.':'이 환경에서는 이미지 공유를 지원하지 않아 뉴스 내용이 대신 클립보드에 복사되었습니다.');}
-      else alert(getLang()==='en'?'Sharing is not supported on this browser.':'이 브라우저에서는 공유 기능을 지원하지 않습니다.');
+      if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
+        await navigator.share(shareData);
+      }else{
+        downloadBlob(blob);
+        alert(getLang()==='en'?'The image was saved. You can attach it to KakaoTalk or Threads.':'카드뉴스 이미지가 저장되었습니다. 카카오톡이나 Threads에서 이 이미지를 첨부해 공유하세요.');
+      }
     }catch(error){
-      if(error?.name!=='AbortError')console.error('Chris News image share failed:',error);
-    }
+      if(error?.name!=='AbortError'){
+        console.error('Chris News image share failed:',error);
+        alert(getLang()==='en'?'The card-news image could not be created. Please try again.':'카드뉴스 이미지를 만드는 중 문제가 발생했습니다. 다시 시도해주세요.');
+      }
+    }finally{button.disabled=false;}
   });
 
   setLabels();

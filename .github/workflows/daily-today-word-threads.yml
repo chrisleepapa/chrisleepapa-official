@@ -85,6 +85,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
+          # The PNG was generated from Production main. Keep it outside the main worktree
+          # while switching to the dedicated public-media branch.
+          cp automation/threads/todays-word.png /tmp/todays-word.png
+
           git fetch origin threads-media 2>/dev/null || true
           if git show-ref --verify --quiet refs/remotes/origin/threads-media; then
             git checkout -B threads-media origin/threads-media
@@ -93,6 +97,7 @@ jobs:
           fi
 
           mkdir -p automation/threads
+          cp /tmp/todays-word.png automation/threads/todays-word.png
           git add automation/threads/todays-word.png
           git commit -m "Update daily Today’s Word image" || true
           git push origin threads-media

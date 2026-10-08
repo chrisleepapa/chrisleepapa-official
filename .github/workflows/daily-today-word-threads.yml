@@ -38,12 +38,12 @@ jobs:
         env:
           TODAY_URL: https://chrisleepapa-official.vercel.app/today
         run: |
-          cat > /tmp/render-today-word.mjs <<'EOF'
+          cat > automation/render-today-word.mjs <<'EOF'
           import { createRequire } from 'node:module';
           import { writeFile } from 'node:fs/promises';
 
-          // The script lives in /tmp, so resolve Playwright from the GitHub workspace.
-          const require = createRequire(`${process.cwd()}/package.json`);
+          // Keep the renderer inside the workspace so Node resolves Playwright from workspace/node_modules.
+          const require = createRequire(import.meta.url);
           const { chromium } = require('playwright');
 
           const browser = await chromium.launch({ headless: true });
@@ -75,7 +75,7 @@ jobs:
           EOF
 
           mkdir -p automation/threads
-          node /tmp/render-today-word.mjs
+          node automation/render-today-word.mjs
 
       - name: Publish image to public GitHub URL
         id: media

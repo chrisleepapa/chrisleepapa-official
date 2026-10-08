@@ -67,31 +67,19 @@ html[data-theme="light"] .home-static-content h1{color:#2f2a22}html[data-theme="
 .chris-news-kicker{margin:0 0 8px;color:#8b6a19;font:700 .62rem Cinzel,serif;letter-spacing:.32em;text-transform:uppercase}
 .chris-news-title{margin:0;color:#302a20;font:600 clamp(2rem,5vw,3.1rem)/1.05 'Cormorant Garamond','Noto Serif KR',serif}
 .chris-news-share-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-.chris-news-share{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:0;padding:10px 15px;border:1px solid rgba(139,106,25,.42);border-radius:999px;background:transparent;color:#8b6a19;font:700 .62rem Pretendard,sans-serif;letter-spacing:.08em;cursor:pointer;transition:all .2s ease}.chris-news-share:hover{background:#8b6a19;color:#fff;border-color:#8b6a19}.chris-news-share:active{transform:scale(.98)}.chris-news-share-icon{font-size:.9rem;line-height:1}@media(max-width:720px){.chris-news-share-actions{margin-top:12px}.chris-news-share{padding:9px 13px}.chris-news-head{align-items:flex-start;flex-direction:column}.chris-news-desc{text-align:left}}
+.chris-news-share{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:0;padding:10px 15px;border:1px solid rgba(139,106,25,.42);border-radius:999px;background:transparent;color:#8b6a19;font:700 .62rem Pretendard,sans-serif;letter-spacing:.08em;cursor:pointer;transition:all .2s ease}.chris-news-share:hover{background:#8b6a19;color:#fff;border-color:#8b6a19}.chris-news-share:active{transform:scale(.98)}.chris-news-share-icon{font-size:.9rem;line-height:1}
 .chris-news-desc{max-width:560px;margin:0;color:rgba(37,37,37,.58);font:.82rem/1.75 Pretendard,sans-serif;word-break:keep-all;text-align:right}
-.chris-news-grid{display:flex;gap:22px;overflow-x:auto;padding:5px 4px 28px;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:rgba(139,106,25,.45) transparent;cursor:grab;user-select:none}
-.chris-news-grid:active{cursor:grabbing}
-.chris-news-card{position:relative;display:flex;flex-direction:column;flex:0 0 clamp(330px,27vw,380px);aspect-ratio:3/5;border:1px solid rgba(37,37,37,.12);border-radius:22px;overflow:hidden;background:#fff;box-shadow:0 16px 42px rgba(30,25,15,.10);scroll-snap-align:start;transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease;box-sizing:border-box;padding:30px 30px 26px}
+.chris-news-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;padding:5px 4px 28px}
+.chris-news-card{position:relative;display:flex;flex-direction:column;min-width:0;aspect-ratio:3/5;border:1px solid rgba(37,37,37,.12);border-radius:22px;overflow:hidden;background:#fff;box-shadow:0 16px 42px rgba(30,25,15,.10);transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease;box-sizing:border-box;padding:30px 30px 26px}
 .chris-news-card:hover{transform:translateY(-5px);border-color:rgba(139,106,25,.4);box-shadow:0 22px 50px rgba(30,25,15,.14)}
-.chris-news-card-top{display:flex;justify-content:space-between;align-items:center;color:#8b6a19;font:700 .62rem Cinzel,serif;letter-spacing:.14em}
-.chris-news-card-date{color:rgba(37,37,37,.42);font:500 .62rem Pretendard,sans-serif;letter-spacing:.03em}
-.chris-news-card-kicker{margin:32px 0 13px;color:#8b6a19;font:600 1rem/1.35 'Noto Serif KR',serif;letter-spacing:-.02em}
-.chris-news-card h3{margin:0;color:#302a20;font:700 clamp(1.85rem,2.7vw,2.35rem)/1.28 'Noto Serif KR',serif;letter-spacing:-.045em;word-break:keep-all}
-.chris-news-summary{margin:22px 0 0;color:#4d4942;font:400 .94rem/1.82 Pretendard,'Noto Sans KR',sans-serif;letter-spacing:-.015em;word-break:keep-all}
-.chris-news-points{margin:22px 0 0;padding:16px 0 0;border-top:1px solid rgba(37,37,37,.10);display:grid;gap:9px}
-.chris-news-point{display:grid;grid-template-columns:7px 1fr;gap:9px;color:#5b564e;font:500 .76rem/1.55 Pretendard,'Noto Sans KR',sans-serif;word-break:keep-all}
-.chris-news-point::before{content:'•';color:#c9a84c;font-size:1rem;line-height:1}
-.chris-news-card-footer{margin-top:auto;padding-top:20px;border-top:1px solid rgba(37,37,37,.10);display:flex;align-items:end;justify-content:space-between;gap:15px}
-.chris-news-source{color:#6b665e;font:600 .55rem/1.5 Pretendard,sans-serif;letter-spacing:.07em}
-.chris-news-read{color:#8b6a19;font:700 .55rem Pretendard,sans-serif;letter-spacing:.13em;white-space:nowrap}
-.chris-news-note{margin:5px 0 0;color:rgba(37,37,37,.48);font:.66rem/1.7 Pretendard,sans-serif}.chris-news-note strong{color:#8b6a19}
+.chris-news-card-top{display:flex;justify-content:space-between;align-items:center;color:#8b6a19;font:700 .62rem Cinzel,serif;letter-spacing:.14em}.chris-news-card-date{color:rgba(37,37,37,.42);font:500 .62rem Pretendard,sans-serif;letter-spacing:.03em}
+.chris-news-card-kicker{margin:32px 0 13px;color:#8b6a19;font:600 1rem/1.35 'Noto Serif KR',serif;letter-spacing:-.02em}.chris-news-card h3{margin:0;color:#302a20;font:700 clamp(1.85rem,2.7vw,2.35rem)/1.28 'Noto Serif KR',serif;letter-spacing:-.045em;word-break:keep-all}.chris-news-summary{margin:22px 0 0;color:#4d4942;font:400 .94rem/1.82 Pretendard,'Noto Sans KR',sans-serif;letter-spacing:-.015em;word-break:keep-all}
+.chris-news-points{margin:22px 0 0;padding:16px 0 0;border-top:1px solid rgba(37,37,37,.10);display:grid;gap:9px}.chris-news-point{display:grid;grid-template-columns:7px 1fr;gap:9px;color:#5b564e;font:500 .76rem/1.55 Pretendard,'Noto Sans KR',sans-serif;word-break:keep-all}.chris-news-point::before{content:'•';color:#c9a84c;font-size:1rem;line-height:1}.chris-news-card-footer{margin-top:auto;padding-top:20px;border-top:1px solid rgba(37,37,37,.10);display:flex;align-items:end;justify-content:space-between;gap:15px}.chris-news-source{color:#6b665e;font:600 .55rem/1.5 Pretendard,sans-serif;letter-spacing:.07em}.chris-news-note{margin:5px 0 0;color:rgba(37,37,37,.48);font:.66rem/1.7 Pretendard,sans-serif}.chris-news-note strong{color:#8b6a19}
 html[data-theme="dark"] #chris-news{background:linear-gradient(180deg,#050507 0%,#08080d 100%);border-top-color:rgba(201,168,76,.12);border-bottom-color:rgba(201,168,76,.10)}
-html[data-theme="dark"] .chris-news-title{color:#f8f3e8}html[data-theme="dark"] .chris-news-desc{color:rgba(240,236,228,.5)}
-html[data-theme="dark"] .chris-news-card{border-color:rgba(255,255,255,.11);background:#0b0b10;box-shadow:0 18px 50px rgba(0,0,0,.28)}
-html[data-theme="dark"] .chris-news-card:hover{border-color:rgba(201,168,76,.46);box-shadow:0 22px 50px rgba(0,0,0,.34)}
-html[data-theme="dark"] .chris-news-card-kicker,html[data-theme="dark"] .chris-news-read{color:#e8d08a}html[data-theme="dark"] .chris-news-card h3{color:#f8f3e8}html[data-theme="dark"] .chris-news-summary{color:rgba(240,236,228,.72)}html[data-theme="dark"] .chris-news-point{color:rgba(240,236,228,.58)}html[data-theme="dark"] .chris-news-card-date,html[data-theme="dark"] .chris-news-source{color:rgba(240,236,228,.45)}html[data-theme="dark"] .chris-news-points,html[data-theme="dark"] .chris-news-card-footer{border-color:rgba(255,255,255,.10)}html[data-theme="dark"] .chris-news-note{color:rgba(255,255,255,.45)}
+html[data-theme="dark"] .chris-news-title{color:#f8f3e8}html[data-theme="dark"] .chris-news-desc{color:rgba(240,236,228,.5)}html[data-theme="dark"] .chris-news-card{border-color:rgba(255,255,255,.11);background:#0b0b10;box-shadow:0 18px 50px rgba(0,0,0,.28)}html[data-theme="dark"] .chris-news-card:hover{border-color:rgba(201,168,76,.46);box-shadow:0 22px 50px rgba(0,0,0,.34)}html[data-theme="dark"] .chris-news-card-kicker{color:#e8d08a}html[data-theme="dark"] .chris-news-card h3{color:#f8f3e8}html[data-theme="dark"] .chris-news-summary{color:rgba(240,236,228,.72)}html[data-theme="dark"] .chris-news-point{color:rgba(240,236,228,.58)}html[data-theme="dark"] .chris-news-card-date,html[data-theme="dark"] .chris-news-source{color:rgba(240,236,228,.45)}html[data-theme="dark"] .chris-news-points,html[data-theme="dark"] .chris-news-card-footer{border-color:rgba(255,255,255,.10)}html[data-theme="dark"] .chris-news-note{color:rgba(255,255,255,.45)}
 @media(max-width:900px){.chris-news-head{display:block}.chris-news-desc{margin-top:12px;text-align:left}}
-@media(max-width:700px){#chris-news{padding:58px 12px 64px}.chris-news-grid{gap:12px;padding:5px 2px 20px}.chris-news-card{flex-basis:calc(100vw - 30px);max-width:380px;aspect-ratio:3/5;border-radius:18px;padding:25px 23px 22px}.chris-news-card-kicker{margin-top:26px;font-size:.9rem}.chris-news-card h3{font-size:clamp(1.85rem,8vw,2.15rem);line-height:1.3}.chris-news-summary{margin-top:18px;font-size:.88rem;line-height:1.75}.chris-news-points{margin-top:17px;padding-top:13px}.chris-news-point{font-size:.7rem}.chris-news-card-footer{padding-top:15px}}
+@media(max-width:700px){#chris-news{padding:58px 12px 64px}.chris-news-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:5px 2px 20px}.chris-news-card{aspect-ratio:3/5;border-radius:18px;padding:22px 18px 20px}.chris-news-card-kicker{margin-top:22px;font-size:.82rem}.chris-news-card h3{font-size:clamp(1.2rem,5.2vw,1.65rem);line-height:1.3}.chris-news-summary{margin-top:14px;font-size:.75rem;line-height:1.65}.chris-news-points{margin-top:14px;padding-top:11px;gap:6px}.chris-news-point{font-size:.62rem;line-height:1.45}.chris-news-card-footer{padding-top:12px}.chris-news-source{font-size:.47rem}}
+@media(max-width:430px){.chris-news-grid{grid-template-columns:1fr;gap:14px}.chris-news-card{aspect-ratio:3/5;padding:25px 22px 22px}.chris-news-card h3{font-size:1.6rem}.chris-news-summary{font-size:.82rem}.chris-news-point{font-size:.68rem}}
 </style></head>
 <body>
 <header id="site-nav"><a class="home-static-brand" href="/" aria-label="Chris LEE.PAPA Home"><span>CHRIS LEE.PAPA</span><small>CREATIVE ARCHIVE</small></a></header>
@@ -105,237 +93,55 @@ html[data-theme="dark"] .chris-news-card-kicker,html[data-theme="dark"] .chris-n
 </section>
 <script>
 document.addEventListener('DOMContentLoaded',()=>{
-  const root=document.getElementById('chris-news');
-  const button=document.getElementById('chris-news-share');
-  const imageButton=document.getElementById('chris-news-image');
-  if(!root||!button||!imageButton)return;
-
-  const getLang=()=>document.documentElement.lang==='en'?'en':'ko';
-  const value=(el,key)=>el?.getAttribute('data-'+key)||el?.textContent.trim()||'';
-
-  const buildShare=()=>{
-    const lang=getLang();
-    const cards=[...root.querySelectorAll('.chris-news-card')];
-    const date=cards[0]?.querySelector('.chris-news-card-date');
-    const lines=cards.map((card,i)=>{
-      const title=card.querySelector('h3');
-      const summary=card.querySelector('.chris-news-summary');
-      return (i+1)+'. '+value(title,lang)+'\n'+value(summary,lang);
-    });
-    const heading=lang==='en'?"Chris's News — Today's 6-card briefing":"Chris's News — 오늘의 전체 카드뉴스";
-    const intro=lang==='en'?'Six stories selected from major international coverage, with key context.':'전 세계 주요 외신을 바탕으로 정리한 오늘의 6개 카드뉴스입니다.';
-    const dateText=value(date,lang);
-    return heading+'\n'+(dateText?dateText+'\n':'')+intro+'\n\n'+lines.join('\n\n')+'\n\n'+location.href.split('#')[0]+'#chris-news';
-  };
-
-  const getCards=()=>{
-    const lang=getLang();
-    return [...root.querySelectorAll('.chris-news-card')].map((card,i)=>({
-      no:String(i+1).padStart(2,'0'),
-      date:value(card.querySelector('.chris-news-card-date'),lang),
-      kicker:value(card.querySelector('.chris-news-card-kicker'),lang),
-      title:value(card.querySelector('h3'),lang).replace(/<br\s*\/?\s*>/gi,' '),
-      summary:value(card.querySelector('.chris-news-summary'),lang),
-      points:[...card.querySelectorAll('.chris-news-point')].map(el=>value(el,lang)),
-      source:value(card.querySelector('.chris-news-source'),lang)
-    }));
-  };
-
-  const wrapText=(ctx,text,x,y,maxWidth,lineHeight,maxLines)=>{
-    const chars=[...text]; let line='',lines=[];
-    for(const ch of chars){
-      const test=line+ch;
-      if(ctx.measureText(test).width>maxWidth&&line){lines.push(line);line=ch;if(lines.length===maxLines)break;}
-      else line=test;
-    }
-    if(lines.length<maxLines&&line)lines.push(line);
-    if(lines.length===maxLines&&lines[maxLines-1]&&chars.join('').length>lines.join('').length) {
-      let last=lines[maxLines-1];
-      while(ctx.measureText(last+'…').width>maxWidth)last=last.slice(0,-1);
-      lines[maxLines-1]=last+'…';
-    }
-    lines.forEach((line,i)=>ctx.fillText(line,x,y+i*lineHeight));
-    return y+lines.length*lineHeight;
-  };
-
-  const drawNewsCard=async(card,lang)=>{
-    const W=720,H=1280;
-    const canvas=document.createElement('canvas'); canvas.width=W; canvas.height=H;
-    const ctx=canvas.getContext('2d');
-    ctx.textBaseline='top';
-    const y=0;
-      ctx.fillStyle='#08080b';ctx.fillRect(0,y,W,H);
-      ctx.fillStyle='#c9a84c';ctx.fillRect(0,y,10,H);
-      ctx.fillStyle='#f4efe5';ctx.font='700 22px Arial';ctx.fillText("CHRIS LEE.PAPA",46,y+48);
-      ctx.fillStyle='#8b6a19';ctx.font='700 17px Arial';ctx.fillText('CHRIS\'S NEWS',46,y+84);
-      ctx.fillStyle='rgba(244,239,229,.5)';ctx.font='500 15px Arial';ctx.fillText(card.date,520,y+86);
-      ctx.fillStyle='#c9a84c';ctx.font='600 18px Arial';ctx.fillText('CARD '+card.no+'  ·  '+card.kicker,46,y+140);
-      ctx.fillStyle='#f8f3e8';ctx.font='700 39px Arial';wrapText(ctx,card.title,46,y+185,628,50,3);
-      ctx.fillStyle='#c9a84c';ctx.fillRect(46,y+355,628,2);
-      ctx.fillStyle='#ddd7cc';ctx.font='400 20px Arial';wrapText(ctx,card.summary,46,y+390,600,32,5);
-      let py=y+575;
-      ctx.fillStyle='#f8f3e8';ctx.font='700 18px Arial';ctx.fillText(lang==='en'?'KEY POINTS':'핵심 포인트',46,py);py+=38;
-      ctx.font='500 17px Arial';ctx.fillStyle='#bdb7ad';
-      card.points.forEach(p=>{ctx.fillStyle='#c9a84c';ctx.beginPath();ctx.arc(56,py+10,3.5,0,Math.PI*2);ctx.fill();ctx.fillStyle='#bdb7ad';py=wrapText(ctx,p,72,py,600,27,2)+18;});
-      ctx.fillStyle='rgba(244,239,229,.34)';ctx.font='500 13px Arial';ctx.fillText(card.source,46,y+1168);
-      ctx.fillStyle='rgba(244,239,229,.22)';ctx.font='400 13px Arial';ctx.fillText(lang==='en'?'Cross-checked international reporting · chrisleepapa-official.vercel.app':'주요 국제 언론 교차 확인 · chrisleepapa-official.vercel.app',46,y+1198);
-      ctx.fillStyle='rgba(244,239,229,.16)';ctx.fillRect(46,y+1230,628,1);
-    return new Promise((resolve,reject)=>{
-      canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('PNG creation failed')),'image/png');
-    });
-  };
-
-  const makeNewsImages=async()=>{
-    const lang=getLang(), cards=getCards();
-    const blobs=[];
-    for(const card of cards) blobs.push(await drawNewsCard(card,lang));
-    return blobs;
-  };
-
-  const downloadBlob=(blob,filename)=>{
-    const url=URL.createObjectURL(blob),a=document.createElement('a');
-    a.href=url;a.download=filename||'chris-news-'+new Date().toISOString().slice(0,10)+'.png';
-    document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
-  };
-
-  const setLabels=()=>{
-    const lang=getLang();
-    const label=button.querySelector('.chris-news-share-label'),save=imageButton.querySelector('.chris-news-share-label');
-    if(label)label.textContent=lang==='en'?"Share today's cards":'전체 카드뉴스 공유';
-    if(save)save.textContent=lang==='en'?'Save image':'이미지 저장';
-    button.setAttribute('aria-label',lang==='en'?"Share all of today's Chris's News cards":'오늘의 Chris\'s News 전체 카드뉴스 공유');
-    imageButton.setAttribute('aria-label',lang==='en'?'Save all six Chris\'s News cards as one image':'오늘의 Chris\'s News 6장을 하나의 이미지로 저장');
-  };
-
-  imageButton.addEventListener('click',async()=>{
-    imageButton.disabled=true;
-    try{
-      const blobs=await makeNewsImages();
-      const date=new Date().toISOString().slice(0,10);
-      blobs.forEach((blob,i)=>{
-        setTimeout(()=>downloadBlob(blob,'chris-news-'+date+'-card-'+String(i+1).padStart(2,'0')+'.png'),i*350);
-      });
-      setTimeout(()=>alert(getLang()==='en'?'Six card images are being saved separately.':'6장의 카드 이미지가 각각 저장됩니다.'),100);
-    }catch(error){
-      console.error('Chris News image save failed:',error);
-      alert(getLang()==='en'?'The six card images could not be created. Please try again.':'6장의 카드 이미지를 만드는 중 문제가 발생했습니다. 다시 시도해주세요.');
-    }finally{imageButton.disabled=false;}
+ const root=document.getElementById('chris-news'),share=document.getElementById('chris-news-share'),save=document.getElementById('chris-news-image');
+ if(!root||!share||!save)return;
+ const lang=()=>document.documentElement.lang==='en'?'en':'ko';
+ const txt=(el)=>el?.getAttribute('data-'+lang())||el?.textContent.trim()||'';
+ const cards=()=>[...root.querySelectorAll('.chris-news-card')].map((el,i)=>({
+  no:String(i+1).padStart(2,'0'),date:txt(el.querySelector('.chris-news-card-date')),kicker:txt(el.querySelector('.chris-news-card-kicker')),
+  title:txt(el.querySelector('h3')).replace(/\s*<br\s*\/?\s*>\s*/gi,' '),summary:txt(el.querySelector('.chris-news-summary')),
+  points:[...el.querySelectorAll('.chris-news-point')].map(txt),source:txt(el.querySelector('.chris-news-source'))
+ }));
+ const wrap=(ctx,s,x,y,w,line,h,max)=>{
+  const lines=[];let cur='';
+  for(const ch of [...s]){const t=cur+ch;if(ctx.measureText(t).width>w&&cur){lines.push(cur);cur=ch;if(lines.length===max)break}else cur=t}
+  if(cur&&lines.length<max)lines.push(cur);
+  if(lines.length===max&&[...s].join('').length>lines.join('').length){let z=lines[max-1];while(ctx.measureText(z+'…').width>w)z=z.slice(0,-1);lines[max-1]=z+'…'}
+  lines.forEach((v,i)=>ctx.fillText(v,x,y+i*line));return y+lines.length*line;
+ };
+ const makeImage=async()=>{
+  const data=cards(), W=2160, cardW=680, cardH=1134, gap=40, header=280, pad=80, H=header+pad+cardH*2+gap+pad;
+  const cv=document.createElement('canvas');cv.width=W;cv.height=H;const ctx=cv.getContext('2d');ctx.textBaseline='top';
+  ctx.fillStyle='#f5f1e8';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#17130f';ctx.font='700 72px Arial';ctx.fillText("Chris's News",pad,62);
+  ctx.fillStyle='#8b6a19';ctx.font='500 30px Arial';ctx.fillText(data[0]?.date||'',pad,150);
+  ctx.fillStyle='#5b554d';ctx.font='400 26px Arial';ctx.fillText(lang()==='en'?'Six stories, selected and cross-checked from major international coverage.':'주요 외신 보도를 교차 확인해 6개 분야의 핵심 뉴스를 한 장에 담았습니다.',pad,205);
+  data.forEach((d,i)=>{
+   const col=i%3,row=Math.floor(i/3),x=pad+col*(cardW+gap),y=header+row*(cardH+gap);
+   ctx.fillStyle='#fff';ctx.fillRect(x,y,cardW,cardH);ctx.strokeStyle='rgba(70,55,30,.16)';ctx.strokeRect(x,y,cardW,cardH);
+   ctx.fillStyle='#8b6a19';ctx.font='700 19px Arial';ctx.fillText('CARD '+d.no,x+34,y+34);
+   ctx.fillStyle='#777067';ctx.font='500 17px Arial';ctx.fillText(d.date,x+cardW-180,y+35);
+   ctx.fillStyle='#8b6a19';ctx.font='600 22px Arial';wrap(ctx,d.kicker,x+34,y+88,cardW-68,28,28,1);
+   ctx.fillStyle='#29231d';ctx.font='700 32px Arial';wrap(ctx,d.title,x+34,y+145,cardW-68,42,42,3);
+   ctx.fillStyle='#c9a84c';ctx.fillRect(x+34,y+285,cardW-68,2);
+   ctx.fillStyle='#4b463f';ctx.font='400 18px Arial';wrap(ctx,d.summary,x+34,y+320,cardW-68,28,28,5);
+   let py=y+500;ctx.fillStyle='#29231d';ctx.font='700 17px Arial';ctx.fillText(lang()==='en'?'KEY POINTS':'핵심 포인트',x+34,py);py+=34;
+   d.points.forEach(p=>{ctx.fillStyle='#c9a84c';ctx.beginPath();ctx.arc(x+41,py+9,3,0,Math.PI*2);ctx.fill();ctx.fillStyle='#5b554d';ctx.font='400 15px Arial';py=wrap(ctx,p,x+54,py,cardW-88,23,23,2)+13});
+   ctx.fillStyle='#817b72';ctx.font='600 12px Arial';ctx.fillText(d.source,x+34,y+cardH-45);
   });
-
-  const isDesktop=()=>window.matchMedia('(min-width: 721px)').matches;
-  let shareBlobs=[];
-
-  const showDesktopShare=async()=>{
-    shareBlobs=await makeNewsImages();
-    let modal=document.getElementById('chris-news-share-modal');
-    if(!modal){
-      modal=document.createElement('div');
-      modal.id='chris-news-share-modal';
-      modal.innerHTML=`
-        <div class="chris-news-share-backdrop"></div>
-        <div class="chris-news-share-dialog" role="dialog" aria-modal="true">
-          <button type="button" class="chris-news-share-close" aria-label="Close">×</button>
-          <p class="chris-news-share-dialog-title">CHRIS'S NEWS</p>
-          <p class="chris-news-share-dialog-desc">PC에서는 브라우저가 여러 이미지를 직접 외부 앱으로 보내는 기능을 지원하지 않습니다.<br>아래에서 6장을 각각 복사하거나 한 번에 저장한 뒤 카카오톡·Threads에 붙여넣을 수 있습니다.</p>
-          <div class="chris-news-share-preview-grid"></div>
-          <div class="chris-news-share-dialog-actions">
-            <button type="button" class="chris-news-share-copy-all">6장 순서대로 복사</button>
-            <button type="button" class="chris-news-share-download-all">6장 모두 저장</button>
-          </div>
-          <p class="chris-news-share-dialog-note">각 카드의 「복사」를 누르면 해당 카드가 클립보드에 들어갑니다. 카카오톡/Threads에서 Ctrl+V로 붙여넣으세요.</p>
-        </div>`;
-      document.body.appendChild(modal);
-      modal.querySelector('.chris-news-share-close').onclick=()=>modal.hidden=true;
-      modal.querySelector('.chris-news-share-backdrop').onclick=()=>modal.hidden=true;
-      modal.querySelector('.chris-news-share-download-all').onclick=()=>{
-        const date=new Date().toISOString().slice(0,10);
-        shareBlobs.forEach((blob,i)=>setTimeout(()=>downloadBlob(blob,'chris-news-'+date+'-card-'+String(i+1).padStart(2,'0')+'.png'),i*350));
-      };
-      modal.querySelector('.chris-news-share-copy-all').onclick=async()=>{
-        if(!navigator.clipboard||!window.ClipboardItem){
-          alert('이 PC 브라우저는 이미지 클립보드를 지원하지 않습니다. 각 카드의 저장 버튼을 이용해주세요.');
-          return;
-        }
-        try{
-          for(let i=0;i<shareBlobs.length;i++){
-            const item=new ClipboardItem({'image/png':shareBlobs[i]});
-            await navigator.clipboard.write([item]);
-            if(i<shareBlobs.length-1) await new Promise(r=>setTimeout(r,900));
-          }
-          alert('6장이 순서대로 클립보드에 복사되었습니다. 마지막 카드부터 붙여넣는 방식은 브라우저 제한이 있으니, 가장 확실한 방법은 각 카드의 「복사」 버튼을 사용하세요.');
-        }catch(error){
-          console.error('Desktop image copy sequence failed:',error);
-          alert('브라우저가 연속 이미지 복사를 차단했습니다. 각 카드의 「복사」 버튼을 이용해주세요.');
-        }
-      };
-      const style=document.createElement('style');
-      style.textContent=`
-        #chris-news-share-modal{position:fixed;inset:0;z-index:99999}
-        .chris-news-share-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(6px)}
-        .chris-news-share-dialog{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(94vw,900px);max-height:92vh;overflow:auto;box-sizing:border-box;padding:26px;border:1px solid rgba(201,168,76,.35);border-radius:22px;background:#101015;color:#f4efe5;box-shadow:0 30px 90px rgba(0,0,0,.55)}
-        .chris-news-share-close{position:absolute;right:14px;top:8px;border:0;background:transparent;color:#ddd;font-size:30px;cursor:pointer}
-        .chris-news-share-dialog-title{margin:0;color:#e8d08a;font:700 20px Cinzel,serif;letter-spacing:.1em}
-        .chris-news-share-dialog-desc{margin:8px 40px 18px 0;color:rgba(244,239,229,.68);font:13px/1.7 Pretendard,sans-serif}
-        .chris-news-share-preview-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-        .chris-news-share-item{padding:10px;border:1px solid rgba(255,255,255,.1);border-radius:14px;background:#08080b}
-        .chris-news-share-item img{display:block;width:100%;height:330px;object-fit:contain;border-radius:8px;background:#050507}
-        .chris-news-share-item button{width:100%;margin-top:8px;padding:9px;border:1px solid rgba(201,168,76,.4);border-radius:999px;background:transparent;color:#e8d08a;font:700 12px Pretendard,sans-serif;cursor:pointer}
-        .chris-news-share-dialog-actions{display:flex;gap:9px;margin-top:16px}
-        .chris-news-share-dialog-actions button{flex:1;padding:12px;border:1px solid rgba(201,168,76,.45);border-radius:999px;background:transparent;color:#e8d08a;font:700 13px Pretendard,sans-serif;cursor:pointer}
-        .chris-news-share-dialog-note{margin:12px 0 0;color:rgba(244,239,229,.42);font:12px/1.6 Pretendard,sans-serif}
-        @media(max-width:720px){.chris-news-share-preview-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.chris-news-share-item img{height:250px}}
-      `;
-      document.head.appendChild(style);
-    }
-    const grid=modal.querySelector('.chris-news-share-preview-grid');
-    grid.innerHTML='';
-    shareBlobs.forEach((blob,i)=>{
-      const item=document.createElement('div'); item.className='chris-news-share-item';
-      const img=document.createElement('img'); img.alt='Chris News card '+(i+1); img.src=URL.createObjectURL(blob);
-      const copy=document.createElement('button'); copy.type='button'; copy.textContent='카드 '+(i+1)+' 이미지 복사';
-      copy.onclick=async()=>{
-        try{
-          if(!navigator.clipboard||!window.ClipboardItem)throw new Error('Clipboard API unavailable');
-          await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);
-          copy.textContent='복사 완료 ✓';
-          setTimeout(()=>copy.textContent='카드 '+(i+1)+' 이미지 복사',1400);
-        }catch(error){
-          console.error('Card copy failed:',error);
-          downloadBlob(blob,'chris-news-'+new Date().toISOString().slice(0,10)+'-card-'+String(i+1).padStart(2,'0')+'.png');
-          alert('이미지 복사가 차단되어 카드 '+(i+1)+'을 PNG로 저장했습니다.');
-        }
-      };
-      item.append(img,copy); grid.appendChild(item);
-    });
-    modal.hidden=false;
-  };
-
-  button.addEventListener('click',async()=>{
-    button.disabled=true;
-    try{
-      if(isDesktop()){
-        await showDesktopShare();
-        return;
-      }
-      const blobs=await makeNewsImages();
-      const files=blobs.map((blob,i)=>new File([blob],'chris-news-'+new Date().toISOString().slice(0,10)+'-card-'+String(i+1).padStart(2,'0')+'.png',{type:'image/png'}));
-      if(navigator.share&&navigator.canShare&&navigator.canShare({files})){
-        await navigator.share({title:"Chris's News",text:buildShare(),files});
-      }else{
-        const date=new Date().toISOString().slice(0,10);
-        blobs.forEach((blob,i)=>setTimeout(()=>downloadBlob(blob,'chris-news-'+date+'-card-'+String(i+1).padStart(2,'0')+'.png'),i*350));
-        alert(getLang()==='en'?'The six card images are being saved separately.':'6장의 카드 이미지가 각각 저장됩니다.');
-      }
-    }catch(error){
-      if(error?.name!=='AbortError'){
-        console.error('Chris News image share failed:',error);
-        alert(getLang()==='en'?'The card-news images could not be prepared. Please try again.':'카드뉴스 이미지를 준비하는 중 문제가 발생했습니다. 다시 시도해주세요.');
-      }
-    }finally{button.disabled=false;}
-  });
-
-  setLabels();
-  new MutationObserver(setLabels).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+  return new Promise((resolve,reject)=>cv.toBlob(b=>b?resolve(b):reject(new Error('PNG failed')),'image/png'));
+ };
+ const download=b=>{const u=URL.createObjectURL(b),a=document.createElement('a'),d=new Date().toISOString().slice(0,10);a.href=u;a.download='chris-news-'+d+'.png';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1000)};
+ const shareImage=async()=>{
+  const blob=await makeImage(),file=new File([blob],'chris-news-'+new Date().toISOString().slice(0,10)+'.png',{type:'image/png'});
+  if(navigator.share&&navigator.canShare?.({files:[file]})){await navigator.share({title:"Chris's News",text:lang()==='en'?"Today's Chris's News":"오늘의 Chris's News",files:[file]});}
+  else if(navigator.clipboard&&window.ClipboardItem){await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);alert(lang()==='en'?'The combined image was copied to the clipboard.':'6장 전체가 하나의 이미지로 클립보드에 복사되었습니다.')}
+  else download(blob);
+ };
+ share.addEventListener('click',async()=>{share.disabled=true;try{await shareImage()}catch(e){if(e.name!=='AbortError'){console.error(e);try{download(await makeImage())}catch(x){alert(lang()==='en'?'Sharing failed. Please try again.':'공유에 실패했습니다. 다시 시도해주세요.')}}}finally{share.disabled=false}});
+ save.addEventListener('click',async()=>{save.disabled=true;try{download(await makeImage())}catch(e){console.error(e);alert(lang()==='en'?'Saving failed. Please try again.':'이미지 저장에 실패했습니다. 다시 시도해주세요.')}finally{save.disabled=false}});
+ const labels=()=>{const en=lang()==='en';share.querySelector('.chris-news-share-label').textContent=en?"Share image":'이미지 공유';save.querySelector('.chris-news-share-label').textContent=en?'Save image':'이미지 저장'};
+ labels();new MutationObserver(labels).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 });
 </script>
 <section id="chris-news" aria-labelledby="chris-news-title">

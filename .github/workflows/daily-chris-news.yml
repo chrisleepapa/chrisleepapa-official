@@ -1,0 +1,41 @@
+name: Daily Chris's News Refresh
+
+on:
+  schedule:
+    # 06:00 KST daily = 21:00 UTC on the previous day
+    - cron: "0 21 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-chris-news-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh-news:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout develop
+        uses: actions/checkout@v5
+        with:
+          ref: develop
+          fetch-depth: 0
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Fetch and compile six daily news cards
+        run: node automation/generate-chris-news.mjs
+      - name: Commit updated news data to develop
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/chris-news.json
+          if git diff --cached --quiet; then
+            echo "News data is unchanged; nothing to commit."
+          else
+            git commit -m "Refresh Chris's News for $(date -u +%F)"
+            git push origin HEAD:develop
+          fi

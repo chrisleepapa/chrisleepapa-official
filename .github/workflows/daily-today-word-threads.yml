@@ -112,53 +112,77 @@ jobs:
           THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
           IMAGE_URL: ${{ steps.media.outputs.image_url }}
         run: |
+          set -euo pipefail
+
           if [ -z "$THREADS_ACCESS_TOKEN" ]; then
             echo "THREADS_ACCESS_TOKEN GitHub Secret is not configured."
             exit 1
           fi
 
-          CREATE_RESPONSE="$(curl --fail-with-body -sS -X POST "https://graph.threads.net/me/threads" \
+          # Confirm that Meta can fetch a publicly accessible PNG before creating a container.
+          IMAGE_CHECK="$(curl -sS -L -o /dev/null -w "%{http_code} %{content_type} %{size_download}" "$IMAGE_URL")"
+          echo "Public image check (HTTP, content-type, bytes): $IMAGE_CHECK"
+          IMAGE_HTTP="${IMAGE_CHECK%% *}"
+          IMAGE_META="${IMAGE_CHECK#* }"
+          IMAGE_TYPE="${IMAGE_META%% *}"
+          if [ "$IMAGE_HTTP" != "200" ] || [ "$IMAGE_TYPE" != "image/png" ]; then
+            echo "Image URL is not publicly serving a PNG. Refusing to call Threads API."
+            exit 1
+          fi
+
+          # Do not use curl --fail here: it suppresses the API response from the log
+          # when command substitution exits under bash -e. Capture and print safe error JSON.
+          CREATE_HTTP="$(curl -sS -o /tmp/threads-create-response.json -w "%{http_code}" -X POST "https://graph.threads.net/me/threads" \
             --data-urlencode "access_token=$THREADS_ACCESS_TOKEN" \
             --data-urlencode "media_type=IMAGE" \
             --data-urlencode "image_url=$IMAGE_URL" \
             --data-urlencode "text=오늘의 말씀 📖" \
             --data-urlencode "alt_text=Chris LEE.PAPA 오늘의 말씀")"
+          CREATE_RESPONSE="$(cat /tmp/threads-create-response.json)"
+          echo "Threads create-container HTTP status: $CREATE_HTTP"
+          echo "Threads create-container response: $CREATE_RESPONSE"
+          case "$CREATE_HTTP" in
+            2??) ;;
+            *) echo "Threads rejected the image container request."; exit 1 ;;
+          esac
 
-          echo "$CREATE_RESPONSE"
-
-          CONTAINER_ID="$(printf '%s' "$CREATE_RESPONSE" | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{const j=JSON.parse(s);if(!j.id)process.exit(1);process.stdout.write(j.id)})")"
+          CONTAINER_ID="$(printf '%s' "$CREATE_RESPONSE" | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{try{const j=JSON.parse(s);if(!j.id)process.exit(1);process.stdout.write(j.id)}catch{process.exit(1)}})")"
 
           # IMAGE containers are processed asynchronously by Threads.
-          # Wait until the same container reports FINISHED before publishing it.
           for attempt in 1 2 3 4 5; do
-            STATUS_RESPONSE="$(curl --fail-with-body -sS \
+            STATUS_HTTP="$(curl -sS -o /tmp/threads-status-response.json -w "%{http_code}" \
               --get "https://graph.threads.net/$CONTAINER_ID" \
               --data-urlencode "fields=status,error_message" \
               --data-urlencode "access_token=$THREADS_ACCESS_TOKEN")"
+            STATUS_RESPONSE="$(cat /tmp/threads-status-response.json)"
+            echo "Container status attempt $attempt (HTTP $STATUS_HTTP): $STATUS_RESPONSE"
+            case "$STATUS_HTTP" in
+              2??) ;;
+              *) echo "Unable to read Threads container status."; exit 1 ;;
+            esac
 
-            echo "Container status attempt $attempt: $STATUS_RESPONSE"
-
-            STATUS="$(printf '%s' "$STATUS_RESPONSE" | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{const j=JSON.parse(s);process.stdout.write(j.status||'')})")"
-
+            STATUS="$(printf '%s' "$STATUS_RESPONSE" | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{try{const j=JSON.parse(s);process.stdout.write(j.status||'')}catch{process.exit(1)}})")"
             if [ "$STATUS" = "FINISHED" ]; then
               break
             fi
-
             if [ "$STATUS" = "ERROR" ] || [ "$STATUS" = "EXPIRED" ]; then
-              echo "Threads container failed: $STATUS_RESPONSE"
+              echo "Threads container processing failed: $STATUS_RESPONSE"
               exit 1
             fi
-
             if [ "$attempt" -eq 5 ]; then
               echo "Threads container did not reach FINISHED within 5 minutes."
               exit 1
             fi
-
             sleep 60
           done
 
-          PUBLISH_RESPONSE="$(curl --fail-with-body -sS -X POST "https://graph.threads.net/me/threads_publish" \
+          PUBLISH_HTTP="$(curl -sS -o /tmp/threads-publish-response.json -w "%{http_code}" -X POST "https://graph.threads.net/me/threads_publish" \
             --data-urlencode "creation_id=$CONTAINER_ID" \
             --data-urlencode "access_token=$THREADS_ACCESS_TOKEN")"
-
+          PUBLISH_RESPONSE="$(cat /tmp/threads-publish-response.json)"
+          echo "Threads publish HTTP status: $PUBLISH_HTTP"
           echo "Threads publish response: $PUBLISH_RESPONSE"
+          case "$PUBLISH_HTTP" in
+            2??) ;;
+            *) echo "Threads failed to publish the media container."; exit 1 ;;
+          esac

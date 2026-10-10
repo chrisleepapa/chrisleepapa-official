@@ -70,7 +70,7 @@ if (cards.some(x => !x)) {
   throw new Error('Daily news refresh aborted to avoid publishing an incomplete six-card set.');
 }
 const now = new Date();
-const date = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' }).format(now);
+const dateParts = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(now);\nconst dateMap = Object.fromEntries(dateParts.map(part => [part.type, part.value]));\nconst date = `${dateMap.year}-${dateMap.month}-${dateMap.day}`;
 const payload = { date, updatedAt: now.toISOString(), sourceNote: 'Google News RSS; headlines and descriptions link to the original publisher.', cards };
 await mkdir('data', { recursive: true });
 await writeFile('data/chris-news.json', JSON.stringify(payload, null, 2) + '\n');

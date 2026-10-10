@@ -1,12 +1,12 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 
 const categories = [
-  { key: 'world', ko: '국제 · 정치 · 외교', en: 'WORLD · POLITICS · DIPLOMACY', query: 'world politics diplomacy international relations' },
-  { key: 'security', ko: '전쟁 · 안보', en: 'WAR · SECURITY', query: 'war security conflict defense' },
-  { key: 'economy', ko: '경제 · 시장', en: 'ECONOMY · MARKETS', query: 'global economy markets business finance' },
-  { key: 'science', ko: '과학 · 기술', en: 'SCIENCE · TECHNOLOGY', query: 'science technology AI research' },
-  { key: 'climate', ko: '기후 · 재난 · 보건', en: 'CLIMATE · DISASTER · HEALTH', query: 'climate disaster health public health' },
-  { key: 'society', ko: '사회 · 문화', en: 'SOCIETY · CULTURE', query: 'society culture education arts' },
+  { key: 'world', ko: '국제 · 정치 · 외교', en: 'WORLD · POLITICS · DIPLOMACY', query: '국제 정치 외교 주요 뉴스' },
+  { key: 'security', ko: '전쟁 · 안보', en: 'WAR · SECURITY', query: '전쟁 안보 국제 분쟁 주요 뉴스' },
+  { key: 'economy', ko: '경제 · 시장', en: 'ECONOMY · MARKETS', query: '세계 경제 금융 시장 주요 뉴스' },
+  { key: 'science', ko: '과학 · 기술', en: 'SCIENCE · TECHNOLOGY', query: '과학 기술 인공지능 연구 주요 뉴스' },
+  { key: 'climate', ko: '기후 · 재난 · 보건', en: 'CLIMATE · DISASTER · HEALTH', query: '기후 재난 보건 건강 주요 뉴스' },
+  { key: 'society', ko: '사회 · 문화', en: 'SOCIETY · CULTURE', query: '사회 문화 교육 예술 주요 뉴스' },
 ];
 
 function decodeEntities(value = '') {
@@ -33,7 +33,7 @@ function parseItems(xml) {
 }
 async function fetchCategory(category) {
   const q = encodeURIComponent(category.query + ' when:1d');
-  const url = `https://news.google.com/rss/search?q=${q}&hl=en-US&gl=US&ceid=US:en`;
+  const url = `https://news.google.com/rss/search?q=${q}&hl=ko&gl=KR&ceid=KR:ko`;
   const response = await fetch(url, { headers: { 'user-agent': 'ChrisLeePapaNewsBot/1.0' }, signal: AbortSignal.timeout(20000) });
   if (!response.ok) throw new Error(`Google News RSS ${category.key}: HTTP ${response.status}`);
   const items = parseItems(await response.text());

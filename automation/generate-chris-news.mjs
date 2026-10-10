@@ -31,6 +31,17 @@ function parseItems(xml) {
     return { title: title.replace(/\s+-\s+[^-]+$/, '').trim(), description, link, pubDate, source };
   }).filter(x => x.title && x.link);
 }
+async function translateToEnglish(value) {
+  try {
+    const url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=ko&tl=en&dt=t&q=' + encodeURIComponent(value.slice(0, 4500));
+    const response = await fetch(url, { signal: AbortSignal.timeout(12000) });
+    if (!response.ok) return value;
+    const payload = await response.json();
+    return Array.isArray(payload?.[0]) ? payload[0].map(part => part?.[0] || '').join('').trim() || value : value;
+  } catch {
+    return value;
+  }
+}
 async function fetchCategory(category) {
   const q = encodeURIComponent(category.query + ' when:1d');
   const url = `https://news.google.com/rss/search?q=${q}&hl=ko&gl=KR&ceid=KR:ko`;

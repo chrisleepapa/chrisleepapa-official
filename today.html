@@ -59,7 +59,7 @@ html[data-theme="light"] .today-title{color:#29251f!important}
 .today-journey{margin:0 0 18px;padding:22px 24px;border:1px solid rgba(201,168,76,.22);border-radius:18px;background:linear-gradient(145deg,rgba(18,16,14,.82),rgba(8,8,11,.82));display:flex;align-items:center;justify-content:space-between;gap:18px}
 .today-journey h2{margin:0 0 7px;color:var(--today-gold);font:600 .95rem 'Cinzel',serif;letter-spacing:.1em}
 .today-journey p{margin:0;color:rgba(238,238,238,.65);font:.86rem/1.7 'Noto Sans KR',sans-serif}
-.journey-copy{flex:1;min-width:0}.journey-progress{margin:14px 0 8px;color:rgba(201,168,76,.75);font:.72rem "Noto Sans KR",sans-serif}.journey-ref{display:block;margin:12px 0 8px;color:#f1e8d1;font:.95rem "Noto Sans KR",sans-serif}.journey-passage{color:rgba(238,238,238,.8);font:.9rem/1.85 "Noto Sans KR",sans-serif;white-space:normal}.journey-chapter-heading{display:block;margin:18px 0 5px;color:var(--today-gold);font-weight:700}.journey-chapter-text{margin:0 0 10px;line-height:1.9}.journey-complete{display:inline-flex;align-items:center;margin-top:14px;padding:10px 14px;border:1px solid rgba(201,168,76,.4);border-radius:10px;color:var(--today-gold);background:rgba(201,168,76,.05);cursor:pointer;font:.75rem "Noto Sans KR",sans-serif}.journey-complete:disabled{opacity:.45;cursor:default}html[data-theme="light"] .journey-ref{color:#29251f}html[data-theme="light"] .journey-passage{color:#383632}html[data-theme="light"] .journey-complete{color:#765b17;border-color:rgba(93,72,24,.3);background:#f7f3e9}.today-journey a{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(201,168,76,.42);border-radius:10px;padding:10px 14px;color:var(--today-gold);font:600 .7rem 'Cinzel',serif;letter-spacing:.08em;text-decoration:none}
+.journey-copy{flex:1;min-width:0}.journey-chapter-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:14px 0}.journey-chapter-option{padding:11px 12px;text-align:left;border:1px solid rgba(201,168,76,.22);border-radius:10px;background:rgba(201,168,76,.045);color:#eee8d8;cursor:pointer;font:.8rem/1.5 "Noto Sans KR",sans-serif}.journey-chapter-option.active{border-color:rgba(201,168,76,.75);background:rgba(201,168,76,.13)}html[data-theme="light"] .journey-chapter-option{color:#29251f;background:#f8f5ec}.journey-progress{margin:14px 0 8px;color:rgba(201,168,76,.75);font:.72rem "Noto Sans KR",sans-serif}.journey-ref{display:block;margin:12px 0 8px;color:#f1e8d1;font:.95rem "Noto Sans KR",sans-serif}.journey-passage{color:rgba(238,238,238,.8);font:.9rem/1.85 "Noto Sans KR",sans-serif;white-space:normal}.journey-chapter-heading{display:block;margin:18px 0 5px;color:var(--today-gold);font-weight:700}.journey-chapter-text{margin:0 0 10px;line-height:1.9}.journey-complete{display:inline-flex;align-items:center;margin-top:14px;padding:10px 14px;border:1px solid rgba(201,168,76,.4);border-radius:10px;color:var(--today-gold);background:rgba(201,168,76,.05);cursor:pointer;font:.75rem "Noto Sans KR",sans-serif}.journey-complete:disabled{opacity:.45;cursor:default}html[data-theme="light"] .journey-ref{color:#29251f}html[data-theme="light"] .journey-passage{color:#383632}html[data-theme="light"] .journey-complete{color:#765b17;border-color:rgba(93,72,24,.3);background:#f7f3e9}.today-journey a{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(201,168,76,.42);border-radius:10px;padding:10px 14px;color:var(--today-gold);font:600 .7rem 'Cinzel',serif;letter-spacing:.08em;text-decoration:none}
 @media(max-width:560px){.today-journey{align-items:flex-start;flex-direction:column}.today-journey a{width:100%;box-sizing:border-box}}
 
 html[data-theme="light"] .today-journey{background:linear-gradient(145deg,#fffdf8,#f3f0e8);border-color:rgba(93,72,24,.18)}
@@ -81,7 +81,7 @@ html[data-theme="light"] .today-journey h2,html[data-theme="light"] .today-journ
 <body>
 <div id="site-nav"></div>
 <div class="auth-overlay" id="todayAuth" aria-hidden="false"><div class="auth-box"><h2 data-i18n="today_auth_title">YOUR TODAY</h2><p data-i18n="today_auth_desc">사이트 공통 계정으로 로그인하면<br>나만의 오늘 기록을 저장할 수 있습니다.</p><input class="auth-input" id="authInitials" maxlength="3" autocomplete="username" placeholder="INITIALS (예: CLP)"><input class="auth-input pin-input" id="authPin" type="password" inputmode="numeric" maxlength="4" autocomplete="current-password" placeholder="4자리 PIN"><div class="auth-error" id="authError"></div><button class="auth-submit" id="authSubmit" type="button" data-i18n="today_login">LOGIN / CREATE</button><p class="auth-note" data-i18n="today_auth_note">한 번 로그인하면 성경 등 로그인 필요한 메뉴에서도 같은 계정을 사용합니다.</p></div></div>
-<main class="today-wrap" id="todayApp" hidden><header class="today-hero"><div class="today-kicker" data-i18n="today_kicker">YOUR DAILY ARCHIVE</div><h1 class="today-title" data-i18n="today_title">TODAY</h1><div class="today-date" id="todayDate"></div><div class="today-profile"><span class="profile-pill">👤 <strong id="profileInitials"></strong></span><span class="today-streak">🔥 <strong id="todayStreak">0</strong> <span data-i18n="today_streak_label">일 연속</span></span><button class="today-checkin" id="todayCheckinBtn" type="button" data-i18n="today_checkin" hidden>오늘 체크인</button><button class="profile-btn" id="logoutBtn" type="button" data-i18n="today_logout">LOG OUT</button></div></header><section class="today-card featured today-word-first" id="todayWordStep"><div class="today-word-head"><h2 data-i18n="today_word">📖 TODAY'S WORD</h2><div class="today-word-actions"><button class="today-share" id="todayShareBtn" type="button" aria-label="오늘의 말씀 공유"><span class="today-share-icon" aria-hidden="true">↗</span><span class="today-share-label" data-i18n="today_share">공유</span></button><button class="today-share" id="todaySaveBtn" type="button" aria-label="오늘의 말씀 이미지 저장"><span class="today-share-icon" aria-hidden="true">↓</span><span class="today-share-label" data-i18n="today_save">저장</span></button></div></div><p class="verse" id="todayVerse"></p><span class="verse-ref" id="todayRef"></span><div class="today-word-actions"><a class="today-link" href="/bible" data-i18n="today_read_bible">BIBLE</a><button class="quiz-next today-quiz-start" id="todayQuizStart" type="button">성경 퀴즈</button></div></section><section class="today-journey" aria-labelledby="todayJourneyTitle"><div class="journey-copy"><h2 id="todayJourneyTitle">MY BIBLE JOURNEY</h2><p>오늘의 말씀과 별도로 창세기부터 순서대로 읽어요. 읽기 진도는 계정별로 이 브라우저에 저장됩니다.</p><div class="journey-progress" id="journeyProgress">통독 기록을 불러오는 중…</div><strong class="journey-ref" id="journeyRef">창세기 1:1–5</strong><div class="journey-passage" id="journeyPassage">성경 본문을 불러오는 중입니다.</div><button class="journey-complete" id="journeyCompleteBtn" type="button">이 본문 읽기 완료 → 다음 본문</button></div><a href="/bible">전체 성경 열기 ↗</a></section><section class="today-routine" id="todayQuizStep" hidden><div class="routine-top"><div><div class="routine-kicker" data-i18n="today_routine_kicker">TODAY'S ROUTINE</div><h2 class="routine-title" data-i18n="today_routine_title">오늘의 성경 퀴즈</h2></div><div class="routine-meta" id="todayRoutineMeta"></div></div><div class="today-quiz" id="todayQuiz"><div class="quiz-count" id="quizCount"></div><div class="quiz-question" id="quizQuestion"></div><div class="quiz-options" id="quizOptions"></div><div class="quiz-feedback" id="quizFeedback" hidden></div><button class="quiz-next" id="quizNext" type="button" hidden>다음 문제 →</button><div class="quiz-result" id="quizResult" hidden></div></div><div class="routine-progress" id="todayWeekProgress"></div></section><section class="today-grid" id="todayRecords" hidden><article class="today-card"><h2 data-i18n="today_tasks">✅ TODAY'S TASKS</h2><form class="today-form" id="todoForm"><input id="todoInput" type="text" maxlength="120" autocomplete="off"><button class="today-btn" type="submit" data-i18n="today_add">ADD</button></form><div class="todo-list" id="todoList"></div></article><article class="today-card"><h2 data-i18n="today_memo_title">📝 TODAY'S MEMO</h2><textarea id="todayMemo" rows="7" maxlength="3000"></textarea></article><article class="today-card"><h2 data-i18n="today_prayer_title">🙏 TODAY'S PRAYER</h2><textarea id="todayPrayer" rows="7" maxlength="3000"></textarea></article></section><div class="today-footer" data-i18n="today_footer">TODAY 기록은 로그인한 이니셜별로 이 브라우저에 분리 저장됩니다.</div></main>
+<main class="today-wrap" id="todayApp" hidden><header class="today-hero"><div class="today-kicker" data-i18n="today_kicker">YOUR DAILY ARCHIVE</div><h1 class="today-title" data-i18n="today_title">TODAY</h1><div class="today-date" id="todayDate"></div><div class="today-profile"><span class="profile-pill">👤 <strong id="profileInitials"></strong></span><span class="today-streak">🔥 <strong id="todayStreak">0</strong> <span data-i18n="today_streak_label">일 연속</span></span><button class="today-checkin" id="todayCheckinBtn" type="button" data-i18n="today_checkin" hidden>오늘 체크인</button><button class="profile-btn" id="logoutBtn" type="button" data-i18n="today_logout">LOG OUT</button></div></header><section class="today-card featured today-word-first" id="todayWordStep"><div class="today-word-head"><h2 data-i18n="today_word">📖 TODAY'S WORD</h2><div class="today-word-actions"><button class="today-share" id="todayShareBtn" type="button" aria-label="오늘의 말씀 공유"><span class="today-share-icon" aria-hidden="true">↗</span><span class="today-share-label" data-i18n="today_share">공유</span></button><button class="today-share" id="todaySaveBtn" type="button" aria-label="오늘의 말씀 이미지 저장"><span class="today-share-icon" aria-hidden="true">↓</span><span class="today-share-label" data-i18n="today_save">저장</span></button></div></div><p class="verse" id="todayVerse"></p><span class="verse-ref" id="todayRef"></span><div class="today-word-actions"><a class="today-link" href="/bible" data-i18n="today_read_bible">BIBLE</a><button class="quiz-next today-quiz-start" id="todayQuizStart" type="button">성경 퀴즈</button></div></section><section class="today-journey" aria-labelledby="todayJourneyTitle"><div class="journey-copy"><h2 id="todayJourneyTitle">MY BIBLE JOURNEY</h2><p>오늘의 말씀과 별도로 창세기부터 순서대로 읽어요. 읽기 진도는 계정별로 이 브라우저에 저장됩니다.</p><div class="journey-progress" id="journeyProgress">통독 기록을 불러오는 중…</div><div class="journey-chapter-list" id="journeyChapterList" aria-label="읽을 장 목록"></div><strong class="journey-ref" id="journeyRef" hidden></strong><div class="journey-passage" id="journeyPassage" hidden></div><button class="journey-complete" id="journeyCompleteBtn" type="button" hidden>이 장 읽기 완료 ✓</button></div><a href="/bible">전체 성경 열기 ↗</a></section><section class="today-routine" id="todayQuizStep" hidden><div class="routine-top"><div><div class="routine-kicker" data-i18n="today_routine_kicker">TODAY'S ROUTINE</div><h2 class="routine-title" data-i18n="today_routine_title">오늘의 성경 퀴즈</h2></div><div class="routine-meta" id="todayRoutineMeta"></div></div><div class="today-quiz" id="todayQuiz"><div class="quiz-count" id="quizCount"></div><div class="quiz-question" id="quizQuestion"></div><div class="quiz-options" id="quizOptions"></div><div class="quiz-feedback" id="quizFeedback" hidden></div><button class="quiz-next" id="quizNext" type="button" hidden>다음 문제 →</button><div class="quiz-result" id="quizResult" hidden></div></div><div class="routine-progress" id="todayWeekProgress"></div></section><section class="today-grid" id="todayRecords" hidden><article class="today-card"><h2 data-i18n="today_tasks">✅ TODAY'S TASKS</h2><form class="today-form" id="todoForm"><input id="todoInput" type="text" maxlength="120" autocomplete="off"><button class="today-btn" type="submit" data-i18n="today_add">ADD</button></form><div class="todo-list" id="todoList"></div></article><article class="today-card"><h2 data-i18n="today_memo_title">📝 TODAY'S MEMO</h2><textarea id="todayMemo" rows="7" maxlength="3000"></textarea></article><article class="today-card"><h2 data-i18n="today_prayer_title">🙏 TODAY'S PRAYER</h2><textarea id="todayPrayer" rows="7" maxlength="3000"></textarea></article></section><div class="today-footer" data-i18n="today_footer">TODAY 기록은 로그인한 이니셜별로 이 브라우저에 분리 저장됩니다.</div></main>
 <div id="site-footer"></div>
 <script src="js/auth.js"></script>
 <script src="js/today-archive-v2.js" defer></script>
@@ -199,43 +199,70 @@ function getBibleJourneyChapters(){
   }
   return [...grouped.values()].sort((a,b)=>bibleJourneyBookNumber(a.book)-bibleJourneyBookNumber(b.book)||a.chapter-b.chapter);
 }
+let openBibleJourneyIndex=null;
 function renderBibleJourney(){
-  const refEl=document.getElementById('journeyRef'),passageEl=document.getElementById('journeyPassage'),progressEl=document.getElementById('journeyProgress'),btn=document.getElementById('journeyCompleteBtn');
-  if(!refEl||!passageEl||!progressEl||!btn)return;
-  if(!Array.isArray(bibleVerses)||!bibleVerses.length){passageEl.textContent='성경 본문을 불러오는 중입니다.';btn.disabled=true;return}
+  const listEl=document.getElementById('journeyChapterList'),refEl=document.getElementById('journeyRef'),passageEl=document.getElementById('journeyPassage'),progressEl=document.getElementById('journeyProgress'),btn=document.getElementById('journeyCompleteBtn');
+  if(!listEl||!refEl||!passageEl||!progressEl||!btn)return;
+  if(!Array.isArray(bibleVerses)||!bibleVerses.length){listEl.textContent='성경 목록을 불러오는 중입니다.';return}
   const chapters=getBibleJourneyChapters();
-  if(!chapters.length){passageEl.textContent='성경 본문을 불러오지 못했습니다. 잠시 후 다시 열어 주세요.';btn.disabled=true;return}
+  if(!chapters.length){listEl.textContent='성경 목록을 불러오지 못했습니다. 잠시 후 다시 열어 주세요.';return}
   const saved=getJSON(bibleJourneyKey(),{nextChapterIndex:0,completedDays:0});
-  // New chapter-by-chapter plan always starts at Genesis 1 unless valid chapter progress exists.
   let startIndex=Number.isInteger(Number(saved.nextChapterIndex))&&saved.nextChapterIndex!=null?Number(saved.nextChapterIndex):0;
   startIndex=Math.max(0,Math.min(startIndex,chapters.length));
   if(saved.finished||startIndex>=chapters.length){
-    refEl.textContent='성경 통독 완료';
+    listEl.innerHTML='';
+    refEl.hidden=true;passageEl.hidden=true;btn.hidden=false;
     passageEl.textContent='창세기부터 요한계시록까지 모든 장을 읽었습니다. 원한다면 처음부터 다시 읽을 수 있습니다.';
     progressEl.textContent='전체 성경 100% 완료 · 총 '+chapters.length+'장';
     btn.disabled=false;btn.textContent='처음부터 다시 읽기';btn.dataset.nextChapterIndex='0';return;
   }
-  const batch=chapters.slice(startIndex,startIndex+4),first=batch[0],last=batch[batch.length-1];
-  const nameFor=ch=>bibleJourneyBookNames[Number(ch.book)]||ch.bookName||ch.book||'BIBLE';
-  refEl.textContent=batch.length===1?nameFor(first)+' '+first.chapter+'장':nameFor(first)+' '+first.chapter+'장부터 '+(nameFor(last)===nameFor(first)?last.chapter+'장':nameFor(last)+' '+last.chapter+'장')+'까지';
-  passageEl.innerHTML='';
-  batch.forEach(ch=>{
-    const heading=document.createElement('strong');heading.className='journey-chapter-heading';heading.textContent=nameFor(ch)+' '+ch.chapter+'장';
-    const body=document.createElement('p');body.className='journey-chapter-text';body.textContent=ch.verses.map(v=>v.content||v.text||'').join(' ');
-    passageEl.appendChild(heading);passageEl.appendChild(body);
-  });
   const completed=Number(saved.completedDays)||Number(saved.completed)||0;
-  progressEl.textContent='하루 목표 4장 · '+completed+'일 완료 · '+startIndex+'/'+chapters.length+'장 읽음 ('+Math.floor(startIndex/chapters.length*100)+'%)';
-  btn.disabled=false;btn.textContent='오늘 4장 읽기 완료 ✓';btn.dataset.nextChapterIndex=String(Math.min(startIndex+batch.length,chapters.length));
+  const nameFor=ch=>bibleJourneyBookNames[bibleJourneyBookNumber(ch.book)]||ch.bookName||ch.book||'BIBLE';
+  progressEl.textContent='하루 목표 4장 · '+completed+'장 완료 · '+startIndex+'/'+chapters.length+'장 읽음 ('+Math.floor(startIndex/chapters.length*100)+'%)';
+  listEl.innerHTML='';
+  const endIndex=Math.min(startIndex+4,chapters.length);
+  for(let i=startIndex;i<endIndex;i++){
+    const ch=chapters[i],item=document.createElement('button');
+    item.type='button';item.className='journey-chapter-option'+(i===openBibleJourneyIndex?' active':'');
+    item.textContent=(i===startIndex?'▶ ':'')+nameFor(ch)+' '+ch.chapter+'장'+(i===startIndex?' · 다음 읽을 장':'');
+    item.addEventListener('click',()=>openBibleJourneyChapter(i));
+    listEl.appendChild(item);
+  }
+  if(openBibleJourneyIndex==null||openBibleJourneyIndex<startIndex||openBibleJourneyIndex>=endIndex){
+    refEl.hidden=true;passageEl.hidden=true;btn.hidden=true;return;
+  }
+  showBibleJourneyChapter(openBibleJourneyIndex,chapters);
+}
+function openBibleJourneyChapter(index){
+  openBibleJourneyIndex=index;
+  renderBibleJourney();
+}
+function showBibleJourneyChapter(index,chapters){
+  const refEl=document.getElementById('journeyRef'),passageEl=document.getElementById('journeyPassage'),btn=document.getElementById('journeyCompleteBtn');
+  const ch=chapters[index],name=bibleJourneyBookNames[bibleJourneyBookNumber(ch.book)]||ch.bookName||ch.book||'BIBLE';
+  refEl.textContent=name+' '+ch.chapter+'장';refEl.hidden=false;
+  passageEl.innerHTML='';
+  const body=document.createElement('p');body.className='journey-chapter-text';body.textContent=ch.verses.map(v=>v.content||v.text||'').join(' ');
+  passageEl.appendChild(body);passageEl.hidden=false;
+  btn.hidden=false;btn.disabled=index!==Number(getJSON(bibleJourneyKey(),{nextChapterIndex:0}).nextChapterIndex||0);
+  btn.textContent=btn.disabled?'이전 장은 읽기 완료됨':'이 장 읽기 완료 ✓';
+  btn.dataset.chapterIndex=String(index);
 }
 function completeBibleJourney(){
-  const btn=document.getElementById('journeyCompleteBtn'),nextIndex=Number(btn&&btn.dataset.nextChapterIndex),chapters=getBibleJourneyChapters();
-  if(!Number.isFinite(nextIndex)||!chapters.length)return;
+  const btn=document.getElementById('journeyCompleteBtn'),chapters=getBibleJourneyChapters(),index=Number(btn&&btn.dataset.chapterIndex);
+  if(btn&&btn.textContent==='처음부터 다시 읽기'){
+    put(bibleJourneyKey(),{nextChapterIndex:0,completedDays:0});openBibleJourneyIndex=null;renderBibleJourney();return;
+  }
+  if(!Number.isFinite(index)||!chapters.length)return;
   const old=getJSON(bibleJourneyKey(),{nextChapterIndex:0,completedDays:0});
-  if(old.finished){put(bibleJourneyKey(),{nextChapterIndex:0,completedDays:0});renderBibleJourney();return}
-  const next={nextChapterIndex:Math.min(nextIndex,chapters.length),completedDays:(Number(old.completedDays)||Number(old.completed)||0)+1,lastReadAt:localDate()};
-  if(nextIndex>=chapters.length){next.nextChapterIndex=chapters.length;next.finished=true}
-  put(bibleJourneyKey(),next);renderBibleJourney();
+  const current=Number(old.nextChapterIndex)||0;
+  if(index!==current)return;
+  const nextIndex=Math.min(current+1,chapters.length);
+  const next={nextChapterIndex:nextIndex,completedDays:(Number(old.completedDays)||Number(old.completed)||0)+1,lastReadAt:localDate()};
+  if(nextIndex>=chapters.length)next.finished=true;
+  put(bibleJourneyKey(),next);
+  openBibleJourneyIndex=null;
+  renderBibleJourney();
 }
 function updateTodayLanguage(lang){const d=window.PAGE_I18N[lang]||window.PAGE_I18N.ko;document.getElementById('todayDate').textContent=new Intl.DateTimeFormat(d.today_date_locale,{dateStyle:'full'}).format(new Date());document.getElementById('todayVerse').textContent='“'+(lang==='en'?verse[2]:verse[0])+'”';document.getElementById('todayRef').textContent=lang==='en'?verse[3]:verse[1];renderBibleJourney();document.getElementById('todoInput').placeholder=d.todo_placeholder;document.getElementById('todayMemo').placeholder=d.memo_placeholder;document.getElementById('todayPrayer').placeholder=d.prayer_placeholder;renderRoutine();document.getElementById('todayAuth').querySelector('#authInitials').placeholder=lang==='en'?'INITIALS (e.g. CLP)':'INITIALS (예: CLP)';document.getElementById('todayAuth').querySelector('#authPin').placeholder=lang==='en'?'4-DIGIT PIN':'4자리 PIN';renderTodos&&renderTodos()}
 function startToday(){document.getElementById('todayAuth').style.display='none';document.getElementById('todayAuth').setAttribute('aria-hidden','true');document.getElementById('todayApp').hidden=false;document.getElementById('todayQuizStep').hidden=true;document.getElementById('todayRecords').hidden=true;document.getElementById('todayCheckinBtn').hidden=true;document.getElementById('profileInitials').textContent=profile;loadData();updateTodayLanguage(window.getCurrentLang?window.getCurrentLang():'ko');loadQuiz();const saved=getJSON(quizStorageKey(),null);if(saved&&saved.date===localDate()&&saved.completed){document.getElementById('todayQuizStep').hidden=false;renderQuiz()}else{const start=document.getElementById('todayQuizStart');if(start)start.hidden=false}/* Visiting TODAY and viewing the daily Word counts as today's check-in; quiz completion is not required. */markCheckin().then(()=>renderRoutine())}

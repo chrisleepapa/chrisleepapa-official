@@ -63,10 +63,18 @@
   const load = async () => {
     try {
       const response = await fetch('/data/chris-news.json?ts=' + Date.now(), { cache: 'no-store' });
-      if (!response.ok) return;
-      render(await response.json());
+      if (!response.ok) throw new Error('News data request failed: ' + response.status);
+      const payload = await response.json();
+      if (!payload || !Array.isArray(payload.cards) || payload.cards.length !== 6) {
+        throw new Error('News data payload is incomplete.');
+      }
+      render(payload);
     } catch (error) {
-      console.warn('Daily Chris\'s News data is not available; keeping the built-in cards.', error);
+      console.warn("Daily Chris's News data is not available.", error);
+      const note = root.querySelector('.chris-news-note span');
+      if (note) note.textContent = document.documentElement.lang === 'en'
+        ? 'The latest news could not be loaded. Please try again later.'
+        : '최신 뉴스 데이터를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.';
     }
   };
   load();

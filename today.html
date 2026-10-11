@@ -173,18 +173,31 @@ function bibleJourneyNumber(value){
   const match=String(value==null?'':value).match(/\d+/);
   return match?Number(match[0]):NaN;
 }
+function bibleJourneyBookNumber(value){
+  const numeric=bibleJourneyNumber(value);
+  if(Number.isFinite(numeric))return numeric;
+  const name=String(value==null?'':value).trim();
+  const entry=Object.entries(bibleJourneyBookNames).find(([,bookName])=>bookName===name);
+  return entry?Number(entry[0]):NaN;
+}
 function getBibleJourneyChapters(){
   const grouped=new Map();
   const ordered=(Array.isArray(bibleVerses)?bibleVerses:[]).filter(v=>v&&(v.content!=null||v.text!=null)&&v.book!=null&&v.chapter!=null)
-    .slice().sort((a,b)=>bibleJourneyNumber(a.book)-bibleJourneyNumber(b.book)||bibleJourneyNumber(a.chapter)-bibleJourneyNumber(b.chapter)||bibleJourneyNumber(a.verse)-bibleJourneyNumber(b.verse));
+    .slice().sort((a,b)=>{
+      const bookDiff=bibleJourneyBookNumber(a.book)-bibleJourneyBookNumber(b.book);
+      if(Number.isFinite(bookDiff)&&bookDiff!==0)return bookDiff;
+      const chapterDiff=bibleJourneyNumber(a.chapter)-bibleJourneyNumber(b.chapter);
+      if(Number.isFinite(chapterDiff)&&chapterDiff!==0)return chapterDiff;
+      return bibleJourneyNumber(a.verse)-bibleJourneyNumber(b.verse);
+    });
   for(const v of ordered){
-    const bookNo=bibleJourneyNumber(v.book),chapterNo=bibleJourneyNumber(v.chapter);
-    if(!Number.isFinite(chapterNo))continue;
-    const key=String(v.book)+'|'+chapterNo;
-    if(!grouped.has(key))grouped.set(key,{book:v.book,chapter:chapterNo,verses:[]});
+    const bookNo=bibleJourneyBookNumber(v.book),chapterNo=bibleJourneyNumber(v.chapter);
+    if(!Number.isFinite(bookNo)||!Number.isFinite(chapterNo))continue;
+    const key=bookNo+'|'+chapterNo;
+    if(!grouped.has(key))grouped.set(key,{book:bookNo,chapter:chapterNo,verses:[]});
     grouped.get(key).verses.push(v);
   }
-  return [...grouped.values()].sort((a,b)=>bibleJourneyNumber(a.book)-bibleJourneyNumber(b.book)||a.chapter-b.chapter);
+  return [...grouped.values()].sort((a,b)=>bibleJourneyBookNumber(a.book)-bibleJourneyBookNumber(b.book)||a.chapter-b.chapter);
 }
 function renderBibleJourney(){
   const refEl=document.getElementById('journeyRef'),passageEl=document.getElementById('journeyPassage'),progressEl=document.getElementById('journeyProgress'),btn=document.getElementById('journeyCompleteBtn');

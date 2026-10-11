@@ -190,17 +190,6 @@ function bibleJourneyBookNumber(value){
   return NaN;
 }
 function bibleJourneyKey(){return 'clp-bible-journey-'+(profile||'guest')}
-function bibleJourneyNumber(value){
-  const match=String(value==null?'':value).match(/\d+/);
-  return match?Number(match[0]):NaN;
-}
-function bibleJourneyBookNumber(value){
-  const numeric=bibleJourneyNumber(value);
-  if(Number.isFinite(numeric))return numeric;
-  const name=String(value==null?'':value).trim();
-  const entry=Object.entries(bibleJourneyBookNames).find(([,bookName])=>bookName===name);
-  return entry?Number(entry[0]):NaN;
-}
 function getBibleJourneyChapters(){
   const grouped=new Map();
   const ordered=(Array.isArray(bibleVerses)?bibleVerses:[]).filter(v=>v&&(v.content!=null||v.text!=null)&&v.book!=null&&v.chapter!=null)

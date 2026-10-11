@@ -39,7 +39,7 @@
       card.append(title);
       card.append(make('p', 'chris-news-summary', safeText(lang === 'en' ? item.summaryEn || item.summary : item.summary)));
       const points = make('div', 'chris-news-points');
-      ((lang === 'en' ? item.points : item.pointsKo || item.points) || []).slice(0, 3).forEach((point) => points.append(make('div', 'chris-news-point', point)));
+      ((lang === 'en' ? item.pointsEn || item.points : item.pointsKo || item.points) || []).slice(0, 3).forEach((point) => points.append(make('div', 'chris-news-point', point)));
       card.append(points);
       const footer = make('div', 'chris-news-card-footer');
       const link = make('a', 'chris-news-source', (item.source || '원문 보기') + ' ↗');

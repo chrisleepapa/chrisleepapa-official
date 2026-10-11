@@ -216,9 +216,8 @@ function renderBibleJourney(){
     progressEl.textContent='전체 성경 100% 완료 · 총 '+chapters.length+'장';
     btn.disabled=false;btn.textContent='처음부터 다시 읽기';btn.dataset.nextChapterIndex='0';return;
   }
-  const completed=Number(saved.completedDays)||Number(saved.completed)||0;
   const nameFor=ch=>bibleJourneyBookNames[bibleJourneyBookNumber(ch.book)]||ch.bookName||ch.book||'BIBLE';
-  progressEl.textContent='하루 목표 4장 · '+completed+'장 완료 · '+startIndex+'/'+chapters.length+'장 읽음 ('+Math.floor(startIndex/chapters.length*100)+'%)';
+  progressEl.textContent='하루 목표 4장 · 전체 '+startIndex+'/'+chapters.length+'장 읽음 ('+Math.floor(startIndex/chapters.length*100)+'%)';
   listEl.innerHTML='';
   const endIndex=Math.min(startIndex+4,chapters.length);
   for(let i=startIndex;i<endIndex;i++){

@@ -173,9 +173,9 @@ const bibleJourneyBookAliases = [
 ['창세기','창','Genesis','GEN'],['출애굽기','출','Exodus','EXO'],['레위기','레','Leviticus','LEV'],['민수기','민','Numbers','NUM'],['신명기','신','Deuteronomy','DEU'],['여호수아','여','Joshua','JOS'],['사사기','사','Judges','JDG'],['룻기','룻','Ruth','RUT'],['사무엘상','삼상','1 Samuel','1SA'],['사무엘하','삼하','2 Samuel','2SA'],['열왕기상','왕상','1 Kings','1KI'],['열왕기하','왕하','2 Kings','2KI'],['역대상','대상','1 Chronicles','1CH'],['역대하','대하','2 Chronicles','2CH'],['에스라','스','Ezra','EZR'],['느헤미야','느','Nehemiah','NEH'],['에스더','에','Esther','EST'],['욥기','욥','Job','JOB'],['시편','시','Psalms','PSA'],['잠언','잠','Proverbs','PRO'],['전도서','전','Ecclesiastes','ECC'],['아가','아','Song of Solomon','SNG'],['이사야','사','Isaiah','ISA'],['예레미야','렘','Jeremiah','JER'],['예레미야 애가','애','Lamentations','LAM'],['에스겔','겔','Ezekiel','EZE'],['다니엘','단','Daniel','DAN'],['호세아','호','Hosea','HOS'],['요엘','욜','Joel','JOL'],['아모스','암','Amos','AMO'],['오바댜','옵','Obadiah','OBA'],['요나','욘','Jonah','JON'],['미가','미','Micah','MIC'],['나훔','나','Nahum','NAM'],['하박국','합','Habakkuk','HAB'],['스바냐','습','Zephaniah','ZEP'],['학개','학','Haggai','HAG'],['스가랴','슥','Zechariah','ZEC'],['말라기','말','Malachi','MAL'],['마태복음','마','Matthew','MAT'],['마가복음','막','Mark','MRK'],['누가복음','눅','Luke','LUK'],['요한복음','요','John','JHN'],['사도행전','행','Acts','ACT'],['로마서','롬','Romans','ROM'],['고린도전서','고전','1 Corinthians','1CO'],['고린도후서','고후','2 Corinthians','2CO'],['갈라디아서','갈','Galatians','GAL'],['에베소서','엡','Ephesians','EPH'],['빌립보서','빌','Philippians','PHP'],['골로새서','골','Colossians','COL'],['데살로니가전서','살전','1 Thessalonians','1TH'],['데살로니가후서','살후','2 Thessalonians','2TH'],['디모데전서','딤전','1 Timothy','1TI'],['디모데후서','딤후','2 Timothy','2TI'],['디도서','딛','Titus','TIT'],['빌레몬서','몬','Philemon','PHM'],['히브리서','히','Hebrews','HEB'],['야고보서','약','James','JAS'],['베드로전서','벧전','1 Peter','1PE'],['베드로후서','벧후','2 Peter','2PE'],['요한일서','요일','1 John','1JN'],['요한이서','요이','2 John','2JN'],['요한삼서','요삼','3 John','3JN'],['유다서','유','Jude','JUD'],['요한계시록','계','Revelation','REV']
 ];
 const bibleJourneyAliasToNumber = new Map();
-bibleJourneyBookAliases.forEach((aliases,index)=>aliases.forEach(alias=>bibleJourneyAliasToNumber.set(String(alias).toLowerCase().replace(/[\\s._-]+/g,''),index+1)));
+bibleJourneyBookAliases.forEach((aliases,index)=>aliases.forEach(alias=>bibleJourneyAliasToNumber.set(String(alias).toLowerCase().replace(/[\s._-]+/g,''),index+1)));
 function bibleJourneyNumber(value){
-  const match=String(value==null?'':value).match(/^\\s*(\\d+)\\s*$/);
+  const match=String(value==null?'':value).match(/^\s*(\d+)\s*$/);
   return match?Number(match[1]):NaN;
 }
 function bibleJourneyBookNumber(value){
@@ -183,9 +183,9 @@ function bibleJourneyBookNumber(value){
   const raw=String(value==null?'':value).trim();
   const numeric=bibleJourneyNumber(raw);
   if(Number.isFinite(numeric)&&numeric>=1&&numeric<=66)return numeric;
-  const normalized=raw.toLowerCase().replace(/[\\s._-]+/g,'');
+  const normalized=raw.toLowerCase().replace(/[\s._-]+/g,'');
   if(bibleJourneyAliasToNumber.has(normalized))return bibleJourneyAliasToNumber.get(normalized);
-  const prefix=normalized.match(/^(\\d+)(samuel|kings|chronicles|corinthians|thessalonians|timothy|peter|john)$/);
+  const prefix=normalized.match(/^(\d+)(samuel|kings|chronicles|corinthians|thessalonians|timothy|peter|john)$/);
   if(prefix)return bibleJourneyAliasToNumber.get(normalized)??NaN;
   return NaN;
 }

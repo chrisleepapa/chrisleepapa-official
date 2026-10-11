@@ -4,7 +4,12 @@
   const grid = root.querySelector('.chris-news-grid');
   if (!grid) return;
 
-  const safeText = (value) => String(value || '').trim();
+  const safeText = (value) => String(value || '')
+    .replace(/<\/?[a-z][^>]*>/gi, ' ')
+    .replace(/&nbsp;|&#160;/gi, ' ')
+    .replace(/&amp;/gi, '&').replace(/&quot;/gi, '"')
+    .replace(/&#39;|&apos;/gi, "'").replace(/&lt;/gi, '<').replace(/&gt;/gi, '>')
+    .replace(/\s+/g, ' ').trim();
   const make = (tag, className, text) => {
     const el = document.createElement(tag);
     if (className) el.className = className;
@@ -31,7 +36,7 @@
       card.append(make('p', 'chris-news-card-kicker', lang === 'en' ? item.categoryEn : item.categoryKo));
       const title = make('h3', '', lang === 'en' ? item.titleEn || item.title : item.title);
       card.append(title);
-      card.append(make('p', 'chris-news-summary', lang === 'en' ? item.summaryEn || item.summary : item.summary));
+      card.append(make('p', 'chris-news-summary', safeText(lang === 'en' ? item.summaryEn || item.summary : item.summary)));
       const points = make('div', 'chris-news-points');
       ((lang === 'en' ? item.points : item.pointsKo || item.points) || []).slice(0, 3).forEach((point) => points.append(make('div', 'chris-news-point', point)));
       card.append(points);

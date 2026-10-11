@@ -59,7 +59,7 @@ html[data-theme="light"] .today-title{color:#29251f!important}
 .today-journey{margin:0 0 18px;padding:22px 24px;border:1px solid rgba(201,168,76,.22);border-radius:18px;background:linear-gradient(145deg,rgba(18,16,14,.82),rgba(8,8,11,.82));display:flex;align-items:center;justify-content:space-between;gap:18px}
 .today-journey h2{margin:0 0 7px;color:var(--today-gold);font:600 .95rem 'Cinzel',serif;letter-spacing:.1em}
 .today-journey p{margin:0;color:rgba(238,238,238,.65);font:.86rem/1.7 'Noto Sans KR',sans-serif}
-.journey-copy{flex:1;min-width:0}.journey-progress{margin:14px 0 8px;color:rgba(201,168,76,.75);font:.72rem "Noto Sans KR",sans-serif}.journey-ref{display:block;margin:12px 0 8px;color:#f1e8d1;font:.95rem "Noto Sans KR",sans-serif}.journey-passage{color:rgba(238,238,238,.8);font:.9rem/1.85 "Noto Sans KR",sans-serif;white-space:normal}.journey-complete{display:inline-flex;align-items:center;margin-top:14px;padding:10px 14px;border:1px solid rgba(201,168,76,.4);border-radius:10px;color:var(--today-gold);background:rgba(201,168,76,.05);cursor:pointer;font:.75rem "Noto Sans KR",sans-serif}.journey-complete:disabled{opacity:.45;cursor:default}html[data-theme="light"] .journey-ref{color:#29251f}html[data-theme="light"] .journey-passage{color:#383632}html[data-theme="light"] .journey-complete{color:#765b17;border-color:rgba(93,72,24,.3);background:#f7f3e9}.today-journey a{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(201,168,76,.42);border-radius:10px;padding:10px 14px;color:var(--today-gold);font:600 .7rem 'Cinzel',serif;letter-spacing:.08em;text-decoration:none}
+.journey-copy{flex:1;min-width:0}.journey-progress{margin:14px 0 8px;color:rgba(201,168,76,.75);font:.72rem "Noto Sans KR",sans-serif}.journey-ref{display:block;margin:12px 0 8px;color:#f1e8d1;font:.95rem "Noto Sans KR",sans-serif}.journey-passage{color:rgba(238,238,238,.8);font:.9rem/1.85 "Noto Sans KR",sans-serif;white-space:normal}.journey-chapter-heading{display:block;margin:18px 0 5px;color:var(--today-gold);font-weight:700}.journey-chapter-text{margin:0 0 10px;line-height:1.9}.journey-complete{display:inline-flex;align-items:center;margin-top:14px;padding:10px 14px;border:1px solid rgba(201,168,76,.4);border-radius:10px;color:var(--today-gold);background:rgba(201,168,76,.05);cursor:pointer;font:.75rem "Noto Sans KR",sans-serif}.journey-complete:disabled{opacity:.45;cursor:default}html[data-theme="light"] .journey-ref{color:#29251f}html[data-theme="light"] .journey-passage{color:#383632}html[data-theme="light"] .journey-complete{color:#765b17;border-color:rgba(93,72,24,.3);background:#f7f3e9}.today-journey a{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(201,168,76,.42);border-radius:10px;padding:10px 14px;color:var(--today-gold);font:600 .7rem 'Cinzel',serif;letter-spacing:.08em;text-decoration:none}
 @media(max-width:560px){.today-journey{align-items:flex-start;flex-direction:column}.today-journey a{width:100%;box-sizing:border-box}}
 
 html[data-theme="light"] .today-journey{background:linear-gradient(145deg,#fffdf8,#f3f0e8);border-color:rgba(93,72,24,.18)}
@@ -169,34 +169,57 @@ let profile='';
 function localDate(){const d=new Date(),y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return y+'-'+m+'-'+day}function profileKey(date){return 'chrisleepapa-today-'+profile+'-'+(date||localDate())}function streakKey(){return 'chrisleepapa-today-streak-'+profile}function readStreak(){return getJSON(streakKey(),{dates:[]})}function writeStreak(v){put(streakKey(),v)}async function loadRemoteStreak(){if(!profile)return readStreak();try{const r=await fetch('https://cvfmkcxmxkmemmshfttn.supabase.co/rest/v1/clp_today?select=record_date,data&account_id=eq.'+encodeURIComponent(profile)+'&order=record_date.asc',{headers:{apikey:'sb_publishable_BbG_kRPWRFeAPvIduwPTJg_O1z_sStm',Authorization:'Bearer sb_publishable_BbG_kRPWRFeAPvIduwPTJg_O1z_sStm'}});if(!r.ok)return readStreak();const rows=await r.json();const dates=(Array.isArray(rows)?rows:[]).filter(x=>x&&x.data&&x.data.checkin===true).map(x=>x.record_date).filter(Boolean);const s={dates:[...new Set([...readStreak().dates,...dates])].sort()};writeStreak(s);return s}catch(_){return readStreak()}}async function markCheckin(){const s=readStreak(),d=localDate();if(!Array.isArray(s.dates))s.dates=[];if(!s.dates.includes(d))s.dates.push(d);s.dates.sort();writeStreak(s);try{const session=window.CLPAuth?.getUser?.();if(session?.initials&&session?.pinHash){const existing=getJSON(profileKey(),{todos:[],memo:'',prayer:''});existing.checkin=true;localStorage.setItem(profileKey(),JSON.stringify(existing));await fetch('https://cvfmkcxmxkmemmshfttn.supabase.co/rest/v1/rpc/clp_save_today',{method:'POST',headers:{apikey:'sb_publishable_BbG_kRPWRFeAPvIduwPTJg_O1z_sStm',Authorization:'Bearer '+sbKey(),'Content-Type':'application/json'},body:JSON.stringify({p_initials:session.initials,p_pin_hash:session.pinHash,p_date:d,p_data:existing})})}}catch(_){}return s}function sbKey(){return 'sb_publishable_BbG_kRPWRFeAPvIduwPTJg_O1z_sStm'}function streakCount(s){return new Set(s.dates||[]).size}function quizStorageKey(){return profileKey()+'-quiz'}function saveQuiz(){put(quizStorageKey(),{date:localDate(),score:quizScore,answered:quizIndex,completed:quizIndex>=todayQuiz.length})}function loadQuiz(){const saved=getJSON(quizStorageKey(),null);todayQuiz=todayQuizSet();quizIndex=0;quizScore=0;if(saved&&saved.date===localDate()&&saved.completed){quizIndex=todayQuiz.length;quizScore=Number(saved.score)||0}}function renderQuiz(){const lang=window.getCurrentLang?window.getCurrentLang():'ko',count=document.getElementById('quizCount'),qEl=document.getElementById('quizQuestion'),opts=document.getElementById('quizOptions'),feedback=document.getElementById('quizFeedback'),next=document.getElementById('quizNext'),result=document.getElementById('quizResult');if(quizIndex>=todayQuiz.length){count.textContent='5 / 5';qEl.textContent=lang==='en'?'Quiz complete.':'퀴즈 완료';opts.innerHTML='';feedback.hidden=true;next.hidden=true;result.hidden=false;result.textContent=(lang==='en'?'Today’s score: ':'오늘의 점수: ')+quizScore+'/5';document.getElementById('todayCheckinBtn').hidden=false;return}const item=todayQuiz[quizIndex];count.textContent=(quizIndex+1)+' / 5';qEl.textContent=item.q;opts.innerHTML='';feedback.hidden=true;next.hidden=true;result.hidden=true;item.o.forEach((label,i)=>{const b=document.createElement('button');b.type='button';b.className='quiz-option';b.textContent=label;b.addEventListener('click',()=>answerQuiz(i));opts.appendChild(b)})}function answerQuiz(choice){if(quizAnswered)return;quizAnswered=true;const item=todayQuiz[quizIndex],correct=choice===item.a;if(correct)quizScore++;document.querySelectorAll('.quiz-option').forEach((b,i)=>{b.disabled=true;if(i===item.a)b.classList.add('correct');if(i===choice&&i!==item.a)b.classList.add('wrong')});const f=document.getElementById('quizFeedback');f.hidden=false;f.textContent=(correct?'✓ ':'✕ ')+item.e;document.getElementById('quizNext').hidden=false;document.getElementById('quizNext').textContent=quizIndex===todayQuiz.length-1?'결과 보기 →':'다음 문제 →';saveQuiz()}function nextQuiz(){quizIndex++;quizAnswered=false;saveQuiz();renderQuiz();if(quizIndex>=todayQuiz.length){markCheckin().then(()=>renderRoutine())}}async function renderRoutine(){const d=window.PAGE_I18N[window.getCurrentLang?window.getCurrentLang():'ko']||window.PAGE_I18N.ko;loadQuiz();const s=await loadRemoteStreak(),count=streakCount(s);document.getElementById('todayStreak').textContent=count;const btn=document.getElementById('todayCheckinBtn');btn.textContent=count>0?d.today_checkin_done:d.today_checkin;btn.classList.toggle('done',count>0);btn.disabled=count>0;const box=document.getElementById('todayWeekProgress');box.innerHTML='';const now=new Date(),dayIndex=now.getDay()||7;for(let i=1;i<=7;i++){const el=document.createElement('span');el.className='routine-day '+(i<=dayIndex?'on':'');box.appendChild(el)}document.getElementById('todayRoutineMeta').textContent=d.today_routine_progress+' · '+count+' '+((window.getCurrentLang?window.getCurrentLang():'ko')==='en'?'day'+(count===1?'':'s'):'일');renderQuiz()}
 const bibleJourneyBookNames={1:'창세기',2:'출애굽기',3:'레위기',4:'민수기',5:'신명기',6:'여호수아',7:'사사기',8:'룻기',9:'사무엘상',10:'사무엘하',11:'열왕기상',12:'열왕기하',13:'역대상',14:'역대하',15:'에스라',16:'느헤미야',17:'에스더',18:'욥기',19:'시편',20:'잠언',21:'전도서',22:'아가',23:'이사야',24:'예레미야',25:'예레미야애가',26:'에스겔',27:'다니엘',28:'호세아',29:'요엘',30:'아모스',31:'오바댜',32:'요나',33:'미가',34:'나훔',35:'하박국',36:'스바냐',37:'학개',38:'스가랴',39:'말라기',40:'마태복음',41:'마가복음',42:'누가복음',43:'요한복음',44:'사도행전',45:'로마서',46:'고린도전서',47:'고린도후서',48:'갈라디아서',49:'에베소서',50:'빌립보서',51:'데살로니가전서',52:'데살로니가후서',53:'디모데전서',54:'디모데후서',55:'디도서',56:'빌레몬서',57:'히브리서',58:'야고보서',59:'베드로전서',60:'베드로후서',61:'요한일서',62:'요한이서',63:'요한삼서',64:'유다서',65:'유다서',66:'요한계시록'};
 function bibleJourneyKey(){return 'clp-bible-journey-'+(profile||'guest')}
+function getBibleJourneyChapters(){
+  const chapters=[];
+  for(const v of bibleVerses){
+    if(!v||(v.content==null&&v.text==null)||v.book==null||v.chapter==null)continue;
+    let current=chapters[chapters.length-1];
+    if(!current||String(current.book)!==String(v.book)||Number(current.chapter)!==Number(v.chapter)){
+      current={book:v.book,chapter:Number(v.chapter),verses:[]};chapters.push(current);
+    }
+    current.verses.push(v);
+  }
+  return chapters;
+}
 function renderBibleJourney(){
   const refEl=document.getElementById('journeyRef'),passageEl=document.getElementById('journeyPassage'),progressEl=document.getElementById('journeyProgress'),btn=document.getElementById('journeyCompleteBtn');
   if(!refEl||!passageEl||!progressEl||!btn)return;
   if(!Array.isArray(bibleVerses)||!bibleVerses.length){passageEl.textContent='성경 본문을 불러오는 중입니다.';btn.disabled=true;return}
-  const saved=getJSON(bibleJourneyKey(),{nextIndex:0,completed:0});
-  if(saved.finished||Number(saved.nextIndex)>=bibleVerses.length){refEl.textContent='성경 통독 완료';passageEl.textContent='창세기부터 요한계시록까지 모든 본문을 읽었습니다. 원한다면 처음부터 다시 읽을 수 있습니다.';progressEl.textContent='전체 성경 100% 완료';btn.disabled=false;btn.textContent='처음부터 다시 읽기';btn.dataset.nextIndex='0';return}
-  btn.textContent='이 본문 읽기 완료 → 다음 본문';
-  const startIndex=Math.min(Math.max(0,Number(saved.nextIndex)||0),bibleVerses.length-1);
-  const start=bibleVerses[startIndex],passage=[];
-  for(let i=startIndex;i<bibleVerses.length&&passage.length<5;i++){
-    const v=bibleVerses[i];
-    if(String(v.book)!==String(start.book)||Number(v.chapter)!==Number(start.chapter))break;
-    if(passage.length&&Number(v.verse)!==Number(passage[passage.length-1].verse)+1)break;
-    passage.push(v);
+  const chapters=getBibleJourneyChapters();
+  if(!chapters.length){passageEl.textContent='성경 본문을 불러오지 못했습니다. 잠시 후 다시 열어 주세요.';btn.disabled=true;return}
+  const saved=getJSON(bibleJourneyKey(),{nextChapterIndex:0,completedDays:0});
+  let startIndex=Number.isInteger(Number(saved.nextChapterIndex))?Number(saved.nextChapterIndex):0;
+  if(saved.nextChapterIndex==null&&Number.isFinite(Number(saved.nextIndex))&&Number(saved.nextIndex)>0){
+    const oldVerse=bibleVerses[Math.min(Number(saved.nextIndex),bibleVerses.length-1)];
+    const migrated=chapters.findIndex(ch=>String(ch.book)===String(oldVerse&&oldVerse.book)&&Number(ch.chapter)===Number(oldVerse&&oldVerse.chapter));
+    if(migrated>=0)startIndex=migrated;
   }
-  const bookName=bibleJourneyBookNames[Number(start.book)]||start.bookName||start.book||'BIBLE';
-  refEl.textContent=bookName+' '+start.chapter+':'+start.verse+(passage.length>1?'-'+passage[passage.length-1].verse:'');
-  passageEl.textContent=passage.map(v=>v.content||v.text||'').join(' ');
-  const completed=Number(saved.completed)||0;
-  progressEl.textContent='읽은 본문 '+completed+'회 · 전체 성경 '+Math.floor(startIndex/Math.max(1,bibleVerses.length)*100)+'% 진행';
-  btn.disabled=false;btn.dataset.nextIndex=String(startIndex+passage.length);
+  if(saved.finished||startIndex>=chapters.length){
+    refEl.textContent='성경 통독 완료';
+    passageEl.textContent='창세기부터 요한계시록까지 모든 장을 읽었습니다. 원한다면 처음부터 다시 읽을 수 있습니다.';
+    progressEl.textContent='전체 성경 100% 완료 · 총 '+chapters.length+'장';
+    btn.disabled=false;btn.textContent='처음부터 다시 읽기';btn.dataset.nextChapterIndex='0';return;
+  }
+  const batch=chapters.slice(startIndex,startIndex+4),first=batch[0],last=batch[batch.length-1];
+  const nameFor=ch=>bibleJourneyBookNames[Number(ch.book)]||ch.bookName||ch.book||'BIBLE';
+  refEl.textContent=batch.length===1?nameFor(first)+' '+first.chapter+'장':nameFor(first)+' '+first.chapter+'장부터 '+(nameFor(last)===nameFor(first)?last.chapter+'장':nameFor(last)+' '+last.chapter+'장')+'까지';
+  passageEl.innerHTML='';
+  batch.forEach(ch=>{
+    const heading=document.createElement('strong');heading.className='journey-chapter-heading';heading.textContent=nameFor(ch)+' '+ch.chapter+'장';
+    const body=document.createElement('p');body.className='journey-chapter-text';body.textContent=ch.verses.map(v=>v.content||v.text||'').join(' ');
+    passageEl.appendChild(heading);passageEl.appendChild(body);
+  });
+  const completed=Number(saved.completedDays)||Number(saved.completed)||0;
+  progressEl.textContent='하루 목표 4장 · '+completed+'일 완료 · '+startIndex+'/'+chapters.length+'장 읽음 ('+Math.floor(startIndex/chapters.length*100)+'%)';
+  btn.disabled=false;btn.textContent='오늘 4장 읽기 완료 ✓';btn.dataset.nextChapterIndex=String(Math.min(startIndex+batch.length,chapters.length));
 }
 function completeBibleJourney(){
-  const btn=document.getElementById('journeyCompleteBtn'),nextIndex=Number(btn?.dataset.nextIndex);
-  if(!Number.isFinite(nextIndex)||!bibleVerses.length)return;
-  const old=getJSON(bibleJourneyKey(),{nextIndex:0,completed:0});
-  const next={nextIndex:Math.min(nextIndex,bibleVerses.length-1),completed:(Number(old.completed)||0)+1,lastReadAt:localDate()};
-  if(nextIndex>=bibleVerses.length){next.nextIndex=0;next.finished=true}
+  const btn=document.getElementById('journeyCompleteBtn'),nextIndex=Number(btn&&btn.dataset.nextChapterIndex),chapters=getBibleJourneyChapters();
+  if(!Number.isFinite(nextIndex)||!chapters.length)return;
+  const old=getJSON(bibleJourneyKey(),{nextChapterIndex:0,completedDays:0});
+  if(old.finished){put(bibleJourneyKey(),{nextChapterIndex:0,completedDays:0});renderBibleJourney();return}
+  const next={nextChapterIndex:Math.min(nextIndex,chapters.length),completedDays:(Number(old.completedDays)||Number(old.completed)||0)+1,lastReadAt:localDate()};
+  if(nextIndex>=chapters.length){next.nextChapterIndex=chapters.length;next.finished=true}
   put(bibleJourneyKey(),next);renderBibleJourney();
 }
 function updateTodayLanguage(lang){const d=window.PAGE_I18N[lang]||window.PAGE_I18N.ko;document.getElementById('todayDate').textContent=new Intl.DateTimeFormat(d.today_date_locale,{dateStyle:'full'}).format(new Date());document.getElementById('todayVerse').textContent='“'+(lang==='en'?verse[2]:verse[0])+'”';document.getElementById('todayRef').textContent=lang==='en'?verse[3]:verse[1];renderBibleJourney();document.getElementById('todoInput').placeholder=d.todo_placeholder;document.getElementById('todayMemo').placeholder=d.memo_placeholder;document.getElementById('todayPrayer').placeholder=d.prayer_placeholder;renderRoutine();document.getElementById('todayAuth').querySelector('#authInitials').placeholder=lang==='en'?'INITIALS (e.g. CLP)':'INITIALS (예: CLP)';document.getElementById('todayAuth').querySelector('#authPin').placeholder=lang==='en'?'4-DIGIT PIN':'4자리 PIN';renderTodos&&renderTodos()}

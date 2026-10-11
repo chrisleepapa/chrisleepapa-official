@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   lines.forEach((v,i)=>ctx.fillText(v,x,y+i*line));return y+lines.length*line;
  };
  const makeImage=async()=>{
-  const data=cards(), W=2160, cardW=680, cardH=1134, gap=40, header=280, pad=80, H=header+pad+cardH*2+gap+pad;
+  const data=cards(), W=2160, cardW=680, cardH=900, gap=40, header=280, pad=80, H=header+pad+cardH*2+gap+pad;
   const cv=document.createElement('canvas');cv.width=W;cv.height=H;const ctx=cv.getContext('2d');ctx.textBaseline='top';
   ctx.fillStyle='#f5f1e8';ctx.fillRect(0,0,W,H);
   ctx.fillStyle='#17130f';ctx.font='700 72px Arial';ctx.fillText("Chris's News",pad,62);

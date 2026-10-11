@@ -71,7 +71,7 @@
       }
       render(payload);
     } catch (error) {
-      console.warn('Daily Chris\\'s News data is not available.', error);
+      console.warn("Daily Chris's News data is not available.", error);
       const note = root.querySelector('.chris-news-note span');
       if (note) note.textContent = document.documentElement.lang === 'en'
         ? 'The latest news could not be loaded. Please try again later.'

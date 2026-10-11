@@ -200,7 +200,6 @@ function getBibleJourneyChapters(){
   return [...grouped.values()].sort((a,b)=>bibleJourneyBookNumber(a.book)-bibleJourneyBookNumber(b.book)||a.chapter-b.chapter);
 }
 let openBibleJourneyIndex=null;
-let openBibleJourneyIndex=null;
 function renderBibleJourney(){
   const listEl=document.getElementById('journeyChapterList'),refEl=document.getElementById('journeyRef'),passageEl=document.getElementById('journeyPassage'),progressEl=document.getElementById('journeyProgress'),btn=document.getElementById('journeyCompleteBtn');
   if(!listEl||!refEl||!passageEl||!progressEl||!btn)return;

@@ -2,7 +2,7 @@
 'use strict';
 (() => {
     const ACCOUNT_PREFIX='chrisleepapa-account-v3-', SESSION_KEY='chrisleepapa-auth-session-v3', TODAY_PREFIX='chrisleepapa-today-';
-    const SUPA_URL='https://cvfmkcxmxkmemmshfttn.supabase.co', SUPA_KEY='sb_publishable_BbG_kRPWRFeAPvIduwPTJg_O1z_sStm';
+    const SUPA_URL='https://cvfmkcxmxkmemmshfttn.supabase.co', SUPA_KEY='sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
     const read=(key,fallback=null)=>{try{const v=localStorage.getItem(key);return v===null?fallback:JSON.parse(v)}catch(_){return fallback}};
     const write=(key,value)=>{try{localStorage.setItem(key,JSON.stringify(value));return true}catch(_){return false}};
     const remove=key=>{try{localStorage.removeItem(key)}catch(_) {}};

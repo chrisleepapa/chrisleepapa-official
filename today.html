@@ -190,6 +190,39 @@ function bibleJourneyBookNumber(value){
   return NaN;
 }
 function bibleJourneyKey(){return 'clp-bible-journey-'+(profile||'guest')}
+let bibleJourneyLoaded=false,bibleJourneyLoadError=false;
+async function bibleJourneyRpc(name,body){
+  const session=window.CLPAuth?.getUser?.();
+  if(!session?.initials||!session?.pinHash)throw new Error('로그인 정보를 확인할 수 없습니다.');
+  const response=await fetch('https://cvfmkcxmxkmemmshfttn.supabase.co/rest/v1/rpc/'+name,{method:'POST',headers:{apikey:sbKey(),Authorization:'Bearer '+sbKey(),'Content-Type':'application/json'},body:JSON.stringify({...body,p_initials:session.initials,p_pin_hash:session.pinHash})});
+  if(!response.ok)throw new Error('Supabase 요청 실패 ('+response.status+')');
+  const result=await response.json();
+  if(!result||result.ok!==true)throw new Error(result?.error||'통독 기록을 저장하지 못했습니다.');
+  return result;
+}
+async function loadBibleJourneyRemote(){
+  bibleJourneyLoaded=false;bibleJourneyLoadError=false;renderBibleJourney();
+  try{
+    const result=await bibleJourneyRpc('clp_load_bible_journey',{});
+    let data=result.data||{nextChapterIndex:0,completedDays:0,dailyReadCount:0};
+    const local=getJSON(bibleJourneyKey(),null);
+    if(!result.found&&local&&(Number(local.nextChapterIndex)>0||Number(local.completedDays)>0||local.finished)){
+      const migrated=await bibleJourneyRpc('clp_save_bible_journey',{p_data:local});
+      data=migrated.data||local;
+    }
+    put(bibleJourneyKey(),data);
+    bibleJourneyLoaded=true;
+  }catch(error){
+    bibleJourneyLoadError=true;
+    console.error('Bible journey load failed:',error);
+  }
+  renderBibleJourney();
+}
+async function saveBibleJourneyRemote(data){
+  const result=await bibleJourneyRpc('clp_save_bible_journey',{p_data:data});
+  put(bibleJourneyKey(),result.data||data);
+  return result.data||data;
+}
 function getBibleJourneyChapters(){
   const grouped=new Map();
   const ordered=(Array.isArray(bibleVerses)?bibleVerses:[]).filter(v=>v&&(v.content!=null||v.text!=null)&&v.book!=null&&v.chapter!=null)
@@ -214,6 +247,7 @@ function renderBibleJourney(){
   const listEl=document.getElementById('journeyChapterList'),refEl=document.getElementById('journeyRef'),passageEl=document.getElementById('journeyPassage'),progressEl=document.getElementById('journeyProgress'),btn=document.getElementById('journeyCompleteBtn');
   if(!listEl||!refEl||!passageEl||!progressEl||!btn)return;
   if(!Array.isArray(bibleVerses)||!bibleVerses.length){listEl.textContent='성경 목록을 불러오는 중입니다.';refEl.hidden=true;passageEl.hidden=true;btn.hidden=true;return}
+  if(!bibleJourneyLoaded){listEl.innerHTML='';refEl.hidden=true;passageEl.hidden=true;btn.hidden=true;progressEl.textContent=bibleJourneyLoadError?'통독 기록을 서버에서 불러오지 못했습니다. 연결을 확인한 뒤 새로고침해 주세요.':'Supabase에서 통독 기록을 불러오는 중…';return}
   const chapters=getBibleJourneyChapters();
   if(!chapters.length){listEl.textContent='성경 목록을 불러오지 못했습니다. 잠시 후 다시 열어 주세요.';refEl.hidden=true;passageEl.hidden=true;btn.hidden=true;return}
   const saved=getJSON(bibleJourneyKey(),{nextChapterIndex:0,completedDays:0});
@@ -264,10 +298,14 @@ function showBibleJourneyChapter(index,chapters){
   btn.textContent=index<current?'이미 읽은 장입니다 ✓':index>current?'앞 장부터 순서대로 읽어주세요':'이 장 읽기 완료 ✓';
   btn.dataset.chapterIndex=String(index);
 }
-function completeBibleJourney(){
+async function completeBibleJourney(){
   const btn=document.getElementById('journeyCompleteBtn'),chapters=getBibleJourneyChapters(),index=Number(btn&&btn.dataset.chapterIndex);
+  if(!bibleJourneyLoaded||bibleJourneyLoadError||!profile)return;
   if(btn&&btn.textContent==='처음부터 다시 읽기'){
-    put(bibleJourneyKey(),{nextChapterIndex:0,completedDays:0,dailyReadCount:0});openBibleJourneyIndex=null;renderBibleJourney();return;
+    btn.disabled=true;
+    try{const reset=await saveBibleJourneyRemote({nextChapterIndex:0,completedDays:0,dailyReadCount:0,dailyStartIndex:0,lastReadAt:null,finished:false});openBibleJourneyIndex=null;renderBibleJourney()}
+    catch(error){console.error(error);alert('통독 기록을 서버에 저장하지 못했습니다. 연결을 확인한 뒤 다시 시도해 주세요.');btn.disabled=false}
+    return;
   }
   if(!Number.isFinite(index)||!chapters.length)return;
   const old=getJSON(bibleJourneyKey(),{nextChapterIndex:0,completedDays:0});
@@ -278,12 +316,19 @@ function completeBibleJourney(){
   const nextIndex=Math.min(current+1,chapters.length);
   const next={nextChapterIndex:nextIndex,completedDays:(Number(old.completedDays)||0)+(old.lastReadAt===today?0:1),lastReadAt:today,dailyReadCount:priorCount+1,dailyStartIndex};
   if(nextIndex>=chapters.length)next.finished=true;
-  put(bibleJourneyKey(),next);
-  openBibleJourneyIndex=null;
-  renderBibleJourney();
+  btn.disabled=true;
+  try{
+    await saveBibleJourneyRemote(next);
+    openBibleJourneyIndex=null;
+    renderBibleJourney();
+  }catch(error){
+    console.error('Bible journey save failed:',error);
+    alert('통독 기록을 Supabase에 저장하지 못했습니다. 읽기 완료로 처리하지 않았습니다. 연결을 확인하고 다시 시도해 주세요.');
+    btn.disabled=false;
+  }
 }
 function updateTodayLanguage(lang){const d=window.PAGE_I18N[lang]||window.PAGE_I18N.ko;document.getElementById('todayDate').textContent=new Intl.DateTimeFormat(d.today_date_locale,{dateStyle:'full'}).format(new Date());document.getElementById('todayVerse').textContent='“'+(lang==='en'?verse[2]:verse[0])+'”';document.getElementById('todayRef').textContent=lang==='en'?verse[3]:verse[1];renderBibleJourney();document.getElementById('todoInput').placeholder=d.todo_placeholder;document.getElementById('todayMemo').placeholder=d.memo_placeholder;document.getElementById('todayPrayer').placeholder=d.prayer_placeholder;renderRoutine();document.getElementById('todayAuth').querySelector('#authInitials').placeholder=lang==='en'?'INITIALS (e.g. CLP)':'INITIALS (예: CLP)';document.getElementById('todayAuth').querySelector('#authPin').placeholder=lang==='en'?'4-DIGIT PIN':'4자리 PIN';renderTodos&&renderTodos()}
-function startToday(){document.getElementById('todayAuth').style.display='none';document.getElementById('todayAuth').setAttribute('aria-hidden','true');document.getElementById('todayApp').hidden=false;document.getElementById('todayQuizStep').hidden=true;document.getElementById('todayRecords').hidden=true;document.getElementById('todayCheckinBtn').hidden=true;document.getElementById('profileInitials').textContent=profile;loadData();updateTodayLanguage(window.getCurrentLang?window.getCurrentLang():'ko');loadQuiz();const saved=getJSON(quizStorageKey(),null);if(saved&&saved.date===localDate()&&saved.completed){document.getElementById('todayQuizStep').hidden=false;renderQuiz()}else{const start=document.getElementById('todayQuizStart');if(start)start.hidden=false}/* Visiting TODAY and viewing the daily Word counts as today's check-in; quiz completion is not required. */markCheckin().then(()=>renderRoutine())}
+function startToday(){document.getElementById('todayAuth').style.display='none';document.getElementById('todayAuth').setAttribute('aria-hidden','true');document.getElementById('todayApp').hidden=false;document.getElementById('todayQuizStep').hidden=true;document.getElementById('todayRecords').hidden=true;document.getElementById('todayCheckinBtn').hidden=true;document.getElementById('profileInitials').textContent=profile;loadData();loadBibleJourneyRemote();updateTodayLanguage(window.getCurrentLang?window.getCurrentLang():'ko');loadQuiz();const saved=getJSON(quizStorageKey(),null);if(saved&&saved.date===localDate()&&saved.completed){document.getElementById('todayQuizStep').hidden=false;renderQuiz()}else{const start=document.getElementById('todayQuizStart');if(start)start.hidden=false}/* Visiting TODAY and viewing the daily Word counts as today's check-in; quiz completion is not required. */markCheckin().then(()=>renderRoutine())}
 async function login(){const ini=document.getElementById('authInitials').value.trim().toUpperCase();const pin=document.getElementById('authPin').value.trim();const err=document.getElementById('authError');err.textContent='';const result=await window.CLPAuth.login(ini,pin,true);if(!result.ok){err.textContent=result.error;return}profile=result.initials;sessionStorage.setItem('clp-today-profile',profile);startToday()}
 function logout(){profile='';sessionStorage.removeItem('clp-today-profile');document.getElementById('todayApp').hidden=true;document.getElementById('todayAuth').style.display='flex';document.getElementById('todayAuth').setAttribute('aria-hidden','false')}
 let todos=[];

@@ -122,32 +122,31 @@ async function fetchCategory(category) {
   const items = parseItems(await response.text());
   if (!items.length) throw new Error('No RSS items for ' + category.key);
   let chosen = null;
-  for (const item of items.slice(0, 5)) {
+  for (const item of items.slice(0, 12)) {
     const article = await fetchArticleDetails(item.link);
     const details = article.details;
     const rssText = item.description.length > 100 && !item.description.includes(item.title) && !isGenericNewsBoilerplate(item.description) ? item.description : '';
     if (details.length || rssText) { chosen = { ...item, link: article.link, details, rssText }; break; }
   }
   if (!chosen) {
-    const item = items[0];
-    const article = await fetchArticleDetails(item.link);
-    chosen = { ...item, link: article.link, details: article.details, rssText: '' };
+    throw new Error('No usable article text or RSS description for ' + category.key + '; refusing to publish a headline-only card.');
   }
-  const evidence = chosen.details.length ? chosen.details : (chosen.rssText ? [chosen.rssText] : []);
+  const evidence = chosen.details.length ? chosen.details : [chosen.rssText];
   const summary = evidence.join(' ').slice(0, 900).trim();
+  if (summary.length < 100) {
+    throw new Error('Article summary too short for ' + category.key + '; refusing to publish a thin card.');
+  }
   const points = sentencePoints(evidence.join(' '));
   const titleEn = await translateToEnglish(chosen.title);
   const summaryEn = summary ? await translateToEnglish(summary) : '';
   const pointsEn = await Promise.all(points.map(translateToEnglish));
-  const fallbackKo = '원문 언론사의 기사 본문을 자동으로 가져오지 못했습니다. 원문 링크에서 자세한 내용을 확인해주세요.';
-  const fallbackEn = 'The publisher did not expose article text for automatic extraction. Open the original report for details.';
   return {
     category: category.key, categoryKo: category.ko, categoryEn: category.en,
     title: chosen.title, titleEn,
-    summary: summary || fallbackKo, summaryEn: summaryEn || fallbackEn,
-    points: points.length ? points : ['원문 기사에서 상세 내용을 확인할 수 있습니다.'],
-    pointsKo: points.length ? points : ['원문 기사에서 상세 내용을 확인할 수 있습니다.'],
-    pointsEn: pointsEn.length ? pointsEn : ['Open the original article for details.'],
+    summary, summaryEn: summaryEn || summary,
+    points: points.length ? points : [summary.slice(0, 180)],
+    pointsKo: points.length ? points : [summary.slice(0, 180)],
+    pointsEn: pointsEn.length ? pointsEn : [summary.slice(0, 180)],
     source: chosen.source, link: chosen.link, publishedAt: chosen.pubDate || new Date().toISOString()
   };
 }

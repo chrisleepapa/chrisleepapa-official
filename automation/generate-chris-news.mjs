@@ -55,23 +55,26 @@ function metaContent(html, key) {
   }
   return '';
 }
+function isGenericNewsBoilerplate(value = '') {
+  return /comprehensive up-to-date news coverage|aggregated from sources all over the world by google news|google news provides.*news coverage/i.test(value.replace(/\s+/g, ' ').trim());
+}
 function extractArticleContent(html) {
   const candidates = [];
   const meta = metaContent(html, 'og:description') || metaContent(html, 'description') || metaContent(html, 'twitter:description');
-  if (meta && meta.length > 70) candidates.push(meta);
+  if (meta && meta.length > 70 && !isGenericNewsBoilerplate(meta)) candidates.push(meta);
   for (const match of html.matchAll(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)) {
     try {
       const parsed = JSON.parse(match[1].trim());
       const nodes = Array.isArray(parsed) ? parsed : [parsed, ...(parsed['@graph'] || [])];
       for (const node of nodes) {
         const body = node && (node.articleBody || node.description);
-        if (typeof body === 'string' && body.length > 100) candidates.push(cleanHtml(body));
+        if (typeof body === 'string' && body.length > 100 && !isGenericNewsBoilerplate(body)) candidates.push(cleanHtml(body));
       }
     } catch {}
   }
   for (const match of html.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)) {
     const paragraph = cleanHtml(match[1]);
-    if (paragraph.length > 80 && !/쿠키|개인정보|로그인|구독|저작권|무단전재|광고|기자\s*$/i.test(paragraph)) candidates.push(paragraph);
+    if (paragraph.length > 80 && !isGenericNewsBoilerplate(paragraph) && !/쿠키|개인정보|로그인|구독|저작권|무단전재|광고|기자\s*$/i.test(paragraph)) candidates.push(paragraph);
   }
   const unique = [];
   for (const candidate of candidates) {
@@ -122,7 +125,7 @@ async function fetchCategory(category) {
   for (const item of items.slice(0, 5)) {
     const article = await fetchArticleDetails(item.link);
     const details = article.details;
-    const rssText = item.description.length > 100 && !item.description.includes(item.title) ? item.description : '';
+    const rssText = item.description.length > 100 && !item.description.includes(item.title) && !isGenericNewsBoilerplate(item.description) ? item.description : '';
     if (details.length || rssText) { chosen = { ...item, link: article.link, details, rssText }; break; }
   }
   if (!chosen) {

@@ -58,6 +58,34 @@ function metaContent(html, key) {
 function isGenericNewsBoilerplate(value = '') {
   return /comprehensive up-to-date news coverage|aggregated from sources all over the world by google news|google news provides.*news coverage/i.test(value.replace(/\s+/g, ' ').trim());
 }
+function extractArticleTitle(html) {
+  const metaTitle = metaContent(html, 'og:title') || metaContent(html, 'twitter:title');
+  if (metaTitle) return metaTitle.replace(/\s*[|｜·-]\s*[^|｜·-]{2,40}$/, '').trim();
+  const jsonHeadline = [...html.matchAll(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)];
+  for (const match of jsonHeadline) {
+    try {
+      const parsed = JSON.parse(match[1].trim());
+      const nodes = Array.isArray(parsed) ? parsed : [parsed, ...(parsed['@graph'] || [])];
+      for (const node of nodes) if (typeof node?.headline === 'string' && node.headline.length > 8) return cleanHtml(node.headline);
+    } catch {}
+  }
+  const titleTag = (html.match(/<title\b[^>]*>([\s\S]*?)<\/title>/i) || [])[1];
+  return titleTag ? cleanHtml(titleTag).replace(/\s*[|｜·-]\s*[^|｜·-]{2,40}$/, '').trim() : '';
+}
+function normalizedTitle(value = '') {
+  return value.toLocaleLowerCase('ko').replace(/[^\p{L}\p{N}]+/gu, '');
+}
+function titleSimilarity(a, b) {
+  const left = normalizedTitle(a);
+  const right = normalizedTitle(b);
+  if (!left || !right) return 0;
+  if (left.includes(right) || right.includes(left)) return 1;
+  const leftTokens = new Set((a.match(/[\p{L}\p{N}]{2,}/gu) || []).map(x => x.toLocaleLowerCase('ko')));
+  const rightTokens = new Set((b.match(/[\p{L}\p{N}]{2,}/gu) || []).map(x => x.toLocaleLowerCase('ko')));
+  if (!leftTokens.size || !rightTokens.size) return 0;
+  const overlap = [...leftTokens].filter(token => rightTokens.has(token)).length;
+  return overlap / Math.min(leftTokens.size, rightTokens.size);
+}
 function extractArticleContent(html) {
   const candidates = [];
   const meta = metaContent(html, 'og:description') || metaContent(html, 'description') || metaContent(html, 'twitter:description');
@@ -92,7 +120,11 @@ async function fetchArticleDetails(url) {
     });
     if (!response.ok) return { link: url, details: [] };
     const html = await response.text();
-    return { link: response.url || url, details: extractArticleContent(html) };
+    const finalUrl = response.url || url;
+    let host = '';
+    try { host = new URL(finalUrl).hostname.toLowerCase(); } catch {}
+    if (host === 'news.google.com' || host.endsWith('.news.google.com')) return { link: finalUrl, details: [], articleTitle: '' };
+    return { link: finalUrl, details: extractArticleContent(html), articleTitle: extractArticleTitle(html) };
   } catch {
     return { link: url, details: [] };
   }
@@ -123,26 +155,27 @@ async function fetchCategory(category) {
   if (!items.length) throw new Error('No RSS items for ' + category.key);
   let chosen = null;
   const candidates = items.slice(0, 30);
+  const nowMs = Date.now();
+  const maxAgeMs = 24 * 60 * 60 * 1000;
   for (const item of candidates) {
+    const publishedMs = Date.parse(item.pubDate);
+    if (!Number.isFinite(publishedMs) || publishedMs > nowMs + 5 * 60 * 1000 || nowMs - publishedMs > maxAgeMs) continue;
     const article = await fetchArticleDetails(item.link);
     const details = article.details;
-    const titleNorm = item.title.replace(/[^\\p{L}\\p{N}]/gu, '').toLowerCase();
-    const rawDescription = cleanHtml(item.description || '');
-    let withoutTitle = rawDescription.startsWith(item.title) ? rawDescription.slice(item.title.length) : rawDescription;
-    withoutTitle = withoutTitle.replace(/^[\\s:|—–\\-·]+/, '').trim();
-    if (item.source && withoutTitle.endsWith(item.source)) withoutTitle = withoutTitle.slice(0, -item.source.length).trim();
-    const descriptionNorm = withoutTitle.replace(/[^\\p{L}\\p{N}]/gu, '').toLowerCase();
-    const rssText = withoutTitle.length >= 80 && !isGenericNewsBoilerplate(withoutTitle) && descriptionNorm !== titleNorm ? withoutTitle : '';
+    if (!article.link || /(^|\.)news\.google\.com$/i.test(new URL(article.link).hostname)) continue;
+    if (article.articleTitle && titleSimilarity(item.title, article.articleTitle) < 0.3) continue;
     const detailText = details.join(' ').trim();
-    if (detailText.length >= 100 || rssText.length >= 80) {
-      chosen = { ...item, link: article.link, details, rssText };
+    // Only publish summaries extracted from the same publisher page as the headline.
+    // RSS snippets may describe a different result and are not a safe summary fallback.
+    if (article.articleTitle && titleSimilarity(item.title, article.articleTitle) >= 0.3 && detailText.length >= 100 && article.link) {
+      chosen = { ...item, link: article.link, details, rssText: '' };
       break;
     }
   }
   if (!chosen) {
-    throw new Error('No article with a usable publisher description found for ' + category.key + ' after checking ' + candidates.length + ' recent results.');
+    throw new Error('No matching publisher article from the last 24 hours with a substantial description found for ' + category.key + ' after checking ' + candidates.length + ' recent results.');
   }
-  const evidence = chosen.details.length ? chosen.details : [chosen.rssText];
+  const evidence = chosen.details;
   const summary = evidence.join(' ').slice(0, 900).trim();
   if (summary.length < 80) {
     throw new Error('Article description is too short for ' + category.key + '; refusing to publish a headline-only card.');
@@ -172,7 +205,8 @@ const now = new Date();
 const dateParts = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(now);
 const dateMap = Object.fromEntries(dateParts.map(part => [part.type, part.value]));
 const date = `${dateMap.year}-${dateMap.month}-${dateMap.day}`;
-const payload = { date, updatedAt: now.toISOString(), sourceNote: 'Google News RSS; headlines and descriptions link to the original publisher.', cards };
+const payload = { date, updatedAt: now.toISOString(), sourceNote: 'Google News RSS headlines; summaries are extracted from matching publisher pages and articles older than 24 hours are excluded.', cards };
 await mkdir('data', { recursive: true });
 await writeFile('data/chris-news.json', JSON.stringify(payload, null, 2) + '\n');
 console.log(`Prepared ${cards.length} news cards for ${date}.`);
+

@@ -1163,6 +1163,7 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
                                 <button class="vt-btn ${hasBm?'active':''}" id="btn-bm-${vKey}" onclick="actionBookmark('${vKey}')">🔖 북마크</button>
                                 <button class="vt-btn" onclick="openMemoModal('${vKey}')">📝 메모 작성</button>
                                 <button class="vt-btn" onclick="shareVerse('${vKey}')">📤 말씀 공유</button>
+                                <button class="vt-btn" onclick="saveVerseImage('${vKey}')">🖼 이미지 저장</button>
                             </div>
                         </div>`;
                     }).join('');
@@ -1319,37 +1320,139 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
             document.getElementById(`badge-${vKey}`).innerHTML = hasBm + hasMemo;
         }
 
-        async function shareVerse(vKey) {
+        function getVerseShareData(vKey) {
             const parts = vKey.split('-');
             const book = BIBLE_BOOKS.find(b => String(b.id) === String(parts[0]));
             const verseTextEl = document.getElementById(`txt-${vKey}`);
-            if (!book || !verseTextEl) { showToast("말씀을 불러올 수 없습니다."); return; }
-            const verseText = verseTextEl.cloneNode(true);
-            verseText.querySelectorAll('.badge-wrap').forEach(el => el.remove());
-            const text = verseText.textContent.trim();
+            if (!book || !verseTextEl) return null;
+            const clone = verseTextEl.cloneNode(true);
+            clone.querySelectorAll('.badge-wrap, .badge-icon').forEach(el => el.remove());
+            let text = (clone.textContent || '').replace(/\s+/g, ' ').trim();
+            // Some Bible data providers include the verse number in the verse text itself.
+            // Remove it so the reference is displayed only once in shared text and images.
+            const verseNumber = Number(parts[2]);
+            text = text.replace(new RegExp('^\\s*' + verseNumber + '(?:[.)、:]?\\s+|\\s*$)'), '').trim();
             const reference = `${book.name} ${parts[1]}장 ${parts[2]}절`;
-            const shareText = `${reference}\n${text}\n\nBible in my hand — Chris LEE.PAPA`;
+            return { reference, text, shareText: `${reference}\\n${text}\\n\\nBible in my hand — Chris LEE.PAPA` };
+        }
+
+        function createVerseImageBlob(data) {
+            return new Promise((resolve, reject) => {
+                try {
+                    const canvas = document.createElement('canvas');
+                    const size = 1200;
+                    canvas.width = size;
+                    canvas.height = size;
+                    const ctx = canvas.getContext('2d');
+                    if (!ctx) return reject(new Error('Canvas unavailable'));
+                    ctx.fillStyle = '#030305';
+                    ctx.fillRect(0, 0, size, size);
+                    const grad = ctx.createLinearGradient(0, 0, size, size);
+                    grad.addColorStop(0, 'rgba(201,168,76,.18)');
+                    grad.addColorStop(1, 'rgba(201,168,76,.025)');
+                    ctx.fillStyle = grad;
+                    ctx.fillRect(0, 0, size, size);
+                    ctx.strokeStyle = 'rgba(201,168,76,.55)';
+                    ctx.lineWidth = 2;
+                    ctx.strokeRect(55, 55, size - 110, size - 110);
+                    ctx.strokeStyle = 'rgba(201,168,76,.18)';
+                    ctx.lineWidth = 1;
+                    ctx.strokeRect(73, 73, size - 146, size - 146);
+                    ctx.textAlign = 'center';
+                    ctx.fillStyle = '#c9a84c';
+                    ctx.font = '600 30px Cinzel, serif';
+                    ctx.fillText('BIBLE IN MY HAND', size / 2, 165);
+                    ctx.fillStyle = '#eee8d8';
+                    ctx.font = '600 34px "Noto Sans KR", sans-serif';
+                    ctx.fillText(data.reference, size / 2, 245);
+                    ctx.fillStyle = '#eee8d8';
+                    ctx.font = '400 42px "Noto Sans KR", sans-serif';
+                    const maxWidth = 900;
+                    const chars = Array.from(data.text);
+                    const lines = [];
+                    let line = '';
+                    for (const ch of chars) {
+                        const test = line + ch;
+                        if (ctx.measureText(test).width > maxWidth && line) {
+                            lines.push(line);
+                            line = ch;
+                        } else line = test;
+                    }
+                    if (line) lines.push(line);
+                    const lineHeight = 62;
+                    const maxLines = 10;
+                    const shownLines = lines.slice(0, maxLines);
+                    if (lines.length > maxLines) shownLines[maxLines - 1] = shownLines[maxLines - 1].slice(0, -1) + '…';
+                    const totalHeight = shownLines.length * lineHeight;
+                    let y = Math.max(355, (size - totalHeight) / 2 + 30);
+                    ctx.fillStyle = 'rgba(201,168,76,.9)';
+                    ctx.font = '500 72px Georgia, serif';
+                    ctx.fillText('“', size / 2, y - 38);
+                    ctx.fillStyle = '#eee8d8';
+                    ctx.font = '400 42px "Noto Sans KR", sans-serif';
+                    for (const row of shownLines) {
+                        ctx.fillText(row, size / 2, y);
+                        y += lineHeight;
+                    }
+                    ctx.fillStyle = '#c9a84c';
+                    ctx.font = '500 23px "Noto Sans KR", sans-serif';
+                    ctx.fillText('Chris LEE.PAPA', size / 2, size - 120);
+                    ctx.fillStyle = 'rgba(238,238,238,.42)';
+                    ctx.font = '400 18px "Noto Sans KR", sans-serif';
+                    ctx.fillText('chrisleepapa-official.vercel.app', size / 2, size - 85);
+                    canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('Image export failed')), 'image/png');
+                } catch (error) { reject(error); }
+            });
+        }
+
+        async function saveVerseImage(vKey) {
+            const data = getVerseShareData(vKey);
+            if (!data) { showToast("말씀을 불러올 수 없습니다."); return; }
             try {
-                if (navigator.share) {
-                    await navigator.share({ title: reference, text: shareText });
-                } else if (navigator.clipboard && window.isSecureContext) {
-                    await navigator.clipboard.writeText(shareText);
-                    showToast("말씀이 복사되었습니다. 원하는 곳에 붙여넣어 공유하세요.");
-                } else {
-                    const textarea = document.createElement('textarea');
-                    textarea.value = shareText;
-                    textarea.style.position = 'fixed';
-                    textarea.style.opacity = '0';
-                    document.body.appendChild(textarea);
-                    textarea.select();
-                    const copied = document.execCommand('copy');
-                    textarea.remove();
-                    showToast(copied ? "말씀이 복사되었습니다. 원하는 곳에 붙여넣어 공유하세요." : "공유를 지원하지 않는 브라우저입니다.");
-                }
+                const blob = await createVerseImageBlob(data);
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `bible-verse-${vKey}.png`;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                setTimeout(() => URL.revokeObjectURL(url), 1200);
+                showToast("말씀 이미지를 저장했습니다.");
             } catch (error) {
-                if (error && error.name !== 'AbortError') showToast("말씀 공유를 완료하지 못했습니다. 다시 시도해주세요.");
+                console.error('Verse image save failed:', error);
+                showToast("이미지 저장에 실패했습니다. 다시 시도해주세요.");
             }
         }
+
+        async function shareVerse(vKey) {
+            const data = getVerseShareData(vKey);
+            if (!data) { showToast("말씀을 불러올 수 없습니다."); return; }
+            try {
+                const blob = await createVerseImageBlob(data);
+                const file = new File([blob], `bible-verse-${vKey}.png`, { type: 'image/png' });
+                if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+                    await navigator.share({ title: data.reference, text: data.shareText, files: [file] });
+                } else if (navigator.share) {
+                    await navigator.share({ title: data.reference, text: data.shareText });
+                } else {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `bible-verse-${vKey}.png`;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    setTimeout(() => URL.revokeObjectURL(url), 1200);
+                    showToast("공유를 지원하지 않아 말씀 이미지를 저장했습니다.");
+                }
+            } catch (error) {
+                if (error && error.name === 'AbortError') return;
+                console.error('Verse share failed:', error);
+                showToast("말씀 공유에 실패했습니다. 이미지 저장을 이용해주세요.");
+            }
+        }
+
 
         function openMemoModal(vKey) {
             activeMemoVerse = vKey;

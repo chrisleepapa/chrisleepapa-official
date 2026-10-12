@@ -165,10 +165,14 @@ async function fetchCategory(category) {
     if (!article.link || /(^|\.)news\.google\.com$/i.test(new URL(article.link).hostname)) continue;
     if (article.articleTitle && titleSimilarity(item.title, article.articleTitle) < 0.3) continue;
     const detailText = details.join(' ').trim();
-    // Only publish summaries extracted from the same publisher page as the headline.
-    // RSS snippets may describe a different result and are not a safe summary fallback.
-    if (article.articleTitle && titleSimilarity(item.title, article.articleTitle) >= 0.3 && detailText.length >= 100 && article.link) {
-      chosen = { ...item, link: article.link, details, rssText: '' };
+    const rssText = cleanHtml(item.description || '');
+    const titleMatches = !article.articleTitle || titleSimilarity(item.title, article.articleTitle) >= 0.3;
+    // Prefer publisher-page text. When a publisher blocks extraction, allow a substantial,
+    // non-boilerplate RSS excerpt only if the link resolves to the publisher, not Google News.
+    const hasPublisherText = Boolean(article.articleTitle) && titleMatches && detailText.length >= 100;
+    const hasUsableRssExcerpt = titleMatches && rssText.length >= 100 && !isGenericNewsBoilerplate(rssText);
+    if (article.link && (hasPublisherText || hasUsableRssExcerpt)) {
+      chosen = { ...item, link: article.link, details: hasPublisherText ? details : [rssText], rssText: hasPublisherText ? '' : rssText };
       break;
     }
   }
@@ -205,7 +209,7 @@ const now = new Date();
 const dateParts = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(now);
 const dateMap = Object.fromEntries(dateParts.map(part => [part.type, part.value]));
 const date = `${dateMap.year}-${dateMap.month}-${dateMap.day}`;
-const payload = { date, updatedAt: now.toISOString(), sourceNote: 'Google News RSS headlines; summaries are extracted from matching publisher pages and articles older than 24 hours are excluded.', cards };
+const payload = { date, updatedAt: now.toISOString(), sourceNote: 'Last-24-hour Google News RSS headlines linked to publisher articles; summaries prefer publisher-page text and use substantial matching RSS excerpts when publisher pages block extraction.', cards };
 await mkdir('data', { recursive: true });
 await writeFile('data/chris-news.json', JSON.stringify(payload, null, 2) + '\n');
 console.log(`Prepared ${cards.length} news cards for ${date}.`);

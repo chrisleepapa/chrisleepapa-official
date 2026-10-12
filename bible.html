@@ -896,8 +896,19 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
                 });
                 if (!response.ok) return;
                 const result = await response.json();
-                if (result?.ok !== true || !result.found) return;
-                const completedCount = Math.max(0, Math.min(1189, Number(result.data?.nextChapterIndex) || 0));
+                if (result?.ok !== true) return;
+
+                // TODAY는 서버 기록과 함께 로그인 계정별 브라우저 기록도 보관합니다.
+                // 서버 응답이 한 장 늦게 반영되는 경우 더 앞선 진도를 사용합니다.
+                let remoteCount = result.found ? Number(result.data?.nextChapterIndex) || 0 : 0;
+                let localCount = 0;
+                try {
+                    const session = window.CLPAuth?.getUser?.();
+                    const initials = session?.initials || localUserId;
+                    const localJourney = JSON.parse(localStorage.getItem('clp-bible-journey-' + initials) || 'null');
+                    if (localJourney) localCount = Number(localJourney.nextChapterIndex) || 0;
+                } catch (_) {}
+                const completedCount = Math.max(0, Math.min(1189, remoteCount, 1189), Math.min(1189, localCount));
                 if (!completedCount) return;
 
                 let chapterIndex = 0;

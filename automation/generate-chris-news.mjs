@@ -125,7 +125,7 @@ async function fetchCategory(category) {
   for (const item of items.slice(0, 12)) {
     const article = await fetchArticleDetails(item.link);
     const details = article.details;
-    const rssText = item.description.length > 100 && !item.description.includes(item.title) && !isGenericNewsBoilerplate(item.description) ? item.description : '';
+    const rssText = item.description.length > 45 && !isGenericNewsBoilerplate(item.description) && item.description.replace(/\s+/g, ' ').trim() !== item.title ? item.description : '';
     if (details.length || rssText) { chosen = { ...item, link: article.link, details, rssText }; break; }
   }
   if (!chosen) {
@@ -133,7 +133,7 @@ async function fetchCategory(category) {
   }
   const evidence = chosen.details.length ? chosen.details : [chosen.rssText];
   const summary = evidence.join(' ').slice(0, 900).trim();
-  if (summary.length < 100) {
+  if (summary.length < 45) {
     throw new Error('Article summary too short for ' + category.key + '; refusing to publish a thin card.');
   }
   const points = sentencePoints(evidence.join(' '));

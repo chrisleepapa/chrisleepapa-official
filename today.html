@@ -331,7 +331,7 @@ async function completeBibleJourney(){
   if(!bibleJourneyLoaded||bibleJourneyLoadError||!profile)return;
   if(btn&&btn.textContent==='처음부터 다시 읽기'){
     btn.disabled=true;
-    try{const reset=await saveBibleJourneyRemote({nextChapterIndex:0,completedDays:0,dailyReadCount:0,dailyStartIndex:0,lastReadAt:null,finished:false,reflections:old.reflections||{}});openBibleJourneyIndex=null;renderBibleJourney()}
+    try{const reset=await saveBibleJourneyRemote({nextChapterIndex:0,completedDays:0,dailyReadCount:0,dailyStartIndex:0,lastReadAt:null,finished:false,reflections:(getJSON(bibleJourneyKey(),{})||{}).reflections||{}});openBibleJourneyIndex=null;renderBibleJourney()}
     catch(error){console.error(error);alert('통독 기록을 서버에 저장하지 못했습니다. 연결을 확인한 뒤 다시 시도해 주세요.');btn.disabled=false}
     return;
   }

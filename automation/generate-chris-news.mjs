@@ -125,16 +125,26 @@ async function fetchCategory(category) {
   for (const item of items.slice(0, 12)) {
     const article = await fetchArticleDetails(item.link);
     const details = article.details;
-    const rssText = item.description.length > 45 && !isGenericNewsBoilerplate(item.description) && item.description.replace(/\s+/g, ' ').trim() !== item.title ? item.description : '';
-    if (details.length || rssText) { chosen = { ...item, link: article.link, details, rssText }; break; }
+    const normalizedTitle = item.title.replace(/[^\p{L}\p{N}]/gu, '').toLowerCase();
+    const normalizedDescription = item.description.replace(/[^\p{L}\p{N}]/gu, '').toLowerCase();
+    const descriptionAddsContext = item.description.length >= 160
+      && !isGenericNewsBoilerplate(item.description)
+      && normalizedDescription !== normalizedTitle
+      && !(normalizedDescription.startsWith(normalizedTitle) && item.description.length < item.title.length + 100);
+    const rssText = descriptionAddsContext ? item.description : '';
+    const usefulDetails = details.join(' ').trim().length >= 140;
+    if (usefulDetails || rssText) { chosen = { ...item, link: article.link, details, rssText }; break; }
   }
   if (!chosen) {
     throw new Error('No usable article text or RSS description for ' + category.key + '; refusing to publish a headline-only card.');
   }
   const evidence = chosen.details.length ? chosen.details : [chosen.rssText];
   const summary = evidence.join(' ').slice(0, 900).trim();
-  if (summary.length < 45) {
-    throw new Error('Article summary too short for ' + category.key + '; refusing to publish a thin card.');
+  const normalizedTitle = chosen.title.replace(/[^\p{L}\p{N}]/gu, '').toLowerCase();
+  const normalizedSummary = summary.replace(/[^\p{L}\p{N}]/gu, '').toLowerCase();
+  if (summary.length < 140 || normalizedSummary === normalizedTitle
+      || (normalizedSummary.startsWith(normalizedTitle) && summary.length < chosen.title.length + 100)) {
+    throw new Error('Article text is too thin for ' + category.key + '; refusing to publish a headline-only card.');
   }
   const points = sentencePoints(evidence.join(' '));
   const titleEn = await translateToEnglish(chosen.title);

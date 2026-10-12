@@ -881,6 +881,61 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
             }
         }
 
+        // TODAY의 Bible Journey 완료 장을 BIBLE 체크리스트에도 동기화합니다.
+        async function syncTodayJourneyProgress() {
+            if (!supabaseConnected || !localUserId || !localUserPin) return;
+            try {
+                const response = await fetch(`${SUPA_URL}/rest/v1/rpc/clp_load_bible_journey`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': SUPA_KEY,
+                        'Authorization': `Bearer ${SUPA_KEY}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ p_initials: localUserId, p_pin_hash: localUserPin })
+                });
+                if (!response.ok) return;
+                const result = await response.json();
+                if (result?.ok !== true) return;
+
+                // TODAY는 서버 기록과 함께 로그인 계정별 브라우저 기록도 보관합니다.
+                // 서버 응답이 한 장 늦게 반영되는 경우 더 앞선 진도를 사용합니다.
+                let remoteCount = result.found ? Number(result.data?.nextChapterIndex) || 0 : 0;
+                let localCount = 0;
+                try {
+                    const session = window.CLPAuth?.getUser?.();
+                    const initials = session?.initials || localUserId;
+                    const localJourney = JSON.parse(localStorage.getItem('clp-bible-journey-' + initials) || 'null');
+                    if (localJourney) localCount = Number(localJourney.nextChapterIndex) || 0;
+                } catch (_) {}
+                const completedCount = Math.max(0, Math.min(1189, remoteCount, 1189), Math.min(1189, localCount));
+                if (!completedCount) return;
+
+                let chapterIndex = 0;
+                const pending = [];
+                for (const book of BIBLE_BOOKS) {
+                    for (let chapter = 1; chapter <= book.max; chapter++) {
+                        if (chapterIndex >= completedCount) break;
+                        const chapterKey = `${book.id}-${chapter}`;
+                        if (!userState.chapters[chapterKey]) {
+                            userState.chapters[chapterKey] = true;
+                            pending.push(chapterKey);
+                        }
+                        chapterIndex++;
+                    }
+                    if (chapterIndex >= completedCount) break;
+                }
+
+                // 소량씩 저장해 Supabase 요청을 과도하게 한꺼번에 보내지 않습니다.
+                for (let i = 0; i < pending.length; i += 25) {
+                    await Promise.all(pending.slice(i, i + 25).map(key => saveChapterProgress(key, true)));
+                }
+                if (pending.length) updateOverallProgress();
+            } catch (error) {
+                console.warn('TODAY → BIBLE reading progress sync skipped:', error);
+            }
+        }
+
         async function saveVerseToSupabase(vKey) {
             if (!supabaseConnected) return; 
             const payload = {
@@ -972,6 +1027,7 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
             const spinner = document.getElementById('loadingSpinner');
             try {
                 await loadSupabaseData();
+                await syncTodayJourneyProgress();
                 const response = await fetch('https://raw.githubusercontent.com/stranger828/bibleAPI/main/bible_structured.json');
                 if(!response.ok) throw new Error("Fetch Failed");
                 globalBibleData = await response.json();

@@ -147,46 +147,54 @@ async function translateToEnglish(value) {
   }
 }
 async function fetchCategory(category) {
-  const q = encodeURIComponent(category.query + ' when:1d');
+  // Search broadly, then enforce a freshness window locally. Google News' when:1d
+  // filter sometimes returns only a handful of results and causes all six cards to fail.
+  const q = encodeURIComponent(category.query);
   const url = 'https://news.google.com/rss/search?q=' + q + '&hl=ko&gl=KR&ceid=KR:ko';
   const response = await fetch(url, { headers: { 'user-agent': 'ChrisLeePapaNewsBot/1.0' }, signal: AbortSignal.timeout(20000) });
   if (!response.ok) throw new Error('Google News RSS ' + category.key + ': HTTP ' + response.status);
   const items = parseItems(await response.text());
   if (!items.length) throw new Error('No RSS items for ' + category.key);
-  let chosen = null;
-  const candidates = items.slice(0, 30);
+  const candidates = items.slice(0, 40);
   const nowMs = Date.now();
-  const maxAgeMs = 24 * 60 * 60 * 1000;
+  const maxAgeMs = 72 * 60 * 60 * 1000;
+  let chosen = null;
   for (const item of candidates) {
     const publishedMs = Date.parse(item.pubDate);
     if (!Number.isFinite(publishedMs) || publishedMs > nowMs + 5 * 60 * 1000 || nowMs - publishedMs > maxAgeMs) continue;
-    const article = await fetchArticleDetails(item.link);
-    const details = article.details;
-    if (!article.link || /(^|\.)news\.google\.com$/i.test(new URL(article.link).hostname)) continue;
-    if (article.articleTitle && titleSimilarity(item.title, article.articleTitle) < 0.3) continue;
-    const detailText = details.join(' ').trim();
+    let article;
+    try { article = await fetchArticleDetails(item.link); } catch { article = { link: item.link, details: [], articleTitle: '' }; }
+    if (!article.link) continue;
+    let hostname = '';
+    try { hostname = new URL(article.link).hostname.toLowerCase(); } catch { continue; }
+    if (hostname === 'news.google.com' || hostname.endsWith('.news.google.com')) continue;
+    const titleMatches = !article.articleTitle || titleSimilarity(item.title, article.articleTitle) >= 0.25;
+    if (!titleMatches) continue;
+    const detailText = (article.details || []).join(' ').trim();
     const rssText = cleanHtml(item.description || '');
-    const titleMatches = !article.articleTitle || titleSimilarity(item.title, article.articleTitle) >= 0.3;
-    // Prefer publisher-page text. When a publisher blocks extraction, allow a substantial,
-    // non-boilerplate RSS excerpt only if the link resolves to the publisher, not Google News.
-    const hasPublisherText = Boolean(article.articleTitle) && titleMatches && detailText.length >= 100;
-    const hasUsableRssExcerpt = titleMatches && rssText.length >= 100 && !isGenericNewsBoilerplate(rssText);
-    if (article.link && (hasPublisherText || hasUsableRssExcerpt)) {
-      chosen = { ...item, link: article.link, details: hasPublisherText ? details : [rssText], rssText: hasPublisherText ? '' : rssText };
+    const usableDetail = detailText.length >= 70 && !isGenericNewsBoilerplate(detailText);
+    const usableRss = rssText.length >= 45 && !isGenericNewsBoilerplate(rssText);
+    if (usableDetail || usableRss) {
+      chosen = {
+        ...item,
+        link: article.link,
+        details: usableDetail ? article.details : [rssText],
+        summarySource: usableDetail ? 'publisher article page' : 'Google News RSS excerpt'
+      };
       break;
     }
   }
   if (!chosen) {
-    throw new Error('No matching publisher article from the last 24 hours with a substantial description found for ' + category.key + ' after checking ' + candidates.length + ' recent results.');
+    throw new Error('No publisher-linked story with a usable excerpt found in the last 72 hours for ' + category.key + ' after checking ' + candidates.length + ' results.');
   }
   const evidence = chosen.details;
-  const summary = evidence.join(' ').slice(0, 900).trim();
-  if (summary.length < 80) {
-    throw new Error('Article description is too short for ' + category.key + '; refusing to publish a headline-only card.');
+  const summary = evidence.join(' ').slice(0, 1100).trim();
+  if (summary.length < 45) {
+    throw new Error('Article excerpt too short for ' + category.key + '; refusing to publish a headline-only card.');
   }
-  const points = sentencePoints(evidence.join(' '));
+  const points = sentencePoints(summary);
   const titleEn = await translateToEnglish(chosen.title);
-  const summaryEn = summary ? await translateToEnglish(summary) : '';
+  const summaryEn = await translateToEnglish(summary);
   const pointsEn = await Promise.all(points.map(translateToEnglish));
   return {
     category: category.key, categoryKo: category.ko, categoryEn: category.en,
@@ -195,7 +203,8 @@ async function fetchCategory(category) {
     points: points.length ? points : [summary.slice(0, 180)],
     pointsKo: points.length ? points : [summary.slice(0, 180)],
     pointsEn: pointsEn.length ? pointsEn : [summary.slice(0, 180)],
-    source: chosen.source, link: chosen.link, publishedAt: chosen.pubDate || new Date().toISOString()
+    source: chosen.source, link: chosen.link, publishedAt: chosen.pubDate || new Date().toISOString(),
+    summarySource: chosen.summarySource
   };
 }
 const results = await Promise.allSettled(categories.map(fetchCategory));
@@ -209,7 +218,7 @@ const now = new Date();
 const dateParts = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(now);
 const dateMap = Object.fromEntries(dateParts.map(part => [part.type, part.value]));
 const date = `${dateMap.year}-${dateMap.month}-${dateMap.day}`;
-const payload = { date, updatedAt: now.toISOString(), sourceNote: 'Last-24-hour Google News RSS headlines linked to publisher articles; summaries prefer publisher-page text and use substantial matching RSS excerpts when publisher pages block extraction.', cards };
+const payload = { date, updatedAt: now.toISOString(), sourceNote: 'Daily Google News RSS discovery; publisher-page summaries are preferred, with substantial RSS excerpts used when publisher pages block extraction. Stories are limited to the last 72 hours.', cards };
 await mkdir('data', { recursive: true });
 await writeFile('data/chris-news.json', JSON.stringify(payload, null, 2) + '\n');
 console.log(`Prepared ${cards.length} news cards for ${date}.`);

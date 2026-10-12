@@ -1162,6 +1162,7 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
                                 <button class="vt-btn ${isH?'active':''}" id="btn-hl-${vKey}" onclick="actionHighlight('${vKey}')">🖍️ 형광펜</button>
                                 <button class="vt-btn ${hasBm?'active':''}" id="btn-bm-${vKey}" onclick="actionBookmark('${vKey}')">🔖 북마크</button>
                                 <button class="vt-btn" onclick="openMemoModal('${vKey}')">📝 메모 작성</button>
+                                <button class="vt-btn" onclick="shareVerse('${vKey}')">📤 말씀 공유</button>
                             </div>
                         </div>`;
                     }).join('');
@@ -1316,6 +1317,38 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
             const hasBm = userState.bookmarks[vKey] ? '<span class="badge-icon">🔖</span>' : '';
             const hasMemo = userState.memos[vKey] ? '<span class="badge-icon">📝</span>' : '';
             document.getElementById(`badge-${vKey}`).innerHTML = hasBm + hasMemo;
+        }
+
+        async function shareVerse(vKey) {
+            const parts = vKey.split('-');
+            const book = BIBLE_BOOKS.find(b => String(b.id) === String(parts[0]));
+            const verseTextEl = document.getElementById(`txt-${vKey}`);
+            if (!book || !verseTextEl) { showToast("말씀을 불러올 수 없습니다."); return; }
+            const verseText = verseTextEl.cloneNode(true);
+            verseText.querySelectorAll('.badge-wrap').forEach(el => el.remove());
+            const text = verseText.textContent.trim();
+            const reference = `${book.name} ${parts[1]}장 ${parts[2]}절`;
+            const shareText = `${reference}\n${text}\n\nBible in my hand — Chris LEE.PAPA`;
+            try {
+                if (navigator.share) {
+                    await navigator.share({ title: reference, text: shareText });
+                } else if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(shareText);
+                    showToast("말씀이 복사되었습니다. 원하는 곳에 붙여넣어 공유하세요.");
+                } else {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = shareText;
+                    textarea.style.position = 'fixed';
+                    textarea.style.opacity = '0';
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    const copied = document.execCommand('copy');
+                    textarea.remove();
+                    showToast(copied ? "말씀이 복사되었습니다. 원하는 곳에 붙여넣어 공유하세요." : "공유를 지원하지 않는 브라우저입니다.");
+                }
+            } catch (error) {
+                if (error && error.name !== 'AbortError') showToast("말씀 공유를 완료하지 못했습니다. 다시 시도해주세요.");
+            }
         }
 
         function openMemoModal(vKey) {

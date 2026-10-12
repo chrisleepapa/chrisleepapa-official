@@ -159,7 +159,7 @@ async function fetchCategory(category) {
   if (!items.length) throw new Error('No RSS items for ' + category.key);
   const candidates = items.slice(0, 40);
   const nowMs = Date.now();
-  const maxAgeMs = 72 * 60 * 60 * 1000;
+  const maxAgeMs = 7 * 24 * 60 * 60 * 1000;
   let chosen = null;
   for (const item of candidates) {
     const publishedMs = Date.parse(item.pubDate);
@@ -187,7 +187,7 @@ async function fetchCategory(category) {
     }
   }
   if (!chosen) {
-    throw new Error('No publisher-linked story with a usable excerpt found in the last 72 hours for ' + category.key + ' after checking ' + candidates.length + ' results.');
+    throw new Error('No publisher-linked story with a usable excerpt found in the last 7 days for ' + category.key + ' after checking ' + candidates.length + ' results.');
   }
   const evidence = chosen.details;
   const summary = evidence.join(' ').slice(0, 1100).trim();
@@ -220,7 +220,7 @@ const now = new Date();
 const dateParts = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(now);
 const dateMap = Object.fromEntries(dateParts.map(part => [part.type, part.value]));
 const date = `${dateMap.year}-${dateMap.month}-${dateMap.day}`;
-const payload = { date, updatedAt: now.toISOString(), sourceNote: 'Daily Google News RSS discovery; publisher-page summaries are preferred, with substantial RSS excerpts used when publisher pages block extraction. Stories are limited to the last 72 hours.', cards };
+const payload = { date, updatedAt: now.toISOString(), sourceNote: 'Daily Google News RSS discovery; publisher-page summaries are preferred, with substantial RSS excerpts used when publisher pages block extraction. Stories are limited to the last 7 days.', cards };
 await mkdir('data', { recursive: true });
 await writeFile('data/chris-news.json', JSON.stringify(payload, null, 2) + '\n');
 console.log(`Prepared ${cards.length} news cards for ${date}.`);

@@ -123,7 +123,9 @@ async function fetchArticleDetails(url) {
     const finalUrl = response.url || url;
     let host = '';
     try { host = new URL(finalUrl).hostname.toLowerCase(); } catch {}
-    if (host === 'news.google.com' || host.endsWith('.news.google.com')) return { link: finalUrl, details: [], articleTitle: '' };
+    // Google News RSS item URLs may not redirect to the publisher in automated requests.
+    // Keep the original story-item URL as a usable fallback; its RSS excerpt is still checked below.
+    if (host === 'news.google.com' || host.endsWith('.news.google.com')) return { link: url, details: [], articleTitle: '' };
     return { link: finalUrl, details: extractArticleContent(html), articleTitle: extractArticleTitle(html) };
   } catch {
     return { link: url, details: [] };
@@ -167,8 +169,8 @@ async function fetchCategory(category) {
     if (!article.link) continue;
     let hostname = '';
     try { hostname = new URL(article.link).hostname.toLowerCase(); } catch { continue; }
-    if (hostname === 'news.google.com' || hostname.endsWith('.news.google.com')) continue;
-    const titleMatches = !article.articleTitle || titleSimilarity(item.title, article.articleTitle) >= 0.25;
+    const isGoogleNewsItem = hostname === 'news.google.com' || hostname.endsWith('.news.google.com');
+    const titleMatches = isGoogleNewsItem || !article.articleTitle || titleSimilarity(item.title, article.articleTitle) >= 0.25;
     if (!titleMatches) continue;
     const detailText = (article.details || []).join(' ').trim();
     const rssText = cleanHtml(item.description || '');
@@ -177,7 +179,7 @@ async function fetchCategory(category) {
     if (usableDetail || usableRss) {
       chosen = {
         ...item,
-        link: article.link,
+        link: isGoogleNewsItem ? item.link : article.link,
         details: usableDetail ? article.details : [rssText],
         summarySource: usableDetail ? 'publisher article page' : 'Google News RSS excerpt'
       };

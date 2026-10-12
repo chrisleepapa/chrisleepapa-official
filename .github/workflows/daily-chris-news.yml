@@ -8,8 +8,7 @@ on:
       - 'automation/generate-chris-news.mjs'
       - '.github/workflows/daily-chris-news.yml'
   schedule:
-    # Scheduled workflows must exist on the default branch.
-    # 06:00 KST daily = 21:00 UTC on the previous day.
+    # 06:00 KST daily = 21:00 UTC on the previous day
     - cron: "0 21 * * *"
   workflow_dispatch:
 

@@ -122,29 +122,30 @@ async function fetchCategory(category) {
   const items = parseItems(await response.text());
   if (!items.length) throw new Error('No RSS items for ' + category.key);
   let chosen = null;
-  for (const item of items.slice(0, 12)) {
+  const candidates = items.slice(0, 30);
+  for (const item of candidates) {
     const article = await fetchArticleDetails(item.link);
     const details = article.details;
-    const normalizedTitle = item.title.replace(/[^\p{L}\p{N}]/gu, '').toLowerCase();
-    const normalizedDescription = item.description.replace(/[^\p{L}\p{N}]/gu, '').toLowerCase();
-    const descriptionAddsContext = item.description.length >= 160
-      && !isGenericNewsBoilerplate(item.description)
-      && normalizedDescription !== normalizedTitle
-      && !(normalizedDescription.startsWith(normalizedTitle) && item.description.length < item.title.length + 100);
-    const rssText = descriptionAddsContext ? item.description : '';
-    const usefulDetails = details.join(' ').trim().length >= 140;
-    if (usefulDetails || rssText) { chosen = { ...item, link: article.link, details, rssText }; break; }
+    const titleNorm = item.title.replace(/[^\\p{L}\\p{N}]/gu, '').toLowerCase();
+    const rawDescription = cleanHtml(item.description || '');
+    let withoutTitle = rawDescription.startsWith(item.title) ? rawDescription.slice(item.title.length) : rawDescription;
+    withoutTitle = withoutTitle.replace(/^[\\s:|—–\\-·]+/, '').trim();
+    if (item.source && withoutTitle.endsWith(item.source)) withoutTitle = withoutTitle.slice(0, -item.source.length).trim();
+    const descriptionNorm = withoutTitle.replace(/[^\\p{L}\\p{N}]/gu, '').toLowerCase();
+    const rssText = withoutTitle.length >= 80 && !isGenericNewsBoilerplate(withoutTitle) && descriptionNorm !== titleNorm ? withoutTitle : '';
+    const detailText = details.join(' ').trim();
+    if (detailText.length >= 100 || rssText.length >= 80) {
+      chosen = { ...item, link: article.link, details, rssText };
+      break;
+    }
   }
   if (!chosen) {
-    throw new Error('No usable article text or RSS description for ' + category.key + '; refusing to publish a headline-only card.');
+    throw new Error('No article with a usable publisher description found for ' + category.key + ' after checking ' + candidates.length + ' recent results.');
   }
   const evidence = chosen.details.length ? chosen.details : [chosen.rssText];
   const summary = evidence.join(' ').slice(0, 900).trim();
-  const normalizedTitle = chosen.title.replace(/[^\p{L}\p{N}]/gu, '').toLowerCase();
-  const normalizedSummary = summary.replace(/[^\p{L}\p{N}]/gu, '').toLowerCase();
-  if (summary.length < 140 || normalizedSummary === normalizedTitle
-      || (normalizedSummary.startsWith(normalizedTitle) && summary.length < chosen.title.length + 100)) {
-    throw new Error('Article text is too thin for ' + category.key + '; refusing to publish a headline-only card.');
+  if (summary.length < 80) {
+    throw new Error('Article description is too short for ' + category.key + '; refusing to publish a headline-only card.');
   }
   const points = sentencePoints(evidence.join(' '));
   const titleEn = await translateToEnglish(chosen.title);

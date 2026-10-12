@@ -24,6 +24,14 @@
     }
     return date.replaceAll('-', '.');
   };
+  const articleDateLabel = (value, fallback, lang) => {
+    const parsed = value ? new Date(value) : null;
+    const date = parsed && !Number.isNaN(parsed.getTime()) ? parsed : new Date((fallback || '') + 'T12:00:00+09:00');
+    if (Number.isNaN(date.getTime())) return fallback || '';
+    if (lang === 'en') return 'ARTICLE ' + new Intl.DateTimeFormat('en-US', { month: 'short', day: '2-digit', year: 'numeric', timeZone: 'Asia/Seoul' }).format(date).toUpperCase();
+    const parts = new Intl.DateTimeFormat('sv-SE', { year: 'numeric', month: '2-digit', day: '2-digit', timeZone: 'Asia/Seoul' }).format(date);
+    return '기사 ' + parts.replaceAll('-', '.');
+  };
   const render = (payload) => {
     if (!payload || !Array.isArray(payload.cards) || payload.cards.length !== 6) return;
     const lang = document.documentElement.lang === 'en' ? 'en' : 'ko';
@@ -32,7 +40,7 @@
       const card = make('article', 'chris-news-card');
       const top = make('div', 'chris-news-card-top');
       top.append(make('span', '', 'CARD ' + String(index + 1).padStart(2, '0')));
-      top.append(make('span', 'chris-news-card-date', dateLabel(payload.date, lang)));
+      top.append(make('span', 'chris-news-card-date', articleDateLabel(item.publishedAt, payload.date, lang)));
       card.append(top);
       card.append(make('p', 'chris-news-card-kicker', lang === 'en' ? item.categoryEn : item.categoryKo));
       const title = make('h3', '', lang === 'en' ? item.titleEn || item.title : item.title);

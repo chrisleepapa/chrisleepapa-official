@@ -1145,6 +1145,8 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
                                 <button class="vt-btn ${isH?'active':''}" id="btn-hl-${vKey}" onclick="actionHighlight('${vKey}')">🖍️ 형광펜</button>
                                 <button class="vt-btn ${hasBm?'active':''}" id="btn-bm-${vKey}" onclick="actionBookmark('${vKey}')">🔖 북마크</button>
                                 <button class="vt-btn" onclick="openMemoModal('${vKey}')">📝 메모 작성</button>
+                                <button class="vt-btn verse-share-btn" onclick="shareBibleVerse('${vKey}')">📤 말씀 공유</button>
+                                <button class="vt-btn verse-save-btn" onclick="saveBibleVerseImage('${vKey}')">🖼 이미지 저장</button>
                             </div>
                         </div>`;
                     }).join('');
@@ -1293,6 +1295,98 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
             updateBadges(vKey);
             document.getElementById(`btn-bm-${vKey}`).classList.toggle('active', userState.bookmarks[vKey]);
             saveVerseToSupabase(vKey);
+        }
+
+        // 선택한 성경 구절을 텍스트/이미지로 공유합니다.
+        function getBibleVerseShareData(vKey) {
+            const [bookId, chapter, verse] = vKey.split('-').map(Number);
+            const book = BIBLE_BOOKS.find(b => Number(b.id) === bookId);
+            if (!book) throw new Error('성경 정보를 찾을 수 없습니다.');
+            const verseData = globalBibleData.find(v => {
+                const b = String(v.book).trim();
+                return (b === String(book.id) || b === book.name || b === book.kr_short || b === book.en || b.toUpperCase() === book.abbrev)
+                    && Number(v.chapter) === chapter && Number(v.verse) === verse;
+            });
+            const localText = LOCAL_VERIFIED_VERSES[bookId]?.[chapter]?.[verse];
+            const text = localText || (verseData ? (verseData.content || verseData.text || '') : '');
+            if (!text) throw new Error('말씀 내용을 찾을 수 없습니다.');
+            return { reference: book.name + ' ' + chapter + ':' + verse, text };
+        }
+
+        function buildBibleVerseShareCard(data) {
+            const card = document.createElement('div');
+            card.setAttribute('aria-hidden', 'true');
+            Object.assign(card.style, {
+                position: 'fixed', left: '-10000px', top: '0', width: '720px', boxSizing: 'border-box',
+                padding: '64px 56px', color: '#f4ead0',
+                background: 'radial-gradient(circle at top right, #252015 0, #09090d 52%, #030305 100%)',
+                border: '2px solid #c9a84c', fontFamily: "'Noto Serif KR', serif"
+            });
+            const brand = document.createElement('div');
+            brand.textContent = 'BIBLE IN MY HAND';
+            Object.assign(brand.style, {fontFamily:'Cinzel, serif', letterSpacing:'5px', color:'#c9a84c', fontSize:'18px', marginBottom:'38px'});
+            const verse = document.createElement('div');
+            verse.textContent = '“' + data.text + '”';
+            Object.assign(verse.style, {fontSize:'30px', lineHeight:'1.9', whiteSpace:'pre-wrap', overflowWrap:'anywhere'});
+            const ref = document.createElement('div');
+            ref.textContent = data.reference;
+            Object.assign(ref.style, {fontSize:'21px', marginTop:'36px', color:'#e8d08a', textAlign:'right'});
+            const footer = document.createElement('div');
+            footer.textContent = 'Chris LEE.PAPA  ·  The Creative Archive';
+            Object.assign(footer.style, {fontFamily:'Cinzel, serif', letterSpacing:'2px', fontSize:'13px', color:'#9b8b60', marginTop:'48px', textAlign:'center'});
+            card.append(brand, verse, ref, footer);
+            document.body.appendChild(card);
+            return card;
+        }
+
+        async function createBibleVerseImage(data) {
+            if (typeof html2canvas !== 'function') throw new Error('이미지 생성 기능을 불러오지 못했습니다.');
+            const card = buildBibleVerseShareCard(data);
+            try {
+                const canvas = await html2canvas(card, {backgroundColor:'#030305', scale:2, useCORS:true});
+                return await new Promise((resolve, reject) => canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('이미지를 만들지 못했습니다.')), 'image/png'));
+            } finally {
+                card.remove();
+            }
+        }
+
+        async function shareBibleVerse(vKey) {
+            try {
+                const data = getBibleVerseShareData(vKey);
+                const blob = await createBibleVerseImage(data);
+                const file = new File([blob], 'bible-verse.png', {type:'image/png'});
+                if (navigator.share && (!navigator.canShare || navigator.canShare({files:[file]}))) {
+                    await navigator.share({title:data.reference, text:data.reference, files:[file]});
+                } else if (navigator.share) {
+                    await navigator.share({title:data.reference, text:data.reference + '\\n' + data.text});
+                } else {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url; a.download = 'bible-verse.png'; a.click();
+                    setTimeout(() => URL.revokeObjectURL(url), 1000);
+                    showToast('이미지를 저장했습니다. 저장된 이미지를 공유해 주세요.');
+                }
+            } catch (error) {
+                if (error && error.name === 'AbortError') return;
+                console.error('Bible verse share failed:', error);
+                showToast(error.message || '말씀 공유에 실패했습니다.');
+            }
+        }
+
+        async function saveBibleVerseImage(vKey) {
+            try {
+                const data = getBibleVerseShareData(vKey);
+                const blob = await createBibleVerseImage(data);
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url; a.download = data.reference.replace(/[^가-힣a-zA-Z0-9]+/g, '-') + '.png';
+                document.body.appendChild(a); a.click(); a.remove();
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
+                showToast('말씀 이미지가 저장되었습니다.');
+            } catch (error) {
+                console.error('Bible verse image save failed:', error);
+                showToast(error.message || '말씀 이미지 저장에 실패했습니다.');
+            }
         }
 
         function updateBadges(vKey) {

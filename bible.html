@@ -22,9 +22,9 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Bible in my hand — 구약 39권 신약 27권 총 1189장 성경 전체를 온라인으로 읽고 묵상하는 성경 일독 앱. 형광펜·북마크·메모·퀴즈·일독 진행률 기능 제공. Chris LEE.PAPA 제작.">
+    <meta name="description" content="Bible in my hand — 구약 39권 신약 27권 총 1189장 성경 전체를 온라인으로 읽고 묵상하는 성경 일독 앱. 형광펜·북마크·메모·일독 진행률 기능 제공. Chris LEE.PAPA 제작.">
     <meta property="og:title" content="BIBLE — Chris LEE.PAPA">
-    <meta property="og:description" content="Bible in my hand — 구약 39권 신약 27권 총 1189장 성경 전체를 온라인으로 읽고 묵상하는 성경 일독 앱. 형광펜·북마크·메모·퀴즈·일독 진행률 기능 제공. Chris LEE.PAPA 제작.">
+    <meta property="og:description" content="Bible in my hand — 구약 39권 신약 27권 총 1189장 성경 전체를 온라인으로 읽고 묵상하는 성경 일독 앱. 형광펜·북마크·메모·일독 진행률 기능 제공. Chris LEE.PAPA 제작.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://chrisleepapa-official.vercel.app/bible">
     <meta property="og:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png?v=1">
@@ -450,9 +450,8 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
   <meta name="robots" content="index, follow">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="BIBLE — Chris LEE.PAPA">
-  <meta name="twitter:description" content="Bible in my hand — 구약 39권 신약 27권 총 1189장 성경 전체를 온라인으로 읽고 묵상하는 성경 일독 앱. 형광펜·북마크·메모·퀴즈·일독 진행률 기능 제공. Chris LEE.PAPA 제작.">
+  <meta name="twitter:description" content="Bible in my hand — 구약 39권 신약 27권 총 1189장 성경 전체를 온라인으로 읽고 묵상하는 성경 일독 앱. 형광펜·북마크·메모·일독 진행률 기능 제공. Chris LEE.PAPA 제작.">
   <meta name="twitter:image" content="https://chrisleepapa-official.vercel.app/images/og_share.png">
-<script src="js/home-bible-quiz.js?v=20260930-2" defer></script>
 <script src="js/bible-creator-story.js?v=20261007-1" defer></script>
 <script src="js/bible-layout.js?v=20261007-1" defer></script>
 </head>
@@ -509,19 +508,6 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
             <div class="archive-list" id="archiveListContainer"></div>
             <div class="modal-action-row" style="margin-top:20px;">
                 <button class="modal-btn btn-copy" onclick="closeAppModal('archiveModal')" style="width:100%;" data-i18n="bible_close">닫기</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ── 퀴즈 모달 (bible 전용) ── -->
-    <div class="app-modal" id="quizModal" onclick="closeAppModal('quizModal', event)">
-        <div class="app-modal-content" onclick="event.stopPropagation()" style="max-width: 650px;">
-            <h3 style="font-size:1.6rem; color:var(--gold-light); margin-bottom:5px;" data-i18n="bible_quiz_title">📝 말씀 확인 퀴즈</h3>
-            <p style="text-align:center; color:#a0a0b5; font-size:0.9rem; margin-bottom:20px;" data-i18n="bible_quiz_desc">현재 장을 올바르게 읽었는지 확인합니다.<br>3문제 중 2문제 이상 정답을 맞혀야 읽음 처리됩니다.</p>
-            <div id="quizContainer" style="text-align:left; margin-bottom: 20px;"></div>
-            <div class="modal-action-row">
-                <button class="modal-btn btn-sns" onclick="closeAppModal('quizModal')" style="flex:1;" data-i18n="bible_read_again">다시 읽기(취소)</button>
-                <button class="modal-btn btn-copy" onclick="submitQuiz()" style="flex:1;" data-i18n="bible_submit">제출하기</button>
             </div>
         </div>
     </div>

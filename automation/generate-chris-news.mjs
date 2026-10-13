@@ -175,52 +175,68 @@ async function fetchCategory(category) {
   let lastCount = 0;
 
   for (const query of [...new Set(queries.filter(Boolean))]) {
-    const url = 'https://news.google.com/rss/search?q=' + encodeURIComponent(query) + '&hl=ko&gl=KR&ceid=KR:ko';
-    let items = [];
-    try {
-      const response = await fetch(url, {
-        headers: { 'user-agent': 'Mozilla/5.0 (compatible; ChrisLeePapaNewsBot/1.0)' },
-        signal: AbortSignal.timeout(20000)
-      });
-      if (!response.ok) {
-        console.warn('RSS query failed for ' + category.key + ' (' + query + '): HTTP ' + response.status);
+    // Use independent aggregators: Google News often returns titles without
+    // excerpts for security stories, while Bing News RSS frequently includes a usable publisher snippet.
+    const encodedQuery = encodeURIComponent(query);
+    const feeds = [
+      { name: 'Google News', url: 'https://news.google.com/rss/search?q=' + encodedQuery + '&hl=ko&gl=KR&ceid=KR:ko' },
+      { name: 'Bing News', url: 'https://www.bing.com/news/search?q=' + encodedQuery + '&format=rss&setlang=ko-KR&cc=KR' }
+    ];
+    for (const feed of feeds) {
+      let items = [];
+      try {
+        const response = await fetch(feed.url, {
+          headers: { 'user-agent': 'Mozilla/5.0 (compatible; ChrisLeePapaNewsBot/1.0)', accept: 'application/rss+xml, application/xml, text/xml, */*' },
+          signal: AbortSignal.timeout(20000)
+        });
+        if (!response.ok) {
+          console.warn(feed.name + ' RSS failed for ' + category.key + ' (' + query + '): HTTP ' + response.status);
+          continue;
+        }
+        items = parseItems(await response.text());
+      } catch (error) {
+        console.warn(feed.name + ' RSS failed for ' + category.key + ' (' + query + '): ' + String(error));
         continue;
       }
-      items = parseItems(await response.text());
-    } catch (error) {
-      console.warn('RSS query failed for ' + category.key + ' (' + query + '): ' + String(error));
-      continue;
-    }
-    lastCount = Math.max(lastCount, items.length);
-    for (const item of items.slice(0, 40)) {
-      const publishedMs = Date.parse(item.pubDate);
-      if (!Number.isFinite(publishedMs) || publishedMs > nowMs + 5 * 60 * 1000 || nowMs - publishedMs > maxAgeMs) continue;
-      if (seenLinks.has(item.link)) continue;
-      seenLinks.add(item.link);
+      lastCount = Math.max(lastCount, items.length);
+      for (const item of items.slice(0, 40)) {
+        const publishedMs = Date.parse(item.pubDate);
+        if (!Number.isFinite(publishedMs) || publishedMs > nowMs + 5 * 60 * 1000 || nowMs - publishedMs > maxAgeMs) continue;
+        if (seenLinks.has(item.link)) continue;
+        seenLinks.add(item.link);
 
-      let article;
-      try { article = await fetchArticleDetails(item.link); }
-      catch { article = { link: item.link, details: [], articleTitle: '' }; }
-      if (!article.link) continue;
-      let hostname = '';
-      try { hostname = new URL(article.link).hostname.toLowerCase(); } catch { continue; }
-      const isGoogleNewsItem = hostname === 'news.google.com' || hostname.endsWith('.news.google.com');
-      const titleMatches = isGoogleNewsItem || !article.articleTitle || titleSimilarity(item.title, article.articleTitle) >= 0.25;
-      if (!titleMatches) continue;
+        let article;
+        try { article = await fetchArticleDetails(item.link); }
+        catch { article = { link: item.link, details: [], articleTitle: '' }; }
+        if (!article.link) continue;
+        let hostname = '';
+        try { hostname = new URL(article.link).hostname.toLowerCase(); } catch { continue; }
+        const isGoogleNewsItem = hostname === 'news.google.com' || hostname.endsWith('.news.google.com');
+        const isBingNewsItem = hostname === 'bing.com' || hostname.endsWith('.bing.com');
+        const isAggregatorItem = isGoogleNewsItem || isBingNewsItem;
+        const titleMatches = isAggregatorItem || !article.articleTitle || titleSimilarity(item.title, article.articleTitle) >= 0.25;
+        if (!titleMatches) continue;
 
-      const detailText = (article.details || []).join(' ').trim();
-      const rssText = cleanHtml(item.description || '');
-      const usableDetail = detailText.length >= 70 && !isGenericNewsBoilerplate(detailText);
-      const usableRss = rssText.length >= 45 && !isGenericNewsBoilerplate(rssText);
-      if (usableDetail || usableRss) {
-        chosen = {
-          ...item,
-          link: isGoogleNewsItem ? item.link : article.link,
-          details: usableDetail ? article.details : [rssText],
-          summarySource: usableDetail ? 'publisher article page' : 'Google News RSS excerpt'
-        };
-        break;
+        const detailText = (article.details || []).join(' ').trim();
+        const rssText = cleanHtml(item.description || '');
+        const usableDetail = detailText.length >= 70 && !isGenericNewsBoilerplate(detailText);
+        const usableRss = rssText.length >= 45 && !isGenericNewsBoilerplate(rssText);
+        if (usableDetail || usableRss) {
+          let source = item.source;
+          if (!source || /Google News/i.test(source)) {
+            try { source = new URL(isAggregatorItem ? item.link : article.link).hostname.replace(/^www\\./, ''); } catch {}
+          }
+          chosen = {
+            ...item,
+            source,
+            link: isAggregatorItem ? item.link : article.link,
+            details: usableDetail ? article.details : [rssText],
+            summarySource: usableDetail ? 'publisher article page' : feed.name + ' RSS excerpt'
+          };
+          break;
+        }
       }
+      if (chosen) break;
     }
     if (chosen) break;
   }

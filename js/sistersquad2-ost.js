@@ -7,7 +7,7 @@
   const loadStory=()=>{
     if(document.querySelector('script[data-ss2-story]')) return;
     const s=document.createElement('script');
-    s.src='/js/sistersquad2-story.js?v=20260827';
+    s.src='/js/sistersquad2-story.js?v=20261013-squad-i18n';
     s.defer=true;
     s.dataset.ss2Story='true';
     document.head.appendChild(s);

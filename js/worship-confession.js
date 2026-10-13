@@ -132,6 +132,7 @@
     `;
     document.head.appendChild(style);
     intro.replaceWith(section);
+    applyWorshipStoryLanguage(document.documentElement.lang || 'ko');
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount, { once: true });

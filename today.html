@@ -362,32 +362,37 @@ function showBibleJourneyChapter(index,chapters){
   btn.dataset.chapterIndex=String(index);
 }
 async function completeBibleJourney(){
-  const btn=document.getElementById('journeyCompleteBtn'),chapters=getBibleJourneyChapters(),index=Number(btn&&btn.dataset.chapterIndex);
-  if(!bibleJourneyLoaded||bibleJourneyLoadError||!profile)return;
-  if(btn&&btn.textContent==='처음부터 다시 읽기'){
-    btn.disabled=true;
-    try{const reset=await saveBibleJourneyRemote({nextChapterIndex:0,completedDays:0,dailyReadCount:0,dailyStartIndex:0,lastReadAt:null,finished:false,reflections:(getJSON(bibleJourneyKey(),{})||{}).reflections||{}});openBibleJourneyIndex=null;renderBibleJourney()}
-    catch(error){console.error(error);alert('통독 기록을 서버에 저장하지 못했습니다. 연결을 확인한 뒤 다시 시도해 주세요.');btn.disabled=false}
+  const btn=document.getElementById('journeyCompleteBtn'),chapters=getBibleJourneyChapters(),index=Number(btn&&btn.dataset.chapterIndex),progressEl=document.getElementById('journeyProgress');
+  const showJourneyMessage=message=>{if(progressEl)progressEl.textContent=message};
+  if(!btn)return;
+  if(!profile){showJourneyMessage('로그인 정보를 확인할 수 없습니다. 로그아웃 후 다시 로그인해 주세요.');return}
+  if(!bibleJourneyLoaded||bibleJourneyLoadError){showJourneyMessage('통독 기록을 아직 불러오지 못했습니다. 잠시 기다린 뒤 다시 시도해 주세요.');return}
+  if(btn.textContent.trim()==='처음부터 다시 읽기'){
+    btn.disabled=true;btn.textContent='저장 중…';
+    try{await saveBibleJourneyRemote({nextChapterIndex:0,completedDays:0,dailyReadCount:0,dailyStartIndex:0,lastReadAt:null,finished:false,reflections:(getJSON(bibleJourneyKey(),{})||{}).reflections||{}});openBibleJourneyIndex=null;renderBibleJourney()}
+    catch(error){console.error('Bible journey reset failed:',error);showJourneyMessage('초기화 저장에 실패했습니다. 인터넷 연결을 확인한 뒤 다시 시도해 주세요.');btn.disabled=false;btn.textContent='처음부터 다시 읽기'}
     return;
   }
-  if(!Number.isFinite(index)||!chapters.length)return;
+  if(!Number.isFinite(index)||!chapters.length){showJourneyMessage('읽을 장 정보를 확인하지 못했습니다. 장 목록을 다시 선택해 주세요.');return}
   const old=getJSON(bibleJourneyKey(),{nextChapterIndex:0,completedDays:0});
   const current=Number(old.nextChapterIndex)||0,today=localDate();
   const priorCount=old.lastReadAt===today?Math.max(0,Number(old.dailyReadCount)||0):0;
-  if(index!==current||priorCount>=4)return;
+  if(index!==current){showJourneyMessage('현재 순서의 장만 완료할 수 있습니다. 다음 읽을 장을 다시 열어 주세요.');renderBibleJourney();return}
+  if(priorCount>=4){showJourneyMessage('오늘 목표인 4장을 모두 읽었습니다. 내일 이어서 읽어 주세요.');renderBibleJourney();return}
   const dailyStartIndex=old.lastReadAt===today&&Number.isInteger(Number(old.dailyStartIndex))?Number(old.dailyStartIndex):current;
   const nextIndex=Math.min(current+1,chapters.length);
   const next={nextChapterIndex:nextIndex,completedDays:(Number(old.completedDays)||0)+(old.lastReadAt===today?0:1),lastReadAt:today,dailyReadCount:priorCount+1,dailyStartIndex};
   if(nextIndex>=chapters.length)next.finished=true;
-  btn.disabled=true;
+  btn.disabled=true;btn.textContent='저장 중…';showJourneyMessage('읽음 완료를 저장하고 있습니다…');
   try{
     await saveBibleJourneyRemote(next);
     openBibleJourneyIndex=null;
     renderBibleJourney();
   }catch(error){
     console.error('Bible journey save failed:',error);
-    alert('통독 기록을 Supabase에 저장하지 못했습니다. 읽기 완료로 처리하지 않았습니다. 연결을 확인하고 다시 시도해 주세요.');
-    btn.disabled=false;
+    showJourneyMessage('저장 실패: '+(error&&error.message?error.message:'연결을 확인한 뒤 다시 시도해 주세요.'));
+    alert('통독 기록을 Supabase에 저장하지 못했습니다. 연결을 확인한 뒤 다시 시도해 주세요.');
+    btn.disabled=false;btn.textContent='이 장 읽기 완료 ✓';
   }
 }
 function updateTodayLanguage(lang){const d=window.PAGE_I18N[lang]||window.PAGE_I18N.ko;document.getElementById('todayDate').textContent=new Intl.DateTimeFormat(d.today_date_locale,{dateStyle:'full'}).format(new Date());document.getElementById('todayVerse').textContent='“'+(lang==='en'?verse[2]:verse[0])+'”';document.getElementById('todayRef').textContent=lang==='en'?verse[3]:verse[1];renderBibleJourney();document.getElementById('todoInput').placeholder=d.todo_placeholder;renderRoutine();document.getElementById('todayAuth').querySelector('#authInitials').placeholder=lang==='en'?'INITIALS (e.g. CLP)':'INITIALS (예: CLP)';document.getElementById('todayAuth').querySelector('#authPin').placeholder=lang==='en'?'4-DIGIT PIN':'4자리 PIN';renderTodos&&renderTodos()}

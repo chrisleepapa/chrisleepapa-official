@@ -63,8 +63,8 @@
     grid.dataset.dailyNewsDate = payload.date;
     const note = root.querySelector('.chris-news-note span');
     if (note) note.textContent = lang === 'en'
-      ? 'Daily headlines collected from Google News RSS and linked to original reports. News date: ' + payload.date + '.'
-      : 'Google 뉴스 RSS에서 매일 수집한 헤드라인이며 원문 기사로 연결됩니다. 뉴스 기준일: ' + payload.date + '.';
+      ? 'Daily stories collected from direct publisher RSS feeds and linked to original reports. News date: ' + payload.date + '.'
+      : 'BBC·가디언·알자지라·NPR·연합뉴스 등 언론사 RSS에서 직접 수집한 기사이며 원문으로 연결됩니다. 뉴스 기준일: ' + payload.date + '.';
     const title = root.querySelector('#chris-news-title');
     if (title) title.textContent = "Chris's News";
   };

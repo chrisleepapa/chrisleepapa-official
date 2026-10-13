@@ -1885,37 +1885,52 @@
             }
         }
 
-        /* =====================================================
-       GET THE BOOK — FEATURE CTA
-       ===================================================== */
+        /* GET THE BOOK — subtle transparent button */
     .get-book-section {
-        --book-accent: var(--pink-accent, #ffb4c8);
-        position: relative; isolation: isolate; display: flex; justify-content: center;
-        margin: 82px auto 36px; padding: 0 12px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 42px auto 24px;
+        padding: 0 16px;
+        background: transparent;
+        border: 0;
     }
-    .get-book-panel {
-        position: relative; width: min(100%, 880px); overflow: hidden; text-align: center;
-        padding: clamp(32px, 5vw, 54px) 24px; border: 1px solid rgba(201,168,76,.36);
-        border-radius: 28px;
-        background: radial-gradient(ellipse at 50% 0%, rgba(255,180,200,.13), transparent 58%), linear-gradient(135deg, rgba(30,20,32,.96), rgba(8,8,14,.96));
-        box-shadow: 0 22px 70px rgba(0,0,0,.28), inset 0 1px rgba(255,255,255,.045);
+    .get-book-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        min-height: 46px;
+        padding: 10px 22px;
+        border: 1px solid rgba(201,168,76,.62);
+        border-radius: 999px;
+        color: var(--gold-light, #e8d08a);
+        background: transparent;
+        box-shadow: none;
+        font-family: 'Cinzel', serif;
+        font-size: .76rem;
+        font-weight: 600;
+        letter-spacing: .14em;
+        text-transform: uppercase;
+        text-decoration: none;
+        transition: border-color .2s ease, color .2s ease, background .2s ease, transform .2s ease;
     }
-    .get-book-panel::before, .get-book-panel::after { content: ""; position: absolute; pointer-events: none; }
-    .get-book-panel::before { inset: 10px; border: 1px solid rgba(255,180,200,.11); border-radius: 20px; }
-    .get-book-panel::after { width: 180px; height: 180px; left: 50%; top: -130px; transform: translateX(-50%); border-radius: 50%; background: rgba(255,180,200,.12); filter: blur(40px); }
-    .get-book-kicker { position: relative; z-index: 1; margin-bottom: 12px; color: var(--book-accent); font: 700 .68rem/1.5 'Cinzel', serif; letter-spacing: .28em; }
-    .get-book-title { position: relative; z-index: 1; margin: 0 0 12px; color: #fff5f7; font: 600 clamp(1.45rem, 3.5vw, 2.15rem)/1.3 'Cormorant Garamond', 'Noto Serif KR', serif; letter-spacing: .025em; }
-    .get-book-description { position: relative; z-index: 1; max-width: 540px; margin: 0 auto 26px; color: #c9c3d0; font-size: .94rem; line-height: 1.9; word-break: keep-all; }
-    .get-book-button { position: relative; z-index: 1; display: inline-flex; align-items: center; justify-content: center; gap: 24px; min-width: min(270px, 100%); min-height: 58px; padding: 15px 24px; border: 1px solid rgba(255,255,255,.38); border-radius: 999px; color: #21151a; background: linear-gradient(110deg, #f4d6df, #d5b15b 115%); box-shadow: 0 8px 28px rgba(201,168,76,.18), inset 0 1px rgba(255,255,255,.7); font: 800 .76rem/1.2 'Cinzel', serif; letter-spacing: .16em; text-transform: uppercase; transition: transform .25s ease, box-shadow .25s ease, filter .25s ease; }
-    .get-book-button:hover { transform: translateY(-4px); filter: brightness(1.07); box-shadow: 0 14px 36px rgba(201,168,76,.28), 0 0 26px rgba(255,180,200,.12); }
-    .get-book-arrow { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: rgba(35,20,24,.1); font: 1.1rem/1 Arial, sans-serif; transition: transform .25s ease; }
-    .get-book-button:hover .get-book-arrow { transform: translateX(4px); }
+    .get-book-button:hover {
+        color: #fff;
+        border-color: rgba(201,168,76,.95);
+        background: rgba(201,168,76,.08);
+        box-shadow: none;
+        transform: translateY(-2px);
+    }
+    .get-book-arrow {
+        display: inline-block;
+        font-size: 1rem;
+        transition: transform .2s ease;
+    }
+    .get-book-button:hover .get-book-arrow { transform: translateX(3px); }
     @media (max-width: 600px) {
-        .get-book-section { margin: 54px auto 24px; padding: 0 4px; }
-        .get-book-panel { padding: 34px 18px; border-radius: 22px; }
-        .get-book-panel::before { inset: 7px; border-radius: 15px; }
-        .get-book-description { font-size: .88rem; margin-bottom: 22px; }
-        .get-book-button { width: 100%; max-width: 310px; min-height: 56px; }
+        .get-book-section { margin: 32px auto 20px; padding: 0 12px; }
+        .get-book-button { min-height: 44px; padding: 9px 18px; font-size: .7rem; }
     }
     </style>
 </head>
@@ -2028,15 +2043,10 @@
      ========================================================= -->
 
 <section class="get-book-section" aria-label="Get the Book">
-    <div class="get-book-panel">
-        <div class="get-book-kicker" data-i18n="book_kicker">KEEP THE MAGIC ALIVE</div>
-        <h2 class="get-book-title" data-i18n="book_title">Bring the Adventure Home</h2>
-        <p class="get-book-description" data-i18n="book_description">Open the pages of Yul and Jung’s first magical journey and discover the secrets of Fairy Town.</p>
-        <a href="/shop.html" class="get-book-button" data-i18n-aria-label="book_button_aria" aria-label="Get the Sister Squad book">
-            <span data-i18n="book_button">GET THE BOOK</span>
-            <span class="get-book-arrow" aria-hidden="true">→</span>
-        </a>
-    </div>
+    <a href="/shop.html" class="get-book-button" data-i18n-aria-label="book_button_aria" aria-label="Get the Sister Squad book">
+        <span data-i18n="book_button">GET THE BOOK</span>
+        <span class="get-book-arrow" aria-hidden="true">→</span>
+    </a>
 </section>
 
 

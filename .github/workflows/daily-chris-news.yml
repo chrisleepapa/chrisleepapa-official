@@ -24,7 +24,7 @@ jobs:
   refresh-news:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout production main
+      - name: Checkout selected branch
         uses: actions/checkout@v5
         with:
           ref: ${{ github.ref_name }}
@@ -35,7 +35,7 @@ jobs:
           node-version: 22
       - name: Fetch and compile six daily news cards
         run: node automation/generate-chris-news.mjs
-      - name: Commit updated news data to main
+      - name: Commit updated news data to selected branch
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

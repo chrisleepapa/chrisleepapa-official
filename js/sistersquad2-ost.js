@@ -71,11 +71,11 @@
         #ss2-embedded-ost p{margin:0;color:#8f94a5;font-size:.7rem;line-height:1.6}
         @media(max-width:760px){#ss2-embedded-ost{padding:0;margin-bottom:65px}#ss2-embedded-ost .ss2-ost-grid{grid-template-columns:1fr}#ss2-embedded-ost .ss2-ost-card{min-height:135px}}
       </style>
-      <div class="ss2-ost-story"><span>THE STORY CONTINUES THROUGH MUSIC</span><h3>이야기를 음악으로 이어가다</h3><p>SISTER SQUAD의 OST 역시 이 이야기의 중심에 있는 가족과 자매의 사랑, 그리고 함께 시련을 이겨내는 마음을 담았습니다.</p><p>책에서 표현하고 싶었던 감정과 메시지를 음악으로 다시 풀어내고, 이야기의 세계를 소리로 확장했습니다.</p></div>
+      <div class="ss2-ost-story"><span>THE STORY CONTINUES THROUGH MUSIC</span><h3 data-ss2-story-title>이야기를 음악으로 이어가다</h3><p data-ss2-story-p1>SISTER SQUAD의 OST 역시 이 이야기의 중심에 있는 가족과 자매의 사랑, 그리고 함께 시련을 이겨내는 마음을 담았습니다.</p><p data-ss2-story-p2>책에서 표현하고 싶었던 감정과 메시지를 음악으로 다시 풀어내고, 이야기의 세계를 소리로 확장했습니다.</p></div>
       <div class="ss2-ost-heading">
         <span class="ss2-ost-kicker">ORIGINAL SOUNDTRACK</span>
         <h2 id="ss2-ost-title" class="ss2-ost-title">SISTER SQUAD 2 OST</h2>
-        <p class="ss2-ost-desc">페이지를 떠나지 않고 SISTER SQUAD 2의 OST를 바로 감상할 수 있습니다.</p>
+        <p class="ss2-ost-desc" data-ss2-ost-desc>페이지를 떠나지 않고 SISTER SQUAD 2의 OST를 바로 감상할 수 있습니다.</p>
       </div>
       <div class="ss2-ost-player">
         <iframe id="ss2-ost-frame" class="ss2-ost-frame" title="SISTER SQUAD 2 Original Soundtrack" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
@@ -117,6 +117,24 @@
     const lang = document.documentElement.lang === 'en' ? 'en' : 'ko';
     const heading = document.querySelector('h3[data-second-journey]');
     if (heading) heading.textContent = lang === 'en' ? 'THE SECOND JOURNEY' : '두 번째 여정';
+
+    const story=document.querySelector('#ss2-embedded-ost .ss2-ost-story');
+    if(story){
+      const values={
+        title: lang==='en' ? 'The Story Continues Through Music' : '이야기를 음악으로 이어가다',
+        p1: lang==='en' ? "The SISTER SQUAD soundtrack carries the heart of this story: family, the love between sisters, and the courage to overcome hardships together." : 'SISTER SQUAD의 OST 역시 이 이야기의 중심에 있는 가족과 자매의 사랑, 그리고 함께 시련을 이겨내는 마음을 담았습니다.',
+        p2: lang==='en' ? 'The feelings and messages expressed in the book are reimagined through music, expanding the world of the story into sound.' : '책에서 표현하고 싶었던 감정과 메시지를 음악으로 다시 풀어내고, 이야기의 세계를 소리로 확장했습니다.',
+        desc: lang==='en' ? 'Listen to the SISTER SQUAD 2 soundtrack here without leaving the page.' : '페이지를 떠나지 않고 SISTER SQUAD 2의 OST를 바로 감상할 수 있습니다.'
+      };
+      const titleEl=story.querySelector('[data-ss2-story-title]');
+      const p1=story.querySelector('[data-ss2-story-p1]');
+      const p2=story.querySelector('[data-ss2-story-p2]');
+      const descEl=document.querySelector('#ss2-embedded-ost [data-ss2-ost-desc]');
+      if(titleEl) titleEl.textContent=values.title;
+      if(p1) p1.textContent=values.p1;
+      if(p2) p2.textContent=values.p2;
+      if(descEl) descEl.textContent=values.desc;
+    }
   };
 
   const ensureSecondJourneyHook=()=>{

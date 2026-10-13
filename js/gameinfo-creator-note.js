@@ -27,6 +27,19 @@
       </div>
     `;
 
+    const texts = {
+      ko: ['놀이를 직접 만들어 보는 과정','이 Game Archive는 다른 게임을 모아 놓은 목록이 아니라, Chris LEE.PAPA가 직접 기획하고 구현해 본 인터랙티브 창작 기록입니다.','아이디어 → 규칙','간단한 아이디어를 실제로 플레이할 수 있는 규칙과 목표로 바꾸는 과정을 실험했습니다.','캐릭터 → 인터랙션','캐릭터와 이미지가 화면 안에서 움직이고 반응하도록 UI와 게임 동작을 함께 설계했습니다.','플레이 → 개선','직접 플레이하면서 조작감, 화면 구성, 난이도와 피드백을 계속 다듬는 방식으로 완성도를 높였습니다.','작은 게임 하나도 결국 하나의 이야기와 경험이 될 수 있다고 생각합니다. 이곳에서는 그 실험과 결과를 함께 볼 수 있습니다.'],
+      en: ['Turning Ideas into Playable Experiences','This Game Archive is more than a collection of games. It documents interactive projects planned and built by Chris LEE.PAPA.','Idea → Rules','I explored how to turn a simple idea into clear rules and goals people can actually play.','Characters → Interaction','I designed the interface and gameplay together so characters and images could move and respond on screen.','Play → Improve','I refined controls, layout, difficulty and feedback through repeated playtesting.','Even a small game can become a story and an experience. This archive shares both the experiments and their results.']
+    };
+    function applyLanguage() {
+      const root = document.querySelector('[data-clp-game-creator-note]');
+      if (!root) return;
+      const t = texts[document.documentElement.lang === 'en' ? 'en' : 'ko'];
+      root.querySelector('h2').textContent=t[0]; root.querySelector('.clp-game-creator-lead').textContent=t[1];
+      const cards=root.querySelectorAll('.clp-game-creator-grid > div');
+      [[t[2],t[3]],[t[4],t[5]],[t[6],t[7]]].forEach((p,i)=>{if(cards[i]){cards[i].querySelector('strong').textContent=p[0];cards[i].querySelector('span').textContent=p[1];}});
+      root.querySelector('.clp-game-creator-close').textContent=t[8];
+    }
     const style = document.createElement('style');
     style.dataset.clpGameCreatorStyle = 'true';
     style.textContent = `
@@ -70,13 +83,16 @@ const light=document.createElement('style');light.textContent='html[data-theme="
       html[data-theme="light"] body:has(.game-selection-wrapper) .clp-game-creator-note *{text-shadow:none!important}';document.head.appendChild(light);
     if (anchor && anchor.parentNode === wrapper) {
       wrapper.insertBefore(note, anchor.nextSibling);
+      applyLanguage();
     } else {
       wrapper.insertBefore(note, wrapper.firstChild);
+      applyLanguage();
     }
   }
 
   function start() {
     insertCreatorNote();
+    new MutationObserver(applyLanguage).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
     let attempts = 0;
     const timer = setInterval(() => {
       insertCreatorNote();

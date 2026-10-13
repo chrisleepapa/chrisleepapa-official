@@ -36,7 +36,7 @@ self.addEventListener('fetch', (event) => {
           const html = await response.text();
           const coverScript = '<script src="/js/worship-vol2-cover-fix.js?v=20260914"></script>';
           const confessionScript = '<script src="/js/worship-confession.js?v=20260914"></script>';
-          const bannerScript = '<script src="/js/worship-banner.js?v=20260915"></script>';
+          const bannerScript = '<script src="/js/worship-banner.js?v=20261013-i18n"></script>';
           let patched = html;
           if (!patched.includes('/js/worship-vol2-cover-fix.js')) {
             const mainScript = '<script src="js/main.js"></script>';

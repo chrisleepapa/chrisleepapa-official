@@ -9,7 +9,7 @@
     const hero = document.createElement('section');
     hero.id = 'worship-page-hero';
     hero.setAttribute('aria-labelledby', 'worship-page-hero-title');
-    hero.innerHTML = `<img class="worship-page-hero-image" src="${image}" alt="나의 찬양 Vol.3 앨범 이미지"><div class="worship-page-hero-overlay"></div><div class="worship-page-hero-content"><div class="worship-page-hero-kicker">CHRIS LEE.PAPA · WORSHIP ARCHIVE</div><h1 id="worship-page-hero-title">WORSHIP</h1><p>영혼 깊은 곳에서 올려드리는 고백과 찬양</p></div>`;
+    hero.innerHTML = `<img class="worship-page-hero-image" src="${image}" alt="나의 찬양 Vol.3 앨범 이미지" data-worship-hero-image><div class="worship-page-hero-overlay"></div><div class="worship-page-hero-content"><div class="worship-page-hero-kicker">CHRIS LEE.PAPA · WORSHIP ARCHIVE</div><h1 id="worship-page-hero-title">WORSHIP</h1><p data-worship-hero-tagline>영혼 깊은 곳에서 올려드리는 고백과 찬양</p></div>`;
     header.replaceWith(hero);
     const style = document.createElement('style');
     style.id = 'worship-page-hero-style';
@@ -27,13 +27,33 @@
     return true;
   }
 
+  function applyLanguage(lang) {
+    const hero = document.getElementById('worship-page-hero');
+    if (!hero) return;
+    const english = (lang || document.documentElement.lang) === 'en';
+    const tagline = hero.querySelector('[data-worship-hero-tagline]');
+    const image = hero.querySelector('[data-worship-hero-image]');
+    if (tagline) tagline.textContent = english
+      ? 'Confessions and praise rising from the depths of the soul'
+      : '영혼 깊은 곳에서 올려드리는 고백과 찬양';
+    if (image) image.alt = english
+      ? 'My Hymn Vol. 3 album cover'
+      : '나의 찬양 Vol.3 앨범 이미지';
+  }
+
+  const previousOnLangChange = window.onLangChange;
+  window.onLangChange = function(lang) {
+    if (typeof previousOnLangChange === 'function') previousOnLangChange(lang);
+    applyLanguage(lang);
+  };
+
   function ensureConfession() {
     if (document.getElementById('worship-confession')) return true;
     if (!document.querySelector('main.container .intro')) return false;
     if (window.__clpWorshipConfessionLoading) return true;
     window.__clpWorshipConfessionLoading = true;
     const script = document.createElement('script');
-    script.src = '/js/worship-confession.js?v=20260915';
+    script.src = '/js/worship-confession.js?v=20261013-i18n';
     script.onload = () => { window.__clpWorshipConfessionLoading = false; };
     document.head.appendChild(script);
     return true;
@@ -41,6 +61,7 @@
 
   function boot() {
     const bannerReady = mount();
+    applyLanguage(document.documentElement.lang || 'ko');
     const confessionReady = ensureConfession();
     if (bannerReady && confessionReady) return;
     let tries = 0;

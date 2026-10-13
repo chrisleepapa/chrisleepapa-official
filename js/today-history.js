@@ -48,15 +48,40 @@
         `; document.head.appendChild(s);
     }
 
+    const T = {
+        ko:{description:'날짜별 메모와 기도를 저장하고 검색, 수정, 삭제할 수 있습니다.',search:'메모·기도 검색',all:'전체 보기',empty:'저장된 기록이 없습니다.',open:'이 날짜 열기',delete:'삭제',noContent:'내용 없음',opened:'기록을 불러왔습니다.\n현재 TODAY 화면은 오늘 날짜 기준 저장이므로, 과거 기록 자체를 수정하려면 날짜 편집 기능을 별도로 활성화할 수 있습니다.',confirmDelete:'기록을 삭제할까요?'},
+        en:{description:'Save, search, and manage your daily notes and prayers by date.',search:'Search notes and prayers',all:'Show all',empty:'No saved records found.',open:'Open this date',delete:'Delete',noContent:'No content',opened:'The record has been loaded.\nThe TODAY screen saves data for the current date. Editing a past record directly would require a separate date-editing feature.',confirmDelete:'Delete this record?'}
+    };
+    const t = key => (T[document.documentElement.lang === 'en' ? 'en' : 'ko'][key] || T.ko[key] || key);
+
+    function applyLanguage(){
+        const section=document.getElementById('todayHistory');
+        if(!section)return;
+        const description=section.querySelector('.history-description');
+        if(description)description.textContent=t('description');
+        const search=document.getElementById('historySearch');
+        if(search)search.placeholder=t('search');
+        const clear=document.getElementById('historyClear');
+        if(clear)clear.textContent=t('all');
+        render();
+    }
+
+    const previousOnLangChange=window.onLangChange;
+    window.onLangChange=function(lang){
+        if(typeof previousOnLangChange==='function')previousOnLangChange(lang);
+        applyLanguage();
+    };
+
     function ensureUI(){
         if(document.getElementById('todayHistory')) return;
         const main=document.getElementById('todayApp'); if(!main) return;
         const section=document.createElement('section'); section.className='today-history'; section.id='todayHistory';
-        section.innerHTML=`<h2>📚 MY DAILY ARCHIVE</h2><p class="history-description">날짜별 메모와 기도를 저장하고 검색, 수정, <span class="keep-phrase">삭제할 수 있습니다.</span></p><div class="history-tools"><input id="historySearch" type="search" placeholder="메모·기도 검색"><input id="historyDate" type="date"><button id="historyClear">전체 보기</button></div><div class="history-list" id="historyList"></div>`;
+        section.innerHTML=`<h2>📚 MY DAILY ARCHIVE</h2><p class="history-description"></p><div class="history-tools"><input id="historySearch" type="search"><input id="historyDate" type="date" aria-label="Record date"><button id="historyClear"></button></div><div class="history-list" id="historyList"></div>`;
         main.appendChild(section);
         document.getElementById('historySearch').addEventListener('input',render);
         document.getElementById('historyDate').addEventListener('change',render);
         document.getElementById('historyClear').addEventListener('click',()=>{document.getElementById('historySearch').value='';document.getElementById('historyDate').value='';render();});
+        applyLanguage();
     }
 
     async function dates(){
@@ -83,12 +108,12 @@
         const d=document.getElementById('historyDate')?.value||'';
         const filtered=records.filter(r=>{const data=r.data||{}; const text=[data.memo,data.prayer,...(data.todos||[]).map(x=>x.text)].join('\n').toLowerCase(); return (!d||r.record_date===d)&&(!q||text.includes(q));});
         list.innerHTML='';
-        if(!filtered.length){list.innerHTML='<div class="history-empty">저장된 기록이 없습니다.</div>';return;}
+        if(!filtered.length){list.innerHTML='<div class="history-empty">'+t('empty')+'</div>';return;}
         filtered.forEach(r=>{
             const data=r.data||{}; const item=document.createElement('div'); item.className='history-item';
             const memo=String(data.memo||'').trim(), prayer=String(data.prayer||'').trim(), todos=(data.todos||[]).map(x=>x.text).filter(Boolean);
-            item.innerHTML=`<div class="history-date">${r.record_date}</div><div class="history-preview"></div><div class="history-actions"><button type="button" data-edit="${r.record_date}">이 날짜 열기</button><button type="button" data-delete="${r.record_date}">삭제</button></div>`;
-            const preview=item.querySelector('.history-preview'); preview.textContent=[memo?`📝 ${memo}`:'',prayer?`🙏 ${prayer}`:'',todos.length?`✅ ${todos.join(' · ')}`:''].filter(Boolean).join('\n')||'내용 없음';
+            item.innerHTML=`<div class="history-date">${r.record_date}</div><div class="history-preview"></div><div class="history-actions"><button type="button" data-edit="${r.record_date}">${t('open')}</button><button type="button" data-delete="${r.record_date}">${t('delete')}</button></div>`;
+            const preview=item.querySelector('.history-preview'); preview.textContent=[memo?`📝 ${memo}`:'',prayer?`🙏 ${prayer}`:'',todos.length?`✅ ${todos.join(' · ')}`:''].filter(Boolean).join('\n')||t('noContent');
             item.querySelector('[data-edit]').onclick=()=>openDate(r.record_date);
             item.querySelector('[data-delete]').onclick=()=>removeDate(r.record_date);
             list.appendChild(item);
@@ -101,11 +126,11 @@
         const r=records.find(x=>x.record_date===d); if(!r)return;
         const data=r.data||{}; const memo=document.getElementById('todayMemo'), prayer=document.getElementById('todayPrayer');
         if(memo)memo.value=data.memo||''; if(prayer)prayer.value=data.prayer||'';
-        alert(`${d} 기록을 불러왔습니다.\n현재 TODAY 화면은 오늘 날짜 기준 저장이므로, 과거 기록 자체를 수정하려면 날짜 편집 기능을 별도로 활성화할 수 있습니다.`);
+        alert(`${d} ${t('opened')}`);
     }
 
     async function removeDate(d){
-        const u=session(); if(!u?.initials||!u?.pinHash||!confirm(`${d} 기록을 삭제할까요?`)) return;
+        const u=session(); if(!u?.initials||!u?.pinHash||!confirm(`${d} ${t('confirmDelete')}`)) return;
         try { await rpc('clp_delete_today',{p_initials:u.initials,p_pin_hash:u.pinHash,p_date:d}); } catch(_){ try{localStorage.removeItem(localKey(d));}catch(__){} }
         records=records.filter(r=>r.record_date!==d); render();
     }

@@ -36,17 +36,18 @@
   function setPs(container,items){if(!container)return;container.innerHTML=items.map(t=>`<p>${t}</p>`).join('');}
   function apply(lang){
     const d=lang==='en'?EN:KO;
-    const hero=document.querySelector('.sq-hero');setText(hero&&hero.querySelector('.sq-lead'),d.lead);
-    const sections=[...document.querySelectorAll('.sq-section')];
-    if(sections[0]){setText(sections[0].querySelector('.sq-h2'),d.birthTitle);setPs(sections[0].querySelector('.sq-copy'),d.birth);}
-    if(sections[1]){setText(sections[1].querySelector('.sq-h2'),d.futureTitle);setPs(sections[1].querySelector('.sq-copy'),d.future);}
-    if(sections[2]){setText(sections[2].querySelector('.sq-h2'),d.heartTitle);sections[2].querySelectorAll('.sq-theme span').forEach((e,i)=>setText(e,d.themes[i]));}
-    if(sections[3]){setText(sections[3].querySelector('.sq-h2'),d.sistersTitle);setPs(sections[3].querySelector('.sq-copy'),d.sisters);setText(sections[3].querySelectorAll('.sq-person p')[0],d.yul);setText(sections[3].querySelectorAll('.sq-person p')[1],d.jung);}
-    if(sections[4]){setText(sections[4].querySelector('.sq-h2'),d.realTitle);sections[4].querySelectorAll('.sq-card h3').forEach((e,i)=>setText(e,d.realCards[i]));sections[4].querySelectorAll('.sq-card p').forEach((e,i)=>setText(e,d.realText[i]));}
-    if(sections[5]){setText(sections[5].querySelector('.sq-h2'),d.artTitle);setPs(sections[5].querySelector('.sq-copy'),d.art);}
-    if(sections[6]){setText(sections[6].querySelector('.sq-h2'),d.exploreTitle);sections[6].querySelectorAll('.sq-link small').forEach((e,i)=>setText(e,d.cards[i]));}
-    const note=document.querySelector('.sq-note');if(note){setText(note.querySelector('blockquote'),d.note);setText(note.querySelector('cite'),d.cite);}
-    document.title='SISTER SQUAD | Chris LEE.PAPA';const meta=document.querySelector('meta[name="description"]');if(meta)meta.setAttribute('content',d.meta);
+    // This file only handles the hero, creator note, and metadata.
+    // Main page sections use explicit data-sq-i18n keys in sistersquad-hub.html.
+    const hero=document.querySelector('.sq-hero');
+    setText(hero&&hero.querySelector('.sq-lead'),d.lead);
+    const note=document.querySelector('.sq-note');
+    if(note){
+      setText(note.querySelector('blockquote'),d.note);
+      setText(note.querySelector('cite'),d.cite);
+    }
+    document.title='SISTER SQUAD | Chris LEE.PAPA';
+    const meta=document.querySelector('meta[name="description"]');
+    if(meta)meta.setAttribute('content',d.meta);
   }
 
   /* Force the Book 1 card to request the current sistersquad1.png asset.

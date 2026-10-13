@@ -68,11 +68,11 @@
         #ss1-embedded-ost p{margin:0;color:#8f94a5;font-size:.7rem;line-height:1.6}
         @media(max-width:760px){#ss1-embedded-ost{padding:0;margin-bottom:65px}#ss1-embedded-ost .ss1-ost-grid{grid-template-columns:1fr}#ss1-embedded-ost .ss1-ost-card{min-height:135px}}
       </style>
-      <div class="ss1-ost-story"><span>THE STORY CONTINUES THROUGH MUSIC</span><h3>이야기를 음악으로 이어가다</h3><p>SISTER SQUAD의 OST 역시 이 이야기의 중심에 있는 가족과 자매의 사랑, 그리고 함께 시련을 이겨내는 마음을 담았습니다.</p><p>책에서 표현하고 싶었던 감정과 메시지를 음악으로 다시 풀어내고, 이야기의 세계를 소리로 확장했습니다.</p></div>
+      <div class="ss1-ost-story"><span>THE STORY CONTINUES THROUGH MUSIC</span><h3 data-ss1-story-title>이야기를 음악으로 이어가다</h3><p data-ss1-story-p1>SISTER SQUAD의 OST 역시 이 이야기의 중심에 있는 가족과 자매의 사랑, 그리고 함께 시련을 이겨내는 마음을 담았습니다.</p><p data-ss1-story-p2>책에서 표현하고 싶었던 감정과 메시지를 음악으로 다시 풀어내고, 이야기의 세계를 소리로 확장했습니다.</p></div>
       <div class="ss1-ost-heading">
         <span class="ss1-ost-kicker">ORIGINAL SOUNDTRACK</span>
         <h2 id="ss1-ost-title" class="ss1-ost-title">SISTER SQUAD 1 OST</h2>
-        <p class="ss1-ost-desc">페이지를 떠나지 않고 SISTER SQUAD 1의 OST를 바로 감상할 수 있습니다.</p>
+        <p class="ss1-ost-desc" data-ss1-ost-desc>페이지를 떠나지 않고 SISTER SQUAD 1의 OST를 바로 감상할 수 있습니다.</p>
       </div>
       <div class="ss1-ost-player">
         <iframe id="ss1-ost-frame" class="ss1-ost-frame" title="SISTER SQUAD 1 Original Soundtrack" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
@@ -106,6 +106,25 @@
     };
     cards.forEach(card=>card.addEventListener('click',()=>select(card.dataset.ost)));
     select('main');
+    const applyStoryLanguage=()=>{
+      const en=document.documentElement.lang==='en';
+      const values={
+        title: en ? 'The Story Continues Through Music' : '이야기를 음악으로 이어가다',
+        p1: en ? "The SISTER SQUAD soundtrack carries the heart of this story: family, the love between sisters, and the courage to overcome hardships together." : 'SISTER SQUAD의 OST 역시 이 이야기의 중심에 있는 가족과 자매의 사랑, 그리고 함께 시련을 이겨내는 마음을 담았습니다.',
+        p2: en ? 'The feelings and messages expressed in the book are reimagined through music, expanding the world of the story into sound.' : '책에서 표현하고 싶었던 감정과 메시지를 음악으로 다시 풀어내고, 이야기의 세계를 소리로 확장했습니다.',
+        desc: en ? 'Listen to the SISTER SQUAD 1 soundtrack here without leaving the page.' : '페이지를 떠나지 않고 SISTER SQUAD 1의 OST를 바로 감상할 수 있습니다.'
+      };
+      const titleEl=section.querySelector('[data-ss1-story-title]');
+      const p1=section.querySelector('[data-ss1-story-p1]');
+      const p2=section.querySelector('[data-ss1-story-p2]');
+      const descEl=section.querySelector('[data-ss1-ost-desc]');
+      if(titleEl) titleEl.textContent=values.title;
+      if(p1) p1.textContent=values.p1;
+      if(p2) p2.textContent=values.p2;
+      if(descEl) descEl.textContent=values.desc;
+    };
+    applyStoryLanguage();
+    new MutationObserver(applyStoryLanguage).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
   };
 
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true});

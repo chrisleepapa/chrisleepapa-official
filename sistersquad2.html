@@ -171,55 +171,114 @@
         height: 220px;
     }
         }
-/* =====================================================
-   GET THE BOOK
-   ===================================================== */
-
-.get-book-section {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 60px 0 20px;
-}
-
-.get-book-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 18px;
-    min-width: 240px;
-    padding: 16px 30px;
-    border: 1px solid var(--gold);
-    color: var(--gold-light);
-    font-family: 'Cinzel', serif;
-    font-size: 0.85rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    background: rgba(201, 168, 76, 0.05);
-    transition:
-        transform 0.3s ease,
-        background 0.3s ease,
-        box-shadow 0.3s ease,
-        color 0.3s ease;
-}
-
-.get-book-button:hover {
-    transform: translateY(-3px);
-    background: rgba(201, 168, 76, 0.12);
-    color: #fff;
-    box-shadow: 0 0 25px rgba(201, 168, 76, 0.2);
-}
-
-.get-book-arrow {
-    font-size: 1.1rem;
-    transition: transform 0.3s ease;
-}
-
-.get-book-button:hover .get-book-arrow {
-    transform: translateX(5px);
-}
-        
+/* GET THE BOOK — cinematic story-card CTA */
+    .get-book-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: min(100% - 32px, 560px);
+        margin: 42px auto 28px;
+        padding: 0;
+        background: transparent !important;
+        border: 0 !important;
+        box-shadow: none !important;
+    }
+    .get-book-button {
+        position: relative;
+        isolation: isolate;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 22px;
+        width: 100%;
+        min-height: 112px;
+        box-sizing: border-box;
+        padding: 28px 32px;
+        overflow: hidden;
+        border: 1px solid rgba(111,215,255, .72);
+        border-radius: 16px;
+        color: #d8f5ff;
+        background:
+            radial-gradient(ellipse at 85% 10%, rgba(111,215,255, .22), transparent 42%),
+            radial-gradient(ellipse at 12% 100%, rgba(69, 76, 130, .26), transparent 48%),
+            linear-gradient(125deg, #080b18 0%, #111a30 52%, #07101d 100%);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 14px 34px rgba(0,0,0,.26);
+        font-family: 'Cinzel', serif;
+        font-size: clamp(.9rem, 2.4vw, 1.08rem);
+        font-weight: 700;
+        letter-spacing: .17em;
+        text-transform: uppercase;
+        text-decoration: none;
+        transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+    }
+    .get-book-button::before {
+        content: "";
+        position: absolute;
+        inset: 7px;
+        z-index: -1;
+        border: 1px solid rgba(111,215,255, .24);
+        border-radius: 10px;
+        pointer-events: none;
+    }
+    .get-book-button::after {
+        content: "✦";
+        position: absolute;
+        right: 76px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6fd7ff;
+        opacity: .26;
+        font-size: 3.4rem;
+        line-height: 1;
+        pointer-events: none;
+    }
+    /* Keep GET THE BOOK CTA text readable in both light and dark themes. */
+    .get-book-button,
+    html[data-theme="light"] .get-book-button,
+    html[data-theme="dark"] .get-book-button,
+    .get-book-button > span[data-i18n="book_button"],
+    html[data-theme="light"] .get-book-button > span[data-i18n="book_button"],
+    html[data-theme="dark"] .get-book-button > span[data-i18n="book_button"],
+    .get-book-button .get-book-arrow,
+    html[data-theme="light"] .get-book-button .get-book-arrow,
+    html[data-theme="dark"] .get-book-button .get-book-arrow {
+        color: #fff !important;
+        -webkit-text-fill-color: #fff !important;
+    }
+    .get-book-button .get-book-arrow {
+        border-color: rgba(255,255,255,.72) !important;
+    }
+    .get-book-button:hover {
+        color: #fff;
+        border-color: rgba(111,215,255, 1);
+        transform: translateY(-3px);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 20px 42px rgba(0,0,0,.34), 0 0 24px rgba(111,215,255, .12);
+    }
+    .get-book-arrow {
+        display: inline-flex;
+        flex: 0 0 38px;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        border: 1px solid rgba(111,215,255, .55);
+        border-radius: 50%;
+        color: #6fd7ff;
+        font-family: sans-serif;
+        font-size: 1.2rem;
+        letter-spacing: 0;
+        transition: transform .2s ease, background .2s ease;
+    }
+    .get-book-button:hover .get-book-arrow {
+        transform: translateX(4px);
+        background: rgba(111,215,255, .12);
+    }
+    @media (max-width: 600px) {
+        .get-book-section { width: calc(100% - 28px); margin: 30px auto 22px; }
+        .get-book-button { min-height: 94px; padding: 22px 20px; gap: 12px; font-size: .78rem; letter-spacing: .12em; }
+        .get-book-button::after { right: 58px; font-size: 2.5rem; }
+        .get-book-arrow { flex-basis: 34px; width: 34px; height: 34px; }
+    }
     </style>
   <meta name="robots" content="index, follow">
 </head>
@@ -345,7 +404,7 @@
 <section aria-label="Related Sister Squad content" style="max-width:900px;margin:70px auto 20px;text-align:center;">
 <div style="border:1px solid rgba(111,215,255,.18);border-radius:18px;padding:26px 24px;background:rgba(10,10,18,.62);">
 <div style="font-family:Cinzel,serif;color:#c9a84c;font-size:.72rem;letter-spacing:.22em;margin-bottom:16px;">EXPLORE SISTER SQUAD</div>
-<p style="color:#a0a0b5;font-size:.88rem;line-height:1.8;margin:0 0 18px;">SISTER SQUAD 2의 이야기와 연결된 세계관과 게임을 더 만나보세요.</p>
+<p style="color:#a0a0b5;font-size:.88rem;line-height:1.8;margin:0 0 18px;" data-i18n="related_world_desc">SISTER SQUAD 2의 이야기와 연결된 세계관과 게임을 더 만나보세요.</p>
 <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;">
 <a href="/gameinfo" style="display:inline-flex;align-items:center;padding:9px 16px;border:1px solid rgba(201,168,76,.35);border-radius:999px;color:#e8d08a;font-size:.78rem;">GAME →</a>
 </div></div></section>
@@ -354,17 +413,12 @@
              GET THE BOOK
              ========================================================= -->
 
-        <section class="get-book-section" aria-label="Get the Book">
-
-            <a
-                href="/shop.html"
-                class="get-book-button"
-            >
-                <span>GET THE BOOK</span>
-                <span class="get-book-arrow">→</span>
-            </a>
-
-        </section>
+        <div class="get-book-section" aria-label="Get the Book">
+    <a href="/shop.html" class="get-book-button" data-i18n-aria-label="book_button_aria" aria-label="Get the Sister Squad book">
+        <span data-i18n="book_button">GET THE BOOK</span>
+        <span class="get-book-arrow" aria-hidden="true">→</span>
+    </a>
+</div>
 
         
     </div>
@@ -377,6 +431,12 @@
         window.PAGE_I18N = {
             ko: {
                 share_desc:       '잿빛으로 물든 요정마을을 구하는 자매의 두 번째 여정을 소중한 사람들에게 전하세요.',
+                book_kicker: '두 번째 모험을 소장하세요',
+                book_title: '다음 모험을 책으로 만나보세요',
+                book_description: '율과 정의 두 번째 여정, 잿빛 요정 마을에 숨겨진 비밀을 책으로 만나보세요.',
+                book_button: '책 만나보기',
+                book_button_aria: 'Sister Squad 2 책 만나보기',
+                related_world_desc: 'SISTER SQUAD 2의 이야기와 연결된 세계관과 게임을 더 만나보세요.',
                 header_title:     'SISTER SQUAD 2',
                 header_slogan:    '저주받은 요정마을',
                 story_label:      'THE STORY',
@@ -421,6 +481,12 @@
             },
             en: {
                 share_desc:       'Share the sisters\' second journey to save a cursed fairy village.',
+                book_kicker: 'KEEP THE SECOND ADVENTURE',
+                book_title: 'Bring the Next Adventure Home',
+                book_description: 'Join Yul and Jung on their second journey and uncover the secrets hidden in the ashen fairy village.',
+                book_button: 'GET THE BOOK',
+                book_button_aria: 'Get the Sister Squad 2 book',
+                related_world_desc: 'Explore more of the world and games connected to SISTER SQUAD 2.',
                 header_title:     'SISTER SQUAD 2',
                 header_slogan:    'The Cursed Fairy Village',
                 story_label:      'THE STORY',
@@ -513,7 +579,7 @@
     </script>
 
     <!-- ★ 공통 스크립트 -->
-    <script src="js/main.js"></script>
+    <script src="js/main.js?v=20261013-squad-i18n-v2"></script>
 
 </body>
 </html>

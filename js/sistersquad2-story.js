@@ -117,15 +117,6 @@
     });
     observer.observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 
-    const author=[...container.querySelectorAll('p')].find(p=>p.textContent.includes('소소한')||p.textContent.includes('Chris LEE.PAPA'));
-    if(!document.getElementById('ss2-author-message')){
-      const message=document.createElement('section');
-      message.id='ss2-author-message';
-      message.style.cssText='max-width:900px;margin:0 auto 90px;padding:34px 30px;border-left:2px solid #c9a84c;background:rgba(201,168,76,.035);border-radius:0 18px 18px 0;';
-      message.innerHTML='<div style="font-family:Cinzel,serif;color:#c9a84c;font-size:.7rem;letter-spacing:.22em;margin-bottom:12px">A FAMILY LETTER</div><p style="margin:0;color:#c0bcb4;font-size:.92rem;line-height:2;word-break:keep-all">세상을 구하는 거대한 모험이 끝난 뒤에도 가족은 다시 평범한 하루로 돌아갑니다. 함께 흙먼지를 털어내고 웃으며 목욕하는 소소한 일상, 서로 다투더라도 다시 안아줄 수 있는 관계가 이 이야기에서 지켜내고 싶은 가장 위대한 기적입니다.</p>';
-      const target=author?author.closest('section'):container.lastElementChild;
-      if(target) target.insertAdjacentElement('afterend',message); else container.appendChild(message);
-    }
   };
 
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',render,{once:true});

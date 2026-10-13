@@ -1,12 +1,60 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 
 const categories = [
-  { key: 'world', ko: '국제 · 정치 · 외교', en: 'WORLD · POLITICS · DIPLOMACY', query: '국제 정치 외교 주요 뉴스' },
-  { key: 'security', ko: '전쟁 · 안보', en: 'WAR · SECURITY', query: '전쟁 안보 국제 분쟁 주요 뉴스' },
-  { key: 'economy', ko: '경제 · 시장', en: 'ECONOMY · MARKETS', query: '세계 경제 금융 시장 주요 뉴스' },
-  { key: 'science', ko: '과학 · 기술', en: 'SCIENCE · TECHNOLOGY', query: '과학 기술 인공지능 연구 주요 뉴스' },
-  { key: 'climate', ko: '기후 · 재난 · 보건', en: 'CLIMATE · DISASTER · HEALTH', query: '기후 재난 보건 건강 주요 뉴스' },
-  { key: 'society', ko: '사회 · 문화', en: 'SOCIETY · CULTURE', query: '사회 문화 교육 예술 주요 뉴스' },
+  {
+    key: 'world', ko: '국제 · 정치 · 외교', en: 'WORLD · POLITICS · DIPLOMACY',
+    query: 'world diplomacy international affairs',
+    feeds: [
+      { name: 'BBC News', url: 'https://feeds.bbci.co.uk/news/world/rss.xml' },
+      { name: 'The Guardian', url: 'https://www.theguardian.com/world/rss' },
+      { name: 'Al Jazeera English', url: 'https://www.aljazeera.com/xml/rss/all.xml' }
+    ]
+  },
+  {
+    key: 'security', ko: '전쟁 · 안보', en: 'WAR · SECURITY',
+    query: 'war conflict security',
+    feeds: [
+      { name: 'Al Jazeera English', url: 'https://www.aljazeera.com/xml/rss/all.xml' },
+      { name: 'BBC News', url: 'https://feeds.bbci.co.uk/news/world/rss.xml' },
+      { name: 'The Guardian', url: 'https://www.theguardian.com/world/rss' }
+    ]
+  },
+  {
+    key: 'economy', ko: '경제 · 시장', en: 'ECONOMY · MARKETS',
+    query: 'global economy business markets',
+    feeds: [
+      { name: 'BBC News', url: 'https://feeds.bbci.co.uk/news/business/rss.xml' },
+      { name: 'The Guardian', url: 'https://www.theguardian.com/business/rss' },
+      { name: 'NPR', url: 'https://feeds.npr.org/1006/rss.xml' }
+    ]
+  },
+  {
+    key: 'science', ko: '과학 · 기술', en: 'SCIENCE · TECHNOLOGY',
+    query: 'science technology AI research',
+    feeds: [
+      { name: 'BBC News', url: 'https://feeds.bbci.co.uk/news/science_and_environment/rss.xml' },
+      { name: 'The Guardian', url: 'https://www.theguardian.com/science/rss' },
+      { name: 'NPR', url: 'https://feeds.npr.org/1007/rss.xml' }
+    ]
+  },
+  {
+    key: 'climate', ko: '기후 · 재난 · 보건', en: 'CLIMATE · DISASTER · HEALTH',
+    query: 'climate environment health disasters',
+    feeds: [
+      { name: 'BBC News', url: 'https://feeds.bbci.co.uk/news/science_and_environment/rss.xml' },
+      { name: 'The Guardian', url: 'https://www.theguardian.com/environment/rss' },
+      { name: 'Al Jazeera English', url: 'https://www.aljazeera.com/xml/rss/all.xml' }
+    ]
+  },
+  {
+    key: 'society', ko: '사회 · 문화', en: 'SOCIETY · CULTURE',
+    query: 'society culture education',
+    feeds: [
+      { name: 'Yonhap News Agency', url: 'https://en.yna.co.kr/RSS/news.xml' },
+      { name: 'BBC News', url: 'https://feeds.bbci.co.uk/news/education/rss.xml' },
+      { name: 'The Guardian', url: 'https://www.theguardian.com/society/rss' }
+    ]
+  },
 ];
 
 function decodeEntities(value = '') {
@@ -149,118 +197,84 @@ async function translateToEnglish(value) {
   }
 }
 async function fetchCategory(category) {
-  // Try several topic-specific queries. Google News RSS may return items whose
-  // publisher pages block bots, so a substantial RSS excerpt is an acceptable
-  // fallback, but headline-only cards are never published.
-  const queries = [
-    category.query,
-    ...(category.fallbackQueries || []),
-    category.key === 'world' ? '세계 주요 뉴스 국제 외교 최신' :
-    category.key === 'security' ? '국제 분쟁 군사 안보 최신 뉴스' :
-    category.key === 'economy' ? '세계 경제 기업 금융 최신 뉴스' :
-    category.key === 'science' ? 'AI 과학 기술 연구 최신 뉴스' :
-    category.key === 'climate' ? '기후변화 자연재해 보건 최신 뉴스' :
-    '사회 문화 교육 환경 최신 뉴스',
-    category.key === 'world' ? 'world news diplomacy latest' :
-    category.key === 'security' ? 'war conflict security latest news' :
-    category.key === 'economy' ? 'global economy markets latest news' :
-    category.key === 'science' ? 'science technology AI latest news' :
-    category.key === 'climate' ? 'climate disaster health latest news' :
-    'society culture education latest news'
-  ];
+  // Prefer direct publisher RSS feeds. Aggregator feeds are deliberately not used:
+  // they often leave the card linked to a search/result page rather than the actual report.
   const nowMs = Date.now();
-  const maxAgeMs = 7 * 24 * 60 * 60 * 1000;
+  const maxAgeMs = 72 * 60 * 60 * 1000;
   const seenLinks = new Set();
-  let chosen = null;
-  let lastCount = 0;
+  const failures = [];
 
-  for (const query of [...new Set(queries.filter(Boolean))]) {
-    // Use independent aggregators: Google News often returns titles without
-    // excerpts for security stories, while Bing News RSS frequently includes a usable publisher snippet.
-    const encodedQuery = encodeURIComponent(query);
-    const feeds = [
-      { name: 'Google News', url: 'https://news.google.com/rss/search?q=' + encodedQuery + '&hl=ko&gl=KR&ceid=KR:ko' },
-      { name: 'Bing News', url: 'https://www.bing.com/news/search?q=' + encodedQuery + '&format=rss&setlang=ko-KR&cc=KR' }
-    ];
-    for (const feed of feeds) {
-      let items = [];
-      try {
-        const response = await fetch(feed.url, {
-          headers: { 'user-agent': 'Mozilla/5.0 (compatible; ChrisLeePapaNewsBot/1.0)', accept: 'application/rss+xml, application/xml, text/xml, */*' },
-          signal: AbortSignal.timeout(20000)
-        });
-        if (!response.ok) {
-          console.warn(feed.name + ' RSS failed for ' + category.key + ' (' + query + '): HTTP ' + response.status);
-          continue;
-        }
-        items = parseItems(await response.text());
-      } catch (error) {
-        console.warn(feed.name + ' RSS failed for ' + category.key + ' (' + query + '): ' + String(error));
+  for (const feed of category.feeds || []) {
+    let items = [];
+    try {
+      const response = await fetch(feed.url, {
+        headers: {
+          'user-agent': 'Mozilla/5.0 (compatible; ChrisLeePapaNewsBot/1.0)',
+          accept: 'application/rss+xml, application/atom+xml, application/xml, text/xml, */*'
+        },
+        signal: AbortSignal.timeout(15000)
+      });
+      if (!response.ok) {
+        failures.push(feed.name + ': HTTP ' + response.status);
         continue;
       }
-      lastCount = Math.max(lastCount, items.length);
-      for (const item of items.slice(0, 40)) {
-        const publishedMs = Date.parse(item.pubDate);
-        if (!Number.isFinite(publishedMs) || publishedMs > nowMs + 5 * 60 * 1000 || nowMs - publishedMs > maxAgeMs) continue;
-        if (seenLinks.has(item.link)) continue;
-        seenLinks.add(item.link);
-
-        let article;
-        try { article = await fetchArticleDetails(item.link); }
-        catch { article = { link: item.link, details: [], articleTitle: '' }; }
-        if (!article.link) continue;
-        let hostname = '';
-        try { hostname = new URL(article.link).hostname.toLowerCase(); } catch { continue; }
-        const isGoogleNewsItem = hostname === 'news.google.com' || hostname.endsWith('.news.google.com');
-        const isBingNewsItem = hostname === 'bing.com' || hostname.endsWith('.bing.com');
-        const isAggregatorItem = isGoogleNewsItem || isBingNewsItem;
-        const titleMatches = isAggregatorItem || !article.articleTitle || titleSimilarity(item.title, article.articleTitle) >= 0.25;
-        if (!titleMatches) continue;
-
-        const detailText = (article.details || []).join(' ').trim();
-        const rssText = cleanHtml(item.description || '');
-        const usableDetail = detailText.length >= 70 && !isGenericNewsBoilerplate(detailText);
-        const usableRss = rssText.length >= 45 && !isGenericNewsBoilerplate(rssText);
-        if (usableDetail || usableRss) {
-          let source = item.source;
-          if (!source || /Google News/i.test(source)) {
-            try { source = new URL(isAggregatorItem ? item.link : article.link).hostname.replace(/^www\\./, ''); } catch {}
-          }
-          chosen = {
-            ...item,
-            source,
-            link: isAggregatorItem ? item.link : article.link,
-            details: usableDetail ? article.details : [rssText],
-            summarySource: usableDetail ? 'publisher article page' : feed.name + ' RSS excerpt'
-          };
-          break;
-        }
-      }
-      if (chosen) break;
+      items = parseItems(await response.text());
+    } catch (error) {
+      failures.push(feed.name + ': ' + String(error));
+      continue;
     }
-    if (chosen) break;
+
+    for (const item of items.slice(0, 35)) {
+      const publishedMs = Date.parse(item.pubDate);
+      if (!Number.isFinite(publishedMs) || publishedMs > nowMs + 5 * 60 * 1000 || nowMs - publishedMs > maxAgeMs) continue;
+      let itemUrl;
+      try {
+        itemUrl = new URL(item.link);
+        if (!['http:', 'https:'].includes(itemUrl.protocol)) continue;
+      } catch { continue; }
+      if (itemUrl.hostname === 'news.google.com' || itemUrl.hostname.includes('bing.com')) continue;
+      const canonicalLink = itemUrl.href;
+      if (seenLinks.has(canonicalLink)) continue;
+      seenLinks.add(canonicalLink);
+
+      const rssText = cleanHtml(item.description || '');
+      const article = await fetchArticleDetails(canonicalLink);
+      const detailText = (article.details || []).join(' ').trim();
+      const articleTitle = article.articleTitle || '';
+      if (articleTitle && titleSimilarity(item.title, articleTitle) < 0.25) continue;
+
+      const summaryCandidate = detailText.length >= 100 && !isGenericNewsBoilerplate(detailText)
+        ? detailText
+        : rssText;
+      const normalizedSummary = normalizedTitle(summaryCandidate);
+      const normalizedHeadline = normalizedTitle(item.title);
+      const headlineOnly = !summaryCandidate || summaryCandidate.length < 90 ||
+        (normalizedHeadline && normalizedSummary.startsWith(normalizedHeadline) &&
+          normalizedSummary.length - normalizedHeadline.length < 35);
+      if (headlineOnly) continue;
+
+      const source = feed.name;
+      const summary = summaryCandidate.slice(0, 1100).trim();
+      const points = sentencePoints(summary);
+      if (points.length === 0 && summary.length < 180) continue;
+      const titleEn = await translateToEnglish(item.title);
+      const summaryEn = await translateToEnglish(summary);
+      const pointsEn = await Promise.all(points.map(translateToEnglish));
+      return {
+        category: category.key, categoryKo: category.ko, categoryEn: category.en,
+        title: item.title, titleEn,
+        summary, summaryEn: summaryEn || summary,
+        points: points.length ? points : [summary.slice(0, 180)],
+        pointsKo: points.length ? points : [summary.slice(0, 180)],
+        pointsEn: pointsEn.length ? pointsEn : [summary.slice(0, 180)],
+        source, link: canonicalLink, publishedAt: item.pubDate,
+        summarySource: detailText.length >= 100 ? 'publisher article page' : feed.name + ' RSS excerpt'
+      };
+    }
   }
 
-  if (!chosen) {
-    throw new Error('No usable article excerpt found for ' + category.key + ' after trying ' + queries.length + ' queries (' + lastCount + ' RSS items in largest result).');
-  }
-
-  const summary = chosen.details.join(' ').slice(0, 1100).trim();
-  if (summary.length < 45) throw new Error('Article excerpt too short for ' + category.key + '.');
-  const points = sentencePoints(summary);
-  const titleEn = await translateToEnglish(chosen.title);
-  const summaryEn = await translateToEnglish(summary);
-  const pointsEn = await Promise.all(points.map(translateToEnglish));
-  return {
-    category: category.key, categoryKo: category.ko, categoryEn: category.en,
-    title: chosen.title, titleEn,
-    summary, summaryEn: summaryEn || summary,
-    points: points.length ? points : [summary.slice(0, 180)],
-    pointsKo: points.length ? points : [summary.slice(0, 180)],
-    pointsEn: pointsEn.length ? pointsEn : [summary.slice(0, 180)],
-    source: chosen.source, link: chosen.link, publishedAt: chosen.pubDate || new Date().toISOString(),
-    summarySource: chosen.summarySource
-  };
+  console.error('News source diagnostics for ' + category.key + ': ' + failures.join(' | '));
+  throw new Error('No recent, substantial, direct-publisher article passed validation for ' + category.key + '.');
 }
 const results = await Promise.allSettled(categories.map(fetchCategory));
 const cards = results.map((r, i) => r.status === 'fulfilled' ? r.value : null);
@@ -275,7 +289,7 @@ const now = new Date();
 const dateParts = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(now);
 const dateMap = Object.fromEntries(dateParts.map(part => [part.type, part.value]));
 const date = `${dateMap.year}-${dateMap.month}-${dateMap.day}`;
-const payload = { date, updatedAt: now.toISOString(), sourceNote: 'Daily Google News RSS discovery; publisher-page summaries are preferred, with substantial RSS excerpts used when publisher pages block extraction. Stories are limited to the last 7 days.', cards };
+const payload = { date, updatedAt: now.toISOString(), sourceNote: 'Direct publisher RSS feeds from BBC News, The Guardian, Al Jazeera English, NPR and Yonhap. Only direct article links with substantial summaries published in the last 72 hours are accepted; incomplete refreshes do not overwrite existing data.', cards };
 await mkdir('data', { recursive: true });
 await writeFile('data/chris-news.json', JSON.stringify(payload, null, 2) + '\n');
 console.log(`Prepared ${cards.length} news cards for ${date}.`);

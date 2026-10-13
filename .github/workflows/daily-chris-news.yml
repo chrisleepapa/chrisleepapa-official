@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - develop
     paths:
       - 'automation/generate-chris-news.mjs'
       - '.github/workflows/daily-chris-news.yml'
@@ -16,7 +17,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: daily-chris-news-refresh
+  group: daily-chris-news-refresh-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -26,7 +27,7 @@ jobs:
       - name: Checkout production main
         uses: actions/checkout@v5
         with:
-          ref: main
+          ref: ${{ github.ref_name }}
           fetch-depth: 0
       - name: Set up Node.js
         uses: actions/setup-node@v5
@@ -43,5 +44,5 @@ jobs:
             echo "News data is unchanged; nothing to commit."
           else
             git commit -m "Refresh Chris's News for $(date -u +%F)"
-            git push origin HEAD:main
+            git push origin HEAD:${{ github.ref_name }}
           fi

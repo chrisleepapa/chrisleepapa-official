@@ -149,51 +149,88 @@ async function translateToEnglish(value) {
   }
 }
 async function fetchCategory(category) {
-  // Search broadly, then enforce a freshness window locally. Google News' when:1d
-  // filter sometimes returns only a handful of results and causes all six cards to fail.
-  const q = encodeURIComponent(category.query);
-  const url = 'https://news.google.com/rss/search?q=' + q + '&hl=ko&gl=KR&ceid=KR:ko';
-  const response = await fetch(url, { headers: { 'user-agent': 'ChrisLeePapaNewsBot/1.0' }, signal: AbortSignal.timeout(20000) });
-  if (!response.ok) throw new Error('Google News RSS ' + category.key + ': HTTP ' + response.status);
-  const items = parseItems(await response.text());
-  if (!items.length) throw new Error('No RSS items for ' + category.key);
-  const candidates = items.slice(0, 40);
+  // Try several topic-specific queries. Google News RSS may return items whose
+  // publisher pages block bots, so a substantial RSS excerpt is an acceptable
+  // fallback, but headline-only cards are never published.
+  const queries = [
+    category.query,
+    ...(category.fallbackQueries || []),
+    category.key === 'world' ? '세계 주요 뉴스 국제 외교 최신' :
+    category.key === 'security' ? '국제 분쟁 군사 안보 최신 뉴스' :
+    category.key === 'economy' ? '세계 경제 기업 금융 최신 뉴스' :
+    category.key === 'science' ? 'AI 과학 기술 연구 최신 뉴스' :
+    category.key === 'climate' ? '기후변화 자연재해 보건 최신 뉴스' :
+    '사회 문화 교육 환경 최신 뉴스',
+    category.key === 'world' ? 'world news diplomacy latest' :
+    category.key === 'security' ? 'war conflict security latest news' :
+    category.key === 'economy' ? 'global economy markets latest news' :
+    category.key === 'science' ? 'science technology AI latest news' :
+    category.key === 'climate' ? 'climate disaster health latest news' :
+    'society culture education latest news'
+  ];
   const nowMs = Date.now();
   const maxAgeMs = 7 * 24 * 60 * 60 * 1000;
+  const seenLinks = new Set();
   let chosen = null;
-  for (const item of candidates) {
-    const publishedMs = Date.parse(item.pubDate);
-    if (!Number.isFinite(publishedMs) || publishedMs > nowMs + 5 * 60 * 1000 || nowMs - publishedMs > maxAgeMs) continue;
-    let article;
-    try { article = await fetchArticleDetails(item.link); } catch { article = { link: item.link, details: [], articleTitle: '' }; }
-    if (!article.link) continue;
-    let hostname = '';
-    try { hostname = new URL(article.link).hostname.toLowerCase(); } catch { continue; }
-    const isGoogleNewsItem = hostname === 'news.google.com' || hostname.endsWith('.news.google.com');
-    const titleMatches = isGoogleNewsItem || !article.articleTitle || titleSimilarity(item.title, article.articleTitle) >= 0.25;
-    if (!titleMatches) continue;
-    const detailText = (article.details || []).join(' ').trim();
-    const rssText = cleanHtml(item.description || '');
-    const usableDetail = detailText.length >= 70 && !isGenericNewsBoilerplate(detailText);
-    const usableRss = rssText.length >= 45 && !isGenericNewsBoilerplate(rssText);
-    if (usableDetail || usableRss) {
-      chosen = {
-        ...item,
-        link: isGoogleNewsItem ? item.link : article.link,
-        details: usableDetail ? article.details : [rssText],
-        summarySource: usableDetail ? 'publisher article page' : 'Google News RSS excerpt'
-      };
-      break;
+  let lastCount = 0;
+
+  for (const query of [...new Set(queries.filter(Boolean))]) {
+    const url = 'https://news.google.com/rss/search?q=' + encodeURIComponent(query) + '&hl=ko&gl=KR&ceid=KR:ko';
+    let items = [];
+    try {
+      const response = await fetch(url, {
+        headers: { 'user-agent': 'Mozilla/5.0 (compatible; ChrisLeePapaNewsBot/1.0)' },
+        signal: AbortSignal.timeout(20000)
+      });
+      if (!response.ok) {
+        console.warn('RSS query failed for ' + category.key + ' (' + query + '): HTTP ' + response.status);
+        continue;
+      }
+      items = parseItems(await response.text());
+    } catch (error) {
+      console.warn('RSS query failed for ' + category.key + ' (' + query + '): ' + String(error));
+      continue;
     }
+    lastCount = Math.max(lastCount, items.length);
+    for (const item of items.slice(0, 40)) {
+      const publishedMs = Date.parse(item.pubDate);
+      if (!Number.isFinite(publishedMs) || publishedMs > nowMs + 5 * 60 * 1000 || nowMs - publishedMs > maxAgeMs) continue;
+      if (seenLinks.has(item.link)) continue;
+      seenLinks.add(item.link);
+
+      let article;
+      try { article = await fetchArticleDetails(item.link); }
+      catch { article = { link: item.link, details: [], articleTitle: '' }; }
+      if (!article.link) continue;
+      let hostname = '';
+      try { hostname = new URL(article.link).hostname.toLowerCase(); } catch { continue; }
+      const isGoogleNewsItem = hostname === 'news.google.com' || hostname.endsWith('.news.google.com');
+      const titleMatches = isGoogleNewsItem || !article.articleTitle || titleSimilarity(item.title, article.articleTitle) >= 0.25;
+      if (!titleMatches) continue;
+
+      const detailText = (article.details || []).join(' ').trim();
+      const rssText = cleanHtml(item.description || '');
+      const usableDetail = detailText.length >= 70 && !isGenericNewsBoilerplate(detailText);
+      const usableRss = rssText.length >= 45 && !isGenericNewsBoilerplate(rssText);
+      if (usableDetail || usableRss) {
+        chosen = {
+          ...item,
+          link: isGoogleNewsItem ? item.link : article.link,
+          details: usableDetail ? article.details : [rssText],
+          summarySource: usableDetail ? 'publisher article page' : 'Google News RSS excerpt'
+        };
+        break;
+      }
+    }
+    if (chosen) break;
   }
+
   if (!chosen) {
-    throw new Error('No publisher-linked story with a usable excerpt found in the last 7 days for ' + category.key + ' after checking ' + candidates.length + ' results.');
+    throw new Error('No usable article excerpt found for ' + category.key + ' after trying ' + queries.length + ' queries (' + lastCount + ' RSS items in largest result).');
   }
-  const evidence = chosen.details;
-  const summary = evidence.join(' ').slice(0, 1100).trim();
-  if (summary.length < 45) {
-    throw new Error('Article excerpt too short for ' + category.key + '; refusing to publish a headline-only card.');
-  }
+
+  const summary = chosen.details.join(' ').slice(0, 1100).trim();
+  if (summary.length < 45) throw new Error('Article excerpt too short for ' + category.key + '.');
   const points = sentencePoints(summary);
   const titleEn = await translateToEnglish(chosen.title);
   const summaryEn = await translateToEnglish(summary);
@@ -212,9 +249,11 @@ async function fetchCategory(category) {
 const results = await Promise.allSettled(categories.map(fetchCategory));
 const cards = results.map((r, i) => r.status === 'fulfilled' ? r.value : null);
 const failed = results.map((r, i) => r.status === 'rejected' ? { category: categories[i].key, error: String(r.reason) } : null).filter(Boolean);
+if (failed.length) console.error('Category fallback diagnostics:', JSON.stringify(failed));
 if (cards.some(x => !x)) {
-  console.error('One or more categories failed:', failed);
-  throw new Error('Daily news refresh aborted to avoid publishing an incomplete six-card set.');
+  // Never silently publish old or fabricated content. Leave the existing JSON untouched
+  // so the failed workflow is visible and the incomplete data is not presented as fresh.
+  throw new Error('News refresh could not obtain six verified, non-headline-only cards. See category fallback diagnostics above.');
 }
 const now = new Date();
 const dateParts = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(now);

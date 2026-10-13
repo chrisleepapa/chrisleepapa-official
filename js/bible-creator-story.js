@@ -20,11 +20,11 @@
         'Sometimes a verse stays in my heart long after I finish reading it. I turn the pages again to find it, mark the same passage, and write down what I was thinking at that moment. I believe these small records can become a personal record of faith over time.',
         'When I made <strong style="color:#e8d08a">Bible in my hand</strong>, I did not want to stop at simply displaying the Bible text on a web page. I wanted to create a personal reading space where I could return not only to what I read today, but also to what stayed with me.',
         'I was not trying to build a huge Bible service or a complicated social platform from the beginning. I cared more about making the flow of choosing a book, opening a chapter, reading the text, marking a meaningful passage, and coming back to it later feel natural.',
-        'So I organized the features in a way that would not interrupt the flow of reading. Highlights, bookmarks, notes, quizzes, and reading progress are not separate functions; they are tools for one continuous flow: <strong style="color:#e8d08a">read → remember → record → read again</strong>.',
+        'So I organized the features in a way that would not interrupt the flow of reading. Highlights, bookmarks, notes, and reading progress are not separate functions; they are tools for one continuous flow: <strong style="color:#e8d08a">read → remember → record → read again</strong>.',
         'The purpose of a highlight is to leave an important passage visible so I can find the words that matter to me again, rather than simply coloring text.',
         'A bookmark is a personal marker for returning to a specific passage later. I wanted to leave a place to remember without interrupting the flow of reading.',
         'Notes allow me to record the thoughts and prayers I had while reading. I wanted the personal record to remain together with the passage that inspired it.',
-        'The quiz is a light way to look back at what I have read. It is less about testing knowledge and more about checking whether I still remember what I just read.',
+        'Reading progress helps me return to Scripture and continue at my own pace.',
         'The reading progress turns all 1,189 chapters into a continuing journey rather than one overwhelming goal, so I can see where I am and continue with the next reading.',
         'I did not translate or newly write the Bible text on this page. The basic Bible data is connected through structured JSON data from the public GitHub project <strong style="color:#e8d08a">stranger828/bibleAPI</strong>. Its README describes the Korean Revised Version data as JSON containing approximately 31,000 verses.',
         'James 1–5 is also connected separately to a Supabase <code style="color:#e8d08a">bible_content</code> table and is fetched when a chapter is selected. In other words, the role of this site is not to create a Bible translation, but to connect publicly provided text data with reading, recording, and progress-management features.',
@@ -38,7 +38,7 @@
         'The heart I confessed through songs in <strong style="color:#e8d08a">WORSHIP</strong> and the thoughts I recorded in <strong style="color:#e8d08a">JOURNAL</strong> continue here in the form of reading and recording Scripture. They may look like different pages, but when you follow what I make and why I make it, they point in the same direction.',
         'I did not want to build a service that simply shows more Bible content. I wanted to make a small space that helps one person sit down before Scripture again. That is the heart I put into the name <strong style="color:#e8d08a">Bible in my hand</strong>.'
       ],
-      cards: ['Highlight', 'Bookmark', 'Notes', 'Quiz', 'Reading Progress'],
+      cards: ['Highlight', 'Bookmark', 'Notes', 'Reading Progress'],
       cardDescriptions: [
         'A way to keep an important passage visible so I can find the words that matter to me again, rather than simply coloring text.',
         'A personal marker for returning to a specific passage later, leaving a place to remember without interrupting the flow of reading.',
@@ -247,7 +247,7 @@
             <div style="padding:20px;border:1px solid rgba(201,168,76,.16);background:rgba(255,255,255,.025)"><strong style="color:#e8d08a">형광펜</strong><br><span>다시 보고 싶은 구절을 눈에 남기는 기능입니다. 단순한 색칠보다 ‘나에게 중요한 말씀’을 다시 찾는 것을 목적으로 했습니다.</span></div>
             <div style="padding:20px;border:1px solid rgba(201,168,76,.16);background:rgba(255,255,255,.025)"><strong style="color:#e8d08a">북마크</strong><br><span>특정 구절을 나중에 다시 찾아가기 위한 개인적인 책갈피입니다. 읽기의 흐름을 끊지 않고 기억할 지점을 남기도록 했습니다.</span></div>
             <div style="padding:20px;border:1px solid rgba(201,168,76,.16);background:rgba(255,255,255,.025)"><strong style="color:#e8d08a">메모</strong><br><span>말씀을 읽은 순간의 생각과 기도를 기록할 수 있도록 했습니다. 본문과 개인적인 기록이 함께 남는 것을 중요하게 생각했습니다.</span></div>
-            <div style="padding:20px;border:1px solid rgba(201,168,76,.16);background:rgba(255,255,255,.025)"><strong style="color:#e8d08a">퀴즈</strong><br><span>읽은 내용을 가볍게 되돌아볼 수 있는 장치입니다. 공부를 위한 시험보다 ‘방금 읽은 내용을 기억하고 있는가’를 확인하는 데 초점을 두었습니다.</span></div>
+            
             <div style="padding:20px;border:1px solid rgba(201,168,76,.16);background:rgba(255,255,255,.025)"><strong style="color:#e8d08a">일독 진행률</strong><br><span>전체 1189장을 하나의 큰 목표로만 보지 않고, 지금 어디까지 왔는지 확인하면서 다음 읽기를 이어갈 수 있도록 했습니다.</span></div>
           </div>
 

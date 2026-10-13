@@ -465,25 +465,25 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
     <div class="app-modal" id="authModal" style="z-index: 5000; background: rgba(0,0,0,0.95);">
         <div class="app-modal-content" style="max-width: 400px; text-align: center;">
             <h3 style="font-family:'Cinzel', serif; letter-spacing:2px; font-size:1.8rem; margin-bottom:10px;">LOGIN</h3>
-            <p style="font-size:0.85rem; color:#888; margin-bottom:25px;">자신만의 이니셜과 비밀번호로<br>클라우드에 기록을 안전하게 동기화하세요.</p>
-            <input type="text" id="authInitials" class="auth-input" maxlength="3" placeholder="이니셜 영문 3자리 (예: KJH)">
-            <input type="password" id="authPin" class="auth-input" maxlength="4" placeholder="비밀번호 숫자 4자리">
-            <button class="modal-btn btn-copy" onclick="handleLogin()" style="width:100%; margin-top:20px; font-size:1rem; padding:15px;">접속하기</button>
+            <p style="font-size:0.85rem; color:#888; margin-bottom:25px;" data-i18n="bible_login_desc">자신만의 이니셜과 비밀번호로<br>클라우드에 기록을 안전하게 동기화하세요.</p>
+            <input type="text" id="authInitials" class="auth-input" maxlength="3" placeholder="이니셜 영문 3자리 (예: KJH)" data-i18n-placeholder="bible_initials_placeholder">
+            <input type="password" id="authPin" class="auth-input" maxlength="4" placeholder="비밀번호 숫자 4자리" data-i18n-placeholder="bible_pin_placeholder">
+            <button class="modal-btn btn-copy" onclick="handleLogin()" style="width:100%; margin-top:20px; font-size:1rem; padding:15px;" data-i18n="bible_login_button">접속하기</button>
         </div>
     </div>
 
     <!-- ── 일독 계획표 모달 (bible 전용) ── -->
     <div class="app-modal" id="planModal" onclick="closeAppModal('planModal', event)">
         <div class="app-modal-content" onclick="event.stopPropagation()">
-            <h3>📖 성경 일독 계획표</h3>
+            <h3 data-i18n="bible_plan_title">📖 성경 일독 계획표</h3>
             <div class="plan-progress-bar"><div class="plan-progress-fill" id="planFill"></div></div>
             <div class="plan-stats">
                 <span id="planPercent">0%</span>
                 <span id="planCount">0 / 1189 Chapters</span>
             </div>
-            <p style="font-size:0.85rem; color:#888; text-align:center;">일독 진행률입니다. 할 수 있습니다.</p>
+            <p style="font-size:0.85rem; color:#888; text-align:center;" data-i18n="bible_plan_desc">일독 진행률입니다. 할 수 있습니다.</p>
             <div class="modal-action-row" style="margin-top:30px;">
-                <button class="modal-btn btn-copy" onclick="closeAppModal('planModal')" style="width:100%;">확인</button>
+                <button class="modal-btn btn-copy" onclick="closeAppModal('planModal')" style="width:100%;" data-i18n="bible_confirm">확인</button>
             </div>
         </div>
     </div>
@@ -491,12 +491,12 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
     <!-- ── 메모 작성 모달 (bible 전용) ── -->
     <div class="app-modal" id="memoModal" onclick="closeAppModal('memoModal', event)">
         <div class="app-modal-content" onclick="event.stopPropagation()">
-            <h3>📝 메모 작성</h3>
+            <h3 data-i18n="bible_memo_title">📝 메모 작성</h3>
             <p style="font-size:0.8rem; color:var(--gold); margin-bottom:10px;" id="memoTargetLabel">창세기 1:1</p>
-            <textarea class="memo-textarea" id="memoInput" placeholder="이 구절을 묵상하며 떠오른 생각을 자유롭게 적어보세요."></textarea>
+            <textarea class="memo-textarea" id="memoInput" placeholder="이 구절을 묵상하며 떠오른 생각을 자유롭게 적어보세요." data-i18n-placeholder="bible_memo_placeholder"></textarea>
             <div class="modal-action-row">
-                <button class="modal-btn btn-sns" onclick="closeAppModal('memoModal')" style="flex:1;">취소</button>
-                <button class="modal-btn btn-copy" onclick="saveMemo()" style="flex:1;">저장</button>
+                <button class="modal-btn btn-sns" onclick="closeAppModal('memoModal')" style="flex:1;" data-i18n="bible_cancel">취소</button>
+                <button class="modal-btn btn-copy" onclick="saveMemo()" style="flex:1;" data-i18n="bible_save">저장</button>
             </div>
         </div>
     </div>
@@ -504,11 +504,11 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
     <!-- ── 내 보관함 모달 (bible 전용) ── -->
     <div class="app-modal" id="archiveModal" onclick="closeAppModal('archiveModal', event)">
         <div class="app-modal-content" style="max-width: 600px;" onclick="event.stopPropagation()">
-            <h3>✨ 내 보관함</h3>
-            <p style="font-size:0.85rem; color:#888; text-align:center; margin-bottom:20px;">형광펜, 북마크, 메모를 남긴 말씀들이 모두 여기에 모입니다.</p>
+            <h3 data-i18n="bible_archive_title">✨ 내 보관함</h3>
+            <p style="font-size:0.85rem; color:#888; text-align:center; margin-bottom:20px;" data-i18n="bible_archive_desc">형광펜, 북마크, 메모를 남긴 말씀들이 모두 여기에 모입니다.</p>
             <div class="archive-list" id="archiveListContainer"></div>
             <div class="modal-action-row" style="margin-top:20px;">
-                <button class="modal-btn btn-copy" onclick="closeAppModal('archiveModal')" style="width:100%;">닫기</button>
+                <button class="modal-btn btn-copy" onclick="closeAppModal('archiveModal')" style="width:100%;" data-i18n="bible_close">닫기</button>
             </div>
         </div>
     </div>
@@ -516,12 +516,12 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
     <!-- ── 퀴즈 모달 (bible 전용) ── -->
     <div class="app-modal" id="quizModal" onclick="closeAppModal('quizModal', event)">
         <div class="app-modal-content" onclick="event.stopPropagation()" style="max-width: 650px;">
-            <h3 style="font-size:1.6rem; color:var(--gold-light); margin-bottom:5px;">📝 말씀 확인 퀴즈</h3>
-            <p style="text-align:center; color:#a0a0b5; font-size:0.9rem; margin-bottom:20px;">현재 장을 올바르게 읽었는지 확인합니다.<br>3문제 중 2문제 이상 정답을 맞혀야 읽음 처리됩니다.</p>
+            <h3 style="font-size:1.6rem; color:var(--gold-light); margin-bottom:5px;" data-i18n="bible_quiz_title">📝 말씀 확인 퀴즈</h3>
+            <p style="text-align:center; color:#a0a0b5; font-size:0.9rem; margin-bottom:20px;" data-i18n="bible_quiz_desc">현재 장을 올바르게 읽었는지 확인합니다.<br>3문제 중 2문제 이상 정답을 맞혀야 읽음 처리됩니다.</p>
             <div id="quizContainer" style="text-align:left; margin-bottom: 20px;"></div>
             <div class="modal-action-row">
-                <button class="modal-btn btn-sns" onclick="closeAppModal('quizModal')" style="flex:1;">다시 읽기(취소)</button>
-                <button class="modal-btn btn-copy" onclick="submitQuiz()" style="flex:1;">제출하기</button>
+                <button class="modal-btn btn-sns" onclick="closeAppModal('quizModal')" style="flex:1;" data-i18n="bible_read_again">다시 읽기(취소)</button>
+                <button class="modal-btn btn-copy" onclick="submitQuiz()" style="flex:1;" data-i18n="bible_submit">제출하기</button>
             </div>
         </div>
     </div>
@@ -532,7 +532,7 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
         <h1 class="page-title">Bible in my hand</h1>
         <div class="cloud-status" id="cloudStatusIcon">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
-            <span id="cloudStatusText">로컬 저장 모드</span>
+            <span id="cloudStatusText" data-i18n="bible_local_mode">로컬 저장 모드</span>
         </div>
     </header>
 
@@ -540,38 +540,38 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
     <section class="bible-intro-section" style="max-width:900px; margin:0 auto 32px; padding:0 24px;">
         <div style="border:1px solid rgba(201,168,76,0.2); border-radius:16px; padding:28px 32px; background:rgba(12,12,20,0.6); backdrop-filter:blur(10px);">
             <h2 style="font-family:'Cinzel',serif; color:#c9a84c; font-size:1.1rem; letter-spacing:2px; margin-bottom:16px;">✦ &nbsp; ABOUT THIS APP</h2>
-            <p style="color:#d0ccc4; line-height:2; font-size:0.95rem; margin-bottom:20px;">
+            <p style="color:#d0ccc4; line-height:2; font-size:0.95rem; margin-bottom:20px;" data-i18n="bible_intro_desc">
                 <strong style="color:#e8d08a;">Bible in my hand</strong>는 구약 39권, 신약 27권, 총 <strong style="color:#e8d08a;">1,189장</strong>으로 이루어진 성경 전체를 
                 온라인에서 체계적으로 읽고 묵상할 수 있는 성경 일독 앱입니다.<br>
                 창세기부터 요한계시록까지, 매일 한 장씩 말씀을 읽으며 신앙의 여정을 기록하세요.
             </p>
             <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px; margin-bottom:20px;">
                 <div style="background:rgba(201,168,76,0.08); border-radius:10px; padding:14px 16px;">
-                    <div style="font-family:'Cinzel',serif; color:#c9a84c; font-size:0.75rem; letter-spacing:1px; margin-bottom:6px;">📖 성경 전권 수록</div>
-                    <div style="color:#c8c4bc; font-size:0.88rem; line-height:1.7;">구약 39권 929장 + 신약 27권 260장. 개역개정 성경 전체를 장별로 읽을 수 있습니다.</div>
+                    <div style="font-family:'Cinzel',serif; color:#c9a84c; font-size:0.75rem; letter-spacing:1px; margin-bottom:6px;" data-i18n="bible_feature_full_title">📖 성경 전권 수록</div>
+                    <div style="color:#c8c4bc; font-size:0.88rem; line-height:1.7;" data-i18n="bible_feature_full_desc">구약 39권 929장 + 신약 27권 260장. 개역개정 성경 전체를 장별로 읽을 수 있습니다.</div>
                 </div>
                 <div style="background:rgba(201,168,76,0.08); border-radius:10px; padding:14px 16px;">
-                    <div style="font-family:'Cinzel',serif; color:#c9a84c; font-size:0.75rem; letter-spacing:1px; margin-bottom:6px;">🖊 형광펜 · 북마크 · 메모</div>
-                    <div style="color:#c8c4bc; font-size:0.88rem; line-height:1.7;">마음에 닿는 구절에 형광펜을 치고, 북마크와 메모로 나만의 말씀 기록을 남기세요.</div>
+                    <div style="font-family:'Cinzel',serif; color:#c9a84c; font-size:0.75rem; letter-spacing:1px; margin-bottom:6px;" data-i18n="bible_feature_notes_title">🖊 형광펜 · 북마크 · 메모</div>
+                    <div style="color:#c8c4bc; font-size:0.88rem; line-height:1.7;" data-i18n="bible_feature_notes_desc">마음에 닿는 구절에 형광펜을 치고, 북마크와 메모로 나만의 말씀 기록을 남기세요.</div>
                 </div>
                 <div style="background:rgba(201,168,76,0.08); border-radius:10px; padding:14px 16px;">
-                    <div style="font-family:'Cinzel',serif; color:#c9a84c; font-size:0.75rem; letter-spacing:1px; margin-bottom:6px;">📊 일독 진행률 추적</div>
-                    <div style="color:#c8c4bc; font-size:0.88rem; line-height:1.7;">읽은 장을 체크하고 전체 1,189장 중 몇 장을 읽었는지 진행률을 한눈에 확인합니다.</div>
+                    <div style="font-family:'Cinzel',serif; color:#c9a84c; font-size:0.75rem; letter-spacing:1px; margin-bottom:6px;" data-i18n="bible_feature_progress_title">📊 일독 진행률 추적</div>
+                    <div style="color:#c8c4bc; font-size:0.88rem; line-height:1.7;" data-i18n="bible_feature_progress_desc">읽은 장을 체크하고 전체 1,189장 중 몇 장을 읽었는지 진행률을 한눈에 확인합니다.</div>
                 </div>
                 <div style="background:rgba(201,168,76,0.08); border-radius:10px; padding:14px 16px;">
-                    <div style="font-family:'Cinzel',serif; color:#c9a84c; font-size:0.75rem; letter-spacing:1px; margin-bottom:6px;">✏️ 말씀 확인 퀴즈</div>
-                    <div style="color:#c8c4bc; font-size:0.88rem; line-height:1.7;">장을 읽은 후 3문제 퀴즈로 말씀을 점검하세요. 2문제 이상 정답 시 읽음 처리됩니다.</div>
+                    <div style="font-family:'Cinzel',serif; color:#c9a84c; font-size:0.75rem; letter-spacing:1px; margin-bottom:6px;" data-i18n="bible_feature_quiz_title">✏️ 말씀 확인 퀴즈</div>
+                    <div style="color:#c8c4bc; font-size:0.88rem; line-height:1.7;" data-i18n="bible_feature_quiz_desc">장을 읽은 후 3문제 퀴즈로 말씀을 점검하세요. 2문제 이상 정답 시 읽음 처리됩니다.</div>
                 </div>
                 <div style="background:rgba(201,168,76,0.08); border-radius:10px; padding:14px 16px;">
-                    <div style="font-family:'Cinzel',serif; color:#c9a84c; font-size:0.75rem; letter-spacing:1px; margin-bottom:6px;">☁️ 클라우드 동기화</div>
-                    <div style="color:#c8c4bc; font-size:0.88rem; line-height:1.7;">나만의 ID와 PIN으로 로그인하면 기록이 클라우드에 저장되어 어느 기기에서든 이어볼 수 있습니다.</div>
+                    <div style="font-family:'Cinzel',serif; color:#c9a84c; font-size:0.75rem; letter-spacing:1px; margin-bottom:6px;" data-i18n="bible_feature_cloud_title">☁️ 클라우드 동기화</div>
+                    <div style="color:#c8c4bc; font-size:0.88rem; line-height:1.7;" data-i18n="bible_feature_cloud_desc">나만의 ID와 PIN으로 로그인하면 기록이 클라우드에 저장되어 어느 기기에서든 이어볼 수 있습니다.</div>
                 </div>
                 <div style="background:rgba(201,168,76,0.08); border-radius:10px; padding:14px 16px;">
-                    <div style="font-family:'Cinzel',serif; color:#c9a84c; font-size:0.75rem; letter-spacing:1px; margin-bottom:6px;">🏆 리더보드</div>
-                    <div style="color:#c8c4bc; font-size:0.88rem; line-height:1.7;">가장 많은 장을 읽은 TOP 5 사용자 랭킹을 확인하며 서로 격려하고 동기부여 하세요.</div>
+                    <div style="font-family:'Cinzel',serif; color:#c9a84c; font-size:0.75rem; letter-spacing:1px; margin-bottom:6px;" data-i18n="bible_feature_rank_title">🏆 리더보드</div>
+                    <div style="color:#c8c4bc; font-size:0.88rem; line-height:1.7;" data-i18n="bible_feature_rank_desc">가장 많은 장을 읽은 TOP 5 사용자 랭킹을 확인하며 서로 격려하고 동기부여 하세요.</div>
                 </div>
             </div>
-            <p style="color:#a0a0b5; font-size:0.85rem; line-height:1.8; border-top:1px solid rgba(255,255,255,0.06); padding-top:16px;">
+            <p style="color:#a0a0b5; font-size:0.85rem; line-height:1.8; border-top:1px solid rgba(255,255,255,0.06); padding-top:16px;" data-i18n="bible_intro_creator">
                 이 앱은 <strong style="color:#c9a84c;">Chris LEE.PAPA</strong>가 두 딸과 교회 어린이 사역의 경험을 바탕으로 제작한 
                 성경 묵상 도구입니다. 말씀이 삶 속에 살아 숨쉬도록, 오늘도 한 장씩 읽어나가는 모든 분들을 응원합니다.
                 <br><br>
@@ -688,8 +688,8 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
                 </div>
             </div>
             <div style="background:rgba(201,168,76,0.05); border-radius:14px; padding:24px 28px;">
-                <h3 style="font-family:'Cinzel',serif; color:#c9a84c; font-size:0.85rem; letter-spacing:2px; margin-bottom:14px;">✦ &nbsp; 만든 이유</h3>
-                <p style="color:#a0a0b5; font-size:0.88rem; line-height:1.9; word-break:keep-all; text-align:left;">
+                <h3 style="font-family:'Cinzel',serif; color:#c9a84c; font-size:0.85rem; letter-spacing:2px; margin-bottom:14px;" data-i18n="bible_why_title">✦ &nbsp; 만든 이유</h3>
+                <p style="color:#a0a0b5; font-size:0.88rem; line-height:1.9; word-break:keep-all; text-align:left;" data-i18n="bible_why_desc">
                     2023년 말, 성경을 처음 제대로 읽기 시작하면서 말씀이 삶을 바꾸는 것을 경험했습니다. 매일 말씀을 읽고 싶었지만 마땅한 도구가 없어 직접 만들기 시작했고, 그것이 <strong style="color:#e8d08a;">Bible in my hand</strong>가 되었습니다. 형광펜으로 마음에 닿는 구절을 표시하고, 메모로 묵상을 남기고, 북마크로 다시 찾아볼 수 있도록 — 성경 한 권을 손 안에 담고 싶었습니다.
                 </p>
             </div>
@@ -702,10 +702,14 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
     <script>
         window.PAGE_I18N = {
             ko: {
+                bible_intro_desc:'<strong style="color:#e8d08a;">Bible in my hand</strong>는 구약 39권, 신약 27권, 총 <strong style="color:#e8d08a;">1,189장</strong>으로 이루어진 성경 전체를 온라인에서 체계적으로 읽고 묵상할 수 있는 성경 일독 앱입니다.<br>창세기부터 요한계시록까지, 매일 한 장씩 말씀을 읽으며 신앙의 여정을 기록하세요.', bible_feature_full_title:'📖 성경 전권 수록', bible_feature_full_desc:'구약 39권 929장 + 신약 27권 260장. 개역개정 성경 전체를 장별로 읽을 수 있습니다.', bible_feature_notes_title:'🖊 형광펜 · 북마크 · 메모', bible_feature_notes_desc:'마음에 닿는 구절에 형광펜을 치고, 북마크와 메모로 나만의 말씀 기록을 남기세요.', bible_feature_progress_title:'📊 일독 진행률 추적', bible_feature_progress_desc:'읽은 장을 체크하고 전체 1,189장 중 몇 장을 읽었는지 진행률을 한눈에 확인합니다.', bible_feature_quiz_title:'✏️ 말씀 확인 퀴즈', bible_feature_quiz_desc:'장을 읽은 후 3문제 퀴즈로 말씀을 점검하세요. 2문제 이상 정답 시 읽음 처리됩니다.', bible_feature_cloud_title:'☁️ 클라우드 동기화', bible_feature_cloud_desc:'나만의 ID와 PIN으로 로그인하면 기록이 클라우드에 저장되어 어느 기기에서든 이어볼 수 있습니다.', bible_feature_rank_title:'🏆 리더보드', bible_feature_rank_desc:'가장 많은 장을 읽은 TOP 5 사용자 랭킹을 확인하며 서로 격려하고 동기부여 하세요.', bible_intro_creator:'이 앱은 <strong style="color:#c9a84c;">Chris LEE.PAPA</strong>가 두 딸과 교회 어린이 사역의 경험을 바탕으로 제작한 성경 묵상 도구입니다. 말씀이 삶 속에 살아 숨쉬도록, 오늘도 한 장씩 읽어나가는 모든 분들을 응원합니다.<br><br>성경에는 창세기 1장 "태초에 하나님이 천지를 창조하시니라"부터 요한계시록 22장 "주 예수의 은혜가 모든 자들에게 있을지어다"까지 인류의 가장 위대한 이야기가 담겨 있습니다. 매일 말씀과 함께하는 하루가 되시길 바랍니다.',
+                bible_login_desc:'자신만의 이니셜과 비밀번호로<br>클라우드에 기록을 안전하게 동기화하세요.', bible_initials_placeholder:'이니셜 영문 3자리 (예: KJH)', bible_pin_placeholder:'비밀번호 숫자 4자리', bible_login_button:'접속하기', bible_plan_title:'📖 성경 일독 계획표', bible_plan_desc:'일독 진행률입니다. 할 수 있습니다.', bible_confirm:'확인', bible_memo_title:'📝 메모 작성', bible_memo_placeholder:'이 구절을 묵상하며 떠오른 생각을 자유롭게 적어보세요.', bible_cancel:'취소', bible_save:'저장', bible_archive_title:'✨ 내 보관함', bible_archive_desc:'형광펜, 북마크, 메모를 남긴 말씀들이 모두 여기에 모입니다.', bible_close:'닫기', bible_quiz_title:'📝 말씀 확인 퀴즈', bible_quiz_desc:'현재 장을 올바르게 읽었는지 확인합니다.<br>3문제 중 2문제 이상 정답을 맞혀야 읽음 처리됩니다.', bible_read_again:'다시 읽기(취소)', bible_submit:'제출하기', bible_local_mode:'로컬 저장 모드', bible_why_title:'✦ &nbsp; 만든 이유', bible_why_desc:'2023년 말, 성경을 처음 제대로 읽기 시작하면서 말씀이 삶을 바꾸는 것을 경험했습니다. 매일 말씀을 읽고 싶었지만 마땅한 도구가 없어 직접 만들기 시작했고, 그것이 <strong style="color:#e8d08a;">Bible in my hand</strong>가 되었습니다. 형광펜으로 마음에 닿는 구절을 표시하고, 메모로 묵상을 남기고, 북마크로 다시 찾아볼 수 있도록 — 성경 한 권을 손 안에 담고 싶었습니다.',
                 share_title: "SHARE ARCHIVE",
                 share_desc: "이곳의 기록과 영감을 소중한 사람들에게 전하세요."
             },
             en: {
+                bible_intro_desc:'<strong style="color:#e8d08a;">Bible in my hand</strong> is a Bible reading and reflection app covering all <strong style="color:#e8d08a;">1,189 chapters</strong> across 39 Old Testament books and 27 New Testament books.<br>Read one chapter each day, from Genesis to Revelation, and keep a record of your faith journey.', bible_feature_full_title:'📖 The Entire Bible', bible_feature_full_desc:'All 39 Old Testament books (929 chapters) and 27 New Testament books (260 chapters), available chapter by chapter in the Korean Revised Version.', bible_feature_notes_title:'🖊 Highlights · Bookmarks · Notes', bible_feature_notes_desc:'Highlight verses that speak to you, and keep your own Scripture journal with bookmarks and notes.', bible_feature_progress_title:'📊 Reading Progress', bible_feature_progress_desc:'Mark chapters as read and see your progress across all 1,189 chapters at a glance.', bible_feature_quiz_title:'✏️ Scripture Quiz', bible_feature_quiz_desc:'Review each chapter with a three-question quiz. Answer at least two correctly to mark it as read.', bible_feature_cloud_title:'☁️ Cloud Sync', bible_feature_cloud_desc:'Sign in with your personal ID and PIN to save your records in the cloud and continue on any device.', bible_feature_rank_title:'🏆 Leaderboard', bible_feature_rank_desc:'See the top five readers by chapters completed and encourage one another along the way.', bible_intro_creator:'This Bible reflection tool was created by <strong style="color:#c9a84c;">Chris LEE.PAPA</strong>, inspired by his two daughters and experience serving children at church. May it encourage everyone reading one chapter at a time to let the Word live in daily life.<br><br>From Genesis 1, “In the beginning God created the heavens and the earth,” to Revelation 22, “The grace of the Lord Jesus be with all,” the Bible carries one of humanity’s greatest stories. May each day be filled with the Word.',
+                bible_login_desc:'Sync your personal reading notes securely to the cloud with your initials and PIN.', bible_initials_placeholder:'3 English initials (e.g. KJH)', bible_pin_placeholder:'4-digit PIN', bible_login_button:'Sign in', bible_plan_title:'📖 Bible Reading Plan', bible_plan_desc:'Your progress through the Bible reading plan.', bible_confirm:'OK', bible_memo_title:'📝 Write a Note', bible_memo_placeholder:'Write down any thoughts that come to mind as you reflect on this verse.', bible_cancel:'Cancel', bible_save:'Save', bible_archive_title:'✨ My Archive', bible_archive_desc:'Your highlighted verses, bookmarks, and notes are collected here.', bible_close:'Close', bible_quiz_title:'📝 Scripture Check Quiz', bible_quiz_desc:'Check whether you have read this chapter carefully.<br>Answer at least 2 of the 3 questions correctly to mark it as read.', bible_read_again:'Read Again (Cancel)', bible_submit:'Submit', bible_local_mode:'Local storage mode', bible_why_title:'✦ &nbsp; Why I Made It', bible_why_desc:'At the end of 2023, I began reading the Bible seriously and experienced how the Word could change my life. I wanted to read every day, but could not find a tool that suited me, so I started building one myself — and it became <strong style="color:#e8d08a;">Bible in my hand</strong>. I wanted to keep the whole Bible close at hand: highlighting verses that spoke to me, recording reflections in notes, and bookmarking passages to revisit.',
                 share_title: "SHARE ARCHIVE",
                 share_desc: "Share the records and inspiration from this place with those you love."
             }
@@ -1162,8 +1166,6 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
                                 <button class="vt-btn ${isH?'active':''}" id="btn-hl-${vKey}" onclick="actionHighlight('${vKey}')">🖍️ 형광펜</button>
                                 <button class="vt-btn ${hasBm?'active':''}" id="btn-bm-${vKey}" onclick="actionBookmark('${vKey}')">🔖 북마크</button>
                                 <button class="vt-btn" onclick="openMemoModal('${vKey}')">📝 메모 작성</button>
-                                <button class="vt-btn" onclick="shareVerse('${vKey}')">📤 말씀 공유</button>
-                                <button class="vt-btn" onclick="saveVerseImage('${vKey}')">🖼 이미지 저장</button>
                             </div>
                         </div>`;
                     }).join('');
@@ -1319,140 +1321,6 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
             const hasMemo = userState.memos[vKey] ? '<span class="badge-icon">📝</span>' : '';
             document.getElementById(`badge-${vKey}`).innerHTML = hasBm + hasMemo;
         }
-
-        function getVerseShareData(vKey) {
-            const parts = vKey.split('-');
-            const book = BIBLE_BOOKS.find(b => String(b.id) === String(parts[0]));
-            const verseTextEl = document.getElementById(`txt-${vKey}`);
-            if (!book || !verseTextEl) return null;
-            const clone = verseTextEl.cloneNode(true);
-            clone.querySelectorAll('.badge-wrap, .badge-icon').forEach(el => el.remove());
-            let text = (clone.textContent || '').replace(/\s+/g, ' ').trim();
-            // Some Bible data providers include the verse number in the verse text itself.
-            // Remove it so the reference is displayed only once in shared text and images.
-            const verseNumber = Number(parts[2]);
-            text = text.replace(new RegExp('^\\s*' + verseNumber + '(?:[.)、:]?\\s+|\\s*$)'), '').trim();
-            const reference = `${book.name} ${parts[1]}장 ${parts[2]}절`;
-            return { reference, text, shareText: `${reference}\\n${text}\\n\\nBible in my hand — Chris LEE.PAPA` };
-        }
-
-        function createVerseImageBlob(data) {
-            return new Promise((resolve, reject) => {
-                try {
-                    const canvas = document.createElement('canvas');
-                    const size = 1200;
-                    canvas.width = size;
-                    canvas.height = size;
-                    const ctx = canvas.getContext('2d');
-                    if (!ctx) return reject(new Error('Canvas unavailable'));
-                    ctx.fillStyle = '#030305';
-                    ctx.fillRect(0, 0, size, size);
-                    const grad = ctx.createLinearGradient(0, 0, size, size);
-                    grad.addColorStop(0, 'rgba(201,168,76,.18)');
-                    grad.addColorStop(1, 'rgba(201,168,76,.025)');
-                    ctx.fillStyle = grad;
-                    ctx.fillRect(0, 0, size, size);
-                    ctx.strokeStyle = 'rgba(201,168,76,.55)';
-                    ctx.lineWidth = 2;
-                    ctx.strokeRect(55, 55, size - 110, size - 110);
-                    ctx.strokeStyle = 'rgba(201,168,76,.18)';
-                    ctx.lineWidth = 1;
-                    ctx.strokeRect(73, 73, size - 146, size - 146);
-                    ctx.textAlign = 'center';
-                    ctx.fillStyle = '#c9a84c';
-                    ctx.font = '600 30px Cinzel, serif';
-                    ctx.fillText('BIBLE IN MY HAND', size / 2, 165);
-                    ctx.fillStyle = '#eee8d8';
-                    ctx.font = '600 34px "Noto Sans KR", sans-serif';
-                    ctx.fillText(data.reference, size / 2, 245);
-                    ctx.fillStyle = '#eee8d8';
-                    ctx.font = '400 42px "Noto Sans KR", sans-serif';
-                    const maxWidth = 900;
-                    const chars = Array.from(data.text);
-                    const lines = [];
-                    let line = '';
-                    for (const ch of chars) {
-                        const test = line + ch;
-                        if (ctx.measureText(test).width > maxWidth && line) {
-                            lines.push(line);
-                            line = ch;
-                        } else line = test;
-                    }
-                    if (line) lines.push(line);
-                    const lineHeight = 62;
-                    const maxLines = 10;
-                    const shownLines = lines.slice(0, maxLines);
-                    if (lines.length > maxLines) shownLines[maxLines - 1] = shownLines[maxLines - 1].slice(0, -1) + '…';
-                    const totalHeight = shownLines.length * lineHeight;
-                    let y = Math.max(355, (size - totalHeight) / 2 + 30);
-                    ctx.fillStyle = 'rgba(201,168,76,.9)';
-                    ctx.font = '500 72px Georgia, serif';
-                    ctx.fillText('“', size / 2, y - 38);
-                    ctx.fillStyle = '#eee8d8';
-                    ctx.font = '400 42px "Noto Sans KR", sans-serif';
-                    for (const row of shownLines) {
-                        ctx.fillText(row, size / 2, y);
-                        y += lineHeight;
-                    }
-                    ctx.fillStyle = '#c9a84c';
-                    ctx.font = '500 23px "Noto Sans KR", sans-serif';
-                    ctx.fillText('Chris LEE.PAPA', size / 2, size - 120);
-                    ctx.fillStyle = 'rgba(238,238,238,.42)';
-                    ctx.font = '400 18px "Noto Sans KR", sans-serif';
-                    ctx.fillText('chrisleepapa-official.vercel.app', size / 2, size - 85);
-                    canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('Image export failed')), 'image/png');
-                } catch (error) { reject(error); }
-            });
-        }
-
-        async function saveVerseImage(vKey) {
-            const data = getVerseShareData(vKey);
-            if (!data) { showToast("말씀을 불러올 수 없습니다."); return; }
-            try {
-                const blob = await createVerseImageBlob(data);
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `bible-verse-${vKey}.png`;
-                document.body.appendChild(a);
-                a.click();
-                a.remove();
-                setTimeout(() => URL.revokeObjectURL(url), 1200);
-                showToast("말씀 이미지를 저장했습니다.");
-            } catch (error) {
-                console.error('Verse image save failed:', error);
-                showToast("이미지 저장에 실패했습니다. 다시 시도해주세요.");
-            }
-        }
-
-        async function shareVerse(vKey) {
-            const data = getVerseShareData(vKey);
-            if (!data) { showToast("말씀을 불러올 수 없습니다."); return; }
-            try {
-                const blob = await createVerseImageBlob(data);
-                const file = new File([blob], `bible-verse-${vKey}.png`, { type: 'image/png' });
-                if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-                    await navigator.share({ title: data.reference, text: data.shareText, files: [file] });
-                } else if (navigator.share) {
-                    await navigator.share({ title: data.reference, text: data.shareText });
-                } else {
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `bible-verse-${vKey}.png`;
-                    document.body.appendChild(a);
-                    a.click();
-                    a.remove();
-                    setTimeout(() => URL.revokeObjectURL(url), 1200);
-                    showToast("공유를 지원하지 않아 말씀 이미지를 저장했습니다.");
-                }
-            } catch (error) {
-                if (error && error.name === 'AbortError') return;
-                console.error('Verse share failed:', error);
-                showToast("말씀 공유에 실패했습니다. 이미지 저장을 이용해주세요.");
-            }
-        }
-
 
         function openMemoModal(vKey) {
             activeMemoVerse = vKey;

@@ -232,6 +232,22 @@
         line-height: 1;
         pointer-events: none;
     }
+    /* Keep GET THE BOOK CTA text readable in both light and dark themes. */
+    .get-book-button,
+    html[data-theme="light"] .get-book-button,
+    html[data-theme="dark"] .get-book-button,
+    .get-book-button > span[data-i18n="book_button"],
+    html[data-theme="light"] .get-book-button > span[data-i18n="book_button"],
+    html[data-theme="dark"] .get-book-button > span[data-i18n="book_button"],
+    .get-book-button .get-book-arrow,
+    html[data-theme="light"] .get-book-button .get-book-arrow,
+    html[data-theme="dark"] .get-book-button .get-book-arrow {
+        color: #fff !important;
+        -webkit-text-fill-color: #fff !important;
+    }
+    .get-book-button .get-book-arrow {
+        border-color: rgba(255,255,255,.72) !important;
+    }
     .get-book-button:hover {
         color: #fff;
         border-color: rgba(111,215,255, 1);

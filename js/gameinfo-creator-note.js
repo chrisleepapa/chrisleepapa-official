@@ -115,6 +115,7 @@ const light=document.createElement('style');light.textContent='html[data-theme="
   }
 
   function start() {
+    window.onLangChange = applyCreatorNoteLanguage;
     insertCreatorNote();
     let attempts = 0;
     const timer = setInterval(() => {

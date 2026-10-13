@@ -386,7 +386,9 @@ async function completeBibleJourney(){
   btn.disabled=true;btn.textContent='저장 중…';showJourneyMessage('읽음 완료를 저장하고 있습니다…');
   try{
     await saveBibleJourneyRemote(next);
-    openBibleJourneyIndex=null;
+    // Keep the reader open on the newly unlocked chapter so the next completion
+    // button is immediately ready and cannot appear stale/disabled.
+    openBibleJourneyIndex=nextIndex<chapters.length?nextIndex:null;
     renderBibleJourney();
   }catch(error){
     console.error('Bible journey save failed:',error);

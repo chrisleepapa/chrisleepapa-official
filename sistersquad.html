@@ -1885,52 +1885,97 @@
             }
         }
 
-        /* GET THE BOOK — subtle transparent button */
+        /* GET THE BOOK — cinematic story-card CTA */
     .get-book-section {
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 42px auto 24px;
-        padding: 0 16px;
-        background: transparent;
-        border: 0;
+        width: min(100% - 32px, 560px);
+        margin: 42px auto 28px;
+        padding: 0;
+        background: transparent !important;
+        border: 0 !important;
+        box-shadow: none !important;
     }
     .get-book-button {
-        display: inline-flex;
+        position: relative;
+        isolation: isolate;
+        display: flex;
         align-items: center;
-        justify-content: center;
-        gap: 12px;
-        min-height: 46px;
-        padding: 10px 22px;
-        border: 1px solid rgba(201,168,76,.62);
-        border-radius: 999px;
-        color: var(--gold-light, #e8d08a);
-        background: transparent;
-        box-shadow: none;
+        justify-content: space-between;
+        gap: 22px;
+        width: 100%;
+        min-height: 112px;
+        box-sizing: border-box;
+        padding: 28px 32px;
+        overflow: hidden;
+        border: 1px solid rgba(201,168,76, .72);
+        border-radius: 16px;
+        color: #f7e6b0;
+        background:
+            radial-gradient(ellipse at 85% 10%, rgba(201,168,76, .22), transparent 42%),
+            radial-gradient(ellipse at 12% 100%, rgba(69, 76, 130, .26), transparent 48%),
+            linear-gradient(125deg, #080b18 0%, #111a30 52%, #07101d 100%);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 14px 34px rgba(0,0,0,.26);
         font-family: 'Cinzel', serif;
-        font-size: .76rem;
-        font-weight: 600;
-        letter-spacing: .14em;
+        font-size: clamp(.9rem, 2.4vw, 1.08rem);
+        font-weight: 700;
+        letter-spacing: .17em;
         text-transform: uppercase;
         text-decoration: none;
-        transition: border-color .2s ease, color .2s ease, background .2s ease, transform .2s ease;
+        transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+    }
+    .get-book-button::before {
+        content: "";
+        position: absolute;
+        inset: 7px;
+        z-index: -1;
+        border: 1px solid rgba(201,168,76, .24);
+        border-radius: 10px;
+        pointer-events: none;
+    }
+    .get-book-button::after {
+        content: "✦";
+        position: absolute;
+        right: 76px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #c9a84c;
+        opacity: .26;
+        font-size: 3.4rem;
+        line-height: 1;
+        pointer-events: none;
     }
     .get-book-button:hover {
         color: #fff;
-        border-color: rgba(201,168,76,.95);
-        background: rgba(201,168,76,.08);
-        box-shadow: none;
-        transform: translateY(-2px);
+        border-color: rgba(201,168,76, 1);
+        transform: translateY(-3px);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 20px 42px rgba(0,0,0,.34), 0 0 24px rgba(201,168,76, .12);
     }
     .get-book-arrow {
-        display: inline-block;
-        font-size: 1rem;
-        transition: transform .2s ease;
+        display: inline-flex;
+        flex: 0 0 38px;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        border: 1px solid rgba(201,168,76, .55);
+        border-radius: 50%;
+        color: #c9a84c;
+        font-family: sans-serif;
+        font-size: 1.2rem;
+        letter-spacing: 0;
+        transition: transform .2s ease, background .2s ease;
     }
-    .get-book-button:hover .get-book-arrow { transform: translateX(3px); }
+    .get-book-button:hover .get-book-arrow {
+        transform: translateX(4px);
+        background: rgba(201,168,76, .12);
+    }
     @media (max-width: 600px) {
-        .get-book-section { margin: 32px auto 20px; padding: 0 12px; }
-        .get-book-button { min-height: 44px; padding: 9px 18px; font-size: .7rem; }
+        .get-book-section { width: calc(100% - 28px); margin: 30px auto 22px; }
+        .get-book-button { min-height: 94px; padding: 22px 20px; gap: 12px; font-size: .78rem; letter-spacing: .12em; }
+        .get-book-button::after { right: 58px; font-size: 2.5rem; }
+        .get-book-arrow { flex-basis: 34px; width: 34px; height: 34px; }
     }
     </style>
 </head>

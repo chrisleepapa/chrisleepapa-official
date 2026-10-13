@@ -53,7 +53,7 @@
     if (window.__clpWorshipConfessionLoading) return true;
     window.__clpWorshipConfessionLoading = true;
     const script = document.createElement('script');
-    script.src = '/js/worship-confession.js?v=20260915';
+    script.src = '/js/worship-confession.js?v=20261013-i18n';
     script.onload = () => { window.__clpWorshipConfessionLoading = false; };
     document.head.appendChild(script);
     return true;

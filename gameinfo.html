@@ -431,7 +431,31 @@ html[data-theme="light"] .game-card .game-tag{
 <script>
 window.onMainReady=function(){initStarsCanvas()};
 function initStarsCanvas(){const canvas=document.getElementById('stars-canvas');if(!canvas)return;const ctx=canvas.getContext('2d');let stars=[],shootingStars=[];function resize(){canvas.width=innerWidth;canvas.height=innerHeight;initStars()}function initStars(){stars=[];const count=Math.floor(canvas.width*canvas.height/6000);for(let i=0;i<count;i++)stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,size:Math.random()*1.6+.2,opacity:Math.random(),speed:Math.random()*.015+.003})}function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);stars.forEach(s=>{s.opacity+=s.speed;if(s.opacity>1||s.opacity<0)s.speed=-s.speed;ctx.beginPath();ctx.arc(s.x,s.y,s.size,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${Math.max(0,s.opacity)})`;ctx.fill()});requestAnimationFrame(draw)}addEventListener('resize',resize);resize();draw()}
-window.PAGE_I18N={ko:{game_tag:'✦ GAME CENTER ✦',game_title:'Choose Your Game',board_title:'부르마블 게임',book_title:'책 쌓기 마스터',omok_title:'Dynamic Omok',curling_title:'매직 컬링',tetris_title:'독수리의 테트리스',switch_title:'요정 포포의 여정',goal_title:'골이예요 GOAL',guide_title:'GAME GUIDE'},en:{game_tag:'✦ GAME CENTER ✦',game_title:'Choose Your Game',board_title:'Blue Marble Game',book_title:'Book Stacking Master',omok_title:'Dynamic Omok',curling_title:'Magic Curling',tetris_title:"Eagle's Tetris",switch_title:"Popo the Fairy's Journey",goal_title:'GOAL',guide_title:'GAME GUIDE'}};
+window.PAGE_I18N={ko:{game_tag:'✦ GAME CENTER ✦',game_title:'Choose Your Game',board_title:'부르마블 게임',book_title:'책 쌓기 마스터',omok_title:'Dynamic Omok',curling_title:'매직 컬링',tetris_title:'독수리의 테트리스',switch_title:'요정 포포의 여정',goal_title:'골이예요 GOAL',guide_title:'GAME GUIDE'},en:{game_tag:'✦ GAME CENTER ✦',game_title:'Choose Your Game',board_title:'Blue Marble Game',book_title:'Book Stacking Master',omok_title:'Dynamic Omok',curling_title:'Magic Curling',tetris_title:"Eagle's Tetris",switch_title:"Popo the Fairy's Journey",goal_title:'GOAL',guide_title:'GAME GUIDE',
+game_intro_desc:'The Chris LEE.PAPA Game Center is a small playground for games I built myself. From strategy and puzzles to sports and action, what will you play today?',
+board_desc:'Roll the dice and travel through a universe of space and creative archives in this strategy board game. Buy properties, collect tolls, and bankrupt your opponents. Supports 2–4 players.',
+book_desc:'Challenge gravity and balance in Dad’s study. Drop books carefully and see how high you can stack them. This single-player physics puzzle asks you to calculate tilt and center of gravity to beat your best score.',
+omok_desc:'Choose a character and connect five stones before time runs out in this dynamic Gomoku duel. Supports two-player matches and solo play against AI, combining tactical reading with quick decisions under time pressure.',
+curling_desc:'Choose the side of Light or Darkness and use magical skills to win in this fantasy curling duel. Combine strategic curling rules—placing stones closest to the center of the house—with magical abilities in a two-player match.',
+tetris_desc:'A classic returns! Stack blocks beneath neon lights, clear lines, and aim for your highest score in this puzzle game.',
+switch_desc:'Help the cute fairy Popo dodge falling ice and attacks from the Fire Griffin by moving left and right—and grab delicious food along the way. You have three chances!',
+goal_desc:'Choose one of the four heroes from MIRACLE SHOT, shoot at a giant scoring wall, and compete head-to-head by accumulating points in this one-on-one soccer game.',
+guide1_heading:'① Blue Marble Game — Board Game',
+guide1_desc:'Move around a space-themed board by rolling dice, buy land, and build properties. Collect tolls when opponents land on your property and win by bankrupting them. Supports 2–4 players.',
+guide2_heading:'② Book Stacking Master — Physics Puzzle',
+guide2_desc:'Place falling books with precise timing to stack them as high as possible. Each book has a different size and weight, making balance a challenge.',
+guide3_heading:'③ Dynamic Omok — Strategy Gomoku',
+guide3_desc:'Race against the clock to connect five stones horizontally, vertically, or diagonally. Play as a Sister Squad character, with solo matches against AI also supported.',
+guide4_heading:'④ Magic Curling — Fantasy Sports',
+guide4_desc:'A fantasy sports game based on real curling rules. Choose Light or Darkness, throw your stones, and knock your opponent’s stones away.',
+guide5_heading:'⑤ Eagle’s Tetris — Arcade Puzzle',
+guide5_desc:'Clear horizontal lines by completing them with seven types of falling tetrominoes. The game features a neon theme, and blocks fall faster as you level up.',
+guide6_heading:'⑥ Popo the Fairy’s Journey — Action / Elemental',
+guide6_desc:'Help the cute fairy Popo dodge falling ice and attacks from the Fire Griffin by moving left and right, while collecting delicious food. You have three chances!',
+guide7_heading:'⑦ GOAL — MIRACLE SHOT GAME',
+guide7_desc:'Choose one of the four MIRACLE SHOT heroes, shoot at a giant scoring wall, and compete in a one-on-one soccer match by accumulating points.',
+guide_footer_note:'Every game was planned and built by Chris LEE.PAPA for his two daughters, Yul and Jung, to enjoy together. All games support desktop and mobile, and can be played for free in a browser with no installation required.'
+}};
 </script>
 <script src="js/main.js"></script><script src="js/guestbook.js"></script>
     <script src="/js/gameinfo-creator-note.js?v=20261007-1"></script>

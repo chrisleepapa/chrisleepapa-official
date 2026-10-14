@@ -791,7 +791,7 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
             const initials = document.getElementById('authInitials').value.toUpperCase().trim();
             const pin = document.getElementById('authPin').value.trim();
             if (!/^[A-Z]{3}$/.test(initials)) return showToast("영문 대/소문자 3자리를 입력하세요.");
-            if (!/^\\d{4}$/.test(pin)) return showToast("숫자 4자리를 정확히 입력하세요.");
+            if (!/^\d{4}$/.test(pin)) return showToast("숫자 4자리를 정확히 입력하세요.");
             if (!window.CLPAuth?.login) return showToast("공통 로그인 모듈을 불러오지 못했습니다.");
             const btn = document.querySelector('#authModal .btn-copy');
             btn.textContent = "확인 중...";

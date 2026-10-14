@@ -337,73 +337,61 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(cardsNow.length!==6) throw new Error('Six news cards are not ready.');
   if(document.fonts?.ready) await document.fonts.ready;
 
-  // Portrait export uses the same real card DOM/CSS as the on-screen cards.
-  // Only the overall canvas layout changes to two columns by three rows.
-  const stage=document.createElement('section');
-  stage.id='chris-news';
-  stage.setAttribute('aria-hidden','true');
-  stage.setAttribute('data-news-capture','true');
-  stage.style.cssText='position:fixed;left:-20000px;top:0;width:1080px;box-sizing:border-box;padding:44px 38px 34px;margin:0;z-index:-1;overflow:visible;background:#f5f2ec;color:#17130f;';
-  const inner=document.createElement('div');
-  inner.className='chris-news-inner';
-  inner.style.cssText='width:100%;max-width:none;margin:0;';
-  const head=document.createElement('div');
-  head.className='chris-news-head';
-  head.style.cssText='display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin:0 0 22px;';
-  const titleBlock=document.createElement('div');
-  const kicker=document.createElement('p');
-  kicker.className='chris-news-kicker';
-  kicker.textContent=lang()==='en'?'WORLD · CURRENT · CURATED':'세계 · 최신 · 큐레이션';
-  const title=document.createElement('h2');
-  title.className='chris-news-title';
-  title.textContent="Chris's News";
-  title.style.cssText='margin:0;';
-  const date=document.createElement('p');
-  date.style.cssText='margin:8px 0 0;color:#8b6a19;font:600 15px Pretendard,sans-serif;';
-  date.textContent=cardsNow[0].querySelector('.chris-news-card-date')?.textContent.trim()||'';
-  titleBlock.append(kicker,title,date);
-  const desc=document.createElement('p');
-  desc.className='chris-news-desc';
-  desc.textContent=lang()==='en'?'Six stories, one daily brief.':'오늘의 주요 뉴스 6개 · 핵심과 맥락';
-  head.append(titleBlock,desc);
-  const grid=document.createElement('div');
-  grid.className='chris-news-grid';
-  grid.style.cssText='display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;padding:0;';
-  cardsNow.forEach(card=>{
-    const clone=card.cloneNode(true);
-    clone.style.setProperty('width','100%','important');
-    clone.style.setProperty('height','500px','important');
-    clone.style.setProperty('min-height','0','important');
-    clone.style.setProperty('aspect-ratio','auto','important');
-    clone.style.setProperty('transform','none','important');
-    clone.style.setProperty('box-sizing','border-box','important');
-    grid.append(clone);
+  // Capture each currently rendered card itself. The card bitmap is then
+  // composed into a portrait sheet without rebuilding or restyling the card.
+  const cardCanvases=await Promise.all(cardsNow.map(card=>window.html2canvas(card,{
+    scale:2,
+    backgroundColor:null,
+    useCORS:true,
+    allowTaint:false,
+    logging:false,
+    scrollX:0,
+    scrollY:0,
+    ignoreElements:el=>el.classList?.contains('chris-news-share-actions') ||
+      el.classList?.contains('chris-news-note')
+  })));
+  const firstRect=cardsNow[0].getBoundingClientRect();
+  const cardW=Math.round(firstRect.width);
+  const cardH=Math.round(firstRect.height);
+  if(!cardW||!cardH) throw new Error('News cards have no visible dimensions.');
+
+  const paddingX=30, paddingTop=32, paddingBottom=30, gap=18, headerH=112;
+  const sheetW=paddingX*2+cardW*2+gap;
+  const sheetH=paddingTop+headerH+gap+cardH*3+gap*2+paddingBottom;
+  const canvas=document.createElement('canvas');
+  canvas.width=sheetW*2;
+  canvas.height=sheetH*2;
+  const ctx=canvas.getContext('2d');
+  if(!ctx) throw new Error('Could not create image canvas.');
+  ctx.scale(2,2);
+  ctx.fillStyle='#f5f2ec';
+  ctx.fillRect(0,0,sheetW,sheetH);
+
+  const dateText=cardsNow[0].querySelector('.chris-news-card-date')?.textContent.trim()||'';
+  ctx.fillStyle='#8b6a19';
+  ctx.font='700 10px Cinzel, serif';
+  ctx.textAlign='left';
+  ctx.fillText(lang()==='en'?'WORLD · CURRENT · CURATED':'세계 · 최신 · 큐레이션',paddingX,paddingTop+10);
+  ctx.fillStyle='#302a20';
+  ctx.font='600 38px "Cormorant Garamond", "Noto Serif KR", serif';
+  ctx.fillText("Chris's News",paddingX,paddingTop+53);
+  ctx.fillStyle='#8b6a19';
+  ctx.font='600 12px Pretendard, sans-serif';
+  ctx.fillText(dateText,paddingX,paddingTop+78);
+  ctx.fillStyle='rgba(37,37,37,.58)';
+  ctx.font='12px Pretendard, sans-serif';
+  ctx.textAlign='right';
+  ctx.fillText(lang()==='en'?'Six stories, one daily brief.':'오늘의 주요 뉴스 6개 · 핵심과 맥락',sheetW-paddingX,paddingTop+52);
+  ctx.textAlign='left';
+
+  cardCanvases.forEach((cardCanvas,i)=>{
+    const col=i%2, row=Math.floor(i/2);
+    const x=paddingX+col*(cardW+gap);
+    const y=paddingTop+headerH+gap+row*(cardH+gap);
+    // Keep the card's captured appearance intact; only arrange cards on the sheet.
+    ctx.drawImage(cardCanvas,x,y,cardW,cardH);
   });
-  inner.append(head,grid);
-  stage.append(inner);
-  document.body.append(stage);
-  try {
-    const canvas=await window.html2canvas(stage,{
-      scale:2,
-      backgroundColor:'#f5f2ec',
-      useCORS:true,
-      allowTaint:false,
-      logging:false,
-      width:1080,
-      windowWidth:1080,
-      scrollX:0,
-      scrollY:0,
-      ignoreElements:el=>el.classList?.contains('chris-news-share-actions') ||
-        el.classList?.contains('chris-news-note'),
-      onclone:clonedDocument=>{
-        const capture=clonedDocument.querySelector('[data-news-capture="true"]');
-        if(capture){capture.style.position='static';capture.style.left='auto';capture.style.top='auto';capture.style.zIndex='auto';}
-      }
-    });
-    return await new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('PNG export failed.')),'image/png'));
-  } finally {
-    stage.remove();
-  }
+  return await new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('PNG export failed.')),'image/png'));
  };
 
  const shareImage=async()=>{

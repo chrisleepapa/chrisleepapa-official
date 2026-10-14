@@ -43,9 +43,9 @@
       top.append(make('span', 'chris-news-card-date', articleDateLabel(item.publishedAt, payload.date, lang)));
       card.append(top);
       card.append(make('p', 'chris-news-card-kicker', lang === 'en' ? item.categoryEn : item.categoryKo));
-      const title = make('h3', '', lang === 'en' ? item.titleEn || item.title : item.title);
+      const title = make('h3', '', lang === 'en' ? item.titleEn || item.title : item.titleKo || item.title);
       card.append(title);
-      card.append(make('p', 'chris-news-summary', safeText(lang === 'en' ? item.summaryEn || item.summary : item.summary)));
+      card.append(make('p', 'chris-news-summary', safeText(lang === 'en' ? item.summaryEn || item.summary : item.summaryKo || item.summary)));
       const points = make('div', 'chris-news-points');
       ((lang === 'en' ? item.pointsEn || item.points : item.pointsKo || item.points) || []).slice(0, 3).forEach((point) => points.append(make('div', 'chris-news-point', point)));
       card.append(points);

@@ -32,8 +32,8 @@ const categories = [
     key: 'science', ko: '과학 · 기술', en: 'SCIENCE · TECHNOLOGY',
     query: 'science technology AI research',
     feeds: [
-      { name: 'BBC News', url: 'https://feeds.bbci.co.uk/news/science_and_environment/rss.xml' },
-      { name: 'The Guardian', url: 'https://www.theguardian.com/science/rss' },
+      { name: 'BBC News Technology', url: 'https://feeds.bbci.co.uk/news/technology/rss.xml' },
+      { name: 'The Guardian Science', url: 'https://www.theguardian.com/science/rss' },
       { name: 'NPR', url: 'https://feeds.npr.org/1007/rss.xml' }
     ]
   },
@@ -196,7 +196,7 @@ async function translateText(value, target) {
     return value;
   }
 }
-async function fetchCategory(category) {
+async function fetchCategory(category, globallySeenLinks = new Set(), globallySeenTitles = []) {
   // Prefer direct publisher RSS feeds. Aggregator feeds are deliberately not used:
   // they often leave the card linked to a search/result page rather than the actual report.
   const nowMs = Date.now();
@@ -234,7 +234,7 @@ async function fetchCategory(category) {
       } catch { continue; }
       if (itemUrl.hostname === 'news.google.com' || itemUrl.hostname.includes('bing.com')) continue;
       const canonicalLink = itemUrl.href;
-      if (seenLinks.has(canonicalLink)) continue;
+      if (seenLinks.has(canonicalLink) || globallySeenLinks.has(canonicalLink)) continue;
       seenLinks.add(canonicalLink);
 
       const rssText = cleanHtml(item.description || '');
@@ -242,6 +242,8 @@ async function fetchCategory(category) {
       const detailText = (article.details || []).join(' ').trim();
       const articleTitle = article.articleTitle || '';
       if (articleTitle && titleSimilarity(item.title, articleTitle) < 0.25) continue;
+      // Keep the six-card feed editorially distinct: never repeat the same or near-identical headline across categories.
+      if (globallySeenTitles.some(title => titleSimilarity(item.title, title) >= 0.75)) continue;
 
       const summaryCandidate = detailText.length >= 100 && !isGenericNewsBoilerplate(detailText)
         ? detailText
@@ -279,9 +281,22 @@ async function fetchCategory(category) {
   console.error('News source diagnostics for ' + category.key + ': ' + failures.join(' | '));
   throw new Error('No recent, substantial, direct-publisher article passed validation for ' + category.key + '.');
 }
-const results = await Promise.allSettled(categories.map(fetchCategory));
-const cards = results.map((r, i) => r.status === 'fulfilled' ? r.value : null);
-const failed = results.map((r, i) => r.status === 'rejected' ? { category: categories[i].key, error: String(r.reason) } : null).filter(Boolean);
+const cards = [];
+const globallySeenLinks = new Set();
+const globallySeenTitles = [];
+const failed = [];
+// Run in category order so each selected article can be reserved before the next category searches.
+for (const category of categories) {
+  try {
+    const card = await fetchCategory(category, globallySeenLinks, globallySeenTitles);
+    cards.push(card);
+    globallySeenLinks.add(card.link);
+    globallySeenTitles.push(card.title);
+  } catch (error) {
+    cards.push(null);
+    failed.push({ category: category.key, error: String(error) });
+  }
+}
 if (failed.length) console.error('Category fallback diagnostics:', JSON.stringify(failed));
 if (cards.some(x => !x)) {
   // Never silently publish old or fabricated content. Leave the existing JSON untouched

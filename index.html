@@ -80,6 +80,194 @@ html[data-theme="dark"] .chris-news-title{color:#f8f3e8}html[data-theme="dark"] 
 @media(max-width:900px){.chris-news-head{display:block}.chris-news-desc{margin-top:12px;text-align:left}}
 @media(max-width:700px){#chris-news{padding:58px 12px 64px}.chris-news-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:5px 2px 20px}.chris-news-card{aspect-ratio:3/5;border-radius:18px;padding:22px 18px 20px}.chris-news-card-kicker{margin-top:22px;font-size:.82rem}.chris-news-card h3{font-size:clamp(1.2rem,5.2vw,1.65rem);line-height:1.3}.chris-news-summary{margin-top:14px;font-size:.75rem;line-height:1.65}.chris-news-points{margin-top:14px;padding-top:11px;gap:6px}.chris-news-point{font-size:.62rem;line-height:1.45}.chris-news-card-footer{padding-top:12px}.chris-news-source{font-size:.47rem}}
 @media(max-width:430px){.chris-news-grid{grid-template-columns:1fr;gap:14px}.chris-news-card{aspect-ratio:3/5;padding:25px 22px 22px}.chris-news-card h3{font-size:1.6rem}.chris-news-summary{font-size:.82rem}.chris-news-point{font-size:.68rem}}
+
+
+/* CHRIS'S NEWS — category-specific editorial card art */
+#chris-news .chris-news-card{isolation:isolate;background-color:#fff;position:relative}
+#chris-news .chris-news-card::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.92;background-repeat:no-repeat;background-size:cover}
+#chris-news .chris-news-card--world{background-image:linear-gradient(145deg,#f5f8fb 0%,#e6edf5 55%,#dce6ef 100%)}
+#chris-news .chris-news-card--world::before{background-image:radial-gradient(ellipse at 100% 0%,rgba(65,108,151,.20),transparent 48%),repeating-linear-gradient(135deg,transparent 0 22px,rgba(57,91,125,.055) 22px 23px),radial-gradient(circle at 90% 12%,transparent 0 44px,rgba(57,91,125,.12) 45px 46px,transparent 47px 62px,rgba(57,91,125,.08) 63px 64px,transparent 65px)}
+#chris-news .chris-news-card--security{background-image:linear-gradient(150deg,#f7f0ec 0%,#eadbd5 58%,#e3d0ca 100%)}
+#chris-news .chris-news-card--security::before{background-image:linear-gradient(135deg,transparent 0 46%,rgba(133,67,55,.09) 46% 47%,transparent 47% 53%,rgba(133,67,55,.07) 53% 54%,transparent 54%),radial-gradient(ellipse at 100% 0%,rgba(157,75,59,.20),transparent 52%),repeating-linear-gradient(0deg,transparent 0 34px,rgba(133,67,55,.045) 34px 35px)}
+#chris-news .chris-news-card--economy{background-image:linear-gradient(145deg,#f7f5e9 0%,#ece9d4 58%,#e1e4ce 100%)}
+#chris-news .chris-news-card--economy::before{background-image:linear-gradient(155deg,transparent 0 48%,rgba(81,111,79,.12) 48.2% 48.8%,transparent 49%),linear-gradient(165deg,transparent 0 61%,rgba(81,111,79,.10) 61.2% 61.8%,transparent 62%),repeating-linear-gradient(90deg,transparent 0 26px,rgba(108,112,70,.055) 26px 27px),radial-gradient(ellipse at 100% 0%,rgba(130,144,86,.18),transparent 50%)}
+#chris-news .chris-news-card--science{background-image:linear-gradient(145deg,#eef5f8 0%,#dcecf0 58%,#d4e4ed 100%)}
+#chris-news .chris-news-card--science::before{background-image:radial-gradient(circle at 88% 9%,rgba(44,119,151,.18) 0 3px,transparent 4px),radial-gradient(circle at 88% 9%,transparent 0 27px,rgba(44,119,151,.15) 28px 29px,transparent 30px 48px,rgba(44,119,151,.10) 49px 50px,transparent 51px),radial-gradient(circle at 12% 74%,rgba(44,119,151,.10) 0 2px,transparent 3px),repeating-linear-gradient(45deg,transparent 0 28px,rgba(44,119,151,.045) 28px 29px)}
+#chris-news .chris-news-card--climate{background-image:linear-gradient(145deg,#eff6ee 0%,#dfece0 58%,#d1e2d7 100%)}
+#chris-news .chris-news-card--climate::before{background-image:radial-gradient(ellipse at 100% 0%,rgba(57,119,87,.18),transparent 50%),repeating-radial-gradient(ellipse at 100% 0%,transparent 0 22px,rgba(57,119,87,.085) 23px 24px,transparent 25px 40px),linear-gradient(125deg,transparent 0 68%,rgba(57,119,87,.06) 68.2% 68.8%,transparent 69%)}
+#chris-news .chris-news-card--society{background-image:linear-gradient(145deg,#f8f0f6 0%,#efe1ee 58%,#e7dcec 100%)}
+#chris-news .chris-news-card--society::before{background-image:radial-gradient(circle at 100% 0%,rgba(137,81,136,.16),transparent 48%),radial-gradient(circle at 100% 0%,transparent 0 36px,rgba(137,81,136,.12) 37px 38px,transparent 39px 58px,rgba(137,81,136,.08) 59px 60px,transparent 61px),repeating-linear-gradient(135deg,transparent 0 30px,rgba(137,81,136,.04) 30px 31px)}
+#chris-news .chris-news-card-top,#chris-news .chris-news-card-kicker,#chris-news .chris-news-card h3,#chris-news .chris-news-summary,#chris-news .chris-news-points,#chris-news .chris-news-card-footer{position:relative;z-index:1}
+html[data-theme="dark"] #chris-news .chris-news-card--world{background-image:linear-gradient(145deg,#15202b 0%,#172432 58%,#1b2b39 100%)}
+html[data-theme="dark"] #chris-news .chris-news-card--security{background-image:linear-gradient(150deg,#2a1b1a 0%,#30201f 58%,#382522 100%)}
+html[data-theme="dark"] #chris-news .chris-news-card--economy{background-image:linear-gradient(145deg,#242719 0%,#292c1e 58%,#303222 100%)}
+html[data-theme="dark"] #chris-news .chris-news-card--science{background-image:linear-gradient(145deg,#14252c 0%,#172b34 58%,#1b303b 100%)}
+html[data-theme="dark"] #chris-news .chris-news-card--climate{background-image:linear-gradient(145deg,#17271e 0%,#1b3025 58%,#20382c 100%)}
+html[data-theme="dark"] #chris-news .chris-news-card--society{background-image:linear-gradient(145deg,#291d2b 0%,#302235 58%,#39263c 100%)}
+/* Premium editorial finish + content-safe card sizing */
+#chris-news{background:linear-gradient(180deg,#f3efe6 0%,#faf8f3 52%,#f0ece3 100%)}
+.chris-news-head{padding-bottom:24px;border-bottom:1px solid rgba(139,106,25,.18)}
+.chris-news-title{letter-spacing:-.025em}
+.chris-news-card{aspect-ratio:auto;min-height:600px;height:auto;overflow:hidden;border-radius:17px;border-color:rgba(126,101,55,.22);padding:28px 27px 24px;box-shadow:0 14px 34px rgba(42,34,19,.08),inset 0 1px 0 rgba(255,255,255,.72)}
+.chris-news-card::after{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,rgba(139,106,25,.85),rgba(232,208,138,.18),transparent);pointer-events:none}
+.chris-news-card:hover{transform:translateY(-3px);box-shadow:0 20px 42px rgba(42,34,19,.13)}
+.chris-news-card-top{gap:8px;flex-wrap:wrap;font-size:.58rem;letter-spacing:.12em}
+.chris-news-card-kicker{margin-top:26px;margin-bottom:12px;font-size:.88rem;letter-spacing:.035em}
+.chris-news-card h3{font-size:clamp(1.55rem,2.25vw,2rem);line-height:1.32;letter-spacing:-.035em;overflow-wrap:anywhere}
+.chris-news-summary{font-size:.88rem;line-height:1.78;overflow-wrap:anywhere}
+.chris-news-points{gap:10px}
+.chris-news-point{font-size:.75rem;line-height:1.62;overflow-wrap:anywhere}
+.chris-news-card-footer{margin-top:auto;padding-top:16px}
+.chris-news-source{overflow-wrap:anywhere;letter-spacing:.035em}
+html[data-theme="dark"] #chris-news{background:linear-gradient(180deg,#09090b 0%,#111014 55%,#08080a 100%)}
+html[data-theme="dark"] #chris-news .chris-news-card{border-color:rgba(232,208,138,.19);box-shadow:0 18px 40px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.035)}
+html[data-theme="dark"] #chris-news .chris-news-card::after{background:linear-gradient(90deg,rgba(232,208,138,.72),rgba(201,168,76,.12),transparent)}
+@media(max-width:900px){.chris-news-card{min-height:560px;padding:24px 22px 21px}.chris-news-card h3{font-size:clamp(1.35rem,3vw,1.8rem)}}
+@media(max-width:700px){.chris-news-card{aspect-ratio:auto;min-height:500px;padding:22px 18px 20px}.chris-news-card-kicker{margin-top:19px}.chris-news-card h3{font-size:clamp(1.2rem,4.2vw,1.55rem)}.chris-news-summary{font-size:.74rem;line-height:1.68}.chris-news-point{font-size:.62rem;line-height:1.55}}
+@media(max-width:430px){.chris-news-card{min-height:0;padding:25px 22px 22px}.chris-news-card h3{font-size:1.55rem}.chris-news-summary{font-size:.82rem}.chris-news-point{font-size:.68rem}}
+@media(prefers-reduced-motion:reduce){.chris-news-card{transition:none}}
+
+/* CHRIS'S NEWS — refined metal, foil and engraved ornament */
+#chris-news{background:linear-gradient(135deg,#e8e3d8 0%,#f8f5ed 42%,#e6dfd1 100%)}
+.chris-news-title{color:#29251e;text-shadow:0 1px 0 rgba(255,255,255,.55)}
+#chris-news .chris-news-card{
+  border:1px solid rgba(124,99,51,.38);
+  border-radius:15px;
+  box-shadow:0 16px 36px rgba(43,34,20,.12),inset 0 1px 0 rgba(255,255,255,.8),inset 0 0 0 4px rgba(255,255,255,.14);
+  background-size:cover;
+}
+#chris-news .chris-news-card::before{
+  inset:8px;
+  border:1px solid rgba(255,255,255,.48);
+  border-radius:9px;
+  opacity:1;
+  background-size:cover;
+}
+#chris-news .chris-news-card::after{
+  top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,#8d6826 0%,#f2df9c 20%,#b58a3d 43%,#fff1bf 58%,#9b742c 80%,#e4c879 100%);
+  box-shadow:0 1px 0 rgba(255,255,255,.45);
+}
+/* Brushed silver / platinum */
+#chris-news .chris-news-card--world{
+  background-color:#dce2e7;
+  background-image:linear-gradient(132deg,rgba(255,255,255,.92) 0%,rgba(215,222,229,.92) 24%,rgba(248,249,249,.96) 43%,rgba(183,195,205,.9) 68%,rgba(235,239,242,.98) 100%),repeating-linear-gradient(174deg,rgba(90,107,122,.045) 0 1px,transparent 1px 4px);
+}
+#chris-news .chris-news-card--world::before{
+  background-image:radial-gradient(ellipse at 100% 0%,rgba(92,116,137,.20),transparent 52%),radial-gradient(circle at 100% 0%,transparent 0 42px,rgba(87,109,128,.28) 43px 44px,transparent 45px 60px,rgba(87,109,128,.18) 61px 62px,transparent 63px),repeating-linear-gradient(135deg,transparent 0 24px,rgba(80,98,115,.055) 24px 25px);
+}
+/* Deep gunmetal with restrained copper etching */
+#chris-news .chris-news-card--security{
+  background-color:#34383b;
+  background-image:linear-gradient(135deg,#555a5d 0%,#292e32 30%,#41474b 52%,#22272a 75%,#505457 100%),repeating-linear-gradient(0deg,rgba(255,255,255,.035) 0 1px,transparent 1px 4px);
+  border-color:rgba(195,151,105,.62);
+}
+#chris-news .chris-news-card--security::before{
+  border-color:rgba(218,179,137,.35);
+  background-image:radial-gradient(circle at 100% 0%,transparent 0 38px,rgba(222,174,126,.24) 39px 40px,transparent 41px 56px,rgba(222,174,126,.15) 57px 58px,transparent 59px),repeating-linear-gradient(135deg,transparent 0 29px,rgba(255,255,255,.045) 29px 30px);
+}
+#chris-news .chris-news-card--security .chris-news-card-top,
+#chris-news .chris-news-card--security .chris-news-card-kicker{color:#e7c58c}
+#chris-news .chris-news-card--security .chris-news-card-date,
+#chris-news .chris-news-card--security h3{color:#fff8eb}
+#chris-news .chris-news-card--security .chris-news-summary,
+#chris-news .chris-news-card--security .chris-news-point{color:rgba(255,248,235,.82)}
+#chris-news .chris-news-card--security .chris-news-source,
+#chris-news .chris-news-card--security .chris-news-note{color:rgba(255,248,235,.64)}
+#chris-news .chris-news-card--security .chris-news-points,
+#chris-news .chris-news-card--security .chris-news-card-footer{border-color:rgba(255,228,192,.2)}
+/* Champagne gold / brushed brass */
+#chris-news .chris-news-card--economy{
+  background-color:#d8c18a;
+  background-image:linear-gradient(125deg,#f8edc8 0%,#d8bd78 17%,#f4e4ae 30%,#b99243 48%,#ead49a 61%,#c6a65c 77%,#f5e8bd 100%),repeating-linear-gradient(174deg,rgba(105,75,24,.08) 0 1px,transparent 1px 4px);
+  border-color:rgba(151,111,37,.58);
+}
+#chris-news .chris-news-card--economy::before{
+  border-color:rgba(255,255,255,.5);
+  background-image:radial-gradient(circle at 100% 0%,transparent 0 42px,rgba(126,91,30,.26) 43px 44px,transparent 45px 61px,rgba(126,91,30,.17) 62px 63px,transparent 64px),linear-gradient(145deg,transparent 0 48%,rgba(255,255,255,.16) 48.2% 48.8%,transparent 49%),repeating-linear-gradient(90deg,transparent 0 28px,rgba(115,84,28,.045) 28px 29px);
+}
+/* Cool platinum / anodized titanium */
+#chris-news .chris-news-card--science{
+  background-color:#c8dce2;
+  background-image:linear-gradient(132deg,#f4fbfc 0%,#bfd7df 24%,#edf5f7 42%,#9ebdc9 66%,#e7f0f2 100%),repeating-linear-gradient(174deg,rgba(47,91,109,.055) 0 1px,transparent 1px 4px);
+  border-color:rgba(69,116,133,.42);
+}
+#chris-news .chris-news-card--science::before{
+  border-color:rgba(255,255,255,.62);
+  background-image:radial-gradient(circle at 100% 0%,rgba(49,111,137,.14) 0 3px,transparent 4px),radial-gradient(circle at 100% 0%,transparent 0 31px,rgba(49,111,137,.28) 32px 33px,transparent 34px 52px,rgba(49,111,137,.17) 53px 54px,transparent 55px),linear-gradient(45deg,transparent 0 72%,rgba(255,255,255,.18) 72.2% 72.8%,transparent 73%);
+}
+/* Satin bronze / mineral green */
+#chris-news .chris-news-card--climate{
+  background-color:#c6d0bd;
+  background-image:linear-gradient(132deg,#eef1df 0%,#c2cdb8 24%,#e2e7d5 43%,#a7b79f 67%,#e4e9da 100%),repeating-linear-gradient(174deg,rgba(61,91,63,.05) 0 1px,transparent 1px 4px);
+  border-color:rgba(80,111,76,.45);
+}
+#chris-news .chris-news-card--climate::before{
+  border-color:rgba(255,255,255,.52);
+  background-image:radial-gradient(ellipse at 100% 0%,rgba(63,105,70,.18),transparent 50%),repeating-radial-gradient(ellipse at 100% 0%,transparent 0 22px,rgba(67,105,72,.15) 23px 24px,transparent 25px 40px),linear-gradient(125deg,transparent 0 68%,rgba(255,255,255,.2) 68.2% 68.8%,transparent 69%);
+}
+/* Rose champagne / pearl */
+#chris-news .chris-news-card--society{
+  background-color:#e5d5d9;
+  background-image:linear-gradient(132deg,#fff4f1 0%,#e2cbd1 25%,#f7e9e8 44%,#cbaeb8 68%,#f5e6e4 100%),repeating-linear-gradient(174deg,rgba(116,70,83,.045) 0 1px,transparent 1px 4px);
+  border-color:rgba(143,94,107,.4);
+}
+#chris-news .chris-news-card--society::before{
+  border-color:rgba(255,255,255,.58);
+  background-image:radial-gradient(circle at 100% 0%,transparent 0 36px,rgba(137,81,102,.25) 37px 38px,transparent 39px 58px,rgba(137,81,102,.15) 59px 60px,transparent 61px),radial-gradient(ellipse at 100% 0%,rgba(161,101,122,.13),transparent 48%),repeating-linear-gradient(135deg,transparent 0 30px,rgba(137,81,102,.045) 30px 31px);
+}
+/* Keep all type legible on light metal finishes */
+#chris-news .chris-news-card--world .chris-news-card-top,
+#chris-news .chris-news-card--world .chris-news-card-kicker,
+#chris-news .chris-news-card--economy .chris-news-card-top,
+#chris-news .chris-news-card--economy .chris-news-card-kicker,
+#chris-news .chris-news-card--science .chris-news-card-top,
+#chris-news .chris-news-card--science .chris-news-card-kicker,
+#chris-news .chris-news-card--climate .chris-news-card-top,
+#chris-news .chris-news-card--climate .chris-news-card-kicker,
+#chris-news .chris-news-card--society .chris-news-card-top,
+#chris-news .chris-news-card--society .chris-news-card-kicker{color:#72531c}
+#chris-news .chris-news-card--world h3,
+#chris-news .chris-news-card--economy h3,
+#chris-news .chris-news-card--science h3,
+#chris-news .chris-news-card--climate h3,
+#chris-news .chris-news-card--society h3{color:#26241f}
+#chris-news .chris-news-card--world .chris-news-summary,
+#chris-news .chris-news-card--economy .chris-news-summary,
+#chris-news .chris-news-card--science .chris-news-summary,
+#chris-news .chris-news-card--climate .chris-news-summary,
+#chris-news .chris-news-card--society .chris-news-summary,
+#chris-news .chris-news-card--world .chris-news-point,
+#chris-news .chris-news-card--economy .chris-news-point,
+#chris-news .chris-news-card--science .chris-news-point,
+#chris-news .chris-news-card--climate .chris-news-point,
+#chris-news .chris-news-card--society .chris-news-point{color:#48443c}
+html[data-theme="dark"] #chris-news{background:linear-gradient(135deg,#09090b 0%,#15130f 48%,#08080a 100%)}
+html[data-theme="dark"] #chris-news .chris-news-card--world{background-image:linear-gradient(132deg,#47525c 0%,#252d34 28%,#3d4852 48%,#1e272f 70%,#414c56 100%),repeating-linear-gradient(174deg,rgba(255,255,255,.035) 0 1px,transparent 1px 4px)}
+html[data-theme="dark"] #chris-news .chris-news-card--economy{background-image:linear-gradient(125deg,#766238 0%,#4d3e21 20%,#8b713d 43%,#3f321b 66%,#6b572e 100%),repeating-linear-gradient(174deg,rgba(255,255,255,.04) 0 1px,transparent 1px 4px)}
+html[data-theme="dark"] #chris-news .chris-news-card--science{background-image:linear-gradient(132deg,#344e58 0%,#1c3038 28%,#3b5660 48%,#1c2c34 72%,#3a515a 100%),repeating-linear-gradient(174deg,rgba(255,255,255,.035) 0 1px,transparent 1px 4px)}
+html[data-theme="dark"] #chris-news .chris-news-card--climate{background-image:linear-gradient(132deg,#3c5140 0%,#1e3023 28%,#415743 48%,#1d2d22 72%,#344b39 100%),repeating-linear-gradient(174deg,rgba(255,255,255,.035) 0 1px,transparent 1px 4px)}
+html[data-theme="dark"] #chris-news .chris-news-card--society{background-image:linear-gradient(132deg,#62434e 0%,#34242b 28%,#634652 48%,#302128 72%,#563944 100%),repeating-linear-gradient(174deg,rgba(255,255,255,.035) 0 1px,transparent 1px 4px)}
+html[data-theme="dark"] #chris-news .chris-news-card--world h3,
+html[data-theme="dark"] #chris-news .chris-news-card--economy h3,
+html[data-theme="dark"] #chris-news .chris-news-card--science h3,
+html[data-theme="dark"] #chris-news .chris-news-card--climate h3,
+html[data-theme="dark"] #chris-news .chris-news-card--society h3{color:#fff8e9}
+html[data-theme="dark"] #chris-news .chris-news-card--world .chris-news-summary,
+html[data-theme="dark"] #chris-news .chris-news-card--economy .chris-news-summary,
+html[data-theme="dark"] #chris-news .chris-news-card--science .chris-news-summary,
+html[data-theme="dark"] #chris-news .chris-news-card--climate .chris-news-summary,
+html[data-theme="dark"] #chris-news .chris-news-card--society .chris-news-summary,
+html[data-theme="dark"] #chris-news .chris-news-card--world .chris-news-point,
+html[data-theme="dark"] #chris-news .chris-news-card--economy .chris-news-point,
+html[data-theme="dark"] #chris-news .chris-news-card--science .chris-news-point,
+html[data-theme="dark"] #chris-news .chris-news-card--climate .chris-news-point,
+html[data-theme="dark"] #chris-news .chris-news-card--society .chris-news-point{color:rgba(255,248,233,.82)}
+/* Chris's News compact, responsive save/share controls */
+.chris-news-share-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;max-width:760px}
+.chris-news-share{min-height:42px;padding:10px 14px;white-space:nowrap}
+.chris-news-share:disabled{opacity:.55;cursor:wait}
+@media(max-width:600px){.chris-news-share-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.chris-news-share{width:100%;padding:11px 8px;font-size:.68rem;letter-spacing:0}.chris-news-share-icon{font-size:1rem}}
 </style></head>
 <body>
 <header id="site-nav"><a class="home-static-brand" href="/" aria-label="Chris LEE.PAPA Home"><span>CHRIS LEE.PAPA</span><small>CREATIVE ARCHIVE</small></a></header>
@@ -93,7 +281,7 @@ html[data-theme="dark"] .chris-news-title{color:#f8f3e8}html[data-theme="dark"] 
 </section>
 <script>
 document.addEventListener('DOMContentLoaded',()=>{
- const root=document.getElementById('chris-news'),share=document.getElementById('chris-news-share'),save=document.getElementById('chris-news-image');
+ const root=document.getElementById('chris-news'),share=document.getElementById('chris-news-share'),save=document.getElementById('chris-news-image'),copyLink=document.getElementById('chris-news-copy-link'),vertical=document.getElementById('chris-news-vertical');
  if(!root||!share||!save)return;
  const lang=()=>document.documentElement.lang==='en'?'en':'ko';
  const txt=(el)=>el?.getAttribute('data-'+lang())||el?.textContent.trim()||'';
@@ -110,7 +298,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   lines.forEach((v,i)=>ctx.fillText(v,x,y+i*line));return y+lines.length*line;
  };
  const makeImage=async()=>{
-  const data=cards(), W=2160, cardW=680, cardH=900, gap=40, header=280, pad=80, H=header+pad+cardH*2+gap+pad;
+  const data=cards(), W=2280, cardW=680, cardH=1420, gap=40, header=280, pad=80, H=header+pad+cardH*2+gap+pad;
   const cv=document.createElement('canvas');cv.width=W;cv.height=H;const ctx=cv.getContext('2d');ctx.textBaseline='top';
   ctx.fillStyle='#f5f1e8';ctx.fillRect(0,0,W,H);
   ctx.fillStyle='#17130f';ctx.font='700 72px Arial';ctx.fillText("Chris's News",pad,62);
@@ -123,35 +311,67 @@ document.addEventListener('DOMContentLoaded',()=>{
    ctx.fillStyle='#777067';ctx.font='500 17px Arial';ctx.fillText(d.date,x+cardW-180,y+35);
    let ty=y+88;
    ctx.fillStyle='#8b6a19';ctx.font='700 25px Arial';ty=wrap(ctx,d.kicker,x+34,ty,cardW-68,32,32,2)+18;
-   ctx.fillStyle='#29231d';ctx.font='700 38px Arial';ty=wrap(ctx,d.title,x+34,ty,cardW-68,49,49,4)+22;
+   ctx.fillStyle='#29231d';ctx.font='700 38px Arial';ty=wrap(ctx,d.title,x+34,ty,cardW-68,47,47,6)+20;
    ctx.fillStyle='#c9a84c';ctx.fillRect(x+34,ty,cardW-68,3);ty+=28;
-   ctx.fillStyle='#4b463f';ctx.font='400 24px Arial';ty=wrap(ctx,d.summary,x+34,ty,cardW-68,35,35,7)+30;
+   ctx.fillStyle='#4b463f';ctx.font='400 24px Arial';ty=wrap(ctx,d.summary,x+34,ty,cardW-68,33,33,7)+26;
    ctx.fillStyle='#29231d';ctx.font='700 22px Arial';ctx.fillText(lang()==='en'?'KEY POINTS':'핵심 포인트',x+34,ty);ty+=42;
-   d.points.forEach(p=>{ctx.fillStyle='#c9a84c';ctx.beginPath();ctx.arc(x+42,ty+12,4,0,Math.PI*2);ctx.fill();ctx.fillStyle='#5b554d';ctx.font='400 21px Arial';ty=wrap(ctx,p,x+58,ty,cardW-92,31,31,3)+17});
+   d.points.forEach(p=>{ctx.fillStyle='#c9a84c';ctx.beginPath();ctx.arc(x+42,ty+12,4,0,Math.PI*2);ctx.fill();ctx.fillStyle='#5b554d';ctx.font='400 21px Arial';ty=wrap(ctx,p,x+58,ty,cardW-92,29,29,3)+14});
    const sourceText=d.source||'';
    ctx.fillStyle='#817b72';ctx.font='600 16px Arial';
-   const sourceY=Math.min(Math.max(ty+22,y+cardH-70),y+cardH-48);
+   const sourceY=Math.max(ty+20,y+cardH-64);
    wrap(ctx,sourceText,x+34,sourceY,cardW-68,20,20,2);
   });
   return new Promise((resolve,reject)=>cv.toBlob(b=>b?resolve(b):reject(new Error('PNG failed')),'image/png'));
  };
- const download=b=>{const u=URL.createObjectURL(b),a=document.createElement('a'),d=new Date().toISOString().slice(0,10);a.href=u;a.download='chris-news-'+d+'.png';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1000)};
+ const download=(b,variant='')=>{const u=URL.createObjectURL(b),a=document.createElement('a'),d=new Date().toISOString().slice(0,10);a.href=u;a.download='chris-news-'+(variant?variant+'-':'')+d+'.png';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1000)};
+ const makeVerticalImage=async()=>{
+  const data=cards(),W=1080,H=1920,pad=48,header=220,gap=22,cols=2,cardW=481,cardH=500;
+  const cv=document.createElement('canvas');cv.width=W;cv.height=H;const ctx=cv.getContext('2d');ctx.textBaseline='top';
+  const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#f7f4ed');bg.addColorStop(1,'#e8e0d0');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#8b6a19';ctx.fillRect(pad,48,76,5);
+  ctx.fillStyle='#17130f';ctx.font='700 60px Arial';ctx.fillText("Chris's News",pad,75);
+  ctx.fillStyle='#8b6a19';ctx.font='600 24px Arial';ctx.fillText(data[0]?.date||'',pad,151);
+  ctx.fillStyle='#5b554d';ctx.font='400 19px Arial';ctx.fillText(lang()==='en'?'SIX STORIES · ONE DAILY BRIEF':'오늘의 주요 뉴스 6개 · DAILY BRIEF',pad,190);
+  data.forEach((d,i)=>{
+   const col=i%cols,row=Math.floor(i/cols),x=pad+col*(cardW+gap),y=header+row*(cardH+gap);
+   const grad=ctx.createLinearGradient(x,y,x+cardW,y+cardH);grad.addColorStop(0,'#fffefa');grad.addColorStop(1,i%3===1?'#f2e8d0':'#e9edf0');
+   ctx.fillStyle=grad;ctx.fillRect(x,y,cardW,cardH);ctx.strokeStyle='rgba(139,106,25,.42)';ctx.lineWidth=2;ctx.strokeRect(x+1,y+1,cardW-2,cardH-2);
+   ctx.strokeStyle='rgba(139,106,25,.18)';ctx.strokeRect(x+10,y+10,cardW-20,cardH-20);
+   ctx.fillStyle='#8b6a19';ctx.font='700 16px Arial';ctx.fillText('STORY '+String(i+1).padStart(2,'0'),x+24,y+26);
+   ctx.fillStyle='#777067';ctx.font='500 13px Arial';ctx.fillText((d.date||'').slice(0,26),x+24,y+52);
+   let ty=y+82;
+   ctx.fillStyle='#8b6a19';ctx.font='700 17px Arial';ty=wrap(ctx,d.kicker,x+24,ty,cardW-48,22,22,1)+10;
+   ctx.fillStyle='#29231d';ctx.font='700 25px Arial';ty=wrap(ctx,d.title,x+24,ty,cardW-48,31,31,3)+12;
+   ctx.fillStyle='#c9a84c';ctx.fillRect(x+24,ty,cardW-48,2);ty+=14;
+   ctx.fillStyle='#4b463f';ctx.font='400 16px Arial';ty=wrap(ctx,d.summary,x+24,ty,cardW-48,21,21,4)+12;
+   ctx.fillStyle='#29231d';ctx.font='700 14px Arial';ctx.fillText(lang()==='en'?'KEY POINTS':'핵심 포인트',x+24,ty);ty+=25;
+   d.points.slice(0,2).forEach(p=>{ctx.fillStyle='#8b6a19';ctx.beginPath();ctx.arc(x+29,ty+7,3,0,Math.PI*2);ctx.fill();ctx.fillStyle='#5b554d';ctx.font='400 13px Arial';ty=wrap(ctx,p,x+40,ty,cardW-64,17,17,2)+7});
+   ctx.fillStyle='#817b72';ctx.font='600 12px Arial';wrap(ctx,d.source||'',x+24,y+cardH-29,cardW-48,15,15,1);
+  });
+  ctx.fillStyle='#8b6a19';ctx.fillRect(pad,H-62,W-pad*2,2);
+  ctx.fillStyle='#6b665e';ctx.font='400 14px Arial';ctx.fillText('CHRIS LEE.PAPA  ·  THE CREATIVE ARCHIVE',pad,H-48);
+  return new Promise((resolve,reject)=>cv.toBlob(b=>b?resolve(b):reject(new Error('PNG failed')),'image/png'));
+ };
+
  const shareImage=async()=>{
   const blob=await makeImage(),file=new File([blob],'chris-news-'+new Date().toISOString().slice(0,10)+'.png',{type:'image/png'});
-  if(navigator.share&&navigator.canShare?.({files:[file]})){await navigator.share({title:"Chris's News",text:lang()==='en'?"Today's Chris's News":"오늘의 Chris's News",files:[file]});}
+  if(navigator.share&&navigator.canShare?.({files:[file]})){await navigator.share({title:"Chris's News",text:(lang()==='en'?"Today's Chris's News":"오늘의 Chris's News")+' '+location.origin+location.pathname+'#chris-news',files:[file]});}
   else if(navigator.clipboard&&window.ClipboardItem){await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);alert(lang()==='en'?'The combined image was copied to the clipboard.':'6장 전체가 하나의 이미지로 클립보드에 복사되었습니다.')}
   else download(blob);
  };
  share.addEventListener('click',async()=>{share.disabled=true;try{await shareImage()}catch(e){if(e.name!=='AbortError'){console.error(e);try{download(await makeImage())}catch(x){alert(lang()==='en'?'Sharing failed. Please try again.':'공유에 실패했습니다. 다시 시도해주세요.')}}}finally{share.disabled=false}});
+ if(copyLink)copyLink.addEventListener('click',async()=>{copyLink.disabled=true;try{const url=location.origin+location.pathname+'#chris-news';await navigator.clipboard.writeText(url);alert(lang()==='en'?'Chris’s News link copied.':'Chris’s News 링크를 복사했습니다.')}catch(e){const url=location.origin+location.pathname+'#chris-news';prompt(lang()==='en'?'Copy this link:':'아래 링크를 복사해 주세요.',url)}finally{copyLink.disabled=false}});
+ if(vertical)vertical.addEventListener('click',async()=>{vertical.disabled=true;try{download(await makeVerticalImage(),'vertical')}catch(e){console.error(e);alert(lang()==='en'?'Portrait image could not be created. Please try again.':'세로형 이미지 생성에 실패했습니다. 다시 시도해 주세요.')}finally{vertical.disabled=false}});
+
  save.addEventListener('click',async()=>{save.disabled=true;try{download(await makeImage())}catch(e){console.error(e);alert(lang()==='en'?'Saving failed. Please try again.':'이미지 저장에 실패했습니다. 다시 시도해주세요.')}finally{save.disabled=false}});
- const labels=()=>{const en=lang()==='en';share.querySelector('.chris-news-share-label').textContent=en?"Share image":'이미지 공유';save.querySelector('.chris-news-share-label').textContent=en?'Save image':'이미지 저장'};
+ const labels=()=>{const en=lang()==='en';share.querySelector('.chris-news-share-label').textContent=en?'Share':'공유하기';save.querySelector('.chris-news-share-label').textContent=en?'Save image':'이미지 저장';if(copyLink)copyLink.querySelector('.chris-news-share-label').textContent=en?'Copy news link':'뉴스 링크 복사';if(vertical)vertical.querySelector('.chris-news-share-label').textContent=en?'Portrait image':'세로형 이미지'};
  labels();new MutationObserver(labels).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 });
 </script>
 <section id="chris-news" aria-labelledby="chris-news-title">
   <div class="chris-news-inner">
     <div class="chris-news-head">
-      <div><p class="chris-news-kicker" data-ko="세계 · 최신 · 큐레이션" data-en="WORLD · CURRENT · CURATED">세계 · 최신 · 큐레이션</p><h2 id="chris-news-title" class="chris-news-title">Chris's News</h2><div class="chris-news-share-actions"><button type="button" class="chris-news-share" id="chris-news-share" data-ko="전체 카드뉴스 공유" data-en="Share today's cards"><span class="chris-news-share-icon" aria-hidden="true">↗</span><span class="chris-news-share-label">전체 카드뉴스 공유</span></button><button type="button" class="chris-news-share chris-news-image-save" id="chris-news-image" data-ko="이미지 저장" data-en="Save image"><span class="chris-news-share-icon" aria-hidden="true">↓</span><span class="chris-news-share-label">이미지 저장</span></button></div></div>
+      <div><p class="chris-news-kicker" data-ko="세계 · 최신 · 큐레이션" data-en="WORLD · CURRENT · CURATED">세계 · 최신 · 큐레이션</p><h2 id="chris-news-title" class="chris-news-title">Chris's News</h2><div class="chris-news-share-actions" aria-label="Chris’s News 저장 및 공유"><button type="button" class="chris-news-share" id="chris-news-image" data-ko="이미지 저장" data-en="Save image"><span class="chris-news-share-icon" aria-hidden="true">↓</span><span class="chris-news-share-label">이미지 저장</span></button><button type="button" class="chris-news-share" id="chris-news-share" data-ko="공유하기" data-en="Share"><span class="chris-news-share-icon" aria-hidden="true">↗</span><span class="chris-news-share-label">공유하기</span></button><button type="button" class="chris-news-share" id="chris-news-copy-link" data-ko="뉴스 링크 복사" data-en="Copy news link"><span class="chris-news-share-icon" aria-hidden="true">⧉</span><span class="chris-news-share-label">뉴스 링크 복사</span></button><button type="button" class="chris-news-share" id="chris-news-vertical" data-ko="세로형 이미지" data-en="Portrait image"><span class="chris-news-share-icon" aria-hidden="true">▯</span><span class="chris-news-share-label">세로형 이미지</span></button></div></div>
       <p class="chris-news-desc" data-ko="전날 전 세계 주요 언론의 보도를 교차 확인해 6개 분야에서 한 가지씩 골라 핵심과 맥락을 정리합니다." data-en="We cross-check major international reports from the previous day and select one story from each of six categories, with context and key points.">전날 전 세계 주요 언론의 보도를 교차 확인해 6개 분야에서 한 가지씩 골라 핵심과 맥락을 정리합니다.</p>
     </div>
     <div class="chris-news-grid" aria-live="polite"></div>

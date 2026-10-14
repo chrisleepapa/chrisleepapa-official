@@ -32,9 +32,9 @@ const categories = [
     key: 'science', ko: '과학 · 기술', en: 'SCIENCE · TECHNOLOGY',
     query: 'science technology AI research',
     feeds: [
-      { name: 'BBC News', url: 'https://feeds.bbci.co.uk/news/science_and_environment/rss.xml' },
-      { name: 'The Guardian', url: 'https://www.theguardian.com/science/rss' },
-      { name: 'NPR', url: 'https://feeds.npr.org/1007/rss.xml' }
+      { name: 'Science News', url: 'https://www.sciencenews.org/feed' },
+      { name: 'ScienceDaily · Top Science', url: 'https://www.sciencedaily.com/rss/top/science.xml', rssOnly: true },
+      { name: 'ScienceDaily · Top Technology', url: 'https://www.sciencedaily.com/rss/top/technology.xml', rssOnly: true }
     ]
   },
   {
@@ -185,9 +185,9 @@ function sentencePoints(text) {
     .map(s => s.length > 220 ? s.slice(0, 217) + '…' : s);
 }
 
-async function translateToEnglish(value) {
+async function translateText(value, target) {
   try {
-    const url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=ko&tl=en&dt=t&q=' + encodeURIComponent(value.slice(0, 4500));
+    const url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=' + target + '&dt=t&q=' + encodeURIComponent(value.slice(0, 4500));
     const response = await fetch(url, { signal: AbortSignal.timeout(12000) });
     if (!response.ok) return value;
     const payload = await response.json();
@@ -196,7 +196,7 @@ async function translateToEnglish(value) {
     return value;
   }
 }
-async function fetchCategory(category) {
+async function fetchCategory(category, globallySeenLinks = new Set(), globallySeenTitles = []) {
   // Prefer direct publisher RSS feeds. Aggregator feeds are deliberately not used:
   // they often leave the card linked to a search/result page rather than the actual report.
   const nowMs = Date.now();
@@ -234,16 +234,22 @@ async function fetchCategory(category) {
       } catch { continue; }
       if (itemUrl.hostname === 'news.google.com' || itemUrl.hostname.includes('bing.com')) continue;
       const canonicalLink = itemUrl.href;
-      if (seenLinks.has(canonicalLink)) continue;
+      if (seenLinks.has(canonicalLink) || globallySeenLinks.has(canonicalLink)) continue;
       seenLinks.add(canonicalLink);
 
       const rssText = cleanHtml(item.description || '');
-      const article = await fetchArticleDetails(canonicalLink);
+      // ScienceDaily permits RSS headlines and summaries with attribution and a link,
+      // but not republishing full article text; keep those entries RSS-only.
+      const article = feed.rssOnly
+        ? { link: canonicalLink, details: [], articleTitle: '' }
+        : await fetchArticleDetails(canonicalLink);
       const detailText = (article.details || []).join(' ').trim();
       const articleTitle = article.articleTitle || '';
       if (articleTitle && titleSimilarity(item.title, articleTitle) < 0.25) continue;
+      // Keep the six-card feed editorially distinct: never repeat the same or near-identical headline across categories.
+      if (globallySeenTitles.some(title => titleSimilarity(item.title, title) >= 0.75)) continue;
 
-      const summaryCandidate = detailText.length >= 100 && !isGenericNewsBoilerplate(detailText)
+      const summaryCandidate = !feed.rssOnly && detailText.length >= 100 && !isGenericNewsBoilerplate(detailText)
         ? detailText
         : rssText;
       const normalizedSummary = normalizedTitle(summaryCandidate);
@@ -257,16 +263,19 @@ async function fetchCategory(category) {
       const summary = summaryCandidate.slice(0, 1100).trim();
       const points = sentencePoints(summary);
       if (points.length === 0 && summary.length < 180) continue;
-      const titleEn = await translateToEnglish(item.title);
-      const summaryEn = await translateToEnglish(summary);
-      const pointsEn = await Promise.all(points.map(translateToEnglish));
+      const safePoints = points.length ? points : [summary.slice(0, 180)];
+      const [titleKo, summaryKo, pointsKo] = await Promise.all([
+        translateText(item.title, 'ko'),
+        translateText(summary, 'ko'),
+        Promise.all(safePoints.map(point => translateText(point, 'ko')))
+      ]);
       return {
         category: category.key, categoryKo: category.ko, categoryEn: category.en,
-        title: item.title, titleEn,
-        summary, summaryEn: summaryEn || summary,
-        points: points.length ? points : [summary.slice(0, 180)],
-        pointsKo: points.length ? points : [summary.slice(0, 180)],
-        pointsEn: pointsEn.length ? pointsEn : [summary.slice(0, 180)],
+        title: item.title, titleEn: item.title, titleKo: titleKo || item.title,
+        summary, summaryEn: summary, summaryKo: summaryKo || summary,
+        points: safePoints,
+        pointsKo: pointsKo.length ? pointsKo : safePoints,
+        pointsEn: safePoints,
         source, link: canonicalLink, publishedAt: item.pubDate,
         summarySource: detailText.length >= 100 ? 'publisher article page' : feed.name + ' RSS excerpt'
       };
@@ -276,9 +285,22 @@ async function fetchCategory(category) {
   console.error('News source diagnostics for ' + category.key + ': ' + failures.join(' | '));
   throw new Error('No recent, substantial, direct-publisher article passed validation for ' + category.key + '.');
 }
-const results = await Promise.allSettled(categories.map(fetchCategory));
-const cards = results.map((r, i) => r.status === 'fulfilled' ? r.value : null);
-const failed = results.map((r, i) => r.status === 'rejected' ? { category: categories[i].key, error: String(r.reason) } : null).filter(Boolean);
+const cards = [];
+const globallySeenLinks = new Set();
+const globallySeenTitles = [];
+const failed = [];
+// Run in category order so each selected article can be reserved before the next category searches.
+for (const category of categories) {
+  try {
+    const card = await fetchCategory(category, globallySeenLinks, globallySeenTitles);
+    cards.push(card);
+    globallySeenLinks.add(card.link);
+    globallySeenTitles.push(card.title);
+  } catch (error) {
+    cards.push(null);
+    failed.push({ category: category.key, error: String(error) });
+  }
+}
 if (failed.length) console.error('Category fallback diagnostics:', JSON.stringify(failed));
 if (cards.some(x => !x)) {
   // Never silently publish old or fabricated content. Leave the existing JSON untouched
@@ -289,7 +311,7 @@ const now = new Date();
 const dateParts = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(now);
 const dateMap = Object.fromEntries(dateParts.map(part => [part.type, part.value]));
 const date = `${dateMap.year}-${dateMap.month}-${dateMap.day}`;
-const payload = { date, updatedAt: now.toISOString(), sourceNote: 'Direct publisher RSS feeds from BBC News, The Guardian, Al Jazeera English, NPR and Yonhap. Only direct article links with substantial summaries published in the last 72 hours are accepted; incomplete refreshes do not overwrite existing data.', cards };
+const payload = { date, updatedAt: now.toISOString(), sourceNote: 'Direct publisher feeds from Science News, ScienceDaily, BBC News, The Guardian, Al Jazeera English, NPR and Yonhap. ScienceDaily entries use attributed RSS headlines and summaries with links; only direct article links published in the last 72 hours are accepted, and incomplete refreshes do not overwrite existing data.', cards };
 await mkdir('data', { recursive: true });
 await writeFile('data/chris-news.json', JSON.stringify(payload, null, 2) + '\n');
 console.log(`Prepared ${cards.length} news cards for ${date}.`);

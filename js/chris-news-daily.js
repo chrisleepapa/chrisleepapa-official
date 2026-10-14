@@ -37,7 +37,8 @@
     const lang = document.documentElement.lang === 'en' ? 'en' : 'ko';
     const frag = document.createDocumentFragment();
     payload.cards.forEach((item, index) => {
-      const card = make('article', 'chris-news-card');
+      const card = make('article', 'chris-news-card chris-news-card--' + (item.category || 'default'));
+      card.dataset.category = item.category || 'default';
       const top = make('div', 'chris-news-card-top');
       top.append(make('span', '', 'CARD ' + String(index + 1).padStart(2, '0')));
       top.append(make('span', 'chris-news-card-date', articleDateLabel(item.publishedAt, payload.date, lang)));

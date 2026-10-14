@@ -263,6 +263,11 @@ html[data-theme="dark"] #chris-news .chris-news-card--economy .chris-news-point,
 html[data-theme="dark"] #chris-news .chris-news-card--science .chris-news-point,
 html[data-theme="dark"] #chris-news .chris-news-card--climate .chris-news-point,
 html[data-theme="dark"] #chris-news .chris-news-card--society .chris-news-point{color:rgba(255,248,233,.82)}
+/* Chris's News compact, responsive save/share controls */
+.chris-news-share-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;max-width:760px}
+.chris-news-share{min-height:42px;padding:10px 14px;white-space:nowrap}
+.chris-news-share:disabled{opacity:.55;cursor:wait}
+@media(max-width:600px){.chris-news-share-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.chris-news-share{width:100%;padding:11px 8px;font-size:.68rem;letter-spacing:0}.chris-news-share-icon{font-size:1rem}}
 </style></head>
 <body>
 <header id="site-nav"><a class="home-static-brand" href="/" aria-label="Chris LEE.PAPA Home"><span>CHRIS LEE.PAPA</span><small>CREATIVE ARCHIVE</small></a></header>
@@ -276,7 +281,7 @@ html[data-theme="dark"] #chris-news .chris-news-card--society .chris-news-point{
 </section>
 <script>
 document.addEventListener('DOMContentLoaded',()=>{
- const root=document.getElementById('chris-news'),share=document.getElementById('chris-news-share'),save=document.getElementById('chris-news-image');
+ const root=document.getElementById('chris-news'),share=document.getElementById('chris-news-share'),save=document.getElementById('chris-news-image'),copyLink=document.getElementById('chris-news-copy-link'),vertical=document.getElementById('chris-news-vertical');
  if(!root||!share||!save)return;
  const lang=()=>document.documentElement.lang==='en'?'en':'ko';
  const txt=(el)=>el?.getAttribute('data-'+lang())||el?.textContent.trim()||'';
@@ -319,6 +324,35 @@ document.addEventListener('DOMContentLoaded',()=>{
   return new Promise((resolve,reject)=>cv.toBlob(b=>b?resolve(b):reject(new Error('PNG failed')),'image/png'));
  };
  const download=b=>{const u=URL.createObjectURL(b),a=document.createElement('a'),d=new Date().toISOString().slice(0,10);a.href=u;a.download='chris-news-'+d+'.png';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1000)};
+ const makeVerticalImage=async()=>{
+  const data=cards(),W=1080,H=1920,pad=48,header=220,gap=22,cols=2,cardW=481,cardH=500;
+  const cv=document.createElement('canvas');cv.width=W;cv.height=H;const ctx=cv.getContext('2d');ctx.textBaseline='top';
+  const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#f7f4ed');bg.addColorStop(1,'#e8e0d0');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#8b6a19';ctx.fillRect(pad,48,76,5);
+  ctx.fillStyle='#17130f';ctx.font='700 60px Arial';ctx.fillText("Chris's News",pad,75);
+  ctx.fillStyle='#8b6a19';ctx.font='600 24px Arial';ctx.fillText(data[0]?.date||'',pad,151);
+  ctx.fillStyle='#5b554d';ctx.font='400 19px Arial';ctx.fillText(lang()==='en'?'SIX STORIES · ONE DAILY BRIEF':'오늘의 주요 뉴스 6개 · DAILY BRIEF',pad,190);
+  data.forEach((d,i)=>{
+   const col=i%cols,row=Math.floor(i/cols),x=pad+col*(cardW+gap),y=header+row*(cardH+gap);
+   const grad=ctx.createLinearGradient(x,y,x+cardW,y+cardH);grad.addColorStop(0,'#fffefa');grad.addColorStop(1,i%3===1?'#f2e8d0':'#e9edf0');
+   ctx.fillStyle=grad;ctx.fillRect(x,y,cardW,cardH);ctx.strokeStyle='rgba(139,106,25,.42)';ctx.lineWidth=2;ctx.strokeRect(x+1,y+1,cardW-2,cardH-2);
+   ctx.strokeStyle='rgba(139,106,25,.18)';ctx.strokeRect(x+10,y+10,cardW-20,cardH-20);
+   ctx.fillStyle='#8b6a19';ctx.font='700 16px Arial';ctx.fillText('STORY '+String(i+1).padStart(2,'0'),x+24,y+26);
+   ctx.fillStyle='#777067';ctx.font='500 13px Arial';ctx.fillText((d.date||'').slice(0,26),x+24,y+52);
+   let ty=y+82;
+   ctx.fillStyle='#8b6a19';ctx.font='700 17px Arial';ty=wrap(ctx,d.kicker,x+24,ty,cardW-48,22,22,1)+10;
+   ctx.fillStyle='#29231d';ctx.font='700 25px Arial';ty=wrap(ctx,d.title,x+24,ty,cardW-48,31,31,3)+12;
+   ctx.fillStyle='#c9a84c';ctx.fillRect(x+24,ty,cardW-48,2);ty+=14;
+   ctx.fillStyle='#4b463f';ctx.font='400 16px Arial';ty=wrap(ctx,d.summary,x+24,ty,cardW-48,21,21,4)+12;
+   ctx.fillStyle='#29231d';ctx.font='700 14px Arial';ctx.fillText(lang()==='en'?'KEY POINTS':'핵심 포인트',x+24,ty);ty+=25;
+   d.points.slice(0,2).forEach(p=>{ctx.fillStyle='#8b6a19';ctx.beginPath();ctx.arc(x+29,ty+7,3,0,Math.PI*2);ctx.fill();ctx.fillStyle='#5b554d';ctx.font='400 13px Arial';ty=wrap(ctx,p,x+40,ty,cardW-64,17,17,2)+7});
+   ctx.fillStyle='#817b72';ctx.font='600 12px Arial';wrap(ctx,d.source||'',x+24,y+cardH-29,cardW-48,15,15,1);
+  });
+  ctx.fillStyle='#8b6a19';ctx.fillRect(pad,H-62,W-pad*2,2);
+  ctx.fillStyle='#6b665e';ctx.font='400 14px Arial';ctx.fillText('CHRIS LEE.PAPA  ·  THE CREATIVE ARCHIVE',pad,H-48);
+  return new Promise((resolve,reject)=>cv.toBlob(b=>b?resolve(b):reject(new Error('PNG failed')),'image/png'));
+ };
+
  const shareImage=async()=>{
   const blob=await makeImage(),file=new File([blob],'chris-news-'+new Date().toISOString().slice(0,10)+'.png',{type:'image/png'});
   if(navigator.share&&navigator.canShare?.({files:[file]})){await navigator.share({title:"Chris's News",text:lang()==='en'?"Today's Chris's News":"오늘의 Chris's News",files:[file]});}
@@ -326,15 +360,18 @@ document.addEventListener('DOMContentLoaded',()=>{
   else download(blob);
  };
  share.addEventListener('click',async()=>{share.disabled=true;try{await shareImage()}catch(e){if(e.name!=='AbortError'){console.error(e);try{download(await makeImage())}catch(x){alert(lang()==='en'?'Sharing failed. Please try again.':'공유에 실패했습니다. 다시 시도해주세요.')}}}finally{share.disabled=false}});
+ if(copyLink)copyLink.addEventListener('click',async()=>{copyLink.disabled=true;try{const url=location.origin+location.pathname+'#chris-news';await navigator.clipboard.writeText(url);alert(lang()==='en'?'Chris’s News link copied.':'Chris’s News 링크를 복사했습니다.')}catch(e){const url=location.origin+location.pathname+'#chris-news';prompt(lang()==='en'?'Copy this link:':'아래 링크를 복사해 주세요.',url)}finally{copyLink.disabled=false}});
+ if(vertical)vertical.addEventListener('click',async()=>{vertical.disabled=true;try{download(await makeVerticalImage(),'vertical')}catch(e){console.error(e);alert(lang()==='en'?'Portrait image could not be created. Please try again.':'세로형 이미지 생성에 실패했습니다. 다시 시도해 주세요.')}finally{vertical.disabled=false}});
+
  save.addEventListener('click',async()=>{save.disabled=true;try{download(await makeImage())}catch(e){console.error(e);alert(lang()==='en'?'Saving failed. Please try again.':'이미지 저장에 실패했습니다. 다시 시도해주세요.')}finally{save.disabled=false}});
- const labels=()=>{const en=lang()==='en';share.querySelector('.chris-news-share-label').textContent=en?"Share image":'이미지 공유';save.querySelector('.chris-news-share-label').textContent=en?'Save image':'이미지 저장'};
+ const labels=()=>{const en=lang()==='en';share.querySelector('.chris-news-share-label').textContent=en?'Share':'공유하기';save.querySelector('.chris-news-share-label').textContent=en?'Save image':'이미지 저장';if(copyLink)copyLink.querySelector('.chris-news-share-label').textContent=en?'Copy news link':'뉴스 링크 복사';if(vertical)vertical.querySelector('.chris-news-share-label').textContent=en?'Portrait image':'세로형 이미지'};
  labels();new MutationObserver(labels).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 });
 </script>
 <section id="chris-news" aria-labelledby="chris-news-title">
   <div class="chris-news-inner">
     <div class="chris-news-head">
-      <div><p class="chris-news-kicker" data-ko="세계 · 최신 · 큐레이션" data-en="WORLD · CURRENT · CURATED">세계 · 최신 · 큐레이션</p><h2 id="chris-news-title" class="chris-news-title">Chris's News</h2><div class="chris-news-share-actions"><button type="button" class="chris-news-share" id="chris-news-share" data-ko="전체 카드뉴스 공유" data-en="Share today's cards"><span class="chris-news-share-icon" aria-hidden="true">↗</span><span class="chris-news-share-label">전체 카드뉴스 공유</span></button><button type="button" class="chris-news-share chris-news-image-save" id="chris-news-image" data-ko="이미지 저장" data-en="Save image"><span class="chris-news-share-icon" aria-hidden="true">↓</span><span class="chris-news-share-label">이미지 저장</span></button></div></div>
+      <div><p class="chris-news-kicker" data-ko="세계 · 최신 · 큐레이션" data-en="WORLD · CURRENT · CURATED">세계 · 최신 · 큐레이션</p><h2 id="chris-news-title" class="chris-news-title">Chris's News</h2><div class="chris-news-share-actions" aria-label="Chris’s News 저장 및 공유"><button type="button" class="chris-news-share" id="chris-news-image" data-ko="이미지 저장" data-en="Save image"><span class="chris-news-share-icon" aria-hidden="true">↓</span><span class="chris-news-share-label">이미지 저장</span></button><button type="button" class="chris-news-share" id="chris-news-share" data-ko="공유하기" data-en="Share"><span class="chris-news-share-icon" aria-hidden="true">↗</span><span class="chris-news-share-label">공유하기</span></button><button type="button" class="chris-news-share" id="chris-news-copy-link" data-ko="뉴스 링크 복사" data-en="Copy news link"><span class="chris-news-share-icon" aria-hidden="true">⧉</span><span class="chris-news-share-label">뉴스 링크 복사</span></button><button type="button" class="chris-news-share" id="chris-news-vertical" data-ko="세로형 이미지" data-en="Portrait image"><span class="chris-news-share-icon" aria-hidden="true">▯</span><span class="chris-news-share-label">세로형 이미지</span></button></div></div>
       <p class="chris-news-desc" data-ko="전날 전 세계 주요 언론의 보도를 교차 확인해 6개 분야에서 한 가지씩 골라 핵심과 맥락을 정리합니다." data-en="We cross-check major international reports from the previous day and select one story from each of six categories, with context and key points.">전날 전 세계 주요 언론의 보도를 교차 확인해 6개 분야에서 한 가지씩 골라 핵심과 맥락을 정리합니다.</p>
     </div>
     <div class="chris-news-grid" aria-live="polite"></div>

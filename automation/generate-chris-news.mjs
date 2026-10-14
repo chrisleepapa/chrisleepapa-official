@@ -32,9 +32,9 @@ const categories = [
     key: 'science', ko: '과학 · 기술', en: 'SCIENCE · TECHNOLOGY',
     query: 'science technology AI research',
     feeds: [
-      { name: 'BBC News Technology', url: 'https://feeds.bbci.co.uk/news/technology/rss.xml' },
-      { name: 'The Guardian Science', url: 'https://www.theguardian.com/science/rss' },
-      { name: 'NPR', url: 'https://feeds.npr.org/1007/rss.xml' }
+      { name: 'Science News', url: 'https://www.sciencenews.org/feed' },
+      { name: 'ScienceDaily · Top Science', url: 'https://www.sciencedaily.com/rss/top/science.xml', rssOnly: true },
+      { name: 'ScienceDaily · Top Technology', url: 'https://www.sciencedaily.com/rss/top/technology.xml', rssOnly: true }
     ]
   },
   {
@@ -238,14 +238,18 @@ async function fetchCategory(category, globallySeenLinks = new Set(), globallySe
       seenLinks.add(canonicalLink);
 
       const rssText = cleanHtml(item.description || '');
-      const article = await fetchArticleDetails(canonicalLink);
+      // ScienceDaily permits RSS headlines and summaries with attribution and a link,
+      // but not republishing full article text; keep those entries RSS-only.
+      const article = feed.rssOnly
+        ? { link: canonicalLink, details: [], articleTitle: '' }
+        : await fetchArticleDetails(canonicalLink);
       const detailText = (article.details || []).join(' ').trim();
       const articleTitle = article.articleTitle || '';
       if (articleTitle && titleSimilarity(item.title, articleTitle) < 0.25) continue;
       // Keep the six-card feed editorially distinct: never repeat the same or near-identical headline across categories.
       if (globallySeenTitles.some(title => titleSimilarity(item.title, title) >= 0.75)) continue;
 
-      const summaryCandidate = detailText.length >= 100 && !isGenericNewsBoilerplate(detailText)
+      const summaryCandidate = !feed.rssOnly && detailText.length >= 100 && !isGenericNewsBoilerplate(detailText)
         ? detailText
         : rssText;
       const normalizedSummary = normalizedTitle(summaryCandidate);
@@ -307,7 +311,7 @@ const now = new Date();
 const dateParts = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(now);
 const dateMap = Object.fromEntries(dateParts.map(part => [part.type, part.value]));
 const date = `${dateMap.year}-${dateMap.month}-${dateMap.day}`;
-const payload = { date, updatedAt: now.toISOString(), sourceNote: 'Direct publisher RSS feeds from BBC News, The Guardian, Al Jazeera English, NPR and Yonhap. Only direct article links with substantial summaries published in the last 72 hours are accepted; incomplete refreshes do not overwrite existing data.', cards };
+const payload = { date, updatedAt: now.toISOString(), sourceNote: 'Direct publisher feeds from Science News, ScienceDaily, BBC News, The Guardian, Al Jazeera English, NPR and Yonhap. ScienceDaily entries use attributed RSS headlines and summaries with links; only direct article links published in the last 72 hours are accepted, and incomplete refreshes do not overwrite existing data.', cards };
 await mkdir('data', { recursive: true });
 await writeFile('data/chris-news.json', JSON.stringify(payload, null, 2) + '\n');
 console.log(`Prepared ${cards.length} news cards for ${date}.`);

@@ -152,6 +152,28 @@
   "redirects": [
     {
       "source": "/world-lore",
+      "has": [
+        {
+          "type": "host",
+          "value": "chrisleepapa-official.vercel.app"
+        }
+      ],
+      "destination": "https://chrisleepapa.com/sistersquad-hub",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "chrisleepapa-official.vercel.app"
+        }
+      ],
+      "destination": "https://chrisleepapa.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/world-lore",
       "destination": "/sistersquad-hub",
       "permanent": true
     }

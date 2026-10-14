@@ -7,7 +7,7 @@
     const SUPA_KEY = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
 
     const session = () => window.CLPAuth?.getUser?.();
-    const date = () => new Date().toISOString().slice(0,10);
+    const date = () => { const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; };
     const rpc = async (name, body) => {
         const r = await fetch(`${SUPA_URL}/rest/v1/rpc/${name}`, {
             method:'POST', headers:{apikey:SUPA_KEY,Authorization:`Bearer ${SUPA_KEY}`,'Content-Type':'application/json'}, body:JSON.stringify(body)
@@ -87,9 +87,12 @@
     async function dates(){
         const u=session(); if(!u?.initials||!u?.pinHash) return [];
         try {
-            const r=await fetch(`${SUPA_URL}/rest/v1/clp_today?select=record_date,data,updated_at&account_id=eq.${encodeURIComponent(u.initials)}&order=record_date.desc`,{headers:{apikey:SUPA_KEY,Authorization:`Bearer ${SUPA_KEY}`} });
-            if(r.ok) return await r.json();
-        } catch (_) {}
+            const result=await rpc('clp_list_today_records',{p_initials:u.initials,p_pin_hash:u.pinHash});
+            if(result?.ok===true && Array.isArray(result.records)) return result.records;
+            console.warn('[Today history] secure archive RPC rejected:',result?.error||'invalid response');
+        } catch (error) {
+            console.warn('[Today history] secure archive load failed:',error);
+        }
         return [];
     }
 

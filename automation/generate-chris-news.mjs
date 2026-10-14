@@ -185,9 +185,9 @@ function sentencePoints(text) {
     .map(s => s.length > 220 ? s.slice(0, 217) + '…' : s);
 }
 
-async function translateToEnglish(value) {
+async function translateText(value, target) {
   try {
-    const url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=ko&tl=en&dt=t&q=' + encodeURIComponent(value.slice(0, 4500));
+    const url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=' + target + '&dt=t&q=' + encodeURIComponent(value.slice(0, 4500));
     const response = await fetch(url, { signal: AbortSignal.timeout(12000) });
     if (!response.ok) return value;
     const payload = await response.json();
@@ -257,16 +257,19 @@ async function fetchCategory(category) {
       const summary = summaryCandidate.slice(0, 1100).trim();
       const points = sentencePoints(summary);
       if (points.length === 0 && summary.length < 180) continue;
-      const titleEn = await translateToEnglish(item.title);
-      const summaryEn = await translateToEnglish(summary);
-      const pointsEn = await Promise.all(points.map(translateToEnglish));
+      const safePoints = points.length ? points : [summary.slice(0, 180)];
+      const [titleKo, summaryKo, pointsKo] = await Promise.all([
+        translateText(item.title, 'ko'),
+        translateText(summary, 'ko'),
+        Promise.all(safePoints.map(point => translateText(point, 'ko')))
+      ]);
       return {
         category: category.key, categoryKo: category.ko, categoryEn: category.en,
-        title: item.title, titleEn,
-        summary, summaryEn: summaryEn || summary,
-        points: points.length ? points : [summary.slice(0, 180)],
-        pointsKo: points.length ? points : [summary.slice(0, 180)],
-        pointsEn: pointsEn.length ? pointsEn : [summary.slice(0, 180)],
+        title: item.title, titleEn: item.title, titleKo: titleKo || item.title,
+        summary, summaryEn: summary, summaryKo: summaryKo || summary,
+        points: safePoints,
+        pointsKo: pointsKo.length ? pointsKo : safePoints,
+        pointsEn: safePoints,
         source, link: canonicalLink, publishedAt: item.pubDate,
         summarySource: detailText.length >= 100 ? 'publisher article page' : feed.name + ' RSS excerpt'
       };

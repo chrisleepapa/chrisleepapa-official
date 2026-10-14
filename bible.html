@@ -813,7 +813,7 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
             }
         }
 
-        // --- Supabase 연동 ---// --- Supabase 연동 ---
+        // --- Supabase 연동 ---
         async function biblePersonalRpc(name, payload) {
             const session = window.CLPAuth?.getUser?.();
             const initials = String(session?.initials || localUserId || '').trim().toUpperCase();
@@ -983,7 +983,7 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
             }
         }
 
-        // --- 앱 초기화 ---// --- 앱 초기화 ---
+        // --- 앱 초기화 ---
         function checkAuth() {
             localUserId = localStorage.getItem('bible_user_id');
             localUserPin = localStorage.getItem('bible_pin_hash');

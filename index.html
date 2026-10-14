@@ -279,6 +279,7 @@ html[data-theme="dark"] #chris-news .chris-news-card--society .chris-news-point{
     <p>일상의 경험과 두 딸과 함께 만든 이야기에서 출발한 창작 활동을 음악, 영상, 출판, 캐릭터와 게임으로 확장하고 있습니다.</p>
   </noscript>
 </section>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" crossorigin="anonymous"></script>
 <script>
 document.addEventListener('DOMContentLoaded',()=>{
  const root=document.getElementById('chris-news'),share=document.getElementById('chris-news-share'),save=document.getElementById('chris-news-image'),copyLink=document.getElementById('chris-news-copy-link'),vertical=document.getElementById('chris-news-vertical');
@@ -298,30 +299,68 @@ document.addEventListener('DOMContentLoaded',()=>{
   lines.forEach((v,i)=>ctx.fillText(v,x,y+i*line));return y+lines.length*line;
  };
  const makeImage=async()=>{
-  const data=cards(), W=2280, cardW=680, cardH=1420, gap=40, header=280, pad=80, H=header+pad+cardH*2+gap+pad;
-  const cv=document.createElement('canvas');cv.width=W;cv.height=H;const ctx=cv.getContext('2d');ctx.textBaseline='top';
-  ctx.fillStyle='#f5f1e8';ctx.fillRect(0,0,W,H);
-  ctx.fillStyle='#17130f';ctx.font='700 72px Arial';ctx.fillText("Chris's News",pad,62);
-  ctx.fillStyle='#8b6a19';ctx.font='500 30px Arial';ctx.fillText(data[0]?.date||'',pad,150);
-  ctx.fillStyle='#5b554d';ctx.font='400 26px Arial';ctx.fillText(lang()==='en'?'Six stories, selected and cross-checked from major international coverage.':'주요 외신 보도를 교차 확인해 6개 분야의 핵심 뉴스를 한 장에 담았습니다.',pad,205);
-  data.forEach((d,i)=>{
-   const col=i%3,row=Math.floor(i/3),x=pad+col*(cardW+gap),y=header+row*(cardH+gap);
-   ctx.fillStyle='#fff';ctx.fillRect(x,y,cardW,cardH);ctx.strokeStyle='rgba(70,55,30,.16)';ctx.strokeRect(x,y,cardW,cardH);
-   ctx.fillStyle='#8b6a19';ctx.font='700 19px Arial';ctx.fillText('CARD '+d.no,x+34,y+34);
-   ctx.fillStyle='#777067';ctx.font='500 17px Arial';ctx.fillText(d.date,x+cardW-180,y+35);
-   let ty=y+88;
-   ctx.fillStyle='#8b6a19';ctx.font='700 25px Arial';ty=wrap(ctx,d.kicker,x+34,ty,cardW-68,32,32,2)+18;
-   ctx.fillStyle='#29231d';ctx.font='700 38px Arial';ty=wrap(ctx,d.title,x+34,ty,cardW-68,47,47,6)+20;
-   ctx.fillStyle='#c9a84c';ctx.fillRect(x+34,ty,cardW-68,3);ty+=28;
-   ctx.fillStyle='#4b463f';ctx.font='400 24px Arial';ty=wrap(ctx,d.summary,x+34,ty,cardW-68,33,33,7)+26;
-   ctx.fillStyle='#29231d';ctx.font='700 22px Arial';ctx.fillText(lang()==='en'?'KEY POINTS':'핵심 포인트',x+34,ty);ty+=42;
-   d.points.forEach(p=>{ctx.fillStyle='#c9a84c';ctx.beginPath();ctx.arc(x+42,ty+12,4,0,Math.PI*2);ctx.fill();ctx.fillStyle='#5b554d';ctx.font='400 21px Arial';ty=wrap(ctx,p,x+58,ty,cardW-92,29,29,3)+14});
-   const sourceText=d.source||'';
-   ctx.fillStyle='#817b72';ctx.font='600 16px Arial';
-   const sourceY=Math.max(ty+20,y+cardH-64);
-   wrap(ctx,sourceText,x+34,sourceY,cardW-68,20,20,2);
+  if(typeof window.html2canvas!=='function') throw new Error('Image renderer is not available.');
+  const cardsNow=[...root.querySelectorAll('.chris-news-card')];
+  if(cardsNow.length!==6) throw new Error('Six news cards are not ready.');
+  if(document.fonts?.ready) await document.fonts.ready;
+
+  // Capture a detached copy of the real card DOM so its existing CSS, typography,
+  // category accents, borders, spacing and light/dark theme are retained.
+  const stage=document.createElement('section');
+  stage.id='chris-news';
+  stage.setAttribute('aria-hidden','true');
+  stage.style.cssText='position:fixed;left:-20000px;top:0;width:1280px;box-sizing:border-box;padding:54px 46px 48px;margin:0;z-index:-1;overflow:visible;';
+  const inner=document.createElement('div');
+  inner.className='chris-news-inner';
+  inner.style.cssText='width:100%;max-width:none;margin:0;';
+  const head=document.createElement('div');
+  head.className='chris-news-head';
+  head.style.cssText='display:flex;align-items:flex-end;justify-content:space-between;gap:28px;margin-bottom:30px;';
+  const titleBlock=document.createElement('div');
+  const kicker=document.createElement('p');
+  kicker.className='chris-news-kicker';
+  kicker.textContent=lang()==='en'?'WORLD · CURRENT · CURATED':'세계 · 최신 · 큐레이션';
+  const title=document.createElement('h2');
+  title.className='chris-news-title';
+  title.textContent="Chris's News";
+  title.style.cssText='margin:0;';
+  const date=document.createElement('p');
+  date.style.cssText='margin:10px 0 0;color:#8b6a19;font:600 16px Pretendard,sans-serif;';
+  date.textContent=cardsNow[0].querySelector('.chris-news-card-date')?.textContent.trim()||'';
+  titleBlock.append(kicker,title,date);
+  const desc=document.createElement('p');
+  desc.className='chris-news-desc';
+  desc.textContent=lang()==='en'
+    ?'Six stories selected from major international coverage, with context and key points.'
+    :'주요 언론 보도를 바탕으로 핵심 내용과 맥락을 정리한 오늘의 뉴스 6선';
+  head.append(titleBlock,desc);
+  const grid=document.createElement('div');
+  grid.className='chris-news-grid';
+  grid.style.cssText='display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;padding:4px 0 0;';
+  cardsNow.forEach(card=>{
+    const clone=card.cloneNode(true);
+    clone.style.cssText+=';width:100%;height:auto;min-height:0;aspect-ratio:3/5;transform:none;box-sizing:border-box;break-inside:avoid;';
+    grid.append(clone);
   });
-  return new Promise((resolve,reject)=>cv.toBlob(b=>b?resolve(b):reject(new Error('PNG failed')),'image/png'));
+  inner.append(head,grid);
+  stage.append(inner);
+  document.body.append(stage);
+  try {
+    const canvas=await window.html2canvas(stage,{
+      backgroundColor:lang()==='en'?'#f5f2ec':'#f5f2ec',
+      scale:2,
+      useCORS:true,
+      allowTaint:false,
+      logging:false,
+      width:1280,
+      windowWidth:1280,
+      scrollX:0,
+      scrollY:0
+    });
+    return await new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('PNG export failed.')),'image/png'));
+  } finally {
+    stage.remove();
+  }
  };
  const download=(b,variant='')=>{const u=URL.createObjectURL(b),a=document.createElement('a'),d=new Date().toISOString().slice(0,10);a.href=u;a.download='chris-news-'+(variant?variant+'-':'')+d+'.png';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1000)};
  const makeVerticalImage=async()=>{

@@ -133,9 +133,21 @@
     }
 
     async function removeDate(d){
-        const u=session(); if(!u?.initials||!u?.pinHash||!confirm(`${d} ${t('confirmDelete')}`)) return;
-        try { await rpc('clp_delete_today',{p_initials:u.initials,p_pin_hash:u.pinHash,p_date:d}); } catch(_){ try{localStorage.removeItem(localKey(d));}catch(__){} }
-        records=records.filter(r=>r.record_date!==d); render();
+        const u=session();
+        if(!confirm(`${d} ${t('confirmDelete')}`)) return;
+        if(u?.initials&&u?.pinHash){
+            try {
+                const result=await rpc('clp_delete_today',{p_initials:u.initials,p_pin_hash:u.pinHash,p_date:d});
+                if(result?.ok!==true) throw new Error(result?.error||'Delete was not confirmed');
+            } catch(error) {
+                console.warn('[Today history] delete failed:',error);
+                alert('기록을 삭제하지 못했습니다. 잠시 후 다시 시도해 주세요.');
+                return;
+            }
+        }
+        try { localStorage.removeItem(localKey(d)); } catch (_) {}
+        records=records.filter(r=>r.record_date!==d);
+        render();
     }
 
     function boot(){addStyles();ensureUI();load();}

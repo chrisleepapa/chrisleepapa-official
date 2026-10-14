@@ -92,6 +92,12 @@
         .shop-benefits{padding:0 22px 28px}
         .shop-benefits-inner{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;max-width:1120px;margin:0 auto}
         .shop-benefit{padding:22px 22px 20px;border:1px solid #f2e3d5;border-radius:20px;background:rgba(255,255,255,.88);box-shadow:0 8px 24px rgba(46,36,32,.035)}
+        a.shop-benefit{display:block;color:inherit;text-decoration:none;cursor:pointer;transition:transform .22s,border-color .22s,box-shadow .22s}
+        a.shop-benefit:hover{transform:translateY(-4px);border-color:#f1c4a8;box-shadow:0 14px 30px rgba(46,36,32,.09)}
+        a.shop-benefit:focus-visible{outline:3px solid #ff5c2e;outline-offset:4px}
+        .shop-benefit-link{display:inline-block;margin-top:13px;color:#c34b29;font-size:.78rem;font-weight:800}
+        .shop-benefit:nth-child(2) .shop-benefit-link{color:#5268cc}
+        .shop-benefit:nth-child(3) .shop-benefit-link{color:#27864b}
         .shop-benefit-icon{display:grid;place-items:center;width:38px;height:38px;margin-bottom:14px;border-radius:50%;background:#fff1e8;color:#ff6b3d;font-size:1.2rem;font-weight:800}
         .shop-benefit:nth-child(2) .shop-benefit-icon{background:#e8eeff;color:#5a72e0}
         .shop-benefit:nth-child(3) .shop-benefit-icon{background:#e6f6ea;color:#2e9a57}
@@ -157,21 +163,24 @@
 </header>
 <section class="shop-benefits" aria-label="About the collection">
   <div class="shop-benefits-inner">
-    <article class="shop-benefit">
+    <a class="shop-benefit" href="#shop-sister-squad" aria-label="SISTER SQUAD 작품 보기">
       <span class="shop-benefit-icon" aria-hidden="true">♡</span>
       <h2 data-i18n="shop_benefit_1_title">가족과 함께 읽는 이야기</h2>
       <p data-i18n="shop_benefit_1_desc">자매의 모험과 관계 속에서 용기, 공감, 화해를 만나는 가족 동화.</p>
-    </article>
-    <article class="shop-benefit">
+      <span class="shop-benefit-link" aria-hidden="true">작품 보러 가기 ↗</span>
+    </a>
+    <a class="shop-benefit" href="#shop-miracle-shot" aria-label="MIRACLE SHOT 작품 보기">
       <span class="shop-benefit-icon" aria-hidden="true">✎</span>
       <h2 data-i18n="shop_benefit_2_title">직접 만든 창작 세계</h2>
       <p data-i18n="shop_benefit_2_desc">이야기와 캐릭터, 음악과 영상까지 이어지는 Chris LEE.PAPA의 창작 아카이브.</p>
-    </article>
-    <article class="shop-benefit">
+      <span class="shop-benefit-link" aria-hidden="true">작품 보러 가기 ↗</span>
+    </a>
+    <a class="shop-benefit" href="#shop-collections" aria-label="공식 판매처 상품 목록 보기">
       <span class="shop-benefit-icon" aria-hidden="true">↗</span>
       <h2 data-i18n="shop_benefit_3_title">공식 판매처로 연결</h2>
       <p data-i18n="shop_benefit_3_desc">각 상품의 버튼을 누르면 해당 서점 또는 플랫폼의 상품 페이지로 이동합니다.</p>
-    </article>
+      <span class="shop-benefit-link" aria-hidden="true">상품 목록 보기 ↗</span>
+    </a>
   </div>
 </section>
 
@@ -213,7 +222,7 @@
         <div class="collection-note" data-i18n="ss2_note">SISTER SQUAD 2는 <strong>저주받은 요정마을</strong>에서 펼쳐지는 자매의 두 번째 모험입니다.</div>
     </section>
 
-    <section class="shop-section ms">
+    <section class="shop-section ms" id="shop-miracle-shot">
         <div class="section-heading"><h2>MIRACLE SHOT</h2><div class="line"></div><small data-i18n="miracle_tag">SPORTS FANTASY</small></div>
         <div class="shop-grid">
             <article class="shop-card">

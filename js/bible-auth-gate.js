@@ -61,6 +61,7 @@ function installBibleSecurePersistence(){
       if(key.endsWith('-CH'))userState.chapters[key.slice(0,-3)]=!!item.is_read;
       else if(key==='PROGRESS')return;
       else{
+        if(item.is_read)userState.read[key]=true;
         if(item.is_highlighted)userState.highlights[key]=true;
         if(item.is_bookmarked)userState.bookmarks[key]=true;
         if(item.memo_text)userState.memos[key]=item.memo_text;

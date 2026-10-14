@@ -104,6 +104,27 @@ html[data-theme="dark"] #chris-news .chris-news-card--economy{background-image:l
 html[data-theme="dark"] #chris-news .chris-news-card--science{background-image:linear-gradient(145deg,#14252c 0%,#172b34 58%,#1b303b 100%)}
 html[data-theme="dark"] #chris-news .chris-news-card--climate{background-image:linear-gradient(145deg,#17271e 0%,#1b3025 58%,#20382c 100%)}
 html[data-theme="dark"] #chris-news .chris-news-card--society{background-image:linear-gradient(145deg,#291d2b 0%,#302235 58%,#39263c 100%)}
+/* Premium editorial finish + content-safe card sizing */
+#chris-news{background:linear-gradient(180deg,#f3efe6 0%,#faf8f3 52%,#f0ece3 100%)}
+.chris-news-head{padding-bottom:24px;border-bottom:1px solid rgba(139,106,25,.18)}
+.chris-news-title{letter-spacing:-.025em}
+.chris-news-card{aspect-ratio:auto;min-height:600px;height:100%;overflow:hidden;border-radius:17px;border-color:rgba(126,101,55,.22);padding:28px 27px 24px;box-shadow:0 14px 34px rgba(42,34,19,.08),inset 0 1px 0 rgba(255,255,255,.72)}
+.chris-news-card::after{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,rgba(139,106,25,.85),rgba(232,208,138,.18),transparent);pointer-events:none}
+.chris-news-card:hover{transform:translateY(-3px);box-shadow:0 20px 42px rgba(42,34,19,.13)}
+.chris-news-card-top{gap:8px;flex-wrap:wrap;font-size:.58rem;letter-spacing:.12em}
+.chris-news-card-kicker{margin-top:26px;margin-bottom:12px;font-size:.88rem;letter-spacing:.035em}
+.chris-news-card h3{font-size:clamp(1.55rem,2.25vw,2rem);line-height:1.32;letter-spacing:-.035em;overflow-wrap:anywhere}
+.chris-news-summary{font-size:.88rem;line-height:1.78;overflow-wrap:anywhere}
+.chris-news-points{gap:10px}
+.chris-news-point{font-size:.75rem;line-height:1.62;overflow-wrap:anywhere}
+.chris-news-card-footer{margin-top:auto;padding-top:16px}
+.chris-news-source{overflow-wrap:anywhere;letter-spacing:.035em}
+html[data-theme="dark"] #chris-news{background:linear-gradient(180deg,#09090b 0%,#111014 55%,#08080a 100%)}
+html[data-theme="dark"] #chris-news .chris-news-card{border-color:rgba(232,208,138,.19);box-shadow:0 18px 40px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.035)}
+html[data-theme="dark"] #chris-news .chris-news-card::after{background:linear-gradient(90deg,rgba(232,208,138,.72),rgba(201,168,76,.12),transparent)}
+@media(max-width:900px){.chris-news-card{min-height:560px;padding:24px 22px 21px}.chris-news-card h3{font-size:clamp(1.35rem,3vw,1.8rem)}}
+@media(max-width:700px){.chris-news-card{aspect-ratio:auto;min-height:500px;padding:22px 18px 20px}.chris-news-card-kicker{margin-top:19px}.chris-news-card h3{font-size:clamp(1.2rem,4.2vw,1.55rem)}.chris-news-summary{font-size:.74rem;line-height:1.68}.chris-news-point{font-size:.62rem;line-height:1.55}}
+@media(max-width:430px){.chris-news-card{min-height:0;padding:25px 22px 22px}.chris-news-card h3{font-size:1.55rem}.chris-news-summary{font-size:.82rem}.chris-news-point{font-size:.68rem}}
 @media(prefers-reduced-motion:reduce){.chris-news-card{transition:none}}
 </style></head>
 <body>
@@ -135,7 +156,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   lines.forEach((v,i)=>ctx.fillText(v,x,y+i*line));return y+lines.length*line;
  };
  const makeImage=async()=>{
-  const data=cards(), W=2160, cardW=680, cardH=900, gap=40, header=280, pad=80, H=header+pad+cardH*2+gap+pad;
+  const data=cards(), W=2160, cardW=680, cardH=1420, gap=40, header=280, pad=80, H=header+pad+cardH*2+gap+pad;
   const cv=document.createElement('canvas');cv.width=W;cv.height=H;const ctx=cv.getContext('2d');ctx.textBaseline='top';
   ctx.fillStyle='#f5f1e8';ctx.fillRect(0,0,W,H);
   ctx.fillStyle='#17130f';ctx.font='700 72px Arial';ctx.fillText("Chris's News",pad,62);
@@ -148,14 +169,14 @@ document.addEventListener('DOMContentLoaded',()=>{
    ctx.fillStyle='#777067';ctx.font='500 17px Arial';ctx.fillText(d.date,x+cardW-180,y+35);
    let ty=y+88;
    ctx.fillStyle='#8b6a19';ctx.font='700 25px Arial';ty=wrap(ctx,d.kicker,x+34,ty,cardW-68,32,32,2)+18;
-   ctx.fillStyle='#29231d';ctx.font='700 38px Arial';ty=wrap(ctx,d.title,x+34,ty,cardW-68,49,49,4)+22;
+   ctx.fillStyle='#29231d';ctx.font='700 38px Arial';ty=wrap(ctx,d.title,x+34,ty,cardW-68,47,47,6)+20;
    ctx.fillStyle='#c9a84c';ctx.fillRect(x+34,ty,cardW-68,3);ty+=28;
-   ctx.fillStyle='#4b463f';ctx.font='400 24px Arial';ty=wrap(ctx,d.summary,x+34,ty,cardW-68,35,35,7)+30;
+   ctx.fillStyle='#4b463f';ctx.font='400 24px Arial';ty=wrap(ctx,d.summary,x+34,ty,cardW-68,33,33,10)+26;
    ctx.fillStyle='#29231d';ctx.font='700 22px Arial';ctx.fillText(lang()==='en'?'KEY POINTS':'핵심 포인트',x+34,ty);ty+=42;
-   d.points.forEach(p=>{ctx.fillStyle='#c9a84c';ctx.beginPath();ctx.arc(x+42,ty+12,4,0,Math.PI*2);ctx.fill();ctx.fillStyle='#5b554d';ctx.font='400 21px Arial';ty=wrap(ctx,p,x+58,ty,cardW-92,31,31,3)+17});
+   d.points.forEach(p=>{ctx.fillStyle='#c9a84c';ctx.beginPath();ctx.arc(x+42,ty+12,4,0,Math.PI*2);ctx.fill();ctx.fillStyle='#5b554d';ctx.font='400 21px Arial';ty=wrap(ctx,p,x+58,ty,cardW-92,29,29,5)+14});
    const sourceText=d.source||'';
    ctx.fillStyle='#817b72';ctx.font='600 16px Arial';
-   const sourceY=Math.min(Math.max(ty+22,y+cardH-70),y+cardH-48);
+   const sourceY=Math.max(ty+20,y+cardH-64);
    wrap(ctx,sourceText,x+34,sourceY,cardW-68,20,20,2);
   });
   return new Promise((resolve,reject)=>cv.toBlob(b=>b?resolve(b):reject(new Error('PNG failed')),'image/png'));

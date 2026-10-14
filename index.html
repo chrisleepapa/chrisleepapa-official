@@ -309,6 +309,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   const stage=document.createElement('section');
   stage.id='chris-news';
   stage.setAttribute('aria-hidden','true');
+  stage.setAttribute('data-news-capture','true');
   stage.style.cssText='position:fixed;left:-20000px;top:0;width:1280px;box-sizing:border-box;padding:54px 46px 48px;margin:0;z-index:-1;overflow:visible;';
   const inner=document.createElement('div');
   inner.className='chris-news-inner';
@@ -354,6 +355,10 @@ document.addEventListener('DOMContentLoaded',()=>{
       logging:false,
       width:1280,
       windowWidth:1280,
+      onclone:clonedDocument=>{
+        const capture=clonedDocument.querySelector('[data-news-capture="true"]');
+        if(capture){capture.style.position='static';capture.style.left='auto';capture.style.top='auto';capture.style.zIndex='auto';}
+      },
       scrollX:0,
       scrollY:0
     });

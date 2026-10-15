@@ -411,6 +411,12 @@ const initChrisNewsExport=()=>{
    #chris-news-export-canvas .chris-news-card-footer{margin-top:30px!important;padding-top:18px!important;gap:20px!important}
    #chris-news-export-canvas .chris-news-source{font-size:16px!important;line-height:1.7!important;letter-spacing:.4px!important;overflow-wrap:anywhere!important}
    #chris-news-export-canvas .chris-news-share-actions,#chris-news-export-canvas .chris-news-note{display:none!important}
+   /* Second/security card: white text must remain white in the exported image. */
+   #chris-news-export-canvas .chris-news-export-card.chris-news-card--security{background-color:#08090b!important;background-image:linear-gradient(145deg,#18191c 0%,#090a0c 48%,#111215 100%)!important;border-color:rgba(201,168,76,.42)!important}
+   #chris-news-export-canvas .chris-news-export-card.chris-news-card--security,
+   #chris-news-export-canvas .chris-news-export-card.chris-news-card--security *{color:#fff!important}
+   #chris-news-export-canvas .chris-news-export-card.chris-news-card--security .chris-news-points,
+   #chris-news-export-canvas .chris-news-export-card.chris-news-card--security .chris-news-card-footer{border-color:rgba(255,255,255,.2)!important}
   `;
   document.head.appendChild(style);
   cards.forEach((card,index)=>{

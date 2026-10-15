@@ -1354,16 +1354,20 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
             });
             if (!keys.length) throw new Error('먼저 공유하거나 저장할 구절을 선택해 주세요.');
             const verses = keys.map(key => ({key, ...getBibleVerseShareData(key)}));
-            const refs = verses.map(v => v.reference);
-            let reference = refs[0];
-            if (refs.length > 1) {
-                const nums = keys.map(key => Number(key.split('-')[2]));
-                const sameChapter = keys.every(key => key.split('-').slice(0,2).join('-') === keys[0].split('-').slice(0,2).join('-'));
-                reference = sameChapter && nums.every((n,i) => i === 0 || n === nums[i-1]+1)
-                    ? BIBLE_BOOKS.find(b => Number(b.id) === Number(keys[0].split('-')[0])).name + ' ' + keys[0].split('-')[1] + ':' + nums[0] + '–' + nums[nums.length-1]
-                    : refs.join(', ');
-            }
-            return {reference, text: verses.map(v => v.reference.split(' ').slice(-1)[0] + '  ' + v.text).join('\n\n'), verses};
+            const firstKeyParts = keys[0].split('-').map(Number);
+            const book = BIBLE_BOOKS.find(b => Number(b.id) === firstKeyParts[0]);
+            const sameChapter = keys.every(key => {
+                const parts = key.split('-').map(Number);
+                return parts[0] === firstKeyParts[0] && parts[1] === firstKeyParts[1];
+            });
+            const reference = sameChapter
+                ? book.name + ' ' + firstKeyParts[1] + '편'
+                : verses.map(v => v.reference).join(', ');
+            const text = verses.map(v => {
+                const verseNumber = Number(v.key.split('-')[2]);
+                return verseNumber + '  ' + v.text;
+            }).join('\n\n');
+            return {reference, text, verses};
         }
 
         // 선택한 성경 구절을 텍스트/이미지로 공유합니다.

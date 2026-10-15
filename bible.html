@@ -205,6 +205,16 @@
         .verse-wrapper { display: flex; flex-direction: column; padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,0.03); transition: 0.3s; }
         .verse-wrapper:hover { background: rgba(255,255,255,0.015); }
         
+        .verse-select-row { display:flex; align-items:center; gap:10px; margin-bottom:8px; color:var(--text-muted); font-size:.85rem; }
+        .verse-select { width:18px; height:18px; accent-color:var(--gold); cursor:pointer; flex:0 0 auto; }
+        .verse-wrapper.multi-selected { background:rgba(201,168,76,.08); border-radius:10px; padding-left:10px; padding-right:10px; }
+        .multi-verse-tools { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin:0 auto 24px; max-width:850px; padding:14px 16px; border:1px solid rgba(201,168,76,.28); border-radius:14px; background:rgba(201,168,76,.06); }
+        .multi-verse-tools .selection-count { color:var(--gold-light); font-size:.9rem; }
+        .multi-verse-tools .selection-actions { display:flex; flex-wrap:wrap; gap:8px; }
+        .multi-verse-tools button { border:1px solid rgba(201,168,76,.4); border-radius:18px; padding:8px 13px; color:var(--gold-light); font-size:.82rem; cursor:pointer; }
+        .multi-verse-tools button:disabled { opacity:.4; cursor:not-allowed; }
+        @media(max-width:600px){ .multi-verse-tools { align-items:flex-start; flex-direction:column; } .multi-verse-tools .selection-actions { width:100%; } .multi-verse-tools button { flex:1; } }
+        
         .verse-main { display: flex; gap: 30px; cursor: pointer; }
         .verse-num { font-family: 'Cinzel', serif; font-size: 1.2rem; font-weight: 700; color: var(--gold); min-width: 50px; text-align: right; padding-top: 8px; opacity: 0.4; transition: 0.3s; }
         .verse-text { font-family: 'Noto Serif KR', serif; font-size: var(--base-font-size); line-height: 2.3; color: rgba(240,236,228,0.95); word-break: keep-all; transition: 0.3s; position: relative; }
@@ -608,6 +618,15 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
                 <span class="en-sub" id="enSub">장을 선택하세요</span>
             </div>
             <div id="loadingSpinner">SYNCHRONIZING ARCHIVE...</div>
+            <div class="multi-verse-tools" id="multiVerseTools" aria-label="여러 말씀 선택 도구">
+                <div><div class="selection-count" id="multiVerseCount" aria-live="polite">선택한 구절 없음</div><small>구절 옆 체크박스로 여러 절을 선택하세요.</small></div>
+                <div class="selection-actions">
+                    <button type="button" onclick="selectAllChapterVerses()">이 장 전체 선택</button>
+                    <button type="button" onclick="clearSelectedVerses()">선택 해제</button>
+                    <button type="button" id="shareSelectedVersesBtn" onclick="shareSelectedBibleVerses()" disabled>📤 선택 말씀 공유</button>
+                    <button type="button" id="saveSelectedVersesBtn" onclick="saveSelectedBibleVersesImage()" disabled>🖼 선택 말씀 저장</button>
+                </div>
+            </div>
             <div id="verseContainer" class="verse-container" style="opacity: 0;"></div>
             
             <div class="chapter-nav-wrapper" id="chapterNavWrapper" style="display: none;">
@@ -1105,6 +1124,12 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
         }
 
         function renderContent() {
+            if (typeof selectedBibleVerseKeys !== 'undefined' && selectedBibleVerseKeys.size) {
+                selectedBibleVerseKeys.clear();
+                const countLabel = document.getElementById('multiVerseCount');
+                if (countLabel) countLabel.textContent = '선택한 구절 없음';
+                ['shareSelectedVersesBtn','saveSelectedVersesBtn'].forEach(id => { const btn = document.getElementById(id); if (btn) btn.disabled = true; });
+            }
             const book = BIBLE_BOOKS.find(b => b.id === currentBookId);
             if(!book) return;
             document.getElementById('headerTitle').textContent = `${book.name} ${currentChapter}`;
@@ -1132,6 +1157,7 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
                         const displayedText = localOverride ? localOverride : (v.content || v.text || "");
                         return `
                         <div class="verse-wrapper" id="wrap-${vKey}">
+                            <label class="verse-select-row"><input class="verse-select" type="checkbox" data-verse-key="${vKey}" aria-label="${book.name} ${currentChapter}장 ${v.verse}절 선택" onchange="toggleSelectedBibleVerse('${vKey}', this.checked)"> 이 구절 선택</label>
                             <div class="verse-main" onclick="toggleToolbar('${vKey}')">
                                 <div class="verse-num" id="num-${vKey}">${v.verse}</div>
                                 <div class="verse-text ${isH}" id="txt-${vKey}">
@@ -1349,9 +1375,143 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
             }
         }
 
+        // 여러 절 선택 상태는 현재 화면에서만 유지합니다.
+        const selectedBibleVerseKeys = new Set();
+
+        function updateSelectedBibleVerseUI() {
+            const count = selectedBibleVerseKeys.size;
+            const label = document.getElementById('multiVerseCount');
+            if (label) label.textContent = count ? `선택한 구절 ${count}개` : '선택한 구절 없음';
+            ['shareSelectedVersesBtn','saveSelectedVersesBtn'].forEach(id => {
+                const btn = document.getElementById(id);
+                if (btn) btn.disabled = count === 0;
+            });
+            document.querySelectorAll('.verse-select').forEach(input => {
+                const selected = selectedBibleVerseKeys.has(input.dataset.verseKey);
+                input.checked = selected;
+                input.closest('.verse-wrapper')?.classList.toggle('multi-selected', selected);
+            });
+        }
+        function toggleSelectedBibleVerse(vKey, checked) {
+            if (checked) selectedBibleVerseKeys.add(vKey); else selectedBibleVerseKeys.delete(vKey);
+            updateSelectedBibleVerseUI();
+        }
+        function clearSelectedVerses() { selectedBibleVerseKeys.clear(); updateSelectedBibleVerseUI(); }
+        function selectAllChapterVerses() {
+            document.querySelectorAll('.verse-select').forEach(input => selectedBibleVerseKeys.add(input.dataset.verseKey));
+            updateSelectedBibleVerseUI();
+        }
+        function getSelectedBibleVersesData() {
+            const keys = [...selectedBibleVerseKeys].sort((a,b) => {
+                const aa=a.split('-').map(Number), bb=b.split('-').map(Number);
+                return aa[0]-bb[0] || aa[1]-bb[1] || aa[2]-bb[2];
+            });
+            if (!keys.length) throw new Error('먼저 공유하거나 저장할 구절을 선택해 주세요.');
+            const verses = keys.map(key => ({key, ...getBibleVerseShareData(key)}));
+            const firstKeyParts = keys[0].split('-').map(Number);
+            const book = BIBLE_BOOKS.find(b => Number(b.id) === firstKeyParts[0]);
+            const sameChapter = keys.every(key => {
+                const parts = key.split('-').map(Number);
+                return parts[0] === firstKeyParts[0] && parts[1] === firstKeyParts[1];
+            });
+            const reference = sameChapter
+                ? book.name + ' ' + firstKeyParts[1] + '편'
+                : verses.map(v => v.reference).join(', ');
+            const text = verses.map(v => {
+                const verseNumber = Number(v.key.split('-')[2]);
+                return verseNumber + '  ' + v.text;
+            }).join('\n\n');
+            return {reference, text, verses};
+        }
+
+        // 선택한 성경 구절을 텍스트/이미지로 공유합니다.
+        function getBibleVerseShareData(vKey) {
+            const [bookId, chapter, verse] = vKey.split('-').map(Number);
+            const book = BIBLE_BOOKS.find(b => Number(b.id) === bookId);
+            if (!book) throw new Error('성경 정보를 찾을 수 없습니다.');
+            const verseData = globalBibleData.find(v => {
+                const b = String(v.book).trim();
+                return (b === String(book.id) || b === book.name || b === book.kr_short || b === book.en || b.toUpperCase() === book.abbrev)
+                    && Number(v.chapter) === chapter && Number(v.verse) === verse;
+            });
+            const localText = LOCAL_VERIFIED_VERSES[bookId]?.[chapter]?.[verse];
+            const text = localText || (verseData ? (verseData.content || verseData.text || '') : '');
+            if (!text) throw new Error('말씀 내용을 찾을 수 없습니다.');
+            return { reference: book.name + ' ' + chapter + ':' + verse, text };
+        }
+
+        function buildBibleVerseShareCard(data) {
+            const card = document.createElement('div');
+            card.setAttribute('aria-hidden', 'true');
+            Object.assign(card.style, {
+                position: 'fixed', left: '-10000px', top: '0', width: '720px', boxSizing: 'border-box',
+                padding: '64px 56px', color: '#f4ead0',
+                background: 'radial-gradient(circle at top right, #252015 0, #09090d 52%, #030305 100%)',
+                border: '2px solid #c9a84c', fontFamily: "'Noto Serif KR', serif"
+            });
+            const brand = document.createElement('div');
+            brand.textContent = 'BIBLE IN MY HAND';
+            Object.assign(brand.style, {fontFamily:'Cinzel, serif', letterSpacing:'5px', color:'#c9a84c', fontSize:'18px', marginBottom:'38px'});
+            const verse = document.createElement('div');
+            verse.textContent = '“' + data.text + '”';
+            Object.assign(verse.style, {fontSize:'30px', lineHeight:'1.9', whiteSpace:'pre-wrap', overflowWrap:'anywhere'});
+            const ref = document.createElement('div');
+            ref.textContent = data.reference;
+            Object.assign(ref.style, {fontSize:'21px', marginTop:'36px', color:'#e8d08a', textAlign:'right'});
+            const footer = document.createElement('div');
+            footer.textContent = 'Chris LEE.PAPA  ·  The Creative Archive';
+            Object.assign(footer.style, {fontFamily:'Cinzel, serif', letterSpacing:'2px', fontSize:'13px', color:'#9b8b60', marginTop:'48px', textAlign:'center'});
+            card.append(brand, verse, ref, footer);
+            document.body.appendChild(card);
+            return card;
+        }
+
+        async function createBibleVerseImage(data) {
+            if (typeof html2canvas !== 'function') throw new Error('이미지 생성 기능을 불러오지 못했습니다.');
+            const card = buildBibleVerseShareCard(data);
+            try {
+                const canvas = await html2canvas(card, {backgroundColor:'#030305', scale:2, useCORS:true});
+                return await new Promise((resolve, reject) => canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('이미지를 만들지 못했습니다.')), 'image/png'));
+            } finally {
+                card.remove();
+            }
+        }
+
+        async function shareSelectedBibleVerses() {
+            try {
+                const data = getSelectedBibleVersesData();
+                const blob = await createBibleVerseImage(data);
+                const file = new File([blob], 'bible-verses.png', {type:'image/png'});
+                if (navigator.share && (!navigator.canShare || navigator.canShare({files:[file]}))) {
+                    await navigator.share({title:data.reference, text:data.reference + '\n' + data.text, files:[file]});
+                } else if (navigator.share) {
+                    await navigator.share({title:data.reference, text:data.reference + '\\n' + data.text});
+                } else {
+                    const url=URL.createObjectURL(blob), a=document.createElement('a');
+                    a.href=url; a.download='bible-verses.png'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1000);
+                    showToast('선택한 말씀 이미지를 저장했습니다. 저장된 이미지를 공유해 주세요.');
+                }
+            } catch(error) {
+                if (error?.name === 'AbortError') return;
+                console.error('Bible multi-verse share failed:',error);
+                showToast(error.message || '선택 말씀 공유에 실패했습니다.');
+            }
+        }
+        async function saveSelectedBibleVersesImage() {
+            try {
+                const data=getSelectedBibleVersesData(), blob=await createBibleVerseImage(data);
+                const url=URL.createObjectURL(blob), a=document.createElement('a');
+                a.href=url; a.download=data.reference.replace(/[^가-힣a-zA-Z0-9]+/g,'-')+'.png';
+                document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),1000);
+                showToast('선택한 말씀 이미지가 저장되었습니다.');
+            } catch(error) {
+                console.error('Bible multi-verse image save failed:',error);
+                showToast(error.message || '선택 말씀 이미지 저장에 실패했습니다.');
+            }
+        }
         async function shareBibleVerse(vKey) {
             try {
-                const data = getBibleVerseShareData(vKey);
+                const data = selectedBibleVerseKeys.size ? getSelectedBibleVersesData() : getBibleVerseShareData(vKey);
                 const blob = await createBibleVerseImage(data);
                 const file = new File([blob], 'bible-verse.png', {type:'image/png'});
                 if (navigator.share && (!navigator.canShare || navigator.canShare({files:[file]}))) {

@@ -350,20 +350,21 @@ document.addEventListener('DOMContentLoaded',()=>{
      const cloneCards=clonedDoc.querySelectorAll('#chris-news .chris-news-card');
      const clone=cloneCards[i];
      if(clone){
-      const exportGradients={
-       'chris-news-card--world':'linear-gradient(145deg,#f5f8fb 0%,#e6edf5 55%,#dce6ef 100%)',
-       'chris-news-card--security':'linear-gradient(150deg,#f7f0ec 0%,#eadbd5 58%,#e3d0ca 100%)',
-       'chris-news-card--economy':'linear-gradient(145deg,#f7f5e9 0%,#ece9d4 58%,#e1e4ce 100%)',
-       'chris-news-card--science':'linear-gradient(145deg,#eef5f8 0%,#dcecf0 58%,#d4e4ed 100%)',
-       'chris-news-card--climate':'linear-gradient(145deg,#eff6ee 0%,#dfece0 58%,#d1e2d7 100%)',
-       'chris-news-card--society':'linear-gradient(145deg,#f7eff7 0%,#eadfeb 58%,#e2d5e5 100%)'
-      };
-      const category=Object.keys(exportGradients).find(name=>clone.classList.contains(name));
+      const screenStyle=getComputedStyle(card);
+      /* Preserve the actual on-screen category gradient (including dark mode).
+         Only remove the decorative pseudo-element/repeating patterns that trigger
+         html2canvas's zero-sized createPattern error. */
       clone.style.transform='none';
       clone.style.transition='none';
-      clone.style.backgroundColor='#f5f3ed';
-      clone.style.backgroundImage=exportGradients[category]||'linear-gradient(145deg,#f5f3ed 0%,#e7e0d4 100%)';
+      clone.style.backgroundColor=screenStyle.backgroundColor||'#f5f3ed';
+      clone.style.backgroundImage=(screenStyle.backgroundImage&&screenStyle.backgroundImage!=='none')
+        ?screenStyle.backgroundImage
+        :'linear-gradient(145deg,#f5f3ed 0%,#e7e0d4 100%)';
       clone.style.backgroundRepeat='no-repeat';
+      clone.style.backgroundPosition='center';
+      clone.style.backgroundSize='100% 100%';
+      clone.style.backgroundOrigin='border-box';
+      clone.style.backgroundClip='border-box';
       clone.style.width=Math.ceil(rect.width)+'px';
       clone.style.height=Math.ceil(rect.height)+'px';
       clone.style.minHeight=Math.ceil(rect.height)+'px';

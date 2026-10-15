@@ -50,6 +50,21 @@
     },
     {
       "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "develop.chrisleepapa.com"
+        }
+      ],
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
       "headers": [
         {
           "key": "X-Content-Type-Options",
@@ -150,6 +165,28 @@
     }
   ],
   "redirects": [
+    {
+      "source": "/world-lore",
+      "has": [
+        {
+          "type": "host",
+          "value": "chrisleepapa-official.vercel.app"
+        }
+      ],
+      "destination": "https://chrisleepapa.com/sistersquad-hub",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "chrisleepapa-official.vercel.app"
+        }
+      ],
+      "destination": "https://chrisleepapa.com/:path*",
+      "permanent": true
+    },
     {
       "source": "/world-lore",
       "destination": "/sistersquad-hub",

@@ -324,7 +324,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   const dark=document.documentElement.getAttribute('data-theme')==='dark';
   const shell=document.createElement('div');
   shell.id='chris-news-export-canvas';
-  Object.assign(shell.style,{position:'fixed',left:'-20000px',top:'0',width:'1080px',boxSizing:'border-box',padding:'54px',display:'block',visibility:'visible',pointerEvents:'none',zIndex:'-1',background:dark?'linear-gradient(180deg,#09090d 0%,#15131a 100%)':'linear-gradient(180deg,#f7f5ef 0%,#eeece5 100%)',color:dark?'#f8f3e8':'#29251e',fontFamily:"Pretendard,'Noto Sans KR',sans-serif'});
+  Object.assign(shell.style,{position:'fixed',left:'0',top:'0',width:'1080px',boxSizing:'border-box',padding:'54px',display:'block',visibility:'visible',pointerEvents:'none',zIndex:'-1',background:dark?'linear-gradient(180deg,#09090d 0%,#15131a 100%)':'linear-gradient(180deg,#f7f5ef 0%,#eeece5 100%)',color:dark?'#f8f3e8':'#29251e',fontFamily:"Pretendard,'Noto Sans KR',sans-serif'});
   const header=document.createElement('header');
   Object.assign(header.style,{padding:'8px 4px 38px',borderBottom:'2px solid '+(dark?'#c9a84c':'#b7984b'),marginBottom:'34px'});
   const kicker=document.createElement('div');kicker.textContent=lang()==='en'?'WORLD  ·  CURRENT  ·  CURATED':'세계  ·  최신  ·  큐레이션';

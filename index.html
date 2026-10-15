@@ -412,15 +412,15 @@ const initChrisNewsExport=()=>{
   const dark=document.documentElement.getAttribute('data-theme')==='dark';
   const shell=document.createElement('div');
   shell.id='chris-news-export-canvas';
-  Object.assign(shell.style,{position:'fixed',left:'0',top:'0',width:'1080px',boxSizing:'border-box',padding:'54px',display:'block',visibility:'visible',pointerEvents:'none',zIndex:'-1',background:dark?'linear-gradient(180deg,#09090d 0%,#15131a 100%)':'linear-gradient(180deg,#f7f5ef 0%,#eeece5 100%)',color:dark?'#f8f3e8':'#29251e',fontFamily:"Pretendard,'Noto Sans KR',sans-serif"});
+  Object.assign(shell.style,{position:'fixed',left:'0',top:'0',width:'1080px',boxSizing:'border-box',padding:'54px',display:'block',visibility:'visible',pointerEvents:'none',zIndex:'-1',background:'linear-gradient(180deg,#f7f5ef 0%,#eeece5 100%)',color:'#29251e',fontFamily:"Pretendard,'Noto Sans KR',sans-serif"});
   const header=document.createElement('header');
-  Object.assign(header.style,{padding:'8px 4px 38px',borderBottom:'2px solid '+(dark?'#c9a84c':'#b7984b'),marginBottom:'34px'});
+  Object.assign(header.style,{padding:'8px 4px 38px',borderBottom:'2px solid #b7984b',marginBottom:'34px',color:'#29251e'});
   const kicker=document.createElement('div');kicker.textContent=lang()==='en'?'WORLD  ·  CURRENT  ·  CURATED':'세계  ·  최신  ·  큐레이션';
-  Object.assign(kicker.style,{fontFamily:'Cinzel,serif',fontSize:'17px',fontWeight:'700',letterSpacing:'5px',color:dark?'#d8bd70':'#8b6a19',marginBottom:'14px'});
+  Object.assign(kicker.style,{fontFamily:'Cinzel,serif',fontSize:'17px',fontWeight:'700',letterSpacing:'5px',color:'#8b6a19',marginBottom:'14px'});
   const title=document.createElement('div');title.textContent="Chris's News";
   Object.assign(title.style,{fontFamily:"Cinzel,'Noto Serif KR',serif",fontSize:'64px',fontWeight:'700',lineHeight:'1.12',letterSpacing:'-1.5px',marginBottom:'14px'});
   const subtitle=document.createElement('div');subtitle.textContent=(lang()==='en'?'Six stories. Essential context.':'세계의 흐름을 읽는 여섯 가지 이야기')+'  ·  '+dateStamp();
-  Object.assign(subtitle.style,{fontSize:'20px',lineHeight:'1.6',color:dark?'rgba(240,236,228,.68)':'#716b60',letterSpacing:'0.2px'});
+  Object.assign(subtitle.style,{fontSize:'20px',lineHeight:'1.6',color:'#716b60',letterSpacing:'0.2px'});
   header.append(kicker,title,subtitle);shell.appendChild(header);
   const style=document.createElement('style');
   style.textContent=`
@@ -440,23 +440,30 @@ const initChrisNewsExport=()=>{
    #chris-news-export-canvas .chris-news-card-footer{margin-top:30px!important;padding-top:18px!important;gap:20px!important}
    #chris-news-export-canvas .chris-news-source{font-size:16px!important;line-height:1.7!important;letter-spacing:.4px!important;overflow-wrap:anywhere!important}
    #chris-news-export-canvas .chris-news-share-actions,#chris-news-export-canvas .chris-news-note{display:none!important}
-   /* Second/security card: use a light background in the exported image for guaranteed contrast. */
-   #chris-news-export-canvas .chris-news-export-card.chris-news-card--security{
+   /* Export every saved news card in the same light ivory style as the second card. */
+   #chris-news-export-canvas .chris-news-export-card{
      background-color:#f4f0e6!important;
      background-image:linear-gradient(145deg,#fffdf7 0%,#f1eadb 100%)!important;
-     border-color:rgba(139,106,25,.48)!important;
-     color:#171717!important
+     border-color:rgba(139,106,25,.38)!important;
+     color:#302a20!important;
    }
-   #chris-news-export-canvas .chris-news-export-card.chris-news-card--security *,
-   #chris-news-export-canvas .chris-news-export-card.chris-news-card--security .chris-news-card-top,
-   #chris-news-export-canvas .chris-news-export-card.chris-news-card--security .chris-news-card-kicker,
-   #chris-news-export-canvas .chris-news-export-card.chris-news-card--security .chris-news-card-date,
-   #chris-news-export-canvas .chris-news-export-card.chris-news-card--security .chris-news-source,
-   #chris-news-export-canvas .chris-news-export-card.chris-news-card--security .chris-news-note{color:#171717!important}
-   #chris-news-export-canvas .chris-news-export-card.chris-news-card--security .chris-news-points,
-   #chris-news-export-canvas .chris-news-export-card.chris-news-card--security .chris-news-card-footer{border-color:rgba(23,23,23,.22)!important}
-   #chris-news-export-canvas .chris-news-export-card.chris-news-card--security .chris-news-card-top,
-   #chris-news-export-canvas .chris-news-export-card.chris-news-card--security .chris-news-card-kicker{color:#8b6a19!important}
+   #chris-news-export-canvas .chris-news-export-card *,
+   #chris-news-export-canvas .chris-news-export-card .chris-news-card-date,
+   #chris-news-export-canvas .chris-news-export-card .chris-news-summary,
+   #chris-news-export-canvas .chris-news-export-card .chris-news-point,
+   #chris-news-export-canvas .chris-news-export-card .chris-news-source{
+     color:#302a20!important;
+     -webkit-text-fill-color:#302a20!important;
+   }
+   #chris-news-export-canvas .chris-news-export-card .chris-news-card-top,
+   #chris-news-export-canvas .chris-news-export-card .chris-news-card-kicker{
+     color:#8b6a19!important;
+     -webkit-text-fill-color:#8b6a19!important;
+   }
+   #chris-news-export-canvas .chris-news-export-card .chris-news-points,
+   #chris-news-export-canvas .chris-news-export-card .chris-news-card-footer{
+     border-color:rgba(23,23,23,.22)!important;
+   }
   `;
   document.head.appendChild(style);
   cards.forEach((card,index)=>{

@@ -351,19 +351,18 @@ document.addEventListener('DOMContentLoaded',()=>{
   for(let i=0;i<blobs.length;i++){
     const title=(cardsNow[i]?.querySelector('h3')?.textContent||'news')
       .replace(/<br\\s*\\/?\\s*>/gi,' ').replace(/[^a-zA-Z0-9가-힣]+/g,'-').replace(/^-|-$/g,'').slice(0,36)||'news';
-    download(blobs[i],String(i+1).padStart(2,'0')+'-'+title+'-'+date);
+    download(blobs[i],String(i+1).padStart(2,'0')+'-'+title);
     // A short gap reduces the chance that browsers block the remaining downloads.
     if(i<blobs.length-1) await new Promise(resolve=>setTimeout(resolve,650));
   }
  };
 
  const shareImage=async()=>{
-  const blobs=await makeImage(),blob=blobs[0],file=new File([blob],'chris-news-card-01-'+new Date().toISOString().slice(0,10)+'.png',{type:'image/png'});
-  if(navigator.share&&navigator.canShare?.({files:[file]})){await navigator.share({title:"Chris's News",text:(lang()==='en'?"Today's Chris's News":"오늘의 Chris's News")+' '+location.origin+location.pathname+'#chris-news',files:[file]});}
-  else if(navigator.clipboard&&window.ClipboardItem){await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);alert(lang()==='en'?'The first news card was copied to the clipboard.':'첫 번째 뉴스 카드가 클립보드에 복사되었습니다.')}
-  else download(blob,'01-card');
+  const blobs=await makeImage(),date=new Date().toISOString().slice(0,10),files=blobs.map((blob,i)=>new File([blob],'chris-news-'+String(i+1).padStart(2,'0')+'-'+date+'.png',{type:'image/png'}));
+  if(navigator.share&&navigator.canShare?.({files})){await navigator.share({title:"Chris's News",text:(lang()==='en'?"Today's Chris's News":"오늘의 Chris's News")+' '+location.origin+location.pathname+'#chris-news',files});}
+  else {for(let i=0;i<blobs.length;i++){download(blobs[i],String(i+1).padStart(2,'0')+'-card');if(i<blobs.length-1)await new Promise(resolve=>setTimeout(resolve,650));}}
  };
- share.addEventListener('click',async()=>{share.disabled=true;try{await shareImage()}catch(e){if(e.name!=='AbortError'){console.error(e);try{download(await makeImage())}catch(x){alert(lang()==='en'?'Sharing failed. Please try again.':'공유에 실패했습니다. 다시 시도해주세요.')}}}finally{share.disabled=false}});
+ share.addEventListener('click',async()=>{share.disabled=true;try{await shareImage()}catch(e){if(e.name!=='AbortError'){console.error(e);try{const blobs=await makeImage();download(blobs[0],'01-card')}catch(x){alert(lang()==='en'?'Sharing failed. Please try again.':'공유에 실패했습니다. 다시 시도해주세요.')}}}finally{share.disabled=false}});
  if(copyLink)copyLink.addEventListener('click',async()=>{copyLink.disabled=true;try{const url=location.origin+location.pathname+'#chris-news';await navigator.clipboard.writeText(url);alert(lang()==='en'?'Chris’s News link copied.':'Chris’s News 링크를 복사했습니다.')}catch(e){const url=location.origin+location.pathname+'#chris-news';prompt(lang()==='en'?'Copy this link:':'아래 링크를 복사해 주세요.',url)}finally{copyLink.disabled=false}});
  if(vertical)vertical.addEventListener('click',async()=>{vertical.disabled=true;try{await downloadCardSet()}catch(e){console.error(e);alert(lang()==='en'?'Card images could not be created. Please try again.':'카드별 이미지 생성에 실패했습니다. 다시 시도해 주세요.')}finally{vertical.disabled=false}});
 

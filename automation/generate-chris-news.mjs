@@ -186,15 +186,30 @@ function sentencePoints(text) {
 }
 
 async function translateText(value, target) {
-  try {
-    const url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=' + target + '&dt=t&q=' + encodeURIComponent(value.slice(0, 4500));
-    const response = await fetch(url, { signal: AbortSignal.timeout(12000) });
-    if (!response.ok) return value;
-    const payload = await response.json();
-    return Array.isArray(payload?.[0]) ? payload[0].map(part => part?.[0] || '').join('').trim() || value : value;
-  } catch {
-    return value;
+  const source = String(value || '').trim();
+  if (!source) return source;
+  const containsHangul = text => /[\\uAC00-\\uD7A3]/.test(text);
+  let lastError;
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      const url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=' + target + '&dt=t&q=' + encodeURIComponent(source.slice(0, 4500));
+      const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
+      if (!response.ok) throw new Error('Translation request failed: HTTP ' + response.status);
+      const payload = await response.json();
+      const translated = Array.isArray(payload?.[0])
+        ? payload[0].map(part => part?.[0] || '').join('').trim()
+        : '';
+      if (!translated) throw new Error('Translation response was empty.');
+      if (target === 'ko' && !containsHangul(translated)) {
+        throw new Error('Korean translation did not contain Hangul; refusing to publish the source text as Korean.');
+      }
+      return translated;
+    } catch (error) {
+      lastError = error;
+      if (attempt < 3) await new Promise(resolve => setTimeout(resolve, 700 * attempt));
+    }
   }
+  throw new Error('Translation failed after 3 attempts: ' + String(lastError));
 }
 async function fetchCategory(category, globallySeenLinks = new Set(), globallySeenTitles = []) {
   // Prefer direct publisher RSS feeds. Aggregator feeds are deliberately not used:

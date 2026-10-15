@@ -247,7 +247,10 @@ async function bibleJourneyRpc(name,body){
   if(!result||result.ok!==true)throw new Error(result?.error||'통독 기록을 저장하지 못했습니다.');
   return result;
 }
+let bibleJourneyLoadSequence=0;
+let bibleJourneyProgressSaving=false;
 async function loadBibleJourneyRemote(){
+  const requestSequence=++bibleJourneyLoadSequence;
   bibleJourneyLoaded=false;bibleJourneyLoadError=false;renderBibleJourney();
   try{
     const result=await bibleJourneyRpc('clp_load_bible_journey',{});
@@ -257,13 +260,16 @@ async function loadBibleJourneyRemote(){
       const migrated=await bibleJourneyRpc('clp_save_bible_journey',{p_data:local});
       data=migrated.data||local;
     }
-    put(bibleJourneyKey(),data);
+    if(requestSequence!==bibleJourneyLoadSequence)return;
+    // A late load must never overwrite a progress update made while it was in flight.
+    if(!bibleJourneyProgressSaving)put(bibleJourneyKey(),data);
     bibleJourneyLoaded=true;
   }catch(error){
+    if(requestSequence!==bibleJourneyLoadSequence)return;
     bibleJourneyLoadError=true;
     console.error('Bible journey load failed:',error);
   }
-  renderBibleJourney();
+  if(requestSequence===bibleJourneyLoadSequence)renderBibleJourney();
 }
 async function saveBibleJourneyRemote(data){
   const result=await bibleJourneyRpc('clp_save_bible_journey',{p_data:data});
@@ -389,36 +395,47 @@ async function completeBibleJourney(){
   const btn=document.getElementById('journeyCompleteBtn'),chapters=getBibleJourneyChapters(),index=Number(btn&&btn.dataset.chapterIndex),progressEl=document.getElementById('journeyProgress');
   const showJourneyMessage=message=>{if(progressEl)progressEl.textContent=message};
   if(!btn)return;
+  if(bibleJourneyProgressSaving){showJourneyMessage('이전 읽기 기록을 저장하고 있습니다. 잠시만 기다려 주세요.');return}
   if(!profile){showJourneyMessage('로그인 정보를 확인할 수 없습니다. 로그아웃 후 다시 로그인해 주세요.');return}
   if(!bibleJourneyLoaded||bibleJourneyLoadError){showJourneyMessage('통독 기록을 아직 불러오지 못했습니다. 잠시 기다린 뒤 다시 시도해 주세요.');return}
   if(btn.textContent.trim()==='처음부터 다시 읽기'){
-    btn.disabled=true;btn.textContent='저장 중…';
-    try{await saveBibleJourneyRemote({nextChapterIndex:0,completedDays:0,dailyReadCount:0,dailyStartIndex:0,lastReadAt:null,finished:false,reflections:(getJSON(bibleJourneyKey(),{})||{}).reflections||{}});openBibleJourneyIndex=null;renderBibleJourney()}
-    catch(error){console.error('Bible journey reset failed:',error);showJourneyMessage('초기화 저장에 실패했습니다. 인터넷 연결을 확인한 뒤 다시 시도해 주세요.');btn.disabled=false;btn.textContent='처음부터 다시 읽기'}
+    bibleJourneyProgressSaving=true;btn.disabled=true;btn.textContent='저장 중…';
+    try{
+      await saveBibleJourneyRemote({nextChapterIndex:0,completedDays:0,dailyReadCount:0,dailyStartIndex:0,lastReadAt:null,finished:false,reflections:(getJSON(bibleJourneyKey(),{})||{}).reflections||{}});
+      openBibleJourneyIndex=null;
+      renderBibleJourney();
+    }catch(error){
+      console.error('Bible journey reset failed:',error);
+      showJourneyMessage('초기화 저장에 실패했습니다. 인터넷 연결을 확인한 뒤 다시 시도해 주세요.');
+      btn.disabled=false;btn.textContent='처음부터 다시 읽기';
+    }finally{bibleJourneyProgressSaving=false}
     return;
   }
   if(!Number.isFinite(index)||!chapters.length){showJourneyMessage('읽을 장 정보를 확인하지 못했습니다. 장 목록을 다시 선택해 주세요.');return}
   const old=getJSON(bibleJourneyKey(),{nextChapterIndex:0,completedDays:0});
   const current=Number(old.nextChapterIndex)||0,today=localDate();
   const priorCount=old.lastReadAt===today?Math.max(0,Number(old.dailyReadCount)||0):0;
-  if(index!==current){showJourneyMessage('현재 순서의 장만 완료할 수 있습니다. 다음 읽을 장을 다시 열어 주세요.');renderBibleJourney();return}
+  if(index!==current){
+    showJourneyMessage('현재 읽을 장과 화면이 일치하지 않습니다. 장 목록에서 ‘다음 읽을 장’을 다시 선택해 주세요.');
+    renderBibleJourney();return;
+  }
   if(priorCount>=4){showJourneyMessage('오늘 목표인 4장을 모두 읽었습니다. 내일 이어서 읽어 주세요.');renderBibleJourney();return}
   const dailyStartIndex=old.lastReadAt===today&&Number.isInteger(Number(old.dailyStartIndex))?Number(old.dailyStartIndex):current;
   const nextIndex=Math.min(current+1,chapters.length);
-  const next={nextChapterIndex:nextIndex,completedDays:(Number(old.completedDays)||0)+(old.lastReadAt===today?0:1),lastReadAt:today,dailyReadCount:priorCount+1,dailyStartIndex};
+  const next={...old,nextChapterIndex:nextIndex,completedDays:(Number(old.completedDays)||0)+(old.lastReadAt===today?0:1),lastReadAt:today,dailyReadCount:priorCount+1,dailyStartIndex};
   if(nextIndex>=chapters.length)next.finished=true;
-  btn.disabled=true;btn.textContent='저장 중…';showJourneyMessage('읽음 완료를 저장하고 있습니다…');
+  bibleJourneyProgressSaving=true;btn.disabled=true;btn.textContent='저장 중…';showJourneyMessage('읽음 완료를 저장하고 있습니다…');
   try{
     await saveBibleJourneyRemote(next);
-    // Keep the reader open on the newly unlocked chapter so the next completion
-    // button is immediately ready and cannot appear stale/disabled.
     openBibleJourneyIndex=nextIndex<chapters.length?nextIndex:null;
     renderBibleJourney();
   }catch(error){
     console.error('Bible journey save failed:',error);
     showJourneyMessage('저장 실패: '+(error&&error.message?error.message:'연결을 확인한 뒤 다시 시도해 주세요.'));
     alert('통독 기록을 Supabase에 저장하지 못했습니다. 연결을 확인한 뒤 다시 시도해 주세요.');
-    btn.disabled=false;btn.textContent='이 장 읽기 완료 ✓';
+    renderBibleJourney();
+  }finally{
+    bibleJourneyProgressSaving=false;
   }
 }
 function updateTodayLanguage(lang){const d=window.PAGE_I18N[lang]||window.PAGE_I18N.ko;document.getElementById('todayDate').textContent=new Intl.DateTimeFormat(d.today_date_locale,{dateStyle:'full'}).format(new Date());document.getElementById('todayVerse').textContent='“'+(lang==='en'?verse[2]:verse[0])+'”';document.getElementById('todayRef').textContent=lang==='en'?verse[3]:verse[1];renderBibleJourney();document.getElementById('todoInput').placeholder=d.todo_placeholder;renderRoutine();document.getElementById('todayAuth').querySelector('#authInitials').placeholder=lang==='en'?'INITIALS (e.g. CLP)':'INITIALS (예: CLP)';document.getElementById('todayAuth').querySelector('#authPin').placeholder=lang==='en'?'4-DIGIT PIN':'4자리 PIN';renderTodos&&renderTodos()}

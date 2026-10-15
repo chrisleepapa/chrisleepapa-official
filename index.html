@@ -293,7 +293,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" crossorigin="anonymous"></script>
 <script>
-document.addEventListener('DOMContentLoaded',()=>{
+const initChrisNewsExport=()=>{
  const root=document.getElementById('chris-news'),share=document.getElementById('chris-news-share'),save=document.getElementById('chris-news-image');
  if(!root||!share||!save)return;
  const lang=()=>document.documentElement.lang==='en'?'en':'ko';
@@ -423,7 +423,8 @@ document.addEventListener('DOMContentLoaded',()=>{
   share.querySelector('.chris-news-share-label').textContent=en?'Share':'공유';
  };
  labels();new MutationObserver(labels).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
-});
+};
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initChrisNewsExport,{once:true});else initChrisNewsExport();
 </script>
 <section id="chris-news" aria-labelledby="chris-news-title">
   <div class="chris-news-inner">

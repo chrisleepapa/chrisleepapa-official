@@ -677,6 +677,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             if (tw) window.scrollTo({ top: tw.offsetTop - 120, behavior: 'smooth' });
         }
         function safeNavigate(url) { if (url && url.trim() !== '') window.location.assign(url); }
+
+        // Chris's Pick deep links: select the requested video and bring the player into view.
+        function openVideoFromHash() {
+            const hash = (window.location.hash || '').slice(1).toLowerCase();
+            const hashVideoIds = {
+                furious: 'kAkGg2t1Ats',
+                'demon-slayer': 'byxLKvBHULk',
+                iloveyou: 'vlt7VfCA8bM',
+                'saranghandago': 'vlt7VfCA8bM'
+            };
+            const targetId = hashVideoIds[hash];
+            if (!targetId) return;
+            const index = videoData.findIndex(function(video) { return video.id === targetId; });
+            if (index < 0) return;
+            loadMainVideo(index);
+        }
+        window.addEventListener('DOMContentLoaded', openVideoFromHash);
+        window.addEventListener('hashchange', openVideoFromHash);
     </script>
 
     <!-- ★ 공통 스크립트 & 공통 방명록 -->

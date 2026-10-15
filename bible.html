@@ -1354,10 +1354,10 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
                 const nums = keys.map(key => Number(key.split('-')[2]));
                 const sameChapter = keys.every(key => key.split('-').slice(0,2).join('-') === keys[0].split('-').slice(0,2).join('-'));
                 reference = sameChapter && nums.every((n,i) => i === 0 || n === nums[i-1]+1)
-                    ? refs[0].replace(/:\\d+$/, ':' + nums[0]) + '–' + nums[nums.length-1]
+                    ? BIBLE_BOOKS.find(b => Number(b.id) === Number(keys[0].split('-')[0])).name + ' ' + keys[0].split('-')[1] + ':' + nums[0] + '–' + nums[nums.length-1]
                     : refs.join(', ');
             }
-            return {reference, text: verses.map(v => v.reference.split(' ').slice(-1)[0] + '  ' + v.text).join('\\n\\n'), verses};
+            return {reference, text: verses.map(v => v.reference.split(' ').slice(-1)[0] + '  ' + v.text).join('\n\n'), verses};
         }
 
         // 선택한 성경 구절을 텍스트/이미지로 공유합니다.
@@ -1419,7 +1419,7 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
                 const blob = await createBibleVerseImage(data);
                 const file = new File([blob], 'bible-verses.png', {type:'image/png'});
                 if (navigator.share && (!navigator.canShare || navigator.canShare({files:[file]}))) {
-                    await navigator.share({title:data.reference, text:data.reference + '\\n' + data.text, files:[file]});
+                    await navigator.share({title:data.reference, text:data.reference + '\n' + data.text, files:[file]});
                 } else if (navigator.share) {
                     await navigator.share({title:data.reference, text:data.reference + '\\n' + data.text});
                 } else {

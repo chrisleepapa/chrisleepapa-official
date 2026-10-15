@@ -352,7 +352,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   const blobs=await renderCards(),cards=getCards(),date=dateStamp();
   return blobs.map((blob,i)=>{
    const title=(cards[i].querySelector('h3')?.textContent||'news').replace(/\\s+/g,' ').replace(/[^a-zA-Z0-9가-힣]+/g,'-').replace(/^-|-$/g,'').slice(0,40)||'news';
-   return {blob,name='chris-news-'+String(i+1).padStart(2,'0')+'-'+title+'-'+date+'.png'};
+   return {blob,name:'chris-news-'+String(i+1).padStart(2,'0')+'-'+title+'-'+date+'.png'};
   });
  };
  const downloadBlob=(blob,name)=>{

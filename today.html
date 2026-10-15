@@ -355,8 +355,8 @@ function renderBibleJourney(){
     item.addEventListener('click',()=>openBibleJourneyChapter(i));
     listEl.appendChild(item);
   }
-  if(dailyReadCount>=4){
-    refEl.hidden=true;passageEl.hidden=false;passageEl.textContent='오늘 목표인 4장을 모두 읽었어요. 내일 이어서 읽을 수 있습니다.';btn.hidden=true;openBibleJourneyIndex=null;return;
+  if(dailyReadCount>=4&&(openBibleJourneyIndex==null||openBibleJourneyIndex<batchStart||openBibleJourneyIndex>=endIndex)){
+    refEl.hidden=true;passageEl.hidden=false;passageEl.textContent='오늘 목표인 4장을 모두 읽었어요. 아래에서 오늘 읽은 장을 다시 선택해 읽을 수 있습니다. 내일 이어서 읽어 주세요.';btn.hidden=true;return;
   }
   if(openBibleJourneyIndex==null||openBibleJourneyIndex<batchStart||openBibleJourneyIndex>=endIndex){
     refEl.hidden=true;passageEl.hidden=true;btn.hidden=true;return;

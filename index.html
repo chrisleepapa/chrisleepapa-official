@@ -327,9 +327,35 @@ document.addEventListener('DOMContentLoaded',()=>{
   const results=[];
   for(let i=0;i<cards.length;i++){
    const card=cards[i];
+   const rect=card.getBoundingClientRect();
+   if(rect.width<80||rect.height<120)throw new Error('Card '+(i+1)+' is not fully laid out.');
    const canvas=await window.html2canvas(card,{
-    scale:3,backgroundColor:'#ffffff',useCORS:true,allowTaint:false,logging:false,
-    scrollX:0,scrollY:0,windowWidth:Math.max(document.documentElement.clientWidth,card.scrollWidth),
+    scale:3,backgroundColor:null,useCORS:true,allowTaint:false,logging:false,
+    scrollX:0,scrollY:0,width:Math.ceil(rect.width),height:Math.ceil(rect.height),
+    windowWidth:document.documentElement.clientWidth,
+    onclone:(clonedDoc)=>{
+     const style=clonedDoc.createElement('style');
+     style.textContent=`
+      #chris-news .chris-news-card{isolation:isolate!important;transform:none!important;transition:none!important;overflow:hidden!important}
+      #chris-news .chris-news-card::before{z-index:0!important;inset:0!important;opacity:1!important}
+      #chris-news .chris-news-card::after{z-index:2!important}
+      #chris-news .chris-news-card>*{position:relative!important;z-index:1!important}
+      #chris-news .chris-news-card .chris-news-share-actions,
+      #chris-news .chris-news-card .chris-news-note{display:none!important}
+     `;
+     clonedDoc.head.appendChild(style);
+     const cloneCards=clonedDoc.querySelectorAll('#chris-news .chris-news-card');
+     const clone=cloneCards[i];
+     if(clone){
+      clone.style.transform='none';
+      clone.style.transition='none';
+      clone.style.backgroundColor=getComputedStyle(card).backgroundColor||'#ffffff';
+      clone.style.backgroundImage=getComputedStyle(card).backgroundImage;
+      clone.style.width=Math.ceil(rect.width)+'px';
+      clone.style.height=Math.ceil(rect.height)+'px';
+      clone.style.minHeight=Math.ceil(rect.height)+'px';
+     }
+    },
     ignoreElements:el=>el.classList?.contains('chris-news-share-actions')||el.classList?.contains('chris-news-note')
    });
    if(!canvas.width||!canvas.height)throw new Error('Card '+(i+1)+' produced an empty canvas.');

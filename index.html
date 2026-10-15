@@ -411,12 +411,23 @@ const initChrisNewsExport=()=>{
    #chris-news-export-canvas .chris-news-card-footer{margin-top:30px!important;padding-top:18px!important;gap:20px!important}
    #chris-news-export-canvas .chris-news-source{font-size:16px!important;line-height:1.7!important;letter-spacing:.4px!important;overflow-wrap:anywhere!important}
    #chris-news-export-canvas .chris-news-share-actions,#chris-news-export-canvas .chris-news-note{display:none!important}
-   /* Second/security card: white text must remain white in the exported image. */
-   #chris-news-export-canvas .chris-news-export-card.chris-news-card--security{background-color:#08090b!important;background-image:linear-gradient(145deg,#18191c 0%,#090a0c 48%,#111215 100%)!important;border-color:rgba(201,168,76,.42)!important}
-   #chris-news-export-canvas .chris-news-export-card.chris-news-card--security,
-   #chris-news-export-canvas .chris-news-export-card.chris-news-card--security *{color:#fff!important}
+   /* Second/security card: use a light background in the exported image for guaranteed contrast. */
+   #chris-news-export-canvas .chris-news-export-card.chris-news-card--security{
+     background-color:#f4f0e6!important;
+     background-image:linear-gradient(145deg,#fffdf7 0%,#f1eadb 100%)!important;
+     border-color:rgba(139,106,25,.48)!important;
+     color:#171717!important
+   }
+   #chris-news-export-canvas .chris-news-export-card.chris-news-card--security *,
+   #chris-news-export-canvas .chris-news-export-card.chris-news-card--security .chris-news-card-top,
+   #chris-news-export-canvas .chris-news-export-card.chris-news-card--security .chris-news-card-kicker,
+   #chris-news-export-canvas .chris-news-export-card.chris-news-card--security .chris-news-card-date,
+   #chris-news-export-canvas .chris-news-export-card.chris-news-card--security .chris-news-source,
+   #chris-news-export-canvas .chris-news-export-card.chris-news-card--security .chris-news-note{color:#171717!important}
    #chris-news-export-canvas .chris-news-export-card.chris-news-card--security .chris-news-points,
-   #chris-news-export-canvas .chris-news-export-card.chris-news-card--security .chris-news-card-footer{border-color:rgba(255,255,255,.2)!important}
+   #chris-news-export-canvas .chris-news-export-card.chris-news-card--security .chris-news-card-footer{border-color:rgba(23,23,23,.22)!important}
+   #chris-news-export-canvas .chris-news-export-card.chris-news-card--security .chris-news-card-top,
+   #chris-news-export-canvas .chris-news-export-card.chris-news-card--security .chris-news-card-kicker{color:#8b6a19!important}
   `;
   document.head.appendChild(style);
   cards.forEach((card,index)=>{

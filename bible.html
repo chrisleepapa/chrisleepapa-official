@@ -1123,6 +1123,12 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
         }
 
         function renderContent() {
+            if (typeof selectedBibleVerseKeys !== 'undefined' && selectedBibleVerseKeys.size) {
+                selectedBibleVerseKeys.clear();
+                const countLabel = document.getElementById('multiVerseCount');
+                if (countLabel) countLabel.textContent = '선택한 구절 없음';
+                ['shareSelectedVersesBtn','saveSelectedVersesBtn'].forEach(id => { const btn = document.getElementById(id); if (btn) btn.disabled = true; });
+            }
             const book = BIBLE_BOOKS.find(b => b.id === currentBookId);
             if(!book) return;
             document.getElementById('headerTitle').textContent = `${book.name} ${currentChapter}`;

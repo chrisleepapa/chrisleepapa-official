@@ -213,11 +213,15 @@
       if (value !== undefined) el.textContent = value;
     });
   }
+  // Keep the guide synchronized with the site's live language selector.
   const prior = window.onLangChange;
   window.onLangChange = function(lang) {
     if (typeof prior === 'function') prior(lang);
     apply(lang);
   };
+  document.addEventListener('DOMContentLoaded', () => {
+    apply((localStorage.getItem('pref-lang') || document.documentElement.lang || 'ko'));
+  });
   apply((localStorage.getItem('pref-lang') || document.documentElement.lang || 'ko'));
 })();
 </script>

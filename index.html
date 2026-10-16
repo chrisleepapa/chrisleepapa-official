@@ -630,28 +630,20 @@ document.addEventListener('DOMContentLoaded',()=>{
 </script>
 
 <style id="chris-news-unified-ivory">
-/* Chris's News: use one consistent ivory surface on screen and in saved cards. */
+/* Chris's News: consistent ivory in light mode and unified black in dark mode. */
 #chris-news .chris-news-card,
-html[data-theme="dark"] #chris-news .chris-news-card,
 #chris-news .chris-news-card--world,
 #chris-news .chris-news-card--security,
 #chris-news .chris-news-card--economy,
 #chris-news .chris-news-card--science,
 #chris-news .chris-news-card--climate,
-#chris-news .chris-news-card--society,
-html[data-theme="dark"] #chris-news .chris-news-card--world,
-html[data-theme="dark"] #chris-news .chris-news-card--security,
-html[data-theme="dark"] #chris-news .chris-news-card--economy,
-html[data-theme="dark"] #chris-news .chris-news-card--science,
-html[data-theme="dark"] #chris-news .chris-news-card--climate,
-html[data-theme="dark"] #chris-news .chris-news-card--society {
+#chris-news .chris-news-card--society {
   background: #f5f0e6 !important;
   background-image: none !important;
   color: #29261f !important;
   border-color: rgba(126,101,55,.22);
 }
-#chris-news .chris-news-card::before,
-html[data-theme="dark"] #chris-news .chris-news-card::before { display:none !important; background:none !important; }
+#chris-news .chris-news-card::before { display:none !important; background:none !important; }
 #chris-news .chris-news-card-top,
 #chris-news .chris-news-card-kicker { color:#72531c !important; }
 #chris-news .chris-news-card-date,
@@ -662,5 +654,25 @@ html[data-theme="dark"] #chris-news .chris-news-card::before { display:none !imp
 #chris-news .chris-news-point { color:#5a554b !important; }
 #chris-news .chris-news-points,
 #chris-news .chris-news-card-footer { border-color:rgba(126,101,55,.18) !important; }
+
+/* Dark mode: all on-screen cards are uniformly black, with readable light text. */
+html[data-theme="dark"] #chris-news .chris-news-card {
+  background:#0b0b10 !important;
+  background-color:#0b0b10 !important;
+  background-image:none !important;
+  color:#f8f3e8 !important;
+  border-color:rgba(232,208,138,.19) !important;
+}
+html[data-theme="dark"] #chris-news .chris-news-card::before { display:none !important; background:none !important; }
+html[data-theme="dark"] #chris-news .chris-news-card-top,
+html[data-theme="dark"] #chris-news .chris-news-card-kicker { color:#e8d08a !important; }
+html[data-theme="dark"] #chris-news .chris-news-card-date,
+html[data-theme="dark"] #chris-news .chris-news-source,
+html[data-theme="dark"] #chris-news .chris-news-note { color:rgba(240,236,228,.58) !important; }
+html[data-theme="dark"] #chris-news .chris-news-card h3 { color:#f8f3e8 !important; }
+html[data-theme="dark"] #chris-news .chris-news-summary { color:rgba(240,236,228,.78) !important; }
+html[data-theme="dark"] #chris-news .chris-news-point { color:rgba(240,236,228,.68) !important; }
+html[data-theme="dark"] #chris-news .chris-news-points,
+html[data-theme="dark"] #chris-news .chris-news-card-footer { border-color:rgba(255,255,255,.12) !important; }
 </style>
 </body></html>

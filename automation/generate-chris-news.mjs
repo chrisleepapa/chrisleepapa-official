@@ -1,4 +1,6 @@
 import { mkdir, writeFile } from 'node:fs/promises';
+import { spawn } from 'node:child_process';
+import { createInterface } from 'node:readline';
 
 const categories = [
   {
@@ -104,7 +106,27 @@ function metaContent(html, key) {
   return '';
 }
 function isGenericNewsBoilerplate(value = '') {
-  return /comprehensive up-to-date news coverage|aggregated from sources all over the world by google news|google news provides.*news coverage/i.test(value.replace(/\s+/g, ' ').trim());
+  const text = value.replace(/\s+/g, ' ').trim();
+  return /comprehensive up-to-date news coverage|aggregated from sources all over the world by google news|google news provides.*news coverage|this will let google show .* news articles|match or are related to your search|read more:|image source:|photograph:|photograph by|getty images|wikimedia commons|adapted by .*hirshfeld|sign up for our newsletter|subscribe to our newsletter|cookie settings|accept all cookies|privacy policy|terms and conditions/i.test(text);
+}
+function splitSentences(value = '') {
+  return (String(value).match(/[^.!?。！？]+[.!?。！？]?/g) || [])
+    .map(s => s.replace(/\s+/g, ' ').trim())
+    .filter(s => s.length >= 45 && s.length <= 420)
+    .filter(s => !isGenericNewsBoilerplate(s))
+    .filter(s => !/^(?:[A-Z][a-z]+\s+){0,3}(?:\d{1,2},?\s+)?(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?\s+\d{1,2}\b/i.test(s));
+}
+function dedupeSentences(sentences) {
+  const seen = new Set();
+  const out = [];
+  for (const sentence of sentences) {
+    const key = normalizedTitle(sentence);
+    if (!key || key.length < 30 || seen.has(key)) continue;
+    if (out.some(old => titleSimilarity(old, sentence) >= 0.82)) continue;
+    seen.add(key);
+    out.push(sentence);
+  }
+  return out;
 }
 function extractArticleTitle(html) {
   const metaTitle = metaContent(html, 'og:title') || metaContent(html, 'twitter:title');
@@ -164,7 +186,7 @@ async function fetchArticleDetails(url) {
     const response = await fetch(url, {
       redirect: 'follow',
       headers: { 'user-agent': 'Mozilla/5.0 (compatible; ChrisLeePapaNewsBot/1.0)' },
-      signal: AbortSignal.timeout(12000)
+      signal: AbortSignal.timeout(7000)
     });
     if (!response.ok) return { link: url, details: [] };
     const html = await response.text();
@@ -179,38 +201,73 @@ async function fetchArticleDetails(url) {
     return { link: url, details: [] };
   }
 }
-function sentencePoints(text) {
-  return (text.match(/[^.!?。！？]+[.!?。！？]?/g) || [])
-    .map(s => s.trim()).filter(s => s.length > 25).slice(0, 3)
-    .map(s => s.length > 220 ? s.slice(0, 217) + '…' : s);
+function sentencePoints(text, excluded = []) {
+  const blocked = new Set(excluded.map(normalizedTitle));
+  return dedupeSentences(splitSentences(text))
+    .filter(sentence => !blocked.has(normalizedTitle(sentence)))
+    .slice(0, 3)
+    .map(s => s.length > 220 ? s.slice(0, 217).replace(/[,;:]$/, '') + '…' : s);
 }
 
-async function translateText(value, target) {
-  const source = String(value || '').trim();
-  if (!source) return source;
-  const containsHangul = text => /[\\uAC00-\\uD7A3]/.test(text);
-  let lastError;
-  for (let attempt = 1; attempt <= 3; attempt++) {
-    try {
-      const url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=' + target + '&dt=t&q=' + encodeURIComponent(source.slice(0, 4500));
-      const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
-      if (!response.ok) throw new Error('Translation request failed: HTTP ' + response.status);
-      const payload = await response.json();
-      const translated = Array.isArray(payload?.[0])
-        ? payload[0].map(part => part?.[0] || '').join('').trim()
-        : '';
-      if (!translated) throw new Error('Translation response was empty.');
-      if (target === 'ko' && !containsHangul(translated)) {
-        throw new Error('Korean translation did not contain Hangul; refusing to publish the source text as Korean.');
+let translatorProcess;
+let translatorQueue = [];
+let translatorReady = false;
+
+function translateWithLocalModel(values) {
+  if (!translatorProcess) {
+    translatorProcess = spawn('python3', ['automation/translate-news-local.py'], { stdio: ['pipe', 'pipe', 'inherit'] });
+    const lines = createInterface({ input: translatorProcess.stdout });
+    lines.on('line', line => {
+      let result;
+      try { result = JSON.parse(line); }
+      catch { result = { error: 'Local translator returned invalid worker output.' }; }
+      const pending = translatorQueue.shift();
+      if (pending) {
+        if (result.error) pending.reject(new Error(result.error));
+        else pending.resolve(result.values || []);
       }
-      return translated;
-    } catch (error) {
-      lastError = error;
-      if (attempt < 3) await new Promise(resolve => setTimeout(resolve, 700 * attempt));
-    }
+    });
+    translatorProcess.on('error', error => {
+      for (const pending of translatorQueue.splice(0)) pending.reject(error);
+    });
+    translatorProcess.on('exit', code => {
+      translatorReady = false;
+      for (const pending of translatorQueue.splice(0)) pending.reject(new Error('Local translator exited with code ' + code));
+      translatorProcess = null;
+    });
   }
-  throw new Error('Translation failed after 3 attempts: ' + String(lastError));
+  return new Promise((resolve, reject) => {
+    translatorQueue.push({ resolve, reject });
+    translatorProcess.stdin.write(JSON.stringify({ values }) + '\n', error => {
+      if (error) {
+        const index = translatorQueue.findIndex(item => item.resolve === resolve);
+        if (index >= 0) translatorQueue.splice(index, 1);
+        reject(error);
+      }
+    });
+  });
 }
+
+async function translateSegments(values, target) {
+  if (target !== 'ko') throw new Error('This news workflow currently supports Korean output only.');
+  const translated = await translateWithLocalModel(values);
+  if (translated.length !== values.length) throw new Error('Local translation returned an unexpected number of fields.');
+
+  const titleKo = String(translated[0] || '').trim();
+  const summaryKo = String(translated[1] || '').trim();
+  const pointsKo = translated.slice(2).map(value => String(value || '').trim()).filter(Boolean);
+  const hasHangul = value => /[\uAC00-\uD7A3]/.test(value);
+  const normalize = value => value.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '');
+  const distinctPoints = [...new Map(pointsKo.map(point => [normalize(point), point])).values()];
+  const allKorean = [titleKo, summaryKo, ...distinctPoints].every(hasHangul);
+  const boilerplate = /comprehensive up-to-date news coverage|match or are related to your search|검색 결과|구글에 표시/i.test([titleKo, summaryKo, ...distinctPoints].join(' '));
+  const obviousBadKorean = /촬영에서 살았던|의심의 여지도|검색 의 어딘가|영광스러운 전쟁|상대는 모두에 모여/i.test([titleKo, summaryKo, ...distinctPoints].join(' '));
+  if (!titleKo || titleKo.length < 8 || !summaryKo || summaryKo.length < 60 || distinctPoints.length < 2 || !allKorean || boilerplate || obviousBadKorean) {
+    throw new Error('Local translation failed Korean completeness or quality checks.');
+  }
+  return [titleKo, summaryKo, ...distinctPoints.slice(0, Math.max(2, values.length - 2))];
+}
+
 async function fetchCategory(category, globallySeenLinks = new Set(), globallySeenTitles = []) {
   // Prefer direct publisher RSS feeds. Aggregator feeds are deliberately not used:
   // they often leave the card linked to a search/result page rather than the actual report.
@@ -218,8 +275,11 @@ async function fetchCategory(category, globallySeenLinks = new Set(), globallySe
   const maxAgeMs = 72 * 60 * 60 * 1000;
   const seenLinks = new Set();
   const failures = [];
+  let candidatesChecked = 0;
+  const maxCandidatesPerCategory = 8;
 
   for (const feed of category.feeds || []) {
+    if (candidatesChecked >= maxCandidatesPerCategory) break;
     let items = [];
     try {
       const response = await fetch(feed.url, {
@@ -240,6 +300,7 @@ async function fetchCategory(category, globallySeenLinks = new Set(), globallySe
     }
 
     for (const item of items.slice(0, 35)) {
+      if (candidatesChecked >= maxCandidatesPerCategory) break;
       const publishedMs = Date.parse(item.pubDate);
       if (!Number.isFinite(publishedMs) || publishedMs > nowMs + 5 * 60 * 1000 || nowMs - publishedMs > maxAgeMs) continue;
       let itemUrl;
@@ -251,6 +312,7 @@ async function fetchCategory(category, globallySeenLinks = new Set(), globallySe
       const canonicalLink = itemUrl.href;
       if (seenLinks.has(canonicalLink) || globallySeenLinks.has(canonicalLink)) continue;
       seenLinks.add(canonicalLink);
+      candidatesChecked++;
 
       const rssText = cleanHtml(item.description || '');
       // ScienceDaily permits RSS headlines and summaries with attribution and a link,
@@ -264,32 +326,38 @@ async function fetchCategory(category, globallySeenLinks = new Set(), globallySe
       // Keep the six-card feed editorially distinct: never repeat the same or near-identical headline across categories.
       if (globallySeenTitles.some(title => titleSimilarity(item.title, title) >= 0.75)) continue;
 
-      const summaryCandidate = !feed.rssOnly && detailText.length >= 100 && !isGenericNewsBoilerplate(detailText)
+      const rawCandidate = !feed.rssOnly && detailText.length >= 100 && !isGenericNewsBoilerplate(detailText)
         ? detailText
         : rssText;
-      const normalizedSummary = normalizedTitle(summaryCandidate);
+      const cleanSentences = dedupeSentences(splitSentences(rawCandidate));
+      const normalizedSummary = normalizedTitle(rawCandidate);
       const normalizedHeadline = normalizedTitle(item.title);
-      const headlineOnly = !summaryCandidate || summaryCandidate.length < 90 ||
+      const headlineOnly = cleanSentences.length < 3 || rawCandidate.length < 150 ||
         (normalizedHeadline && normalizedSummary.startsWith(normalizedHeadline) &&
           normalizedSummary.length - normalizedHeadline.length < 35);
       if (headlineOnly) continue;
 
+      // Keep the editorial summary short, then choose different sentences for the key points.
+      // Never publish credits, search-engine snippets, duplicated sentences, or truncated fragments.
+      const summarySentences = cleanSentences.slice(0, 2);
+      const summary = summarySentences.join(' ').slice(0, 650).trim();
+      const points = sentencePoints(rawCandidate, summarySentences);
+      if (summary.length < 90 || points.length < 2) continue;
+      const safePoints = points;
       const source = feed.name;
-      const summary = summaryCandidate.slice(0, 1100).trim();
-      const points = sentencePoints(summary);
-      if (points.length === 0 && summary.length < 180) continue;
-      const safePoints = points.length ? points : [summary.slice(0, 180)];
-      const [titleKo, summaryKo, pointsKo] = await Promise.all([
-        translateText(item.title, 'ko'),
-        translateText(summary, 'ko'),
-        Promise.all(safePoints.map(point => translateText(point, 'ko')))
-      ]);
+      const translatedFields = await translateSegments([item.title, summary, ...safePoints], 'ko');
+      const titleKo = translatedFields[0];
+      const summaryKo = translatedFields[1];
+      const pointsKo = translatedFields.slice(2);
+      const translatedPoints = dedupeSentences(pointsKo);
+      if (!titleKo || !summaryKo || translatedPoints.length < 2 ||
+          /this will let google show|match or are related to your search/i.test(summaryKo)) continue;
       return {
         category: category.key, categoryKo: category.ko, categoryEn: category.en,
-        title: item.title, titleEn: item.title, titleKo: titleKo || item.title,
-        summary, summaryEn: summary, summaryKo: summaryKo || summary,
+        title: item.title, titleEn: item.title, titleKo,
+        summary, summaryEn: summary, summaryKo,
         points: safePoints,
-        pointsKo: pointsKo.length ? pointsKo : safePoints,
+        pointsKo: translatedPoints,
         pointsEn: safePoints,
         source, link: canonicalLink, publishedAt: item.pubDate,
         summarySource: detailText.length >= 100 ? 'publisher article page' : feed.name + ' RSS excerpt'
@@ -322,6 +390,19 @@ if (cards.some(x => !x)) {
   // so the failed workflow is visible and the incomplete data is not presented as fresh.
   throw new Error('News refresh could not obtain six verified, non-headline-only cards. See category fallback diagnostics above.');
 }
+for (const card of cards) {
+  const pointsKo = dedupeSentences(card.pointsKo || []);
+  const pointsEn = dedupeSentences(card.pointsEn || []);
+  if (!card.titleKo || !/[\uAC00-\uD7A3]/.test(card.titleKo) ||
+      !card.summaryKo || !/[\uAC00-\uD7A3]/.test(card.summaryKo) ||
+      pointsKo.length < 2 || pointsEn.length < 2 ||
+      isGenericNewsBoilerplate(card.summaryKo) || isGenericNewsBoilerplate(card.summaryEn)) {
+    throw new Error('Quality gate rejected incomplete, untranslated, duplicated, or boilerplate news card: ' + card.category);
+  }
+  card.pointsKo = pointsKo.slice(0, 3);
+  card.pointsEn = pointsEn.slice(0, 3);
+  card.points = card.pointsEn;
+}
 const now = new Date();
 const dateParts = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(now);
 const dateMap = Object.fromEntries(dateParts.map(part => [part.type, part.value]));
@@ -330,4 +411,3 @@ const payload = { date, updatedAt: now.toISOString(), sourceNote: 'Direct publis
 await mkdir('data', { recursive: true });
 await writeFile('data/chris-news.json', JSON.stringify(payload, null, 2) + '\n');
 console.log(`Prepared ${cards.length} news cards for ${date}.`);
-

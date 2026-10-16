@@ -251,6 +251,26 @@ function translateWithLocalModel(values) {
   });
 }
 
+function sourceProperNouns(source) {
+  const words = new Set();
+  // Allow English names and official entities that occur inside the original sentence.
+  const text = String(source || '');
+  const sentenceStarts = new Set();
+  for (const match of text.matchAll(/(?:^|[.!?]\s+)([A-Za-z][A-Za-z0-9.'&-]*)/g)) {
+    sentenceStarts.add(match[1].toLowerCase());
+  }
+  for (const token of text.match(/[A-Za-z][A-Za-z0-9.'&-]*/g) || []) {
+    if (/^[A-Z]{2,}$/.test(token)) words.add(token.toLowerCase());
+    else if (/^[A-Z][a-z]/.test(token) && !sentenceStarts.has(token.toLowerCase())) words.add(token.toLowerCase());
+  }
+  return words;
+}
+function hasUntranslatedEnglish(source, translated) {
+  const allowed = sourceProperNouns(source);
+  const latinWords = String(translated || '').match(/[A-Za-z][A-Za-z'-]*/g) || [];
+  return latinWords.some(word => !/^[A-Z]{2,}$/.test(word) && !allowed.has(word.toLowerCase()));
+}
+
 async function translateSegments(values, target) {
   if (target !== 'ko') throw new Error('This news workflow currently supports Korean output only.');
   const translated = await translateWithLocalModel(values);
@@ -262,15 +282,19 @@ async function translateSegments(values, target) {
   const hasHangul = value => /[\uAC00-\uD7A3]/.test(value);
   const normalize = value => value.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '');
   const distinctPoints = [...new Map(pointsKo.map(point => [normalize(point), point])).values()];
-  const allKorean = [titleKo, summaryKo, ...distinctPoints].every(hasHangul);
-  const boilerplate = /comprehensive up-to-date news coverage|match or are related to your search|검색 결과|구글에 표시/i.test([titleKo, summaryKo, ...distinctPoints].join(' '));
-  const obviousBadKorean = /촬영에서 살았던|의심의 여지도|검색 의 어딘가|영광스러운 전쟁|상대는 모두에 모여/i.test([titleKo, summaryKo, ...distinctPoints].join(' '));
-  if (!titleKo || titleKo.length < 8 || !summaryKo || summaryKo.length < 60 || distinctPoints.length < 2 || !allKorean || boilerplate || obviousBadKorean) {
-    throw new Error('Local translation failed Korean completeness or quality checks.');
+  const translations = [titleKo, summaryKo, ...distinctPoints];
+  const allKorean = translations.every(hasHangul);
+  // Validate against each corresponding English source field. Proper nouns and acronyms
+  // may stay English; ordinary untranslated English words may not.
+  const mixedEnglish = translations.some((value, index) => hasUntranslatedEnglish(values[index] || '', value));
+  const boilerplate = /comprehensive up-to-date news coverage|match or are related to your search|검색 결과|구글에 표시/i.test(translations.join(' '));
+  const obviousBadKorean = /촬영에서 살았던|의심의 여지도|검색 의 어딘가|영광스러운 전쟁|상대는 모두에 모여/i.test(translations.join(' '));
+  if (!titleKo || titleKo.length < 8 || !summaryKo || summaryKo.length < 60 ||
+      distinctPoints.length < 2 || !allKorean || mixedEnglish || boilerplate || obviousBadKorean) {
+    throw new Error('Local translation failed Korean completeness or mixed-English quality checks.');
   }
   return [titleKo, summaryKo, ...distinctPoints.slice(0, Math.max(2, values.length - 2))];
 }
-
 async function fetchCategory(category, globallySeenLinks = new Set(), globallySeenTitles = []) {
   // Prefer direct publisher RSS feeds. Aggregator feeds are deliberately not used:
   // they often leave the card linked to a search/result page rather than the actual report.

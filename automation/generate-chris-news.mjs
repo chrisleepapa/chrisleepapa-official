@@ -1,4 +1,5 @@
 import { mkdir, writeFile } from 'node:fs/promises';
+import { execFileSync } from 'node:child_process';
 
 const categories = [
   {
@@ -256,6 +257,21 @@ async function translateSegments(values, target) {
 
   const providers = [
     async () => translateText(combined, target),
+    async () => {
+      // Local Argos Translate is installed and cached by the workflow; it avoids paid APIs and public rate limits.
+      const output = execFileSync('python', ['automation/translate-news-local.py'], {
+        input: JSON.stringify(values),
+        encoding: 'utf8',
+        timeout: 45000,
+        maxBuffer: 1024 * 1024
+      });
+      const translatedFields = JSON.parse(output);
+      if (!Array.isArray(translatedFields) || translatedFields.length !== values.length ||
+          translatedFields.some(value => !value || !/[\uAC00-\uD7A3]/.test(value))) {
+        throw new Error('Local English-to-Korean translation returned incomplete output.');
+      }
+      return markers.map((marker, index) => marker + '\n' + translatedFields[index]).join('\n\n');
+    },
     async () => {
       const url = 'https://translate.google.com/translate_a/single?client=gtx&sl=auto&tl=' + target + '&dt=t&q=' + encodeURIComponent(combined);
       const response = await fetch(url, { signal: AbortSignal.timeout(7000) });

@@ -208,123 +208,65 @@ function sentencePoints(text, excluded = []) {
     .map(s => s.length > 220 ? s.slice(0, 217).replace(/[,;:]$/, '') + '…' : s);
 }
 
-async function translateText(value, target) {
-  const source = String(value || '').trim();
-  if (!source) return source;
-  const containsHangul = text => /[\uAC00-\uD7A3]/.test(text);
-  let lastError;
-  for (let attempt = 1; attempt <= 3; attempt++) {
-    try {
-      const url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=' + target + '&dt=t&q=' + encodeURIComponent(source.slice(0, 4500));
-      const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
-      if (!response.ok) throw new Error('Translation request failed: HTTP ' + response.status);
-      const payload = await response.json();
-      const translated = Array.isArray(payload?.[0])
-        ? payload[0].map(part => part?.[0] || '').join('').trim()
-        : '';
-      if (!translated) throw new Error('Translation response was empty.');
-      if (target === 'ko') {
-        const hangulCount = (translated.match(/[\uAC00-\uD7A3]/g) || []).length;
-        const latinCount = (translated.match(/[A-Za-z]/g) || []).length;
-        if (!containsHangul(translated) || hangulCount < 3 || (latinCount > 80 && latinCount > hangulCount * 1.5)) {
-          throw new Error('Korean translation appears untranslated or incomplete; refusing to publish it.');
-        }
-      }
-      if (/this will let google show|match or are related to your search|comprehensive up-to-date news coverage/i.test(translated)) {
-        throw new Error('Translation contains publisher/search boilerplate.');
-      }
-      return translated;
-    } catch (error) {
-      lastError = error;
-      if (attempt < 2) await new Promise(resolve => setTimeout(resolve, 1000));
-    }
-  }
-  throw new Error('Translation failed after 3 attempts: ' + String(lastError));
-}
 async function translateSegments(values, target) {
-  const markers = values.map((_, index) => 'ZXQCHRISNEWSFIELD' + index + 'QXZ');
-  const combined = values.map((value, index) => markers[index] + '\n' + value).join('\n\n');
-  const parseSegments = (translated) => {
-    const parts = markers.map((marker, index) => {
-      const start = translated.indexOf(marker);
-      if (start < 0) return '';
-      const contentStart = start + marker.length;
-      const nextMarker = index + 1 < markers.length ? translated.indexOf(markers[index + 1], contentStart) : translated.length;
-      return translated.slice(contentStart, nextMarker < 0 ? translated.length : nextMarker).trim();
-    });
-    return parts.every(part => part.length > 0) ? parts : null;
-  };
+  if (target !== 'ko') throw new Error('This news workflow currently supports Korean output only.');
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) throw new Error('GEMINI_API_KEY is missing. Add it as a GitHub Actions repository secret; no fallback translator will publish poor-quality Korean.');
 
-  const providers = [
-    async () => translateText(combined, target),
-    async () => {
-      // Local Argos Translate is installed and cached by the workflow; it avoids paid APIs and public rate limits.
-      const output = execFileSync('python', ['automation/translate-news-local.py'], {
-        input: JSON.stringify(values),
-        encoding: 'utf8',
-        timeout: 45000,
-        maxBuffer: 1024 * 1024
-      });
-      const translatedFields = JSON.parse(output);
-      if (!Array.isArray(translatedFields) || translatedFields.length !== values.length ||
-          translatedFields.some(value => !value || !/[\uAC00-\uD7A3]/.test(value))) {
-        throw new Error('Local English-to-Korean translation returned incomplete output.');
-      }
-      return markers.map((marker, index) => marker + '\n' + translatedFields[index]).join('\n\n');
-    },
-    async () => {
-      const url = 'https://translate.google.com/translate_a/single?client=gtx&sl=auto&tl=' + target + '&dt=t&q=' + encodeURIComponent(combined);
-      const response = await fetch(url, { signal: AbortSignal.timeout(7000) });
-      if (!response.ok) throw new Error('Google Translate mirror failed: HTTP ' + response.status);
-      const payload = await response.json();
-      const translated = Array.isArray(payload?.[0]) ? payload[0].map(part => part?.[0] || '').join('').trim() : '';
-      if (!translated) throw new Error('Google Translate mirror returned no text.');
-      return translated;
-    },
-    async () => {
-      const instances = [
-        'https://translate.argosopentech.com/translate',
-        'https://translate.terraprint.co/translate',
-        'https://translate.astian.org/translate'
-      ];
-      const translateWithInstance = async (url) => {
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: { 'content-type': 'application/json', accept: 'application/json' },
-          body: JSON.stringify({ q: combined, source: 'en', target: 'ko', format: 'text' }),
-          signal: AbortSignal.timeout(6000)
-        });
-        if (!response.ok) throw new Error('LibreTranslate instance failed: HTTP ' + response.status);
-        const payload = await response.json();
-        if (!payload?.translatedText) throw new Error('LibreTranslate instance returned no usable text.');
-        return payload.translatedText;
-      };
-      return Promise.any(instances.map(translateWithInstance));
-    },
-    async () => {
-      const url = 'https://api.mymemory.translated.net/get?q=' + encodeURIComponent(combined) + '&langpair=en|ko';
-      const response = await fetch(url, { signal: AbortSignal.timeout(6000) });
-      if (!response.ok) throw new Error('MyMemory translation failed: HTTP ' + response.status);
-      const payload = await response.json();
-      if (Number(payload?.responseStatus) !== 200 || !payload?.responseData?.translatedText) {
-        throw new Error('MyMemory translation returned no usable text (status ' + String(payload?.responseStatus || 'unknown') + ').');
-      }
-      return decodeEntities(payload.responseData.translatedText);
-    }
-  ];
+  const prompt = [
+    'You are the Korean-language editor of Chris\'s News, a concise, trustworthy daily news digest.',
+    'Translate and professionally rewrite the supplied English news fields into natural, polished Korean used by a Korean news publication.',
+    'Preserve facts and uncertainty. Never invent facts, names, numbers, causes, quotes, or context.',
+    'Use fluent Korean grammar and natural Korean word order. Do not leave ordinary English words in the Korean output.',
+    'Use commonly accepted Korean forms for proper names when known; retain English only for names normally written in English.',
+    'Remove RSS/search-engine boilerplate, credits, duplicate wording, fragments, and awkward literal translations.',
+    'Write a concise and accurate title, a 2–3 sentence Korean summary, and distinct useful key points.',
+    'Each key point must add a different fact and avoid repeating the title, summary, or another point.',
+    'Use a neutral tone, no sensationalism, and no editorial opinion.',
+    'Return only JSON with this shape: {\"titleKo\":\"...\",\"summaryKo\":\"...\",\"pointsKo\":[\"...\",\"...\"]}.',
+    'Input English fields:', JSON.stringify({ title: values[0] || '', summary: values[1] || '', keyPoints: values.slice(2) })
+  ].join('\\n');
 
-  const failures = [];
-  for (const provider of providers) {
-    try {
-      const translated = await provider();
-      const parts = parseSegments(translated);
-      if (parts && (target !== 'ko' || parts.every(part => /[\uAC00-\uD7A3]/.test(part)))) return parts;
-      failures.push('provider changed segment markers or returned incomplete translation');
-    } catch (error) {
-      failures.push(String(error));
-    }
+  const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', 'x-goog-api-key': apiKey },
+    body: JSON.stringify({
+      contents: [{ role: 'user', parts: [{ text: prompt }] }],
+      generationConfig: {
+        responseMimeType: 'application/json',
+        responseSchema: {
+          type: 'OBJECT',
+          properties: {
+            titleKo: { type: 'STRING' },
+            summaryKo: { type: 'STRING' },
+            pointsKo: { type: 'ARRAY', items: { type: 'STRING' } }
+          },
+          required: ['titleKo', 'summaryKo', 'pointsKo']
+        },
+        temperature: 0.2,
+        maxOutputTokens: 1200
+      }
+    }),
+    signal: AbortSignal.timeout(45000)
+  });
+  const body = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error('Gemini news translation failed: ' + (body?.error?.message || ('HTTP ' + response.status)));
+  const generated = body?.candidates?.[0]?.content?.parts?.map(part => part.text || '').join('').trim();
+  if (!generated) throw new Error('Gemini returned no translated news content.');
+  let parsed;
+  try { parsed = JSON.parse(generated); } catch { throw new Error('Gemini returned invalid JSON for news translation.'); }
+  const titleKo = String(parsed.titleKo || '').trim();
+  const summaryKo = String(parsed.summaryKo || '').trim();
+  const pointsKo = Array.isArray(parsed.pointsKo) ? parsed.pointsKo.map(value => String(value || '').trim()).filter(Boolean) : [];
+  const hasHangul = value => /[\\uAC00-\\uD7A3]/.test(value);
+  const normalize = value => value.toLowerCase().replace(/[^\\p{L}\\p{N}]+/gu, '');
+  const distinctPoints = [...new Map(pointsKo.map(point => [normalize(point), point])).values()];
+  const allKorean = [titleKo, summaryKo, ...distinctPoints].every(hasHangul);
+  const boilerplate = /this will let google show|match or are related to your search|comprehensive up-to-date news coverage|검색 결과|구글에 표시/i.test([titleKo, summaryKo, ...distinctPoints].join(' '));
+  if (!titleKo || titleKo.length < 8 || !summaryKo || summaryKo.length < 60 || distinctPoints.length < 2 || !allKorean || boilerplate) {
+    throw new Error('Gemini output failed Korean language, completeness, or boilerplate quality checks.');
   }
-  throw new Error('All batch translation providers failed: ' + failures.join(' | '));
+  return [titleKo, summaryKo, ...distinctPoints.slice(0, Math.max(2, values.length - 2))];
 }
 
 async function fetchCategory(category, globallySeenLinks = new Set(), globallySeenTitles = []) {

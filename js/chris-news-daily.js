@@ -32,9 +32,28 @@
     const parts = new Intl.DateTimeFormat('sv-SE', { year: 'numeric', month: '2-digit', day: '2-digit', timeZone: 'Asia/Seoul' }).format(date);
     return '기사 ' + parts.replaceAll('-', '.');
   };
+  const hasHangul = (value) => /[\uAC00-\uD7A3]/.test(String(value || ''));
+  const hasBoilerplate = (value) => /this will let google show|match or are related to your search|comprehensive up-to-date news coverage|a working is named/i.test(String(value || ''));
+  const validatePayload = (payload, lang) => {
+    if (!payload || !Array.isArray(payload.cards) || payload.cards.length !== 6) return false;
+    const seenTitles = new Set();
+    for (const item of payload.cards) {
+      const title = lang === 'en' ? (item.titleEn || item.title) : item.titleKo;
+      const summary = lang === 'en' ? (item.summaryEn || item.summary) : item.summaryKo;
+      const points = lang === 'en' ? (item.pointsEn || item.points) : item.pointsKo;
+      const normalized = String(title || '').toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '');
+      if (!title || !summary || !Array.isArray(points) || points.length < 2 ||
+          (lang === 'ko' && (!hasHangul(title) || !hasHangul(summary) || points.some(point => !hasHangul(point)))) ||
+          [title, summary, ...points].some(hasBoilerplate) || seenTitles.has(normalized)) return false;
+      const uniquePoints = new Set(points.map(point => String(point).toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '')));
+      if (uniquePoints.size < Math.min(2, points.length)) return false;
+      seenTitles.add(normalized);
+    }
+    return true;
+  };
   const render = (payload) => {
-    if (!payload || !Array.isArray(payload.cards) || payload.cards.length !== 6) return;
     const lang = document.documentElement.lang === 'en' ? 'en' : 'ko';
+    if (!validatePayload(payload, lang)) throw new Error('News data failed language and editorial quality checks.');
     const frag = document.createDocumentFragment();
     payload.cards.forEach((item, index) => {
       const card = make('article', 'chris-news-card chris-news-card--' + (item.category || 'default'));
@@ -44,11 +63,11 @@
       top.append(make('span', 'chris-news-card-date', articleDateLabel(item.publishedAt, payload.date, lang)));
       card.append(top);
       card.append(make('p', 'chris-news-card-kicker', lang === 'en' ? item.categoryEn : item.categoryKo));
-      const title = make('h3', '', lang === 'en' ? item.titleEn || item.title : item.titleKo || item.title);
+      const title = make('h3', '', lang === 'en' ? item.titleEn || item.title : item.titleKo);
       card.append(title);
-      card.append(make('p', 'chris-news-summary', safeText(lang === 'en' ? item.summaryEn || item.summary : item.summaryKo || item.summary)));
+      card.append(make('p', 'chris-news-summary', safeText(lang === 'en' ? item.summaryEn || item.summary : item.summaryKo)));
       const points = make('div', 'chris-news-points');
-      ((lang === 'en' ? item.pointsEn || item.points : item.pointsKo || item.points) || []).slice(0, 3).forEach((point) => points.append(make('div', 'chris-news-point', point)));
+      (lang === 'en' ? item.pointsEn || item.points : item.pointsKo).slice(0, 3).forEach((point) => points.append(make('div', 'chris-news-point', point)));
       card.append(points);
       const footer = make('div', 'chris-news-card-footer');
       const link = make('a', 'chris-news-source', (item.source || '원문 보기') + ' ↗');
@@ -75,23 +94,22 @@
       const response = await fetch('/data/chris-news.json?ts=' + Date.now(), { cache: 'no-store' });
       if (!response.ok) throw new Error('News data request failed: ' + response.status);
       const payload = await response.json();
-      if (!payload || !Array.isArray(payload.cards) || payload.cards.length !== 6) {
-        throw new Error('News data payload is incomplete.');
-      }
       render(payload);
     } catch (error) {
       console.warn("Daily Chris's News data is not available.", error);
       const note = root.querySelector('.chris-news-note span');
       if (note) note.textContent = document.documentElement.lang === 'en'
-        ? 'The latest news could not be loaded. Please try again later.'
-        : '최신 뉴스 데이터를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.';
+        ? 'The latest news failed editorial or language checks. Please try again later.'
+        : '최신 뉴스의 번역 또는 품질 검증에 실패했습니다. 기존 기사를 임의로 바꾸지 않고 잠시 후 다시 확인합니다.';
     }
   };
   load();
+  let observedLanguage = document.documentElement.lang;
   new MutationObserver(() => {
-    const payloadDate = grid.dataset.dailyNewsDate;
-    if (!payloadDate) return;
-    // Re-fetch on language changes so the six cards use the matching translated fields.
+    const currentLanguage = document.documentElement.lang;
+    if (currentLanguage === observedLanguage) return;
+    observedLanguage = currentLanguage;
+    // Re-render even if the previous payload failed validation, so language changes can recover.
     load();
   }).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
 })();

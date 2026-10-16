@@ -266,24 +266,32 @@ async function translateSegments(values, target) {
       return translated;
     },
     async () => {
-      const response = await fetch('https://translate.argosopentech.com/translate', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json', accept: 'application/json' },
-        body: JSON.stringify({ q: combined, source: 'en', target: 'ko', format: 'text' }),
-        signal: AbortSignal.timeout(12000)
-      });
-      if (!response.ok) throw new Error('LibreTranslate fallback failed: HTTP ' + response.status);
-      const payload = await response.json();
-      if (!payload?.translatedText) throw new Error('LibreTranslate fallback returned no usable text.');
-      return payload.translatedText;
+      const instances = [
+        'https://translate.argosopentech.com/translate',
+        'https://translate.terraprint.co/translate',
+        'https://translate.astian.org/translate'
+      ];
+      const translateWithInstance = async (url) => {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json', accept: 'application/json' },
+          body: JSON.stringify({ q: combined, source: 'en', target: 'ko', format: 'text' }),
+          signal: AbortSignal.timeout(9000)
+        });
+        if (!response.ok) throw new Error('LibreTranslate instance failed: HTTP ' + response.status);
+        const payload = await response.json();
+        if (!payload?.translatedText) throw new Error('LibreTranslate instance returned no usable text.');
+        return payload.translatedText;
+      };
+      return Promise.any(instances.map(translateWithInstance));
     },
     async () => {
       const url = 'https://api.mymemory.translated.net/get?q=' + encodeURIComponent(combined) + '&langpair=en|ko';
-      const response = await fetch(url, { signal: AbortSignal.timeout(12000) });
+      const response = await fetch(url, { signal: AbortSignal.timeout(9000) });
       if (!response.ok) throw new Error('MyMemory translation failed: HTTP ' + response.status);
       const payload = await response.json();
-      if (payload?.responseStatus !== 200 || !payload?.responseData?.translatedText) {
-        throw new Error('MyMemory translation returned no usable text.');
+      if (Number(payload?.responseStatus) !== 200 || !payload?.responseData?.translatedText) {
+        throw new Error('MyMemory translation returned no usable text (status ' + String(payload?.responseStatus || 'unknown') + ').');
       }
       return decodeEntities(payload.responseData.translatedText);
     }

@@ -1,5 +1,4 @@
 import { mkdir, writeFile } from 'node:fs/promises';
-import { execFileSync } from 'node:child_process';
 
 const categories = [
   {
@@ -225,7 +224,7 @@ async function translateSegments(values, target) {
     'Use a neutral tone, no sensationalism, and no editorial opinion.',
     'Return only JSON with this shape: {\"titleKo\":\"...\",\"summaryKo\":\"...\",\"pointsKo\":[\"...\",\"...\"]}.',
     'Input English fields:', JSON.stringify({ title: values[0] || '', summary: values[1] || '', keyPoints: values.slice(2) })
-  ].join('\\n');
+  ].join('\n');
 
   const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent', {
     method: 'POST',
@@ -258,8 +257,8 @@ async function translateSegments(values, target) {
   const titleKo = String(parsed.titleKo || '').trim();
   const summaryKo = String(parsed.summaryKo || '').trim();
   const pointsKo = Array.isArray(parsed.pointsKo) ? parsed.pointsKo.map(value => String(value || '').trim()).filter(Boolean) : [];
-  const hasHangul = value => /[\\uAC00-\\uD7A3]/.test(value);
-  const normalize = value => value.toLowerCase().replace(/[^\\p{L}\\p{N}]+/gu, '');
+  const hasHangul = value => /[\uAC00-\uD7A3]/.test(value);
+  const normalize = value => value.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '');
   const distinctPoints = [...new Map(pointsKo.map(point => [normalize(point), point])).values()];
   const allKorean = [titleKo, summaryKo, ...distinctPoints].every(hasHangul);
   const boilerplate = /this will let google show|match or are related to your search|comprehensive up-to-date news coverage|검색 결과|구글에 표시/i.test([titleKo, summaryKo, ...distinctPoints].join(' '));

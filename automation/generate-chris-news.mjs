@@ -266,6 +266,18 @@ async function translateSegments(values, target) {
       return translated;
     },
     async () => {
+      const response = await fetch('https://translate.argosopentech.com/translate', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', accept: 'application/json' },
+        body: JSON.stringify({ q: combined, source: 'en', target: 'ko', format: 'text' }),
+        signal: AbortSignal.timeout(12000)
+      });
+      if (!response.ok) throw new Error('LibreTranslate fallback failed: HTTP ' + response.status);
+      const payload = await response.json();
+      if (!payload?.translatedText) throw new Error('LibreTranslate fallback returned no usable text.');
+      return payload.translatedText;
+    },
+    async () => {
       const url = 'https://api.mymemory.translated.net/get?q=' + encodeURIComponent(combined) + '&langpair=en|ko';
       const response = await fetch(url, { signal: AbortSignal.timeout(12000) });
       if (!response.ok) throw new Error('MyMemory translation failed: HTTP ' + response.status);

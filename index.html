@@ -655,5 +655,17 @@ html[data-theme="dark"] #chris-news .chris-news-card h3{color:#f8f3e8!important}
 html[data-theme="dark"] #chris-news .chris-news-summary{color:rgba(240,236,228,.78)!important}
 html[data-theme="dark"] #chris-news .chris-news-point{color:rgba(240,236,228,.68)!important}
 html[data-theme="dark"] #chris-news .chris-news-points,html[data-theme="dark"] #chris-news .chris-news-card-footer{border-color:rgba(255,255,255,.12)!important}
+
+/* Hard override: every visible news card stays black in dark mode, regardless of category or wrapper. */
+html[data-theme="dark"] .chris-news-card,
+html[data-theme="dark"] #chris-news .chris-news-card,
+html[data-theme="dark"] .chris-news-card[class*="--"] {
+  background: #0b0b10 !important;
+  background-color: #0b0b10 !important;
+  background-image: none !important;
+  color: #f8f3e8 !important;
+}
+html[data-theme="dark"] .chris-news-card::before,
+html[data-theme="dark"] .chris-news-card::after { background: none !important; }
 </style>
 </body></html>

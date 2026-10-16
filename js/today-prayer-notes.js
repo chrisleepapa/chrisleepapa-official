@@ -175,8 +175,8 @@
     document.getElementById('pn-title').placeholder=tx('titlePlaceholder');
     document.getElementById('pn-content').placeholder=tx('contentPlaceholder');
     document.getElementById('pn-search').placeholder=tx('search');
-    document.getElementById('pn-cat-filter').options[0].text=tx('allCategories');
-    document.getElementById('pn-state-filter').options[0].text=tx('allStates');
+    document.querySelectorAll('#pn-category,#pn-cat-filter').forEach(sel=>Array.from(sel.options).forEach(opt=>{opt.textContent=opt.value?catLabel(opt.value):tx('allCategories')}));
+    document.querySelectorAll('#pn-state,#pn-state-filter').forEach(sel=>Array.from(sel.options).forEach(opt=>{opt.textContent=opt.value?stateLabel(opt.value):tx('allStates')}));
     document.getElementById('pn-save').textContent=editingId?tx('update'):tx('save');
     document.getElementById('pn-cancel').textContent=tx('cancel');renderDaily();renderNotes();
   }

@@ -186,6 +186,7 @@
     chooseDaily(false);renderDaily();renderNotes();applyLanguage();
   }
   const previous=window.onLangChange;window.onLangChange=function(l){if(typeof previous==='function')previous(l);applyLanguage()};
+  window.addEventListener('clp-today-data-hydrated',event=>{if(event.detail?.initials!==user()?.initials)return;const data=readData();notes=Array.isArray(data.prayerNotes)?data.prayerNotes.filter(n=>n&&n.id&&n.title&&n.content):[];chooseDaily(false);renderDaily();renderNotes()});
   function init(){const main=document.getElementById('todayApp');if(!main)return;new MutationObserver(()=>{if(!main.hidden)boot()}).observe(main,{attributes:true,attributeFilter:['hidden']});if(!main.hidden)boot()}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();

@@ -184,6 +184,18 @@
     const main=document.getElementById('todayApp');if(!main||main.hidden||!user()?.initials||initialized)return;
     initialized=true;style();build();const data=migrateLocal();notes=Array.isArray(data.prayerNotes)?data.prayerNotes.filter(n=>n&&n.id&&n.title&&n.content):[];
     chooseDaily(false);renderDaily();renderNotes();applyLanguage();
+    // Support homepage deep links after the account-gated TODAY app becomes visible.
+    if(location.hash==='#myPrayerNotes'){
+      const section=document.getElementById('myPrayerNotes');
+      if(section){
+        section.hidden=false;
+        document.getElementById('prayerNotesToggle').textContent=tx('manageOpen');
+        renderNotes();
+        requestAnimationFrame(()=>section.scrollIntoView({behavior:'smooth',block:'start'}));
+      }
+    }else if(location.hash==='#todayJourneyTitle'){
+      requestAnimationFrame(()=>document.getElementById('todayJourneyTitle')?.scrollIntoView({behavior:'smooth',block:'start'}));
+    }
   }
   const previous=window.onLangChange;window.onLangChange=function(l){if(typeof previous==='function')previous(l);applyLanguage()};
   function init(){const main=document.getElementById('todayApp');if(!main)return;new MutationObserver(()=>{if(!main.hidden)boot()}).observe(main,{attributes:true,attributeFilter:['hidden']});if(!main.hidden)boot()}

@@ -243,9 +243,7 @@ async function translateText(value, target) {
 async function translateSegments(values, target) {
   const markers = values.map((_, index) => 'ZXQCHRISNEWSFIELD' + index + 'QXZ');
   const combined = values.map((value, index) => markers[index] + '\n' + value).join('\n\n');
-  try {
-    // One translation request per card avoids triggering public translation endpoint rate limits.
-    const translated = await translateText(combined, target);
+  const parseSegments = (translated) => {
     const parts = markers.map((marker, index) => {
       const start = translated.indexOf(marker);
       if (start < 0) return '';
@@ -253,17 +251,44 @@ async function translateSegments(values, target) {
       const nextMarker = index + 1 < markers.length ? translated.indexOf(markers[index + 1], contentStart) : translated.length;
       return translated.slice(contentStart, nextMarker < 0 ? translated.length : nextMarker).trim();
     });
-    if (parts.every(part => part.length > 0)) return parts;
-  } catch (error) {
-    console.warn('Batch translation failed; retrying fields sequentially:', String(error));
+    return parts.every(part => part.length > 0) ? parts : null;
+  };
+
+  const providers = [
+    async () => translateText(combined, target),
+    async () => {
+      const url = 'https://translate.google.com/translate_a/single?client=gtx&sl=auto&tl=' + target + '&dt=t&q=' + encodeURIComponent(combined);
+      const response = await fetch(url, { signal: AbortSignal.timeout(12000) });
+      if (!response.ok) throw new Error('Google Translate mirror failed: HTTP ' + response.status);
+      const payload = await response.json();
+      const translated = Array.isArray(payload?.[0]) ? payload[0].map(part => part?.[0] || '').join('').trim() : '';
+      if (!translated) throw new Error('Google Translate mirror returned no text.');
+      return translated;
+    },
+    async () => {
+      const url = 'https://api.mymemory.translated.net/get?q=' + encodeURIComponent(combined) + '&langpair=en|ko';
+      const response = await fetch(url, { signal: AbortSignal.timeout(12000) });
+      if (!response.ok) throw new Error('MyMemory translation failed: HTTP ' + response.status);
+      const payload = await response.json();
+      if (payload?.responseStatus !== 200 || !payload?.responseData?.translatedText) {
+        throw new Error('MyMemory translation returned no usable text.');
+      }
+      return decodeEntities(payload.responseData.translatedText);
+    }
+  ];
+
+  const failures = [];
+  for (const provider of providers) {
+    try {
+      const translated = await provider();
+      const parts = parseSegments(translated);
+      if (parts && (target !== 'ko' || parts.every(part => /[\uAC00-\uD7A3]/.test(part)))) return parts;
+      failures.push('provider changed segment markers or returned incomplete translation');
+    } catch (error) {
+      failures.push(String(error));
+    }
   }
-  // If the translator changes the separators, retry one field at a time with a pause between requests.
-  const translatedFields = [];
-  for (let index = 0; index < values.length; index++) {
-    translatedFields.push(await translateText(values[index], target));
-    if (index < values.length - 1) await new Promise(resolve => setTimeout(resolve, 1800));
-  }
-  return translatedFields;
+  throw new Error('All batch translation providers failed: ' + failures.join(' | '));
 }
 
 async function fetchCategory(category, globallySeenLinks = new Set(), globallySeenTitles = []) {

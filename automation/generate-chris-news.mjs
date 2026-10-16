@@ -255,13 +255,19 @@ function sourceProperNouns(source) {
   const words = new Set();
   // Allow English names and official entities that occur inside the original sentence.
   const text = String(source || '');
-  const sentenceStarts = new Set();
-  for (const match of text.matchAll(/(?:^|[.!?]\s+)([A-Za-z][A-Za-z0-9.'&-]*)/g)) {
-    sentenceStarts.add(match[1].toLowerCase());
-  }
+  const commonCapitalizedWords = new Set([
+    'a','an','the','and','or','but','if','then','than','when','while','where','who','what','why','how',
+    'he','she','it','they','we','you','i','his','her','their','our','your','its','this','that','these','those',
+    'after','before','during','following','amid','among','from','with','without','into','onto','over','under',
+    'as','at','by','for','in','on','to','of','up','out','off','about','around','across','through',
+    'says','said','say','calls','called','plans','planned','killed','dead','living','telling','alone',
+    'three','two','one','new','technology','banks','bank','might','help','stink','hole','bitter','end',
+    'lead','updates','adds','photos','attention','seoul'
+  ]);
   for (const token of text.match(/[A-Za-z][A-Za-z0-9.'&-]*/g) || []) {
-    if (/^[A-Z]{2,}$/.test(token)) words.add(token.toLowerCase());
-    else if (/^[A-Z][a-z]/.test(token) && !sentenceStarts.has(token.toLowerCase())) words.add(token.toLowerCase());
+    const lower = token.toLowerCase();
+    if (/^[A-Z]{2,}$/.test(token)) words.add(lower);
+    else if (/^[A-Z][a-z]/.test(token) && !commonCapitalizedWords.has(lower)) words.add(lower);
   }
   return words;
 }

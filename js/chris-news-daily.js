@@ -41,11 +41,11 @@
       const title = lang === 'en' ? (item.titleEn || item.title) : item.titleKo;
       const summary = lang === 'en' ? (item.summaryEn || item.summary) : item.summaryKo;
       const points = lang === 'en' ? (item.pointsEn || item.points) : item.pointsKo;
-      const normalized = String(title || '').toLowerCase().replace(/[^\\p{L}\\p{N}]+/gu, '');
+      const normalized = String(title || '').toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '');
       if (!title || !summary || !Array.isArray(points) || points.length < 2 ||
           (lang === 'ko' && (!hasHangul(title) || !hasHangul(summary) || points.some(point => !hasHangul(point)))) ||
           [title, summary, ...points].some(hasBoilerplate) || seenTitles.has(normalized)) return false;
-      const uniquePoints = new Set(points.map(point => String(point).toLowerCase().replace(/[^\\p{L}\\p{N}]+/gu, '')));
+      const uniquePoints = new Set(points.map(point => String(point).toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '')));
       if (uniquePoints.size < Math.min(2, points.length)) return false;
       seenTitles.add(normalized);
     }
@@ -104,10 +104,12 @@
     }
   };
   load();
+  let observedLanguage = document.documentElement.lang;
   new MutationObserver(() => {
-    const payloadDate = grid.dataset.dailyNewsDate;
-    if (!payloadDate) return;
-    // Re-fetch on language changes so the six cards use the matching translated fields.
+    const currentLanguage = document.documentElement.lang;
+    if (currentLanguage === observedLanguage) return;
+    observedLanguage = currentLanguage;
+    // Re-render even if the previous payload failed validation, so language changes can recover.
     load();
   }).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
 })();

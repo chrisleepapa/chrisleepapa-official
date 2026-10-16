@@ -56,7 +56,13 @@
   fixStyle.textContent=".sq-link:nth-child(1){background-image:url('/images/sistersquad1.png?v=20260828') !important}";
   document.head.appendChild(fixStyle);
 
-  window.onLangChange=function(lang){apply(lang)};
+  // Preserve the hub's full-page data-sq-i18n handler instead of overwriting it.
+  // The inline page dictionary translates all sections; this layer adds hero/note/meta copy.
+  const previousLangChange=window.onLangChange;
+  window.onLangChange=function(lang){
+    if(typeof previousLangChange==='function') previousLangChange(lang);
+    apply(lang);
+  };
   window.addEventListener('load',function(){apply(typeof window.getCurrentLang==='function'?window.getCurrentLang():'ko')});
   apply(typeof window.getCurrentLang==='function'?window.getCurrentLang():'ko');
 })();

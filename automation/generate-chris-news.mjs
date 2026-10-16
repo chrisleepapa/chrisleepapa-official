@@ -209,93 +209,65 @@ function sentencePoints(text, excluded = []) {
 
 async function translateSegments(values, target) {
   if (target !== 'ko') throw new Error('This news workflow currently supports Korean output only.');
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) throw new Error('GEMINI_API_KEY is missing. Add it as a GitHub Actions repository secret; no fallback translator will publish poor-quality Korean.');
 
-  const prompt = [
-    'You are the Korean-language editor of Chris\'s News, a concise, trustworthy daily news digest.',
-    'Translate and professionally rewrite the supplied English news fields into natural, polished Korean used by a Korean news publication.',
-    'Preserve facts and uncertainty. Never invent facts, names, numbers, causes, quotes, or context.',
-    'Use fluent Korean grammar and natural Korean word order. Do not leave ordinary English words in the Korean output.',
-    'Use commonly accepted Korean forms for proper names when known; retain English only for names normally written in English.',
-    'Remove RSS/search-engine boilerplate, credits, duplicate wording, fragments, and awkward literal translations.',
-    'Write a concise and accurate title, a 2–3 sentence Korean summary, and distinct useful key points.',
-    'Each key point must add a different fact and avoid repeating the title, summary, or another point.',
-    'Use a neutral tone, no sensationalism, and no editorial opinion.',
-    'Return only JSON with this shape: {\"titleKo\":\"...\",\"summaryKo\":\"...\",\"pointsKo\":[\"...\",\"...\"]}.',
-    'Input English fields:', JSON.stringify({ title: values[0] || '', summary: values[1] || '', keyPoints: values.slice(2) })
-  ].join('\n');
-
-  let parsed;
-  let lastError;
-  for (let attempt = 1; attempt <= 4; attempt++) {
-    try {
-      const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json', 'x-goog-api-key': apiKey },
-        body: JSON.stringify({
-          contents: [{ role: 'user', parts: [{ text: prompt }] }],
-          generationConfig: {
-            responseMimeType: 'application/json',
-            responseSchema: {
-              type: 'OBJECT',
-              properties: {
-                titleKo: { type: 'STRING' },
-                summaryKo: { type: 'STRING' },
-                pointsKo: { type: 'ARRAY', items: { type: 'STRING' } }
-              },
-              required: ['titleKo', 'summaryKo', 'pointsKo']
-            },
-            temperature: 0.2,
-            maxOutputTokens: 1200
-          }
-        }),
-        signal: AbortSignal.timeout(45000)
-      });
-      const body = await response.json().catch(() => ({}));
-      if (!response.ok) {
-        const message = body?.error?.message || ('HTTP ' + response.status);
-        const retryable = response.status === 429 || response.status >= 500;
-        if (retryable && attempt < 4) {
-          lastError = new Error('Gemini news translation temporarily unavailable: ' + message);
-          await new Promise(resolve => setTimeout(resolve, attempt * 2500));
-          continue;
-        }
-        throw new Error('Gemini news translation failed: ' + message);
-      }
-      const generated = body?.candidates?.[0]?.content?.parts?.map(part => part.text || '').join('').trim();
-      if (!generated) throw new Error('Gemini returned no translated news content.');
+  // No-key Google Translate web endpoint: avoids Gemini quotas and paid API credentials.
+  // Translate each field separately to preserve sentence boundaries and news context.
+  async function translateOne(text) {
+    const url = new URL('https://translate.googleapis.com/translate_a/single');
+    url.searchParams.set('client', 'gtx');
+    url.searchParams.set('sl', 'en');
+    url.searchParams.set('tl', 'ko');
+    url.searchParams.set('dt', 't');
+    url.searchParams.set('q', text);
+    let lastError;
+    for (let attempt = 1; attempt <= 3; attempt++) {
       try {
-        parsed = JSON.parse(generated);
-        break;
-      } catch {
-        lastError = new Error('Gemini returned invalid JSON for news translation.');
-        if (attempt < 4) {
-          await new Promise(resolve => setTimeout(resolve, attempt * 1200));
-          continue;
-        }
+        const response = await fetch(url, {
+          headers: { 'user-agent': 'Mozilla/5.0 (compatible; ChrisLeePapaNewsBot/1.0)' },
+          signal: AbortSignal.timeout(15000)
+        });
+        if (!response.ok) throw new Error('Translation endpoint HTTP ' + response.status);
+        const body = await response.json();
+        const translated = Array.isArray(body?.[0])
+          ? body[0].map(part => Array.isArray(part) ? part[0] || '' : '').join('').trim()
+          : '';
+        if (!translated) throw new Error('Translation endpoint returned empty text.');
+        return translated;
+      } catch (error) {
+        lastError = error;
+        if (attempt < 3) await new Promise(resolve => setTimeout(resolve, attempt * 1200));
       }
-    } catch (error) {
-      lastError = error;
-      if (attempt < 4 && /temporarily unavailable|fetch failed|timeout|aborted/i.test(String(error))) {
-        await new Promise(resolve => setTimeout(resolve, attempt * 2500));
-        continue;
-      }
-      if (attempt === 4) throw error;
-      if (!/invalid JSON/.test(String(error))) throw error;
     }
+    throw new Error('Free translation failed after retries: ' + String(lastError));
   }
-  if (!parsed) throw lastError || new Error('Gemini translation did not return valid JSON after retries.');
-  const titleKo = String(parsed.titleKo || '').trim();
-  const summaryKo = String(parsed.summaryKo || '').trim();
-  const pointsKo = Array.isArray(parsed.pointsKo) ? parsed.pointsKo.map(value => String(value || '').trim()).filter(Boolean) : [];
+
+  const output = [];
+  for (const value of values) {
+    const translated = await translateOne(String(value || ''));
+    output.push(translated);
+    // Be gentle with the public endpoint and avoid bursts that trigger throttling.
+    await new Promise(resolve => setTimeout(resolve, 180));
+  }
+
+  // Context-aware corrections for frequent English news terms that generic MT can mistranslate.
+  const sourceContext = values.join(' ').toLowerCase();
+  const fix = value => {
+    let text = value;
+    if (/\b(shooting|shot dead|shot and killed|gunfire|gunman|firearm|opened fire|fired shots)\b/i.test(sourceContext)) {
+      text = text.replace(/촬영/g, '총격').replace(/촬영 사건/g, '총격 사건');
+    }
+    return text.replace(/\s+/g, ' ').trim();
+  };
+  const fixed = output.map(fix);
+  const [titleKo, summaryKo, ...pointsKo] = fixed;
   const hasHangul = value => /[\uAC00-\uD7A3]/.test(value);
   const normalize = value => value.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '');
   const distinctPoints = [...new Map(pointsKo.map(point => [normalize(point), point])).values()];
-  const allKorean = [titleKo, summaryKo, ...distinctPoints].every(hasHangul);
-  const boilerplate = /this will let google show|match or are related to your search|comprehensive up-to-date news coverage|검색 결과|구글에 표시/i.test([titleKo, summaryKo, ...distinctPoints].join(' '));
-  if (!titleKo || titleKo.length < 8 || !summaryKo || summaryKo.length < 60 || distinctPoints.length < 2 || !allKorean || boilerplate) {
-    throw new Error('Gemini output failed Korean language, completeness, or boilerplate quality checks.');
+  const boilerplate = /comprehensive up-to-date news coverage|match or are related to your search|검색 결과|구글에 표시/i.test(fixed.join(' '));
+  const obviousBadKorean = /촬영에서 살았던|의심의 여지도|검색 의 어딘가|영광스러운 전쟁|상대는 모두에 모여/i.test(fixed.join(' '));
+  if (!titleKo || titleKo.length < 8 || !summaryKo || summaryKo.length < 60 ||
+      distinctPoints.length < 2 || !fixed.every(hasHangul) || boilerplate || obviousBadKorean) {
+    throw new Error('Free translation failed Korean completeness or quality checks.');
   }
   return [titleKo, summaryKo, ...distinctPoints.slice(0, Math.max(2, values.length - 2))];
 }
@@ -443,4 +415,3 @@ const payload = { date, updatedAt: now.toISOString(), sourceNote: 'Direct publis
 await mkdir('data', { recursive: true });
 await writeFile('data/chris-news.json', JSON.stringify(payload, null, 2) + '\n');
 console.log(`Prepared ${cards.length} news cards for ${date}.`);
-

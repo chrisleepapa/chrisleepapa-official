@@ -227,6 +227,9 @@ function translateWithLocalModel(values) {
         else pending.resolve(result.values || []);
       }
     });
+    translatorProcess.stdin.on('error', error => {
+      for (const pending of translatorQueue.splice(0)) pending.reject(error);
+    });
     translatorProcess.on('error', error => {
       for (const pending of translatorQueue.splice(0)) pending.reject(error);
     });

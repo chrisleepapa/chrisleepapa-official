@@ -208,20 +208,32 @@
   };
   function apply(lang) {
     const selected = lang === 'en' ? 'en' : 'ko';
+    // This page's dictionary intentionally handles the existing hub copy too.
+    // Update only elements with a matching key, preserving nested markup.
     document.querySelectorAll('[data-sq-i18n]').forEach(el => {
       const value = dict[selected][el.dataset.sqI18n];
-      if (value !== undefined) el.textContent = value;
+      if (value !== undefined) {
+        if (el.children.length === 0) {
+          el.textContent = value;
+        } else {
+          // Keep existing inline emphasis/markup in translated paragraphs and list items.
+          const tag = el.tagName.toLowerCase();
+          if (tag === 'p' && el.dataset.sqI18n === 'storyGuideIntro') {
+            el.innerHTML = selected === 'ko'
+              ? '<strong>SISTER SQUAD</strong>는 두 자매가 낯선 마법 세계에서 모험을 겪으며 각자의 강점을 이해하고, 서로 다른 방식이 함께할 때 더 큰 힘이 된다는 사실을 배워가는 오리지널 판타지 시리즈입니다. 언니 율이는 논리와 분석을 바탕으로 문제를 풀고, 동생 정이는 생명과 마음을 연결하는 공감 능력으로 위기를 마주합니다. 어느 한쪽이 항상 정답인 것이 아니라, 두 자매가 서로의 시각을 받아들일 때 해결의 실마리가 생깁니다.'
+              : '<strong>SISTER SQUAD</strong> is an original fantasy series about two sisters who discover their individual strengths and learn that different ways of thinking become more powerful when they work together. Yul, the older sister, solves problems through logic and analysis. Jung, the younger sister, faces crises with empathy that connects living things and hearts. Neither sister always has the right answer; solutions emerge when they make room for each other’s perspective.';
+          } else if (tag === 'li' && /^storyGuideKey[123]$/.test(el.dataset.sqI18n)) {
+            const parts = value.split(': ');
+            el.innerHTML = '<strong>' + parts[0] + ':</strong> ' + parts.slice(1).join(': ');
+          } else {
+            el.textContent = value;
+          }
+        }
+      }
     });
   }
-  // Keep the guide synchronized with the site's live language selector.
-  const prior = window.onLangChange;
-  window.onLangChange = function(lang) {
-    if (typeof prior === 'function') prior(lang);
-    apply(lang);
-  };
-  document.addEventListener('DOMContentLoaded', () => {
-    apply((localStorage.getItem('pref-lang') || document.documentElement.lang || 'ko'));
-  });
+  // The site's language selector calls this hook immediately; no reload is needed.
+  window.onLangChange = function(lang) { apply(lang); };
   apply((localStorage.getItem('pref-lang') || document.documentElement.lang || 'ko'));
 })();
 </script>

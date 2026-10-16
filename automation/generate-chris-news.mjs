@@ -235,11 +235,37 @@ async function translateText(value, target) {
       return translated;
     } catch (error) {
       lastError = error;
-      if (attempt < 3) await new Promise(resolve => setTimeout(resolve, 700 * attempt));
+      if (attempt < 3) await new Promise(resolve => setTimeout(resolve, 1500 * (2 ** (attempt - 1))));
     }
   }
   throw new Error('Translation failed after 3 attempts: ' + String(lastError));
 }
+async function translateSegments(values, target) {
+  const markers = values.map((_, index) => 'ZXQCHRISNEWSFIELD' + index + 'QXZ');
+  const combined = values.map((value, index) => markers[index] + '\n' + value).join('\n\n');
+  try {
+    // One translation request per card avoids triggering public translation endpoint rate limits.
+    const translated = await translateText(combined, target);
+    const parts = markers.map((marker, index) => {
+      const start = translated.indexOf(marker);
+      if (start < 0) return '';
+      const contentStart = start + marker.length;
+      const nextMarker = index + 1 < markers.length ? translated.indexOf(markers[index + 1], contentStart) : translated.length;
+      return translated.slice(contentStart, nextMarker < 0 ? translated.length : nextMarker).trim();
+    });
+    if (parts.every(part => part.length > 0)) return parts;
+  } catch (error) {
+    console.warn('Batch translation failed; retrying fields sequentially:', String(error));
+  }
+  // If the translator changes the separators, retry one field at a time with a pause between requests.
+  const translatedFields = [];
+  for (let index = 0; index < values.length; index++) {
+    translatedFields.push(await translateText(values[index], target));
+    if (index < values.length - 1) await new Promise(resolve => setTimeout(resolve, 1800));
+  }
+  return translatedFields;
+}
+
 async function fetchCategory(category, globallySeenLinks = new Set(), globallySeenTitles = []) {
   // Prefer direct publisher RSS feeds. Aggregator feeds are deliberately not used:
   // they often leave the card linked to a search/result page rather than the actual report.
@@ -311,11 +337,10 @@ async function fetchCategory(category, globallySeenLinks = new Set(), globallySe
       const points = sentencePoints(rawCandidate, summarySentences);
       if (summary.length < 90 || points.length < 2) continue;
       const safePoints = points;
-      const [titleKo, summaryKo, pointsKo] = await Promise.all([
-        translateText(item.title, 'ko'),
-        translateText(summary, 'ko'),
-        Promise.all(safePoints.map(point => translateText(point, 'ko')))
-      ]);
+      const translatedFields = await translateSegments([item.title, summary, ...safePoints], 'ko');
+      const titleKo = translatedFields[0];
+      const summaryKo = translatedFields[1];
+      const pointsKo = translatedFields.slice(2);
       const translatedPoints = dedupeSentences(pointsKo);
       if (!titleKo || !summaryKo || translatedPoints.length < 2 ||
           /this will let google show|match or are related to your search/i.test(summaryKo)) continue;

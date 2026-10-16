@@ -33,6 +33,8 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: 22
+      - name: Check news generator syntax
+        run: node --check automation/generate-chris-news.mjs
       - name: Fetch and compile six daily news cards
         run: node automation/generate-chris-news.mjs
       - name: Commit updated news data to selected branch

@@ -184,7 +184,7 @@ async function fetchArticleDetails(url) {
     const response = await fetch(url, {
       redirect: 'follow',
       headers: { 'user-agent': 'Mozilla/5.0 (compatible; ChrisLeePapaNewsBot/1.0)' },
-      signal: AbortSignal.timeout(12000)
+      signal: AbortSignal.timeout(7000)
     });
     if (!response.ok) return { link: url, details: [] };
     const html = await response.text();
@@ -235,7 +235,7 @@ async function translateText(value, target) {
       return translated;
     } catch (error) {
       lastError = error;
-      if (attempt < 3) await new Promise(resolve => setTimeout(resolve, 1500 * (2 ** (attempt - 1))));
+      if (attempt < 2) await new Promise(resolve => setTimeout(resolve, 1000));
     }
   }
   throw new Error('Translation failed after 3 attempts: ' + String(lastError));
@@ -258,7 +258,7 @@ async function translateSegments(values, target) {
     async () => translateText(combined, target),
     async () => {
       const url = 'https://translate.google.com/translate_a/single?client=gtx&sl=auto&tl=' + target + '&dt=t&q=' + encodeURIComponent(combined);
-      const response = await fetch(url, { signal: AbortSignal.timeout(12000) });
+      const response = await fetch(url, { signal: AbortSignal.timeout(7000) });
       if (!response.ok) throw new Error('Google Translate mirror failed: HTTP ' + response.status);
       const payload = await response.json();
       const translated = Array.isArray(payload?.[0]) ? payload[0].map(part => part?.[0] || '').join('').trim() : '';
@@ -276,7 +276,7 @@ async function translateSegments(values, target) {
           method: 'POST',
           headers: { 'content-type': 'application/json', accept: 'application/json' },
           body: JSON.stringify({ q: combined, source: 'en', target: 'ko', format: 'text' }),
-          signal: AbortSignal.timeout(9000)
+          signal: AbortSignal.timeout(6000)
         });
         if (!response.ok) throw new Error('LibreTranslate instance failed: HTTP ' + response.status);
         const payload = await response.json();
@@ -287,7 +287,7 @@ async function translateSegments(values, target) {
     },
     async () => {
       const url = 'https://api.mymemory.translated.net/get?q=' + encodeURIComponent(combined) + '&langpair=en|ko';
-      const response = await fetch(url, { signal: AbortSignal.timeout(9000) });
+      const response = await fetch(url, { signal: AbortSignal.timeout(6000) });
       if (!response.ok) throw new Error('MyMemory translation failed: HTTP ' + response.status);
       const payload = await response.json();
       if (Number(payload?.responseStatus) !== 200 || !payload?.responseData?.translatedText) {
@@ -318,8 +318,11 @@ async function fetchCategory(category, globallySeenLinks = new Set(), globallySe
   const maxAgeMs = 72 * 60 * 60 * 1000;
   const seenLinks = new Set();
   const failures = [];
+  let candidatesChecked = 0;
+  const maxCandidatesPerCategory = 8;
 
   for (const feed of category.feeds || []) {
+    if (candidatesChecked >= maxCandidatesPerCategory) break;
     let items = [];
     try {
       const response = await fetch(feed.url, {
@@ -340,6 +343,7 @@ async function fetchCategory(category, globallySeenLinks = new Set(), globallySe
     }
 
     for (const item of items.slice(0, 35)) {
+      if (candidatesChecked >= maxCandidatesPerCategory) break;
       const publishedMs = Date.parse(item.pubDate);
       if (!Number.isFinite(publishedMs) || publishedMs > nowMs + 5 * 60 * 1000 || nowMs - publishedMs > maxAgeMs) continue;
       let itemUrl;
@@ -351,6 +355,7 @@ async function fetchCategory(category, globallySeenLinks = new Set(), globallySe
       const canonicalLink = itemUrl.href;
       if (seenLinks.has(canonicalLink) || globallySeenLinks.has(canonicalLink)) continue;
       seenLinks.add(canonicalLink);
+      candidatesChecked++;
 
       const rssText = cleanHtml(item.description || '');
       // ScienceDaily permits RSS headlines and summaries with attribution and a link,

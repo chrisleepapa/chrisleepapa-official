@@ -226,34 +226,66 @@ async function translateSegments(values, target) {
     'Input English fields:', JSON.stringify({ title: values[0] || '', summary: values[1] || '', keyPoints: values.slice(2) })
   ].join('\n');
 
-  const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent', {
-    method: 'POST',
-    headers: { 'content-type': 'application/json', 'x-goog-api-key': apiKey },
-    body: JSON.stringify({
-      contents: [{ role: 'user', parts: [{ text: prompt }] }],
-      generationConfig: {
-        responseMimeType: 'application/json',
-        responseSchema: {
-          type: 'OBJECT',
-          properties: {
-            titleKo: { type: 'STRING' },
-            summaryKo: { type: 'STRING' },
-            pointsKo: { type: 'ARRAY', items: { type: 'STRING' } }
-          },
-          required: ['titleKo', 'summaryKo', 'pointsKo']
-        },
-        temperature: 0.2,
-        maxOutputTokens: 1200
-      }
-    }),
-    signal: AbortSignal.timeout(45000)
-  });
-  const body = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error('Gemini news translation failed: ' + (body?.error?.message || ('HTTP ' + response.status)));
-  const generated = body?.candidates?.[0]?.content?.parts?.map(part => part.text || '').join('').trim();
-  if (!generated) throw new Error('Gemini returned no translated news content.');
   let parsed;
-  try { parsed = JSON.parse(generated); } catch { throw new Error('Gemini returned invalid JSON for news translation.'); }
+  let lastError;
+  for (let attempt = 1; attempt <= 4; attempt++) {
+    try {
+      const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', 'x-goog-api-key': apiKey },
+        body: JSON.stringify({
+          contents: [{ role: 'user', parts: [{ text: prompt }] }],
+          generationConfig: {
+            responseMimeType: 'application/json',
+            responseSchema: {
+              type: 'OBJECT',
+              properties: {
+                titleKo: { type: 'STRING' },
+                summaryKo: { type: 'STRING' },
+                pointsKo: { type: 'ARRAY', items: { type: 'STRING' } }
+              },
+              required: ['titleKo', 'summaryKo', 'pointsKo']
+            },
+            temperature: 0.2,
+            maxOutputTokens: 1200
+          }
+        }),
+        signal: AbortSignal.timeout(45000)
+      });
+      const body = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        const message = body?.error?.message || ('HTTP ' + response.status);
+        const retryable = response.status === 429 || response.status >= 500;
+        if (retryable && attempt < 4) {
+          lastError = new Error('Gemini news translation temporarily unavailable: ' + message);
+          await new Promise(resolve => setTimeout(resolve, attempt * 2500));
+          continue;
+        }
+        throw new Error('Gemini news translation failed: ' + message);
+      }
+      const generated = body?.candidates?.[0]?.content?.parts?.map(part => part.text || '').join('').trim();
+      if (!generated) throw new Error('Gemini returned no translated news content.');
+      try {
+        parsed = JSON.parse(generated);
+        break;
+      } catch {
+        lastError = new Error('Gemini returned invalid JSON for news translation.');
+        if (attempt < 4) {
+          await new Promise(resolve => setTimeout(resolve, attempt * 1200));
+          continue;
+        }
+      }
+    } catch (error) {
+      lastError = error;
+      if (attempt < 4 && /temporarily unavailable|fetch failed|timeout|aborted/i.test(String(error))) {
+        await new Promise(resolve => setTimeout(resolve, attempt * 2500));
+        continue;
+      }
+      if (attempt === 4) throw error;
+      if (!/invalid JSON/.test(String(error))) throw error;
+    }
+  }
+  if (!parsed) throw lastError || new Error('Gemini translation did not return valid JSON after retries.');
   const titleKo = String(parsed.titleKo || '').trim();
   const summaryKo = String(parsed.summaryKo || '').trim();
   const pointsKo = Array.isArray(parsed.pointsKo) ? parsed.pointsKo.map(value => String(value || '').trim()).filter(Boolean) : [];

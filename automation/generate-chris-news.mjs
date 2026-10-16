@@ -1,4 +1,6 @@
 import { mkdir, writeFile } from 'node:fs/promises';
+import { spawn } from 'node:child_process';
+import { createInterface } from 'node:readline';
 
 const categories = [
   {
@@ -207,67 +209,61 @@ function sentencePoints(text, excluded = []) {
     .map(s => s.length > 220 ? s.slice(0, 217).replace(/[,;:]$/, '') + '…' : s);
 }
 
+let translatorProcess;
+let translatorQueue = [];
+let translatorReady = false;
+
+function translateWithLocalModel(values) {
+  if (!translatorProcess) {
+    translatorProcess = spawn('python3', ['automation/translate-news-local.py'], { stdio: ['pipe', 'pipe', 'inherit'] });
+    const lines = createInterface({ input: translatorProcess.stdout });
+    lines.on('line', line => {
+      let result;
+      try { result = JSON.parse(line); }
+      catch { result = { error: 'Local translator returned invalid worker output.' }; }
+      const pending = translatorQueue.shift();
+      if (pending) {
+        if (result.error) pending.reject(new Error(result.error));
+        else pending.resolve(result.values || []);
+      }
+    });
+    translatorProcess.on('error', error => {
+      for (const pending of translatorQueue.splice(0)) pending.reject(error);
+    });
+    translatorProcess.on('exit', code => {
+      translatorReady = false;
+      for (const pending of translatorQueue.splice(0)) pending.reject(new Error('Local translator exited with code ' + code));
+      translatorProcess = null;
+    });
+  }
+  return new Promise((resolve, reject) => {
+    translatorQueue.push({ resolve, reject });
+    translatorProcess.stdin.write(JSON.stringify({ values }) + '\n', error => {
+      if (error) {
+        const index = translatorQueue.findIndex(item => item.resolve === resolve);
+        if (index >= 0) translatorQueue.splice(index, 1);
+        reject(error);
+      }
+    });
+  });
+}
+
 async function translateSegments(values, target) {
   if (target !== 'ko') throw new Error('This news workflow currently supports Korean output only.');
+  const translated = await translateWithLocalModel(values);
+  if (translated.length !== values.length) throw new Error('Local translation returned an unexpected number of fields.');
 
-  // No-key Google Translate web endpoint: avoids Gemini quotas and paid API credentials.
-  // Translate each field separately to preserve sentence boundaries and news context.
-  async function translateOne(text) {
-    const url = new URL('https://translate.googleapis.com/translate_a/single');
-    url.searchParams.set('client', 'gtx');
-    url.searchParams.set('sl', 'en');
-    url.searchParams.set('tl', 'ko');
-    url.searchParams.set('dt', 't');
-    url.searchParams.set('q', text);
-    let lastError;
-    for (let attempt = 1; attempt <= 3; attempt++) {
-      try {
-        const response = await fetch(url, {
-          headers: { 'user-agent': 'Mozilla/5.0 (compatible; ChrisLeePapaNewsBot/1.0)' },
-          signal: AbortSignal.timeout(15000)
-        });
-        if (!response.ok) throw new Error('Translation endpoint HTTP ' + response.status);
-        const body = await response.json();
-        const translated = Array.isArray(body?.[0])
-          ? body[0].map(part => Array.isArray(part) ? part[0] || '' : '').join('').trim()
-          : '';
-        if (!translated) throw new Error('Translation endpoint returned empty text.');
-        return translated;
-      } catch (error) {
-        lastError = error;
-        if (attempt < 3) await new Promise(resolve => setTimeout(resolve, attempt * 1200));
-      }
-    }
-    throw new Error('Free translation failed after retries: ' + String(lastError));
-  }
-
-  const output = [];
-  for (const value of values) {
-    const translated = await translateOne(String(value || ''));
-    output.push(translated);
-    // Be gentle with the public endpoint and avoid bursts that trigger throttling.
-    await new Promise(resolve => setTimeout(resolve, 180));
-  }
-
-  // Context-aware corrections for frequent English news terms that generic MT can mistranslate.
-  const sourceContext = values.join(' ').toLowerCase();
-  const fix = value => {
-    let text = value;
-    if (/\b(shooting|shot dead|shot and killed|gunfire|gunman|firearm|opened fire|fired shots)\b/i.test(sourceContext)) {
-      text = text.replace(/촬영/g, '총격').replace(/촬영 사건/g, '총격 사건');
-    }
-    return text.replace(/\s+/g, ' ').trim();
-  };
-  const fixed = output.map(fix);
-  const [titleKo, summaryKo, ...pointsKo] = fixed;
+  const titleKo = String(translated[0] || '').trim();
+  const summaryKo = String(translated[1] || '').trim();
+  const pointsKo = translated.slice(2).map(value => String(value || '').trim()).filter(Boolean);
   const hasHangul = value => /[\uAC00-\uD7A3]/.test(value);
   const normalize = value => value.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '');
   const distinctPoints = [...new Map(pointsKo.map(point => [normalize(point), point])).values()];
-  const boilerplate = /comprehensive up-to-date news coverage|match or are related to your search|검색 결과|구글에 표시/i.test(fixed.join(' '));
-  const obviousBadKorean = /촬영에서 살았던|의심의 여지도|검색 의 어딘가|영광스러운 전쟁|상대는 모두에 모여/i.test(fixed.join(' '));
-  if (!titleKo || titleKo.length < 8 || !summaryKo || summaryKo.length < 60 ||
-      distinctPoints.length < 2 || !fixed.every(hasHangul) || boilerplate || obviousBadKorean) {
-    throw new Error('Free translation failed Korean completeness or quality checks.');
+  const allKorean = [titleKo, summaryKo, ...distinctPoints].every(hasHangul);
+  const boilerplate = /comprehensive up-to-date news coverage|match or are related to your search|검색 결과|구글에 표시/i.test([titleKo, summaryKo, ...distinctPoints].join(' '));
+  const obviousBadKorean = /촬영에서 살았던|의심의 여지도|검색 의 어딘가|영광스러운 전쟁|상대는 모두에 모여/i.test([titleKo, summaryKo, ...distinctPoints].join(' '));
+  if (!titleKo || titleKo.length < 8 || !summaryKo || summaryKo.length < 60 || distinctPoints.length < 2 || !allKorean || boilerplate || obviousBadKorean) {
+    throw new Error('Local translation failed Korean completeness or quality checks.');
   }
   return [titleKo, summaryKo, ...distinctPoints.slice(0, Math.max(2, values.length - 2))];
 }

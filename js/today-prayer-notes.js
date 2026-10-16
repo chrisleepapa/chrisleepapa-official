@@ -16,7 +16,7 @@
   const keyFor=date=>PREFIX+String(user()?.initials||'').toUpperCase()+'-'+(date||today());
   const read=key=>{try{return JSON.parse(localStorage.getItem(key)||'null')}catch(_){return null}};
   const readData=()=>read(keyFor())||{};
-  const saveData=patch=>{const key=keyFor(),old=read(key)||{};try{localStorage.setItem(key,JSON.stringify(Object.assign({},old,patch)));return true}catch(_){setStatus('저장 공간이 부족해 기록하지 못했습니다.');return false}};
+  const saveData=patch=>{const key=keyFor(),old=read(key)||{};if(Object.prototype.hasOwnProperty.call(patch,'prayerNotes'))patch=Object.assign({},patch,{prayerNotesUpdatedAt:new Date().toISOString()});try{localStorage.setItem(key,JSON.stringify(Object.assign({},old,patch)));return true}catch(_){setStatus('저장 공간이 부족해 기록하지 못했습니다.');return false}};
   let notes=[],editingId=null,initialized=false;
   function style(){
     if(document.getElementById('prayer-notes-style'))return;
@@ -88,11 +88,11 @@
   function chooseDaily(force){
     const data=readData(),saved=data.prayerDailySelection,current=saved&&saved.date===today()?saved.id:null;
     if(!force&&current&&notes.some(n=>n.id===current))return;
-    if(!notes.length){saveData({prayerNotes:notes,prayerDailySelection:{date:today(),id:null}});return}
+    if(!notes.length){saveData({prayerDailySelection:{date:today(),id:null}});return}
     let pool=notes.filter(n=>n.status!=='answered');if(!pool.length)pool=notes.slice();
     const prior=saved&&saved.id;let choices=pool.filter(n=>n.id!==prior);if(!choices.length)choices=pool;
     const picked=choices[Math.floor(Math.random()*choices.length)];
-    saveData({prayerNotes:notes,prayerDailySelection:{date:today(),id:picked.id}});
+    saveData({prayerDailySelection:{date:today(),id:picked.id}});
   }
   function renderDaily(){
     const data=readData(),s=data.prayerDailySelection,note=s&&s.date===today()?notes.find(n=>n.id===s.id):null;

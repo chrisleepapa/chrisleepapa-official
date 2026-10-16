@@ -4,18 +4,19 @@ import json
 import re
 import sys
 
-MODEL_NAME = "Helsinki-NLP/opus-mt-en-ko"
+MODEL_NAME = "facebook/m2m100_418M"
 
 def emit(value):
     sys.stdout.write(json.dumps(value, ensure_ascii=False) + "\n")
     sys.stdout.flush()
 
 try:
-    from transformers import MarianMTModel, MarianTokenizer
+    from transformers import M2M100ForConditionalGeneration, M2M100Tokenizer
     import torch
     torch.set_num_threads(2)
-    tokenizer = MarianTokenizer.from_pretrained(MODEL_NAME)
-    model = MarianMTModel.from_pretrained(MODEL_NAME)
+    tokenizer = M2M100Tokenizer.from_pretrained(MODEL_NAME)
+    tokenizer.src_lang = "en"
+    model = M2M100ForConditionalGeneration.from_pretrained(MODEL_NAME)
     model.eval()
 except Exception as exc:
     emit({"error": "Could not load free local translation model: " + str(exc)})
@@ -41,7 +42,7 @@ for line in sys.stdin:
             continue
         inputs = tokenizer(values, return_tensors="pt", padding=True, truncation=True, max_length=512)
         with torch.inference_mode():
-            generated = model.generate(**inputs, max_new_tokens=220, num_beams=4)
+            generated = model.generate(**inputs, forced_bos_token_id=tokenizer.get_lang_id("ko"), max_new_tokens=220, num_beams=4)
         translated = tokenizer.batch_decode(generated, skip_special_tokens=True)
         emit({"values": [fix_translation(source, target) for source, target in zip(values, translated)]})
     except Exception as exc:

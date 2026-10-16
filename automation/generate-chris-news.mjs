@@ -104,7 +104,27 @@ function metaContent(html, key) {
   return '';
 }
 function isGenericNewsBoilerplate(value = '') {
-  return /comprehensive up-to-date news coverage|aggregated from sources all over the world by google news|google news provides.*news coverage/i.test(value.replace(/\s+/g, ' ').trim());
+  const text = value.replace(/\s+/g, ' ').trim();
+  return /comprehensive up-to-date news coverage|aggregated from sources all over the world by google news|google news provides.*news coverage|this will let google show .* news articles|match or are related to your search|read more:|image source:|photograph:|photograph by|getty images|wikimedia commons|adapted by .*hirshfeld|sign up for our newsletter|subscribe to our newsletter|cookie settings|accept all cookies|privacy policy|terms and conditions/i.test(text);
+}
+function splitSentences(value = '') {
+  return (String(value).match(/[^.!?。！？]+[.!?。！？]?/g) || [])
+    .map(s => s.replace(/\s+/g, ' ').trim())
+    .filter(s => s.length >= 45 && s.length <= 420)
+    .filter(s => !isGenericNewsBoilerplate(s))
+    .filter(s => !/^(?:[A-Z][a-z]+\s+){0,3}(?:\d{1,2},?\s+)?(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?\s+\d{1,2}\b/i.test(s));
+}
+function dedupeSentences(sentences) {
+  const seen = new Set();
+  const out = [];
+  for (const sentence of sentences) {
+    const key = normalizedTitle(sentence);
+    if (!key || key.length < 30 || seen.has(key)) continue;
+    if (out.some(old => titleSimilarity(old, sentence) >= 0.82)) continue;
+    seen.add(key);
+    out.push(sentence);
+  }
+  return out;
 }
 function extractArticleTitle(html) {
   const metaTitle = metaContent(html, 'og:title') || metaContent(html, 'twitter:title');
@@ -179,16 +199,18 @@ async function fetchArticleDetails(url) {
     return { link: url, details: [] };
   }
 }
-function sentencePoints(text) {
-  return (text.match(/[^.!?。！？]+[.!?。！？]?/g) || [])
-    .map(s => s.trim()).filter(s => s.length > 25).slice(0, 3)
-    .map(s => s.length > 220 ? s.slice(0, 217) + '…' : s);
+function sentencePoints(text, excluded = []) {
+  const blocked = new Set(excluded.map(normalizedTitle));
+  return dedupeSentences(splitSentences(text))
+    .filter(sentence => !blocked.has(normalizedTitle(sentence)))
+    .slice(0, 3)
+    .map(s => s.length > 220 ? s.slice(0, 217).replace(/[,;:]$/, '') + '…' : s);
 }
 
 async function translateText(value, target) {
   const source = String(value || '').trim();
   if (!source) return source;
-  const containsHangul = text => /[\\uAC00-\\uD7A3]/.test(text);
+  const containsHangul = text => /[\uAC00-\uD7A3]/.test(text);
   let lastError;
   for (let attempt = 1; attempt <= 3; attempt++) {
     try {
@@ -200,8 +222,15 @@ async function translateText(value, target) {
         ? payload[0].map(part => part?.[0] || '').join('').trim()
         : '';
       if (!translated) throw new Error('Translation response was empty.');
-      if (target === 'ko' && !containsHangul(translated)) {
-        throw new Error('Korean translation did not contain Hangul; refusing to publish the source text as Korean.');
+      if (target === 'ko') {
+        const hangulCount = (translated.match(/[\uAC00-\uD7A3]/g) || []).length;
+        const latinCount = (translated.match(/[A-Za-z]/g) || []).length;
+        if (!containsHangul(translated) || hangulCount < 3 || (latinCount > 80 && latinCount > hangulCount * 1.5)) {
+          throw new Error('Korean translation appears untranslated or incomplete; refusing to publish it.');
+        }
+      }
+      if (/this will let google show|match or are related to your search|comprehensive up-to-date news coverage/i.test(translated)) {
+        throw new Error('Translation contains publisher/search boilerplate.');
       }
       return translated;
     } catch (error) {
@@ -264,32 +293,38 @@ async function fetchCategory(category, globallySeenLinks = new Set(), globallySe
       // Keep the six-card feed editorially distinct: never repeat the same or near-identical headline across categories.
       if (globallySeenTitles.some(title => titleSimilarity(item.title, title) >= 0.75)) continue;
 
-      const summaryCandidate = !feed.rssOnly && detailText.length >= 100 && !isGenericNewsBoilerplate(detailText)
+      const rawCandidate = !feed.rssOnly && detailText.length >= 100 && !isGenericNewsBoilerplate(detailText)
         ? detailText
         : rssText;
-      const normalizedSummary = normalizedTitle(summaryCandidate);
+      const cleanSentences = dedupeSentences(splitSentences(rawCandidate));
+      const normalizedSummary = normalizedTitle(rawCandidate);
       const normalizedHeadline = normalizedTitle(item.title);
-      const headlineOnly = !summaryCandidate || summaryCandidate.length < 90 ||
+      const headlineOnly = cleanSentences.length < 3 || rawCandidate.length < 150 ||
         (normalizedHeadline && normalizedSummary.startsWith(normalizedHeadline) &&
           normalizedSummary.length - normalizedHeadline.length < 35);
       if (headlineOnly) continue;
 
-      const source = feed.name;
-      const summary = summaryCandidate.slice(0, 1100).trim();
-      const points = sentencePoints(summary);
-      if (points.length === 0 && summary.length < 180) continue;
-      const safePoints = points.length ? points : [summary.slice(0, 180)];
+      // Keep the editorial summary short, then choose different sentences for the key points.
+      // Never publish credits, search-engine snippets, duplicated sentences, or truncated fragments.
+      const summarySentences = cleanSentences.slice(0, 2);
+      const summary = summarySentences.join(' ').slice(0, 650).trim();
+      const points = sentencePoints(rawCandidate, summarySentences);
+      if (summary.length < 90 || points.length < 2) continue;
+      const safePoints = points;
       const [titleKo, summaryKo, pointsKo] = await Promise.all([
         translateText(item.title, 'ko'),
         translateText(summary, 'ko'),
         Promise.all(safePoints.map(point => translateText(point, 'ko')))
       ]);
+      const translatedPoints = dedupeSentences(pointsKo);
+      if (!titleKo || !summaryKo || translatedPoints.length < 2 ||
+          /this will let google show|match or are related to your search/i.test(summaryKo)) continue;
       return {
         category: category.key, categoryKo: category.ko, categoryEn: category.en,
-        title: item.title, titleEn: item.title, titleKo: titleKo || item.title,
-        summary, summaryEn: summary, summaryKo: summaryKo || summary,
+        title: item.title, titleEn: item.title, titleKo,
+        summary, summaryEn: summary, summaryKo,
         points: safePoints,
-        pointsKo: pointsKo.length ? pointsKo : safePoints,
+        pointsKo: translatedPoints,
         pointsEn: safePoints,
         source, link: canonicalLink, publishedAt: item.pubDate,
         summarySource: detailText.length >= 100 ? 'publisher article page' : feed.name + ' RSS excerpt'
@@ -321,6 +356,19 @@ if (cards.some(x => !x)) {
   // Never silently publish old or fabricated content. Leave the existing JSON untouched
   // so the failed workflow is visible and the incomplete data is not presented as fresh.
   throw new Error('News refresh could not obtain six verified, non-headline-only cards. See category fallback diagnostics above.');
+}
+for (const card of cards) {
+  const pointsKo = dedupeSentences(card.pointsKo || []);
+  const pointsEn = dedupeSentences(card.pointsEn || []);
+  if (!card.titleKo || !/[\uAC00-\uD7A3]/.test(card.titleKo) ||
+      !card.summaryKo || !/[\uAC00-\uD7A3]/.test(card.summaryKo) ||
+      pointsKo.length < 2 || pointsEn.length < 2 ||
+      isGenericNewsBoilerplate(card.summaryKo) || isGenericNewsBoilerplate(card.summaryEn)) {
+    throw new Error('Quality gate rejected incomplete, untranslated, duplicated, or boilerplate news card: ' + card.category);
+  }
+  card.pointsKo = pointsKo.slice(0, 3);
+  card.pointsEn = pointsEn.slice(0, 3);
+  card.points = card.pointsEn;
 }
 const now = new Date();
 const dateParts = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(now);

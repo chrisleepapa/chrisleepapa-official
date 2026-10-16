@@ -403,6 +403,7 @@ async function fetchCategory(category, globallySeenLinks = new Set(), globallySe
       const points = sentencePoints(rawCandidate, summarySentences);
       if (summary.length < 90 || points.length < 2) continue;
       const safePoints = points;
+      const source = feed.name;
       const translatedFields = await translateSegments([item.title, summary, ...safePoints], 'ko');
       const titleKo = translatedFields[0];
       const summaryKo = translatedFields[1];

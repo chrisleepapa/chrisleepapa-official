@@ -105,7 +105,8 @@ function normalizeInternalLinks(){
 
 function loadPageSpecificScripts(){const page=getCurrentPageKey();if(page==='sistersquad-hub'){const card=document.querySelector('.sq-links .sq-link:nth-child(1)');if(card)card.style.backgroundImage="url('/images/sistersquad1.png?v=20260828')";loadScriptOnce('/js/sistersquad-hub-i18n.js?v=20261013','sistersquad-hub-i18n');return;}if(page==='sistersquad2'){loadScriptOnce('/js/sistersquad2-ost.js?v=20261013-squad-i18n-v2','sistersquad2-ost');return;}if(page==='miracleshot'){loadScriptOnce('/js/work-miracle-shot.js?v=20261013','work-miracle-shot');return;}}
 
-async function loadComponents(){const page=getCurrentPageKey();if(window.PAGE_I18N){i18n.ko={...BASE_I18N.ko,...(window.PAGE_I18N.ko||{})};i18n.en={...BASE_I18N.en,...(window.PAGE_I18N.en||{})};}if(page==='worship'){i18n.ko={...i18n.ko,...WORSHIP_I18N.ko};i18n.en={...i18n.en,...WORSHIP_I18N.en};}/* Apply the saved language before waiting for async header/footer components. */setLanguage(currentLang);await Promise.all([loadComponent('site-nav','components/header.html'),loadComponent('site-footer','components/footer.html')]);/* Re-apply after async components so Home content and newly injected UI always use the saved language. */setLanguage(currentLang);initScrollProgress();initNavScroll();initMobileMenu();initDesktopDropdowns();initActiveNavLink();initLangDropdown();initThemeToggle();initShareModal();initBibleLogout();initSecurity();initMouseOrb();normalizeInternalLinks();loadPageSpecificScripts();if(typeof window.onMainReady==='function')window.onMainReady();}
+function normalizeBibleEditorialFooterOrder(){if(getCurrentPageKey()!=='bible')return;const footer=document.getElementById('site-footer');if(!footer||!footer.parentNode)return;const section=Array.from(document.querySelectorAll('section')).find(el=>{const heading=el.querySelector('h2');return heading&&/BIBLE\s+IN\s+MY\s+HAND/i.test(heading.textContent||'');});if(!section)return;const guestbook=document.getElementById('guestbook-section');const target=guestbook&&guestbook.parentNode===footer.parentNode?guestbook:footer;target.parentNode.insertBefore(section,target);}
+async function loadComponents(){const page=getCurrentPageKey();if(window.PAGE_I18N){i18n.ko={...BASE_I18N.ko,...(window.PAGE_I18N.ko||{})};i18n.en={...BASE_I18N.en,...(window.PAGE_I18N.en||{})};}if(page==='worship'){i18n.ko={...i18n.ko,...WORSHIP_I18N.ko};i18n.en={...i18n.en,...WORSHIP_I18N.en};}/* Apply the saved language before waiting for async header/footer components. */setLanguage(currentLang);await Promise.all([loadComponent('site-nav','components/header.html'),loadComponent('site-footer','components/footer.html')]);normalizeBibleEditorialFooterOrder();/* Re-apply after async components so Home content and newly injected UI always use the saved language. */setLanguage(currentLang);initScrollProgress();initNavScroll();initMobileMenu();initDesktopDropdowns();initActiveNavLink();initLangDropdown();initThemeToggle();initShareModal();initBibleLogout();initSecurity();initMouseOrb();normalizeInternalLinks();loadPageSpecificScripts();if(typeof window.onMainReady==='function')window.onMainReady();}
 function initScrollProgress(){const bar=document.getElementById('scroll-progress');if(!bar)return;const update=()=>{const scroll=window.scrollY||window.pageYOffset||0,max=document.documentElement.scrollHeight-window.innerHeight,percent=max>0?Math.max(0,Math.min(100,(scroll/max)*100)):0;bar.style.width=`${percent}%`;};window.addEventListener('scroll',update,{passive:true});window.addEventListener('resize',update,{passive:true});update();}
 function initNavScroll(){const nav=document.getElementById('main-nav');if(!nav)return;const update=()=>nav.classList.toggle('scrolled',(window.scrollY||0)>40);window.addEventListener('scroll',update,{passive:true});update();}
 function closeDesktopDropdowns(except=null){document.querySelectorAll('.nav-dropdown-wrapper').forEach(wrapper=>{if(wrapper===except)return;wrapper.classList.remove('active');const trigger=wrapper.querySelector('.nav-dropdown-trigger');if(trigger){trigger.classList.remove('active');trigger.setAttribute('aria-expanded','false');}});}
@@ -137,3 +138,24 @@ function initBibleLogout(){if(getCurrentPageKey()!=='bible')return;document.quer
 function initSecurity(){document.addEventListener('contextmenu',event=>{if(event.target.closest('input,textarea,select,[contenteditable="true"]'))return;event.preventDefault();});document.addEventListener('copy',event=>{if(event.target.closest('input,textarea,select,[contenteditable="true"]'))return;if(window.getSelection&&window.getSelection().toString())event.preventDefault();});document.addEventListener('keydown',event=>{if(event.target.closest&&event.target.closest('input,textarea,select,[contenteditable="true"]'))return;const key=String(event.key||'').toUpperCase();if(key==='F12'||(event.ctrlKey&&event.shiftKey&&(key==='I'||key==='J'))||(event.ctrlKey&&key==='U')){event.preventDefault();return;}if(event.ctrlKey&&['C','S','P'].includes(key)&&window.getSelection&&window.getSelection().toString())event.preventDefault();});}
 function initMouseOrb(){const orb=document.getElementById('mouse-orb');if(!orb||!window.matchMedia||!window.matchMedia('(min-width:901px)').matches)return;document.addEventListener('mousemove',event=>{orb.style.left=`${event.clientX}px`;orb.style.top=`${event.clientY}px`;},{passive:true});}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',loadComponents,{once:true});else loadComponents();
+
+/* Shared guestbook: restore it on every standard page with a shared footer.
+   Pages that already load guestbook.js keep their existing single instance. */
+(function ensureSharedGuestbook(){
+  function loadGuestbookIfNeeded(){
+    if(!document.getElementById('site-footer')) return;
+    if(document.getElementById('guestbook-section')) return;
+    if(Array.from(document.scripts).some(script => /(?:^|\/)guestbook\.js(?:[?#]|$)/i.test(script.getAttribute('src') || ''))) return;
+    const script = document.createElement('script');
+    script.src = '/js/guestbook.js';
+    script.async = false;
+    script.dataset.clpGuestbook = 'shared';
+    document.body.appendChild(script);
+  }
+  if(document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadGuestbookIfNeeded, { once: true });
+  } else {
+    loadGuestbookIfNeeded();
+  }
+})();
+

@@ -42,12 +42,12 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/huggingface/hub
-          key: opus-mt-en-ko-${{ runner.os }}-v1
+          key: opus-mt-tc-big-en-ko-${{ runner.os }}-v1
       - name: Install CPU-only translation dependencies
         run: |
           python -m pip install --upgrade pip
           python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
-          python -m pip install transformers sentencepiece
+          python -m pip install 'transformers==4.46.3' sentencepiece
       - name: Check news generator syntax
         run: node --check automation/generate-chris-news.mjs
       - name: Fetch and compile six daily news cards

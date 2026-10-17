@@ -4,7 +4,7 @@ import json
 import re
 import sys
 
-MODEL_NAME = "Helsinki-NLP/opus-mt-en-ko"
+MODEL_NAME = "Helsinki-NLP/opus-mt-tc-big-en-ko"
 
 def emit(value):
     sys.stdout.write(json.dumps(value, ensure_ascii=False) + "\n")

@@ -52,7 +52,6 @@ const categories = [
     key: 'society', ko: '사회 · 문화', en: 'SOCIETY · CULTURE',
     query: 'society culture education',
     feeds: [
-      { name: 'Yonhap News Agency', url: 'https://en.yna.co.kr/RSS/news.xml' },
       { name: 'BBC News', url: 'https://feeds.bbci.co.uk/news/education/rss.xml' },
       { name: 'The Guardian', url: 'https://www.theguardian.com/society/rss' }
     ]
@@ -227,6 +226,9 @@ function translateWithLocalModel(values) {
         else pending.resolve(result.values || []);
       }
     });
+    translatorProcess.stdin.on('error', error => {
+      for (const pending of translatorQueue.splice(0)) pending.reject(error);
+    });
     translatorProcess.on('error', error => {
       for (const pending of translatorQueue.splice(0)) pending.reject(error);
     });
@@ -248,6 +250,32 @@ function translateWithLocalModel(values) {
   });
 }
 
+function sourceProperNouns(source) {
+  const words = new Set();
+  // Allow English names and official entities that occur inside the original sentence.
+  const text = String(source || '');
+  const commonCapitalizedWords = new Set([
+    'a','an','the','and','or','but','if','then','than','when','while','where','who','what','why','how',
+    'he','she','it','they','we','you','i','his','her','their','our','your','its','this','that','these','those',
+    'after','before','during','following','amid','among','from','with','without','into','onto','over','under',
+    'as','at','by','for','in','on','to','of','up','out','off','about','around','across','through',
+    'says','said','say','calls','called','plans','planned','killed','dead','living','telling','alone',
+    'three','two','one','new','technology','banks','bank','might','help','stink','hole','bitter','end',
+    'lead','updates','adds','photos','attention','seoul'
+  ]);
+  for (const token of text.match(/[A-Za-z][A-Za-z0-9.'&-]*/g) || []) {
+    const lower = token.toLowerCase();
+    if (/^[A-Z]{2,}$/.test(token)) words.add(lower);
+    else if (/^[A-Z][a-z]/.test(token) && !commonCapitalizedWords.has(lower)) words.add(lower);
+  }
+  return words;
+}
+function hasUntranslatedEnglish(source, translated) {
+  const allowed = sourceProperNouns(source);
+  const latinWords = String(translated || '').match(/[A-Za-z][A-Za-z'-]*/g) || [];
+  return latinWords.some(word => !/^[A-Z]{2,}$/.test(word) && !allowed.has(word.toLowerCase()));
+}
+
 async function translateSegments(values, target) {
   if (target !== 'ko') throw new Error('This news workflow currently supports Korean output only.');
   const translated = await translateWithLocalModel(values);
@@ -259,28 +287,30 @@ async function translateSegments(values, target) {
   const hasHangul = value => /[\uAC00-\uD7A3]/.test(value);
   const normalize = value => value.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '');
   const distinctPoints = [...new Map(pointsKo.map(point => [normalize(point), point])).values()];
-  const allKorean = [titleKo, summaryKo, ...distinctPoints].every(hasHangul);
-  const boilerplate = /comprehensive up-to-date news coverage|match or are related to your search|검색 결과|구글에 표시/i.test([titleKo, summaryKo, ...distinctPoints].join(' '));
-  const obviousBadKorean = /촬영에서 살았던|의심의 여지도|검색 의 어딘가|영광스러운 전쟁|상대는 모두에 모여/i.test([titleKo, summaryKo, ...distinctPoints].join(' '));
-  if (!titleKo || titleKo.length < 8 || !summaryKo || summaryKo.length < 60 || distinctPoints.length < 2 || !allKorean || boilerplate || obviousBadKorean) {
-    throw new Error('Local translation failed Korean completeness or quality checks.');
+  const translations = [titleKo, summaryKo, ...distinctPoints];
+  const allKorean = translations.every(hasHangul);
+  // Validate against each corresponding English source field. Proper nouns and acronyms
+  // may stay English; ordinary untranslated English words may not.
+  const mixedEnglish = translations.some((value, index) => hasUntranslatedEnglish(values[index] || '', value));
+  const boilerplate = /comprehensive up-to-date news coverage|match or are related to your search|검색 결과|구글에 표시/i.test(translations.join(' '));
+  const obviousBadKorean = /촬영에서 살았던|의심의 여지도|검색 의 어딘가|영광스러운 전쟁|상대는 모두에 모여/i.test(translations.join(' '));
+  if (!titleKo || titleKo.length < 8 || !summaryKo || summaryKo.length < 60 ||
+      distinctPoints.length < 2 || !allKorean || mixedEnglish || boilerplate || obviousBadKorean) {
+    throw new Error('Local translation failed Korean completeness or mixed-English quality checks.');
   }
   return [titleKo, summaryKo, ...distinctPoints.slice(0, Math.max(2, values.length - 2))];
 }
-
 async function fetchCategory(category, globallySeenLinks = new Set(), globallySeenTitles = []) {
-  // Prefer direct publisher RSS feeds. Aggregator feeds are deliberately not used:
-  // they often leave the card linked to a search/result page rather than the actual report.
   const nowMs = Date.now();
   const maxAgeMs = 72 * 60 * 60 * 1000;
-  const seenLinks = new Set();
   const failures = [];
-  let candidatesChecked = 0;
-  const maxCandidatesPerCategory = 8;
+  const seenLinks = new Set();
+  const candidateLimit = 30;
 
+  // Fetch every configured publisher feed first, then compare their timestamps together.
+  // This prevents the first configured publisher from winning merely because it appears first.
+  const feedCandidates = [];
   for (const feed of category.feeds || []) {
-    if (candidatesChecked >= maxCandidatesPerCategory) break;
-    let items = [];
     try {
       const response = await fetch(feed.url, {
         headers: {
@@ -293,76 +323,72 @@ async function fetchCategory(category, globallySeenLinks = new Set(), globallySe
         failures.push(feed.name + ': HTTP ' + response.status);
         continue;
       }
-      items = parseItems(await response.text());
+      const items = parseItems(await response.text());
+      for (const item of items.slice(0, 50)) {
+        const publishedMs = Date.parse(item.pubDate);
+        if (!Number.isFinite(publishedMs) || publishedMs > nowMs + 5 * 60 * 1000 || nowMs - publishedMs > maxAgeMs) continue;
+        let itemUrl;
+        try {
+          itemUrl = new URL(item.link);
+          if (!['http:', 'https:'].includes(itemUrl.protocol)) continue;
+        } catch { continue; }
+        if (itemUrl.hostname === 'news.google.com' || itemUrl.hostname.includes('bing.com')) continue;
+        feedCandidates.push({ feed, item, publishedMs, canonicalLink: itemUrl.href });
+      }
     } catch (error) {
       failures.push(feed.name + ': ' + String(error));
-      continue;
     }
+  }
 
-    for (const item of items.slice(0, 35)) {
-      if (candidatesChecked >= maxCandidatesPerCategory) break;
-      const publishedMs = Date.parse(item.pubDate);
-      if (!Number.isFinite(publishedMs) || publishedMs > nowMs + 5 * 60 * 1000 || nowMs - publishedMs > maxAgeMs) continue;
-      let itemUrl;
-      try {
-        itemUrl = new URL(item.link);
-        if (!['http:', 'https:'].includes(itemUrl.protocol)) continue;
-      } catch { continue; }
-      if (itemUrl.hostname === 'news.google.com' || itemUrl.hostname.includes('bing.com')) continue;
-      const canonicalLink = itemUrl.href;
-      if (seenLinks.has(canonicalLink) || globallySeenLinks.has(canonicalLink)) continue;
-      seenLinks.add(canonicalLink);
-      candidatesChecked++;
+  feedCandidates.sort((a, b) => b.publishedMs - a.publishedMs);
+  let candidatesChecked = 0;
+  for (const candidate of feedCandidates) {
+    if (candidatesChecked >= candidateLimit) break;
+    const { feed, item, canonicalLink } = candidate;
+    if (seenLinks.has(canonicalLink) || globallySeenLinks.has(canonicalLink)) continue;
+    seenLinks.add(canonicalLink);
+    candidatesChecked++;
 
-      const rssText = cleanHtml(item.description || '');
-      // ScienceDaily permits RSS headlines and summaries with attribution and a link,
-      // but not republishing full article text; keep those entries RSS-only.
-      const article = feed.rssOnly
-        ? { link: canonicalLink, details: [], articleTitle: '' }
-        : await fetchArticleDetails(canonicalLink);
-      const detailText = (article.details || []).join(' ').trim();
-      const articleTitle = article.articleTitle || '';
-      if (articleTitle && titleSimilarity(item.title, articleTitle) < 0.25) continue;
-      // Keep the six-card feed editorially distinct: never repeat the same or near-identical headline across categories.
-      if (globallySeenTitles.some(title => titleSimilarity(item.title, title) >= 0.75)) continue;
+    const rssText = cleanHtml(item.description || '');
+    const article = feed.rssOnly
+      ? { link: canonicalLink, details: [], articleTitle: '' }
+      : await fetchArticleDetails(canonicalLink);
+    const detailText = (article.details || []).join(' ').trim();
+    const articleTitle = article.articleTitle || '';
+    if (articleTitle && titleSimilarity(item.title, articleTitle) < 0.25) continue;
+    if (globallySeenTitles.some(title => titleSimilarity(item.title, title) >= 0.75)) continue;
 
-      const rawCandidate = !feed.rssOnly && detailText.length >= 100 && !isGenericNewsBoilerplate(detailText)
-        ? detailText
-        : rssText;
-      const cleanSentences = dedupeSentences(splitSentences(rawCandidate));
-      const normalizedSummary = normalizedTitle(rawCandidate);
-      const normalizedHeadline = normalizedTitle(item.title);
-      const headlineOnly = cleanSentences.length < 3 || rawCandidate.length < 150 ||
-        (normalizedHeadline && normalizedSummary.startsWith(normalizedHeadline) &&
-          normalizedSummary.length - normalizedHeadline.length < 35);
-      if (headlineOnly) continue;
+    const rawCandidate = !feed.rssOnly && detailText.length >= 100 && !isGenericNewsBoilerplate(detailText)
+      ? detailText
+      : rssText;
+    const cleanSentences = dedupeSentences(splitSentences(rawCandidate));
+    const normalizedSummary = normalizedTitle(rawCandidate);
+    const normalizedHeadline = normalizedTitle(item.title);
+    const headlineOnly = cleanSentences.length < 3 || rawCandidate.length < 150 ||
+      (normalizedHeadline && normalizedSummary.startsWith(normalizedHeadline) &&
+        normalizedSummary.length - normalizedHeadline.length < 35);
+    if (headlineOnly) continue;
 
-      // Keep the editorial summary short, then choose different sentences for the key points.
-      // Never publish credits, search-engine snippets, duplicated sentences, or truncated fragments.
-      const summarySentences = cleanSentences.slice(0, 2);
-      const summary = summarySentences.join(' ').slice(0, 650).trim();
-      const points = sentencePoints(rawCandidate, summarySentences);
-      if (summary.length < 90 || points.length < 2) continue;
-      const safePoints = points;
-      const source = feed.name;
-      const translatedFields = await translateSegments([item.title, summary, ...safePoints], 'ko');
-      const titleKo = translatedFields[0];
-      const summaryKo = translatedFields[1];
-      const pointsKo = translatedFields.slice(2);
-      const translatedPoints = dedupeSentences(pointsKo);
-      if (!titleKo || !summaryKo || translatedPoints.length < 2 ||
-          /this will let google show|match or are related to your search/i.test(summaryKo)) continue;
-      return {
-        category: category.key, categoryKo: category.ko, categoryEn: category.en,
-        title: item.title, titleEn: item.title, titleKo,
-        summary, summaryEn: summary, summaryKo,
-        points: safePoints,
-        pointsKo: translatedPoints,
-        pointsEn: safePoints,
-        source, link: canonicalLink, publishedAt: item.pubDate,
-        summarySource: detailText.length >= 100 ? 'publisher article page' : feed.name + ' RSS excerpt'
-      };
-    }
+    const summarySentences = cleanSentences.slice(0, 2);
+    const summary = summarySentences.join(' ').slice(0, 650).trim();
+    const points = sentencePoints(rawCandidate, summarySentences);
+    if (summary.length < 90 || points.length < 2) continue;
+
+    const translatedFields = await translateSegments([item.title, summary, ...points], 'ko');
+    const titleKo = translatedFields[0];
+    const summaryKo = translatedFields[1];
+    const translatedPoints = dedupeSentences(translatedFields.slice(2));
+    if (!titleKo || !summaryKo || translatedPoints.length < 2 ||
+        /this will let google show|match or are related to your search/i.test(summaryKo)) continue;
+
+    return {
+      category: category.key, categoryKo: category.ko, categoryEn: category.en,
+      title: item.title, titleEn: item.title, titleKo,
+      summary, summaryEn: summary, summaryKo,
+      points, pointsKo: translatedPoints, pointsEn: points,
+      source: feed.name, link: canonicalLink, publishedAt: item.pubDate,
+      summarySource: detailText.length >= 100 ? 'publisher article page' : feed.name + ' RSS excerpt'
+    };
   }
 
   console.error('News source diagnostics for ' + category.key + ': ' + failures.join(' | '));
@@ -390,6 +416,9 @@ if (cards.some(x => !x)) {
   // so the failed workflow is visible and the incomplete data is not presented as fresh.
   throw new Error('News refresh could not obtain six verified, non-headline-only cards. See category fallback diagnostics above.');
 }
+// Keep the six selected category stories in newest-first publication order.
+cards.sort((a, b) => Date.parse(b.publishedAt || '') - Date.parse(a.publishedAt || ''));
+
 for (const card of cards) {
   const pointsKo = dedupeSentences(card.pointsKo || []);
   const pointsEn = dedupeSentences(card.pointsEn || []);
@@ -403,12 +432,11 @@ for (const card of cards) {
   card.pointsEn = pointsEn.slice(0, 3);
   card.points = card.pointsEn;
 }
-cards.sort((a, b) => Date.parse(b.publishedAt || '') - Date.parse(a.publishedAt || ''));
 const now = new Date();
 const dateParts = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(now);
 const dateMap = Object.fromEntries(dateParts.map(part => [part.type, part.value]));
 const date = `${dateMap.year}-${dateMap.month}-${dateMap.day}`;
-const payload = { date, updatedAt: now.toISOString(), sourceNote: 'Direct publisher feeds from Science News, ScienceDaily, BBC News, The Guardian, Al Jazeera English, NPR and Yonhap. ScienceDaily entries use attributed RSS headlines and summaries with links; only direct article links published in the last 72 hours are accepted, and incomplete refreshes do not overwrite existing data.', cards };
+const payload = { date, updatedAt: now.toISOString(), sourceNote: 'International publisher feeds only, including BBC News, The Guardian, Al Jazeera English, NPR, Science News and ScienceDaily. Articles link to the original publisher; only direct article links published in the last 72 hours are accepted, and incomplete refreshes do not overwrite existing data.', cards };
 await mkdir('data', { recursive: true });
 await writeFile('data/chris-news.json', JSON.stringify(payload, null, 2) + '\n');
 console.log(`Prepared ${cards.length} news cards for ${date}.`);

@@ -410,29 +410,52 @@ const initChrisNewsExport=()=>{
    #chris-news-export-canvas .chris-news-card-footer{margin-top:30px!important;padding-top:18px!important;gap:20px!important}
    #chris-news-export-canvas .chris-news-source{font-size:16px!important;line-height:1.7!important;letter-spacing:.4px!important;overflow-wrap:anywhere!important}
    #chris-news-export-canvas .chris-news-share-actions,#chris-news-export-canvas .chris-news-note{display:none!important}
-   /* Export every saved news card in the same light ivory style as the second card. */
+   /* Export cards follow the selected site theme and keep all cards visually consistent. */
    #chris-news-export-canvas .chris-news-export-card{
-     background-color:#f4f0e6!important;
-     background-image:linear-gradient(145deg,#fffdf7 0%,#f1eadb 100%)!important;
-     border-color:rgba(139,106,25,.38)!important;
-     color:#302a20!important;
+     background-color:#f5f0e6!important;
+     background-image:none!important;
+     border-color:rgba(126,101,55,.28)!important;
+     color:#29261f!important;
    }
    #chris-news-export-canvas .chris-news-export-card *,
    #chris-news-export-canvas .chris-news-export-card .chris-news-card-date,
    #chris-news-export-canvas .chris-news-export-card .chris-news-summary,
    #chris-news-export-canvas .chris-news-export-card .chris-news-point,
    #chris-news-export-canvas .chris-news-export-card .chris-news-source{
-     color:#302a20!important;
-     -webkit-text-fill-color:#302a20!important;
+     color:#48443c!important;
+     -webkit-text-fill-color:#48443c!important;
    }
    #chris-news-export-canvas .chris-news-export-card .chris-news-card-top,
    #chris-news-export-canvas .chris-news-export-card .chris-news-card-kicker{
-     color:#8b6a19!important;
-     -webkit-text-fill-color:#8b6a19!important;
+     color:#72531c!important;
+     -webkit-text-fill-color:#72531c!important;
    }
    #chris-news-export-canvas .chris-news-export-card .chris-news-points,
    #chris-news-export-canvas .chris-news-export-card .chris-news-card-footer{
-     border-color:rgba(23,23,23,.22)!important;
+     border-color:rgba(126,101,55,.18)!important;
+   }
+   html[data-theme="dark"] #chris-news-export-canvas .chris-news-export-card{
+     background-color:#0b0b10!important;
+     background-image:none!important;
+     border-color:rgba(232,208,138,.19)!important;
+     color:#f8f3e8!important;
+   }
+   html[data-theme="dark"] #chris-news-export-canvas .chris-news-export-card *,
+   html[data-theme="dark"] #chris-news-export-canvas .chris-news-export-card .chris-news-card-date,
+   html[data-theme="dark"] #chris-news-export-canvas .chris-news-export-card .chris-news-summary,
+   html[data-theme="dark"] #chris-news-export-canvas .chris-news-export-card .chris-news-point,
+   html[data-theme="dark"] #chris-news-export-canvas .chris-news-export-card .chris-news-source{
+     color:rgba(248,243,232,.82)!important;
+     -webkit-text-fill-color:rgba(248,243,232,.82)!important;
+   }
+   html[data-theme="dark"] #chris-news-export-canvas .chris-news-export-card .chris-news-card-top,
+   html[data-theme="dark"] #chris-news-export-canvas .chris-news-export-card .chris-news-card-kicker{
+     color:#e8d08a!important;
+     -webkit-text-fill-color:#e8d08a!important;
+   }
+   html[data-theme="dark"] #chris-news-export-canvas .chris-news-export-card .chris-news-points,
+   html[data-theme="dark"] #chris-news-export-canvas .chris-news-export-card .chris-news-card-footer{
+     border-color:rgba(255,255,255,.16)!important;
    }
   `;
   document.head.appendChild(style);
@@ -602,7 +625,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 </script>
 
 <style id="chris-news-unified-ivory">
-/* Chris's News: every on-screen card uses card 2's ivory background in both light and dark themes. */
+/* Chris's News: consistent light/dark card styling with readable contrast. */
 #chris-news .chris-news-card,
 #chris-news .chris-news-card[class*="--"],
 .chris-news-card {
@@ -639,5 +662,36 @@ document.addEventListener('DOMContentLoaded',()=>{
 #chris-news .chris-news-card-footer,
 .chris-news-card .chris-news-points,
 .chris-news-card .chris-news-card-footer { border-color: rgba(126,101,55,.18) !important; }
+
+/* Dark mode: all cards use the same near-black background and high-contrast text. */
+html[data-theme="dark"] #chris-news .chris-news-card,
+html[data-theme="dark"] #chris-news .chris-news-card[class*="--"],
+html[data-theme="dark"] .chris-news-card {
+  background: #0b0b10 !important;
+  background-color: #0b0b10 !important;
+  background-image: none !important;
+  color: #f8f3e8 !important;
+  border-color: rgba(232,208,138,.19) !important;
+}
+html[data-theme="dark"] #chris-news .chris-news-card-top,
+html[data-theme="dark"] #chris-news .chris-news-card-kicker,
+html[data-theme="dark"] .chris-news-card .chris-news-card-top,
+html[data-theme="dark"] .chris-news-card .chris-news-card-kicker { color: #e8d08a !important; }
+html[data-theme="dark"] #chris-news .chris-news-card-date,
+html[data-theme="dark"] #chris-news .chris-news-source,
+html[data-theme="dark"] #chris-news .chris-news-note,
+html[data-theme="dark"] .chris-news-card .chris-news-card-date,
+html[data-theme="dark"] .chris-news-card .chris-news-source,
+html[data-theme="dark"] .chris-news-card .chris-news-note { color: rgba(248,243,232,.68) !important; }
+html[data-theme="dark"] #chris-news .chris-news-card h3,
+html[data-theme="dark"] .chris-news-card h3 { color: #f8f3e8 !important; }
+html[data-theme="dark"] #chris-news .chris-news-summary,
+html[data-theme="dark"] .chris-news-card .chris-news-summary { color: rgba(248,243,232,.82) !important; }
+html[data-theme="dark"] #chris-news .chris-news-point,
+html[data-theme="dark"] .chris-news-card .chris-news-point { color: rgba(248,243,232,.76) !important; }
+html[data-theme="dark"] #chris-news .chris-news-points,
+html[data-theme="dark"] #chris-news .chris-news-card-footer,
+html[data-theme="dark"] .chris-news-card .chris-news-points,
+html[data-theme="dark"] .chris-news-card .chris-news-card-footer { border-color: rgba(255,255,255,.16) !important; }
 </style>
 </body></html>

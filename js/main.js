@@ -137,3 +137,24 @@ function initBibleLogout(){if(getCurrentPageKey()!=='bible')return;document.quer
 function initSecurity(){document.addEventListener('contextmenu',event=>{if(event.target.closest('input,textarea,select,[contenteditable="true"]'))return;event.preventDefault();});document.addEventListener('copy',event=>{if(event.target.closest('input,textarea,select,[contenteditable="true"]'))return;if(window.getSelection&&window.getSelection().toString())event.preventDefault();});document.addEventListener('keydown',event=>{if(event.target.closest&&event.target.closest('input,textarea,select,[contenteditable="true"]'))return;const key=String(event.key||'').toUpperCase();if(key==='F12'||(event.ctrlKey&&event.shiftKey&&(key==='I'||key==='J'))||(event.ctrlKey&&key==='U')){event.preventDefault();return;}if(event.ctrlKey&&['C','S','P'].includes(key)&&window.getSelection&&window.getSelection().toString())event.preventDefault();});}
 function initMouseOrb(){const orb=document.getElementById('mouse-orb');if(!orb||!window.matchMedia||!window.matchMedia('(min-width:901px)').matches)return;document.addEventListener('mousemove',event=>{orb.style.left=`${event.clientX}px`;orb.style.top=`${event.clientY}px`;},{passive:true});}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',loadComponents,{once:true});else loadComponents();
+
+/* Shared guestbook: restore it on every standard page with a shared footer.
+   Pages that already load guestbook.js keep their existing single instance. */
+(function ensureSharedGuestbook(){
+  function loadGuestbookIfNeeded(){
+    if(!document.getElementById('site-footer')) return;
+    if(document.getElementById('guestbook-section')) return;
+    if(Array.from(document.scripts).some(script => /(?:^|\/)guestbook\.js(?:[?#]|$)/i.test(script.getAttribute('src') || ''))) return;
+    const script = document.createElement('script');
+    script.src = '/js/guestbook.js';
+    script.async = false;
+    script.dataset.clpGuestbook = 'shared';
+    document.body.appendChild(script);
+  }
+  if(document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadGuestbookIfNeeded, { once: true });
+  } else {
+    loadGuestbookIfNeeded();
+  }
+})();
+

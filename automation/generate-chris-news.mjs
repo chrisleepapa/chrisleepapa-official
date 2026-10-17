@@ -326,6 +326,8 @@ async function fetchCategory(category, globallySeenLinks = new Set(), globallySe
         continue;
       }
       items = parseItems(await response.text());
+      // RSS feeds are not guaranteed to return items in publication order.
+      items.sort((a, b) => Date.parse(b.pubDate || '') - Date.parse(a.pubDate || ''));
     } catch (error) {
       failures.push(feed.name + ': ' + String(error));
       continue;

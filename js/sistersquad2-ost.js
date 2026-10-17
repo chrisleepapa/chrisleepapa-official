@@ -149,7 +149,14 @@
     }
   };
 
-  window.onLangChange = function(){
+  /* Preserve other page listeners (especially the shared guestbook). */
+  const previousOnLangChange = window.onLangChange;
+  window.onLangChange = function(lang){
+    if (typeof previousOnLangChange === 'function') {
+      try { previousOnLangChange(lang); } catch (error) {
+        console.error('[SISTER SQUAD 2] language listener error:', error);
+      }
+    }
     ensureSecondJourneyHook();
     applySecondJourneyLanguage();
   };

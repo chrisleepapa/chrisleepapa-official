@@ -129,6 +129,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         @keyframes fadeUp { from{opacity:0;transform:translateY(28px);} to{opacity:1;transform:translateY(0);} }
         @media(max-width:900px){ .identity-block{padding:30px 24px;} .timeline-item{grid-template-columns:70px 1fr;gap:12px;} }
         @media(max-width:600px){ .page-wrapper{padding-left:16px;padding-right:16px;} .identity-block{padding:28px 20px;border-radius:20px;} .identity-text{font-size:.98rem;line-height:1.95;} .timeline-item{grid-template-columns:58px 1fr;gap:10px;} .timeline-year{font-size:.78rem;} .timeline-content strong{font-size:.72rem;} .timeline-content p{font-size:.82rem;} }
+    /* Keep the shared footer at the bottom when About content is shorter than the viewport. */
+        body { min-height:100vh; }
+        body > #site-nav { flex:0 0 auto; }
+        body > main.page-wrapper { flex:1 0 auto; width:100%; }
+        body > #site-footer { flex:0 0 auto; width:100%; margin-top:auto; }
     </style>
 </head>
 

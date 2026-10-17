@@ -422,6 +422,9 @@ if (cards.some(x => !x)) {
   // so the failed workflow is visible and the incomplete data is not presented as fresh.
   throw new Error('News refresh could not obtain six verified, non-headline-only cards. See category fallback diagnostics above.');
 }
+// Keep the six selected category stories in newest-first publication order.
+cards.sort((a, b) => Date.parse(b.publishedAt || '') - Date.parse(a.publishedAt || ''));
+
 for (const card of cards) {
   const pointsKo = dedupeSentences(card.pointsKo || []);
   const pointsEn = dedupeSentences(card.pointsEn || []);

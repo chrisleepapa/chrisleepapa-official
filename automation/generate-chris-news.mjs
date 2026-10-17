@@ -301,18 +301,16 @@ async function translateSegments(values, target) {
   return [titleKo, summaryKo, ...distinctPoints.slice(0, Math.max(2, values.length - 2))];
 }
 async function fetchCategory(category, globallySeenLinks = new Set(), globallySeenTitles = []) {
-  // Prefer direct publisher RSS feeds. Aggregator feeds are deliberately not used:
-  // they often leave the card linked to a search/result page rather than the actual report.
   const nowMs = Date.now();
   const maxAgeMs = 72 * 60 * 60 * 1000;
-  const seenLinks = new Set();
   const failures = [];
-  let candidatesChecked = 0;
-  const maxCandidatesPerCategory = 8;
+  const seenLinks = new Set();
+  const candidateLimit = 30;
 
+  // Fetch every configured publisher feed first, then compare their timestamps together.
+  // This prevents the first configured publisher from winning merely because it appears first.
+  const feedCandidates = [];
   for (const feed of category.feeds || []) {
-    if (candidatesChecked >= maxCandidatesPerCategory) break;
-    let items = [];
     try {
       const response = await fetch(feed.url, {
         headers: {
@@ -325,78 +323,72 @@ async function fetchCategory(category, globallySeenLinks = new Set(), globallySe
         failures.push(feed.name + ': HTTP ' + response.status);
         continue;
       }
-      items = parseItems(await response.text());
-      // RSS feeds are not guaranteed to return items in publication order.
-      items.sort((a, b) => Date.parse(b.pubDate || '') - Date.parse(a.pubDate || ''));
+      const items = parseItems(await response.text());
+      for (const item of items.slice(0, 50)) {
+        const publishedMs = Date.parse(item.pubDate);
+        if (!Number.isFinite(publishedMs) || publishedMs > nowMs + 5 * 60 * 1000 || nowMs - publishedMs > maxAgeMs) continue;
+        let itemUrl;
+        try {
+          itemUrl = new URL(item.link);
+          if (!['http:', 'https:'].includes(itemUrl.protocol)) continue;
+        } catch { continue; }
+        if (itemUrl.hostname === 'news.google.com' || itemUrl.hostname.includes('bing.com')) continue;
+        feedCandidates.push({ feed, item, publishedMs, canonicalLink: itemUrl.href });
+      }
     } catch (error) {
       failures.push(feed.name + ': ' + String(error));
-      continue;
     }
+  }
 
-    for (const item of items.slice(0, 35)) {
-      if (candidatesChecked >= maxCandidatesPerCategory) break;
-      const publishedMs = Date.parse(item.pubDate);
-      if (!Number.isFinite(publishedMs) || publishedMs > nowMs + 5 * 60 * 1000 || nowMs - publishedMs > maxAgeMs) continue;
-      let itemUrl;
-      try {
-        itemUrl = new URL(item.link);
-        if (!['http:', 'https:'].includes(itemUrl.protocol)) continue;
-      } catch { continue; }
-      if (itemUrl.hostname === 'news.google.com' || itemUrl.hostname.includes('bing.com')) continue;
-      const canonicalLink = itemUrl.href;
-      if (seenLinks.has(canonicalLink) || globallySeenLinks.has(canonicalLink)) continue;
-      seenLinks.add(canonicalLink);
-      candidatesChecked++;
+  feedCandidates.sort((a, b) => b.publishedMs - a.publishedMs);
+  let candidatesChecked = 0;
+  for (const candidate of feedCandidates) {
+    if (candidatesChecked >= candidateLimit) break;
+    const { feed, item, canonicalLink } = candidate;
+    if (seenLinks.has(canonicalLink) || globallySeenLinks.has(canonicalLink)) continue;
+    seenLinks.add(canonicalLink);
+    candidatesChecked++;
 
-      const rssText = cleanHtml(item.description || '');
-      // ScienceDaily permits RSS headlines and summaries with attribution and a link,
-      // but not republishing full article text; keep those entries RSS-only.
-      const article = feed.rssOnly
-        ? { link: canonicalLink, details: [], articleTitle: '' }
-        : await fetchArticleDetails(canonicalLink);
-      const detailText = (article.details || []).join(' ').trim();
-      const articleTitle = article.articleTitle || '';
-      if (articleTitle && titleSimilarity(item.title, articleTitle) < 0.25) continue;
-      // Keep the six-card feed editorially distinct: never repeat the same or near-identical headline across categories.
-      if (globallySeenTitles.some(title => titleSimilarity(item.title, title) >= 0.75)) continue;
+    const rssText = cleanHtml(item.description || '');
+    const article = feed.rssOnly
+      ? { link: canonicalLink, details: [], articleTitle: '' }
+      : await fetchArticleDetails(canonicalLink);
+    const detailText = (article.details || []).join(' ').trim();
+    const articleTitle = article.articleTitle || '';
+    if (articleTitle && titleSimilarity(item.title, articleTitle) < 0.25) continue;
+    if (globallySeenTitles.some(title => titleSimilarity(item.title, title) >= 0.75)) continue;
 
-      const rawCandidate = !feed.rssOnly && detailText.length >= 100 && !isGenericNewsBoilerplate(detailText)
-        ? detailText
-        : rssText;
-      const cleanSentences = dedupeSentences(splitSentences(rawCandidate));
-      const normalizedSummary = normalizedTitle(rawCandidate);
-      const normalizedHeadline = normalizedTitle(item.title);
-      const headlineOnly = cleanSentences.length < 3 || rawCandidate.length < 150 ||
-        (normalizedHeadline && normalizedSummary.startsWith(normalizedHeadline) &&
-          normalizedSummary.length - normalizedHeadline.length < 35);
-      if (headlineOnly) continue;
+    const rawCandidate = !feed.rssOnly && detailText.length >= 100 && !isGenericNewsBoilerplate(detailText)
+      ? detailText
+      : rssText;
+    const cleanSentences = dedupeSentences(splitSentences(rawCandidate));
+    const normalizedSummary = normalizedTitle(rawCandidate);
+    const normalizedHeadline = normalizedTitle(item.title);
+    const headlineOnly = cleanSentences.length < 3 || rawCandidate.length < 150 ||
+      (normalizedHeadline && normalizedSummary.startsWith(normalizedHeadline) &&
+        normalizedSummary.length - normalizedHeadline.length < 35);
+    if (headlineOnly) continue;
 
-      // Keep the editorial summary short, then choose different sentences for the key points.
-      // Never publish credits, search-engine snippets, duplicated sentences, or truncated fragments.
-      const summarySentences = cleanSentences.slice(0, 2);
-      const summary = summarySentences.join(' ').slice(0, 650).trim();
-      const points = sentencePoints(rawCandidate, summarySentences);
-      if (summary.length < 90 || points.length < 2) continue;
-      const safePoints = points;
-      const source = feed.name;
-      const translatedFields = await translateSegments([item.title, summary, ...safePoints], 'ko');
-      const titleKo = translatedFields[0];
-      const summaryKo = translatedFields[1];
-      const pointsKo = translatedFields.slice(2);
-      const translatedPoints = dedupeSentences(pointsKo);
-      if (!titleKo || !summaryKo || translatedPoints.length < 2 ||
-          /this will let google show|match or are related to your search/i.test(summaryKo)) continue;
-      return {
-        category: category.key, categoryKo: category.ko, categoryEn: category.en,
-        title: item.title, titleEn: item.title, titleKo,
-        summary, summaryEn: summary, summaryKo,
-        points: safePoints,
-        pointsKo: translatedPoints,
-        pointsEn: safePoints,
-        source, link: canonicalLink, publishedAt: item.pubDate,
-        summarySource: detailText.length >= 100 ? 'publisher article page' : feed.name + ' RSS excerpt'
-      };
-    }
+    const summarySentences = cleanSentences.slice(0, 2);
+    const summary = summarySentences.join(' ').slice(0, 650).trim();
+    const points = sentencePoints(rawCandidate, summarySentences);
+    if (summary.length < 90 || points.length < 2) continue;
+
+    const translatedFields = await translateSegments([item.title, summary, ...points], 'ko');
+    const titleKo = translatedFields[0];
+    const summaryKo = translatedFields[1];
+    const translatedPoints = dedupeSentences(translatedFields.slice(2));
+    if (!titleKo || !summaryKo || translatedPoints.length < 2 ||
+        /this will let google show|match or are related to your search/i.test(summaryKo)) continue;
+
+    return {
+      category: category.key, categoryKo: category.ko, categoryEn: category.en,
+      title: item.title, titleEn: item.title, titleKo,
+      summary, summaryEn: summary, summaryKo,
+      points, pointsKo: translatedPoints, pointsEn: points,
+      source: feed.name, link: canonicalLink, publishedAt: item.pubDate,
+      summarySource: detailText.length >= 100 ? 'publisher article page' : feed.name + ' RSS excerpt'
+    };
   }
 
   console.error('News source diagnostics for ' + category.key + ': ' + failures.join(' | '));

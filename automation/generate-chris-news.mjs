@@ -52,7 +52,6 @@ const categories = [
     key: 'society', ko: '사회 · 문화', en: 'SOCIETY · CULTURE',
     query: 'society culture education',
     feeds: [
-      { name: 'Yonhap News Agency', url: 'https://en.yna.co.kr/RSS/news.xml' },
       { name: 'BBC News', url: 'https://feeds.bbci.co.uk/news/education/rss.xml' },
       { name: 'The Guardian', url: 'https://www.theguardian.com/society/rss' }
     ]
@@ -440,7 +439,7 @@ const now = new Date();
 const dateParts = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(now);
 const dateMap = Object.fromEntries(dateParts.map(part => [part.type, part.value]));
 const date = `${dateMap.year}-${dateMap.month}-${dateMap.day}`;
-const payload = { date, updatedAt: now.toISOString(), sourceNote: 'Direct publisher feeds from Science News, ScienceDaily, BBC News, The Guardian, Al Jazeera English, NPR and Yonhap. ScienceDaily entries use attributed RSS headlines and summaries with links; only direct article links published in the last 72 hours are accepted, and incomplete refreshes do not overwrite existing data.', cards };
+const payload = { date, updatedAt: now.toISOString(), sourceNote: 'International publisher feeds only, including BBC News, The Guardian, Al Jazeera English, NPR, Science News and ScienceDaily. Articles link to the original publisher; only direct article links published in the last 72 hours are accepted, and incomplete refreshes do not overwrite existing data.', cards };
 await mkdir('data', { recursive: true });
 await writeFile('data/chris-news.json', JSON.stringify(payload, null, 2) + '\n');
 console.log(`Prepared ${cards.length} news cards for ${date}.`);

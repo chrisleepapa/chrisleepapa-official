@@ -403,6 +403,7 @@ for (const card of cards) {
   card.pointsEn = pointsEn.slice(0, 3);
   card.points = card.pointsEn;
 }
+cards.sort((a, b) => Date.parse(b.publishedAt || '') - Date.parse(a.publishedAt || ''));
 const now = new Date();
 const dateParts = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(now);
 const dateMap = Object.fromEntries(dateParts.map(part => [part.type, part.value]));

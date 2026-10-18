@@ -10,7 +10,7 @@ on:
       - 'automation/translate-news-local.py'
       - '.github/workflows/daily-chris-news.yml'
   schedule:
-    # 06:00 KST daily = 21:00 UTC on the previous day
+    # 06:00 KST daily = 21:00 UTC on the previous day; workflow file changes also trigger a fresh run
     - cron: "0 21 * * *"
   workflow_dispatch:
 

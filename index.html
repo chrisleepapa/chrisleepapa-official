@@ -462,7 +462,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     });
     if (status) setText(status, '차트 확인: ' + new Date(data.updatedAt).toLocaleString('ko-KR') + ' · 하루 단위 캐시', 'Chart checked: ' + new Date(data.updatedAt).toLocaleString('en-US') + ' · daily cache');
   } catch (error) {
-    if (status) setText(status, '글로벌 차트를 불러오지 못했습니다. 잠시 후 다시 확인해 주세요.', 'Could not load global charts. Please check again later.');
+    if (status) setText(status, '차트 연결 실패 · 표시된 영상은 최신 순위가 아닐 수 있습니다.', 'Chart connection failed · displayed videos may not reflect current rankings.');
     console.error('[Global YouTube charts]', error);
   }
 });

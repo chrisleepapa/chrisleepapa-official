@@ -374,7 +374,15 @@ async function fetchCategory(category, globallySeenLinks = new Set(), globallySe
     const points = sentencePoints(rawCandidate, summarySentences);
     if (summary.length < 90 || points.length < 2) continue;
 
-    const translatedFields = await translateSegments([item.title, summary, ...points], 'ko');
+    let translatedFields;
+    try {
+      translatedFields = await translateSegments([item.title, summary, ...points], 'ko');
+    } catch (error) {
+      // A single article with poor machine translation must not abort the whole category.
+      // Continue to the next recent publisher candidate and only fail if none pass validation.
+      console.error('Skipping article after Korean translation quality check for ' + category.key + ': ' + item.title + ' — ' + String(error));
+      continue;
+    }
     const titleKo = translatedFields[0];
     const summaryKo = translatedFields[1];
     const translatedPoints = dedupeSentences(translatedFields.slice(2));

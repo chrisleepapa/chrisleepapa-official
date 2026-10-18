@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-  // The selection is stable for a Korean calendar day, but rotates the next day.
+  // Stable for a Korean calendar day; the selection rotates on the next day.
   res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=3600');
   if (req.method !== 'GET') {
     res.setHeader('Allow', 'GET');
@@ -7,10 +7,10 @@ export default async function handler(req, res) {
   }
 
   const decode = (value = '') => value
-    .replace(/<!\\[CDATA\\[([\\s\\S]*?)\\]\\]>/g, '$1')
+    .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1')
     .replace(/&amp;/g, '&').replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>')
-    .replace(/<[^>]*>/g, ' ').replace(/\\s+/g, ' ').trim();
+    .replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
 
   function dailySeed(dateText) {
     let hash = 2166136261;
@@ -25,36 +25,36 @@ export default async function handler(req, res) {
     let value = (seed ^ salt) >>> 0;
     value = Math.imul(value ^ (value >>> 16), 0x45d9f3b);
     value = Math.imul(value ^ (value >>> 16), 0x45d9f3b);
-    value = (value ^ (value >>> 16)) >>> 0;
-    return value % length;
+    return ((value ^ (value >>> 16)) >>> 0) % length;
   }
 
   async function getTop100MusicVideos() {
-    // RSSHub exposes the official YouTube Top Music Videos chart (TopVideos).
-    // Its items are video entries from the chart, not a YouTube search guess.
+    // RSSHub's TopVideos route exposes entries from YouTube's official chart.
     const response = await fetch('https://rsshub.app/youtube/charts/TopVideos/global', {
-      headers: { 'User-Agent': 'Mozilla/5.0 ChrisLeePapaArchive/1.0', 'Accept': 'application/rss+xml, application/xml, text/xml' }
+      headers: {
+        'User-Agent': 'Mozilla/5.0 ChrisLeePapaArchive/1.0',
+        'Accept': 'application/rss+xml, application/xml, text/xml'
+      }
     });
     if (!response.ok) throw new Error('YouTube Top Videos chart returned ' + response.status);
     const xml = await response.text();
-    const items = [...xml.matchAll(/<item\\b[^>]*>([\\s\\S]*?)<\\/item>/gi)].map((match, rank) => {
+    const items = [...xml.matchAll(/<item\b[^>]*>([\s\S]*?)<\/item>/gi)].map((match, rank) => {
       const body = match[1];
-      const field = name => (body.match(new RegExp('<' + name + '(?:\\\\s[^>]*)?>([\\\\s\\S]*?)<\\\\/' + name + '>', 'i')) || [,''])[1];
+      const field = name => (body.match(new RegExp('<' + name + '(?:\\s[^>]*)?>([\\s\\S]*?)<\\/' + name + '>', 'i')) || [,''])[1];
       const title = decode(field('title'));
       const raw = decode(field('link')) + ' ' + field('description');
-      const idMatch = raw.match(/(?:youtube\\.com\\/(?:watch\\?(?:[^\\s"'<>]*?&)?v=|embed\\/|shorts\\/)|youtu\\.be\\/)([A-Za-z0-9_-]{11})/);
+      const idMatch = raw.match(/(?:youtube\.com\/(?:watch\?(?:[^\s"'<>]*?&)?v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
       if (!idMatch || !title) return null;
       const id = idMatch[1];
-      const cleanTitle = title.replace(/\\s+-\\s+YouTube Music Charts.*$/i, '').trim();
       return {
         id,
-        title: cleanTitle,
+        title,
         chart: 'YouTube Top Music Videos',
         chartRank: rank + 1,
         url: 'https://www.youtube.com/watch?v=' + id,
         thumbnail: 'https://img.youtube.com/vi/' + id + '/hqdefault.jpg'
       };
-    }).filter((item, index, all) => item && all.findIndex(other => other.id === item.id) === index);
+    }).filter(item => item).filter((item, index, all) => all.findIndex(other => other.id === item.id) === index);
 
     if (items.length < 2) throw new Error('The YouTube Top Music Videos chart returned fewer than two usable videos');
     return items.slice(0, 100);
@@ -62,12 +62,15 @@ export default async function handler(req, res) {
 
   try {
     const videos = await getTop100MusicVideos();
-    const dateText = new Intl.DateTimeFormat('en-CA', {
+    const parts = new Intl.DateTimeFormat('en-CA', {
       timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit'
-    }).format(new Date());
+    }).formatToParts(new Date());
+    const dateText = parts.find(p => p.type === 'year').value + '-' +
+      parts.find(p => p.type === 'month').value + '-' +
+      parts.find(p => p.type === 'day').value;
     const seed = dailySeed(dateText);
-    const firstIndex = dailyIndex(seed, 0x13579bdf, videos.length);
-    let secondIndex = dailyIndex(seed, 0x2468ace0, videos.length);
+    const firstIndex = dailyIndex(seed, 0x13579bdf, videos.length) % videos.length;
+    let secondIndex = dailyIndex(seed, 0x2468ace0, videos.length) % videos.length;
     if (secondIndex === firstIndex) secondIndex = (firstIndex + 1 + (seed % (videos.length - 1))) % videos.length;
 
     const musicVideo = { ...videos[firstIndex], slot: 'popular-music-video' };

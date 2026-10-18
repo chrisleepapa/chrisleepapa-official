@@ -14,8 +14,9 @@ const current = Object.fromEntries(parts.map(p => [p.type, p.value]));
 const todayKst = new Date(Date.UTC(Number(current.year), Number(current.month) - 1, Number(current.day)));
 const yesterday = new Date(todayKst.getTime() - 86400000);
 const dateKey = yesterday.toISOString().slice(0, 10);
-const publishedAfter = yesterday.toISOString();
-const publishedBefore = todayKst.toISOString();
+// KST midnight is 15:00 UTC on the previous date.
+const publishedAfter = new Date(yesterday.getTime() - 9 * 60 * 60 * 1000).toISOString();
+const publishedBefore = new Date(todayKst.getTime() - 9 * 60 * 60 * 1000).toISOString();
 
 const searches = [
   '한국 뉴스 이슈',

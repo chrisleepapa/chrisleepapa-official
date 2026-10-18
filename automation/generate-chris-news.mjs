@@ -71,14 +71,18 @@ function tag(xml, name) {
   return m ? decodeEntities(m[1]) : '';
 }
 function parseItems(xml) {
-  return [...xml.matchAll(/<item(?:\s[^>]*)?>([\s\S]*?)<\/item>/gi)].map(m => {
+  return [...xml.matchAll(/<item(?:\\s[^>]*)?>([\\s\\S]*?)<\\/item>/gi)].map(m => {
     const item = m[1];
     const title = tag(item, 'title');
     const description = tag(item, 'description');
     const link = tag(item, 'link');
     const pubDate = tag(item, 'pubDate');
-    const source = tag(item, 'source') || (title.includes(' - ') ? title.split(' - ').at(-1) : 'Google News');
-    return { title: title.replace(/\s+-\s+[^-]+$/, '').trim(), description, link, pubDate, source };
+    const source = tag(item, 'source') || (title.includes(' - ') ? title.split(' - ').at(-1) : 'International publisher');
+    const enclosure = item.match(/<enclosure\\b[^>]*\\burl=["']([^"']+)["'][^>]*>/i);
+    const mediaImage = item.match(/<media:(?:content|thumbnail)\\b[^>]*\\burl=["']([^"']+)["'][^>]*>/i);
+    const htmlImage = (description.match(/<img\\b[^>]*\\bsrc=["']([^"']+)["']/i) || [])[1];
+    const imageUrl = (enclosure || mediaImage || [])[1] || htmlImage || '';
+    return { title: title.replace(/\\s+-\\s+[^-]+$/, '').trim(), description, link, pubDate, source, imageUrl };
   }).filter(x => x.title && x.link);
 }
 
@@ -180,6 +184,29 @@ function extractArticleContent(html) {
   }
   return unique.slice(0, 5);
 }
+function extractImageUrl(html, baseUrl) {
+  const candidates = [];
+  for (const meta of html.match(/<meta\\b[^>]*>/gi) || []) {
+    const key = (meta.match(/\\b(?:property|name)\\s*=\\s*["']([^"']+)["']/i) || [])[1] || '';
+    const content = (meta.match(/\\bcontent\\s*=\\s*["']([^"']+)["']/i) || [])[1] || '';
+    if (/^(?:og:image|og:image:url|twitter:image|twitter:image:src)$/i.test(key) && content) candidates.push(content.trim());
+  }
+  for (const raw of candidates) {
+    try {
+      const image = new URL(raw, baseUrl);
+      if (image.protocol === 'https:' && !/google\\.com$|googleusercontent\\.com$/.test(image.hostname) && !/logo|avatar|icon/i.test(image.pathname)) return image.href;
+    } catch {}
+  }
+  return '';
+}
+function normalizeImageUrl(raw, baseUrl) {
+  if (!raw) return '';
+  try {
+    const image = new URL(raw, baseUrl);
+    if (image.protocol !== 'https:' || /^(?:localhost|127\\.|0\\.0\\.0\\.0)/i.test(image.hostname)) return '';
+    return image.href;
+  } catch { return ''; }
+}
 async function fetchArticleDetails(url) {
   try {
     const response = await fetch(url, {
@@ -187,17 +214,22 @@ async function fetchArticleDetails(url) {
       headers: { 'user-agent': 'Mozilla/5.0 (compatible; ChrisLeePapaNewsBot/1.0)' },
       signal: AbortSignal.timeout(7000)
     });
-    if (!response.ok) return { link: url, details: [] };
+    if (!response.ok) return { link: url, details: [], imageUrl: '' };
     const html = await response.text();
     const finalUrl = response.url || url;
     let host = '';
     try { host = new URL(finalUrl).hostname.toLowerCase(); } catch {}
     // Google News RSS item URLs may not redirect to the publisher in automated requests.
     // Keep the original story-item URL as a usable fallback; its RSS excerpt is still checked below.
-    if (host === 'news.google.com' || host.endsWith('.news.google.com')) return { link: url, details: [], articleTitle: '' };
-    return { link: finalUrl, details: extractArticleContent(html), articleTitle: extractArticleTitle(html) };
+    if (host === 'news.google.com' || host.endsWith('.news.google.com')) return { link: url, details: [], articleTitle: '', imageUrl: '' };
+    return {
+      link: finalUrl,
+      details: extractArticleContent(html),
+      articleTitle: extractArticleTitle(html),
+      imageUrl: extractImageUrl(html, finalUrl)
+    };
   } catch {
-    return { link: url, details: [] };
+    return { link: url, details: [], imageUrl: '' };
   }
 }
 function sentencePoints(text, excluded = []) {
@@ -351,7 +383,7 @@ async function fetchCategory(category, globallySeenLinks = new Set(), globallySe
 
     const rssText = cleanHtml(item.description || '');
     const article = feed.rssOnly
-      ? { link: canonicalLink, details: [], articleTitle: '' }
+      ? { link: canonicalLink, details: [], articleTitle: '', imageUrl: '' }
       : await fetchArticleDetails(canonicalLink);
     const detailText = (article.details || []).join(' ').trim();
     const articleTitle = article.articleTitle || '';
@@ -395,6 +427,7 @@ async function fetchCategory(category, globallySeenLinks = new Set(), globallySe
       summary, summaryEn: summary, summaryKo,
       points, pointsKo: translatedPoints, pointsEn: points,
       source: feed.name, link: canonicalLink, publishedAt: item.pubDate,
+      imageUrl: normalizeImageUrl(article.imageUrl || item.imageUrl, canonicalLink),
       summarySource: detailText.length >= 100 ? 'publisher article page' : feed.name + ' RSS excerpt'
     };
   }

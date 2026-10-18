@@ -428,11 +428,32 @@ document.addEventListener('DOMContentLoaded', async function () {
   const cards = section.querySelectorAll('.youtube-top3-card');
   const status = document.getElementById('youtube-top3-updated');
   const language = () => document.documentElement.lang && document.documentElement.lang.toLowerCase().startsWith('en') ? 'en' : 'ko';
+  const applySectionLanguage = () => {
+    const lang = language();
+    section.querySelectorAll('[data-ko][data-en]').forEach((node) => {
+      const value = node.getAttribute('data-' + lang);
+      if (value !== null) node.textContent = value;
+    });
+    cards.forEach((card, index) => {
+      const title = card.querySelector('strong')?.textContent || '';
+      card.setAttribute('aria-label', lang === 'en'
+        ? (index === 0 ? 'Global popular music video: ' : 'Global trending video: ') + title + (index === 0 ? ' — YouTube' : ' — watch video')
+        : (index === 0 ? '전 세계 인기 뮤직비디오 보기: ' : '전 세계 화제 영상 보기: ') + title);
+    });
+  };
   const setText = (node, ko, en) => {
     node.setAttribute('data-ko', ko);
     node.setAttribute('data-en', en);
     node.textContent = language() === 'en' ? en : ko;
   };
+  applySectionLanguage();
+  if (window.MutationObserver) {
+    new MutationObserver((mutations) => {
+      if (mutations.some((mutation) => mutation.type === 'attributes' && mutation.attributeName === 'lang')) {
+        applySectionLanguage();
+      }
+    }).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+  }
   try {
     const response = await fetch('/api/youtube-trends', { headers: { 'Accept': 'application/json' }, cache: 'no-store' });
     if (!response.ok) throw new Error('Global chart request failed (' + response.status + ')');

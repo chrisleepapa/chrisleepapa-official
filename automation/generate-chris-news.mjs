@@ -305,7 +305,13 @@ function sourceProperNouns(source) {
 function hasUntranslatedEnglish(source, translated) {
   const allowed = sourceProperNouns(source);
   const latinWords = String(translated || '').match(/[A-Za-z][A-Za-z'-]*/g) || [];
-  return latinWords.some(word => !/^[A-Z]{2,}$/.test(word) && !allowed.has(word.toLowerCase()));
+  return latinWords.some(word => {
+    const lower = word.toLowerCase();
+    if (/^[A-Z]{2,}$/.test(word) || allowed.has(lower)) return false;
+    // Names and place names may remain English, but ordinary lowercase English words
+    // embedded in a Korean sentence indicate that translation was incomplete.
+    return /^[a-z]/.test(word);
+  });
 }
 
 async function translateSegments(values, target) {

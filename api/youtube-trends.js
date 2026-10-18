@@ -24,7 +24,7 @@ export default async function handler(req, res) {
     let songTitle = '';
     let artist = '';
     // Billboard's chart page exposes the chart entries as title and artist headings.
-    const titleMatches = [...html.matchAll(/<h3\\b[^>]*>([\\s\\S]*?)<\\/h3>/gi)];
+    const titleMatches = [...html.matchAll(/<h3\b[^>]*>([\s\S]*?)<\/h3>/gi)];
     for (let i = 0; i < titleMatches.length; i++) {
       const candidate = decode(titleMatches[i][1]);
       if (!candidate || /^(billboard global 200|this week|last week|peak pos\.?|weeks on chart)$/i.test(candidate)) continue;
@@ -44,7 +44,7 @@ export default async function handler(req, res) {
       const chartAt = plain.indexOf('BILLBOARD GLOBAL 200');
       if (chartAt >= 0) {
         const section = plain.slice(chartAt, chartAt + 5000);
-        const match = section.match(/(?:1\\s+)([A-Za-z0-9][^]{1,100}?)\\s{2,}([A-Z][^]{1,100}?)(?:\\s{2,}|2\\s)/);
+        const match = section.match(/(?:1\s+)([A-Za-z0-9][^]{1,100}?)\s{2,}([A-Z][^]{1,100}?)(?:\s{2,}|2\s)/);
         if (match) { songTitle = match[1].trim(); artist = match[2].trim(); }
       }
     }

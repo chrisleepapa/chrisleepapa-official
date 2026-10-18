@@ -354,18 +354,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="youtube-top3-head">
       <p class="youtube-top3-kicker" data-ko="VIDEO SPOTLIGHT" data-en="VIDEO SPOTLIGHT">VIDEO SPOTLIGHT</p>
       <h2 id="youtube-daily-top3-title" data-ko="인기 뮤비와 화제의 영상" data-en="Featured Music Video & Trending Video">인기 뮤비와 화제의 영상</h2>
-      <p data-ko="공식 YouTube 글로벌 일일 뮤직비디오 차트와 전 세계 화제의 영상을 소개합니다." data-en="Explore YouTube’s official global daily music-video chart and a worldwide trending video.">전 세계 일일 뮤직비디오 차트와 화제의 영상 차트를 바탕으로 자동 선정합니다.</p><p id="youtube-top3-updated" class="youtube-top3-updated" data-ko="글로벌 차트 확인 중…" data-en="Checking global charts…">글로벌 차트 확인 중…</p>
+      <p data-ko="YouTube 글로벌 인기 뮤직비디오 TOP 100에서 매일 무작위로 두 영상을 골라 소개합니다." data-en="Two videos are randomly selected each day from YouTube’s global Top 100 music videos.">전 세계 일일 뮤직비디오 차트와 화제의 영상 차트를 바탕으로 자동 선정합니다.</p><p id="youtube-top3-updated" class="youtube-top3-updated" data-ko="글로벌 차트 확인 중…" data-en="Checking global charts…">글로벌 차트 확인 중…</p>
     </div>
     <div class="youtube-top3-grid">
       <a class="youtube-top3-card" href="https://charts.youtube.com/charts/TopVideos/global/daily" target="_blank" rel="noopener noreferrer" aria-label="공식 YouTube 글로벌 일일 뮤직비디오 차트 보기">
-        <span class="youtube-top3-number">01 · OFFICIAL YOUTUBE MUSIC CHART</span>
+        <span class="youtube-top3-number">01 · DAILY RANDOM PICK</span>
         <span class="youtube-top3-thumb"><img src="images/favicon.png" alt="YouTube 공식 글로벌 뮤직비디오 차트" loading="lazy"><span class="youtube-top3-play" aria-hidden="true">▶</span></span>
-        <strong data-ko="Daily Top Music Videos — Global" data-en="Daily Top Music Videos — Global">Daily Top Music Videos — Global</strong>
-        <span class="youtube-top3-meta" data-ko="YouTube가 공식 집계하는 글로벌 일일 인기 뮤직비디오 차트입니다." data-en="The official global daily chart of the most-viewed music videos on YouTube.">YouTube가 공식 집계하는 글로벌 일일 인기 뮤직비디오 차트입니다.</span>
+        <strong data-ko="오늘의 랜덤 인기 뮤비" data-en="Today’s Random Music Video">오늘의 랜덤 인기 뮤비</strong>
+        <span class="youtube-top3-meta" data-ko="글로벌 TOP 100 중 오늘 무작위로 선정한 뮤직비디오" data-en="Randomly selected today from the global Top 100 music videos">글로벌 TOP 100 중 오늘 무작위로 선정한 뮤직비디오</span>
         <span class="youtube-top3-go" data-ko="공식 차트 열기 ↗" data-en="Open official chart ↗">공식 차트 열기 ↗</span>
       </a>
       <a class="youtube-top3-card" href="https://www.rockstargames.com/VI/launch-trailer" target="_blank" rel="noopener noreferrer" aria-label="Grand Theft Auto VI Launch Trailer 공식 영상 보기">
-        <span class="youtube-top3-number">02 · GLOBAL VIDEO TREND</span>
+        <span class="youtube-top3-number">02 · DAILY RANDOM PICK</span>
         <span class="youtube-top3-thumb"><img src="https://videos-rockstargames-com.akamaized.net/v4/rkoCtr1r/art/global.jpg" alt="Grand Theft Auto VI 공식 트레일러 아트워크" loading="lazy"><span class="youtube-top3-play" aria-hidden="true">▶</span></span>
         <strong data-ko="Grand Theft Auto VI — Launch Trailer" data-en="Grand Theft Auto VI — Launch Trailer">Grand Theft Auto VI — Launch Trailer</strong>
         <span class="youtube-top3-meta" data-ko="전 세계 여러 국가에서 화제가 된 Rockstar Games의 공식 출시 트레일러" data-en="Rockstar Games' official launch trailer, trending across countries worldwide.">전 세계 여러 국가에서 화제가 된 Rockstar Games의 공식 출시 트레일러</span>
@@ -475,13 +475,13 @@ document.addEventListener('DOMContentLoaded', async function () {
       const meta = card.querySelector('.youtube-top3-meta');
       const channel = item.channel ? ' · ' + item.channel : '';
       if (meta) setText(meta,
-        index === 0 ? 'YouTube 공식 글로벌 일일 뮤직비디오 차트' : '글로벌 화제 영상 차트' + channel,
-        index === 0 ? 'Official YouTube global daily music-video chart' : 'Global trending-video chart' + channel
+        index === 0 ? '글로벌 TOP 100에서 오늘 무작위 선정' : '글로벌 TOP 100에서 오늘 무작위 선정' + channel,
+        index === 0 ? 'Randomly selected today from the global Top 100' : 'Randomly selected today from the global Top 100' + channel
       );
       const link = card.querySelector('.youtube-top3-go');
       if (link) setText(link, index === 0 ? '공식 차트 열기 ↗' : '화제 영상 보기 ↗', index === 0 ? 'Open official chart ↗' : 'Watch trending video ↗');
     });
-    if (status) setText(status, '차트 확인: ' + new Date(data.updatedAt).toLocaleString('ko-KR') + ' · 하루 단위 캐시', 'Chart checked: ' + new Date(data.updatedAt).toLocaleString('en-US') + ' · daily cache');
+    if (status) setText(status, '오늘의 랜덤 선정 · ' + (data.selectionDate || new Date(data.updatedAt).toLocaleDateString('ko-KR')) + ' · TOP ' + (data.chartSize || 100), 'Daily random picks · ' + (data.selectionDate || new Date(data.updatedAt).toLocaleDateString('en-US')) + ' · TOP ' + (data.chartSize || 100));
   } catch (error) {
     if (status) setText(status, '차트 연결 실패 · 표시된 영상은 최신 순위가 아닐 수 있습니다.', 'Chart connection failed · displayed videos may not reflect current rankings.');
     console.error('[Global YouTube charts]', error);

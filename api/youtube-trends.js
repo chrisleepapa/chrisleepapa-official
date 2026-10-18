@@ -6,20 +6,20 @@ export default async function handler(req, res) {
   }
 
   const decode = (value = '') => value
-    .replace(/<!\\[CDATA\\[([\\s\\S]*?)\\]\\]>/g, '$1')
+    .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1')
     .replace(/&amp;/g, '&').replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>')
-    .replace(/<[^>]*>/g, ' ').replace(/\\s+/g, ' ').trim();
+    .replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
 
   function parseTrendingFeed(xml) {
-    return [...xml.matchAll(/<item\\b[^>]*>([\\s\\S]*?)<\\/item>/gi)].map(match => {
+    return [...xml.matchAll(/<item\b[^>]*>([\s\S]*?)<\/item>/gi)].map(match => {
       const body = match[1];
-      const field = name => (body.match(new RegExp('<' + name + '(?:\\\\s[^>]*)?>([\\\\s\\\\S]*?)<\\\\/' + name + '>', 'i')) || [,''])[1];
+      const field = name => (body.match(new RegExp('<' + name + '(?:\\s[^>]*)?>([\\s\\S]*?)<\\/' + name + '>', 'i')) || [,''])[1];
       const title = decode(field('title'));
       const raw = decode(field('link')) + ' ' + field('description');
-      const idMatch = raw.match(/(?:youtube\\.com\\/(?:watch\\?(?:[^\\s"'<>]*?&)?v=|embed\\/|shorts\\/)|youtu\\.be\\/)([A-Za-z0-9_-]{11})/);
+      const idMatch = raw.match(/(?:youtube\.com\/(?:watch\?(?:[^\s"'<>]*?&)?v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
       if (!idMatch || !title) return null;
-      return { id: idMatch[1], title: title.replace(/\\s+-\\s+YouTube Music Charts.*$/i, ''), url: 'https://www.youtube.com/watch?v=' + idMatch[1], thumbnail: 'https://img.youtube.com/vi/' + idMatch[1] + '/hqdefault.jpg' };
+      return { id: idMatch[1], title: title.replace(/\s+-\s+YouTube Music Charts.*$/i, ''), url: 'https://www.youtube.com/watch?v=' + idMatch[1], thumbnail: 'https://img.youtube.com/vi/' + idMatch[1] + '/hqdefault.jpg' };
     }).filter(Boolean);
   }
 
@@ -27,14 +27,14 @@ export default async function handler(req, res) {
     const response = await fetch('https://musiccharty.com/', { headers: { 'User-Agent': 'Mozilla/5.0 ChrisLeePapaArchive/1.0' } });
     if (!response.ok) throw new Error('Global daily music chart returned ' + response.status);
     const html = await response.text();
-    const tags = [...html.matchAll(/<img\\b[^>]*>/gi)].map(m => m[0]);
+    const tags = [...html.matchAll(/<img\b[^>]*>/gi)].map(m => m[0]);
     for (const tag of tags) {
-      const src = (tag.match(/(?:src|data-src)=["']([^"']*i\\.ytimg\\.com\\/vi\\/([A-Za-z0-9_-]{11})\\/hqdefault\\.jpg[^"']*)["']/i) || []);
+      const src = (tag.match(/(?:src|data-src)=["']([^"']*i\.ytimg\.com\/vi\/([A-Za-z0-9_-]{11})\/hqdefault\.jpg[^"']*)["']/i) || []);
       if (!src[2]) continue;
       const alt = (tag.match(/alt=["']([^"']*)["']/i) || [,''])[1];
-      const label = decode(alt).replace(/^Image:\\s*/i, '');
+      const label = decode(alt).replace(/^Image:\s*/i, '');
       if (!label) continue;
-      const by = label.match(/^(.*)\\s+by\\s+(.+)$/i);
+      const by = label.match(/^(.*)\s+by\s+(.+)$/i);
       return {
         id: src[2],
         title: by ? by[1].trim() : label,

@@ -1,56 +1,41 @@
-name: Daily Chris's News Refresh
+name: Daily YouTube Top 3
 
 on:
+  schedule:
+    - cron: '0 21 * * *'
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: daily-chris-news-refresh-${{ github.ref }}
+  group: daily-youtube-top3-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  refresh-news:
+  refresh-youtube-top3:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout selected branch
         uses: actions/checkout@v5
         with:
           ref: ${{ github.ref_name }}
-          fetch-depth: 0
       - name: Set up Node.js
         uses: actions/setup-node@v5
         with:
           node-version: 22
-      - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: '3.12'
-      - name: Cache open translation model
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/huggingface/hub
-          key: opus-mt-tc-big-en-ko-${{ runner.os }}-v1
-      - name: Install CPU-only translation dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
-          python -m pip install 'transformers==4.46.3' sentencepiece
-      - name: Check news generator syntax
-        run: node --check automation/generate-chris-news.mjs
-      - name: Fetch and compile six daily news cards
+      - name: Fetch yesterday's popular videos
         env:
-          HF_HOME: ~/.cache/huggingface
-        run: node automation/generate-chris-news.mjs
-      - name: Commit updated news data to selected branch
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+        run: node automation/generate-youtube-daily-top3.mjs
+      - name: Commit updated video data
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/chris-news.json
+          git add data/youtube-daily-top3.json
           if git diff --cached --quiet; then
-            echo "News data is unchanged; nothing to commit."
+            echo "YouTube data is unchanged; nothing to commit."
           else
-            git commit -m "Refresh Chris's News for $(date -u +%F)"
+            git commit -m "Refresh YouTube daily top 3 for $(date -u +%F)"
             git push origin HEAD:${{ github.ref_name }}
           fi

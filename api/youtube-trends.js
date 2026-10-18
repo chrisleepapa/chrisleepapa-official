@@ -118,7 +118,7 @@ export default async function handler(req, res) {
     }
     return res.status(200).json({
       updatedAt: new Date().toISOString(),
-      source: 'Music Charty daily global music chart and worldwide trending chart',
+      source: 'Billboard Global 200 and worldwide trending chart',
       musicVideo,
       trendingVideo
     });

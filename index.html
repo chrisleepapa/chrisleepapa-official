@@ -353,38 +353,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="youtube-top3-inner">
     <div class="youtube-top3-head">
       <p class="youtube-top3-kicker" data-ko="YOUTUBE · DAILY DISCOVERY" data-en="YOUTUBE · DAILY DISCOVERY">YOUTUBE · DAILY DISCOVERY</p>
-      <h2 id="youtube-daily-top3-title" data-ko="어제의 YouTube 화제 TOP 3" data-en="Yesterday on YouTube · TOP 3">어제의 YouTube 화제 TOP 3</h2>
-      <p data-ko="전날 화제가 된 영상들을 주제별로 빠르게 찾아볼 수 있습니다. 각 카드를 누르면 YouTube에서 해당 날짜의 검색 결과가 열립니다." data-en="Quickly explore videos around yesterday’s hot topics. Each card opens YouTube search results for the previous day.">전날 화제가 된 영상들을 주제별로 빠르게 찾아볼 수 있습니다. 각 카드를 누르면 YouTube에서 해당 날짜의 검색 결과가 열립니다.</p>
+      <h2 id="youtube-daily-top3-title" data-ko="어제 공개된 인기 영상 TOP 3" data-en="Yesterday’s Most-Watched New Videos · TOP 3">어제 공개된 인기 영상 TOP 3</h2>
+      <p data-ko="한국 시간 기준 어제 공개된 영상 중 조회수가 높은 영상을 골라 보여줍니다." data-en="Videos published yesterday in Korea time, ranked by view count.">한국 시간 기준 어제 공개된 영상 중 조회수가 높은 영상을 골라 보여줍니다.</p>
     </div>
-    <div class="youtube-top3-grid">
-      <a class="youtube-top3-card" data-query="이슈·뉴스" href="https://www.youtube.com/results?search_query=한국+어제+화제+이슈" target="_blank" rel="noopener noreferrer">
-        <span class="youtube-top3-number">01</span><span class="youtube-top3-icon" aria-hidden="true">▶</span>
-        <strong data-ko="이슈 · 뉴스" data-en="Issues · News">이슈 · 뉴스</strong>
-        <span data-ko="전날의 주요 화제와 이슈 영상" data-en="Videos about yesterday’s major topics">전날의 주요 화제와 이슈 영상</span>
-        <span class="youtube-top3-go" data-ko="YouTube에서 보기 ↗" data-en="Explore on YouTube ↗">YouTube에서 보기 ↗</span>
-      </a>
-      <a class="youtube-top3-card" data-query="음악·엔터" href="https://www.youtube.com/results?search_query=한국+어제+화제+음악+엔터" target="_blank" rel="noopener noreferrer">
-        <span class="youtube-top3-number">02</span><span class="youtube-top3-icon" aria-hidden="true">♫</span>
-        <strong data-ko="음악 · 엔터테인먼트" data-en="Music · Entertainment">음악 · 엔터테인먼트</strong>
-        <span data-ko="새롭게 주목받는 음악과 엔터 영상" data-en="Music and entertainment getting attention">새롭게 주목받는 음악과 엔터 영상</span>
-        <span class="youtube-top3-go" data-ko="YouTube에서 보기 ↗" data-en="Explore on YouTube ↗">YouTube에서 보기 ↗</span>
-      </a>
-      <a class="youtube-top3-card" data-query="문화·화제" href="https://www.youtube.com/results?search_query=한국+어제+화제+영상+문화" target="_blank" rel="noopener noreferrer">
-        <span class="youtube-top3-number">03</span><span class="youtube-top3-icon" aria-hidden="true">✦</span>
-        <strong data-ko="문화 · 화제 영상" data-en="Culture · Viral Videos">문화 · 화제 영상</strong>
-        <span data-ko="온라인에서 화제가 된 다양한 영상" data-en="Videos gaining attention online">온라인에서 화제가 된 다양한 영상</span>
-        <span class="youtube-top3-go" data-ko="YouTube에서 보기 ↗" data-en="Explore on YouTube ↗">YouTube에서 보기 ↗</span>
-      </a>
+    <div id="youtube-top3-results" class="youtube-top3-grid" aria-live="polite">
+      <p class="youtube-top3-loading" data-ko="어제의 인기 영상을 불러오는 중입니다…" data-en="Loading yesterday’s popular videos…">어제의 인기 영상을 불러오는 중입니다…</p>
     </div>
-    <p class="youtube-top3-note" data-ko="참고: API 키나 유료 번역 없이 운영하는 간단한 버전입니다. 카드는 순위를 임의로 만들어 표시하지 않고 YouTube 검색으로 연결합니다." data-en="Note: This lightweight version uses no API key or paid translation. It links to YouTube search rather than inventing a ranking.">참고: API 키나 유료 번역 없이 운영하는 간단한 버전입니다. 카드는 순위를 임의로 만들어 표시하지 않고 YouTube 검색으로 연결합니다.</p>
+    <p id="youtube-top3-note" class="youtube-top3-note" data-ko="전날 공개된 영상의 조회수를 기준으로 선정합니다. YouTube가 제공하는 공식 전체 인기 급상승 순위의 과거 기록은 아니며, 뉴스·음악·화제 분야 검색 결과를 비교한 목록입니다." data-en="Ranked by views among videos published the previous day. This is not an archived official YouTube Trending ranking; it compares results across news, music, and viral-topic searches.">전날 공개된 영상의 조회수를 기준으로 선정합니다. YouTube가 제공하는 공식 전체 인기 급상승 순위의 과거 기록은 아니며, 뉴스·음악·화제 분야 검색 결과를 비교한 목록입니다.</p>
   </div>
 </section>
 <style id="youtube-daily-top3-style">
 #youtube-daily-top3{padding:74px 20px 82px;background:linear-gradient(180deg,#07070a,#0d0c10);border-top:1px solid rgba(201,168,76,.14);border-bottom:1px solid rgba(201,168,76,.12);color:#f0ece4}
 .youtube-top3-inner{max-width:1080px;margin:0 auto}.youtube-top3-head{text-align:center;max-width:700px;margin:0 auto 30px}.youtube-top3-kicker{margin:0 0 10px;color:#c9a84c;font:600 .68rem Cinzel,serif;letter-spacing:.2em}.youtube-top3-head h2{margin:0;color:#f4e5bd;font:600 clamp(1.6rem,4vw,2.4rem)/1.35 'Noto Serif KR',serif;letter-spacing:-.04em}.youtube-top3-head>p:last-child{margin:13px auto 0;color:rgba(240,236,228,.62);font-size:.9rem;line-height:1.8;word-break:keep-all}
-.youtube-top3-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.youtube-top3-card{position:relative;display:flex;flex-direction:column;min-height:235px;padding:24px;border:1px solid rgba(232,208,138,.2);border-radius:18px;background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.012));transition:transform .2s,border-color .2s,background .2s;box-sizing:border-box}.youtube-top3-card:hover{transform:translateY(-4px);border-color:rgba(232,208,138,.55);background:linear-gradient(145deg,rgba(201,168,76,.09),rgba(255,255,255,.02))}.youtube-top3-number{position:absolute;right:20px;top:17px;color:rgba(232,208,138,.4);font:600 1rem Cinzel,serif;letter-spacing:.1em}.youtube-top3-icon{display:flex;align-items:center;justify-content:center;width:42px;height:42px;margin-bottom:20px;border:1px solid rgba(232,208,138,.32);border-radius:50%;color:#e8d08a;font-size:1.15rem}.youtube-top3-card strong{color:#f4f0e8;font:600 1.03rem/1.5 'Noto Serif KR',serif}.youtube-top3-card>span:nth-of-type(3){margin-top:7px;color:rgba(240,236,228,.58);font-size:.78rem;line-height:1.7}.youtube-top3-go{margin-top:auto;padding-top:20px;color:#e8d08a;font-size:.7rem;font-weight:600;letter-spacing:.04em}.youtube-top3-note{max-width:800px;margin:22px auto 0;color:rgba(240,236,228,.42);font-size:.7rem;line-height:1.7;text-align:center;word-break:keep-all}
-@media(max-width:700px){#youtube-daily-top3{padding:52px 15px 60px}.youtube-top3-grid{grid-template-columns:1fr;gap:10px}.youtube-top3-card{min-height:155px;padding:20px}.youtube-top3-icon{margin-bottom:13px}.youtube-top3-go{padding-top:14px}}
-html[data-theme="light"] #youtube-daily-top3{background:linear-gradient(180deg,#f8f5ee,#efebe1);color:#29261f;border-color:rgba(126,101,55,.18)}html[data-theme="light"] .youtube-top3-head h2{color:#29261f}html[data-theme="light"] .youtube-top3-head>p:last-child,html[data-theme="light"] .youtube-top3-card>span:nth-of-type(3){color:#666055}html[data-theme="light"] .youtube-top3-card{background:rgba(255,255,255,.72);border-color:rgba(126,101,55,.2)}html[data-theme="light"] .youtube-top3-card strong{color:#29261f}html[data-theme="light"] .youtube-top3-note{color:#777064}
+.youtube-top3-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.youtube-top3-card{position:relative;display:flex;flex-direction:column;min-width:0;min-height:260px;padding:14px;border:1px solid rgba(232,208,138,.2);border-radius:18px;background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.012));box-sizing:border-box;overflow:hidden}.youtube-top3-thumb{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:10px;background:#19191c}.youtube-top3-number{position:absolute;top:22px;left:22px;padding:4px 8px;border-radius:6px;background:rgba(0,0,0,.78);color:#f4e5bd;font:600 .8rem Cinzel,serif}.youtube-top3-card strong{display:block;margin-top:13px;color:#f4f0e8;font:600 .98rem/1.5 'Noto Serif KR',serif;overflow-wrap:anywhere}.youtube-top3-meta{margin-top:8px;color:rgba(240,236,228,.58);font-size:.72rem;line-height:1.6}.youtube-top3-go{margin-top:auto;padding-top:14px;color:#e8d08a;font-size:.72rem;font-weight:600}.youtube-top3-loading,.youtube-top3-empty{grid-column:1/-1;text-align:center;color:rgba(240,236,228,.65);padding:24px}.youtube-top3-note{max-width:800px;margin:22px auto 0;color:rgba(240,236,228,.42);font-size:.7rem;line-height:1.7;text-align:center;word-break:keep-all}
+@media(max-width:700px){#youtube-daily-top3{padding:52px 15px 60px}.youtube-top3-grid{grid-template-columns:1fr;gap:10px}.youtube-top3-card{min-height:0;padding:13px;display:grid;grid-template-columns:120px minmax(0,1fr);column-gap:12px;align-content:start}.youtube-top3-thumb{grid-row:1/5;width:120px}.youtube-top3-number{top:19px;left:19px}.youtube-top3-card strong{margin-top:0;font-size:.9rem}.youtube-top3-meta{margin-top:5px}.youtube-top3-go{padding-top:7px}}
+html[data-theme="light"] #youtube-daily-top3{background:linear-gradient(180deg,#f8f5ee,#efebe1);color:#29261f;border-color:rgba(126,101,55,.18)}html[data-theme="light"] .youtube-top3-head h2{color:#29261f}html[data-theme="light"] .youtube-top3-head>p:last-child,html[data-theme="light"] .youtube-top3-meta{color:#666055}html[data-theme="light"] .youtube-top3-card{background:rgba(255,255,255,.72);border-color:rgba(126,101,55,.2)}html[data-theme="light"] .youtube-top3-card strong{color:#29261f}html[data-theme="light"] .youtube-top3-note{color:#777064}
 </style>
 
 <section class="home-static-content" aria-labelledby="home-static-title">
@@ -438,20 +421,31 @@ document.addEventListener('DOMContentLoaded',()=>{
 </script>
 
 <script>
-(() => {
- const date = new Date();
- date.setDate(date.getDate() - 1);
- const stamp = new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit'}).format(date);
- const dateLabel = stamp.replaceAll('-','.');
- const queries = [
-  '한국 '+dateLabel+' 화제 이슈 영상',
-  '한국 '+dateLabel+' 인기 음악 엔터',
-  '한국 '+dateLabel+' 화제 문화 영상'
- ];
- document.querySelectorAll('#youtube-daily-top3 .youtube-top3-card').forEach((card,index) => {
-  const q = queries[index];
-  if (q) card.href = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q);
- });
-})();
+document.addEventListener('DOMContentLoaded', async function(){
+  const host=document.getElementById('youtube-top3-results');
+  if(!host)return;
+  const language=()=>document.documentElement.lang==='en'||document.documentElement.dataset.language==='en'?'en':'ko';
+  const text=(ko,en)=>language()==='en'?en:ko;
+  try{
+    const response=await fetch('/data/youtube-daily-top3.json?v='+Date.now(),{cache:'no-store'});
+    if(!response.ok)throw new Error('Daily video data unavailable');
+    const payload=await response.json();
+    if(!Array.isArray(payload.videos)||payload.videos.length===0)throw new Error('No videos');
+    host.replaceChildren();
+    payload.videos.slice(0,3).forEach((video,index)=>{
+      const a=document.createElement('a');a.className='youtube-top3-card';a.href='https://www.youtube.com/watch?v='+encodeURIComponent(video.id);a.target='_blank';a.rel='noopener noreferrer';
+      const img=document.createElement('img');img.className='youtube-top3-thumb';img.src=video.thumbnail;img.alt='';img.loading='lazy';img.referrerPolicy='strict-origin-when-cross-origin';
+      const number=document.createElement('span');number.className='youtube-top3-number';number.textContent=String(index+1).padStart(2,'0');
+      const title=document.createElement('strong');title.textContent=video.title;
+      const meta=document.createElement('span');meta.className='youtube-top3-meta';meta.textContent=(video.channel||'YouTube')+' · '+Number(video.viewCount||0).toLocaleString(language()==='en'?'en-US':'ko-KR')+' views';
+      const go=document.createElement('span');go.className='youtube-top3-go';go.textContent=text('YouTube에서 영상 보기 ↗','Watch on YouTube ↗');
+      a.append(img,number,title,meta,go);host.appendChild(a);
+    });
+    const note=document.getElementById('youtube-top3-note');
+    if(note&&payload.date)note.dataset.ko='기준일: '+payload.date+' (한국 시간). 전날 공개된 영상의 조회수를 기준으로 선정합니다. 공식 인기 급상승 순위의 과거 기록이 아닌, 공개 영상 검색 결과를 비교한 목록입니다.';
+  }catch(error){
+    host.innerHTML='<p class="youtube-top3-empty" data-ko="아직 인기 영상 데이터가 준비되지 않았습니다." data-en="Yesterday’s video list is not available yet.">아직 인기 영상 데이터가 준비되지 않았습니다.</p>';
+  }
+});
 </script>
 </body></html>

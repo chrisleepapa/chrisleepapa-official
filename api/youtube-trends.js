@@ -11,25 +11,13 @@ export default async function handler(req, res) {
     .replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>')
     .replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
 
-  function parseTrendingFeed(xml) {
-    return [...xml.matchAll(/<item\b[^>]*>([\s\S]*?)<\/item>/gi)].map(match => {
-      const body = match[1];
-      const field = name => (body.match(new RegExp('<' + name + '(?:\\s[^>]*)?>([\\s\\S]*?)<\\/' + name + '>', 'i')) || [,''])[1];
-      const title = decode(field('title'));
-      const raw = decode(field('link')) + ' ' + field('description');
-      const idMatch = raw.match(/(?:youtube\.com\/(?:watch\?(?:[^\s"'<>]*?&)?v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
-      if (!idMatch || !title) return null;
-      return { id: idMatch[1], title: title.replace(/\s+-\s+YouTube Music Charts.*$/i, ''), url: 'https://www.youtube.com/watch?v=' + idMatch[1], thumbnail: 'https://img.youtube.com/vi/' + idMatch[1] + '/hqdefault.jpg' };
-    }).filter(Boolean);
-  }
-
   async function getDailyMusicVideo() {
     const response = await fetch('https://musiccharty.com/', { headers: { 'User-Agent': 'Mozilla/5.0 ChrisLeePapaArchive/1.0' } });
     if (!response.ok) throw new Error('Global daily music chart returned ' + response.status);
     const html = await response.text();
     const tags = [...html.matchAll(/<img\b[^>]*>/gi)].map(m => m[0]);
     for (const tag of tags) {
-      const src = (tag.match(/(?:src|data-src)=["']([^"']*i\.ytimg\.com\/vi\/([A-Za-z0-9_-]{11})\/hqdefault\.jpg[^"']*)["']/i) || []);
+      const src = tag.match(/(?:src|data-src)=["']([^"']*i\.ytimg\.com\/vi\/([A-Za-z0-9_-]{11})\/hqdefault\.jpg[^"']*)["']/i) || [];
       if (!src[2]) continue;
       const alt = (tag.match(/alt=["']([^"']*)["']/i) || [,''])[1];
       const label = decode(alt).replace(/^Image:\s*/i, '');
@@ -46,18 +34,53 @@ export default async function handler(req, res) {
     throw new Error('Could not find a video in the daily global music chart');
   }
 
+  async function getGlobalTrendingVideo() {
+    // Prefer a general worldwide trending chart (not a channel or the user's own work).
+    try {
+      const response = await fetch('https://chartslist.com/', { headers: { 'User-Agent': 'Mozilla/5.0 ChrisLeePapaArchive/1.0' } });
+      if (response.ok) {
+        const html = await response.text();
+        const anchors = [...html.matchAll(/<a\b[^>]*href=["']([^"']*(?:youtube\.com\/watch\?v=|youtu\.be\/)([A-Za-z0-9_-]{11})[^"']*)["'][^>]*>([\s\S]*?)<\/a>/gi)];
+        for (const match of anchors) {
+          const title = decode(match[3]);
+          if (!title || /^(watch|youtube|play)$/i.test(title)) continue;
+          return { id: match[2], title, url: 'https://www.youtube.com/watch?v=' + match[2], thumbnail: 'https://img.youtube.com/vi/' + match[2] + '/hqdefault.jpg' };
+        }
+      }
+    } catch (_) {}
+
+    // Fallback: public RSS feed for YouTube's global trending video chart.
+    const response = await fetch('https://rsshub.app/youtube/charts/TrendingVideos/global', { headers: { 'User-Agent': 'ChrisLeePapaArchive/1.0' } });
+    if (!response.ok) throw new Error('Global trending chart returned ' + response.status);
+    const xml = await response.text();
+    const items = [...xml.matchAll(/<item\b[^>]*>([\s\S]*?)<\/item>/gi)].map(match => {
+      const body = match[1];
+      const field = name => (body.match(new RegExp('<' + name + '(?:\\s[^>]*)?>([\\s\\S]*?)<\\/' + name + '>', 'i')) || [,''])[1];
+      const title = decode(field('title'));
+      const raw = decode(field('link')) + ' ' + field('description');
+      const idMatch = raw.match(/(?:youtube\.com\/(?:watch\?(?:[^\s"'<>]*?&)?v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+      if (!idMatch || !title) return null;
+      return { id: idMatch[1], title, url: 'https://www.youtube.com/watch?v=' + idMatch[1], thumbnail: 'https://img.youtube.com/vi/' + idMatch[1] + '/hqdefault.jpg' };
+    }).filter(Boolean);
+    if (!items.length) throw new Error('No usable global trending video was returned');
+    return items[0];
+  }
+
   try {
-    const [musicVideo, trendResponse] = await Promise.all([
-      getDailyMusicVideo(),
-      fetch('https://rsshub.app/youtube/charts/TrendingVideos/global', { headers: { 'User-Agent': 'ChrisLeePapaArchive/1.0' } })
-    ]);
-    if (!trendResponse.ok) throw new Error('Global trending video chart returned ' + trendResponse.status);
-    const trendingItems = parseTrendingFeed(await trendResponse.text());
-    const trendingVideo = trendingItems.find(item => item.id !== musicVideo.id);
-    if (!trendingVideo) throw new Error('No usable global trending video was returned');
+    const musicVideo = await getDailyMusicVideo();
+    let trendingVideo = await getGlobalTrendingVideo();
+    if (trendingVideo.id === musicVideo.id) {
+      const alternative = await fetch('https://rsshub.app/youtube/charts/TrendingVideos/global', { headers: { 'User-Agent': 'ChrisLeePapaArchive/1.0' } });
+      if (alternative.ok) {
+        const xml = await alternative.text();
+        const links = [...xml.matchAll(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/g)].map(m => m[1]);
+        const other = links.find(id => id !== musicVideo.id);
+        if (other) trendingVideo = { id: other, title: 'Global YouTube trending video', url: 'https://www.youtube.com/watch?v=' + other, thumbnail: 'https://img.youtube.com/vi/' + other + '/hqdefault.jpg' };
+      }
+    }
     return res.status(200).json({
       updatedAt: new Date().toISOString(),
-      source: 'Music Charty daily global music chart and YouTube Charts via RSSHub',
+      source: 'Music Charty daily global music chart and worldwide trending chart',
       musicVideo,
       trendingVideo
     });

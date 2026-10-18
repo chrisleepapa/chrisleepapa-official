@@ -354,15 +354,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="youtube-top3-head">
       <p class="youtube-top3-kicker" data-ko="VIDEO SPOTLIGHT" data-en="VIDEO SPOTLIGHT">VIDEO SPOTLIGHT</p>
       <h2 id="youtube-daily-top3-title" data-ko="인기 뮤비와 화제의 영상" data-en="Featured Music Video & Trending Video">인기 뮤비와 화제의 영상</h2>
-      <p data-ko="Billboard Global 200 1위 곡의 YouTube 영상과 전 세계 화제의 영상을 자동으로 소개합니다." data-en="Features a YouTube video for the Billboard Global 200 No. 1 song plus a worldwide trending video.">전 세계 일일 뮤직비디오 차트와 화제의 영상 차트를 바탕으로 자동 선정합니다.</p><p id="youtube-top3-updated" class="youtube-top3-updated" data-ko="글로벌 차트 확인 중…" data-en="Checking global charts…">글로벌 차트 확인 중…</p>
+      <p data-ko="공식 YouTube 글로벌 일일 뮤직비디오 차트와 전 세계 화제의 영상을 소개합니다." data-en="Explore YouTube’s official global daily music-video chart and a worldwide trending video.">전 세계 일일 뮤직비디오 차트와 화제의 영상 차트를 바탕으로 자동 선정합니다.</p><p id="youtube-top3-updated" class="youtube-top3-updated" data-ko="글로벌 차트 확인 중…" data-en="Checking global charts…">글로벌 차트 확인 중…</p>
     </div>
     <div class="youtube-top3-grid">
-      <a class="youtube-top3-card" href="https://www.billboard.com/charts/billboard-global-200/" target="_blank" rel="noopener noreferrer" aria-label="Billboard Global 200 1위 곡의 YouTube 영상 보기">
-        <span class="youtube-top3-number">01 · BILLBOARD GLOBAL 200</span>
-        <span class="youtube-top3-thumb"><img src="images/favicon.png" alt="Billboard Global 200 차트 대표 이미지" loading="lazy"><span class="youtube-top3-play" aria-hidden="true">▶</span></span>
-        <strong data-ko="Billboard Global 200 — No. 1" data-en="Olivia Rodrigo — expectations (feat. Chappell Roan)">Olivia Rodrigo — expectations (feat. Chappell Roan)</strong>
-        <span class="youtube-top3-meta" data-ko="Billboard Global 200 주간 1위 곡을 YouTube에서 찾아 소개합니다." data-en="The current No. 1 song on Billboard Global 200, matched to a YouTube video.">2026년 10월 18일 기준 글로벌 인기 뮤직비디오 차트 상위권</span>
-        <span class="youtube-top3-go" data-ko="YouTube에서 보기 ↗" data-en="Watch on YouTube ↗">YouTube에서 보기 ↗</span>
+      <a class="youtube-top3-card" href="https://charts.youtube.com/" target="_blank" rel="noopener noreferrer" aria-label="공식 YouTube 글로벌 일일 뮤직비디오 차트 보기">
+        <span class="youtube-top3-number">01 · OFFICIAL YOUTUBE MUSIC CHART</span>
+        <span class="youtube-top3-thumb"><img src="images/favicon.png" alt="YouTube 공식 글로벌 뮤직비디오 차트" loading="lazy"><span class="youtube-top3-play" aria-hidden="true">▶</span></span>
+        <strong data-ko="Daily Top Music Videos — Global" data-en="Daily Top Music Videos — Global">Daily Top Music Videos — Global</strong>
+        <span class="youtube-top3-meta" data-ko="YouTube가 공식 집계하는 글로벌 일일 인기 뮤직비디오 차트입니다." data-en="The official global daily chart of the most-viewed music videos on YouTube.">YouTube가 공식 집계하는 글로벌 일일 인기 뮤직비디오 차트입니다.</span>
+        <span class="youtube-top3-go" data-ko="공식 차트 열기 ↗" data-en="Open official chart ↗">공식 차트 열기 ↗</span>
       </a>
       <a class="youtube-top3-card" href="https://www.rockstargames.com/VI/launch-trailer" target="_blank" rel="noopener noreferrer" aria-label="Grand Theft Auto VI Launch Trailer 공식 영상 보기">
         <span class="youtube-top3-number">02 · GLOBAL VIDEO TREND</span>
@@ -460,13 +460,13 @@ document.addEventListener('DOMContentLoaded', async function () {
     const data = await response.json();
     const entries = [data.musicVideo, data.trendingVideo];
     entries.forEach((item, index) => {
-      if (!item || !item.id || !item.url) throw new Error('Incomplete chart item');
+      if (!item || !item.url || (index === 1 && !item.id)) throw new Error('Incomplete chart item');
       const card = cards[index];
       if (!card) return;
       card.href = item.url;
-      card.setAttribute('aria-label', (index === 0 ? 'Global popular music video: ' : 'Global trending video: ') + item.title + ' — YouTube');
+      card.setAttribute('aria-label', index === 0 ? 'Official YouTube global daily music-video chart' : 'Global trending video: ' + item.title + ' — YouTube');
       const image = card.querySelector('.youtube-top3-thumb img');
-      if (image) {
+      if (image && index === 1) {
         image.src = item.thumbnail || ('https://img.youtube.com/vi/' + item.id + '/hqdefault.jpg');
         image.alt = item.title + ' YouTube thumbnail';
       }
@@ -475,11 +475,11 @@ document.addEventListener('DOMContentLoaded', async function () {
       const meta = card.querySelector('.youtube-top3-meta');
       const channel = item.channel ? ' · ' + item.channel : '';
       if (meta) setText(meta,
-        index === 0 ? 'Billboard Global 200 1위 곡의 YouTube 영상' + channel : '글로벌 화제 영상 차트' + channel,
-        index === 0 ? 'YouTube video for the Billboard Global 200 No. 1 song' + channel : 'Global trending-video chart' + channel
+        index === 0 ? 'YouTube 공식 글로벌 일일 뮤직비디오 차트' : '글로벌 화제 영상 차트' + channel,
+        index === 0 ? 'Official YouTube global daily music-video chart' : 'Global trending-video chart' + channel
       );
       const link = card.querySelector('.youtube-top3-go');
-      if (link) setText(link, index === 0 ? 'YouTube에서 보기 ↗' : '화제 영상 보기 ↗', index === 0 ? 'Watch on YouTube ↗' : 'Watch trending video ↗');
+      if (link) setText(link, index === 0 ? '공식 차트 열기 ↗' : '화제 영상 보기 ↗', index === 0 ? 'Open official chart ↗' : 'Watch trending video ↗');
     });
     if (status) setText(status, '차트 확인: ' + new Date(data.updatedAt).toLocaleString('ko-KR') + ' · 하루 단위 캐시', 'Chart checked: ' + new Date(data.updatedAt).toLocaleString('en-US') + ' · daily cache');
   } catch (error) {

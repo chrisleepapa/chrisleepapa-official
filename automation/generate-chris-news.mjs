@@ -71,18 +71,18 @@ function tag(xml, name) {
   return m ? decodeEntities(m[1]) : '';
 }
 function parseItems(xml) {
-  return [...xml.matchAll(/<item(?:\\s[^>]*)?>([\\s\\S]*?)<\\/item>/gi)].map(m => {
+  return [...xml.matchAll(/<item(?:\s[^>]*)?>([\s\S]*?)<\/item>/gi)].map(m => {
     const item = m[1];
     const title = tag(item, 'title');
     const description = tag(item, 'description');
     const link = tag(item, 'link');
     const pubDate = tag(item, 'pubDate');
     const source = tag(item, 'source') || (title.includes(' - ') ? title.split(' - ').at(-1) : 'International publisher');
-    const enclosure = item.match(/<enclosure\\b[^>]*\\burl=["']([^"']+)["'][^>]*>/i);
-    const mediaImage = item.match(/<media:(?:content|thumbnail)\\b[^>]*\\burl=["']([^"']+)["'][^>]*>/i);
-    const htmlImage = (description.match(/<img\\b[^>]*\\bsrc=["']([^"']+)["']/i) || [])[1];
+    const enclosure = item.match(/<enclosure\b[^>]*\burl=["']([^"']+)["'][^>]*>/i);
+    const mediaImage = item.match(/<media:(?:content|thumbnail)\b[^>]*\burl=["']([^"']+)["'][^>]*>/i);
+    const htmlImage = (description.match(/<img\b[^>]*\bsrc=["']([^"']+)["']/i) || [])[1];
     const imageUrl = (enclosure || mediaImage || [])[1] || htmlImage || '';
-    return { title: title.replace(/\\s+-\\s+[^-]+$/, '').trim(), description, link, pubDate, source, imageUrl };
+    return { title: title.replace(/\s+-\s+[^-]+$/, '').trim(), description, link, pubDate, source, imageUrl };
   }).filter(x => x.title && x.link);
 }
 
@@ -186,15 +186,15 @@ function extractArticleContent(html) {
 }
 function extractImageUrl(html, baseUrl) {
   const candidates = [];
-  for (const meta of html.match(/<meta\\b[^>]*>/gi) || []) {
-    const key = (meta.match(/\\b(?:property|name)\\s*=\\s*["']([^"']+)["']/i) || [])[1] || '';
-    const content = (meta.match(/\\bcontent\\s*=\\s*["']([^"']+)["']/i) || [])[1] || '';
+  for (const meta of html.match(/<meta\b[^>]*>/gi) || []) {
+    const key = (meta.match(/\b(?:property|name)\s*=\s*["']([^"']+)["']/i) || [])[1] || '';
+    const content = (meta.match(/\bcontent\s*=\s*["']([^"']+)["']/i) || [])[1] || '';
     if (/^(?:og:image|og:image:url|twitter:image|twitter:image:src)$/i.test(key) && content) candidates.push(content.trim());
   }
   for (const raw of candidates) {
     try {
       const image = new URL(raw, baseUrl);
-      if (image.protocol === 'https:' && !/google\\.com$|googleusercontent\\.com$/.test(image.hostname) && !/logo|avatar|icon/i.test(image.pathname)) return image.href;
+      if (image.protocol === 'https:' && !/google\.com$|googleusercontent\.com$/.test(image.hostname) && !/logo|avatar|icon/i.test(image.pathname)) return image.href;
     } catch {}
   }
   return '';
@@ -203,7 +203,7 @@ function normalizeImageUrl(raw, baseUrl) {
   if (!raw) return '';
   try {
     const image = new URL(raw, baseUrl);
-    if (image.protocol !== 'https:' || /^(?:localhost|127\\.|0\\.0\\.0\\.0)/i.test(image.hostname)) return '';
+    if (image.protocol !== 'https:' || /^(?:localhost|127\.|0\.0\.0\.0)/i.test(image.hostname)) return '';
     return image.href;
   } catch { return ''; }
 }

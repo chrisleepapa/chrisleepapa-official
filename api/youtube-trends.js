@@ -1,69 +1,68 @@
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 's-maxage=86400, stale-while-revalidate=86400');
-  res.setHeader('Access-Control-Allow-Origin', '*');
   if (req.method !== 'GET') {
     res.setHeader('Allow', 'GET');
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const feeds = [
-    { key: 'musicVideo', url: 'https://rsshub.app/youtube/charts/TopVideos/global', type: 'music' },
-    { key: 'trendingVideo', url: 'https://rsshub.app/youtube/charts/TrendingVideos/global', type: 'trending' }
-  ];
+  const decode = (value = '') => value
+    .replace(/<!\\[CDATA\\[([\\s\\S]*?)\\]\\]>/g, '$1')
+    .replace(/&amp;/g, '&').replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/<[^>]*>/g, ' ').replace(/\\s+/g, ' ').trim();
 
-  function decode(value = '') {
-    return value
-      .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1')
-      .replace(/&amp;/g, '&').replace(/&quot;/g, '"')
-      .replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>')
-      .replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+  function parseTrendingFeed(xml) {
+    return [...xml.matchAll(/<item\\b[^>]*>([\\s\\S]*?)<\\/item>/gi)].map(match => {
+      const body = match[1];
+      const field = name => (body.match(new RegExp('<' + name + '(?:\\\\s[^>]*)?>([\\\\s\\\\S]*?)<\\\\/' + name + '>', 'i')) || [,''])[1];
+      const title = decode(field('title'));
+      const raw = decode(field('link')) + ' ' + field('description');
+      const idMatch = raw.match(/(?:youtube\\.com\\/(?:watch\\?(?:[^\\s"'<>]*?&)?v=|embed\\/|shorts\\/)|youtu\\.be\\/)([A-Za-z0-9_-]{11})/);
+      if (!idMatch || !title) return null;
+      return { id: idMatch[1], title: title.replace(/\\s+-\\s+YouTube Music Charts.*$/i, ''), url: 'https://www.youtube.com/watch?v=' + idMatch[1], thumbnail: 'https://img.youtube.com/vi/' + idMatch[1] + '/hqdefault.jpg' };
+    }).filter(Boolean);
   }
 
-  function parseFeed(xml, type) {
-    const items = [...xml.matchAll(/<item\b[^>]*>([\s\S]*?)<\/item>/gi)].map(match => {
-      const body = match[1];
-      const field = name => (body.match(new RegExp('<' + name + '(?:\\s[^>]*)?>([\\s\\S]*?)<\\/' + name + '>', 'i')) || [,''])[1];
-      const rawTitle = decode(field('title'));
-      const rawLink = decode(field('link'));
-      const description = field('description');
-      const raw = rawLink + ' ' + description;
-      const idMatch = raw.match(/(?:youtube\.com\/(?:watch\?(?:[^\s"'<>]*?&)?v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
-      const videoId = idMatch && idMatch[1];
-      if (!videoId || !rawTitle) return null;
-      const title = rawTitle.replace(/\s+-\s+YouTube Music Charts.*$/i, '').replace(/\s+-\s+[^-]{1,100}$/, (m) => m);
+  async function getDailyMusicVideo() {
+    const response = await fetch('https://musiccharty.com/', { headers: { 'User-Agent': 'Mozilla/5.0 ChrisLeePapaArchive/1.0' } });
+    if (!response.ok) throw new Error('Global daily music chart returned ' + response.status);
+    const html = await response.text();
+    const tags = [...html.matchAll(/<img\\b[^>]*>/gi)].map(m => m[0]);
+    for (const tag of tags) {
+      const src = (tag.match(/(?:src|data-src)=["']([^"']*i\\.ytimg\\.com\\/vi\\/([A-Za-z0-9_-]{11})\\/hqdefault\\.jpg[^"']*)["']/i) || []);
+      if (!src[2]) continue;
+      const alt = (tag.match(/alt=["']([^"']*)["']/i) || [,''])[1];
+      const label = decode(alt).replace(/^Image:\\s*/i, '');
+      if (!label) continue;
+      const by = label.match(/^(.*)\\s+by\\s+(.+)$/i);
       return {
-        id: videoId,
-        title,
-        channel: decode(field('author') || field('dc:creator')),
-        url: 'https://www.youtube.com/watch?v=' + videoId,
-        thumbnail: 'https://img.youtube.com/vi/' + videoId + '/hqdefault.jpg',
-        type
+        id: src[2],
+        title: by ? by[1].trim() : label,
+        channel: by ? by[2].trim() : '',
+        url: 'https://www.youtube.com/watch?v=' + src[2],
+        thumbnail: 'https://img.youtube.com/vi/' + src[2] + '/hqdefault.jpg'
       };
-    }).filter(Boolean);
-    return items;
+    }
+    throw new Error('Could not find a video in the daily global music chart');
   }
 
   try {
-    const results = await Promise.all(feeds.map(async feed => {
-      const response = await fetch(feed.url, { headers: { 'User-Agent': 'ChrisLeePapa-CreativeArchive/1.0' } });
-      if (!response.ok) throw new Error('Chart source returned ' + response.status);
-      return { key: feed.key, items: parseFeed(await response.text(), feed.type) };
-    }));
-    const data = Object.fromEntries(results.map(item => [item.key, item.items[0] || null]));
-    if (!data.musicVideo || !data.trendingVideo) {
-      throw new Error('One or more global YouTube chart feeds returned no usable video');
-    }
+    const [musicVideo, trendResponse] = await Promise.all([
+      getDailyMusicVideo(),
+      fetch('https://rsshub.app/youtube/charts/TrendingVideos/global', { headers: { 'User-Agent': 'ChrisLeePapaArchive/1.0' } })
+    ]);
+    if (!trendResponse.ok) throw new Error('Global trending video chart returned ' + trendResponse.status);
+    const trendingItems = parseTrendingFeed(await trendResponse.text());
+    const trendingVideo = trendingItems.find(item => item.id !== musicVideo.id);
+    if (!trendingVideo) throw new Error('No usable global trending video was returned');
     return res.status(200).json({
       updatedAt: new Date().toISOString(),
-      source: 'YouTube Music Charts via RSSHub',
-      musicVideo: data.musicVideo,
-      trendingVideo: data.trendingVideo
+      source: 'Music Charty daily global music chart and YouTube Charts via RSSHub',
+      musicVideo,
+      trendingVideo
     });
   } catch (error) {
     res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=3600');
-    return res.status(502).json({
-      error: 'Global YouTube charts are temporarily unavailable.',
-      message: error.message
-    });
+    return res.status(502).json({ error: 'Global YouTube charts are temporarily unavailable.', message: error.message });
   }
 }

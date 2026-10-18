@@ -9,7 +9,9 @@ const categories = [
     feeds: [
       { name: 'BBC News', url: 'https://feeds.bbci.co.uk/news/world/rss.xml' },
       { name: 'The Guardian', url: 'https://www.theguardian.com/world/rss' },
-      { name: 'Al Jazeera English', url: 'https://www.aljazeera.com/xml/rss/all.xml' }
+      { name: 'Al Jazeera English', url: 'https://www.aljazeera.com/xml/rss/all.xml' },
+      { name: 'DW News', url: 'https://rss.dw.com/rdf/rss-en-world' },
+      { name: 'PBS NewsHour', url: 'https://www.pbs.org/newshour/feeds/rss/headlines' }
     ]
   },
   {
@@ -18,7 +20,9 @@ const categories = [
     feeds: [
       { name: 'Al Jazeera English', url: 'https://www.aljazeera.com/xml/rss/all.xml' },
       { name: 'BBC News', url: 'https://feeds.bbci.co.uk/news/world/rss.xml' },
-      { name: 'The Guardian', url: 'https://www.theguardian.com/world/rss' }
+      { name: 'The Guardian', url: 'https://www.theguardian.com/world/rss' },
+      { name: 'DW News', url: 'https://rss.dw.com/rdf/rss-en-all' },
+      { name: 'PBS NewsHour', url: 'https://www.pbs.org/newshour/feeds/rss/headlines' }
     ]
   },
   {
@@ -27,7 +31,8 @@ const categories = [
     feeds: [
       { name: 'BBC News', url: 'https://feeds.bbci.co.uk/news/business/rss.xml' },
       { name: 'The Guardian', url: 'https://www.theguardian.com/business/rss' },
-      { name: 'NPR', url: 'https://feeds.npr.org/1006/rss.xml' }
+      { name: 'NPR', url: 'https://feeds.npr.org/1006/rss.xml' },
+      { name: 'Financial Times', url: 'https://www.ft.com/world?format=rss' }
     ]
   },
   {
@@ -36,7 +41,9 @@ const categories = [
     feeds: [
       { name: 'Science News', url: 'https://www.sciencenews.org/feed' },
       { name: 'ScienceDaily · Top Science', url: 'https://www.sciencedaily.com/rss/top/science.xml', rssOnly: true },
-      { name: 'ScienceDaily · Top Technology', url: 'https://www.sciencedaily.com/rss/top/technology.xml', rssOnly: true }
+      { name: 'ScienceDaily · Top Technology', url: 'https://www.sciencedaily.com/rss/top/technology.xml', rssOnly: true },
+      { name: 'NASA', url: 'https://www.nasa.gov/news-release/feed/' },
+      { name: 'NPR Science', url: 'https://feeds.npr.org/1007/rss.xml' }
     ]
   },
   {
@@ -45,7 +52,9 @@ const categories = [
     feeds: [
       { name: 'BBC News', url: 'https://feeds.bbci.co.uk/news/science_and_environment/rss.xml' },
       { name: 'The Guardian', url: 'https://www.theguardian.com/environment/rss' },
-      { name: 'Al Jazeera English', url: 'https://www.aljazeera.com/xml/rss/all.xml' }
+      { name: 'Al Jazeera English', url: 'https://www.aljazeera.com/xml/rss/all.xml' },
+      { name: 'DW News', url: 'https://rss.dw.com/rdf/rss-en-all' },
+      { name: 'NASA', url: 'https://www.nasa.gov/news-release/feed/' }
     ]
   },
   {
@@ -53,7 +62,9 @@ const categories = [
     query: 'society culture education',
     feeds: [
       { name: 'BBC News', url: 'https://feeds.bbci.co.uk/news/education/rss.xml' },
-      { name: 'The Guardian', url: 'https://www.theguardian.com/society/rss' }
+      { name: 'The Guardian', url: 'https://www.theguardian.com/society/rss' },
+      { name: 'NPR', url: 'https://feeds.npr.org/1001/rss.xml' },
+      { name: 'PBS NewsHour', url: 'https://www.pbs.org/newshour/feeds/rss/headlines' }
     ]
   },
 ];
@@ -338,7 +349,7 @@ async function translateSegments(values, target) {
   }
   return [titleKo, summaryKo, ...distinctPoints.slice(0, Math.max(2, values.length - 2))];
 }
-async function fetchCategory(category, globallySeenLinks = new Set(), globallySeenTitles = []) {
+async function fetchCategory(category, globallySeenLinks = new Set(), globallySeenTitles = [], globallySeenSources = new Map()) {
   const nowMs = Date.now();
   const maxAgeMs = 72 * 60 * 60 * 1000;
   const failures = [];
@@ -384,6 +395,10 @@ async function fetchCategory(category, globallySeenLinks = new Set(), globallySe
     if (candidatesChecked >= candidateLimit) break;
     const { feed, item, canonicalLink } = candidate;
     if (seenLinks.has(canonicalLink) || globallySeenLinks.has(canonicalLink)) continue;
+    // Diversify publishers across the six-card feed. Prefer a source not already used;
+    // allow a publisher to appear twice only when needed to fill all six categories.
+    const sourceCount = globallySeenSources.get(feed.name) || 0;
+    if (sourceCount >= 2) continue;
     seenLinks.add(canonicalLink);
     candidatesChecked++;
 
@@ -444,14 +459,16 @@ async function fetchCategory(category, globallySeenLinks = new Set(), globallySe
 const cards = [];
 const globallySeenLinks = new Set();
 const globallySeenTitles = [];
+const globallySeenSources = new Map();
 const failed = [];
 // Run in category order so each selected article can be reserved before the next category searches.
 for (const category of categories) {
   try {
-    const card = await fetchCategory(category, globallySeenLinks, globallySeenTitles);
+    const card = await fetchCategory(category, globallySeenLinks, globallySeenTitles, globallySeenSources);
     cards.push(card);
     globallySeenLinks.add(card.link);
     globallySeenTitles.push(card.title);
+    globallySeenSources.set(card.source, (globallySeenSources.get(card.source) || 0) + 1);
   } catch (error) {
     cards.push(null);
     failed.push({ category: category.key, error: String(error) });
@@ -483,7 +500,7 @@ const now = new Date();
 const dateParts = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(now);
 const dateMap = Object.fromEntries(dateParts.map(part => [part.type, part.value]));
 const date = `${dateMap.year}-${dateMap.month}-${dateMap.day}`;
-const payload = { date, updatedAt: now.toISOString(), sourceNote: 'International publisher feeds only, including BBC News, The Guardian, Al Jazeera English, NPR, Science News and ScienceDaily. Articles link to the original publisher; only direct article links published in the last 72 hours are accepted, and incomplete refreshes do not overwrite existing data.', cards };
+const payload = { date, updatedAt: now.toISOString(), sourceNote: 'International publisher feeds only, selected from multiple candidate articles across BBC News, The Guardian, Al Jazeera English, DW News, PBS NewsHour, NPR, Financial Times, Science News, ScienceDaily and NASA. Articles link to the original publisher; only direct article links published in the last 72 hours are accepted, and incomplete refreshes do not overwrite existing data.', cards };
 await mkdir('data', { recursive: true });
 await writeFile('data/chris-news.json', JSON.stringify(payload, null, 2) + '\n');
 console.log(`Prepared ${cards.length} news cards for ${date}.`);

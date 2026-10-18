@@ -47,20 +47,11 @@ export default async function handler(req, res) {
     const musicVideo = {
       title: 'Daily Top Music Videos — Global',
       chart: 'YouTube Daily Top Music Videos',
-      chartUrl: 'https://charts.youtube.com/',
-      url: 'https://charts.youtube.com/',
+      chartUrl: 'https://charts.youtube.com/charts/TopVideos/global/daily',
+      url: 'https://charts.youtube.com/charts/TopVideos/global/daily',
       thumbnail: '/images/favicon.png'
     };
     const trendingVideo = await getGlobalTrendingVideo();
-    if (false) {
-      const alternative = await fetch('https://rsshub.app/youtube/charts/TrendingVideos/global', { headers: { 'User-Agent': 'ChrisLeePapaArchive/1.0' } });
-      if (alternative.ok) {
-        const xml = await alternative.text();
-        const links = [...xml.matchAll(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/g)].map(m => m[1]);
-        const other = links.find(id => id !== musicVideo.id);
-        if (other) trendingVideo = { id: other, title: 'Global YouTube trending video', url: 'https://www.youtube.com/watch?v=' + other, thumbnail: 'https://img.youtube.com/vi/' + other + '/hqdefault.jpg' };
-      }
-    }
     return res.status(200).json({
       updatedAt: new Date().toISOString(),
       source: 'Official YouTube Daily Top Music Videos chart and worldwide trending chart',

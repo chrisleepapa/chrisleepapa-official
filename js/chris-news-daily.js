@@ -62,6 +62,16 @@
       top.append(make('span', '', 'CARD ' + String(index + 1).padStart(2, '0')));
       top.append(make('span', 'chris-news-card-date', articleDateLabel(item.publishedAt, payload.date, lang)));
       card.append(top);
+      if (item.imageUrl && /^https:\/\//i.test(item.imageUrl)) {
+        const image = make('img', 'chris-news-card-image');
+        image.src = item.imageUrl;
+        image.alt = '';
+        image.loading = 'lazy';
+        image.decoding = 'async';
+        image.referrerPolicy = 'no-referrer';
+        image.addEventListener('error', () => image.remove(), { once: true });
+        card.append(image);
+      }
       card.append(make('p', 'chris-news-card-kicker', lang === 'en' ? item.categoryEn : item.categoryKo));
       const title = make('h3', '', lang === 'en' ? item.titleEn || item.title : item.titleKo);
       card.append(title);

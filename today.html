@@ -409,8 +409,8 @@ function showBibleJourneyChapter(index,chapters){
     row.append(number,text);verseList.appendChild(row);
   });
   passageEl.appendChild(verseList);passageEl.hidden=false;
-  btn.hidden=false;btn.disabled=index!==current||bibleJourneyProgressSaving;
-  btn.textContent=bibleJourneyProgressSaving?'저장 중…':index<current?'이미 읽은 장입니다 ✓':index>current?'앞 장부터 순서대로 읽어주세요':'이 장 읽기 완료 ✓';
+  btn.hidden=false;btn.disabled=!!bibleJourneyProgressSaving;
+  btn.textContent=bibleJourneyProgressSaving?'저장 중…':index<current?'이미 읽은 장입니다 · 다시 읽기':index>current?'이 장은 아직 완료할 수 없습니다 · 순서대로 읽기':'이 장 읽기 완료 ✓';
   btn.dataset.chapterIndex=String(index);
 }
 async function completeBibleJourney(){

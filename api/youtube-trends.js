@@ -1,6 +1,6 @@
 export default async function handler(req, res) {
   // Stable for a Korean calendar day; the selection rotates on the next day.
-  res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=3600');
+  res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=60');
   if (req.method !== 'GET') {
     res.setHeader('Allow', 'GET');
     return res.status(405).json({ error: 'Method not allowed' });

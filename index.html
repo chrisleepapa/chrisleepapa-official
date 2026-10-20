@@ -466,7 +466,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       card.href = item.url;
       card.setAttribute('aria-label', index === 0 ? 'Official YouTube global daily music-video chart' : 'Global trending video: ' + item.title + ' — YouTube');
       const image = card.querySelector('.youtube-top3-thumb img');
-      if (image && index === 1) {
+      if (image) {
         image.src = item.thumbnail || ('https://img.youtube.com/vi/' + item.id + '/hqdefault.jpg');
         image.alt = item.title + ' YouTube thumbnail';
       }

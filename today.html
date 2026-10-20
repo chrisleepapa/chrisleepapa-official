@@ -409,8 +409,8 @@ function showBibleJourneyChapter(index,chapters){
     row.append(number,text);verseList.appendChild(row);
   });
   passageEl.appendChild(verseList);passageEl.hidden=false;
-  btn.hidden=false;btn.disabled=index!==current;
-  btn.textContent=index<current?'이미 읽은 장입니다 ✓':index>current?'앞 장부터 순서대로 읽어주세요':'이 장 읽기 완료 ✓';
+  btn.hidden=false;btn.disabled=index!==current||bibleJourneyProgressSaving;
+  btn.textContent=bibleJourneyProgressSaving?'저장 중…':index<current?'이미 읽은 장입니다 ✓':index>current?'앞 장부터 순서대로 읽어주세요':'이 장 읽기 완료 ✓';
   btn.dataset.chapterIndex=String(index);
 }
 async function completeBibleJourney(){
@@ -458,6 +458,9 @@ async function completeBibleJourney(){
     renderBibleJourney();
   }finally{
     bibleJourneyProgressSaving=false;
+    // Re-render after the saving lock is released so the button cannot remain stuck
+    // disabled/hidden after a transient network or Supabase error.
+    renderBibleJourney();
   }
 }
 function updateTodayLanguage(lang){const d=window.PAGE_I18N[lang]||window.PAGE_I18N.ko;document.getElementById('todayDate').textContent=new Intl.DateTimeFormat(d.today_date_locale,{dateStyle:'full'}).format(new Date());const verseEl=document.getElementById('todayVerse');if(verseEl)verseEl.textContent='“'+(lang==='en'?verse[2]:verse[0])+'”';const refEl=document.getElementById('todayRef');if(refEl)refEl.textContent=lang==='en'?verse[3]:verse[1];renderBibleJourney();document.getElementById('todoInput').placeholder=d.todo_placeholder;renderRoutine();document.getElementById('todayAuth').querySelector('#authInitials').placeholder=lang==='en'?'INITIALS (e.g. CLP)':'INITIALS (예: CLP)';document.getElementById('todayAuth').querySelector('#authPin').placeholder=lang==='en'?'4-DIGIT PIN':'4자리 PIN';renderTodos&&renderTodos()}

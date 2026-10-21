@@ -71,7 +71,10 @@ export default async function handler(req, res) {
           entry => entry?.musicAnalyticsSectionRenderer
         )?.musicAnalyticsSectionRenderer;
         const videos = section?.content?.videos || section?.videos;
-        const videoList = Array.isArray(videos) ? videos : videos?.[0]?.videoViews;
+        // YouTube's response groups video charts by metric (videoViews, etc.).
+        const videoList = Array.isArray(videos?.[0]?.videoViews)
+          ? videos[0].videoViews
+          : Array.isArray(videos) ? videos : videos?.[0]?.videoViews;
         if (!Array.isArray(videoList) || !videoList.length) {
           throw new Error('YouTube chart API response contained no video list');
         }

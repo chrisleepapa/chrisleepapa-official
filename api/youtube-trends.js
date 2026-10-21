@@ -71,19 +71,25 @@ export default async function handler(req, res) {
     const seed = dailySeed(dateText);
     // The popular music-video card always represents the current #1 entry
     // in the official YouTube global daily Top Music Videos chart.
-    const musicVideo = { ...videos[0], chartRank: 1, slot: 'popular-music-video' };
-    // Keep the separate trending-video card as a daily rotating pick, excluding #1.
-    const trendingPool = videos.slice(1);
+    const topVideos = videos.slice(0, 5).map((video, index) => ({
+      ...video,
+      chartRank: index + 1,
+      slot: 'popular-music-video'
+    }));
+    if (topVideos.length < 5) throw new Error('The YouTube chart returned fewer than five usable videos');
+
+    // Keep a daily rotating pick for the separate trending-video use case.
+    const trendingPool = videos.slice(5);
     const secondIndex = dailyIndex(seed, 0x2468ace0, trendingPool.length);
     const trendingVideo = { ...trendingPool[secondIndex], slot: 'global-trending-video' };
 
     return res.status(200).json({
       updatedAt: new Date().toISOString(),
       selectionDate: dateText,
-      source: 'YouTube official global daily Top Music Videos chart — rank #1 for popular music video; daily rotating pick for trending video',
+      source: 'YouTube official global daily Top Music Videos chart — top 5 ranked videos',
       chartUrl: 'https://charts.youtube.com/charts/TopVideos/global/daily',
       chartSize: videos.length,
-      musicVideo,
+      topVideos,
       trendingVideo
     });
   } catch (error) {

@@ -354,7 +354,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="youtube-top3-head">
       <p class="youtube-top3-kicker" data-ko="VIDEO SPOTLIGHT" data-en="VIDEO SPOTLIGHT">VIDEO SPOTLIGHT</p>
       <h2 id="youtube-daily-top3-title" data-ko="인기 뮤비와 화제의 영상" data-en="Featured Music Video & Trending Video">인기 뮤비와 화제의 영상</h2>
-      <p data-ko="YouTube 글로벌 인기 뮤직비디오 TOP 100에서 매일 무작위로 두 영상을 골라 소개합니다." data-en="Two videos are randomly selected each day from YouTube’s global Top 100 music videos.">전 세계 일일 뮤직비디오 차트와 화제의 영상 차트를 바탕으로 자동 선정합니다.</p><p id="youtube-top3-updated" class="youtube-top3-updated" data-ko="글로벌 차트 확인 중…" data-en="Checking global charts…">글로벌 차트 확인 중…</p>
+      <p data-ko="YouTube 공식 글로벌 일일 뮤직비디오 차트의 TOP 5를 순위대로 소개합니다." data-en="Explore the top five videos from YouTube’s official global daily music-video chart, in ranking order.">YouTube 공식 글로벌 일일 뮤직비디오 차트의 TOP 5를 순위대로 소개합니다.</p><p id="youtube-top3-updated" class="youtube-top3-updated" data-ko="글로벌 차트 확인 중…" data-en="Checking global charts…">글로벌 차트 확인 중…</p>
     </div>
     <div class="youtube-top3-grid">
       <a class="youtube-top3-card" href="https://charts.youtube.com/charts/TopVideos/global/daily" target="_blank" rel="noopener noreferrer" aria-label="공식 YouTube 글로벌 일일 뮤직비디오 차트 보기">
@@ -422,31 +422,32 @@ html[data-theme="light"] #youtube-daily-top3{background:linear-gradient(180deg,#
 <section id="chris-note" aria-labelledby="home-content-title"></section>
 </main><footer id="site-footer"></footer>
 <script>
+<script>
 document.addEventListener('DOMContentLoaded', async function () {
   const section = document.getElementById('youtube-daily-top3');
   if (!section) return;
-  const cards = section.querySelectorAll('.youtube-top3-card');
+  const grid = section.querySelector('.youtube-top3-grid');
   const status = document.getElementById('youtube-top3-updated');
   const language = () => document.documentElement.lang && document.documentElement.lang.toLowerCase().startsWith('en') ? 'en' : 'ko';
+  const setText = (node, ko, en) => {
+    node.setAttribute('data-ko', ko);
+    node.setAttribute('data-en', en);
+    node.textContent = language() === 'en' ? en : ko;
+  };
   const applySectionLanguage = () => {
     const lang = language();
     section.querySelectorAll('[data-ko][data-en]').forEach((node) => {
       const value = node.getAttribute('data-' + lang);
       if (value !== null) node.textContent = value;
     });
-    cards.forEach((card, index) => {
+    grid?.querySelectorAll('.youtube-top3-card').forEach((card) => {
       const title = card.querySelector('strong')?.textContent || '';
+      const rank = card.dataset.rank || '';
       card.setAttribute('aria-label', lang === 'en'
-        ? (index === 0 ? 'Global popular music video: ' : 'Global trending video: ') + title + (index === 0 ? ' — YouTube' : ' — watch video')
-        : (index === 0 ? '전 세계 인기 뮤직비디오 보기: ' : '전 세계 화제 영상 보기: ') + title);
+        ? 'Global music video chart rank ' + rank + ': ' + title
+        : '글로벌 뮤직비디오 차트 ' + rank + '위: ' + title);
     });
   };
-  const setText = (node, ko, en) => {
-    node.setAttribute('data-ko', ko);
-    node.setAttribute('data-en', en);
-    node.textContent = language() === 'en' ? en : ko;
-  };
-  applySectionLanguage();
   if (window.MutationObserver) {
     new MutationObserver((mutations) => {
       if (mutations.some((mutation) => mutation.type === 'attributes' && mutation.attributeName === 'lang')) {
@@ -455,35 +456,73 @@ document.addEventListener('DOMContentLoaded', async function () {
     }).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
   }
   try {
-    const response = await fetch('/api/youtube-trends', { headers: { 'Accept': 'application/json' }, cache: 'no-store' });
+    const response = await fetch('/api/youtube-trends', {
+      headers: { 'Accept': 'application/json' },
+      cache: 'no-store'
+    });
     if (!response.ok) throw new Error('Global chart request failed (' + response.status + ')');
     const data = await response.json();
-    const entries = [data.musicVideo, data.trendingVideo];
-    entries.forEach((item, index) => {
-      if (!item || !item.url || (index === 1 && !item.id)) throw new Error('Incomplete chart item');
-      const card = cards[index];
-      if (!card) return;
-      card.href = item.url;
-      card.setAttribute('aria-label', index === 0 ? 'Official YouTube global daily music-video chart' : 'Global trending video: ' + item.title + ' — YouTube');
-      const image = card.querySelector('.youtube-top3-thumb img');
-      if (image) {
-        image.src = item.thumbnail || ('https://img.youtube.com/vi/' + item.id + '/hqdefault.jpg');
-        image.alt = item.title + ' YouTube thumbnail';
+    if (!Array.isArray(data.topVideos) || data.topVideos.length < 5) {
+      throw new Error('The chart API did not return five ranked videos');
+    }
+    grid.replaceChildren();
+    data.topVideos.slice(0, 5).forEach((item, index) => {
+      if (!item || !item.id || !item.url || !item.title) {
+        throw new Error('Incomplete chart item at rank ' + (index + 1));
       }
-      const title = card.querySelector('strong');
-      if (title) setText(title, item.title, item.title);
-      const meta = card.querySelector('.youtube-top3-meta');
-      const channel = item.channel ? ' · ' + item.channel : '';
-      if (meta) setText(meta,
-        index === 0 ? 'YouTube 공식 글로벌 일일 뮤직비디오 차트 1위' : '글로벌 TOP 100에서 오늘 선정' + channel,
-        index === 0 ? 'No. 1 on YouTube’s official global daily music-video chart' : 'Daily pick from the global Top 100' + channel
-      );
-      const link = card.querySelector('.youtube-top3-go');
-      if (link) setText(link, index === 0 ? '1위 뮤직비디오 보기 ↗' : '화제 영상 보기 ↗', index === 0 ? 'Watch No. 1 music video ↗' : 'Watch trending video ↗');
+      const rank = index + 1;
+      const card = document.createElement('a');
+      card.className = 'youtube-top3-card';
+      card.href = item.url;
+      card.target = '_blank';
+      card.rel = 'noopener noreferrer';
+      card.dataset.rank = String(rank);
+      card.setAttribute('aria-label', 'Global music video chart rank ' + rank + ': ' + item.title);
+
+      const number = document.createElement('span');
+      number.className = 'youtube-top3-number';
+      number.textContent = String(rank).padStart(2, '0') + ' · ' + (language() === 'en' ? 'GLOBAL TOP 5' : '글로벌 TOP 5');
+
+      const thumb = document.createElement('span');
+      thumb.className = 'youtube-top3-thumb';
+      const image = document.createElement('img');
+      image.src = 'https://img.youtube.com/vi/' + item.id + '/hqdefault.jpg';
+      image.alt = item.title + ' YouTube thumbnail';
+      image.loading = 'lazy';
+      image.onerror = function () {
+        if (this.dataset.fallbackTried) {
+          this.onerror = null;
+          this.src = '/images/favicon.png';
+          return;
+        }
+        this.dataset.fallbackTried = '1';
+        this.src = 'https://img.youtube.com/vi/' + item.id + '/mqdefault.jpg';
+      };
+      const play = document.createElement('span');
+      play.className = 'youtube-top3-play';
+      play.setAttribute('aria-hidden', 'true');
+      play.textContent = '▶';
+      thumb.append(image, play);
+
+      const title = document.createElement('strong');
+      title.textContent = item.title;
+      const meta = document.createElement('span');
+      meta.className = 'youtube-top3-meta';
+      setText(meta, 'YouTube 공식 글로벌 일일 뮤직비디오 차트 ' + rank + '위', 'No. ' + rank + ' on YouTube’s official global daily music-video chart');
+      const link = document.createElement('span');
+      link.className = 'youtube-top3-go';
+      setText(link, '뮤직비디오 보기 ↗', 'Watch music video ↗');
+      card.append(number, thumb, title, meta, link);
+      grid.appendChild(card);
     });
-    if (status) setText(status, '인기 뮤비 차트 1위 · 화제 영상 일일 선정 · ' + (data.selectionDate || new Date(data.updatedAt).toLocaleDateString('ko-KR')), 'No. 1 music video · daily trending pick · ' + (data.selectionDate || new Date(data.updatedAt).toLocaleDateString('en-US')));
+    if (status) setText(
+      status,
+      'YouTube 공식 글로벌 일일 뮤직비디오 차트 TOP 5 · ' + (data.selectionDate || new Date(data.updatedAt).toLocaleDateString('ko-KR')),
+      'YouTube official global daily music-video chart TOP 5 · ' + (data.selectionDate || new Date(data.updatedAt).toLocaleDateString('en-US'))
+    );
+    applySectionLanguage();
   } catch (error) {
-    if (status) setText(status, '차트 연결 실패 · 표시된 영상은 최신 순위가 아닐 수 있습니다.', 'Chart connection failed · displayed videos may not reflect current rankings.');
+    if (status) setText(status, '차트 연결 실패 · TOP 5를 불러오지 못했습니다.', 'Chart connection failed · unable to load the Top 5.');
     console.error('[Global YouTube charts]', error);
   }
 });

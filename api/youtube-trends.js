@@ -69,17 +69,18 @@ export default async function handler(req, res) {
       parts.find(p => p.type === 'month').value + '-' +
       parts.find(p => p.type === 'day').value;
     const seed = dailySeed(dateText);
-    const firstIndex = dailyIndex(seed, 0x13579bdf, videos.length) % videos.length;
-    let secondIndex = dailyIndex(seed, 0x2468ace0, videos.length) % videos.length;
-    if (secondIndex === firstIndex) secondIndex = (firstIndex + 1 + (seed % (videos.length - 1))) % videos.length;
-
-    const musicVideo = { ...videos[firstIndex], slot: 'popular-music-video' };
-    const trendingVideo = { ...videos[secondIndex], slot: 'global-trending-video' };
+    // The popular music-video card always represents the current #1 entry
+    // in the official YouTube global daily Top Music Videos chart.
+    const musicVideo = { ...videos[0], chartRank: 1, slot: 'popular-music-video' };
+    // Keep the separate trending-video card as a daily rotating pick, excluding #1.
+    const trendingPool = videos.slice(1);
+    const secondIndex = dailyIndex(seed, 0x2468ace0, trendingPool.length);
+    const trendingVideo = { ...trendingPool[secondIndex], slot: 'global-trending-video' };
 
     return res.status(200).json({
       updatedAt: new Date().toISOString(),
       selectionDate: dateText,
-      source: 'YouTube Top Music Videos chart — daily random selection from the Top 100',
+      source: 'YouTube official global daily Top Music Videos chart — rank #1 for popular music video; daily rotating pick for trending video',
       chartUrl: 'https://charts.youtube.com/charts/TopVideos/global/daily',
       chartSize: videos.length,
       musicVideo,

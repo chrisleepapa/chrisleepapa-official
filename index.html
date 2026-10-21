@@ -447,6 +447,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         : '글로벌 뮤직비디오 차트 ' + rank + '위: ' + title);
     });
   };
+  // Clear static placeholders so failed chart requests cannot show the site favicon as a thumbnail.
+  if (grid) grid.replaceChildren();
   if (window.MutationObserver) {
     new MutationObserver((mutations) => {
       if (mutations.some((mutation) => mutation.type === 'attributes' && mutation.attributeName === 'lang')) {

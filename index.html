@@ -475,13 +475,13 @@ document.addEventListener('DOMContentLoaded', async function () {
       const meta = card.querySelector('.youtube-top3-meta');
       const channel = item.channel ? ' · ' + item.channel : '';
       if (meta) setText(meta,
-        index === 0 ? '글로벌 TOP 100에서 오늘 무작위 선정' : '글로벌 TOP 100에서 오늘 무작위 선정' + channel,
-        index === 0 ? 'Randomly selected today from the global Top 100' : 'Randomly selected today from the global Top 100' + channel
+        index === 0 ? 'YouTube 공식 글로벌 일일 뮤직비디오 차트 1위' : '글로벌 TOP 100에서 오늘 선정' + channel,
+        index === 0 ? 'No. 1 on YouTube’s official global daily music-video chart' : 'Daily pick from the global Top 100' + channel
       );
       const link = card.querySelector('.youtube-top3-go');
-      if (link) setText(link, index === 0 ? '공식 차트 열기 ↗' : '화제 영상 보기 ↗', index === 0 ? 'Open official chart ↗' : 'Watch trending video ↗');
+      if (link) setText(link, index === 0 ? '1위 뮤직비디오 보기 ↗' : '화제 영상 보기 ↗', index === 0 ? 'Watch No. 1 music video ↗' : 'Watch trending video ↗');
     });
-    if (status) setText(status, '오늘의 랜덤 선정 · ' + (data.selectionDate || new Date(data.updatedAt).toLocaleDateString('ko-KR')) + ' · TOP ' + (data.chartSize || 100), 'Daily random picks · ' + (data.selectionDate || new Date(data.updatedAt).toLocaleDateString('en-US')) + ' · TOP ' + (data.chartSize || 100));
+    if (status) setText(status, '인기 뮤비 차트 1위 · 화제 영상 일일 선정 · ' + (data.selectionDate || new Date(data.updatedAt).toLocaleDateString('ko-KR')), 'No. 1 music video · daily trending pick · ' + (data.selectionDate || new Date(data.updatedAt).toLocaleDateString('en-US')));
   } catch (error) {
     if (status) setText(status, '차트 연결 실패 · 표시된 영상은 최신 순위가 아닐 수 있습니다.', 'Chart connection failed · displayed videos may not reflect current rankings.');
     console.error('[Global YouTube charts]', error);

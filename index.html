@@ -383,6 +383,28 @@ html[data-theme="light"] #youtube-daily-top3{background:linear-gradient(180deg,#
 </style>
 
 
+<section id="youtube-trending-video" aria-labelledby="youtube-trending-video-title">
+  <div class="youtube-top3-inner">
+    <div class="youtube-top3-head">
+      <p class="youtube-top3-kicker" data-ko="DAILY VIDEO PICK" data-en="DAILY VIDEO PICK">DAILY VIDEO PICK</p>
+      <h2 id="youtube-trending-video-title" data-ko="오늘의 화제 영상" data-en="Today’s Trending Video">오늘의 화제 영상</h2>
+      <p data-ko="YouTube 글로벌 일일 뮤직비디오 차트 TOP 100 중에서 매일 한 편을 선정합니다. 인기 뮤비 TOP 5와는 별도로 보여줍니다." data-en="One video is selected each day from the YouTube global daily music-video chart Top 100, separately from the Top 5.">YouTube 글로벌 일일 뮤직비디오 차트 TOP 100 중에서 매일 한 편을 선정합니다. 인기 뮤비 TOP 5와는 별도로 보여줍니다.</p>
+      <p id="youtube-trending-updated" class="youtube-top3-updated" data-ko="오늘의 영상을 불러오는 중…" data-en="Loading today’s video…">오늘의 영상을 불러오는 중…</p>
+    </div>
+    <div class="youtube-top3-grid" id="youtube-trending-grid"></div>
+  </div>
+</section>
+<style id="youtube-trending-video-style">
+#youtube-trending-video{padding:64px 20px 72px;background:linear-gradient(180deg,#0d0c10,#07070a);border-bottom:1px solid rgba(201,168,76,.12);color:#f0ece4}
+#youtube-trending-video .youtube-top3-grid{grid-template-columns:minmax(0,680px);justify-content:center}
+#youtube-trending-video .youtube-top3-card{width:100%}
+html[data-theme="light"] #youtube-trending-video{background:linear-gradient(180deg,#efebe1,#f8f5ee);color:#29261f;border-color:rgba(126,101,55,.18)}
+html[data-theme="light"] #youtube-trending-video .youtube-top3-head h2{color:#29261f}
+html[data-theme="light"] #youtube-trending-video .youtube-top3-head>p:last-of-type{color:#666055}
+@media(max-width:700px){#youtube-trending-video{padding:48px 15px 56px}}
+</style>
+
+
 
 <section class="home-static-content" aria-labelledby="home-static-title">
   <div class="home-static-inner">
@@ -427,6 +449,9 @@ document.addEventListener('DOMContentLoaded', async function () {
   if (!section) return;
   const grid = section.querySelector('.youtube-top3-grid');
   const status = document.getElementById('youtube-top3-updated');
+  const trendingSection = document.getElementById('youtube-trending-video');
+  const trendingGrid = document.getElementById('youtube-trending-grid');
+  const trendingStatus = document.getElementById('youtube-trending-updated');
   const language = () => document.documentElement.lang && document.documentElement.lang.toLowerCase().startsWith('en') ? 'en' : 'ko';
   const setText = (node, ko, en) => {
     node.setAttribute('data-ko', ko);
@@ -445,10 +470,25 @@ document.addEventListener('DOMContentLoaded', async function () {
       card.setAttribute('aria-label', lang === 'en'
         ? 'Global music video chart rank ' + rank + ': ' + title
         : '글로벌 뮤직비디오 차트 ' + rank + '위: ' + title);
+      const number = card.querySelector('.youtube-top3-number');
+      if (number) number.textContent = String(rank).padStart(2, '0') + ' · ' + (lang === 'en' ? 'GLOBAL TOP 5' : '글로벌 TOP 5');
     });
+    if (trendingSection) {
+      trendingSection.querySelectorAll('[data-ko][data-en]').forEach((node) => {
+        const value = node.getAttribute('data-' + lang);
+        if (value !== null) node.textContent = value;
+      });
+      trendingGrid?.querySelectorAll('.youtube-top3-card').forEach((card) => {
+        const title = card.querySelector('strong')?.textContent || '';
+        card.setAttribute('aria-label', lang === 'en' ? 'Today’s trending video: ' + title : '오늘의 화제 영상: ' + title);
+        const number = card.querySelector('.youtube-top3-number');
+        if (number) number.textContent = lang === 'en' ? 'DAILY PICK' : '오늘의 선정 영상';
+      });
+    }
   };
   // Clear static placeholders so failed chart requests cannot show the site favicon as a thumbnail.
   if (grid) grid.replaceChildren();
+  if (trendingGrid) trendingGrid.replaceChildren();
   if (window.MutationObserver) {
     new MutationObserver((mutations) => {
       if (mutations.some((mutation) => mutation.type === 'attributes' && mutation.attributeName === 'lang')) {
@@ -516,6 +556,51 @@ document.addEventListener('DOMContentLoaded', async function () {
       card.append(number, thumb, title, meta, link);
       grid.appendChild(card);
     });
+    if (data.trendingVideo && data.trendingVideo.id && data.trendingVideo.url && data.trendingVideo.title && trendingGrid) {
+      const item = data.trendingVideo;
+      const card = document.createElement('a');
+      card.className = 'youtube-top3-card';
+      card.href = item.url;
+      card.target = '_blank';
+      card.rel = 'noopener noreferrer';
+      card.setAttribute('aria-label', 'Today’s trending video: ' + item.title);
+      const number = document.createElement('span');
+      number.className = 'youtube-top3-number';
+      number.textContent = language() === 'en' ? 'DAILY PICK' : '오늘의 선정 영상';
+      const thumb = document.createElement('span');
+      thumb.className = 'youtube-top3-thumb';
+      const image = document.createElement('img');
+      image.src = item.thumbnail || ('https://img.youtube.com/vi/' + item.id + '/hqdefault.jpg');
+      image.alt = item.title + ' YouTube thumbnail';
+      image.loading = 'lazy';
+      image.onerror = function () {
+        if (this.dataset.fallbackTried) { this.onerror = null; this.src = 'https://img.youtube.com/vi/' + item.id + '/mqdefault.jpg'; return; }
+        this.dataset.fallbackTried = '1';
+        this.src = 'https://img.youtube.com/vi/' + item.id + '/mqdefault.jpg';
+      };
+      const play = document.createElement('span');
+      play.className = 'youtube-top3-play';
+      play.setAttribute('aria-hidden', 'true');
+      play.textContent = '▶';
+      thumb.append(image, play);
+      const title = document.createElement('strong');
+      title.textContent = item.title;
+      const meta = document.createElement('span');
+      meta.className = 'youtube-top3-meta';
+      setText(meta, '글로벌 일일 차트 TOP 100에서 오늘 선정한 영상', 'Today’s selection from the global daily chart Top 100');
+      const link = document.createElement('span');
+      link.className = 'youtube-top3-go';
+      setText(link, '영상 보기 ↗', 'Watch video ↗');
+      card.append(number, thumb, title, meta, link);
+      trendingGrid.replaceChildren(card);
+      if (trendingStatus) setText(
+        trendingStatus,
+        '오늘의 화제 영상 · ' + (data.selectionDate || new Date(data.updatedAt).toLocaleDateString('ko-KR')),
+        'Today’s trending video · ' + (data.selectionDate || new Date(data.updatedAt).toLocaleDateString('en-US'))
+      );
+    } else if (trendingStatus) {
+      setText(trendingStatus, '오늘의 화제 영상을 불러오지 못했습니다.', 'Unable to load today’s trending video.');
+    }
     if (status) setText(
       status,
       'YouTube 공식 글로벌 일일 뮤직비디오 차트 TOP 5 · ' + (data.selectionDate || new Date(data.updatedAt).toLocaleDateString('ko-KR')),
@@ -524,6 +609,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     applySectionLanguage();
   } catch (error) {
     if (status) setText(status, '차트 연결 실패 · TOP 5를 불러오지 못했습니다.', 'Chart connection failed · unable to load the Top 5.');
+    if (trendingStatus) setText(trendingStatus, '화제 영상 연결 실패 · 잠시 후 다시 확인해 주세요.', 'Trending video unavailable · please try again later.');
     console.error('[Global YouTube charts]', error);
   }
 });

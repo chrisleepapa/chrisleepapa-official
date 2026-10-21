@@ -30,12 +30,13 @@ export default async function handler(req, res) {
 
   async function getTop100MusicVideos() {
     // Prefer YouTube's own chart endpoint so the page does not depend on an RSS proxy.
-    const apiKey = 'AIzaSyCzEW7JUJdSql0-2V4tHUb6laYm4iAE_dM';
+    const apiKey = process.env.YOUTUBE_CHARTS_API_KEY;
     const chartQueries = [
       'chart_params_type=DAY&perspective=CHART&flags=viral_video_chart&selected_chart=VIDEOS&chart_params_id=daily:0:0',
       'chart_params_type=WEEK&perspective=CHART&flags=viral_video_chart&selected_chart=VIDEOS&chart_params_id=weekly:0:0'
     ];
     let lastError = null;
+    if (!apiKey) throw new Error('YOUTUBE_CHARTS_API_KEY is not configured');
     for (const chartQuery of chartQueries) {
       try {
         const response = await fetch('https://charts.youtube.com/youtubei/v1/browse?alt=json&key=' + apiKey, {

@@ -106,7 +106,7 @@
   }
 
   function renderDaily(){
-    const data=readData(),s=data.prayerDailySelection,note=s&&s.date===today()?notes.find(n=>n.id===s.id):null;
+    const s=dailySelection,note=s&&s.date===today()?notes.find(n=>n.id===s.id):null;
     const title=document.getElementById('dailyPrayerTitle'),body=document.getElementById('dailyPrayerContent');
     if(!title||!body)return;
     title.textContent=note?note.title:tx('emptyTitle');body.textContent=note?note.content:tx('emptyText');

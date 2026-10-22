@@ -443,6 +443,12 @@ html[data-theme="light"] #youtube-trending-video .youtube-top3-head>p:last-of-ty
 .faith-journey-link{display:inline-flex;align-items:center;gap:6px;margin-top:auto;padding-top:18px;color:#e8d08a;font:600 .64rem Pretendard,sans-serif;letter-spacing:.1em}
 .faith-journey-link:after{content:'↗';transition:transform .2s ease}
 .faith-journey-card:hover .faith-journey-link:after{transform:translate(2px,-2px)}
+.faith-journey-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:18px}
+.faith-journey-link-button{margin-top:0;padding:9px 13px;border:1px solid rgba(232,208,138,.34);border-radius:999px;background:rgba(201,168,76,.07);font-size:.68rem;letter-spacing:.03em;text-decoration:none}
+.faith-journey-link-button:after{content:'↗'}
+.faith-journey-link-button:hover{border-color:rgba(232,208,138,.7);background:rgba(201,168,76,.14)}
+html[data-theme="light"] .faith-journey-link-button{border-color:rgba(126,101,55,.3);background:rgba(201,168,76,.08)}
+
 .faith-journey-foot{margin:24px 0 0;color:rgba(201,168,76,.72);font:500 .61rem/1.8 Cinzel,serif;letter-spacing:.12em;text-align:center}
 html[data-theme="light"] #faith-journey{background:linear-gradient(110deg,#f8f5ee 0%,#efebe2 52%,#faf9f6 100%);border-color:rgba(126,101,55,.18);color:#29261f}
 html[data-theme="light"] .faith-journey-title,html[data-theme="light"] .faith-journey-card h3{color:#302a20}
@@ -473,12 +479,15 @@ html[data-theme="light"] .faith-journey-link,html[data-theme="light"] .faith-jou
         <p data-ko="TODAY의 묵상 기록 섹션에서 말씀의 깨달음과 감사, 기도를 기록하고 다시 돌아보세요." data-en="Open the reflection notes in TODAY to record and revisit your insights, gratitude, and prayers.">TODAY의 묵상 기록 섹션에서 말씀의 깨달음과 감사, 기도를 기록하고 다시 돌아보세요.</p>
         <span class="faith-journey-link" data-ko="묵상 기록 열기" data-en="OPEN REFLECTION NOTES">묵상 기록 열기</span>
       </a>
-      <a class="faith-journey-card" href="/worship">
+      <div class="faith-journey-card faith-journey-card-cryout">
         <span class="faith-journey-step">03 · CRY OUT</span>
         <h3 data-ko="기도와 찬양으로" data-en="Pray and Worship">기도와 찬양으로</h3>
-        <p data-ko="오리지널 워십 음악과 함께 마음을 열고 하나님께 나아가세요." data-en="Open your heart and draw near to God through original worship music.">오리지널 워십 음악과 함께 마음을 열고 하나님께 나아가세요.</p>
-        <span class="faith-journey-link" data-ko="워십 듣기" data-en="LISTEN TO WORSHIP">워십 듣기</span>
-      </a>
+        <p data-ko="기도노트에 마음을 담고, 워십 찬양으로 하나님께 나아가세요." data-en="Pour your heart into prayer notes and draw near to God through worship.">기도노트에 마음을 담고, 워십 찬양으로 하나님께 나아가세요.</p>
+        <div class="faith-journey-actions">
+          <a class="faith-journey-link faith-journey-link-button" href="/today#myPrayerNotes" data-ko="기도노트" data-en="PRAYER NOTES">기도노트</a>
+          <a class="faith-journey-link faith-journey-link-button" href="/worship" data-ko="워십 듣기" data-en="WORSHIP">워십 듣기</a>
+        </div>
+      </div>
     </div>
     <p class="faith-journey-foot">READ THE WORD · REFLECT DEEPLY · CRY OUT IN FAITH</p>
   </div>

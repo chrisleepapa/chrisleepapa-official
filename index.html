@@ -102,7 +102,7 @@ html[data-theme="dark"] #chris-news .chris-news-card-footer{border-color:rgba(25
 .home-static-kicker{margin:0 0 12px;color:#c9a84c;font:700 .66rem Cinzel,serif;letter-spacing:.3em;text-transform:uppercase}
 .home-static-content h1{margin:0;color:#f8f3e8;font:600 clamp(2rem,5vw,3.2rem)/1.08 'Cormorant Garamond','Noto Serif KR',serif}
 .home-static-intro{max-width:760px;margin:18px 0 36px;color:rgba(240,236,228,.68);font:.95rem/1.9 Pretendard,sans-serif;word-break:keep-all}
-.home-static-projects{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:44px}
+.home-static-projects{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:44px}.home-static-projects a{position:relative;display:flex;min-height:270px;aspect-ratio:4/5;flex-direction:column;justify-content:flex-end;overflow:hidden;padding:0;border:1px solid rgba(201,168,76,.28);border-radius:18px;background:#101014;isolation:isolate;box-sizing:border-box;transition:transform .25s,border-color .25s}.home-static-projects a img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform .45s}.home-static-projects a:before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,.02) 15%,rgba(0,0,0,.2) 42%,rgba(0,0,0,.9) 100%)}.home-static-projects a:hover{transform:translateY(-4px);border-color:rgba(232,208,138,.72)}.home-static-projects a:hover img{transform:scale(1.045)}.home-static-projects a .home-static-project-copy{padding:22px 18px 20px;color:#fff}.home-static-projects a strong{display:block;color:#fff;font:600 1.15rem/1.35 'Noto Serif KR',serif}.home-static-projects a span{display:block;margin-top:7px;color:rgba(255,255,255,.82);font:.72rem/1.6 Pretendard,sans-serif}.home-static-project-kicker{display:block!important;margin:0 0 7px!important;color:#e8d08a!important;font:700 .61rem Cinzel,serif!important;letter-spacing:.18em!important}
 .home-static-projects a{display:block;padding:22px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.018);transition:.25s}
 .home-static-projects a:hover{border-color:rgba(201,168,76,.32);transform:translateY(-3px)}
 .home-static-projects strong{display:block;color:#f3ead5;font:600 1rem/1.4 'Noto Serif KR',serif}
@@ -114,7 +114,7 @@ html[data-theme="dark"] #chris-news .chris-news-card-footer{border-color:rgba(25
 .home-static-recent h3{margin:0;color:#f0ece4;font:600 1rem/1.5 'Noto Serif KR',serif}
 .home-static-recent p{margin:5px 0 0;color:rgba(240,236,228,.48);font:.78rem/1.65 Pretendard,sans-serif}
 .home-static-journal{display:inline-block;margin-top:24px;color:#e8d08a;font:600 .72rem Pretendard,sans-serif;letter-spacing:.04em}
-@media(max-width:700px){.home-static-content{padding:58px 16px 66px}.home-static-projects{grid-template-columns:1fr;gap:10px}.home-static-projects a{padding:18px}.home-static-intro{font-size:.88rem}.home-static-content h1{font-size:2.15rem}}
+@media(max-width:700px){.home-static-content{padding:58px 16px 66px}.home-static-projects{grid-template-columns:1fr;gap:12px}.home-static-projects a{min-height:230px;aspect-ratio:16/10;padding:0}.home-static-projects a .home-static-project-copy{padding:20px}.home-static-intro{font-size:.88rem}.home-static-content h1{font-size:2.15rem}}
 
 html[data-theme="light"] .home-static-brand{color:#4a3a18;text-shadow:none}html[data-theme="light"] .home-static-brand small{color:rgba(139,106,25,.72)}html[data-theme="light"] .home-static-brand:hover{color:#7d5d12}
 html[data-theme="light"] #home-actions{background:linear-gradient(180deg,#f4f1ea,#faf9f6);border-top-color:rgba(93,72,24,.14);border-bottom-color:rgba(93,72,24,.12)}
@@ -444,9 +444,9 @@ html[data-theme="light"] .faith-journey-card:hover{border-color:rgba(139,106,25,
     <h1 id="home-static-title" data-i18n="home_static_title">창작 기록과 제작 과정</h1>
     <p class="home-static-intro" data-i18n="home_static_intro">Chris LEE.PAPA의 창작 아카이브는 완성된 작품만 전시하는 포트폴리오가 아니라, 아이디어가 실제 결과물로 이어지는 과정을 기록하는 공간입니다. 두 딸과 나눈 일상과 상상에서 출발한 SISTER SQUAD는 캐릭터와 이야기, 책과 영상으로 확장되었고, 오리지널 음악과 워십에는 곡을 만들게 된 계기와 전달하고 싶은 마음을 담았습니다. AI를 활용한 그림·영상 제작과 독립 출판 과정에서는 도구를 어떻게 활용했는지, 어떤 부분을 수정하고 선택했는지, 시행착오를 통해 무엇을 배웠는지를 함께 정리합니다. 각 프로젝트의 결과뿐 아니라 그 배경과 제작 과정을 따라가며 창작이 발전하는 모습을 살펴볼 수 있습니다.</p>
     <div class="home-static-projects">
-      <a href="/sistersquad-hub"><strong data-i18n="home_archive_squad">SISTER SQUAD</strong><span>Characters · Stories · Books · Films</span></a>
-      <a href="/music"><strong data-i18n="home_archive_music">Music Archive</strong><span>Original music · Albums · Production notes</span></a>
-      <a href="/worship"><strong data-i18n="home_archive_worship">Worship Archive</strong><span>Worship music · Lyrics · Reflections</span></a>
+      <a href="/sistersquad-hub" aria-label="SISTER SQUAD — 대표 작품 보기"><img src="/images/sistersquad2_poster.jpg" alt="SISTER SQUAD 2 대표 작품 표지" loading="lazy"><span class="home-static-project-copy"><span class="home-static-project-kicker">STORY · ORIGINAL IP</span><strong data-i18n="home_archive_squad">SISTER SQUAD</strong><span>Characters · Stories · Books · Films</span></span></a>
+      <a href="/music" aria-label="Music Archive — 대표 음악 보기"><img src="/images/music.jpg" alt="Chris LEE.PAPA 음악 아카이브 대표 이미지" loading="lazy"><span class="home-static-project-copy"><span class="home-static-project-kicker">MUSIC · ORIGINALS</span><strong data-i18n="home_archive_music">Music Archive</strong><span>Original music · Albums · Production notes</span></span></a>
+      <a href="/worship" aria-label="Worship Archive — 대표 워십 앨범 보기"><img src="/images/My%20hymn1.jpg" alt="나의 찬양 Vol.1 앨범 커버" loading="lazy"><span class="home-static-project-copy"><span class="home-static-project-kicker">FAITH · WORSHIP</span><strong data-i18n="home_archive_worship">Worship Archive</strong><span>Worship music · Lyrics · Reflections</span></span></a>
     </div>
   </div>
 </section>

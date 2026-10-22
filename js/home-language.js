@@ -1,19 +1,24 @@
 /* Home language controller
- * Home action cards keep both translations in the markup and follow
- * the document language directly, avoiding timing conflicts with global i18n.
+ * Homepage action cards and Faith Journey follow the document language directly,
+ * avoiding timing conflicts with global i18n.
  */
 'use strict';
 (() => {
-  const root = document.getElementById('home-actions');
-  if (!root) return;
+  const roots = ['home-actions', 'faith-journey']
+    .map((id) => document.getElementById(id))
+    .filter(Boolean);
+  if (!roots.length) return;
 
   const apply = () => {
     const lang = document.documentElement.lang === 'en' ? 'en' : 'ko';
-    root.querySelectorAll('[data-ko][data-en]').forEach((el) => {
-      const value = el.getAttribute('data-' + lang);
-      if (value !== null) el.textContent = value;
+    roots.forEach((root) => {
+      root.querySelectorAll('[data-ko][data-en]').forEach((el) => {
+        const value = el.getAttribute('data-' + lang);
+        if (value !== null) el.textContent = value;
+      });
     });
-    root.style.visibility = 'visible';
+    const actions = document.getElementById('home-actions');
+    if (actions) actions.style.visibility = 'visible';
   };
 
   apply();

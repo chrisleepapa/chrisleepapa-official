@@ -66,7 +66,8 @@
     '역대급 출연진 귀칼 실사 촬영 현장 #귀멸의칼날':'Demon Slayer Live-Action Set — Behind the Scenes','사랑한다고 MV':'I Love You — Music Video',
     '체인소맨 Rev It Up':'Chainsaw Man — Rev It Up','주술회전 영역전개':'Jujutsu Kaisen — Domain Expansion','귀멸의칼날 벽력일섬':'Demon Slayer — Thunderclap and Flash',
     '귀멸의칼날 난리났어':'Demon Slayer — It’s Wild','로봇전쟁 Final Round':'Robot War — Final Round','귀멸의칼날 촬영준비':'Demon Slayer — Preparing to Film',
-    '귀멸의칼날 촬영 비하인드':'Demon Slayer — Behind the Scenes','귀멸의칼날 Flash bang':'Demon Slayer — Flash Bang'
+    '귀멸의칼날 촬영 비하인드':'Demon Slayer — Behind the Scenes','귀멸의칼날 Flash bang':'Demon Slayer — Flash Bang',
+    '뚜뚜뿌뿌삐삐 · Video 01':'TuTu PuPu PiPi · Video 01','뚜뚜뿌뿌삐삐 · Video 02':'TuTu PuPu PiPi · Video 02','뚜뚜뿌뿌삐삐 · Video 03':'TuTu PuPu PiPi · Video 03','뚜뚜뿌뿌삐삐 · Video 04':'TuTu PuPu PiPi · Video 04','뚜뚜뿌뿌삐삐 · Video 05':'TuTu PuPu PiPi · Video 05'
   };
   const EN_SUB_MAP={'저주받은 요정마을 · Book 2':'Cursed Fairy Village · Book 2','Vertical Archive · YouTube Shorts':'Vertical Archive · YouTube Shorts'};
   function localizePick(pick,lang){

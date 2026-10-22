@@ -107,6 +107,17 @@ html[data-theme="dark"] #chris-news .chris-news-card-footer{border-color:rgba(25
 .home-static-projects a:hover{border-color:rgba(201,168,76,.32);transform:translateY(-3px)}
 .home-static-projects strong{display:block;color:#f3ead5;font:600 1rem/1.4 'Noto Serif KR',serif}
 .home-static-projects span{display:block;margin-top:8px;color:rgba(240,236,228,.45);font:.7rem/1.6 Pretendard,sans-serif}
+/* CREATIVE ARCHIVE IMAGE HERO CARDS — final overrides */
+.home-static-content .home-static-projects a{position:relative;display:flex;min-height:270px;aspect-ratio:4/5;flex-direction:column;justify-content:flex-end;overflow:hidden;padding:0;border:1px solid rgba(201,168,76,.28);border-radius:18px;background:#101014;isolation:isolate;box-sizing:border-box}
+.home-static-content .home-static-projects a img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;transition:transform .45s}
+.home-static-content .home-static-projects a:before{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(0,0,0,.02) 15%,rgba(0,0,0,.2) 42%,rgba(0,0,0,.9) 100%);pointer-events:none}
+.home-static-content .home-static-projects a .home-static-project-copy{position:relative;z-index:2;display:block;padding:22px 18px 20px;color:#fff}
+.home-static-content .home-static-projects a .home-static-project-copy strong{display:block;color:#fff;font:600 1.15rem/1.35 'Noto Serif KR',serif}
+.home-static-content .home-static-projects a .home-static-project-copy span{display:block;margin-top:7px;color:rgba(255,255,255,.82);font:.72rem/1.6 Pretendard,sans-serif}
+.home-static-content .home-static-projects a .home-static-project-copy .home-static-project-kicker{display:block;margin:0 0 7px;color:#e8d08a;font:700 .61rem Cinzel,serif;letter-spacing:.18em}
+.home-static-content .home-static-projects a:hover{transform:translateY(-4px);border-color:rgba(232,208,138,.72)}
+.home-static-content .home-static-projects a:hover img{transform:scale(1.045)}
+@media(max-width:700px){.home-static-content .home-static-projects{grid-template-columns:1fr;gap:14px}.home-static-content .home-static-projects a{min-height:0;aspect-ratio:16/10}}
 .home-static-recent{border-top:1px solid rgba(255,255,255,.08);padding-top:30px}
 .home-static-recent h2{margin:0 0 18px;color:#e8d08a;font:600 1.35rem/1.3 'Noto Serif KR',serif}
 .home-static-recent article{border-top:1px solid rgba(255,255,255,.06)}

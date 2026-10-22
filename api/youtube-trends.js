@@ -162,6 +162,8 @@ export default async function handler(req, res) {
       source: 'YouTube official global daily Top Music Videos chart — top 5 ranked videos',
       chartUrl: 'https://charts.youtube.com/charts/TopVideos/global/daily',
       chartSize: videos.length,
+      // Compatibility alias for the previous homepage while the UI deployment rolls out.
+      musicVideo: topVideos[0],
       topVideos,
       trendingVideo
     });

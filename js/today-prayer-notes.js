@@ -13,10 +13,15 @@
   const user=()=>window.CLPAuth?.getUser?.();
   const today=()=>{const p=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());const v=t=>(p.find(x=>x.type===t)||{}).value||'';return v('year')+'-'+v('month')+'-'+v('day')};
   const esc=v=>String(v==null?'':v).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
-  const keyFor=date=>PREFIX+String(user()?.initials||'').toUpperCase()+'-'+(date||today());
-  const read=key=>{try{return JSON.parse(localStorage.getItem(key)||'null')}catch(_){return null}};
-  const readData=()=>read(keyFor())||{};
-  const saveData=patch=>{const key=keyFor(),old=read(key)||{};if(Object.prototype.hasOwnProperty.call(patch,'prayerNotes'))patch=Object.assign({},patch,{prayerNotesUpdatedAt:new Date().toISOString()});try{localStorage.setItem(key,JSON.stringify(Object.assign({},old,patch)));return true}catch(_){setStatus('저장 공간이 부족해 기록하지 못했습니다.');return false}};
+  const SUPA_URL='https://cvfmkcxmxkmemmshfttn.supabase.co';
+  const SUPA_KEY='sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
+  const rpcNames={load:'clp_prayer_notes_load',save:'clp_prayer_notes_save',remove:'clp_prayer_notes_delete',daily:'clp_prayer_daily_set'};
+  const rpc=async(name,body)=>{const u=user();if(!u?.initials||!u?.pinHash)throw new Error('로그인 정보를 확인할 수 없습니다. 로그아웃 후 다시 로그인해 주세요.');const response=await fetch(SUPA_URL+'/rest/v1/rpc/'+name,{method:'POST',headers:{apikey:SUPA_KEY,Authorization:'Bearer '+SUPA_KEY,'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(Object.assign({p_initials:u.initials,p_pin_hash:u.pinHash},body))});if(!response.ok)throw new Error('서버 저장에 실패했습니다 ('+response.status+').');const result=await response.json();if(!result||result.ok!==true)throw new Error(result?.error||'서버에서 요청을 처리하지 못했습니다.');return result};
+  const localKeyPrefix=()=>PREFIX+String(user()?.initials||'').toUpperCase()+'-';
+  const readLocal=key=>{try{return JSON.parse(localStorage.getItem(key)||'null')}catch(_){return null}};
+  const localLegacyNotes=()=>{const found=[];try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(!k||!k.startsWith(localKeyPrefix()))continue;const data=readLocal(k);if(!Array.isArray(data?.prayerNotes))continue;for(const n of data.prayerNotes){if(n&&n.title&&n.content)found.push({...n,id:null,createdAt:/^\d{4}-\d{2}-\d{2}$/.test(n.createdAt||'')?n.createdAt:k.slice(localKeyPrefix().length)})}}}catch(_){}const seen=new Set();return found.filter(n=>{const key=(n.title+'|'+n.content).trim();if(seen.has(key))return false;seen.add(key);return true})};
+  let dailySelection=null;
+
   let notes=[],editingId=null,initialized=false;
   function style(){
     if(document.getElementById('prayer-notes-style'))return;
@@ -77,23 +82,29 @@
     document.getElementById('prayerTodayRefresh').addEventListener('click',selectAnother);
   }
   function setStatus(v){const el=document.getElementById('pn-statusline');if(el)el.textContent=v}
-  function migrateLocal(){
-    const data=readData();if(Array.isArray(data.prayerNotes))return data;
-    const prefix=PREFIX+String(user()?.initials||'').toUpperCase()+'-',found=[];
-    try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(!k||!k.startsWith(prefix))continue;const date=k.slice(prefix.length);if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||date>=today())continue;const old=read(k);if(old&&Array.isArray(old.prayerNotes)&&old.prayerNotes.length)found.push({date,data:old})}}catch(_){}
-    found.sort((a,b)=>b.date.localeCompare(a.date));
-    if(found.length){saveData({prayerNotes:found[0].data.prayerNotes,prayerDailySelection:found[0].data.prayerDailySelection||null});return readData()}
-    return data;
+  async function loadRemoteNotes(){
+    const result=await rpc(rpcNames.load,{});
+    notes=Array.isArray(result.notes)?result.notes:[];
+    dailySelection=result.dailySelection||null;
+    // Import browser-only notes once, only when the server account has no prayer notes.
+    if(!notes.length){
+      const legacy=localLegacyNotes();
+      for(const n of legacy){
+        const saved=await rpc(rpcNames.save,{p_id:null,p_title:String(n.title).slice(0,100),p_content:String(n.content).slice(0,3000),p_category:categories.some(c=>c[0]===n.category)?n.category:'personal',p_status:states.some(s=>s[0]===n.status)?n.status:'praying',p_created_at:/^\d{4}-\d{2}-\d{2}$/.test(n.createdAt||'')?n.createdAt:null});
+        if(saved.note)notes.push(saved.note);
+      }
+    }
+    if(!dailySelection||dailySelection.date!==today()||!notes.some(n=>n.id===dailySelection.id))await chooseDaily(false);
   }
-  function chooseDaily(force){
-    const data=readData(),saved=data.prayerDailySelection,current=saved&&saved.date===today()?saved.id:null;
+  async function chooseDaily(force){
+    const current=dailySelection&&dailySelection.date===today()?dailySelection.id:null;
     if(!force&&current&&notes.some(n=>n.id===current))return;
-    if(!notes.length){saveData({prayerDailySelection:{date:today(),id:null}});return}
-    let pool=notes.filter(n=>n.status!=='answered');if(!pool.length)pool=notes.slice();
-    const prior=saved&&saved.id;let choices=pool.filter(n=>n.id!==prior);if(!choices.length)choices=pool;
-    const picked=choices[Math.floor(Math.random()*choices.length)];
-    saveData({prayerDailySelection:{date:today(),id:picked.id}});
+    let picked=null;
+    if(notes.length){let pool=notes.filter(n=>n.status!=='answered');if(!pool.length)pool=notes.slice();let choices=pool.filter(n=>n.id!==current);if(!choices.length)choices=pool;picked=choices[Math.floor(Math.random()*choices.length)]}
+    const result=await rpc(rpcNames.daily,{p_note_id:picked?.id||null});
+    dailySelection={date:result.date||today(),id:result.id||null};
   }
+
   function renderDaily(){
     const data=readData(),s=data.prayerDailySelection,note=s&&s.date===today()?notes.find(n=>n.id===s.id):null;
     const title=document.getElementById('dailyPrayerTitle'),body=document.getElementById('dailyPrayerContent');
@@ -104,7 +115,8 @@
     document.getElementById('dailyPrayerStatus').textContent=note?stateLabel(note.status):'';
     document.getElementById('prayerTodayRefresh').hidden=notes.length<2;
   }
-  function selectAnother(){chooseDaily(true);renderDaily();setStatus(tx('shown'))}
+  async function selectAnother(){try{await chooseDaily(true);renderDaily();setStatus(tx('shown'))}catch(error){setStatus((lang()==='en'?'Could not update today’s prayer: ':'오늘의 기도를 변경하지 못했습니다: ')+(error?.message||''))}}
+
   function toggleNotes(){
     const section=document.getElementById('myPrayerNotes');section.hidden=!section.hidden;
     document.getElementById('prayerNotesToggle').textContent=section.hidden?tx('manage'):tx('manageOpen');
@@ -121,21 +133,29 @@
     setStatus('');form.scrollIntoView({behavior:'smooth',block:'nearest'});document.getElementById('pn-title').focus();
   }
   function closeEditor(){editingId=null;document.getElementById('pn-form').hidden=true;document.getElementById('pn-form').reset();setStatus('')}
-  function submitEditor(e){
+  async function submitEditor(e){
     e.preventDefault();const title=document.getElementById('pn-title').value.trim(),content=document.getElementById('pn-content').value.trim();
     if(!title||!content){setStatus(tx('required'));return}
-    const now=new Date().toISOString();
-    if(editingId){notes=notes.map(n=>n.id===editingId?Object.assign({},n,{title,content,category:document.getElementById('pn-category').value,status:document.getElementById('pn-state').value,updatedAt:now}):n);setStatus(tx('updated'))}
-    else{notes.unshift({id:'pn-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8),title,content,category:document.getElementById('pn-category').value,status:document.getElementById('pn-state').value,createdAt:today(),updatedAt:now});setStatus(tx('saved'))}
-    if(!saveData({prayerNotes:notes}))return;
-    if(!notes.some(n=>n.id===(readData().prayerDailySelection||{}).id))chooseDaily(false);
-    closeEditor();renderDaily();renderNotes();
+    const button=document.getElementById('pn-save');button.disabled=true;setStatus(lang()==='en'?'Saving to your account…':'계정에 저장하는 중…');
+    try{
+      const result=await rpc(rpcNames.save,{p_id:editingId||null,p_title:title,p_content:content,p_category:document.getElementById('pn-category').value,p_status:document.getElementById('pn-state').value,p_created_at:editingId?null:today()});
+      const note=result.note;if(!note)throw new Error('저장 결과를 확인하지 못했습니다.');
+      if(editingId)notes=notes.map(n=>n.id===editingId?note:n);else notes.unshift(note);
+      setStatus(editingId?tx('updated'):tx('saved'));
+      if(!notes.some(n=>n.id===dailySelection?.id))await chooseDaily(false);
+      closeEditor();renderDaily();renderNotes();
+    }catch(error){console.error('Prayer note save failed:',error);setStatus((lang()==='en'?'Could not save to the server: ':'서버 저장 실패: ')+(error?.message||'연결을 확인해 주세요.'))}
+    finally{button.disabled=false}
   }
-  function deleteNote(id){
+  async function deleteNote(id){
     if(!window.confirm(tx('confirm')))return;
-    notes=notes.filter(n=>n.id!==id);let selection=readData().prayerDailySelection||null;if(selection&&selection.id===id)selection=null;
-    saveData({prayerNotes:notes,prayerDailySelection:selection});chooseDaily(false);renderDaily();renderNotes();setStatus(tx('deleted'));
+    try{
+      await rpc(rpcNames.remove,{p_id:id});
+      notes=notes.filter(n=>n.id!==id);if(dailySelection?.id===id)dailySelection=null;
+      await chooseDaily(false);renderDaily();renderNotes();setStatus(tx('deleted'));
+    }catch(error){console.error('Prayer note delete failed:',error);setStatus((lang()==='en'?'Could not delete: ':'삭제 실패: ')+(error?.message||'연결을 확인해 주세요.'))}
   }
+
   function renderNotes(){
     const grid=document.getElementById('pn-grid');if(!grid)return;
     const query=document.getElementById('pn-search').value.trim().toLocaleLowerCase(lang()==='en'?'en':'ko'),cat=document.getElementById('pn-cat-filter').value,state=document.getElementById('pn-state-filter').value;
@@ -182,8 +202,9 @@
   }
   function boot(){
     const main=document.getElementById('todayApp');if(!main||main.hidden||!user()?.initials||initialized)return;
-    initialized=true;style();build();const data=migrateLocal();notes=Array.isArray(data.prayerNotes)?data.prayerNotes.filter(n=>n&&n.id&&n.title&&n.content):[];
-    chooseDaily(false);renderDaily();renderNotes();applyLanguage();
+    initialized=true;style();build();renderDaily();renderNotes();setStatus(lang()==='en'?'Loading prayers from your account…':'계정에서 기도를 불러오는 중…');
+    loadRemoteNotes().then(()=>{renderDaily();renderNotes();applyLanguage();setStatus('')}).catch(error=>{console.error('Prayer notes load failed:',error);setStatus((lang()==='en'?'Could not load prayers from the server: ':'서버에서 기도를 불러오지 못했습니다: ')+(error?.message||'연결을 확인해 주세요.'));const grid=document.getElementById('pn-grid');if(grid)grid.innerHTML='<div class="pn-empty" style="grid-column:1/-1">'+esc(lang()==='en'?'Your prayers could not be loaded. Please check your connection and retry.':'기도를 불러오지 못했습니다. 연결을 확인한 뒤 다시 로그인해 주세요.')+'</div>'});
+
     // Support homepage deep links after the account-gated TODAY app becomes visible.
     if(location.hash==='#myPrayerNotes'){
       const section=document.getElementById('myPrayerNotes');

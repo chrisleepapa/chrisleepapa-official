@@ -354,8 +354,8 @@ html[data-theme="dark"] #chris-news .chris-news-card--society .chris-news-point{
 .home-ss2-story-cta{display:inline-flex;align-items:center;justify-content:center;gap:9px;margin-top:22px;padding:12px 18px;border:1px solid rgba(232,208,138,.6);border-radius:999px;background:rgba(201,168,76,.12);color:#f4e5bd;text-decoration:none;font:600 .78rem Pretendard,sans-serif;transition:transform .2s,border-color .2s}
 .home-ss2-story-cta:hover{transform:translateY(-2px);border-color:#f4e5bd}
 .home-ss2-story-frame{width:min(100%,230px);justify-self:center;aspect-ratio:9/16;position:relative;overflow:hidden;border:1px solid rgba(111,215,255,.38);border-radius:18px;background:radial-gradient(ellipse at 50% 18%,rgba(111,215,255,.2),transparent 45%),linear-gradient(160deg,#19243a,#07080d 70%);box-shadow:0 18px 48px rgba(0,0,0,.34)}
-.home-ss2-story-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.48;filter:saturate(.8)}
-.home-ss2-story-frame:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,7,14,.1),rgba(4,7,14,.82))}
+.home-ss2-story-live-video{display:block}
+.home-ss2-story-live-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
 .home-ss2-story-frame-copy{position:absolute;z-index:1;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px;text-align:center}
 .home-ss2-story-play{display:grid;place-items:center;width:52px;height:52px;margin-bottom:18px;border:1px solid rgba(232,208,138,.8);border-radius:50%;color:#f4e5bd;font-size:1.1rem}
 .home-ss2-story-frame-copy strong{color:#fff;font:600 .9rem/1.5 Cinzel,serif;letter-spacing:.1em}.home-ss2-story-frame-copy span{margin-top:9px;color:#d9e4f2;font-size:.68rem;letter-spacing:.12em}
@@ -390,10 +390,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p class="home-ss2-story-promo" data-ko="마을을 구할 수 있을까? 이번엔 자매와 아빠의 힘을 합쳐야 합니다. SISTER SQUAD 2 — 모험은 계속됩니다." data-en="Can they save the village? This time, the sisters and their dad must face the danger together. SISTER SQUAD 2 — The Adventure Continues.">마을을 구할 수 있을까? 이번엔 자매와 아빠의 힘을 합쳐야 합니다. SISTER SQUAD 2 — 모험은 계속됩니다.</p>
       <a class="home-ss2-story-cta" href="/sistersquad2" data-ko="스토리 영상 섹션 보기 ↗" data-en="Explore the Story ↗">스토리 영상 섹션 보기 ↗</a>
     </div>
-    <a class="home-ss2-story-frame" href="/sistersquad2" aria-label="SISTER SQUAD 2 스토리 영상 섹션 보기">
-      <img src="/images/sistersquad2_poster.jpg" alt="SISTER SQUAD 2 저주받은 요정마을 포스터" loading="lazy">
-      <span class="home-ss2-story-frame-copy"><span class="home-ss2-story-play" aria-hidden="true">▶</span><strong data-ko="STORY VIDEO" data-en="STORY VIDEO">STORY VIDEO</strong><span data-ko="COMING SOON · 9:16" data-en="COMING SOON · 9:16">COMING SOON · 9:16</span></span>
-    </a>
+    <div class="home-ss2-story-frame home-ss2-story-live-video">
+      <iframe
+        src="https://www.youtube-nocookie.com/embed/USfDxu7IuxU?playsinline=1&rel=0"
+        title="Sister Squad 2 — First Story Video"
+        loading="lazy"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+      ></iframe>
+    </div>
   </div>
 </section>
 

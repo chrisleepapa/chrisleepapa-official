@@ -336,7 +336,7 @@
             <img src="images/sistersquad2_poster.jpg" alt="Sister Squad 2: 저주받은 요정마을 — 얼음 그리핀과 불꽃 그리핀 사이에 선 율이와 정이 표지">
         </div>
 
-        <!-- SISTER SQUAD 2 STORY VIDEO: add the uploaded MP4 URL to data-video-src when ready. -->
+        <!-- SISTER SQUAD 2 STORY VIDEO: first official short -->
         <section class="ss2-story-section" id="ss2-story-video" aria-labelledby="ss2-story-video-title">
             <div class="ss2-story-copy">
                 <span class="ss2-story-kicker" data-i18n="story_video_kicker">THE STORY, IN MOTION</span>
@@ -346,30 +346,18 @@
                 <span class="ss2-story-format" data-i18n="story_video_format">▶ VERTICAL STORY · 9:16</span>
             </div>
             <div class="ss2-story-video-shell">
-                <video class="ss2-story-video-player" controls playsinline preload="metadata" poster="images/sistersquad2_poster.jpg" data-video-src="" aria-label="Sister Squad 2 story video"></video>
-                <div class="ss2-story-placeholder">
-                    <div class="ss2-story-playmark" aria-hidden="true">▶</div>
-                    <strong data-i18n="story_video_coming">STORY VIDEO<br>COMING SOON</strong>
-                    <span data-i18n="story_video_placeholder">영상이 준비되면 이곳에서 바로 감상할 수 있어요.</span>
-                </div>
+                <iframe
+                    class="ss2-story-video-player"
+                    src="https://www.youtube-nocookie.com/embed/USfDxu7IuxU?playsinline=1&rel=0"
+                    title="Sister Squad 2 — First Story Video"
+                    loading="lazy"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen
+                    style="display:block;width:100%;height:100%;position:absolute;inset:0;border:0;background:#000;"
+                ></iframe>
             </div>
         </section>
-        <script>
-        (() => {
-            const shell = document.querySelector('#ss2-story-video');
-            if (!shell) return;
-            const video = shell.querySelector('.ss2-story-video-player');
-            const placeholder = shell.querySelector('.ss2-story-placeholder');
-            const source = (video?.dataset.videoSrc || '').trim();
-            if (source) {
-                video.src = source;
-                placeholder.hidden = true;
-                video.hidden = false;
-            } else {
-                video.hidden = true;
-            }
-        })();
-        </script>
 
         <h2 class="section-title" data-i18n="char_sec_title">Family</h2>
         <div class="character-grid">

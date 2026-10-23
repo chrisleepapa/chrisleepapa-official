@@ -343,6 +343,27 @@ html[data-theme="dark"] #chris-news .chris-news-card--society .chris-news-point{
 .chris-news-share{min-height:42px;padding:10px 14px;white-space:nowrap}
 .chris-news-share:disabled{opacity:.55;cursor:wait}
 @media(max-width:600px){.chris-news-share-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.chris-news-share{width:100%;padding:11px 8px;font-size:.68rem;letter-spacing:0}.chris-news-share-icon{font-size:1rem}}
+
+/* SISTER SQUAD 2 story-video feature on Home */
+#home-ss2-story{padding:64px 20px 70px;background:linear-gradient(135deg,#111a2b 0%,#0b0c12 65%,#17120c 100%);border-top:1px solid rgba(111,215,255,.18);border-bottom:1px solid rgba(201,168,76,.18);color:#f0ece4}
+.home-ss2-story-inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(190px,250px);align-items:center;gap:clamp(28px,5vw,64px);max-width:1000px;margin:0 auto}
+.home-ss2-story-copy{min-width:0}.home-ss2-story-kicker{margin:0 0 12px;color:#8bdcff;font:600 .68rem Cinzel,serif;letter-spacing:.2em}
+.home-ss2-story-copy h2{margin:0;color:#f4e5bd;font:600 clamp(1.65rem,4vw,2.5rem)/1.3 'Noto Serif KR',serif;letter-spacing:-.04em;word-break:keep-all}
+.home-ss2-story-copy p{margin:16px 0 0;color:rgba(240,236,228,.76);font:.93rem/1.9 Pretendard,sans-serif;word-break:keep-all}
+.home-ss2-story-promo{padding-left:14px;border-left:2px solid #c9a84c;color:#fff!important;font-weight:600!important}
+.home-ss2-story-cta{display:inline-flex;align-items:center;justify-content:center;gap:9px;margin-top:22px;padding:12px 18px;border:1px solid rgba(232,208,138,.6);border-radius:999px;background:rgba(201,168,76,.12);color:#f4e5bd;text-decoration:none;font:600 .78rem Pretendard,sans-serif;transition:transform .2s,border-color .2s}
+.home-ss2-story-cta:hover{transform:translateY(-2px);border-color:#f4e5bd}
+.home-ss2-story-frame{width:min(100%,230px);justify-self:center;aspect-ratio:9/16;position:relative;overflow:hidden;border:1px solid rgba(111,215,255,.38);border-radius:18px;background:radial-gradient(ellipse at 50% 18%,rgba(111,215,255,.2),transparent 45%),linear-gradient(160deg,#19243a,#07080d 70%);box-shadow:0 18px 48px rgba(0,0,0,.34)}
+.home-ss2-story-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.48;filter:saturate(.8)}
+.home-ss2-story-frame:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,7,14,.1),rgba(4,7,14,.82))}
+.home-ss2-story-frame-copy{position:absolute;z-index:1;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px;text-align:center}
+.home-ss2-story-play{display:grid;place-items:center;width:52px;height:52px;margin-bottom:18px;border:1px solid rgba(232,208,138,.8);border-radius:50%;color:#f4e5bd;font-size:1.1rem}
+.home-ss2-story-frame-copy strong{color:#fff;font:600 .9rem/1.5 Cinzel,serif;letter-spacing:.1em}.home-ss2-story-frame-copy span{margin-top:9px;color:#d9e4f2;font-size:.68rem;letter-spacing:.12em}
+html[data-theme="light"] #home-ss2-story{background:linear-gradient(135deg,#f7f5ef,#eaf1f5 70%,#f7f0df);color:#29261f;border-color:rgba(126,101,55,.18)}
+html[data-theme="light"] .home-ss2-story-copy h2{color:#302a20}html[data-theme="light"] .home-ss2-story-copy p{color:#514b41}html[data-theme="light"] .home-ss2-story-promo{color:#302718!important}
+html[data-theme="light"] .home-ss2-story-cta{color:#6f551b;border-color:rgba(126,101,55,.4);background:rgba(201,168,76,.1)}
+@media(max-width:700px){#home-ss2-story{padding:50px 17px 56px}.home-ss2-story-inner{grid-template-columns:minmax(0,1fr) minmax(112px,38%);gap:18px}.home-ss2-story-copy h2{font-size:1.45rem}.home-ss2-story-copy p{font-size:.82rem;line-height:1.75}.home-ss2-story-kicker{font-size:.57rem;letter-spacing:.12em}.home-ss2-story-frame{width:100%;border-radius:13px}.home-ss2-story-play{width:40px;height:40px;margin-bottom:12px}.home-ss2-story-frame-copy strong{font-size:.68rem}.home-ss2-story-frame-copy span{font-size:.56rem}.home-ss2-story-cta{padding:10px 12px;font-size:.69rem}}
+@media(max-width:420px){.home-ss2-story-inner{grid-template-columns:1fr}.home-ss2-story-frame{width:min(100%,190px);grid-row:1}.home-ss2-story-copy{text-align:center}.home-ss2-story-promo{text-align:left}}
 </style></head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -358,6 +379,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <p>음악, 워십, 성경, 문학, 영상, SISTER SQUAD와 다양한 창작 프로젝트를 기록하는 공식 창작 아카이브입니다.</p>
     <p>일상의 경험과 두 딸과 함께 만든 이야기에서 출발한 창작 활동을 음악, 영상, 출판, 캐릭터와 게임으로 확장하고 있습니다.</p>
   </noscript>
+</section>
+
+<section id="home-ss2-story" aria-labelledby="home-ss2-story-title">
+  <div class="home-ss2-story-inner">
+    <div class="home-ss2-story-copy">
+      <p class="home-ss2-story-kicker" data-ko="SISTER SQUAD 2 · STORY VIDEO" data-en="SISTER SQUAD 2 · STORY VIDEO">SISTER SQUAD 2 · STORY VIDEO</p>
+      <h2 id="home-ss2-story-title" data-ko="두 번째 모험이 영상으로 펼쳐집니다" data-en="The Second Adventure Comes to Life">두 번째 모험이 영상으로 펼쳐집니다</h2>
+      <p data-ko="잿빛으로 변한 요정마을 루미나. 율이와 정이, 그리고 아빠의 새로운 여정을 세로형 스토리 영상으로 만나보세요. 자매의 티격태격 케미와 마법 세계를 뒤흔드는 위기, 가족이 함께 맞서는 순간이 기다립니다." data-en="The fairy village of Lumina has fallen into ash. Follow Yul, Jung, and their dad in a vertical story experience filled with sisterly sparks, danger in a magical world, and a family facing it all together.">잿빛으로 변한 요정마을 루미나. 율이와 정이, 그리고 아빠의 새로운 여정을 세로형 스토리 영상으로 만나보세요. 자매의 티격태격 케미와 마법 세계를 뒤흔드는 위기, 가족이 함께 맞서는 순간이 기다립니다.</p>
+      <p class="home-ss2-story-promo" data-ko="마을을 구할 수 있을까? 이번엔 자매와 아빠의 힘을 합쳐야 합니다. SISTER SQUAD 2 — 모험은 계속됩니다." data-en="Can they save the village? This time, the sisters and their dad must face the danger together. SISTER SQUAD 2 — The Adventure Continues.">마을을 구할 수 있을까? 이번엔 자매와 아빠의 힘을 합쳐야 합니다. SISTER SQUAD 2 — 모험은 계속됩니다.</p>
+      <a class="home-ss2-story-cta" href="/sistersquad2" data-ko="스토리 영상 섹션 보기 ↗" data-en="Explore the Story ↗">스토리 영상 섹션 보기 ↗</a>
+    </div>
+    <a class="home-ss2-story-frame" href="/sistersquad2" aria-label="SISTER SQUAD 2 스토리 영상 섹션 보기">
+      <img src="/images/sistersquad2_poster.jpg" alt="SISTER SQUAD 2 저주받은 요정마을 포스터" loading="lazy">
+      <span class="home-ss2-story-frame-copy"><span class="home-ss2-story-play" aria-hidden="true">▶</span><strong data-ko="STORY VIDEO" data-en="STORY VIDEO">STORY VIDEO</strong><span data-ko="COMING SOON · 9:16" data-en="COMING SOON · 9:16">COMING SOON · 9:16</span></span>
+    </a>
+  </div>
 </section>
 
 <section id="youtube-daily-top3" aria-labelledby="youtube-daily-top3-title">

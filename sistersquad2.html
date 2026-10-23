@@ -128,6 +128,39 @@
         .ost-platforms { display: flex; justify-content: center; gap: 14px; margin-top: 18px; flex-wrap: wrap; }
         .ost-pill { font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 1px; padding: 7px 18px; border-radius: 20px; border: 1px solid var(--spotify); color: var(--spotify); text-transform: uppercase; }
 
+
+        /* ── SISTER SQUAD 2 vertical story video ── */
+        .ss2-story-section {
+            display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, 300px);
+            align-items: center; gap: clamp(28px, 5vw, 64px);
+            max-width: 960px; margin: 0 auto 84px; padding: clamp(24px, 4vw, 44px);
+            border: 1px solid rgba(111,215,255,.24); border-radius: 24px;
+            background: linear-gradient(135deg, rgba(16,24,42,.92), rgba(14,12,20,.94));
+            box-shadow: 0 24px 60px rgba(0,0,0,.2);
+        }
+        .ss2-story-kicker { display:block; margin-bottom:12px; color:var(--ice); font-family:'Cinzel',serif; font-size:.72rem; letter-spacing:.2em; }
+        .ss2-story-copy h2 { margin:0 0 16px; color:var(--gold-light); font-family:'Cinzel',serif; font-size:clamp(1.5rem,3.8vw,2.35rem); line-height:1.25; letter-spacing:.04em; }
+        .ss2-story-copy p { margin:0 0 16px; color:#d5d5e0; font-size:.98rem; line-height:1.9; word-break:keep-all; }
+        .ss2-story-promo { padding-left:14px; border-left:2px solid var(--gold); color:#fff !important; font-weight:600; }
+        .ss2-story-video-shell { width:100%; max-width:300px; justify-self:center; aspect-ratio:9/16; position:relative; overflow:hidden; border-radius:18px; border:1px solid rgba(111,215,255,.42); background:radial-gradient(ellipse at 50% 20%,rgba(111,215,255,.15),transparent 48%),linear-gradient(160deg,#11182a,#07080d 70%); box-shadow:0 18px 44px rgba(0,0,0,.42),0 0 28px rgba(111,215,255,.08); }
+        .ss2-story-video-shell video { display:block; width:100%; height:100%; position:absolute; inset:0; object-fit:cover; background:#000; }
+        .ss2-story-placeholder { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:22px; text-align:center; }
+        .ss2-story-playmark { display:grid; place-items:center; width:58px; height:58px; margin-bottom:20px; border:1px solid rgba(232,208,138,.75); border-radius:50%; color:var(--gold-light); font-size:1.35rem; box-shadow:0 0 26px rgba(201,168,76,.12); }
+        .ss2-story-placeholder strong { color:#f5e8bd; font-family:'Cinzel',serif; font-size:.9rem; letter-spacing:.12em; line-height:1.5; }
+        .ss2-story-placeholder span { margin-top:10px; color:#a9b1c4; font-size:.76rem; line-height:1.6; }
+        .ss2-story-format { display:inline-flex; align-items:center; gap:7px; margin-top:22px; padding:7px 12px; border:1px solid rgba(111,215,255,.35); border-radius:999px; color:#bdeeff; font-size:.72rem; letter-spacing:.08em; }
+        html[data-theme="light"] .ss2-story-section { background:linear-gradient(135deg,#fffdf8,#f0f5f8); border-color:rgba(70,105,125,.24); box-shadow:0 18px 42px rgba(60,50,30,.09); }
+        html[data-theme="light"] .ss2-story-copy h2 { color:#4a3a15; }
+        html[data-theme="light"] .ss2-story-copy p { color:#4a453d; }
+        html[data-theme="light"] .ss2-story-promo { color:#302718 !important; }
+        html[data-theme="light"] .ss2-story-placeholder strong { color:#f5e8bd; }
+        @media (max-width:700px) {
+            .ss2-story-section { grid-template-columns:1fr; gap:26px; margin-bottom:58px; padding:24px 20px; }
+            .ss2-story-copy { text-align:center; }
+            .ss2-story-promo { text-align:left; }
+            .ss2-story-video-shell { width:min(100%,270px); }
+        }
+
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
         /* ── Light mode readability ── */
@@ -302,6 +335,41 @@
         <div class="poster-wrapper">
             <img src="images/sistersquad2_poster.jpg" alt="Sister Squad 2: 저주받은 요정마을 — 얼음 그리핀과 불꽃 그리핀 사이에 선 율이와 정이 표지">
         </div>
+
+        <!-- SISTER SQUAD 2 STORY VIDEO: add the uploaded MP4 URL to data-video-src when ready. -->
+        <section class="ss2-story-section" id="ss2-story-video" aria-labelledby="ss2-story-video-title">
+            <div class="ss2-story-copy">
+                <span class="ss2-story-kicker" data-i18n="story_video_kicker">THE STORY, IN MOTION</span>
+                <h2 id="ss2-story-video-title" data-i18n="story_video_title">두 번째 모험이 영상으로 펼쳐집니다</h2>
+                <p data-i18n="story_video_desc">잿빛으로 변한 요정마을 루미나. 다시 펼쳐진 속삭임의 책과 함께 율이와 정이의 새로운 여정이 시작됩니다. 자매의 티격태격 케미, 마법 세계의 위기, 그리고 가족이 함께 맞서는 순간을 세로형 스토리 영상으로 만나보세요.</p>
+                <p class="ss2-story-promo" data-i18n="story_video_promo">마을을 구할 수 있을까? 이번엔 자매와 아빠의 힘을 합쳐야 합니다. SISTER SQUAD 2 — 모험은 계속됩니다.</p>
+                <span class="ss2-story-format" data-i18n="story_video_format">▶ VERTICAL STORY · 9:16</span>
+            </div>
+            <div class="ss2-story-video-shell">
+                <video class="ss2-story-video-player" controls playsinline preload="metadata" poster="images/sistersquad2_poster.jpg" data-video-src="" aria-label="Sister Squad 2 story video"></video>
+                <div class="ss2-story-placeholder">
+                    <div class="ss2-story-playmark" aria-hidden="true">▶</div>
+                    <strong data-i18n="story_video_coming">STORY VIDEO<br>COMING SOON</strong>
+                    <span data-i18n="story_video_placeholder">영상이 준비되면 이곳에서 바로 감상할 수 있어요.</span>
+                </div>
+            </div>
+        </section>
+        <script>
+        (() => {
+            const shell = document.querySelector('#ss2-story-video');
+            if (!shell) return;
+            const video = shell.querySelector('.ss2-story-video-player');
+            const placeholder = shell.querySelector('.ss2-story-placeholder');
+            const source = (video?.dataset.videoSrc || '').trim();
+            if (source) {
+                video.src = source;
+                placeholder.hidden = true;
+                video.hidden = false;
+            } else {
+                video.hidden = true;
+            }
+        })();
+        </script>
 
         <h2 class="section-title" data-i18n="char_sec_title">Family</h2>
         <div class="character-grid">
@@ -492,6 +560,13 @@
                 villain_griffin_name: '쌍둥이 그리핀, 스콜 &amp; 게일',
                 villain_griffin_desc: '전설의 약초 \'월광초\'를 지키는 냉기와 화염의 수호자. 생명과 감각이 서로 이어져 있어 완벽한 팀워크로만 공략할 수 있다.',
                 ost_note_p:       'SISTER SQUAD 2의 놀라운 오리지널 사운드트랙을 지금 만나보세요. 유튜브, 애플뮤직, 스포티파이 등 주요 스트리밍 플랫폼에 출시되었습니다.',
+                story_video_kicker: 'THE STORY, IN MOTION',
+                story_video_title: '두 번째 모험이 영상으로 펼쳐집니다',
+                story_video_desc: '잿빛으로 변한 요정마을 루미나. 다시 펼쳐진 속삭임의 책과 함께 율이와 정이의 새로운 여정이 시작됩니다. 자매의 티격태격 케미, 마법 세계의 위기, 그리고 가족이 함께 맞서는 순간을 세로형 스토리 영상으로 만나보세요.',
+                story_video_promo: '마을을 구할 수 있을까? 이번엔 자매와 아빠의 힘을 합쳐야 합니다. SISTER SQUAD 2 — 모험은 계속됩니다.',
+                story_video_format: '▶ VERTICAL STORY · 9:16',
+                story_video_coming: 'STORY VIDEO<br>COMING SOON',
+                story_video_placeholder: '영상이 준비되면 이곳에서 바로 감상할 수 있어요.',
                 media_sec_title:  '주요 장면',
                 story_desc:       '요정 마을 루미나에 평화를 찾아줬던 두 영웅, 율이와 정이는 평범한 일상으로 돌아옵니다.<br>하지만 <b>율이는 뾰족한 사춘기 소녀</b>가, <b>정이는 독립심 강한 초등학생</b>이 되어 자매 사이엔 미묘한 긴장감이 흐릅니다.<br><br>그러던 어느 날, 루미나에서 온 구조 신호. 숨겨진 과거와 트라우마를 간직한 아빠와 함께 다시 \'속삭임의 책\'을 펼치지만, 그들을 맞이한 루미나는 <b>잿빛의 폐허</b>였습니다.<br><br>자매는 저주의 근원을 파헤치기 위한 두 번째 여정을 시작합니다. 매번 충돌하면서도 진정한 자매애를 깨달아가는 율이와 정이, 그리고 과거의 실패를 마주하며 딸들을 지키기 위해 비장한 희생을 선택하는 아빠. 절망 속에서도 유머를 잃지 않는 조력자들과 함께, <b>\'함께\'라는 힘의 위대함</b>을 증명하는 감동적이고 유쾌한 여정입니다.',
                 seo_story_desc:   '1편에서 요정 마을을 구했던 <strong style="color:#e8d08a;">율이와 정이</strong>는 각자 사춘기와 초등학생 시절을 지나며 새로운 갈등을 마주합니다. 잿빛으로 물든 루미나를 되살리기 위해 <strong style="color:#c9a84c;">죽음의 늪</strong>, <strong style="color:#c9a84c;">거인의 등뼈</strong>, <strong style="color:#c9a84c;">고요의 계곡</strong>을 지나 고대 도시 아르카디아까지 향하는 여정 속에서, 자매는 이성과 감성이 다르지 않고 서로를 완성한다는 것을 배웁니다.',
@@ -550,6 +625,13 @@
                 villain_griffin_name: 'Twin Griffins, Squall & Gale',
                 villain_griffin_desc: 'The final guardians of the legendary Moonlight Herb, wielding frost and flame. Their lives and senses are linked — only perfect teamwork can defeat them.',
                 ost_note_p:       'Discover the amazing original soundtrack of Sister Squad 2, now streaming on YouTube, Apple Music, Spotify and more.',
+                story_video_kicker: 'THE STORY, IN MOTION',
+                story_video_title: 'The Second Adventure Comes to Life',
+                story_video_desc: 'The fairy village of Lumina has fallen into ash. As the Whispering Book opens once more, Yul and Jung begin a new journey. Discover the sisters’ lively chemistry, the danger threatening the magical world, and a family standing together in this vertical story video.',
+                story_video_promo: 'Can they save the village? This time, the sisters and their dad must face the danger together. SISTER SQUAD 2 — The Adventure Continues.',
+                story_video_format: '▶ VERTICAL STORY · 9:16',
+                story_video_coming: 'STORY VIDEO<br>COMING SOON',
+                story_video_placeholder: 'The video will be ready to watch here soon.',
                 media_sec_title:  'Highlights: Key Scenes',
                 story_desc:       'Yul and Jung, the two heroes who once brought peace to the fairy village of Lumina, return to ordinary life.<br>But <b>Yul has become a prickly teenager</b>, and <b>Jung a fiercely independent grade-schooler</b> — a quiet tension now runs between the sisters.<br><br>Then one day, a distress signal arrives from Lumina. Together with their father, who hides a past full of secrets and trauma, they open the \'Whispering Book\' once more — only to find Lumina reduced to ash-grey ruins.<br><br>The sisters set out on a second journey to uncover the root of the curse. Clashing again and again, Yul and Jung come to understand true sisterhood, while their father confronts his past failures and chooses a solemn sacrifice to protect his daughters. With the help of allies who never lose their humor even in despair, they prove the power of standing <b>together</b> — a moving, joyful adventure once more.',
                 seo_story_desc:   'Having saved the fairy village once, <strong style="color:#e8d08a;">Yul and Jung</strong> now face new conflicts as they grow through adolescence and grade school. On the way to the ancient city of Arcadia — through the <strong style="color:#c9a84c;">Swamp of Death</strong>, the <strong style="color:#c9a84c;">Giant\'s Spine</strong>, and the <strong style="color:#c9a84c;">Valley of Silence</strong> — the sisters learn that reason and heart aren\'t opposites, but two halves that complete each other.',

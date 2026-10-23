@@ -215,6 +215,57 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             color: #ffe9a6 !important;
         }
 
+
+        /* ── Mobile Wallpaper Studio ── */
+        .wallpaper-studio { max-width:1100px; margin:0 auto 100px; padding:0 20px; position:relative; z-index:10; }
+        .wallpaper-studio-inner { padding:42px; border:1px solid rgba(201,168,76,.24); border-radius:22px; background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(201,168,76,.045)); box-shadow:0 18px 45px rgba(0,0,0,.18); }
+        .wallpaper-kicker { color:#a98536; font:600 .78rem/1.5 'Cinzel',serif; letter-spacing:2px; margin-bottom:10px; }
+        .wallpaper-title { color:#25232a; font:600 clamp(1.5rem,3.5vw,2.15rem)/1.35 'Cinzel','Pretendard',serif; margin-bottom:10px; }
+        .wallpaper-intro { color:#5f5b63; max-width:780px; font-size:.98rem; line-height:1.85; margin-bottom:24px; word-break:keep-all; }
+        .wallpaper-policy { display:flex; align-items:flex-start; gap:10px; padding:14px 16px; margin-bottom:26px; border:1px solid rgba(169,133,54,.22); border-radius:12px; background:rgba(201,168,76,.07); color:#514a3d; font-size:.86rem; line-height:1.7; }
+        .wallpaper-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; }
+        .wallpaper-card { min-width:0; overflow:hidden; border:1px solid rgba(35,32,28,.12); border-radius:16px; background:#fff; box-shadow:0 8px 24px rgba(30,25,15,.06); }
+        .wallpaper-preview { position:relative; aspect-ratio:9/16; overflow:hidden; background:#e8e3d9; }
+        .wallpaper-preview img { display:block; width:100%; height:100%; object-fit:cover; }
+        .wallpaper-preview::after { content:'9:16 · MOBILE'; position:absolute; left:10px; top:10px; padding:5px 8px; border-radius:5px; background:rgba(20,19,18,.72); color:#fff; font:600 .62rem/1.2 'Pretendard',sans-serif; letter-spacing:1px; }
+        .wallpaper-card-body { padding:18px; }
+        .wallpaper-card-title { color:#29262b; font-size:1.02rem; line-height:1.45; margin-bottom:7px; }
+        .wallpaper-card-desc { color:#68636a; font-size:.85rem; line-height:1.7; min-height:3.4em; margin-bottom:14px; word-break:keep-all; }
+        .wallpaper-download { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; min-height:44px; padding:10px 12px; border:1px solid #c9a84c; border-radius:9px; background:#f7f0df; color:#40331b; font-size:.86rem; font-weight:700; text-align:center; }
+        .wallpaper-download[disabled] { border-color:#dedbd4; background:#f1efeb; color:#77716b; cursor:not-allowed; }
+        .wallpaper-card-status { margin-top:9px; color:#817b72; font-size:.75rem; line-height:1.55; text-align:center; }
+        .wallpaper-help { margin-top:24px; padding:20px; border-radius:14px; background:rgba(255,255,255,.62); border:1px solid rgba(35,32,28,.09); }
+        .wallpaper-help h3 { color:#302c32; font-size:.95rem; margin-bottom:8px; }
+        .wallpaper-help p { color:#625d64; font-size:.84rem; line-height:1.8; word-break:keep-all; }
+        .wallpaper-help p + p { margin-top:8px; }
+        html[data-theme="dark"] .wallpaper-studio-inner { background:linear-gradient(145deg,rgba(201,168,76,.06),rgba(10,10,18,.72)); }
+        html[data-theme="dark"] .wallpaper-title, html:not([data-theme="light"]) .wallpaper-title { color:#f4efe5; }
+        html[data-theme="dark"] .wallpaper-intro, html:not([data-theme="light"]) .wallpaper-intro { color:#c8c1b7; }
+        html[data-theme="dark"] .wallpaper-policy, html:not([data-theme="light"]) .wallpaper-policy { color:#e0d5bb; background:rgba(201,168,76,.08); }
+        html[data-theme="dark"] .wallpaper-card, html:not([data-theme="light"]) .wallpaper-card { background:#111116; border-color:rgba(255,255,255,.12); }
+        html[data-theme="dark"] .wallpaper-card-title, html:not([data-theme="light"]) .wallpaper-card-title { color:#f3eee5; }
+        html[data-theme="dark"] .wallpaper-card-desc, html:not([data-theme="light"]) .wallpaper-card-desc { color:#c1bbc1; }
+        html[data-theme="dark"] .wallpaper-download, html:not([data-theme="light"]) .wallpaper-download { background:rgba(201,168,76,.12); color:#f1d98f; }
+        html[data-theme="dark"] .wallpaper-download[disabled], html:not([data-theme="light"]) .wallpaper-download[disabled] { background:#252329; border-color:#45414a; color:#a9a4ad; }
+        html[data-theme="dark"] .wallpaper-help, html:not([data-theme="light"]) .wallpaper-help { background:rgba(255,255,255,.035); border-color:rgba(255,255,255,.09); }
+        html[data-theme="dark"] .wallpaper-help h3, html:not([data-theme="light"]) .wallpaper-help h3 { color:#f0e8d8; }
+        html[data-theme="dark"] .wallpaper-help p, html:not([data-theme="light"]) .wallpaper-help p { color:#c0bac2; }
+        @media(max-width:760px) {
+          .wallpaper-studio { padding:0 14px; }
+          .wallpaper-studio-inner { padding:28px 18px; }
+          .wallpaper-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+          .wallpaper-card-body { padding:13px; }
+          .wallpaper-card-title { font-size:.92rem; }
+          .wallpaper-card-desc { font-size:.79rem; min-height:4.5em; }
+        }
+        @media(max-width:480px) {
+          .wallpaper-grid { grid-template-columns:1fr; }
+          .wallpaper-card { display:grid; grid-template-columns:minmax(100px,38%) minmax(0,1fr); }
+          .wallpaper-preview { aspect-ratio:3/4; min-height:190px; }
+          .wallpaper-card-body { display:flex; flex-direction:column; justify-content:center; padding:14px; }
+          .wallpaper-card-desc { min-height:0; }
+        }
+
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
         @media (max-width: 900px) {
@@ -349,6 +400,64 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </article>
             </div>
         </div>
+    </section>
+
+
+    <section class="wallpaper-studio" id="mobile-wallpaper-studio" aria-labelledby="wallpaper-studio-title">
+      <div class="wallpaper-studio-inner">
+        <p class="wallpaper-kicker">✦ &nbsp; MOBILE WALLPAPER STUDIO</p>
+        <h2 class="wallpaper-title" id="wallpaper-studio-title">움직이는 순간을, 나의 화면에.</h2>
+        <p class="wallpaper-intro i18n-ko">Chris LEE.PAPA가 만든 AI 영상과 뮤직비디오의 감성적인 순간을 모바일 잠금화면 컬렉션으로 준비하고 있습니다. 마음에 드는 장면을 골라 나만의 화면으로 간직해 보세요.</p>
+        <p class="wallpaper-intro i18n-en">A collection of cinematic moments from AI videos and music videos by Chris LEE.PAPA, being prepared for your mobile lock screen. Choose a moment and make it part of your everyday view.</p>
+        <div class="wallpaper-policy">
+          <span aria-hidden="true">✦</span>
+          <span class="i18n-ko">무료 다운로드 · 개인적인 잠금화면 사용만 허용됩니다. 재배포 및 상업적 이용은 허용되지 않습니다.</span>
+          <span class="i18n-en">Free downloads for personal lock-screen use only. Redistribution and commercial use are not permitted.</span>
+        </div>
+        <div class="wallpaper-grid">
+          <article class="wallpaper-card">
+            <div class="wallpaper-preview"><img src="https://img.youtube.com/vi/kAkGg2t1Ats/hqdefault.jpg" alt="FURIOUS 영상 미리보기" loading="lazy"></div>
+            <div class="wallpaper-card-body">
+              <h3 class="wallpaper-card-title">FURIOUS · Cinematic</h3>
+              <p class="wallpaper-card-desc i18n-ko">강렬한 분위기와 영화적인 장면으로 구성한 첫 번째 컬렉션 후보.</p>
+              <p class="wallpaper-card-desc i18n-en">A cinematic candidate with a powerful mood and dramatic imagery.</p>
+              <button class="wallpaper-download" type="button" disabled aria-disabled="true"><span class="i18n-ko">영상 파일 준비 중</span><span class="i18n-en">Video file in preparation</span></button>
+              <p class="wallpaper-card-status i18n-ko">다운로드용 세로 영상 파일이 등록되면 활성화됩니다.</p>
+              <p class="wallpaper-card-status i18n-en">Available when the vertical download file is added.</p>
+            </div>
+          </article>
+          <article class="wallpaper-card">
+            <div class="wallpaper-preview"><img src="https://img.youtube.com/vi/vlt7VfCA8bM/hqdefault.jpg" alt="사랑한다고 영상 미리보기" loading="lazy"></div>
+            <div class="wallpaper-card-body">
+              <h3 class="wallpaper-card-title">Love Song · Memories</h3>
+              <p class="wallpaper-card-desc i18n-ko">그리움과 따뜻한 기억을 담은 감성적인 영상 컬렉션 후보.</p>
+              <p class="wallpaper-card-desc i18n-en">An emotional candidate inspired by longing and tender memories.</p>
+              <button class="wallpaper-download" type="button" disabled aria-disabled="true"><span class="i18n-ko">영상 파일 준비 중</span><span class="i18n-en">Video file in preparation</span></button>
+              <p class="wallpaper-card-status i18n-ko">다운로드용 세로 영상 파일이 등록되면 활성화됩니다.</p>
+              <p class="wallpaper-card-status i18n-en">Available when the vertical download file is added.</p>
+            </div>
+          </article>
+          <article class="wallpaper-card">
+            <div class="wallpaper-preview"><img src="https://img.youtube.com/vi/gQ4Ip6cyr1U/hqdefault.jpg" alt="Rev It Up 영상 미리보기" loading="lazy"></div>
+            <div class="wallpaper-card-body">
+              <h3 class="wallpaper-card-title">Rev It Up · Energy</h3>
+              <p class="wallpaper-card-desc i18n-ko">역동적인 색감과 에너지를 담은 세로 영상 컬렉션 후보.</p>
+              <p class="wallpaper-card-desc i18n-en">A high-energy candidate with dynamic color and movement.</p>
+              <button class="wallpaper-download" type="button" disabled aria-disabled="true"><span class="i18n-ko">영상 파일 준비 중</span><span class="i18n-en">Video file in preparation</span></button>
+              <p class="wallpaper-card-status i18n-ko">다운로드용 세로 영상 파일이 등록되면 활성화됩니다.</p>
+              <p class="wallpaper-card-status i18n-en">Available when the vertical download file is added.</p>
+            </div>
+          </article>
+        </div>
+        <div class="wallpaper-help">
+          <h3 class="i18n-ko">기기별 잠금화면 설정 안내</h3>
+          <h3 class="i18n-en">Set up your lock screen</h3>
+          <p class="i18n-ko"><strong>Android:</strong> 기종에 따라 동영상 잠금화면 지원 여부가 다릅니다. 지원 기기에서는 갤러리에서 영상을 선택해 잠금화면으로 설정할 수 있습니다.</p>
+          <p class="i18n-en"><strong>Android:</strong> Support varies by device. On supported phones, select the video in Gallery and set it as your lock-screen wallpaper.</p>
+          <p class="i18n-ko"><strong>iPhone:</strong> MP4 파일을 그대로 움직이는 잠금화면으로 설정할 수는 없습니다. Live Photo 형식이 제공되는 경우 iOS의 잠금화면 설정에서 적용할 수 있습니다.</p>
+          <p class="i18n-en"><strong>iPhone:</strong> An MP4 alone cannot be set as a moving lock screen. If a Live Photo version is provided, you can apply it through iOS Lock Screen settings.</p>
+        </div>
+      </div>
     </section>
 
     <section class="shorts-section">

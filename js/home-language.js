@@ -4,7 +4,7 @@
  */
 'use strict';
 (() => {
-  const roots = ['home-actions', 'faith-journey']
+  const roots = ['home-actions', 'faith-journey', 'home-ss2-story']
     .map((id) => document.getElementById(id))
     .filter(Boolean);
   if (!roots.length) return;

@@ -3504,13 +3504,12 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
         }
     </script>
 
-    <!-- 찬송가 ZIP 뷰어: 압축 안의 이미지/PDF를 브라우저에서 읽습니다. -->
-    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+    <!-- 찬송가 뷰어: images/hymn 폴더의 PDF를 직접 불러옵니다. -->
     <script>
     (function(){
-        const archiveUrls = ['/images/1to10%EC%9E%A5.zip'];
-        let hymnFiles = [];
-        let activeHymn = 0;
+        const hymnFiles = [{"number":1,"name":"001장 만복의 근원 하나님.pdf","url":"/images/hymn/001%EC%9E%A5%20%EB%A7%8C%EB%B3%B5%EC%9D%98%20%EA%B7%BC%EC%9B%90%20%ED%95%98%EB%82%98%EB%8B%98.pdf"},{"number":2,"name":"002장 찬양 성부 성자 성령.pdf","url":"/images/hymn/002%EC%9E%A5%20%EC%B0%AC%EC%96%91%20%EC%84%B1%EB%B6%80%20%EC%84%B1%EC%9E%90%20%EC%84%B1%EB%A0%B9.pdf"},{"number":3,"name":"003장 성부 성자와 성령.pdf","url":"/images/hymn/003%EC%9E%A5%20%EC%84%B1%EB%B6%80%20%EC%84%B1%EC%9E%90%EC%99%80%20%EC%84%B1%EB%A0%B9.pdf"},{"number":4,"name":"004장 성부 성자와 성령.pdf","url":"/images/hymn/004%EC%9E%A5%20%EC%84%B1%EB%B6%80%20%EC%84%B1%EC%9E%90%EC%99%80%20%EC%84%B1%EB%A0%B9.pdf"},{"number":5,"name":"005장 이 천지간 만물들아.pdf","url":"/images/hymn/005%EC%9E%A5%20%EC%9D%B4%20%EC%B2%9C%EC%A7%80%EA%B0%84%20%EB%A7%8C%EB%AC%BC%EB%93%A4%EC%95%84.pdf"},{"number":6,"name":"006장 목소리 높여서.pdf","url":"/images/hymn/006%EC%9E%A5%20%EB%AA%A9%EC%86%8C%EB%A6%AC%20%EB%86%92%EC%97%AC%EC%84%9C.pdf"},{"number":7,"name":"007장 성부 성자 성령.pdf","url":"/images/hymn/007%EC%9E%A5%20%EC%84%B1%EB%B6%80%20%EC%84%B1%EC%9E%90%20%EC%84%B1%EB%A0%B9.pdf"},{"number":8,"name":"008장 거룩 거룩 거룩 전능하신 주님.pdf","url":"/images/hymn/008%EC%9E%A5%20%EA%B1%B0%EB%A3%A9%20%EA%B1%B0%EB%A3%A9%20%EA%B1%B0%EB%A3%A9%20%EC%A0%84%EB%8A%A5%ED%95%98%EC%8B%A0%20%EC%A3%BC%EB%8B%98.pdf"},{"number":9,"name":"009장 하늘에 가득찬 영광의 하나님.pdf","url":"/images/hymn/009%EC%9E%A5%20%ED%95%98%EB%8A%98%EC%97%90%20%EA%B0%80%EB%93%9D%EC%B0%AC%20%EC%98%81%EA%B4%91%EC%9D%98%20%ED%95%98%EB%82%98%EB%8B%98.pdf"},{"number":10,"name":"010장 전능왕 오셔서.pdf","url":"/images/hymn/010%EC%9E%A5%20%EC%A0%84%EB%8A%A5%EC%99%95%20%EC%98%A4%EC%85%94%EC%84%9C.pdf"}];
+        const totalHymns = 645;
+        let activeHymn = 1;
         const $ = id => document.getElementById(id);
         function setStatus(message){ const el=$('hymnStatus'); if(el) el.textContent=message; }
         window.switchBibleMode = function(mode){
@@ -3521,86 +3520,70 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
             $('hymnModeBtn').classList.toggle('active',isHymn);
             $('bibleModeBtn').setAttribute('aria-selected',String(!isHymn));
             $('hymnModeBtn').setAttribute('aria-selected',String(isHymn));
-            if(isHymn && !hymnFiles.length) loadHymnArchives();
             if(isHymn) $('hymnPanel').scrollIntoView({behavior:'smooth',block:'start'});
         };
-        function hymnNumber(name){
-            const base=name.split('/').pop();
-            const match=base.match(/(?:찬송가|찬송|hymn)?\s*0*(\d{1,3})\b/i);
-            return match ? Number(match[1]) : null;
-        }
-        function sortKey(file){ return hymnNumber(file.name) || 9999; }
-        window.loadHymnArchives = async function(){
-            if(!window.JSZip){ setStatus('압축파일 읽기 도구를 불러오지 못했습니다. 페이지를 새로고침해 주세요.'); return; }
-            setStatus('압축파일을 확인하는 중입니다…');
-            const all=[];
-            for(const url of archiveUrls){
-                try{
-                    const response=await fetch(url,{cache:'no-store'});
-                    if(!response.ok) throw new Error('HTTP '+response.status);
-                    const zip=await JSZip.loadAsync(await response.arrayBuffer());
-                    const entries=Object.values(zip.files).filter(f=>!f.dir && !/(^|\/)(__MACOSX|\.DS_Store)/.test(f.name));
-                    for(const file of entries){
-                        const ext=file.name.split('.').pop().toLowerCase();
-                        if(['jpg','jpeg','png','webp','gif','pdf'].includes(ext)){
-                            all.push({name:file.name,number:hymnNumber(file.name),ext,archive:url,zipFile:file});
-                        } else if(['ppt','pptx'].includes(ext)){
-                            all.push({name:file.name,number:hymnNumber(file.name),ext,archive:url,zipFile:file});
-                        }
-                    }
-                }catch(error){ console.warn('Hymn archive unavailable:',url,error); }
-            }
-            hymnFiles=all.sort((a,b)=>(a.number||9999)-(b.number||9999)||a.name.localeCompare(b.name,'ko'));
+        function fileFor(number){ return hymnFiles.find(file=>file.number===number); }
+        window.loadHymnArchives = function(){
             renderHymnNumbers();
-            if(!hymnFiles.length){
-                setStatus('압축파일을 읽었지만 웹에서 바로 표시할 이미지/PDF 자료를 찾지 못했습니다. PPT/PPTX 파일만 있다면 PDF 또는 슬라이드 이미지로 내보내야 웹에서 표시할 수 있습니다.');
-                $('hymnPages').innerHTML='<div class="hymn-empty"><strong>자료 형식 확인이 필요합니다.</strong><br>ZIP 안에 JPG·PNG 이미지 또는 PDF가 있으면 바로 표시할 수 있습니다.<br>PPT/PPTX만 있다면 PDF로 내보내거나 슬라이드 이미지를 넣어주세요.</div>';
-                return;
-            }
-            const nums=[...new Set(hymnFiles.map(f=>f.number).filter(n=>n>=1&&n<=645))];
-            setStatus('자료 '+hymnFiles.length+'개를 확인했습니다. 번호를 선택해 보세요.'+(nums.length?' · 확인된 찬송가 '+nums.length+'개':''));
-            const query=Number($('hymnSearch').value);
-            const first=hymnFiles.findIndex(f=>f.number===query);
-            if(first>=0) showHymn(first);
-            else if(hymnFiles.length) showHymn(0);
+            setStatus('전체 645장을 표시합니다. 현재 PDF '+hymnFiles.length+'개가 준비되어 있습니다. 파일이 없는 장은 PDF를 추가하면 표시됩니다.');
+            const requested=Number($('hymnSearch').value);
+            selectHymn(requested>=1&&requested<=totalHymns?requested:1);
         };
         function renderHymnNumbers(){
             const grid=$('hymnNumberGrid');
-            const numbers=[...new Set(hymnFiles.map(f=>f.number).filter(n=>n>=1&&n<=645))].sort((a,b)=>a-b);
             grid.innerHTML='';
-            numbers.forEach(number=>{
-                const btn=document.createElement('button'); btn.type='button'; btn.className='hymn-number';
-                btn.textContent=number; btn.setAttribute('aria-label','찬송가 '+number+'장');
-                btn.onclick=()=>{const idx=hymnFiles.findIndex(f=>f.number===number);if(idx>=0)showHymn(idx);};
+            for(let number=1;number<=totalHymns;number++){
+                const file=fileFor(number);
+                const btn=document.createElement('button');
+                btn.type='button';
+                btn.className='hymn-number'+(file?'':' hymn-missing');
+                btn.textContent=String(number).padStart(3,'0');
+                btn.setAttribute('aria-label','찬송가 '+number+'장'+(file?'':' (PDF 준비 중)'));
+                btn.title=file?file.name:'PDF 준비 중';
+                btn.onclick=()=>selectHymn(number);
                 grid.appendChild(btn);
-            });
-            if(!numbers.length) grid.innerHTML='<div class="hymn-empty">파일 이름에서 찬송가 번호를 찾지 못했습니다. 파일명에 번호가 포함되어 있는지 확인해 주세요.</div>';
+            }
         }
-        async function showHymn(index){
-            if(!hymnFiles.length) return;
-            index=(index+hymnFiles.length)%hymnFiles.length; activeHymn=index;
-            const item=hymnFiles[index], title=(item.number?'찬송가 '+item.number+'장':'찬송가')+' · '+item.name.split('/').pop();
-            $('hymnCurrentTitle').textContent=title;
-            document.querySelectorAll('.hymn-number').forEach(b=>b.classList.toggle('active',Number(b.textContent)===item.number));
-            const root=$('hymnPages'); root.innerHTML='<div class="hymn-empty">자료를 여는 중…</div>';
-            if(item.ext==='ppt'||item.ext==='pptx'){
-                root.innerHTML='<div class="hymn-empty"><strong>PowerPoint 파일</strong><br>PPT/PPTX는 브라우저에서 직접 렌더링되지 않습니다.<br>이 파일을 PDF로 내보내 ZIP에 넣으면 여기에서 바로 볼 수 있습니다.</div>';
+        function selectHymn(number){
+            activeHymn=Math.max(1,Math.min(totalHymns,number));
+            const item=fileFor(activeHymn);
+            $('hymnCurrentTitle').textContent='찬송가 '+String(activeHymn).padStart(3,'0')+'장'+(item?' · '+item.name.replace(/^\\d{3}장\\s*/,'').replace(/\\.pdf$/i,''):'');
+            document.querySelectorAll('.hymn-number').forEach((b,i)=>b.classList.toggle('active',i+1===activeHymn));
+            const root=$('hymnPages');
+            root.innerHTML='';
+            if(!item){
+                root.innerHTML='<div class="hymn-empty"><strong>아직 PDF가 등록되지 않았습니다.</strong><br>images/hymn 폴더에 '+String(activeHymn).padStart(3,'0')+'장 PDF를 추가하면 이곳에서 바로 볼 수 있습니다.</div>';
+                setStatus('찬송가 '+activeHymn+'장 PDF는 아직 등록되지 않았습니다.');
                 return;
             }
-            try{
-                const blob=await item.zipFile.async('blob');
-                const url=URL.createObjectURL(blob);
-                if(item.ext==='pdf'){
-                    const iframe=document.createElement('iframe'); iframe.title=title; iframe.src=url; root.replaceChildren(iframe);
-                }else{
-                    const img=document.createElement('img'); img.src=url; img.alt=title+' 악보 및 가사'; img.loading='lazy'; root.replaceChildren(img);
-                }
-            }catch(e){root.innerHTML='<div class="hymn-empty">이 자료를 열지 못했습니다. 압축파일을 확인해 주세요.</div>';}
+            setStatus('찬송가 '+activeHymn+'장 PDF를 불러왔습니다.');
+            const iframe=document.createElement('iframe');
+            iframe.title='찬송가 '+activeHymn+'장 악보 및 가사';
+            iframe.src=item.url;
+            iframe.style.width='100%';
+            iframe.style.height='min(78vh, 1000px)';
+            iframe.style.minHeight='600px';
+            iframe.style.border='0';
+            root.appendChild(iframe);
+            const link=document.createElement('a');
+            link.href=item.url;
+            link.target='_blank';
+            link.rel='noopener';
+            link.className='hymn-pdf-link';
+            link.textContent='PDF를 새 탭에서 열기 / 저장하기';
+            root.appendChild(link);
         }
-        window.stepHymn=function(delta){if(hymnFiles.length)showHymn(activeHymn+delta);};
-        $('hymnSearch').addEventListener('keydown',e=>{if(e.key==='Enter'){const n=Number(e.currentTarget.value);const idx=hymnFiles.findIndex(f=>f.number===n);if(idx>=0)showHymn(idx);else setStatus('해당 번호의 자료를 찾지 못했습니다.');}});
+        window.stepHymn=function(delta){selectHymn(Math.max(1,Math.min(totalHymns,activeHymn+delta)));};
+        $('hymnSearch').addEventListener('keydown',e=>{
+            if(e.key==='Enter'){
+                const number=Number(e.currentTarget.value);
+                if(Number.isInteger(number)&&number>=1&&number<=totalHymns) selectHymn(number);
+                else setStatus('1~645 사이의 찬송가 번호를 입력해 주세요.');
+            }
+        });
+        loadHymnArchives();
     })();
     </script>
 
-</body>
+    </body>
 </html>

@@ -136,21 +136,67 @@
             background: linear-gradient(135deg, rgba(16,24,42,.92), rgba(14,12,20,.94));
             box-shadow: 0 24px 60px rgba(0,0,0,.2);
         }
-        .ss2-story-videos { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:22px; margin-top:28px; }
-        .ss2-story-video-card { min-width:0; text-align:center; }
-        .ss2-story-video-card h3 { margin:0 0 12px; color:var(--gold-light); font-family:'Cinzel',serif; font-size:.9rem; letter-spacing:.08em; }
-        .ss2-story-video-shell { width:100%; max-width:280px; justify-self:center; aspect-ratio:9/16; position:relative; overflow:hidden; margin:0 auto; border-radius:18px; border:1px solid rgba(111,215,255,.42); background:#080b12; box-shadow:0 18px 44px rgba(0,0,0,.32); }
-        .ss2-story-video-shell iframe { display:block;width:100%;height:100%;position:absolute;inset:0;border:0;background:#000; }
-        .ss2-full-video-cta { display:flex; justify-content:center; margin-top:28px; }
-        .ss2-full-video-cta span { display:inline-flex; align-items:center; justify-content:center; padding:13px 22px; border:1px solid rgba(201,168,76,.45); border-radius:999px; color:var(--gold-light); background:rgba(201,168,76,.08); font-weight:700; text-align:center; }
-        html[data-theme="light"] .ss2-story-video-card h3 { color:#4a3a15; }
-        html[data-theme="light"] .ss2-full-video-cta span { color:#5d4815; background:#fffaf0; border-color:rgba(130,100,30,.3); }
+        .ss2-story-videos {
+            display:flex; gap:20px; margin-top:28px; padding:4px 2px 18px;
+            overflow-x:auto; overflow-y:hidden; scroll-snap-type:x mandatory;
+            scroll-behavior:smooth; -webkit-overflow-scrolling:touch;
+            scrollbar-width:thin; scrollbar-color:rgba(201,168,76,.65) rgba(120,120,120,.12);
+        }
+        .ss2-story-video-card {
+            flex:0 0 calc((100% - 40px) / 3); min-width:0; text-align:center;
+            scroll-snap-align:start;
+        }
+        .ss2-story-video-card h3 {
+            margin:0 0 12px; color:var(--gold-light); font-family:'Cinzel',serif;
+            font-size:.9rem; letter-spacing:.08em;
+        }
+        .ss2-story-video-shell {
+            width:100%; max-width:300px; aspect-ratio:9/16; position:relative;
+            overflow:hidden; margin:0 auto; border-radius:18px;
+            border:1px solid rgba(111,215,255,.42);
+            background:radial-gradient(ellipse at 50% 20%,rgba(111,215,255,.15),transparent 48%),linear-gradient(160deg,#11182a,#07080d 70%);
+            box-shadow:0 18px 44px rgba(0,0,0,.32);
+        }
+        .ss2-story-video-shell iframe {
+            display:block; width:100%; height:100%; position:absolute; inset:0;
+            border:0; background:#000;
+        }
+        .ss2-full-story {
+            position:relative; isolation:isolate; width:100%; overflow:hidden;
+            display:flex; flex-direction:column; align-items:center;
+            margin-top:42px; padding:34px clamp(16px,3vw,30px) 30px;
+            border:1px solid rgba(232,208,138,.72); border-radius:22px;
+            background:radial-gradient(ellipse at 50% 0%,rgba(201,168,76,.2),transparent 58%),linear-gradient(145deg,rgba(27,27,34,.98),rgba(7,9,15,.98) 72%);
+            box-shadow:0 0 0 5px rgba(201,168,76,.06),0 22px 55px rgba(0,0,0,.38),0 0 42px rgba(201,168,76,.1);
+        }
+        .ss2-full-story::before { content:""; position:absolute; inset:9px; z-index:-1; border:1px solid rgba(232,208,138,.18); border-radius:15px; pointer-events:none; }
+        .ss2-full-story::after { content:""; position:absolute; top:-100px; left:50%; transform:translateX(-50%); width:65%; height:180px; background:rgba(201,168,76,.12); filter:blur(55px); pointer-events:none; z-index:-1; }
+        .ss2-full-story-kicker { display:inline-flex; align-items:center; gap:9px; margin-bottom:10px; padding:6px 13px; border:1px solid rgba(232,208,138,.45); border-radius:999px; color:#e8d08a; background:rgba(201,168,76,.1); font-family:'Cinzel',serif; font-size:.68rem; letter-spacing:.22em; }
+        .ss2-full-story h3 { margin:0 0 10px; color:#fff1c2; font-family:'Cinzel',serif; font-size:clamp(1.45rem,4vw,2.15rem); letter-spacing:.13em; line-height:1.25; text-align:center; text-shadow:0 0 24px rgba(232,208,138,.18); }
+        .ss2-full-story-note { max-width:560px; margin:0 0 22px; color:#d2c9b4; font-size:.9rem; line-height:1.75; text-align:center; word-break:keep-all; }
+        .ss2-full-story .ss2-story-video-shell { width:min(100%,360px); padding:5px; border:1px solid rgba(232,208,138,.72); border-radius:20px; background:linear-gradient(145deg,#e8d08a,#6e5520 45%,#e8d08a); box-shadow:0 15px 45px rgba(0,0,0,.42),0 0 30px rgba(201,168,76,.15); }
+        .ss2-full-story .ss2-story-video-shell iframe { border-radius:14px; }
+        .ss2-full-video-cta { display:flex; justify-content:center; margin-top:24px; }
+        .ss2-full-video-cta a { display:inline-flex; align-items:center; justify-content:center; gap:10px; min-height:48px; padding:13px 25px; border:1px solid #e8d08a; border-radius:999px; color:#17130a; background:linear-gradient(110deg,#e8d08a,#c9a84c); font-weight:800; letter-spacing:.04em; text-align:center; box-shadow:0 8px 24px rgba(201,168,76,.2); transition:transform .2s ease,box-shadow .2s ease; }
+        .ss2-full-video-cta a:hover { transform:translateY(-2px); box-shadow:0 12px 30px rgba(201,168,76,.3); }
+        html[data-theme="light"] .ss2-full-story { background:radial-gradient(ellipse at 50% 0%,rgba(201,168,76,.2),transparent 60%),linear-gradient(145deg,#fffdf7,#f0e8d5); border-color:#b18a2e; box-shadow:0 0 0 5px rgba(177,138,46,.08),0 18px 42px rgba(60,50,30,.14); }
+        html[data-theme="light"] .ss2-full-story::before { border-color:rgba(130,100,30,.22); }
+        html[data-theme="light"] .ss2-full-story h3 { color:#392b0e; text-shadow:none; }
+        html[data-theme="light"] .ss2-full-story-note { color:#554a35; }
+        html[data-theme="light"] .ss2-full-story-kicker { color:#674d10; background:rgba(201,168,76,.15); }
+        @media (max-width:700px) {
+            .ss2-full-story { margin-top:30px; padding:27px 15px 24px; border-radius:18px; }
+            .ss2-full-story::before { inset:7px; border-radius:12px; }
+            .ss2-full-story-kicker { font-size:.6rem; letter-spacing:.16em; }
+            .ss2-full-story h3 { letter-spacing:.08em; }
+            .ss2-full-story-note { font-size:.84rem; }
+            .ss2-full-video-cta { width:100%; }
+            .ss2-full-video-cta a { width:100%; max-width:320px; padding:12px 16px; }
+        }
         .ss2-story-kicker { display:block; margin-bottom:12px; color:var(--ice); font-family:'Cinzel',serif; font-size:.72rem; letter-spacing:.2em; }
         .ss2-story-copy h2 { margin:0 0 16px; color:var(--gold-light); font-family:'Cinzel',serif; font-size:clamp(1.5rem,3.8vw,2.35rem); line-height:1.25; letter-spacing:.04em; }
         .ss2-story-copy p { margin:0 0 16px; color:#d5d5e0; font-size:.98rem; line-height:1.9; word-break:keep-all; }
         .ss2-story-promo { padding-left:14px; border-left:2px solid var(--gold); color:#fff !important; font-weight:600; }
-        .ss2-story-video-shell { width:100%; max-width:300px; justify-self:center; aspect-ratio:9/16; position:relative; overflow:hidden; border-radius:18px; border:1px solid rgba(111,215,255,.42); background:radial-gradient(ellipse at 50% 20%,rgba(111,215,255,.15),transparent 48%),linear-gradient(160deg,#11182a,#07080d 70%); box-shadow:0 18px 44px rgba(0,0,0,.42),0 0 28px rgba(111,215,255,.08); }
-        .ss2-story-video-shell video { display:block; width:100%; height:100%; position:absolute; inset:0; object-fit:cover; background:#000; }
         .ss2-story-placeholder { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:22px; text-align:center; }
         .ss2-story-playmark { display:grid; place-items:center; width:58px; height:58px; margin-bottom:20px; border:1px solid rgba(232,208,138,.75); border-radius:50%; color:var(--gold-light); font-size:1.35rem; box-shadow:0 0 26px rgba(201,168,76,.12); }
         .ss2-story-placeholder strong { color:#f5e8bd; font-family:'Cinzel',serif; font-size:.9rem; letter-spacing:.12em; line-height:1.5; }
@@ -160,16 +206,20 @@
         html[data-theme="light"] .ss2-story-copy h2 { color:#4a3a15; }
         html[data-theme="light"] .ss2-story-copy p { color:#4a453d; }
         html[data-theme="light"] .ss2-story-promo { color:#302718 !important; }
-        html[data-theme="light"] .ss2-story-placeholder strong { color:#f5e8bd; }
+        html[data-theme="light"] .ss2-story-video-card h3 { color:#4a3a15; }
+        html[data-theme="light"] .ss2-full-video-cta span { color:#5d4815; background:#fffaf0; border-color:rgba(130,100,30,.3); }
         @media (max-width:700px) {
             .ss2-story-section { margin-bottom:58px; padding:24px 20px; }
             .ss2-story-copy { text-align:center; }
             .ss2-story-promo { text-align:left; }
             .ss2-story-videos { gap:14px; }
-            .ss2-story-video-shell { width:100%; }
-            .ss2-story-video-card h3 { font-size:.72rem; }
+            .ss2-story-video-card { flex-basis:78%; }
+            .ss2-story-video-card h3 { font-size:.78rem; }
         }
-        @media (max-width:420px) { .ss2-story-videos { grid-template-columns:1fr; } }
+        @media (max-width:420px) {
+            .ss2-story-videos { gap:12px; }
+            .ss2-story-video-card { flex-basis:84%; }
+        }
 
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -354,7 +404,7 @@
                 <span class="ss2-story-kicker" data-i18n="story_video_kicker">SISTER SQUAD 2 · MOVIES</span>
                 <h2 id="ss2-story-video-title" data-i18n="story_video_title">SISTER SQUAD 2 영상</h2>
                 <p data-i18n="story_video_desc">본편 공개에 앞서 SISTER SQUAD 2의 분위기와 새로운 모험을 먼저 만나볼 수 있는 세 편의 선공개 예고편입니다.</p>
-                <p class="ss2-story-promo" data-i18n="story_video_promo">율이와 정이, 그리고 아빠 크리스의 두 번째 모험. 약 15분 분량의 본편 영상도 공개될 예정입니다.</p>
+                <p class="ss2-story-promo" data-i18n="story_video_promo">율이와 정이, 그리고 아빠 크리스의 두 번째 모험. 약 15분 분량의 본편은 곧 공개됩니다.</p>
             </div>
             <div class="ss2-story-videos">
                 <article class="ss2-story-video-card">
@@ -376,7 +426,17 @@
                     </div>
                 </article>
             </div>
-            <div class="ss2-full-video-cta"><span data-i18n="story_video_full_coming">▶ FULL Story · Coming soon</span></div>
+            <div class="ss2-full-story" aria-labelledby="ss2-full-story-title">
+                <span class="ss2-full-story-kicker" data-i18n="story_video_full_kicker">✦ THE FEATURE PRESENTATION ✦</span>
+                <h3 id="ss2-full-story-title" data-i18n="story_video_full_title">FULL STORY</h3>
+                <p class="ss2-full-story-note" data-i18n="story_video_full_note">율이와 정이, 그리고 아빠 크리스의 두 번째 모험을 지금 만나보세요.</p>
+                <div class="ss2-story-video-shell">
+                    <iframe src="https://www.youtube-nocookie.com/embed/sKkPYaMM75A?playsinline=1&rel=0" title="SISTER SQUAD 2 — 본편 영상" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+                <div class="ss2-full-video-cta">
+                    <a href="https://youtu.be/sKkPYaMM75A?si=zUwDcwd493RIvkdH" target="_blank" rel="noopener noreferrer" data-i18n="story_video_full_watch">▶ 유튜브에서 본편 보기 ↗</a>
+                </div>
+            </div>
         </section>
 
         <h2 class="section-title" data-i18n="char_sec_title">Family</h2>
@@ -570,12 +630,15 @@
                 ost_note_p:       'SISTER SQUAD 2의 놀라운 오리지널 사운드트랙을 지금 만나보세요. 유튜브, 애플뮤직, 스포티파이 등 주요 스트리밍 플랫폼에 출시되었습니다.',
                 story_video_kicker: 'SISTER SQUAD 2 · MOVIES',
                 story_video_title: 'SISTER SQUAD 2 영상',
-                story_video_desc: '본편 공개에 앞서 SISTER SQUAD 2의 분위기와 새로운 모험을 먼저 만나볼 수 있는 두 편의 선공개 예고편입니다.',
-                story_video_promo: '율이와 정이, 그리고 아빠 크리스의 두 번째 모험. 약 15분 분량의 본편 영상도 공개될 예정입니다.',
+                story_video_desc: 'SISTER SQUAD 2의 세 편의 예고편과 약 15분 분량의 본편 영상을 만나보세요.',
+                story_video_promo: '율이와 정이, 그리고 아빠 크리스의 두 번째 모험. 아래에서 본편을 지금 감상할 수 있습니다.',
                 story_video_trailer1: '예고편 1',
                 story_video_trailer2: '예고편 2',
                 story_video_trailer3: '예고편 3',
-                story_video_full_coming: '▶ FULL Story · Coming soon',
+                story_video_full_kicker: '✦ THE FEATURE PRESENTATION ✦',
+                story_video_full_title: '본편 영상',
+                story_video_full_note: '율이와 정이, 그리고 아빠 크리스의 두 번째 모험을 지금 만나보세요.',
+                story_video_full_watch: '▶ 유튜브에서 본편 보기 ↗',
                 media_sec_title:  '주요 장면',
                 story_desc:       '요정 마을 루미나에 평화를 찾아줬던 두 영웅, 율이와 정이는 평범한 일상으로 돌아옵니다.<br>하지만 <b>율이는 뾰족한 사춘기 소녀</b>가, <b>정이는 독립심 강한 초등학생</b>이 되어 자매 사이엔 미묘한 긴장감이 흐릅니다.<br><br>그러던 어느 날, 루미나에서 온 구조 신호. 숨겨진 과거와 트라우마를 간직한 아빠와 함께 다시 \'속삭임의 책\'을 펼치지만, 그들을 맞이한 루미나는 <b>잿빛의 폐허</b>였습니다.<br><br>자매는 저주의 근원을 파헤치기 위한 두 번째 여정을 시작합니다. 매번 충돌하면서도 진정한 자매애를 깨달아가는 율이와 정이, 그리고 과거의 실패를 마주하며 딸들을 지키기 위해 비장한 희생을 선택하는 아빠. 절망 속에서도 유머를 잃지 않는 조력자들과 함께, <b>\'함께\'라는 힘의 위대함</b>을 증명하는 감동적이고 유쾌한 여정입니다.',
                 seo_story_desc:   '1편에서 요정 마을을 구했던 <strong style="color:#e8d08a;">율이와 정이</strong>는 각자 사춘기와 초등학생 시절을 지나며 새로운 갈등을 마주합니다. 잿빛으로 물든 루미나를 되살리기 위해 <strong style="color:#c9a84c;">죽음의 늪</strong>, <strong style="color:#c9a84c;">거인의 등뼈</strong>, <strong style="color:#c9a84c;">고요의 계곡</strong>을 지나 고대 도시 아르카디아까지 향하는 여정 속에서, 자매는 이성과 감성이 다르지 않고 서로를 완성한다는 것을 배웁니다.',
@@ -636,12 +699,15 @@
                 ost_note_p:       'Discover the amazing original soundtrack of Sister Squad 2, now streaming on YouTube, Apple Music, Spotify and more.',
                 story_video_kicker: 'SISTER SQUAD 2 · MOVIES',
                 story_video_title: 'SISTER SQUAD 2 — Movies',
-                story_video_desc: 'Three early-release preview trailers offer a first look at the atmosphere and new adventure of SISTER SQUAD 2 before the full episode arrives.',
-                story_video_promo: 'Yul, Jung, and their dad Chris begin a second adventure. The full video, approximately 15 minutes long, is coming soon.',
+                story_video_desc: 'Watch three previews and the full SISTER SQUAD 2 story, approximately 15 minutes long.',
+                story_video_promo: 'Yul, Jung, and their dad Chris begin a second adventure. Watch the full story below.',
                 story_video_trailer1: 'Preview Trailer 1',
                 story_video_trailer2: 'Preview Trailer 2',
                 story_video_trailer3: 'Preview Trailer 3',
-                story_video_full_coming: '▶ FULL Story · Coming soon',
+                story_video_full_kicker: '✦ THE FEATURE PRESENTATION ✦',
+                story_video_full_title: 'Full Story',
+                story_video_full_note: 'Join Yul, Jung, and their dad Chris on their second adventure.',
+                story_video_full_watch: '▶ Watch the full story on YouTube ↗',
                 media_sec_title:  'Highlights: Key Scenes',
                 story_desc:       'Yul and Jung, the two heroes who once brought peace to the fairy village of Lumina, return to ordinary life.<br>But <b>Yul has become a prickly teenager</b>, and <b>Jung a fiercely independent grade-schooler</b> — a quiet tension now runs between the sisters.<br><br>Then one day, a distress signal arrives from Lumina. Together with their father, who hides a past full of secrets and trauma, they open the \'Whispering Book\' once more — only to find Lumina reduced to ash-grey ruins.<br><br>The sisters set out on a second journey to uncover the root of the curse. Clashing again and again, Yul and Jung come to understand true sisterhood, while their father confronts his past failures and chooses a solemn sacrifice to protect his daughters. With the help of allies who never lose their humor even in despair, they prove the power of standing <b>together</b> — a moving, joyful adventure once more.',
                 seo_story_desc:   'Having saved the fairy village once, <strong style="color:#e8d08a;">Yul and Jung</strong> now face new conflicts as they grow through adolescence and grade school. On the way to the ancient city of Arcadia — through the <strong style="color:#c9a84c;">Swamp of Death</strong>, the <strong style="color:#c9a84c;">Giant\'s Spine</strong>, and the <strong style="color:#c9a84c;">Valley of Silence</strong> — the sisters learn that reason and heart aren\'t opposites, but two halves that complete each other.',

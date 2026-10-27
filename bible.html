@@ -485,6 +485,78 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
         .hymn-file-list a { display:inline-block; margin:5px; color:#775711; text-decoration:underline; }
         @media(max-width:600px) { .hymn-pagination { flex-wrap:wrap; justify-content:center; } .hymn-pagination span { order:-1; width:100%; text-align:center; } .hymn-switch button { flex:1; padding:11px 10px; font-size:.9rem; } .hymn-tools { grid-template-columns:1fr; } .hymn-load-btn { width:100%; } .hymn-number-grid { grid-template-columns:repeat(5,minmax(0,1fr)); } }
 
+    
+/* HYMNAL REDESIGN — responsive ivory & gold */
+.hymn-switch{display:flex;justify-content:center;gap:8px;max-width:460px;margin:0 auto 24px;padding:5px;border:1px solid rgba(201,168,76,.22);border-radius:18px;background:rgba(255,255,255,.045)}
+.hymn-switch button{flex:1;min-height:44px;border:1px solid transparent;border-radius:13px;padding:10px 18px;color:#d4d0c6;background:transparent;cursor:pointer;font-weight:700;transition:.2s}
+.hymn-switch button.active{background:linear-gradient(135deg,#f3df9e,#c5a04b);color:#211a0b;border-color:#e5ca7b;box-shadow:0 3px 12px rgba(201,168,76,.16)}
+.hymn-panel{box-sizing:border-box;width:min(1160px,calc(100% - 32px));margin:0 auto 64px;padding:clamp(18px,3.2vw,34px);border:1px solid rgba(201,168,76,.25);border-radius:24px;background:#111116;box-shadow:0 18px 50px rgba(0,0,0,.18)}
+.hymn-panel *,.hymn-panel *:before,.hymn-panel *:after{box-sizing:border-box}
+.hymn-hero{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:24px;padding-bottom:22px;border-bottom:1px solid rgba(201,168,76,.18)}
+.hymn-kicker{color:#c5a04b;font-size:.72rem;letter-spacing:.16em;font-weight:800}
+.hymn-title{font-family:'Noto Serif KR',serif;color:#f1dfad;font-size:clamp(1.55rem,3vw,2.15rem);line-height:1.35;margin:7px 0 8px;letter-spacing:-.035em}
+.hymn-subtitle{color:#bdb9ae;font-size:.92rem;line-height:1.65;margin:0}
+.hymn-hero>div:last-child{flex:0 0 auto;padding:9px 12px;border:1px solid rgba(201,168,76,.25);border-radius:999px;color:#e0c879!important;background:rgba(201,168,76,.07);font-size:.8rem!important;white-space:nowrap}
+.hymn-tools{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;margin-bottom:10px}
+.hymn-search{display:block;width:100%;min-width:0;min-height:48px;padding:12px 15px;border-radius:13px;border:1px solid rgba(201,168,76,.28);background:#1a1a20;color:#f5f0e4;font:inherit;outline:none;transition:border-color .2s,box-shadow .2s}
+.hymn-search::placeholder{color:#918d83}.hymn-search:focus{border-color:#c9a84c;box-shadow:0 0 0 3px rgba(201,168,76,.13)}
+.hymn-load-btn{min-height:48px;padding:12px 20px;border-radius:13px;background:#c9a84c;color:#211a0b;font-weight:800;cursor:pointer;transition:background .2s,transform .2s}
+.hymn-load-btn:hover{background:#e5ca7b}.hymn-load-btn:active{transform:translateY(1px)}
+.hymn-status{display:flex;align-items:center;min-height:38px;margin:0 0 20px;padding:9px 12px;border-radius:10px;color:#c6c1b6;background:rgba(255,255,255,.035);font-size:.83rem;line-height:1.5}
+.hymn-pagination{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;margin:0 0 14px;color:#d9cda9;font-size:.86rem}
+.hymn-pagination span{text-align:center;font-variant-numeric:tabular-nums;white-space:nowrap}
+.hymn-pagination button{min-height:40px;border:1px solid rgba(201,168,76,.25);border-radius:11px;padding:8px 13px;background:rgba(201,168,76,.07);color:#ead9a2;cursor:pointer;transition:background .2s,border-color .2s}
+.hymn-pagination button:last-child{justify-self:end}.hymn-pagination button:hover:not(:disabled){background:rgba(201,168,76,.16);border-color:#c9a84c}.hymn-pagination button:disabled{opacity:.35;cursor:not-allowed}
+.hymn-number-grid{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:8px;margin:0 0 28px}
+.hymn-number{min-width:0;min-height:43px;padding:8px 3px;border:1px solid #343239;border-radius:10px;background:#1b1a20;color:#e5e0d6;font-family:'Pretendard',sans-serif;font-size:.9rem;font-weight:600;font-variant-numeric:tabular-nums;cursor:pointer;transition:background .18s,border-color .18s,color .18s,transform .18s}
+.hymn-number:hover{border-color:rgba(201,168,76,.75);background:rgba(201,168,76,.1);color:#f5df9b}.hymn-number.active{border-color:#c9a84c;background:#c9a84c;color:#201909;font-weight:850;box-shadow:0 3px 10px rgba(201,168,76,.18)}
+.hymn-number:focus-visible,.hymn-pagination button:focus-visible,.hymn-viewer-actions button:focus-visible,.hymn-load-btn:focus-visible{outline:3px solid #d9bd68;outline-offset:2px}
+.hymn-number.hymn-missing{opacity:.48}.hymn-number.hymn-missing:after{content:"";display:block}
+.hymn-viewer{border:1px solid #ded8c9;border-radius:17px;overflow:hidden;background:#f8f6ef;color:#27251f;min-height:250px;box-shadow:0 8px 24px rgba(0,0,0,.08)}
+.hymn-viewer-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 16px;background:#29261e;color:#f2df9e}
+.hymn-viewer-head>strong{min-width:0;font-family:'Noto Serif KR',serif;font-size:.98rem;line-height:1.5;overflow-wrap:anywhere}
+.hymn-viewer-actions{display:flex;flex:0 0 auto;gap:7px}.hymn-viewer-actions button{min-height:36px;border:1px solid rgba(232,208,138,.35);border-radius:9px;padding:7px 10px;color:#f2df9e;background:rgba(255,255,255,.035);cursor:pointer;white-space:nowrap}
+.hymn-viewer-actions button:hover{background:rgba(201,168,76,.15)}
+.hymn-pages{padding:clamp(8px,2vw,22px);display:flex;flex-direction:column;align-items:center;gap:14px;overflow-x:auto}
+.hymn-pages img{display:block;max-width:100%;height:auto;box-shadow:0 4px 18px rgba(0,0,0,.12)}.hymn-pages iframe{display:block;width:100%;height:min(78vh,900px);border:0;background:white}
+.hymn-pages .hymn-pdf-page{width:100%;max-width:100%;background:#fff}.hymn-pages .hymn-pdf-page canvas{display:block;width:100%;height:auto;margin:0 auto 14px;background:#fff;box-shadow:0 4px 18px rgba(0,0,0,.12)}
+.hymn-empty{padding:clamp(28px,5vw,48px) 18px;text-align:center;color:#625c50;line-height:1.9}.hymn-empty strong{color:#8b6818}
+.hymn-file-list{padding:12px 20px 22px;color:#4d473a}.hymn-file-list a{display:inline-block;margin:5px;color:#775711;text-decoration:underline}
+@media(min-width:601px) and (max-width:899px){.hymn-number-grid{grid-template-columns:repeat(8,minmax(0,1fr))}}
+@media(max-width:600px){
+.hymn-switch{width:calc(100% - 32px);margin-bottom:18px}.hymn-switch button{flex:1;min-width:0;padding:10px 8px;font-size:.88rem}
+.hymn-panel{width:calc(100% - 20px);margin-bottom:40px;padding:17px 13px;border-radius:19px}
+.hymn-hero{align-items:flex-start;flex-direction:column;gap:12px;margin-bottom:18px;padding-bottom:17px}.hymn-hero>div:last-child{align-self:flex-start}
+.hymn-tools{grid-template-columns:minmax(0,1fr);gap:8px}.hymn-load-btn{width:100%}.hymn-status{margin-bottom:15px;font-size:.8rem}
+.hymn-pagination{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}.hymn-pagination span{grid-column:1/-1;grid-row:1;font-size:.82rem}
+.hymn-pagination button{width:100%;min-width:0;padding:8px 5px;font-size:.82rem}.hymn-pagination button:first-child{grid-column:1;grid-row:2}.hymn-pagination button:last-child{grid-column:2;grid-row:2;justify-self:stretch}
+.hymn-number-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin-bottom:22px}.hymn-number{min-height:42px;border-radius:9px;font-size:.88rem}
+.hymn-viewer{border-radius:13px}.hymn-viewer-head{align-items:flex-start;flex-direction:column;padding:12px}.hymn-viewer-actions{width:100%}.hymn-viewer-actions button{flex:1}
+.hymn-pages{padding:7px;gap:8px}.hymn-pages .hymn-pdf-page canvas{margin-bottom:8px}
+}
+@media(max-width:360px){.hymn-number-grid{gap:5px}.hymn-number{min-height:39px;font-size:.82rem}}
+html[data-theme="light"] body:has(.bible-container) .hymn-panel{background:#fffdf8;border-color:#e8dfc9;box-shadow:0 14px 40px rgba(65,48,12,.07)}
+html[data-theme="light"] body:has(.bible-container) .hymn-switch{background:#f8f5ed;border-color:#e9e1d0}
+html[data-theme="light"] body:has(.bible-container) .hymn-switch button{color:#5c5547}
+html[data-theme="light"] body:has(.bible-container) .hymn-switch button.active{color:#211a0b}
+html[data-theme="light"] body:has(.bible-container) .hymn-kicker{color:#98721e}
+html[data-theme="light"] body:has(.bible-container) .hymn-title{color:#4c3a13}
+html[data-theme="light"] body:has(.bible-container) .hymn-subtitle{color:#625c50}
+html[data-theme="light"] body:has(.bible-container) .hymn-hero>div:last-child{color:#85651b!important;background:#fbf5e4;border-color:#e8d9b2}
+html[data-theme="light"] body:has(.bible-container) .hymn-search{background:#fff;border-color:#ded5c1;color:#29251f}
+html[data-theme="light"] body:has(.bible-container) .hymn-search::placeholder{color:#8b8476}
+html[data-theme="light"] body:has(.bible-container) .hymn-status{color:#5c5547;background:#f7f4ec}
+html[data-theme="light"] body:has(.bible-container) .hymn-pagination{color:#62552f}
+html[data-theme="light"] body:has(.bible-container) .hymn-pagination button{color:#5d4715;background:#faf5e7;border-color:#e7dcc0}
+html[data-theme="light"] body:has(.bible-container) .hymn-number{background:#fff;color:#3b372f;border-color:#e5e0d5}
+html[data-theme="light"] body:has(.bible-container) .hymn-number:hover{background:#fbf5e4;color:#654b12;border-color:#c9a84c}
+html[data-theme="light"] body:has(.bible-container) .hymn-number.active{background:#c9a84c;color:#201909;border-color:#b58d2d}
+html[data-theme="light"] body:has(.bible-container) .hymn-viewer{border-color:#e4ddce}
+html[data-theme="light"] body:has(.bible-container) .hymn-viewer-head{background:#f2ecdc;color:#403317}
+html[data-theme="light"] body:has(.bible-container) .hymn-viewer-actions button{color:#5b4717;border-color:#dfd1ae;background:#fbf7ec}
+html[data-theme="light"] body:has(.bible-container) .hymn-empty{color:#625c50}
+html[data-theme="light"] body:has(.bible-container) .hymn-empty strong{color:#85651b}
+
     </style>
   <meta name="robots" content="index, follow">
   <meta name="twitter:card" content="summary_large_image">
@@ -690,7 +762,7 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
             <div><div class="hymn-kicker">HYMNAL ARCHIVE · PILOT</div><h2 class="hymn-title">찬송가 악보 &amp; 가사</h2><p class="hymn-subtitle">번호를 선택해 악보와 가사를 크게 보고, 모바일에서도 편하게 넘겨보세요.</p></div>
             <div style="color:#d9cda9;font-size:.82rem;">전체 찬송가 · 1–645장</div>
         </div>
-        <div class="hymn-tools"><input id="hymnSearch" class="hymn-search" type="search" inputmode="numeric" placeholder="찬송가 번호 검색 (예: 3)" aria-label="찬송가 번호 검색"><button class="hymn-load-btn" type="button" onclick="loadHymnArchives()">자료 다시 불러오기</button></div>
+        <div class="hymn-tools"><input id="hymnSearch" class="hymn-search" type="search" inputmode="numeric" placeholder="찬송가 번호 입력 (1–645)" aria-label="찬송가 번호 검색"><button class="hymn-load-btn" type="button" onclick="loadHymnArchives()">번호로 이동</button></div>
         <p id="hymnStatus" class="hymn-status" role="status" aria-live="polite">압축파일에서 찬송가 자료를 확인합니다.</p>
         <div class="hymn-pagination" aria-label="찬송가 페이지 이동"><button type="button" id="hymnPrevPage" onclick="changeHymnPage(-1)">← 이전 50장</button><span id="hymnPageLabel">1–50장 · 13페이지 중 1</span><button type="button" id="hymnNextPage" onclick="changeHymnPage(1)">다음 50장 →</button></div><div id="hymnNumberGrid" class="hymn-number-grid" aria-label="현재 페이지 찬송가 번호 목록"></div>
         <div class="hymn-viewer">
@@ -2184,6 +2256,78 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
         .hymn-file-list a { display:inline-block; margin:5px; color:#775711; text-decoration:underline; }
         @media(max-width:600px) { .hymn-pagination { flex-wrap:wrap; justify-content:center; } .hymn-pagination span { order:-1; width:100%; text-align:center; } .hymn-switch button { flex:1; padding:11px 10px; font-size:.9rem; } .hymn-tools { grid-template-columns:1fr; } .hymn-load-btn { width:100%; } .hymn-number-grid { grid-template-columns:repeat(5,minmax(0,1fr)); } }
 
+    
+/* HYMNAL REDESIGN — responsive ivory & gold */
+.hymn-switch{display:flex;justify-content:center;gap:8px;max-width:460px;margin:0 auto 24px;padding:5px;border:1px solid rgba(201,168,76,.22);border-radius:18px;background:rgba(255,255,255,.045)}
+.hymn-switch button{flex:1;min-height:44px;border:1px solid transparent;border-radius:13px;padding:10px 18px;color:#d4d0c6;background:transparent;cursor:pointer;font-weight:700;transition:.2s}
+.hymn-switch button.active{background:linear-gradient(135deg,#f3df9e,#c5a04b);color:#211a0b;border-color:#e5ca7b;box-shadow:0 3px 12px rgba(201,168,76,.16)}
+.hymn-panel{box-sizing:border-box;width:min(1160px,calc(100% - 32px));margin:0 auto 64px;padding:clamp(18px,3.2vw,34px);border:1px solid rgba(201,168,76,.25);border-radius:24px;background:#111116;box-shadow:0 18px 50px rgba(0,0,0,.18)}
+.hymn-panel *,.hymn-panel *:before,.hymn-panel *:after{box-sizing:border-box}
+.hymn-hero{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:24px;padding-bottom:22px;border-bottom:1px solid rgba(201,168,76,.18)}
+.hymn-kicker{color:#c5a04b;font-size:.72rem;letter-spacing:.16em;font-weight:800}
+.hymn-title{font-family:'Noto Serif KR',serif;color:#f1dfad;font-size:clamp(1.55rem,3vw,2.15rem);line-height:1.35;margin:7px 0 8px;letter-spacing:-.035em}
+.hymn-subtitle{color:#bdb9ae;font-size:.92rem;line-height:1.65;margin:0}
+.hymn-hero>div:last-child{flex:0 0 auto;padding:9px 12px;border:1px solid rgba(201,168,76,.25);border-radius:999px;color:#e0c879!important;background:rgba(201,168,76,.07);font-size:.8rem!important;white-space:nowrap}
+.hymn-tools{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;margin-bottom:10px}
+.hymn-search{display:block;width:100%;min-width:0;min-height:48px;padding:12px 15px;border-radius:13px;border:1px solid rgba(201,168,76,.28);background:#1a1a20;color:#f5f0e4;font:inherit;outline:none;transition:border-color .2s,box-shadow .2s}
+.hymn-search::placeholder{color:#918d83}.hymn-search:focus{border-color:#c9a84c;box-shadow:0 0 0 3px rgba(201,168,76,.13)}
+.hymn-load-btn{min-height:48px;padding:12px 20px;border-radius:13px;background:#c9a84c;color:#211a0b;font-weight:800;cursor:pointer;transition:background .2s,transform .2s}
+.hymn-load-btn:hover{background:#e5ca7b}.hymn-load-btn:active{transform:translateY(1px)}
+.hymn-status{display:flex;align-items:center;min-height:38px;margin:0 0 20px;padding:9px 12px;border-radius:10px;color:#c6c1b6;background:rgba(255,255,255,.035);font-size:.83rem;line-height:1.5}
+.hymn-pagination{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;margin:0 0 14px;color:#d9cda9;font-size:.86rem}
+.hymn-pagination span{text-align:center;font-variant-numeric:tabular-nums;white-space:nowrap}
+.hymn-pagination button{min-height:40px;border:1px solid rgba(201,168,76,.25);border-radius:11px;padding:8px 13px;background:rgba(201,168,76,.07);color:#ead9a2;cursor:pointer;transition:background .2s,border-color .2s}
+.hymn-pagination button:last-child{justify-self:end}.hymn-pagination button:hover:not(:disabled){background:rgba(201,168,76,.16);border-color:#c9a84c}.hymn-pagination button:disabled{opacity:.35;cursor:not-allowed}
+.hymn-number-grid{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:8px;margin:0 0 28px}
+.hymn-number{min-width:0;min-height:43px;padding:8px 3px;border:1px solid #343239;border-radius:10px;background:#1b1a20;color:#e5e0d6;font-family:'Pretendard',sans-serif;font-size:.9rem;font-weight:600;font-variant-numeric:tabular-nums;cursor:pointer;transition:background .18s,border-color .18s,color .18s,transform .18s}
+.hymn-number:hover{border-color:rgba(201,168,76,.75);background:rgba(201,168,76,.1);color:#f5df9b}.hymn-number.active{border-color:#c9a84c;background:#c9a84c;color:#201909;font-weight:850;box-shadow:0 3px 10px rgba(201,168,76,.18)}
+.hymn-number:focus-visible,.hymn-pagination button:focus-visible,.hymn-viewer-actions button:focus-visible,.hymn-load-btn:focus-visible{outline:3px solid #d9bd68;outline-offset:2px}
+.hymn-number.hymn-missing{opacity:.48}.hymn-number.hymn-missing:after{content:"";display:block}
+.hymn-viewer{border:1px solid #ded8c9;border-radius:17px;overflow:hidden;background:#f8f6ef;color:#27251f;min-height:250px;box-shadow:0 8px 24px rgba(0,0,0,.08)}
+.hymn-viewer-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 16px;background:#29261e;color:#f2df9e}
+.hymn-viewer-head>strong{min-width:0;font-family:'Noto Serif KR',serif;font-size:.98rem;line-height:1.5;overflow-wrap:anywhere}
+.hymn-viewer-actions{display:flex;flex:0 0 auto;gap:7px}.hymn-viewer-actions button{min-height:36px;border:1px solid rgba(232,208,138,.35);border-radius:9px;padding:7px 10px;color:#f2df9e;background:rgba(255,255,255,.035);cursor:pointer;white-space:nowrap}
+.hymn-viewer-actions button:hover{background:rgba(201,168,76,.15)}
+.hymn-pages{padding:clamp(8px,2vw,22px);display:flex;flex-direction:column;align-items:center;gap:14px;overflow-x:auto}
+.hymn-pages img{display:block;max-width:100%;height:auto;box-shadow:0 4px 18px rgba(0,0,0,.12)}.hymn-pages iframe{display:block;width:100%;height:min(78vh,900px);border:0;background:white}
+.hymn-pages .hymn-pdf-page{width:100%;max-width:100%;background:#fff}.hymn-pages .hymn-pdf-page canvas{display:block;width:100%;height:auto;margin:0 auto 14px;background:#fff;box-shadow:0 4px 18px rgba(0,0,0,.12)}
+.hymn-empty{padding:clamp(28px,5vw,48px) 18px;text-align:center;color:#625c50;line-height:1.9}.hymn-empty strong{color:#8b6818}
+.hymn-file-list{padding:12px 20px 22px;color:#4d473a}.hymn-file-list a{display:inline-block;margin:5px;color:#775711;text-decoration:underline}
+@media(min-width:601px) and (max-width:899px){.hymn-number-grid{grid-template-columns:repeat(8,minmax(0,1fr))}}
+@media(max-width:600px){
+.hymn-switch{width:calc(100% - 32px);margin-bottom:18px}.hymn-switch button{flex:1;min-width:0;padding:10px 8px;font-size:.88rem}
+.hymn-panel{width:calc(100% - 20px);margin-bottom:40px;padding:17px 13px;border-radius:19px}
+.hymn-hero{align-items:flex-start;flex-direction:column;gap:12px;margin-bottom:18px;padding-bottom:17px}.hymn-hero>div:last-child{align-self:flex-start}
+.hymn-tools{grid-template-columns:minmax(0,1fr);gap:8px}.hymn-load-btn{width:100%}.hymn-status{margin-bottom:15px;font-size:.8rem}
+.hymn-pagination{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}.hymn-pagination span{grid-column:1/-1;grid-row:1;font-size:.82rem}
+.hymn-pagination button{width:100%;min-width:0;padding:8px 5px;font-size:.82rem}.hymn-pagination button:first-child{grid-column:1;grid-row:2}.hymn-pagination button:last-child{grid-column:2;grid-row:2;justify-self:stretch}
+.hymn-number-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin-bottom:22px}.hymn-number{min-height:42px;border-radius:9px;font-size:.88rem}
+.hymn-viewer{border-radius:13px}.hymn-viewer-head{align-items:flex-start;flex-direction:column;padding:12px}.hymn-viewer-actions{width:100%}.hymn-viewer-actions button{flex:1}
+.hymn-pages{padding:7px;gap:8px}.hymn-pages .hymn-pdf-page canvas{margin-bottom:8px}
+}
+@media(max-width:360px){.hymn-number-grid{gap:5px}.hymn-number{min-height:39px;font-size:.82rem}}
+html[data-theme="light"] body:has(.bible-container) .hymn-panel{background:#fffdf8;border-color:#e8dfc9;box-shadow:0 14px 40px rgba(65,48,12,.07)}
+html[data-theme="light"] body:has(.bible-container) .hymn-switch{background:#f8f5ed;border-color:#e9e1d0}
+html[data-theme="light"] body:has(.bible-container) .hymn-switch button{color:#5c5547}
+html[data-theme="light"] body:has(.bible-container) .hymn-switch button.active{color:#211a0b}
+html[data-theme="light"] body:has(.bible-container) .hymn-kicker{color:#98721e}
+html[data-theme="light"] body:has(.bible-container) .hymn-title{color:#4c3a13}
+html[data-theme="light"] body:has(.bible-container) .hymn-subtitle{color:#625c50}
+html[data-theme="light"] body:has(.bible-container) .hymn-hero>div:last-child{color:#85651b!important;background:#fbf5e4;border-color:#e8d9b2}
+html[data-theme="light"] body:has(.bible-container) .hymn-search{background:#fff;border-color:#ded5c1;color:#29251f}
+html[data-theme="light"] body:has(.bible-container) .hymn-search::placeholder{color:#8b8476}
+html[data-theme="light"] body:has(.bible-container) .hymn-status{color:#5c5547;background:#f7f4ec}
+html[data-theme="light"] body:has(.bible-container) .hymn-pagination{color:#62552f}
+html[data-theme="light"] body:has(.bible-container) .hymn-pagination button{color:#5d4715;background:#faf5e7;border-color:#e7dcc0}
+html[data-theme="light"] body:has(.bible-container) .hymn-number{background:#fff;color:#3b372f;border-color:#e5e0d5}
+html[data-theme="light"] body:has(.bible-container) .hymn-number:hover{background:#fbf5e4;color:#654b12;border-color:#c9a84c}
+html[data-theme="light"] body:has(.bible-container) .hymn-number.active{background:#c9a84c;color:#201909;border-color:#b58d2d}
+html[data-theme="light"] body:has(.bible-container) .hymn-viewer{border-color:#e4ddce}
+html[data-theme="light"] body:has(.bible-container) .hymn-viewer-head{background:#f2ecdc;color:#403317}
+html[data-theme="light"] body:has(.bible-container) .hymn-viewer-actions button{color:#5b4717;border-color:#dfd1ae;background:#fbf7ec}
+html[data-theme="light"] body:has(.bible-container) .hymn-empty{color:#625c50}
+html[data-theme="light"] body:has(.bible-container) .hymn-empty strong{color:#85651b}
+
     </style>
   <meta name="robots" content="index, follow">
   <meta name="twitter:card" content="summary_large_image">
@@ -2389,7 +2533,7 @@ html[data-theme="light"] body:has(.bible-container) section[style*="max-width:90
             <div><div class="hymn-kicker">HYMNAL ARCHIVE · PILOT</div><h2 class="hymn-title">찬송가 악보 &amp; 가사</h2><p class="hymn-subtitle">번호를 선택해 악보와 가사를 크게 보고, 모바일에서도 편하게 넘겨보세요.</p></div>
             <div style="color:#d9cda9;font-size:.82rem;">전체 찬송가 · 1–645장</div>
         </div>
-        <div class="hymn-tools"><input id="hymnSearch" class="hymn-search" type="search" inputmode="numeric" placeholder="찬송가 번호 검색 (예: 3)" aria-label="찬송가 번호 검색"><button class="hymn-load-btn" type="button" onclick="loadHymnArchives()">자료 다시 불러오기</button></div>
+        <div class="hymn-tools"><input id="hymnSearch" class="hymn-search" type="search" inputmode="numeric" placeholder="찬송가 번호 입력 (1–645)" aria-label="찬송가 번호 검색"><button class="hymn-load-btn" type="button" onclick="loadHymnArchives()">번호로 이동</button></div>
         <p id="hymnStatus" class="hymn-status" role="status" aria-live="polite">압축파일에서 찬송가 자료를 확인합니다.</p>
         <div class="hymn-pagination" aria-label="찬송가 페이지 이동"><button type="button" id="hymnPrevPage" onclick="changeHymnPage(-1)">← 이전 50장</button><span id="hymnPageLabel">1–50장 · 13페이지 중 1</span><button type="button" id="hymnNextPage" onclick="changeHymnPage(1)">다음 50장 →</button></div><div id="hymnNumberGrid" class="hymn-number-grid" aria-label="현재 페이지 찬송가 번호 목록"></div>
         <div class="hymn-viewer">

@@ -161,13 +161,19 @@
             display:block; width:100%; height:100%; position:absolute; inset:0;
             border:0; background:#000;
         }
-        .ss2-full-video-cta { display:flex; justify-content:center; margin-top:28px; }
-        .ss2-full-video-cta span {
-            display:inline-flex; align-items:center; justify-content:center;
+        .ss2-full-story { display:flex; flex-direction:column; align-items:center; margin-top:34px; padding-top:30px; border-top:1px solid rgba(201,168,76,.22); }
+        .ss2-full-story h3 { margin:0 0 16px; color:var(--gold-light); font-family:'Cinzel',serif; font-size:1rem; letter-spacing:.12em; text-align:center; }
+        .ss2-full-story .ss2-story-video-shell { width:min(100%,340px); }
+        .ss2-full-video-cta { display:flex; justify-content:center; margin-top:22px; }
+        .ss2-full-video-cta a {
+            display:inline-flex; align-items:center; justify-content:center; gap:8px;
             padding:13px 24px; border:1px solid rgba(201,168,76,.45);
             border-radius:999px; color:var(--gold-light);
             background:rgba(201,168,76,.08); font-weight:700; text-align:center;
         }
+        .ss2-full-video-cta a:hover { background:rgba(201,168,76,.16); }
+        html[data-theme="light"] .ss2-full-story h3 { color:#4a3a15; }
+        html[data-theme="light"] .ss2-full-video-cta a { color:#5d4815; background:#fffaf0; border-color:rgba(130,100,30,.3); }
         .ss2-story-kicker { display:block; margin-bottom:12px; color:var(--ice); font-family:'Cinzel',serif; font-size:.72rem; letter-spacing:.2em; }
         .ss2-story-copy h2 { margin:0 0 16px; color:var(--gold-light); font-family:'Cinzel',serif; font-size:clamp(1.5rem,3.8vw,2.35rem); line-height:1.25; letter-spacing:.04em; }
         .ss2-story-copy p { margin:0 0 16px; color:#d5d5e0; font-size:.98rem; line-height:1.9; word-break:keep-all; }
@@ -401,7 +407,15 @@
                     </div>
                 </article>
             </div>
-            <div class="ss2-full-video-cta"><span data-i18n="story_video_full_coming">▶ FULL STORY · COMING SOON</span></div>
+            <div class="ss2-full-story" aria-labelledby="ss2-full-story-title">
+                <h3 id="ss2-full-story-title" data-i18n="story_video_full_title">본편 영상</h3>
+                <div class="ss2-story-video-shell">
+                    <iframe src="https://www.youtube-nocookie.com/embed/sKkPYaMM75A?playsinline=1&rel=0" title="SISTER SQUAD 2 — 본편 영상" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+                <div class="ss2-full-video-cta">
+                    <a href="https://youtu.be/sKkPYaMM75A?si=zUwDcwd493RIvkdH" target="_blank" rel="noopener noreferrer" data-i18n="story_video_full_watch">▶ 유튜브에서 본편 보기 ↗</a>
+                </div>
+            </div>
         </section>
 
         <h2 class="section-title" data-i18n="char_sec_title">Family</h2>
@@ -595,12 +609,13 @@
                 ost_note_p:       'SISTER SQUAD 2의 놀라운 오리지널 사운드트랙을 지금 만나보세요. 유튜브, 애플뮤직, 스포티파이 등 주요 스트리밍 플랫폼에 출시되었습니다.',
                 story_video_kicker: 'SISTER SQUAD 2 · MOVIES',
                 story_video_title: 'SISTER SQUAD 2 영상',
-                story_video_desc: '본편 공개에 앞서 SISTER SQUAD 2의 분위기와 새로운 모험을 먼저 만나볼 수 있는 두 편의 선공개 예고편입니다.',
-                story_video_promo: '율이와 정이, 그리고 아빠 크리스의 두 번째 모험. 약 15분 분량의 본편 영상도 공개될 예정입니다.',
+                story_video_desc: 'SISTER SQUAD 2의 세 편의 예고편과 약 15분 분량의 본편 영상을 만나보세요.',
+                story_video_promo: '율이와 정이, 그리고 아빠 크리스의 두 번째 모험. 아래에서 본편을 지금 감상할 수 있습니다.',
                 story_video_trailer1: '예고편 1',
                 story_video_trailer2: '예고편 2',
                 story_video_trailer3: '예고편 3',
-                story_video_full_coming: '▶ FULL Story · Coming soon',
+                story_video_full_title: '본편 영상',
+                story_video_full_watch: '▶ 유튜브에서 본편 보기 ↗',
                 media_sec_title:  '주요 장면',
                 story_desc:       '요정 마을 루미나에 평화를 찾아줬던 두 영웅, 율이와 정이는 평범한 일상으로 돌아옵니다.<br>하지만 <b>율이는 뾰족한 사춘기 소녀</b>가, <b>정이는 독립심 강한 초등학생</b>이 되어 자매 사이엔 미묘한 긴장감이 흐릅니다.<br><br>그러던 어느 날, 루미나에서 온 구조 신호. 숨겨진 과거와 트라우마를 간직한 아빠와 함께 다시 \'속삭임의 책\'을 펼치지만, 그들을 맞이한 루미나는 <b>잿빛의 폐허</b>였습니다.<br><br>자매는 저주의 근원을 파헤치기 위한 두 번째 여정을 시작합니다. 매번 충돌하면서도 진정한 자매애를 깨달아가는 율이와 정이, 그리고 과거의 실패를 마주하며 딸들을 지키기 위해 비장한 희생을 선택하는 아빠. 절망 속에서도 유머를 잃지 않는 조력자들과 함께, <b>\'함께\'라는 힘의 위대함</b>을 증명하는 감동적이고 유쾌한 여정입니다.',
                 seo_story_desc:   '1편에서 요정 마을을 구했던 <strong style="color:#e8d08a;">율이와 정이</strong>는 각자 사춘기와 초등학생 시절을 지나며 새로운 갈등을 마주합니다. 잿빛으로 물든 루미나를 되살리기 위해 <strong style="color:#c9a84c;">죽음의 늪</strong>, <strong style="color:#c9a84c;">거인의 등뼈</strong>, <strong style="color:#c9a84c;">고요의 계곡</strong>을 지나 고대 도시 아르카디아까지 향하는 여정 속에서, 자매는 이성과 감성이 다르지 않고 서로를 완성한다는 것을 배웁니다.',
@@ -661,12 +676,13 @@
                 ost_note_p:       'Discover the amazing original soundtrack of Sister Squad 2, now streaming on YouTube, Apple Music, Spotify and more.',
                 story_video_kicker: 'SISTER SQUAD 2 · MOVIES',
                 story_video_title: 'SISTER SQUAD 2 — Movies',
-                story_video_desc: 'Three early-release preview trailers offer a first look at the atmosphere and new adventure of SISTER SQUAD 2 before the full episode arrives.',
-                story_video_promo: 'Yul, Jung, and their dad Chris begin a second adventure. The full story, approximately 15 minutes long, is coming soon.',
+                story_video_desc: 'Watch three previews and the full SISTER SQUAD 2 story, approximately 15 minutes long.',
+                story_video_promo: 'Yul, Jung, and their dad Chris begin a second adventure. Watch the full story below.',
                 story_video_trailer1: 'Preview Trailer 1',
                 story_video_trailer2: 'Preview Trailer 2',
                 story_video_trailer3: 'Preview Trailer 3',
-                story_video_full_coming: '▶ FULL Story · Coming soon',
+                story_video_full_title: 'Full Story',
+                story_video_full_watch: '▶ Watch the full story on YouTube ↗',
                 media_sec_title:  'Highlights: Key Scenes',
                 story_desc:       'Yul and Jung, the two heroes who once brought peace to the fairy village of Lumina, return to ordinary life.<br>But <b>Yul has become a prickly teenager</b>, and <b>Jung a fiercely independent grade-schooler</b> — a quiet tension now runs between the sisters.<br><br>Then one day, a distress signal arrives from Lumina. Together with their father, who hides a past full of secrets and trauma, they open the \'Whispering Book\' once more — only to find Lumina reduced to ash-grey ruins.<br><br>The sisters set out on a second journey to uncover the root of the curse. Clashing again and again, Yul and Jung come to understand true sisterhood, while their father confronts his past failures and chooses a solemn sacrifice to protect his daughters. With the help of allies who never lose their humor even in despair, they prove the power of standing <b>together</b> — a moving, joyful adventure once more.',
                 seo_story_desc:   'Having saved the fairy village once, <strong style="color:#e8d08a;">Yul and Jung</strong> now face new conflicts as they grow through adolescence and grade school. On the way to the ancient city of Arcadia — through the <strong style="color:#c9a84c;">Swamp of Death</strong>, the <strong style="color:#c9a84c;">Giant\'s Spine</strong>, and the <strong style="color:#c9a84c;">Valley of Silence</strong> — the sisters learn that reason and heart aren\'t opposites, but two halves that complete each other.',

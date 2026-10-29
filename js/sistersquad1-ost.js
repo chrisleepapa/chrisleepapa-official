@@ -75,7 +75,7 @@
         <p class="ss1-ost-desc" data-ss1-ost-desc>페이지를 떠나지 않고 SISTER SQUAD 1의 OST를 바로 감상할 수 있습니다.</p>
       </div>
       <div class="ss1-ost-player">
-        <iframe id="ss1-ost-frame" class="ss1-ost-frame" title="SISTER SQUAD 1 Original Soundtrack" loading="eager" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe><div class="ss1-ost-fallback">영상이 표시되지 않나요? <a id="ss1-ost-direct" href="https://www.youtube.com/playlist?list=OLAK5uy_mqee5T3VeR_PxTavxgLXm1HDpm40_VRZU" target="_blank" rel="noopener">YouTube에서 직접 보기 ↗</a></div>
+        <iframe id="ss1-ost-frame" class="ss1-ost-frame" title="SISTER SQUAD 1 Original Soundtrack" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe><div class="ss1-ost-fallback">영상이 표시되지 않나요? <a id="ss1-ost-direct" href="https://www.youtube.com/playlist?list=OLAK5uy_mqee5T3VeR_PxTavxgLXm1HDpm40_VRZU" target="_blank" rel="noopener">YouTube에서 직접 보기 ↗</a></div>
         <div class="ss1-ost-current"><strong id="ss1-ost-current-title">SISTER SQUAD</strong><span id="ss1-ost-current-desc">Original Soundtrack · Main Edition</span><div class="ss1-ost-links"><a id="ss1-ost-youtube" class="ss1-ost-link" href="#" target="_blank" rel="noopener">YOUTUBE ↗</a><a id="ss1-ost-spotify" class="ss1-ost-link" href="#" target="_blank" rel="noopener">SPOTIFY ↗</a></div></div>
       </div>
       <div class="ss1-ost-grid" role="tablist" aria-label="SISTER SQUAD 1 OST editions">
@@ -92,9 +92,19 @@
     const spotify=section.querySelector('#ss1-ost-spotify');
     const direct=section.querySelector('#ss1-ost-direct');
     const cards=section.querySelectorAll('[data-ost]');
-    const select=(key)=>{
+    let activeKey='main';
+    let playerLoaded=false;
+    const loadPlayer=(key=activeKey)=>{
       const item=tracks[key];
-      frame.src=`https://www.youtube.com/embed/videoseries?list=${item.playlist}&rel=0`;
+      if(!item||!frame)return;
+      const nextSrc=`https://www.youtube-nocookie.com/embed/videoseries?list=${item.playlist}&rel=0`;
+      if(frame.src!==nextSrc) frame.src=nextSrc;
+      playerLoaded=true;
+    };
+    const select=(key,loadNow=true)=>{
+      const item=tracks[key];
+      activeKey=key;
+      if(loadNow) loadPlayer(key);
       title.textContent=item.title;
       desc.textContent=item.desc;
       yt.href=`https://www.youtube.com/playlist?list=${item.playlist}`;
@@ -107,7 +117,19 @@
       });
     };
     cards.forEach(card=>card.addEventListener('click',()=>select(card.dataset.ost)));
-    select('main');
+    select('main',false);
+    const playerBox=section.querySelector('.ss1-ost-player');
+    if('IntersectionObserver' in window && playerBox){
+      const playerObserver=new IntersectionObserver(entries=>{
+        if(entries.some(entry=>entry.isIntersecting)){
+          loadPlayer(activeKey);
+          playerObserver.disconnect();
+        }
+      },{rootMargin:'250px 0px'});
+      playerObserver.observe(playerBox);
+    }else{
+      window.setTimeout(()=>loadPlayer(activeKey),1200);
+    }
     const applyStoryLanguage=()=>{
       const en=document.documentElement.lang==='en';
       const values={

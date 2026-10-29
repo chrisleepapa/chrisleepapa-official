@@ -2027,13 +2027,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     
     /* Banner title: large, concise, high-contrast white text */
-    .header-content .header-title {
+    #page-title.header-title, .header-content #page-title.header-title {
         color: #fff !important;
-        font-size: clamp(1.6rem, 6.5vw, 5rem) !important;
-        line-height: 1.12;
-        letter-spacing: .04em;
-        white-space: nowrap;
-        text-shadow: 0 2px 18px rgba(0,0,0,.65);
+        -webkit-text-fill-color: #fff !important;
+        font-size: clamp(2rem, 6.5vw, 5rem) !important;
+        line-height: 1.12 !important;
+        font-weight: 800 !important;
+        letter-spacing: .04em !important;
+        white-space: nowrap !important;
+        text-shadow: 0 2px 18px rgba(0,0,0,.8) !important;
     }
 
     </style>
@@ -2061,7 +2063,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="header-banner">
             <img src="/images/sistersquad1_banner.png" alt="Sister Squad 1 공식 배너" fetchpriority="high">
             <div class="header-content">
-                <h1 id="page-title" class="header-title" data-i18n="header_title">SISTER SQUAD 1</h1>
+                <h1 id="page-title" class="header-title" style="color:#fff !important;font-size:clamp(2rem,6.5vw,5rem) !important;line-height:1.12 !important;font-weight:800 !important;letter-spacing:.04em !important;white-space:nowrap !important;text-shadow:0 2px 18px rgba(0,0,0,.8) !important;" data-i18n="header_title">SISTER SQUAD 1</h1>
                 <p class="header-slogan" data-i18n="header_slogan">Two Sisters, One Magical Destiny</p>
             </div>
         </div>
@@ -2092,7 +2094,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <iframe
                 src="https://www.youtube.com/embed/C0lluI-l0gc?rel=0"
                 title="SISTER SQUAD Cinematic Trailer"
-                loading="lazy"
+                loading="eager"
                 allow="
                     accelerometer;
                     autoplay;
@@ -2848,7 +2850,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
          COMMON SCRIPT
          ========================================================= -->
 
-    <script src="js/sistersquad1-ost.js?v=20261013-squad-i18n-v2" defer></script>
+    <script src="js/sistersquad1-ost.js?v=20261029-video-fix" defer></script>
 
     <script
         src="js/main.js?v=20261013-squad-i18n-v2"

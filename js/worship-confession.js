@@ -133,6 +133,19 @@
     document.head.appendChild(style);
     intro.replaceWith(section);
     applyWorshipStoryLanguage(document.documentElement.lang || 'ko');
+
+    // The confession section is inserted dynamically and changes page layout.
+    // Re-apply the requested deep link after insertion so #vol1/#vol2/#vol3
+    // lands on the album card rather than leaving the viewport on the story.
+    function restoreHashTarget() {
+      const rawHash = window.location.hash;
+      if (!rawHash || rawHash.length < 2) return;
+      let targetId = rawHash.slice(1);
+      try { targetId = decodeURIComponent(targetId); } catch (_) {}
+      const target = document.getElementById(targetId);
+      if (target) target.scrollIntoView({ block: 'start', behavior: 'auto' });
+    }
+    [0, 120, 350, 700].forEach((delay) => window.setTimeout(restoreHashTarget, delay));
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount, { once: true });

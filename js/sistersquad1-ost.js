@@ -32,7 +32,7 @@
         #ss1-embedded-ost .ss1-ost-title{margin:0;color:#fff;font-family:Cinzel,serif;font-size:clamp(1.35rem,3vw,1.9rem);letter-spacing:.12em}
         #ss1-embedded-ost .ss1-ost-desc{max-width:680px;margin:12px auto 0;color:#aeb1c0;font-size:.82rem;line-height:1.8;word-break:keep-all}
         #ss1-embedded-ost .ss1-ost-player{background:#000;border:1px solid rgba(255,255,255,.1);border-radius:20px;overflow:hidden;box-shadow:0 22px 55px rgba(0,0,0,.45);margin-bottom:20px}
-        #ss1-embedded-ost .ss1-ost-frame{display:block;width:100%;aspect-ratio:16/9;border:0;background:#000}
+        #ss1-embedded-ost .ss1-ost-frame{display:block;width:100%;aspect-ratio:16/9;border:0;background:#000} #ss1-embedded-ost .ss1-ost-fallback{padding:12px 16px;text-align:center;background:#111;color:#eee;font-size:.78rem} #ss1-embedded-ost .ss1-ost-fallback a{color:#e8d08a;font-weight:700;margin-left:6px}
         #ss1-embedded-ost .ss1-ost-current{padding:15px 20px;border-top:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.025)}
         #ss1-embedded-ost .ss1-ost-current strong{display:block;color:#fff;font-family:Cinzel,serif;font-size:.9rem;letter-spacing:.08em}
         #ss1-embedded-ost .ss1-ost-current span{display:block;color:#8f94a5;font-size:.7rem;margin-top:3px}
@@ -75,7 +75,7 @@
         <p class="ss1-ost-desc" data-ss1-ost-desc>페이지를 떠나지 않고 SISTER SQUAD 1의 OST를 바로 감상할 수 있습니다.</p>
       </div>
       <div class="ss1-ost-player">
-        <iframe id="ss1-ost-frame" class="ss1-ost-frame" title="SISTER SQUAD 1 Original Soundtrack" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+        <iframe id="ss1-ost-frame" class="ss1-ost-frame" title="SISTER SQUAD 1 Original Soundtrack" loading="eager" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe><div class="ss1-ost-fallback">영상이 표시되지 않나요? <a id="ss1-ost-direct" href="https://www.youtube.com/playlist?list=OLAK5uy_mqee5T3VeR_PxTavxgLXm1HDpm40_VRZU" target="_blank" rel="noopener">YouTube에서 직접 보기 ↗</a></div>
         <div class="ss1-ost-current"><strong id="ss1-ost-current-title">SISTER SQUAD</strong><span id="ss1-ost-current-desc">Original Soundtrack · Main Edition</span><div class="ss1-ost-links"><a id="ss1-ost-youtube" class="ss1-ost-link" href="#" target="_blank" rel="noopener">YOUTUBE ↗</a><a id="ss1-ost-spotify" class="ss1-ost-link" href="#" target="_blank" rel="noopener">SPOTIFY ↗</a></div></div>
       </div>
       <div class="ss1-ost-grid" role="tablist" aria-label="SISTER SQUAD 1 OST editions">
@@ -90,6 +90,7 @@
     const desc=section.querySelector('#ss1-ost-current-desc');
     const yt=section.querySelector('#ss1-ost-youtube');
     const spotify=section.querySelector('#ss1-ost-spotify');
+    const direct=section.querySelector('#ss1-ost-direct');
     const cards=section.querySelectorAll('[data-ost]');
     const select=(key)=>{
       const item=tracks[key];
@@ -97,6 +98,7 @@
       title.textContent=item.title;
       desc.textContent=item.desc;
       yt.href=`https://www.youtube.com/playlist?list=${item.playlist}`;
+      if(direct) direct.href=yt.href;
       spotify.href=item.spotify;
       cards.forEach(card=>{
         const active=card.dataset.ost===key;

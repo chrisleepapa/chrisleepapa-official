@@ -101,6 +101,25 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         .business-card-link:hover { border-color:var(--gold); color:var(--gold); transform:translateY(-2px); }
         .business-card-link.primary { background:#25221b; border-color:#25221b; color:#fff; }
         html[data-theme="dark"] .business-card-link.primary { background:#e8d08a; border-color:#e8d08a; color:#17130b; }
+        /* Email CTA: keep strong contrast even when shared theme/link rules override colors */
+        html[data-theme="light"] .business-card-link.primary,
+        html[data-theme="light"] .business-card-contact a.business-card-link.primary {
+            background:#25221b !important;
+            border-color:#25221b !important;
+            color:#ffffff !important;
+            -webkit-text-fill-color:#ffffff !important;
+        }
+        html[data-theme="light"] .business-card-link.primary span,
+        html[data-theme="light"] .business-card-contact a.business-card-link.primary span {
+            color:#ffffff !important;
+            -webkit-text-fill-color:#ffffff !important;
+        }
+        html[data-theme="light"] .business-card-link.primary:hover {
+            background:#25221b !important;
+            border-color:#25221b !important;
+            color:#ffffff !important;
+            -webkit-text-fill-color:#ffffff !important;
+        }
         .business-card-link.primary:hover { filter:brightness(1.08); color:inherit; }
         .business-card-link span { font-size:1.15rem; }
         .collaboration-section { max-width:780px; margin:48px auto 0; padding-top:35px; border-top:1px solid var(--contact-line); text-align:left; }

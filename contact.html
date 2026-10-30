@@ -67,16 +67,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         .business-card {
             display:flex; flex-direction:column; width:min(100%,520px); max-width:520px;
             margin:0 auto; overflow:hidden; border:1px solid var(--contact-line);
-            border-radius:26px; background:var(--contact-paper); color:var(--contact-ink);
-            text-align:center; box-shadow:0 24px 70px rgba(30,25,15,.16);
+            border-radius:28px; background:var(--contact-paper); color:var(--contact-ink);
+            text-align:center; box-shadow:0 28px 80px rgba(30,25,15,.18),0 0 0 5px rgba(177,138,53,.07);
         }
         .business-card-photo {
-            position:relative; width:100%; height:430px; min-height:0;
+            position:relative; width:100%; height:390px; min-height:0;
             overflow:hidden; background:#e9dfd0;
         }
         .business-card-photo img {
             position:absolute; inset:0; width:100%; height:100%;
-            object-fit:cover; object-position:center 25%;
+            object-fit:contain; object-position:center bottom; padding:18px 18px 0;
         }
         .business-card-photo::after {
             content:""; position:absolute; inset:auto 0 0; height:24%;
@@ -84,17 +84,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         }
         .business-card-info {
             display:flex; flex-direction:column; align-items:center;
-            justify-content:center; padding:34px clamp(24px,6vw,48px) 42px;
+            justify-content:center; padding:32px clamp(24px,6vw,48px) 38px;
         }
         .business-card-kicker { color:var(--gold); font:700 .7rem 'Cinzel',serif; letter-spacing:.22em; margin-bottom:15px; }
         .business-card-name { color:var(--contact-ink); font:700 clamp(1.8rem,5vw,2.55rem) 'Cinzel',serif; letter-spacing:.035em; line-height:1.2; }
         .business-card-role { margin-top:10px; color:var(--contact-muted); font-size:.95rem; letter-spacing:.02em; }
-        .business-card-rule { width:54px; height:2px; margin:23px auto 22px; background:var(--gold); }
+        .business-card-rule { width:64px; height:2px; margin:22px auto 20px; background:var(--gold); }
         .business-card-tagline { color:var(--contact-muted); font-size:.94rem; line-height:1.85; word-break:keep-all; }
         .business-card-contact { display:grid; grid-template-columns:1fr; width:100%; gap:11px; margin-top:30px; }
         .business-card-link {
             display:flex; align-items:center; justify-content:center; gap:11px;
-            width:100%; min-height:54px; padding:0 18px; border:1px solid var(--contact-line);
+            width:100%; min-height:56px; padding:0 18px; border:1px solid var(--contact-line);
             border-radius:12px; background:var(--contact-soft); color:var(--contact-ink);
             text-decoration:none; font-size:.95rem; font-weight:650; transition:all .2s ease;
         }
@@ -117,7 +117,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             .page-wrapper { padding:100px 14px 70px; }
             .glass-card { padding:26px 4px; }
             .business-card { width:100%; max-width:460px; border-radius:22px; }
-            .business-card-photo { height:340px; }
+            .business-card-photo { height:320px; }
             .business-card-info { padding:29px 23px 34px; }
             .business-card-contact { gap:10px; }
             .business-card-link { min-height:52px; font-size:.9rem; }
@@ -179,7 +179,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
             <section class="business-card" aria-label="Chris LEE.PAPA digital business card">
                 <div class="business-card-photo">
-                    <img src="/images/chris03.jpg" alt="Chris LEE.PAPA 크리에이터 캐릭터" loading="eager">
+                    <img src="/images/chris01.png" alt="Chris LEE.PAPA 캐릭터 일러스트" loading="eager">
                 </div>
                 <div class="business-card-info">
                     <span class="business-card-kicker">CREATOR · PRODUCER · WRITER</span>

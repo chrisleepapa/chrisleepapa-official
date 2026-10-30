@@ -1277,3 +1277,36 @@ main 병합 커밋 `21c5f424ad1b6991e72fc5a76e04da4b98c1a048`의 Vercel Producti
 
 ### 변경 이력
 - 2026-10-30: 사이트맵 24개 HTML과 사용자 제공 GTM export v2를 정적으로 대조. 소스 변경 없이 점검 문서만 develop에서 갱신.
+
+## 28. 동의 관리(CMP) 및 개인정보처리방침 대조 — 2026-10-30
+
+### 확인 범위
+- 기준 브랜치: `develop`.
+- 27단계에서 미완료로 남긴 GTM consent 설정과 사이트의 실제 동의 관리 구성을 정적 소스 기준으로 후속 확인.
+- `main`과 `develop`을 비교한 결과, `develop`은 점검 문서 변경 1건만 앞서 있으며 사이트 HTML/JS/CSS는 동일하다. 따라서 코드 검색 결과는 동일한 사이트 소스에 대한 점검으로 판단했다.
+- GitHub 저장소 코드에서 다음 문자열/구성의 존재 여부를 검색했다: `gtag consent default`, `Consent Mode v2`, `googlefc`, `Funding Choices`, `CookieYes`, `cookie consent`, `analytics_storage ad_storage`.
+
+### 확인 결과
+1. 사이트 코드 검색에서 Google Consent Mode 초기화(`gtag('consent', ...)`), `analytics_storage`/`ad_storage` 설정, Google Funding Choices/Google FC 및 CMP 제품 연동 흔적을 찾지 못했다.
+2. 사용자 제공 GTM export v2에는 GA4 Google tag 1개만 존재하며, consent 설정 상태는 `NOT_SET`으로 기록되어 있다. AdSense 태그는 0개다.
+3. `privacy.html`의 한국어/영어 정책은 Google Analytics 및 AdSense 쿠키 사용 사실을 설명한다.
+4. 쿠키 관리 항목은 브라우저 설정에서 쿠키를 비활성화하는 방법을 안내한다. 사이트 자체의 동의 배너, 광고/분석 목적별 선택, 동의 변경·철회 UI 또는 CMP 연동 안내는 정적 본문에서 확인되지 않았다.
+5. 개인정보처리방침에는 개인정보 처리 동의 철회 권리가 적혀 있으나, 실제 사이트에서 쿠키/광고/분석 동의를 어떻게 변경하는지 구체적인 절차는 제시하지 않는다.
+
+### 판정 및 주의
+- **정적 소스 기준 동의 관리 기능은 확인되지 않음**으로 기록한다. 다만 GTM 계정의 게시 컨테이너에 UI/태그가 추가되어 있는지, 외부 스크립트나 서버 측에서 별도 처리하는지까지는 이 소스 검색만으로 단정하지 않는다.
+- Google은 EEA 및 영국(2024-01-16부터), 스위스(2024-07-31부터) 이용자에게 개인 맞춤 광고를 제공하는 게시자에게 Google 인증 CMP와 IAB TCF 통합을 요구한다고 안내한다. 실제 적용 필요성은 사이트의 해당 지역 방문자 및 광고 제공 여부에 따라 판단해야 한다.
+- 이 요구사항만으로 현재 한국 이용자에 대한 정책 위반 또는 AdSense 거절 원인이라고 단정하지 않는다.
+- 참고: Google AdSense 공식 안내 https://support.google.com/adsense/answer/13554116?hl=en
+
+### 후속 조치
+- [x] 사이트 소스에서 Consent Mode/CMP 관련 코드 검색
+- [x] privacy.html의 쿠키·광고·분석 고지 확인
+- [x] GTM export v2의 consent 설정 기록과 대조
+- [ ] GA4/AdSense 계정에서 실제 consent 상태 및 Privacy & messaging 설정 확인
+- [ ] GA4 지역별 사용자 보고서에서 EEA/영국/스위스 방문 여부 확인
+- [ ] 해당 지역 방문자에게 광고를 제공한다면 Google 인증 CMP 및 IAB TCF 적용 여부 결정
+- [ ] 사이트 자체 쿠키/동의 UI가 필요한지 검토하고, 필요 시 별도 단계에서 develop에만 구현
+
+### 변경 이력
+- 2026-10-30: GTM consent 설정 미완료 항목을 이어서 사이트 코드와 개인정보처리방침을 대조. 사이트 소스 변경 없이 본 점검 문서만 develop에서 갱신.

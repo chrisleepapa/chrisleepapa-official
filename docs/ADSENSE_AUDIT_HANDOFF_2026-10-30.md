@@ -1163,3 +1163,32 @@ main 병합 커밋 `21c5f424ad1b6991e72fc5a76e04da4b98c1a048`의 Vercel Producti
 - 한국어/영어 제목 번역 키 `video6Title` 추가, 기존 반응형 카드 레이아웃과 iframe 언어 전환 제목 로직 재사용.
 - 수정 파일: `tutupupupipi.html`; develop 브랜치만 수정.
 - 검증: 영상 카드 총 6개, 새 embed 및 Shorts 링크 ID 일치. 실제 브라우저 재생은 배포 후 확인 필요.
+
+
+## 23. TuTuPuPuPiPi YouTube 영상 카드 지연 로딩 및 재생 UX 개선 — 2026-10-30
+
+### 적용 내용 (develop)
+- 대상: `tutupupupipi.html`.
+- Shorts 6개를 페이지 진입 즉시 iframe으로 불러오던 구조에서 YouTube 썸네일 + 재생 버튼 구조로 변경.
+- 방문자가 재생 버튼을 누른 카드에 대해서만 iframe을 생성해 영상 재생을 시작하도록 변경(지연 로딩).
+- 재생 iframe은 `youtube-nocookie.com` 도메인을 사용하고, `autoplay=1`, `playsinline=1`, `rel=0`을 적용.
+- 썸네일은 각 영상 ID에 대응하는 YouTube 썸네일 주소를 사용하며, 썸네일 로딩 실패 시 카드 배경/재생 버튼이 유지되도록 fallback 처리.
+- 영상 영역 소개 문구를 방문자 관점의 한국어/영어 문장으로 수정하고, 재생 버튼의 접근성 라벨 및 iframe 제목도 언어 설정에 맞게 갱신.
+- OST YouTube 플레이어도 privacy-enhanced `youtube-nocookie.com` embed 도메인으로 변경. YouTube 외부 재생목록 링크와 Spotify 앨범 링크는 유지.
+- 영상 ID, Shorts 외부 링크, 캐릭터 설명, 다른 페이지 섹션은 변경하지 않음.
+
+### 검증
+- [x] 영상 카드 6개와 기존 6개 영상 ID 유지
+- [x] 초기 HTML에 Shorts iframe이 없어 페이지 진입 시 플레이어를 자동 요청하지 않음
+- [x] 재생 클릭 시 해당 영상 ID로 iframe을 생성하도록 스크립트 추가
+- [x] 한국어/영어 재생 라벨 및 iframe 제목 처리
+- [x] YouTube 원본 Shorts 링크 6개 유지
+- [ ] PC/모바일 실제 브라우저에서 썸네일 표시 및 재생 확인
+- [ ] 실제 YouTube 플레이어의 쿠키/브라우저 정책에 따른 재생 여부 확인
+
+### 검증 한계
+- YouTube 영상 URL은 확인했으나, 현재 작업 환경에서 YouTube Shorts 페이지의 실제 영상 스트림/장면은 가져오지 못했다. 따라서 개별 영상의 줄거리나 장면을 임의로 설명하거나 제목을 창작하지 않았다.
+- 이번 개선은 사이트 로딩/임베드 UX와 접근성 개선이며, 실제 브라우저 재생 성공을 보증하는 것은 아니다.
+
+### 변경 이력
+- 2026-10-30: YouTube Shorts 6개를 클릭 시 재생 방식으로 전환하고, OST 임베드에 privacy-enhanced 도메인을 적용. develop에서만 작업하며 main은 변경하지 않음.

@@ -1557,3 +1557,71 @@ main 병합 커밋 `21c5f424ad1b6991e72fc5a76e04da4b98c1a048`의 Vercel Producti
 
 ### 변경 이력
 - 2026-10-30: JOURNAL 목록 페이지와 개별 글 6개의 색인/메타데이터/광고 코드를 대조. 소스 변경 없이 점검 문서만 develop에서 갱신.
+
+
+## 34. SISTER SQUAD 2 본편 공개 안내 및 영상 섹션 재점검 — 2026-10-30
+
+### 확인 범위
+- 기준 브랜치: `develop`.
+- `sistersquad2.html`, `index.html`, `sistersquad-hub.html`, `sistersquad.html`, `js/sistersquad2-story.js`를 대상으로 본편/예고편 안내, 영상 ID, 번역 문구, 홈 연결, 페이지 SEO 및 광고 코드 확인.
+- develop의 Vercel 배포 별칭과 연결된 커밋도 확인.
+- 실제 YouTube 영상의 공개/재생 가능 상태와 브라우저 내 iframe 재생은 현재 조회 도구로 확인하지 못함.
+
+### SisterSquad 2 작품 페이지 확인 결과
+- 파일: `sistersquad2.html`.
+- title: `SISTER SQUAD 2 — The Adventure Continues | Chris LEE.PAPA`.
+- meta description 및 Open Graph/Twitter 설명은 저주받은 요정마을 루미나를 구하는 두 번째 모험과 원작 판타지 소설임을 설명.
+- canonical: `https://chrisleepapa.com/sistersquad2`.
+- robots: `index, follow`.
+- AdSense loader 및 publisher ID는 각각 1회 존재. 이번 단계에서는 광고 설정을 변경하지 않음.
+- 영상 소개 영역의 제목은 `SISTER SQUAD 2 영상`, kicker는 `SISTER SQUAD 2 · MOVIES`.
+- 초기 HTML 문구는 예고편 3편과 약 15분 분량의 본편을 소개하며, 본편을 지금 감상할 수 있다고 안내한다.
+- 본편 영상 iframe과 외부 링크는 모두 video ID `sKkPYaMM75A`를 사용한다.
+- 본편 제목은 `FULL STORY`, 한국어 번역은 `본편 영상`; CTA는 `유튜브에서 본편 보기`로 설정되어 있다.
+- 과거 공개 전 안내인 `본편은 곧 공개됩니다`, `Coming soon` 문구는 현재 `sistersquad2.html`의 영상 소개/본편 번역 문자열에서 발견되지 않았다.
+- 예고편 iframe ID는 `USfDxu7IuxU`, `dcvLikVol0A`, `JAJUJ77N-aE`이며 한국어 라벨은 각각 `예고편 1`, `예고편 2`, `예고편 3`.
+- 추가로 NG 영상 iframe `c1PrzobN_MI`가 별도 카드로 존재한다. 따라서 영상 카드 구성은 예고편 3개 + NG 영상 1개 + 본편 1개다.
+- 캐릭터 소개, 시놉시스, 세력/조력자, OST 관련 영역이 영상 섹션 외에도 존재해 단순 임베드만 있는 페이지는 아니다.
+- 다만 본편 약 15분이라는 길이는 페이지 문구에 기재된 값이며, 이번 점검에서는 YouTube 메타데이터로 실제 길이를 독립 검증하지 못했다.
+
+### 홈 페이지와 연결 상태
+- `index.html`에 별도의 `SISTER SQUAD 2 · FULL STORY` 홍보 섹션이 존재.
+- 홈 문구는 본편이 공개되었으며 지금 재생할 수 있다고 안내한다.
+- 홈 iframe도 `sKkPYaMM75A`를 사용하고, CTA는 `/sistersquad2`로 연결된다.
+- 작품 페이지의 본편 ID 및 홈 홍보 ID가 일치한다.
+- `sistersquad-hub.html`은 색인 허용 및 canonical을 갖춘 SISTER SQUAD IP 허브이며, 이번 단계에서는 별도 변경하지 않았다.
+
+### 배포 확인 및 제한
+- develop 별칭 `https://develop.chrisleepapa.com`의 Vercel 배포 상태: READY.
+- 배포 연결 커밋: `680b60d42309a776c5ff1744adbefd2f98163362` (33단계 JOURNAL 점검 문서 커밋).
+- 배포는 34단계 점검 문서 변경 이전의 최신 develop 배포다. 따라서 이번 단계의 문서 변경은 다음 자동 배포에 포함되지만, 페이지 소스는 변경하지 않았다.
+- YouTube 단축 URL 및 develop 페이지를 조회 도구에서 직접 열 수 없어 영상 공개 범위, 삭제/연령 제한/지역 제한 여부, 실제 iframe 재생 상태를 확인하지 못했다.
+- 영상 ID가 HTML에 존재한다는 사실만으로 공개 재생 가능 상태를 확정하지 않는다.
+
+### 판정
+- 소스 문구 차원에서는 본편 공개 후 안내로 정합성이 맞춰져 있으며, 이전의 `Coming soon` 안내가 남아 있지 않다.
+- 홈과 작품 페이지의 본편 ID 및 CTA 연결이 일치한다.
+- SisterSquad 2 페이지는 시놉시스, 캐릭터, 세계관 관련 인물/세력, OST, 예고편, NG 영상, 본편 등 고유한 창작 맥락을 포함한다. AdSense 콘텐츠 가치 측면에서 단순 영상 링크 모음으로 보기는 어렵다.
+- 단, 실제 YouTube 공개 상태와 브라우저 재생은 확인 전이므로 완전 검증이 아닌 정적 소스 점검 완료로 한정한다.
+- 페이지의 AdSense loader 1회는 현재 유지하며, 이번 단계에서 사이트 HTML/CSS/JS는 수정하지 않았다.
+
+### 단계별 체크리스트
+- [x] develop의 SisterSquad 2 페이지 파일 및 영상 영역 확인
+- [x] 본편 영상 ID와 YouTube 외부 링크 ID 일치 확인
+- [x] 예고편 3개의 영상 ID 및 한국어 라벨 확인
+- [x] NG 영상 카드 존재 확인
+- [x] 본편 공개 전 `Coming soon` 문구 잔존 여부 확인
+- [x] 한국어/영어 본편 소개 번역 문자열 확인
+- [x] 홈 페이지 본편 홍보 문구, 영상 ID 및 작품 페이지 링크 대조
+- [x] title/description/canonical/robots/AdSense loader 정적 확인
+- [x] develop Vercel 배포가 READY이며 33단계 커밋을 가리키는지 확인
+- [ ] YouTube 본편의 현재 공개/재생 가능 상태 확인
+- [ ] PC/모바일 브라우저에서 본편 및 예고편 iframe 재생 확인
+- [ ] 영상의 실제 재생 시간과 페이지의 약 15분 안내 대조
+
+### 다음 단계
+- 35단계 — Music 제작 노트의 초기 HTML/동적 JavaScript 렌더링 구조와 검색엔진 노출 가능성 점검.
+- 이번 단계의 미완료 항목은 YouTube 외부 공개 상태 및 브라우저 실기기 테스트가 가능할 때 보완한다.
+
+### 변경 이력
+- 2026-10-30: SisterSquad 2 페이지 및 홈 홍보 섹션의 본편 공개 안내, 영상 ID, 번역, SEO/광고 코드를 develop에서 재점검. 사이트 소스는 변경하지 않고 본 점검 문서만 갱신. main은 변경하지 않음.

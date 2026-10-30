@@ -1710,3 +1710,93 @@ main 병합 커밋 `21c5f424ad1b6991e72fc5a76e04da4b98c1a048`의 Vercel Producti
 
 ### 변경 이력
 - 2026-10-30: develop의 MUSIC HTML/JS 및 실제 개발 URL 응답을 대조. 14개 제작 노트와 14개 앨범명 일치, 앨범 이야기 2개 누락, JS 의존 렌더링 및 오래된 cache-busting query를 확인. 사이트 소스는 수정하지 않고 점검 문서만 갱신. main은 변경하지 않음.
+
+
+## 36. WORSHIP 한국어·영어 페이지의 고유 콘텐츠, 출처·권리 표시 및 광고 설정 점검 — 2026-10-30
+
+### 확인 범위
+- 기준 브랜치: `develop`.
+- `worship.html`, `worship_eng.html`, 관련 `js/worship-*.js`, `js/main.js`, `sitemap.xml`, `vercel.json`을 확인.
+- develop 도메인의 두 페이지 응답과 Vercel 배포 커밋을 확인.
+- 외부 Spotify/YouTube의 실제 재생 상태, 권리자 계약/배포 계약, Googlebot 렌더링 및 실제 PC·모바일 브라우저 동작은 확인 범위에 포함되지 않음.
+
+### 배포 및 SEO / 광고 코드
+- develop Vercel 별칭: `https://develop.chrisleepapa.com`.
+- Vercel 상태: READY. 연결 브랜치 `develop`, 커밋 `5ab6e0dcf6020308fd0367f50aff1221375520af` (35단계 점검 문서 커밋).
+- `worship.html`: title `WORSHIP — 나의 찬양 | Chris LEE.PAPA`, description 존재, canonical `https://chrisleepapa.com/worship`, HTML robots `index, follow`.
+- `worship_eng.html`: title `ENGLISH WORSHIP — SHOUT | Chris LEE.PAPA`, description 존재, canonical `https://chrisleepapa.com/worship_eng`, HTML robots `index, follow`.
+- 두 URL 모두 sitemap에 각각 등록되어 있음.
+- 두 HTML 파일 모두 AdSense loader 1회, publisher ID `ca-pub-3207219520058740` 1회, GTM 컨테이너 초기화/noscript 참조 2회.
+- develop 도메인 응답은 두 페이지 모두 HTTP 200. 응답 헤더 `X-Robots-Tag: noindex, nofollow`는 `vercel.json`의 develop 호스트 전용 설정과 일치하며, 개발 사이트를 검색엔진에서 제외하기 위한 의도된 동작이다. 운영 도메인의 실제 응답 헤더/Google 색인 상태를 이 결과로 추정하지 않는다.
+
+### 한국어 Worship 페이지
+- 파일: `worship.html`.
+- 앨범 카드 4개: 나의 찬양 Vol.1, Vol.2, Vol.3, Whispers Of Grace ver1.
+- Vol.1~Vol.3 각 10곡, 총 30곡의 가사가 초기 HTML에 정적으로 포함됨.
+- 앨범을 만들기 시작한 이유, Vol.1의 첫 고백, Vol.2의 공동체적 예배, Vol.3의 믿음·가족·공동체·천국 소망을 설명하는 정적 스토리 카드 4개가 있음.
+- 페이지 소개 및 마지막 아카이브 설명에도 단순 음원 모음이 아니라 일상과 신앙의 고백을 기록한 창작 아카이브라는 설명이 있음.
+- Spotify 앨범 링크와 YouTube playlist 링크가 앨범별로 제공됨. Vol.1은 Spotify 링크만, Vol.2·Vol.3·Whispers Of Grace는 Spotify와 YouTube 링크가 확인됨.
+- `Whispers Of Grace ver1`은 앨범 설명 및 스트리밍 링크는 있으나 Vol.1~3처럼 별도 제작 스토리 또는 가사집이 연결되어 있지는 않음.
+- Vol.3 가사집에는 동일 제목 `나를 아시는 주님`이 01번과 05번, `천국을 향해`가 06번과 08번에 반복됨. 서로 다른 보컬 편성의 버전인지, 트랙 표기가 맞는지 앨범 원본 트랙리스트와 대조할 필요가 있음.
+
+### 영어 Worship 페이지
+- 파일: `worship_eng.html`.
+- 앨범: SHOUT. HTML에 `id="shout-album"` 앨범 섹션과 Spotify 앨범 링크, YouTube playlist 링크가 존재.
+- 15곡의 영어 가사가 초기 HTML에 정적으로 포함됨.
+- SHOUT의 제작 배경, 개인 신앙 여정, 영어 워십을 만든 이유, 15곡의 주제와 언어를 넘어 찬양을 나누려는 취지를 설명하는 고유 본문이 존재.
+- 마지막 설명은 SHOUT가 단순 곡 모음이 아니라 앨범 이야기와 15곡 가사 아카이브임을 밝힘.
+- 곡명 중 `Faithfull still`, `Lord your my way`는 철자/문법상 오탈자 가능성이 있어 공식 발매 트랙명과 대조 권장. 실제 발매 메타데이터를 확인하지 않고 임의로 정정하지 않음.
+
+### 스크립트와 실제 렌더링 구조
+- 두 페이지의 HTML 하단에서 확인되는 외부 페이지 스크립트는 `js/main.js`이며, 나머지는 별도 인라인 별 효과 코드 등이다.
+- `js/main.js`에는 한국어 Worship 정적 스토리 카드의 영어 번역 및 Worship 페이지 소개 번역 데이터가 존재한다.
+- `js/worship-banner.js`, `js/worship-confession.js`, `js/worship-origin-story.js`, `js/worship-eng-presentation.js`, `js/worship-vol2-cover-fix.js` 파일은 저장소에 존재하지만, 조사한 두 HTML의 script src 또는 `js/main.js`의 명시적 로더 참조에서는 해당 파일명을 찾지 못했다. 현재 페이지에 적용되는 기능으로 간주하지 않으며, 실제 미사용 파일인지 추가 전체 참조 검색이 필요하다.
+- 핵심 앨범 카드, 가사, 스토리 본문은 HTML 정적 콘텐츠로 존재하므로 이 페이지의 핵심 콘텐츠가 전적으로 JavaScript 렌더링에 의존하지는 않는다.
+- Vercel 응답에서 두 페이지의 HTTP 200과 HTML 본문을 확인했으나, 브라우저에서 언어 전환 후 실제 텍스트, Spotify/YouTube 링크 이동, 모바일 레이아웃을 조작해 보지는 않았다.
+
+### 출처·저작권·이용 권리 표시
+- 두 페이지 HTML 전체에서 `copyright`, `©`, `license/licence`, `permission`, `출처`, `저작권`, `rights`, `credit` 관련 표기를 찾지 못함.
+- 가사집 소개는 직접 만든 찬양의 가사라고 설명하지만, 작사·작곡·편곡·마스터 음원·보컬/연주·앨범 아트워크의 권리자와 권리 범위, AI 도구 이용 조건, 배포사 계약/플랫폼 유통 권한을 구분해 표기하지는 않음.
+- 악보 PDF 또는 악보 다운로드 섹션은 두 Worship 페이지에서 확인되지 않음. 찬송가 PDF 자료의 출처 문제는 Bible/찬송가 점검의 별도 보류 항목이며 이 페이지의 자작 워십 가사/음원 권리와 혼동하지 않음.
+- Spotify/YouTube 링크가 공식 스트리밍 링크라는 설명은 있으나, 링크 존재만으로 사이트에 가사를 전문 게시할 권리, 음원/커버 이미지 사용 권리, 번역·개작 권리까지 증명되지는 않음.
+- 현재 확인 가능한 범위에서는 명시적 권리/출처 안내가 부족하다. 다만 실제 권리 침해가 발생했다고 단정하지 않는다. 창작자 본인의 권리 보유 여부, 공동 창작자/도구/배포사 계약 및 플랫폼의 가사 표시 허용 범위는 계약·계정 정보 확인이 필요하다.
+
+### AdSense 콘텐츠 품질 관점의 판단
+1. 두 페이지 모두 개별 작품 설명, 창작 배경, 신앙적 맥락, 앨범별 스토리 및 긴 가사집을 갖추고 있어 단순 외부 스트리밍 링크 모음으로만 구성된 페이지는 아니다.
+2. 한국어 페이지는 앨범 3종의 스토리와 30곡 가사, 영어 페이지는 SHOUT 제작 배경과 15곡 가사를 정적으로 제공한다. 이는 고유 콘텐츠라는 점에서 긍정적이다.
+3. 다만 가사 전문이 페이지의 상당 부분을 차지하므로, 해당 가사를 사이트에 게시할 권한이 있는지 확인하고, 창작 과정·트랙별 설명·녹음/편곡/AI 제작 방식 등 창작자 고유 정보가 가사만큼 충분히 전달되는지 검토할 필요가 있다.
+4. 저작권/권리 표기 부재를 AdSense 거절의 확정 원인으로 단정하지 않는다. 저작권 문제와 AdSense의 콘텐츠 가치 평가는 서로 별개의 검토 항목이다.
+5. AdSense loader 1회는 현재 소스에서 확인했으나, Auto ads의 실제 광고 표시 여부 및 페이지별 제외 설정은 AdSense 계정에서 별도로 확인해야 한다.
+
+### 판정
+- **고유 콘텐츠:** 정적 스토리와 가사로 확인. 단순 임베드 모음이 아님.
+- **SEO 기본 구성:** 양 페이지 모두 title/description/canonical/robots 및 sitemap 등록 확인.
+- **광고 코드:** 양 페이지 모두 AdSense loader 1회 확인.
+- **출처/권리 안내:** HTML상 명시적 표기 없음. 실제 권리 보유/허락 여부는 미확인.
+- **외부 링크/렌더링:** HTTP 200 확인. 실제 플랫폼 재생, PC/모바일 동작, 언어 전환의 브라우저 테스트는 미완료.
+- 이번 단계에서 사이트 소스는 변경하지 않았고, `main`도 변경하지 않았다.
+
+### 단계별 체크리스트
+- [x] 한국어 Worship title/description/canonical/robots 확인
+- [x] 영어 Worship title/description/canonical/robots 확인
+- [x] 두 페이지의 sitemap 등록 확인
+- [x] 두 페이지 AdSense loader 및 publisher ID 횟수 확인
+- [x] 한국어 앨범 4개 및 Vol.1~3 가사 30곡 확인
+- [x] 영어 SHOUT 앨범 및 가사 15곡 확인
+- [x] 한국어/영어 제작 배경과 고유 스토리 본문 확인
+- [x] 두 페이지에서 명시적 저작권/출처/라이선스 표기 부재 확인
+- [x] develop Vercel 배포 READY 및 커밋 SHA 확인
+- [x] develop 두 페이지 HTTP 200 응답 확인
+- [ ] 한국어·영어 워십의 작사/작곡/편곡/음원/아트워크 권리 보유 및 AI 도구·배포 계약 확인
+- [ ] 가사 전문 게시 권한 및 공동 창작자/번역/개작 권리 확인
+- [ ] 앨범별 제작 크레딧과 출처/권리 안내를 페이지에 표기할지 결정
+- [ ] Vol.3 중복 트랙 제목 및 SHOUT 영어 트랙명 오탈자 여부를 공식 트랙리스트와 대조
+- [ ] Whispers Of Grace의 작품 스토리/제작 배경을 추가할지 검토
+- [ ] PC/모바일에서 앨범 링크, 언어 전환, 가사 펼침, 레이아웃 실기기 테스트
+- [ ] 운영 도메인에서 실제 Google 색인/검색 노출 및 Auto ads 설정 확인
+
+### 다음 단계
+- 37단계 — Worship 및 Music 등 창작 페이지의 AI 사용·창작자 크레딧·외부 플랫폼/음원 권리 표기 체계와 사이트 공통 저작권 안내를 대조. 권리 확인이 필요한 자료는 허락을 추정하지 않고 미확인으로 유지한다.
+
+### 변경 이력
+- 2026-10-30: develop의 한국어/영어 Worship HTML, 관련 JS, sitemap, vercel 설정 및 develop 배포 응답을 점검. 두 페이지의 정적 고유 콘텐츠와 SEO/광고 코드, 권리 안내 부재 및 트랙명 확인 후보를 기록. 사이트 소스는 수정하지 않고 점검 문서만 갱신. main은 변경하지 않음.

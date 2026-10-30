@@ -1310,3 +1310,37 @@ main 병합 커밋 `21c5f424ad1b6991e72fc5a76e04da4b98c1a048`의 Vercel Producti
 
 ### 변경 이력
 - 2026-10-30: GTM consent 설정 미완료 항목을 이어서 사이트 코드와 개인정보처리방침을 대조. 사이트 소스 변경 없이 본 점검 문서만 develop에서 갱신.
+
+## 29. 사이트맵 URL 메타데이터·canonical·robots 정적 대조 — 2026-10-30
+
+### 확인 범위
+- 기준 브랜치: `develop`.
+- `sitemap.xml`에 등록된 URL 24개를 추출하고 각 URL에 대응하는 HTML 파일의 title, meta description, canonical, robots를 대조.
+- `robots.txt`도 함께 확인.
+- 태그 속성 순서가 페이지별로 다를 수 있어 meta name/content의 속성 순서를 고정하지 않고 확인했다.
+
+### 확인 결과
+- 사이트맵 URL: **24개**.
+- 24개 HTML 모두 title 존재.
+- 24개 HTML 모두 meta description 존재. `music.html`은 description 태그의 속성 순서가 달라 단순 문자열 패턴에서는 누락처럼 보일 수 있으나 실제 태그가 존재한다.
+- 24개 HTML 모두 canonical 존재하며, 각각 해당 사이트맵 URL의 `https://chrisleepapa.com/` 표준 주소와 일치한다.
+- 23개 HTML은 `robots=index, follow`를 명시한다.
+- `tutupupupipi.html`은 robots meta가 없지만, 별도 noindex 지시가 없으며 기본 크롤링 동작을 차단하는 설정으로 보이지 않는다. 명시적 index, follow를 추가할지는 별도 개선 여부로 남긴다.
+- `robots.txt`:
+  - `User-agent: *`
+  - `Allow: /`
+  - Sitemap: `https://chrisleepapa.com/sitemap.xml`
+- 사이트맵에는 `/journal` 목록 페이지가 아니라 `/journal-1`부터 `/journal-6`까지 개별 글이 등록되어 있다.
+- 사이트맵에 포함된 24개 URL 사이에서 canonical이 구 Vercel 도메인을 가리키는 사례는 발견되지 않았다.
+
+### 판정
+- [x] 사이트맵 URL 24개 추출
+- [x] 24개 title 존재 확인
+- [x] 24개 meta description 존재 확인
+- [x] 24개 canonical이 사이트맵 URL과 일치하는지 확인
+- [x] robots meta 및 robots.txt 확인
+- [x] sitemap.xml의 canonical 도메인과 robots.txt sitemap 주소 확인
+- [ ] Google Search Console에서 실제 색인 상태 및 Google 선택 canonical 확인(계정 화면 필요)
+
+### 변경 이력
+- 2026-10-30: 사이트맵 24개 HTML의 SEO 기본 메타데이터와 robots.txt를 정적으로 대조. 사이트 소스 변경 없이 본 점검 문서만 develop에서 갱신.

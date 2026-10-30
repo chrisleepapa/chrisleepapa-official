@@ -1904,3 +1904,88 @@ main 병합 커밋 `21c5f424ad1b6991e72fc5a76e04da4b98c1a048`의 Vercel Producti
 
 ### 변경 이력
 - 2026-10-30: develop의 이용약관, 개인정보처리방침, ABOUT 및 주요 창작 페이지를 대조해 AI 사용 설명, 인간 창작자 기여, 개별 크레딧 및 제3자 권리 안내 현황을 기록. Wallpaper의 개인 이용 조건은 구체적으로 확인했으나 프로젝트별 출처/권리 증빙은 미확인으로 유지. 사이트 소스는 수정하지 않고 점검 문서만 갱신. main은 변경하지 않음.
+
+## 38. 권리 범위 재정의 및 프로젝트별 크레딧 수집 — 2026-10-30
+
+### 기준 및 변경 제한
+- 기준 브랜치: `develop` (점검 시작 시 HEAD: `0b515d9d3921cd3b695fb419a410e2fe9854c3ef`).
+- `main`은 변경하지 않는다.
+- 이번 단계는 권리 정보 수집 항목과 이용약관 수정 초안을 준비하는 단계다. 실제 라이선스/계약/원본 이력을 확인하지 못한 항목은 미확인으로 남긴다.
+- 사용자 확인 전 `terms.html` 또는 작품 페이지의 HTML/JS/CSS를 수정하지 않는다.
+
+### 공통 이용약관 수정 방향
+현재 한국어 Article 02는 사이트에 게재된 음악, 가사, 소설, 그림, 게임, 영상, 이미지, 텍스트, 코드, 브랜드 자산 전부에 운영자 명의의 `© 2026 Chris LEE.PAPA. All rights reserved.`를 적용한다고 포괄 선언한다. 제3자 자료 및 별도 라이선스 자료를 구분하는 예외가 충분하지 않다.
+
+다음 문안은 **검토용 초안**이며, 사용자 승인 및 실제 권리 관계 확인 전에는 게시하지 않는다.
+
+#### 한국어 초안 — 저작권 및 지식재산권
+> 사이트에서 운영자가 직접 창작했거나 적법하게 권리를 보유·행사할 수 있는 콘텐츠의 권리는 해당 권리자에게 귀속됩니다. Chris LEE.PAPA가 보유한 권리가 확인되는 창작물은 별도 표시가 없는 한 저작권법 등 관련 법령의 보호를 받으며, 사전 허락 없는 복제·배포·수정·2차적 저작물 작성 및 상업적 이용을 금지합니다.
+>
+> 다만 사이트에 포함되거나 연결된 제3자 저작물, 외부 플랫폼의 임베드·서비스, 폰트·소프트웨어·이미지·음원·효과음·영상·성경 및 찬송가 자료 등은 각 원 권리자에게 권리가 귀속되며, 해당 자료에 적용되는 라이선스와 이용 조건을 따릅니다. 이러한 자료가 사이트에 표시되거나 링크되어 있다는 사실만으로 운영자가 해당 자료의 저작권을 소유하거나 별도의 이용 허락을 받았다는 의미는 아닙니다.
+>
+> AI 도구를 활용한 콘텐츠의 권리와 이용 범위는 사용한 도구의 당시 약관, 입력 자료의 권리, 결과물의 특성 및 창작자의 실제 기여를 고려하여 판단합니다. 사이트는 확인 가능한 범위에서 AI 활용 및 인간 창작 기여, 외부 자료 출처와 이용 조건을 작품별로 안내합니다.
+>
+> 개별 작품에 별도의 라이선스·출처·이용 조건이 표시된 경우 해당 표시가 이 조항보다 우선하여 적용될 수 있습니다. 권리 관계가 확인되지 않은 자료는 운영자의 독점 소유 콘텐츠로 표시하지 않으며, 확인이 완료될 때까지 별도 검토 대상으로 둡니다.
+
+#### 영어 초안 — Copyright & Intellectual Property
+> Rights in content created by the Site operator, or content for which the operator is legally entitled to exercise the relevant rights, remain with the applicable rights holder. Original works whose rights are confirmed to be held by Chris LEE.PAPA are protected under applicable copyright laws unless otherwise stated. Reproduction, redistribution, modification, creation of derivative works, or commercial use requires prior permission where required by law.
+>
+> Third-party works and materials included in or linked from the Site—including embedded services, fonts, software, images, music, sound effects, videos, and Bible or hymn materials—remain the property of their respective rights holders and are subject to their applicable licenses and terms. Their appearance or linking on this Site does not by itself mean that the operator owns those rights or has obtained a separate license.
+>
+> Rights and permitted uses for AI-assisted content depend on the applicable terms of the tools at the time of use, rights in the input materials, the nature of the output, and the creator's actual contribution. Where verified, the Site may identify AI use, human creative contributions, third-party sources, and applicable usage terms on individual work pages.
+>
+> Where an individual work includes a specific license, attribution, or usage notice, that notice may govern that work. Materials whose rights status has not been verified will not be represented as exclusively owned by the operator and will remain subject to review.
+
+### 프로젝트별 확인 현황 및 수집 항목
+
+| 프로젝트 | 현재 확인 가능한 사실 | 사용자/제작 기록 확인이 필요한 내용 |
+|---|---|---|
+| MUSIC | AI 음악 및 제작 노트가 존재하고 ABOUT에서 Suno AI 사용을 공개 | 트랙/앨범별 사용 도구·당시 플랜, 작사·작곡·편곡·보컬·믹싱·마스터링 기여자, 커버아트·샘플·루프 출처, 배포 계약 및 가사 게시 권한 |
+| WORSHIP 한국어 | 나의 찬양 Vol.1~3 및 Whispers Of Grace 소개, 가사·앨범 스토리 존재 | 앨범별 가사/작곡/편곡/음원/보컬/아트워크 권리, AI 도구 사용 여부, 전문 가사 게시 권한 |
+| WORSHIP 영어 | SHOUT 앨범 소개와 15곡 가사 존재 | 영어 가사 원작성/번역/개작 여부, 작곡·편곡·음원·아트워크 권리, 게시 권한 |
+| SISTER SQUAD 1/2 | 두 딸과 함께 발전시킨 오리지널 IP라는 ABOUT 설명, 캐릭터·세계관·소설·영상 존재 | 캐릭터 설정/원고/삽화/영상별 인간 기여, 공동 창작 범위, 이미지·영상 도구와 외부 리소스 출처 |
+| TuTuPuPuPiPi | 캐릭터·세계관·Shorts·OST 링크 존재 | 캐릭터 원안/그림/영상/OST별 제작자와 AI 도구, 음원 권리, 외부 에셋 출처 |
+| Wallpaper | 개인 기기 배경화면 무료 이용, 재배포·재판매·무단 편집·상업적 이용 제한 안내 | 모바일 영상 4편·PC 이미지 9점별 원본 제작 여부, AI 도구/소스, 외부 이미지·음원·효과음 라이선스 |
+| MOVIE 및 기타 영상 | AI 영상 작품을 소개하고 YouTube 영상/임베드 사용 | 영상별 생성 도구, 직접 촬영/편집/후반 작업, 음악·효과음·폰트·스톡 자료의 출처와 라이선스 |
+| Bible / 찬송가 | 성경 및 찬송가 자료가 사이트에 포함되며 찬송가 출처 블로그를 사용자 제공 | 개역개정 데이터의 이용 근거, 찬송가 악보·가사 파일의 원본/동일성, 출처 제공자의 권리 허락 권한, 온라인 게시 허락 및 광고 제외 외 별도 권리 조건 |
+
+### 외부 서비스와 권리의 구분
+- Spotify/YouTube/Apple Music의 공식 링크 또는 임베드 사용은 사이트에 가사 전문, 앨범 아트워크, 음원 파일을 별도로 복제·게시할 권리를 자동으로 부여하지 않는다.
+- YouTube에 게시된 영상이라고 해서 영상에 포함된 모든 음악·이미지·폰트·캐릭터 요소의 독점 소유 또는 상업적 이용 권한이 자동으로 증명되는 것은 아니다.
+- Google Fonts, CDN 폰트, 라이브러리, 오픈소스 코드 등은 각 라이선스와 고지 의무를 별도로 확인해야 한다.
+- AI 서비스 이용 사실만으로 모든 결과물의 독점 저작권 또는 모든 플랫폼에서의 무제한 상업적 이용 가능성을 단정하지 않는다.
+
+### 사용자 확인이 필요한 핵심 질문
+아래 항목은 공개 HTML만으로 사실을 확정할 수 없다. 답변이 없는 항목은 미확인으로 유지한다.
+
+1. **음악 제작:** Suno 외에 음악 생성·보컬·편곡·마스터링에 사용한 도구가 있는가? 작품별로 다르다면 앨범/작품 이름과 도구를 연결해야 한다. 당시 유료/무료 플랜도 가능한 범위에서 확인한다.
+2. **이미지·캐릭터·영상 제작:** Sister Squad, TuTuPuPuPiPi, Wallpaper, Movie의 캐릭터 그림·삽화·배경·영상 제작에 실제 사용한 AI 도구나 편집 프로그램은 무엇인가? 직접 그리거나 촬영한 자료와 생성/편집한 자료를 구분한다.
+3. **공동 창작:** Sister Squad에서 두 딸이 참여한 부분은 아이디어·캐릭터 설정·이야기·그림·목소리 중 무엇인가? 공개 가능한 범위에서 기여 유형만 확인하고, 미성년자의 개인정보는 크레딧에 넣지 않는다.
+4. **외부 자료:** 직접 만들지 않은 이미지·음원·효과음·폰트·템플릿·스톡 자료를 사용했다면 서비스/출처와 라이선스 또는 구매·허락 근거가 있는가?
+5. **워십 권리:** 한국어/영어 워십의 가사, 번역, 작곡, 편곡, 보컬, 커버아트는 각각 본인 창작/AI 보조/타인 제공 중 어디에 해당하는가? 가사 전문을 사이트에 게시할 권한도 확인해야 한다.
+6. **Bible/찬송가:** 성경 본문 데이터와 찬송가 악보·가사 파일을 어떤 경로로 확보했는가? 출처 블로그가 실제 파일의 권리자이거나 게시 허락을 할 권한이 있다는 증빙이 있는가?
+
+### 이번 단계 판정
+- **확인 완료:** 공통 이용약관의 포괄적 권리 문구, 프로젝트별 공개 크레딧 현황, 외부 임베드와 재게시 권리의 차이, 수정 검토용 한국어/영어 초안.
+- **미확인:** 프로젝트별 도구/플랜/인간 기여, 외부 자료 라이선스, 워십 가사 게시 권리, Bible/찬송가 게시 허락.
+- **보류:** 실제 권리 증빙을 확보하기 전에는 제3자 자료의 권리 보유 또는 상업적 이용 가능성을 확정하지 않는다.
+- 이번 단계에서는 점검 문서만 수정하며, 사이트 소스와 광고 설정은 수정하지 않는다. `main`은 변경하지 않는다.
+
+### 단계별 체크리스트
+- [x] develop HEAD 및 main 대비 상태 확인
+- [x] 이용약관 한국어 저작권 조항과 외부 서비스 조항 재확인
+- [x] 한국어/영어 권리 조항 검토용 초안 작성
+- [x] 프로젝트별 크레딧/권리 확인 항목 정리
+- [x] AI 생성 도구 이용과 플랫폼 재게시 권리의 구분 기록
+- [x] Bible/찬송가 자료의 미확인 상태 유지
+- [ ] 사용자에게 프로젝트별 실제 도구/권리 관계 확인
+- [ ] 사용자 답변과 가능한 라이선스/계약 증빙 대조
+- [ ] 사실 확인 후 이용약관 및 작품별 크레딧 문구 확정
+- [ ] 사용자 승인 후 develop 사이트 소스 수정 및 배포 검증
+- [ ] 사용자 승인 전 main 반영 금지
+
+### 다음 단계
+- 39단계 — 사용자 확인 답변과 제공 가능한 권리/라이선스 자료를 대조해 프로젝트별 크레딧 사실표를 확정한다. 확인되지 않은 항목은 계속 미확인으로 표시하며, 이용약관/사이트 소스 수정은 별도 승인 후 진행한다.
+
+### 변경 이력
+- 2026-10-30: develop의 이용약관과 주요 프로젝트를 재확인하고, 한국어/영어 권리 조항 검토 초안 및 프로젝트별 정보 수집표를 추가. 이번 변경은 점검 문서에 한정하며 사이트 소스와 main은 변경하지 않음.

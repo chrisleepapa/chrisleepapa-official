@@ -355,6 +355,21 @@ html[data-theme="light"] .desktop-wallpaper-card{background:#fff;border-color:rg
   }
 }
 
+
+/* Enlarge the hero collection film on mobile as a full portrait preview */
+@media (max-width: 640px) {
+  .wallpaper-hero-media { width: 100%; }
+  .wallpaper-hero-media-frame { width: 100%; padding: 8px; }
+  .wallpaper-hero-media .lockscreen-intro-video {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 9 / 16;
+    max-height: none;
+    object-fit: cover;
+  }
+}
+
 </style>
 
 </head><body>

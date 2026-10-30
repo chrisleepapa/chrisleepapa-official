@@ -764,3 +764,21 @@ main 병합 커밋 `21c5f424ad1b6991e72fc5a76e04da4b98c1a048`의 Vercel Producti
 
 변경 이력:
 - 2026-10-30: 다섯 기능성/정책 페이지의 직접 AdSense 로더 제거. 소스 정적 검증 및 Preview READY 확인. 운영 main은 변경하지 않음.
+
+
+### 다음 점검 — 실제 Preview HTML/브라우저 및 외부 계정 접근 가능 여부 (2026-10-30)
+
+- Vercel Preview 배포는 READY이며 develop 별칭이 연결된 것을 재확인했다.
+- 다섯 URL의 Preview 응답을 서버 측으로 다시 읽으려 했으나, 연결 도구의 안전 검사에서 해당 URL 요청이 차단되었다. 따라서 배포 산출물 HTML의 광고 코드 0회 여부는 아직 확인하지 않았다.
+- 일반 웹 열기에서도 develop 도메인의 다섯 경로가 접근 불가로 반환되었다. 이는 페이지가 실제로 다운되었다는 증거가 아니라 현재 점검 도구의 접근 제한이다.
+- 현재 사용 가능한 연결 도구 목록에서 Google Tag Manager 또는 AdSense 계정 관리 전용 연결은 확인되지 않았다. 따라서 GTM 최신 게시 버전 및 AdSense Auto ads 페이지 제외는 계정 UI에서 확인할 자료가 있어야 완료할 수 있다.
+- 브라우저 자동 조작/개발자 도구 접근 도구도 현재 대화의 도구 목록에서 확인되지 않아 실제 브라우저 콘솔·네트워크 테스트는 미완료로 유지한다.
+
+#### 체크리스트 상태
+- [x] develop Preview 배포 READY 및 develop 도메인 alias 확인
+- [x] develop 소스 다섯 페이지의 AdSense loader/publisher ID 0회, GTM 참조 유지 정적 검증
+- [ ] Preview 응답 HTML에서 다섯 URL의 실제 광고 코드 재확인(도구 접근 차단)
+- [ ] 브라우저 개발자 도구에서 콘솔 오류 및 광고 네트워크 요청 확인(브라우저 직접 테스트 필요)
+- [ ] GTM 계정의 현재 게시 버전 확인 및 제공된 v2 export와 대조(계정 UI 자료 필요)
+- [ ] AdSense Auto ads 페이지 제외 설정 확인(계정 UI 자료 필요)
+

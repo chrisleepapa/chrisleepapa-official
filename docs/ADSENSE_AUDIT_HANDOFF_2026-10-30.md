@@ -555,3 +555,28 @@
 
 변경 이력:
 - 2026-10-30: 사용자가 제공한 GTM 버전 2 내보내기 파일을 검사해 GA4 태그 1개만 존재함을 확인. develop/main 브랜치가 diverged 상태임을 재확인. 사이트 페이지 소스는 수정하지 않았다.
+
+
+### 2단계 후속 점검 — develop Preview 배포 상태 확인 (2026-10-30)
+
+Vercel에서 develop 브랜치의 최신 사이트 코드 커밋 배포를 확인했다.
+- 코드 커밋: `e77b794de729947edec30c5963ffcc304a36931d`
+- 배포 ID: `dpl_2XV3Wk2qPueiAdEH5qP3njNg9YM1`
+- 배포 상태: `READY`
+- Preview URL: `https://chrisleepapa-official-49vfmvg8f-chrisleepapas-projects.vercel.app`
+- 별칭: `https://develop.chrisleepapa.com`
+- 따라서 현재 develop의 Bible 코드 수정 및 찬송가 출처 표기 변경이 포함된 Preview 배포는 준비 완료 상태다.
+- 이후 감사 문서만 추가한 커밋 `bbef578536be142a18f1b770f207156eb6994ea9`에 대한 별도 Preview 배포는 확인 당시 `INITIALIZING` 상태였다. 이는 문서 변경만 포함한다.
+
+검증 한계:
+- 배포 상태 READY는 확인했으나 실제 브라우저에서 로그인, 성경 읽기, 묵상 저장, 찬송가 PDF 렌더링을 조작하는 테스트는 아직 수행하지 않았다.
+- 따라서 해당 기능 체크 항목은 미완료로 유지한다.
+
+체크리스트:
+- [x] develop의 Bible 코드 변경 커밋이 포함된 Preview 배포 READY 확인
+- [ ] PC 브라우저에서 성경 읽기/로그인/묵상 저장/찬송가 PDF 확인
+- [ ] 모바일 브라우저에서 레이아웃 및 동일 기능 확인
+- [ ] 브라우저 개발자 도구에서 광고 스크립트 요청/콘솔 오류 확인
+
+변경 이력:
+- 2026-10-30: develop 코드 커밋 e77b794의 Vercel Preview 배포 READY 및 develop.chrisleepapa.com 별칭을 확인. 실제 브라우저 기능 테스트는 미완료로 유지.

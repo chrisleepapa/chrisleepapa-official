@@ -661,3 +661,54 @@ main 병합 커밋 `21c5f424ad1b6991e72fc5a76e04da4b98c1a048`의 Vercel Producti
 
 변경 이력:
 - 2026-10-30: Production 배포 READY 이후 sitemap 및 주요 운영 URL의 HTML 응답을 대조. 코드 수정 없이 광고 코드 잔존 페이지와 후속 조치 대상을 식별.
+
+
+### 기능성/정책 페이지 광고 로더 제거 — develop 수정 및 정적 검증 (2026-10-30)
+
+사용자 요청에 따라 기존 점검표 순서대로 `/game`, `/tetris`, `/privacy`, `/terms`, `/contact` 다섯 페이지의 직접 AdSense 로더를 develop에서 제거했다.
+
+#### 수정 범위
+- 각 페이지의 AdSense 로더 script 1개만 제거했다.
+- 페이지 본문, 게임 로직, 정책/문의 내용, GTM 코드는 수정하지 않았다.
+- `/wallpaper`는 광고 제외가 확정되지 않아 수정하지 않았다.
+- main에는 반영하지 않았다.
+
+#### 소스 정적 검증
+현재 develop HEAD의 각 파일을 다시 읽어 확인한 결과:
+
+| 파일 | AdSense loader | Publisher ID | GTM 참조 |
+|---|---:|---:|---:|
+| `game.html` | 0 | 0 | 2 |
+| `tetris.html` | 0 | 0 | 2 |
+| `privacy.html` | 0 | 0 | 2 |
+| `terms.html` | 0 | 0 | 2 |
+| `contact.html` | 0 | 0 | 2 |
+
+- 다섯 파일 모두 AdSense loader 0회, publisher ID 0회.
+- 다섯 파일 모두 GTM 컨테이너 참조 2회 유지(기존 script/noscript 구성).
+- 최신 develop 배포 ID: `dpl_59xGgtbZmsp8DEJJX6rsXCAhrkAf`
+- 배포 URL: https://chrisleepapa-official-e67m0fupz-chrisleepapas-projects.vercel.app
+- 상태: READY
+- 배포 커밋: `b6181f4ff3db5ad77cfab20b4949943cb36a646a`
+
+#### 아직 완료로 체크하지 않는 항목
+- Vercel Preview 실제 응답 HTML 다섯 URL의 광고 코드 확인은 도구 안전 검사에서 차단되어 미완료.
+- 실제 브라우저의 광고 요청, 콘솔 오류 및 시각적 확인은 미완료.
+- GTM 계정의 최신 게시 버전 대조 및 AdSense Auto ads 페이지 제외 설정은 미완료.
+- Bible/찬송가 자료 권리 확인은 사용자 자료 출처·허락 근거가 없어 보류.
+- `/wallpaper`의 독립 콘텐츠 가치 검토는 미완료.
+
+#### 체크리스트 갱신
+- [x] 기능성/정책 페이지 다섯 파일의 직접 AdSense 로더 제거(develop)
+- [x] 다섯 파일의 AdSense loader/publisher ID 0회 및 GTM 유지 정적 검증
+- [x] 변경 커밋을 포함한 develop Preview 배포 READY 확인
+- [ ] Preview 실제 HTML 응답에서 다섯 URL의 광고 코드 재확인
+- [ ] 브라우저 개발자 도구에서 콘솔 오류 및 광고 네트워크 요청 확인
+- [ ] GTM 계정 최신 게시 버전과 제공된 v2 export 대조
+- [ ] AdSense Auto ads 페이지 제외 설정 확인
+- [ ] Bible 및 찬송가 데이터의 온라인 게시 권리 확인(보류)
+- [ ] 사용자 develop 사이트 확인 후 승인
+- [ ] 승인 후 main 반영
+
+변경 이력:
+- 2026-10-30: 다섯 기능성/정책 페이지의 직접 AdSense 로더 제거. 소스 정적 검증 및 Preview READY 확인. 운영 main은 변경하지 않음.

@@ -1505,3 +1505,55 @@ main 병합 커밋 `21c5f424ad1b6991e72fc5a76e04da4b98c1a048`의 Vercel Producti
 
 ### 변경 이력
 - 2026-10-30: PC PNG 9개 참조 및 메타데이터 표시를 점검했으나 원본 바이너리 시각 확인은 도구 제약으로 보류. 사이트 소스는 수정하지 않음.
+
+
+## 33. JOURNAL 목록 페이지 색인 설정 및 개별 글 대조 — 2026-10-30
+
+### 확인 범위
+- 기준 브랜치: `develop`.
+- `journal.html`, `journal-1.html`~`journal-6.html`, `sitemap.xml`, `vercel.json`을 대조.
+- 목록 페이지의 noindex, 내부 링크/요약문, 개별 글의 robots/canonical/description/AdSense loader, 사이트맵 포함 여부 확인.
+- 실제 Google Search Console 색인 상태와 Google 선택 canonical은 확인하지 못함.
+
+### JOURNAL 목록 페이지 확인 결과
+- `journal.html` title: `JOURNAL — Chris LEE.PAPA`.
+- meta description은 창작 기록, 제작 과정, AI 음악·영상·그림책·Sister Squad·웹게임 관련 공식 Creative Journal임을 설명.
+- canonical: `https://chrisleepapa.com/journal`.
+- robots: `noindex, follow`.
+- 페이지에는 Journal 01~06까지 여섯 개 글의 카드가 정적 HTML로 존재하며, 각 카드에 카테고리, 제목, 실제 창작 경험을 요약한 설명, 개별 글 링크가 포함됨.
+- `sitemap.xml`에는 `/journal` 목록 페이지가 없고 `/journal-1`~`/journal-6`만 포함됨.
+- `vercel.json`에는 운영 호스트 전체에 noindex를 적용하는 규칙이 없으며, develop 호스트에만 `X-Robots-Tag: noindex, nofollow`를 적용한다. 따라서 운영 `/journal`의 noindex는 HTML meta 설정에서 비롯됨.
+
+### 개별 Journal 1~6 확인 결과
+- 6개 모두 `robots=index, follow`.
+- 6개 모두 자신의 `https://chrisleepapa.com/journal-N` canonical과 meta description 보유.
+- 6개 모두 AdSense loader 1회.
+- 개별 글의 주요 주제:
+  1. 두 딸과 AI를 만나 Sister Squad 창작을 시작한 배경
+  2. Skywork AI를 이용한 그림 소설 제작 과정
+  3. POD 독립출판 경험과 준비 과정
+  4. Sister Squad 캐릭터 디자인과 삽화 제작 경험
+  5. 직장생활과 가족, 창작을 병행한 실제 작업 방식
+  6. 나의 찬양 프로젝트의 기도와 신앙, 창작 과정
+- 사이트맵에는 여섯 개 개별 글이 모두 포함됨.
+- 개별 글 일부는 Article 구조화 데이터(JSON-LD)를 포함하고 있으나, 이번 단계에서는 각 글의 본문 품질 전체를 재평가하지 않음.
+
+### 분석 및 권고
+1. `/journal`은 단순 링크 목록만 있는 빈 페이지가 아니다. 여섯 개 개별 글의 주제와 고유한 요약을 정적으로 제공하는 아카이브 허브다.
+2. 개별 글은 모두 색인 허용 및 사이트맵 등록 상태인 반면, 상위 목록 페이지는 noindex이며 사이트맵에서도 제외되어 있다. 이 설정이 의도된 것인지 확인할 필요가 있다.
+3. 목록 페이지의 고유 요약과 내부 탐색 기능은 검색 사용자에게 유용할 수 있으므로, 검색 유입을 원한다면 `noindex` 제거와 sitemap 등록을 검토할 가치가 있다.
+4. 다만 AdSense 거절 사유가 '가치가 별로 없는 콘텐츠'인 점을 고려해, 색인 허용만으로 콘텐츠 가치가 개선되는 것은 아니다. 현재 여섯 개 카드의 설명이 실제 글의 고유 내용을 정확히 대표하는지, 목록 페이지 자체가 충분한 탐색 가치를 제공하는지 사용자 검토가 필요하다.
+5. 이번 단계에서는 설정 의도를 임의로 추정해 noindex를 제거하지 않았고, sitemap도 수정하지 않았다.
+
+### 판정 및 후속
+- [x] `journal.html` title/description/canonical/robots 확인
+- [x] 목록 페이지에 정적 카드 6개와 고유 요약/링크 존재 확인
+- [x] `journal-1`~`journal-6`의 robots/canonical/description/AdSense loader 확인
+- [x] 사이트맵의 개별 글 포함 및 목록 페이지 제외 확인
+- [x] Vercel의 운영/개발 호스트별 robots 헤더 설정 대조
+- [ ] `/journal` 목록 페이지를 검색 색인 허용할지 결정
+- [ ] 색인 허용 시 noindex 제거 및 sitemap 등록을 develop에서 변경하고 검증
+- [ ] Google Search Console에서 /journal의 실제 색인/크롤링 상태 확인
+
+### 변경 이력
+- 2026-10-30: JOURNAL 목록 페이지와 개별 글 6개의 색인/메타데이터/광고 코드를 대조. 소스 변경 없이 점검 문서만 develop에서 갱신.

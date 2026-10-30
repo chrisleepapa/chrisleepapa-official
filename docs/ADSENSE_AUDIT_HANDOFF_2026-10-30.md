@@ -1066,3 +1066,24 @@ main 병합 커밋 `21c5f424ad1b6991e72fc5a76e04da4b98c1a048`의 Vercel Producti
 
 ### 변경 이력
 - 2026-10-30: 사용자가 제공한 GTM export v2 파일을 Library에서 재열람하고 기존 HTML 소스 점검과 대조. 사이트 코드는 변경하지 않고 이 문서만 develop에서 갱신.
+
+
+## 18. Search Console 색인 상태 — 공개 검색 보조 점검 (2026-10-30)
+
+### 공개 검색 결과
+- 공개 웹 검색에서 `site:chrisleepapa.com` 및 주요 경로(`/about`, `/journal-2`, `/journal-3`, `/bible`)를 포함한 검색을 실행했으나 이번 검색 결과에는 일치 항목이 반환되지 않았다.
+- 이는 검색엔진의 특정 검색 결과 응답일 뿐, Google Search Console의 색인 상태를 직접 읽은 결과가 아니다. 검색 결과가 비어 있다는 사실만으로 페이지가 색인에서 제외되었다고 단정할 수 없다.
+
+### 기존 소스 기준과 구분
+- sitemap/robots/canonical 등 정적 파일 설정은 앞선 점검에서 확인한 상태를 유지한다.
+- 실제 Google 색인 여부, Google이 선택한 canonical, 마지막 크롤링 날짜, 색인 생성 요청 처리 상태는 Search Console의 URL 검사 및 페이지 색인 보고서에서 확인해야 한다.
+- 현재 이 대화에서 Search Console 계정 데이터에 직접 접근할 수 있는 연결이 확인되지 않았다. 따라서 이전에 사용자가 보고한 `/about`의 Google 선택 canonical 문제 및 `/journal-2`, `/journal-3` 재색인 요청의 최신 처리 결과는 미확인으로 유지한다.
+
+### 판정 및 후속
+- [x] 공개 검색에서 도메인 색인 결과를 보조적으로 조회
+- [ ] Search Console URL 검사에서 `https://chrisleepapa.com/about`, `/journal-2`, `/journal-3`의 최신 색인 및 Google 선택 canonical 확인
+- [ ] 페이지 색인 보고서에서 사이트맵 제출 URL들의 색인/제외 사유 확인
+- [ ] 필요 시 라이브 테스트 후 색인 생성 요청 결과 확인
+
+### 변경 이력
+- 2026-10-30: 공개 검색 보조 조회를 수행했으나 결과가 비어 있었음. 이를 GSC 상태로 오인하지 않도록 검증 한계를 명시. 사이트 코드는 변경하지 않고 이 문서만 develop에서 갱신.

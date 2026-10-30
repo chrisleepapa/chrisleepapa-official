@@ -484,3 +484,12 @@
 
 변경 이력:
 - 2026-10-30: develop/bible.html에서 불완전한 중복 HTML 문서를 제거하고 찬송가 뷰어가 포함된 완전 문서를 유지. 직접 AdSense 로더와 publisher ID 제거. 정적 구조 검증 완료. 브라우저 및 기능 테스트는 미완료.
+### develop Preview 배포 확인 (2026-10-30)
+
+- 소스 수정 커밋 2e2a31a3b9ddf904f2175e2c4266bbc2f3790500에 연결된 Vercel Preview 배포가 READY 상태임을 확인했다.
+- Preview URL: https://chrisleepapa-official-ka54ql5tk-chrisleepapas-projects.vercel.app/bible
+- 해당 URL 응답 HTTP 200 확인.
+- 실제 배포된 HTML 응답(150,607자)을 다시 검사한 결과 DOCTYPE 1회, html 시작/종료 각 1회, AdSense 로더 0회, publisher ID 0회, PDF.js 1회, 찬송가 목록 스크립트 1회가 확인되었다.
+- 따라서 GitHub 소스뿐 아니라 수정 커밋의 Preview 배포 산출물에도 직접 AdSense 로더와 게시자 ID가 없는 것을 확인했다.
+- 이 검증은 HTML 응답 확인이며, 실제 브라우저에서 성경 읽기·로그인·묵상 저장·찬송가 PDF 렌더링을 직접 조작해 본 테스트는 아니다.
+- 별도 문서 갱신 커밋 dd88754d988e5292753f55908f872a0939099243의 Vercel 배포는 확인 시점에 BUILDING 상태였다.

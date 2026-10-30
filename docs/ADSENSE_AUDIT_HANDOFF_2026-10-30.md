@@ -1155,3 +1155,11 @@ main 병합 커밋 `21c5f424ad1b6991e72fc5a76e04da4b98c1a048`의 Vercel Producti
 - 기존 TikTok 컬렉션 CTA는 사용자 제공 YouTube 컬렉션 URL이 없으므로 제거.
 - 수정 파일: `tutupupupipi.html`; 개발 브랜치에서만 수정.
 - 검증: 다섯 카드 각각의 embed ID와 외부 Shorts 링크가 사용자 제공 ID와 일치하는지 문자열 기준으로 확인 예정. 실제 브라우저 재생은 별도 확인 필요.
+
+
+## 22. TuTuPuPuPiPi YouTube Shorts 6번째 영상 추가 (2026-10-30)
+- 사용자 제공 영상 ID `cNdoaogTY-g`를 여섯 번째 카드로 추가.
+- 페이지 내 플레이어: `https://www.youtube.com/embed/cNdoaogTY-g`; 원본 링크: `https://youtube.com/shorts/cNdoaogTY-g`.
+- 한국어/영어 제목 번역 키 `video6Title` 추가, 기존 반응형 카드 레이아웃과 iframe 언어 전환 제목 로직 재사용.
+- 수정 파일: `tutupupupipi.html`; develop 브랜치만 수정.
+- 검증: 영상 카드 총 6개, 새 embed 및 Shorts 링크 ID 일치. 실제 브라우저 재생은 배포 후 확인 필요.

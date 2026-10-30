@@ -1036,3 +1036,33 @@ main 병합 커밋 `21c5f424ad1b6991e72fc5a76e04da4b98c1a048`의 Vercel Producti
 
 ### 변경 이력
 - 2026-10-30: TuTuPuPuPiPi 영상 5개 소스와 TikTok 메타데이터 접근성을 점검. 사이트 코드는 변경하지 않고 이 문서만 develop에서 갱신.
+
+
+## 17. GTM export v2 재검토 — 2026-10-30
+
+### 업로드된 내보내기 파일에서 확인한 설정
+- 파일: `GTM-NGDTQNVG_v2.json` (사용자 Library 업로드, 2026-10-30 04:10:04 export)
+- 컨테이너: `chrisleepapa-official` / 공개 ID `GTM-NGDTQNVG`
+- export의 컨테이너 버전: **2**
+- Google tag 1개: `Google tag - GA4`
+- 측정 ID: `G-NBGELYQ4TZ`
+- firing trigger ID: `2147479553` (파일의 trigger definition이 함께 포함되지 않아 이 export 조각만으로 트리거 이름을 독립 재확인하지는 못함. 컨테이너 버전 설명은 All Pages 사용이라고 기재)
+- AdSense 태그: **0개**
+- export에는 이 GA4 태그 외 다른 태그 항목이 없다.
+
+### 기존 사이트 소스 점검과의 대조
+- sitemap 24개 HTML의 GTM 참조는 각각 2회(스크립트 + noscript)이며, 직접 GA4 gtag 설정은 발견되지 않았다는 기존 소스 점검 결과와 일치한다.
+- 따라서 업로드된 export 기준으로는 GTM을 통한 GA4 태그 1개 구성이며, 별도 AdSense 태그는 없다. 사이트 HTML의 AdSense loader는 GTM과 별도로 페이지별 직접 삽입되어 있다.
+- 다만 이 export는 **버전 2의 파일**일 뿐, 현재 GTM 계정에서 실제 게시된 최신 버전이 2인지, 버전 2가 현재 게시 상태인지까지 증명하지 않는다.
+- GTM 관리 화면의 현재 게시 버전/버전 기록 및 GA4 실시간 수집 여부를 확인할 계정 연결 또는 최신 화면은 현재 확보되지 않았다. GTM 전용 계정 연동도 확인되지 않았다.
+
+### 판정 및 후속
+- [x] 사용자 업로드 GTM export v2의 컨테이너 ID와 태그 목록 확인
+- [x] GA4 측정 ID 확인
+- [x] export 내 AdSense 태그 0개 확인
+- [ ] GTM 계정에서 실제 게시된 최신 버전 및 게시 시각 확인
+- [ ] GTM Preview 또는 GA4 실시간 보고서로 실제 페이지뷰/중복 수집 확인
+- [ ] GTM과 별도 HTML AdSense 로더의 역할이 혼동되지 않도록 태그 구성을 최종 확인
+
+### 변경 이력
+- 2026-10-30: 사용자가 제공한 GTM export v2 파일을 Library에서 재열람하고 기존 HTML 소스 점검과 대조. 사이트 코드는 변경하지 않고 이 문서만 develop에서 갱신.

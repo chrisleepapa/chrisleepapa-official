@@ -2131,3 +2131,54 @@ main 병합 커밋 `21c5f424ad1b6991e72fc5a76e04da4b98c1a048`의 Vercel Producti
 - 다만 개별 영상의 생성 이력/파일 메타데이터, Gemini의 해당 생성 기능과 생성 당시 약관, 출력물의 상업적 이용 조건까지 독립적으로 검증한 것은 아니다.
 - 따라서 외부 음원 사용으로 단정하지 않으며, Gemini 생성 음원으로 분류하되 생성 시점의 서비스 약관·이용 조건 확인은 미완료로 유지한다.
 - 이번 확인은 사용자 진술에 따른 기록이며 사이트 파일은 수정하지 않았다.
+
+
+## 42단계 — Google Fonts 및 Pretendard 실제 사용 글꼴·라이선스 대조 — 2026-10-30
+
+**진행 상태: 확인 대상 페이지의 폰트 family와 공식 라이선스 확인 완료 / API 제공 파일의 고정 버전 및 전체 페이지 일괄 대조는 미완료**
+
+### 42-1. 실제 소스에서 확인한 글꼴
+- `css/common.css`의 Google Fonts import: `Cinzel`, `Cormorant Garamond`, `Noto Sans KR`.
+- `index.html`, `about.html`, `sistersquad.html`, `sistersquad2.html`, `wallpaper.html`, `movie.html` 등 확인한 주요 페이지: `Cinzel`, `Cormorant Garamond`, `Noto Serif KR` 조합.
+- `worship.html`: `Cinzel`, `Noto Serif KR`.
+- `worship_eng.html`: `Cinzel`, `Noto Serif`.
+- `tutupupupipi.html`: `Cinzel`, `Noto Serif KR`.
+- Pretendard CDN: `https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css`. 확인한 주요 페이지 중 index/about/worship/worship_eng/SisterSquad/Wallpaper/Movie 등에서 v1.3.8 고정 경로를 사용한다.
+- Google Fonts URL에는 family와 weight가 지정되어 있으나 API URL에 개별 폰트 릴리스 버전이 고정되어 있지는 않다. 따라서 family의 라이선스는 대조했지만, 특정 날짜에 API가 실제 반환한 바이너리 버전까지 고정·검증한 것은 아니다.
+
+### 42-2. Google Fonts 공식 family metadata 대조
+Google Fonts 공식 저장소의 각 family `METADATA.pb`에서 다음 family의 라이선스 필드가 모두 `OFL`임을 확인했다.
+- Cinzel: https://raw.githubusercontent.com/google/fonts/main/ofl/cinzel/METADATA.pb
+- Cormorant Garamond: https://raw.githubusercontent.com/google/fonts/main/ofl/cormorantgaramond/METADATA.pb
+- Noto Sans KR: https://raw.githubusercontent.com/google/fonts/main/ofl/notosanskr/METADATA.pb
+- Noto Serif KR: https://raw.githubusercontent.com/google/fonts/main/ofl/notoserifkr/METADATA.pb
+- Noto Serif: https://raw.githubusercontent.com/google/fonts/main/ofl/notoserif/METADATA.pb
+- Google Fonts 공식 안내는 컬렉션의 글꼴을 오픈소스 라이선스로 배포하며 상업적 프로젝트에서도 사용할 수 있다고 설명한다: https://developers.google.com/fonts
+- 1차 판단: 현재 확인한 family의 Google Fonts API 사용은 각 family의 공식 OFL 표시와 부합한다. 다만 각 글꼴의 저작권/Reserved Font Name 조항을 포함한 개별 OFL 전문이 최종 기준이며, Google Fonts가 향후 API에서 제공하는 파일이 바뀔 수 있다는 점은 별도 유의한다.
+
+### 42-3. Pretendard v1.3.8 공식 배포본
+- 사용 중인 CDN 경로는 v1.3.8 태그를 명시적으로 고정한다.
+- 공식 태그의 LICENSE 원문: https://raw.githubusercontent.com/orioncactus/pretendard/v1.3.8/LICENSE
+- 해당 LICENSE는 SIL Open Font License 1.1이며 저작권자 Kil Hyung-jin 및 Reserved Font Name `Pretendard`를 표시한다.
+- OFL 1.1은 글꼴을 웹/소프트웨어에 포함·임베드하는 사용을 허용하지만, 글꼴 파일 자체를 단독으로 판매할 수 없고 수정본에는 Reserved Font Name 조건을 준수해야 한다.
+- 현재 사이트는 jsDelivr CDN에서 공식 태그의 CSS/폰트를 호출하며, 저장소에 폰트 바이너리를 복사해 수정·재배포하는 구조는 이번 확인 대상에서 발견하지 않았다.
+- 1차 판단: 현재 확인한 CDN 호출 방식은 OFL 1.1의 웹 임베딩 사용과 부합한다. 향후 폰트 파일을 저장소에 직접 복사하거나 수정·재배포할 경우 LICENSE 및 저작권 고지를 함께 보존하고 Reserved Font Name 조건을 따라야 한다.
+
+### 42-4. Rockstar 외부 이미지 후속 확인
+- 사용자 요청에 따라 GTA VI/Rockstar 외부 이미지 카드의 HTML을 develop과 main 양쪽 `index.html`에서 제거한 상태를 재확인했다.
+- 두 브랜치의 홈 소스에서 `rockstargames`, `Grand Theft Auto VI`, `rkoCtr1r` 문자열이 모두 발견되지 않았다.
+- 따라서 41-3의 기존 홈 카드 사용 건은 소스 기준으로 제거 완료로 상태를 갱신한다.
+- 다만 실제 운영 도메인 배포 반영 및 CDN 캐시까지 확인한 것은 아니다. 배포 확인은 Vercel 상태 및 운영 URL 응답을 별도 점검해야 한다.
+
+### 42단계 판정
+- **확인 완료:** 확인한 주요 페이지의 Google Fonts family, 각 family 공식 metadata의 OFL 표시, Pretendard v1.3.8 공식 태그 LICENSE의 OFL 1.1 및 Reserved Font Name, Rockstar 카드의 develop/main 소스 제거 상태.
+- **부분 확인:** Google Fonts API가 실제 제공한 특정 시점의 바이너리 버전, 확인 범위 밖의 모든 HTML/CSS 파일에서 사용되는 추가 family.
+- **미확인:** 운영 도메인에 Rockstar 카드 제거가 실제 배포되었는지, 개별 외부 이미지·효과음·템플릿 등 나머지 에셋의 라이선스.
+- **판단 제한:** 폰트 라이선스 확인은 AdSense 승인 요건 충족이나 승인 결과를 보장하지 않는다. 저작권 침해가 없다는 포괄적 법률 판단도 아니다.
+- 이번 단계에서는 점검 문서만 develop에서 수정한다. 사이트 HTML/CSS/JS/미디어/광고 설정 및 main은 변경하지 않는다.
+
+### 다음 단계
+- 43단계 — 외부 구성요소 인벤토리의 남은 항목을 순서대로 확인한다. 먼저 YouTube/Spotify 임베드와 썸네일이 플랫폼 제공 방식으로만 호출되는지, 별도 다운로드·재업로드한 파일이 있는지 소스 및 사용자 제작 이력 기준으로 구분한다. 이어서 Suno 트랙별 생성 당시 플랜·배포 권리, Worship 가사 게시 권한, Bible/찬송가 자료의 원본 및 온라인 게시 허락을 별도 단계로 진행한다. 미확인 사항은 사용자 확인이 필요할 때 한 번에 하나씩 질문한다.
+
+### 변경 이력
+- 2026-10-30: 42단계에서 주요 Google Fonts family와 Pretendard v1.3.8 공식 라이선스를 대조하고, GTA VI 외부 이미지 카드가 develop/main 홈 소스에서 제거된 것을 재확인. 점검 문서만 develop에 기록하며 사이트 소스/광고 설정/main은 수정하지 않음.

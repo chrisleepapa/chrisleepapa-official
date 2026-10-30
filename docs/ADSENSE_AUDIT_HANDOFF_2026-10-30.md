@@ -1144,3 +1144,13 @@ main 병합 커밋 `21c5f424ad1b6991e72fc5a76e04da4b98c1a048`의 Vercel Producti
 
 ### 변경 이력
 - 2026-10-30: 찬송가 뷰어에 301~400장 등록. 사이트의 다른 기능 및 AdSense 설정은 변경하지 않음.
+
+
+## 21. TuTuPuPuPiPi 영상 플랫폼을 YouTube Shorts로 전환 (2026-10-30)
+- 사용자 제공 YouTube Shorts 5개로 기존 TikTok 플레이어 및 외부 링크를 교체함.
+- 영상 ID 순서: rjo0LdIyUM0, n2H9MKmtZSw, jkDo17TzeRY, bshNnMYpNmw, Fc98eIrrHJU.
+- 영상 카드 iframe은 `https://www.youtube.com/embed/{videoId}`, 외부 링크는 해당 `https://youtube.com/shorts/{videoId}`로 설정.
+- 영상 섹션 제목/설명, 미리보기 문구, 링크 라벨, iframe 접근성 제목을 YouTube Shorts 기준으로 변경.
+- 기존 TikTok 컬렉션 CTA는 사용자 제공 YouTube 컬렉션 URL이 없으므로 제거.
+- 수정 파일: `tutupupupipi.html`; 개발 브랜치에서만 수정.
+- 검증: 다섯 카드 각각의 embed ID와 외부 Shorts 링크가 사용자 제공 ID와 일치하는지 문자열 기준으로 확인 예정. 실제 브라우저 재생은 별도 확인 필요.

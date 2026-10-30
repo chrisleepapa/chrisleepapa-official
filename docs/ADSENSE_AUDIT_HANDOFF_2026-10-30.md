@@ -1625,3 +1625,88 @@ main 병합 커밋 `21c5f424ad1b6991e72fc5a76e04da4b98c1a048`의 Vercel Producti
 
 ### 변경 이력
 - 2026-10-30: SisterSquad 2 페이지 및 홈 홍보 섹션의 본편 공개 안내, 영상 ID, 번역, SEO/광고 코드를 develop에서 재점검. 사이트 소스는 변경하지 않고 본 점검 문서만 갱신. main은 변경하지 않음.
+
+
+## 35. MUSIC 제작 노트의 정적 HTML·동적 렌더링 및 앨범별 콘텐츠 대조 — 2026-10-30
+
+### 확인 범위
+- 기준 브랜치: `develop`.
+- `music.html`, `js/music-production-notes.js`, `sitemap.xml`을 확인.
+- 초기 HTML 본문, 인라인 음악 데이터, 외부 제작 노트 스크립트, 앨범 목록과 제작 노트의 데이터 대응, SEO 메타 및 AdSense 로더를 대조.
+- 실제 develop 페이지와 제작 노트 JS 파일을 Vercel URL fetch로 요청해 HTTP 응답을 확인. 일반 브라우저에서 JavaScript 실행 후 DOM, Spotify 재생, PC/모바일 레이아웃을 직접 조작한 테스트는 아님.
+
+### 페이지 메타 및 광고 코드
+- `music.html` title: `MUSIC ARCHIVE — Chris LEE.PAPA`.
+- meta description은 공식 MUSIC ARCHIVE에서 Spotify/YouTube 발매 AI 음악, 앨범, EP, 싱글 및 창작 음악을 소개한다고 설명.
+- canonical: `https://chrisleepapa.com/music`.
+- robots: `index, follow`.
+- sitemap에 `https://chrisleepapa.com/music` 등록.
+- AdSense loader 1회, publisher ID `ca-pub-3207219520058740` 1회.
+- JSON-LD 구조화 데이터는 `music.html`에서 확인되지 않음. 구조화 데이터 부재 자체를 AdSense 정책 위반이나 거절 원인으로 단정하지 않음.
+
+### 초기 HTML에 직접 포함된 고유 콘텐츠
+- 초기 HTML의 `.music-creation-notes` 영역에는 음악 제작 철학과 실제 창작 판단 기준을 설명하는 8개 주제의 편집형 본문이 정적으로 포함됨.
+- 주요 내용: 곡의 출발점과 창작 이유, AI 결과물에 대한 창작자 선택, 가사와 보컬의 적합성, 편곡에서 남길 요소, 결과물 채택 기준, 다양한 장르를 만드는 이유, 발매 후 검토, AI 창작에서 배운 점.
+- 따라서 JavaScript가 실행되지 않는 경우에도 일반적인 창작 과정/제작 관점의 고유한 본문은 남아 있음.
+- 다만 앨범 플레이어, 앨범별 이야기 목록 및 작품별 세부 제작 노트는 초기 HTML에 완성된 정적 카드 형태로 존재하지 않고 JavaScript 렌더링에 의존함.
+
+### 앨범 데이터와 앨범별 이야기 대조
+- `music.html`의 `musicData`에는 앨범/EP/싱글/연주곡 등 14개 작품이 정의되어 있음.
+- 플레이리스트와 앨범 정보는 인라인 JavaScript의 `renderPlaylist()`, `renderActive()`, `renderArchive()` 등으로 DOM에 생성됨.
+- 별도 인라인 `MUSIC_STORIES` 데이터와 `renderMusicStories()`가 앨범별 이야기를 `#archive-list`에 삽입함.
+- `MUSIC_STORIES`에 등록된 앨범별 설명은 12개이며, 14개 앨범 전체와 비교할 때 아래 두 작품이 빠져 있음.
+  1. `Winter town`
+  2. `Winter groove`
+- 렌더링 함수는 이야기 데이터가 없는 작품에 빈 문자열을 반환하므로, 현재 앨범 이야기 목록에서는 이 두 작품이 표시되지 않을 수 있음. 플레이리스트의 14개 작품 데이터 및 제작 노트 데이터에는 두 작품이 존재함.
+- 이 누락은 소스 데이터 대조로 확인된 실제 콘텐츠 일관성 결함이며, 다음 수정 후보로 기록. 이번 점검 단계에서는 임의로 설명을 작성하지 않고 수정하지 않음.
+
+### 작품별 음악 제작 노트 JavaScript
+- 외부 파일: `js/music-production-notes.js`.
+- `music.html`은 해당 파일을 `<script src="js/music-production-notes.js?v=20261013"></script>`로 불러옴.
+- 스크립트는 기존 정적 `.music-creation-notes` 영역을 교체하고, 작품별 기록을 생성함.
+- 기록 대상은 14개이며 `musicData`의 14개 작품명과 전부 일치함. 누락되거나 고립된 작품명은 없음.
+- 각 작품 기록은 출발점, 제작 방향, 감상 포인트, 참고용 제작 프롬프트로 구성됨.
+- 한국어/영어 번역 데이터가 있고, 언어 속성 변경을 감지해 재렌더링하는 MutationObserver가 존재.
+- 스크립트 설명은 프롬프트가 실제 입력값의 직접 인용이 아니라 작품의 성격을 바탕으로 재구성한 참고용 자료이며, 확인할 수 없는 제작 이력은 임의로 만들지 않았다고 명시. 이 안내는 창작 사실과 예시 프롬프트를 구분하는 데 유용함.
+- 외부 스크립트의 최신 관련 GitHub 커밋은 2026-10-22 `Add JPOP and Zumba production notes to Music Archive`이며, 현재 HTML의 cache-busting query는 `v=20261013`으로 그보다 이전 날짜를 표시함.
+- query 값만으로 실제 캐시 오작동을 확정할 수는 없고 현재 응답의 Cache-Control 헤더도 도구 결과에서 확보하지 못함. 다만 이후 파일 내용 변경 시 query 버전도 함께 갱신하는 편이 안전함.
+
+### 실제 개발 URL 요청 결과
+- `https://develop.chrisleepapa.com/music`: HTTP 200 OK, 응답 HTML 약 39 KB.
+- HTML 응답에는 8개 주제의 정적 제작 과정 본문이 포함되어 있음.
+- `https://develop.chrisleepapa.com/js/music-production-notes.js?v=20261013`: HTTP 200 OK, 응답 JavaScript 약 15 KB.
+- 응답된 JS 안에서 작품별 제작 기록 데이터 및 프롬프트 안내 문구를 확인함.
+- 이는 서버가 페이지와 외부 JS 파일을 정상 제공한다는 뜻이며, 실제 브라우저에서 JS 실행 후 14개 카드가 모두 표시되는지 또는 Googlebot 렌더링 HTML에 포함되는지까지 증명하지는 않음.
+- 웹 조회 도구에서는 개발 페이지를 열 수 없었으므로 일반 브라우저 렌더링 검증은 미완료로 유지.
+
+### 분석 및 판정
+1. MUSIC 페이지는 단순한 음원 링크 모음만으로 구성되지 않음. 초기 HTML에 8개 주제의 구체적인 음악 창작 판단 과정이 정적으로 포함되어 있고, 앨범별 이야기와 14개 작품별 제작 기록도 별도 데이터로 준비되어 있음.
+2. 개별 제작 노트 14개는 별도 JavaScript가 실행되어야 실제 DOM에 표시된다. Google의 JavaScript 렌더링이 이를 수집할 수는 있지만, 현재 점검만으로 Googlebot의 렌더링 완료 및 색인 반영을 보장할 수 없다.
+3. 앨범별 이야기 데이터에서 `Winter town`, `Winter groove`가 누락되어 14개 앨범과 12개 이야기 간 불일치가 확인됨. 해당 두 작품의 실제 배경을 확인한 뒤 설명을 추가하는 것이 적절하다.
+4. 제작 프롬프트가 재구성된 참고 자료라는 고지는 적절하다. 실제 생성에 사용한 프롬프트라고 오인되지 않도록 현재의 안내를 유지하는 것이 좋다.
+5. 외부 제작 노트 파일의 query 버전(`20261013`)이 최신 관련 파일 변경일(2026-10-22)보다 오래되었으므로, 다음 스크립트 변경 시 query 버전을 함께 갱신할 것을 권고한다.
+6. 이번 단계에서는 HTML/JS/CSS 및 광고 코드를 수정하지 않았고, main도 변경하지 않았다.
+
+### 단계별 체크리스트
+- [x] MUSIC 페이지 title/description/canonical/robots 확인
+- [x] sitemap의 /music 등록 확인
+- [x] AdSense loader 및 publisher ID 횟수 확인
+- [x] 초기 HTML의 정적 창작 과정 본문 확인
+- [x] 인라인 앨범 데이터 14개 확인
+- [x] 별도 제작 노트 JS의 작품 데이터 14개 확인
+- [x] 제작 노트 14개와 앨범 데이터 14개의 이름 일치 확인
+- [x] 한국어/영어 번역 및 참고용 프롬프트 고지 확인
+- [x] 실제 develop 페이지와 JS 파일 HTTP 200 응답 확인
+- [x] 앨범별 이야기 데이터가 12개뿐이며 `Winter town`, `Winter groove`가 누락된 점 확인
+- [x] JS query 버전이 파일의 최신 관련 커밋일보다 오래된 점 확인
+- [ ] `Winter town` 및 `Winter groove`의 실제 작품 맥락을 확인해 앨범 이야기 보강
+- [ ] 제작 노트 JS cache-busting query 버전 갱신 여부 결정
+- [ ] PC/모바일 브라우저에서 플레이어, 앨범 목록, 14개 제작 노트 렌더링 및 언어 전환 테스트
+- [ ] Google Search Console URL 검사/렌더링 결과로 작품별 제작 노트의 Googlebot 노출 여부 확인
+- [ ] Spotify 플레이어 및 앨범 링크 실제 재생/이동 테스트
+
+### 다음 단계
+- 36단계 — Worship 페이지(한국어/영어)의 정적 콘텐츠, 가사·악보·음원 출처 및 이용 권리 표시를 점검. 권리 허락 여부는 소스에 출처가 적혀 있다는 이유만으로 추정하지 않고, 확인 가능한 근거와 미확인 사항을 분리해 기록한다.
+
+### 변경 이력
+- 2026-10-30: develop의 MUSIC HTML/JS 및 실제 개발 URL 응답을 대조. 14개 제작 노트와 14개 앨범명 일치, 앨범 이야기 2개 누락, JS 의존 렌더링 및 오래된 cache-busting query를 확인. 사이트 소스는 수정하지 않고 점검 문서만 갱신. main은 변경하지 않음.

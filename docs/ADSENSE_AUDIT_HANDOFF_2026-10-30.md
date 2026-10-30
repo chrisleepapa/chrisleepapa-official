@@ -782,3 +782,61 @@ main 병합 커밋 `21c5f424ad1b6991e72fc5a76e04da4b98c1a048`의 Vercel Producti
 - [ ] GTM 계정의 현재 게시 버전 확인 및 제공된 v2 export와 대조(계정 UI 자료 필요)
 - [ ] AdSense Auto ads 페이지 제외 설정 확인(계정 UI 자료 필요)
 
+
+
+### 3단계 정밀 재점검 — 2026-10-30 최신 develop 기준
+
+#### 브랜치 및 배포
+- 점검 시점 develop HEAD: `4e96350a97d1bfbe4b187fa99a96dbbe880084f6` (`Fix published Sister Squad 2 copy`)
+- main HEAD: `00b6d079d920edb31ee43bf07d8067519de7631f`
+- main...develop 비교: `diverged`, develop ahead 25 / behind 11 (커밋 그래프 기준이며 실제 파일 차이와 구분).
+- develop의 최신 SisterSquad2 수정 배포: `dpl_GX5zShqCdwrXHaLyHVSH9HEnHbkV`, 상태 READY, alias `https://develop.chrisleepapa.com`.
+- main은 수정하지 않았다.
+
+#### 사이트맵 및 SEO 정적 대조
+- 현재 develop `sitemap.xml`: 24개 URL.
+- `/journal` 목록 페이지는 사이트맵에서 제외되고 `noindex, follow`; `/journal-1`~`/journal-6` 개별 글은 사이트맵에 포함되며 `index, follow`.
+- `/today`는 `noindex, follow`이고 사이트맵에서 제외.
+- `/bible`은 canonical `https://chrisleepapa.com/bible`, `index, follow`이며 사이트맵에 포함.
+- 점검한 주요 페이지의 canonical은 chrisleepapa.com 도메인으로 지정되어 있다. `/tutupupupipi`는 robots 메타가 명시되지 않았으나 기본 동작상 색인 허용 상태다.
+- 실제 Google Search Console의 색인 결과와 선택 canonical은 이 정적 검사로 확정할 수 없다.
+
+#### 광고 스크립트 정적 대조
+- AdSense loader/publisher ID가 0회인 것으로 재확인: `bible.html`, `game.html`, `tetris.html`, `privacy.html`, `terms.html`, `contact.html`, `today.html`, `journal.html`.
+- `wallpaper.html`, `tutupupupipi.html` 및 주요 창작/음악/작품 소개 페이지에는 AdSense loader와 publisher ID가 각 1회 존재한다.
+- 점검한 페이지에서 GTM 컨테이너 참조는 script/noscript 합계 2회 유지된다.
+- `/bible`은 AdSense loader 0, publisher ID 0, GTM 2회. Bible 직접 광고 코드 제거 상태 유지.
+- 제공받은 GTM export v2에는 GA4 Google tag 1개(`G-NBGELYQ4TZ))가 있고 AdSense 태그는 없었다. 다만 현재 GTM 계정의 게시 버전과 동일한지는 확인하지 못했다.
+- AdSense 계정이 아직 심사/승인 전이므로 Auto ads의 실제 URL별 제외 설정은 현재 확인 가능한 상태가 아니다. 승인 전에는 이 항목을 반복 요청하지 않고 보류한다.
+
+#### 콘텐츠 가치 검토
+- `sistersquad2.html`: 기존 HTML 초기 문구에 본편 공개 전 안내(“본편은 곧 공개됩니다”)가 남아 있는 것을 발견해, 이미 공개된 본편을 지금 시청할 수 있다는 문구로 수정했다. 한국어 초기 문구 2곳을 현재 번역 데이터와 일치시켰다. 커밋 `4e96350a97d1bfbe4b187fa99a96dbbe880084f6`; develop Preview READY 확인.
+- `wallpaper.html`: 모바일 MP4 4편, PC PNG 9점, 각 영상의 차이 설명, 개인 사용 조건, Android/iPhone/Windows/macOS 설정 안내 및 제작자 노트가 확인된다. 단순 다운로드 목록보다 독립적인 안내·제작 맥락이 충분히 포함되어 있어 현재는 광고 제외를 확정하지 않는다. 단, 이미지 9점의 개별 설명은 제목이 일반적인 번호형이므로 차별화 여지가 있다.
+- `tutupupupipi.html`: 캐릭터 3인의 개별 소개, 세계관, OST, TikTok 영상 5개가 있으나 세계관/슬로건 설명이 반복되고 영상별 고유한 에피소드 설명이나 제작 과정이 제한적이다. 광고를 유지할지 판단하기 전에 기존 페이지 안에서 에피소드별 내용·제작자 관점을 보강할 필요가 있다. 사용자 제공 사실 없이 줄거리나 제작 이력을 만들어 넣지 않는다.
+- `sistersquad2.html`: 캐릭터별 서사, 작품 세계관, 제작 노트, 본편과 예고편이 있어 독립적인 창작 콘텐츠가 확인된다.
+- `worship.html`, `worship_eng.html`: 앨범 이야기와 창작 배경이 HTML 본문에 존재한다. 가사·악보·음원별 권리 범위는 별도 확인이 필요하다.
+- `music.html`: 제작 기록이 `js/music-production-notes.js`로 동적 생성된다. 초기 HTML 및 검색엔진 렌더링 결과에서 실제 노출되는지는 아직 검증하지 못했다.
+- `movie.html`: 영상별 아이디어·제작 과정·배운 점 등 제작 노트 구조가 확인된다.
+
+#### Bible / 찬송가 자료 재점검
+- develop `images/hymn/`에 PDF 1~250장 250개가 존재하고 번호 누락은 없다.
+- main에는 PDF 1~200장 200개가 존재한다. develop에만 추가된 PDF는 201~250장 50개다.
+- 현재 `bible.html`의 `hymnFiles` 데이터 배열은 1~200장 200개만 등록되어 있다. 따라서 201~250 PDF 파일은 저장소에는 있지만 뷰어 검색/표시 목록에는 아직 연결되지 않았다.
+- 201~250장을 뷰어에 등록하는 작업은 파일의 온라인 게시 및 상업적 이용 허락 확인 후 진행한다. 파일이 저장소에 있다는 사실이나 출처 링크(`https://w-decrecendo.tistory.com/`) 표기만으로 권리 허락이 입증되지는 않는다.
+- 성경 본문은 `stranger828/bibleAPI`의 개역개정 JSON을 사용한다. 해당 프로젝트 README도 성경 데이터 저작권은 대한성서공회에 있을 수 있으므로 상업적 이용 전 확인이 필요하다고 명시한다.
+- 성경 본문 및 찬송가 악보의 온라인 게시/광고 포함 이용 허락은 아직 확인되지 않았다. Bible의 광고 로더 제거는 광고 코드 조치일 뿐 저작권 이용 허락을 대체하지 않는다.
+
+#### 아직 완료 처리하지 않는 항목
+- [ ] 대한성서공회 또는 권리자로부터 개역개정 본문 사용 허락 근거 확보
+- [ ] 찬송가 PDF 1~250의 원본 출처 및 온라인 게시/상업적 이용 허락 확인
+- [ ] 찬송가 201~250 뷰어 등록 여부 결정(권리 확인 후)
+- [ ] 현재 GTM 게시 버전과 export v2 대조
+- [ ] 브라우저 실제 PC/모바일 콘솔·네트워크 테스트
+- [ ] Bible 로그인, 성경 읽기, 묵상 저장/불러오기 실제 기능 테스트
+- [ ] 찬송가 1~200 PDF 뷰어 실기기 테스트(기존 PC 육안 확인 외 모바일 미완료)
+- [ ] TuTuPuPuPiPi 페이지의 에피소드별 고유 설명/제작 과정 보강
+- [ ] Music 제작 노트의 렌더링 후 검색엔진 노출 확인
+- [ ] 사용자 develop 최종 검토 후에만 main 반영
+
+변경 이력:
+- 2026-10-30: 최신 develop/main, 24개 사이트맵 URL, 주요 페이지 광고 코드 및 SEO 메타, SisterSquad2 본편 안내, Wallpaper/TuTuPuPuPiPi/Music/Worship 콘텐츠 구조, 찬송가 PDF 1~250 파일과 뷰어 등록 범위를 재점검. SisterSquad2의 오래된 본편 공개 안내만 develop에서 수정하고 Preview READY 확인. main은 변경하지 않음.

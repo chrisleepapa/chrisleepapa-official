@@ -1394,3 +1394,70 @@ main 병합 커밋 `21c5f424ad1b6991e72fc5a76e04da4b98c1a048`의 Vercel Producti
 
 ### 변경 이력
 - 2026-10-30: 게임 허브/소개/실행 페이지 8개의 광고 및 robots 설정을 정적으로 대조. 사이트 소스는 변경하지 않고 점검 문서만 develop에서 갱신.
+
+
+## 31. TODAY 및 WALLPAPER 페이지 광고·콘텐츠 품질 점검 — 2026-10-30
+
+### 확인 범위
+- 기준 브랜치: `develop`.
+- `today.html`, `wallpaper.html`, TODAY 기능 스크립트 `js/today-archive-v2.js`, `js/today-prayer-notes.js`, `vercel.json`, `sitemap.xml`을 확인.
+- AdSense loader/publisher ID, robots/canonical, 페이지 콘텐츠, 사용자 기록 기능, 미디어 다운로드/사용 안내를 정적 소스 기준으로 대조.
+- 실제 브라우저 렌더링, 로그인 후 데이터 저장 성공, 다운로드 파일의 실제 응답/품질, AdSense 계정의 Auto ads URL 제외 설정은 이 단계에서 검증하지 않음.
+
+### TODAY 확인 결과
+- 파일: `today.html`; title `TODAY — Chris LEE.PAPA`.
+- meta description 및 canonical `https://chrisleepapa.com/today` 존재.
+- meta robots: `noindex, follow`.
+- AdSense loader, publisher ID 및 수동 광고 슬롯/호출: 0.
+- sitemap.xml에는 `/today`가 등록되어 있지 않음.
+- 로그인 UI는 사이트 공통 계정을 안내하며, 로그인 후 기도노트, 오늘 체크인/연속 방문일, 성경 통독 진도, 날짜별 묵상 기록 및 할 일 기능을 제공하는 구조.
+- `js/today-archive-v2.js`는 묵상 기록 목록/검색/날짜별 편집·저장·삭제 기능을 Supabase RPC로 호출.
+- `js/today-prayer-notes.js`는 기도노트 관리와 날짜별 다시 보기 기능을 제공하며 Supabase RPC 및 기존 브라우저 로컬 기록 호환 로직을 포함.
+- `today.html` 내부에는 체크인 일부를 localStorage에 보관하고 Supabase에 저장을 시도하는 로직도 확인됨. 따라서 데이터 저장은 서버 연동을 기본으로 하되 일부 상태는 브라우저 로컬 저장과 병행하는 구조로 보임.
+
+### TODAY 판정
+- 개인 로그인 및 개인 기록 중심의 기능성 페이지이며 검색 유입용 공개 콘텐츠가 아니다.
+- 현재 noindex 및 광고 로더 미포함 구성은 페이지 목적과 일치한다.
+- 광고를 추가하거나 검색 색인 대상으로 전환할 필요는 확인되지 않았다.
+- 실제 개인정보/계정 데이터 접근 통제의 적정성은 Supabase RLS 및 RPC 권한을 별도로 검토해야 하며, HTML/JS만으로 보안 적합성을 확정하지 않는다.
+
+### WALLPAPER 확인 결과
+- 파일: `wallpaper.html`; title `Wallpaper Studio | Mobile & Desktop — Chris LEE.PAPA`.
+- meta description, canonical `https://chrisleepapa.com/wallpaper`, robots `index, follow` 존재.
+- AdSense loader 및 publisher ID 각각 1회.
+- sitemap.xml에 `/wallpaper` 등록.
+- 모바일용 MP4 4개: 북유럽 풍경, 남유럽 풍경, 도시 야경 드라이브, 구름 위 산의 정자. 각 작품은 영상 미리보기와 MP4 다운로드 링크를 제공.
+- PC용 PNG 9개: 원본 이미지 열기 및 PNG 다운로드 링크 제공.
+- 별도의 창작자 노트에서 배경화면 기획 의도, 모바일/PC 매체 차이, 개인 화면 사용 취지를 설명.
+- Android/iPhone/Windows/macOS별 설정 안내가 있으며, MP4를 모든 iPhone에서 바로 움직이는 잠금화면으로 쓸 수 없다는 제한도 명시.
+- 무료 개인 사용, 재배포/재판매/무단 편집/상업적 이용 제한 및 별도 이용 문의 안내 존재.
+- 한국어/영어 콘텐츠가 제공됨.
+
+### WALLPAPER 콘텐츠 품질 분석
+- 단순 파일 다운로드 목록보다 완성도가 높다. 작품 소개, 미리보기, 창작자 관점의 설명, 기기별 설정법, 이용 조건까지 있어 페이지 자체의 실용성과 독창성을 보강한다.
+- 모바일 4개는 작품별 이름과 alt 설명이 구체적이다.
+- 반면 PC 9개는 제목이 모두 'PC 배경화면 작품 01~09' 형태이고 alt도 번호 중심이다. 개별 작품의 이름, 장면/주제, 해상도·비율, 제작 의도 등은 카드 단위로 구별되어 있지 않다.
+- 따라서 PC 컬렉션은 실제 작품 자체가 독창적이더라도 HTML 텍스트만 보면 각 작품의 개별 가치와 차이를 파악하기 어렵다. 아홉 개 작품 각각에 맞는 실제 장면 설명과 정확한 이미지 정보가 추가되면 사용자와 검색엔진 모두에 더 명확한 콘텐츠가 된다.
+- 다만 이미지 원본을 실제로 열어 장면/해상도를 확인하지 않았으므로, 작품별 설명을 추측해 추가해서는 안 된다.
+
+### 판정 및 권고
+1. TODAY는 현재 noindex 및 광고 미포함 상태를 유지한다.
+2. WALLPAPER는 현재 확인된 콘텐츠 구성만으로 저가치 페이지라고 단정할 수 없다. 실제 창작물 13점, 다운로드/미리보기, 창작자 노트, 기기별 설정 가이드 및 이용 조건이 확인된다.
+3. WALLPAPER의 AdSense loader는 1회이며, 수동 광고 슬롯은 이번 단계의 핵심 확인 대상이 아니었고 실제 광고 노출은 계정 Auto ads 설정에 좌우된다. 현재 상태를 임의로 제거하지 않는다.
+4. PC 배경화면 9점의 개별 제목·설명·대체 텍스트를 보강할 여지가 있다. 단, 실제 이미지 원본을 확인한 뒤 사실에 맞는 설명만 작성한다.
+5. 무료 다운로드 동선이 중요한 페이지이므로 Auto ads가 다운로드 버튼/미리보기를 가리거나 콘텐츠 이용을 방해하는지 실제 운영 도메인에서 확인할 필요가 있다. 불편이 확인되면 URL 제외 여부를 검토한다.
+6. AdSense 승인 여부는 사이트 전체의 독창성, 탐색 구조, 정책 준수 및 Google의 실제 검토에 따라 결정되므로 이번 정적 점검만으로 승인 가능성을 보증하지 않는다.
+
+### 판정 및 후속
+- [x] TODAY AdSense loader/publisher ID 및 robots/canonical 확인
+- [x] TODAY 개인 기록 기능 및 Supabase/로컬 저장 코드 확인
+- [x] WALLPAPER AdSense loader/publisher ID 및 robots/canonical 확인
+- [x] 모바일 MP4 4개, PC PNG 9개, 다운로드/미리보기 구조 확인
+- [x] 창작자 노트, 기기별 설정 안내, 이용 조건 확인
+- [x] PC 컬렉션 개별 설명/alt의 구체성 부족 기록
+- [ ] PC PNG 9개 원본 이미지의 실제 장면, 해상도, 비율 확인 후 개별 정보 보강 여부 결정
+- [ ] 운영 도메인에서 WALLPAPER Auto ads의 실제 노출 위치와 다운로드 UX 확인
+- [ ] Supabase RLS/RPC 권한 검토(별도 보안 점검 범위)
+
+### 변경 이력
+- 2026-10-30: TODAY 및 WALLPAPER 페이지와 관련 기능 스크립트를 정적으로 점검. 사이트 HTML/JS/CSS는 수정하지 않고 본 점검 문서만 develop에서 갱신.

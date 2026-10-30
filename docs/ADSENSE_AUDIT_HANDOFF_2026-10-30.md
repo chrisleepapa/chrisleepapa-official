@@ -613,3 +613,51 @@ Vercel에서 develop 브랜치의 최신 사이트 코드 커밋 배포를 확�
 
 변경 이력:
 - 2026-10-30: 사용자 피드백에 따라 PC 찬송가 PDF 표시 확인 항목 완료 처리. 사이트 소스 변경 없음.
+
+
+### 운영 배포 후 다음 점검 — Production HTML / Sitemap 광고 코드 대조 (2026-10-30)
+
+main 병합 커밋 `21c5f424ad1b6991e72fc5a76e04da4b98c1a048`의 Vercel Production 배포가 `READY`임을 확인한 뒤, 운영 도메인 `https://chrisleepapa.com`의 실제 HTML 응답을 조회했다. 이 결과는 브라우저에서 광고가 실제 노출되는지 또는 AdSense 계정의 Auto ads가 적용되는지까지 확인한 것은 아니며, 서버가 전달한 HTML의 코드 유무만을 의미한다.
+
+#### 운영 사이트에서 확인된 결과
+
+- `/bible`: HTTP 200, canonical 정상, `index, follow`; AdSense loader 0, `adsbygoogle` 0, publisher ID 0, GTM 2회. Bible 직접 광고 코드 제거가 운영 배포에 반영된 것을 확인.
+- `/today`: HTTP 200, `noindex, follow`; AdSense loader 및 publisher ID 0.
+- `/journal`: HTTP 200, `noindex, follow`; AdSense loader 및 publisher ID 0. sitemap에도 목록 페이지 `/journal`은 없고 개별 글 `/journal-1`~`/journal-6`만 포함.
+- 다음 페이지는 각각 AdSense loader 1회 및 publisher ID 1회가 HTML에 남아 있음: `/game`, `/tetris`, `/privacy`, `/terms`, `/contact`.
+- `/wallpaper`: AdSense loader 1회, publisher ID 1회. 기존 문서의 콘텐츠 보강 후보이며 광고 제외 확정 페이지는 아니지만, 다운로드/임베드 중심이므로 별도 콘텐츠 가치 검토 필요.
+- 홈, `/music`, `/movie`, `/sistersquad-hub`, `/sistersquad`, `/sistersquad2`, `/worship`, `/worship_eng`도 HTML에 AdSense loader와 publisher ID가 각 1회 존재.
+- `/tutupupupipi`는 AdSense loader/publisher ID 각 1회 존재하며, HTML에서 robots 메타 태그는 확인되지 않았다(미기재가 곧 noindex를 뜻하지는 않음).
+- 조회한 주요 페이지에서 GTM 컨테이너 `GTM-NGDTQNVG`가 각 2회 나타남(스크립트 및 noscript 구성).
+
+#### 운영 sitemap 확인
+
+- `https://chrisleepapa.com/sitemap.xml`: HTTP 200, XML sitemap 정상 응답.
+- URL 총 24개.
+- `/bible` 포함, `/journal` 목록은 제외하고 `/journal-1`~`/journal-6` 개별 글을 포함.
+- 확인된 sitemap URL 전체 목록은 현재 운영 `sitemap.xml` 응답 기준이며, Search Console의 실제 색인 상태와는 별도다.
+
+#### 다음 조치 권고 및 한계
+
+1. `/game`, `/tetris`, `/privacy`, `/terms`, `/contact`는 이전 권고에 따라 광고 제외를 우선 적용할 대상인데 운영 HTML에 직접 AdSense 로더가 남아 있다. develop에서 해당 페이지별 광고 코드 제거 또는 전역 로더 구조를 확인한 뒤 수정 범위를 정한다. 전역 광고 로더가 공통으로 주입되는 구조라면 개별 페이지 변경만으로 해결되지 않을 수 있다.
+2. `/wallpaper`는 광고 제외를 확정하지 않았으므로 독립적인 제작 설명과 다운로드 가치 여부를 별도로 평가한다.
+3. GTM 내보내기 v2에 AdSense 태그가 없다는 사실은 확인했으나, 현재 GTM 계정의 최신 게시 버전과 동일한지 및 AdSense Auto ads의 URL 제외 설정은 아직 확인되지 않았다.
+4. 브라우저 개발자 도구에서 실제 네트워크 요청/콘솔을 확인하는 테스트는 아직 미완료다. 사용자가 앞서 확인한 로그인·성경 읽기·묵상 저장/불러오기·모바일·찬송가 표시 결과는 사용자 확인 항목으로 별도 반영하되, assistant의 자동 브라우저 테스트로 표현하지 않는다.
+5. Bible 및 찬송가 자료의 온라인 게시 권리 확인은 1단계 보류 상태이며, 광고 코드 제거로 권리 문제가 해결된 것은 아니다.
+
+#### 체크리스트 갱신
+
+- [x] Production 배포가 READY인지 확인
+- [x] 운영 sitemap 응답 및 URL 24개 확인
+- [x] 운영 `/bible` HTML에서 AdSense loader/publisher ID가 없는지 확인
+- [x] 운영 `/today`, `/journal`의 robots 및 광고 코드 확인
+- [x] 기능성/정책 페이지 5개에서 AdSense 코드 잔존 확인
+- [x] Wallpaper 페이지 광고 코드 및 콘텐츠 검토 필요성 확인
+- [ ] `/game`, `/tetris`, `/privacy`, `/terms`, `/contact` 광고 제외 조치(develop에서만)
+- [ ] GTM 계정 최신 게시 버전과 제공받은 v2 export 대조
+- [ ] AdSense Auto ads 페이지 제외 설정 확인
+- [ ] 브라우저 개발자 도구의 콘솔/네트워크 광고 요청 확인
+- [ ] Bible 및 찬송가 데이터의 온라인 게시 권리 확인(보류)
+
+변경 이력:
+- 2026-10-30: Production 배포 READY 이후 sitemap 및 주요 운영 URL의 HTML 응답을 대조. 코드 수정 없이 광고 코드 잔존 페이지와 후속 조치 대상을 식별.

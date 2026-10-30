@@ -2182,3 +2182,46 @@ Google Fonts 공식 저장소의 각 family `METADATA.pb`에서 다음 family의
 
 ### 변경 이력
 - 2026-10-30: 42단계에서 주요 Google Fonts family와 Pretendard v1.3.8 공식 라이선스를 대조하고, GTA VI 외부 이미지 카드가 develop/main 홈 소스에서 제거된 것을 재확인. 점검 문서만 develop에 기록하며 사이트 소스/광고 설정/main은 수정하지 않음.
+
+
+## 43단계 — YouTube/Spotify 임베드·썸네일 및 외부 IP 포함 영상 점검 — 2026-10-30
+
+**진행 상태: 플랫폼 임베드/썸네일 구조 확인 완료 / 애니메이션 원작 IP 사용 권한 확인 필요**
+
+### 43-1. 플랫폼 임베드 및 썸네일 구조
+- `index.html`: SISTER SQUAD 2 본편 YouTube No-Cookie iframe, 동적 YouTube 썸네일 호출을 확인했다.
+- `sistersquad.html`: YouTube No-Cookie iframe으로 영상 재생.
+- `sistersquad2.html`: YouTube No-Cookie iframe으로 본편, 예고 영상 및 NG/비하인드 영상 재생. 개별 YouTube 링크도 함께 제공한다.
+- `tutupupupipi.html`: YouTube OST 플레이리스트와 Spotify OST 앨범을 공식 임베드하고, Shorts 썸네일은 `i.ytimg.com`에서 불러온다.
+- `music.html`: Spotify 앨범 플레이어를 동적으로 생성하며 YouTube 플레이리스트 링크를 제공한다.
+- `worship.html` 및 `worship_eng.html`: 앨범의 Spotify/YouTube 외부 링크를 제공한다. 이번에 확인한 범위에서는 로컬 음원 파일을 재생하는 구조는 확인되지 않았다.
+- `movie.html`: YouTube 영상 iframe과 `img.youtube.com` 썸네일을 사용한다.
+- 플랫폼 임베드/플랫폼 썸네일을 사용하는 사실은 저장소에 타인의 원본 영상·음원 파일을 직접 복사해 올렸다는 증거가 아니다. 반대로 임베드된 영상의 내부 구성요소에 대한 권리까지 사이트 운영자가 확보했다는 증거도 아니다.
+- Wallpaper 페이지는 별도 로컬 MP4 파일(`lockscreen00.mp4`, `mobile01.mp4`~`mobile04.mp4`)을 직접 제공한다. 사용자는 Wallpaper 영상의 음원이 Gemini 생성이라고 확인했다. 생성 당시 기능/약관과 각 파일의 다른 구성요소 여부는 미확인으로 유지한다.
+
+### 43-2. Movie 페이지의 원작 애니메이션 캐릭터 사용 정황
+- `movie.html`의 제작 노트는 “귀멸의 칼날” 및 “Demon Slayer”를 명시하고, 애니메이션 캐릭터를 실제 영화 촬영장에 배치한 AI 실사 영상이라고 설명한다.
+- 같은 페이지의 Shorts 목록에는 “체인소맨 / Chainsaw Man”, “주술회전 / Jujutsu Kaisen”, “귀멸의 칼날 / Demon Slayer”의 등장인물을 사용한 영상 설명이 명시되어 있다.
+- 따라서 해당 영상들은 사용자가 Gemini로 직접 생성·편집했더라도, 사용자의 완전한 오리지널 캐릭터만으로 구성된 작품이 아니라 기존 애니메이션 IP를 소재로 한 팬메이드/2차 창작 성격이 있는 콘텐츠로 구분해야 한다.
+- `movie.html`의 HTML에는 AdSense 로더가 1회 존재한다. 이 사실은 광고가 실제로 노출되었음을 뜻하지는 않지만, 해당 URL에 광고 스크립트가 적용된 상태임을 뜻한다.
+- Google Publisher Policies는 저작권 침해 콘텐츠에 광고를 게재하지 못하도록 규정한다. Google 안내상 정책은 페이지에 존재하는 콘텐츠 전반에 적용되므로, 직접 제작한 AI 영상이라는 사실만으로 원작 캐릭터 사용 권한이 자동 확보되는 것은 아니다.
+- 공식 정책 참고: https://support.google.com/publisherpolicies/answer/10502938
+- AdSense 정책 안내: https://support.google.com/adsense/answer/2660562
+- 현재 저장소 및 이번 정적 조사만으로 원작 권리자의 허락, 라이선스, 이용 가능한 범위 또는 법적 예외 적용 여부는 확인할 수 없다. 침해가 확정되었다고 단정하지 않는다.
+
+### 43-3. 현재 판정
+- **확인 완료:** 주요 프로젝트 페이지의 YouTube/Spotify 임베드·외부 썸네일 호출 구조와 Wallpaper 로컬 MP4 제공 구조.
+- **주의 필요:** Movie 페이지에 기존 애니메이션 IP의 캐릭터가 등장하는 AI 팬메이드/2차 창작 영상이 소개되어 있고, 페이지 소스에 AdSense 로더가 1회 존재한다.
+- **미확인:** Demon Slayer, Chainsaw Man, Jujutsu Kaisen 관련 캐릭터·상표·원작 요소 사용에 대한 권리자의 허락/라이선스 또는 적용 가능한 법적 예외. 개별 YouTube 영상의 내부 음악·효과음·이미지 구성요소 권리도 이번 HTML 점검만으로는 확인할 수 없다.
+- **보류:** 영상이 Gemini로 생성되었다는 사실만으로 원작 IP 이용 허락이 있다고 판단하지 않는다. 반대로 AI 팬메이드라는 이유만으로 위법이라고 확정하지 않는다.
+- **권고:** 권리 근거가 확인되기 전에는 Movie 페이지의 해당 영상에 광고를 적용하는 것이 안전하다고 단정할 수 없다. 페이지 광고 제외 또는 해당 콘텐츠의 공개 범위 조정은 권리 확인 후 별도 검토하며, 사용자 승인 없이 소스는 수정하지 않는다.
+
+### 사용자 확인 필요 — 애니메이션 원작 IP 이용 권한
+- Movie 페이지의 귀멸의 칼날, 체인소맨, 주술회전 캐릭터를 사용한 AI 영상에 대해 원작 권리자/공식 라이선스의 허락을 받은 적이 있는가?
+- 허락 또는 라이선스가 없다면 “별도 허락 없음”으로 기록하고, 광고가 적용되는 페이지에서 어떤 방식으로 공개할지 다음 단계에서 검토한다.
+
+### 다음 단계
+- 사용자 답변에 따라 Movie 페이지의 애니메이션 팬메이드 영상 권리/광고 적용 여부를 먼저 판단한다. 이후 Suno 개별 트랙의 생성 당시 플랜과 배포 조건, Worship 가사 게시 권한, Bible/찬송가 원본·온라인 게시 허락을 각각 분리해 확인한다.
+
+### 변경 이력
+- 2026-10-30: 43단계에서 YouTube/Spotify 임베드·썸네일 및 Wallpaper 로컬 MP4 구조를 재확인. Movie 페이지에 기존 애니메이션 IP를 소재로 한 AI 영상 설명과 AdSense 로더 1회를 확인해 권리 확인 필요 항목으로 기록. 문서만 develop에 기록하고 사이트 소스 및 main은 수정하지 않음.

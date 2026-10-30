@@ -124,15 +124,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .contact-links { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:0 auto; }
-        .contact-link { min-height:86px; display:flex; align-items:center; gap:13px; padding:16px; text-align:left; border:1px solid rgba(201,168,76,.2); border-radius:16px; background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(12,12,18,.62)); color:var(--text); text-decoration:none; transition:transform .25s,border-color .25s,background .25s,box-shadow .25s; }
-        .contact-link:hover { transform:translateY(-3px); border-color:rgba(232,208,138,.65); background:linear-gradient(145deg,rgba(201,168,76,.12),rgba(12,12,18,.8)); box-shadow:0 12px 26px rgba(0,0,0,.25); }
-        .contact-link-icon { flex:0 0 40px; width:40px; height:40px; display:grid; place-items:center; border-radius:12px; border:1px solid rgba(201,168,76,.24); background:rgba(201,168,76,.09); color:var(--gold-light); font-size:1.15rem; font-weight:700; }
-        .contact-link-copy { min-width:0; display:flex; flex-direction:column; gap:5px; }
-        .contact-link-copy strong { font-size:.92rem; font-weight:650; letter-spacing:.01em; color:#f5edda; }
-        .contact-link-copy small { font-family:'Pretendard',sans-serif; font-size:.72rem; line-height:1.35; color:rgba(220,216,206,.62); }
-        .contact-link-arrow { margin-left:auto; align-self:flex-start; color:rgba(232,208,138,.6); font-size:.9rem; }
-        .contact-email { border-color:rgba(201,168,76,.42); background:linear-gradient(145deg,rgba(201,168,76,.13),rgba(12,12,18,.68)); }
+        /* Contact channel cards share the exact visual language of About. */
+        .link-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin:0 auto; }
+        .link-card { position:relative; min-height:154px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; padding:24px 18px; border:1px solid rgba(201,168,76,.18); border-radius:18px; background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(12,12,18,.72)); box-shadow:0 10px 28px rgba(0,0,0,.16); backdrop-filter:blur(10px); color:var(--text); text-decoration:none; text-align:center; transition:transform .3s,border-color .3s,background .3s,box-shadow .3s; }
+        .link-card:hover { border-color:rgba(232,208,138,.62); background:linear-gradient(145deg,rgba(201,168,76,.12),rgba(12,12,18,.82)); transform:translateY(-4px); box-shadow:0 14px 30px rgba(0,0,0,.28); }
+        .link-icon { width:42px; height:42px; flex:0 0 42px; display:flex; align-items:center; justify-content:center; border-radius:50%; border:1px solid rgba(201,168,76,.2); background:rgba(201,168,76,.09); color:var(--gold-light); font-size:1.1rem; }
+        .link-name { font-family:'Cinzel',serif; font-size:.78rem; letter-spacing:1.6px; color:var(--gold-light); }
+        .link-copy { display:flex; flex-direction:column; gap:5px; }
+        .link-copy strong { font-family:'Cinzel',serif; font-size:.78rem; font-weight:600; letter-spacing:1.6px; color:var(--gold-light); }
+        .link-copy small { font-family:'Pretendard',sans-serif; font-size:.76rem; line-height:1.4; color:rgba(220,216,206,.68); }
+        .link-arrow { position:absolute; right:16px; top:14px; color:rgba(232,208,138,.55); font-size:.95rem; transition:transform .3s,color .3s; }
+        .link-card:hover .link-arrow { color:var(--gold-light); transform:translate(2px,-2px); }
+        @media(max-width:600px){ .link-grid { grid-template-columns:1fr; gap:10px; } .link-card { min-height:92px; flex-direction:row; justify-content:flex-start; text-align:left; padding:16px 18px; gap:14px; } .link-icon { flex:0 0 42px; } .link-copy { margin-left:0; text-align:left; } .link-arrow { right:14px; top:10px; } }
         .action-btn {
             font-family: 'Cinzel', serif;
             font-size: 0.9rem;
@@ -159,8 +162,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         @media (max-width: 900px) {
             .glass-card { padding: 40px 20px; }
             .title { font-size: 2.2rem; }
-            .contact-links { grid-template-columns:1fr; }
-            .contact-link { min-height:76px; }
+
         }
     </style>
   <meta name="robots" content="index, follow">
@@ -188,11 +190,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </p>
             <p class="contact-notice" data-i18n="contact_notice">⏱ 응답 시간: 24시간 이내</p>
 
-            <div class="contact-links" aria-label="Contact and social links">
-                <a href="mailto:chrisleepapa@gmail.com" class="contact-link contact-email">
-                    <span class="contact-link-icon" aria-hidden="true">✉</span><span class="contact-link-copy"><strong>Email</strong><small>비즈니스 및 협업 문의</small></span><span class="contact-link-arrow" aria-hidden="true">↗</span>
+            <div class="link-grid" aria-label="Contact and social links">
+                <a href="mailto:chrisleepapa@gmail.com" class="link-card">
+                    <span class="link-icon" aria-hidden="true">✉</span><span class="link-copy"><strong>Email</strong><small>비즈니스 및 협업 문의</small></span><span class="link-arrow" aria-hidden="true">↗</span>
                 </a>
-                <a href="https://www.instagram.com/myeongheon.mung?exln=bHFqdGVlZzBkb3do" target="_blank" rel="noopener noreferrer" class="contact-link">
+                <a href="https://www.instagram.com/myeongheon.mung?exln=bHFqdGVlZzBkb3do" target="_blank" rel="noopener noreferrer" class="link-card">
                     <span class="contact-link-icon" aria-hidden="true">◎</span><span class="contact-link-copy"><strong>Instagram</strong><small>일상과 창작 기록</small></span><span class="contact-link-arrow" aria-hidden="true">↗</span>
                 </a>
                 <a href="https://www.facebook.com/share/1NEyc49Ms8/" target="_blank" rel="noopener noreferrer" class="contact-link">

@@ -2421,3 +2421,13 @@ Google Fonts 공식 저장소의 각 family `METADATA.pb`에서 다음 family의
 - 공식 자료: https://help.suno.com/en/articles/5663873 ; https://help.suno.com/en/articles/9604993 ; https://suno.com/terms
 - 본 판단은 사용자 진술과 Suno 공식 안내에 근거하며 계정의 개별 트랙 이력을 직접 검증한 것은 아니다.
 - main, 사이트 소스, 음원 파일, 광고 설정은 변경하지 않았다.
+
+
+### 45단계 보완 — Cover 결과물도 공식 Download → WAV 사용 확인 — 2026-10-30
+
+사용자가 본인 원곡을 Cover 기능으로 제작한 새 버전 역시 Suno의 공식 **Download → WAV** 메뉴로 내려받았다고 확인했다.
+- 따라서 Cover 결과물의 다운로드 경로도 사용자 진술상 Suno 공식 제공 채널이다.
+- 별도 녹음/스트리밍 추출 방식은 사용하지 않은 것으로 기록한다.
+- Cover 결과물별 DistroKid 업로드 및 실제 플랫폼 배포 여부, 다운로드 시점의 월별 할당량 또는 추가 크레딧 충족 여부는 별도 확인되지 않았다.
+- 본인 원곡 Cover에 대한 상업적 이용 가능성은 Suno 공식 안내를 참고하되, 해당 곡별 조건 충족 여부를 독립 검증한 것은 아니다.
+- main, 사이트 소스, 음원 파일, 광고 설정은 변경하지 않았다.

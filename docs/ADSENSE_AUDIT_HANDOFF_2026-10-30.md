@@ -854,3 +854,59 @@ main 병합 커밋 `21c5f424ad1b6991e72fc5a76e04da4b98c1a048`의 Vercel Producti
 - 이용 권리 관련: 공개 사이트에서 누구나 다운로드할 수 있다는 사실과 다른 사이트에 재게시하거나 광고가 있는 사이트에서 이용할 수 있는 권한은 별개다. 출처 표기는 유지하되 권리 확인은 별도 미완료 항목으로 둔다.
 
 정정: 위 3단계 점검의 “201~250장 뷰어 미등록” 상태는 이 후속 커밋으로 develop에서 수정되었다. 이제 뷰어 목록은 1~250장까지 등록되어 있다.
+
+
+## 12. 2026-10-30 후속 점검 — main 반영 후 재검증
+
+### 브랜치 및 운영 배포
+- main HEAD: `b2f69314754b54622bdf73346801197a0e0b9baa` (PR #157 병합 커밋)
+- develop HEAD(이번 기록 작성 직전): `1d4ed2fc317a53df6fb445ca8bade45c0a87343a`
+- main과 develop의 파일 비교 결과 변경 파일 0개. 커밋 그래프상 main에 병합 커밋 1개가 더 있으나 파일 내용은 동일.
+- Vercel Production deployment `dpl_J3yDkSpJm7D7EU8PrsucGiT4abz8`: READY, main commit `b2f69314`, alias `chrisleepapa.com` 확인.
+
+### Bible / 찬송가 소스 재검증
+- main의 `bible.html`: AdSense loader 0회, publisher ID 0회, GTM 참조 2회.
+- `hymnFiles`에서 PDF 경로 300개 확인, 출처 링크 `https://w-decrecendo.tistory.com/` 포함.
+- PDF 경로 300개 등록은 소스 정적 확인이며, 실제 모바일 PDF.js 렌더링은 별도 브라우저 테스트 필요.
+- 개역개정 본문 및 새찬송가 자료의 온라인/광고 포함 이용 허락은 여전히 확인되지 않음. 출처 링크 표시는 권리 허락의 증거가 아님.
+- Bible은 현재 `index, follow`이며 sitemap에 포함. 권리 확인 전 색인/공개 정책은 사용자가 결정할 수 있도록 임의 변경하지 않음.
+
+### 사이트맵 / SEO / 도메인
+- `sitemap.xml`: 24개 고유 URL, 모두 `https://chrisleepapa.com`.
+- `robots.txt`: 전체 허용 및 sitemap URL 지정.
+- 사이트맵 24개 HTML 파일의 title, description, canonical을 확인. Music의 description은 `data-i18n` 속성이 포함된 형태로 존재함(단순 정규식 검사에서 누락된 것으로 오인하지 않도록 주의).
+- `/today`, `/journal`: noindex, follow이며 sitemap 제외.
+- `/game`, `/tetris`: index, follow이나 sitemap 제외. 노출 의도 확인 대상.
+- Vercel 설정에서 develop 호스트는 `X-Robots-Tag: noindex, nofollow`; 구 `chrisleepapa-official.vercel.app`은 `.com`으로 영구 리디렉션.
+- `ads.txt`: `google.com, pub-3207219520058740, DIRECT, f08c47fec0942fa0` 확인.
+
+### 광고 / 분석 태그
+- sitemap 24개 페이지 모두 GTM 컨테이너 참조 2회(스크립트 + noscript) 확인.
+- 해당 24개 HTML에서 직접 `gtag.js`, `G-NBGELYQ4TZ`, `GT-5MJDBTR2` 설정은 발견되지 않음.
+- 직접 AdSense loader는 20개 페이지에서 1회씩, Bible/Contact/Privacy/Terms는 0회.
+- 추가 기능 페이지 `/today`, `/journal`, `/game`, `/tetris`도 직접 AdSense loader 및 publisher ID 0회.
+- `js/main.js`에도 AdSense 로딩 코드 없음.
+- 2026-10-30 업로드된 GTM export v2는 GA4 Google tag 1개(`G-NBGELYQ4TZ`, All Pages), AdSense tag 0개. 현재 계정의 실제 게시 버전이 v2인지 여부는 계정 UI/최신 export로 확인 필요.
+- AdSense Auto ads URL 제외 설정은 계정 승인/활성화 이후 확인할 항목으로 보류하며, 승인 전 반복 점검하지 않음.
+
+### 콘텐츠 품질
+- TuTuPuPuPiPi: 캐릭터 3명, 세계관, OST 임베드, TikTok 영상 5개. 영상 제목이 Video 01~05로 일반적이고 영상별 독립 설명/제작 맥락이 부족해 보강 우선순위 높음. 사실 확인 없이 에피소드 내용을 창작해 넣지 않음.
+- Music: `music-production-notes.js` 로드 및 `.music-creation-notes` 컨테이너 존재 확인. 작품별 제작 기록 14개와 별도 창작 판단 기준 설명이 HTML에 존재. JS 실행 후 실제 노출은 브라우저 확인 필요.
+- Wallpaper: 모바일 영상 4편, PC 이미지 9점, 기기별 설정 안내와 작품 설명 확인.
+- Movie: 영상 아카이브 및 FURIOUS/귀멸의 칼날/사랑한다고 제작 기록 섹션 확인.
+- Worship: Vol.1~3 앨범 이야기와 가사 아카이브, English Worship SHOUT 15곡 가사 아카이브 확인. 가사/악보/음원 권리 범위는 별도 확인 필요.
+
+### 아직 미완료인 항목
+- [ ] 대한성서공회로부터 개역개정 본문 온라인/상업적 이용 허락 근거 확보
+- [ ] 찬송가 PDF 1~300의 원본 출처 및 온라인/상업적 게시 허락 근거 확보
+- [ ] TuTuPuPuPiPi 영상 5개 각각의 실제 장면/에피소드/제작 의도 설명 보강(창작자 사실 확인 필요)
+- [ ] GTM 계정의 현재 게시 버전과 export v2 대조
+- [ ] GSC 실제 색인 상태 및 Google 선택 canonical 확인
+- [ ] 브라우저 PC/모바일 렌더링, 콘솔, 네트워크, Bible 로그인/묵상 저장/찬송가 PDF 테스트
+- [ ] AdSense 심사/계정 활성화 이후 Auto ads 페이지 제외 설정 확인
+- [ ] 사용자 최종 확인 전에는 develop의 추가 수정 사항을 main에 반영하지 않음
+
+### 검증 한계
+- GitHub 소스, Vercel 배포 상태, 정적 설정은 확인했으나 현재 도구에서 chrisleepapa.com 실브라우저 HTML/JS 렌더링 및 Chrome 개발자 도구 테스트는 수행하지 못함.
+- Search Console과 GTM/AdSense 계정 내부의 최신 상태는 연결된 계정 데이터가 없어 확인하지 못함.
+- 이번 후속 점검에서 사이트 코드 변경은 하지 않았으며, 이 문서만 develop에서 갱신함.

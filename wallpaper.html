@@ -314,6 +314,47 @@ html[data-theme="light"] .desktop-wallpaper-card{background:#fff;border-color:rg
 @media(max-width:380px){.wallpaper-card{grid-template-columns:96px minmax(0,1fr)}.wallpaper-card-body{padding:10px}.wallpaper-download{font-size:.61rem;padding:7px 5px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.wallpaper-card,.desktop-wallpaper-card{transition:none!important}.wallpaper-card:hover,.desktop-wallpaper-card:hover{transform:none}}
 
+
+/* Mobile collection: restore large, full-width vertical previews */
+@media (max-width: 640px) {
+  #mobile-wallpaper-studio .wallpaper-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+  }
+  #mobile-wallpaper-studio .wallpaper-card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  #mobile-wallpaper-studio .wallpaper-preview {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 9 / 16;
+    min-height: 0;
+    flex: none;
+    border-radius: 14px 14px 0 0;
+  }
+  #mobile-wallpaper-studio .wallpaper-preview video,
+  #mobile-wallpaper-studio .wallpaper-preview img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  #mobile-wallpaper-studio .wallpaper-card-body {
+    width: 100%;
+    padding: 18px;
+  }
+  #mobile-wallpaper-studio .wallpaper-card-title {
+    font-size: 1.05rem;
+  }
+  #mobile-wallpaper-studio .wallpaper-card-desc {
+    font-size: .86rem;
+    min-height: 0;
+  }
+}
+
 </style>
 
 </head><body>

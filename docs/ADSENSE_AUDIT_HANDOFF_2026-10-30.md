@@ -910,3 +910,15 @@ main 병합 커밋 `21c5f424ad1b6991e72fc5a76e04da4b98c1a048`의 Vercel Producti
 - GitHub 소스, Vercel 배포 상태, 정적 설정은 확인했으나 현재 도구에서 chrisleepapa.com 실브라우저 HTML/JS 렌더링 및 Chrome 개발자 도구 테스트는 수행하지 못함.
 - Search Console과 GTM/AdSense 계정 내부의 최신 상태는 연결된 계정 데이터가 없어 확인하지 못함.
 - 이번 후속 점검에서 사이트 코드 변경은 하지 않았으며, 이 문서만 develop에서 갱신함.
+
+
+## 13. 2026-10-30 진행 확인 및 다음 순서
+
+- 위 점검 기록 커밋 `d263454a6b81872890a7bf3f8954dd6e5cbcb996`의 Vercel develop deployment `dpl_J2Br14qdygVHFQ6mvH846pmfJyyG`가 READY로 완료됨. 별칭 `develop.chrisleepapa.com` 확인.
+- 이 커밋은 점검 문서만 수정하며 사이트 실행 코드/콘텐츠 파일은 수정하지 않음.
+- 문서 커밋으로 Git 브랜치 그래프는 main 1 commit ahead / develop 1 commit ahead의 diverged 상태가 됨. 소스 비교에서 변경된 파일은 이 점검 문서 1개뿐. 사이트 파일의 차이는 없음.
+- AdSense 심사/준비 상태는 사용자가 제공한 계정 화면 기준으로만 파악 가능. 공개 소스 점검으로 승인 상태를 추정하지 않음.
+- GSC의 실제 색인/Google 선택 canonical은 GitHub 소스만으로 확인 불가. GSC 데이터 접근 또는 사용자가 제공한 최신 화면이 필요함.
+- GTM 현재 게시 버전도 GTM 컨테이너 UI의 버전 확인 또는 최신 export가 필요함. 이전 export v2를 현재 게시 상태로 단정하지 않음.
+- TuTuPuPuPiPi 영상 5개에 관한 설명은 실제 영상 내용을 확인하지 않고 창작하지 않음. 각 영상의 실제 제목/장면/핵심 내용을 확인할 수 있을 때 상세 설명을 보강함.
+- 다음 진행 순서: (1) 권리 확인 자료 유무 확인 및 공식 허락 범위 정리, (2) TuTuPuPuPiPi 실제 영상 설명 근거 확보, (3) GTM 게시 버전 확인, (4) GSC 색인/표준 URL 확인, (5) 브라우저 실기능 점검. 각 항목은 근거 확보 후에만 완료 처리.

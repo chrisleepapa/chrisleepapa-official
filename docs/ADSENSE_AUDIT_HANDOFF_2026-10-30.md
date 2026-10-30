@@ -1228,3 +1228,52 @@ main 병합 커밋 `21c5f424ad1b6991e72fc5a76e04da4b98c1a048`의 Vercel Producti
 - 한국어/영어 번역 키 추가. 외부 리소스, 영상 ID, OST 링크, 광고/GTM 코드는 변경하지 않음.
 - 검증: 모든 신규 번역 키 양 언어 사전 존재, 앵커 ID(characters/world/videos/ost) 링크 대상 존재, 미디어쿼리 확인.
 - 실제 기기 시각/터치 테스트는 미수행. 작업 브랜치 develop, main 미변경.
+
+
+
+## 27. GTM/GA4 정적 설정 및 export v2 대조 — 2026-10-30
+
+### 확인 범위
+- 기준 브랜치: 현재 main/develop이 동일한 커밋을 가리키므로, 동일 소스 기준으로 확인.
+- 사이트맵에 등록된 HTML 24개를 각각 읽어 GTM 컨테이너, GA4 직접 태그, AdSense loader를 문자열 기준으로 점검.
+- 사용자 제공 Library 파일 `GTM-NGDTQNVG_v2.json` 전체 내용을 다시 읽어 컨테이너 버전 메타데이터와 태그 설정을 확인.
+- 이번 단계는 정적 소스와 업로드된 export의 대조이며, GTM 계정의 현재 게시 상태 또는 실제 GA4 이벤트 수집을 확인한 것은 아님.
+
+### 사이트 HTML 24개 점검 결과
+- 24/24 페이지에서 GTM 컨테이너 ID `GTM-NGDTQNVG`가 정확히 2회 확인됨.
+  - GTM 스크립트 로더: 페이지당 1회
+  - GTM noscript iframe: 페이지당 1회
+- 24개 페이지 모두에서 GA4 측정 ID `G-NBGELYQ4TZ`의 직접 삽입은 0회.
+- 별도 `gtag.js` 직접 로딩도 발견되지 않음.
+- AdSense loader 및 publisher ID는 20개 페이지에서 각 1회 확인됨.
+- `bible.html`, `contact.html`, `privacy.html`, `terms.html`은 AdSense loader 및 publisher ID가 각각 0회.
+- 이 결과는 HTML 정적 소스 기준이다. GTM 컨테이너가 브라우저에서 실제 실행되는지, CMP/브라우저 차단 등에 의해 차이가 생기는지는 별도 실측이 필요하다.
+
+### 사용자 제공 GTM export v2
+- export 시간: 2026-10-30 04:10:04.
+- 컨테이너: `chrisleepapa-official` / `GTM-NGDTQNVG`.
+- export에 포함된 컨테이너 버전: **2**.
+- 태그: `Google tag - GA4` 1개.
+- 측정 ID: `G-NBGELYQ4TZ`.
+- firing trigger ID: `2147479553` (All Pages 기본 트리거 ID).
+- 태그 실행 옵션: `ONCE_PER_EVENT`.
+- AdSense 태그: 0개.
+- consent 설정 상태: `NOT_SET`. 이 값만으로 법적/정책 위반을 단정하지 않으며, 실제 동의 관리 설정이 필요한 대상 지역/서비스인지 별도 검토 사항으로 남긴다.
+- export 설명은 All Pages 트리거를 사용한다고 명시하며, 소스의 GA4 직접 태그 0회와 GTM 기반 설치 구조가 일치한다.
+
+### 판정
+- [x] 사이트맵 HTML 24개에서 GTM 컨테이너 중복 설치 여부 정적 점검
+- [x] 24개 HTML의 GA4 직접 설치 여부 점검
+- [x] 24개 HTML의 AdSense loader/publisher ID 존재 현황 점검
+- [x] 사용자 제공 GTM export v2의 컨테이너 ID, 버전, GA4 태그, 측정 ID, trigger ID 확인
+- [ ] GTM 계정에서 현재 게시된 버전이 v2인지 확인
+- [ ] GTM Preview 및 GA4 실시간 보고서에서 실제 페이지뷰 1회 수집/중복 여부 확인
+- [ ] GTM consent 설정 및 사이트의 실제 동의 관리 구성 대조
+
+### 현재 필요한 확인 자료
+- GTM 관리 화면의 컨테이너 버전 목록/현재 게시 버전 화면 또는 최신 게시 버전 export가 필요하다.
+- GTM Preview 접속 후 사이트를 열었을 때 GA4 Google tag가 각 페이지에서 1회 실행되는지, GA4 실시간 보고서에 페이지뷰가 중복 기록되지 않는지 확인해야 한다.
+- 계정 내부 게시 버전과 실시간 보고서는 현재 연결된 도구로 직접 조회할 수 없어 미확인으로 유지한다.
+
+### 변경 이력
+- 2026-10-30: 사이트맵 24개 HTML과 사용자 제공 GTM export v2를 정적으로 대조. 소스 변경 없이 점검 문서만 develop에서 갱신.

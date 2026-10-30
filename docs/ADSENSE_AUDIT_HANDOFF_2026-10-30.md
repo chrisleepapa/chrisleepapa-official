@@ -1344,3 +1344,53 @@ main 병합 커밋 `21c5f424ad1b6991e72fc5a76e04da4b98c1a048`의 Vercel Producti
 
 ### 변경 이력
 - 2026-10-30: 사이트맵 24개 HTML의 SEO 기본 메타데이터와 robots.txt를 정적으로 대조. 사이트 소스 변경 없이 본 점검 문서만 develop에서 갱신.
+
+## 30. 게임 관련 페이지 광고 로더 및 색인 설정 점검 — 2026-10-30
+
+### 확인 범위
+- 기준 브랜치: `develop`.
+- 게임 허브 `game.html`, 게임 선택/소개 `gameinfo.html`, 게임 실행 페이지 6개(`booktop.html`, `fiveinrow.html`, `curling.html`, `tetris.html`, `switch.html`, `goal.html`)의 AdSense loader, publisher ID, 수동 광고 슬롯/호출, GTM, canonical, title을 대조.
+- `vercel.json`의 `/gameinfo` 응답 헤더도 확인.
+- 이번 단계는 정적 소스 점검이며 실제 광고 노출 여부/AdSense 계정의 Auto ads 페이지 제외 설정은 확인하지 못함.
+
+### 확인 결과
+
+| 페이지 | AdSense loader | Publisher ID | 수동 광고 슬롯/호출 | 비고 |
+|---|---:|---:|---:|---|
+| `/game` (`game.html`) | 0 | 0 | 0 | 게임 허브 |
+| `/gameinfo` | 1 | 1 | 0 | 게임 선택/소개 화면 |
+| `/booktop` | 1 | 1 | 0 | 게임 실행 |
+| `/fiveinrow` | 1 | 1 | 0 | 게임 실행 |
+| `/curling` | 1 | 1 | 0 | 게임 실행 |
+| `/tetris` | 0 | 0 | 0 | 게임 실행 |
+| `/switch` | 1 | 1 | 0 | 게임 실행 |
+| `/goal` (`goal.html`) | 0 | 0 | 0 | 게임 실행, canonical 미확인 |
+
+- 점검한 8개 페이지 모두 GTM 컨테이너는 스크립트 1회 + noscript 1회로 정적 확인되었다.
+- 점검한 게임 페이지들에서 `adsbygoogle.push()` 또는 `data-ad-slot` 기반 수동 광고 단위는 발견되지 않았다.
+- 다만 AdSense loader가 있는 페이지는 Auto ads가 계정에서 활성화되어 있고 URL 제외 설정이 없다면 자동 광고 대상이 될 수 있다. loader가 있다는 사실만으로 실제 광고가 노출된다고 단정할 수는 없다.
+- `gameinfo.html`의 HTML meta robots는 `index, follow`이나 `vercel.json`은 `/gameinfo` 응답에 `X-Robots-Tag: noindex, follow`를 설정한다. HTML과 HTTP 헤더가 서로 다르며, 더 제한적인 noindex 지시가 검색엔진에 적용될 수 있으므로 설정 의도를 확인해야 한다.
+- `gameinfo.html`은 AdSense loader가 있으나 수동 광고 슬롯은 없고, 현재 Vercel 설정상 noindex 응답 대상이다. Auto ads가 켜져 있다면 색인 대상이 아닌 게임 선택 화면에도 자동 광고 요청 가능성이 있으므로 계정의 URL 제외 설정을 별도로 확인할 필요가 있다.
+- `/booktop`, `/fiveinrow`, `/curling`, `/switch`는 게임 실행 화면임에도 AdSense loader가 포함되어 있다. 광고 슬롯 호출은 없지만 Auto ads 적용 가능성이 있으므로 게임 플레이 중 광고가 개입하지 않도록 제외하는 방향을 권고한다.
+- `/game`, `/tetris`, `/goal`은 현재 HTML상 AdSense loader가 없다. 다만 `goal.html`은 canonical 태그가 확인되지 않아 별도 SEO 점검 대상으로 남긴다.
+- `/gameinfo`는 사이트맵 24개 URL에는 포함되지 않는다.
+
+### 분석 및 권고
+1. 게임 허브와 게임 실행 화면은 방문 목적이 플레이/조작이므로 광고가 콘텐츠 이용을 방해할 가능성이 있다. 특히 자동 광고가 게임 캔버스/조작 UI와 겹치지 않도록 게임 관련 URL을 AdSense Auto ads 페이지 제외 대상으로 설정하는 보수적 방안을 권고한다.
+2. 소스에 남아 있는 loader를 제거할지, Auto ads URL 제외만으로 운영할지는 실제 계정 설정과 테스트를 확인한 뒤 결정한다. 페이지별 loader 제거와 Auto ads 제외는 별개의 통제 수단이다.
+3. `/gameinfo`의 meta robots와 Vercel `X-Robots-Tag` 불일치는 별도 SEO 정리 항목이다. 이번 광고 점검에서는 임의 수정하지 않는다.
+4. 광고가 없어도 게임 화면의 독창성/설명/이용 가치 평가는 별도 콘텐츠 품질 점검 대상이며, 광고 제외만으로 AdSense의 '가치가 별로 없는 콘텐츠' 판정이 해결되는 것은 아니다.
+
+### 판정 및 후속
+- [x] `/game`, `/gameinfo` 및 게임 실행 페이지 6개의 AdSense loader/publisher ID 확인
+- [x] 수동 광고 슬롯/호출 여부 확인
+- [x] GTM 중복 설치 여부 정적 확인
+- [x] `/gameinfo` HTML robots와 Vercel HTTP 헤더 설정 대조
+- [ ] AdSense Auto ads의 실제 URL 제외 목록 확인
+- [ ] 운영 도메인에서 게임 페이지별 광고 요청/실제 노출 여부 브라우저 확인
+- [ ] 게임 실행 페이지의 AdSense loader 제거 여부 결정
+- [ ] `/gameinfo` noindex 설정 의도 확인 및 meta/header 일치 여부 결정
+- [ ] `goal.html` canonical 누락 보완 필요성 검토
+
+### 변경 이력
+- 2026-10-30: 게임 허브/소개/실행 페이지 8개의 광고 및 robots 설정을 정적으로 대조. 사이트 소스는 변경하지 않고 점검 문서만 develop에서 갱신.

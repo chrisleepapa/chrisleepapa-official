@@ -20,12 +20,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           return Promise.all(keys.map(function(key){ return caches.delete(key); }));
         });
       })
-      .then(function(){
-        if(!sessionStorage.getItem('legacy-sw-cleaned')){
-          sessionStorage.setItem('legacy-sw-cleaned','1');
-          location.reload();
-        }
-      });
+      // Do not force a page reload after legacy service-worker cleanup.
+      // The current page remains visible; subsequent navigations use the fresh network response.
   }).catch(function(){});
 })();
 </script>

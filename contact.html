@@ -124,12 +124,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .link-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
+        .contact-links { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:0 auto; }
+        .contact-link { min-height:86px; display:flex; align-items:center; gap:13px; padding:16px; text-align:left; border:1px solid rgba(201,168,76,.2); border-radius:16px; background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(12,12,18,.62)); color:var(--text); text-decoration:none; transition:transform .25s,border-color .25s,background .25s,box-shadow .25s; }
+        .contact-link:hover { transform:translateY(-3px); border-color:rgba(232,208,138,.65); background:linear-gradient(145deg,rgba(201,168,76,.12),rgba(12,12,18,.8)); box-shadow:0 12px 26px rgba(0,0,0,.25); }
+        .contact-link-icon { flex:0 0 40px; width:40px; height:40px; display:grid; place-items:center; border-radius:12px; border:1px solid rgba(201,168,76,.24); background:rgba(201,168,76,.09); color:var(--gold-light); font-size:1.15rem; font-weight:700; }
+        .contact-link-copy { min-width:0; display:flex; flex-direction:column; gap:5px; }
+        .contact-link-copy strong { font-size:.92rem; font-weight:650; letter-spacing:.01em; color:#f5edda; }
+        .contact-link-copy small { font-family:'Pretendard',sans-serif; font-size:.72rem; line-height:1.35; color:rgba(220,216,206,.62); }
+        .contact-link-arrow { margin-left:auto; align-self:flex-start; color:rgba(232,208,138,.6); font-size:.9rem; }
+        .contact-email { border-color:rgba(201,168,76,.42); background:linear-gradient(145deg,rgba(201,168,76,.13),rgba(12,12,18,.68)); }
         .action-btn {
             font-family: 'Cinzel', serif;
             font-size: 0.9rem;
@@ -156,6 +159,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         @media (max-width: 900px) {
             .glass-card { padding: 40px 20px; }
             .title { font-size: 2.2rem; }
+            .contact-links { grid-template-columns:1fr; }
+            .contact-link { min-height:76px; }
         }
     </style>
   <meta name="robots" content="index, follow">

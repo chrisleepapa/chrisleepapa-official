@@ -2247,3 +2247,15 @@ Google Fonts 공식 저장소의 각 family `METADATA.pb`에서 다음 family의
 ### 다음 의사결정 대기
 - 사용자가 원작 캐릭터 AI 영상을 사이트 및 YouTube에 계속 공개할지, 또는 해당 콘텐츠를 내릴지 결정해야 한다.
 - 본 기록은 develop 점검 문서에만 추가한다. 사용자 지시 없이 movie.html, YouTube 영상, 광고 코드, robots/sitemap 또는 main을 수정하지 않는다.
+
+
+## 43단계 후속 조치 — Movie 페이지 광고 로더 제외 — 2026-10-30
+
+사용자의 명시적 지시에 따라 develop 브랜치의 `movie.html`에서 AdSense 로더 1회를 제거했다.
+- 제거 대상: `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3207219520058740`
+- Movie 페이지의 영상, 설명, 임베드, 공개 상태는 변경하지 않았다.
+- 다른 페이지의 AdSense 코드, GTM/GA 코드, 계정의 Auto ads 설정, robots/sitemap은 변경하지 않았다.
+- main 브랜치는 수정하지 않았다.
+- 이 조치는 Movie 페이지 자체에서 AdSense 스크립트를 불러오지 않도록 하는 소스 변경이다. GTM 또는 계정 측 설정 등 별도 경로로 광고 코드가 삽입되는지와 실제 광고 노출 여부는 배포 후 별도 검증이 필요하다.
+- 사용자는 원작 애니메이션 IP의 별도 허락은 없으나 현재 영상을 유지하고, 문제가 제기되면 내리겠다는 운영 방침을 밝혔다. 본 조치는 광고만 제외하며 영상 권리 상태를 해결하거나 법적 안전성을 보장하지 않는다.
+- 2026-10-30 develop 커밋: `af9b5029a11e89ad6cc63603e7ac0a4e40553bab`

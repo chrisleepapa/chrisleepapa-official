@@ -2615,3 +2615,8 @@ Google Fonts 공식 저장소의 각 family `METADATA.pb`에서 다음 family의
   - Generative AI Prohibited Use Policy: https://policies.google.com/terms/generative-ai/use-policy?hl=ko
   - 한국저작권위원회 생성형 인공지능 활용 저작물의 저작권 등록 안내서: https://copyright.re.kr/uploads/생성형_인공지능_활용_저작물의_저작권_등록_안내서_1773322096694.pdf
 - 조사 결론: 현재 공개된 공식 자료만으로는 Sister Squad 콘텐츠의 Gemini 상업적 이용을 금지한다고 볼 근거는 확인되지 않았지만, 생성 당시 약관·계정 상품·기능별 정책을 확정하지 못했으므로 '상업적 이용 권리 완전 확인'으로 종결하지 않음. 생성일, Gemini 앱 내 사용 기능, 당시 Google AI Pro 구독 내역과 약관 버전이 추가 확인 대상.
+
+
+### Sister Squad 권별 출시 연도 확인
+- 사용자 확인: Sister Squad 1권은 2025년에 출시했고, 2권은 2026년에 출시함.
+- 이는 출시 연도 확인이며, 각 이미지·영상·음향 에셋의 실제 Gemini 생성일과 동일하다고 단정하지 않음. 생성일 및 해당 시점 약관 적용 여부는 별도 확인 대상.

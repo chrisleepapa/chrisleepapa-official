@@ -237,3 +237,17 @@ Movie 페이지의 독립적인 콘텐츠 가치와 영상 중심 구성 비중�
 
 ### 다음 단일 작업
 Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한다. 접근이 불가능하면 미검증으로 남기고, 그 다음 Music/Worship 중 한 페이지씩 동적 본문과 실제 광고 위치를 점검한다.
+
+
+## 2026-11-01 Vercel Preview 확인 결과
+
+- Vercel 프로젝트: chrisleepapa-official (팀 chrisleepapas-projects).
+- develop 브랜치 도메인 develop.chrisleepapa.com은 Vercel 프로젝트에 검증된 상태로 연결되어 있다.
+- 직전 READY 배포는 commit 272a7313cc91a2f6bb7e1b1f686839b8ddaa9261이며, 해당 배포에 develop.chrisleepapa.com alias가 연결된 것을 확인했다.
+- 최신 문서 커밋 244ed95bcd9d98f4243f3355c2b7cba02dedc6fb의 Preview 배포는 확인 시점에 BUILDING 상태였다. 따라서 최신 문서 커밋의 배포 완료를 확인하지 않았다.
+- 브라우저 확인 도구로 develop.chrisleepapa.com/movie 및 READY Preview URL을 열려고 했으나 접근 오류가 발생했다. 이는 사이트 사용자에게도 접근 불가하다는 증거가 아니며, 본 점검 도구에서 실제 렌더링을 확인하지 못했다는 뜻이다.
+- main/develop compare는 이 확인 시점에 diverged, develop ahead 6 / behind 1이었다. 비교된 파일은 두 AdSense 점검 문서뿐이었다. 이 수치는 해당 비교 시점의 값이며, 문서 갱신 커밋 이후 다시 비교해야 한다.
+- 사이트 소스/광고 설정/main 변경 없음. Vercel 배포 또는 도메인 설정을 수동 변경하지 않았다.
+
+### 다음 단일 작업
+최신 develop Preview 배포가 READY가 되었는지 확인하고, 실제 브라우저 렌더링을 검증할 수 있는 경로가 있는지 확인한다. 보호된 배포 또는 도구 접근 한계로 실제 렌더링을 확인할 수 없다면 그 한계를 명시하고, 정적 소스 결과를 브라우저 검증 완료로 승격하지 않는다.

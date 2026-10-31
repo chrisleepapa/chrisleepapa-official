@@ -1,6 +1,6 @@
 # Chris LEE.PAPA AdSense 점검 — 이어하기 메모
 
-- 기준일: 2026-10-31
+- 기준일: 2026-11-01
 - 저장소: chrisleepapa/chrisleepapa-official
 - 작업 브랜치: develop only
 - 운영 도메인: https://chrisleepapa.com
@@ -201,3 +201,19 @@ AdSense/기술 정적 확인:
 
 ## 다음 단일 작업
 **Movie 페이지의 독립적인 콘텐츠 가치와 영상 중심 구성 비중을 develop 소스 기준으로 점검한다.**
+
+
+## 현재 작업 위치 — 2026-11-01 (이 절이 이전 '다음 단일 작업' 메모보다 우선)
+
+- 최신 기준 문서: docs/ADSENSE_AUDIT_HANDOFF_2026-10-30.md의 2026-10-31 기준 재정렬 및 2026-11-01 추가 기록.
+- 작업 브랜치: develop only. main/develop은 현재 GitHub compare에서 diverged (main 기준 develop ahead 2 / behind 1)이므로 동일하다고 간주하거나 자동 병합하지 않는다.
+- 2026-11-01 재확인: develop sitemap 24개 URL, robots 전체 허용, ads.txt 게시자 라인 존재. Home은 AdSense 로더 1회이며 Chris's News 마크업/로딩 문구는 없음(과거 CSS 규칙만 잔존). TuTuPuPuPiPi, Miracle Shot, Wallpaper는 각 AdSense 로더 1회, Bible은 로더 없음.
+- TuTuPuPuPiPi 6개 Shorts별 한·영 제목/설명과 캐릭터·세계관·OST 콘텐츠는 정적 소스에서 확인. 영상 장면과 설명의 일치 및 실제 렌더링은 미검증. 코드 수정은 하지 않음.
+- '골이예요'는 Miracle Shot 프로젝트와 연결된 게임이다. miracleshot.html 스토리 페이지와 게임 실행 화면을 혼동하지 말고 실제 게임 진입 경로를 별도로 확인한다.
+- 기존 2026-10-16 Audit 1.0 Library 문서는 역사 기록이다. 현재 사이트 페이지 목록·작업 우선순위의 기준으로 재사용하지 않는다.
+
+### 다음 단일 작업
+Movie 페이지의 독립적인 콘텐츠 가치와 영상 중심 구성 비중을 develop 소스 기준으로 점검한다. 먼저 실제 파일·본문·영상별 제목/설명·출처/링크·AdSense 로더를 확인하고, 영상 재생과 Auto ads 위치는 별도 미검증으로 기록한다. 수정은 필요성이 확인된 최소 범위만 제안하며, 이 단계에서는 main을 건드리지 않는다.
+
+### 새 대화에서 이어갈 때
+“먼저 최신 docs/ADSENSE_AUDIT_NEXT_STEPS.md와 docs/ADSENSE_AUDIT_HANDOFF_2026-10-30.md를 읽고, 2026-11-01 현재 작업 위치의 다음 단일 작업인 Movie 페이지 정적 점검만 진행해. develop만 사용하고, 확인한 사실·근거·미검증 항목을 문서에 기록해. main과 사이트 코드는 승인 없이 수정하지 마.”

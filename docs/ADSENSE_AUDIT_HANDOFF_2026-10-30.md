@@ -2958,3 +2958,38 @@ AdSense 콘텐츠 가치 판단:
 
 ### 다음 단일 작업
 **Movie 페이지의 독립적인 콘텐츠 가치와 영상 중심 구성 비중을 develop 소스 기준으로 점검한다.** 영상별 제목·설명·제작 배경·출처/링크·광고 로더를 확인하고, 실제 브라우저 재생 및 광고 위치는 정적 소스 검사와 분리해 기록한다. 수정은 점검 결과를 정리한 뒤 필요한 최소 범위만 검토한다.
+
+
+## 2026-11-01 새 대화 시작 시 기준·저장소 상태 재확인
+
+### 적용 기준 및 작업 통제
+- 이 문서의 2026-10-31 절 「AdSense 심사 기준으로 전체 점검 체계 재정렬」을 현재 최우선 기준으로 유지한다. 2026-10-16 Library의 Audit 1.0은 과거 기록이며, 현재 페이지 목록·우선순위의 기준으로 사용하지 않는다.
+- AdSense 직접 심사축(독창적 게시자 콘텐츠, 복제/재게시 콘텐츠의 실질적 부가가치, 저가치·비콘텐츠 화면, 사용자 경험/탐색, 크롤링·렌더링)과 별도 권리축(저작권·라이선스·외부 서비스 약관)을 혼합하지 않는다.
+- 최소 글자 수, 페이지별 공식 점수, 승인 확률을 임의로 만들지 않는다. 내부 위험도는 점검 순서를 정하기 위한 값일 뿐 Google의 공식 평가가 아니다.
+- 한 번에 한 페이지/한 작업만 진행한다. 정적 소스 확인과 실제 브라우저/광고 노출/GSC 확인을 분리한다. 증거가 없는 항목은 미검증으로 남긴다.
+- 모든 코드 변경은 develop에서만 진행하고 사용자 검토 전 main에 반영하지 않는다. 기존 기능·페이지를 임의로 삭제하거나 새 페이지를 만들지 않는다.
+
+### 2026-11-01 develop 소스 재확인
+
+| 항목 | develop에서 확인한 사실 | 판정/한계 |
+|---|---|---|
+| 브랜치 관계 | GitHub compare 기준 main과 develop은 diverged. main 기준 develop은 ahead 2 / behind 1. 비교 응답에 표시된 차이 파일은 docs/ADSENSE_AUDIT_HANDOFF_2026-10-30.md, docs/ADSENSE_AUDIT_NEXT_STEPS.md | 두 브랜치가 동일하지 않음. 이번 점검에서 main 수정·merge·force push 금지. 차이 문서부터 확인하고 사용자가 승인할 때까지 develop 유지 |
+| sitemap.xml | 24개 URL. Home, Music, Movie, Wallpaper, SisterSquad Hub/1/2/Yul/Jung, Miracle Shot, TuTuPuPuPiPi, Bible, Worship 2종, Journal 1~6, About/Contact/Privacy/Terms | 소스상 24개 URL. 각 URL의 현재 HTTP 상태, 실제 canonical, 색인 결과까지 확인한 것은 아님 |
+| robots.txt | 전체 User-agent 허용 및 https://chrisleepapa.com/sitemap.xml 선언 | 정적 소스 정상. Googlebot/AdSense 크롤러 실제 접근 성공은 별도 검증 |
+| ads.txt | google.com, pub-3207219520058740, DIRECT, f08c47fec0942fa0 | 정적 소스상 게시자 라인 확인. 공개 URL 응답은 별도 확인 |
+| Home index.html | AdSense 로더 1회, canonical은 루트 도메인. Chris's News 섹션 마크업/로딩 문구는 없음. 과거 #chris-news CSS 규칙은 일부 잔존 | 기존 Audit 1.0의 Chris's News 초기 로딩 위험 항목은 현재 마크업 기준으로 오래된 내용. 뉴스 섹션 재추가/삭제 작업을 하지 말고 CSS 잔존은 현 단계에서 승인 리스크로 단정하지 않음 |
+| TuTuPuPuPiPi | tutupupupipi.html AdSense 로더 1회, 고유 canonical, 캐릭터/세계관/OST/6개 Shorts 소개가 존재 | 2026-11-01 별도 점검 결과 참조. 영상 실제 장면과 문구 일치 및 브라우저 렌더링은 미검증 |
+| Miracle Shot | miracleshot.html AdSense 로더 1회, 자체 스토리·인물·주제 콘텐츠 확인 | 2026-10-31 점검 결과 참조. 이 작품 페이지와 '골이예요' 게임 화면은 같은 URL/콘텐츠로 간주하지 말 것 |
+| Wallpaper | wallpaper.html AdSense 로더 1회, 작품별 모바일/PC 월페이퍼 설명과 이용 안내가 존재 | 본문 자체 설명은 확인. 이미지 원본별 시각 내용, 다운로드 동작, Auto ads 실제 위치는 미검증 |
+| Bible | bible.html에는 AdSense 로더 없음, canonical은 /bible | 광고 제외 상태 유지. 성경 본문/찬송가의 권리 검토는 AdSense 콘텐츠 가치와 별도 트랙 |
+
+### 용어·페이지 구분 주의
+- 사용자가 정정한 게임의 명칭은 '골이예요' 게임이며 Miracle Shot 프로젝트와 연결된 게임이다. miracleshot.html의 스토리/작품 소개 페이지를 게임 자체로 오인하지 않는다.
+- 게임은 실제 진입 URL과 게임 실행 화면을 gameinfo 등 연결 경로에서 추적해 별도 평가한다. 기능 화면의 광고 여부와 스토리 페이지의 콘텐츠 가치를 분리한다.
+- Home의 Chris's News는 현재 develop HTML에 섹션 마크업이 없으므로, 과거 뉴스 로딩 이슈를 현재 문제로 반복 제기하지 않는다.
+
+### 다음 단일 작업
+Movie 페이지의 독립적인 콘텐츠 가치와 영상 중심 구성 비중을 develop 소스 기준으로 점검한다. 영상별 제목·설명·제작 배경·출처/링크·AdSense 로더 유무를 확인한다. 원작 IP/저작권 리스크는 AdSense 콘텐츠 가치 판단과 분리해 기록한다. 실제 영상 재생, 모바일/PC 레이아웃, Auto ads 위치는 별도 검증으로 남긴다. 이번 재확인에서는 사이트 코드나 광고 설정을 변경하지 않았다.
+
+### 변경 이력
+- 2026-11-01: 새 대화 시작 시 develop 핵심 파일, 사이트맵, robots, ads.txt, 주요 페이지 AdSense 로더 및 main/develop 차이를 재확인하고 현재 기준과 다음 단일 작업을 기록. 사이트 HTML/기능 및 main은 변경하지 않음.

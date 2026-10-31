@@ -2800,3 +2800,16 @@ Google Fonts 공식 저장소의 각 family `METADATA.pb`에서 다음 family의
 - 이 단계는 정적 소스 감사이며 AdSense 심사 통과 판정이 아니다.
 - 다음은 P0 대상의 실제 브라우저 렌더링, JS 오류, 모바일/PC, 광고 슬롯/GTM, 각 외부 링크 및 다운로드 기능을 확인한다. 이어서 Bible/기능 페이지 및 사이트 전체 URL의 robots/canonical/sitemap을 점검한다.
 - 사이트 소스는 수정하지 않았다. 점검 문서만 갱신하며 main은 변경하지 않는다.
+
+
+### P0 기술 보조 점검 — robots/sitemap/canonical/광고 로더/GTM — 2026-10-31
+
+- develop의 `robots.txt`는 전체 User-agent에 `Allow: /`를 선언하고 공식 도메인의 sitemap을 가리킨다.
+- develop의 `sitemap.xml`에는 총 24개 URL이 있으며, 모두 `https://chrisleepapa.com/`의 canonical 도메인을 사용한다. 현재 목록에는 홈, Music/Movie/Wallpaper, Sister Squad 허브·1·2·캐릭터 프로필, Miracle Shot, TuTuPuPuPiPi, Bible/Worship 2개, Journal 1~6, About/Contact/Privacy/Terms가 있다.
+- 점검한 9개 P0 창작/미디어 페이지의 canonical은 모두 chrisleepapa.com의 해당 경로와 일치한다. Sister Squad 1·2·허브, Movie, Wallpaper, Music, Korean Worship, English Worship은 `index, follow`가 명시되어 있다. TuTuPuPuPiPi는 robots 메타 태그가 없으므로 일반적인 기본 동작(index 허용)을 사용한다.
+- 확인한 9개 페이지에서 수동 광고 슬롯(`ins.adsbygoogle`) 및 `adsbygoogle.push`는 발견하지 못했다. 따라서 소스상 직접 광고 단위 삽입은 확인되지 않았으며, AdSense 로더는 자동 광고 설정에 따라 광고가 삽입될 수 있게 하는 형태다.
+- AdSense 로더는 Sister Squad 1·2·허브, TuTuPuPiPi, Wallpaper, Music, Korean Worship, English Worship에 페이지별 1회씩 확인했다. Movie HTML에는 직접 로더가 없다.
+- 사용자가 제공한 2026-10-30 GTM 컨테이너 JSON(v2)을 확인한 결과, 내보낸 버전에는 GA4 Google tag(`G-NBGELYQ4TZ`) 하나만 존재한다. 해당 파일 기준으로 GTM에서 별도의 AdSense 태그를 실행하는 구성은 확인되지 않았다. 이는 현재 GTM 작업공간의 미게시 변경사항이나 AdSense 계정의 Auto ads 설정을 포함한 실시간 브라우저 결과는 아니다.
+- 따라서 정적 소스 기준으로 Movie는 다른 P0 페이지와 달리 AdSense 로더가 없는 상태로 확인된다. 다른 8개 페이지는 Auto ads가 적용될 수 있으므로 AdSense 계정의 사이트별 Auto ads 설정 및 실제 화면 노출을 확인해야 한다.
+- 주의: 로더 존재/부재만으로 실제 광고 노출 위치나 심사 크롤러의 판단을 확정할 수 없다. 실제 페이지 렌더링과 AdSense 설정을 확인해야 한다.
+- 이번 단계에서도 사이트 코드, 광고 설정, GTM 게시 상태 및 main은 변경하지 않았다.

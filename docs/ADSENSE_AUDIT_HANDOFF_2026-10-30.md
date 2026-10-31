@@ -2977,7 +2977,7 @@ AdSense 콘텐츠 가치 판단:
 | sitemap.xml | 24개 URL. Home, Music, Movie, Wallpaper, SisterSquad Hub/1/2/Yul/Jung, Miracle Shot, TuTuPuPuPiPi, Bible, Worship 2종, Journal 1~6, About/Contact/Privacy/Terms | 소스상 24개 URL. 각 URL의 현재 HTTP 상태, 실제 canonical, 색인 결과까지 확인한 것은 아님 |
 | robots.txt | 전체 User-agent 허용 및 https://chrisleepapa.com/sitemap.xml 선언 | 정적 소스 정상. Googlebot/AdSense 크롤러 실제 접근 성공은 별도 검증 |
 | ads.txt | google.com, pub-3207219520058740, DIRECT, f08c47fec0942fa0 | 정적 소스상 게시자 라인 확인. 공개 URL 응답은 별도 확인 |
-| Home index.html | AdSense 로더 1회, canonical은 루트 도메인. Chris's News 섹션 마크업/로딩 문구는 없음. 과거 #chris-news CSS 규칙은 일부 잔존 | 기존 Audit 1.0의 Chris's News 초기 로딩 위험 항목은 현재 마크업 기준으로 오래된 내용. 뉴스 섹션 재추가/삭제 작업을 하지 말고 CSS 잔존은 현 단계에서 승인 리스크로 단정하지 않음 |
+| Home index.html | AdSense 로더 1회, canonical은 루트 도메인 | 정적 소스 확인. 실제 브라우저 광고 위치와 반응형 렌더링은 별도 검증 |
 | TuTuPuPuPiPi | tutupupupipi.html AdSense 로더 1회, 고유 canonical, 캐릭터/세계관/OST/6개 Shorts 소개가 존재 | 2026-11-01 별도 점검 결과 참조. 영상 실제 장면과 문구 일치 및 브라우저 렌더링은 미검증 |
 | Miracle Shot | miracleshot.html AdSense 로더 1회, 자체 스토리·인물·주제 콘텐츠 확인 | 2026-10-31 점검 결과 참조. 이 작품 페이지와 '골이예요' 게임 화면은 같은 URL/콘텐츠로 간주하지 말 것 |
 | Wallpaper | wallpaper.html AdSense 로더 1회, 작품별 모바일/PC 월페이퍼 설명과 이용 안내가 존재 | 본문 자체 설명은 확인. 이미지 원본별 시각 내용, 다운로드 동작, Auto ads 실제 위치는 미검증 |

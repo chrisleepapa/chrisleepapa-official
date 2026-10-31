@@ -207,7 +207,7 @@ AdSense/기술 정적 확인:
 
 - 최신 기준 문서: docs/ADSENSE_AUDIT_HANDOFF_2026-10-30.md의 2026-10-31 기준 재정렬 및 2026-11-01 추가 기록.
 - 작업 브랜치: develop only. main/develop은 현재 GitHub compare에서 diverged (main 기준 develop ahead 2 / behind 1)이므로 동일하다고 간주하거나 자동 병합하지 않는다.
-- 2026-11-01 재확인: develop sitemap 24개 URL, robots 전체 허용, ads.txt 게시자 라인 존재. Home은 AdSense 로더 1회이며 Chris's News 마크업/로딩 문구는 없음(과거 CSS 규칙만 잔존). TuTuPuPuPiPi, Miracle Shot, Wallpaper는 각 AdSense 로더 1회, Bible은 로더 없음.
+- 2026-11-01 재확인: develop sitemap 24개 URL, robots 전체 허용, ads.txt 게시자 라인 존재. Home은 AdSense 로더 1회. TuTuPuPuPiPi, Miracle Shot, Wallpaper는 각 AdSense 로더 1회, Bible은 로더 없음.
 - TuTuPuPuPiPi 6개 Shorts별 한·영 제목/설명과 캐릭터·세계관·OST 콘텐츠는 정적 소스에서 확인. 영상 장면과 설명의 일치 및 실제 렌더링은 미검증. 코드 수정은 하지 않음.
 - '골이예요'는 Miracle Shot 프로젝트와 연결된 게임이다. miracleshot.html 스토리 페이지와 게임 실행 화면을 혼동하지 말고 실제 게임 진입 경로를 별도로 확인한다.
 - 기존 2026-10-16 Audit 1.0 Library 문서는 역사 기록이다. 현재 사이트 페이지 목록·작업 우선순위의 기준으로 재사용하지 않는다.

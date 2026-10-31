@@ -2598,3 +2598,20 @@ Google Fonts 공식 저장소의 각 family `METADATA.pb`에서 다음 family의
 - 사용자 재확인: Sister Squad의 소리, 이미지, 영상, 캐릭터 및 배경 등 관련 제작 에셋은 모두 Gemini로 제작했으며 외부 에셋을 가져오지 않음.
 - 앞서 기록한 Gemini 워터마크는 제거·가림 없이 유지한 상태로 유튜브와 사이트에 게시함.
 - 동일한 제작 도구/외부 에셋 사용 여부를 다시 질문하지 말고, 이후 점검은 생성 시점의 약관·상업적 이용 조건 등 아직 검증되지 않은 권리 항목에 집중함.
+
+
+### Gemini / Google AI Pro 상업적 이용 약관 1차 조사 (2026-10-31)
+- 적용 서비스 구분: 사용자는 Gemini 앱에서 월 29,000원 구독 계정(상품명은 Google AI Pro로 추정)을 사용해 Sister Squad의 소리·이미지·영상·캐릭터·배경을 생성했다고 확인함. Gemini API / AI Studio가 아닌 소비자용 Gemini 앱을 사용한 것으로 전제하되, 실제 생성 경로와 당시 계정 화면은 미확인.
+- Google 공식 Google Terms of Service의 'Content in Google services'는 일부 서비스가 독창적 콘텐츠를 생성할 수 있고 Google은 그 콘텐츠의 소유권을 주장하지 않는다고 명시함. 이는 Google이 소유권을 주장하지 않는다는 뜻이지, 생성물의 독점적 저작권·비침해·상업적 이용을 보증한다는 뜻은 아님.
+- Gemini Apps Privacy Hub는 Gemini Apps에 Google Terms of Service 및 Generative AI Prohibited Use Policy가 적용된다고 안내함. 한국 이용자에게는 Korean Location Terms of Service도 적용된다고 안내함.
+- Google Generative AI Prohibited Use Policy는 타인의 지식재산권·개인정보 등 권리 침해 및 생성물의 출처를 오인시키는 행위를 금지함.
+- 1차 조사에서는 소비자용 Gemini 앱의 Google AI Pro 출력물을 상업적으로 이용하는 것을 일괄 금지하는 명시 조항은 확인하지 못함. 다만 확인한 일반 약관의 'Google은 소유권을 주장하지 않는다'는 문구만으로 상업적 이용 권리의 전면 보장이라고 결론 내릴 수 없음. 생성 당시 적용된 약관 버전 및 각 기능(이미지/영상/음향)별 조건 확인이 남음.
+- 한국저작권위원회의 '생성형 인공지능 활용 저작물의 저작권 등록 안내서'는 AI가 기계적으로 생성한 결과물 자체와 인간의 창작적 기여가 인정되는 AI 활용 저작물을 구분함. 인간의 창작적 기여 사례로 본인 저작물의 프롬프트 반영, AI 결과물의 창작성 있는 수정·증감, 결과물의 창작적 선택·배열·구성을 제시함.
+- Sister Squad는 기존 Journal에 사용자가 이야기·세계관·캐릭터 핵심을 기획하고, 프롬프트·초안 수정·장면 선택·검수에 참여한 과정이 기록되어 있음. 이 기록은 사람의 창작적 기여를 설명하는 근거가 될 수 있으나, AI가 자동 생성한 개별 이미지·영상·음향 파일 각각에 저작권이 성립한다고 단정하지 않음.
+- 사용자가 확인한 대로 생성물 워터마크는 제거·가림 없이 유지하여 게시함. 워터마크 유지와 AI 출처의 투명성은 긍정적 사실이나, 이것만으로 저작권 비침해나 상업적 이용 허가가 증명되는 것은 아님.
+- 조사 참고 공식 자료:
+  - Google Terms of Service: https://policies.google.com/terms
+  - Gemini Apps Privacy Hub: https://support.google.com/gemini/answer/13594961?hl=ko
+  - Generative AI Prohibited Use Policy: https://policies.google.com/terms/generative-ai/use-policy?hl=ko
+  - 한국저작권위원회 생성형 인공지능 활용 저작물의 저작권 등록 안내서: https://copyright.re.kr/uploads/생성형_인공지능_활용_저작물의_저작권_등록_안내서_1773322096694.pdf
+- 조사 결론: 현재 공개된 공식 자료만으로는 Sister Squad 콘텐츠의 Gemini 상업적 이용을 금지한다고 볼 근거는 확인되지 않았지만, 생성 당시 약관·계정 상품·기능별 정책을 확정하지 못했으므로 '상업적 이용 권리 완전 확인'으로 종결하지 않음. 생성일, Gemini 앱 내 사용 기능, 당시 Google AI Pro 구독 내역과 약관 버전이 추가 확인 대상.

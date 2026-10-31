@@ -10,7 +10,7 @@
     if (document.getElementById('mshot-story-script')) return;
     const s = document.createElement('script');
     s.id = 'mshot-story-script';
-    s.src = '/js/miracle-shot-story-v2.js?v=20261013';
+    s.src = '/js/miracle-shot-story-v2.js?v=20261031';
     s.onload = () => {
       if (typeof window.renderMiracleShotStory === 'function') window.renderMiracleShotStory();
     };

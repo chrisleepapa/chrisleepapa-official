@@ -217,3 +217,23 @@ Movie 페이지의 독립적인 콘텐츠 가치와 영상 중심 구성 비중�
 
 ### 새 대화에서 이어갈 때
 “먼저 최신 docs/ADSENSE_AUDIT_NEXT_STEPS.md와 docs/ADSENSE_AUDIT_HANDOFF_2026-10-30.md를 읽고, 2026-11-01 현재 작업 위치의 다음 단일 작업인 Movie 페이지 정적 점검만 진행해. develop만 사용하고, 확인한 사실·근거·미검증 항목을 문서에 기록해. main과 사이트 코드는 승인 없이 수정하지 마.”
+
+
+## 최근 단일 작업 결과 — Movie 페이지 정적 감사 (2026-11-01)
+
+- 파일: movie.html (develop blob SHA: ddcfbd1685d3fea0d79dd2d2357e8725ccff0483)
+- canonical: /movie, robots: index/follow.
+- AdSense 로더 0회, 수동 광고 단위 0개.
+- YouTube 메인 임베드 1개, Shorts 외부 링크 8개.
+- FURIOUS, 귀멸의 칼날, 사랑한다고 등 3개 작품의 제작 노트가 한국어/영어로 존재하며 아이디어·제작 과정·배운 점을 설명한다.
+- VERTICAL ARCHIVES의 Shorts 8개는 제목/썸네일/YouTube 링크 중심이며 카드별 독립 설명은 확인되지 않았다. 페이지 전체에는 3개 제작 노트가 있으므로 단순 링크 모음으로 단정하지 않는다.
+- 귀멸의 칼날·체인소맨·주술회전 팬메이드 AI 영상의 별도 허락이 없다는 과거 사용자 확인과, 사용자가 영상을 유지하되 문제가 제기되면 내리겠다는 방침을 기존 상세 기록에서 재확인했다. 권리 문제는 별도 트랙으로 유지.
+- Movie 페이지 광고 로더 제거 이력과 현재 소스의 0회가 일치한다. 코드 수정 없음.
+- 실제 Preview/운영 페이지는 웹 접근 실패로 브라우저 렌더링·모바일/PC·영상 재생·Auto ads 위치 미검증.
+
+## 브랜치 비교 최신화 참고
+- Movie 점검 직후 문서 갱신 전 compare 결과: main/develop diverged, develop ahead 4 / behind 1. 비교 파일은 점검 문서 2개뿐이었다.
+- 이번에도 develop 문서만 갱신하며 main은 수정하지 않는다. 문서 갱신 이후 ahead/behind 수치는 새 compare로 다시 확인하기 전까지 확정값으로 사용하지 않는다.
+
+### 다음 단일 작업
+Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한다. 접근이 불가능하면 미검증으로 남기고, 그 다음 Music/Worship 중 한 페이지씩 동적 본문과 실제 광고 위치를 점검한다.

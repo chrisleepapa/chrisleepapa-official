@@ -2813,3 +2813,58 @@ Google Fonts 공식 저장소의 각 family `METADATA.pb`에서 다음 family의
 - 따라서 정적 소스 기준으로 Movie는 다른 P0 페이지와 달리 AdSense 로더가 없는 상태로 확인된다. 다른 8개 페이지는 Auto ads가 적용될 수 있으므로 AdSense 계정의 사이트별 Auto ads 설정 및 실제 화면 노출을 확인해야 한다.
 - 주의: 로더 존재/부재만으로 실제 광고 노출 위치나 심사 크롤러의 판단을 확정할 수 없다. 실제 페이지 렌더링과 AdSense 설정을 확인해야 한다.
 - 이번 단계에서도 사이트 코드, 광고 설정, GTM 게시 상태 및 main은 변경하지 않았다.
+
+
+### P1 정적 소스 감사 — 기능 페이지·운영 정보·Journal·홈 — 2026-10-31
+
+| 페이지 | 본문 추정 | 광고/색인 상태 | 1차 판정 |
+|---|---:|---|---|
+| Home | 약 1,718자 | AdSense 로더 1회, index/follow, sitemap 포함 | 보완 검토 없이 유지 가능성이 높음. 실제 첫 화면에서 Sister Squad 2 영상과 자체 아카이브 설명의 비중/광고 간섭 확인 필요 |
+| Bible | 약 2,011자 + 동적 성경 뷰어 | AdSense 로더 없음, index/follow, sitemap 포함 | 광고 미적용 유지. 성경/찬송가 권리 확인 별도. 기능 자체와 앱 소개는 존재하므로 글자 수만으로 저가치 판정하지 않음 |
+| Today | 약 546자 | AdSense 로더 없음, noindex/follow, sitemap 제외 | 적절한 보수 설정. 로그인 개인 기록/묵상 기능 화면이 검색 색인에 노출되지 않도록 현재 noindex 유지 |
+| Game Center (/gameinfo) | 약 2,392자 | AdSense 로더 1회, index/follow, sitemap 제외 | 광고 제외 검토. 게임 선택/실행 진입 기능이 중심이지만 직접 기획·구현 과정과 7개 게임 설명도 있음. 광고가 게임 선택/실행 버튼과 혼동되지 않는지 실제 화면 확인 |
+| Sister Squad Game (/game) | 약 483자 | AdSense 로더 없음, index/follow, sitemap 제외 | 기능 전용 화면. 광고 미적용 유지. 검색 노출이 꼭 필요하지 않다면 noindex 검토 가능하나, 현 단계에서 변경하지 않음 |
+| Tetris (/tetris) | 약 416자 | AdSense 로더 없음, index/follow, sitemap 제외 | 기능 전용 화면. 광고 미적용 유지. 검색 노출이 꼭 필요하지 않다면 noindex 검토 가능하나, 현 단계에서 변경하지 않음 |
+| Shop | 약 1,329자 | AdSense 로더 없음, index/follow, sitemap 제외 | 공식 작품/상품 소개와 판매처 연결이 있어 단순 링크 중계 페이지로 단정하지 않음. 상품별 자체 설명과 공식 판매처 이동이 실제로 일치하는지 점검 |
+| About | 약 2,633자 | AdSense 로더 1회, index/follow, sitemap 포함 | 운영자와 창작 배경을 설명하는 고유 콘텐츠. 유지 가능성이 높음 |
+| Contact | 약 234자 | AdSense 로더 없음, index/follow, sitemap 포함 | 연락/협업 목적의 기능 페이지이며 광고 미적용. 응답 시간 '24시간 이내' 문구가 현재 실제 운영 약속과 일치하는지만 확인 |
+| Privacy | 약 5,738자 | AdSense 로더 없음, index/follow, sitemap 포함 | AdSense·Analytics·쿠키 설명 포함. 실제 수집/보관/광고 설정과 정책 문구가 일치하는지 최종 검토 |
+| Terms | 약 4,231자 | AdSense 로더 없음, index/follow, sitemap 포함 | 저작권·금지행위·외부 서비스 등 주요 항목 포함. 실제 제공 기능과 약관 내용의 일치 여부 확인 |
+| Journal index | 약 1,031자 | AdSense 로더 없음, noindex/follow, sitemap 제외 | 상세 글 6개로 이어지는 안내 목록이며 noindex 설정은 현재 구조와 일치 |
+| Journal 1~6 | 약 3,408~9,370자 | 각 상세 글 AdSense 로더 1회, index/follow, sitemap 포함 | 개인 경험, 제작 과정, 출판, 캐릭터 디자인, 창작 일상, 워십 기록 등 독창적 장문 콘텐츠. 사이트의 핵심 고유 콘텐츠 자산으로 평가 |
+| Miracle Shot | 약 3,854자 | AdSense 로더 1회, index/follow, sitemap 포함 | 자체 성장 드라마의 스토리·세계관·인물 소개가 있어 독립적인 콘텐츠 가치가 높음 |
+| Yul / Jung 캐릭터 프로필 | 약 2,940자 / 2,879자 | 각 AdSense 로더 1회, index/follow, sitemap 포함 | 두 권의 서사, 성격, 능력, 성장 과정이 각각 구체적으로 설명된 독창적 캐릭터 페이지 |
+
+#### 주요 판단 및 후속 조치
+
+1. **AdSense 광고 제외 상태가 적절한 화면**
+   - Bible, Today, Game, Tetris, Shop, Contact, Privacy, Terms, Journal index에는 HTML에 AdSense 로더가 없다.
+   - 특히 Today는 개인 기록 화면이고 noindex/follow가 설정되어 있어 현재 설정을 유지한다.
+   - Bible은 성경/찬송가 권리 확인이 끝나기 전까지 광고 로더를 추가하지 않는다. 현재 페이지는 sitemap/index 상태이므로 공개·색인 유지 여부는 권리 확인과 별도로 판단한다.
+   - Game/Tetris는 플레이 화면이므로 광고를 넣지 않는 현재 상태를 유지한다.
+
+2. **Game Center (/gameinfo)**
+   - 자체 게임 7개와 제작 과정 설명이 있어 순수한 빈 메뉴 페이지는 아니다.
+   - 다만 광고 로더가 있고 방문자의 주된 행동은 게임 선택/실행이므로, 광고가 버튼·게임 카드·플레이 영역 근처에 자동 삽입되어 오클릭을 유발하지 않는지 확인해야 한다.
+   - 실제 광고 위치를 확인하기 전까지 '광고 제외 검토'로 유지한다. 아직 코드는 변경하지 않는다.
+
+3. **Journal 상세 글과 창작 페이지**
+   - Journal 1~6, Miracle Shot, Yul/Jung 프로필은 구체적인 자체 서사와 개인 경험이 포함되어 있어 독창적 콘텐츠 측면에서 긍정적이다.
+   - Journal index가 noindex인 것은 상세 글을 sitemap에 직접 포함한 현재 구조와 일치한다.
+   - 기존 글을 복제하거나 길이만 늘리지 않고 내부 링크로 작품 페이지와 Journal을 연결하는 방향을 우선한다.
+
+4. **사이트맵/색인 구성**
+   - sitemap의 24개 URL은 실제 공개 핵심 페이지와 Journal 상세 글 중심으로 구성되어 있다.
+   - Today, Shop, Game Center, Game, Tetris, Journal index는 sitemap에 포함되지 않는다. 다만 일부는 index/follow이므로 sitemap 제외가 noindex를 뜻하지는 않는다.
+   - 현재 robots.txt는 전체 크롤링을 허용하고 sitemap을 안내한다.
+
+5. **정책 문구와 사용자 경험**
+   - Contact의 24시간 응답 약속, Privacy의 실제 데이터 처리 설명, Terms의 권리 범위는 운영 현실과 일치하는지 확인이 필요하다.
+   - About/Contact/Privacy/Terms는 광고가 아니라 신뢰와 탐색을 위한 페이지로 유지한다.
+
+#### 단계 완료 범위
+- develop 소스의 주요 P0 창작/미디어 페이지와 P1 기능/운영/Journal 페이지를 정적 검사했다.
+- HTML에서 확인한 본문 길이와 광고 로더 수는 정적 소스 기준이며, 브라우저 최종 화면이나 Auto ads 실제 노출 결과가 아니다.
+- AdSense 로더가 없다는 것은 해당 HTML에 직접 로더가 없다는 뜻이며, 별도 외부 설정/배포 환경의 모든 가능성을 단정하지 않는다.
+- 다음 단계는 광고 로더가 있는 실제 페이지에서 Auto ads/광고 간섭 여부, JS 동적 본문 렌더링, 모바일/PC 표시 및 링크/버튼 작동을 실측하는 것이다.
+- 이번 점검은 문서만 갱신했으며 사이트 코드, 광고 설정, GTM 게시, main 브랜치는 변경하지 않았다.

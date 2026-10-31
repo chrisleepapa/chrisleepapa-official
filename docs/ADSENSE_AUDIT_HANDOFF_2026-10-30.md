@@ -3035,3 +3035,20 @@ AdSense 콘텐츠 가치 판단:
 
 ### 다음 단일 작업
 Movie 페이지의 실제 Preview 배포 여부와 브라우저 렌더링 확인 가능성을 먼저 검증한다. 실제 화면에 접근할 수 없으면 미검증으로 명시하고, 정적 소스만으로 정상이라고 처리하지 않는다. 이후 남은 광고 로더 페이지 중 Music/Worship의 동적 본문 및 Auto ads 위치를 한 페이지씩 확인한다.
+
+
+## 2026-11-01 추가 확인 — 최신 develop Preview 배포 및 브라우저 접근
+
+- Vercel 프로젝트: `chrisleepapa-official`, 팀 `chrisleepapas-projects`.
+- 최신 develop 배포: `dpl_2WcP8twbME8XMfpeUMGuaXzGBeqH`.
+- 상태: `READY`; 배포 URL: `https://chrisleepapa-official-4pz739fpj-chrisleepapas-projects.vercel.app`.
+- 배포 커밋: `291c5d07909b954fc108c3306e468797923c15f3` (develop).
+- 별칭: `develop.chrisleepapa.com` 및 `chrisleepapa-official-git-develop-chrisleepapas-projects.vercel.app`가 최신 배포에 연결됨.
+- Vercel 빌드 이벤트에서 Git clone, `vercel build`, `Build Completed`, `Deployment completed`를 확인. Node.js 함수의 ESM→CommonJS 변환 경고 1건이 있었으나 배포는 READY로 완료됨. 이 경고가 런타임 오류를 의미하는지는 확인되지 않음.
+- 브라우저 접근 재시도: `https://develop.chrisleepapa.com/movie`와 고유 Preview URL의 `/movie` 모두 현재 웹 확인 도구에서 열리지 않음(Internal Error / URL not accessible).
+- Vercel 별칭 정보에 `develop.chrisleepapa.com`의 shareable-link protection bypass 항목이 있었으나 만료 시각은 2026-10-30 17:34 UTC로, 현재 확인 시점에는 유효하지 않은 것으로 보임. 보호 설정의 전체 상태나 우회 자격 증명은 변경하지 않았음.
+- **판정:** 배포 완료와 도메인 별칭 연결은 확인. Movie 페이지의 실제 DOM/화면, 모바일·PC 레이아웃, 영상 재생, 콘솔 오류, Auto ads 위치는 브라우저 도구 접근 실패로 여전히 미검증. READY는 빌드/배포 성공이지 화면 검증 성공을 뜻하지 않음.
+- 변경 사항: 사이트 코드·Vercel 설정·main은 변경하지 않음. 이 단계는 상태 확인만 수행.
+
+### 다음 단일 작업
+**Music 페이지(`music.html`)의 초기 HTML 본문, 동적 제작 노트 출력 경로, 미디어/광고 요소를 develop 소스 기준으로 점검한다.** 이미 확인한 제작 노트 스크립트 실행 순서와 언어 전환 구조는 재사용하고, 변경된 부분이 있는지 현재 파일을 다시 확인한다. 이 단계에서는 우선 정적 소스만 검사하고 사이트 코드는 수정하지 않는다. 실제 브라우저 렌더링 및 Auto ads 위치는 별도 미검증으로 유지한다.

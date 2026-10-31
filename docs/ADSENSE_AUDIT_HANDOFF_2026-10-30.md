@@ -2630,3 +2630,9 @@ Google Fonts 공식 저장소의 각 family `METADATA.pb`에서 다음 family의
 - 2026-07-30 약관은 생성형 AI 콘텐츠의 인간 제작물 오인 유도, 타인의 지식재산권·개인정보 침해 등 금지 행위를 명시함. 워터마크를 유지하고 AI 활용 사실을 숨기지 않은 점은 출처 투명성에 도움이 되지만, 별도 권리 검토를 대체하지 않음.
 - 공식 근거: https://policies.google.com/terms/archive ; https://policies.google.com/terms/archive/20240522?hl=en ; https://policies.google.com/terms?hl=ko ; https://support.google.com/gemini/answer/13594961?hl=ko ; https://policies.google.com/terms/generative-ai/use-policy?hl=ko
 - 현재 확인 범위에서 Gemini 소비자 앱 유료 구독 생성물의 상업적 이용을 전면 금지하는 조항은 확인하지 못함. 다만 생성일·당시 약관·기능별 조건을 확정하기 전에는 상업적 이용 권리가 완전히 검증되었다고 결론 내리지 않음.
+
+
+### Sister Squad 2권 출시 시점의 약관 구분 확인
+- 사용자 확인: Sister Squad 2권은 Google의 새 이용약관 시행일인 2026-07-30 이후 출시함.
+- 따라서 2권의 출시·게시 시점에는 2026-07-30 시행 Google 이용약관이 적용되는 기간임.
+- 단, 이 사실만으로 2권에 포함된 모든 이미지·영상·음향의 실제 생성일이 2026-07-30 이후였다고 단정하지 않음. 생성 당시 약관 적용 여부는 개별 생성일 또는 제작 기간 확인이 필요함.

@@ -401,3 +401,22 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 - 2026-10-30에 제공된 GTM-NGDTQNVG 버전 2 내보내기 파일을 읽었다. 포함된 태그는 GA4 Google tag(`G-NBGELYQ4TZ`) 1개이며 AdSense/광고 태그는 확인되지 않았다. 단, 이는 내보내기 파일 기준이며 GTM에 그 이후 게시된 버전이나 브라우저에서의 실시간 네트워크 요청까지 증명하지는 않는다.
 - 실환경 브라우저에서 광고 요청이 전혀 없는지에 대한 네트워크 패널 확인은 아직 미실시. 따라서 “HTML 로더/태그 제외와 GTM v2 내보내기 점검 완료”는 말할 수 있지만, “브라우저 광고 요청 0건”이라고 단정하지 않는다.
 - 위 검증은 develop 도메인 기준이며 main/운영 도메인에는 적용하지 않았다.
+
+
+## 2026-11-01 game.html(SISTER SQUAD) 정적 점검 완료
+
+- game.html develop 소스 및 js/game-auth.js 인증 흐름 확인.
+- Sister Squad 세계관을 바탕으로 한 24칸 보드, 2개 캐릭터, 별 10개 승리 조건, 랜덤 칸 배치, 주사위 이동, 별 보상/차감, 휴식/추가 이동, 마법 이벤트, 자매 대결, 보스, 다크나이트 추격, 승리/재시작 기능을 확인.
+- 게임 시작 화면에 핵심 목표와 플레이 개요가 있으며, 별도 상세 규칙 페이지는 확인되지 않음.
+- 로그인 필수. 로컬 2캐릭터 교대 구조이며 온라인 멀티플레이/진행 저장 기능은 이 페이지 소스에서 확인되지 않음.
+- game.html HTML robots noindex, nofollow, canonical /game, AdSense loader 및 adsbygoogle 참조 0회 확인.
+- 실제 develop HTTP 응답은 200, X-Robots-Tag: noindex, nofollow, robots meta 1개, AdSense loader 0회, adsbygoogle 0회.
+- 모바일 CSS 및 reduced-motion 대응은 있으나 viewport 확대 제한(user-scalable=no)과 overflow:hidden은 접근성/화면 사용성 검토 후보.
+- 실제 게임 플레이, 인증 흐름, 모바일/PC 화면, 이미지/BGM 로딩, 콘솔, 브라우저 광고 네트워크 요청은 미검증. GTM v2 내보내기에서 광고 태그가 없었다는 이전 확인은 현재 게시 버전의 실시간 네트워크 확인과 구분.
+- 게임 소스와 Vercel 설정, sitemap, main은 수정하지 않고 감사 문서만 갱신.
+
+### 다음 단일 작업
+**booktop.html(BOOK STACKING MASTER) 정적 감사**: 독립 콘텐츠, Matter.js 물리 로직, 게임 완성도, 로그인/인증, 외부 라이브러리, 링크/자산 참조, noindex 및 광고 제외 상태를 확인한다. 실제 플레이는 브라우저 검증 전까지 미검증으로 유지한다.
+
+### 새 대화에서 이어갈 때
+“최신 AdSense 감사 문서 두 개를 읽고 다음 작업인 booktop.html BOOK STACKING MASTER 정적 감사만 진행해. develop만 사용하고 main 및 게임 소스는 승인 없이 수정하지 마. 실제 브라우저 플레이와 물리 동작은 확인하지 못하면 미검증으로 기록해.”

@@ -1028,3 +1028,38 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 
 ### 다음 점검
 **Shop / Contact / Privacy / Terms 및 나머지 sitemap 대상 페이지의 광고 로더·색인·canonical·내부 링크를 최종 대조한다.** 특히 Shop은 구매 링크 중심 페이지이므로 자체 설명과 상품 소개의 독창적 가치가 충분한지 확인하고, 광고 로더가 없는 현재 상태를 유지한다.
+
+
+## 2026-11-02 Shop / Contact / Privacy / Terms / Guestbook 최종 대조
+
+### Shop
+- `shop.html`은 canonical `/shop`, robots `index, follow`, 이미지 10개, 공식 서점/플랫폼 구매 링크를 제공한다.
+- SISTER SQUAD 1·2, 컬러링북, 오디오북, MIRACLE SHOT의 종이책/전자책 링크가 실제 소스에 존재한다. meta description의 MIRACLE SHOT 언급과 본문 상품 구성이 일치한다.
+- 본문은 약 251단어로 구매 링크 중심의 카탈로그 성격이다. 현재 sitemap에는 포함되지 않으며 AdSense loader 0개다. 광고를 추가하지 않고, 검색 노출이 꼭 필요한 상점 랜딩페이지로 운영할지 여부는 별도 판단 대상으로 남긴다.
+- 페이지 목적이 구매처 연결이므로 별도 광고를 추가하지 않는 현재 상태를 유지한다.
+
+### Contact
+- canonical `/contact`, robots `index, follow`, AdSense loader 0개.
+- 이메일, Instagram, Facebook 연락 링크와 협업/문의 목적을 제공한다. 연락 창구 페이지 특성상 짧은 본문은 기능상 자연스럽고, 광고도 없다.
+
+### Privacy / Terms
+- 두 페이지 모두 canonical 정상, robots `index, follow`, AdSense loader 0개.
+- Privacy는 한국어/영어 양쪽의 수집 항목, 이용 목적, AdSense/Analytics, 국외 처리, 쿠키, 보관 기간, 권리 행사 및 문의 정보를 제공한다.
+- Terms는 한국어/영어 양쪽의 이용 조건, 운영자 창작물과 제3자 자료의 권리 구분, 금지 행위, 방명록/UGC, 외부 서비스, 면책 및 약관 변경 안내를 제공한다.
+- 11월 2일 수정본은 develop 소스에 존재하지만 새 Preview 배포가 되지 않아 실제 제공 응답은 아직 검증되지 않았다.
+
+### Guestbook
+- `guestbook.html`은 canonical `/guestbook`, robots `noindex, follow`, AdSense loader 0개다.
+- 사용자 게시 기능만 제공하는 페이지이므로 sitemap에 포함되지 않는 현재 상태가 적절하다.
+
+### Bible / Today 색인 정책 재확인
+- `bible.html`: meta robots `index, follow`, canonical `/bible`, sitemap 포함, AdSense loader 0개.
+- `today.html`: meta robots `noindex, follow`, canonical `/today`, sitemap 제외, AdSense loader 0개.
+- develop Preview 전체에 붙는 `X-Robots-Tag: noindex, nofollow`를 개별 Production 페이지의 색인 설정으로 오해하지 않도록 앞선 Bible/Today 점검 기록을 정정했다.
+
+### 종합 판정
+- Shop, Contact, Privacy, Terms, Guestbook에는 AdSense loader가 없다.
+- Shop은 sitemap에 없고, Guestbook은 noindex 및 sitemap 제외다.
+- Bible은 검색 대상이지만 광고 로더는 제외되어 있다. 개역개정 본문과 찬송가 자료 권리 확인은 계속 미해결로 남는다.
+- 이번 단계에서 Shop/Contact/Privacy/Terms/Guestbook의 코드는 추가 수정하지 않았다. main은 변경하지 않았다.
+- 새 Preview가 준비되기 전까지 11월 2일 변경분은 develop 소스 반영 완료, 실제 Preview/Production 미검증으로 유지한다.

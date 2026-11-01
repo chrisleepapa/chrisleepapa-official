@@ -1151,3 +1151,50 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 - 같은 최신 Preview에서 `/music` loader 0, `/worship` 및 `/worship_eng` 제작 안내 반영/loader 1, `/privacy` 및 `/terms` 최신 문구 반영/loader 0을 재확인했다.
 - Production 비교: `chrisleepapa.com/`은 기존 H1 2개, `/music` loader 1개, Worship 페이지는 신규 AI 제작 안내가 아직 없고, Privacy/Terms는 11월 2일 수정 전 문구를 제공한다. 이는 main을 변경하지 않고 develop에서만 검증 중인 현재 배포 절차와 일치한다.
 - 최신 main 대비 develop: ahead 39 / behind 0. main은 수정하지 않았다.
+
+
+## 2026-11-02 이어서 점검 — 최신 Preview 상태 및 Music 페이지
+
+### Preview 상태
+- 직전 문서 커밋 `07eba16205c24e69285305616a9971960287ecea`의 Vercel 배포 `dpl_3YzszGkSUzCZvTC3D7a6tYBFLBzR`를 다시 조회했다.
+- 상태: `READY`; alias: `develop.chrisleepapa.com`.
+- 이번 Music 수정 커밋은 이 READY 배포 이후에 생성되었으므로, 수정된 Music 페이지가 Preview에 반영되었다고 간주하지 않는다.
+- 일일 배포 한도 상황을 고려해 새 배포를 수동 요청하지 않았다.
+
+### Music 페이지 정적 감사
+**대상:** `music.html`, `js/music-production-notes.js`
+
+**수정 전 확인**
+1. `music.html` canonical은 `https://chrisleepapa.com/music`, robots는 `index, follow`.
+2. AdSense 로더 0회, 수동 광고 단위 0개, `adsbygoogle.push` 0회. 페이지 상단 주석은 애니메이션 팬메이드 작품의 권리 검토가 끝날 때까지 광고 로더를 제외한다고 설명한다.
+3. 음악 데이터는 14개 작품을 포함한다. 별도 동적 제작 노트 스크립트에는 14개 작품 각각의 출발점·제작 방향·감상 포인트·참고용 프롬프트가 있고, 한국어/영어 설명 데이터가 존재한다.
+4. 기존 앨범 이야기 데이터 `MUSIC_STORIES`는 12개 작품만 포함해 `Winter town`, `Winter groove` 두 작품이 앨범 이야기 영역에서 누락되는 것을 확인했다. 두 작품은 제작 노트에는 이미 존재했다.
+5. Spotify 플레이어는 iframe API와 fallback iframe을 사용하는 구조다. 정적 HTML에서 확인되는 iframe은 GTM noscript와 Spotify fallback 2개이며, YouTube는 앨범별 외부 링크로 제공된다.
+6. 음악 제작 노트는 작품별 설명과 함께 프롬프트가 실제 원문 입력값이 아니라 작품의 분위기와 주제를 바탕으로 재구성한 참고용이라는 점을 명시한다. 이는 실제 제작 로그와 재구성 예시를 혼동하지 않도록 하는 설명이다.
+7. 본문에는 별도의 창작 판단 기준(감정에서 사운드로 옮기기, 생성 결과 검토·수정, 발매 이후 맥락 기록)이 한국어/영어로 포함되어 있다.
+
+**최소 수정**
+- `music.html`의 `MUSIC_STORIES.ko`와 `MUSIC_STORIES.en`에 `Winter town`, `Winter groove`의 작품별 이야기를 추가했다.
+- 추가 설명은 기존 제작 노트의 주제·제작 방향에 근거해 작성했으며, 새로운 발매 이력이나 실제 작업 과정을 만들어 넣지 않았다.
+- 기존 음원 링크, 앨범 데이터, 플레이어, 광고 제외 상태는 변경하지 않았다.
+- develop 커밋: `832298fc05c61ff6a3b4394e9cefeabce46d86bd`
+- 수정 파일 blob SHA: `9e8e3f065bbccad45f0da0fc455ad5b389b03478`
+
+**재검증**
+- [x] 음악 데이터 작품 수 14개 확인
+- [x] 앨범 이야기 키 14개로 일치, 누락 0개
+- [x] Winter town 한국어/영어 설명 존재
+- [x] Winter groove 한국어/영어 설명 존재
+- [x] canonical 1개 및 robots index/follow 유지
+- [x] AdSense 로더 0회, 수동 광고 단위 0개 유지
+- [x] 수정은 develop에만 반영
+- [ ] 수정 커밋의 Vercel Preview 배포 완료 및 실제 렌더링
+- [ ] 한국어/영어 전환, Spotify 재생, 모바일/PC 레이아웃 브라우저 확인
+- [ ] Auto ads가 페이지에 실제 노출되지 않는지 AdSense/브라우저에서 확인
+
+**별도 미해결 사항**
+- `영역전개`, `벽력일섬` 등 제3자 애니메이션 IP에서 영감을 받은 작품의 권리·서비스 약관 문제는 이번 콘텐츠 보완으로 해결되지 않는다. 현재 Music 페이지의 AdSense 로더는 계속 제외 상태로 둔다.
+- 저작권/서비스 약관의 적법성 판단은 이 정적 감사의 범위를 벗어나며, 권리 확인을 완료했다고 기록하지 않는다.
+
+### 다음 단일 작업
+**Worship 페이지의 동적/정적 창작 설명, 앨범·곡별 정보, 광고 로더 및 외부 임베드 구성을 소스 기준으로 점검한다.** 실제 화면의 재생·광고 위치는 배포 및 브라우저 확인 전까지 미검증으로 둔다.

@@ -495,3 +495,15 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 - EEA/UK/Switzerland 방문자 대상 Google 인증 CMP가 AdSense 계정 Privacy & Messaging에서 활성화되어 있는지 확인. 사이트 소스에서 자체 CMP가 보이지 않고 과거 GTM export의 consent state는 NOT_SET이었으므로 우선 확인 항목.
 - 다음 단계: 확인된 privacy/CMP 이슈와 끊어진 `/book` 링크를 먼저 수정 승인받고, 이후 저널/작품 페이지의 브라우저 렌더링·언어 전환·외부 링크 검증.
 
+
+## 2026-11-01 최우선 조치 추가 — Supabase 데이터 보호
+
+- P0 보안: public.bible table has permissive anon SELECT/INSERT/UPDATE/DELETE policies and grants. Bible page stores SHA-256 of a 4-digit PIN in the `PROFILE` row's memo_text and stores per-user verse notes/progress in the same table. The public API can expose the hash and other accounts' Bible data. This is not merely an AdSense issue; protect user data first.
+- Supabase project region: Tokyo (`ap-northeast-1`). New personal data tables: clp_accounts, clp_today, clp_bible_journey, clp_bible_reflections, clp_prayer_notes, clp_prayer_daily. Current privacy policy does not accurately describe these data categories or the processing region.
+- Security Advisor: 18 SECURITY DEFINER RPCs callable by anon, 8 callable by authenticated; 6 private tables RLS enabled/no direct policies. Review each function because they run with owner privileges; not every warning is automatically a vulnerability, but public.bible direct access is confirmed.
+- Do not revoke public.bible policies before replacing the Bible page's direct REST calls; that would break login and Bible record storage. Plan staged migration to authenticated RPCs, verify per-account read/write, then revoke public access and remove legacy PROFILE hashes.
+- The 4-digit PIN + unsalted SHA-256 + browser localStorage bearer hash + no visible login attempt limit needs hardening. No brute-force test was performed.
+- No DB/source changes were made. User approval is required before security refactor because it affects Bible login and existing personal records.
+
+### 새 대화 이어가기
+우선 Supabase public.bible 테이블의 공개 접근 취약점을 안전하게 해결하는 단계별 설계를 제시하고, 사용자 승인 후 develop의 Bible 인증/기록 코드를 새 RPC 방식으로 전환해. 기존 기록을 보존하고 실제 계정 분리 테스트 후에만 anon 권한을 닫아. 개인정보처리방침은 Tokyo 리전과 실제 저장 데이터/삭제 절차를 반영해 함께 정리하되, main은 건드리지 마.

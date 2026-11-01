@@ -3444,3 +3444,46 @@ curling.html (컬링): 규칙/턴 진행, 힘·방향 입력, 충돌/점수 판�
 ### 다음 게임
 tetris.html (테트리스) 정적 게임 감사를 진행한다. 게임 기능/조작/충돌/라인 제거/속도/기록/인증을 확인하고 noindex·광고 제외는 HTTP에서 간단히 확인한다.
 
+
+## 2026-11-01 Google AdSense / Publisher 정책 기준 재확인
+
+- 공식 AdSense 준비 가이드는 고유하고 관련성 있는 콘텐츠, 방문자에게 특별한 가치, 명확하고 쉬운 탐색/가독성/기능성, 외부 자료를 사용할 경우 게시자 자신의 원본 설명·지식·리뷰·생각을 더할 것을 강조한다: https://support.google.com/adsense/answer/7299563.
+- Google의 미승인 안내는 사이트 전체의 여러 페이지를 검토할 수 있다고 명시하고, 부족한 콘텐츠(이미지/영상만 있고 텍스트가 부족한 경우, 완전한 문장·문단 부족), 원본 콘텐츠 가치 부족, 자동 생성 페이지/독창적 콘텐츠가 거의 없는 페이지, broken links·로그인 제한·과도한 팝업 등을 탐색 문제 예시로 든다: https://support.google.com/adsense/answer/81904.
+- Google Publisher Policies는 게시자 콘텐츠가 없거나 저가치인 화면, 공사 중 화면, 알림·내비게이션·행동 유도 목적 화면에 광고를 허용하지 않는다고 설명한다: https://support.google.com/publisherpolicies/answer/11112688.
+- Google Search의 scaled content abuse 정책은 AI 사용 여부 자체가 아니라, 사용자 가치 없이 대량으로 만들어진 비독창적 페이지를 문제로 정의한다. 외부 영상·이미지 수집/임베드만으로 구성된 페이지도 실질적 추가 가치가 없으면 문제가 될 수 있다: https://developers.google.com/search/docs/essentials/spam-policies.
+- 이 프로젝트의 점검 기준은 위 공개 항목에 맞춰 원본성/실제 제작 경험/페이지별 차별성/완성도/탐색성/기술성/정책·권리 이슈로 나눈다. 공식적으로 공개되지 않은 최소 글자 수, 점수, 승인 확률은 만들지 않는다.
+
+## 2026-11-01 핵심 창작 페이지 정밀 점검 (Miracle Shot / TuTu / Sister Squad)
+
+- miracleshot.html (SHA 0650eff2879391a81bfc767a14ec8a862ab473ce): 고유 title/description/canonical, index,follow, AdSense loader 1회. 본문 텍스트 약 3.85k자, 이미지 27개, 오리지널 세계관/줄거리/코치와 4명 캐릭터 소개/성경 인물 연결/작품 주제 해설/OST를 확인. 이미지 중심 전시가 아니라 스토리와 캐릭터의 의미를 설명하는 자체 콘텐츠가 있어 가치가 강한 편. 성경 인물 연결은 신앙적 해석/작품 설정임을 분명히 하고, 성경 본문을 직접 인용하는 경우 번역본 저작권과 출처를 별도 확인. 실제 이미지 권리/생성·제작 경위는 사이트 소유 자료인지 최종 확인 후보.
+- tutupupupipi.html (SHA 28414f4e2700e48ba660679ffefc6e7ea9486c1e): 고유 title/description/canonical, HTML robots meta 없음(기본적으로 index 허용), AdSense loader 1회. 본문 텍스트 약 2.1k자, 3캐릭터 소개와 성격/특징, 하늘섬·숲·마을 설정, YouTube 6개 쇼츠 카드, YouTube/Spotify OST 임베드 2개. 캐릭터와 음악은 독창적 요소지만, 외부 영상·음악 비중이 높고 세계관/에피소드 설명이 상대적으로 짧다. AdSense 콘텐츠 가치 측면에서 각 쇼츠의 구체적인 장면/이야기 설명, 캐릭터 관계, 세계관 장소, 작품 제작 과정/음악 제작 노트 등 직접 작성 콘텐츠를 더 보강할 우선 후보. 단순히 영상 수를 늘리는 것은 해결책이 아니다.
+- sistersquad.html (SHA 98bd00534db409d03567b77ced28a27a1b386169): 고유 title/description/canonical, index,follow, loader 1회. 본문 약 1.5k자. Book 1 줄거리, 두 자매의 캐릭터, 첫 모험의 주제, 창작 동기, OST, 영어판 샘플 링크를 제공. 실제 원작 도서와 샘플을 제공하므로 작품 소개의 목적은 명확하지만, 허브보다 본문이 짧아 작품 세계/독자 대상/책 구성/제작 배경의 설명을 더하면 페이지 자체 가치가 강화된다.
+- sistersquad2.html (SHA 529d9358a7945dd77a7afbce33049bdf2796c6ed): 고유 title/description/canonical, index,follow, loader 1회. 본문 약 3.0k자. 예고편 3개, NG 영상, 약 15분 본편, 가족/동료 캐릭터, OST, 이야기 주제 및 제작 과정 설명을 제공. 영상과 별개로 서사·캐릭터 동기를 설명하는 부분이 긍정적. 소개문에서 '세 편의 예고편'과 실제 영상 목록이 일치하는지, 본편 영상/재생 링크가 정상인지 브라우저 확인 필요.
+- sistersquad-hub.html (SHA 644effc2e0e40e142256bb878d4a9718ebaad4b7): 고유 title/description/canonical, index,follow, loader 1회. 본문 약 6.4k자, 이미지 45개. 시리즈 공통 세계관, 캐릭터 관계, 장소/마법/유물, Book 1·2 연결, 개별 프로필 링크가 있는 핵심 허브. sistersquad 및 sistersquad2 개별 도서 소개와 역할이 다르므로 중복이라기보다 시리즈 개관 페이지로 분리된 구조. 단, 공통 캐릭터 설명이 개별 프로필과 지나치게 반복되지 않도록 유지.
+- yul.html / jung.html: 각 고유 canonical/title/description, index,follow, loader 1회. 각 약 1.9~2.0k자. 캐릭터 프로필, 능력 단계, 자매 관계, 실제 딸의 성격에서 출발한 창작 배경, 성장 노트가 있어 템플릿만 복제한 페이지는 아니다. 공통 줄거리 문구는 짧게 유지하고 캐릭터별 실제 사례/고유 장면/대사/시각 자료가 구분되도록 관리.
+- shop.html (SHA b9f5dc8ff71da65a59bd2dbacd74c59b19df44fd): canonical `/shop`, index,follow, AdSense loader 0. 종이책/전자책/오디오북/컬러링북 등 공식 판매처로 연결되는 상품 안내 페이지. 제품별 설명은 짧지만 광고 코드는 없고, 구매 목적을 분명히 표시. 판매처 링크가 계속 유효한지 별도 점검 필요.
+- `/shop.html`과 `/shop`은 develop HTTP 200으로 동일한 Shop 콘텐츠를 반환하고 canonical은 `/shop`. `/book`은 404. Journal 2/3/4의 `/book` CTA 세 곳이 끊겨 있는 것은 확인된 탐색 결함.
+- 핵심 창작 페이지 7개 develop HTTP 확인: 모두 200, 각 canonical이 운영 .com 경로, HTML robots index,follow (TuTu는 meta 생략), AdSense loader 각 1회. develop 도메인 응답 헤더 X-Robots-Tag noindex,nofollow는 개발 도메인 전역 설정이므로 운영 도메인의 index 정책과 구분.
+- 코드/광고 설정은 수정하지 않았다. 정적 소스와 develop HTTP만 확인했고, 브라우저에서 영상/음악 재생, 광고 자동 배치, 모바일 가독성, 언어 전환, 링크 실제 클릭은 미검증.
+
+## 2026-11-01 tetris.html 정적 게임 감사 완료
+
+- develop 파일 SHA: 41a899d551209f06b7b47a129ac5f601395ff805.
+- 10×20 테트리스 보드, I/L/J/O/Z/S/T 7종 블록, 다음 블록 2개 미리보기, 좌우 이동/회전/소프트 드롭/하드 드롭, 일시정지, 게임 오버/재시작, 레벨별 효과, YouTube BGM, 모바일 터치 D-pad 및 키보드 입력을 확인.
+- 완성 줄 제거는 아래쪽부터 검사하고 여러 줄 동시 삭제를 지원. 5줄마다 레벨 증가, 최고 도달 레벨을 Supabase tetris_scores에 저장하고 TOP 3 랭킹 조회. 공통 game-auth.js의 GAME_PAGES에 tetris 포함, 계정 이니셜 기반 로그인 적용.
+- 뚜렷한 밸런스 후보: 낙하 간격이 라인당 500ms씩 줄어들어 4줄 제거 시 이미 최소 100ms에 도달한다. 레벨은 5줄마다 오르므로 레벨 1에서 속도가 급격히 최저치가 되는 구조. 의도된 고난도인지 실제 플레이 확인 후 속도 곡선을 완화할지 판단.
+- HUD에는 LEVEL만 표시하고 누적 라인 수/점수는 표시하지 않는다. 기록도 점수나 라인 수가 아니라 최고 레벨만 저장하므로 게임 목표와 랭킹 의미를 시작 화면에서 더 명확히 안내할 수 있다.
+- Supabase 저장은 기존 기록보다 높은 level만 PATCH, 새 기록은 POST하며 HTTP 응답을 검사한다. 실패 시 오류 원인을 화면에 표시하도록 되어 있어 다른 게임의 일부 랭킹 구현보다 실패 피드백이 낫다. 실제 DB RLS/동시 요청/저장 여부는 미확인.
+- 실제 HTTP https://develop.chrisleepapa.com/tetris: 200, X-Robots-Tag noindex,nofollow, HTML robots meta 1개(noindex,nofollow), canonical `/tetris`, AdSense loader 0, adsbygoogle 0, GTM 유지.
+- 실제 브라우저 게임 플레이, 회전 벽 차기, 라인 제거, 난이도 곡선, 모바일 버튼 연속 입력, 화면 회전/resize, BGM, DB 저장/RLS, 콘솔 및 네트워크 패널은 미검증.
+- 게임 소스/DB/Vercel/sitemap/main 수정 없음. 감사 문서만 develop에 기록.
+
+### 다음 게임
+switch.html (SWITCH) 정적 게임 감사. 이어서 goal.html (골이예요).
+
+
+## 정정: Journal 영어 본문 범위
+
+- 앞선 Journal 1~6 기록 중 영어 본문이 없는 것으로 분류한 페이지를 재확인했다. journal-3.html에도 영어 body 번역 데이터가 존재하므로 영어 본문 부족 후보에서 제외한다. journal-1/2/3/4는 각 언어 사전에 본문 번역 데이터를 포함하고, journal-6은 ko/en 본문 패널을 별도로 둔다.
+- 현재 소스상 journal-5.html은 영어 메타/UI는 있으나 영어 body 번역 데이터가 확인되지 않아 영어 전환 시 본문이 한국어로 남을 가능성이 높다. 브라우저 언어 전환 테스트 후 실제 개선 대상으로 확정한다.
+

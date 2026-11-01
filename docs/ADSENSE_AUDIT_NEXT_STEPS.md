@@ -1409,3 +1409,19 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 
 ### 다음 작업
 **Sister Squad 1 페이지의 작품별 독창적 설명과 제작 과정 기록을 원작에 근거해 보완하고, 나이·권수 등 기존 페이지 간 정보가 서로 어긋나지 않도록 사실 대조부터 한다.** 사실관계가 확정되지 않은 나이는 임의로 고치지 않는다.
+
+
+### 후속 사실 대조 — Sister Squad 연령 표기
+- `sistersquad.html`의 Book 1 연령 표기(율 11세, 정 7세)는 캐릭터 프로필과 일치한다. `yul.html`은 현재 12세 / 1권 11세, `jung.html` 본문은 현재 8세 / 1권 7세, `sistersquad2.html`은 2권 기준 12세 / 8세로 확인했다.
+- 다만 `jung.html`의 검색·공유 메타 설명 3곳(name description, og:description, twitter:description)은 정이를 7세라고만 표기해 현재 프로필 설명과 시점이 불명확했다.
+- 세 메타 설명을 "현재 8살, 1권에서는 7살"로 구분하고 2권에서 이어지는 모험을 설명하도록 수정했다.
+- develop 커밋: `d00a076c22b37c43807e4f85aa176c1e45d547c6`
+- 본문·캐릭터 설정·이미지·광고 코드는 변경하지 않았다.
+
+### AdSense 최우선 점검 상태 갱신
+- [x] 창작 페이지의 독립적인 설명·창작 과정·미디어 구성 정적 점검
+- [x] Sister Squad 1의 Book 1 연령 표기와 Yul/Jung 프로필 및 Book 2 연령 대조
+- [x] Jung SEO/공유 메타의 연령 시점 불명확 문제 수정
+- [ ] AdSense 계정 Privacy & messaging에서 유럽 규정 메시지와 CMP 인증/TCF 상태 확인
+- [ ] AdSense Policy Center에서 현재 사이트/페이지별 정책 이슈 확인
+- [ ] 실제 Auto ads가 다운로드·재생·메뉴 등 상호작용 요소와 인접하는지 실기기 검증

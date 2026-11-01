@@ -420,3 +420,21 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 
 ### 새 대화에서 이어갈 때
 “최신 AdSense 감사 문서 두 개를 읽고 다음 작업인 booktop.html BOOK STACKING MASTER 정적 감사만 진행해. develop만 사용하고 main 및 게임 소스는 승인 없이 수정하지 마. 실제 브라우저 플레이와 물리 동작은 확인하지 못하면 미검증으로 기록해.”
+
+
+## 2026-11-01 booktop.html(BOOK STACKING MASTER) 정적 점검 완료
+
+- booktop.html과 공통 game-auth.js 확인. Matter.js 0.19.0 물리 엔진, Tailwind CDN, YouTube IFrame API 사용.
+- '아빠의 서재' 책 쌓기 게임: 포인터 드래그 조준 후 낙하, 충돌/중력, 동적 카메라, 콤보/축하 효과, 게임오버/재시작, BGM.
+- Supabase booktop_scores에서 TOP 5 조회 및 이니셜별 최고 점수 upsert 시도.
+- 로그인 필수이며 계정 이니셜을 랭킹 필드에 자동 반영하고 숨김/읽기 전용 처리.
+- canonical/description 존재, HTML robots noindex,nofollow. 실제 develop HTTP 200 및 X-Robots-Tag noindex,nofollow, AdSense loader 0회, adsbygoogle 0회 확인.
+- Supabase RLS/실제 저장 권한 및 서버 측 점수 검증은 미확인. 클라이언트 점수 조작 방어는 별도 점검 후보.
+- 최종 점수가 score-1로 표시되는 의도, 모바일/PC 조작, 실제 물리·카메라·충돌, BGM, CDN 실패, 콘솔, 광고 네트워크 요청은 미검증.
+- 게임 코드, DB, Vercel 설정, sitemap, main은 수정하지 않고 감사 문서만 기록.
+
+### 다음 단일 작업
+**fiveinrow.html(오목) 정적 감사**: 승리 판정/대전 흐름/기록 및 로그인/모바일 입력/외부 라이브러리/정책 응답을 점검한다.
+
+### 새 대화에서 이어갈 때
+“다음 게임 fiveinrow.html(오목)을 develop 정적 소스 기준으로 빠르게 감사해. 게임별 색인·광고는 이미 제외 결정이므로 정책을 다시 논의하지 말고 HTTP 정책 확인만 간단히 해. 실제 대국은 확인하지 못하면 미검증으로 기록해. main과 게임 소스는 수정하지 마.”

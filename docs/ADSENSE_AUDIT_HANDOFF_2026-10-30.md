@@ -3601,3 +3601,11 @@ switch.html (SWITCH) 정적 게임 감사. 이어서 goal.html (골이예요).
 - Supabase official docs confirm Data API access is controlled by table grants plus RLS, and SECURITY DEFINER functions execute with owner privileges; function execution should be explicitly restricted and search_path pinned/empty with schema-qualified names: https://supabase.com/docs/guides/api/securing-your-api and https://supabase.com/docs/guides/database/functions.
 - No main branch changes, no DB migration, no user data changes, no branch creation, and no new paid service were performed.
 
+
+### 2026-11-01 follow-up verification
+
+- Latest develop privacy deployment `f97371d37821ca5c98cc1e99f6e4c6c6fd5fd9e8` is READY. `https://develop.chrisleepapa.com/privacy` returns HTTP 200, canonical `https://chrisleepapa.com/privacy`, robots `index, follow`, AdSense loader 0, and includes the Supabase Tokyo disclosure plus Google's partner-site data-use link.
+- Latest develop Bible/TODAY HTTP checks return 200. Bible remains `index, follow`; TODAY remains `noindex, follow`. Static response source shows account-scoped RPC calls and no direct REST calls to personal tables.
+- Read-only negative-auth SQL checks against `clp_load_bible_records`, `clp_save_bible_record`, and `clp_list_today_records` using a non-existent test initials and dummy hash each returned `{ok:false, error:'인증에 실패했습니다.'}`. No records were created or read.
+- This is only a function rejection check; it does not replace browser tests with the real account, cross-account isolation tests, or the pending database grant/policy cutover.
+

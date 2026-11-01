@@ -498,10 +498,10 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 
 ## 2026-11-01 최우선 조치 추가 — Supabase 데이터 보호
 
-- P0 보안: public.bible table has permissive anon SELECT/INSERT/UPDATE/DELETE policies and grants. Bible page stores SHA-256 of a 4-digit PIN in the `PROFILE` row's memo_text and stores per-user verse notes/progress in the same table. The public API can expose the hash and other accounts' Bible data. This is not merely an AdSense issue; protect user data first.
+- 역사적 P0 발견 사항(2026-11-01 조치 완료): `public.bible`의 anon 공개 CRUD 정책/권한은 제거했다. 현재 남은 인증 위험은 4자리 PIN의 unsalted SHA-256 및 localStorage 보관, 로그인/개인 RPC의 rate limit 부재다. 이는 별도 P1 인증 강화 작업으로 관리한다.
 - Supabase project region: Tokyo (`ap-northeast-1`). New personal data tables: clp_accounts, clp_today, clp_bible_journey, clp_bible_reflections, clp_prayer_notes, clp_prayer_daily. Current privacy policy does not accurately describe these data categories or the processing region.
 - Security Advisor: 18 SECURITY DEFINER RPCs callable by anon, 8 callable by authenticated; 6 private tables RLS enabled/no direct policies. Review each function because they run with owner privileges; not every warning is automatically a vulnerability, but public.bible direct access is confirmed.
-- Do not revoke public.bible policies before replacing the Bible page's direct REST calls; that would break login and Bible record storage. Plan staged migration to authenticated RPCs, verify per-account read/write, then revoke public access and remove legacy PROFILE hashes.
+- 완료: Bible 페이지와 관련 JS를 계정별 RPC 경로로 전환하고 main 배포를 확인한 뒤 `public.bible`의 anon/authenticated 직접 접근 권한과 4개 정책을 제거했다. 기존 기록은 삭제하지 않았으며, `PROFILE` hash row는 확인 당시 존재하지 않았다.
 - The 4-digit PIN + unsalted SHA-256 + browser localStorage bearer hash + no visible login attempt limit needs hardening. No brute-force test was performed.
 - No DB/source changes were made. User approval is required before security refactor because it affects Bible login and existing personal records.
 
@@ -520,7 +520,7 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 - Develop Bible/TODAY source paths now use account-scoped RPCs for personal data. Direct REST reads/writes from Bible, Bible gate, Bible layout TOP5, TODAY check-in streak, and TODAY archive were removed. Public `bible_content` read remains for scripture text.
 - Privacy policy Korean/English revised for account and personal-record data categories, Supabase Tokyo processing region, manual deletion request path (no self-service deletion), and Google's partner-site data-use disclosure.
 - Develop deployment of latest code `b83ff66` is READY; privacy latest deployment `f97371d` is READY. HTTP/source verified for `/bible` and `/today`; interactive auth/save/load tests are not yet performed.
-- P0 DB exposure still exists: public.bible anon full CRUD policies/grants remain live. Main still has old direct REST requests. Do NOT revoke DB grants/policies until develop code is approved and merged to main, then verify production RPC path. Only one Supabase project exists and no dev branch is provisioned; no paid branch created.
+- P0 DB exposure closed on 2026-11-01: production main Bible/TODAY source uses RPC-only personal-data paths; `public.bible` and its sequence have no anon/authenticated direct privileges, and the four anon policies were dropped. Existing rows were preserved.
 - Custom 4-digit PIN + unsalted SHA-256 + localStorage hash + no visible rate limiting on public SECURITY DEFINER RPCs remain hardening priorities. Plan stronger credentials/rate limiting and `search_path=''`/function privilege review.
 - Next: verify latest privacy HTTP response, then manual browser tests of Bible/TODAY account features on develop. After user review, get explicit approval to update main and only then apply DB migration to revoke direct public table access. Continue AdSense review on substantive content; don't list removed YouTube charts as missing features.
 
@@ -536,3 +536,16 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 - SISTER SQUAD hub/Book1/Book2/Yul/Jung and MIRACLE SHOT have substantial original story, character, world, and creation-process content. Journal 5 English body exists; remove old suspected gap from outstanding list.
 - Do not treat removed YouTube chart as a missing page or AdSense issue.
 
+
+ 
+## 2026-11-01 production cutover result
+ 
+- P0 public table exposure closed: public.bible anon policies removed; anon/authenticated direct table grants and anon sequence usage revoked. Production main is now on RPC-only personal Bible data source.
+- Production main deployed: six security-related files selectively synced from develop; latest main deployment READY. /bible, /today, /privacy HTTP 200 and expected canonical/robots confirmed.
+- Database RPC test passed: ran as anon inside a rollback transaction for Bible save/load, Bible Journey, TODAY records, prayer notes, and Bible reflections. Wrong PIN rejected. No synthetic test account or rows remained after rollback.
+- Function grants narrowed: 18 clp_* SECURITY DEFINER functions remain executable by anon for the current custom login flow; PUBLIC and authenticated EXECUTE removed. Security Advisor now has 0 authenticated SECURITY DEFINER warnings; 18 anon warnings remain because the custom PIN RPCs are still public endpoints.
+- Leaderboard narrowed: public Bible TOP 5 function returns at most five rows; privacy policy now discloses public display of initials and reading progress.
+- Remaining P1: 4-digit unsalted SHA-256 PIN, hash in localStorage, and no effective rate limit. Plan a versioned server-side salted hash + short-lived random session-token migration before calling account authentication fully secure.
+- Manual UI testing still required: actual production login, Bible/TODAY/Prayer Notes CRUD, progress sync, and cross-account isolation were not browser-tested by the assistant. HTTP/SQL checks are not a substitute.
+- Admin limitation: attempt to revoke default EXECUTE privileges for future functions failed due database permission denial; defaults unchanged.
+- Branch note: main received selected security files, not the full develop branch. Histories remain diverged.

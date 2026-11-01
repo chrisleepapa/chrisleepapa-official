@@ -1100,3 +1100,36 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 - 광고 로더는 Music 0, Korean Worship 1, English Worship 1, Journal 1 1, Privacy/Terms/Shop/Contact/Bible/Today/Guestbook/Goal/Gameinfo 0으로 확인했다.
 - main은 변경하지 않았다. 최신 main 대비 develop은 ahead이며 behind 0 상태를 유지한다.
 - 실제 브라우저 화면/모바일 상호작용과 Google Search Console 색인 상태는 별도 검증 대상이다.
+
+
+## 2026-11-02 계정 보안 후속 설계 — 모든 개인 RPC 경로 추적
+
+### 확인한 직접 호출 지점
+- `js/auth.js`: `clp_login`, `clp_load_today`, `clp_save_today`.
+- `today.html`: `clp_list_today_records`, `clp_save_today`, `clp_load_bible_journey`, `clp_save_bible_journey`.
+- `js/today-history.js`: `clp_list_today_records`, `clp_delete_today`.
+- `js/today-prayer-notes.js`: `clp_prayer_notes_load`, `clp_prayer_notes_save`, `clp_prayer_notes_delete`, `clp_prayer_daily_set`.
+- `bible.html`: `clp_load_bible_records`, `clp_save_bible_record`, `clp_load_bible_journey`, `clp_load_bible_leaderboard`.
+- `js/bible-layout.js`: `clp_load_bible_records`, `clp_save_bible_record`.
+- 따라서 로그인만 제한하는 것으로는 충분하지 않다. TODAY, 성경 묵상/진행, 기도노트 RPC도 브라우저에서 직접 호출되며 같은 이니셜/PIN 해시 검증에 의존한다.
+
+### 보안 위험의 정확한 범위
+- `clp_login`은 `anon` 역할에서 호출 가능하고, 영문 3자리 이니셜 계정을 생성할 수 있으며, PIN 해시를 직접 비교한다.
+- 프런트엔드는 4자리 PIN을 SHA-256으로 해시한 값을 보내고 localStorage에 보관한다. 이 해시는 salt 없이 계산된다.
+- 개인 기록 관련 `SECURITY DEFINER` RPC도 `anon` 역할에서 호출할 수 있다. 각 RPC가 PIN 해시와 이니셜을 다시 검증하므로 단순히 로그인 UI를 통과하지 않는 것만으로 보호되지 않는다.
+- 로그인 실패 횟수 제한을 확인하지 못했다. 그러나 `clp_login`만 잠그면 다른 개인 기록 RPC를 통한 온라인 추측 시도는 계속 가능하다.
+- 반대로 개인 RPC의 `anon EXECUTE` 권한을 일괄 취소하면 현재 브라우저 코드가 직접 호출하는 계정·성경·TODAY·기도노트 기능이 중단될 수 있다. 이번 점검에서 권한을 변경하지 않았다.
+
+### 권장 개선 아키텍처
+1. **공통 Edge Function 게이트웨이**를 만들어 로그인 및 모든 개인 기록 RPC 호출을 통과시킨다. 클라이언트는 Supabase REST의 `/rpc/clp_*`를 직접 호출하지 않고 Edge Function만 호출한다.
+2. 게이트웨이에서 요청 IP와 이니셜을 함께 기준으로 실패 시도를 제한한다. IP 원문을 저장하지 않고 서버 비밀키를 사용한 해시값만 보관한다. 초기 정책은 계정 영구 잠금 대신 짧은 쿨다운/점진적 지연을 사용해 공격자의 계정 잠금 유발(DoS)을 줄인다.
+3. Edge Function은 서버 전용 `service_role` 키로 내부 RPC를 호출한다. 이 키는 브라우저 코드나 Git 저장소에 절대 넣지 않는다.
+4. 모든 개인 RPC를 Edge Function 경유로 전환하고 Preview에서 로그인·계정 생성·TODAY 저장/삭제·성경 진행/묵상·기도노트 저장/삭제를 확인한 다음에만 개인 RPC의 직접 `anon EXECUTE`를 제한한다.
+5. 공개 콘텐츠 및 공개 순위 조회는 별도 검토한다. `clp_load_bible_leaderboard`처럼 로그인 없는 공개 순위 데이터와 개인 기록 RPC를 같은 권한 묶음으로 취급하지 않는다.
+6. PIN 저장은 단계적으로 salt가 있는 강한 KDF로 이전한다. 기존 계정은 다음 정상 로그인 때 새 방식으로 재해시하는 방식으로 마이그레이션하고, 이전 로그인 호환 기간과 롤백 경로를 둔다. 단순히 기존 PIN 해시를 한 번에 폐기하지 않는다.
+
+### 이번 단계의 조치 여부
+- 직접 RPC 호출 지점을 전부 추적해 보안 개선 범위를 확인했다.
+- 현재 Supabase 프로젝트에는 테스트용 branch가 없으며, 실제 계정이 사용하는 DB다. 브라우저 코드만 먼저 바꾸거나 DB 권한을 먼저 잠그면 기존 개인 기록 기능이 끊길 수 있다.
+- 따라서 이번 단계에서는 운영 DB 함수, 권한, 테이블, Edge Function을 변경하지 않았다. 계정 데이터도 읽지 않았다.
+- 이 작업은 AdSense 콘텐츠 점검과 별개의 보안 개선 작업이며, 테스트 환경을 마련하고 모든 클라이언트 호출을 한 번에 전환할 수 있을 때 진행한다.

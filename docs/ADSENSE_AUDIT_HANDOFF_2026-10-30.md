@@ -3661,3 +3661,36 @@ switch.html (SWITCH) 정적 게임 감사. 이어서 goal.html (골이예요).
 
 ### 다음 단일 작업
 **AdSense 계정의 Privacy & Messaging에서 European regulations 메시지가 설정/활성화되어 있는지 계정 화면 기준으로 확인한다.** 외부 CMP를 임의로 설치하거나 사이트 코드를 추가하지 않는다. 계정 설정 확인 후 필요한 조치만 결정하고, 그 다음 Bible 페이지의 성경 본문/찬송가 자료 출처·게시 권한 점검을 별도 항목으로 진행한다.
+
+
+## 2026-11-01 재점검 — 현재 sitemap 및 AdSense 핵심 페이지
+
+**범위: develop/main GitHub 소스 정적 재검사, develop/main Vercel 배포 상태, 24개 sitemap URL의 기본 메타/콘텐츠 규모. 브라우저 렌더링과 AdSense 계정 설정은 별도 미검증. 코드 수정 없음.**
+
+### 기준 및 제외
+- Prompt Lab은 이미 삭제된 페이지이므로 점검 대상에서 제외. 현재 sitemap 24개에도 포함되지 않는다.
+- Game Center 및 게임 페이지의 noindex/광고 제외 결정은 재논의하지 않는다.
+- 제거된 YouTube 차트를 누락된 기능이나 AdSense 콘텐츠 부족 문제로 분류하지 않는다.
+
+### 현재 확인 결과
+- develop sitemap.xml: 24개 URL. 운영 도메인 https://chrisleepapa.com 사용. Prompt Lab 없음.
+- robots.txt: Allow: /, sitemap 경로 정상.
+- ads.txt: google.com, pub-3207219520058740, DIRECT, f08c47fec0942fa0 확인.
+- develop 홈페이지 canonical /, AdSense loader 1회. YouTube 차트 섹션/스타일/로딩 스크립트 식별자가 없음.
+- main 홈페이지에는 youtube-daily-top3, youtube-trending-video 및 관련 CSS/스크립트가 남아 있음. develop은 제거 완료. main 최신 production 배포는 commit ed13030c004861bec711d674a0df3cefaab6c226, develop 최신 READY 배포는 commit 4904cbcb562274d1da3624ae2d3eef0428946ba2. 따라서 해당 정리는 develop에만 반영되어 있으며 main 운영 소스와는 차이가 있다. 이를 새로운 콘텐츠 누락 문제로 기록하지 않고, 배포 브랜치 차이로만 기록한다.
+- 현재 compare: main 대비 develop ahead 3 / behind 0. 변경 파일은 index.html과 점검 문서 2개. main은 수정하지 않았다.
+- sitemap 24개 페이지의 기본 메타 점검: 개별 canonical 및 index/follow 확인. 단일 H1 확인. 각 페이지의 AdSense loader는 페이지별로 기록했으며, Bible/Movie/Contact/Privacy/Terms는 0회. 수동 adsbygoogle.push 단위는 확인한 대상에서 0회.
+- 원본 콘텐츠 강점: Movie 제작 노트, Wallpaper 소개/설정 안내, SISTER SQUAD 허브·2권·캐릭터 페이지, MIRACLE SHOT, TuTuPuPuPiPi, Music/Worship, Journal 1~6. Worship 본문은 약 5,080단어, English Worship 약 3,580단어, Movie 약 1,380단어, Wallpaper 약 1,322단어, Journal 2 약 1,224단어 등 독립적인 설명/제작 기록이 존재한다. 단어 수는 승인 기준으로 사용하지 않는다.
+- SISTER SQUAD 1은 약 336단어의 독립적인 줄거리·캐릭터·첫 모험·창작 배경이 있으며 Journal 1/2/4 내부 링크가 연결되어 있다. 다만 OST/영문판/구매 CTA가 상세한 자체 작품 설명보다 먼저 배치되어 있고, STORY와 FIRST ADVENTURE 일부 내용이 겹친다. 보완 후보로만 기록하며 자동으로 저가치 판정하지 않는다.
+- /shop은 실제 shop.html이 존재하고 canonical /shop, index/follow이며 SISTER SQUAD 1에서 내부 링크로 연결된다. sitemap에는 포함되지 않지만 이는 곧바로 정책 위반이나 끊어진 링크를 뜻하지 않는다. 필요 시 sitemap 포함 여부를 별도 결정한다.
+- Contact 약 47단어, Privacy 약 1,477단어, Terms 약 750단어. Contact/Privacy/Terms에는 AdSense loader가 없다. Contact의 짧은 분량만으로 문제로 판정하지 않는다.
+- Privacy 페이지는 수집 데이터, Google Analytics/광고 파트너, Supabase 처리 리전/개인 기록 항목과 삭제 요청 경로를 설명하는 현행 문구를 포함한다. 실제 운영·보관 기간 및 계정 삭제 프로세스는 별도 사실 검증 필요.
+
+### 미검증 및 잔여 위험
+- 브라우저 실제 렌더링, 모바일/PC 레이아웃, JS 동적 본문 출력, Auto ads 배치, 광고 네트워크 요청은 확인하지 못했다.
+- AdSense 계정의 Privacy & Messaging European regulations 설정/활성 상태는 사이트 소스에서 확인할 수 없다.
+- Bible 본문 및 찬송가 PDF의 온라인 게시/상업적 이용 권한은 출처 링크만으로 확정할 수 없으며 저작권 트랙에서 별도 확인한다.
+- Movie 페이지에 포함된 기존 제3자 IP 팬메이드 영상은 콘텐츠 가치와 별개인 권리 검토 대상으로 유지한다.
+
+### 다음 단일 작업
+**사용자가 AdSense 계정의 Privacy & Messaging → European regulations 메시지 설정 화면을 확인해 활성/비활성 상태를 알려주면 해당 항목을 판정한다.** 계정 화면 확인 전에는 CMP 정상/미설정을 단정하지 않는다. 이후 Bible 본문/찬송가 게시 권한과 출처를 확인한다.

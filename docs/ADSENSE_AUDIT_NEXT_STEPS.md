@@ -697,3 +697,15 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 
 ### 다음 단일 작업
 **최신 develop Preview 배포가 READY인지 확인한 뒤 `/miracleshot`, `/gameinfo`, `/goal` HTTP 응답에서 최신 title/CTA/설명/robots 헤더를 재확인한다.** 이어서 실제 브라우저 조작이 가능한 환경이 확보되면 CTA → 로그인 → 게임 시작 흐름과 모바일 레이아웃을 검증한다. main은 계속 수정하지 않는다.
+
+
+### Preview 배포 및 HTTP 재검증 결과
+- 최종 develop 커밋 `01cd13b7cefec4aa92ef7b3b0a6f754e386871b1`의 Vercel 배포 `dpl_C8xEvYLgBDZQ7Wy3s2CsKnB7XojS`가 `READY`이며 `develop.chrisleepapa.com` alias 연결을 확인했다.
+- `/miracleshot`: HTTP 200, 최신 title에 `기적을 차올리다`, STORY → GAME CTA 및 /goal 링크 1개, index/follow, AdSense loader 1개.
+- `/gameinfo`: HTTP 200, noindex,nofollow, 중복 Tetris 문구 수정 및 로그인 안내 반영, AdSense loader 0개.
+- `/goal`: HTTP 200, noindex,nofollow, AdSense loader 0개.
+- Vercel JSON의 /gameinfo 및 /goal X-Robots-Tag noindex,nofollow 규칙과 sitemap에서 두 URL이 빠진 상태도 정적 소스에서 확인했다.
+- HTTP 요청은 HTML 제공 여부와 본문 반영을 확인한 것이며, 실제 브라우저에서 CTA 클릭·로그인·게임 조작·모바일 레이아웃을 직접 시험한 것은 아니다.
+
+### 다음 단일 작업
+**MIRACLE SHOT → 골이예요 연결 흐름의 실제 브라우저 검증**을 진행한다. 특히 로그인 전/후 게임 시작, CPU/2인 모드, 3라운드 및 10회 슛 동작, 모바일 화면을 확인한다. 실제 브라우저 조작이 불가능한 항목은 미검증으로 유지하고, main은 수정하지 않는다.

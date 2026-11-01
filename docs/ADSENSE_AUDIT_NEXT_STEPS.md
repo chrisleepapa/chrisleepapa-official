@@ -462,3 +462,15 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 
 ### 새 대화 이어가기
 최신 감사 문서를 확인한 뒤 tetris.html 게임 정적 감사를 진행하고, 이어서 /miracleshot 및 /tutupupupipi 등 AdSense 핵심 콘텐츠 페이지를 정밀 점검해. Game Center 광고/색인 제외는 반복하지 말고, develop만 사용하며 main은 수정하지 마.
+
+## 2026-11-01 이어서 진행
+
+- 게임 감사 완료: game.html, booktop.html, fiveinrow.html, curling.html, tetris.html. 다음 switch.html, 이후 goal.html.
+- AdSense 핵심 창작 페이지 1차 점검: miracleshot, tutupupupipi, sistersquad, sistersquad2, sistersquad-hub, yul, jung, shop.
+- 가장 먼저 해결할 탐색 결함 후보: journal-2/3/4의 `/book` 링크는 404. 목적지는 작품 허브(/sistersquad-hub) 또는 Book 1 페이지(/sistersquad) 중 의미에 맞게 결정한 뒤 수정.
+- 콘텐츠 보강 우선 후보: tutupupupipi (캐릭터·세계관·각 영상의 구체적 독창 설명 추가), sistersquad Book 1 (작품 구성/독자/제작 배경을 더 풍부하게), journal-5 영어 본문 번역 여부 확인.
+- 다음 AdSense 페이지는 /movie, /wallpaper, /music, /worship, /worship_eng, /about, /contact, /privacy, /terms, /bible 순으로 잔여 이슈 확인.
+- Google 공식 AdSense 기준은 고유하고 관련성 있는 원본 콘텐츠, 명확한 탐색, 충분한 완성 문장/문단, 자동 생성·저가치 페이지/끊어진 링크의 회피다. 글자 수 기준이나 승인 확률은 임의로 설정하지 않는다.
+
+### 새 대화 이어가기
+최신 감사 문서 확인 후 switch.html 게임 감사를 빠르게 진행하고, 이어서 /movie와 /wallpaper 및 남은 정책·신뢰 페이지를 AdSense 공개 기준에 맞춰 정밀 점검해. develop만 사용하고 main은 건드리지 마.

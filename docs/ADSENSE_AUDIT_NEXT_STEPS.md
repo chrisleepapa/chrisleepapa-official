@@ -1368,3 +1368,44 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 7. Google 도구: Search Console의 /about 선택 canonical 및 사이트맵 처리 결과, AdSense Auto ads 실제 노출 위치 확인.
 
 **현재 결론:** 배포 한도와 무관하게 GitHub 소스 점검·수정·정적 재검증은 계속할 수 있다. 다만 실제 Preview 렌더링 검증은 최신 배포 READY 확인 후에만 완료 처리한다.
+
+
+## 2026-11-02 AdSense 최우선 재점검 — 콘텐츠 가치 및 개인정보 동의(CMP)
+
+### 적용한 공식 기준
+- Google AdSense 준비 가이드는 고유하고 관련성 있는 콘텐츠, 명확한 탐색, 방문자에게 유용한 독창적 콘텐츠를 확인하도록 안내한다.
+- Google Publisher Policies는 저가치 콘텐츠, 콘텐츠가 없는 화면, 공사 중 화면, 알림·탐색 등 행동 목적 화면에 광고를 게재하지 못하도록 한다. 자동 생성 콘텐츠는 사람의 검토·선별 없이 게시하면 안 된다.
+- 광고가 메뉴·탐색·다운로드 버튼으로 오인되거나 클릭을 유도하는 배치도 금지된다.
+- 출처: Google AdSense 공식 도움말(준비 가이드, Publisher Policies, Site behavior).
+
+### 광고가 있는 창작 페이지 재점검
+대상: `wallpaper.html`, `sistersquad-hub.html`, `sistersquad.html`, `sistersquad2.html`, `yul.html`, `jung.html`, `miracleshot.html`, `tutupupupipi.html`, `index.html`
+
+- Wallpaper: 개인용 무료 배경화면 4개 MP4와 PC PNG 9개, 작품별 설명, 포맷·사용 범위·기기별 설정 가이드, 창작자 노트가 존재한다. 단순 다운로드 목록만 있는 페이지는 아니다.
+- Sister Squad Hub: 캐릭터 14개 이상, 세계관·마법·두 모험의 주제 설명, 시각 자료가 있고 독립적인 소개 콘텐츠가 있다.
+- Sister Squad 1: 현재 약 344단어(HTML 태그/스크립트 제거 기준), 작품 소개·줄거리·캐릭터·창작 동기·창작 과정 기록, YouTube 트레일러와 공식 OST/도서 링크가 있다. 글 분량은 다른 작품 페이지보다 짧아 **콘텐츠 깊이 보완 우선 후보**로 분류한다. 다만 영상·이미지·원작 소개가 있으므로 단어 수만으로 저가치라고 판정하지 않는다.
+- Sister Squad 2: 약 730단어, 영상 3개와 NG 영상 2개, 등장인물·후속 이야기·제작기·작품을 읽는 세 가지 관점이 있다.
+- Yul/Jung 캐릭터 페이지: 각각 약 670/656단어, 캐릭터 프로필·능력·관계·탄생 비화·성장 분석 및 이미지가 있다. 단순 이미지 갤러리 형태가 아니다.
+- Miracle Shot: 약 938단어, 독립 줄거리·캐릭터·성경적 영감·창작 의도·OST 설명과 이미지가 있다. lightbox용 이미지 요소는 `alt=""`로 비어 있으나 동적 이미지 확대용 요소이며, 일반 본문 이미지 26개에는 대체 텍스트가 있다. 이번에는 장식/동적 요소인지 확인 전 임의 수정하지 않았다.
+- TuTu PuPu PiPi: 약 572단어, 캐릭터 소개, 세계관, OST 및 6개 Shorts의 개별 설명, 창작자 노트가 있다.
+- Home: 약 269단어의 일반 텍스트 외에 큐레이션 카드와 프로젝트 진입 동선이 있는 아카이브 랜딩 페이지다. 일반 문서와 단어 수를 직접 비교하지 않는다.
+
+**판정:** 이번에 확인한 페이지들은 단순 외부 영상·이미지 모음만으로 구성된 화면은 아니다. 다만 Sister Squad 1은 작품별 독립 설명이 비교적 짧아 추가 보완 후보로 남긴다. 이번 단계에서 콘텐츠 문구나 광고 코드를 임의로 바꾸지 않았다.
+
+### 개인정보 동의 및 CMP — 계정 설정 확인이 필요한 P0 항목
+- `privacy.html`에는 Google AdSense 광고 쿠키, Google Analytics, 제3자 광고 파트너, 맞춤형 광고 설정 링크가 설명되어 있다.
+- `privacy.html`, `js/main.js`, `js/home-language.js`, `css/common.css`, `index.html`에서 CMP/TCF 동의 UI 또는 `googlefc` / Funding Choices 구현을 확인하지 못했다.
+- 이는 사이트 소스에서 찾지 못했다는 뜻이며, AdSense 계정의 Privacy & messaging에서 Google CMP를 설정했는지는 이 저장소만으로 확인할 수 없다.
+- Google 공식 요구사항: EEA/UK/스위스 사용자에게 개인화 광고를 제공하는 경우 Google 인증 및 IAB TCF 통합 CMP가 필요하다. CMP가 없거나 인증되지 않은 트래픽은 개인화 광고 대상이 되지 않을 수 있다.
+- 따라서 AdSense 계정의 **개인정보 보호 및 메시지(Privacy & messaging)**에서 유럽 규정 메시지 생성·게시 여부, CMP 상태, TCF 신호, 대상 지역을 확인해야 한다. 글로벌 영어 콘텐츠가 있으므로 유럽 방문자 유입 가능성을 무시하지 않는다.
+- 공식 출처: Google AdSense Help — `Google consent management requirements for serving ads in the EEA, the UK, and Switzerland` 및 `Set up and manage your Consent Management Platform (CMP)`.
+
+### AdSense 우선 위험순위
+1. **P0 — CMP/유럽 규정 메시지:** AdSense 계정 설정 확인 필요. 저장소만으로 완료 판정 불가.
+2. **P1 — Sister Squad 1 독립 콘텐츠 깊이:** 작품별 줄거리·창작 과정의 설명이 상대적으로 짧음. 기존 원고에 근거한 내용 보강을 우선 검토.
+3. **P1 — 저작권/라이선스 증빙:** 음악·영상·이미지·도서 샘플·외부 임베드의 권리 범위를 항목별로 확인. 광고 제외된 Music/Movie 외에도 각 광고 대상 페이지의 이미지·음원·영상 사용권을 검토해야 함.
+4. **P2 — 자동 광고 실제 배치:** 메뉴·다운로드·재생 버튼과 인접하거나 오인될 수 있는 위치, 모바일 화면의 오클릭 위험을 Preview/실기기에서 확인.
+5. **P2 — 실제 색인 및 사이트 승인 상태:** Search Console의 선택 canonical과 AdSense 사이트 검토/정책 센터 상태는 계정 UI에서 확인.
+
+### 다음 작업
+**Sister Squad 1 페이지의 작품별 독창적 설명과 제작 과정 기록을 원작에 근거해 보완하고, 나이·권수 등 기존 페이지 간 정보가 서로 어긋나지 않도록 사실 대조부터 한다.** 사실관계가 확정되지 않은 나이는 임의로 고치지 않는다.

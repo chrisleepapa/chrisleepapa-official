@@ -634,5 +634,14 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 - AdSense Auto ads가 실제 화면에서 영상 플레이 버튼/탐색 링크와 얼마나 가까이 배치되는지, 실제 광고가 노출되는지는 계정 설정과 브라우저 실측이 필요하다.
 - AdSense 승인은 보장할 수 없으며, 이번 작업은 콘텐츠/가독성 측면의 사전 개선이다.
 
+### 배포 및 HTTP 재확인 결과 — 2026-11-01
+- 최신 develop 통합 커밋 `949f1ab7d25b9bf71064c61b8ed88200bfac1af9`의 Vercel Preview 배포가 `READY`로 완료됐고 `develop.chrisleepapa.com` alias가 연결됐다.
+- `https://develop.chrisleepapa.com/tutupupupipi`: HTTP 200, canonical 확인, AdSense 로더 1개, 새 라이트 모드 대비 CSS 포함.
+- `https://develop.chrisleepapa.com/sistersquad-hub`: HTTP 200, canonical 확인, AdSense 로더 1개, 새 라이트 모드 가독성 CSS 포함.
+- `sistersquad.html` 및 `sistersquad2.html`에는 기존 라이트 모드 CSS 규칙이 각각 33개/39개 존재하는 것을 정적으로 확인했다. 이 두 페이지는 이번 변경에서 수정하지 않았다.
+- main 대비 develop은 ahead 8 / behind 0이며 변경 파일은 `index.html`, 두 점검 문서, `sistersquad-hub.html`, `tutupupupipi.html`이다. main은 변경하지 않았다.
+- Preview HTTP 200은 서버가 최신 HTML을 제공한다는 확인이다. 실제 브라우저 화면 캡처/시각적 확인, 모바일·PC에서의 상호작용, Auto ads의 실제 위치와 노출, 개별 영상 장면과 설명의 일치까지 확인한 것은 아니다. 이 항목들은 미검증으로 유지한다.
+- Vercel 빌드 로그에 ESM→CommonJS 경고가 있었으나 해당 배포는 READY로 완료됐다. 빌드 실패는 확인되지 않았다.
+
 ### 다음 점검
-최신 develop 변경분의 Vercel Preview 배포 상태를 확인하고, 접근 가능한 브라우저 환경에서 두 페이지의 라이트/다크 및 모바일/PC 레이아웃과 광고 배치를 검증한다. 실제 영상 장면을 확인하지 못한 설명은 계속 미검증으로 유지한다.
+실제 브라우저에서 라이트/다크 모드 및 모바일/PC 레이아웃을 확인하고, AdSense Auto ads 위치가 재생·탐색 UI와 혼동되거나 과도하게 가까운지 점검한다. 실제 영상 장면과 설명을 대조하지 못한 항목은 미검증으로 유지한다.

@@ -3331,3 +3331,42 @@ Movie 페이지의 실제 Preview 배포 여부와 브라우저 렌더링 확인
 
 ### 다음 단일 작업
 **booktop.html(BOOK STACKING MASTER) 페이지의 독립 콘텐츠, 물리/게임 실행 로직, 인증 흐름, 외부 라이브러리, 광고·색인 제외 상태를 develop 정적 소스 기준으로 점검한다.** 실제 플레이/물리 동작은 브라우저 검증 전까지 미검증으로 둔다.
+
+
+## 2026-11-01 booktop.html(BOOK STACKING MASTER) 정적 감사 완료
+
+**판정: Matter.js를 이용한 물리 기반 책 쌓기 게임으로, 단순 임베드가 아닌 자체 게임 루프·카메라·효과·랭킹 연동을 구현했다. Game Center 정책에 맞춰 색인 및 광고 제외가 develop 실제 응답에서 확인됐다.**
+
+### 확인한 소스와 응답
+- booktop.html develop blob SHA: f737a605c94f39e873e9cb51dccee11179bbcf51.
+- js/game-auth.js에서 booktop이 공통 로그인 대상 페이지 목록에 포함됨을 확인.
+- HTML에 description, canonical https://chrisleepapa.com/booktop, robots noindex,nofollow 존재.
+- 실제 https://develop.chrisleepapa.com/booktop 응답은 HTTP 200, X-Robots-Tag noindex,nofollow, robots meta 1개, AdSense loader 0회, adsbygoogle 0회, GTM ID 2회.
+- Matter.js 0.19.0 CDN과 Tailwind CDN을 사용. YouTube IFrame API로 BGM 플레이리스트를 연결.
+
+### 게임 콘텐츠와 로직
+1. '아빠의 서재' 테마로 떨어지는 책을 조준해 쌓는 물리 기반 캐주얼 게임이다. 시작 화면에 영문 3자리 랭킹 식별값 입력과 시작 버튼이 있다.
+2. Matter.Engine/Render/Runner/Bodies/Composite/Events/Body를 이용해 중력, 충돌, 렌더링 및 물리 업데이트를 구현. 중력값 1.8, 반복 계산 설정, 책/책상 마찰·반발·밀도 등이 소스에 지정되어 있다.
+3. 매 책마다 폭·높이와 텍스처를 생성하고, 포인터를 누른 채 좌우로 조준한 뒤 손을 떼면 책이 낙하한다. 충돌음, 성공/실패 말풍선, 10권 이상 콤보 효과, 특정 점수 마일스톤 축하 연출이 있다.
+4. 책탑이 높아지면 카메라가 점진적으로 위로 이동하고 배경/책상 패널도 따라 움직인다. 책이 책상 아래로 떨어지면 게임오버 처리.
+5. 게임오버 시 최종 기록을 표시하고 Supabase booktop_scores에서 TOP 5를 조회한다. 현재 이니셜의 기존 기록과 비교한 후 더 높은 점수일 때 upsert를 시도하고 랭킹을 다시 불러온다.
+6. 다시 쌓기/상단 초기화, BGM 셔플·반복, 음향 효과가 구현되어 있다.
+
+### 인증·데이터·개선 관찰
+- 공통 game-auth.js가 로그인 여부를 검사하며 미로그인 사용자는 로그인 모달로 유도한다. 로그인 계정 이니셜을 기존 랭킹 입력 필드에 채우고 숨김/읽기 전용으로 만들어 사용자가 임의 이니셜을 입력하지 못하게 한다.
+- Supabase publishable key를 브라우저에서 사용해 TOP 5를 읽고 점수를 기록한다. publishable key는 클라이언트 공개용 키이므로 그 자체를 비밀키로 취급하지 않는다. 다만 이 소스 감사만으로 booktop_scores 테이블의 RLS 정책, UPDATE/INSERT 권한, 서버 측 점수 검증 여부는 확인할 수 없다. 점수는 클라이언트 게임 로직에서 생성되므로 서버 검증이 없다면 기록 조작 가능성을 별도 보안 점검해야 한다.
+- 랭킹 등록용 이니셜 안내는 시작 화면에 있지만, 공통 인증 스크립트가 필드를 계정 이니셜로 자동 대체한다. 로그인한 계정 이니셜로 랭킹을 등록한다는 안내를 사용자에게 더 명확히 할 수 있다.
+- viewport user-scalable=no, body overflow:hidden/touch-action:none 구조는 게임 조작에는 쓰이지만 확대·스크롤 접근성을 제한할 수 있다. 실제 기기에서 조작 충돌이나 화면 잘림이 있는지는 미검증.
+- 외부 CDN(Matter.js, Tailwind), Google Fonts, YouTube API에 의존한다. 외부 리소스 차단 시 게임 렌더러/스타일/BGM에 영향이 있을 수 있으나 실제 실패 동작은 확인하지 않았다.
+- 최종 점수는 gameOver에서 score - 1로 계산한다. 낙하 직전 마지막 책을 점수에서 제외하려는 설계인지 소스만으로 확정할 수 없어, 실제 플레이 규칙과 대조할 후보로 기록한다.
+
+### 미검증 범위
+- 실제 로그인/로그아웃, 책 조준·낙하·충돌·카메라 이동·게임오버·재시작을 실행하지 않았다.
+- Supabase 실제 테이블/RLS 정책, 기록 등록 성공 여부, 동시 기록 경쟁, 점수 위변조 방어를 검사하지 않았다.
+- 모바일/PC 렌더링, 외부 CDN/API 차단 시 동작, YouTube BGM 재생, 브라우저 콘솔 및 광고 네트워크 요청은 미검증.
+- Search Console에서 noindex 재크롤링 완료 여부는 별도 확인 대상.
+
+이번 단계에서는 booktop.html/JS, Supabase 설정, vercel.json, sitemap 및 main을 수정하지 않았다. 감사 문서만 develop에 기록한다.
+
+### 다음 단일 작업
+**fiveinrow.html(오목) 정적 감사**: 게임 규칙/승리 판정, 난이도 또는 대전 방식, 기록/인증, 외부 라이브러리, 모바일 입력, 색인·광고 제외를 소스와 실제 HTTP 응답 기준으로 빠르게 확인한다. 실제 대국은 브라우저 검증 전까지 미검증으로 둔다.

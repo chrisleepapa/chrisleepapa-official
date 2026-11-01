@@ -1240,3 +1240,25 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 
 ### 다음 단일 작업
 **About 페이지의 콘텐츠 독립성, 사이트 내 창작자/운영 정보, canonical 및 구 Vercel 도메인 참조를 소스 기준으로 점검한다.** 과거 Search Console에서 구 Vercel 주소가 Google 선택 canonical로 잡힌 이력이 있으므로, 내부 링크·canonical·사이트맵 일치 여부를 특히 확인한다.
+
+
+## 2026-11-02 이어서 점검 — About 페이지 및 표준 URL
+
+**대상:** `about.html`, `index.html`, `js/main.js`, `sitemap.xml`
+
+- `about.html` canonical은 `https://chrisleepapa.com/about`, robots는 `index, follow`, H1 1개.
+- `about.html` AdSense 로더 1회, 수동 광고 단위 0개, `adsbygoogle.push` 0회. 자동 광고 실제 위치는 별도 브라우저 확인이 필요하다.
+- 본문에는 창작자 소개와 여정, Creative Philosophy, 아카이브에서 다루는 작품 분야, 제작 과정, 2025.07~2026.10 연혁, YouTube/Spotify/TikTok 공식 프로필 링크가 있다. 태그·스크립트 제거 기준 약 586단어이며, 외부 임베드만으로 구성된 페이지가 아니다.
+- About 페이지의 링크는 공식 SNS 3개이며, 작품 상세 페이지로 직접 연결하는 본문 링크는 확인되지 않았다. 다만 전역 메뉴를 통한 탐색이 가능하므로 이번에는 임의로 링크를 추가하지 않았다. 향후 사용자가 작품별 바로가기 영역을 원하면 별도 개선 대상으로 검토한다.
+- About 페이지 자체에서 구 Vercel `.vercel.app` 주소 참조는 발견되지 않았다.
+- `index.html` canonical은 루트 `https://chrisleepapa.com/`, robots는 `index, follow`이며 구 Vercel 주소 참조가 없다.
+- `js/main.js`에서도 구 Vercel 주소 참조가 발견되지 않았다.
+- `sitemap.xml`에는 `https://chrisleepapa.com/about`이 포함되어 있으며 구 Vercel 주소는 없다.
+- 위 네 파일의 정적 소스에서 표준 도메인과 구 Vercel 주소 참조는 일관된다. 다만 과거 Search Console의 Google 선택 canonical 이력은 실제 Google 색인 상태이므로, 이 소스 검사만으로 해결되었다고 판정하지 않는다.
+
+**판정:** About 페이지의 독립적인 창작자·사이트 설명은 확인되며, canonical/robots/sitemap 소스도 일치한다. 코드 수정은 하지 않았다.
+
+**미완료:** Search Console에서 `/about`의 Google 선택 canonical이 현재도 구 Vercel 도메인인지, 새 크롤링 후 갱신되었는지 확인해야 한다. 실제 브라우저의 모바일/PC 표시와 자동 광고 위치도 미검증이다.
+
+### 다음 단일 작업
+**Journal 1~6의 Article 구조화 데이터, 날짜·작성자·canonical·내부 링크를 한 번에 대조한다.** 이미 확인한 Journal 1의 Article JSON-LD 추가 이력을 포함해 6개 문서 사이의 메타데이터 일관성을 정적 소스로 확인한다.

@@ -486,3 +486,12 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 
 ### 새 대화 이어가기
 최신 감사 문서를 확인한 뒤 음악/워십과 Bible 자료 출처 및 개인정보처리방침의 실제 데이터 처리 범위를 정밀 점검해. switch/goal 게임 버그는 수정안 제시 후 승인받고, develop만 사용하며 main은 건드리지 마.
+
+## 2026-11-01 최신 정밀 점검
+
+- Music / Worship / English Worship은 앨범별 제작 이야기와 자체 가사 아카이브가 풍부해 독창적인 콘텐츠 가치가 높은 편. JS 렌더링/링크/언어 전환의 브라우저 확인은 남아 있음.
+- Bible 페이지 직접 AdSense loader 0 유지. 현재 hymnFiles 400개(001~400)이며 401~645는 placeholder. 개역개정 JSON의 상업적 웹 게시 허락 및 찬송가 PDF의 온라인 재게시 권한은 여전히 미확정.
+- 개인정보처리방침 갱신은 공통 계정 이니셜/PIN hash, Bible 기록, TODAY memo/prayer/todos, prayer notes, Supabase 처리/보관/삭제 범위를 실제 운영자에게 확인한 후 진행.
+- EEA/UK/Switzerland 방문자 대상 Google 인증 CMP가 AdSense 계정 Privacy & Messaging에서 활성화되어 있는지 확인. 사이트 소스에서 자체 CMP가 보이지 않고 과거 GTM export의 consent state는 NOT_SET이었으므로 우선 확인 항목.
+- 다음 단계: 확인된 privacy/CMP 이슈와 끊어진 `/book` 링크를 먼저 수정 승인받고, 이후 저널/작품 페이지의 브라우저 렌더링·언어 전환·외부 링크 검증.
+

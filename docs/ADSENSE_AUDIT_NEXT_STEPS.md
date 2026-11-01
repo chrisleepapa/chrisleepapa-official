@@ -882,3 +882,49 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 - 최신 소스 커밋을 대상으로 Preview 재배포를 요청했으나 Vercel API가 `api-deployments-free-per-day` 한도 초과(24시간 후 재시도 가능)로 거부했다. 재배포 성공으로 표시하지 않는다.
 - main은 변경하지 않았다. develop에는 기존 main에 없는 점검·수정 커밋이 누적되어 있다.
 - 다음 단계는 Vercel 배포 한도 초기화 후 현재 develop HEAD를 Preview로 빌드하고, `/contact`, `/privacy`, `/terms`의 HTTP 200, canonical, robots, 광고 로더, 수정일 및 변경 문구를 확인하는 것이다. 그 전까지 코드 수정은 develop 소스에만 보관하며 main에 반영하지 않는다.
+
+
+## 2026-11-02 Journal 1~6 및 Music / Movie / Wallpaper 콘텐츠 점검
+
+### Journal 1~6 정적 콘텐츠 확인
+- 6개 글 모두 고유한 제목·canonical·index/follow 메타를 갖고 있으며, 본문에 작성자의 실제 창작 경험과 제작 판단을 담고 있다.
+- 정적 HTML 본문 텍스트 기준 대략적인 단어 수: Journal 1 약 778, Journal 2 약 1,128, Journal 3 약 896, Journal 4 약 881, Journal 5 약 790, Journal 6 약 1,793.
+- 각 글은 한국어/영어 본문 또는 언어별 콘텐츠를 제공하며, 이전/다음 글 및 관련 프로젝트로 이어지는 내부 링크가 있다.
+- 6개 글 모두 AdSense loader가 1회이며, 수동 광고 단위와 직접 `adsbygoogle.push` 호출은 0개다. 광고 슬롯을 직접 삽입하지 않고 페이지 로더만 둔 상태다.
+- 모든 글에 H1은 1개다. 본문에는 글별 제작 과정, 시행착오, 선택 기준, 개인 경험이 포함되어 있어 단순 링크 모음이나 자동 생성된 짧은 페이지 형태는 아니다.
+- Journal 2는 Skywork 및 GPT/Gemini 요금제 표를 포함하지만, “글 작성 당시 비교 기록이며 현재 요금은 공식 가격 페이지에서 재확인”하라는 주의 문구가 있다. 요금·크레딧은 바뀔 수 있으므로 최신 정보로 오인되지 않도록 이 안내를 유지한다.
+- Journal 2~6에는 Article JSON-LD가 있으나 Journal 1에는 없었다. 게시일을 소스에서 확인할 수 없어 임의의 날짜를 넣지 않고, 날짜를 생략한 Article 구조화 데이터(제목, 설명, URL, 대표 이미지, 작성자, 섹션)를 추가했다.
+- Journal 1 Article JSON-LD 추가 커밋: `99f3a6de0afb55c4c28422ca94676d140679cce9`.
+- Journal 1~6은 본문 대표 이미지 파일을 직접 삽입하지 않고 영상 임베드/본문 중심으로 구성되어 있다. OG 공유 이미지는 메타 태그에서 별도로 지정한다. 이미지가 없다는 사실만으로 정책 위반은 아니지만, 실제 글의 시각적 보조 자료를 더하면 독자 경험이 개선될 여지는 있다.
+
+### Music Archive
+- canonical 및 index/follow, AdSense loader 1회 확인.
+- 정적 HTML에도 음악 창작 과정 설명이 있으며, 별도 JS가 앨범별 이야기와 제작 기록을 추가 렌더링한다.
+- JS 안의 `${a.title}`은 템플릿 문자열로서 실제 플레이리스트 제목을 출력하는 코드이며, HTML에 잘못 노출된 문구가 아니다. 정적 HTML의 별도 제작 기록 섹션은 실제 텍스트로 존재한다.
+- 동적 앨범 스토리/제작 기록은 브라우저에서 JavaScript 실행 후 표시되므로, Google 렌더링 및 실제 화면 검증은 별도 대상이다. 이번 단계에서는 기능 변경을 하지 않았다.
+
+### Movie Archive
+- canonical 및 index/follow 확인.
+- 직접 제작 영상 3편의 기획·제작 노트와 이미지/영상 자료가 포함된 콘텐츠 페이지다.
+- AdSense loader가 없는 것은 파일 내 주석에 “Movie page is excluded from page-level ad loading”이라고 명시된 의도적 설정이다. 이번 점검에서는 광고 코드를 임의로 추가하지 않았다.
+- 페이지의 실제 광고 제외 여부는 사이트 운영 의도와 AdSense 설정을 함께 고려해 유지한다.
+
+### Wallpaper Studio
+- canonical 및 index/follow, AdSense loader 1회 확인.
+- 모바일 무빙 월페이퍼와 PC 배경화면 설명, 이용 방법, 작품 소개 및 이미지 9개/영상 1개가 포함되어 있다.
+- 무료 개인용 배경화면 제공이라는 목적과 사용 안내가 확인되며, 이번 점검에서 코드 수정은 필요하지 않았다.
+
+### Preview 상태와 제한
+- Journal 1 Article JSON-LD 변경 및 Privacy/Terms 수정 이후 최신 develop 소스를 대상으로 한 새 Preview 배포는 아직 확인되지 않았다. 이전 READY 배포는 이전 소스를 서비스한다.
+- Vercel 공식 한도 문서상 Hobby 플랜은 하루 100 deployments(rolling 24-hour window)이며, 시간당 빌드 한도도 별도로 존재한다. 직전 API 호출은 `api-deployments-free-per-day` 오류를 반환했다. quota 초기화 시점은 단순히 시계 날짜가 바뀌는 시점으로 단정하지 않고, 다음 배포 요청 전 Vercel 상태를 확인한다.
+- 최신 코드가 Preview에서 서비스되는지 확인하기 전까지 Journal 1 구조화 데이터와 Privacy/Terms 변경은 소스 반영 완료·실서비스 미검증으로 분류한다.
+
+### 판정
+- Journal 1~6, Music, Wallpaper는 자체 경험/창작 과정 설명을 포함하고 있으며 현재 코드상 index/follow와 AdSense loader 설정이 확인됐다.
+- Movie는 의도적으로 AdSense loader를 제외한 상태로 유지한다.
+- Journal 1의 Article 구조화 데이터 누락은 수정했다.
+- 이번 단계에서는 AdSense 정책상 위험 페이지를 임의로 삭제하거나 광고 코드를 추가하지 않았다.
+- main은 변경하지 않았다.
+
+### 다음 점검
+**Sister Squad 허브 및 개별 페이지, Yul/Jung 캐릭터 소개, TuTuPuPuPiPi 페이지를 작품 설명·저작권/출처·내부 링크·이미지/영상·광고/색인 설정 기준으로 교차 점검한다.** 기존에 수정한 라이트 모드 대비도 함께 살펴보되, Preview 배포가 막힌 동안에는 소스 검사와 정적 검증까지만 수행한다.

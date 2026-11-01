@@ -3530,3 +3530,30 @@ switch.html (SWITCH) 정적 게임 감사. 이어서 goal.html (골이예요).
 - 정적 소스 감사 순서: game.html, booktop.html, fiveinrow.html, curling.html, tetris.html, switch.html, goal.html 완료.
 - Game Center 8개 경로 noindex/no-ads 정책은 이미 적용·검증된 범위로 반복 변경하지 않는다. 게임 관련 다음 단계는 확인된 gameplay 버그의 수정 승인 및 브라우저 실기 테스트.
 
+
+## 2026-11-01 Music / Worship / Bible 정밀 점검
+
+- music.html (SHA 669ec9e374733abbfa8aa907f998112f65a9bf15): 고유 title/description/canonical, index,follow, AdSense loader 1회. 본문 약 3.7k자. 앨범 소개 외에 8개 제작 원칙, 실제 가사·보컬·편곡·AI 초안 선별·발매 후 검토 등 창작자의 의사결정 기록이 있어 음악 플레이어/외부 링크만 모은 페이지가 아니다. 앨범 카드/세부 제작 노트 일부는 JS로 생성되므로 브라우저에서 렌더링/언어 전환/플레이어 링크 확인 필요.
+- worship.html (SHA 4eda662935e0145d9a8006e25344cac7474a3322): 고유 title/description/canonical, index,follow, loader 1회. 본문 약 20.2k자. Korean Worship 소개, Vol.1~3의 개별 앨범 설명, 제작 동기/신앙적 맥락, 가사집 및 공식 Spotify/YouTube 링크. 자체 제작 과정과 앨범별 차이가 구체적으로 있어 독립 콘텐츠 가치가 높은 편.
+- worship_eng.html (SHA 0eed89f3ba336040f6dfa018dfc4c4ce3921ced4): 고유 title/description/canonical, index,follow, loader 1회. 본문 약 18.4k자. SHOUT 영어 워십 앨범의 독립적인 스토리와 15곡 전체 가사, Spotify/YouTube 공식 링크. Korean Worship 페이지와 언어만 바꾼 중복이 아니라 별도 앨범/가사 아카이브로 설명되어 있다. 두 페이지 모두 각 곡의 작사·작곡·음원 권리 상태는 별도 권리 트랙으로 관리.
+- bible.html (SHA 8ebe20954d2fa1b89127179a9083765f601a41c0): 고유 title/description/canonical, index,follow, AdSense loader 0, adsbygoogle 0. 본문 설명 약 2.0k자 외에 성경 읽기/진도, 개인 기록, 형광펜/북마크/메모, 로그인, 찬송가 PDF 뷰어 기능을 제공. 사용자가 정한 광고 제외 정책을 유지한다. 기능 페이지이므로 직접 광고 코드를 다시 추가하지 않는다.
+- Bible 페이지의 외부 본문 데이터는 stranger828/bibleAPI의 `bible_structured.json`에서 불러온다. 현재 해당 README는 소스 코드의 자유 이용과 성경 데이터의 저작권을 분리하며, 개역개정 데이터는 대한성서공회 권리일 수 있으므로 상업적 이용 전에 확인하라고 명시한다: https://github.com/stranger828/bibleAPI. 사이트 내 제작 노트에도 이 사실을 공개한 점은 투명성 측면에서 좋으나, 출처 표시만으로 웹 재게시/상업적 이용 허락이 확보되는 것은 아니다.
+- Bible 페이지의 찬송가 뷰어는 1~645장을 표시하나, 현재 develop 소스의 hymnFiles 목록에는 400개 PDF(001~400)가 등록되어 있고 401~645는 미등록 placeholder다. 사용자가 최근 자료를 계속 추가한 상태가 반영된다. UI는 미등록 PDF를 'PDF 준비 중'으로 표시하고 400개 등록 사실을 안내한다.
+- 찬송가 PDF 출처 표시는 사용자가 요청한 데크레센도 블로그 `https://w-decrecendo.tistory.com/`로 변경된 상태. 다만 기존 PDF가 이 블로그의 어떤 원본 게시물/파일에서 왔는지, 해당 파일의 복제·변환·온라인 재게시 허락이 있는지는 별도 미확인. 한국찬송가공회 및 원 게시물의 권리 범위 확인은 AdSense 콘텐츠 가치 심사와 별도 권리 트랙.
+- Bible/찬송가 페이지의 AdSense 제외는 사용자가 확정한 운영 정책이며 현재 코드에서도 직접 AdSense loader 0. 광고 제외는 외부 성경 본문/찬송가 파일의 저작권 허락을 대신하지 않는다.
+- 현재 sitemap.xml에는 24개 공개 경로가 포함되고 `/gameinfo`, 7개 게임, `/today`, `/shop`은 포함되지 않는다. robots.txt는 전체 허용 및 sitemap 안내. Game Center 제외는 개별 noindex/header 및 sitemap omission으로 유지하며 robots.txt에서 막지 않는다.
+- `/music`, `/worship`, `/worship_eng`, `/bible`의 develop HTTP 200/운영 canonical/index meta 확인. develop 도메인 전역 X-Robots-Tag noindex,nofollow는 운영 도메인 정책과 구분.
+
+### AdSense 콘텐츠 가치 1차 종합 판단
+
+- 강점: Journal 1~6의 실제 경험·제작 과정, Miracle Shot과 Sister Squad의 자체 IP/세계관/캐릭터 설명, 음악·워십의 앨범별 이야기와 제작 판단, Movie의 제작 노트, Wallpaper의 이용 안내 등은 외부 미디어만 모은 페이지와 구분되는 게시자 고유 콘텐츠다.
+- 가장 우선적인 승인 리스크: privacy.html이 실제 계정/개인 기록의 Supabase 저장을 충분히 설명하지 않는 점, Journal 2/3/4의 끊어진 `/book` 링크, `tutupupupipi`의 외부 영상 대비 짧은 세계관/에피소드 설명, journal-5 영어 본문 부재 가능성, Bible/찬송가 자료의 별도 권리 미확정.
+- EEA/UK/Switzerland 동의: Google의 EU User Consent Policy는 이 지역 방문자에 대해 필요한 고지/동의와 Google 인증 CMP 사용을 요구한다. 소스상 자체 CMP/consent banner가 보이지 않고, 이전 GTM export snapshot에서는 consent state가 NOT_SET이었다. 실제 AdSense 계정 Privacy & Messaging에서 Google 인증 CMP가 활성화되어 있는지 반드시 별도 확인한다. 계정 설정은 코드 소스만으로 판정하지 않는다.
+- 광고를 제외한 기능/법률 페이지는 직접 광고 코드를 추가하지 않는다. 전체 사이트 검토 가능성 때문에 광고 제외 페이지라도 탐색·저작권·정책 문서의 정확성은 유지한다.
+
+
+## 2026-11-01 정정: SWITCH 공통 인증 및 찬송가 목록
+
+- js/game-auth.js의 GAME_PAGES에 switch가 포함되어 있고, 공통 로그인 후 initials-input을 계정 이니셜로 채우고 숨기며 계정 표시줄/로그아웃을 추가한다. 앞서 SWITCH의 공통 인증 적용 여부를 미확인으로 기록한 항목을 정정한다.
+- bible.html 현재 hymnFiles는 400개(001~400)다. 기존 2026-10-30 기록의 100개는 당시 확인 시점의 값이며, 2026-11-01 현재 소스는 400개다. 401~645는 미등록 상태.
+

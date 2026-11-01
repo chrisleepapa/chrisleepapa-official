@@ -1133,3 +1133,13 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 - 현재 Supabase 프로젝트에는 테스트용 branch가 없으며, 실제 계정이 사용하는 DB다. 브라우저 코드만 먼저 바꾸거나 DB 권한을 먼저 잠그면 기존 개인 기록 기능이 끊길 수 있다.
 - 따라서 이번 단계에서는 운영 DB 함수, 권한, 테이블, Edge Function을 변경하지 않았다. 계정 데이터도 읽지 않았다.
 - 이 작업은 AdSense 콘텐츠 점검과 별개의 보안 개선 작업이며, 테스트 환경을 마련하고 모든 클라이언트 호출을 한 번에 전환할 수 있을 때 진행한다.
+
+
+## 2026-11-02 Home 페이지 heading 정리
+
+- `index.html`은 canonical `/`, robots `index, follow`, AdSense loader 1회, 직접 `adsbygoogle.push` 0회로 설정되어 있다.
+- 정적 소스에서 H1이 2개였던 원인은 실제 페이지 제목과 `noscript` 대체 안내가 각각 H1을 사용했기 때문이다.
+- 실제 표시 콘텐츠의 H1인 `창작 기록과 제작 과정`은 유지하고, `noscript` 대체 제목은 굵은 문단으로 변경해 H1을 1개로 정리했다.
+- 변경 커밋: `fbe40fa56d0e334b2bf335ecf8e0b2156d53deee`.
+- 정적 재검증: H1 1개, canonical 정상, index/follow, AdSense loader 1회, 직접 push 0회.
+- Preview 배포는 코드 변경 후 자동 빌드 상태를 확인하고 별도로 검증한다. main은 변경하지 않았다.

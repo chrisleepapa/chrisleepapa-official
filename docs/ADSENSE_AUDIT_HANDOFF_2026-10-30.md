@@ -3574,3 +3574,12 @@ switch.html (SWITCH) 정적 게임 감사. 이어서 goal.html (골이예요).
 - The custom 4-digit PIN/SHA-256 model is weak even for new clp_accounts: hash is sent/stored in browser localStorage as a bearer credential and RPC login has no visible attempt throttling. Consider a stronger authentication model or longer secret with server-side slow salted password hashing and rate limiting. Do not change auth or DB without user approval because this could affect all personal records.
 - Privacy policy update is now blocked on a security-first data flow decision. Supabase region Tokyo and data categories can be disclosed, but avoid claiming current storage is private until the public.bible access path is secured.
 
+
+## 2026-11-01 production confirmation for P0 findings
+
+- Production `https://chrisleepapa.com/book` also returns HTTP 404, confirming the Journal 2/3/4 `/book` CTA issue is not limited to the develop preview.
+- main branch source SHAs for privacy.html, journal-2.html, journal-3.html, journal-4.html, and bible.html match the develop files checked for this review. In particular, privacy.html SHA `e7f01d335f5e4c44865738513f92a732b3b0b42e` is identical in main and develop and contains no Supabase disclosure; the three journal files in main still each contain one `/book` link.
+- Production `/privacy` and `/bible` return HTTP 200, canonical to chrisleepapa.com, robots index,follow, and AdSense loader 0. Production `/bible` source is the same as develop, including direct REST calls to public.bible and PROFILE hash storage.
+- Supabase direct grants were confirmed independently: anon has SELECT/INSERT/UPDATE/DELETE on public.bible. Combined with four permissive public policies and the PROFILE hash storage, the exposure finding applies to the production Supabase project used by the live site.
+- The critical database issue is live, not a preview-only risk. No data was read or altered; only schema, grants, policies, function definitions and aggregate row counts were inspected.
+

@@ -645,3 +645,55 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 
 ### 다음 점검
 실제 브라우저에서 라이트/다크 모드 및 모바일/PC 레이아웃을 확인하고, AdSense Auto ads 위치가 재생·탐색 UI와 혼동되거나 과도하게 가까운지 점검한다. 실제 영상 장면과 설명을 대조하지 못한 항목은 미검증으로 유지한다.
+
+
+## 2026-11-01 MIRACLE SHOT 원작과 골이예요 게임 관계 점검
+
+**작품 관계를 바로잡아 점검했다. MIRACLE SHOT(기적을 차올리다)는 원작 이야기이며, 골이예요(GOAL)는 그 이야기의 네 주인공을 선택해 플레이하는 파생 게임이다. 두 콘텐츠는 연결하되 서로 다른 페이지·정책으로 관리한다.**
+
+### 확인한 develop 소스
+- `miracleshot.html`: 원작 스토리 페이지. 시놉시스, 세계관, 이 코치와 황·길·고·영 캐릭터, 성장 주제, 성경적 영감, 창작 의도, 하이라이트 이미지, OST가 포함된다.
+- `gameinfo.html`: Game Center의 일곱 번째 게임 카드와 게임 안내에 골이예요가 포함된다.
+- `goal.html`: 실제 게임 실행 화면. CPU 또는 2인 모드, 캐릭터 선택, 3라운드, 플레이어별 10회 슛, 점수벽과 결과 화면이 구현되어 있다.
+- `js/miracleshot/goal.js`: 게임 시작 시 계정 로그인을 요구하며, 로그인 성공 후 매치를 시작한다.
+- `vercel.json`: `/goal`, `/gameinfo` 응답에 X-Robots-Tag `noindex, nofollow` 설정.
+- `sitemap.xml`: 원작 `/miracleshot`만 포함. `/gameinfo` 및 `/goal`은 포함하지 않는다.
+
+### 광고·색인 정책 판정
+| 페이지 | AdSense 로더 | robots meta | canonical | sitemap | 판정 |
+|---|---:|---|---|---|---|
+| `/miracleshot` | 1 | index, follow | 있음 | 포함 | 원작 콘텐츠, 광고/색인 대상 |
+| `/gameinfo` | 0 | noindex, nofollow | 있음 | 제외 | 게임 허브, 광고/색인 제외 유지 |
+| `/goal` | 0 | noindex, nofollow | 없음 | 제외 | 게임 실행 화면, 광고/색인 제외 유지 |
+
+- 세 페이지 모두 정적 HTML에서 수동 광고 단위와 직접 adsbygoogle.push 호출은 0개.
+- 게임 허브와 게임 실행 화면은 기존의 광고/색인 제외 결정을 유지했다. `/goal`의 noindex는 HTML meta와 Vercel 응답 헤더 양쪽에 존재한다. `/gameinfo`도 HTML meta 및 응답 헤더가 noindex,nofollow로 일치한다.
+- 원작 `/miracleshot`은 독립적인 창작 설명과 캐릭터·세계관·주제 콘텐츠를 보유하고 index/follow 및 sitemap 대상임을 확인했다.
+
+### develop에서 실제 수정
+1. `miracleshot.html`
+   - 페이지 title에 사용자가 확정한 한국어 작품명 `기적을 차올리다`를 반영했다.
+   - 원작 이야기와 파생 게임의 관계를 분명히 하는 STORY → GAME 연결 영역을 추가하고 `/goal`로 연결했다.
+   - 한국어/영어 번역 문구를 함께 추가했다.
+   - 원작 페이지의 AdSense loader, canonical, index/follow 및 기존 스토리 콘텐츠는 유지했다.
+   - 커밋: `291fa6f825ff3149799f1d63da6eac9fe6c4a9d0`
+2. `gameinfo.html`
+   - 검색/공유용 설명의 중복된 `테트리스, 테트리스` 문구를 실제 게임명 `독수리의 테트리스`로 바로잡고 게임 목록을 정확히 표시했다.
+   - 골이예요 카드와 게임 안내의 한국어/영어 설명에 무료 계정 로그인 후 플레이 가능하다는 사실을 추가했다. 실제 게임 시작 로직의 로그인 요구와 일치한다.
+   - AdSense 로더 0, noindex,nofollow 및 기존 게임 링크는 유지했다.
+   - 커밋: `5d2507cfe45926ef1b0f5f43db06e5aaff794d0e`
+
+### 정적 재검증
+- 원작: title에 `기적을 차올리다`, canonical `/miracleshot`, index/follow, AdSense loader 1, /goal 연결 링크 1개 확인.
+- Game Center: 중복 테트리스 문구 없음, 한국어/영어 로그인 안내 존재, AdSense loader 0, noindex,nofollow 확인.
+- GOAL: AdSense loader 0, noindex,nofollow 확인.
+- `vercel.json`의 /goal 및 /gameinfo noindex 헤더와 sitemap 제외 상태는 변경하지 않았다.
+- main은 수정하지 않았다.
+
+### 미검증
+- 실제 브라우저에서 원작 CTA 클릭 후 게임 페이지 진입, 로그인 모달, 로그인 성공 후 게임 시작 및 CPU/2인 매치 진행은 아직 실제 조작 검증하지 않았다.
+- 모바일/PC 레이아웃과 한국어/영어 전환은 정적 소스 확인만 했으며 시각적 렌더링 검증은 아니다.
+- Auto ads의 실제 노출/배치는 계정과 브라우저 화면에서 별도 확인이 필요하다. 원작 페이지에는 로더가 있으나 게임 페이지에는 없다.
+
+### 다음 단일 작업
+**최신 develop Preview 배포가 READY인지 확인한 뒤 `/miracleshot`, `/gameinfo`, `/goal` HTTP 응답에서 최신 title/CTA/설명/robots 헤더를 재확인한다.** 이어서 실제 브라우저 조작이 가능한 환경이 확보되면 CTA → 로그인 → 게임 시작 흐름과 모바일 레이아웃을 검증한다. main은 계속 수정하지 않는다.

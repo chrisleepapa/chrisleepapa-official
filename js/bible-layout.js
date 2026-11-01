@@ -101,35 +101,43 @@
     const original = window.updateOverallProgress;
     const SUPA_URL = 'https://cvfmkcxmxkmemmshfttn.supabase.co';
     const SUPA_KEY = 'sb_publishable_Bb_GkRPWRFeAPvIduwPTJg_O1z_sStm';
-    const TOTAL_CHAPTERS = 1189;
 
     window.updateOverallProgress = async function () {
       try {
         const pending = window.__clpBibleChapterSavePending;
         if (pending) await pending;
-      } catch (_) {}
-
+      } catch (error) {
+        console.warn('[Bible] pending chapter save failed:', error);
+      }
       const session = window.CLPAuth?.getUser?.();
-      const userId = String(session?.initials || window.localUserId || localStorage.getItem('bible_user_id') || '').trim();
-      if (!userId) return original();
+      const initials = String(session?.initials || window.localUserId || localStorage.getItem('bible_user_id') || '').trim();
+      const pinHash = session?.pinHash || window.localUserPin || localStorage.getItem('bible_pin_hash') || '';
+      if (!initials || !pinHash) return original();
 
-      try {
-        const headers = { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` };
-        const chapterRes = await fetch(`${SUPA_URL}/rest/v1/bible?select=verse_key,is_read&user_id=eq.${encodeURIComponent(userId)}&verse_key=like.*-CH`, { cache: 'no-store', headers });
-        if (!chapterRes.ok) return original();
-        const rows = await chapterRes.json();
-        const totalRead = rows.filter(row => typeof row.verse_key === 'string' && row.verse_key.endsWith('-CH') && row.is_read === true).length;
-        const payload = { user_id: userId, verse_key: 'PROGRESS', is_read: true, memo_text: String(totalRead) };
-        const progressRes = await fetch(`${SUPA_URL}/rest/v1/bible?on_conflict=user_id,verse_key`, {
+      const rpc = async (name, body) => {
+        const response = await fetch(`${SUPA_URL}/rest/v1/rpc/${name}`, {
           method: 'POST',
-          headers: { ...headers, 'Content-Type': 'application/json', Prefer: 'resolution=merge-duplicates, return=minimal' },
-          body: JSON.stringify(payload)
+          headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(body)
         });
-        if (!progressRes.ok) return original();
+        if (!response.ok) throw new Error(`Bible RPC ${name} HTTP ${response.status}`);
+        const result = await response.json();
+        if (!result || result.ok !== true) throw new Error(result?.error || `Bible RPC ${name} failed`);
+        return result;
+      };
+      try {
+        const args = { p_initials: initials, p_pin_hash: pinHash };
+        const records = await rpc('clp_load_bible_records', args);
+        const totalRead = (records.records || []).filter(row => typeof row.verse_key === 'string' && row.verse_key.endsWith('-CH') && row.is_read === true).length;
+        await rpc('clp_save_bible_record', {
+          ...args, p_verse_key: 'PROGRESS', p_is_read: false,
+          p_is_highlighted: false, p_is_bookmarked: false, p_memo_text: String(totalRead)
+        });
         if (typeof window.loadLeaderboard === 'function') await window.loadLeaderboard();
         window.__clpBibleProgressUpdate = Promise.resolve();
-      } catch (_) {
-        return original();
+      } catch (error) {
+        console.error('[Bible] secure progress sync failed:', error);
+        throw error;
       }
     };
     window.__clpTop5ProgressSyncInstalled = true;

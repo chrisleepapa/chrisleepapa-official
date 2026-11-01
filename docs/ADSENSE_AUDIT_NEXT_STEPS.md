@@ -474,3 +474,15 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 
 ### 새 대화 이어가기
 최신 감사 문서 확인 후 switch.html 게임 감사를 빠르게 진행하고, 이어서 /movie와 /wallpaper 및 남은 정책·신뢰 페이지를 AdSense 공개 기준에 맞춰 정밀 점검해. develop만 사용하고 main은 건드리지 마.
+
+## 2026-11-01 점검 이어가기
+
+- 게임 정적 감사 7종 완료: game, booktop, fiveinrow, curling, tetris, switch, goal. switch는 탭 복귀 후 게임 멈춤 가능성, goal은 방향 드래그가 실제 조준에 반영되지 않는 문제/캐릭터 능력치 미사용/라운드 번호 오프바이원 후보.
+- AdSense 핵심 콘텐츠 점검: movie(제작 노트 강점, 일부 기존 IP 팬 영상 저작권 별도), wallpaper(설명/설정 가이드 강점), about(창작자 경험/사이트 정체성 강점).
+- Trust pages: contact는 실제 email/Instagram/Facebook 연결. Privacy/Terms는 한국어/영어 본문 존재하지만 개인정보처리방침이 Supabase 계정/개인 기록 저장을 충분히 설명하지 않는다. 저장 데이터 범위, 보관기간, Supabase 리전, 삭제 요청 절차 확인 후 갱신해야 한다.
+- EEA/영국/스위스 광고 방문자가 있을 경우 Google 인증 CMP/동의 요구사항이 적용되는지 AdSense 설정에서 확인 필요. 소스만으로 계정 CMP 설정을 확정하지 않는다.
+- 다음: 음악/워십 페이지 잔여 이슈 확인, Bible page 외부 성경 데이터 라이선스/출처 및 저장 데이터 설명 확인, privacy policy 문구를 운영자 확인 후 갱신.
+- 게임 소스 수정은 사용자 승인 전 보류. Privacy/Terms는 법적 문서이므로 운영자 확인 없이 보관기간/서버 리전/삭제 절차를 지어내지 않는다.
+
+### 새 대화 이어가기
+최신 감사 문서를 확인한 뒤 음악/워십과 Bible 자료 출처 및 개인정보처리방침의 실제 데이터 처리 범위를 정밀 점검해. switch/goal 게임 버그는 수정안 제시 후 승인받고, develop만 사용하며 main은 건드리지 마.

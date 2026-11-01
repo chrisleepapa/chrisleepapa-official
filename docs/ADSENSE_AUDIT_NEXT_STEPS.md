@@ -977,3 +977,53 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 
 ### 다음 점검
 **Music / Worship / Worship English / Movie 페이지의 음원·영상 출처, 원작·커버·AI 활용 고지, 내부 링크와 광고 대상 범위를 교차 점검한다.** 특히 커버곡·리믹스·연주곡·워십 음원의 권리/배포 플랫폼 정보를 구분해 사실과 일치하는지 확인한다. Preview 배포 한도 해소 전까지는 소스 검사와 정적 검증만 진행한다.
+
+
+## 2026-11-02 Music / Worship / Movie 권리·콘텐츠·광고 범위 점검
+
+### Music Archive
+- `music.html`은 14개 발매작을 Spotify/YouTube 링크와 함께 소개하고, AI 활용과 창작자의 선택·수정 과정을 설명한다. 정적 HTML 기준 약 746단어의 창작 설명이 있다.
+- 다만 앨범 `영역전개`는 주술회전의 캐릭터/기술에서 영감을 받았다고, `벽력일섬`은 귀멸의 칼날의 주(柱) 캐릭터에서 영감을 받았다고 페이지 설명이 명시한다. 이는 제3자 IP와 연관된 팬 창작물일 수 있으며, 단순히 “영감” 또는 출처를 표기한 것만으로 상업적 이용 권한이 확보되는 것은 아니다.
+- 두 앨범의 실제 음원·커버 이미지·배포 권한은 이 저장소만으로 확인할 수 없고, 권리자 허가나 이용 가능한 라이선스 문서도 저장소에서 확인하지 못했다.
+- **예방 조치:** 혼합형 Music Archive에는 위 두 IP 연관 작품이 함께 표시되므로, 권리 확인 전까지 `music.html`에서 AdSense loader를 임시 제외했다. 페이지는 index/follow와 canonical을 유지하고, 앨범·작품을 삭제하지 않았다. 직접 광고 push도 없다.
+- 변경 커밋: `004c7745bb4cf9f296add5148b6169423a8599f0`.
+- 권리 확인 후 두 작품의 원작 IP 사용 범위와 커버 아트/음원 권리를 확인하고, 필요하면 팬 창작물 전용 비광고 페이지로 분리한 뒤 Music Archive의 광고 여부를 다시 결정한다.
+
+### Korean Worship
+- `worship.html`에는 Vol.1~Vol.3 각 10곡의 가사(총 30곡), 앨범 이야기, Spotify/YouTube 공식 링크, Whispers Of Grace 앨범 소개가 있다.
+- 기존 meta description은 Vol.1~Vol.3만 언급하고 Whispers Of Grace를 누락해 실제 앨범 구성에 맞게 수정했다.
+- 가사·예배 방향은 창작자가 직접 구상·수정하고 Suno 등 AI 음악 도구는 보컬·연주·편곡 구현을 돕는 제작 도구로 사용했다는 설명을 추가했다. AI 생성 결과를 자동 게시하지 않고 선택·수정한다는 제작 과정도 설명한다.
+- AdSense loader 1회, 직접 push 0, canonical 및 index/follow 유지.
+- 변경 커밋: `aa1a7c9ff02c92aa406f9f7664674114be72d426`.
+
+### English Worship — SHOUT
+- `worship_eng.html`에는 SHOUT 앨범 소개, 앨범 스토리, 공식 Spotify/YouTube 링크, 15곡의 전체 가사가 있다.
+- 창작자가 가사·주제·예배 방향을 개발·수정하고 AI 음악 도구(Suno 포함)가 보컬·연주·편곡 제작을 보조한다는 설명을 추가했다. 생성 결과를 자동으로 발매하지 않고 사람이 검토·선택한다는 점을 명확히 했다.
+- AdSense loader 1회, 직접 push 0, canonical 및 index/follow 유지.
+- 변경 커밋: `5658a82176e62cc89b328314b388f00362de3f3d`.
+
+### Creator's stated music workflow — 권리 문서 대체 아님
+- 사용자는 이전 대화에서 본인의 곡을 기획·작사하고 AI 초안을 직접 수정·보완했으며, Suno에서 WAV로 출력해 DistroKid에 배포했다고 설명했다.
+- 또한 Suno의 Cover 기능은 타인의 곡을 무단으로 커버하기 위한 것이 아니라 본인이 만든 곡의 영어 버전 또는 연주곡 버전을 제작하는 데 사용했다고 설명했다.
+- 이 설명은 제작 과정의 맥락이며, 실제 배포 권리·Suno/DistroKid 라이선스·샘플/보컬 권리·제3자 IP 포함 여부를 증명하는 계약서나 권리 증빙을 대신하지 않는다. 관련 증빙은 별도로 보관해야 한다.
+
+### Movie Archive
+- `movie.html`에는 FURIOUS, 귀멸의 칼날 캐릭터를 실사 촬영 현장에 배치한 AI 영상 콘셉트, 사랑한다고 등 3개 제작 노트와 이미지/쇼츠 자료가 있다.
+- 귀멸의 칼날 캐릭터를 명시적으로 사용한 영상은 제3자 IP 기반 파생 콘텐츠로 취급해야 하며, 권리 허가 여부는 미확인이다.
+- 이 페이지는 기존 주석에 따라 AdSense loader가 0개이고, 이번 점검에서도 광고 코드를 추가하지 않았다. index/follow 및 canonical은 유지한다.
+- Google Publisher Policies는 타인의 저작권을 침해하는 콘텐츠를 허용하지 않으며, 다른 사람의 콘텐츠를 복제·임베드한 화면에는 추가 설명·큐레이션·가치가 필요하다고 안내한다. 단순 출처 표기나 비공식 고지만으로 저작권 허가가 생기는 것은 아니다.
+
+### 최종 확인 및 미해결
+- Music: canonical 정상, index/follow, AdSense loader 0(예방 조치), 직접 push 0.
+- Korean Worship: canonical 정상, index/follow, AdSense loader 1, 직접 push 0, 30곡 가사 및 4개 앨범 설명.
+- English Worship: canonical 정상, index/follow, AdSense loader 1, 직접 push 0, 15곡 가사 및 SHOUT 설명.
+- Movie: canonical 정상, index/follow, AdSense loader 0, 직접 push 0.
+- 이 단계의 점검은 소스 기준이다. 최신 변경 소스의 Preview 배포가 아직 완료되지 않아 브라우저 렌더링과 실제 광고 요청 여부는 미검증이다.
+- 제3자 IP 연관 음원·영상의 권리 허가 여부는 미해결 상태로 유지한다. 페이지의 광고 제외는 위험을 줄이는 조치이지 권리 허가나 법률 판단이 아니다.
+
+### 참고 정책
+- Google Publisher Policies — Intellectual property abuse 및 replicated content: https://support.google.com/adsense/answer/10502938
+- AdSense Program Policies: https://support.google.com/adsense/answer/48182
+
+### 다음 점검
+**Shop / Contact / Privacy / Terms 및 나머지 sitemap 대상 페이지의 광고 로더·색인·canonical·내부 링크를 최종 대조한다.** 특히 Shop은 구매 링크 중심 페이지이므로 자체 설명과 상품 소개의 독창적 가치가 충분한지 확인하고, 광고 로더가 없는 현재 상태를 유지한다.

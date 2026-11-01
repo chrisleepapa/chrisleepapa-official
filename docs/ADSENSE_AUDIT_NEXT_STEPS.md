@@ -1143,3 +1143,11 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 - 변경 커밋: `fbe40fa56d0e334b2bf335ecf8e0b2156d53deee`.
 - 정적 재검증: H1 1개, canonical 정상, index/follow, AdSense loader 1회, 직접 push 0회.
 - Preview 배포는 코드 변경 후 자동 빌드 상태를 확인하고 별도로 검증한다. main은 변경하지 않았다.
+
+
+### Home H1 수정 Preview 확인 — 2026-11-02
+- Home H1 수정 `fbe40fa56d0e334b2bf335ecf8e0b2156d53deee`를 포함한 최신 READY Preview 배포는 `dpl_JAQPbN17kL4m6yx33QiCxxNQbtDQ` (최종 audit doc commit `e722f150bff92c468bc1961b0964fb3e34781472))다.
+- `develop.chrisleepapa.com/` HTTP 200, canonical `/`, meta robots index/follow, H1 1개, AdSense loader 1개를 확인했다.
+- 같은 최신 Preview에서 `/music` loader 0, `/worship` 및 `/worship_eng` 제작 안내 반영/loader 1, `/privacy` 및 `/terms` 최신 문구 반영/loader 0을 재확인했다.
+- Production 비교: `chrisleepapa.com/`은 기존 H1 2개, `/music` loader 1개, Worship 페이지는 신규 AI 제작 안내가 아직 없고, Privacy/Terms는 11월 2일 수정 전 문구를 제공한다. 이는 main을 변경하지 않고 develop에서만 검증 중인 현재 배포 절차와 일치한다.
+- 최신 main 대비 develop: ahead 39 / behind 0. main은 수정하지 않았다.

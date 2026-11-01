@@ -3180,3 +3180,59 @@ Movie 페이지의 실제 Preview 배포 여부와 브라우저 렌더링 확인
 
 ### 다음 단일 작업
 **게임 안내 페이지(`gameinfo.html`)에서 '골이예요' 게임의 실제 진입 경로와 독립 콘텐츠/광고 구조를 점검한다.** Miracle Shot 스토리 소개 페이지(`miracleshot.html`)와 게임 실행 화면을 혼동하지 말고, 안내 페이지가 연결하는 실제 게임 파일/경로를 소스에서 추적한다. 먼저 정적 소스만 확인하고, 실제 플레이 동작은 브라우저 검증 전까지 미검증으로 둔다.
+
+
+## 2026-11-01 추가 점검 — Game Center 및 '골이예요' 실제 게임 경로
+
+**판정: Game Center에는 제작자가 직접 기획·구현한 7개 게임 소개와 별도의 창작 과정 설명이 있다. '골이예요' 링크는 실제 게임 실행 페이지로 연결된다. 다만 검색 색인 지시가 HTML과 Vercel 응답 헤더에서 서로 충돌하며, 게임 실행에는 사이트 계정 로그인이 필요하다.**
+
+확인한 develop 파일:
+- `gameinfo.html` (blob SHA: `ab1fb9dc80512a951dfad1ce58d0b44795758687`)
+- `js/gameinfo-creator-note.js` (blob SHA: `be62ffc46d7a6f0347305d97047cf7855fd0e29b`)
+- `goal.html` (blob SHA: `d8db0b109d00d9cf4451d5d4168bef1dd5893358`)
+- `js/miracleshot/goal.js` (blob SHA: `5903f15a132e6980a28b28638e4b45eceb37bc8c`)
+- `js/miracleshot/goal-result.js` (blob SHA: `5349bafd8b0a195a938eb5ef03d761ede3d17a01`)
+- `js/game-auth.js` (develop 최신 파일 확인)
+- `js/auth.js` (develop 최신 파일 확인)
+- `vercel.json` (blob SHA: `6f032a42e0e07d58e066dccca64c7285c3228f7e`)
+- `sitemap.xml` (blob SHA: `9526d1ee1d3457540a3aa08dca33f654cedf4c9b`)
+
+### 실제 게임 진입 경로 확인
+1. Game Center 일곱 번째 카드의 href는 `/goal`.
+2. 저장소에 실제 게임 실행 페이지 `goal.html`이 존재한다. Vercel 설정은 `cleanUrls: true`이며, `/goal`을 `goal.html`로 제공하는 구조다. 별도 `/goal` rewrite나 redirect는 없다.
+3. `goal.html`은 `/js/miracleshot/goal.js`와 `/js/miracleshot/goal-result.js`를 로드한다.
+4. `miracleshot.html`은 별도의 작품 소개 페이지다. Game Center의 '/goal' 링크가 실행하는 게임과는 구분한다.
+5. 게임 페이지의 제목은 `MIRACLE SHOT — GOAL`. 화면 텍스트에는 캐릭터 선택, CPU/2인 모드, 3라운드, 플레이어별 10회 슛, 점수벽, 파워 게이지, 결과 및 다시하기 UI가 포함된다.
+6. `goal.js`에는 캐릭터별 능력치, 무작위 점수 타깃, 파워 충전, 포인터 드래그 입력, 효과음/진동, CPU 턴 및 매치 종료 처리 함수가 확인된다. 실제 플레이 가능 여부와 조작감은 브라우저 실행 전까지 확인된 것으로 보지 않는다.
+
+### Game Center의 콘텐츠 가치
+1. 페이지 정적 본문에는 7개 게임 카드와 각 게임 설명, 별도 GAME GUIDE 7개 항목이 있다. 각 카드 링크는 `game.html`, `booktop.html`, `fiveinrow.html`, `curling.html`, `tetris.html`, `switch.html`, `/goal`로 연결된다. 대응하는 HTML 파일이 저장소에 존재함을 확인했다.
+2. 게임 소개 외에 창작 과정 섹션이 있다. `js/gameinfo-creator-note.js`가 아이디어를 플레이 규칙으로 전환한 과정, 캐릭터와 UI/인터랙션 설계, 직접 플레이를 통한 조작감·난이도·피드백 개선이라는 세 주제를 동적으로 삽입한다.
+3. 제작자 노트는 ko/en 양쪽 문구와 언어 변경 감지 로직을 포함한다. Game Center HTML에도 43개의 `data-i18n` 키와 `window.PAGE_I18N` 한국어/영어 사전이 있다.
+4. 본문 텍스트는 태그/스크립트/스타일을 제외하고 약 2,421자이며, 동적 제작자 노트는 별도다. 이는 정적 텍스트량 참고치일 뿐 AdSense 공식 기준이 아니다.
+5. 페이지 설명 meta에는 '테트리스, 테트리스'가 중복 기재되어 있다. 실제 카드 목록은 7개로, 서로 다른 게임 7종을 제공한다. 메타 설명의 단순 중복 문구는 정리 후보로 기록한다.
+6. 본문은 모든 게임을 무료·브라우저 플레이 가능하다고 안내한다. 다만 게임 공통 인증 스크립트 `js/game-auth.js`가 로그아웃 사용자를 로그인 모달로 보내며, `goal.js`도 시작 시 로그인 여부를 확인한다. 따라서 '무료'는 결제 없이 이용 가능하다는 의미로 이해해야 하며, 무로그인 즉시 플레이는 아니다. 안내 문구에 로그인/계정 필요 여부를 더 명확히 알릴지 검토할 수 있다.
+
+### 광고/색인/기술 구조
+1. `gameinfo.html`: AdSense loader 1회, 수동 광고 단위 0개, 직접 `adsbygoogle.push` 0개. GTM ID 2회는 head loader와 body noscript iframe 구성.
+2. `goal.html`: AdSense loader 0회, 수동 광고 단위 0개. GTM head loader + noscript iframe 구성. 실제 게임 플레이 화면에 AdSense 코드를 직접 삽입하지 않은 구조다.
+3. `gameinfo.html`의 HTML robots meta는 `index, follow`이나, `vercel.json`은 `/gameinfo` 응답에 `X-Robots-Tag: noindex, follow`를 설정한다. HTTP 응답 헤더의 noindex가 있으므로 현재 설정은 검색 색인 관점에서 서로 충돌한다. 게임센터를 검색에 노출하려는지, 의도적으로 제외하려는지 정책을 확인해야 한다.
+4. `sitemap.xml`에는 `/gameinfo`와 `/goal` 모두 포함되어 있지 않다. `/gameinfo`가 noindex로 설정된 현재 헤더와 sitemap 제외는 서로 일관되지만, HTML meta와는 충돌한다. `/goal`은 canonical, meta description, robots meta가 모두 없고 sitemap에도 없다. 게임 실행 화면을 검색에 노출할 의도가 없다면 noindex 정책을 명시적으로 적용할지 검토할 수 있다.
+5. `goal.html`은 `/js/auth.js` 및 `/js/game-auth.js`를 로드한다. `game-auth.js`의 게임 페이지 집합에 `goal`이 포함되어 있고, 로그아웃이면 로그인 모달을 표시한다. `goal.js`의 매치 시작 버튼도 로그인 상태를 재확인한다.
+
+### 개선 후보 및 판단
+- **색인 정책 충돌(우선 확인):** Game Center를 검색 노출하려면 /gameinfo의 Vercel noindex 헤더 제거 및 sitemap 포함 여부를 함께 검토해야 한다. 의도적으로 숨기는 페이지라면 HTML robots meta도 noindex로 맞춰 설정을 일치시킬 수 있다. 승인 전에는 변경하지 않는다.
+- **Goal 실행 페이지 검색 정책:** 게임 실행 화면은 인터랙티브 앱이며 설명 텍스트가 매우 적고 sitemap에도 없다. 검색 노출을 원하지 않는다면 명시적 noindex 정책이 더 명확할 수 있다. 이 역시 정책 확인 전에는 변경하지 않는다.
+- **메타 설명의 '테트리스' 중복은 단순 문구 오류 후보.**
+- **로그인 안내:** '무료 플레이' 문구만으로는 계정 로그인이 필요한 점을 알기 어렵다. 무료 이용과 계정 필요를 구분해 안내하는 방안을 검토한다.
+- 위 사항은 즉시 AdSense 거절 사유라고 단정할 수 없다. 색인 설정, 검색 노출 의도, UX 안내를 구분해 검토한다.
+
+### 미검증 범위
+- 실제 브라우저에서 /gameinfo 카드 클릭 후 /goal 이동, 로그인/로그아웃 모달, 계정 로그인 성공, CPU/2인 게임, 터치·마우스 조작, 결과/재시작, 모바일/PC 레이아웃, 콘솔 오류를 실행 검증하지 않았다.
+- 실제 AdSense Auto ads 삽입 위치와 /gameinfo에서의 광고 표시 여부는 확인하지 않았다.
+- 게임 내부 물리/점수 계산이 실제 플레이에서 의도대로 동작하는지 정적 소스만으로 확정하지 않는다.
+
+이번 단계에서는 사이트 HTML/JS/Vercel 설정/sitemap/main을 수정하지 않았다. 점검 결과만 이 문서에 기록한다.
+
+### 다음 단일 작업
+**다음 게임 페이지 `game.html`(부르마블 보드게임)의 독립 콘텐츠, 실행 로직, 계정 인증, 광고 로더, 색인/메타 설정을 develop 소스만으로 점검한다.** 실제 플레이는 브라우저 검증 전까지 미검증으로 둔다.

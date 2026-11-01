@@ -450,3 +450,15 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 
 ### 새 대화에서 이어갈 때
 최신 감사 문서 확인 후 curling.html 게임 정적 감사를 진행하고, 이어서 홈페이지와 journal-1~6 등 AdSense 핵심 콘텐츠 페이지를 차례로 정밀 점검해. 게임은 빠르게 진행하고, 광고 대상 콘텐츠는 본문 가치와 독창성까지 꼼꼼히 봐. develop만 사용하고 main은 건드리지 마.
+
+## 2026-11-01 점검 결과 추가 및 다음 순서
+
+- 게임 감사 완료: game.html, booktop.html, fiveinrow.html, curling.html. 다음 게임은 tetris.html.
+- 홈페이지 1차 정밀 점검: 원본 창작 소개, SISTER SQUAD 2 본편, Chris's Pick, Chris's Note, Faith Journey 등 독립 콘텐츠 확인. h1 복수, JS 주입 콘텐츠/외부 YouTube 데이터의 런타임 검증이 남음.
+- Journal 1~6 본문 소스 감사 완료. 개인 경험/제작 과정이 중심이며 글별 주제 차별성은 존재. Skywork 가격·기능의 최신성, POD 실제 단계 구체화, Journal 5 메시지 중복 완화, Journal 6 성경 인용 출처 확인이 개선 후보.
+- Journal 2·3·4의 CTA `/book`은 develop HTTP 404로 확인. 목적지 확인 후 수정할 것. 아직 소스 수정 전.
+- Journal 3·5는 영어 UI/메타가 있더라도 본문이 한국어로 남을 수 있어 언어 전환 검증 필요.
+- 다음 AdSense 정밀 대상: /miracleshot, /tutupupupipi, /sistersquad, /sistersquad2, /sistersquad-hub, /yul, /jung, /movie, /wallpaper, /music, /worship, /worship_eng, /about, /contact, /privacy, /terms, /bible. 이미 점검한 페이지는 새로운 잔여 이슈 중심으로 확인.
+
+### 새 대화 이어가기
+최신 감사 문서를 확인한 뒤 tetris.html 게임 정적 감사를 진행하고, 이어서 /miracleshot 및 /tutupupupipi 등 AdSense 핵심 콘텐츠 페이지를 정밀 점검해. Game Center 광고/색인 제외는 반복하지 말고, develop만 사용하며 main은 수정하지 마.

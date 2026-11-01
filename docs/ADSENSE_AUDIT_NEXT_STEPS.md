@@ -1063,3 +1063,41 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 - Bible은 검색 대상이지만 광고 로더는 제외되어 있다. 개역개정 본문과 찬송가 자료 권리 확인은 계속 미해결로 남는다.
 - 이번 단계에서 Shop/Contact/Privacy/Terms/Guestbook의 코드는 추가 수정하지 않았다. main은 변경하지 않았다.
 - 새 Preview가 준비되기 전까지 11월 2일 변경분은 develop 소스 반영 완료, 실제 Preview/Production 미검증으로 유지한다.
+
+
+## 2026-11-02 최신 develop Preview 검증 — 코드 변경분 반영 확인
+
+### 확인한 배포
+- Vercel deployment: `dpl_5Qd49Cw7YGJXSi9NNJP3cKcySbd8`
+- 배포 상태: READY
+- 배포 커밋: `1f1499d28d53a4558abbd206b4f405361bc8a379`
+- Alias: `develop.chrisleepapa.com`
+- 이 배포는 Journal 1 구조화 데이터, Privacy/Terms 수정, Music 광고 로더 제외, Korean/English Worship 제작 설명 변경을 모두 포함한 코드 커밋이다.
+- 이 배포 이후 추가된 최신 커밋 `f943adf`, `c2c5be6`는 감사 문서만 수정한 커밋이며, 마지막 조회 시 관련 후속 배포는 BUILDING/QUEUED 상태였다. 따라서 코드 Preview 검증은 READY 배포 `1f1499d` 기준으로 완료하고, 문서 전용 최신 배포는 상태를 계속 확인한다.
+
+### HTTP 200 및 HTML 원문 확인
+| 경로 | HTTP | Meta robots | AdSense loader | 핵심 확인 |
+|---|---:|---|---:|---|
+| `/music` | 200 | index, follow | 0 | 권리 확인 전 광고 로더 제외 문구 반영 |
+| `/worship` | 200 | index, follow | 1 | AI 제작 과정 설명 및 앨범 설명 수정 반영 |
+| `/worship_eng` | 200 | index, follow | 1 | SHOUT AI 보조 제작 설명 반영 |
+| `/journal-1` | 200 | index, follow | 1 | Article JSON-LD 반영 |
+| `/privacy` | 200 | index, follow | 0 | 2026-11-02 수정일·방명록·게임 순위·삭제 안내 반영 |
+| `/terms` | 200 | index, follow | 0 | 제3자 콘텐츠 권리 구분 반영 |
+| `/shop` | 200 | index, follow | 0 | 구매 링크 페이지, 광고 없음 |
+| `/contact` | 200 | index, follow | 0 | 연락처 페이지, 광고 없음 |
+| `/bible` | 200 | index, follow | 0 | canonical 정상, sitemap 포함 |
+| `/today` | 200 | noindex, follow | 0 | sitemap 제외 |
+| `/guestbook` | 200 | noindex, follow | 0 | 광고 없음 |
+| `/goal` | 200 | noindex, nofollow | 0 | 광고 없음 |
+| `/gameinfo` | 200 | noindex, nofollow | 0 | 광고 없음 |
+
+### Preview 헤더 주의
+- 위 경로들은 모두 Preview에서 응답 헤더 `X-Robots-Tag: noindex, nofollow`를 받는다. 이는 develop 호스트 전체의 보호 설정이며, 각 페이지의 Production meta robots와 별개다.
+- 따라서 위 표는 HTML 원문 meta robots와 페이지별 광고 코드 유무를 검증한 것이다. Production 색인 상태를 직접 확인한 결과로 오해하지 않는다.
+
+### 판정
+- 코드 변경이 포함된 READY Preview에서 Music 광고 제외, Worship 제작 설명, Journal 1 Article JSON-LD, Privacy/Terms 수정이 모두 응답 HTML에 반영된 것을 확인했다.
+- 광고 로더는 Music 0, Korean Worship 1, English Worship 1, Journal 1 1, Privacy/Terms/Shop/Contact/Bible/Today/Guestbook/Goal/Gameinfo 0으로 확인했다.
+- main은 변경하지 않았다. 최신 main 대비 develop은 ahead이며 behind 0 상태를 유지한다.
+- 실제 브라우저 화면/모바일 상호작용과 Google Search Console 색인 상태는 별도 검증 대상이다.

@@ -507,3 +507,10 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 
 ### 새 대화 이어가기
 우선 Supabase public.bible 테이블의 공개 접근 취약점을 안전하게 해결하는 단계별 설계를 제시하고, 사용자 승인 후 develop의 Bible 인증/기록 코드를 새 RPC 방식으로 전환해. 기존 기록을 보존하고 실제 계정 분리 테스트 후에만 anon 권한을 닫아. 개인정보처리방침은 Tokyo 리전과 실제 저장 데이터/삭제 절차를 반영해 함께 정리하되, main은 건드리지 마.
+
+## 2026-11-01 production status
+
+- `/book` 404 is confirmed on both develop and production. The three Journal CTA links are present in main and develop.
+- `/privacy` and `/bible` production HTML both 200 and have no direct AdSense loader. Production Bible source is identical to develop and uses the public `bible` REST table.
+- Supabase `public.bible` anon full CRUD grants and permissive policies are live on the project used by production. This is the first item to secure before continuing lower-priority page polishing.
+

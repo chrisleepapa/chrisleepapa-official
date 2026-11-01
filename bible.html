@@ -934,77 +934,73 @@ html[data-theme="light"] body:has(.bible-container) .hymn-empty strong{color:#85
         async function handleLogin() {
             const ini = document.getElementById('authInitials').value.toUpperCase();
             const pin = document.getElementById('authPin').value;
-            if(!/^[A-Z]{3}$/.test(ini)) return showToast("영문 대/소문자 3자리를 입력하세요.");
-            if(!/^\d{4}$/.test(pin)) return showToast("숫자 4자리를 정확히 입력하세요.");
+            if (!/^[A-Z]{3}$/.test(ini)) return showToast("영문 대/소문자 3자리를 입력하세요.");
+            if (!/^\\d{4}$/.test(pin)) return showToast("숫자 4자리를 정확히 입력하세요.");
 
             const btn = document.querySelector('#authModal .btn-copy');
             btn.textContent = "확인 중...";
             btn.disabled = true;
-
-            const hashedPin = await hashPIN(pin);
-            
             try {
-                const res = await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?user_id=eq.${ini}&verse_key=eq.PROFILE`, {
-                    headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}` }
-                });
-                const data = await res.json();
-                
-                if (data.length > 0) {
-                    if (data[0].memo_text !== hashedPin) {
-                        btn.textContent = "접속하기";
-                        btn.disabled = false;
-                        return showToast("비밀번호가 일치하지 않습니다.");
-                    }
-                } else {
-                    await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}`, {
-                        method: 'POST',
-                        headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ user_id: ini, verse_key: 'PROFILE', memo_text: hashedPin })
-                    });
-                }
-                
-                localStorage.setItem('bible_user_id', ini);
-                localStorage.setItem('bible_pin_hash', hashedPin);
-                localUserId = ini;
-                
+                if (!window.CLPAuth?.login) throw new Error("공통 로그인 기능을 불러오지 못했습니다.");
+                const result = await window.CLPAuth.login(ini, pin, true);
+                if (!result?.ok) throw new Error(result?.error || "로그인 정보를 확인해주세요.");
+                const session = result.user || window.CLPAuth.getUser();
+                localStorage.setItem('bible_user_id', session.initials);
+                localStorage.setItem('bible_pin_hash', session.pinHash);
+                localUserId = session.initials;
+                localUserPin = session.pinHash;
                 document.getElementById('authModal').classList.remove('active');
                 setTimeout(() => document.getElementById('authModal').style.display = 'none', 300);
-                
-                initAppAfterAuth();
-            } catch (e) {
+                await initAppAfterAuth();
+            } catch (error) {
                 btn.textContent = "접속하기";
                 btn.disabled = false;
-                showToast("네트워크 오류가 발생했습니다.");
+                showToast(error.message || "로그인에 실패했습니다.");
             }
         }
 
         // --- Supabase 연동 ---
+        async function bibleRPC(name, body) {
+            const response = await fetch(`${SUPA_URL}/rest/v1/rpc/${name}`, {
+                method: 'POST',
+                headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json', Accept: 'application/json' },
+                body: JSON.stringify(body)
+            });
+            if (!response.ok) throw new Error(`Supabase RPC ${name} 실패 (${response.status})`);
+            const result = await response.json();
+            if (!result || result.ok !== true) throw new Error(result?.error || `Supabase RPC ${name} 처리 실패`);
+            return result;
+        }
         async function loadSupabaseData() {
             try {
-                const res = await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?user_id=eq.${localUserId}`, {
-                    headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}` }
+                const session = window.CLPAuth?.getUser?.();
+                const initials = session?.initials || localUserId;
+                const pinHash = session?.pinHash || localUserPin;
+                if (!initials || !pinHash) throw new Error("로그인 정보가 없습니다.");
+                const result = await bibleRPC('clp_load_bible_records', {
+                    p_initials: initials,
+                    p_pin_hash: pinHash
                 });
-                if (!res.ok) throw new Error("Supabase 테이블 연결 실패");
-                
-                const data = await res.json();
-                supabaseConnected = true;
-                document.getElementById('cloudStatusText').textContent = "클라우드 동기화 됨";
-                document.getElementById('cloudStatusIcon').classList.add('active');
-
-                data.forEach(item => {
-                    const key = item.verse_key;
+                userState = { read: {}, chapters: {}, highlights: {}, bookmarks: {}, memos: {} };
+                (result.records || []).forEach(item => {
+                    const key = String(item.verse_key || '');
                     if (key.endsWith('-CH')) {
-                        const chKey = key.replace('-CH', '');
-                        userState.chapters[chKey] = item.is_read;
+                        userState.chapters[key.replace('-CH', '')] = !!item.is_read;
                     } else if (key !== 'PROFILE' && key !== 'PROGRESS') {
                         if (item.is_highlighted) userState.highlights[key] = true;
                         if (item.is_bookmarked) userState.bookmarks[key] = true;
                         if (item.memo_text) userState.memos[key] = item.memo_text;
                     }
                 });
-            } catch (err) {
-                console.warn("로컬 모드로 실행됩니다. Supabase에 테이블을 생성해주세요.");
+                supabaseConnected = true;
+                document.getElementById('cloudStatusText').textContent = "클라우드 동기화 됨";
+                document.getElementById('cloudStatusIcon').classList.add('active');
+            } catch (error) {
+                console.error('[Bible] secure record load failed:', error);
                 supabaseConnected = false;
+                document.getElementById('cloudStatusText').textContent = "클라우드 연결 실패";
+                document.getElementById('cloudStatusIcon').classList.remove('active');
+                throw error;
             }
         }
 
@@ -1064,70 +1060,73 @@ html[data-theme="light"] body:has(.bible-container) .hymn-empty strong{color:#85
         }
 
         async function saveVerseToSupabase(vKey) {
-            if (!supabaseConnected) return; 
-            const payload = {
-                user_id: localUserId, verse_key: vKey, is_read: false,
-                is_highlighted: userState.highlights[vKey] || false,
-                is_bookmarked: userState.bookmarks[vKey] || false,
-                memo_text: userState.memos[vKey] || null
-            };
+            if (!supabaseConnected) return;
             try {
-                await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?on_conflict=user_id,verse_key`, {
-                    method: 'POST',
-                    headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'resolution=merge-duplicates, return=minimal' },
-                    body: JSON.stringify(payload)
+                await bibleRPC('clp_save_bible_record', {
+                    p_initials: localUserId,
+                    p_pin_hash: localUserPin,
+                    p_verse_key: vKey,
+                    p_is_read: false,
+                    p_is_highlighted: !!userState.highlights[vKey],
+                    p_is_bookmarked: !!userState.bookmarks[vKey],
+                    p_memo_text: userState.memos[vKey] || null
                 });
-            } catch (e) { console.error("Sync Error:", e); }
+            } catch (error) {
+                console.error("[Bible] secure verse save failed:", error);
+                showToast("성경 기록 저장에 실패했습니다. 다시 시도해 주세요.");
+            }
         }
 
         async function saveChapterProgress(chKey, isComplete) {
             if (!supabaseConnected) return;
-            const dbKey = `${chKey}-CH`;
-            const payload = { user_id: localUserId, verse_key: dbKey, is_read: isComplete };
-            try {
-                await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?on_conflict=user_id,verse_key`, {
-                    method: 'POST',
-                    headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'resolution=merge-duplicates, return=minimal' },
-                    body: JSON.stringify(payload)
-                });
-            } catch (e) {}
+            return bibleRPC('clp_save_bible_record', {
+                p_initials: localUserId,
+                p_pin_hash: localUserPin,
+                p_verse_key: `${chKey}-CH`,
+                p_is_read: !!isComplete,
+                p_is_highlighted: false,
+                p_is_bookmarked: false,
+                p_memo_text: null
+            });
         }
 
-        function updateOverallProgress() {
+        async function updateOverallProgress() {
             if (!supabaseConnected) return;
-            const totalRead = Object.values(userState.chapters).filter(v=>v).length;
-            const payload = { user_id: localUserId, verse_key: 'PROGRESS', memo_text: String(totalRead) };
-            fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?on_conflict=user_id,verse_key`, {
-                method: 'POST',
-                headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'resolution=merge-duplicates, return=minimal' },
-                body: JSON.stringify(payload)
-            }).then(() => loadLeaderboard());
+            const totalRead = Object.values(userState.chapters).filter(Boolean).length;
+            await bibleRPC('clp_save_bible_record', {
+                p_initials: localUserId,
+                p_pin_hash: localUserPin,
+                p_verse_key: 'PROGRESS',
+                p_is_read: false,
+                p_is_highlighted: false,
+                p_is_bookmarked: false,
+                p_memo_text: String(totalRead)
+            });
+            await loadLeaderboard();
         }
 
         async function loadLeaderboard() {
             try {
-                const res = await fetch(`${SUPA_URL}/rest/v1/${TABLE_NAME}?verse_key=eq.PROGRESS`, {
-                    headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}` }
-                });
-                if (!res.ok) return;
-                const data = await res.json();
-                let list = data.map(d => ({ ini: d.user_id, count: parseInt(d.memo_text) || 0 }));
+                const result = await bibleRPC('clp_load_bible_leaderboard', {});
+                const data = Array.isArray(result.records) ? result.records : [];
+                let list = data.map(d => ({ ini: d.user_id, count: parseInt(d.memo_text, 10) || 0 }));
                 const map = {};
-                list.forEach(item => { if(!map[item.ini] || map[item.ini] < item.count) map[item.ini] = item.count; });
-                let uniqueList = Object.keys(map).map(ini => ({ini, count: map[ini]}));
-                uniqueList.sort((a,b) => b.count - a.count);
+                list.forEach(item => { if (!map[item.ini] || map[item.ini] < item.count) map[item.ini] = item.count; });
+                let uniqueList = Object.keys(map).map(ini => ({ ini, count: map[ini] }));
+                uniqueList.sort((a, b) => b.count - a.count);
                 uniqueList = uniqueList.slice(0, 5);
                 const container = document.getElementById('leaderboardList');
+                if (!container) return;
                 container.innerHTML = '';
-                if(uniqueList.length === 0) {
+                if (!uniqueList.length) {
                     container.innerHTML = `<div style="text-align:center; color:#888; font-size:0.8rem; padding: 10px;">아직 기록이 없습니다.</div>`;
                     return;
                 }
                 uniqueList.forEach((item, idx) => {
                     let medal = `${idx + 1}위`;
-                    if(idx === 0) medal = '🥇';
-                    else if(idx === 1) medal = '🥈';
-                    else if(idx === 2) medal = '🥉';
+                    if (idx === 0) medal = '🥇';
+                    else if (idx === 1) medal = '🥈';
+                    else if (idx === 2) medal = '🥉';
                     const pct = ((item.count / TOTAL_CHAPTERS) * 100).toFixed(1);
                     container.innerHTML += `
                         <div class="rank-item">
@@ -1135,7 +1134,9 @@ html[data-theme="light"] body:has(.bible-container) .hymn-empty strong{color:#85
                             <span class="rank-pct">${pct}% <span style="font-size:0.75rem;opacity:0.6;">(${item.count}/${TOTAL_CHAPTERS})</span></span>
                         </div>`;
                 });
-            } catch(e) {}
+            } catch (error) {
+                console.warn('[Bible] leaderboard load failed:', error);
+            }
         }
 
         // --- 앱 초기화 ---

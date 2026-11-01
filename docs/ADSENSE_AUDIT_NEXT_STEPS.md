@@ -321,3 +321,24 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 
 ### 새 대화에서 이어갈 때
 “최신 AdSense 점검 문서 두 개를 확인하고 다음 단일 작업인 gameinfo.html의 '골이예요' 게임 안내/진입 경로 정적 점검만 진행해. Miracle Shot 스토리 페이지와 게임 실행 화면을 혼동하지 말고 develop만 사용해. main과 사이트 코드는 승인 없이 수정하지 마.”
+
+
+## 2026-11-01 Game Center 및 '골이예요' 경로 정적 점검 완료
+
+- `gameinfo.html` 카드 7개와 GAME GUIDE 7개, 별도 창작 과정 노트 확인.
+- 창작 과정 노트는 아이디어→규칙, 캐릭터→인터랙션, 플레이→개선의 세 주제로 ko/en 동적 삽입.
+- 일곱 번째 카드 `/goal`은 `cleanUrls: true` 설정에 따라 실제 `goal.html` 실행 페이지로 연결되는 구조. `miracleshot.html`은 별도의 작품 소개 페이지임을 확인.
+- `goal.html`은 `goal.js`와 `goal-result.js`를 로드하고 CPU/2인, 3라운드, 각 플레이어 10회 슛, 점수벽 및 결과/재시작 UI를 포함.
+- `gameinfo.html`: AdSense 로더 1회, 수동 광고 0. `goal.html`: AdSense 로더 0, 수동 광고 0.
+- 중요 확인: `gameinfo.html` HTML robots meta는 index,follow이나 Vercel 응답 헤더는 X-Robots-Tag noindex,follow로 충돌. sitemap에는 /gameinfo 및 /goal이 모두 없음.
+- `goal.html`에는 canonical/description/robots meta가 없고, `game-auth.js` 및 `goal.js`에서 로그인 필요가 확인됨. 무료 플레이 안내와 계정 로그인 필요를 구분할지 검토 후보.
+- Game Center meta description의 '테트리스, 테트리스' 중복 문구 확인.
+- 색인 정책·로그인 안내·메타 문구는 개선 후보로 기록했으나 승인 없이 수정하지 않음.
+- 실제 게임 플레이, 로그인 플로우, 모바일/PC, Auto ads 위치는 미검증.
+- 사이트 소스, Vercel 설정, sitemap 및 main은 수정하지 않음.
+
+### 다음 단일 작업
+**다음 게임 페이지 `game.html`(부르마블 보드게임)의 독립 콘텐츠, 실행 로직, 계정 인증, 광고 로더, 색인/메타 설정을 develop 소스만으로 점검한다.** 실제 플레이는 브라우저 검증 전까지 미검증으로 둔다.
+
+### 새 대화에서 이어갈 때
+“최신 AdSense 점검 문서 두 개를 확인하고 다음 단일 작업인 game.html 부르마블 게임 정적 점검만 진행해. develop만 사용하고 main, 사이트 소스, Vercel 설정은 승인 없이 수정하지 마. 실제 플레이는 확인하지 못하면 미검증으로 기록해.”

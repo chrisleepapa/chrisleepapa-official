@@ -1262,3 +1262,30 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 
 ### 다음 단일 작업
 **Journal 1~6의 Article 구조화 데이터, 날짜·작성자·canonical·내부 링크를 한 번에 대조한다.** 이미 확인한 Journal 1의 Article JSON-LD 추가 이력을 포함해 6개 문서 사이의 메타데이터 일관성을 정적 소스로 확인한다.
+
+
+## 2026-11-02 이어서 점검 — Journal 1~6 Article 구조화 데이터
+
+**대상:** `journal-1.html` ~ `journal-6.html`
+
+### 공통 확인
+- 여섯 페이지 모두 canonical이 각 페이지의 `https://chrisleepapa.com/journal-N` 경로와 일치한다.
+- 여섯 페이지 모두 robots `index, follow`.
+- 여섯 페이지 모두 Article JSON-LD 블록 1개가 있고 JSON 파싱 오류가 없다.
+- 여섯 페이지 모두 AdSense 로더 1회, 수동 광고 단위 0개, `adsbygoogle.push` 0회.
+- 각 Article의 headline, author, mainEntityOfPage는 존재하며, mainEntityOfPage는 해당 페이지 canonical과 일치한다.
+- 본문 분량은 정적 태그 제거 기준 약 860~1,975단어로 확인되며, 여섯 문서 모두 제작 경험·과정·배운 점을 설명하는 독립적인 글이다.
+- Journal 내부 링크는 1→2, 2→1·3, 3→2·4, 4→3·5, 5→4, 6→5로 연결된다. Worship 페이지에서도 Journal 6으로 연결되는 링크가 있다.
+
+### 문서별 차이 및 보완 판단
+- Journal 1: Article JSON-LD의 headline, description, URL, mainEntityOfPage, image, author, publisher, articleSection이 유효하게 존재한다. 다만 정확한 게시일/수정일을 확인할 수 있는 근거가 없어 datePublished/dateModified는 넣지 않은 상태다. 날짜를 임의로 만들지 않고 유지한다.
+- Journal 2·3: datePublished `2026-08-01`, dateModified `2026-09-11` 및 image, author, publisher 등이 포함된다.
+- Journal 4·5·6: datePublished/dateModified와 author가 포함된다. Journal 4·5·6은 Article JSON-LD의 image/publisher 세부 필드가 앞선 문서와 다르다. 실제 대표 이미지가 무엇인지 임의로 지정하지 않고, 현재 구조를 유지한다.
+- 모든 문서의 og:image는 존재한다. 일부 문서는 공통 공유 이미지, Journal 6은 `images/My hymn3.jpg`를 사용한다. OG 이미지가 있다는 사실만으로 그것을 기사 대표 이미지로 자동 복사하지 않는다.
+
+**판정:** 구조화 데이터는 여섯 페이지 모두 파싱 가능하고 핵심 식별 정보가 canonical과 일치한다. 날짜·이미지 근거가 확인되지 않은 필드는 임의로 보충하지 않는다. 이번 단계에서 사이트 코드는 수정하지 않았다.
+
+**미완료:** Search Console/리치 결과 테스트에서 실제 Google 해석 결과를 확인하지 못했다. 실제 브라우저의 글 본문, 광고 위치, 모바일/PC 표시도 미검증이다.
+
+### 다음 단일 작업
+**사이트맵에 포함된 URL과 실제 canonical/index 상태, 페이지별 AdSense 로더 수를 다시 대조해 사이트 전체 공개·광고 범위의 최종 정적 매트릭스를 작성한다.** 이미 수정된 develop 파일을 기준으로 확인하고, 광고 제외 대상(Bible/게임/기타 기능 페이지)이 사이트맵이나 자동 광고 범위에 잘못 포함되지 않았는지 함께 점검한다.

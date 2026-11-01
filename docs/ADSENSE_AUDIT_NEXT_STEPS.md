@@ -1068,12 +1068,11 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 ## 2026-11-02 최신 develop Preview 검증 — 코드 변경분 반영 확인
 
 ### 확인한 배포
-- Vercel deployment: `dpl_5Qd49Cw7YGJXSi9NNJP3cKcySbd8`
-- 배포 상태: READY
-- 배포 커밋: `1f1499d28d53a4558abbd206b4f405361bc8a379`
-- Alias: `develop.chrisleepapa.com`
+- 코드 변경 검증 배포: `dpl_5Qd49Cw7YGJXSi9NNJP3cKcySbd8` (READY, commit `1f1499d28d53a4558abbd206b4f405361bc8a379`).
+- 후속 develop 배포: `dpl_rAmmWbrvknRUU7d8Ba2L5KbU1vyo` (READY, commit `c2c5be679886ae8d0717ac5bce845bca0bfda7f7`).
+- Alias: `develop.chrisleepapa.com` — 후속 READY 배포에 연결 확인.
 - 이 배포는 Journal 1 구조화 데이터, Privacy/Terms 수정, Music 광고 로더 제외, Korean/English Worship 제작 설명 변경을 모두 포함한 코드 커밋이다.
-- 이 배포 이후 추가된 최신 커밋 `f943adf`, `c2c5be6`는 감사 문서만 수정한 커밋이며, 마지막 조회 시 관련 후속 배포는 BUILDING/QUEUED 상태였다. 따라서 코드 Preview 검증은 READY 배포 `1f1499d` 기준으로 완료하고, 문서 전용 최신 배포는 상태를 계속 확인한다.
+- 이후 감사 문서만 수정한 커밋 `f943adf`, `c2c5be6`까지 포함한 develop 배포 `dpl_rAmmWbrvknRUU7d8Ba2L5KbU1vyo`도 READY가 되었고, `develop.chrisleepapa.com` alias가 연결된 것을 확인했다. 이 배포의 코드 결과는 앞서 검증한 코드 변경을 그대로 포함한다.
 
 ### HTTP 200 및 HTML 원문 확인
 | 경로 | HTTP | Meta robots | AdSense loader | 핵심 확인 |

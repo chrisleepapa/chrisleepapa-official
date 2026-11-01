@@ -87,9 +87,11 @@
     async function dates(){
         const u=session(); if(!u?.initials||!u?.pinHash) return [];
         try {
-            const r=await fetch(`${SUPA_URL}/rest/v1/clp_today?select=record_date,data,updated_at&account_id=eq.${encodeURIComponent(u.initials)}&order=record_date.desc`,{headers:{apikey:SUPA_KEY,Authorization:`Bearer ${SUPA_KEY}`} });
-            if(r.ok) return await r.json();
-        } catch (_) {}
+            const result=await rpc('clp_list_today_records',{p_initials:u.initials,p_pin_hash:u.pinHash});
+            if(result?.ok===true&&Array.isArray(result.records)) return result.records;
+        } catch(error) {
+            console.error('[TODAY history] secure record load failed:',error);
+        }
         return [];
     }
 
@@ -131,7 +133,14 @@
 
     async function removeDate(d){
         const u=session(); if(!u?.initials||!u?.pinHash||!confirm(`${d} ${t('confirmDelete')}`)) return;
-        try { await rpc('clp_delete_today',{p_initials:u.initials,p_pin_hash:u.pinHash,p_date:d}); } catch(_){ try{localStorage.removeItem(localKey(d));}catch(__){} }
+        try {
+            const result=await rpc('clp_delete_today',{p_initials:u.initials,p_pin_hash:u.pinHash,p_date:d});
+            if(result?.ok!==true) throw new Error(result?.error||'기록 삭제에 실패했습니다.');
+        } catch(error) {
+            console.error('[TODAY history] record deletion failed:',error);
+            alert('기록을 삭제하지 못했습니다. 잠시 후 다시 시도해 주세요.');
+            return;
+        }
         records=records.filter(r=>r.record_date!==d); render();
     }
 

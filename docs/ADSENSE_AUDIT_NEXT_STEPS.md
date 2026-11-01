@@ -528,3 +528,11 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 - Follow-up verified latest develop privacy page HTTP 200/index/canonical and Google partner-site disclosure. Bible and TODAY HTTP 200, expected robots policy, and personal-table direct REST calls absent from current develop source. Invalid credential calls to Bible/TODAY RPCs were rejected without writes.
 - Browser testing with the real account and the production DB permission cutover remain outstanding. Do not describe P0 as resolved until anon grants/policies are removed after main is updated.
 
+
+## 2026-11-01 additional page fixes
+
+- TuTu PuPu PiPi: explicit index/follow meta, stronger unique page description and OG description, visitor-friendly six-Shorts intro, bilingual creator note added. Deploy ready and HTTP verified.
+- Journal 2/3/4 broken `/book` CTA fixed on develop to `/sistersquad`; recheck final deployment. Journal 2 pricing comparison now clearly marked as a historical snapshot.
+- SISTER SQUAD hub/Book1/Book2/Yul/Jung and MIRACLE SHOT have substantial original story, character, world, and creation-process content. Journal 5 English body exists; remove old suspected gap from outstanding list.
+- Do not treat removed YouTube chart as a missing page or AdSense issue.
+

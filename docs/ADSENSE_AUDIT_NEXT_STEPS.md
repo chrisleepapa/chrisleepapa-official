@@ -1289,3 +1289,56 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 
 ### 다음 단일 작업
 **사이트맵에 포함된 URL과 실제 canonical/index 상태, 페이지별 AdSense 로더 수를 다시 대조해 사이트 전체 공개·광고 범위의 최종 정적 매트릭스를 작성한다.** 이미 수정된 develop 파일을 기준으로 확인하고, 광고 제외 대상(Bible/게임/기타 기능 페이지)이 사이트맵이나 자동 광고 범위에 잘못 포함되지 않았는지 함께 점검한다.
+
+
+## 2026-11-02 이어서 점검 — 사이트맵 24개 URL과 광고 적용 범위
+
+### 사이트맵 / robots
+- `sitemap.xml`에 공개 URL 24개가 있다.
+- 24개 모두 실제 HTML 파일의 canonical이 해당 sitemap URL과 일치하며 robots는 `index, follow`.
+- `robots.txt`는 `User-agent: *`에 `Allow: /`를 적용하고 `https://chrisleepapa.com/sitemap.xml`을 가리킨다.
+- 사이트맵 대상 24개 HTML에서 구 Vercel `.vercel.app` 주소 참조는 발견되지 않았다.
+
+### AdSense 로더 정적 매트릭스
+**로더 1회 (18개):**
+- `/`
+- `/wallpaper`
+- `/sistersquad-hub`
+- `/sistersquad`
+- `/sistersquad2`
+- `/yul`
+- `/jung`
+- `/miracleshot`
+- `/tutupupupipi`
+- `/worship`
+- `/worship_eng`
+- `/journal-1` ~ `/journal-6`
+- `/about`
+
+**로더 0회 (6개):**
+- `/music` — 제3자 IP 영감 작품의 권리 검토가 끝날 때까지 광고 제외 유지
+- `/movie` — 팬메이드 영상 및 제3자 IP 권리 검토와 미디어 중심 구성 고려
+- `/bible` — 사용자의 광고 제외 결정 유지
+- `/contact`
+- `/privacy`
+- `/terms`
+
+**공통 정적 결과:**
+- 사이트맵 24개 HTML 모두 수동 광고 단위 `ins.adsbygoogle` 0개.
+- 사이트맵 24개 HTML 모두 직접 `adsbygoogle.push` 호출 0개.
+- 모든 페이지의 H1은 1개였다. 단, Privacy/Terms는 한국어·영어 언어별 H1이 각각 소스에 있으나 `css/common.css`의 `html[lang]` 선택자로 한 언어만 표시하도록 구성되어 있다.
+- AdSense 로더가 있다는 사실은 실제 광고가 표시된다는 뜻이 아니다. 자동 광고 노출 및 위치는 AdSense 설정과 실제 브라우저에서 별도로 확인해야 한다.
+
+### 사이트맵에서 제외된 기능 페이지 확인
+- `/today`: `noindex, follow`, AdSense 로더 0회, sitemap 제외.
+- `/guestbook`: `noindex, follow`, AdSense 로더 0회, sitemap 제외.
+- `/goal`: `noindex, nofollow`, AdSense 로더 0회, sitemap 제외. canonical은 설정되어 있지 않다. 현재 검색 색인 대상이 아닌 게임 실행 페이지이므로 이번에는 추가하지 않았다.
+- `/gameinfo`: `noindex, nofollow`, AdSense 로더 0회, sitemap 제외.
+- `ads.txt`에는 `google.com, pub-3207219520058740, DIRECT, f08c47fec0942fa0` 게시자 라인이 존재한다.
+
+**판정:** develop 소스의 sitemap 24개 URL, canonical, robots, AdSense 로더 범위는 서로 일치한다. Bible/기능 페이지 광고 제외 결정도 코드상 유지된다. 사이트 코드 변경은 하지 않았다.
+
+**미완료:** Google Search Console의 실제 색인/선택 canonical, AdSense Auto ads의 실제 노출 여부, 브라우저 모바일/PC 렌더링은 이 정적 소스 대조로 확인할 수 없다. Music/Movie 및 Bible/찬송가 관련 권리 검토도 별도 미해결이다.
+
+### 다음 단일 작업
+**현재 develop의 최근 변경 커밋과 Vercel 자동 배포 상태를 대조하고, 배포 한도가 풀린 뒤 Preview에서 확인해야 할 페이지별 테스트 목록을 확정한다.** 새 배포를 수동 요청하지 않고 상태 조회만 한다.

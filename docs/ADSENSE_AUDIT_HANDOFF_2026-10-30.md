@@ -3487,3 +3487,46 @@ switch.html (SWITCH) 정적 게임 감사. 이어서 goal.html (골이예요).
 - 앞선 Journal 1~6 기록 중 영어 본문이 없는 것으로 분류한 페이지를 재확인했다. journal-3.html에도 영어 body 번역 데이터가 존재하므로 영어 본문 부족 후보에서 제외한다. journal-1/2/3/4는 각 언어 사전에 본문 번역 데이터를 포함하고, journal-6은 ko/en 본문 패널을 별도로 둔다.
 - 현재 소스상 journal-5.html은 영어 메타/UI는 있으나 영어 body 번역 데이터가 확인되지 않아 영어 전환 시 본문이 한국어로 남을 가능성이 높다. 브라우저 언어 전환 테스트 후 실제 개선 대상으로 확정한다.
 
+
+## 2026-11-01 Movie / Wallpaper / About / Trust pages 정밀 점검
+
+- movie.html (SHA ddcfbd1685d3fea0d79dd2d2357e8725ccff0483): 고유 title/description/canonical, index,follow, AdSense loader 0. 본문 약 7.7k자, FURIOUS / Demon Slayer 촬영 콘셉트 / 사랑한다고 등 3개 영상의 한·영 제작 노트(기획 의도, AI 시각자료 제작, 선별·편집, 배운 점), Shorts 아카이브를 확인. 최종 영상만 모은 페이지가 아니라 제작 과정과 창작 의도를 설명하는 점이 좋다. 다만 Demon Slayer 등 기존 애니메이션 IP를 활용한 팬 영상은 저작권·상표권 위험을 AdSense 콘텐츠 가치와 별도로 확인해야 한다. 현재 이 페이지 자체에는 AdSense loader가 없다.
+- wallpaper.html (SHA 94a3fc1615cb03f23b519ad3855fc016afead6f7): 고유 title/description/canonical, index,follow, AdSense loader 1. 본문 약 6.8k자, 모바일 MP4 4편/PC 이미지 9점, 각 작품 설명, 창작 노트, Android/iPhone 설정 가이드, 개인 이용·재배포 금지 라이선스 안내를 제공. 단순 다운로드 링크가 아니라 사용법/작품 설명을 갖춘 점이 긍정적. `images/mobile01.mp4`~`mobile04.mp4`, `images/wallpaper01`~`wallpaper09` 실제 파일 응답/다운로드 및 모바일 재생은 별도 브라우저·자산 검증 필요.
+- about.html (SHA 2eba44a5bf2ab164d09884a4a08161dfdef1730c): 고유 title/description/canonical, index,follow, loader 1, 본문 약 2.6k자. 창작자로 전환한 배경, 가족과 Sister Squad의 탄생, AI 음악/영상 제작 방식, 신앙과 창작 아카이브의 연결, 사람의 선택·수정 책임을 설명. 사이트의 정체성과 제작자 경험을 보여주는 핵심 신뢰 페이지.
+- contact.html (SHA bcd301579ab264508e8edc8a162591e998d0ff42): index,follow, loader 0, 본문 텍스트는 짧지만 실제 이메일 mailto, Instagram, Facebook 연결과 협업 분야/응답 시간 안내가 있는 기능성 연락 페이지. 저가치 광고 페이지로 볼 근거는 낮고 광고 코드도 없음.
+- privacy.html (SHA e7f01d335f5e4c44865738513f92a732b3b0b42): index,follow, loader 0, 한국어/영어 본문 약 5.7k자. Google AdSense/Analytics 쿠키, 제3자 광고 파트너, IP/브라우저/방문 정보, 방명록 정보를 설명. 그러나 실제 공통 계정 및 개인 기능이 저장하는 데이터가 빠져 있음: 3자리 이니셜 계정 ID, PIN의 SHA-256 해시/인증 세션, Bible 읽기 진행률·형광펜·북마크·구절 메모, TODAY 메모·기도·할 일, 개인 기도노트(제목/내용/분류/상태/작성일), Supabase RPC 및 clp_today/Bible/기도노트 저장. 현 문구의 '이메일 또는 기타 개인 식별 정보는 수집하지 않는다'는 방명록 입력 항목 설명으로는 가능하나, 사이트 전체 계정 데이터 설명으로 오해되지 않도록 범위를 명확히 해야 한다.
+- privacy.html은 시행일 2026-01-01, 최종 수정 2026-06으로 표시되어 있다. 계정/기도/성경 저장 기능을 포함하도록 데이터 항목·목적·Supabase 처리업체/국외 처리 여부(실제 프로젝트 리전 확인 필요)·보유기간·삭제 요청 절차·로컬 저장을 한국어와 영어 모두에서 정확히 갱신할 필요가 있다. 데이터 보관기간/계정 삭제 지원/서버 리전은 소스만으로 확정하지 않고 운영자 확인 후 문구를 작성한다.
+- terms.html (SHA b3b5487206ef9626b63a7baa41b69fefab7c3f67): index,follow, loader 0, 한·영 저작권/금지행위/방명록/외부서비스/면책/약관 변경 내용을 제공. 시행일 2026-01-01, 최종 수정 2026-06. 계정 기능/개인 기록의 이용 조건 및 계정 종료/데이터 삭제 정책과 privacy의 표현을 함께 정합성 확인할 후보.
+- 개발 도메인 HTTP는 movie/wallpaper/about/contact/privacy/terms/shop 모두 200, HTML robots index,follow, canonical 운영 .com. 응답 헤더 X-Robots-Tag noindex,nofollow는 develop 전역 정책. wallpaper/about에 loader 1회, 나머지 movie/contact/privacy/terms/shop은 0회.
+- Google Publisher Policies는 Google 제품 사용에 따른 데이터 수집·공유·사용과 쿠키/웹 비콘/IP/기타 식별자 및 제3자 쿠키 사용을 개인정보처리방침에 명확히 공개하도록 요구한다: https://support.google.com/publisherpolicies/answer/10437794. 현재 Google 쿠키 공개는 있으나 자체 계정/기록 저장 정보가 누락된 상태.
+- EEA/영국/스위스 방문자에게 개인 맞춤 광고를 제공하는 경우 Google EU User Consent Policy에 따라 필요한 동의 및 Google 인증 CMP 설정이 적용되는지 AdSense 계정에서 확인해야 한다: https://support.google.com/adsense/answer/7670013. 페이지 소스만으로 CMP 계정 설정을 확인할 수 없으므로 미검증으로 기록.
+- privacy/terms는 법적 고지이므로, 데이터 보관기간·Supabase 처리 리전·삭제 방법을 확인하기 전 임의로 문구를 변경하지 않는다.
+
+## 2026-11-01 switch.html (FAIRY CATCH) 정적 게임 감사 완료
+
+- develop 파일 SHA: 717a200c6d9ad8083e64703cc282445856f03fd6.
+- 화면 아래 요정을 좌우로 움직여 음식(6종)을 받으면 +1점, 불/얼음/쓰레기에 닿으면 에너지 1개 감소. 기본 에너지 3개, 위험물 충돌 후 1초 무적 시간, 시간이 지날수록 낙하 속도 증가 및 아이템 생성 간격 감소.
+- 마우스/터치 드래그, 키보드 좌우 방향키, 모바일 touch D-pad 대체 조작은 없고 canvas drag 중심. 60fps requestAnimationFrame 루프, 반응형 canvas/DPR, 파티클/배경 별·구름, BGM, 게임오버/재시작.
+- Supabase skyfairy_ranking TOP 5 조회 및 이니셜별 최고 점수 저장, localStorage에 기기별 개인 최고 기록. common js/game-auth.js가 switch 페이지를 공통 인증 대상에 포함하는지 확인할 필요가 있으며, 페이지 소스에는 독립 이니셜 입력과 localStorage 저장도 남아 있다. 실제 공통 로그인 게이트와 충돌/동기화는 브라우저에서 미검증.
+- 확인된 로직 결함 후보: document.visibilitychange에서 탭이 숨겨지면 state를 `over-paused-hidden`으로 바꾸지만, 다시 visible이 되었을 때 playing으로 복구하거나 재시작 화면을 띄우는 처리 코드가 없다. 게임 중 앱 전환/화면 잠금 후 돌아오면 루프가 정지한 상태로 남을 수 있다.
+- Supabase recordScore는 기존 기록 조회 후 PATCH/POST를 수행하지만 PATCH/POST 응답의 ok를 검사하지 않는다. 실패해도 '개인 최고 기록 저장 완료' 또는 '기록 저장됨'으로 표시될 수 있다. RLS 및 동시 저장은 미확인.
+- 실제 HTTP https://develop.chrisleepapa.com/switch: 200, X-Robots-Tag noindex,nofollow, HTML robots meta noindex,nofollow, canonical `/switch`, AdSense loader 0, adsbygoogle 0, GTM 유지.
+- 실제 브라우저 조작, 화면 숨김/복귀 재현, collision/lives, 저장 실패, 모바일 pointer/touch 중복 이벤트, BGM, console/network는 미검증.
+
+## 2026-11-01 goal.html (MIRACLE SHOT — GOAL) 정적 게임 감사 완료
+
+- develop 파일 SHA: 76daf0c5d541fec1f80904d93ff105beda24923e; 핵심 로직 js/miracleshot/goal.js SHA 5903f15a132e6980a28b28638e4b45eceb37bc8c.
+- Miracle Shot 4인 캐릭터 중 선택, CPU 또는 같은 기기 2인 대전. 3라운드/라운드당 선수별 10회 슛, 타깃 벽에 배치된 +100~−100/0 점수 칸을 맞춰 라운드 승수를 겨룬다. 2라운드 승리 시 조기 종료, 3라운드 종료 시 결과 화면. 점수 합계와 라운드 승수를 분리해 계산.
+- 로그인 필수. pointer drag/hold로 파워 게이지를 충전하고, 움직이는 무작위 타깃을 놓는 순간 슛. CPU는 무작위 파워/타깃을 선택. 캐릭터 4명에 power/accuracy/curve 능력치가 정의되어 있으나 현재 game.js에서 실제 판정에 사용하지 않아 캐릭터별 성능 차이는 외형 선택에 그치는 것으로 보인다.
+- 주요 조작 안내는 '공을 누른 채 게이지를 채우고, 원하는 방향으로 드래그한 뒤 손을 떼세요'이나 pointermove 핸들러는 preventDefault만 하고 좌표/방향을 사용하지 않는다. 타깃은 115ms 간격 무작위 변경, angle/curve도 무작위 값이며 실제 공 궤적/타깃 판정에 사용되지 않는다. 즉, 안내된 방향 조작이 실제로 작동하지 않는 UI/게임플레이 불일치.
+- 파워만 판정에 사용하며 88~92%를 PERFECT, 70% 이상을 GOOD, 그 미만을 WEAK로 표시. 캐릭터별 능력치 및 커브/각도 UI가 실질 판정에 반영되지 않는 점을 정리해야 한다.
+- 라운드 종료 시 state.round++를 실행한 뒤 showRoundTransition(state.round, ...)에서 라운드 번호를 출력하므로, 1라운드 종료 안내가 ROUND 2로 표시되는 오프바이원 결함 후보.
+- 실제 HTTP https://develop.chrisleepapa.com/goal: 200, X-Robots-Tag noindex,nofollow, HTML robots meta noindex,nofollow, AdSense loader 0, adsbygoogle 0. GTM 유지.
+- 실제 브라우저 조작, 캐릭터 선택/능력치, 드래그 방향, 10회씩 투구, 라운드 종료, CPU 균형, 모바일 pointer, 인증, console/network는 미검증.
+- 게임 소스/DB/Vercel/sitemap/main 수정 없음. 감사 문서만 develop에 기록.
+
+### Game Center 정적 감사 전체 완료
+
+- 정적 소스 감사 순서: game.html, booktop.html, fiveinrow.html, curling.html, tetris.html, switch.html, goal.html 완료.
+- Game Center 8개 경로 noindex/no-ads 정책은 이미 적용·검증된 범위로 반복 변경하지 않는다. 게임 관련 다음 단계는 확인된 gameplay 버그의 수정 승인 및 브라우저 실기 테스트.
+

@@ -782,11 +782,12 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
    - 따라서 일반 출처 링크만으로 PDF 400개의 재호스팅 및 공개 제공 권한이 확인됐다고 볼 수 없다.
    - UI는 1~645장으로 표시하지만 실제 PDF 등록 수는 400개이며, 나머지 번호는 미등록 상태로 안내하는 구조다. 645개 전체가 제공되는 것으로 오인되지 않도록 콘텐츠 설명과 실제 등록 수의 일치 여부를 계속 관리한다.
 
-### Preview 및 광고/색인 상태
-- `/bible`: HTTP 200, canonical 정상, 응답 `X-Robots-Tag: noindex, nofollow`, AdSense loader 0개, 직접 `adsbygoogle.push` 0개.
-- `/today`: HTTP 200, canonical 정상, 응답 `X-Robots-Tag: noindex, nofollow`, AdSense loader 0개, 직접 `adsbygoogle.push` 0개.
-- 두 페이지 모두 sitemap 및 AdSense 대상 페이지와 별도로 관리 중인 상태를 유지한다.
-- noindex 및 광고 로더 제외는 검색·광고 노출을 줄이는 기술 설정일 뿐, 저작권 허가를 대신하지 않는다.
+### Preview 및 광고/색인 상태 — 정정
+- 두 페이지 모두 develop Preview HTTP 200, canonical 정상, AdSense loader 0개, 직접 `adsbygoogle.push` 0개다.
+- **중요 정정:** Preview에서 관찰한 `X-Robots-Tag: noindex, nofollow`는 `develop.chrisleepapa.com` 전체에 적용되는 Preview 보호 헤더다. 이를 개별 페이지의 Production 색인 설정으로 해석하면 안 된다.
+- `bible.html` 자체의 meta robots는 `index, follow`이며 canonical은 `https://chrisleepapa.com/bible`이다. 현재 develop sitemap에도 `/bible`이 포함되어 있다. 따라서 성경 페이지는 기술적으로 색인 대상이지만 AdSense loader는 제외된 상태다.
+- `today.html` 자체의 meta robots는 `noindex, follow`이며 canonical은 `https://chrisleepapa.com/today`이다. sitemap에는 포함되지 않고 AdSense loader도 없다.
+- noindex 및 광고 로더 제외는 검색·광고 노출을 조절하는 기술 설정일 뿐, 저작권 허가를 대신하지 않는다.
 
 ### 판정 및 조치
 - **고위험 미확인 항목:** 개역개정 본문 전체의 웹 재현 허가, Supabase 야고보서 데이터의 출처/허가, 찬송가 PDF 400개의 원저작자 및 재배포·상업적 이용 권한.

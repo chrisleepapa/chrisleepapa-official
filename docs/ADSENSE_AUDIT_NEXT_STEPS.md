@@ -389,3 +389,15 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 - 이 수정들이 포함된 최신 develop 배포는 아직 별도 READY 확인 전이다. 앞서 READY였던 배포는 이 5개 후속 수정 이전 커밋이므로 광고 제외 검증 완료로 간주하면 안 된다.
 - HTTP 응답에서 `X-Robots-Tag: noindex, nofollow`는 8개 경로 모두 확인했다. 앞선 HTTP 점검에서는 HTML 본문이 응답 래퍼 안에 이스케이프되어 robots meta 추출은 유효하게 검증되지 않았다. 최신 배포에서 HTML 원문을 다시 파싱할 것.
 - 실제 광고 요청이 없는지는 최신 배포에서 HTML 로더 0회 확인과 별도로 브라우저 네트워크/DOM 검증이 필요하다. GTM에서 별도 광고 태그를 삽입할 가능성도 확인 대상으로 남긴다.
+
+
+### 최신 develop 배포 실응답 재검증 완료 (2026-11-01)
+- 후속 로더 제거를 포함한 커밋 `32d1e85563ac6799b3a5873b5dbc9ee36895880e` 배포가 READY 되었고 `develop.chrisleepapa.com` 별칭이 연결됐다.
+- 최신 개발 도메인의 8개 경로를 각각 HTTP GET으로 확인했다: `/gameinfo`, `/game`, `/booktop`, `/fiveinrow`, `/curling`, `/tetris`, `/switch`, `/goal`. 모두 HTTP 200.
+- 8개 모두 응답 헤더 `X-Robots-Tag: noindex, nofollow` 확인.
+- 8개 모두 HTML 본문에 robots 메타가 정확히 1개이며 `noindex, nofollow` 확인.
+- 8개 모두 AdSense loader URL 0회, `adsbygoogle` 참조 0회 확인.
+- `/goal`은 canonical이 없지만 색인 제외에는 영향을 주지 않으며, 사용자 결정에 따라 별도 색인 메타와 응답 헤더 noindex가 확인됨.
+- 2026-10-30에 제공된 GTM-NGDTQNVG 버전 2 내보내기 파일을 읽었다. 포함된 태그는 GA4 Google tag(`G-NBGELYQ4TZ`) 1개이며 AdSense/광고 태그는 확인되지 않았다. 단, 이는 내보내기 파일 기준이며 GTM에 그 이후 게시된 버전이나 브라우저에서의 실시간 네트워크 요청까지 증명하지는 않는다.
+- 실환경 브라우저에서 광고 요청이 전혀 없는지에 대한 네트워크 패널 확인은 아직 미실시. 따라서 “HTML 로더/태그 제외와 GTM v2 내보내기 점검 완료”는 말할 수 있지만, “브라우저 광고 요청 0건”이라고 단정하지 않는다.
+- 위 검증은 develop 도메인 기준이며 main/운영 도메인에는 적용하지 않았다.

@@ -876,9 +876,9 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 
 
 ### Preview 배포 제한 및 현재 상태 — 2026-11-02
-- Privacy/Terms 및 감사 문서의 최신 소스 커밋은 develop에 반영되어 있다. 최신 develop HEAD는 `6307fe4c753697b1719697ccdfc7ba567f71bc7e`.
+- Privacy/Terms 및 감사 문서의 최신 소스 커밋은 develop에 반영되어 있다. 최신 develop HEAD는 `4a1ef0dccb6d307df33297cacb615f32a0c1a8b1`.
 - Vercel에서 확인 가능한 마지막 READY develop 배포는 `dpl_3i7K31UDPr7c4uT8Ms1zbnivdwF9` (commit `81d5012c42d154607ca3631f1bcbd28cb3306dc7))이며 `develop.chrisleepapa.com` alias가 연결되어 있다.
 - 이 Preview의 `/privacy` 응답은 여전히 2026년 11월 1일 문구와 이전 방명록 비밀번호 안내를 제공한다. 따라서 11월 2일 Privacy/Terms 수정은 아직 Preview에서 서비스되는 상태가 아니다.
 - 최신 소스 커밋을 대상으로 Preview 재배포를 요청했으나 Vercel API가 `api-deployments-free-per-day` 한도 초과(24시간 후 재시도 가능)로 거부했다. 재배포 성공으로 표시하지 않는다.
-- 마지막 확인 시 main 대비 develop은 ahead 22 / behind 0이며, main은 변경되지 않았다.
-- 다음 단계는 Vercel 배포 한도 초기화 후 develop HEAD `6307fe4...`를 Preview로 빌드하고, `/contact`, `/privacy`, `/terms`의 HTTP 200, canonical, robots, 광고 로더, 수정일 및 변경 문구를 확인하는 것이다. 그 전까지 코드 수정은 develop 소스에만 보관하며 main에 반영하지 않는다.
+- 마지막 확인 시 main 대비 develop은 ahead 23 / behind 0이며, main은 변경되지 않았다.
+- 다음 단계는 Vercel 배포 한도 초기화 후 develop HEAD `4a1ef0d...`를 Preview로 빌드하고, `/contact`, `/privacy`, `/terms`의 HTTP 200, canonical, robots, 광고 로더, 수정일 및 변경 문구를 확인하는 것이다. 그 전까지 코드 수정은 develop 소스에만 보관하며 main에 반영하지 않는다.

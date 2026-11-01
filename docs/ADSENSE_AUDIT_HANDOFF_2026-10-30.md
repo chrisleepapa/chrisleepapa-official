@@ -3397,3 +3397,50 @@ curling.html (컬링): 규칙/턴 진행, 힘·방향 입력, 충돌/점수 판�
 5. 신뢰·정책 페이지: /about, /contact, /privacy, /terms 및 Bible 페이지의 색인/광고 정책과 제3자 자료 출처·이용허락 분리 확인.
 
 평가는 Google의 공개 정책을 기준으로 하되, 공식적으로 공개되지 않은 최소 글자 수·점수·승인 확률을 만들어내지 않는다. 콘텐츠 가치, 탐색/UX, 기술 구현, 저작권·이용허락은 서로 다른 판단 항목으로 기록한다. 작업은 develop 전용이며 main은 별도 승인 전까지 수정하지 않는다.
+
+## 2026-11-01 홈페이지 AdSense 콘텐츠 정밀 점검 (1차)
+
+- develop index.html SHA: 9f70fbb5e50d17be15d73b3b8a725baef1186596.
+- 홈페이지 메타: title 'Chris LEE.PAPA — The Creative Archive', 고유 description, canonical https://chrisleepapa.com/, HTML robots index,follow.
+- 실제 develop HTTP 응답은 200. 개발 도메인 전체에 적용된 X-Robots-Tag noindex,nofollow가 응답에 있으나 HTML 메타는 index,follow다. 이는 develop 배포의 검색 제외 헤더이며 운영 도메인 정책과 혼동하지 않는다.
+- 홈페이지 AdSense loader 1회, 정적 수동 광고 단위/adsbygoogle 호출 0으로 확인. GTM 로더/iframe 외의 중복 AdSense loader는 확인되지 않음.
+- 고유 콘텐츠 요소: Chris's Pick 일일 선정 작품(별도 JS 데이터/설명), SISTER SQUAD 2 본편 소개 및 영상, 창작 아카이브의 상세 소개와 SISTER SQUAD/Music/Worship 진입 카드, Chris's Note의 편집형 창작 기록, Faith Journey 안내, YouTube 차트/오늘의 영상 영역.
+- `js/home-chris-pick-v2.js`에는 워십, 오리지널 음악, SISTER SQUAD/영상, TuTu PuPu PiPi, 월페이퍼 등 작품 데이터와 한국어/영어 소개가 있다. `js/home-chris-note.js`는 창작 경험을 설명하는 별도 편집 콘텐츠를 렌더링한다. 이들은 단순 외부 링크 집합보다 독립적인 맥락/설명을 제공하는 긍정 요소.
+- 확인된 구조 개선 후보: 홈페이지에 Chris's Pick 렌더러가 삽입하는 h1과 정적 창작 기록 h1이 함께 있어 h1이 복수다. 시각적 타이틀 역할을 유지하되 하나의 주 h1과 하위 h2로 위계를 정리하는 것이 바람직하다.
+- YouTube 차트/오늘의 영상은 외부 데이터에 의존한다. 소스에 요청 실패 처리와 빈 placeholder 제거가 있으나, 실제 브라우저에서 성공/실패/언어 전환 시 카드 노출 및 레이아웃을 확인하지 않았다.
+- Chris's Pick과 Chris's Note는 JavaScript가 비어 있는 section에 콘텐츠를 주입한다. 정적 소스에 렌더러와 데이터가 존재하나, 브라우저에서 JS 오류/차단 시 콘텐츠가 사라질 수 있는 구조다. 실제 브라우저 검증 필요.
+- main과 비교 시 index.html의 큰 차이는 main에 남아 있던 Chris's News 관련 코드/스타일 제거다. 사용자 요청에 따른 삭제이므로 결함으로 취급하지 않는다. develop에서 뉴스 섹션 참조는 더 이상 주요 렌더링 흐름에 존재하지 않는다.
+- 홈페이지는 현재 정적 소스상 광고 콘텐츠와 본문 사이에 별도 광고 단위가 직접 삽입된 구조가 아니며, Auto ads 로더만 확인된다. 실제 Auto ads 배치/레이아웃 간섭은 브라우저에서 검증해야 한다.
+- 사이트 코드와 광고 설정은 수정하지 않았다. develop 문서만 갱신.
+
+## 2026-11-01 Journal 1~6 본문 정밀 점검 (소스 감사)
+
+- 여섯 글 모두 각각 고유 title/description/canonical, 본문 주제, 본문 내 여러 단락 및 섹션 구성이 확인된다. 모두 AdSense loader 1회. 이는 loader 존재 여부일 뿐 승인 가능성을 의미하지 않는다.
+- 대략적인 article HTML 텍스트 길이(태그 제거 후, 한국어 본문 및 영문 패널이 함께 있는 경우 합산): journal-1 약 3.4k자, journal-2 약 4.7k자, journal-3 약 3.8k자, journal-4 약 3.8k자, journal-5 약 3.2k자, journal-6 약 9.1k자. 글자 수를 승인 기준으로 간주하지 않는다.
+- journal-1: 두 딸과 함께 Sister Squad를 시작한 실제 동기, AI 창작 시행착오, 가족 공동 창작의 의미를 6개 하위 주제로 기록. 개인 경험 중심으로 고유성이 높다. 본문 말미 외부 예술가 인용문은 출처/원문 링크와 인용 허용 범위를 확인할 후보.
+- journal-2: Skywork 도구 설명, 첫 프롬프트, 표/비교, 실제 제작 단계, 사람의 선택·수정과 퇴고 과정을 구체적으로 설명. 독립적인 튜토리얼 가치가 있다. 다만 Skywork의 기능/회사 소개/요금제 수치는 변동 가능성이 있어 최신 정보와 근거 출처를 확인해야 한다. GPT/Gemini 가격도 게시 시점과 현재가 다를 수 있으므로 갱신 또는 기준일 표시 후보.
+- journal-3: Sister Squad 실제 POD 출판 과정, 원고 확정, 표지/본문 파일, ISBN·판형·유통·검수 등의 경험을 다루는 실용 가이드. 세부 경험은 있으나 사용한 POD 서비스명, 실제 규격/비용/제출 단계/실수 사례 등 재현 가능한 구체 정보를 더 명확히 제시하면 차별성이 높아질 수 있다.
+- journal-4: 실제 두 캐릭터의 성격 정리, AI 이미지 결과의 일관성 문제, 캐릭터 시트/삽화 선택 등 창작 경험을 다룬다. 본문 표와 단계가 있어 주제에 맞는 구성. 최종 캐릭터 전/후 이미지나 실제 수정 사례와 연결하면 설명 근거가 더 강해질 수 있다.
+- journal-5: 직장·가족 생활과 창작을 병행하는 실제 시간 관리, 우선순위, AI 결과물 선택·수정 원칙을 개인 경험으로 기록. 구체적인 루틴/사례가 있으나 다른 저널과 'AI는 도구, 최종 선택은 사람'이라는 메시지가 반복되므로 이 글만의 실천 사례/주간 작업 예시를 보강하면 중복 인상을 줄일 수 있다.
+- journal-6: 워십 제작 동기, 작업 단계 표, AI 도구 사용 시 사람의 판단, 가족과 신앙, 긴 기도문을 한국어/영어로 제공. 다른 글과 구별되는 실제 신앙 고백/창작 기록이 있으나 본문 중 긴 기도문은 독자에게 어떤 맥락에서 작성됐는지 앞뒤 설명을 유지하고, 성경 구절을 직접 인용하는 경우 번역본 저작권/출처를 별도 확인한다.
+- 언어 전환 구조는 글마다 구현 방식이 다르다. journal-6은 ko/en 본문 패널이 각각 존재한다. journal-1/2/4는 언어 사전의 body 번역 데이터를 포함하는 구조. journal-3/5는 본문이 한국어 정적 HTML에 있고 영어 메타/일부 UI 문자열만 확인되어 영어 전환 시 본문이 한국어로 남을 가능성이 높다. 실제 브라우저 언어 전환 확인 후, 영어 페이지 품질/언어 일관성 개선 후보로 처리.
+- 중요 내부 링크 오류: journal-2, journal-3, journal-4의 작품 CTA가 `/book`을 가리킨다. develop 실제 HTTP GET `/book`은 404. 올바른 작품 진입 목적지를 `/sistersquad-hub` 또는 `/sistersquad` 중 페이지 역할에 맞춰 결정한 뒤 세 링크를 수정해야 한다. 수정은 아직 하지 않았다.
+- `/journal`은 develop에서 200이며 HTML robots noindex,follow로 구성. `/today`도 200/noindex,follow/AdSense loader 0. `/bible`은 200, HTML robots index,follow, AdSense loader 0. develop 전역 응답 헤더 noindex,nofollow는 별도 개발 도메인 설정.
+- 실제 운영 도메인의 페이지 렌더링, 모바일/PC, 광고 자동 배치, 영문 전환, 링크 클릭 및 외부 참조 유효성은 브라우저에서 추가 확인해야 한다.
+
+## 2026-11-01 curling.html (MAGIC CURLING) 정적 게임 감사 완료
+
+- develop 파일 SHA: a281a9d1298765cd8a9dd5b999c52948d01faa06.
+- 판타지 콘셉트의 컬링형 게임. 요정 연합/어둠의 왕관/우당탕 가족 3개 팀 중 플레이어가 선택하고, 나머지 2개 중 하나를 CPU 팀으로 무작위 지정한다. 플레이어는 선택 팀의 캐릭터 4명을 순서대로 배치한다.
+- 3라운드 구조이며 양 팀은 라운드마다 4개 스톤을 투구한다. 스톤이 정지하면 팀이 번갈아 진행. 하우스 중심 거리 기준으로 10/5/3/1점 영역 점수를 각 스톤에 부여하고, 라운드 승수를 누적해 2승 우선 또는 3라운드 종료 후 최종 승자를 결정한다. 라운드 동점 및 최종 무승부 처리 코드가 존재.
+- 드래그 방향/거리로 발사 각도와 파워를 계산. 스톤 간 충돌, 벽 반사, 마찰 감속, 파티클/효과/카메라 흔들림, 캐릭터별 특수 스킬, CPU의 공격/배치 선택 로직을 확인.
+- Supabase curling_ranking TOP 5 조회와 승수 POST/PATCH. 공통 js/game-auth.js의 GAME_PAGES에 curling이 포함되어 있어 로그인 필요, 계정 이니셜 기반 인증 UI 적용 대상. DB RLS 및 쓰기 권한은 미확인.
+- DB 승수 갱신은 읽기-수정-쓰기이며 POST/PATCH 응답 상태를 확인하지 않고 승수를 반환하는 구조. 요청 실패/동시 갱신 시 랭킹이 실제 저장되지 않아도 성공처럼 표시될 수 있으므로 개선 후보.
+- 점수는 모든 스톤에 대해 하우스 구역 점수를 합산하는 아케이드형 규칙이다. 전통 컬링의 '상대보다 하우스 중심에 가까운 스톤만 득점' 방식과 다르므로, 현재 규칙을 시작 화면/플레이 안내에서 명확히 설명해야 한다. 소스에 세부 점수 구역이 있지만 실제 안내 가독성은 브라우저 확인 필요.
+- 실제 HTTP https://develop.chrisleepapa.com/curling: 200, X-Robots-Tag noindex,nofollow, HTML robots meta 1개(noindex,nofollow), canonical `/curling`, AdSense loader 0, adsbygoogle 0, GTM ID 2회.
+- 실제 게임 플레이, 물리/충돌, CPU 투구의 균형, 캐릭터 스킬, 터치 드래그, 프레임 성능, Supabase 실제 저장/RLS, BGM, 콘솔/네트워크 패널은 미검증.
+- 게임 소스, DB, Vercel 설정, sitemap, main은 수정하지 않았다. 감사 문서만 develop에 기록.
+
+### 다음 게임
+tetris.html (테트리스) 정적 게임 감사를 진행한다. 게임 기능/조작/충돌/라인 제거/속도/기록/인증을 확인하고 noindex·광고 제외는 HTTP에서 간단히 확인한다.
+

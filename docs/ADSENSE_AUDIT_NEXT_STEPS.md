@@ -803,3 +803,29 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 
 ### 다음 점검
 **성경·찬송가 권리 미확인 항목은 허가 확인 전까지 미해결로 유지한다.** 다음 AdSense 점검은 이 권리 문제를 승인 완료로 오인하지 않고, 다른 색인 대상 페이지의 독창적 콘텐츠·정책 페이지·광고 배치 적합성을 순서대로 확인한다.
+
+
+## 2026-11-02 ABOUT 페이지 및 표준 URL 재점검
+
+### 확인한 항목
+- develop의 `about.html`, `vercel.json`, sitemap 및 develop/production/기존 Vercel 호스트의 HTTP 응답.
+- About 페이지의 본문 구성, canonical/robots, 구조화 데이터, AdSense 로더 및 외부 링크.
+
+### 결과
+- `/about`은 title `ABOUT — Chris LEE.PAPA`, canonical `https://chrisleepapa.com/about`, meta robots `index, follow`로 설정되어 있다.
+- 본문에는 창작자 소개, 신앙과 창작 여정, SISTER SQUAD 탄생 배경, AI 창작 도구 활용, The Creative Archive 설명, 창작 과정, 프로젝트 타임라인, 공식 YouTube/Spotify/TikTok 링크가 있다. 단순 링크 모음이 아니라 자체 창작자 소개와 제작 과정 설명을 포함한다.
+- H1은 1개이며, 주요 섹션 제목은 창작 방식/아카이브 소개/영문 소개로 구분된다.
+- Person, WebSite, AboutPage를 연결한 JSON-LD 구조화 데이터가 있으며, Person의 sameAs에 공식 YouTube, Spotify 아티스트, TikTok 링크가 들어 있다.
+- AdSense 로더 1회, 수동 광고 단위 및 직접 `adsbygoogle.push` 호출 0개.
+- 본문에서 확인한 공식 외부 링크는 YouTube, Spotify, TikTok 3개다.
+- Production `https://chrisleepapa.com/about`은 HTTP 200으로 최신 title 및 canonical을 제공한다.
+- 기존 호스트 `https://chrisleepapa-official.vercel.app/about`은 HTTP 301을 반환한다. `vercel.json`에는 해당 호스트의 모든 경로를 `https://chrisleepapa.com/:path*`로 영구 리디렉션하는 규칙이 존재한다. 따라서 이전 Vercel 주소를 표준 공개 주소로 유지하지 않는 설정은 확인됐다.
+- develop 호스트 응답의 `X-Robots-Tag: noindex, nofollow`는 develop 전체에 적용되는 Preview 보호 설정이다. Production 응답에는 이 헤더가 없다.
+
+### 판정 및 잔여 확인
+- 소스와 Production HTTP 기준으로 About 페이지의 canonical/robots/AdSense 로더 설정은 일치한다. 이 점검에서 페이지 코드 수정은 필요하지 않아 변경하지 않았다.
+- Google Search Console이 과거에 old Vercel URL을 Google-selected canonical로 표시했던 문제는, 현재 Google 색인 보고서에 다시 접속해 확인하지 못했으므로 완전 해결로 표시하지 않는다. 기존 호스트 301 리디렉션이 확인됐으므로 다음 크롤링 후 Google-selected canonical이 `https://chrisleepapa.com/about`로 갱신되는지 확인한다.
+- 브라우저에서 실제 시각 렌더링 및 모바일/PC 레이아웃은 별도 검증 대상이다.
+
+### 다음 점검
+**Contact, Privacy, Terms 페이지를 실제 기능·개인정보 처리 코드와 대조한다.** 특히 개인정보처리방침의 Supabase 데이터 처리, 계정/기록 삭제 경로, Google Analytics·AdSense·쿠키 안내가 실제 구현과 일치하는지 확인한다. 해당 페이지는 AdSense 로더를 추가하지 않는다.

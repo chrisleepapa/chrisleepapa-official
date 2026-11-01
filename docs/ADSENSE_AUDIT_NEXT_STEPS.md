@@ -342,3 +342,39 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 
 ### 새 대화에서 이어갈 때
 “최신 AdSense 점검 문서 두 개를 확인하고 다음 단일 작업인 game.html 부르마블 게임 정적 점검만 진행해. develop만 사용하고 main, 사이트 소스, Vercel 설정은 승인 없이 수정하지 마. 실제 플레이는 확인하지 못하면 미검증으로 기록해.”
+
+
+## 2026-11-01 사용자 결정 및 Game Center 정책 통일
+
+**사용자 결정: Game Center와 그 안의 개별 게임은 검색엔진 색인에서 제외하고 AdSense 광고도 제외한다.** 이 정책을 develop에 적용했다.
+
+### 적용 범위
+- 안내 허브: `/gameinfo`
+- 개별 게임: `/game`, `/booktop`, `/fiveinrow`, `/curling`, `/tetris`, `/switch`, `/goal`
+
+### 변경 사항
+1. 위 8개 HTML 페이지 모두에 `<meta name="robots" content="noindex, nofollow">`를 설정했다. 기존 `index, follow` 값은 noindex로 교체했고, robots 메타가 없던 `goal.html`에는 새로 추가했다.
+2. `vercel.json`에 위 8개 경로 각각 `X-Robots-Tag: noindex, nofollow` 응답 헤더를 추가했다. HTML 메타와 HTTP 헤더를 같은 정책으로 맞췄다.
+3. Game Center 및 개별 게임 HTML에서 AdSense 로더를 제거했다. 실제 로더가 있었던 `gameinfo.html`, `booktop.html`, `fiveinrow.html`, `curling.html`, `switch.html`에서 제거했고, 나머지 `game.html`, `tetris.html`, `goal.html`은 기존에도 로더가 없어 그대로 유지했다.
+4. `sitemap.xml`에는 이 8개 경로가 이미 없으므로 변경하지 않았다.
+5. Google Tag Manager는 AdSense 로더와 별개이므로 기존 분석/태그 기능을 위해 유지했다. 개발 도메인 전체에 적용되던 별도 noindex 헤더도 그대로 유지했다.
+6. robots.txt에서 게임 경로를 Disallow 처리하지 않았다. 검색엔진이 페이지를 크롤링해 noindex 지시를 읽을 수 있도록 하기 위함이다.
+
+### 정적 소스 재검증
+- 8개 HTML 모두 robots meta가 정확히 1개이며 값은 `noindex, nofollow`다.
+- 8개 HTML 모두 AdSense 로더 URL `pagead2.googlesyndication.com/pagead/js/adsbygoogle.js`가 0회다.
+- Vercel 설정에 8개 경로 각각의 `X-Robots-Tag: noindex, nofollow` 규칙이 존재한다.
+- sitemap에는 게임센터 및 개별 게임 URL이 계속 포함되지 않는다.
+- 작업 브랜치: develop only. main은 수정하지 않았다.
+
+### 배포 후 확인이 남은 항목
+- 현재 변경은 GitHub develop 소스에 반영된 상태다. Vercel 최신 배포가 READY가 된 후 실제 HTTP 응답에서 각 경로의 `X-Robots-Tag`가 전달되는지 확인해야 한다.
+- Google Search Console에서 기존에 색인된 게임 URL이 있다면 noindex 재크롤링 이후 제외 상태로 바뀌는지 확인해야 한다. noindex 반영에는 크롤링 시간이 필요하며 즉시 검색 결과에서 사라진다고 보장할 수 없다.
+- AdSense Auto ads는 HTML 로더를 제거했으므로 이 페이지들에서 로드되지 않는 구조다. 단, 배포된 페이지에서 브라우저 네트워크/DOM으로 광고 요청이 없는지 확인하는 실환경 검증은 아직 하지 않았다.
+- GTM 컨테이너 자체가 별도의 광고 태그를 주입하지 않는지까지 포함한 실환경 광고 요청 검증은 별도 확인 사항이다.
+
+이번 정책 변경은 develop에만 적용했다. main에 반영하지 않았다.
+
+
+## 다음 단일 작업
+**다음 게임 페이지 `game.html`(부르마블)의 콘텐츠/기능 정적 감사**를 이어간다. 색인·광고 정책은 이번 단계에서 이미 noindex 및 광고 로더 제외로 통일했으므로, 다음 점검은 게임의 독립 콘텐츠, 실행 로직, 인증 흐름, 링크/오류 가능성만 살펴본다. develop 소스만 확인하고 실제 플레이는 브라우저에서 검증하기 전까지 미검증으로 기록한다.

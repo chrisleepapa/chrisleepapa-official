@@ -1198,3 +1198,45 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 
 ### 다음 단일 작업
 **Worship 페이지의 동적/정적 창작 설명, 앨범·곡별 정보, 광고 로더 및 외부 임베드 구성을 소스 기준으로 점검한다.** 실제 화면의 재생·광고 위치는 배포 및 브라우저 확인 전까지 미검증으로 둔다.
+
+
+## 2026-11-02 이어서 점검 — Worship / English Worship
+
+### Korean Worship 정적 감사
+**파일:** `worship.html` (수정 후 blob SHA는 후속 재검증 결과 참조)
+
+- canonical `/worship`, robots `index, follow`, H1 1개.
+- AdSense 로더 1회, 수동 광고 단위 0개, `adsbygoogle.push` 0회. 자동 광고 실제 배치는 브라우저/AdSense 설정에서 별도 확인해야 한다.
+- 앨범 카드 4개: 나의 찬양 Vol.1·Vol.2·Vol.3 및 Whispers Of Grace ver1. Spotify/YouTube 외부 링크가 각 앨범 카드에 연결되어 있다.
+- 가사 아카이브는 나의 찬양 Vol.1~3의 30개 트랙으로 구성된다. 앨범 이야기 4개와 창작/제작 과정 카드가 있으며, 가사·앨범 설명 외에도 창작 동기, 앨범별 주제, 제작 판단을 설명한다.
+- 제작 설명은 가사·곡 주제·예배 방향을 창작자가 기획·수정하고, Suno 등 AI 도구는 보컬·연주·편곡 구현에 활용했으며 여러 생성 결과를 검토·선택·수정했다는 역할 구분을 포함한다.
+- Spotify 앨범 커버 이미지는 Spotify oEmbed API로 동적으로 가져오는 코드가 있다. 실제 API 성공, 이미지 표시, 네트워크 실패 시 대체 이미지 및 모바일 표시 상태는 브라우저 검증 전까지 미확인이다.
+- 별도 Spotify 음악 iframe 임베드는 없고, 앨범 외부 링크와 동적 커버 조회를 사용한다. 정적 iframe은 GTM noscript 1개다.
+
+### English Worship 정적 감사
+**파일:** `worship_eng.html`
+
+- canonical `/worship_eng`, robots `index, follow`, H1 1개.
+- AdSense 로더 1회, 수동 광고 단위 0개, `adsbygoogle.push` 0회.
+- SHOUT 앨범 카드, Spotify/YouTube 공식 링크, 5개 제작·주제 스토리 카드, 15개 트랙 가사 아카이브가 있다.
+- Human direction / AI-assisted production 영역에서 가사·주제·예배 방향의 창작자 역할과 AI 도구의 제작 보조 역할을 구분한다.
+- 외부 음악은 링크로 제공하며, 별도 Spotify 임베드는 확인되지 않았다. 정적 iframe은 GTM noscript 1개다.
+
+### 발견 및 최소 수정
+- Korean Worship의 일반 meta description에는 Whispers Of Grace가 포함되어 있었지만 Open Graph description에는 빠져 있어 검색/공유 메타 설명이 서로 달랐다.
+- Open Graph description에도 Whispers Of Grace를 추가해 네 앨범 정보가 일치하도록 수정했다.
+- develop 커밋: `29807c30a62715f41417ac389be506080809d32c`
+- 이번 수정은 메타 설명 한 줄만 변경했다. 앨범, 가사, 링크, 광고 설정은 변경하지 않았다.
+
+### 재검증 및 미완료
+- [x] Korean Worship 4개 앨범 카드 및 Vol.1~3 가사 30개 확인
+- [x] English Worship SHOUT 15개 가사 확인
+- [x] 양쪽 페이지의 창작·AI 제작 과정 설명 확인
+- [x] canonical/robots/H1 및 광고 로더 구조 확인
+- [x] Korean Worship Open Graph 설명에 Whispers Of Grace 반영
+- [ ] Spotify 커버 API, 외부 링크, 모바일/PC 실제 렌더링 확인
+- [ ] 자동 광고 실제 노출 위치 및 본문/가사와의 간섭 여부 확인
+- [ ] 앨범별 음원·커버 아트 권리 및 플랫폼 약관 확인은 별도 권리 검토로 유지
+
+### 다음 단일 작업
+**About 페이지의 콘텐츠 독립성, 사이트 내 창작자/운영 정보, canonical 및 구 Vercel 도메인 참조를 소스 기준으로 점검한다.** 과거 Search Console에서 구 Vercel 주소가 Google 선택 canonical로 잡힌 이력이 있으므로, 내부 링크·canonical·사이트맵 일치 여부를 특히 확인한다.

@@ -514,3 +514,13 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 - `/privacy` and `/bible` production HTML both 200 and have no direct AdSense loader. Production Bible source is identical to develop and uses the public `bible` REST table.
 - Supabase `public.bible` anon full CRUD grants and permissive policies are live on the project used by production. This is the first item to secure before continuing lower-priority page polishing.
 
+
+## 2026-11-01 latest progress
+
+- Develop Bible/TODAY source paths now use account-scoped RPCs for personal data. Direct REST reads/writes from Bible, Bible gate, Bible layout TOP5, TODAY check-in streak, and TODAY archive were removed. Public `bible_content` read remains for scripture text.
+- Privacy policy Korean/English revised for account and personal-record data categories, Supabase Tokyo processing region, manual deletion request path (no self-service deletion), and Google's partner-site data-use disclosure.
+- Develop deployment of latest code `b83ff66` is READY; privacy latest deployment `f97371d` is READY. HTTP/source verified for `/bible` and `/today`; interactive auth/save/load tests are not yet performed.
+- P0 DB exposure still exists: public.bible anon full CRUD policies/grants remain live. Main still has old direct REST requests. Do NOT revoke DB grants/policies until develop code is approved and merged to main, then verify production RPC path. Only one Supabase project exists and no dev branch is provisioned; no paid branch created.
+- Custom 4-digit PIN + unsalted SHA-256 + localStorage hash + no visible rate limiting on public SECURITY DEFINER RPCs remain hardening priorities. Plan stronger credentials/rate limiting and `search_path=''`/function privilege review.
+- Next: verify latest privacy HTTP response, then manual browser tests of Bible/TODAY account features on develop. After user review, get explicit approval to update main and only then apply DB migration to revoke direct public table access. Continue AdSense review on substantive content; don't list removed YouTube charts as missing features.
+

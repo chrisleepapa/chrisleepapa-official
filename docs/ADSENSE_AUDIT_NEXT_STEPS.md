@@ -1342,3 +1342,29 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 
 ### 다음 단일 작업
 **현재 develop의 최근 변경 커밋과 Vercel 자동 배포 상태를 대조하고, 배포 한도가 풀린 뒤 Preview에서 확인해야 할 페이지별 테스트 목록을 확정한다.** 새 배포를 수동 요청하지 않고 상태 조회만 한다.
+
+
+## 2026-11-02 배포 한도 중 작업 상태 및 Preview 테스트 대기표
+
+### 브랜치 비교
+- GitHub compare 기준 `main` 대비 `develop`은 ahead 47 / behind 0.
+- main에는 반영하지 않았다. main을 develop으로 덮어쓰거나 병합하지 않았다.
+
+### Vercel 자동 배포 상태 조회
+- 이번 세션에서 수동 배포 명령은 실행하지 않았다.
+- Music 콘텐츠 수정 커밋 `832298fc05c61ff6a3b4394e9cefeabce46d86bd`: READY 확인.
+- Worship OG 설명 수정 커밋 `29807c30a62715f41417ac389be506080809d32c`: READY 확인.
+- Journal/ About/ 점검 문서 커밋들의 자동 배포도 READY 상태인 항목을 확인했다.
+- 가장 최근 사이트 전체 매트릭스 문서 커밋 `0d86ab1e6b265e0151f68de87e5ab7112aea961b`: 조회 시점 BUILDING. 문서만 변경한 커밋이므로 사이트 HTML/JS 수정은 포함하지 않는다.
+- 자동 배포가 GitHub 커밋 이후 생성되고 있음을 확인했다. 사용자가 말한 일일 배포 한도 때문에 실제 Preview가 최신 커밋까지 갱신되었다고 단정하지 않는다.
+
+### 배포 가능 시 Preview에서 수행할 테스트
+1. Music: 14개 작품별 이야기, 한국어/영어 전환, Spotify iframe API 및 fallback, 광고 로더 미포함 확인.
+2. Worship: 4개 앨범 카드, Vol.1~3 가사 30개, Spotify 커버 API, 한국어/영어 전환, 자동 광고 위치 확인.
+3. English Worship: SHOUT 15개 가사, Spotify/YouTube 링크, 모바일 가사 아코디언 확인.
+4. About: 창작자 소개·연혁·SNS 링크, canonical 및 공유 미리보기 확인.
+5. Privacy/Terms: 한국어·영어 전환 시 언어별 H1 하나만 표시되는지 확인.
+6. 사이트 공통: 모바일 메뉴, PC/모바일 레이아웃, 콘솔 오류, AdSense 광고가 본문·플레이어·링크와 혼동되지 않는지 확인.
+7. Google 도구: Search Console의 /about 선택 canonical 및 사이트맵 처리 결과, AdSense Auto ads 실제 노출 위치 확인.
+
+**현재 결론:** 배포 한도와 무관하게 GitHub 소스 점검·수정·정적 재검증은 계속할 수 있다. 다만 실제 Preview 렌더링 검증은 최신 배포 READY 확인 후에만 완료 처리한다.

@@ -301,3 +301,23 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 
 ### 새 대화에서 이어갈 때
 “최신 AdSense 점검 문서 두 개를 확인하고 다음 단일 작업인 Sister Squad 2 페이지 정적 점검만 진행해. develop만 사용하고 main은 건드리지 마. 실제 브라우저 렌더링과 영상 장면은 확인하지 못하면 미검증으로 기록해.”
+
+
+## 2026-11-01 Sister Squad 2 정적 점검 완료
+
+- `sistersquad2.html`, `js/sistersquad2-story.js`, `js/sistersquad2-ost.js` develop 소스 확인.
+- canonical/robots 정상, AdSense 로더 1회, 수동 광고 단위 0개, 직접 push 호출 0개.
+- YouTube nocookie 임베드 5개: 예고 3, NG/비하인드 1, 본편 1. GTM noscript iframe 1개는 별도.
+- 네 가족 인물과 조력자/적대 세력 설정, 제작자 노트, 6단계 여정과 3개 성장 주제 확인.
+- 59개 HTML 번역 키의 ko/en 사전 대응 확인. 동적 story와 OST도 한국어/영어 처리 경로가 있음.
+- OST는 메인/Instrumental/English Edition 3개 YouTube 플레이리스트 및 Spotify 앨범 연결을 제공.
+- 영상 1~3 카드의 개별 설명은 없고 공통 소개문만 존재. 실제 영상 내용을 확인하지 못해 설명은 추가하지 않음.
+- body의 `user-select:none`은 본문 선택을 제한할 수 있는 UX 후보로 기록.
+- 실제 브라우저 렌더링, 모바일/PC, 언어 전환, 영상/OST 재생, Auto ads 위치는 미검증.
+- 사이트 코드와 main은 수정하지 않음.
+
+### 다음 단일 작업
+**게임 안내 페이지(`gameinfo.html`)에서 '골이예요' 게임의 실제 진입 경로와 독립 콘텐츠/광고 구조를 점검한다.** `miracleshot.html` 스토리 소개와 게임 실행 화면을 혼동하지 말고, 안내 페이지에서 연결되는 실제 게임 파일/경로를 정적 소스로 추적한다. 실제 플레이 동작은 브라우저 검증 전까지 미검증으로 둔다.
+
+### 새 대화에서 이어갈 때
+“최신 AdSense 점검 문서 두 개를 확인하고 다음 단일 작업인 gameinfo.html의 '골이예요' 게임 안내/진입 경로 정적 점검만 진행해. Miracle Shot 스토리 페이지와 게임 실행 화면을 혼동하지 말고 develop만 사용해. main과 사이트 코드는 승인 없이 수정하지 마.”

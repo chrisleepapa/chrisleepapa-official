@@ -3637,3 +3637,27 @@ switch.html (SWITCH) 정적 게임 감사. 이어서 goal.html (골이예요).
 - Important remaining P1 auth risk: 4-digit PIN is still hashed with unsalted SHA-256 client-side and retained in localStorage; no effective rate limiting was verified. The public RPCs check the supplied hash, but an attacker could brute-force the 10,000-value PIN space against exposed RPC endpoints. Do not claim the overall account system is fully hardened. Plan a staged migration to salted server-side password hashing and short-lived random session tokens, with a safe re-login transition.
 - Still required: interactive real-account browser tests on production (login, Bible chapter progress, highlight/bookmark/memo save/load, Bible Journey/reflections, TODAY memo/prayer/todos/check-in/history, prayer-note CRUD, and cross-account isolation). Source/HTTP/SQL tests do not replace these UI checks.
 - Develop remains the audit/work branch; main received only the six security-related file syncs and the privacy leaderboard disclosure. Current branch histories remain diverged; do not describe the branches as identical.
+
+
+## 2026-11-01 홈페이지 잔여 YouTube 차트 코드 정리 및 CMP 정적 확인
+
+**판정: 홈페이지에서 이전에 제거하기로 한 외부 YouTube 차트/오늘의 화제 영상 잔여 코드가 실제로 남아 있어 develop에서 제거했다. 배포 READY 확인. 운영 main은 변경하지 않았다.**
+
+### 확인 및 수정 근거
+- index.html의 기존 소스에는 #youtube-daily-top3, #youtube-trending-video 두 섹션과 각 CSS, 외부 차트 데이터를 불러오는 스크립트가 남아 있었다. youtube-trending-updated의 초기 문구는 “오늘의 영상을 불러오는 중…”이었다.
+- 해당 영역은 CSS로 숨겨진 상태가 아니었다. 따라서 이전 문서의 “제거된 YouTube 차트는 누락 기능으로 취급하지 않는다”는 정책과 실제 HTML이 불일치했다.
+- develop의 index.html에서 차트 관련 CSS 2개, 섹션 2개, 차트 로딩 스크립트 1개만 제거했다.
+- SISTER SQUAD 2 본편 영상, Faith Journey, Chris's Pick, Chris's Note, 앨범 이동 스크립트 및 나머지 홈 콘텐츠는 보존했다.
+- 커밋: b4b10ae7f8e4254206e3ebd1403a3740b7028466.
+- Vercel 배포: dpl_4vy3x9LsY8tMJPwiemjSdAwAeojC, 상태 READY; develop 별칭 연결 확인.
+- 재검증: develop index.html에 YouTube 차트 섹션/ID/로딩 문구가 더 이상 없고 Faith Journey, Chris's Pick, 앨범 이동 로직은 남아 있음.
+- main은 수정하지 않았다. 웹 브라우저에서 preview 페이지를 열어 PC/모바일 화면을 직접 확인하는 단계는 도구 접근 실패로 미검증이다.
+
+### 개인정보/동의 관리 정적 확인
+- develop의 index.html, privacy.html, js/main.js, components/header.html, components/footer.html에서 googlefc, fundingchoices, __tcfapi, 별도 CMP SDK/스크립트 표식을 찾지 못했다.
+- 개인정보처리방침에는 쿠키/광고 및 제3자 광고 파트너 설명이 있으나, 이 설명만으로 동의 관리 플랫폼이 구현되었다고 볼 수 없다.
+- Google은 EEA·영국(2024-01-16부터), 스위스(2024-07-31부터) 이용자에게 개인 맞춤 광고를 제공하는 게시자에게 Google 인증 CMP와 IAB TCF 통합을 요구한다. Google Privacy & Messaging의 유럽 규정 메시지도 인증된 CMP 선택지다.
+- 사이트 소스만으로 AdSense 계정의 Privacy & Messaging 설정, 실제 유럽 지역 광고 동의 메시지 노출, 실제 트래픽 지역은 확인할 수 없다.
+
+### 다음 단일 작업
+**AdSense 계정의 Privacy & Messaging에서 European regulations 메시지가 설정/활성화되어 있는지 계정 화면 기준으로 확인한다.** 외부 CMP를 임의로 설치하거나 사이트 코드를 추가하지 않는다. 계정 설정 확인 후 필요한 조치만 결정하고, 그 다음 Bible 페이지의 성경 본문/찬송가 자료 출처·게시 권한 점검을 별도 항목으로 진행한다.

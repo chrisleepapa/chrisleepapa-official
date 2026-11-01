@@ -524,3 +524,7 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 - Custom 4-digit PIN + unsalted SHA-256 + localStorage hash + no visible rate limiting on public SECURITY DEFINER RPCs remain hardening priorities. Plan stronger credentials/rate limiting and `search_path=''`/function privilege review.
 - Next: verify latest privacy HTTP response, then manual browser tests of Bible/TODAY account features on develop. After user review, get explicit approval to update main and only then apply DB migration to revoke direct public table access. Continue AdSense review on substantive content; don't list removed YouTube charts as missing features.
 
+
+- Follow-up verified latest develop privacy page HTTP 200/index/canonical and Google partner-site disclosure. Bible and TODAY HTTP 200, expected robots policy, and personal-table direct REST calls absent from current develop source. Invalid credential calls to Bible/TODAY RPCs were rejected without writes.
+- Browser testing with the real account and the production DB permission cutover remain outstanding. Do not describe P0 as resolved until anon grants/policies are removed after main is updated.
+

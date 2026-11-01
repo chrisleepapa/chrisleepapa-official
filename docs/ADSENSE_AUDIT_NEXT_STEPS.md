@@ -928,3 +928,52 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 
 ### 다음 점검
 **Sister Squad 허브 및 개별 페이지, Yul/Jung 캐릭터 소개, TuTuPuPuPiPi 페이지를 작품 설명·저작권/출처·내부 링크·이미지/영상·광고/색인 설정 기준으로 교차 점검한다.** 기존에 수정한 라이트 모드 대비도 함께 살펴보되, Preview 배포가 막힌 동안에는 소스 검사와 정적 검증까지만 수행한다.
+
+
+## 2026-11-02 SISTER SQUAD / 캐릭터 프로필 / TuTu PuPu PiPi 점검
+
+### 공통 확인
+- 점검 파일: `sistersquad-hub.html`, `sistersquad.html`, `sistersquad2.html`, `yul.html`, `jung.html`, `tutupupupipi.html`.
+- 6개 모두 canonical이 chrisleepapa.com의 해당 경로를 가리키며 meta robots는 `index, follow`.
+- 6개 모두 AdSense loader 1회, 직접 `adsbygoogle.push` 0회다. 페이지 내부에 수동 광고 슬롯은 이번 정적 검사에서 확인되지 않았다.
+- 6개 페이지의 H1은 각각 1개다. 이미지 요소는 모두 alt 속성이 있다. 라이트 모드 대비 CSS 규칙이 각 페이지에 존재한다. 실제 화면 대비/반응형 레이아웃은 브라우저 Preview 확인 전까지 미검증이다.
+
+### SISTER SQUAD 허브
+- 약 1,120단어의 소개와 두 자매·가족·요정·적대 세력·세계관·마법 아이템·두 권의 이야기 설명이 포함되어 있다.
+- 이미지 45개와 영상 임베드 1개가 있으며 이미지 alt 속성은 모두 존재한다.
+- 창작 세계관의 중심 허브로서 작품·캐릭터·후속 이야기로 연결하는 구조다.
+- 별도 JSON-LD 구조화 데이터는 확인되지 않았다. 필수 AdSense 요건은 아니며, 이후 SEO 개선 시 CreativeWork/WebPage 구조화 데이터를 추가할 수 있다.
+
+### SISTER SQUAD 1
+- 페이지에는 1권의 핵심 줄거리, 율·정 캐릭터 설명, 작가의 창작 의도, OST, 책 구매/영문 샘플 링크, 창작 과정 Journal 링크가 포함되어 있다.
+- 본문 문단 추출만으로는 약 299단어로 짧게 집계되지만, 페이지에는 추가 언어별 콘텐츠 데이터와 2개의 영상 임베드가 있어 단순 링크 페이지만은 아니다.
+- Article JSON-LD가 이미 존재하며, canonical·index/follow·AdSense loader 설정도 확인했다.
+- 이번 점검에서 콘텐츠를 불필요하게 반복 확장하지 않았다. 향후 책 소개의 독자 가치, 상세 목차/샘플, 출판 정보 등을 실제 출판물과 대조해 추가할 수 있다.
+
+### SISTER SQUAD 2
+- 약 649단어의 소개, 두 자매와 아빠의 캐릭터 변화, 두 번째 모험의 갈등/회복 주제, OST, 세 편의 짧은 영상과 본편, NG 영상 및 제작 노트가 있다.
+- 이미지 3개, 영상 임베드 6개, FULL STORY 안내가 확인됐다.
+- 섹션 제목은 `SISTER SQUAD 2 영상`, 본편 CTA는 `Full Story`로 구분되어 있다. 영상 소개 문장에서 세 개의 예고편을 설명하는 것은 콘텐츠 유형 안내로 유지했다.
+- canonical·index/follow·AdSense loader 설정은 정상이다.
+
+### Yul / Jung 캐릭터 프로필
+- Yul 약 604단어, Jung 약 598단어의 소개로 각 캐릭터의 성격, 능력, 자매 관계, 1·2권의 성장, 창작 배경을 각각 설명한다.
+- 두 페이지 모두 이미지 15개, 영상 임베드 1개, 이미지 alt 속성 전체 존재, 라이트 모드 관련 CSS 규칙이 확인됐다.
+- 두 프로필 모두 canonical·index/follow·AdSense loader 1회다.
+- 별도 JSON-LD는 없지만 필수 광고 정책 문제로 보지는 않는다. 필요 시 캐릭터 프로필을 설명하는 CreativeWork/WebPage 구조화 데이터를 추가할 수 있다.
+
+### TuTu PuPu PiPi
+- 약 510단어의 소개와 캐릭터 3명의 역할, 세계관, 제작 의도, 공식 OST 설명이 있다.
+- 이미지 11개, YouTube Shorts 6개가 개별 제목·설명·YouTube 링크와 함께 등록되어 있으며, YouTube/Spotify 공식 OST 임베드도 존재한다.
+- 메타 설명의 “6편 Shorts”와 실제 6개 영상 링크 수가 일치한다.
+- canonical·index/follow·AdSense loader 1회, 이미지 alt 전체 존재, 라이트 모드 CSS 규칙을 확인했다.
+- 별도 JSON-LD는 확인되지 않았다. 필수 AdSense 정책 문제는 아니며 추후 SEO 개선 항목이다.
+
+### 판정
+- 이번 점검 범위에서 잘못된 canonical, noindex, 광고 로더 중복, 이미지 alt 누락, TuTu 영상 수 불일치 등 즉시 수정이 필요한 기술 오류는 발견하지 못했다.
+- SISTER SQUAD 허브와 개별 작품 페이지는 독창적인 세계관·캐릭터·창작 과정 설명을 포함한다.
+- 다만 SISTER SQUAD 1의 정적 본문 텍스트는 상대적으로 짧게 집계되므로, 향후 실제 책의 목차·출판 정보·독자가 얻을 수 있는 내용 등 검증 가능한 세부 정보를 보강할 여지가 있다. 임의의 줄거리나 출판 사실을 추가하지 않는다.
+- 이번 점검에서는 페이지 본문이나 광고 설정을 임의로 변경하지 않았다. main은 변경하지 않았다.
+
+### 다음 점검
+**Music / Worship / Worship English / Movie 페이지의 음원·영상 출처, 원작·커버·AI 활용 고지, 내부 링크와 광고 대상 범위를 교차 점검한다.** 특히 커버곡·리믹스·연주곡·워십 음원의 권리/배포 플랫폼 정보를 구분해 사실과 일치하는지 확인한다. Preview 배포 한도 해소 전까지는 소스 검사와 정적 검증만 진행한다.

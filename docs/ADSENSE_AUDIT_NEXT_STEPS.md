@@ -1,5 +1,39 @@
 # Chris LEE.PAPA AdSense 점검 — 이어하기 메모
 
+- 기준일: 2026-11-02
+- 저장소: chrisleepapa/chrisleepapa-official
+- 작업 브랜치: develop only. main은 사용자 요청으로 2026-11-02에 당시 develop HEAD 21b891c15c97de48e6788fc4210ff9ce52ee7c44와 동기화됨. 이후 감사 수정은 develop에만 반영.
+- 운영 도메인: https://chrisleepapa.com
+- 개발 도메인: https://develop.chrisleepapa.com
+- 상세 조사 기록: docs/ADSENSE_AUDIT_HANDOFF_2026-10-30.md
+
+## 현재 진행 상태 / 다음 단일 작업 — 2026-11-02 갱신
+
+### 이번 단계에서 완료
+- TuTuPuPuPiPi: 6개 Shorts 고유 ID/설명, 캐릭터·세계관·OST·창작자 노트, 로컬 이미지/alt, 광고 코드 확인. 즉시 수정 불필요.
+- About: 반복되던 창작 과정 소개 문단과 미사용 한/영 번역 키 제거. 수정 커밋 78476b2d3fb03676911a36f5c057eda7f2192adf.
+- Home/About/Sister Squad 허브·1·2/Yul/Jung: 긴 본문 완전 일치 0건. Yul/Jung의 공통 프로필 구조는 서로 다른 캐릭터 서사로 확인.
+- Journal 1~6/Worship/English Worship: 긴 본문 완전 일치 0건. Journal 주제별 구분 확인, Worship 안내문 유사도 후보는 짧은 공통 주제 수준.
+- Wallpaper/TuTuPuPuPiPi/Miracle Shot/Sister Squad 허브·1·2: 긴 본문 완전 일치 0건. 페이지별 목적/내용 구분 확인.
+- 정적 교차 중복 검사에서 AdSense 복제 콘텐츠로 판단할 긴 문단 복제는 발견되지 않음. 유사도는 참고 지표이며 Google의 최종 판정은 아님.
+
+### 다음 단일 작업
+최종 정적 광고 대상/제외 대상 표를 다시 확인하고, 모든 광고 로더 페이지가 의도한 광고 대상인지, 제외 페이지에는 로더가 없는지, sitemap·canonical·robots·GTM 수량이 현재 develop 소스와 일치하는지 한 번 더 교차 검증한다. 특히 사용자 지정 제외(성경·찬송·게임 실행 페이지)와 MIRACLE SHOT 작품 소개 페이지를 혼동하지 않는다.
+
+### 미완료 실서비스 검증
+- 실제 브라우저 모바일/PC 렌더링과 동적 JS 실행.
+- 현재 게시된 GTM 컨테이너 버전 및 Auto ads 실제 노출 위치.
+- Google Search Console의 실제 발견/색인 URL 및 sitemap 상태.
+- 정적 소스만으로 위 항목을 완료 처리하지 않는다.
+
+### 변하지 않는 범위
+- AdSense 거절 사유: 복제 콘텐츠 / 가치가 별로 없는 콘텐츠.
+- 성경·찬송 및 게임 실행 페이지는 광고 대상 콘텐츠 심사에서 제외. miracleshot.html은 스토리/작품 소개, 실제 게임은 goal.html로 구분.
+- 소스 수정은 develop에서만 진행하고 main은 추가 지시 전까지 수정하지 않는다.
+- 새 페이지 생성, 이미 끝난 페이지의 근거 없는 반복 수정 금지.
+
+---
+
 ## 최신 작업 결과 — 2026-11-02 본문 유사도 대조
 
 - 대상: index.html, about.html, sistersquad-hub.html, sistersquad.html, sistersquad2.html, yul.html, jung.html.

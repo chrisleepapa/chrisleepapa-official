@@ -4612,7 +4612,7 @@ TuTuPuPuPiPi 수정 후 develop 소스의 최신 HEAD와 Vercel Preview 상태�
 - 토큰 집합 유사도: Yul/Jung 0.172, Hub/Sister Squad 1 0.097, Home/About 0.096이 상위였다. 공통 인물명·세계관·브랜드 어휘의 영향이 있어 이 수치만으로 복제 판정을 하지 않았다.
 - Yul/Jung은 자매 관계 및 세계관을 공유하지만, 율의 분석·염력·판단 성장과 정의 교감·공감·두려움을 감당하는 성장 및 각 캐릭터의 실제 기원은 서로 구분된다. Sister Squad Hub는 세계관/인물 탐색 허브, 1편은 첫 모험과 창작 배경, 2편은 폐허 회복 여정과 제작 노트에 초점을 둔다. Home은 작품 탐색, About은 창작자 소개와 제작 방식 안내 역할이다.
 - 판정: 정적 본문에서 복제 콘텐츠로 볼 만한 동일 문단을 찾지 못했다. 이번 비교를 이유로 문장을 삭제하거나 글자 수를 줄일 필요가 없어 코드 변경은 하지 않았다. 동적 홈 콘텐츠와 실제 브라우저 표시 상태는 별도 검증이 필요하다.
-- GitHub 현재 develop HEAD는 a57c06241f107a43ba5251832713408492cb67d1, main HEAD는 21b891c15c97de48e6788fc4210ff9ce52ee7c44이며 develop이 16 commits ahead / 0 behind다. 이는 main 동기화 이후 develop에서 진행한 콘텐츠 수정과 점검 문서 기록이다. main은 변경하지 않았다.
+- 비교 시점 GitHub develop HEAD는 a57c06241f107a43ba5251832713408492cb67d1, main HEAD는 21b891c15c97de48e6788fc4210ff9ce52ee7c44였다. main 동기화 이후 점검 수정과 문서 갱신은 develop에서만 수행했으며 main은 변경하지 않았다.
 - Vercel 최신 develop Preview 조회 결과는 commit 3a880e077cf51d5808268fc4210ff9ce52ee7c44의 READY 배포이며 현재 develop HEAD와 일치하지 않는다. 최신 Production도 이전 main commit c5e491bb6b125eb00b1e871163c7d0fb7cca74e8의 READY 배포다. 현재 HEAD의 실제 화면 검증은 미완료다.
 - 다음 단계: 현재 HEAD와 일치하는 Preview가 준비될 때 브라우저에서 Tutu, Miracle Shot 스토리/GOAL, About 및 주요 광고 대상 페이지의 모바일·PC 표시와 동적 콘텐츠를 검증한다. 현재 게시 GTM, Auto ads 위치, Search Console 실제 색인 상태도 별도 확인 전까지 미완료다.
 

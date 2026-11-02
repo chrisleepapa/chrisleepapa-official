@@ -1872,3 +1872,17 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 - 조치: 콘텐츠 수정은 하지 않음. 불필요한 문구 추가나 페이지 중복 확장은 피함.
 - 검증 한계: 현재 Vercel 일일 배포 한도 때문에 develop 실서비스의 최신 렌더링은 확인하지 못함. GitHub develop 소스만 점검했고 main/production에는 반영하지 않음.
 - 다음 순서: `/tutupupupipi` 실제 콘텐츠 구성과 독립 설명, 영상 임베드 비중, 광고 코드/메타/중복 여부 점검.
+
+
+## 2026-11-02 추가 점검 — TuTu PuPu PiPi 페이지
+
+- 대상: `/tutupupupipi` (광고 대상 페이지).
+- 기본 설정: canonical `https://chrisleepapa.com/tutupupupipi`, `index, follow`, 페이지 설명 존재, AdSense 로더 1개. 수동 광고 슬롯 및 `adsbygoogle.push`는 확인되지 않음.
+- 고유 콘텐츠: 세 캐릭터의 성격·역할·대사, 하늘섬/숲/마을 세계관, OST 설명, 여섯 Shorts 각각의 영상 ID·제목·개별 설명·YouTube 링크, 창작자 노트를 포함.
+- 영상 구현: Shorts 6개는 각각 고유 ID 6개를 사용하며, 최초 HTML에 Shorts 플레이어 iframe을 6개 미리 삽입하지 않고 클릭 시 `youtube-nocookie.com` iframe을 생성하는 방식. OST YouTube playlist 및 Spotify 앨범 embed는 별도로 1개씩 존재.
+- 중복/가치 검토: 기존 Creator Note가 세계관 소개와 Feature 설명의 여섯 에피소드 요약을 거의 다시 말하고 있어 본문 반복을 줄일 필요가 있었음. 한국어/영어 Creator Note를 캐릭터 성격을 장면으로 보여주는 기획 의도와 페이지 구성 이유를 설명하도록 수정해 앞선 세계관·영상 설명과 역할을 분리.
+- 수정 파일: `tutupupupipi.html`; 개발 브랜치 커밋 `d0399af3bd661877627e62700c0c59adbff57cb6`.
+- 확인: 수정 후 GitHub develop 재조회에서 새 한국어/영어 문구 확인, 기존 반복 문구 부재 확인, Shorts 6개/고유 ID 6개/AdSense 로더 1개/클릭형 Shorts 로딩 구조 확인.
+- 판정: 기존 페이지는 단순 임베드 모음이 아니라 독립 캐릭터·세계관 설명과 개별 영상 안내를 갖추고 있음. 이번 수정은 중복 설명을 줄여 고유한 창작 의도를 더 분명히 함. AdSense 승인 보장은 아님.
+- 검증 한계: Vercel 일일 배포 제한으로 develop 실서비스 반영 및 브라우저 화면 검증은 미실시. main/production에는 반영하지 않음.
+- 다음 순서: `/worship` 및 `/worship_eng`의 독립 창작 설명, 앨범/플레이리스트 임베드 비중, 중복 문구, 광고 코드 점검.

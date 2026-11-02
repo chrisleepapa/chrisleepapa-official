@@ -4419,3 +4419,43 @@ switch.html (SWITCH) 정적 게임 감사. 이어서 goal.html (골이예요).
 - develop에서 실제 수정한 콘텐츠 파일은 `sistersquad-hub.html`의 두 탐색 앵커와 한국어/영어 안내 문구뿐이다. 그 외 점검은 소스 확인 및 문서 기록만 수행했다.
 - 두 점검 문서의 기록과 현재 코드 상태를 대조한 결과, 정적 소스 감사는 24개 sitemap URL과 13개 비-sitemap 루트 HTML까지 확장되었다.
 - 실서비스 브라우저 렌더링, 현재 게시 GTM 버전, 실제 Auto ads 위치, Search Console 실제 색인 상태는 아직 확인되지 않았다. 이 항목들은 확인 전까지 완료로 표시하지 않는다.
+
+
+
+## 2026-11-02 후속 점검 — Movie Archive, Shop, About, Wallpaper, Journal
+
+### Movie Archive
+- develop `movie.html` 최종 blob SHA: `a1efa0b8566ad51893ee654c2ee9b891674d54cc`.
+- 기존 Shorts 8편이 상단 썸네일/목록과 별도 SEO 소개 구역 안의 두 번째 목록에서 중복 표시되던 구조를 정리했다. 두 번째 목록 블록은 제거하고, 첫 번째 카드 목록은 유지했다.
+- 각 8개 YouTube Shorts URL의 정적 출현을 확인해 각 영상 링크가 한 번씩만 남는지 재검증했다.
+- 한국어/영어 작품 소개를 팬 콘셉트 영상, 직접 기획한 음악 기반 뮤직비디오, 로봇 액션 등 실제 아카이브의 종류에 맞게 구체화했다.
+- 제작 과정 문구도 콘셉트 결정 → AI 장면 생성 → 선별/편집 → 오리지널 음악과 영상 결합, 기존 애니메이션 캐릭터 활용 작업의 팬 콘셉트 구분을 설명하도록 정리했다.
+- 직접 AdSense loader 0개. 실제 화면 렌더링은 미검증.
+
+### Shop
+- develop `shop.html` 최종 blob SHA: `cac9f3749650af6305034a239fab24dd9fca2408`; 최종 수정 커밋 `9a747cb26bc6dd0e807de0e3c9e4c056356c6293`.
+- Sister Squad 1: Book of Whispers에서 시작하는 두 자매의 첫 모험, 율의 분석/염력과 정의 공감 능력, 가족과 친구를 지키는 주제를 설명.
+- Sister Squad 2: 루미나의 저주, 죽음의 늪·거인의 등뼈·고요의 계곡·아르카디아 여정, 두려움과 가족의 선택을 설명.
+- Miracle Shot: 네 소년과 이 코치의 풋살 성장, 팀워크·신뢰·재도전 주제를 설명.
+- 위 세 설명은 한국어/영어 모두 추가했고, 각 설명 키가 실제 마크업에 한 번씩 연결되는지 확인했다.
+- 신규 설명 색상이 어두운 배경에서 낮은 대비가 될 수 있어 `rgba(240,236,228,.78)`로 수정했다.
+- 직접 AdSense loader 0개. sitemap 밖 `index, follow` 페이지이므로 별도 indexability 관리 후보로 유지. noindex 변경은 하지 않았다.
+
+### About
+- `about.html` blob SHA `b3089b51949beb1e1f6fc4868e2b12e9143d3120`, 직접 AdSense loader 1개.
+- 창작자 소개, 개인적 창작 배경, Creative Philosophy, 아카이브 제작 방식, 메뉴별 제공 가치, 연혁, 외부 채널 안내가 독립적인 내용으로 존재한다.
+- 동일한 배경 설명이 일부 반복되지만 각 구역의 목적(개인 서사 / 창작 철학 / 제작 방식 / 방문자 안내)이 달라, 문장 수를 늘리거나 삭제할 근거가 부족하다. 수정하지 않음.
+
+### Wallpaper
+- `wallpaper.html` blob SHA `94a3fc1615cb03f23b519ad3855fc016afead6f7`, 직접 AdSense loader 1개.
+- 모바일 MP4 4개, PC PNG 9개를 확인했다. 개별 모바일 영상은 서로 다른 풍경/도시/상상 장면 설명과 다운로드를 제공한다.
+- Creator's Note, 모바일/PC 포맷 차이, 개인 이용 라이선스, Android/iPhone/Windows/macOS 설정 가이드가 있어 단순 이미지 링크 모음보다 추가적인 사용 가치가 있다.
+- PC 이미지 alt는 artwork 번호 중심으로 구체적 장면 묘사는 아니지만, 실제 이미지를 시각 확인하지 않은 상태에서 장면을 추정해 alt를 변경하지 않았다. 수정하지 않음.
+
+### Journal
+- `journal.html` blob SHA `d2ccd34b7654f5770d4565f52e97cf53f856f993`, 직접 AdSense loader 0개.
+- 목록은 Journal 1~6의 제목, 주제, 요약과 상세 링크를 제공한다.
+- 상세 글은 가족 창작의 시작, Skywork로 원고 제작, POD 출판, 캐릭터/삽화 디자인, 직장·가족과 창작 시간 관리, Worship 제작 고백으로 주제가 분리된다.
+- 일부 글에서 AI 협업/선택·수정이라는 공통 배경이 반복되지만 각 글의 핵심 목적은 다르다. 단순 반복 문구를 제거하려고 실제 경험 설명을 축약할 이유는 확인되지 않아 수정하지 않음.
+
+- 이번 단계의 판정은 정적 소스 기준이다. 모바일/PC 실제 렌더링, 외부 링크 목적지, 광고 자동 삽입 위치 및 현재 게시 GTM은 미검증이다. main/production은 변경하지 않았다.

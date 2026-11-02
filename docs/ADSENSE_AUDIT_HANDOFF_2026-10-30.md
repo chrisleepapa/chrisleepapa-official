@@ -4318,3 +4318,17 @@ switch.html (SWITCH) 정적 게임 감사. 이어서 goal.html (골이예요).
 - 판정: sitemap 내 URL 누락, canonical 불일치, robots 차단, 중복 수동 광고 슬롯은 이번 정적 점검에서 발견되지 않음. 광고 제외 대상 6개 URL은 직접 AdSense 로더가 없는 상태로 확인됨.
 - 검증 한계: GitHub develop 정적 파일 및 제공된 GTM export만 확인. 실제 Google 크롤링/색인, 실시간 GTM 게시 버전, 브라우저 광고 노출 위치와 Auto ads 동작은 미검증. main/production 미변경.
 - 다음 단일 작업: Sister Squad 1·2·허브·캐릭터 페이지의 남은 후속 항목(영상/이미지/구매 링크 목적지, 페이지별 고유 역할과 내부 링크)을 하나씩 재검증한다.
+
+
+## 2026-11-02 후속 점검 — Sister Squad 1 내부 링크 및 미디어 참조
+
+- 대상: `sistersquad.html`; develop blob SHA `9004c878f986d96cba5f0886ab8ce19dbf418a9b`.
+- 기본 설정: canonical `https://chrisleepapa.com/sistersquad`, `index, follow`, 직접 AdSense loader 1개.
+- 미디어: YouTube trailer iframe 1개(`C0lluI-l0gc`), OST YouTube playlist 링크 1개, Spotify 앨범 링크 1개. 외부 플레이어/음원은 작품 소개를 보조하는 구조.
+- 내부 연결: 허브 `sistersquad-hub.html`, 공식 Shop `/shop.html`, Journal 1·2·4 링크를 확인. GitHub develop tree에서 각 내부 HTML 파일이 실제 존재함을 확인.
+- 이미지: `/images/sistersquad1_banner.png`가 develop tree에 존재함을 확인.
+- 고유 가치: 첫 모험의 이야기·캐릭터 설명과 창작 배경이 있으며, 새로 추가한 Journal 링크는 이야기의 시작, 원고 수정, 캐릭터/삽화 제작 과정을 더 깊이 읽을 수 있게 연결함.
+- 판정: 정적 소스에서 깨진 내부 링크나 누락된 배너 파일은 발견되지 않음. 독립 작품 소개와 제작 과정 링크가 존재하여 외부 미디어만 나열한 화면은 아님.
+- 조치: 코드 변경 없음.
+- 검증 한계: YouTube/Spotify/Amazon 외부 목적지의 실시간 가용성 및 실제 브라우저 클릭·재생은 확인하지 못함. 광고 노출 위치도 미검증. main/production 미변경.
+- 다음 단일 작업: `sistersquad2.html`의 본편/예고편/NG 영상 연결, 작품 설명과 제작 노트, 내부 링크/이미지 참조를 같은 기준으로 확인한다.

@@ -4,7 +4,7 @@
 - **기준 도메인:** https://chrisleepapa.com/
 - **작업 기준 소스:** GitHub `chrisleepapa/chrisleepapa-official`의 `develop` 브랜치 우선. 검증·사용자 승인 전에는 `main`에 반영하지 않음.
 - **심사 이력:** 사용자가 제공한 기록상 chrisleepapa.com은 2026-10-19 사이트 검토를 신청했고 2026-10-30 두 사유로 거절됨. 현재 AdSense 계정의 사이트 등록/상태 및 재검토 가능 여부는 계정 화면 확인 전까지 미확인. 이 문서는 재심사 준비 점검이며, 새로운 검토 요청을 제출하지 않음.
-- **문서 버전:** Audit 1.29 — 홈페이지 Chris's Pick 동적 링크·이미지 및 noscript 대체 구조 점검
+- **문서 버전:** Audit 1.30 — 비사이트맵 경로·삭제된 URL·서비스워커 잔여 동작 점검
 - **최초 점검의 역사적 판정:** Audit 1.0 작성 당시의 판단이며 현재 상태를 뜻하지 않음. 아래 미완료 항목은 실제 존재·운영 여부와 최신 소스를 다시 확인한 뒤에만 유효한 점검 대상으로 채택한다.
 
 ## 최우선 기준 — 실제 AdSense 탈락 사유 (고정)
@@ -662,4 +662,16 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **접근성 연결 확인:** Chris's Note 섹션의 aria-labelledby 대상 id가 no-script fallback 제목 및 home-chris-note.js가 생성하는 동적 제목 양쪽에 존재함.
 - **미확인 범위:** 외부 YouTube 썸네일 13건 및 Spotify oEmbed 커버 조회의 실시간 성공 여부, 실제 브라우저의 JavaScript 실행·화면 전환은 미확인. 최신 홈페이지 변경 commit의 Preview deployment가 아직 생성되지 않아 코드 수준 검사만 완료함.
 - **판정:** Chris's Pick의 내부 경로·앨범 deep link·Worship/Wallpaper anchor는 소스 기준 정상. no-script 대체 콘텐츠 및 접근성 연결도 코드에 반영됨. 두 고정 AdSense 거절 사유에 대한 직접적인 위반 증거는 새로 발견하지 못함.
+
+
+
+### 2026-11-02 / Audit 1.30 — 비사이트맵 경로·삭제된 URL·서비스워커 잔여 동작 점검
+
+- **저장소 루트 HTML 경로 전수 분류:** develop 저장소 루트의 HTML 파일 37개를 sitemap 24개와 비사이트맵 경로로 분류함. 비사이트맵 항목은 13개이며, 게임/도구 경로와 보조 페이지, Naver 소유 확인 파일로 구성됨. 이 중 광고 로더가 있는 추가 콘텐츠 페이지는 발견하지 못함.
+- **비사이트맵 경로 상태:** /goal, /switch, /tetris, /curling, /fiveinrow, /booktop, /game, /gameinfo는 HTTP 200, noindex, nofollow, AdSense 로더 0개. /journal, /today, /guestbook은 HTTP 200, noindex, follow, 로더 0개. /shop은 HTTP 200, index, follow, 로더 0개이며 작품 설명과 공식 판매처 정보를 제공함. Naver 소유 확인 파일은 HTML 페이지가 아니라 소유 확인 문자열만 반환하는 텍스트 응답이며 광고 코드가 없음.
+- **삭제된 화면 URL Production 검사:** /prompt-lab, /chris-news, /youtube-chart, /youtube-daily-top3, /youtube-trending-video는 모두 HTTP 404, AdSense 로더 0개. /book도 HTTP 404이며 Journal 1의 잘못된 내부 링크는 Audit 1.28에서 /shop으로 수정함.
+- **SISTER SQUAD 구주소 처리:** Vercel 설정에 /world-lore → /sistersquad-hub 영구 리디렉션이 존재함. Production 조회 도구는 내부 리디렉션을 따라 최종 200 응답을 반환하지만, 최종 HTML의 canonical은 https://chrisleepapa.com/sistersquad-hub로 일치함. 따라서 별도 중복 콘텐츠 화면으로 판정하지 않음.
+- **서비스워커·캐시 점검:** 저장소에서 현재 serviceWorker.register 호출은 발견되지 않음. 홈페이지는 기존 Service Worker 등록을 해제하고 Cache Storage 항목을 삭제하는 정리 코드를 실행함. sw.js는 네트워크 우선 fetch 후 일부 페이지에 보조 UI 스크립트를 주입하는 동작이며, caches.open/cache.addAll 기반 HTML 캐싱은 확인되지 않음. 따라서 현재 코드 기준 신규 방문자에게 서비스워커가 자동 등록되거나 과거 HTML 캐시가 광고 제외 페이지에 재사용되는 구조는 확인되지 않음.
+- **잔여 서비스워커 파일:** sw.js 자체는 저장소에 남아 있고 /miracleshot, /worship, 홈페이지에 보조 스크립트를 주입하는 구형 fetch handler가 포함됨. 관련 스크립트 파일은 모두 저장소에 존재함. 현재 등록 호출은 없으며 홈페이지에서 기존 등록을 해제하므로 즉시 삭제하지 않고 잔여 파일로 기록함. 기존 Service Worker가 설치된 사용자가 홈페이지 방문 전에 다른 경로로 직접 진입하는 경우의 일시적 영향은 브라우저 세션 없이는 확인 불가.
+- **AdSense 판단:** sitemap 외의 공개 HTML 경로에서도 광고 로더가 있는 숨은 추가 페이지는 발견하지 못함. 삭제된 화면 URL은 404, 게임/도구는 noindex 및 광고 코드 없음, /world-lore는 정식 허브로 영구 리디렉션됨. 이번 점검에서 두 고정 거절 사유를 직접 유발하는 추가 광고 화면은 발견하지 못함.
 

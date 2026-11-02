@@ -881,3 +881,14 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **배포 상태:** 현재 확인한 Production 및 Preview의 `/miracleshot`은 HTTP 200, canonical `https://chrisleepapa.com/miracleshot`, 각각 AdSense loader 1개, GTM 1개. 다만 이 응답은 develop 수정 커밋보다 이전 빌드이므로 수정 후 렌더링은 아직 확인하지 못함. `/goal` Production/Preview는 모두 HTTP 200이며 AdSense loader 0개.
 - **판정:** 페이지의 오리지널 스토리·캐릭터·창작자 관점은 양호함. 기존 게임 링크를 유지하면서 잘못된 'Coming Soon' 중복 안내를 develop에서 제거함. 최신 Preview 검증은 미완료.
 - **점수:** 내부 AdSense 준비도 74/100 유지. 정확성 개선은 반영했으나 Google의 복제 콘텐츠 판정 대상과 원본 제작·배포 증빙을 검증한 것은 아니므로 점수는 변경하지 않음.
+
+
+### 2026-11-03 / Audit 1.46 — 홈페이지 Chris's Pick의 TuTu TikTok 잔여 링크 정리
+
+- **검사 대상:** `index.html`, `js/home-chris-pick-v2.js`의 develop/main 및 Production 홈페이지.
+- **발견:** 홈페이지가 실제로 로드하는 `home-chris-pick-v2.js`의 develop 소스에는 TuTu PuPu PiPi의 예전 TikTok 링크 5개가 남아 있었음. 반면 `tutupupupipi.html`은 이미 여섯 편의 YouTube Shorts로 교체되어 있어 프로젝트 페이지와 홈페이지의 영상 출처가 서로 달랐음. 이 잔여 링크는 사용자가 이전에 지정한 'TikTok 대신 YouTube Shorts' 방침과 불일치함.
+- **조치:** develop의 홈페이지 Chris's Pick에서 기존 TikTok 카드 5개를 제거하고, `tutupupupipi.html`에 실제 등록된 여섯 Shorts의 ID·제목·설명·썸네일·YouTube Shorts URL을 그대로 반영함. 한국어/영어 제목 맵도 여섯 항목으로 갱신함. 그 결과 develop 스크립트 내 TikTok URL 0개, 해당 여섯 Shorts URL 6개를 확인함.
+- **수정 파일/커밋:** develop `js/home-chris-pick-v2.js`; 주요 수정 커밋 `05a86604dbe3ce5873b86b2bac47cbc1457d42a6`, 후속 서식 커밋 `940a2d0597285e76c496a560c020ecf431a208fd`.
+- **main/Production 상태:** main의 같은 파일에는 아직 TikTok URL 5개가 남아 있고 새 YouTube Shorts 링크 0개임. Production 홈페이지는 HTTP 200, canonical `https://chrisleepapa.com/`, AdSense loader 1개, GTM 1개로 응답함. 홈페이지는 해당 스크립트를 실제로 로드함. 따라서 이 수정은 develop에만 있으며 main/Production에는 아직 반영되지 않음.
+- **판정:** 홈페이지와 TuTu 프로젝트 페이지의 영상 링크 불일치를 develop에서 수정 완료. 사용자 확인 전까지 main 병합 및 Production 반영은 하지 않음. Preview 최신 배포에서의 렌더링 확인은 미완료.
+- **점수:** 내부 AdSense 준비도 74/100 유지. 오래된 외부 플랫폼 링크와 프로젝트 내 불일치를 제거했으나, Google의 복제 콘텐츠 판단을 직접 해소했다는 증거는 아니므로 점수는 변경하지 않음.

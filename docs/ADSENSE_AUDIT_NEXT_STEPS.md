@@ -1842,3 +1842,17 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 ### 다음 단일 작업
 
 **사이트 전체의 sitemap.xml / robots.txt / canonical / 라우트 리다이렉트 정합성을 일괄 점검한다.** sitemap 24개 URL 각각의 실제 HTTP 상태, canonical 대상, robots 지시, 삭제 페이지/옛 vercel.app 주소 노출 여부를 대조하고, AdSense 심사에 불필요한 중복 URL이 남아 있는지 확인한다. Google Search Console이 선택한 canonical은 계정 화면 접근 전까지 별도 미검증으로 유지한다.
+
+
+## 2026-11-02 추가 점검 — 개인정보처리방침과 실제 처리 흐름 대조
+
+- 범위: 개인정보처리방침의 고지 내용과 개발 브랜치의 실제 코드 흐름 대조. 성경·찬송·게임의 콘텐츠 가치/저작권 심사는 제외.
+- 방명록: `js/guestbook.js`가 Supabase `guestbook` 테이블에 닉네임, 메시지, 방문 페이지를 전송하고, `created_at`을 화면에 표시. 입력 폼은 이메일/비밀번호를 받지 않음. 정책 설명과 일치.
+- 공통 계정: `js/auth.js`에서 3자리 이니셜과 4자리 PIN을 검증하고 SHA-256 해시를 생성. 로그인 세션과 이니셜/PIN 해시를 localStorage에 저장하며 Supabase RPC로 인증. 정책의 브라우저 저장/계정 정보 설명과 일치.
+- TODAY/기도노트: `js/today-history.js`, `js/today-prayer-notes.js`, `js/today-archive-v2.js`에서 기록 조회·저장·삭제 RPC를 사용. 기도노트 및 날짜별 TODAY 기록 일부의 사용자 삭제 가능, 전체 계정/연결 기록 일괄 삭제는 이메일 수동 요청이라는 정책 설명과 부합.
+- 제3자/국외 처리: 페이지에 GTM 컨테이너 `GTM-NGDTQNVG`가 설치되어 있고, 기존 GTM 구성은 GA4를 전 페이지에서 처리. Supabase 프로젝트 조회 결과 프로젝트 `cvfmkcxmxkmemmshfttn`의 리전은 `ap-northeast-1`(도쿄)로 확인되어 정책의 국외 처리 고지와 일치.
+- 발견 및 조치: 기존 정책은 AdSense 광고가 현재 게재 중이라고 단정했으나, 현재 승인 상태와 일치하지 않아 한국어/영어 Article 02·03·04·06의 광고·쿠키 표현을 “광고가 실제 제공되는 경우” 조건부 표현으로 수정. 한국어 Article 07에도 전체 삭제 요청 시 운영자가 본인 확인 후 수동 처리한다는 설명을 추가해 영어 문구와 맞춤.
+- 페이지 자체 점검: `privacy.html`은 canonical `https://chrisleepapa.com/privacy`, `index, follow`, GTM 코드가 있으며 AdSense 직접 로더는 없음. 개인정보 안내 페이지 자체에서 광고를 직접 로드하지 않음.
+- 수정 파일: `privacy.html`; 개발 브랜치 커밋 `4c638f26530d330ae8adb2a01cdd30b486a48867`.
+- 검증 한계: GitHub 개발 소스 재조회로 수정 문자열과 메타 설정을 확인. 현재 Vercel 일일 배포 한도 때문에 수정본의 develop 실서비스 렌더링은 아직 검증하지 않음. 운영(main)에는 반영하지 않음.
+- 다음 순서: 실제 AdSense 대상인 SisterSquad 및 SisterSquad 2 페이지의 독립 콘텐츠 가치/중복성 점검. 광고 제외 페이지는 콘텐츠 가치 심사에서 제외.

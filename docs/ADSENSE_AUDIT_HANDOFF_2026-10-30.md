@@ -4615,3 +4615,23 @@ TuTuPuPuPiPi 수정 후 develop 소스의 최신 HEAD와 Vercel Preview 상태�
 - GitHub 현재 develop HEAD는 a57c06241f107a43ba5251832713408492cb67d1, main HEAD는 21b891c15c97de48e6788fc4210ff9ce52ee7c44이며 develop이 16 commits ahead / 0 behind다. 이는 main 동기화 이후 develop에서 진행한 콘텐츠 수정과 점검 문서 기록이다. main은 변경하지 않았다.
 - Vercel 최신 develop Preview 조회 결과는 commit 3a880e077cf51d5808268fc4210ff9ce52ee7c44의 READY 배포이며 현재 develop HEAD와 일치하지 않는다. 최신 Production도 이전 main commit c5e491bb6b125eb00b1e871163c7d0fb7cca74e8의 READY 배포다. 현재 HEAD의 실제 화면 검증은 미완료다.
 - 다음 단계: 현재 HEAD와 일치하는 Preview가 준비될 때 브라우저에서 Tutu, Miracle Shot 스토리/GOAL, About 및 주요 광고 대상 페이지의 모바일·PC 표시와 동적 콘텐츠를 검증한다. 현재 게시 GTM, Auto ads 위치, Search Console 실제 색인 상태도 별도 확인 전까지 미완료다.
+
+## 2026-11-02 후속 점검 — Journal / Worship / Wallpaper / 프로젝트 페이지 교차 중복
+
+### Journal 1~6 및 Worship / English Worship
+- 대상: journal-1.html ~ journal-6.html, worship.html, worship_eng.html.
+- 스크립트/스타일 및 가사 details 영역을 제외한 본문 단락을 비교. 80자 이상 텍스트의 완전 일치 0건.
+- Journal 1~6은 가족 창작 동기, Skywork 원고 제작, POD 출판, 캐릭터/삽화 제작, 직장·가족과 창작 시간 관리, Worship 고백 기록으로 주제가 구분됨.
+- Worship과 English Worship의 앨범/아카이브 소개는 형식이 일부 유사하지만 언어·앨범·가사 내용이 다르고, 가사 본문은 이번 교차 비교에서 제외해 일반 안내문과 혼동하지 않음.
+- 가장 높은 단락 유사도 후보는 journal-6.html과 worship_eng.html 약 0.16으로, Worship 기록이라는 공통 주제를 가리키는 짧은 소개 수준. 본문 복제 근거는 아님.
+
+### Wallpaper / TuTuPuPuPiPi / Miracle Shot / Sister Squad
+- 대상: wallpaper.html, tutupupupipi.html, miracleshot.html, sistersquad.html, sistersquad2.html, sistersquad-hub.html.
+- 긴 본문 문단의 완전 일치 0건. 서로 다른 프로젝트의 줄거리·캐릭터·사용 안내·창작자 노트가 구분됨.
+- Sister Squad 1과 허브 사이의 짧은 영문 문구 유사도 약 0.24는 작품 탐색용 요약/세계관 공통어 수준이며, 동일한 긴 본문이 반복되는 것은 아님.
+- Wallpaper는 작품 감상/파일 사용 안내, TuTuPuPuPiPi는 3캐릭터와 6개 에피소드, Miracle Shot은 작품 소개와 캐릭터 성장/창작 의도, Sister Squad 각 페이지는 서로 다른 작품/허브/캐릭터 역할을 가짐.
+
+### 전체 정적 중복 점검 판정
+- 광고 대상 주요 콘텐츠 페이지 간 긴 본문 문단 완전 일치가 확인되지 않음.
+- 일부 공통 시리즈 배경·브랜드 설명·프로필 구조는 있으나 페이지별 역할과 세부 서사가 구분됨. 이를 이유로 콘텐츠를 억지로 늘리거나 삭제하지 않음.
+- 유사도 수치는 단어 집합 비교의 참고값이며 Google의 복제 콘텐츠 판정이 아님. 최종 렌더링/색인된 화면 검증은 별도.

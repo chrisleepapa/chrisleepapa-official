@@ -336,7 +336,7 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
    - production `/about`에는 과거 제작 현황 문구가 남아 있음. develop에는 최신 현황이 한국어·영어로 반영됨.
 
 4. **Branch 비교**
-   - GitHub `main...develop` 비교: develop은 main보다 69 commits ahead, main은 develop 뒤에 있음(2026-11-02 확인).
+   - GitHub `main...develop` 비교: develop은 main보다 72 commits ahead, main은 develop 뒤에 있음(2026-11-02 확인).
    - 차이는 AdSense 관련 콘텐츠·광고 코드뿐 아니라 홈페이지, 게임, 개인정보/약관, 음악, 워십, 캐릭터 등 여러 파일에 걸쳐 있음. 이 상태에서 개별 파일만 임의로 production에 복사하거나 즉시 main을 덮어쓰지 않음.
    - **운영 원칙:** 현재 모든 수정은 develop에서만 유지. AdSense 심사 전에는 두 고위험 항목(홈 YouTube Chart 제거, Music 광고 코드 제외)을 포함한 검토된 develop 변경을 사용자가 승인한 후 main에 반영하고, production 도메인에서 재검증해야 함.
 
@@ -369,7 +369,7 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 
 - **2026-11-02 / Audit 1.11:** Production과 develop의 TuTu PuPu PiPi, SISTER SQUAD 1, MIRACLE SHOT, SISTER SQUAD Hub, Korean/English Worship 본문을 실서비스 HTML 응답으로 비교. TuTu 및 SISTER SQUAD 1은 develop에 고유한 캐릭터·세계관·에피소드 설명이 더 있음. Worship 두 페이지는 develop에 AI 보조 제작과 인간 창작자의 선택·수정 역할을 설명하는 문단이 추가되어 있음. Miracle Shot과 SISTER SQUAD Hub는 비교 범위에서 주요 본문이 동일. Production은 아직 develop 변경을 반영하지 않은 상태로 기록.
 
-- **2026-11-02 / Audit 1.10:** 실제 production `.com`과 develop alias의 홈·Music 응답을 비교. Production 홈에 YouTube daily Top3/Trending Video 차트 코드와 AdSense 로더 1개가 잔존하고 develop에서는 관련 코드가 제거됨을 확인. Production Music에는 AdSense 로더 1개, develop에는 0개이며 develop은 혼합 애니메이션 영감/커버 음악 페이지 광고 제외 커밋(004c774)을 포함. Production SISTER SQUAD 1/About도 develop 수정 미반영. main...develop 비교 결과 develop 69 commits ahead. 이 상태를 두 실제 거절 사유에 대한 고위험 미해결 항목으로 분류하고, main 변경/재심사 제출은 보류.
+- **2026-11-02 / Audit 1.10:** 실제 production `.com`과 develop alias의 홈·Music 응답을 비교. Production 홈에 YouTube daily Top3/Trending Video 차트 코드와 AdSense 로더 1개가 잔존하고 develop에서는 관련 코드가 제거됨을 확인. Production Music에는 AdSense 로더 1개, develop에는 0개이며 develop은 혼합 애니메이션 영감/커버 음악 페이지 광고 제외 커밋(004c774)을 포함. Production SISTER SQUAD 1/About도 develop 수정 미반영. main...develop 비교 결과 develop 72 commits ahead. 이 상태를 두 실제 거절 사유에 대한 고위험 미해결 항목으로 분류하고, main 변경/재심사 제출은 보류.
 
 - **2026-11-02 / Audit 1.9:** Vercel 배포 URL fetch로 production `.com`과 develop custom domain을 비교. Production `/`, `/sistersquad`, `/about`은 HTTP 200, index/follow, 공식 canonical, 직접 AdSense 로더 1개. Production About에는 구형 제작 현황, SISTER SQUAD 1에는 세계관 제작 노트 미반영 확인. Develop 페이지들은 HTTP 200이나 응답 헤더 X-Robots-Tag noindex,nofollow로 검색엔진 노출 차단. develop 개선이 production/AdSense 심사 대상에 아직 반영되지 않았음을 명확히 기록. main 변경 및 심사 요청 없음.
 

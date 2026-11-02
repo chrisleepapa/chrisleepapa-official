@@ -1,3 +1,31 @@
+## 최신 이어하기 상태 — 2026-11-02 20:xx KST
+
+### 이번 단일 작업 — 최신 develop Preview 응답/소스 일치 확인
+
+- Vercel develop 브랜치 최신 READY 배포: `chrisleepapa-official-9rswxn4sw-chrisleepapas-projects.vercel.app`, 배포 커밋 `608af817035b8eb94a2ad7219925e2b0e02c0ecf`.
+- GitHub `608af...`과 현재 `develop` 비교 결과: develop이 5개 커밋 앞서 있으나 변경 파일은 `docs/ADSENSE_AUDIT_HANDOFF_2026-10-30.md`, `docs/ADSENSE_AUDIT_NEXT_STEPS.md` 두 문서뿐이다. 사이트 HTML/JS는 Preview 배포 커밋과 동일하므로 이 Preview를 현재 앱 소스 검증 기준으로 사용할 수 있다.
+- Vercel Preview 응답 확인(모두 HTTP 200): `/about`, `/tutupupupipi`, `/miracleshot`, `/goal`, `/music`, `/movie`.
+- 응답 HTML 정적 확인:
+  - About: canonical `https://chrisleepapa.com/about`, `index, follow`, AdSense loader 1개, GTM script/noscript 각 1개. 제거 대상 중복 번역 키 `process_en_title`, `process_en_note` 미검출.
+  - TuTuPuPuPiPi: canonical/robots 정상, AdSense loader 1개, GTM script/noscript 각 1개, 영상 카드 `data-video-id` 6개.
+  - Miracle Shot 스토리 소개: canonical/robots 정상, AdSense loader 1개, GTM script/noscript 각 1개.
+  - GOAL 게임 실행 화면: `noindex, nofollow`, AdSense loader 0개, GTM script/noscript 각 1개. 게임 화면 광고 제외 상태 유지.
+  - Music 및 Movie: 각 canonical/robots 정상, 직접 AdSense loader 0개, GTM script/noscript 각 1개.
+- 판정: Preview가 현재 develop 앱 소스와 일치하고 주요 페이지 응답/정적 메타데이터 및 직접 광고 로더 범위가 기록된 의도와 일치한다. Miracle Shot 스토리와 GOAL 게임을 구분했고 게임 실행 화면의 광고 제외도 유지된다.
+- 검증 한계: 이 확인은 Vercel 응답 HTML 검사이며 실제 브라우저의 JavaScript 실행, 모바일/PC 레이아웃, 이미지/YouTube/Spotify 재생, Auto ads 실제 삽입 위치를 검증한 것이 아니다. GTM 실시간 게시 버전 및 Search Console 실제 색인 데이터도 확인하지 못했다. 따라서 브라우저/Google 계정 검증은 미완료다.
+- 코드 변경: 없음. 사이트 HTML/JS 및 main/production 변경 없음.
+
+### 다음 단일 작업 — Google 계정의 실서비스 검증
+
+1. GTM 컨테이너 `GTM-NGDTQNVG`의 현재 게시 버전이 2026-10-30 제공 export v2와 일치하는지 확인한다.
+2. AdSense 계정에서 승인/등록 상태를 가정하지 말고, 실제 계정 상태 및 사이트별 Auto ads 설정/광고 표시 진단을 확인한다. Auto ads가 실제로 삽입되는 화면이 확인되면 URL과 화면을 기록한다.
+3. Search Console에서 `https://chrisleepapa.com` 속성의 sitemap 상태, 발견된 URL, 색인 URL, 제외/오류 및 Google 선택 canonical을 확인한다.
+4. Google 계정 화면/연결 데이터에 접근하지 못하는 항목은 미완료로 유지하고, 정적 HTML 결과로 대체 판정하지 않는다.
+
+- 고정 원칙: 성경·찬송 및 실제 게임 실행 화면은 광고 대상 콘텐츠 심사에서 제외. 모든 소스 수정은 develop에서만 진행하고 main/production은 별도 지시 전까지 변경하지 않는다.
+
+---
+
 # Chris LEE.PAPA AdSense 점검 — 이어하기 메모
 
 - 기준일: 2026-11-02

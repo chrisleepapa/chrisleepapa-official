@@ -2049,3 +2049,19 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 - 조치: 코드 변경 없음. 상품/판매처 링크와 기능 유지.
 - 검증 한계: GitHub develop 정적 소스만 확인. 각 외부 판매 링크의 현재 목적지/재고/상품 상태, 브라우저 UI 및 모바일 표시, 실시간 광고 노출은 미검증. main/production 미변경.
 - 다음 단일 작업: `index.html` 홈 화면의 광고 대상 콘텐츠 구성, Sister Squad 2 본편 임베드 주변의 자체 설명/카드 반복, 광고 코드 및 동적 렌더링 구조를 확인한다.
+
+
+## 최근 단일 작업 결과 — Home 페이지 및 동적 홈 섹션
+
+- 대상: `index.html`, `js/home-chris-pick-v2.js`, `js/home-chris-note.js`, `js/home-language.js`, `js/main.js`.
+- develop blob SHA: `index.html` = `c56d154d11629bcb087169118c5e370e6b77b7f1`; `home-chris-pick-v2.js` = `76f505eed40196b5f65d8cc09bdb4255bc156b2f`; `home-chris-note.js` = `3262cfc304f4feaa3d944189f00449da20d7ac1b`.
+- 기본 설정: canonical `https://chrisleepapa.com/`, `index, follow`, 직접 AdSense loader 1개, 수동 광고 슬롯 0개, 직접 `adsbygoogle.push` 0개.
+- 미디어: Sister Squad 2 본편 YouTube-nocookie iframe 1개. 제목, 저주받은 요정마을의 줄거리, 본편 공개 안내, 작품 상세 페이지 링크가 영상 주변에 있음. 영상만 단독으로 제공하는 화면은 아님.
+- 독립 본문: 창작 아카이브의 목적, 두 딸과 함께 시작한 이야기, 음악·워십·출판·AI 제작 과정에 대한 설명이 정적 HTML에 있음. 홈은 개별 작품 상세 페이지가 아니라 프로젝트 탐색 허브 역할.
+- 동적 콘텐츠: Chris's Pick 스크립트는 다양한 책/음악/영상 작품을 큐레이션하는 데이터 배열을 보유하고, Chris's Note는 Journal 1~6의 제목·요약·목적지 6개를 각각 제공함. 두 섹션의 컨테이너가 HTML에 있고 관련 스크립트가 페이지 하단에서 로드됨. 홈 언어 스크립트는 문서 언어에 맞춰 Faith Journey 및 Sister Squad 2 관련 텍스트를 갱신함.
+- 중복 검토: Chris's Note 요약은 Journal 상세 글의 탐색용 요약이며 상세 글의 본문을 그대로 복제하는 구조는 아님. Chris's Pick도 작품 링크를 제공하는 큐레이션 역할로 판단. 홈에 Faith Journey의 성경 읽기/묵상/기도 기능 안내가 있지만 성경 본문·찬송 악보를 제공하는 화면이 아니라 기능 페이지로 이동시키는 안내 영역임.
+- 광고/GTM: 제공된 GTM v2 export(2026-10-30, version 2)는 GA4 Google tag 1개만 포함하고 AdSense 태그는 없음. 현재 게시 버전과의 동일성 및 실제 Auto ads 배치는 미검증.
+- 판정: 자체 창작 아카이브 소개와 프로젝트별 고유 탐색 정보가 존재하며, 메인 영상 임베드 주변에도 독립적인 작품 소개가 있음. 정적 소스에서 즉시 수정이 필요한 복제 콘텐츠/가치 부족 문제를 확인하지 못함.
+- 조치: 코드 변경 없음. 기존 홈 영상과 동적 큐레이션 유지.
+- 검증 한계: develop 정적 소스 및 JS 구조 확인. 실제 브라우저에서 동적 섹션 표시, 언어 전환, 모바일/PC 레이아웃, 영상 재생, 현재 광고 노출 위치는 미검증. main/production 미변경.
+- 다음 단일 작업: sitemap의 24개 URL을 현재 develop 파일과 대조해 색인 대상/광고 대상/광고 제외 대상, canonical, robots, 직접 AdSense loader 수를 한 표로 재검증하고 누락된 광고 대상 페이지가 없는지 확인한다.

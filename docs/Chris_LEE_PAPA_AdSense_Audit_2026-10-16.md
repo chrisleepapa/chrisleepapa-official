@@ -4,7 +4,7 @@
 - **기준 도메인:** https://chrisleepapa.com/
 - **작업 기준 소스:** GitHub `chrisleepapa/chrisleepapa-official`의 `develop` 브랜치 우선. 검증·사용자 승인 전에는 `main`에 반영하지 않음.
 - **심사 이력:** 사용자가 제공한 기록상 chrisleepapa.com은 2026-10-19 사이트 검토를 신청했고 2026-10-30 두 사유로 거절됨. 현재 AdSense 계정의 사이트 등록/상태 및 재검토 가능 여부는 계정 화면 확인 전까지 미확인. 이 문서는 재심사 준비 점검이며, 새로운 검토 요청을 제출하지 않음.
-- **문서 버전:** Audit 1.70 — SISTER SQUAD 1 한국어 본문·다국어 콘텐츠 일치 수정
+- **문서 버전:** Audit 1.71 — GTM v2 내보내기 재확인 및 현재 게시본 구분
 - **최초 점검의 역사적 판정:** Audit 1.0 작성 당시의 판단이며 현재 상태를 뜻하지 않음. 아래 미완료 항목은 실제 존재·운영 여부와 최신 소스를 다시 확인한 뒤에만 유효한 점검 대상으로 채택한다.
 
 ## 최우선 기준 — 실제 AdSense 탈락 사유 (고정)
@@ -1220,3 +1220,14 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **AdSense 관점:** 이 수정은 독창적 이야기의 설명을 한국어 화면에서도 빠짐없이 유지하여 언어 전환에 따른 콘텐츠 축약을 줄이는 품질 개선임. 이 변경 하나만으로 AdSense 승인이나 복제 콘텐츠 판정 해소를 보장하지 않음.
 - **배포:** develop 브랜치만 수정. main 및 Production 배포는 변경하지 않음. develop 배포/브라우저 화면 검증은 별도 미완료.
 - **점수:** 74/100 유지. 콘텐츠 설명의 언어별 일관성은 개선했으나 실제 런타임·GTM 게시 버전·광고 요청 검증이 남아 있어 점수 상향 근거로 계산하지 않음.
+
+
+### 2026-11-03 / Audit 1.71 — 보관된 GTM v2 내보내기 재검증
+
+- **파일 근거:** Library에 보관된 `GTM-NGDTQNVG_v2.json`, exportTime `2026-10-30 04:10:04`, container `GTM-NGDTQNVG`, container version `2`.
+- **확인된 구성:** 내보내기 파일의 tag 배열은 1개이며, `Google tag - GA4` (`googtag`)만 포함. 측정 ID `G-NBGELYQ4TZ`, firingTriggerId `2147479553`(All Pages)로 설정되어 있음. 내보내기 안에 AdSense 태그 또는 AdSense 관련 custom HTML tag는 없음.
+- **추가 관찰:** tag의 consentSettings.consentStatus는 `NOT_SET`. 이 값만으로 실제 동의 배너나 개인정보 처리의 적법성을 판정하지 않으며, 별도 확인 항목으로 남김.
+- **해석 범위:** 이 파일은 2026-10-30에 내보낸 version 2의 스냅샷임. 이후 컨테이너에 새 버전이 게시되었는지, 실제 Production 페이지에서 어떤 컨테이너 버전이 실행되는지는 증명하지 못함. 따라서 “현재 게시 GTM에 AdSense 태그가 없다”고 확정하지 않음.
+- **기존 HTML과의 관계:** 현재 develop/main 소스에서 광고 대상 페이지는 직접 AdSense loader를 포함하고, GTM은 GA4/기타 컨테이너 동작을 위한 별도 로더로 남아 있음. GTM v2에 AdSense tag가 없다는 사실은 HTML에 직접 포함된 AdSense loader의 존재와 모순되지 않음.
+- **조치:** 이 내보내기에서 제거할 AdSense GTM tag는 확인되지 않아 컨테이너 설정 변경은 하지 않음. 최신 게시 버전 확인 및 브라우저 네트워크 검증을 미완료로 유지.
+- **배포/점수:** 코드와 Production은 변경하지 않음. 내부 점수 74/100 유지.

@@ -449,3 +449,15 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 4. 그다음 이 문서의 기존 URL별 콘텐츠 체크리스트에서 미완료 항목만 이어서 확인한다. 완료 항목을 다시 열거나 새로운 기준을 만들지 않는다.
 
 **문서 관리:** 앞으로 수정하는 것은 이 파일 하나뿐이다. 새 문서를 만들지 않고, 각 점검 결과는 이 파일의 해당 항목 또는 날짜가 붙은 진행 기록에만 추가한다.
+
+
+### 2026-11-02 / Audit 1.15 — 통합문서 기준 최신 develop Preview 재검증
+
+- 최신 `develop` 커밋 `5dc0fd94dde7181e8576256ce952a72a1864807c`의 Vercel Preview 배포가 `READY` 상태임을 확인. 이번 커밋은 Docs 문서 정리이며 사이트 앱 소스 변경은 없음.
+- Preview의 `/sitemap.xml` 응답은 HTTP 200이며 `<loc>` 24개를 반환. URL 구성은 현재 사이트의 24개 공개 sitemap 경로와 일치.
+- sitemap 중 주요 광고 대상 및 제외 경로 16개를 Preview에서 다시 요청. 16/16 HTTP 200.
+- 16개 경로 모두 GTM 로더가 정확히 1개 확인됨. canonical은 `/goal`을 제외한 확인 페이지에서 공식 `.com` URL과 일치. `/goal`은 canonical 없이 `noindex, nofollow`이며 AdSense 로더 0개로 게임 실행 화면 제외 상태 유지.
+- AdSense 직접 로더: 홈, About, TuTuPuPuPiPi, Miracle Shot 스토리, SISTER SQUAD 1·2, Korean Worship, English Worship, Wallpaper에 각 1개. `/music`, `/movie`, `/bible`, `/contact`, `/privacy`, `/terms`, `/goal`은 0개. 이 결과는 Preview 응답 HTML에 직접 포함된 로더만 센 것이며 GTM/Auto ads에서 실제 광고가 삽입되는지 증명하지 않음.
+- 두 거절 사유에 대한 콘텐츠 판정: 이번 작업은 새 본문 품질 판정이 아니라 기존 수정본의 Preview 응답·기술 상태 재확인이다. 따라서 이전 URL별 콘텐츠 판정을 자동으로 상향하거나 AdSense 승인 준비 완료로 판정하지 않음.
+- 계정 수준 미완료: AdSense 사이트 등록/정책센터/Auto ads, GTM 현재 게시 버전, Search Console 실제 색인 데이터는 연결된 계정 도구가 없어 확인 불가. 미확인 상태를 유지하며 임의로 완료 처리하지 않음.
+- **조치:** 앱 소스 수정 없음. 점검문서에만 결과 기록. 작업 브랜치 develop 유지, main/production 변경 없음.

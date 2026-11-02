@@ -2157,3 +2157,19 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 - 조치: 코드 변경 없음.
 - 검증 한계: develop 정적 소스 및 저장소 이미지 존재 확인. Unsplash 이미지의 실제 표시, 외부 URL 가용성, 브라우저/모바일 표시 및 광고 위치는 미검증. main/production 미변경.
 - 다음 단일 작업: P0/P1 페이지별 점검 기록과 현재 develop 파일 상태를 최종 대조하고, 남은 미완료 항목을 우선순위로 정리한다.
+
+
+## 최근 단일 작업 결과 — 사이트맵 밖의 루트 HTML 13개
+
+- develop Git tree의 루트 HTML 37개와 sitemap 24개를 대조. sitemap 밖 HTML은 13개: `booktop`, `curling`, `fiveinrow`, `game`, `gameinfo`, `goal`, `guestbook`, `naver8c846221d6596a175ea38d4f8e3ec89a`, `shop`, `switch`, `tetris`, `today`, `journal`.
+- AdSense 코드: 이 13개 파일 모두 직접 AdSense loader 0개, 수동 광고 슬롯 0개, 직접 `adsbygoogle.push` 0개.
+- 색인 설정:
+  - `shop`: `index, follow`, canonical 존재. sitemap에는 없지만 내부 링크로 발견될 수 있는 indexable 페이지. 본문은 공식 판매처/상품 디렉터리 성격이며, 별도 상세 작품 설명보다 구매 링크 비중이 높음. 광고 코드는 없으므로 즉시 광고 노출 문제는 없으나, 사이트 전체 콘텐츠 가치 관점에서 얇은 페이지 후보로 기록. noindex 전환은 검색 유입/판매 목적에 영향을 주므로 이번에는 임의 변경하지 않음.
+  - `journal`: `noindex, follow`, 광고 코드 없음. 상세 글 6개는 sitemap에 포함됨.
+  - `today`, `guestbook`: `noindex, follow`, 광고 코드 없음.
+  - `booktop`, `gameinfo`, `game`, `tetris`, `curling`, `fiveinrow`, `goal`, `switch`: `noindex, nofollow`, 광고 코드 없음.
+  - Naver 소유권 확인 HTML: title/canonical/robots/GTM/AdSense 코드가 없는 짧은 검증 파일.
+- 게임/기능 페이지는 사용자의 기존 운영 원칙대로 광고 대상에서 제외되어 있고, 확인한 게임 HTML은 모두 noindex/no-follow 및 광고 코드 0개.
+- 판정: 사이트맵 밖에서 예상하지 못한 광고 로더를 가진 페이지는 발견되지 않음. 주의 대상으로 남는 것은 광고가 없는 indexable `/shop` 한 페이지이며, 콘텐츠 확장 또는 noindex 여부는 판매/검색 목적을 고려해 별도 판단할 사항.
+- 검증 한계: GitHub develop 정적 소스 기준. Google이 실제로 발견/색인한 URL 목록은 Search Console에서 확인해야 함. main/production 미변경.
+- 다음 단일 작업: 전체 점검 결과를 다시 읽고 미완료/실서비스 검증 항목과 콘텐츠 개선 후보를 분리해 최종 체크리스트를 정리한다.

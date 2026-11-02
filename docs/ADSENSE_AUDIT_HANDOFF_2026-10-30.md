@@ -4698,3 +4698,27 @@ TuTuPuPuPiPi 수정 후 develop 소스의 최신 HEAD와 Vercel Preview 상태�
 - GitHub compare 기준 배포 커밋 608af... 이후 현재 develop HEAD e3a96a4a6882191f4d7c3f4dce6f59857c79dede까지 1개 커밋 앞서 있으며, 차이는 docs/ADSENSE_AUDIT_NEXT_STEPS.md만 수정된 문서 커밋이다. 따라서 현재 앱 소스는 READY 미리보기와 동일함.
 - 미리보기 응답의 x-robots-tag는 noindex/nofollow로 확인되어 preview 크롤링 방지 상태. HTML 안의 canonical은 운영 도메인 https://chrisleepapa.com/about로 유지.
 - 검증 범위: HTTP 응답 및 반환 HTML 확인. 실제 브라우저 실행, JavaScript 런타임, 모바일/PC 레이아웃, 외부 링크/플레이어, 광고 삽입 위치는 아직 확인하지 않음. production 도메인 배포/수정 없음.
+
+
+## 2026-11-02 후속 실서비스/브랜치 상태 보충
+
+### TuTuPuPuPiPi 최종 파일 재확인
+- 현재 develop blob SHA: fc7740fb4161a30a06e33da99174950f4489930a (기존 8863d632... 기록은 이후 alt/접근성 개선 커밋 전의 스냅샷).
+- Shorts 썸네일 6개 alt가 각 장면을 구체적으로 설명하며, 언어 전환 시 한국어/영어 alt 배열을 적용하는 코드와 각 카드의 실제 에피소드 제목을 aria-label/title에 연결하는 코드가 존재함.
+- 6개 영상 ID는 서로 다르고 중복 없음. 직접 AdSense loader 1개 유지.
+- 관련 커밋: c55ebf3e2da82e6a26e390881af7d188c12a3410, f4c3113f647ccd9782cede181da8f9d30c10853e.
+
+### AdSense/크롤링 파일 실제 응답
+- develop 미리보기의 /ads.txt, /robots.txt, /sitemap.xml 모두 HTTP 200.
+- /ads.txt 내용: google.com, pub-3207219520058740, DIRECT, f08c47fec0942fa0.
+- production https://chrisleepapa.com/ads.txt도 HTTP 200이며 동일한 publisher line을 반환함.
+- robots.txt는 Allow: / 및 운영 sitemap URL을 선언.
+
+### 브랜치/배포 차이 — 반드시 최신 상태 우선
+- main HEAD: 21b891c15c97de48e6788fc4210ff9ce52ee7c44.
+- develop HEAD: ae6b00c0cad4b1a32a8c4a7da53be0b14095f3ef.
+- compare main...develop: develop 29 commits ahead, 0 behind. 이 차이는 사용자가 main 동기화를 요청한 뒤 develop에서 이어서 진행한 점검/수정/문서 커밋이며, main은 이 후속 작업을 아직 받지 않음.
+- Vercel develop 최신 READY 배포 커밋은 608af817035b8eb94a2ad7219925e2b0e02c0ecf. 현재 develop HEAD와의 차이는 문서 파일 2개만 수정한 3개 커밋이며, 앱 소스는 배포된 미리보기와 동일함.
+- Vercel production 최신 READY 배포는 main 커밋 c5e491bb6b125eb00b1e871163c7d0fb7cca74e8. main HEAD 21b891...까지도 아직 production 배포가 진행되지 않은 상태.
+- production /about은 HTTP 200이지만 아직 이전 버전(process_en_note 반복 문단 포함)을 반환함. About 중복 정리 수정은 develop에만 있음. production /ads.txt는 정상 200.
+- main/production은 이 후속 감사에서 수정하거나 배포하지 않았다. 배포 한도/사용자 승인 상태를 임의로 가정하지 않는다.

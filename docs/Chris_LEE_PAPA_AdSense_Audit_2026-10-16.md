@@ -1007,3 +1007,15 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **판정:** Audit 1.40에서 수정한 About의 도구 역할 설명은 Preview에서 실제 응답으로 확인 완료. Production에는 아직 반영하지 않음.
 - **변경 범위:** 이번 단계 소스 수정 없음. main/Production 병합도 하지 않음.
 - **점수:** 내부 AdSense 준비도 74/100 유지. 제작 과정의 사실 정확성은 개선·검증되었으나, Google 계정의 실제 심사 사유 해소를 직접 입증하지는 않음.
+
+
+### 2026-11-03 / Audit 1.56 — SISTER SQUAD 허브 세계관 6개 장소 및 한·영 76개 번역 키 Preview 확인
+
+- **검사 대상:** `sistersquad-hub.html`의 develop/main 소스 및 `https://develop.chrisleepapa.com/sistersquad-hub` Preview.
+- **브랜치 비교:** develop blob `9302ee819f65b31e755916ae01fc096a956a7c34`, main blob `f156fc1d7c039e3a22fac217443edde7021e02b0`. 두 소스는 다르며 이번 세계관 보강은 develop에만 존재함.
+- **세계관 영역:** 비어 있던 영역에 실제 이야기 속 장소 6곳의 고유 설명을 제공함: Lumina, Arcadia, Dead Swamp, Giant’s Spine, Valley of Silence, Hope Market. 각 장소는 1권/2권의 사건과 인물의 선택, 시련, 목적에 연결되어 있음.
+- **번역 키 검사:** HTML의 `data-sq-i18n` 고유 키 76개를 확인함. 한국어 사전 77개, 영어 사전 81개이며, 실제 HTML에서 사용하는 76개 키가 두 사전에 모두 존재함. 누락 키 0개, 중복 HTML 키 0개.
+- **Preview 결과:** HTTP 200, canonical `https://chrisleepapa.com/sistersquad-hub`, `noindex, nofollow`, AdSense loader 1개, GTM 1개. 실제 Preview HTML에서 고유 번역 키 76개와 장소 6개 이름을 확인함.
+- **판정:** Audit 1.40의 세계관 보강은 develop Preview에 반영되어 실제 응답으로 확인됨. 한국어·영어 번역 키도 모두 존재함. main/Production에는 아직 반영하지 않음.
+- **변경 범위:** 이번 단계 소스 수정 없음. 기존 develop 작업 결과의 실제 Preview 검증임.
+- **점수:** 내부 AdSense 준비도 74/100 유지. 세계관 고유 설명과 언어별 완성도는 개선되었으나 Google의 실제 복제 콘텐츠 심사 해소를 직접 입증하는 것은 아님.

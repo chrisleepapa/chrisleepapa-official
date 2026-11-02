@@ -4,7 +4,7 @@
 - **기준 도메인:** https://chrisleepapa.com/
 - **작업 기준 소스:** GitHub `chrisleepapa/chrisleepapa-official`의 `develop` 브랜치 우선. 검증·사용자 승인 전에는 `main`에 반영하지 않음.
 - **심사 신청 여부:** 사용자가 아직 새 도메인에 대한 사이트 검토를 신청하지 않았다고 명시함. 이 문서는 신청 전 준비 점검이며, 심사 신청이나 승인을 의미하지 않음.
-- **문서 버전:** Audit 1.7 — AdSense 대상 페이지 광고 코드·SISTER SQUAD 1 콘텐츠 재점검
+- **문서 버전:** Audit 1.8 — 홈·SISTER SQUAD 1 광고 화면 재점검
 - **최초 점검의 역사적 판정:** Audit 1.0 작성 당시의 판단이며 현재 상태를 뜻하지 않음. 아래 미완료 항목은 실제 존재·운영 여부와 최신 소스를 다시 확인한 뒤에만 유효한 점검 대상으로 채택한다.
 
 ## 최우선 기준 — 실제 AdSense 탈락 사유 (고정)
@@ -296,7 +296,17 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - 복제 콘텐츠 정책은 외부 콘텐츠를 추가 설명·선별·부가 가치 없이 임베드하거나 복사한 화면에 Google 광고를 허용하지 않음. 본 점검은 이 기준을 페이지별로 적용함.
 - 참고: https://support.google.com/adsense/answer/7299563 및 https://support.google.com/publisherpolicies/answer/11190248
 
+### 7.11 홈 화면의 광고 적합성 재점검
+
+- `index.html`은 `index, follow`, canonical `https://chrisleepapa.com/`, 직접 AdSense 로더 1개.
+- 초기 HTML에는 SISTER SQUAD 2 본편 소개와 자체 설명, The Creative Archive의 목적 및 AI 창작·편집 과정을 설명하는 고유 문단, SISTER SQUAD·Music·Worship 프로젝트 안내, Faith Journey의 Read/Reflect/Cry Out 안내가 포함됨.
+- 홈에는 SISTER SQUAD 2의 YouTube 본편 임베드가 있으나, 영상만 단독으로 제공하지 않고 작품의 줄거리·가족 창작 배경·프로젝트 설명과 이동 경로를 함께 제공함. 따라서 소스 기준 복제 콘텐츠 위험은 낮음.
+- Chris's Pick 및 Chris's Note는 스크립트가 채우는 영역이 있어 실제 브라우저 렌더링 검증이 남아 있음. 다만 JS 없이도 보이는 핵심 아카이브 소개와 주요 프로젝트·Faith Journey 본문이 초기 HTML에 존재함.
+- **판정:** 두 고정 거절 사유 모두 소스 기준 양호. 홈은 단순 링크 목록이나 동영상 모음이 아니라 창작 아카이브의 목적과 주요 프로젝트를 안내하는 허브로 구성됨. 배포 후 스크립트 기반 섹션이 정상적으로 채워지는지 별도 확인.
+
 ## 8. 변경 기록
+
+- **2026-11-02 / Audit 1.8:** AdSense 직접 로더가 있는 홈 화면의 초기 HTML을 재검토. SISTER SQUAD 2 임베드에 작품 설명·가족 창작 배경·Creative Archive 소개·프로젝트 탐색·Faith Journey 안내가 함께 있어 단순 임베드/링크 모음이 아님을 확인. Chris's Pick/Chris's Note는 스크립트 렌더링 여부를 실제 브라우저에서 추가 확인하도록 남김.
 
 - **2026-11-02 / Audit 1.7:** 광고 직접 로더가 있는 페이지와 없는 페이지를 현재 develop 소스 기준으로 분류. SISTER SQUAD 1 페이지에서 번역 스크립트에만 정의되고 화면에 표시되지 않던 세계관 제작 노트 마크업 누락을 발견해 본문에 연결. 한국어/영어 설명이 실제 DOM에 렌더링되도록 보완하고 본문 가시 텍스트 약 1,652자 → 약 1,974자 확인. 직접 로더 1개 유지. 수정 커밋 8e03e19. 외부 임베드가 있는 화면의 광고 정책 리스크 및 실제 화면 확인을 후속 검증 항목으로 명시.
 

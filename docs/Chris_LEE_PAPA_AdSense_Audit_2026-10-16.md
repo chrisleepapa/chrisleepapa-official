@@ -4,7 +4,7 @@
 - **기준 도메인:** https://chrisleepapa.com/
 - **작업 기준 소스:** GitHub `chrisleepapa/chrisleepapa-official`의 `develop` 브랜치 우선. 검증·사용자 승인 전에는 `main`에 반영하지 않음.
 - **심사 신청 여부:** 사용자가 아직 새 도메인에 대한 사이트 검토를 신청하지 않았다고 명시함. 이 문서는 신청 전 준비 점검이며, 심사 신청이나 승인을 의미하지 않음.
-- **문서 버전:** Audit 1.8 — 홈·SISTER SQUAD 1 광고 화면 재점검
+- **문서 버전:** Audit 1.9 — develop·production 광고 심사 반영 범위 검증
 - **최초 점검의 역사적 판정:** Audit 1.0 작성 당시의 판단이며 현재 상태를 뜻하지 않음. 아래 미완료 항목은 실제 존재·운영 여부와 최신 소스를 다시 확인한 뒤에만 유효한 점검 대상으로 채택한다.
 
 ## 최우선 기준 — 실제 AdSense 탈락 사유 (고정)
@@ -304,7 +304,20 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - Chris's Pick 및 Chris's Note는 스크립트가 채우는 영역이 있어 실제 브라우저 렌더링 검증이 남아 있음. 다만 JS 없이도 보이는 핵심 아카이브 소개와 주요 프로젝트·Faith Journey 본문이 초기 HTML에 존재함.
 - **판정:** 두 고정 거절 사유 모두 소스 기준 양호. 홈은 단순 링크 목록이나 동영상 모음이 아니라 창작 아카이브의 목적과 주요 프로젝트를 안내하는 허브로 구성됨. 배포 후 스크립트 기반 섹션이 정상적으로 채워지는지 별도 확인.
 
+### 7.12 develop과 실제 AdSense 심사 대상 도메인 비교
+
+**검증 시각:** 2026-11-02 (KST), Vercel 배포 URL fetch 응답 기준
+
+- `https://chrisleepapa.com/`, `/sistersquad`, `/about`은 모두 HTTP 200, canonical은 각각 공식 `.com` URL, meta robots는 `index, follow`, AdSense 직접 로더는 각 1개로 확인됨.
+- 현재 production `/about`에는 이전 상태 문구('Creative Archive를 전면 업데이트하고 있습니다', 'SISTER SQUAD 1 영문판 제작 및 유통을 준비하고 있습니다')가 남아 있음. develop `/about`에는 최신 상태 문구가 한국어 및 영어로 반영됨.
+- 현재 production `/sistersquad`에는 새로 연결한 `seo_making_desc` 세계관 노트 마크업이 없음. develop `/sistersquad`에는 해당 본문 마크업과 한국어·영어 번역 데이터가 포함됨.
+- `https://develop.chrisleepapa.com/sistersquad`, `/about`, `/`은 HTTP 200이나 응답 헤더 `X-Robots-Tag: noindex, nofollow`가 설정되어 있음. HTML meta robots는 index, follow여도 HTTP 응답 헤더의 noindex가 우선 적용됨. 따라서 develop alias는 검색엔진/AdSense의 공개 심사 대상과 분리된 검토용 환경으로 확인됨.
+- **심사상 핵심:** AdSense 신청 대상인 `chrisleepapa.com` production은 아직 develop의 About 및 SISTER SQUAD 1 개선 내용을 반영하지 않음. develop에서 수정한 것만으로 현재 실제 심사 대상 사이트가 개선되었다고 볼 수 없음.
+- 기존 작업 원칙대로 main은 수정하지 않음. Audit와 콘텐츠 수정은 develop에서만 진행. 최종 심사 전에는 사용자의 확인 후 develop 변경을 production에 반영하고, `.com` 도메인에서 동일한 본문·광고 코드·canonical·robots 상태를 다시 검증해야 함. 지금은 AdSense 재심사 요청을 제출하지 않음.
+
 ## 8. 변경 기록
+
+- **2026-11-02 / Audit 1.9:** Vercel 배포 URL fetch로 production `.com`과 develop custom domain을 비교. Production `/`, `/sistersquad`, `/about`은 HTTP 200, index/follow, 공식 canonical, 직접 AdSense 로더 1개. Production About에는 구형 제작 현황, SISTER SQUAD 1에는 세계관 제작 노트 미반영 확인. Develop 페이지들은 HTTP 200이나 응답 헤더 X-Robots-Tag noindex,nofollow로 검색엔진 노출 차단. develop 개선이 production/AdSense 심사 대상에 아직 반영되지 않았음을 명확히 기록. main 변경 및 심사 요청 없음.
 
 - **2026-11-02 / Audit 1.8:** AdSense 직접 로더가 있는 홈 화면의 초기 HTML을 재검토. SISTER SQUAD 2 임베드에 작품 설명·가족 창작 배경·Creative Archive 소개·프로젝트 탐색·Faith Journey 안내가 함께 있어 단순 임베드/링크 모음이 아님을 확인. Chris's Pick/Chris's Note는 스크립트 렌더링 여부를 실제 브라우저에서 추가 확인하도록 남김.
 

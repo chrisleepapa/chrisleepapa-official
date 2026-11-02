@@ -996,3 +996,14 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **배포 상태:** develop 소스만 수정. main/Production은 변경하지 않았으며 새 Preview 반영은 확인 전.
 - **판정:** Vol.2·Vol.3의 수록곡 개수와 순서는 공식 발매 목록과 일치하며, 발견된 세 가지 표기 차이를 develop에서 수정함.
 - **점수:** 내부 AdSense 준비도 74/100 유지. 콘텐츠 메타데이터 정확성 개선이며 Google의 실제 복제 콘텐츠 판정을 직접 해결했다는 근거는 아니므로 점수는 변경하지 않음.
+
+
+### 2026-11-03 / Audit 1.55 — About 페이지의 AI 도구 역할 설명 Preview 검증
+
+- **검사 대상:** develop `about.html`, Production `/about`, Preview `/about`.
+- **사실관계:** develop 소스 및 Preview에 `Suno AI로 음악을 만들고, Gemini로 이미지·영상·사운드를 제작한다`는 설명이 존재함. 사용자가 확인한 실제 제작 도구 역할과 일치함. Skywork는 Sister Squad 원고 작업 맥락에서 별도로 다루므로 About의 전체 도구 소개에 임의로 추가하지 않음.
+- **Preview 결과:** `https://develop.chrisleepapa.com/about` HTTP 200, canonical `https://chrisleepapa.com/about`, `noindex, nofollow`, AdSense loader 1개, GTM 1개. Preview 응답에 Suno와 Gemini가 모두 존재함.
+- **Production 결과:** `https://chrisleepapa.com/about` HTTP 200, canonical 일치, `index, follow`, AdSense loader 1개, GTM 1개. 현재 Production 응답에는 Suno만 있고 Gemini 역할 설명이 없어 develop과 차이가 남아 있음.
+- **판정:** Audit 1.40에서 수정한 About의 도구 역할 설명은 Preview에서 실제 응답으로 확인 완료. Production에는 아직 반영하지 않음.
+- **변경 범위:** 이번 단계 소스 수정 없음. main/Production 병합도 하지 않음.
+- **점수:** 내부 AdSense 준비도 74/100 유지. 제작 과정의 사실 정확성은 개선·검증되었으나, Google 계정의 실제 심사 사유 해소를 직접 입증하지는 않음.

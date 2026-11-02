@@ -77,7 +77,17 @@
     return '';
   }
   function getTodayKey(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
-  function getDailyPick(picks){let hash=2166136261;const key=getTodayKey();for(let i=0;i<key.length;i++){hash^=key.charCodeAt(i);hash=Math.imul(hash,16777619);}return picks[(hash>>>0)%picks.length];}
+  // Keep the full archive intact, but do not rotate third-party-IP fan works or generic numbered desktop wallpaper cards into the AdSense-facing homepage feature.
+  const HOMEPAGE_PICK_EXCLUSIONS=new Set([
+    '벽력일섬','영역전개','역대급 출연진 귀칼 실사 촬영 현장 #귀멸의칼날',
+    '체인소맨 Rev It Up','주술회전 영역전개','귀멸의칼날 벽력일섬',
+    '귀멸의칼날 난리났어','귀멸의칼날 촬영준비','귀멸의칼날 촬영 비하인드',
+    '귀멸의칼날 Flash bang',
+    'Desktop Wallpaper 02','Desktop Wallpaper 03','Desktop Wallpaper 04',
+    'Desktop Wallpaper 05','Desktop Wallpaper 06','Desktop Wallpaper 07',
+    'Desktop Wallpaper 08','Desktop Wallpaper 09'
+  ]);
+  function getDailyPick(picks){const eligible=picks.filter(p=>!HOMEPAGE_PICK_EXCLUSIONS.has(p.title));const pool=eligible.length?eligible:picks;let hash=2166136261;const key=getTodayKey();for(let i=0;i<key.length;i++){hash^=key.charCodeAt(i);hash=Math.imul(hash,16777619);}return pool[(hash>>>0)%pool.length];}
   function getLang(){return (window.getCurrentLang?window.getCurrentLang():document.documentElement.lang||'ko').toString().toLowerCase().startsWith('en')?'en':'ko';}
   const EN_TITLE_MAP={
     'SISTER SQUAD 2 · 본편':'SISTER SQUAD 2 · Full Story','사랑한다고':'I Love You','2026 난리났어':'2026 — It’s Wild','벽력일섬':'Thunderclap and Flash','영역전개':'Domain Expansion',

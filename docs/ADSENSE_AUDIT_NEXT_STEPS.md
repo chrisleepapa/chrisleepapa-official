@@ -2,6 +2,48 @@
 
 - 기준일: 2026-11-02
 - 저장소: chrisleepapa/chrisleepapa-official
+- 작업 브랜치: develop only. main은 2026-11-02에 21b891c15c97de48e6788fc4210ff9ce52ee7c44까지 동기화됐고, 이후 develop 후속 점검으로 다시 분리됨.
+- 운영 도메인: https://chrisleepapa.com
+- 개발 도메인: https://develop.chrisleepapa.com
+- 상세 조사 기록: docs/ADSENSE_AUDIT_HANDOFF_2026-10-30.md
+
+## 현재 진행 상태 / 다음 단일 작업 — 2026-11-02 갱신
+
+### 정적 점검 및 미리보기 확인
+- 주요 광고 대상 콘텐츠 간 긴 본문 완전 일치 0건. 공통 브랜드/시리즈 설명과 실제 복제 본문을 구분.
+- TuTuPuPuPiPi 현재 blob SHA fc7740fb4161a30a06e33da99174950f4489930a. Shorts 6개 고유 ID, 장면별 한/영 썸네일 alt, 동적 에피소드 제목 연결 확인.
+- About의 중복 창작 과정 문단과 미사용 한/영 번역 키를 develop에서 제거. 수정 커밋 78476b2d3fb03676911a36f5c057eda7f2192adf.
+- sitemap 24개: canonical/robots/GTM 모두 24/24. 직접 AdSense loader 18개, 제외 6개, 수동 슬롯/push 0개.
+- sitemap 밖 루트 HTML 13개: 직접 광고 코드 0개. 게임 실행 페이지는 noindex/nofollow 및 loader 0개.
+- develop /ads.txt, /robots.txt, /sitemap.xml HTTP 200. production /ads.txt도 HTTP 200이며 publisher line 정상.
+- develop 미리보기 READY; About HTML HTTP 200으로 수정본 확인.
+
+### 브랜치/배포 상태
+- main HEAD 21b891c15c97de48e6788fc4210ff9ce52ee7c44.
+- develop HEAD ae6b00c0cad4b1a32a8c4a7da53be0b14095f3ef; main보다 29 commits ahead, 0 behind. 이후 후속 수정은 develop에만 있음.
+- develop 미리보기 READY 배포는 608af817035b8eb94a2ad7219925e2b0e02c0ecf 기준이며, 현재 develop과의 차이는 문서 3개 커밋뿐.
+- production 최신 READY 배포는 c5e491bb6b125eb00b1e871163c7d0fb7cca74e8로, main HEAD 21b891...도 아직 배포되지 않음. production /about은 이전 버전이며 About 수정은 develop에만 반영.
+- main 병합 및 production 배포는 추가 지시 전까지 하지 않는다.
+
+### 다음 단일 작업
+실제 Google 계정 검증이 남아 있다: GTM-NGDTQNVG의 현재 게시 버전과 2026-10-30 export v2 일치 여부, AdSense Auto ads 실제 노출 위치, Search Console 발견/색인 URL. 제공된 export v2는 GA4 Google tag 1개만 포함하고 AdSense 태그는 없지만, 현재 게시 버전과 같다고 단정하지 않는다.
+
+### 미완료
+- GTM 현재 게시 버전 확인.
+- AdSense Auto ads 실제 노출 위치/화면 확인.
+- Search Console 실제 발견/색인 URL 및 sitemap 상태 확인.
+- 브라우저에서 모바일/PC 렌더링, JS 런타임 및 외부 플레이어 확인.
+
+### 고정 범위
+- AdSense 거절 사유: 복제 콘텐츠 / 가치가 별로 없는 콘텐츠.
+- 성경·찬송 및 게임 실행 페이지는 광고 대상 콘텐츠 심사에서 제외.
+- 수정은 develop에서만 진행. main/production은 사용자의 추가 지시 전까지 변경하지 않는다.
+- 새 페이지 생성이나 근거 없는 반복 수정 금지.
+
+---
+
+- 기준일: 2026-11-02
+- 저장소: chrisleepapa/chrisleepapa-official
 - 작업 브랜치: develop only. main은 2026-11-02에 당시 develop HEAD 21b891c15c97de48e6788fc4210ff9ce52ee7c44까지 동기화됨. 이후 감사 수정은 develop에만 반영.
 - 운영 도메인: https://chrisleepapa.com
 - 개발 도메인: https://develop.chrisleepapa.com

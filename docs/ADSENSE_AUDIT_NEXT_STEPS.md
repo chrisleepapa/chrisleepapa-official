@@ -1,3 +1,16 @@
+## 추가 확인 — 광고 소유권 파일 및 크롤러 접근
+
+- `https://chrisleepapa.com/ads.txt`: HTTP 200. 내용은 `google.com, pub-3207219520058740, DIRECT, f08c47fec0942fa0` 한 줄이며 사용자가 제공한 publisher ID와 일치.
+- `https://chrisleepapa.com/robots.txt`: HTTP 200. `User-agent: *`, `Allow: /`, sitemap URL `https://chrisleepapa.com/sitemap.xml` 확인.
+- 판정: 공개 경로에서 ads.txt 및 robots.txt 접근 가능. ads.txt의 게시자 ID 오타/불일치는 확인되지 않음. 이것만으로 AdSense 계정 내 사이트 소유권/ads.txt 상태가 승인되었다고 판단하지 않음.
+- GTM export의 GA4 태그 consent status는 `NOT_SET`; 동의 설정은 별도 계정/태그 관리자 확인이 필요하며 현 단계에서 임의 변경하지 않음.
+
+### 계정 검증 차단 상태
+
+- ChatGPT 연결 앱 검색에서 AdSense 계정/사이트 정책 상태를 직접 읽는 전용 연결은 확인되지 않음. Ads Manager는 AdSense 사이트 심사/Auto ads 계정 콘솔과 다른 서비스이므로 대체 수단으로 사용하지 않음.
+- 따라서 AdSense 홈/사이트 상태/정책 센터/Auto ads 설정과 Search Console 실제 색인 데이터는 로그인된 Google 계정 화면 확인 전까지 미완료로 유지.
+- 사용자가 계정 화면을 공유하기 전에는 승인/미승인/등록 여부, Auto ads 설정 상태, Google 색인 결과를 추측하거나 완료 처리하지 않는다.
+
 ## 최신 이어하기 상태 — 2026-11-02 GTM 정적 구성 감사
 
 ### 이번 단일 작업 — GTM export v2와 실제 사이트 출력 대조

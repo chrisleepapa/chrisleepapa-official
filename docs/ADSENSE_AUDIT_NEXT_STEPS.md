@@ -1,3 +1,30 @@
+## 최신 이어하기 상태 — 2026-11-02 GTM 정적 구성 감사
+
+### 이번 단일 작업 — GTM export v2와 실제 사이트 출력 대조
+
+- Library에 보관된 `GTM-NGDTQNVG_v2.json` 원본(2026-10-30 export)을 다시 읽고 구성 확인.
+- 컨테이너: `GTM-NGDTQNVG` / account `6352507597` / container `250881100`.
+- Export version: `2`, 이름 `GA4 Google tag 설정 - chrisleepapa.com`.
+- 태그: `Google tag - GA4` 1개, 유형 `googtag`, 측정 ID `G-NBGELYQ4TZ`, firing trigger ID `2147479553`(All Pages 기본 트리거로 문서에 기술됨).
+- 내보내기에는 AdSense 태그/광고 삽입 태그가 없음. GTM이 광고 코드를 중복 주입하는 구성은 export에서 확인되지 않음.
+- 주의: 태그의 `consentStatus`는 `NOT_SET`. 동의 모드/Consent Initialization 설정은 이 export에 포함되지 않아 별도 확인 필요. 이것만으로 위반이라고 단정하지 않음.
+- 실제 공식 사이트 sitemap의 24개 URL을 HTTP 200 응답으로 확인:
+  - 24/24 페이지 모두 GTM script 1개 + noscript 1개.
+  - 24/24 페이지 모두 직접 gtag.js 로더 0개, 직접 `gtag('config', 'G-NBGELYQ4TZ')` 0개, 직접 `gtag('config', 'GT-5MJDBTR2')` 0개. HTML에서 직접 GA4 중복 설치 징후 없음.
+  - AdSense loader는 20/24 페이지에 1개, 제외 페이지 `/bible`, `/contact`, `/privacy`, `/terms`는 각각 0개.
+  - 정적 HTML에서 `adsbygoogle.push` 직접 호출은 24/24 모두 0개.
+- 판정: 사이트 소스 출력 기준으로 GTM 중복 설치/직접 GA4 중복 구성 및 제외 페이지의 직접 AdSense loader 유입은 발견되지 않음. export 구성상 GTM은 GA4 태그 1개만 포함하고 AdSense 태그는 없음.
+- 검증 한계: 2026-10-30 export가 현재 GTM에 게시된 live version 2인지, 그 이후 workspace 변경/새 게시가 있었는지는 GTM 계정 화면/API에 로그인해 확인하지 못함. HTML에서 GTM container ID가 1회 호출되는 것만으로 실제 태그 발화/GA4 실시간 이벤트/중복 page_view 유무를 증명할 수 없음. Google Tag Assistant Preview/GA4 DebugView 확인 미완료.
+- 코드 변경: 없음. develop 앱 소스 및 main/production 변경 없음.
+
+### 다음 단일 작업 — AdSense 계정의 실제 사이트/광고 설정 진단
+
+- 승인/등록 상태를 가정하지 않고 AdSense 홈의 계정/사이트 상태, chrisleepapa.com 등록 상태, 정책 센터/문제 진단 및 Auto ads 설정 화면에 실제로 표시되는 값을 확인한다.
+- 계정에 해당 메뉴/사이트가 없으면 “미등록/미확인”으로 기록하며 Auto ads 제외 설정을 이미 가능한 것처럼 안내하지 않는다.
+- 실제 Google 계정 화면을 직접 읽을 수 없는 경우 사용자 계정 연결/화면 제공이 필요하다고 명확히 표시하고, 정적 소스 검사만으로 계정 상태를 추정하지 않는다.
+
+---
+
 ## 최신 이어하기 상태 — 2026-11-02 20:xx KST
 
 ### 이번 단일 작업 — 최신 develop Preview 응답/소스 일치 확인

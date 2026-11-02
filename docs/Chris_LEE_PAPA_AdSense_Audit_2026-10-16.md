@@ -4,7 +4,7 @@
 - **기준 도메인:** https://chrisleepapa.com/
 - **작업 기준 소스:** GitHub `chrisleepapa/chrisleepapa-official`의 `develop` 브랜치 우선. 검증·사용자 승인 전에는 `main`에 반영하지 않음.
 - **심사 신청 여부:** 사용자가 아직 새 도메인에 대한 사이트 검토를 신청하지 않았다고 명시함. 이 문서는 신청 전 준비 점검이며, 심사 신청이나 승인을 의미하지 않음.
-- **문서 버전:** Audit 1.10 — production의 잔존 광고 위험 확인
+- **문서 버전:** Audit 1.11 — 주요 광고 페이지 production·develop 콘텐츠 비교
 - **최초 점검의 역사적 판정:** Audit 1.0 작성 당시의 판단이며 현재 상태를 뜻하지 않음. 아래 미완료 항목은 실제 존재·운영 여부와 최신 소스를 다시 확인한 뒤에만 유효한 점검 대상으로 채택한다.
 
 ## 최우선 기준 — 실제 AdSense 탈락 사유 (고정)
@@ -342,7 +342,21 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 
 **Production 현재 상태 요약:** 홈과 Music에 직접 AdSense 로더가 남아 있고, develop에서 이미 제거/제외한 조치가 아직 production에 미반영. 따라서 현재 production은 AdSense 재심사 제출 준비 완료 상태가 아님.
 
+### 7.14 주요 광고 페이지의 production·develop 본문 비교
+
+**2026-11-02 실서비스 응답 비교(각 페이지 HTML에서 script/style를 제외한 본문 텍스트 기준)**
+
+- **TuTu PuPu PiPi:** production 본문 텍스트 약 2,428자, develop 약 2,690자. production에도 캐릭터·세계관·OST·영상 안내가 있으므로 '콘텐츠가 전혀 없는 페이지'는 아님. 다만 develop에는 뚜뚜의 리더 역할, 세 친구의 상호보완적 성격, 하늘섬·숲·마을의 구체적인 장면, 여섯 편의 영상별 사건과 창작 세계 연결 설명이 추가되어 있음. 두 버전 모두 AdSense 직접 로더 1개. **저가치 위험 완화 측면에서 develop 버전이 더 강함.**
+- **SISTER SQUAD 1:** production 본문 약 1,491자, develop 약 1,974자. develop에 속삭이는 책에서 시작되는 모험의 상세 설명과 Fairy Town 세계관 제작 노트가 더해짐. 두 버전 모두 직접 로더 1개. production은 새 설명 미반영 상태.
+- **MIRACLE SHOT:** production과 develop의 본문 제목·주요 서술 및 직접 로더 1개가 동일한 것으로 확인. 이번 비교에서 추가 개선 필요 사항 없음.
+- **SISTER SQUAD Hub:** production과 develop의 주요 인물·세계관 설명과 직접 로더 1개가 동일한 것으로 확인. 이번 비교에서 추가 개선 필요 사항 없음.
+- **Korean Worship:** 두 버전 모두 직접 로더 1개와 원곡 가사·앨범 설명이 있음. develop에는 AI 도구를 보조 제작에 사용하고 생성 결과를 선택·수정했다는 별도 설명 섹션이 추가되어 있음. production은 해당 설명이 아직 미반영.
+- **English Worship:** 두 버전 모두 직접 로더 1개와 SHOUT 앨범 소개·가사가 있음. develop에는 인간이 가사·주제·예배 방향을 정하고 AI가 보컬·악기·편곡 제작을 보조했다는 설명이 추가되어 있음. production은 해당 설명이 아직 미반영.
+- **해석:** 위 차이는 곧바로 정책 위반을 뜻하지 않음. 다만 광고가 게재되는 화면에서 원작자의 창작 과정과 직접 작성한 콘텐츠가 명확히 드러나도록 하는 develop의 보완이 심사 준비 측면에서 더 유리함. main에 반영되기 전에는 production의 현재 상태를 그대로 기준으로 판단해야 함.
+
 ## 8. 변경 기록
+
+- **2026-11-02 / Audit 1.11:** Production과 develop의 TuTu PuPu PiPi, SISTER SQUAD 1, MIRACLE SHOT, SISTER SQUAD Hub, Korean/English Worship 본문을 실서비스 HTML 응답으로 비교. TuTu 및 SISTER SQUAD 1은 develop에 고유한 캐릭터·세계관·에피소드 설명이 더 있음. Worship 두 페이지는 develop에 AI 보조 제작과 인간 창작자의 선택·수정 역할을 설명하는 문단이 추가되어 있음. Miracle Shot과 SISTER SQUAD Hub는 비교 범위에서 주요 본문이 동일. Production은 아직 develop 변경을 반영하지 않은 상태로 기록.
 
 - **2026-11-02 / Audit 1.10:** 실제 production `.com`과 develop alias의 홈·Music 응답을 비교. Production 홈에 YouTube daily Top3/Trending Video 차트 코드와 AdSense 로더 1개가 잔존하고 develop에서는 관련 코드가 제거됨을 확인. Production Music에는 AdSense 로더 1개, develop에는 0개이며 develop은 혼합 애니메이션 영감/커버 음악 페이지 광고 제외 커밋(004c774)을 포함. Production SISTER SQUAD 1/About도 develop 수정 미반영. main...develop 비교 결과 develop 69 commits ahead. 이 상태를 두 실제 거절 사유에 대한 고위험 미해결 항목으로 분류하고, main 변경/재심사 제출은 보류.
 

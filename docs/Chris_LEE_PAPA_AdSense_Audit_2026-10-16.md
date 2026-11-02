@@ -4,7 +4,7 @@
 - **기준 도메인:** https://chrisleepapa.com/
 - **작업 기준 소스:** GitHub `chrisleepapa/chrisleepapa-official`의 `develop` 브랜치 우선. 검증·사용자 승인 전에는 `main`에 반영하지 않음.
 - **심사 이력:** 사용자가 제공한 기록상 chrisleepapa.com은 2026-10-19 사이트 검토를 신청했고 2026-10-30 두 사유로 거절됨. 현재 AdSense 계정의 사이트 등록/상태 및 재검토 가능 여부는 계정 화면 확인 전까지 미확인. 이 문서는 재심사 준비 점검이며, 새로운 검토 요청을 제출하지 않음.
-- **문서 버전:** Audit 1.30 — 비사이트맵 경로·삭제된 URL·서비스워커 잔여 동작 점검
+- **문서 버전:** Audit 1.31 — SISTER SQUAD 허브 세계관 콘텐츠 보강 및 핵심 광고 대상 페이지 품질 확인
 - **최초 점검의 역사적 판정:** Audit 1.0 작성 당시의 판단이며 현재 상태를 뜻하지 않음. 아래 미완료 항목은 실제 존재·운영 여부와 최신 소스를 다시 확인한 뒤에만 유효한 점검 대상으로 채택한다.
 
 ## 최우선 기준 — 실제 AdSense 탈락 사유 (고정)
@@ -674,4 +674,17 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **서비스워커·캐시 점검:** 저장소에서 현재 serviceWorker.register 호출은 발견되지 않음. 홈페이지는 기존 Service Worker 등록을 해제하고 Cache Storage 항목을 삭제하는 정리 코드를 실행함. sw.js는 네트워크 우선 fetch 후 일부 페이지에 보조 UI 스크립트를 주입하는 동작이며, caches.open/cache.addAll 기반 HTML 캐싱은 확인되지 않음. 따라서 현재 코드 기준 신규 방문자에게 서비스워커가 자동 등록되거나 과거 HTML 캐시가 광고 제외 페이지에 재사용되는 구조는 확인되지 않음.
 - **잔여 서비스워커 파일:** sw.js 자체는 저장소에 남아 있고 /miracleshot, /worship, 홈페이지에 보조 스크립트를 주입하는 구형 fetch handler가 포함됨. 관련 스크립트 파일은 모두 저장소에 존재함. 현재 등록 호출은 없으며 홈페이지에서 기존 등록을 해제하므로 즉시 삭제하지 않고 잔여 파일로 기록함. 기존 Service Worker가 설치된 사용자가 홈페이지 방문 전에 다른 경로로 직접 진입하는 경우의 일시적 영향은 브라우저 세션 없이는 확인 불가.
 - **AdSense 판단:** sitemap 외의 공개 HTML 경로에서도 광고 로더가 있는 숨은 추가 페이지는 발견하지 못함. 삭제된 화면 URL은 404, 게임/도구는 noindex 및 광고 코드 없음, /world-lore는 정식 허브로 영구 리디렉션됨. 이번 점검에서 두 고정 거절 사유를 직접 유발하는 추가 광고 화면은 발견하지 못함.
+
+
+
+### 2026-11-03 / Audit 1.31 — SISTER SQUAD 허브 세계관 콘텐츠 보강 및 핵심 광고 대상 페이지 품질 확인
+
+- **발견 사항:** SISTER SQUAD 허브의 세계관(World) 영역에 빈 sq-world-grid가 남아 있었고, 주요 장소 설명 6개(Lumina, Arcadia, Dead Swamp, Giant’s Spine, Valley of Silence, Hope Market)는 Magic 영역의 주제 카드에 중복 배치되어 있었다. 이는 세계관을 찾는 이용자에게 정보 구조가 불명확하고 World 섹션이 실질적으로 비어 보일 수 있는 문제였다.
+- **조치:** develop의 sistersquad-hub.html에서 World 섹션에 장소 카드 6개와 각 장소의 역할·서사적 의미를 배치하고, 중복된 장소 설명을 Magic 섹션에서 제거함. Magic 섹션에는 Sword of Reason, Bow of Empathy, Chaotic Time, Time Break, Moonlight Flower, Spring of Life 등 마법·상징 요소 6개만 남도록 구분함.
+- **한·영 다국어 확인:** World 섹션에 사용되는 luminaName, arcadiaName, swampName, spineName, valleyName, marketName 키의 한국어/영어 사전을 보완함. 전체 data-sq-i18n 키 76개를 양쪽 언어 사전과 대조해 누락 0건 확인.
+- **구조 확인:** World 섹션에 장소 카드 6개, Magic 섹션에 마법/상징 카드 6개 존재. sq-info-card 스타일 규칙도 정의되어 있음. 이미지 alt 누락 0건.
+- **핵심 광고 대상 콘텐츠 정적 품질 확인:** SISTER SQUAD 허브, 1권, 2권, TuTuPuPuPiPi, About, Miracle Shot 스토리, Yul 프로필, Jung 프로필, 홈페이지의 title/description/H1 및 본문 텍스트를 검사함. 모두 제목과 설명이 존재하고 명시적인 lorem ipsum/coming soon/공사중 문구는 발견되지 않음. 이미지 alt 누락도 0건.
+- **한계:** 본문 글자 수는 HTML 정적 텍스트 기준이며, JavaScript로 생성되는 동적 영역, 영상/음원 외부 임베드의 실제 재생, 모바일/PC 브라우저 렌더링과 클릭 테스트는 포함하지 않음. 검색엔진의 실제 평가나 AdSense 심사 점수를 의미하지 않음.
+- **AdSense 판단:** SISTER SQUAD 허브의 세계관 정보 구조를 개선해 중복·빈 영역을 줄이고 원작 설정을 더 명확하게 설명함. 다만 이 개선만으로 '복제된 콘텐츠' 또는 '가치가 낮은 콘텐츠' 거절 사유가 해소되었다고 단정하지 않으며, 원작 차별성·창작 과정·페이지별 독자 가치의 추가 검증을 계속함.
+- **변경 범위:** sistersquad-hub.html 및 이 통합점검문서만 develop에 반영. main 병합과 Production 배포는 수행하지 않음.
 

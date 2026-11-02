@@ -4502,3 +4502,17 @@ switch.html (SWITCH) 정적 게임 감사. 이어서 goal.html (골이예요).
 
 ### 다음 단일 작업
 현재 HEAD 21b891c와 일치하는 Vercel 배포가 생성·완료되는지 확인한다. 배포가 준비되면 실제 브라우저에서 광고 대상 페이지를 모바일/PC로 열어 동적 콘텐츠·링크·광고 위치를 확인한다. 배포가 아직 없으면 실서비스 확인을 완료 처리하지 않고, 정적 감사 결과와 미완료 항목을 구분해 유지。
+
+
+## 2026-11-02 추가 수정 — TuTuPuPuPiPi 영상별 제목/썸네일 설명 유지
+
+- 직전 develop 커밋 c55ebf3e2da82e6a26e390881af7d188c12a3410에서 `tutupupupipi.html`의 Shorts 6개 정적 제목과 alt를 에피소드별로 구체화한 변경을 확인했다.
+- 후속 스크립트 대조에서 페이지 하단의 applyLanguage()가 언어 전환 시 썸네일 alt를 다시 'YouTube Shorts 영상 01~06' 형식으로 덮어쓰고, 재생 버튼/iframe title도 영상 번호만 표시하는 문제가 발견됐다. 즉, 정적 HTML의 alt 개선이 실제 JS 실행 후 유지되지 않는 구조였다.
+- develop에서 `tutupupupipi.html`의 언어 적용 로직을 수정했다. 한국어/영어 각각 6개 에피소드별 구체적인 썸네일 alt 배열을 적용하고, 재생 버튼의 aria-label과 iframe title에도 번역 사전의 실제 에피소드 제목을 사용하도록 변경했다.
+- 수정 커밋: f4c3113f647ccd9782cede181da8f9d30c10853e. 최신 blob SHA: fc7740fb4161a30a06e33da99174950f4489930a.
+- 정적 재검증: 영상 카드 6개 유지, 각 영상 ID가 data-video-id/썸네일/YouTube 링크에 연결됨, 직접 AdSense loader 1개, 한국어/영어 설명 키 존재, 6개 한국어 alt 및 6개 영어 alt 문자열 존재, 기존의 일반 번호형 alt 덮어쓰기 코드 제거, iframe title과 재생 버튼 aria-label이 에피소드 제목을 사용함을 확인했다.
+- 이 변경은 기존 영상/OST/캐릭터 콘텐츠를 삭제하지 않고 접근성 텍스트와 영상별 식별 정보를 보완한다. 영상 실제 장면과 설명의 일치, 언어 전환의 실제 브라우저 동작, 모바일/PC 배치 및 Auto ads 위치는 여전히 미검증이다.
+- 이번 수정은 develop에만 반영했다. main/운영 배포는 변경하지 않았다.
+
+### 다음 단일 작업
+TuTuPuPuPiPi 수정 후 develop 소스의 최신 HEAD와 Vercel Preview 상태를 다시 대조한다. 현재 HEAD 배포가 READY가 되면 브라우저에서 한국어/영어 전환, 영상 6개 재생, 모바일/PC 레이아웃을 확인하고, 그 다음 남은 승인 전 GTM/Auto ads/GSC 검증으로 넘어간다.

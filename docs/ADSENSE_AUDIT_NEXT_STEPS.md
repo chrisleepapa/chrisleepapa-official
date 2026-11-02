@@ -7,73 +7,43 @@
 - 개발 도메인: https://develop.chrisleepapa.com
 - 상세 조사 기록: docs/ADSENSE_AUDIT_HANDOFF_2026-10-30.md
 
-## 현재 진행 상태 / 다음 단일 작업 — 2026-11-02 갱신
+## 현재 진행 상태 / 다음 단일 작업 — 2026-11-02 최종 갱신
 
-### 이번 단계에서 완료
-- TuTuPuPuPiPi: 6개 Shorts 고유 ID/설명, 캐릭터·세계관·OST·창작자 노트, 로컬 이미지/alt, 광고 코드 확인. 즉시 수정 불필요.
-- About: 반복되던 창작 과정 소개 문단과 미사용 한/영 번역 키 제거. 수정 커밋 78476b2d3fb03676911a36f5c057eda7f2192adf.
-- Home/About/Sister Squad 허브·1·2/Yul/Jung: 긴 본문 완전 일치 0건. Yul/Jung의 공통 프로필 구조는 서로 다른 캐릭터 서사로 확인.
-- Journal 1~6/Worship/English Worship: 긴 본문 완전 일치 0건. Journal 주제별 구분 확인, Worship 안내문 유사도 후보는 짧은 공통 주제 수준.
-- Wallpaper/TuTuPuPuPiPi/Miracle Shot/Sister Squad 허브·1·2: 긴 본문 완전 일치 0건. 페이지별 목적/내용 구분 확인.
-- 정적 교차 중복 검사에서 AdSense 복제 콘텐츠로 판단할 긴 문단 복제는 발견되지 않음. 유사도는 참고 지표이며 Google의 최종 판정은 아님.
+### 이번 단계 완료
+- 주요 광고 대상 페이지 간 중복 본문 대조:
+  - Home, About, Sister Squad Hub/1/2, Yul, Jung: 80자 이상 본문 문단 완전 일치 0건. Yul/Jung의 공통 프로필 서식은 있으나 캐릭터 능력·성격·성장 설명은 구분됨.
+  - Journal 1~6: 정확히 일치하는 본문 문단 0건(공통 내비게이션 제외). 각 글의 주제와 본문은 구분되며 Journal 5 영어 본문도 확인.
+  - Wallpaper, Worship, English Worship, TuTuPuPuPiPi, Miracle Shot 스토리 페이지: 긴 본문 문단 완전 일치 0건.
+- TuTuPuPuPiPi: 6개 Shorts의 고유 제목/설명/영상 ID/링크, 한국어·영어 번역, 장면별 썸네일 alt 확인. 정적 HTML 제목도 구체적이며, 영상/OST 외에 캐릭터·세계관·창작자 노트가 존재.
+- About: 반복되던 영어 아카이브 소개 문단과 미사용 번역 키 제거. 창작자 소개·제작 과정·프로젝트 안내·연혁 유지. 커밋 `78476b2d3fb03676911a36f5c057eda7f2192adf`.
+- Miracle Shot 페이지 역할 구분: `miracleshot.html`은 풋살 성장 드라마의 작품 소개(광고 대상, loader 1개), `goal.html`은 실제 게임 실행 페이지(noindex/nofollow, loader 0개). 게임 페이지 광고 제외 원칙을 유지하고 작품 소개 페이지의 광고 로더는 유지.
+- sitemap 24개 URL을 현재 develop HTML과 대조:
+  - 직접 AdSense loader 18개: Home, Wallpaper, Sister Squad Hub/1/2, Yul, Jung, Miracle Shot 작품 소개, TuTuPuPuPiPi, Worship/English Worship, Journal 1~6, About.
+  - 직접 AdSense loader가 없는 6개: Music, Movie, Bible, Contact, Privacy, Terms.
+  - 24개 모두 수동 광고 슬롯 0개, 직접 `adsbygoogle.push` 0개.
+  - sitemap 밖의 실제 게임 실행 페이지 `goal.html`도 AdSense loader/publisher ID 0개이며 `noindex, nofollow`.
+- 실제 사이트맵의 콘텐츠 페이지 정적 점검은 진행했으나, Google의 실제 색인 결과 및 Google이 렌더링한 최종 화면을 확인한 것은 아니다.
+
+### Vercel Preview 상태
+- 프로젝트: `chrisleepapa-official`, 팀 `chrisleepapas-projects`.
+- 현재 develop HEAD 확인값: `3b2fc3d8b2ac21690d37083aee8b11f318ae69e2`.
+- 최근 확인된 Preview는 READY 상태이며 `develop.chrisleepapa.com` 별칭을 갖지만, 연결된 커밋은 `3a880e077cf51d58082613b71386cbdbd83d24bb`이다.
+- GitHub 비교 결과 현재 develop HEAD는 해당 Preview 커밋보다 14개 커밋 앞서 있고, `about.html`, `miracleshot.html`, `tutupupupipi.html` 및 점검 문서가 달라져 있다. 따라서 이 Preview는 현재 develop 최신 코드의 검증본이 아니다.
+- 현재 develop HEAD와 정확히 일치하는 READY 배포는 확인되지 않았다. 새 배포는 실행하지 않았다(사용자가 알려준 일일 배포 한도 고려).
+- 따라서 최신 코드의 브라우저 모바일/PC 렌더링 및 실제 광고 위치는 미검증으로 유지한다.
 
 ### 다음 단일 작업
-최종 정적 광고 대상/제외 대상 표를 다시 확인하고, 모든 광고 로더 페이지가 의도한 광고 대상인지, 제외 페이지에는 로더가 없는지, sitemap·canonical·robots·GTM 수량이 현재 develop 소스와 일치하는지 한 번 더 교차 검증한다. 특히 사용자 지정 제외(성경·찬송·게임 실행 페이지)와 MIRACLE SHOT 작품 소개 페이지를 혼동하지 않는다.
+최신 develop HEAD의 Preview가 생성되어 READY가 되면 해당 Preview를 기준으로 모바일/PC 실제 화면을 확인한다. 특히 TuTuPuPuPiPi의 한국어/영어 전환·영상 재생, About의 중복 제거 후 레이아웃, Miracle Shot 작품 소개와 GOAL 게임의 역할/광고 제외 구분을 확인한다. 최신 코드 Preview가 준비되기 전에는 과거 Preview를 최신 검증본으로 취급하지 않는다.
 
 ### 미완료 실서비스 검증
-- 실제 브라우저 모바일/PC 렌더링과 동적 JS 실행.
+- 최신 코드 Preview에서의 실제 브라우저 모바일/PC 렌더링과 동적 JS 실행.
 - 현재 게시된 GTM 컨테이너 버전 및 Auto ads 실제 노출 위치.
 - Google Search Console의 실제 발견/색인 URL 및 sitemap 상태.
-- 정적 소스만으로 위 항목을 완료 처리하지 않는다.
+- 위 항목은 정적 소스만으로 완료 처리하지 않는다.
 
 ### 변하지 않는 범위
 - AdSense 거절 사유: 복제 콘텐츠 / 가치가 별로 없는 콘텐츠.
-- 성경·찬송 및 게임 실행 페이지는 광고 대상 콘텐츠 심사에서 제외. miracleshot.html은 스토리/작품 소개, 실제 게임은 goal.html로 구분.
-- 소스 수정은 develop에서만 진행하고 main은 추가 지시 전까지 수정하지 않는다.
-- 새 페이지 생성, 이미 끝난 페이지의 근거 없는 반복 수정 금지.
-
----
-
-## 최신 작업 결과 — 2026-11-02 본문 유사도 대조
-
-- 대상: index.html, about.html, sistersquad-hub.html, sistersquad.html, sistersquad2.html, yul.html, jung.html.
-- 정적 HTML의 제목/문단/목록 텍스트를 추출해 비교했다. 70자 이상인 본문 블록에서 페이지 간 완전히 동일한 문단은 0개였다.
-- 추출된 정적 텍스트 길이는 Home 약 1,466자, About 약 2,470자, Sister Squad Hub 약 6,476자, Sister Squad 1 약 2,018자, Sister Squad 2 약 3,048자, Yul 약 2,990자, Jung 약 2,929자다. 홈의 Chris's Pick/Chris's Note 등 외부 JS 데이터는 이 글자 수에 포함되지 않는다.
-- 토큰 집합 유사도는 가장 높은 Yul/Jung 0.172, Hub/Sister Squad 1 0.097, Home/About 0.096이었다. 이는 공통 인물명·세계관·브랜드 어휘와 페이지 역할상 공유되는 개념이 반영된 수치이며, 본문 복제 판정으로 사용하지 않았다.
-- Yul/Jung은 같은 자매 세계관과 관계 설명을 공유하지만, 율의 분석·염력·판단 성장과 정의 교감·공감·두려움을 감당하는 성장 및 각 딸의 캐릭터 기원은 구분된다. Sister Squad Hub는 세계관 안내, 1편은 첫 모험/창작 배경, 2편은 폐허 회복 여정/제작 노트로 역할이 나뉜다. Home은 프로젝트 탐색, About은 창작자 소개/제작 방식에 초점을 둔다.
-- 판정: 정적 본문에서 복제 콘텐츠로 볼 만한 동일 문단을 찾지 못했다. 이번 대조만으로 삭제/축약할 문구는 없어 코드 수정하지 않았다. 동적 홈 콘텐츠의 실제 표시와 브라우저 렌더링은 별도 검증 대상이다.
-- 대조 시점 GitHub develop HEAD는 a57c06241f107a43ba5251832713408492cb67d1, main HEAD는 21b891c15c97de48e6788fc4210ff9ce52ee7c44였다. main 동기화 이후 점검/문서 커밋은 develop에만 반영하며 main은 변경하지 않았다. 차이는 main 동기화 이후 develop에서 진행한 콘텐츠 수정과 점검 문서 기록이다. main은 변경하지 않았다.
-- Vercel에서 조회한 최신 develop Preview는 3a880e077cf51d5808268fc4210ff9ce52ee7c44 커밋의 READY 배포이며 현재 develop HEAD와 일치하지 않는다. 최신 Production도 이전 main 커밋 c5e491bb6b125eb00b1e871163c7d0fb7cca74e8의 READY 배포다. 따라서 현재 HEAD의 실제 화면 검증은 미완료다.
-
-### 다음 단일 작업
-현재 develop HEAD와 일치하는 Preview가 준비될 때까지 정적 소스 감사 결과를 유지하고, 배포 한도가 허용되는 시점에 브라우저에서 Tutu, Miracle Shot 스토리/GOAL, About 및 주요 광고 대상 페이지의 모바일·PC 표시와 동적 콘텐츠를 검증한다. GTM 게시 버전, Auto ads 위치, Search Console 실제 색인 상태도 계정/실서비스 확인 전까지 미완료로 둔다.
-
-- 기준일: 2026-11-02
-- 저장소: chrisleepapa/chrisleepapa-official
-- 작업 브랜치: develop only. main은 사용자 요청에 따라 2026-11-02에 develop의 당시 HEAD 21b891c15c97de48e6788fc4210ff9ce52ee7c44와 동기화됨. 이후 AdSense 감사 수정은 develop에만 반영.
-- 운영 도메인: https://chrisleepapa.com
-- 개발 도메인: https://develop.chrisleepapa.com
-- 상세 조사 기록: docs/ADSENSE_AUDIT_HANDOFF_2026-10-30.md
-
-## 현재 진행 상태 / 다음 단일 작업 — 2026-11-02 갱신
-
-### 이번 단계에서 완료
-- TuTuPuPuPiPi 재대조: 캐릭터/세계관 설명, Shorts 6편의 고유 설명·영상 ID, 로컬 이미지/alt, 직접 광고 코드 확인. 반복 목록 및 즉시 수정할 저가치 요소가 없어 변경하지 않음.
-- About: 창작 과정 상자에서 앞선 문단과 의미가 겹치는 별도 소개 문단과 한국어/영어 미사용 번역 키를 제거. 창작자 소개, 프로젝트 안내, 제작 과정, 연혁은 유지. 수정 커밋 78476b2d3fb03676911a36f5c057eda7f2192adf.
-- 주요 7개 페이지(Home, About, Sister Squad Hub/1/2, Yul, Jung) 간 정적 본문 유사도 대조: 긴 본문 문단 완전 일치 0건. Yul/Jung 프로필의 가장 높은 문단 유사도 약 0.32는 공통 시리즈 배경과 병렬 프로필 형식에 따른 것으로, 능력·나이·성장 내용은 구분됨.
-
-### 다음 단일 작업
-나머지 광고 로더가 있는 콘텐츠 페이지(특히 Journal 1~6, Worship/English Worship, Wallpaper, TuTuPuPuPiPi, Miracle Shot 작품 소개)의 본문 간 반복 문구를 대조한다. 공통 브랜드 문구·메뉴·작품 개요와 실제로 중복된 본문을 구분하고, 동일하거나 의미상 불필요하게 반복되는 문단이 있을 때만 최소 수정한다.
-
-### 미완료 실서비스 검증
-- 실제 브라우저 모바일/PC 렌더링과 동적 JS 실행.
-- 현재 게시된 GTM 컨테이너 버전 및 Auto ads 실제 노출 위치.
-- Google Search Console의 실제 발견/색인 URL 및 sitemap 상태.
-- 정적 소스만으로 위 항목을 완료 처리하지 않는다.
-
-### 변하지 않는 범위
-- AdSense 거절 사유: 복제 콘텐츠 / 가치가 별로 없는 콘텐츠.
-- 성경·찬송 및 게임 실행 페이지는 광고 대상 콘텐츠 심사에서 제외. miracleshot.html은 스토리/작품 소개, 실제 게임은 goal.html로 구분.
+- 성경/찬송 악보·뷰어 및 실제 게임 실행 페이지는 광고 대상 콘텐츠 심사에서 제외. Worship/English Worship은 사용자가 제작한 오리지널 앨범/가사 아카이브로 별도 구분한다.
 - 소스 수정은 develop에서만 진행하고 main은 추가 지시 전까지 수정하지 않는다.
 - 새 페이지 생성, 이미 끝난 페이지의 근거 없는 반복 수정 금지.
 

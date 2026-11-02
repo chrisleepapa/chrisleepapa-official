@@ -4479,3 +4479,10 @@ switch.html (SWITCH) 정적 게임 감사. 이어서 goal.html (골이예요).
 - 직접 AdSense loader는 각 1개. 실제 광고 위치/브라우저 표시/외부 플레이어 작동은 미검증이다.
 
 - main/production은 변경하지 않았다. 정적 소스 감사와 실제 브라우저/AdSense 실노출 검증은 별도 상태로 유지한다.
+
+
+## 2026-11-02 브랜치 차이 재확인
+
+- GitHub API compare 기준 develop HEAD `62c95793fe7302e170c955146487d0cadf158f07`, main HEAD `c5e491bb6b125eb00b1e871163c7d0fb7cca74e8`.
+- develop은 main보다 77 commits ahead, 0 behind다. 이 수치는 이번 감사 변경뿐 아니라 기존 develop 작업 전체를 포함한다.
+- 사용자의 명시적 요청 전에는 main 반영하지 않는다. 이번 점검에서도 main과 production은 변경하지 않았다.

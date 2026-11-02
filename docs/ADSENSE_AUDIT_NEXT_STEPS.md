@@ -1619,3 +1619,72 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 ### 다음 단일 작업
 
 **Chris's Note / Journal의 목록 페이지와 상세 글을 AdSense 기준으로 점검한다.** 먼저 실제 `/journal` 경로의 파일·canonical·robots·사이트맵·내부 링크 상태를 확인하고, Journal 1~6은 기존 점검 기록을 재활용해 복제/저가치 위험과 실제 본문 접근성을 확인한다. 이전에 확인한 Journal 1·2·4의 제작 경험을 다시 묻지 않는다.
+
+
+## 2026-11-02 추가 점검 — Chris's Journal 목록 및 상세 글 1~6
+
+**대상:** `journal.html`, `journal-1.html`~`journal-6.html`
+**기준:** 독창적 본문 가치, 복제 문단, 색인/사이트맵 정합성, 광고 로더, 내부 이동
+**브랜치:** develop
+**최종 develop HEAD:** `45611a7655f7d8dbe2073fc774195c354075d345`
+
+### 1) 목록 페이지 `/journal`
+
+- canonical `https://chrisleepapa.com/journal`
+- robots `noindex, follow`
+- AdSense 로더 0개
+- sitemap에서 제외됨
+- 여섯 편의 제목, 카테고리, 개별 요약과 상세 페이지 링크를 제공한다.
+
+**판정:** 목록은 상세 글로 안내하는 디렉터리 역할이다. 본문 상세 글과 달리 독립적인 검색 유입용 콘텐츠가 아니므로 noindex 및 sitemap 제외 상태를 유지한다. 광고도 로딩하지 않는다.
+
+### 2) 상세 글 1~6
+
+| 페이지 | 본문 텍스트 길이(공백 포함) | 핵심 고유 내용 |
+|---|---:|---|
+| Journal 1 | 약 3,574자 | 두 딸과 Sister Squad를 시작한 개인적 계기, 시행착오, 가족과 함께 만든 기억 |
+| Journal 2 | 약 5,021자 | 실제 Skywork 활용, 첫 프롬프트, 도구 비교, 초안 검토·수정 과정 |
+| Journal 3 | 약 4,000자 | POD 출판, 원고·표지·판형·ISBN·유통·가격·업로드·검토의 실제 순서 |
+| Journal 4 | 약 3,975자 | 율이·정이 캐릭터 디자인 기준, AI 이미지 일관성, 두 딸의 검수, 삽화 선택 |
+| Journal 5 | 약 3,408자 | 직장·가족 일상 속 창작 시간 관리, 작업 단위, 다섯 가지 실천 원칙 |
+| Journal 6 | 약 9,370자 | 찬양 창작 동기, 기도·가사·작곡·AI 결과 선택·수정, 개인 기도문 |
+
+확인:
+1. 여섯 상세 글 모두 개별 canonical이 정확하고 `index, follow`다.
+2. sitemap에는 Journal 1~6이 모두 포함되고 목록 `/journal`은 제외된다.
+3. 각 상세 글에는 AdSense 로더 1개, 수동 광고 슬롯 0개, `adsbygoogle.push` 0개가 있다. `js/main.js`와 `js/guestbook.js`에는 AdSense 삽입 코드가 없어 공통 스크립트 중복 로딩은 확인되지 않았다.
+4. 6개 상세 글의 본문은 각각 다른 경험과 실무 과정을 다룬다. 120자 이상 문단의 앞부분을 비교했을 때 페이지 사이에 동일 문단 반복은 확인되지 않았다.
+5. Journal 2는 실제 프롬프트와 도구 비교표, 당시 가격이라는 시점 안내를 포함한다. Journal 3은 실제 POD 절차와 체크 항목을 포함한다. Journal 4~6도 구체적인 창작·시간 관리·기도 과정을 담고 있어 단순한 홍보문이나 짧은 요약 페이지가 아니다.
+6. Journal 1의 타 예술가 인용문은 인물명을 표기하고 있다. 인용 권리 여부는 콘텐츠 가치 판단과 별도의 권리 검토 항목이다.
+7. 상세 글은 본문이 HTML에 직접 포함되어 있어 핵심 텍스트가 빈 JavaScript placeholder에만 의존하지 않는다.
+
+### 3) 발견된 내부 이동 문구 불일치 및 수정
+
+- Journal 2 → Journal 3: 기존 다음 글 문구의 '나도 작가!'를 실제 상세 글 제목 `POD로 직접 책을 출판하는 법`에 맞게 정리.
+- Journal 3 → Journal 4: 기존 '공식 아카이브 정식 오픈' 안내를 실제 다음 글인 캐릭터 디자인/삽화 글로 수정. 본문 마지막 예고도 같은 주제로 변경.
+- Journal 4 → Journal 5: 기존 '음악과 영상으로 이야기를 확장' 안내를 실제 다음 글인 `퇴근 후, 나는 다시 창작자가 된다`로 수정. 본문 마지막 예고도 직장·가족 일상 속 창작 이야기로 정렬.
+- Journal 4의 이전 글 제목도 Journal 3의 실제 제목과 일치시켰다.
+
+수정 커밋:
+- `journal-2.html`: `fb056570941ace952b8d3e248f1d26491262a641`
+- `journal-3.html`: `dd621c59930cc586eafa8f74c87e4c26f5f94dfb`
+- `journal-4.html`: `45611a7655f7d8dbe2073fc774195c354075d345`
+
+### 4) 배포 상태 — 중요
+
+- Journal 2 변경은 Vercel preview 배포 `dpl_CVxUNFHaxLBUmq6xxjgaHXHEMrht`에서 READY 및 개발 URL 반영을 확인했다.
+- Journal 3·4 변경은 GitHub develop 브랜치에 반영되었고 정적 소스에서 수정 내용을 확인했다.
+- 그러나 Vercel 수동 preview 배포 시 `402 payment_required`, `api-deployments-free-per-day`, retryAfter 86400초(24시간) 응답을 받았다.
+- 따라서 현재 `develop.chrisleepapa.com`의 Journal 3·4는 이전 배포본 문구가 남아 있을 수 있다. 최신 GitHub develop 소스와 실제 develop alias를 혼동하지 않는다.
+- main은 수정하지 않았다. main SHA는 `c5e491bb6b125eb00b1e871163c7d0fb7cca74e8`; develop은 main보다 11개 커밋 앞서 있으며 뒤처진 커밋은 없다.
+
+### 판정
+
+- **독창적 콘텐츠 가치:** 상세 글 1~6 양호. 개인 경험, 실제 프롬프트, 단계별 제작 과정, 구체적인 판단 기준과 시행착오가 담겨 있다.
+- **복제 콘텐츠 위험:** 상세 글 간 긴 동일 문단 반복은 확인되지 않았다. 목록 페이지는 짧은 요약으로 상세 글을 안내하며 noindex·무광고 처리되어 있다.
+- **광고 설정:** 상세 글 각각 로더 1개, 수동 슬롯/호출 없음. Auto ads의 실제 배치 위치는 브라우저에서 별도 확인해야 한다.
+- **내부 이동:** Journal 2~4 제목 불일치를 소스에서 정리했다. Journal 5는 Journal Home으로 이동하며 Journal 6의 이전 글 링크는 정상이다. Journal 5의 다음 글 버튼은 현재 없다(경미한 UX 사항).
+
+### 다음 단일 작업
+
+**MIRACLE SHOT(골이예요) 게임 및 Game Center 페이지를 점검한다.** 게임 자체의 독창적 기능·설명·규칙·조작 안내·모바일 UX, 게임 페이지와 허브 사이의 중복 설명, AdSense 로더/광고 제외 상태, 사이트맵 및 canonical을 develop 소스 기준으로 확인한다. 게임은 광고가 주목적인 페이지로 취급하지 않고, 실제 게임 경험과 자체 설명의 완결성을 중심으로 평가한다.

@@ -929,3 +929,15 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **배포 응답:** Production 및 Preview 모두 HTTP 200, canonical `https://chrisleepapa.com/journal-2`, AdSense loader 1개, GTM 1개. Production은 `index, follow`, Preview는 `noindex`.
 - **판정:** 도구 역할의 현재 서술은 확인된 사용자 사실과 모순되지 않으며, 제작 과정의 구체성도 충분함. 수정 불필요.
 - **점수:** 내부 AdSense 준비도 74/100 유지. 개인 경험·원본 프롬프트의 존재는 긍정적 근거이나 Google의 실제 복제 콘텐츠 판단을 대체하지 않음.
+
+
+### 2026-11-03 / Audit 1.50 — Journal 2~6 본문 소제목의 의미 구조 개선
+
+- **검사 대상:** `journal-2.html`~`journal-6.html`의 한국어 본문 및 영어 번역 콘텐츠.
+- **발견:** 다섯 편 모두 글의 실제 섹션 소제목을 시각적으로는 제목처럼 표시하면서 HTML에서는 일반 `div`로 작성하고 있었음. H1 외에 의미 있는 H2가 없어 스크린 리더와 검색 엔진이 본문 구조를 파악하기 어려운 상태였음.
+- **조치:** 기존 CSS 클래스·문구·순서를 유지한 채 소제목 요소만 의미 구조가 있는 `h2`로 변경함. Journal 2: 20개, Journal 3: 9개, Journal 4: 27개, Journal 5: 7개, Journal 6: 16개를 변경함. 한국어 및 영어 번역 문자열에 포함된 소제목도 함께 변경함.
+- **사후 검증:** 다섯 페이지 모두 H1 1개, H2 각각 20/9/27/7/16개, 잔여 `div.journal-subhead` 또는 `div.subhead` 0개를 확인함. 소제목 문구와 본문 내용은 변경하지 않음.
+- **develop 수정 커밋:** Journal 2 `ba72ef11dc898951ce8533d751ce935e1776c334`; Journal 3 `b4e79aebb6fd8b3773ee6e267db24b5f8318433e`; Journal 4 `af4d46be12d3936dc281831fc085d138e418a80c`; Journal 5 `617ab7b2538d8ae38e479e7b2f518b9af6c970bd`; Journal 6 `dda92c3a42b59060707fbb683b4c7e1b736f0141`.
+- **배포 상태:** 이 수정은 develop에만 존재함. 수정 후 새 Preview에서 렌더링·언어 전환·모바일 레이아웃을 검증하지 않았으며, main/Production에는 반영하지 않음.
+- **판정:** 개인 경험 중심의 긴 Journal 본문 2~6의 섹션 구조와 접근성이 개선됨. CSS 클래스와 기존 시각 디자인은 유지했으며, 콘텐츠 자체는 변경하지 않음.
+- **점수:** 내부 AdSense 준비도 74/100 유지. 의미 구조 개선은 긍정적이나, 복제 콘텐츠 거절 사유의 해소를 직접 입증하는 자료는 아니므로 점수는 변경하지 않음.

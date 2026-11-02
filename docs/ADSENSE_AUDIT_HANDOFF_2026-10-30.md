@@ -4214,3 +4214,17 @@ switch.html (SWITCH) 정적 게임 감사. 이어서 goal.html (골이예요).
 - 조치: 정적 소스 검토에서 즉시 수정이 필요한 AdSense 복제 콘텐츠/가치 부족 문제는 발견되지 않아 소스 변경 없음.
 - 다음 순서: `Chris's Note` 및 영상·Spotify 임베드 중심 페이지의 고유 설명/독립 콘텐츠 가치 점검.
 - 검증 한계: develop 브랜치 소스 기준, 실제 플레이어 재생/브라우저 시각 검증 미실시. 운영 main 미반영.
+
+
+## 2026-11-02 추가 점검 — Movie Archive (광고 제외 화면의 콘텐츠/중복 확인)
+
+- 점검 브랜치: develop. 소스 파일 `movie.html`의 현재 blob SHA: `ddcfbd1685d3fea0d79dd2d2357e8725ccff0483`.
+- 페이지 기본 설정: canonical `https://chrisleepapa.com/movie`, `index, follow`, description 존재.
+- 광고 코드 정적 확인: 페이지 직접 AdSense loader 0개, 수동 광고 슬롯 0개, `adsbygoogle.push` 0개. 소스에 “Movie page is excluded from page-level ad loading” 주석이 있음. 다만 GTM 컨테이너 스크립트/noscript는 남아 있으므로, GTM 내부 AdSense 태그의 URL 제외 조건까지 확인하기 전에는 “실제 광고 미노출”로 최종 확정하지 않음.
+- 독립 콘텐츠: FURIOUS, 귀멸의 칼날 실사 촬영 콘셉트, 사랑한다고 3개 영상 각각에 한국어/영어 제작 노트가 있음. 각 작품별 아이디어, 제작 과정, 배운 점을 설명하며 단순 영상 임베드만 제공하는 구조는 아님.
+- 미디어 구성: 메인 YouTube 플레이어 1개, YouTube Shorts 8개 링크/썸네일. GTM noscript iframe을 제외하면 영상 iframe은 메인 플레이어 1개. Shorts는 외부 YouTube 링크로 연결됨.
+- 중복/가치 확인: 상단 VERTICAL ARCHIVES와 하단 SHORTS VIDEO LIST에 동일한 Shorts 8편의 제목/목록이 반복 노출되고, 일부 설명도 사실상 동일함. 이는 별도 작품 페이지를 복제한 문제라기보다 동일 목록을 두 섹션에서 반복하는 편집상 중복임. 페이지에는 3개 작품의 구체적인 제작 노트가 있어 고유한 창작자 콘텐츠도 확인됨.
+- 판정: 콘텐츠 가치 자체는 양호. 다만 동일 Shorts 8편을 두 번 나열하는 부분은 사용자 경험과 페이지 고유성 측면에서 정리 후보. 현재 즉시 삭제/수정은 하지 않음. 광고 제외가 실제로 GTM에서도 적용되는지 별도 확인 필요.
+- 조치: 코드 변경 없음. 기존 영상/기능은 유지.
+- 검증 한계: GitHub develop 정적 소스만 확인. 실제 브라우저 렌더링, 영상 재생, GTM 컨테이너의 실시간 태그 실행, AdSense 광고 미노출은 검증하지 못함. main/production 미변경.
+- 다음 단일 작업: `music.html`의 앨범 이야기/제작 기록이 서로 중복되지 않는지, 동적 렌더링 영역이 실제 본문으로 정상 구성되는지, 광고 코드와 외부 플레이어 구조가 적절한지 확인한다.

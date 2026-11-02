@@ -31,8 +31,10 @@ const WORSHIP_I18N = {
     vol2_card:'첫 고백에 이어 더 깊어진 믿음과 감사의 마음을 담은 두 번째 찬양.',
     vol3_title:'나의 찬양 Vol.3',
     vol3_card:'연약하고 부족한 나의 진솔하고 담백한 고백. 완벽한 사람이 아니라 주님을 바라보며 다시 일어나는 사람의 노래입니다.',
+    whispers_title:'은혜의 속삭임 Ver.1',
+    whispers_card:'은혜의 속삭임처럼 마음을 어루만지는 워십 앨범입니다. 조용한 묵상과 기도의 순간에 함께하며, 하나님을 향한 믿음과 위로의 고백을 음악으로 전합니다.',
     story_heading:'앨범을 만들게 된 이야기',
-    story_intro:'이 음원들은 거창한 음악 프로젝트에서 시작된 것이 아니라, 일상 속에서 하나님께 드리고 싶었던 마음을 한 곡씩 기록하면서 시작되었습니다.'
+    story_intro:'각 앨범이 어떤 고백에서 출발했고, 세 장의 앨범을 거치며 예배의 주제와 표현이 어떻게 넓어졌는지 차례로 살펴봅니다.'
   },
   en: {
     meta_title:'WORSHIP — My Hymn Vol.1–3 | Chris LEE.PAPA',
@@ -50,8 +52,10 @@ const WORSHIP_I18N = {
     vol2_card:'A second collection of praise, carrying a deeper faith and a growing heart of gratitude after the first confession.',
     vol3_title:'My Hymn Vol.3',
     vol3_card:'An honest and simple confession from someone weak and imperfect — a song about getting back up while keeping our eyes on the Lord.',
+    whispers_title:'Whispers of Grace · Version 1',
+    whispers_card:'A worship collection that gently comforts the heart like a whisper of grace, accompanying quiet moments of reflection and prayer with songs of faith and comfort offered to God.',
     story_heading:'The Stories Behind the Albums',
-    story_intro:'These recordings did not begin as a grand music project. They began one song at a time, as I recorded the heart I wanted to offer to God in everyday life.'
+    story_intro:'Explore the ideas behind each album and how the themes and expression of worship developed across the three collections.'
   }
 };
 
@@ -60,13 +64,15 @@ const WORSHIP_STORY_I18N = {
     ['노래를 만들기 시작한 이유','처음에는 좋은 음악을 만들고 싶다는 마음보다 하나님께 드리고 싶은 마음을 노래로 남기고 싶었습니다. 한 곡씩 만들다 보니 음악은 결과물이 아니라 믿음과 일상을 기록하는 방법이 되었습니다.'],
     ['첫 번째 고백','Vol.1은 완성된 사람의 찬양이 아니라 부족하고 흔들리는 사람이 주님을 바라보며 다시 걸어가는 고백입니다. 평범한 하루와 가족, 두려움과 감사가 노래의 출발점이 되었습니다.'],
     ['더 넓어진 예배','Vol.2에서는 개인의 고백을 넘어 함께 노래하고 예배하는 기쁨을 담았습니다. 힘 있게 외치는 찬양부터 조용한 고백, 어린이와 공동체를 위한 노래까지 예배의 폭을 넓혔습니다.'],
-    ['나를 아시는 주님','Vol.3은 지나온 시간을 돌아보며 결국 모든 것이 은혜였음을 고백하는 앨범입니다. 어린 믿음, 가족, 공동체, 천국의 소망과 마지막까지 주님을 바라보겠다는 믿음을 여러 형태의 보컬과 예배 음악으로 기록했습니다.']
+    ['나를 아시는 주님','Vol.3은 지나온 시간을 돌아보며 결국 모든 것이 은혜였음을 고백하는 앨범입니다. 어린 믿음, 가족, 공동체, 천국의 소망과 마지막까지 주님을 바라보겠다는 믿음을 여러 형태의 보컬과 예배 음악으로 기록했습니다.'],
+    ['AI와 함께 완성한 찬양','가사와 곡의 주제, 예배의 방향은 창작자가 직접 구상하고 다듬었습니다. AI 음악 도구는 보컬과 연주, 편곡을 구현하는 제작 과정에 활용했으며, 여러 생성 결과를 듣고 선택·수정해 최종 음원으로 정리했습니다.']
   ],
   en: [
     ['Why I Started Making Songs','At first, I wanted to leave behind in song not simply a desire to make good music, but the heart I wanted to offer to God. As I made one song after another, music became a way of recording faith and everyday life rather than simply producing finished works.'],
     ['The First Confession','Vol.1 is not the praise of someone who has it all together. It is the confession of someone who is weak and shaken, yet looks to the Lord and gets back on the road. Ordinary days, family, fear and gratitude became the starting points for these songs.'],
     ['A Wider Expression of Worship','Vol.2 moves beyond personal confession to capture the joy of singing and worshiping together. From powerful songs of praise to quiet confessions, children’s songs and music for the community, the scope of worship grew wider.'],
-    ['The Lord Who Knows Me','Vol.3 looks back over the years and confesses that, in the end, everything was grace. It records faith through worship music and different vocal arrangements — faith in a young belief, family, community, the hope of heaven, and the desire to keep looking to the Lord until the end.']
+    ['The Lord Who Knows Me','Vol.3 looks back over the years and confesses that, in the end, everything was grace. It records faith through worship music and different vocal arrangements — faith in a young belief, family, community, the hope of heaven, and the desire to keep looking to the Lord until the end.'],
+    ['Completing Worship with AI','The lyrics, song themes, and direction of worship were conceived and refined by the creator. AI music tools supported the production of vocals, instruments, and arrangements; multiple generated takes were reviewed, selected, and edited before the final recordings were prepared.']
   ]
 };
 

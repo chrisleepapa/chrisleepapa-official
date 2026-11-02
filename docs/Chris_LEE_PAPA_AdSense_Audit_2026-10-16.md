@@ -1112,3 +1112,21 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **수정:** Movie·Music·Shop 소스는 이미 직접 광고 코드가 없는 상태이므로 변경하지 않음. GTM 컨테이너 설정도 이 점검에서 수정하거나 게시하지 않음. 점검문서만 develop/main에 동기화함.
 - **판정:** MOVIE의 직접 광고 로더 및 광고 관련 코드 문자열은 0개이며, 제공된 GTM version 2 내보내기에도 GA4 태그 외 광고 태그가 없음. 현재 확인 가능한 근거로는 기존 “Movie 페이지 광고 제외” 요구에 맞는 소스 상태임. 다만 최신 GTM 게시 버전 및 실제 브라우저 광고 요청은 별도 검증이 남음.
 - **내부 점수:** 74/100 유지. 광고 코드 부재와 제작 노트는 긍정적 근거이나, 최신 GTM 게시본 및 실제 광고 노출 검증이 끝나지 않아 점수 변경 없음.
+
+
+
+### 2026-11-03 / Audit 1.64 — JOURNAL 1 본문 출처 정확성 및 SISTER SQUAD 2 콘텐츠 재검토
+
+- **검사 대상:** develop `journal-1.html`, `journal-2.html`~`journal-6.html`, `sistersquad2.html`.
+- **JOURNAL 1 콘텐츠:** 두 딸과 함께 오리지널 이야기와 캐릭터를 만들게 된 동기, AI를 창작 도구로 사용하며 겪은 시행착오, 자녀들이 캐릭터·의상·무기 선택에 참여한 과정, 결과물보다 가족이 함께 만든 기억의 의미를 구체적으로 설명함. 단순 AI 도구 소개가 아니라 개인 경험과 실제 제작 과정을 담은 독립 에세이임.
+- **JOURNAL 1 구조:** H1 1개, H2 18개, 직접 AdSense loader 1개, GTM script 1개, 내부 앵커 누락 0건. 정식 canonical은 `https://chrisleepapa.com/journal-1`, robots는 `index, follow`.
+- **출처 정확성 발견 및 조치:** 기존 문구는 Snezhana Soosh의 발언을 직접 인용하는 따옴표 형태였으나, 실제 인터뷰의 영어 발언을 그대로 옮긴 문장이 아니라 의미를 요약한 한국어 문장이었음. 이를 직접 인용처럼 보이지 않도록 수정하고, 2016년 SELF가 소개한 인터뷰를 출처 링크로 연결함. 이어지는 문장의 “이 문장”도 “이 이야기”로 바꾸어 문맥을 맞춤.
+- **외부 근거:** SELF, “This Artist's Heartwarming Illustrations Show The Love Between A Father And A Daughter” (2016-04-15): https://www.self.com/story/this-artists-heartwarming-illustrations-show-the-love-between-a-father-and-a-daughter . 해당 글은 Soosh가 어린 시절 아버지와의 관계에서 원했던 사랑과 보호를 그림에 담았다고 소개함. 사이트에서는 이를 직접 인용이 아닌 간접 설명으로 표기함.
+- **수정 커밋:** develop `e6eeb192b0b84d5f88ef0456ee68d843a64e7882` — `content: attribute Soosh inspiration as sourced paraphrase`. 문장 의미는 유지하면서 인용 형식과 출처 표기를 정확하게 정리함. main은 변경하지 않음.
+- **JOURNAL 1~6 반복 문단 비교:** 각 상세 페이지의 90자 초과 문단을 정규화해 상호 비교한 결과, 서로 다른 페이지 사이에 완전히 동일한 장문 문단은 0건. JOURNAL 1은 가족과 함께 창작을 시작한 경험, JOURNAL 2~6은 각각 그림 소설 제작, POD 출판, 캐릭터 디자인, 직장과 창작 병행, 워십 음악 제작 경험으로 주제가 구분됨.
+- **SISTER SQUAD 2 콘텐츠:** 세 편의 예고편과 NG 영상, 약 15분 본편, 가족 구성원과 요정·조력자·적대 캐릭터 소개, OST, 2편에서 아빠 캐릭터가 이야기 안으로 들어온 창작 동기, 세 가지 주제 해설을 확인함. 캐릭터 설명과 세계관·장소의 의미를 함께 제공하므로 단순 영상 임베드 전용 페이지가 아님.
+- **SISTER SQUAD 2 구조:** H1 1개, H2 6개, H3 15개, 이미지 3개 모두 alt 속성 존재, 내부 앵커 누락 0건. YouTube iframe 5개(예고편 3, NG 1, 본편 1)는 각각 title 속성이 존재함. 별도 GTM noscript iframe은 접근성 제목 검사에서 제외함. 직접 AdSense loader 1개, GTM script 1개.
+- **브랜치 비교:** `journal-1.html` 및 `sistersquad2.html`은 develop/main blob SHA가 서로 다름. 이번 Journal1 인용 형식·출처 개선은 develop에만 반영되었고, main에는 아직 반영하지 않음. SISTER SQUAD 2의 기존 develop 차이도 유지됨.
+- **수정 범위:** 사이트 소스는 `journal-1.html` 한 파일의 출처 표기만 develop에서 수정. `sistersquad2.html`은 점검만 수행. 점검문서는 develop/main 양쪽에 동기화함.
+- **판정:** JOURNAL 1~6은 점검한 장문 문단 사이에 완전 동일 문단이 없고, 서로 다른 개인 경험을 다룸. JOURNAL 1의 간접 인용 표기와 출처를 개선함. SISTER SQUAD 2는 영상 외에 고유 서사·캐릭터·제작 의도 설명이 확인됨. 단, 이번 정적 점검은 Google의 실제 복제 콘텐츠 판정이나 외부 영상 권리 상태를 보증하지 않음.
+- **내부 점수:** 74/100 유지. 출처 정확성과 콘텐츠 구분은 개선되었으나 Preview/Production 브라우저 검증이 남아 있어 점수는 올리지 않음.

@@ -4459,3 +4459,23 @@ switch.html (SWITCH) 정적 게임 감사. 이어서 goal.html (골이예요).
 - 일부 글에서 AI 협업/선택·수정이라는 공통 배경이 반복되지만 각 글의 핵심 목적은 다르다. 단순 반복 문구를 제거하려고 실제 경험 설명을 축약할 이유는 확인되지 않아 수정하지 않음.
 
 - 이번 단계의 판정은 정적 소스 기준이다. 모바일/PC 실제 렌더링, 외부 링크 목적지, 광고 자동 삽입 위치 및 현재 게시 GTM은 미검증이다. main/production은 변경하지 않았다.
+
+
+## 2026-11-02 후속 점검 — Yul/Jung hero alt 및 Worship 가사 아카이브
+
+### Yul / Jung
+- `images/yul01.png`, `images/jung01.png`가 develop 저장소에 존재함을 확인했다.
+- 기존 hero alt는 "Yul Profile" / "Jung Profile"로 일반적이었다. 각 프로필의 역할을 설명하도록 한국어 alt를 수정했다.
+  - `yul.html`: `율(Yul) — Sister Squad 캐릭터 프로필 일러스트`; 커밋 `c6b91acca548ff8c7eec58d435242e3cf18edc8b`; 최종 blob SHA `f48cac72ff472bc49d2fe3f885015565257e188b`.
+  - `jung.html`: `정(Jung) — Sister Squad 캐릭터 프로필 일러스트`; 커밋 `c82d4cb4c7d8e0c726b3fa9d49b4cef234c59cc9`; 최종 blob SHA `25e4ec10ac89c4a7be41e2d34f24c191c2b1f6c`.
+- 각 페이지는 13개 gallery image를 유지하며, 직접 AdSense loader 1개다.
+- Unsplash는 로컬 hero 이미지 오류 시 fallback으로만 선언되어 있다. 실제 브라우저 이미지 로딩/크롭은 미검증이다.
+
+### Worship / English Worship
+- `worship.html`: 한국어 Vol.1~3 전체 30개 가사 아코디언. 각 가사 본문은 서로 달랐고, 중복 ID/완전히 동일한 가사 본문은 발견하지 못했다.
+- `worship_eng.html`: SHOUT 전체 15개 가사 아코디언. 중복 ID/완전히 동일한 가사 본문은 발견하지 못했다.
+- 한국어 Vol.3에서 "나를 아시는 주님", "천국을 향해" 제목이 각각 반복되지만 해당 항목들의 가사 본문은 서로 달랐다. 동일 곡 복제라고 판정하지 않았고, 임의로 제목을 변경하지 않았다.
+- 두 페이지 모두 앨범 이야기, 예배의 방향, 제작 방식 설명, 스트리밍 링크 및 자체 가사 아카이브를 함께 제공한다. 외부 Spotify/YouTube 링크만 있는 화면이 아니므로 콘텐츠 가치 측면에서 이번 단계 수정은 불필요하다고 판단했다.
+- 직접 AdSense loader는 각 1개. 실제 광고 위치/브라우저 표시/외부 플레이어 작동은 미검증이다.
+
+- main/production은 변경하지 않았다. 정적 소스 감사와 실제 브라우저/AdSense 실노출 검증은 별도 상태로 유지한다.

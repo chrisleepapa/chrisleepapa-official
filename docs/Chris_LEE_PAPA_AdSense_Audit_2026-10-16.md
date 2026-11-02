@@ -4,7 +4,7 @@
 - **기준 도메인:** https://chrisleepapa.com/
 - **작업 기준 소스:** GitHub `chrisleepapa/chrisleepapa-official`의 `develop` 브랜치 우선. 검증·사용자 승인 전에는 `main`에 반영하지 않음.
 - **심사 이력:** 사용자가 제공한 기록상 chrisleepapa.com은 2026-10-19 사이트 검토를 신청했고 2026-10-30 두 사유로 거절됨. 현재 AdSense 계정의 사이트 등록/상태 및 재검토 가능 여부는 계정 화면 확인 전까지 미확인. 이 문서는 재심사 준비 점검이며, 새로운 검토 요청을 제출하지 않음.
-- **문서 버전:** Audit 1.27 — Production 24개 URL·광고 대상 18개 재검증, 동적 홈페이지 보완 및 잔여 API 정리
+- **문서 버전:** Audit 1.28 — 광고 대상 18개 페이지 내부 링크 전수 점검 및 Journal 1 링크 수정
 - **최초 점검의 역사적 판정:** Audit 1.0 작성 당시의 판단이며 현재 상태를 뜻하지 않음. 아래 미완료 항목은 실제 존재·운영 여부와 최신 소스를 다시 확인한 뒤에만 유효한 점검 대상으로 채택한다.
 
 ## 최우선 기준 — 실제 AdSense 탈락 사유 (고정)
@@ -637,4 +637,16 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **배포·검증 한계:** API 삭제 commit의 Preview는 확인했으나, 이후 homepage fallback 및 접근성 commit 76a7d35...와 889fe49...에 대한 별도 Preview deployment는 현재 Vercel 목록에서 확인되지 않음. 따라서 이 두 수정은 GitHub 소스 수준으로 검증했으며 실제 브라우저 렌더링 완료로 표시하지 않음. 일일 배포 제한/계정 제한을 우회하는 수동 배포는 실행하지 않음.
 - **브랜치 반영 원칙:** 이번 세 소스 변경은 develop에만 반영함. main에는 Audit 1.26 문서 커밋만 있고, api/youtube-trends.js 삭제 및 홈페이지 fallback/접근성 수정은 아직 반영되지 않음. main 병합 또는 추가 Production 변경은 하지 않음.
 - **AdSense 판정:** 두 고정 거절 사유에 관해 18개 광고 대상 페이지 사이의 완전 동일 본문 문단이나 깨진 로컬 미디어 참조는 발견하지 못함. 홈페이지의 초기 HTML 콘텐츠가 JS 렌더링에 의존하는 부분을 no-script fallback으로 보완했으나, 최신 Preview에서의 실제 렌더링과 AdSense 계정 크롤러가 최종 DOM을 어떻게 읽는지는 미확인. Google 최종 심사 결과를 보장하지 않음.
+
+
+
+### 2026-11-02 / Audit 1.28 — 광고 대상 18개 페이지 내부 링크 전수 점검 및 Journal 1 링크 수정
+
+- **점검 범위:** 현재 develop의 18개 광고 대상 HTML 페이지에서 로컬 페이지 링크와 페이지 내부 anchor를 정적 검사함. 이미지·영상·PDF·CSS·JS 등 파일 링크와 외부 링크는 페이지 라우트 검사에서 분리함.
+- **1차 검사:** 첫 9개 광고 대상 페이지에서 깨진 로컬 페이지 링크 0건, 존재하지 않는 내부 anchor 0건.
+- **발견 사항:** Journal 1의 하단 CTA에서 href="book"으로 연결하고 있었으나 저장소에 book.html이 없고 Production의 /book 요청도 HTTP 404임. 해당 링크는 책 소개와 공식 판매처를 제공하는 실제 공개 /shop 페이지로 연결하는 것이 목적에 부합한다고 판단함.
+- **조치:** develop의 journal-1.html에서 링크를 href="/shop"으로 수정함. /shop은 Production에서 HTTP 200, 공식 canonical, index, follow이며 광고 로더는 0개인 것을 확인함. 수정 commit b7094a2d3d9beb8aafe483e6cc2e04f20c106fb3 (develop).
+- **2차 검사:** 수정 후 나머지 9개 페이지를 재검사한 결과 깨진 로컬 페이지 링크 0건, 존재하지 않는 내부 anchor 0건. Journal 1의 새 /shop 링크도 소스에서 확인함.
+- **범위와 한계:** 이는 저장소 HTML의 href와 id를 대조한 정적 검사임. JavaScript 실행 후 생성되는 동적 링크, 외부 판매처·YouTube·Spotify의 실제 목적지 상태, 모바일/PC 브라우저에서의 클릭 동작은 별도 확인이 필요함. 이번 수정은 develop에만 반영했고 Preview deployment가 생성되기 전이므로 실제 Preview 클릭 테스트 완료로 표시하지 않음.
+- **AdSense 판단:** 광고 대상 18개 페이지의 정적 내부 링크/anchor 검사에서 확인된 단일 깨진 링크를 수정함. 이는 사용자 경험과 페이지 완성도를 높이는 조치이며 두 고정 거절 사유를 직접 해소했다는 증거로 과장하지 않음.
 

@@ -892,3 +892,16 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **main/Production 상태:** main의 같은 파일에는 아직 TikTok URL 5개가 남아 있고 새 YouTube Shorts 링크 0개임. Production 홈페이지는 HTTP 200, canonical `https://chrisleepapa.com/`, AdSense loader 1개, GTM 1개로 응답함. 홈페이지는 해당 스크립트를 실제로 로드함. 따라서 이 수정은 develop에만 있으며 main/Production에는 아직 반영되지 않음.
 - **판정:** 홈페이지와 TuTu 프로젝트 페이지의 영상 링크 불일치를 develop에서 수정 완료. 사용자 확인 전까지 main 병합 및 Production 반영은 하지 않음. Preview 최신 배포에서의 렌더링 확인은 미완료.
 - **점수:** 내부 AdSense 준비도 74/100 유지. 오래된 외부 플랫폼 링크와 프로젝트 내 불일치를 제거했으나, Google의 복제 콘텐츠 판단을 직접 해소했다는 증거는 아니므로 점수는 변경하지 않음.
+
+
+### 2026-11-03 / Audit 1.47 — 홈페이지 Creative Archive 및 Chris's Pick 구성·AdSense 위험 검토
+
+- **검사 대상:** develop의 `index.html`, `js/home-chris-note.js`, `js/home-chris-pick-v2.js`, `js/home-language.js`.
+- **고유 가치 확인:** 홈 정적 소개는 완성 결과물만 나열하는 포트폴리오가 아니라 아이디어·제작·수정·출판 과정을 연결하는 아카이브라고 설명함. SISTER SQUAD 2 본편 소개/영상, 3개 주요 프로젝트 아카이브 카드, Chris's Note 6개 글 링크, Faith Journey 안내가 존재함. Chris's Note에는 두 딸과의 창작 출발점, 실제 도구 사용과 수정, POD 출판 경험, 캐릭터 디자인, 직장과 가족 속 창작, 워십 창작 경험이 구체적으로 요약되어 있음.
+- **Chris's Pick 구성:** 총 58개 항목으로 구성됨: BOOK 3, MUSIC 17, VIDEO 4, SHORTS 15, WORSHIP 5, WALLPAPER 14. 날짜 기준으로 1개를 결정론적으로 선택해 홈페이지에 노출하는 구조임.
+- **이전 수정 확인:** TuTu PuPu PiPi의 기존 TikTok 5개 항목은 develop에서 공식 YouTube Shorts 6개 항목으로 교체 완료(Audit 1.46). develop의 해당 스크립트에는 TikTok URL 0개임.
+- **추가 AdSense 위험 후보:** Chris's Pick에는 Demon Slayer, Jujutsu Kaisen, Chainsaw Man 등 타사 애니메이션 캐릭터에서 영감을 받은 영상·음악 항목이 일부 포함되어 있음. 이 중 8개는 제목에서 해당 IP가 명시된 영상/Shorts이며, 벽력일섬·영역전개 등 관련 음악도 포함됨. 제작자가 직접 만든 AI 영상이라도 타사 캐릭터를 활용한 파생 콘텐츠는 원본 창작물과 동일한 독창성 근거로 취급하기 어려우므로, 광고가 노출되는 홈페이지의 일일 추천에 계속 포함되는 것은 복제/재사용 콘텐츠 심사 관점에서 잠재 위험으로 분류함. 다만 이 항목이 실제 Google 거절 원인이라고 확인된 것은 아님.
+- **추가 콘텐츠 가치 후보:** Wallpaper 항목 14개 중 Desktop Wallpaper 02~09는 설명이 '두 번째/세 번째/여섯 번째 이미지'처럼 번호 중심의 일반 문구임. 실제 Wallpaper 페이지에는 별도 작품 설명·기기 설정 안내가 있으나, 홈페이지 Chris's Pick 카드에서 이 항목이 선택되면 개별 카드만으로 제공하는 정보가 얕을 수 있음.
+- **보존 원칙:** 이 단계에서는 팬워크나 월페이퍼 작품을 삭제하거나 숨기지 않음. 사용자의 작품 아카이브 보존 의사를 침해하지 않도록, 광고 대상 홈페이지의 일일 추천 후보에서 파생 콘텐츠/일반 설명 항목을 제외할지 여부는 별도 정책 결정 사항으로 남김. 현재는 위험 후보 식별만 완료함.
+- **판정:** 홈페이지의 전체 소개·제작자 노트·프로젝트 연결은 독창적 맥락을 제공함. 다만 매일 바뀌는 Chris's Pick은 타사 IP 기반 팬워크와 설명이 얕은 월페이퍼를 선택할 수 있어, AdSense 복제/재사용 콘텐츠 거절 사유와 관련해 추가 검토가 필요한 부분임.
+- **점수:** 내부 AdSense 준비도 74/100 유지. 고유 콘텐츠 구조는 긍정적이나, 홈페이지의 동적 추천 후보가 모두 동일한 독창성 수준이라고 볼 수 없어 점수는 올리지 않음.

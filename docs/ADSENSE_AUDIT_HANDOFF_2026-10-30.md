@@ -4516,3 +4516,36 @@ switch.html (SWITCH) 정적 게임 감사. 이어서 goal.html (골이예요).
 
 ### 다음 단일 작업
 TuTuPuPuPiPi 수정 후 develop 소스의 최신 HEAD와 Vercel Preview 상태를 다시 대조한다. 현재 HEAD 배포가 READY가 되면 브라우저에서 한국어/영어 전환, 영상 6개 재생, 모바일/PC 레이아웃을 확인하고, 그 다음 남은 승인 전 GTM/Auto ads/GSC 검증으로 넘어간다.
+
+
+## 2026-11-02 후속 점검 — TuTu PuPu PiPi, Journal 1~6, MIRACLE SHOT 제외 처리
+
+### TuTu PuPu PiPi
+- 대상: `tutupupupipi.html`; 수정 전 blob SHA `8863d63266db7e7eece4ccf3cd66f86ace7b28f0`.
+- 기존 정적 HTML에서 여섯 영상 카드의 제목이 모두 일반적인 `Video 01`~`Video 06` 형식으로 남아 있었다. JavaScript 번역 사전에는 고유한 제목이 이미 있었으나, 스크립트 실행 전/실패 시에는 제목의 정보량이 부족했다.
+- 카드의 정적 제목 6개를 기존 한국어 번역 사전의 실제 제목과 일치시켰다. 각 썸네일 alt도 해당 영상 설명에서 확인되는 장면을 반영해 6개 모두 구체화했다.
+- 기존 동적 한국어/영어 번역, 영상 ID, YouTube Shorts 링크, 캐릭터 소개, 세계관, OST 임베드, 창작자 노트는 유지했다.
+- 수정 커밋: `c55ebf3e2da82e6a26e390881af7d188c12a3410`; 수정 후 blob SHA `5d67098987e1fd9be873b8aabe76539f8335ffec`.
+- 재검증: 정적 고유 제목 6개, video ID 6개 및 중복 없음, YouTube Shorts 링크 6개 및 중복 없음, 장면별 alt 6개. 한국어/영어 번역 키 누락 없음. 직접 AdSense loader 1개, 수동 슬롯 0개, adsbygoogle.push 0개.
+- 판정: 이전에 지적된 정적 제목 fallback의 정보 부족을 최소 수정으로 해소했다. 실제 영상 장면과 설명의 완전한 일치 여부 및 브라우저 렌더링은 영상/브라우저 확인 전까지 미검증이다.
+
+### Journal 1~6 교차 중복 확인
+- 대상: `journal-1.html`~`journal-6.html`.
+- 각 페이지 본문 텍스트(스크립트·스타일·태그 제거 기준)는 약 3,453~9,402자.
+- 여섯 페이지의 문단을 정규화해 정확히 일치하는 문장을 비교한 결과, 반복된 것은 공통 Journal 내비게이션/상단 안내 문구뿐이었다. 독립 본문에서 완전히 동일한 문단은 확인되지 않았다.
+- 주제는 각각 가족 창작의 시작, Skywork와 원고 구성, POD 출판, 캐릭터·삽화 디자인, 퇴근 후 창작 시간 관리, Worship 창작 기록으로 구분된다.
+- 여섯 페이지 모두 canonical은 개별 chrisleepapa.com 경로와 일치하고 `index, follow`, 직접 AdSense loader 1개다. Journal 5의 영어 본문도 `PAGE_I18N.en.body`에서 확인했다.
+- 판정: 정적 소스에서 복제 본문 또는 영문 본문 누락 문제를 확인하지 못했다. 변경하지 않았다. 실제 렌더링/언어 전환은 미검증이다.
+
+### MIRACLE SHOT 게임 광고 제외
+- 대상: `miracleshot.html`; 수정 전 blob SHA `5083a9e56e3d4cab35a9759d55b3facdae4127ed`.
+- 사용자가 MIRACLE SHOT을 게임으로 명확히 분류하고 광고 대상에서 제외한다고 지정했으나, 페이지에 AdSense loader와 publisher ID가 남아 있는 것을 확인했다.
+- Google AdSense 스크립트 블록만 제거했다. GTM, canonical, `index, follow`, 게임 콘텐츠와 기능은 변경하지 않았다.
+- 수정 커밋: `90a2490a06caa7dbfb7e86dd06129274d61e488f`; 수정 후 blob SHA `d67aa4e227c6e5837697d6c43c8c2b3d173ba74a`.
+- 재검증: AdSense loader 0, publisher ID 0, 수동 광고 슬롯 0, adsbygoogle.push 0. GTM 1개와 canonical/robots 설정 유지.
+- 판정: 게임 광고 제외 원칙에 맞게 정적 HTML의 직접 AdSense 호출을 제거했다. GTM 게시 버전이나 실제 광고 노출 여부는 별도 검증 전까지 미완료다.
+
+### 브랜치 상태 갱신
+- 사용자의 요청으로 2026-11-02에 develop을 main에 fast-forward 반영했으며, 동기화 기준 커밋은 `21b891c15c97de48e6788fc4210ff9ce52ee7c44`였다.
+- 위의 TuTu PuPu PiPi 및 MIRACLE SHOT 수정과 점검 문서 갱신은 동기화 이후 develop에서만 수행한다. 따라서 과거 본문에 있는 “main 미변경/77 commits ahead” 표기는 당시의 과거 상태 기록이며, 현재 기준 브랜치 상태는 이 섹션과 `ADSENSE_AUDIT_NEXT_STEPS.md` 맨 앞의 최신 상태를 따른다.
+- 이번 단계도 배포하지 않았다. main 운영 배포, 실제 브라우저, 현재 게시 GTM, Auto ads 위치, GSC 색인 검증은 완료로 표시하지 않는다.

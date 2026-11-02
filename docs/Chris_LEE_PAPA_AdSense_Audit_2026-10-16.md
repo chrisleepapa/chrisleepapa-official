@@ -4,7 +4,7 @@
 - **기준 도메인:** https://chrisleepapa.com/
 - **작업 기준 소스:** GitHub `chrisleepapa/chrisleepapa-official`의 `develop` 브랜치 우선. 검증·사용자 승인 전에는 `main`에 반영하지 않음.
 - **심사 이력:** 사용자가 제공한 기록상 chrisleepapa.com은 2026-10-19 사이트 검토를 신청했고 2026-10-30 두 사유로 거절됨. 현재 AdSense 계정의 사이트 등록/상태 및 재검토 가능 여부는 계정 화면 확인 전까지 미확인. 이 문서는 재심사 준비 점검이며, 새로운 검토 요청을 제출하지 않음.
-- **문서 버전:** Audit 1.26 — Production·develop 현재 상태 정합성 재검증 및 미완료 항목 재분류
+- **문서 버전:** Audit 1.27 — Production 24개 URL·광고 대상 18개 재검증, 동적 홈페이지 보완 및 잔여 API 정리
 - **최초 점검의 역사적 판정:** Audit 1.0 작성 당시의 판단이며 현재 상태를 뜻하지 않음. 아래 미완료 항목은 실제 존재·운영 여부와 최신 소스를 다시 확인한 뒤에만 유효한 점검 대상으로 채택한다.
 
 ## 최우선 기준 — 실제 AdSense 탈락 사유 (고정)
@@ -612,3 +612,29 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **중요한 미확인 사항:** export는 2026-10-30 시점의 버전 2 파일일 뿐, 현재 GTM 계정에서 실제 게시된 최신 버전이 2인지 확인하지 못함. GA4 실시간 보고서/DebugView에서 실제 page_view 수신과 중복 여부도 계정 접근 없이 확인 불가. 따라서 현재 정적 HTML상 중복 설치는 발견하지 못했으나, GTM 게시 버전 및 GA4 수집 정상 여부는 **미완료**로 유지.
 - **다음 검증 단계:** GTM 계정에서 게시된 버전 번호와 버전 2의 차이 확인 → GA4 실시간/DebugView에서 페이지별 page_view가 1회씩 들어오는지 확인 → GTM Preview로 광고 제외 경로에서 AdSense loader가 실행되지 않는지 확인. 이 단계는 계정 권한/실시간 세션이 필요하므로 이번 자동 점검에서 완료 처리하지 않음.
 - **판정:** 현재 운영 HTML의 GTM 삽입은 sitemap 24개 모두 1회로 일관됨. 직접 GA4 중복 삽입은 확인되지 않음. AdSense loader의 대상/제외 경로 분포도 의도한 목록과 일치함. 단, 태그의 실제 게시 버전과 GA4 데이터 수신은 미확인 상태.
+
+
+### 2026-11-02 / Audit 1.27 — Production 24개 URL·광고 대상 18개 재검증, 동적 홈페이지 보완 및 잔여 API 정리
+
+**점검 범위:** Google의 두 고정 거절 사유(복제 콘텐츠 / 가치가 별로 없는 콘텐츠)를 최우선으로 유지하면서, 실제 Production 응답, 18개 광고 대상 화면의 HTML, 로컬 미디어 참조, 동적 홈페이지 렌더링 의존성 및 삭제된 기능의 잔여 코드를 확인함.
+
+- **Production 배포 상태 정정:** 2026-11-02 통합점검문서 Audit 1.26을 main에 커밋한 뒤 Vercel Git 연동이 Production 배포를 자동 생성함. 최신 배포 dpl_4Zo4tpHfDBSHsAayR9YdyghTGDe8은 READY, alias chrisleepapa.com, main commit 71277c202c4c29be2c6cc656b40cd37d16bead97임. 수동 배포가 아니라 main 문서 커밋에 따른 자동 배포이며, 이 커밋은 문서만 바꾸었으므로 사이트 HTML·기능 소스는 이전 Production과 동일함. 기존 Production 배포 dpl_E1hRVLpF6heQYWCqn2BKCzVn7NNB의 소스 커밋은 e098a80b7f25be221edad1911318087c6c1731d1임.
+- **Sitemap 전수 재검증:** 실제 Production sitemap의 24개 URL을 모두 요청한 결과 24/24 HTTP 200. 공개 페이지의 canonical은 공식 https://chrisleepapa.com/ 도메인으로 정합성을 확인함. sitemap의 indexable 페이지는 index, follow 상태임.
+- **AdSense 로더 분포:** 실제 Production 24개 sitemap URL 중 18개 화면에 adsbygoogle.js 로더 1개씩 존재하고, 6개 화면은 0개임. 로더가 있는 화면은 /, /about, /sistersquad-hub, /sistersquad, /sistersquad2, /yul, /jung, /miracleshot, /tutupupupipi, /worship, /worship_eng, /wallpaper, /journal-1~ /journal-6임. 로더가 없는 화면은 /music, /movie, /bible, /contact, /privacy, /terms임. 사용자 지정 광고 제외 목록과 일치함.
+- **수동 광고 슬롯 정적 검사:** GitHub main/develop 코드 검색에서 data-ad-slot, data-ad-format 속성을 찾지 못함. 확인되는 것은 광고 대상 화면의 AdSense 공통 로더이며, 별도의 수동 광고 단위 슬롯은 확인되지 않음. 실제 자동 광고 설정 및 계정 내 광고 배치 상태는 계정 접근이 없어 미확인으로 유지함.
+- **공통 태그 재확인:** 24개 sitemap 페이지 각각 GTM GTM-NGDTQNVG 로더 1개와 noscript iframe 1개. 직접 GA4 스크립트 중복 여부는 Audit 1.25의 0건 결과를 유지함.
+- **정책·크롤링 파일:** Production /ads.txt, /robots.txt, /sitemap.xml 모두 HTTP 200. ads.txt의 게시자 라인 일치. robots.txt는 전체 크롤링 허용 및 공식 sitemap 주소를 안내함.
+- **sitemap 외 공개 경로:** /goal, /switch, /tetris, /curling, /fiveinrow, /booktop, /game, /gameinfo는 모두 HTTP 200, AdSense 로더 0개, noindex, nofollow 응답 헤더/메타 확인. /journal, /today, /guestbook은 HTTP 200, 로더 0개, noindex, follow. /shop은 HTTP 200, 로더 0개, index, follow이며 sitemap에는 포함되지 않음. 이 경로들을 광고 대상 콘텐츠 화면으로 재분류하지 않음.
+- **도메인 정합성:** chrisleepapa-official.vercel.app의 루트와 /about은 공식 .com으로 301 이동함. develop.chrisleepapa.com은 HTML meta robots가 index, follow인 반면 Vercel 응답 헤더에 X-Robots-Tag: noindex, nofollow가 설정되어 실제 크롤링 차단 지시는 noindex임. 개발 도메인의 meta/header 표현이 서로 다르지만 Production의 색인 지시에는 영향 없음.
+- **광고 대상 18개 페이지의 본문 중복 검사:** 80자 초과 본문 문단을 페이지 간 비교한 결과 서로 다른 광고 대상 페이지 사이의 완전 동일 문단은 발견하지 못함. Journal 1·4에서 동일 문장이 HTML 본문과 JavaScript 언어 전환용 데이터에 각각 들어 있는 사례는 확인했으나, 이는 번역/렌더링 데이터 보관 방식이며 화면에 동일 문단이 두 번 표시되는 구조는 아님. 복제 콘텐츠 정책 위반의 직접 증거로 판단하지 않음.
+- **로컬 미디어 참조 검사:** 광고 대상 18개 HTML의 img, video, source 로컬 참조 총 130건을 저장소 파일 트리와 대조한 결과 130/130 파일 존재. URL 인코딩된 공백 경로는 디코딩 후 비교함. 이번 검사 범위에서 깨진 로컬 이미지·영상 파일 경로는 발견되지 않음.
+- **메타데이터·구조화 데이터:** 18개 광고 대상 화면의 title, description, canonical을 확인했으며 페이지별 주제와 일치함. About JSON-LD는 Person·WebSite·AboutPage를 포함한 유효한 @graph; Journal 1~6은 Article 구조화 데이터, SISTER SQUAD 1은 CreativeWork 구조화 데이터 확인. JSON-LD가 없는 페이지는 오류로 단정하지 않으며 AdSense 합격 필수요건으로 취급하지 않음.
+- **홈페이지의 동적 콘텐츠 렌더링 위험:** Production 초기 HTML에서 Chris's Pick과 Chris's Note가 JavaScript로 채워지는 구조를 확인함. home-chris-pick-v2.js는 작품 설명을 로컬 데이터에서 생성하고, Spotify oEmbed는 음악 카드 커버 이미지 조회에만 사용하며 실패 시 대체 이미지를 사용함. home-chris-note.js도 여섯 Journal 메타데이터와 창작자 소개를 로컬 데이터로 렌더링함. 따라서 콘텐츠 자체가 외부 API 결과에 의존하지는 않지만, JavaScript 실행 전 HTML에는 두 섹션의 완전한 본문이 노출되지 않는 렌더링 의존성이 있음.
+- **홈페이지 no-script 보완:** index.html의 #chris-note에 창작자 소개와 Journal 1~6으로 연결되는 의미 있는 noscript 대체 콘텐츠를 추가하고, JS 비활성 환경에서 대체 콘텐츠가 숨겨지지 않도록 초기 visibility:hidden 규칙을 제거함. 정상 JS 환경에서는 noscript가 렌더링되지 않고 기존 home-chris-note.js가 동적 섹션을 채우는 구조를 유지함. 변경 commit 76a7d35b8e911505e3b1a6b25fd8ce6823a6e450 (develop).
+- **홈페이지 접근성 보완:** #chris-note의 aria-labelledby="home-content-title"가 동적 렌더링 후에도 실제 제목을 가리키도록 home-chris-note.js의 생성 h2에 id="home-content-title"을 추가함. 변경 commit 889fe49abec522da50133d8bda9107a69b2ecabd (develop).
+- **삭제된 YouTube Chart 잔여 API 제거:** 저장소의 api/youtube-trends.js는 더 이상 사용되지 않는 YouTube 글로벌 차트 조회 서버리스 함수였고, 전체 저장소에서 /api/youtube-trends, YOUTUBE_CHARTS_API_KEY 호출 참조를 찾지 못함. 사용자 요청에 따라 develop에서 파일을 삭제함. commit 2b9058b33013e13ba30e5c2653012cb50a85ea31. 해당 commit의 Vercel Preview dpl_8VhFvxgmaXY85KMRY7ET5QjZFn6x는 READY; Preview의 /api/youtube-trends 응답 HTTP 404 확인. 이는 삭제된 화면을 되살리는 것이 아니라 남아 있던 미사용 API 엔드포인트를 제거한 것임.
+- **Prompt Lab / Chris's News 확인:** 저장소에 해당 경로의 HTML 페이지가 없고 chris-news 코드 참조도 발견되지 않음. prompt-lab 검색의 일부 결과는 Journal의 .journal-prompt 스타일명과 본문 속 프롬프트 표현으로 확인되어 Prompt Lab 페이지 잔여물로 보지 않음.
+- **배포·검증 한계:** API 삭제 commit의 Preview는 확인했으나, 이후 homepage fallback 및 접근성 commit 76a7d35...와 889fe49...에 대한 별도 Preview deployment는 현재 Vercel 목록에서 확인되지 않음. 따라서 이 두 수정은 GitHub 소스 수준으로 검증했으며 실제 브라우저 렌더링 완료로 표시하지 않음. 일일 배포 제한/계정 제한을 우회하는 수동 배포는 실행하지 않음.
+- **브랜치 반영 원칙:** 이번 세 소스 변경은 develop에만 반영함. main에는 Audit 1.26 문서 커밋만 있고, api/youtube-trends.js 삭제 및 홈페이지 fallback/접근성 수정은 아직 반영되지 않음. main 병합 또는 추가 Production 변경은 하지 않음.
+- **AdSense 판정:** 두 고정 거절 사유에 관해 18개 광고 대상 페이지 사이의 완전 동일 본문 문단이나 깨진 로컬 미디어 참조는 발견하지 못함. 홈페이지의 초기 HTML 콘텐츠가 JS 렌더링에 의존하는 부분을 no-script fallback으로 보완했으나, 최신 Preview에서의 실제 렌더링과 AdSense 계정 크롤러가 최종 DOM을 어떻게 읽는지는 미확인. Google 최종 심사 결과를 보장하지 않음.
+

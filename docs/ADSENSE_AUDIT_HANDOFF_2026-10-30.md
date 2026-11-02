@@ -4300,3 +4300,21 @@ switch.html (SWITCH) 정적 게임 감사. 이어서 goal.html (골이예요).
 - 조치: 코드 변경 없음. 기존 홈 영상과 동적 큐레이션 유지.
 - 검증 한계: develop 정적 소스 및 JS 구조 확인. 실제 브라우저에서 동적 섹션 표시, 언어 전환, 모바일/PC 레이아웃, 영상 재생, 현재 광고 노출 위치는 미검증. main/production 미변경.
 - 다음 단일 작업: sitemap의 24개 URL을 현재 develop 파일과 대조해 색인 대상/광고 대상/광고 제외 대상, canonical, robots, 직접 AdSense loader 수를 한 표로 재검증하고 누락된 광고 대상 페이지가 없는지 확인한다.
+
+
+## 2026-11-02 사이트맵 전체 24개 URL — canonical / robots / 광고 코드 교차 점검
+
+- 기준: GitHub develop의 `sitemap.xml`과 24개 실제 HTML 파일. sitemap 총 24 URL.
+- URL별 파일 존재: 24/24 확인.
+- canonical: 24/24가 각 페이지의 `https://chrisleepapa.com/{path}` 또는 홈 정식 URL을 가리킴.
+- robots: sitemap에 포함된 24개 URL은 모두 `index, follow`.
+- GTM: 24/24 HTML에 GTM 컨테이너 스크립트와 noscript 참조가 각각 1개씩 존재(문자열 기준 GTM ID 2회).
+- 직접 AdSense loader: 총 18개 페이지에서 각 1개 확인.
+- 직접 AdSense loader 0개: `/music`, `/movie`, `/bible`, `/contact`, `/privacy`, `/terms` 총 6개.
+- 수동 광고 슬롯 `<ins class="adsbygoogle">`: 24개 페이지 전체 0개.
+- 직접 `adsbygoogle.push`: 24개 페이지 전체 0개.
+- 이전 점검 기록에는 20개 로더/4개 제외로 기재되어 있었으나, 현재 develop 소스는 18개 로더/6개 제외로 확인됨. 새로 직접 로더가 없는 Music/Movie 두 페이지가 추가 광고 제외 상태로 확인됨. 이는 정적 HTML의 직접 로더 기준이며 실제 Auto ads 및 현재 게시 GTM 버전의 광고 동작을 의미하지 않음.
+- GTM 보충 근거: 사용자가 제공한 2026-10-30 GTM export version 2는 GA4 Google tag 1개만 포함하고 AdSense 태그는 없음. 현재 GTM 실시간 게시 버전과 동일성은 미확인.
+- 판정: sitemap 내 URL 누락, canonical 불일치, robots 차단, 중복 수동 광고 슬롯은 이번 정적 점검에서 발견되지 않음. 광고 제외 대상 6개 URL은 직접 AdSense 로더가 없는 상태로 확인됨.
+- 검증 한계: GitHub develop 정적 파일 및 제공된 GTM export만 확인. 실제 Google 크롤링/색인, 실시간 GTM 게시 버전, 브라우저 광고 노출 위치와 Auto ads 동작은 미검증. main/production 미변경.
+- 다음 단일 작업: Sister Squad 1·2·허브·캐릭터 페이지의 남은 후속 항목(영상/이미지/구매 링크 목적지, 페이지별 고유 역할과 내부 링크)을 하나씩 재검증한다.

@@ -2,6 +2,40 @@
 
 - 기준일: 2026-11-02
 - 저장소: chrisleepapa/chrisleepapa-official
+- 작업 브랜치: develop only. main은 2026-11-02에 당시 develop HEAD 21b891c15c97de48e6788fc4210ff9ce52ee7c44까지 동기화됨. 이후 감사 수정은 develop에만 반영.
+- 운영 도메인: https://chrisleepapa.com
+- 개발 도메인: https://develop.chrisleepapa.com
+- 상세 조사 기록: docs/ADSENSE_AUDIT_HANDOFF_2026-10-30.md
+
+## 현재 진행 상태 / 다음 단일 작업 — 2026-11-02 갱신
+
+### 정적 소스 점검 완료/재검증
+- TuTuPuPuPiPi: Shorts 6편의 고유 ID/설명, 캐릭터·세계관·OST·창작자 노트, 로컬 이미지/alt 확인. 즉시 수정 불필요.
+- About: 중복되던 제작 과정 소개 문단 및 미사용 한/영 번역 키 제거. 수정 커밋 78476b2d3fb03676911a36f5c057eda7f2192adf.
+- 광고 대상 주요 콘텐츠 페이지 간 긴 본문 문단 완전 일치 0건. Yul/Jung 및 Sister Squad 공통 세계관/프로필 구조는 서로 다른 캐릭터 서사·페이지 역할로 확인.
+- sitemap 24개: canonical 24/24, robots index/follow 24/24, GTM script/noscript 각각 1회, 직접 AdSense loader 18개, loader 없는 페이지 6개. 수동 광고 슬롯/push 0개.
+- sitemap 밖 루트 HTML 13개: 직접 AdSense loader/수동 슬롯/push 모두 0개. shop만 index/follow이며 sitemap 밖. 게임/기능 페이지는 noindex/no-follow.
+- 제외 대상 6개: music, movie, bible, contact, privacy, terms. MIRACLE SHOT 게임은 goal.html(noindex/no-follow, loader 0), miracleshot.html은 별도 작품 소개(index/follow, loader 1).
+
+### 다음 단일 작업
+정적 소스 단계는 현재 점검표상 마무리 단계다. 다음은 실서비스 검증 준비: GTM-NGDTQNVG의 현재 게시 버전과 2026-10-30 제공 export v2의 일치 여부, AdSense Auto ads의 실제 노출 화면/위치, Search Console의 실제 발견·색인 URL을 각각 확인한다. 계정 연결이나 브라우저 접근이 불가능한 항목은 미완료로 유지하고, 정적 소스 결과를 실서비스 정상 판정으로 바꾸지 않는다.
+
+### 미완료 실서비스 검증
+- 현재 게시된 GTM 컨테이너 버전과 export v2 비교.
+- AdSense Auto ads 실제 노출 화면/위치 확인(승인 전 계정 상태를 가정하지 말 것).
+- Google Search Console의 실제 발견/색인 URL 및 sitemap 상태.
+- 실제 브라우저 모바일/PC 렌더링, 동적 JS 실행 및 외부 플레이어.
+
+### 변하지 않는 범위
+- AdSense 거절 사유: 복제 콘텐츠 / 가치가 별로 없는 콘텐츠.
+- 성경·찬송 및 게임 실행 페이지는 광고 대상 콘텐츠 심사에서 제외.
+- 소스 수정은 develop에서만 진행하고 main은 추가 지시 전까지 수정하지 않는다.
+- 새 페이지 생성, 이미 끝난 페이지의 근거 없는 반복 수정 금지.
+
+---
+
+- 기준일: 2026-11-02
+- 저장소: chrisleepapa/chrisleepapa-official
 - 작업 브랜치: develop only. main은 사용자 요청으로 2026-11-02에 당시 develop HEAD 21b891c15c97de48e6788fc4210ff9ce52ee7c44와 동기화됨. 이후 감사 수정은 develop에만 반영.
 - 운영 도메인: https://chrisleepapa.com
 - 개발 도메인: https://develop.chrisleepapa.com

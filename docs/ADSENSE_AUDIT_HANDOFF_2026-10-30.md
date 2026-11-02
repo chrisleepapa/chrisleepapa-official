@@ -4332,3 +4332,18 @@ switch.html (SWITCH) 정적 게임 감사. 이어서 goal.html (골이예요).
 - 조치: 코드 변경 없음.
 - 검증 한계: YouTube/Spotify/Amazon 외부 목적지의 실시간 가용성 및 실제 브라우저 클릭·재생은 확인하지 못함. 광고 노출 위치도 미검증. main/production 미변경.
 - 다음 단일 작업: `sistersquad2.html`의 본편/예고편/NG 영상 연결, 작품 설명과 제작 노트, 내부 링크/이미지 참조를 같은 기준으로 확인한다.
+
+
+## 2026-11-02 후속 점검 — Sister Squad 2 영상/이미지/내부 링크
+
+- 대상: `sistersquad2.html`; develop blob SHA `529d9358a7945dd77a7afbce33049bdf2796c6ed`.
+- 기본 설정: canonical `https://chrisleepapa.com/sistersquad2`, `index, follow`, 직접 AdSense loader 1개.
+- 영상: 예고편 3개, NG/비하인드 1개, 본편 1개로 YouTube-nocookie iframe 총 5개. 모두 개별 title이 있고 `loading="lazy"`가 설정됨. 본편 iframe ID `sKkPYaMM75A`와 별도 YouTube 링크의 영상 ID가 일치함.
+- 이미지: `/images/sistersquad2_banner.png`, `images/yul00.jpg`, `images/jung00.jpg` 3개가 develop tree에 존재하고 alt가 설정됨.
+- 내부 링크: `/gameinfo`, `/shop.html` 대상 파일이 develop tree에 존재함.
+- 독립 콘텐츠: 두 번째 모험의 서사, 등장인물, 가족, 동료/요정, OST, 제작 노트, 아빠 캐릭터를 이야기 속에 포함시킨 이유, 세 가지 주제 해설이 있음. 본문 텍스트 추출 약 3,044자.
+- 상태 문구: “곧 공개”, “공개 예정”, “COMING SOON”, “준비 중” 등 본편 공개 상태와 충돌하는 문구를 발견하지 못함.
+- 판정: 페이지는 다수의 영상을 포함하지만 작품 고유 서사와 창작자 해설이 함께 있으며, 영상 iframe은 지연 로딩됨. 정적 소스에서 즉시 수정이 필요한 복제 콘텐츠/가치 부족 또는 깨진 내부 파일 참조를 확인하지 못함.
+- 조치: 코드 변경 없음.
+- 검증 한계: YouTube 영상의 실제 공개/재생 가능 여부, 외부 링크 실시간 상태, 실제 브라우저/모바일 표시 및 광고 위치는 미검증. main/production 미변경.
+- 다음 단일 작업: `sistersquad-hub.html`의 허브 고유 목적, 개별 작품/캐릭터 페이지로의 링크, 중복 설명 및 이미지 참조를 확인한다.

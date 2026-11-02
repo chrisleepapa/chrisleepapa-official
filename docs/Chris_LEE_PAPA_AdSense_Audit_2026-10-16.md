@@ -814,3 +814,20 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **AdSense 관련성:** 제작 도구별 역할을 정확하게 설명해 콘텐츠의 실제 제작 과정과 저자 경험을 더 투명하게 함. 직접 거절 사유 해소를 입증하는 자료는 아니므로 내부 준비도 점수는 74/100 유지.
 - **변경 범위:** `about.html`과 통합점검문서만 develop에 반영. main에는 통합점검문서만 동기화하며, About 소스는 병합하지 않음.
 
+
+
+### 2026-11-03 / Audit 1.41 — WORSHIP 한국어·영어 페이지 창작 가치 및 가사집 정밀 대조
+
+- **검사 대상:** develop의 `worship.html`, `worship_eng.html`, `js/main.js` 및 WORSHIP 관련 제작 설명.
+- **한국어 WORSHIP 구성:** 앨범 카드 4개(나의 찬양 Vol.1~3, Whispers Of Grace), 가사집 30곡, 앨범 제작 배경 5개 이야기 카드, 창작자의 개인적 예배 동기를 설명하는 본문, 최종 아카이브 설명이 존재함.
+- **영어 WORSHIP 구성:** SHOUT 앨범 카드 1개, 가사집 15곡, 앨범의 주제·영어 워십 제작 의도·AI 보조 제작 과정에 관한 5개 이야기 카드가 존재함.
+- **독창성·가치 판정:** 두 페이지 모두 외부 음원 링크만 모아놓은 구조가 아님. 앨범별 주제, 개인의 신앙 경험과 창작 동기, 곡의 방향, AI 생성 결과를 검토·선택한 제작 과정, 전체 가사집을 함께 제공함. 사용자가 설명한 본인 창작·배포 이력과도 일치하는 서술 구조임. 다만 음원 원본 계정의 소유권 및 실제 배포 메타데이터를 독립 확인한 것은 아님.
+- **한국어 가사집의 편집 오류:** Vol.1 및 Vol.3 가사 본문 안에 실제 가사가 아닌 내부 제작 메모 `[아웃트로 제외]`, `[Instrumental Outro 제외]`가 노출된 것을 확인함. 해당 두 메모만 develop의 `worship.html`에서 제거함. 곡의 가사, 보컬 구성 및 다른 섹션 표시는 변경하지 않음.
+- **수정 커밋:** develop `5f48f11bcd32a859caf6325f35b13c4e30700dec` — `content: remove production-only outro notes from worship lyrics`. 변경 파일은 `worship.html` 하나이며, main 및 Production은 변경하지 않음.
+- **추가 대조 필요:** 한국어 Vol.3에서 `나를 아시는 주님`이 01/05번, `천국을 향해`가 06/08번에 각각 반복됨. 각 항목의 보컬 구성 표기는 솔로/여성 중창, 남성 중창/혼성 듀엣으로 구분되어 있어 별도 편곡 버전일 가능성이 있으나, 실제 발매 트랙 목록과의 일치 여부는 확인 전까지 미확정으로 유지함.
+- **추가 대조 필요:** 영어 SHOUT의 06번 `Faithfull still`, 13번 `Lord your my way` 표기는 문법·철자상 오기로 보일 수 있으나, Spotify/YouTube 발매 메타데이터를 확인하지 못했으므로 임의 수정하지 않음. 배포된 공식 트랙명과 대조가 필요함.
+- **공식 스트리밍 링크 검증:** 소스에서 Spotify 앨범 링크 5개 및 YouTube Music/playlist 링크 4개 그룹을 확인함. 외부 서비스 페이지의 실시간 메타데이터 조회는 도구 측 Cache miss로 실패했으므로 URL이 실제 해당 앨범·트랙 목록을 가리키는지는 미검증. 링크가 유효하지 않다고 판정한 것은 아님.
+- **Preview/Production 확인:** 확인 가능한 최신 READY develop Preview는 deployment `dpl_A3L4968rEdnDvLnrtUWTKkbwrYgH`, commit `d466b78fc48111c1df1c7281dd208294b2aabc63`임. 한국어 WORSHIP 수정 커밋 `5f48f11`은 해당 Preview보다 최신이므로 Preview에서 수정 결과를 확인하지 못함. 영어 WORSHIP Preview는 HTTP 200, canonical `https://chrisleepapa.com/worship_eng`, x-robots-tag noindex, AdSense loader 1개, GTM 1개를 확인함. Production의 한국어/영어 WORSHIP 모두 HTTP 200, 각 정식 canonical 일치, AdSense loader 1개, GTM 1개를 확인함.
+- **한계:** Preview의 noindex는 개발 배포에 대한 설정이며 Production의 색인 허용 여부를 뜻하지 않음. 실제 브라우저의 라이트모드·모바일 레이아웃, 언어 전환, 외부 음원 재생, Spotify/YouTube 발매 트랙 목록, Google 계정 내 광고 상태는 이 단계에서 검증하지 못함.
+- **판정:** WORSHIP 두 페이지는 창작자의 원작·가사·개인적 맥락을 제공하는 점에서 독창성 측면의 긍정적 근거가 충분함. 두 개의 내부 제작 메모는 develop에서 제거 완료. 공식 발매 메타데이터 대조와 수정 후 Preview 검증은 미완료로 유지함.
+- **점수:** 내부 AdSense 준비도 74/100 유지. 소스 품질 개선은 반영했으나 외부 링크·배포 메타데이터·Google의 실제 복제 콘텐츠 판단을 검증하지 못했으므로 점수를 올리지 않음.

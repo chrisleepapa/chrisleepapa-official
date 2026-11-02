@@ -1800,3 +1800,45 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 ### 다음 단일 작업
 
 **About / Contact / Privacy / Terms 및 사이트 전반의 공개 연락처·운영자 정보·저작권 고지를 교차 점검한다.** 특히 사이트의 독창적 창작물과 제3자 자료의 구분, Contact 응답 경로, Privacy/Terms의 언어별 동일성, AdSense 로더 제외, sitemap/canonical/robots를 확인한다. 계정의 Privacy & Messaging/CMP는 별도 계정 UI 미검증으로 유지한다.
+
+
+## 2026-11-02 추가 점검 — About / Contact / Privacy / Terms 교차 검증
+
+**대상:** `about.html`, `contact.html`, `privacy.html`, `terms.html`
+**기준:** 독창적 About 본문, Contact 기능/개인정보 수집 여부, 법적 고지, 광고 로더, 색인/사이트맵
+**브랜치:** develop
+
+### 확인 결과
+
+1. **About**
+   - canonical `https://chrisleepapa.com/about`, robots `index, follow`, sitemap 포함.
+   - develop 응답 HTTP 200.
+   - 본문 약 2,638자. 창작자 소개, 개인적 창작 계기, Sister Squad, 음악/영상/신앙 프로젝트, Creative Archive 제작 방식, 창작 철학, 연혁을 제공한다.
+   - 긴 본문 문단 8개를 홈과 비교했을 때 동일한 120자 이상 문단 반복은 없었다.
+   - AdSense 로더 1개, 수동 광고 슬롯 0개, `adsbygoogle.push` 0개. About 페이지는 고유한 소개 콘텐츠를 제공하므로 현재 광고 로더를 유지한다.
+
+2. **Contact**
+   - canonical `https://chrisleepapa.com/contact`, robots `index, follow`, sitemap 포함.
+   - develop 응답 HTTP 200.
+   - 본문 약 234자. 연락 목적, 24시간 이내 응답 안내, 이메일 `mailto:`, Instagram, Facebook 링크를 제공한다.
+   - 문의 폼이나 사이트 내 입력 데이터 저장 기능은 없다. 이메일 클라이언트를 여는 링크 중심이므로 별도 문의 폼 데이터 수집은 확인되지 않았다.
+   - AdSense 로더 0개, 수동 슬롯 0개. 짧은 길이는 Contact 유틸리티 페이지의 목적에 맞으며 광고도 없어 저가치 광고 페이지로 보지 않는다.
+
+3. **Privacy / Terms**
+   - Privacy: canonical `/privacy`, `index, follow`, sitemap 포함, AdSense 로더 0개.
+   - Terms: canonical `/terms`, `index, follow`, sitemap 포함, AdSense 로더 0개.
+   - 두 페이지 모두 한국어/영어 조항을 제공한다.
+   - Privacy는 자동 수집 정보, 게스트북, 공통 계정 이니셜/PIN 해시, Bible/TODAY 개인 기록, 게임 점수, localStorage, 쿠키, Supabase 일본 리전, 보관/삭제 요청 경로를 설명한다.
+   - Terms는 운영자 창작물과 성경 번역문·찬송가 악보/가사·제3자 미디어를 구분하고, 출처 표기가 재배포/상업적 이용 허가를 의미하지 않는다고 명시한다.
+
+### 종합 판정
+
+- About은 자체 창작자 소개와 제작 철학이 있어 독립적 가치가 충분하다.
+- Contact는 연락 수단 안내 전용 페이지이며 광고가 없어 본문 길이 자체를 저가치 문제로 보지 않는다.
+- Privacy/Terms는 검색 노출과 사이트맵이 정상이며 광고를 로딩하지 않는다.
+- 네 페이지 모두 develop에서 HTTP 200, canonical 및 robots 설정이 소스와 일치한다.
+- 이번 단계에서 소스 수정은 하지 않았다.
+
+### 다음 단일 작업
+
+**사이트 전체의 sitemap.xml / robots.txt / canonical / 라우트 리다이렉트 정합성을 일괄 점검한다.** sitemap 24개 URL 각각의 실제 HTTP 상태, canonical 대상, robots 지시, 삭제 페이지/옛 vercel.app 주소 노출 여부를 대조하고, AdSense 심사에 불필요한 중복 URL이 남아 있는지 확인한다. Google Search Console이 선택한 canonical은 계정 화면 접근 전까지 별도 미검증으로 유지한다.

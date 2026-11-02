@@ -844,3 +844,14 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **검증 한계:** HTML 사전 및 공통 언어 적용 코드는 확인했으나, 브라우저에서 한국어↔영어 전환을 직접 실행한 것은 아님. 최신 develop Preview는 이 수정 커밋보다 이전이므로 Preview 렌더링 확인도 미완료.
 - **판정:** 예고편 카드명은 누락된 것이 아니라 기존부터 한국어/영어 사전에 정확히 존재했음. 이전 Audit 1.37의 generic title 판정은 정정함. iframe 접근성 title은 develop에서 개선 완료.
 - **점수:** 내부 AdSense 준비도 74/100 유지. 영상 설명을 임의로 창작하지 않았으며, 실제 Google 복제 콘텐츠 판정의 해소를 입증하는 새 증거는 아니므로 점수는 변경하지 않음.
+
+
+### 2026-11-03 / Audit 1.43 — AdSense 광고 제외 6개 페이지 및 Movie 페이지 실배포 확인
+
+- **검사 대상:** develop의 sitemap 24개 URL, `music.html`, `movie.html`, `bible.html`, `contact.html`, `privacy.html`, `terms.html`, `wallpaper.html`; Movie는 Preview 및 Production 응답도 확인함.
+- **광고 제외 페이지 6개 확인:** `/music`, `/movie`, `/bible`, `/contact`, `/privacy`, `/terms`에서 AdSense loader 0개, GTM script 1개를 확인함. 24개 sitemap URL 중 이 6개를 제외한 18개가 기존 Audit 1.36의 광고 대상 18개와 일치함.
+- **Movie 페이지:** develop의 `movie.html`에서 AdSense loader 0개, GTM 1개, canonical `https://chrisleepapa.com/movie`, robots `index, follow` 확인. Production과 확인 가능한 Preview 모두 HTTP 200, 동일 canonical, robots `index, follow`, AdSense loader 0개, GTM 1개로 응답함.
+- **기타 제외 페이지:** `music.html`, `bible.html`, `contact.html`, `privacy.html`, `terms.html`에서도 AdSense loader 0개를 확인함. `wallpaper.html`은 AdSense loader 1개로 광고 대상에 포함됨.
+- **판정:** 사용자가 요청한 Movie 페이지 광고 제외는 develop 소스뿐 아니라 현재 Production 및 Preview 응답에서도 반영되어 있음. 광고 제외 페이지 6개와 광고 대상 18개 구성에 새 오류는 발견되지 않음.
+- **변경 범위:** 소스 수정 없음. 이 단계는 기존 광고 분리 설정을 재검증한 것임.
+- **점수:** 내부 AdSense 준비도 74/100 유지. 광고 대상 분리의 일관성을 확인했으나 두 실제 거절 사유의 해소 여부를 추가 입증한 것은 아님.

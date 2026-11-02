@@ -1130,3 +1130,18 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **수정 범위:** 사이트 소스는 `journal-1.html` 한 파일의 출처 표기만 develop에서 수정. `sistersquad2.html`은 점검만 수행. 점검문서는 develop/main 양쪽에 동기화함.
 - **판정:** JOURNAL 1~6은 점검한 장문 문단 사이에 완전 동일 문단이 없고, 서로 다른 개인 경험을 다룸. JOURNAL 1의 간접 인용 표기와 출처를 개선함. SISTER SQUAD 2는 영상 외에 고유 서사·캐릭터·제작 의도 설명이 확인됨. 단, 이번 정적 점검은 Google의 실제 복제 콘텐츠 판정이나 외부 영상 권리 상태를 보증하지 않음.
 - **내부 점수:** 74/100 유지. 출처 정확성과 콘텐츠 구분은 개선되었으나 Preview/Production 브라우저 검증이 남아 있어 점수는 올리지 않음.
+
+
+
+### 2026-11-03 / Audit 1.65 — MIRACLE SHOT 부제 확인 및 ABOUT 의미 구조 개선
+
+- **사용자 확인 사항:** MIRACLE SHOT의 공식 한국어 부제는 `기적을 차올리다`. `골이예요 GOAL`은 별도 게임명이며 부제와 혼동하지 않음.
+- **MIRACLE SHOT 제목·부제 확인:** develop `miracleshot.html`의 문서 title, Open Graph title, Twitter title은 모두 `MIRACLE SHOT — 기적을 차올리다 | Chris LEE.PAPA`. 화면의 H1은 `MIRACLE SHOT`, 그 아래 표시되는 한국어 `header_slogan`은 `기적을 차올리다 · FOUR KIDS, ONE MIRACLE`. 영문 화면은 `KICKING UP A MIRACLE · FOUR KIDS, ONE MIRACLE`. 기존 표기가 사용자 지정 부제와 일치하므로 MIRACLE SHOT 페이지는 수정하지 않음.
+- **ABOUT 브랜치 비교:** develop `about.html`은 main과 blob SHA가 다름. 실제 차이는 한국어/영어 `mystory_p3`의 3개 문구(정적 본문 1개, ko 번역 1개, en 번역 1개)이며, develop은 Suno AI를 음악 제작에, Gemini를 이미지·영상·사운드 제작에 활용한다고 명확히 설명함. main은 Gemini 설명이 빠진 이전 문구임. develop의 정확한 도구 역할 구분을 유지하며 main에는 반영하지 않음.
+- **ABOUT 의미 구조 개선:** 기존 Who I Am, My Story, Creative Philosophy, Journey, Find Me의 섹션 제목 5개가 스타일용 `div`였음. 동일한 클래스·ID·번역 키를 유지한 채 `h2`로 변경하고, 기본 브라우저 H2 상단 여백이 기존 디자인을 바꾸지 않도록 각 제목 클래스의 margin을 명시함. 기존 창작 아카이브 제작 과정 제목 H2는 유지.
+- **ABOUT 검증:** develop `about.html` H1 1개, H2 6개(기존 제작 과정 H2 1개 + 의미 구조로 바꾼 H2 5개), H2 열기/닫기 태그 6/6, 구형 제목 div 0개. ko/en 번역 모두 Gemini 설명 존재. canonical `https://chrisleepapa.com/about`, robots `index, follow`, 직접 AdSense loader 1개, GTM script 1개. 콘텐츠 본문과 번역은 수정하지 않고 제목 태그와 기본 여백만 변경함.
+- **수정 커밋:** develop `b48eed618f2895b92d42fd5d36bc7917cc05310a` — `a11y: use semantic section headings on about page`. main은 수정하지 않음.
+- **Preview 배포:** develop 최신 소스 SHA로 Preview 배포를 요청했으나 Vercel이 `api-deployments-free-per-day` 제한(24시간 내 100회 초과)으로 HTTP 402를 반환함. 배포 생성되지 않음. 한도 우회, 요금제 변경, Production 배포는 시도하지 않음. 가장 최근 확인된 READY Preview는 이전 commit `f8c2e5b87e750206519b41b6146c84abb15eb67f`로 현재 ABOUT 수정 commit을 포함하지 않음.
+- **브라우저 확인 한계:** `chrisleepapa.com/about` 및 `/miracleshot` 페이지를 외부 페이지 열람 도구로 직접 확인할 수 없어 Production 화면을 검증하지 못함. 정적 소스 확인과 브라우저/배포 검증을 구분함.
+- **판정:** MIRACLE SHOT의 한국어 부제는 이미 메타데이터와 화면 문구에 정확히 반영되어 있어 추가 변경 불필요. ABOUT는 AI 도구 역할이 ko/en 모두 명확하며, 다섯 섹션 제목의 의미 구조를 개선함. Preview 배포 제한으로 실제 렌더링은 미검증.
+- **내부 점수:** 74/100 유지. ABOUT 의미 구조 개선은 반영했으나, Preview와 실제 Production 렌더링 검증이 남아 있어 점수 상향 없음.

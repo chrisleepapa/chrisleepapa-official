@@ -1911,3 +1911,17 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 - 조치: 코드 수정 없음. 현재 구성이 홈 탐색 목적에 부합하며, 동일 내용을 더 늘리는 것은 불필요.
 - 검증 한계: GitHub develop 소스 점검. 브라우저 렌더링은 배포 한도 때문에 미확인. main/production 미변경.
 - 다음 순서: `/music` 및 `/movie`의 실제 작품 설명과 외부 임베드/링크 의존도, 특히 Movie 페이지의 광고 로더 제외 여부 점검.
+
+
+## 2026-11-02 추가 점검 — Wallpaper Studio
+
+- 대상: `/wallpaper` (광고 대상 페이지).
+- 기본 설정: title/description 존재, canonical `https://chrisleepapa.com/wallpaper`, `index, follow`, AdSense 로더 1개, 수동 광고 슬롯/adsbygoogle.push 0개.
+- 독립 콘텐츠: 모바일 무빙 월페이퍼 4편과 PC 정지 이미지 9점, 각 모바일 작품별 설명, 창작자 노트, 개인 사용 라이선스, Android/iPhone/Windows/macOS 설정 가이드를 포함. 단순 파일 다운로드 링크 모음이 아님.
+- 파일 경로 확인: `images/lockscreen00.mp4`, `mobile01.mp4`~`mobile04.mp4`, `wallpaper01.png`~`wallpaper09.png` 총 14개 파일이 모두 GitHub develop의 `images/` 디렉터리에 존재. 다운로드 링크는 모바일 MP4 4개 및 PC PNG 9개로 연결됨.
+- 영상/이미지 동작: 상단 컬렉션 영상 1개와 모바일 미리보기 4개, 총 5개 video 요소. 모바일 미리보기는 `preload=none`, PC 이미지는 lazy loading/async decoding을 사용. 광고 슬롯을 삽입한 별도 수동 코드는 없음. 기존 사용자 요청대로 별도 이미지 오버레이 요소는 확인되지 않음.
+- 성능 주의: 확인한 14개 원본 파일 합계 약 115.7MB(상단 영상 포함). 파일 자체는 모두 존재하지만, 모바일 네트워크 환경에서는 초기/개별 다운로드 부담이 될 수 있음. 이는 AdSense 정책 위반이 아니라 성능 최적화 후보. 상단 영상은 autoplay/muted/loop이며 metadata preload.
+- 독창성 판정: 각 작품을 무료 개인 배경화면으로 제공하는 목적과 사용 범위가 명확하고, 모바일/PC별 파일 형식·설정 안내 및 창작 노트가 있어 다운로드만 제공하는 빈약한 페이지는 아님. 다만 PC 이미지 9점은 번호 중심의 일반 제목이므로, 실제 이미지 내용을 확인한 뒤 작품별 고유 설명을 추가하면 더 나아질 수 있음. 이미지 장면은 이번 소스 점검에서 직접 시각 검증하지 않음.
+- 조치: 코드 수정 없음. 이미지 장면을 확인하지 않고 설명을 추측해 추가하지 않음.
+- 검증 한계: GitHub develop 소스 및 파일 존재/크기 확인. 실제 브라우저 다운로드, 모바일/PC 화면, 영상 재생 및 최신 preview는 Vercel 배포 한도 때문에 미검증. main/production 미변경.
+- 다음 순서: `/about` 등 실제 색인/광고 대상 소개 페이지의 고유 콘텐츠, 중복성, 광고 코드 점검. `/contact`, `/privacy`, `/terms`는 광고 제외 정책 페이지로 콘텐츠 가치 심사에서 제외.

@@ -44,20 +44,33 @@
 
 이번 항목에서는 파일을 수정하지 않았다. 브라우저에서 실제 한국어/영어 전환, 콘솔 오류, 모바일/PC 레이아웃, 제작 노트 전체 표시 여부는 아직 확인하지 못했다.
 
-## 다음 단일 작업
-**Sister Squad 1 페이지의 콘텐츠 가치와 기존 Journal 내부 링크 연결을 소스 기준으로 확인한다.**
+## 현재 진행 상태 / 다음 단일 작업 — 2026-11-02 갱신
 
-대상:
-- `sistersquad.html`
-- 관련 Journal 상세 페이지의 링크 대상/실제 경로
+### 완료한 정적 점검
+- AdSense 거절 사유(복제 콘텐츠 / 가치가 별로 없는 콘텐츠)에 맞춘 기준 재정렬.
+- sitemap 24개 URL 전체의 파일 존재, canonical, robots, GTM, AdSense 직접 로더, 수동 슬롯 및 push 코드 대조.
+- sitemap 밖 루트 HTML 13개도 robots 및 광고 코드 확인. 게임/기능 페이지는 광고 코드가 없고 noindex 설정임.
+- P0/P1 광고 대상 콘텐츠: Sister Squad 1·2·허브·Yul·Jung, TuTuPuPuPiPi, Worship/English Worship, Music, Movie, Wallpaper, Miracle Shot, Home, Journal 1~6, About, Shop 정적 검토.
+- 개인정보처리방침 문구 수정 및 기존 점검 결과 기록.
+- Sister Squad 허브의 잘못된 탐색 앵커 2개를 develop에서 수정하고 재검증.
+- 상세 근거는 `docs/ADSENSE_AUDIT_HANDOFF_2026-10-30.md`의 2026-11-02 기록을 기준으로 한다.
 
-확인할 것:
-- 작품 줄거리, 캐릭터, 독자 대상, 핵심 갈등/주제 등 자체 콘텐츠가 독립적으로 이해되는지
-- 기존 Journal 1·2·4로 연결되는 제작 과정 링크가 실제 존재하는지, 링크가 정확한 경로를 가리키는지
-- 외부 도서/OST/영상 링크가 본문보다 먼저 과도하게 강조되는지
-- 이미 있는 설명을 반복하지 않고 보완이 꼭 필요한 부분만 식별
+### 현재 확인된 사이트 전체 코드 상태
+- sitemap URL 24개 모두 canonical이 일치하고 `index, follow`.
+- 24/24에 GTM 스크립트와 noscript가 각각 1개.
+- 직접 AdSense loader 18개, 광고 코드 없는 페이지 6개: `/music`, `/movie`, `/bible`, `/contact`, `/privacy`, `/terms`.
+- sitemap 밖 HTML 13개는 모두 직접 AdSense loader/수동 슬롯/push 0개. 그중 `/shop`만 `index, follow`이며 sitemap에는 없음.
+- 제공된 GTM export version 2(2026-10-30)는 GA4 Google tag 1개만 포함. 현재 실시간 게시 버전은 미확인.
 
-우선 소스만 확인한다. 수정이 필요해도 사용자 확인 전에는 수정하지 말고, 실제 브라우저 확인이 불가능하면 그 한계를 명시한다.
+### 남은 확인 / 개선 후보
+1. 실제 브라우저에서 develop의 모바일·PC 렌더링, 동적 스크립트, 외부 플레이어, 링크 클릭을 검증한다. 배포 한도 또는 브라우저 접근 제약이 있으면 미검증으로 유지한다.
+2. 현재 게시된 GTM 컨테이너 및 AdSense Auto ads의 실제 광고 노출 위치를 확인한다. 정적 HTML만으로 광고 미노출을 확정하지 않는다.
+3. Movie Archive의 동일 Shorts 8편 목록 반복, Music Archive의 제작 원칙 중복, Shop의 얇은 판매 링크 디렉터리 여부를 최소 수정 관점에서 재평가한다.
+4. Yul/Jung 프로필의 Unsplash hero 이미지와 alt가 실제 화면에서 적절한지 확인한다.
+5. Google Search Console에서 실제 발견/색인 URL과 sitemap 상태를 확인한다.
+
+### 다음 단일 작업
+**기존 점검 기록을 최종 대조하고, 위 남은 항목을 AdSense 승인 영향도 순으로 분류한다.** 소스 수정이나 main 반영은 실제 문제가 확인된 경우에만 진행하며, 모든 수정은 develop에서만 한다.
 
 ## 다음 대화에서 그대로 사용할 요청
 “Chris LEE.PAPA AdSense 점검을 이어서 진행해. 먼저 docs/ADSENSE_AUDIT_NEXT_STEPS.md와 상세 조사 기록을 확인하고, ‘다음 단일 작업’ 하나만 차분히 진행해. 이미 확인한 사실은 다시 묻지 말고 develop만 작업하며 main은 건드리지 마.”

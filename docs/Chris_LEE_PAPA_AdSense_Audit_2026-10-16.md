@@ -4,7 +4,7 @@
 - **기준 도메인:** https://chrisleepapa.com/
 - **작업 기준 소스:** GitHub `chrisleepapa/chrisleepapa-official`의 `develop` 브랜치 우선. 검증·사용자 승인 전에는 `main`에 반영하지 않음.
 - **심사 신청 여부:** 사용자가 아직 새 도메인에 대한 사이트 검토를 신청하지 않았다고 명시함. 이 문서는 신청 전 준비 점검이며, 심사 신청이나 승인을 의미하지 않음.
-- **문서 버전:** Audit 1.11 — 주요 광고 페이지 production·develop 콘텐츠 비교
+- **문서 버전:** Audit 1.12 — 주요 광고 페이지 production·develop 비교 완료
 - **최초 점검의 역사적 판정:** Audit 1.0 작성 당시의 판단이며 현재 상태를 뜻하지 않음. 아래 미완료 항목은 실제 존재·운영 여부와 최신 소스를 다시 확인한 뒤에만 유효한 점검 대상으로 채택한다.
 
 ## 최우선 기준 — 실제 AdSense 탈락 사유 (고정)
@@ -354,7 +354,18 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **English Worship:** 두 버전 모두 직접 로더 1개와 SHOUT 앨범 소개·가사가 있음. develop에는 인간이 가사·주제·예배 방향을 정하고 AI가 보컬·악기·편곡 제작을 보조했다는 설명이 추가되어 있음. production은 해당 설명이 아직 미반영.
 - **해석:** 위 차이는 곧바로 정책 위반을 뜻하지 않음. 다만 광고가 게재되는 화면에서 원작자의 창작 과정과 직접 작성한 콘텐츠가 명확히 드러나도록 하는 develop의 보완이 심사 준비 측면에서 더 유리함. main에 반영되기 전에는 production의 현재 상태를 그대로 기준으로 판단해야 함.
 
+### 7.15 추가 광고 대상 페이지 production·develop 비교
+
+- **SISTER SQUAD 2:** 양쪽 본문 가시 텍스트 약 2,986자, 10개 주요 문단, 직접 AdSense 로더 1개로 동일. 가족·자매 성장 서사와 구체적인 여정 설명이 있어 두 고정 거절 사유 기준 소스상 양호.
+- **YUL:** 양쪽 본문 약 2,940자, 10개 주요 문단, 직접 AdSense 로더 1개로 동일. 성격, 염력, 동생과의 관계, 실제 딸을 모티프로 한 창작 배경 및 성장 과정이 구체적으로 포함됨.
+- **JUNG:** 양쪽 본문 약 2,879자, 10개 주요 문단, 직접 AdSense 로더 1개로 동일. 성격, 교감 능력, 언니와의 관계, 실제 딸의 경험에서 가져온 창작 배경과 성장 과정이 구체적으로 포함됨.
+- **Journal 1:** 양쪽 본문 약 3,574자, 직접 AdSense 로더 1개로 동일. 본문은 개인 경험과 창작 과정을 담은 장문 기록.
+- **Journal 6:** 양쪽 본문 약 9,370자, 직접 AdSense 로더 1개로 동일. 찬양 제작 동기와 신앙적 고백, 작업 과정을 담은 장문 기록.
+- 위 페이지들은 이번 실서비스 비교에서 production과 develop의 본문·광고 코드 차이가 확인되지 않아 추가 수정하지 않음. 나머지 Journal 2~5도 이전 develop 소스 심층 검토에서 독립적인 1인칭 경험과 제작 과정을 확인했으나, production 브라우저 비교는 아직 전체 완료로 표시하지 않음.
+
 ## 8. 변경 기록
+
+- **2026-11-02 / Audit 1.12:** 실서비스 production과 develop을 추가 비교. SISTER SQUAD 2, YUL, JUNG, Journal 1, Journal 6은 주요 본문 텍스트 및 직접 AdSense 로더 수가 양쪽에서 동일하고 독립적인 원작·캐릭터·개인 경험 설명이 확인되어 추가 수정하지 않음. Journal 2~5의 production 비교는 미완료로 명시.
 
 - **2026-11-02 / Audit 1.11:** Production과 develop의 TuTu PuPu PiPi, SISTER SQUAD 1, MIRACLE SHOT, SISTER SQUAD Hub, Korean/English Worship 본문을 실서비스 HTML 응답으로 비교. TuTu 및 SISTER SQUAD 1은 develop에 고유한 캐릭터·세계관·에피소드 설명이 더 있음. Worship 두 페이지는 develop에 AI 보조 제작과 인간 창작자의 선택·수정 역할을 설명하는 문단이 추가되어 있음. Miracle Shot과 SISTER SQUAD Hub는 비교 범위에서 주요 본문이 동일. Production은 아직 develop 변경을 반영하지 않은 상태로 기록.
 

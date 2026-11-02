@@ -983,3 +983,16 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **점수:** 내부 AdSense 준비도 74/100 유지. 메타데이터 정확성은 개선되었으나 Google의 복제 콘텐츠 심사 결과를 직접 해소한 증거는 아니므로 점수는 변경하지 않음.
 
 **External evidence:** Amazon Music artist page: https://music.amazon.in/artists/B0FSRQG4TG/chris-lee-papa ; Spotify Vol.3 track listing: https://open.spotify.com/track/06PMJ0wnWQe71CJv8fkdTg
+
+
+### 2026-11-03 / Audit 1.54 — 한국어 WORSHIP Vol.2·Vol.3 수록곡 표기와 발매 목록 대조
+
+- **검사 대상:** develop의 `worship.html`, Apple Music의 나의 찬양 vol 2 공식 트랙 목록, Spotify의 나의 찬양 vol. 3 공식 트랙 목록.
+- **Vol.2 대조:** 공식 Apple Music 목록은 10곡이며 사이트 가사집도 10곡임. 01번 공식 표기는 `모두 찬양해`인데 사이트는 `모두찬양해`로 띄어쓰기가 달랐음. develop에서 제목 표기를 공식 메타데이터와 일치시킴.
+- **Vol.3 대조:** 공식 Spotify 목록은 10곡이며 사이트 가사집도 10곡임. 02번 공식 표기 `모든 걸 주께 맡겨요`, 10번 공식 표기 `축복의가정`과 사이트의 띄어쓰기가 달라 develop에서 공식 발매 표기로 맞춤.
+- **중복 제목 확인:** Vol.3 01/05번은 Solo/여성 중창, 06/08번은 남성 중창/혼성 듀엣으로 별도 트랙이 등록되어 있음. 사이트의 각 가사 항목에도 `Solo`, `여성 중창`, `남성 중창`, `혼성 듀엣` 표기가 존재하므로 같은 곡을 잘못 중복 등록한 것이 아님.
+- **수정 커밋:** develop `40fb41853b9790cfc40b2026247c1dc0876ce6a3` — `content: align worship lyric titles with official release metadata`. 제목 3개만 수정하고 가사 본문·순서·음원 링크는 변경하지 않음.
+- **외부 근거:** Apple Music 나의 찬양 vol 2: https://music.apple.com/us/album/%EB%82%98%EC%9D%98-%EC%B0%AC%EC%96%91-vol-2/1896016177 ; Spotify 나의 찬양 vol. 3 track listing: https://open.spotify.com/track/06PMJ0wnWQe71CJv8fkdTg
+- **배포 상태:** develop 소스만 수정. main/Production은 변경하지 않았으며 새 Preview 반영은 확인 전.
+- **판정:** Vol.2·Vol.3의 수록곡 개수와 순서는 공식 발매 목록과 일치하며, 발견된 세 가지 표기 차이를 develop에서 수정함.
+- **점수:** 내부 AdSense 준비도 74/100 유지. 콘텐츠 메타데이터 정확성 개선이며 Google의 실제 복제 콘텐츠 판정을 직접 해결했다는 근거는 아니므로 점수는 변경하지 않음.

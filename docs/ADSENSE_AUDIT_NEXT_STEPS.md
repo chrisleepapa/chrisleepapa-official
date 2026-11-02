@@ -1742,3 +1742,61 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 ### 다음 단일 작업
 
 **Bible 페이지(`bible.html`)의 성경 본문 데이터 출처·게시 권한, 찬송가 자료 파일 범위, 광고 제외, 페이지 본문 독립성 및 개인정보 저장 기능 안내를 develop 소스 기준으로 점검한다.** 성경 번역본과 찬송가 PDF의 온라인 게시 권한은 실제 허가 근거가 없으면 완료로 표시하지 않는다. 이어서 Privacy 페이지의 실제 데이터 처리 설명과 일치 여부를 확인한다.
+
+
+## 2026-11-02 추가 점검 — Bible / Today / Privacy / Terms
+
+**대상:** `bible.html`, `js/bible-auth-gate.js`, `js/bible-creator-story.js`, `images/hymn/`, `today.html`, Today 관련 저장 스크립트, `privacy.html`, `terms.html`
+**기준:** AdSense 페이지 가치, 성경/악보 데이터 출처와 게시 권한, 광고 제외, 개인정보 처리 고지
+**브랜치:** develop
+
+### 1) Bible 페이지와 성경 데이터
+
+- `bible.html` canonical `https://chrisleepapa.com/bible`, robots `index, follow`, sitemap 포함.
+- AdSense 로더 0개, 수동 광고 슬롯 0개, `adsbygoogle.push` 0개. 사용자가 지정한 Bible 페이지 광고 제외 상태가 유지된다.
+- 기본 성경 데이터는 `https://raw.githubusercontent.com/stranger828/bibleAPI/main/bible_structured.json`을 우선 사용하고 `bible.json`을 fallback으로 사용한다. 인증 후 로딩되며 브라우저 캐시를 사용한다.
+- GitHub API에서 해당 저장소의 `license` 필드는 null이고 저장소에 LICENSE 파일이 없다. README는 개역개정 데이터의 저작권이 대한성서공회에 있을 수 있고 상업적 이용 전 확인이 필요하다고 경고한다.
+- `bible-creator-story.js`에는 데이터 출처 링크와 권리 안내가 실제로 표시된다. 이 사이트가 성경 본문을 직접 번역하거나 독창적 창작물로 주장하지 않는다는 설명도 있다. 이는 출처 투명성에는 도움이 되지만 저작권자의 이용 허가를 대신하지 않는다.
+- 야고보서 1~5장은 별도로 Supabase `bible_content` 테이블에서 읽는다. 현재 페이지의 출처 안내는 별도 Supabase 본문의 구체적 원출처/이용 권한까지 증명하지 않으므로 별도 확인 대상으로 남긴다.
+- Bible reader는 책/장 선택, 검색, 읽기 진행, 형광펜, 북마크, 구절 메모, 묵상/일독 진행과 계정별 기록 기능을 제공한다. 기능적 독창성은 충분하나, 본문 데이터의 권리 문제와는 별개다.
+
+### 2) 찬송가 PDF
+
+- `bible.html`의 `hymnFiles` 배열은 400개이며 번호 1~400에 누락/중복이 없다.
+- 모든 PDF 경로는 `/images/hymn/`를 사용하고 해당 디렉터리에 400개 파일이 존재한다.
+- 루트 디렉터리에는 별도 찬송가 PDF가 0개이며, 과거 요청한 루트 101~125 파일 제거 상태도 확인했다.
+- UI는 전체 1~645장 구조를 보여주되 현재 400개 PDF 등록 상태와 나머지 준비 중 상태를 구분해 안내한다.
+- 페이지에는 자료 출처 `https://w-decrecendo.tistory.com/`가 표시된다. 그러나 블로그 출처 표기만으로 원저작권자의 온라인 재게시 권한이 확인되지는 않는다.
+- 한국찬송가공회는 21세기 새찬송가/통일찬송가 저작권과 온라인 악보 다운로드 이용 유형을 별도로 안내한다. 현재 400개 파일의 곡별 권리 및 재게시 허가 문서는 확인되지 않았다.
+
+### 3) 외부 권리 근거 — 미완료 고위험 항목
+
+- 대한성서공회 공식 안내는 저작권이 있는 한글 성경 본문을 컴퓨터 데이터 등으로 사용하는 경우 허가가 필요하며, 비상업적 교회 교육용 인용도 허가 신청 대상이라고 설명한다.
+- 공개 GitHub 저장소의 데이터 제공이나 출처 링크만으로 개역개정 전체 본문의 웹 게시/캐싱 권한을 확보했다고 볼 수 없다.
+- 한국찬송가공회의 온라인 악보 다운로드 라이선스 안내와 현재 사이트의 400개 PDF 제공 방식에 대한 권리 확인이 필요하다.
+- 따라서 **개역개정 본문 전체와 찬송가 PDF 400개는 게시 권한 미확인**으로 남긴다. 허가를 받은 것으로 표시하지 않는다. 실제 서면 허가가 확인되기 전까지 이 항목을 완료 처리하지 않는다.
+- Bible 페이지는 현재 광고가 없지만 index/follow 및 sitemap 대상이다. 권리 미확인 상태는 광고 승인 여부와 별도의 저작권/콘텐츠 위험으로 관리한다. 필요 시 권리 확인 전 색인 범위 축소 또는 자료 비공개 여부를 별도 결정한다. 이번 단계에서는 페이지를 임의로 비공개하거나 삭제하지 않았다.
+
+### 4) 개인정보처리방침 및 Today 저장 기능 대조
+
+- `privacy.html` canonical `https://chrisleepapa.com/privacy`, robots `index, follow`, sitemap 포함, AdSense 로더 0개.
+- 정책에는 영문 3자리 이니셜, PIN 인증 해시, 계정 생성/수정/최근 로그인 시각, 성경 읽기 진행률, 하이라이트/북마크/구절 메모, Bible Journey, Today 날짜별 메모/기도/할 일/출석, 묵상, 기도노트, 공개 TOP 5, 게임 점수/순위, localStorage 세션/해시/설정, Google Analytics/AdSense 쿠키가 기재되어 있다.
+- Supabase 리전은 일본 도쿄 `ap-northeast-1`로 고지되어 있다. 전체 계정/연결 기록 삭제는 자동 기능이 없으며 이메일 요청 경로와 7일 이내 처리 안내가 있다.
+- 코드에서 Bible chapter progress는 `clp_save_bible_record`, Today records는 `clp_list_today_records`/`clp_save_today`/`clp_delete_today`, Bible Journey는 `clp_load_bible_journey`/`clp_save_bible_journey`, reflection archive는 `clp_list_bible_reflections`/`clp_upsert_bible_reflection`/`clp_delete_bible_reflection` RPC를 사용한다. Today/Bible 개인 기록을 직접 REST 테이블에 노출하는 코드는 확인되지 않았다.
+- `today.html`은 `noindex, follow`, AdSense 로더 0개, sitemap 제외다. 개인 대시보드의 광고/검색 노출 제외 상태와 맞는다.
+- `terms.html` canonical `https://chrisleepapa.com/terms`, robots `index, follow`, sitemap 포함, AdSense 로더 0개. 2026-11-02 수정본은 성경 번역문, 찬송가 악보/가사, 제3자 미디어가 각 권리자에게 귀속되고 출처 표기만으로 재배포/상업적 이용 허가가 되지 않는다는 문구를 명시한다.
+- Privacy와 Terms는 실제 기능 및 제3자 권리 구분을 비교적 정확하게 설명한다. 이번 단계에서 수정하지 않았다.
+
+### 판정
+
+- **Bible 기능 가치:** 독립적인 읽기/검색/진도/메모 기능과 창작자 설명이 있어 단순 복제 텍스트만 있는 페이지는 아니다.
+- **복제/권리 위험:** 전체 개역개정 데이터와 400개 찬송가 PDF의 재게시 허가가 확인되지 않아 고위험 미완료. 공개 GitHub/블로그 출처는 허가 증빙이 아니다.
+- **광고 설정:** Bible/Today/Privacy/Terms 모두 AdSense 로더 0개. Bible과 Today의 광고 제외 정책이 코드와 일치한다.
+- **개인정보 고지:** Supabase 일본 리전, 이니셜/PIN 해시, 읽기/묵상/기도/할 일/순위 기록, 브라우저 저장, 삭제 요청 경로가 정책에 반영되어 있다.
+- **미검증:** AdSense 계정의 Privacy & Messaging/CMP 설정 및 실제 동의 배너 노출은 사이트 소스만으로 확인할 수 없다. 계정 화면에서 별도 확인이 필요하다.
+
+이번 단계에서는 성경/찬송가 자료를 삭제하거나 비공개하지 않았고, 코드도 수정하지 않았다. 권리 확인 전에는 허가 완료로 처리하지 않는다.
+
+### 다음 단일 작업
+
+**About / Contact / Privacy / Terms 및 사이트 전반의 공개 연락처·운영자 정보·저작권 고지를 교차 점검한다.** 특히 사이트의 독창적 창작물과 제3자 자료의 구분, Contact 응답 경로, Privacy/Terms의 언어별 동일성, AdSense 로더 제외, sitemap/canonical/robots를 확인한다. 계정의 Privacy & Messaging/CMP는 별도 계정 UI 미검증으로 유지한다.

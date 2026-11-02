@@ -1032,3 +1032,13 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **WORSHIP 외부 링크 검사:** 한국어 WORSHIP 페이지에 Vol.1/2/3, Whispers of Grace의 Spotify 링크와 Vol.2/3 YouTube 앨범 링크가 존재하고, 영문 WORSHIP 페이지에 SHOUT Spotify·YouTube 링크가 존재함. 다만 Spotify 페이지는 공개 조회 도구에서 캐시 미스로 메타데이터를 읽지 못해 앨범 ID와 실제 발매명·트랙 전체의 실시간 일치 여부를 독립 검증하지 못함. 기존에 확인된 일부 공식 메타데이터 외에는 링크를 추정하거나 수정하지 않음.
 - **판정:** AdSense-facing homepage의 대표 추천 후보를 더 엄격하게 정리함. 작품 아카이브는 보존하면서 광고 대상 화면의 타사 IP 기반 파생물 및 정보량이 낮은 카드 노출 위험을 줄이는 조치임.
 - **점수:** 내부 AdSense 준비도 74/100 유지. 노출 후보 개선은 완료했지만 Preview 검증과 Google의 실제 복제 콘텐츠 판정 해소 증거가 아직 없어 점수는 변경하지 않음.
+
+
+### 2026-11-03 / Audit 1.58 — Chris's Pick 필터 정적 검증 및 Preview 배포 한도 확인
+
+- **정적 검증:** develop `js/home-chris-pick-v2.js`에서 추천 항목 58개를 파싱함. 제외 목록 18개가 실제 제목과 모두 정확히 일치(누락 0개), 나머지 40개가 추천 후보로 남음. 일일 추천 함수가 `HOMEPAGE_PICK_EXCLUSIONS` Set을 사용해 제외 항목을 필터링하는 것을 확인함.
+- **아카이브 보존:** 58개 전체 원본 PICKS 데이터는 그대로 존재하며, 필터는 `getDailyPick` 내부에서만 적용됨. 따라서 제외된 작품의 개별 링크와 페이지 데이터는 삭제되지 않음.
+- **Preview 배포 시도:** 최신 develop 커밋 `3973ca7276340233c4c7b55e1ee88340d2a1d182`로 Vercel Preview를 생성하려 했으나, Vercel이 `api-deployments-free-per-day` 제한(일일 100회 초과, 약 24시간 후 재시도)을 반환함. 배포 생성은 이루어지지 않았으며 기존 Preview/Production에는 새 필터가 반영되지 않음.
+- **Production 보호:** 배포 제한을 우회하거나 요금제·팀 설정을 변경하지 않음. Production/main도 변경하지 않음.
+- **판정:** 소스 필터의 정적 검증은 완료했으나, 새 Preview에서 브라우저 렌더링 검증은 Vercel 배포 한도 해제 후 수행해야 함.
+- **점수:** 내부 AdSense 준비도 74/100 유지. 소스 수정 및 정적 확인만으로 Preview/실사용 검증을 대체하지 않음.

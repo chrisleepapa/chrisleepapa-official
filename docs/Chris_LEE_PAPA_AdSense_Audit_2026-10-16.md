@@ -4,7 +4,7 @@
 - **기준 도메인:** https://chrisleepapa.com/
 - **작업 기준 소스:** GitHub `chrisleepapa/chrisleepapa-official`의 `develop` 브랜치 우선. 검증·사용자 승인 전에는 `main`에 반영하지 않음.
 - **심사 이력:** 사용자가 제공한 기록상 chrisleepapa.com은 2026-10-19 사이트 검토를 신청했고 2026-10-30 두 사유로 거절됨. 현재 AdSense 계정의 사이트 등록/상태 및 재검토 가능 여부는 계정 화면 확인 전까지 미확인. 이 문서는 재심사 준비 점검이며, 새로운 검토 요청을 제출하지 않음.
-- **문서 버전:** Audit 1.24 — 최신 Production 배포·전체 sitemap URL·About·TuTuPuPuPiPi 재검증 완료
+- **문서 버전:** Audit 1.25 — 최신 Production 배포·전체 sitemap URL·GTM 정적 구성 재검증 완료
 - **최초 점검의 역사적 판정:** Audit 1.0 작성 당시의 판단이며 현재 상태를 뜻하지 않음. 아래 미완료 항목은 실제 존재·운영 여부와 최신 소스를 다시 확인한 뒤에만 유효한 점검 대상으로 채택한다.
 
 ## 최우선 기준 — 실제 AdSense 탈락 사유 (고정)
@@ -575,3 +575,15 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **한계:** 이번 검증은 Production에서 반환된 초기 HTML 및 HTTP 응답 기준이다. 실제 브라우저의 모바일/PC 상호작용, 모든 이미지 다운로드 성공, 로그인 상태별 화면, AdSense 계정 내부의 사이트 상태/코드 감지/재검토 버튼은 확인하지 못함. AdSense 심사 요청은 제출하지 않음.
 - **종합:** 이번 차수에서 이전 배포에 남아 있던 /about 및 /tutupupupipi의 구버전 노출은 최신 Production 배포 후 해소된 것을 확인함. 전체 sitemap URL 응답과 광고 로더 분포도 최신 Production 기준으로 재기록함. 콘텐츠 두 기준의 양호 판정은 현재 확인한 HTML과 본문에 대한 내부 점검 결과이며, Google의 최종 승인 보장은 아님.
 - **/shop 보조 공개 경로 심층 확인:** HTTP 200, canonical `https://chrisleepapa.com/shop`, robots `index, follow`, AdSense loader 0개. sitemap에는 포함되지 않지만 검색 색인이 허용된 공개 경로임. 본문에는 SISTER SQUAD 1·2와 MIRACLE SHOT 각각의 고유 줄거리/주제 설명, 종이책·전자책·오디오북·컬러링북 등 판형 구분, YES24·영풍문고·Google Play 등 공식 판매처 링크가 제공됨. 단순 상품 링크만 나열한 화면이 아니라 작품별 소개와 구매 형식 안내가 함께 있음. 현재 확인한 범위에서 복제·저가치 콘텐츠의 직접 증거는 발견하지 못했으며, 광고 로더가 없어 광고가 표시되는 화면의 복제 콘텐츠 판정 대상은 아님. 공개·색인 상태는 변경하지 않음.
+
+
+### 2026-11-02 / Audit 1.25 — GTM·GA4 태그 정적 구성 추가 검증
+
+- **현재 Production HTML 전체 24개 sitemap 경로:** 각 페이지에서 GTM 컨테이너 `GTM-NGDTQNVG`의 비동기 로더 1개, GTM noscript iframe 1개를 확인함. 모든 페이지 HTTP 200. 홈페이지의 두 번째 `<noscript>`는 GTM이 아니라 Chris's Pick의 검색엔진/스크립트 비활성화용 소개 문구로 확인되어 중복 GTM으로 계산하지 않음.
+- **직접 GA4 스크립트 중복:** 전체 24개에서 `gtag/js?id=` 직접 로드 0개, inline `gtag('config')` 0개. HTML에 직접 GA4를 추가로 설치한 중복 패턴은 발견하지 못함.
+- **AdSense loader 분포 재확인:** sitemap 24개 중 18개에 loader 1개씩, 6개(`/music`, `/movie`, `/bible`, `/contact`, `/privacy`, `/terms`)는 0개. 이전 Audit 1.24와 동일한 분포. `/bible` 등 사용자 지정 제외 페이지에 loader 없음.
+- **제공된 GTM export 파일 `GTM-NGDTQNVG_v2.json` 확인:** exportTime 2026-10-30 04:10:04, containerVersionId 2. 컨테이너 `GTM-NGDTQNVG`, 태그 1개(`Google tag - GA4`, type `googtag`), 측정 ID `G-NBGELYQ4TZ`, All Pages 트리거(`2147479553`)로 구성됨. 이 export 파일 안에는 별도 GA4 config 태그나 추가 Google tag가 보이지 않음.
+- **동의 설정 참고:** export의 해당 Google tag consentStatus는 `NOT_SET`. 이는 이 태그 설정에 별도 consent requirement가 지정되지 않았다는 의미로 기록하며, 실제 사용자 동의 수집/Consent Mode 작동 여부를 확인했다는 뜻은 아님.
+- **중요한 미확인 사항:** export는 2026-10-30 시점의 버전 2 파일일 뿐, 현재 GTM 계정에서 실제 게시된 최신 버전이 2인지 확인하지 못함. GA4 실시간 보고서/DebugView에서 실제 page_view 수신과 중복 여부도 계정 접근 없이 확인 불가. 따라서 현재 정적 HTML상 중복 설치는 발견하지 못했으나, GTM 게시 버전 및 GA4 수집 정상 여부는 **미완료**로 유지.
+- **다음 검증 단계:** GTM 계정에서 게시된 버전 번호와 버전 2의 차이 확인 → GA4 실시간/DebugView에서 페이지별 page_view가 1회씩 들어오는지 확인 → GTM Preview로 광고 제외 경로에서 AdSense loader가 실행되지 않는지 확인. 이 단계는 계정 권한/실시간 세션이 필요하므로 이번 자동 점검에서 완료 처리하지 않음.
+- **판정:** 현재 운영 HTML의 GTM 삽입은 sitemap 24개 모두 1회로 일관됨. 직접 GA4 중복 삽입은 확인되지 않음. AdSense loader의 대상/제외 경로 분포도 의도한 목록과 일치함. 단, 태그의 실제 게시 버전과 GA4 데이터 수신은 미확인 상태.

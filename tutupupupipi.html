@@ -277,15 +277,31 @@
         });
         const featureImage = document.querySelector('.tutu-feature-art img');
         if (featureImage) featureImage.alt = selected === 'en' ? 'TuTu PuPu PiPi setting off for a magical adventure' : '신비로운 세상으로 떠나는 뚜뚜뿌뿌삐삐';
+        const thumbnailAlts = selected === 'en' ? [
+          'Three friends search for a rainbow hidden behind clouds — YouTube Shorts thumbnail',
+          'Three friends discover a star fallen from the sky — YouTube Shorts thumbnail',
+          'TuTu leads the friends on an adventurous day — YouTube Shorts thumbnail',
+          'PuPu turns an ordinary day into playful fun — YouTube Shorts thumbnail',
+          'PiPi spreads its wings and flies through the sky — YouTube Shorts thumbnail',
+          'Three friends find a red strawberry in the grass — YouTube Shorts thumbnail'
+        ] : [
+          '구름에 가려진 무지개를 찾는 세 친구의 YouTube Shorts 썸네일',
+          '하늘에서 떨어진 별을 발견한 세 친구의 YouTube Shorts 썸네일',
+          '친구들을 이끄는 뚜뚜의 하루 YouTube Shorts 썸네일',
+          '뿌뿌와 함께하는 즐거운 놀이 시간 YouTube Shorts 썸네일',
+          '하늘을 나는 삐삐의 하루 YouTube Shorts 썸네일',
+          '풀숲에서 빨간 딸기를 찾는 세 친구의 YouTube Shorts 썸네일'
+        ];
         document.querySelectorAll('.tutu-video').forEach(function (card, index) {
           const number = String(index + 1).padStart(2, '0');
           const title = selected === 'en' ? 'TuTu PuPu PiPi YouTube Short ' + number : '뚜뚜뿌뿌삐삐 YouTube Shorts 영상 ' + number;
+          const episodeTitle = dict['video' + (index + 1) + 'Title'] || title;
           const button = card.querySelector('.tutu-video-preview');
           const frame = card.querySelector('.tutu-video-frame');
-          if (button) button.setAttribute('aria-label', selected === 'en' ? 'Play video ' + number : '영상 ' + number + ' 재생');
-          if (frame) frame.title = title;
+          if (button) button.setAttribute('aria-label', selected === 'en' ? 'Play video: ' + episodeTitle : '영상 재생: ' + episodeTitle);
+          if (frame) frame.title = episodeTitle;
           const image = card.querySelector('.tutu-video-preview img');
-          if (image) image.alt = selected === 'en' ? title + ' thumbnail' : title + ' 썸네일';
+          if (image) image.alt = thumbnailAlts[index] || (selected === 'en' ? episodeTitle + ' thumbnail' : episodeTitle + ' 썸네일');
         });
       }
       window.onLangChange = applyLanguage;

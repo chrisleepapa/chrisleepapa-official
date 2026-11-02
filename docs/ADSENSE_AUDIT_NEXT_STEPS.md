@@ -1545,3 +1545,77 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 ### 다음 단일 작업
 
 **Music 및 Worship 페이지를 AdSense 콘텐츠 가치 기준으로 교차 점검한다.** 앨범/곡별 자체 소개, 가사·제작 노트의 독창성, 외부 Spotify/YouTube 임베드 비중, 초기 HTML과 동적 JavaScript 콘텐츠의 차이, 광고 로더 및 수동 광고 슬롯을 develop 소스에서 확인한다. 이미 확인된 음악 제작 경험과 앨범 정보를 다시 묻지 않는다.
+
+
+## 2026-11-02 추가 점검 — Music / Worship / English Worship
+
+**대상:** `music.html`, `worship.html`, `worship_eng.html`, `js/music-production-notes.js`
+**기준:** 독창적 콘텐츠 가치, 외부 미디어 의존도, 동적 렌더링, 광고 로더 중복
+**브랜치:** develop
+
+### 1) Music 페이지
+
+- 파일 `music.html` 최신 blob SHA: `2af4684d64ae2d103e0e663f928564951d7ea7eb`
+- 동적 제작 노트 파일 `js/music-production-notes.js` blob SHA: `ce9d57fe3a9dfe7fa1e9eb7e849e69d06d38e560`
+- develop 배포: `dpl_6QDJixpvszVoPBTNVRa2ty5JcQah`, commit `693bc3ac7a5b1504bc8fa3931b0d42ac096a80ff`, READY, alias `develop.chrisleepapa.com`.
+
+확인:
+1. 14개 앨범/EP/싱글/연주 작품에 대해 한국어·영어 앨범 스토리가 각각 존재한다.
+2. `js/music-production-notes.js`에 14개 작품별 제작 기록이 있다. 작품의 출발점, 제작 방향, 감상 포인트와 참고용 재구성 프롬프트를 제공하며, 원래 입력 프롬프트를 그대로 인용한 것이 아니라는 안내도 명시한다.
+3. 페이지는 Spotify 플레이어와 YouTube/Spotify 외부 감상 경로를 제공하지만, 작품별 스토리와 제작 기록도 함께 제공한다. 외부 플레이어만 나열한 구조는 아니다.
+4. 페이지 단위 AdSense 로더 0개, 수동 광고 슬롯 0개, `adsbygoogle.push` 0개. 공통 `js/main.js`와 `js/guestbook.js`에도 AdSense 삽입 코드가 없어 공통 스크립트 중복 삽입은 확인되지 않았다.
+5. canonical은 `https://chrisleepapa.com/music`, robots는 `index, follow`, sitemap 포함을 확인했다.
+6. 앨범 스토리와 제작 노트는 JavaScript로 동적 삽입된다. 제작 노트는 정적 대체 영역이 있지만 앨범 스토리는 초기 HTML의 빈 목록에 인라인 스크립트가 내용을 채우는 구조다. 실제 브라우저/Google 렌더링 결과는 별도 검증이 필요하다.
+
+### 2) Music 페이지 최소 수정
+
+기존 데이터에서 4개 앨범은 로컬 트랙 목록과 trackCount가 비어 있어 플레이리스트에 `0 TRACKS`로 표시될 수 있었다. 또 `Run it back`은 전체 4곡으로 표기되지만 로컬 제목 목록은 1개뿐이었다.
+
+수정:
+- `music.html`의 플레이리스트에서 트랙 수가 미입력된 작품은 `0 TRACKS` 대신 Spotify 트랙리스트 안내를 표시한다.
+- 트랙 수와 로컬 제목 목록이 일치하지 않는 경우 불완전한 로컬 목록 대신 Spotify 트랙리스트 안내를 사용한다.
+- 미확인 트랙 수를 전체 합계에 포함하지 않으며, 불완전한 데이터로 전체 트랙 수를 단정하지 않도록 처리했다.
+- 앨범 데이터, Spotify/YouTube 링크, 플레이어 기능은 변경하지 않았다.
+
+커밋:
+- 최초 수정 `081226fcd80f9149dc1111e373e2929c6011d73f`
+- 최종 보완 `693bc3ac7a5b1504bc8fa3931b0d42ac096a80ff`
+
+재검증:
+- develop 소스에 미확인 트랙 수 fallback 로직 존재 확인.
+- Vercel develop 배포 READY 확인.
+- 배포 URL 및 `https://develop.chrisleepapa.com/music` HTTP 200, 최신 수정 로직이 응답 HTML에 포함됨 확인.
+- 실제 화면에서 텍스트 줄바꿈/모바일 표시 및 Spotify 재생은 미검증.
+
+### 3) 한국어 Worship 페이지
+
+- 파일 `worship.html` blob SHA: `ff78261a80c023007fbf465f9527206653259424`
+- 나의 찬양 Vol.1·2·3 각 10곡, 총 30곡의 가사가 HTML에 직접 포함되어 있다.
+- 30개 `details` 항목 모두 비어 있지 않고, 본문 길이는 최소 252자 이상이다.
+- 앨범 카드 4개(Vol.1·2·3, Whispers Of Grace ver1), 앨범을 만든 이야기, 창작자의 신앙적 동기, AI를 제작 보조로 활용하고 결과를 선별·수정한 과정, Journal 연결, 전체 가사집이 있다.
+- Spotify 앨범 링크 4개와 YouTube 재생목록 링크 3개는 외부 감상 경로로 제공된다. 외부 Spotify/YouTube 플레이어 임베드는 확인되지 않았다.
+- AdSense 로더 1개, 수동 광고 슬롯 0개, `adsbygoogle.push` 0개.
+- canonical `https://chrisleepapa.com/worship`, robots `index, follow`, sitemap 포함 확인.
+
+### 4) English Worship 페이지
+
+- 파일 `worship_eng.html` blob SHA: `44f2e0c6ee779f1592ad240b882e92c33eea531c`
+- SHOUT 앨범 15곡의 영어 가사가 HTML에 직접 포함되어 있다. 15개 `details` 항목 모두 비어 있지 않고, 본문 길이는 최소 546자 이상이다.
+- 앨범 스토리, 찬양의 주제, 개인적 고백과 공동체적 선포, 영어 워십 컬렉션으로 분리한 이유, 사람의 기획과 AI 보조 제작 과정을 설명한다.
+- Spotify 앨범 링크와 YouTube 앨범 재생목록 링크를 제공하며, 외부 플레이어 임베드는 확인되지 않았다.
+- AdSense 로더 1개, 수동 광고 슬롯 0개, `adsbygoogle.push` 0개.
+- canonical `https://chrisleepapa.com/worship_eng`, robots `index, follow`, sitemap 포함 확인.
+
+### 종합 판정
+
+- **독창적 콘텐츠 가치:** Music은 14개 앨범별 이야기와 제작 기록, 한국어 Worship은 30곡의 가사와 앨범 창작 배경, English Worship은 SHOUT 15곡의 가사와 고유한 스토리를 보유해 양호.
+- **복제 콘텐츠 위험:** 세 페이지 모두 외부 음원 링크/플레이어가 페이지의 유일한 가치가 아니다. Worship 페이지는 외부 미디어 임베드 없이 가사와 자체 설명을 직접 제공한다. 실제 음원/가사의 권리 확인은 별도 권리 트랙이다.
+- **광고 설정:** Music은 AdSense 로더 없음. Worship과 English Worship은 각 1개이며 수동 슬롯/중복 공통 삽입은 확인되지 않았다. Auto ads의 실제 위치는 미검증.
+- **동적 렌더링:** Music의 앨범 스토리와 제작 노트가 JavaScript로 생성되므로 실제 브라우저 및 검색엔진 렌더링 검증이 남아 있다.
+- **미검증:** 모바일/PC 실제 레이아웃, 언어 전환, Spotify 플레이어 재생, Worship 가사 접기/펼치기 동작, Auto ads 위치.
+
+이번 단계의 소스 수정은 Music의 잘못된 0곡 표기만 develop에 반영했다. Worship과 English Worship은 수정하지 않았다. main은 변경하지 않았다.
+
+### 다음 단일 작업
+
+**Chris's Note / Journal의 목록 페이지와 상세 글을 AdSense 기준으로 점검한다.** 먼저 실제 `/journal` 경로의 파일·canonical·robots·사이트맵·내부 링크 상태를 확인하고, Journal 1~6은 기존 점검 기록을 재활용해 복제/저가치 위험과 실제 본문 접근성을 확인한다. 이전에 확인한 Journal 1·2·4의 제작 경험을 다시 묻지 않는다.

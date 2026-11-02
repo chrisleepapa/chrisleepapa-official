@@ -4689,3 +4689,12 @@ TuTuPuPuPiPi 수정 후 develop 소스의 최신 HEAD와 Vercel Preview 상태�
 - 이전 기록의 20개/4개 수치는 과거 상태이며 현재는 18개/6개임.
 - GTM ID 참조 수량은 확인했지만 실제 GTM 게시 버전과 AdSense Auto ads 설정/노출 위치는 계정에서 확인하지 못함. 사용자가 제공한 GTM export v2가 현재 게시 버전인지도 미확인.
 - Google 크롤링/색인 상태, 실제 브라우저 모바일/PC 화면, 동적 스크립트 실행, 광고가 실제로 삽입된 화면은 미검증.
+
+
+## 2026-11-02 실서비스 전 단계 — develop Vercel 미리보기 응답 확인
+
+- Vercel develop branch 최신 확인 배포: READY, deployment URL chrisleepapa-official-9rswxn4sw-chrisleepapas-projects.vercel.app, 배포 커밋 608af817035b8eb94a2ad7219925e2b0e02c0ecf.
+- develop.chrisleepapa.com/about 요청 결과 HTTP 200. 응답 HTML에서 About 수정본이 제공되고, 중복 제거한 process_en_title/process_en_note 키와 해당 마크업이 없는 것을 확인.
+- GitHub compare 기준 배포 커밋 608af... 이후 현재 develop HEAD e3a96a4a6882191f4d7c3f4dce6f59857c79dede까지 1개 커밋 앞서 있으며, 차이는 docs/ADSENSE_AUDIT_NEXT_STEPS.md만 수정된 문서 커밋이다. 따라서 현재 앱 소스는 READY 미리보기와 동일함.
+- 미리보기 응답의 x-robots-tag는 noindex/nofollow로 확인되어 preview 크롤링 방지 상태. HTML 안의 canonical은 운영 도메인 https://chrisleepapa.com/about로 유지.
+- 검증 범위: HTTP 응답 및 반환 HTML 확인. 실제 브라우저 실행, JavaScript 런타임, 모바일/PC 레이아웃, 외부 링크/플레이어, 광고 삽입 위치는 아직 확인하지 않음. production 도메인 배포/수정 없음.

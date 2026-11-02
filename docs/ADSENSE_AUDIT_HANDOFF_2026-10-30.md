@@ -4271,3 +4271,16 @@ switch.html (SWITCH) 정적 게임 감사. 이어서 goal.html (골이예요).
 - 조치: 코드 변경 없음.
 - 검증 한계: develop 정적 소스, sitemap 및 robots만 확인. 실제 Google 색인 상태, 검색결과, 브라우저 렌더링/광고 노출, 링크 클릭은 미검증. main/production 미변경.
 - 다음 단일 작업: `shop.html`의 작품별 고유 설명, 판매처 링크 의존도, 광고 로더/슬롯 및 색인 설정을 확인한다.
+
+
+## 2026-11-02 추가 점검 — Official Shop
+
+- 대상: `shop.html`; develop blob SHA `b9f5dc8ff71da65a59bd2dbacd74c59b19df44fd`.
+- 기본 설정: canonical `https://chrisleepapa.com/shop`, `index, follow`.
+- 광고 코드: 직접 AdSense loader 0개, 수동 광고 슬롯 0개, `adsbygoogle.push` 0개. 확인한 GTM v2 export(2026-10-30, version 2)에도 GA4 Google tag만 있고 AdSense 태그는 없음. 현재 실시간 게시 GTM 버전은 별도 미검증.
+- 페이지 목적/구성: Sister Squad 1·2, 컬러링북, Miracle Shot 등 출판물과 이모티콘의 공식 판매처로 연결하는 쇼핑 안내/상품 디렉터리. YES24, 영풍문고, Google Play, Amazon 및 OGQ/Naver 링크가 있음.
+- 콘텐츠 가치: 가족 동화, 창작 세계, 상품 유형을 소개하는 짧은 문구가 있으나 정적 본문 텍스트는 약 1,351자이며 페이지의 주된 기능은 외부 판매처 링크 연결임. 작품 자체의 상세한 서사/제작 설명은 별도 작품 페이지에 존재함.
+- 판정: 광고 코드가 없는 판매처 안내 페이지이므로 현재 확인 범위에서 “복제 콘텐츠 화면에 광고” 위험은 낮음. 다만 `index, follow`인 상태에서 독립적인 작품 정보보다 외부 구매 링크 비중이 높아 사이트 전체의 콘텐츠 가치 관점에서는 얇은 디렉터리로 보일 여지가 있음. 상세 작품 설명을 무리하게 복사해 붙이지 말고, 각 상품의 차이/독자 대상/판본과 형식 등 이 페이지에서만 필요한 구매 판단 정보를 제공할지 검토할 가치가 있음.
+- 조치: 코드 변경 없음. 상품/판매처 링크와 기능 유지.
+- 검증 한계: GitHub develop 정적 소스만 확인. 각 외부 판매 링크의 현재 목적지/재고/상품 상태, 브라우저 UI 및 모바일 표시, 실시간 광고 노출은 미검증. main/production 미변경.
+- 다음 단일 작업: `index.html` 홈 화면의 광고 대상 콘텐츠 구성, Sister Squad 2 본편 임베드 주변의 자체 설명/카드 반복, 광고 코드 및 동적 렌더링 구조를 확인한다.

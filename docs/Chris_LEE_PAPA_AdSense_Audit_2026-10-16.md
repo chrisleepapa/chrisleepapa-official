@@ -4,7 +4,7 @@
 - **기준 도메인:** https://chrisleepapa.com/
 - **작업 기준 소스:** GitHub `chrisleepapa/chrisleepapa-official`의 `develop` 브랜치 우선. 검증·사용자 승인 전에는 `main`에 반영하지 않음.
 - **심사 신청 여부:** 사용자가 아직 새 도메인에 대한 사이트 검토를 신청하지 않았다고 명시함. 이 문서는 신청 전 준비 점검이며, 심사 신청이나 승인을 의미하지 않음.
-- **문서 버전:** Audit 1.9 — develop·production 광고 심사 반영 범위 검증
+- **문서 버전:** Audit 1.10 — production의 잔존 광고 위험 확인
 - **최초 점검의 역사적 판정:** Audit 1.0 작성 당시의 판단이며 현재 상태를 뜻하지 않음. 아래 미완료 항목은 실제 존재·운영 여부와 최신 소스를 다시 확인한 뒤에만 유효한 점검 대상으로 채택한다.
 
 ## 최우선 기준 — 실제 AdSense 탈락 사유 (고정)
@@ -315,7 +315,36 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **심사상 핵심:** AdSense 신청 대상인 `chrisleepapa.com` production은 아직 develop의 About 및 SISTER SQUAD 1 개선 내용을 반영하지 않음. develop에서 수정한 것만으로 현재 실제 심사 대상 사이트가 개선되었다고 볼 수 없음.
 - 기존 작업 원칙대로 main은 수정하지 않음. Audit와 콘텐츠 수정은 develop에서만 진행. 최종 심사 전에는 사용자의 확인 후 develop 변경을 production에 반영하고, `.com` 도메인에서 동일한 본문·광고 코드·canonical·robots 상태를 다시 검증해야 함. 지금은 AdSense 재심사 요청을 제출하지 않음.
 
+### 7.13 Production에 남아 있는 AdSense 우선 위험
+
+**2026-11-02 실서비스 응답 비교 결과**
+
+1. **홈페이지 YouTube Chart 잔존 — 높은 우선순위**
+   - `https://chrisleepapa.com/` production은 HTTP 200, index/follow, 공식 canonical, AdSense 직접 로더 1개.
+   - production HTML에 `youtube-daily-top3`, `youtube-trending-video`, `YouTube Chart`, `youtube-top3-card` 관련 코드/스타일/스크립트가 남아 있음. 글로벌 YouTube 뮤직비디오 TOP 5 및 오늘의 화제 영상 데이터를 불러오는 로직도 확인.
+   - develop homepage에는 위 키워드/섹션 코드가 모두 0건. develop에서 이미 제거된 변경이 production에는 아직 반영되지 않음.
+   - 외부 YouTube 영상/차트 집계 화면에 광고가 함께 표시되는 구조라면, '추가 설명·선별·독창적 부가 가치 없이 외부 콘텐츠를 모아 보여주는 화면'으로 해석될 위험이 있음. 정확한 기존 거절 원인이라고 단정하지 않지만, 현재 두 고정 거절 사유 중 **복제된 콘텐츠가 있는 화면에 Google 게재 광고**와 가장 직접적으로 연결되는 고위험 항목으로 분류.
+
+2. **Music 페이지 광고 코드 잔존 — 높은 우선순위**
+   - production `/music`은 HTTP 200, 공식 canonical, 직접 AdSense 로더 1개.
+   - develop `/music`은 HTTP 200, `X-Robots-Tag: noindex, nofollow`(검토 환경), 직접 AdSense 로더 0개.
+   - develop에는 혼합된 애니메이션 영감/커버 성격의 음악이 포함된 페이지에 광고를 게재하지 않도록 로더를 제외한 변경이 반영되어 있음(기존 커밋 `004c7745bb4cf9f296add5148b6169423a8599f0`). production에는 아직 광고 코드가 남아 있음.
+   - Music 페이지에는 창작 의도와 제작 과정에 관한 고유 설명도 있으므로 페이지 전체를 복제 콘텐츠라고 판정하지 않음. 다만 제3자 작품을 연상시키는 곡/커버가 섞인 페이지에 광고가 노출되는 위험을 줄이기 위해 develop의 광고 제외 상태를 유지하고, production 반영 전까지 재심사 금지.
+
+3. **SISTER SQUAD 1 및 About 수정 미반영**
+   - production `/sistersquad`는 AdSense 직접 로더 1개이나 새 세계관 제작 노트가 아직 없음. develop에는 해당 노트가 있음.
+   - production `/about`에는 과거 제작 현황 문구가 남아 있음. develop에는 최신 현황이 한국어·영어로 반영됨.
+
+4. **Branch 비교**
+   - GitHub `main...develop` 비교: develop은 main보다 69 commits ahead, main은 develop 뒤에 있음(2026-11-02 확인).
+   - 차이는 AdSense 관련 콘텐츠·광고 코드뿐 아니라 홈페이지, 게임, 개인정보/약관, 음악, 워십, 캐릭터 등 여러 파일에 걸쳐 있음. 이 상태에서 개별 파일만 임의로 production에 복사하거나 즉시 main을 덮어쓰지 않음.
+   - **운영 원칙:** 현재 모든 수정은 develop에서만 유지. AdSense 심사 전에는 두 고위험 항목(홈 YouTube Chart 제거, Music 광고 코드 제외)을 포함한 검토된 develop 변경을 사용자가 승인한 후 main에 반영하고, production 도메인에서 재검증해야 함.
+
+**Production 현재 상태 요약:** 홈과 Music에 직접 AdSense 로더가 남아 있고, develop에서 이미 제거/제외한 조치가 아직 production에 미반영. 따라서 현재 production은 AdSense 재심사 제출 준비 완료 상태가 아님.
+
 ## 8. 변경 기록
+
+- **2026-11-02 / Audit 1.10:** 실제 production `.com`과 develop alias의 홈·Music 응답을 비교. Production 홈에 YouTube daily Top3/Trending Video 차트 코드와 AdSense 로더 1개가 잔존하고 develop에서는 관련 코드가 제거됨을 확인. Production Music에는 AdSense 로더 1개, develop에는 0개이며 develop은 혼합 애니메이션 영감/커버 음악 페이지 광고 제외 커밋(004c774)을 포함. Production SISTER SQUAD 1/About도 develop 수정 미반영. main...develop 비교 결과 develop 69 commits ahead. 이 상태를 두 실제 거절 사유에 대한 고위험 미해결 항목으로 분류하고, main 변경/재심사 제출은 보류.
 
 - **2026-11-02 / Audit 1.9:** Vercel 배포 URL fetch로 production `.com`과 develop custom domain을 비교. Production `/`, `/sistersquad`, `/about`은 HTTP 200, index/follow, 공식 canonical, 직접 AdSense 로더 1개. Production About에는 구형 제작 현황, SISTER SQUAD 1에는 세계관 제작 노트 미반영 확인. Develop 페이지들은 HTTP 200이나 응답 헤더 X-Robots-Tag noindex,nofollow로 검색엔진 노출 차단. develop 개선이 production/AdSense 심사 대상에 아직 반영되지 않았음을 명확히 기록. main 변경 및 심사 요청 없음.
 

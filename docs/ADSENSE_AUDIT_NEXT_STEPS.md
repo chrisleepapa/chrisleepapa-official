@@ -1688,3 +1688,57 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 ### 다음 단일 작업
 
 **MIRACLE SHOT(골이예요) 게임 및 Game Center 페이지를 점검한다.** 게임 자체의 독창적 기능·설명·규칙·조작 안내·모바일 UX, 게임 페이지와 허브 사이의 중복 설명, AdSense 로더/광고 제외 상태, 사이트맵 및 canonical을 develop 소스 기준으로 확인한다. 게임은 광고가 주목적인 페이지로 취급하지 않고, 실제 게임 경험과 자체 설명의 완결성을 중심으로 평가한다.
+
+
+## 2026-11-02 추가 점검 — MIRACLE SHOT / Game Center / 골이예요 경로 교차 확인
+
+**대상:** `miracleshot.html`, `goal.html`, `gameinfo.html`, Game Center 개별 게임 7종
+**기준:** 광고 대상 페이지와 게임 실행 페이지의 분리, 독창적 콘텐츠 가치, 색인/사이트맵, 광고 로더
+**브랜치:** develop
+
+### 확인 결과
+
+1. **MIRACLE SHOT 스토리 소개 `/miracleshot`**
+   - canonical `https://chrisleepapa.com/miracleshot`, robots `index, follow`, sitemap 포함.
+   - AdSense 로더 1개, 수동 광고 슬롯 0개, `adsbygoogle.push` 0개.
+   - 약 3,981자의 본문, 9개 섹션, 스토리 세계관/코치/네 아이 캐릭터/성경 인물 연결/성장 주제/제작 의도/작가 소개/게임 CTA가 있다.
+   - 5곡 오리지널 OST, Spotify 앨범 플레이어와 YouTube 재생목록 링크, 책 구매 링크가 있다.
+   - 18개 하이라이트 이미지와 8개 캐릭터·성경 인물 이미지가 있으며, 26개 실제 파일은 develop `images/`에 모두 존재한다. 추가 1개 빈 `src` 이미지는 lightbox 모달의 동적 이미지 자리표시자이므로 누락 이미지로 계산하지 않는다.
+   - 18개 갤러리 이미지 파일의 합계는 약 92.6MB다. 모두 `loading="lazy"`이나 `decoding="async"`와 명시적 width/height는 없다. 초기 로드는 지연되지만 전체 갤러리를 탐색할 때 전송량이 커질 수 있어 성능 최적화 후보로 기록한다.
+   - 18개 갤러리 alt는 `Miracle Shot 하이라이트 1~18` 수준으로 일반적이다. 실제 장면을 확인하지 않은 채 상세 설명을 임의로 쓰지 않는다.
+   - 긴 본문 문단의 정확한 반복은 확인되지 않았다. Story/Theme/About 블록은 주제를 확장해 설명하며 문단을 그대로 복제한 구조는 아니다.
+
+2. **실제 게임 실행 `/goal`**
+   - 개발 응답 HTTP 200, robots `noindex, nofollow`, AdSense 로더 0개, 수동 광고 0개, sitemap 제외.
+   - 캐릭터 선택, CPU/2인 모드, 점수벽, 슛 게이지 안내, 라운드/결과 UI가 있는 실제 게임 화면이다. 본문 정보가 짧은 것은 게임 실행 화면의 성격과 일치하며, 광고를 로드하지 않는다.
+   - canonical/description은 없으나 noindex 정책 페이지이며 별도 검색 노출 대상이 아니다.
+
+3. **Game Center `/gameinfo`**
+   - 개발 응답 HTTP 200, canonical `https://chrisleepapa.com/gameinfo`, robots `noindex, nofollow`, AdSense 로더 0개, sitemap 제외.
+   - 7개 게임 카드와 GAME GUIDE, 게임별 규칙/조작 개요, 창작자 노트를 제공한다.
+   - 허브는 게임을 안내하지만 검색 색인이나 광고 대상 페이지로 사용하지 않는 현재 정책을 유지한다.
+
+4. **Game Center 개별 게임 7종**
+   - `/game`, `/booktop`, `/fiveinrow`, `/curling`, `/tetris`, `/switch`, `/goal` 모두 HTML robots `noindex, nofollow`, AdSense 로더 0개, 수동 슬롯 0개이며 sitemap에서 제외되어 있다.
+   - 이 설정은 2026-11-01 사용자 결정(게임 허브 및 개별 게임을 검색 색인/AdSense 광고에서 제외)에 부합한다.
+   - `/miracleshot`는 스토리/작품 소개 페이지이므로 indexable + sitemap + AdSense loader 1개이고, 실제 게임 `/goal`과 분리되어 있다.
+
+### 판정
+
+- **독창적 콘텐츠 가치:** `/miracleshot`은 게임 실행 UI가 아니라 독립적인 스토리/캐릭터/신앙적 주제/제작 의도/OST를 제공하므로 광고 대상 콘텐츠로서 자체 가치가 있다.
+- **복제 콘텐츠 위험:** Game Center 카드의 한 줄 요약은 허브 역할이며 광고·색인 대상이 아니다. MIRACLE SHOT 본문에서 동일 문단 반복은 확인되지 않았다.
+- **광고 범위:** 실제 게임 화면과 Game Center는 광고 제외, 스토리 소개 페이지에만 AdSense 로더가 있다. 현재 의도된 분리 구조가 유지된다.
+- **성능/접근성 개선 후보:** MIRACLE SHOT 갤러리 18장의 총 파일 크기 약 92.6MB, 일반적인 alt, 이미지 width/height 미지정. 이는 복제/저가치 정책 위반으로 단정하지 않고 성능·접근성 보완 항목으로 관리한다.
+
+### 미검증 항목
+
+- 실제 브라우저에서 스토리 페이지의 이미지 라이트박스, Spotify 재생, 책/게임 CTA 동작
+- 실제 게임의 로그인, CPU/2인 모드, 3라운드/10회 슛, 모바일 조작
+- Auto ads 실제 배치와 브라우저 네트워크 요청
+- 18개 갤러리 이미지의 장면별 상세 설명 및 압축/반응형 이미지 적용 전후 성능
+
+이번 단계에서 게임/스토리 페이지 코드는 수정하지 않았다. 사용자 결정에 따른 게임 noindex/광고 제외도 변경하지 않았다.
+
+### 다음 단일 작업
+
+**Bible 페이지(`bible.html`)의 성경 본문 데이터 출처·게시 권한, 찬송가 자료 파일 범위, 광고 제외, 페이지 본문 독립성 및 개인정보 저장 기능 안내를 develop 소스 기준으로 점검한다.** 성경 번역본과 찬송가 PDF의 온라인 게시 권한은 실제 허가 근거가 없으면 완료로 표시하지 않는다. 이어서 Privacy 페이지의 실제 데이터 처리 설명과 일치 여부를 확인한다.

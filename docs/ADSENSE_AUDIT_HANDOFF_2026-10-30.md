@@ -4228,3 +4228,25 @@ switch.html (SWITCH) 정적 게임 감사. 이어서 goal.html (골이예요).
 - 조치: 코드 변경 없음. 기존 영상/기능은 유지.
 - 검증 한계: GitHub develop 정적 소스만 확인. 실제 브라우저 렌더링, 영상 재생, GTM 컨테이너의 실시간 태그 실행, AdSense 광고 미노출은 검증하지 못함. main/production 미변경.
 - 다음 단일 작업: `music.html`의 앨범 이야기/제작 기록이 서로 중복되지 않는지, 동적 렌더링 영역이 실제 본문으로 정상 구성되는지, 광고 코드와 외부 플레이어 구조가 적절한지 확인한다.
+
+
+### Movie Archive 광고 제외 — GTM export 추가 근거 (2026-11-02)
+- 제공된 `GTM-NGDTQNVG_v2.json`(2026-10-30 export, container version 2)의 태그 목록은 GA4 Google tag 1개이며 AdSense 태그는 없음.
+- 따라서 확인한 HTML의 직접 AdSense loader/수동 슬롯 0개와 해당 GTM export를 함께 보면, 확인 가능한 소스/버전 범위에서는 Movie 페이지의 광고 로딩 코드가 발견되지 않음.
+- 다만 export가 현재 실시간 게시 버전과 동일한지 확인하지 않았으므로 실제 운영 광고 미노출의 최종 증명으로 간주하지 않음.
+
+
+## 2026-11-02 추가 점검 — Music Archive (독립 콘텐츠 및 동적 제작 기록)
+
+- 대상: `music.html` 및 `js/music-production-notes.js`.
+- develop 파일 SHA: `music.html` = `2af4684d64ae2d103e0e663f928564951d7ea7eb`; `js/music-production-notes.js` = `ce9d57fe3a9dfe7fa1e9eb7e849e69d06d38e560`.
+- 기본 설정: canonical `https://chrisleepapa.com/music`, `index, follow`, 직접 AdSense loader 0개, 수동 광고 슬롯 0개, `adsbygoogle.push` 0개.
+- 본문/기능: 앨범 아카이브와 Spotify 플레이어, 앨범별 이야기, 음악 제작 기록, 창작자의 실제 판단 기준을 설명하는 본문이 있음. 외부 음악 플레이어만 나열한 화면은 아님.
+- 동적 콘텐츠: `music-production-notes.js`가 페이지 내 `.music-creation-notes` 영역을 대상으로 작품별 출발점·제작 방향·감상 포인트·참고 프롬프트를 렌더링한다. HTML에서 컨테이너와 스크립트 로드가 확인되고, `main.js` 언어 설정에 따라 한국어/영어를 다시 렌더링하는 MutationObserver 구조가 있음. 소스상 출력 경로는 연결되어 있으나 실제 브라우저 렌더링/콘솔 검증은 미실시.
+- 앨범별 설명: 앨범 스토리와 제작 노트가 서로 다른 역할(작품의 의미·배경 vs 실제 제작 판단/감상 포인트)을 갖도록 구성되어 있음. 다만 상단 8개 원칙과 하단 “FROM IDEA TO RELEASE” 3개 항목은 ‘창작 의도’, ‘AI 결과를 그대로 채택하지 않는 판단’, ‘발매 후 맥락 기록’에서 의미가 반복됨. 분량을 늘리는 것보다 두 영역을 통합하거나 하단 요약을 간결하게 하는 편집 후보임.
+- 외부 미디어: Spotify 플레이어 API 및 오류 시 fallback iframe 경로가 있음. 음악 아카이브의 핵심 기능으로, 이를 제거할 근거는 없음.
+- 판정: 독창적인 제작 관점과 앨범별 이야기/기록이 있어 저가치 임베드 모음으로 보이지 않음. 현재 정적 소스에서 즉시 수정이 필요한 복제 콘텐츠 문제는 확인되지 않음. 설명 영역 간 일부 반복은 편집 개선 후보로만 기록.
+- 광고/GTM 보충 확인: 사용자가 제공한 `GTM-NGDTQNVG_v2.json`(2026-10-30 export, container version 2)을 확인한 결과 태그는 GA4 Google tag 1개뿐이며 AdSense 태그는 없음. 이 export가 현재 실시간 게시 버전과 동일한지는 별도 확인이 필요하므로, 실제 광고 미노출은 실서비스 태그 확인 전까지 확정하지 않음.
+- 조치: 코드 변경 없음. 기존 앨범/Spotify 기능 유지.
+- 검증 한계: GitHub develop 정적 소스 및 제공된 GTM v2 export만 확인. 실제 브라우저 표시, Spotify 재생, 모바일/PC 레이아웃, 현재 게시된 GTM 버전은 미검증. main/production 미변경.
+- 다음 단일 작업: `/journal` 목록의 `noindex` 설정과 사이트맵 포함 여부를 대조하고, 색인 대상인 Journal 상세 글 1~6의 독립 콘텐츠·광고 코드·목록 링크 연결을 확인한다.

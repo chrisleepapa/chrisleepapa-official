@@ -1,3 +1,37 @@
+# Chris LEE.PAPA AdSense 점검 — 이어하기 메모
+
+- 기준일: 2026-11-02
+- 저장소: chrisleepapa/chrisleepapa-official
+- 작업 브랜치: develop only (main은 직전 사용자 요청으로 develop HEAD 21b891c15c97de48e6788fc4210ff9ce52ee7c44까지 동기화됨. 이후 점검 수정은 develop에서만 진행)
+- 운영 도메인: https://chrisleepapa.com
+- 개발 도메인: https://develop.chrisleepapa.com
+- 상세 조사 기록: docs/ADSENSE_AUDIT_HANDOFF_2026-10-30.md
+
+## 현재 진행 상태 / 다음 단일 작업 — 2026-11-02 갱신
+
+### 이번 단계에서 완료
+- 점검 문서와 최신 develop 소스를 대조하고, 성경·찬송 및 게임 실행 페이지를 광고 대상 콘텐츠 감사에서 제외하는 원칙을 재확인.
+- tutupupupipi.html: 캐릭터/세계관 설명, Shorts 6편의 고유 설명과 영상 ID, 로컬 이미지/alt, 직접 광고 코드 상태를 재검증. 중복 영상 목록이나 즉시 수정할 저가치 요소가 없어 변경하지 않음.
+- about.html: 창작 과정 설명 상자 안에서 앞선 문단과 의미가 중복되던 별도 소개 문단을 제거하고 한국어/영어 미사용 번역 키도 제거. 제작 과정 설명, 창작자 소개, 프로젝트 안내, 연혁은 유지. 수정 커밋 78476b2d3fb03676911a36f5c057eda7f2192adf.
+- About 재검증: canonical/robots 유지, 직접 AdSense loader 1개, 중복 키/마크업 0개, 정적 본문 약 2,505자.
+
+### 다음 단일 작업
+광고 로더가 있는 주요 콘텐츠 페이지 사이의 실질적인 본문 유사도/반복 문구를 대조한다. 우선 홈·About·Sister Squad 허브/1·2·Yul·Jung을 비교하고, 공통 브랜드 소개나 탐색용 요약은 복제 콘텐츠로 오판하지 않는다. 실제로 같은 설명이 반복되는 경우에만 최소 수정한다.
+
+### 미완료 실서비스 검증
+- 실제 브라우저의 모바일/PC 렌더링과 동적 JS 실행.
+- 현재 게시된 GTM 컨테이너 버전 및 Auto ads 실제 노출 위치.
+- Google Search Console의 실제 발견/색인 URL 및 sitemap 상태.
+- 위 항목은 정적 HTML만으로 완료 처리하지 않는다.
+
+### 변하지 않는 범위
+- AdSense 거절 사유 두 가지: 복제 콘텐츠 / 가치가 별로 없는 콘텐츠.
+- 성경·찬송 및 게임 실행 페이지는 광고 대상 콘텐츠 점검에서 제외. miracleshot.html은 작품 소개이고 실제 게임은 goal.html임을 구분.
+- 소스 수정은 develop에서만 진행하고, main은 사용자의 추가 지시 전까지 수정하지 않는다.
+- 새 페이지를 만들거나 이미 확인한 페이지를 근거 없이 반복 수정하지 않는다.
+
+---
+
 
 
 ## 2026-11-02 후속 수정 — Miracle Shot 작품/게임 광고 구분 및 About 중복 설명

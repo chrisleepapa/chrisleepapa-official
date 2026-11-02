@@ -4537,13 +4537,14 @@ TuTuPuPuPiPi 수정 후 develop 소스의 최신 HEAD와 Vercel Preview 상태�
 - 여섯 페이지 모두 canonical은 개별 chrisleepapa.com 경로와 일치하고 `index, follow`, 직접 AdSense loader 1개다. Journal 5의 영어 본문도 `PAGE_I18N.en.body`에서 확인했다.
 - 판정: 정적 소스에서 복제 본문 또는 영문 본문 누락 문제를 확인하지 못했다. 변경하지 않았다. 실제 렌더링/언어 전환은 미검증이다.
 
-### MIRACLE SHOT 게임 광고 제외
-- 대상: `miracleshot.html`; 수정 전 blob SHA `5083a9e56e3d4cab35a9759d55b3facdae4127ed`.
-- 사용자가 MIRACLE SHOT을 게임으로 명확히 분류하고 광고 대상에서 제외한다고 지정했으나, 페이지에 AdSense loader와 publisher ID가 남아 있는 것을 확인했다.
-- Google AdSense 스크립트 블록만 제거했다. GTM, canonical, `index, follow`, 게임 콘텐츠와 기능은 변경하지 않았다.
-- 수정 커밋: `90a2490a06caa7dbfb7e86dd06129274d61e488f`; 수정 후 blob SHA `d67aa4e227c6e5837697d6c43c8c2b3d173ba74a`.
-- 재검증: AdSense loader 0, publisher ID 0, 수동 광고 슬롯 0, adsbygoogle.push 0. GTM 1개와 canonical/robots 설정 유지.
-- 판정: 게임 광고 제외 원칙에 맞게 정적 HTML의 직접 AdSense 호출을 제거했다. GTM 게시 버전이나 실제 광고 노출 여부는 별도 검증 전까지 미완료다.
+### MIRACLE SHOT 작품 소개와 GOAL 게임의 구분 — 앞선 오분류 정정
+- 앞선 점검에서 `miracleshot.html`을 게임 실행 페이지로 잘못 분류해 AdSense loader를 일시 제거했으나, 이후 파일과 최근 커밋을 대조해 오분류임을 확인했다.
+- `miracleshot.html`: 풋살 성장 드라마의 작품/스토리 소개 페이지. canonical `https://chrisleepapa.com/miracleshot`, robots `index, follow`, 직접 AdSense loader 1개 및 publisher ID 1개가 최종 develop 소스에 유지된다.
+- `goal.html`: 실제 MIRACLE SHOT 게임 실행 페이지. 제목 `MIRACLE SHOT — GOAL`, robots `noindex, nofollow`, AdSense loader 0개, publisher ID 0개.
+- `game.html`도 `noindex, nofollow` 및 AdSense loader 0개.
+- 따라서 광고 제외 대상은 실제 게임 실행 페이지 `goal.html` 등 기능성 게임 페이지이며, 작품 소개 페이지 `miracleshot.html`은 광고 대상 콘텐츠로 유지한다. 앞선 loader 제거 커밋은 이후 `1e2660867489fc86ea4206e7a41393af2a965d93`에서 복구되었다.
+- 최신 develop 재검증 SHA: `miracleshot.html` `ead83ef26257c077389700f703273cb18096147d`, `goal.html` `200d7d2c8fba96065e088c72f6b56c29a8c11dd1`.
+- 실제 게임 기능 및 브라우저 광고 노출은 최신 Preview 확인 전까지 미검증이다.
 
 ### 브랜치 상태 갱신
 - 사용자의 요청으로 2026-11-02에 develop을 main에 fast-forward 반영했으며, 동기화 기준 커밋은 `21b891c15c97de48e6788fc4210ff9ce52ee7c44`였다.
@@ -4635,3 +4636,33 @@ TuTuPuPuPiPi 수정 후 develop 소스의 최신 HEAD와 Vercel Preview 상태�
 - 광고 대상 주요 콘텐츠 페이지 간 긴 본문 문단 완전 일치가 확인되지 않음.
 - 일부 공통 시리즈 배경·브랜드 설명·프로필 구조는 있으나 페이지별 역할과 세부 서사가 구분됨. 이를 이유로 콘텐츠를 억지로 늘리거나 삭제하지 않음.
 - 유사도 수치는 단어 집합 비교의 참고값이며 Google의 복제 콘텐츠 판정이 아님. 최종 렌더링/색인된 화면 검증은 별도.
+
+
+## 2026-11-02 후속 교차 점검 — Journal/Worship/Wallpaper/TuTu/Miracle 및 사이트맵 광고 코드
+
+### 콘텐츠 중복 교차 확인
+- Journal 1~6: 정확히 일치하는 본문 문단 0건(공통 내비게이션/상단 안내 제외). 글별 주제와 본문이 구분됨. Journal 5의 영어 본문 존재 확인.
+- Wallpaper, Worship, English Worship, TuTuPuPuPiPi, Miracle Shot 스토리 소개 페이지의 80자 이상 본문 문단 비교: 완전 일치 0건.
+- 앞선 Home/About/Sister Squad Hub/1/2/Yul/Jung 교차 검사에서도 80자 이상 본문 문단 완전 일치 0건.
+- 판정: 이 범위에서 정적 HTML 본문 복제 증거를 발견하지 못했다. 공통 내비게이션·브랜드 문구·동일 시리즈의 공통 배경은 본문 복제로 취급하지 않았다. 문단 유사도 검사만으로 Google의 정책 판정을 보장할 수는 없다.
+
+### sitemap 24개 URL 광고 코드 재대조
+- sitemap 24개 URL의 HTML 파일을 각각 확인했다.
+- 직접 AdSense loader 18개: `index.html`, `wallpaper.html`, `sistersquad-hub.html`, `sistersquad.html`, `sistersquad2.html`, `yul.html`, `jung.html`, `miracleshot.html`, `tutupupupipi.html`, `worship.html`, `worship_eng.html`, `journal-1.html`~`journal-6.html`, `about.html`.
+- 직접 AdSense loader가 없는 6개: `music.html`, `movie.html`, `bible.html`, `contact.html`, `privacy.html`, `terms.html`.
+- 24개 모두 수동 `adsbygoogle` 슬롯 0개, 직접 `adsbygoogle.push` 0개.
+- sitemap 밖의 실제 게임 실행 페이지 `goal.html`은 `noindex, nofollow`, AdSense loader 0개, publisher ID 0개. 게임/기능 페이지의 광고 제외 상태를 유지한다.
+- `worship.html` 및 `worship_eng.html`은 외부 찬송 악보/뷰어가 아니라 사용자가 만든 오리지널 Worship 앨범과 가사 아카이브로 구분해 광고 대상 페이지로 유지한다.
+
+### Vercel Preview 확인 — 최신 코드와 배포 커밋 불일치
+- 프로젝트 `chrisleepapa-official`, 팀 `chrisleepapas-projects`.
+- 확인된 READY Preview: deployment ID `dpl_CodNk9f6bv1fTR1Xp9fLQUae4aGM`, URL `chrisleepapa-official-5u4hmhb3n-chrisleepapas-projects.vercel.app`, alias `develop.chrisleepapa.com`.
+- 해당 Preview의 Git commit은 `3a880e077cf51d58082613b71386cbdbd83d24bb`.
+- 확인 시점 develop HEAD는 `3b2fc3d8b2ac21690d37083aee8b11f318ae69e2`; GitHub compare상 Preview commit보다 14 commits 앞서 있고 `about.html`, `miracleshot.html`, `tutupupupipi.html` 및 두 점검 문서가 변경됨.
+- 현재 develop HEAD와 일치하는 READY Preview는 확인되지 않았다. 일일 배포 한도를 고려해 새 배포를 시작하지 않았다.
+- 따라서 위 READY Preview는 최신 develop 코드의 브라우저 검증본으로 사용할 수 없다. 모바일/PC 렌더링, 언어 전환, 실제 광고 위치는 미검증으로 유지한다.
+
+### 현재 상태 적용 원칙
+- 사용자의 요청으로 main은 2026-11-02 동기화 기준 커밋 `21b891c15c97de48e6788fc4210ff9ce52ee7c44`까지 develop과 동일해졌다. 이후 감사 변경은 develop에서만 수행한다.
+- 과거 문서 중 MIRACLE SHOT 스토리 소개를 게임으로 오분류한 기록은 이 섹션의 정정을 우선 적용한다.
+- 현재 이어하기 순서는 `docs/ADSENSE_AUDIT_NEXT_STEPS.md` 최상단의 최신 상태를 우선 적용한다.

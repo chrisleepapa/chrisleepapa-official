@@ -1,5 +1,19 @@
 # Chris LEE.PAPA AdSense 점검 — 이어하기 메모
 
+## 최신 작업 결과 — 2026-11-02 본문 유사도 대조
+
+- 대상: index.html, about.html, sistersquad-hub.html, sistersquad.html, sistersquad2.html, yul.html, jung.html.
+- 정적 HTML의 제목/문단/목록 텍스트를 추출해 비교했다. 70자 이상인 본문 블록에서 페이지 간 완전히 동일한 문단은 0개였다.
+- 추출된 정적 텍스트 길이는 Home 약 1,466자, About 약 2,470자, Sister Squad Hub 약 6,476자, Sister Squad 1 약 2,018자, Sister Squad 2 약 3,048자, Yul 약 2,990자, Jung 약 2,929자다. 홈의 Chris's Pick/Chris's Note 등 외부 JS 데이터는 이 글자 수에 포함되지 않는다.
+- 토큰 집합 유사도는 가장 높은 Yul/Jung 0.172, Hub/Sister Squad 1 0.097, Home/About 0.096이었다. 이는 공통 인물명·세계관·브랜드 어휘와 페이지 역할상 공유되는 개념이 반영된 수치이며, 본문 복제 판정으로 사용하지 않았다.
+- Yul/Jung은 같은 자매 세계관과 관계 설명을 공유하지만, 율의 분석·염력·판단 성장과 정의 교감·공감·두려움을 감당하는 성장 및 각 딸의 캐릭터 기원은 구분된다. Sister Squad Hub는 세계관 안내, 1편은 첫 모험/창작 배경, 2편은 폐허 회복 여정/제작 노트로 역할이 나뉜다. Home은 프로젝트 탐색, About은 창작자 소개/제작 방식에 초점을 둔다.
+- 판정: 정적 본문에서 복제 콘텐츠로 볼 만한 동일 문단을 찾지 못했다. 이번 대조만으로 삭제/축약할 문구는 없어 코드 수정하지 않았다. 동적 홈 콘텐츠의 실제 표시와 브라우저 렌더링은 별도 검증 대상이다.
+- 현재 GitHub develop HEAD는 a57c06241f107a43ba5251832713408492cb67d1, main HEAD는 21b891c15c97de48e6788fc4210ff9ce52ee7c44이며 develop이 16 commits ahead / 0 behind다. 차이는 main 동기화 이후 develop에서 진행한 콘텐츠 수정과 점검 문서 기록이다. main은 변경하지 않았다.
+- Vercel에서 조회한 최신 develop Preview는 3a880e077cf51d5808268fc4210ff9ce52ee7c44? (실제 SHA: 3a880e077cf51d5808268fc4210ff9ce52ee7c44) 커밋의 READY 배포이며 현재 develop HEAD와 일치하지 않는다. 최신 Production도 이전 main 커밋 c5e491bb6b125eb00b1e871163c7d0fb7cca74e8의 READY 배포다. 따라서 현재 HEAD의 실제 화면 검증은 미완료다.
+
+### 다음 단일 작업
+현재 develop HEAD와 일치하는 Preview가 준비될 때까지 정적 소스 감사 결과를 유지하고, 배포 한도가 허용되는 시점에 브라우저에서 Tutu, Miracle Shot 스토리/GOAL, About 및 주요 광고 대상 페이지의 모바일·PC 표시와 동적 콘텐츠를 검증한다. GTM 게시 버전, Auto ads 위치, Search Console 실제 색인 상태도 계정/실서비스 확인 전까지 미완료로 둔다.
+
 - 기준일: 2026-11-02
 - 저장소: chrisleepapa/chrisleepapa-official
 - 작업 브랜치: develop only. main은 사용자 요청에 따라 2026-11-02에 develop의 당시 HEAD 21b891c15c97de48e6788fc4210ff9ce52ee7c44와 동기화됨. 이후 AdSense 감사 수정은 develop에만 반영.

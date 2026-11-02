@@ -32,6 +32,20 @@ TuTuPuPuPiPi 수정 후 develop 소스의 최신 HEAD와 Vercel Preview 상태�
 
 # Chris LEE.PAPA AdSense 점검 — 이어하기 메모
 
+## 최신 작업 상태 — 2026-11-02 (main 동기화 이후)
+
+- 사용자의 명시적 요청에 따라 2026-11-02에 `develop`을 `main`에 fast-forward 반영했다. 동기화 기준 커밋은 `21b891c15c97de48e6788fc4210ff9ce52ee7c44`이며, 당시 두 브랜치는 동일했다.
+- 동기화 이후의 AdSense 점검 수정은 이 문서의 기존 원칙에 따라 `develop`에서만 진행한다. 따라서 이후 `main`은 동기화 기준 커밋을 유지하고, 새 점검 커밋은 develop에만 쌓인다. 다음 main 반영은 사용자의 별도 요청이 있을 때 진행한다.
+- 이번 후속 점검에서 `tutupupupipi.html`의 영상 카드 정적 제목 6개를 실제 한국어 제목으로 교체하고, 6개 썸네일 alt를 각 영상의 고유한 장면 설명으로 구체화했다. 기존 한국어/영어 동적 번역, 영상 ID, 링크, OST, 페이지 구조는 유지했다.
+  - 수정 커밋: `c55ebf3e2da82e6a26e390881af7d188c12a3410`
+  - 재검증: 정적 제목 6개, 고유 Shorts ID 6개, 고유 Shorts 링크 6개, 구체적 alt 6개, 한국어/영어 번역 키 존재. 직접 AdSense loader 1개, 수동 슬롯 0개, adsbygoogle.push 0개.
+- Journal 1~6을 나란히 대조했다. 각 본문 길이는 약 3,453~9,402자이며, 정확히 일치한 문단은 공통 Journal 내비게이션 문구뿐이었다. 주제는 가족 창작의 시작, 원고/AI 활용, POD 출판, 캐릭터·삽화, 퇴근 후 창작, Worship 창작 기록으로 구분된다. Journal 5의 영어 본문도 소스에서 확인했다. 수정 불필요.
+- 사용자가 광고 대상에서 제외한다고 명시한 MIRACLE SHOT 게임 페이지에서 AdSense 로더와 게시자 ID가 남아 있는 것을 발견해 제거했다.
+  - 수정 커밋: `90a2490a06caa7dbfb7e86dd06129274d61e488f`
+  - 재검증: `miracleshot.html` 직접 AdSense loader 0, publisher ID 0, 수동 슬롯 0, adsbygoogle.push 0. GTM 1개, canonical 및 `index, follow`는 유지. 게임 기능과 검색 색인 설정은 변경하지 않았다.
+- 이번 단계는 GitHub develop 정적 소스 검증이다. 전체 사이트맵 24개 URL의 광고 로더 수는 이번 개별 수정 이후 전체 재집계를 남겨 두며, 실제 브라우저/모바일 렌더링, 현재 게시 GTM, Auto ads 실제 위치, GSC 실색인 상태는 미검증이다. 배포/실서비스 확인 완료로 표시하지 않는다.
+- 다음 단일 작업: sitemap 24개 페이지의 현재 AdSense 로더/게시자 ID 현황을 재집계하고, 사용자 지정 제외 페이지(Bible·Worship/찬송·게임 등)에 광고 코드가 남아 있지 않은지 최종 대조한다.
+
 - 기준일: 2026-11-01
 - 저장소: chrisleepapa/chrisleepapa-official
 - 작업 브랜치: develop only

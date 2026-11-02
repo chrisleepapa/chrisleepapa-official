@@ -4577,3 +4577,16 @@ TuTuPuPuPiPi 수정 후 develop 소스의 최신 HEAD와 Vercel Preview 상태�
 1. 광고 로더가 있는 페이지 간 본문 유사도/반복 문구를 추가 대조하되, 공통 브랜드 문구·내비게이션·작품 요약과 실질적인 본문 복제를 구분한다.
 2. 콘텐츠 정적 점검과 별도로 현재 게시 GTM 버전, 실제 Auto ads 배치, GSC 발견/색인 URL은 계정/실서비스 확인 전까지 미완료로 유지한다.
 3. 성경·찬송 및 게임 실행 페이지는 광고 대상 콘텐츠 심사에서 제외한다. 특히 miracleshot.html은 스토리/작품 소개 페이지이고 실제 게임은 goal.html임을 기존 기록대로 구분한다.
+
+
+## 2026-11-02 후속 수정 — Miracle Shot 작품/게임 광고 구분 및 About 중복 설명
+
+- develop의 커밋 90a2490a06caa7dbfb7e86dd06129274d61e488f가 miracleshot.html에서 AdSense loader를 제거한 것을 확인했다. 그러나 이 파일은 풋살 성장 드라마의 작품 소개 페이지이며, 게임 실행 화면이 아니다. 사용자가 광고 대상에서 제외하라고 한 Miracle Shot 게임은 별도 goal.html이다.
+- 실제 파일 대조: miracleshot.html은 제목 'MIRACLE SHOT — 기적을 차올리다', canonical https://chrisleepapa.com/miracleshot, robots index/follow인 작품·스토리 페이지다. goal.html은 제목 'MIRACLE SHOT — GOAL', robots noindex/nofollow인 게임 실행 화면이며 AdSense loader가 0개다. game.html도 noindex/nofollow 및 loader 0개다.
+- 따라서 develop에서 miracleshot.html에 기존 게시자 ID(pub-3207219520058740)의 표준 AdSense loader 1개를 복구했다. 수정 커밋 1e2660867489fc86ea4206e7a41393af2a965d93, 최신 blob SHA ead83ef26257c077389700f703273cb18096147d.
+- 재검증: miracleshot.html loader 1개 / index, follow / canonical 유지. goal.html loader 0개 / noindex, nofollow 유지. 게임 실행 화면에는 광고 코드를 넣지 않았고 작품 소개 페이지의 광고 적용만 복구했다.
+- 별도 develop 커밋 78476b2d3fb03676911a36f5c057eda7f2192adf에서 About 페이지의 반복되는 영어 아카이브 소개 블록을 제거한 변경도 대조했다. 핵심 제작 과정 설명과 4개 콘텐츠 유형 목록은 유지되며, 중복 제목/문단이 정적 HTML 및 번역 사전에서 제거된 것을 확인했다. About loader는 1개 유지.
+- 이번 단계는 develop에서만 수정/검증했다. main 및 운영 배포는 변경하지 않았다. 실제 브라우저/모바일/PC 렌더링, Auto ads 위치는 미검증이다.
+
+### 다음 단일 작업
+현재 develop HEAD의 Vercel Preview 배포 상태를 확인한다. 최신 코드 커밋까지 READY가 아니면 실서비스 UI 점검 완료로 표시하지 않는다. READY라면 Miracle Shot 스토리 페이지와 GOAL 게임 페이지가 구분되어 표시되는지, About의 중복 제거 후 한국어/영어 레이아웃이 정상인지 브라우저에서 확인한다.

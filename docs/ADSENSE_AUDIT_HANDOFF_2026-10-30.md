@@ -4666,3 +4666,26 @@ TuTuPuPuPiPi 수정 후 develop 소스의 최신 HEAD와 Vercel Preview 상태�
 - 사용자의 요청으로 main은 2026-11-02 동기화 기준 커밋 `21b891c15c97de48e6788fc4210ff9ce52ee7c44`까지 develop과 동일해졌다. 이후 감사 변경은 develop에서만 수행한다.
 - 과거 문서 중 MIRACLE SHOT 스토리 소개를 게임으로 오분류한 기록은 이 섹션의 정정을 우선 적용한다.
 - 현재 이어하기 순서는 `docs/ADSENSE_AUDIT_NEXT_STEPS.md` 최상단의 최신 상태를 우선 적용한다.
+
+
+## 2026-11-02 최종 정적 광고 대상/제외 대상 재검증
+
+### sitemap 24개 URL
+- sitemap URL 24개, 실제 루트 HTML 파일 24개 모두 존재.
+- 24/24 canonical이 각 정식 URL과 일치하고 robots는 index, follow.
+- 24/24 GTM 컨테이너 참조가 script 1회 + noscript 1회(HTML 내 GTM ID 문자열 2회)로 확인됨.
+- 직접 AdSense loader 18개: index, wallpaper, sistersquad-hub, sistersquad, sistersquad2, yul, jung, miracleshot, tutupupupipi, worship, worship_eng, journal-1~6, about.
+- 직접 AdSense loader 0개: music, movie, bible, contact, privacy, terms.
+- sitemap 24개 전체에서 수동 adsbygoogle 슬롯 0개, 직접 adsbygoogle.push 0개.
+
+### sitemap 밖 루트 HTML 13개
+- booktop, curling, fiveinrow, game, gameinfo, goal, guestbook, journal, shop, switch, tetris, today, Naver 소유권 확인 HTML.
+- 13개 모두 직접 AdSense loader 0개, 수동 광고 슬롯 0개, 직접 push 0개.
+- 게임/기능 페이지는 noindex, nofollow. guestbook/journal/today는 noindex, follow. shop은 sitemap 밖이지만 index, follow이며 직접 광고 코드는 없음. Naver 검증 HTML은 canonical/robots/GTM/광고 코드가 없음.
+- goal.html은 실제 MIRACLE SHOT 게임 실행 화면으로 noindex, nofollow 및 광고 코드 0개. miracleshot.html은 별도 작품 소개 페이지로 sitemap/index, follow 및 AdSense loader 1개.
+
+### 판정 및 한계
+- 현재 develop 정적 소스에서 의도한 광고 제외 6개 sitemap URL과 비-sitemap 기능 페이지에 직접 AdSense 로더가 삽입된 사례는 없음.
+- 이전 기록의 20개/4개 수치는 과거 상태이며 현재는 18개/6개임.
+- GTM ID 참조 수량은 확인했지만 실제 GTM 게시 버전과 AdSense Auto ads 설정/노출 위치는 계정에서 확인하지 못함. 사용자가 제공한 GTM export v2가 현재 게시 버전인지도 미확인.
+- Google 크롤링/색인 상태, 실제 브라우저 모바일/PC 화면, 동적 스크립트 실행, 광고가 실제로 삽입된 화면은 미검증.

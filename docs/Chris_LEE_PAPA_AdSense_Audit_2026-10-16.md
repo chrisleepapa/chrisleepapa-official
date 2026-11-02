@@ -868,3 +868,16 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **배포 응답:** Production과 Preview 모두 HTTP 200 및 canonical `https://chrisleepapa.com/tutupupupipi` 일치. Production은 robots `index, follow`, Preview는 `x-robots-tag: noindex`. 양쪽 응답 모두 AdSense loader 1개, GTM 1개.
 - **판정:** 기존 Audit 1.30 이후 보강된 여섯 영상별 설명과 제작자 노트가 소스에 실제 존재하며, 이번 단계에서 빈 콘텐츠 영역이나 설명 누락은 발견되지 않음. 추가 코드 수정은 불필요.
 - **점수:** 내부 AdSense 준비도 74/100 유지. 페이지 자체의 고유 가치에 대한 소스 증거는 긍정적이나, Google의 복제 콘텐츠 판정 및 원본 영상 소유권 검증을 대신하지 않으므로 점수는 변경하지 않음.
+
+
+### 2026-11-03 / Audit 1.45 — MIRACLE SHOT 독창성 및 GOAL 게임 연결 문구 정합성 수정
+
+- **검사 대상:** develop의 `miracleshot.html`, `js/miracle-shot-story-v2.js`, Production/Preview의 `/miracleshot` 및 `/goal` 응답.
+- **독창성·콘텐츠 가치:** MIRACLE SHOT 페이지에는 풋살을 소재로 한 고유 이야기, 코치와 네 아이의 성장 서사, 각 캐릭터의 차이가 팀의 강점이 되는 주제, 성경 인물과 연결한 해석, 캐릭터 갤러리, OST, 창작 동기 및 제작 과정이 존재함. 동적 제작자 노트는 교회 어린이부 교사로 아이들을 만나며 오래 기억될 추억을 남기고 싶었던 창작 동기, 축구보다 네 아이에게 적합하다고 판단한 풋살 소재, 신앙적 메시지를 작품에 담은 이유를 설명함.
+- **실제 연결 구조 확인:** MIRACLE SHOT은 스토리/IP이며, 게임은 별도 `골이예요 GOAL` 페이지(`/goal`)임. `miracleshot.html` 하단에는 이미 네 캐릭터를 선택해 슛을 하는 `/goal` CTA가 존재함. `/goal`은 Production과 Preview 모두 HTTP 200으로 응답하고 페이지 제목은 `MIRACLE SHOT — GOAL`, AdSense loader 0개, GTM 1개임.
+- **불일치 발견:** 동적 스토리 레이어 `js/miracle-shot-story-v2.js`에는 게임을 미래 프로젝트로 표현하는 `COMING SOON` 블록이 남아 있었음. 이미 운영 중인 `/goal` 게임 링크와 상충하므로 정확하지 않은 안내였음.
+- **조치:** develop에서 해당 동적 `COMING SOON` 게임 블록 및 한국어/영어의 오래된 '게임 확장 예정' 문구를 제거함. 기존 페이지 하단의 실제 `/goal` CTA는 유지함. MIRACLE SHOT 스토리, 성경적 주제, 캐릭터, OST, 제작자 노트는 변경하지 않음.
+- **수정 커밋:** develop `34d0df60f34b9bd06d602699d28a2e50cb511567` — `content: remove outdated coming-soon game copy from Miracle Shot story`. 변경 파일은 `js/miracle-shot-story-v2.js` 하나이며, main 및 Production은 변경하지 않음.
+- **배포 상태:** 현재 확인한 Production 및 Preview의 `/miracleshot`은 HTTP 200, canonical `https://chrisleepapa.com/miracleshot`, 각각 AdSense loader 1개, GTM 1개. 다만 이 응답은 develop 수정 커밋보다 이전 빌드이므로 수정 후 렌더링은 아직 확인하지 못함. `/goal` Production/Preview는 모두 HTTP 200이며 AdSense loader 0개.
+- **판정:** 페이지의 오리지널 스토리·캐릭터·창작자 관점은 양호함. 기존 게임 링크를 유지하면서 잘못된 'Coming Soon' 중복 안내를 develop에서 제거함. 최신 Preview 검증은 미완료.
+- **점수:** 내부 AdSense 준비도 74/100 유지. 정확성 개선은 반영했으나 Google의 복제 콘텐츠 판정 대상과 원본 제작·배포 증빙을 검증한 것은 아니므로 점수는 변경하지 않음.

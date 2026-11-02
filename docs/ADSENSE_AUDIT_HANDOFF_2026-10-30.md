@@ -4486,3 +4486,19 @@ switch.html (SWITCH) 정적 게임 감사. 이어서 goal.html (골이예요).
 - GitHub API compare 기준 develop HEAD `62c95793fe7302e170c955146487d0cadf158f07`, main HEAD `c5e491bb6b125eb00b1e871163c7d0fb7cca74e8`.
 - develop은 main보다 77 commits ahead, 0 behind다. 이 수치는 이번 감사 변경뿐 아니라 기존 develop 작업 전체를 포함한다.
 - 사용자의 명시적 요청 전에는 main 반영하지 않는다. 이번 점검에서도 main과 production은 변경하지 않았다.
+
+
+## 2026-11-02 메인 반영 후 심사 준비 상태 재대조
+
+- GitHub main과 develop의 현재 HEAD는 모두 21b891c15c97de48e6788fc4210ff9ce52ee7c44로 동일하다. 두 브랜치의 compare 결과도 identical(ahead 0 / behind 0)이다.
+- 이번 확인은 GitHub 소스 반영 상태를 확인한 것이며, Vercel 운영 배포 완료를 뜻하지 않는다. Vercel에서 확인한 최신 Production 배포는 READY 상태이나 커밋이 이전 c5e491bb6b125eb00b1e871163c7d0fb7cca74e8이다. 현재 HEAD 21b891c와 일치하는 Production 배포는 조회되지 않았다. 최신 develop Preview 조회 결과도 현재 HEAD와 다른 커밋을 가리켜, 최신 소스의 실제 렌더링 검증은 미완료다.
+- 2026-11-02 현재 정적 감사 범위는 sitemap 24개 URL과 sitemap 밖 루트 HTML 13개다. sitemap URL은 파일 존재 24/24, canonical 일치 24/24, index, follow 24/24, GTM script/noscript 각각 1회씩 확인 기록이 있다.
+- sitemap 내 직접 AdSense loader는 18개 페이지에 각 1개이며, 6개 페이지(/music, /movie, /bible, /contact, /privacy, /terms)는 직접 loader가 없다. 전체 24개에서 수동 광고 슬롯과 직접 adsbygoogle.push는 0개다. sitemap 밖 루트 HTML 13개도 직접 loader/수동 슬롯/push가 모두 0개다.
+- 직접 광고 로더가 있는 18개 페이지는 Home, About, Sister Squad 1·2·Hub, Yul, Jung, TuTuPuPuPiPi, Miracle Shot 스토리, Worship, English Worship, Wallpaper, Journal 1~6이다. 각 페이지의 정적 콘텐츠/중복 여부는 기존 상세 감사 기록에 있다. Bible/찬송 및 게임 실행 화면은 사용자 지정에 따라 광고 대상 콘텐츠 심사 목록에서 제외한다.
+- 이번 대조에서 새롭게 발견된 누락 페이지나 추가 직접 광고 로더는 확인되지 않았다. 기존 조치(Movie Shorts 중복 목록 제거, Shop 작품별 설명 및 대비 보완, Sister Squad 허브 앵커 수정, Yul/Jung hero alt 보완 등)는 현재 감사 기록을 유지한다.
+- 남은 승인 전 핵심 검증은 ① 현재 HEAD와 일치하는 Vercel 배포 확인 ② 실제 브라우저의 모바일/PC 및 동적 콘텐츠 표시 ③ 현재 게시 GTM 버전 확인 ④ Auto ads 실제 삽입 위치/화면별 광고 노출 확인 ⑤ Search Console의 실제 발견·색인·canonical 상태 확인이다. 확인 전까지 완료로 표시하지 않는다.
+- Shop은 sitemap 밖이지만 index, follow이고 직접 광고 코드는 없다. 판매처 링크 중심의 얇은 디렉터리 가능성은 기존 위험 후보로 유지하되, 검색/판매 목적에 영향이 있으므로 임의로 noindex 전환하지 않는다.
+- 이번 재대조에서는 사이트 HTML/JS를 추가 수정하지 않았다. 점검 문서만 갱신하며, main 소스와 Vercel 설정/배포는 별도로 변경하지 않는다.
+
+### 다음 단일 작업
+현재 HEAD 21b891c와 일치하는 Vercel 배포가 생성·완료되는지 확인한다. 배포가 준비되면 실제 브라우저에서 광고 대상 페이지를 모바일/PC로 열어 동적 콘텐츠·링크·광고 위치를 확인한다. 배포가 아직 없으면 실서비스 확인을 완료 처리하지 않고, 정적 감사 결과와 미완료 항목을 구분해 유지。

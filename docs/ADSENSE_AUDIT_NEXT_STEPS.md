@@ -1199,6 +1199,206 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 ### 다음 단일 작업
 **Worship 페이지의 동적/정적 창작 설명, 앨범·곡별 정보, 광고 로더 및 외부 임베드 구성을 소스 기준으로 점검한다.** 실제 화면의 재생·광고 위치는 배포 및 브라우저 확인 전까지 미검증으로 둔다.
 
+
+## 2026-11-02 이어서 점검 — Worship / English Worship
+
+### Korean Worship 정적 감사
+**파일:** `worship.html` (수정 후 blob SHA는 후속 재검증 결과 참조)
+
+- canonical `/worship`, robots `index, follow`, H1 1개.
+- AdSense 로더 1회, 수동 광고 단위 0개, `adsbygoogle.push` 0회. 자동 광고 실제 배치는 브라우저/AdSense 설정에서 별도 확인해야 한다.
+- 앨범 카드 4개: 나의 찬양 Vol.1·Vol.2·Vol.3 및 Whispers Of Grace ver1. Spotify/YouTube 외부 링크가 각 앨범 카드에 연결되어 있다.
+- 가사 아카이브는 나의 찬양 Vol.1~3의 30개 트랙으로 구성된다. 앨범 이야기 4개와 창작/제작 과정 카드가 있으며, 가사·앨범 설명 외에도 창작 동기, 앨범별 주제, 제작 판단을 설명한다.
+- 제작 설명은 가사·곡 주제·예배 방향을 창작자가 기획·수정하고, Suno 등 AI 도구는 보컬·연주·편곡 구현에 활용했으며 여러 생성 결과를 검토·선택·수정했다는 역할 구분을 포함한다.
+- Spotify 앨범 커버 이미지는 Spotify oEmbed API로 동적으로 가져오는 코드가 있다. 실제 API 성공, 이미지 표시, 네트워크 실패 시 대체 이미지 및 모바일 표시 상태는 브라우저 검증 전까지 미확인이다.
+- 별도 Spotify 음악 iframe 임베드는 없고, 앨범 외부 링크와 동적 커버 조회를 사용한다. 정적 iframe은 GTM noscript 1개다.
+
+### English Worship 정적 감사
+**파일:** `worship_eng.html`
+
+- canonical `/worship_eng`, robots `index, follow`, H1 1개.
+- AdSense 로더 1회, 수동 광고 단위 0개, `adsbygoogle.push` 0회.
+- SHOUT 앨범 카드, Spotify/YouTube 공식 링크, 5개 제작·주제 스토리 카드, 15개 트랙 가사 아카이브가 있다.
+- Human direction / AI-assisted production 영역에서 가사·주제·예배 방향의 창작자 역할과 AI 도구의 제작 보조 역할을 구분한다.
+- 외부 음악은 링크로 제공하며, 별도 Spotify 임베드는 확인되지 않았다. 정적 iframe은 GTM noscript 1개다.
+
+### 발견 및 최소 수정
+- Korean Worship의 일반 meta description에는 Whispers Of Grace가 포함되어 있었지만 Open Graph description에는 빠져 있어 검색/공유 메타 설명이 서로 달랐다.
+- Open Graph description에도 Whispers Of Grace를 추가해 네 앨범 정보가 일치하도록 수정했다.
+- develop 커밋: `29807c30a62715f41417ac389be506080809d32c`
+- 이번 수정은 메타 설명 한 줄만 변경했다. 앨범, 가사, 링크, 광고 설정은 변경하지 않았다.
+
+### 재검증 및 미완료
+- [x] Korean Worship 4개 앨범 카드 및 Vol.1~3 가사 30개 확인
+- [x] English Worship SHOUT 15개 가사 확인
+- [x] 양쪽 페이지의 창작·AI 제작 과정 설명 확인
+- [x] canonical/robots/H1 및 광고 로더 구조 확인
+- [x] Korean Worship Open Graph 설명에 Whispers Of Grace 반영
+- [ ] Spotify 커버 API, 외부 링크, 모바일/PC 실제 렌더링 확인
+- [ ] 자동 광고 실제 노출 위치 및 본문/가사와의 간섭 여부 확인
+- [ ] 앨범별 음원·커버 아트 권리 및 플랫폼 약관 확인은 별도 권리 검토로 유지
+
+### 다음 단일 작업
+**About 페이지의 콘텐츠 독립성, 사이트 내 창작자/운영 정보, canonical 및 구 Vercel 도메인 참조를 소스 기준으로 점검한다.** 과거 Search Console에서 구 Vercel 주소가 Google 선택 canonical로 잡힌 이력이 있으므로, 내부 링크·canonical·사이트맵 일치 여부를 특히 확인한다.
+
+
+## 2026-11-02 이어서 점검 — About 페이지 및 표준 URL
+
+**대상:** `about.html`, `index.html`, `js/main.js`, `sitemap.xml`
+
+- `about.html` canonical은 `https://chrisleepapa.com/about`, robots는 `index, follow`, H1 1개.
+- `about.html` AdSense 로더 1회, 수동 광고 단위 0개, `adsbygoogle.push` 0회. 자동 광고 실제 위치는 별도 브라우저 확인이 필요하다.
+- 본문에는 창작자 소개와 여정, Creative Philosophy, 아카이브에서 다루는 작품 분야, 제작 과정, 2025.07~2026.10 연혁, YouTube/Spotify/TikTok 공식 프로필 링크가 있다. 태그·스크립트 제거 기준 약 586단어이며, 외부 임베드만으로 구성된 페이지가 아니다.
+- About 페이지의 링크는 공식 SNS 3개이며, 작품 상세 페이지로 직접 연결하는 본문 링크는 확인되지 않았다. 다만 전역 메뉴를 통한 탐색이 가능하므로 이번에는 임의로 링크를 추가하지 않았다. 향후 사용자가 작품별 바로가기 영역을 원하면 별도 개선 대상으로 검토한다.
+- About 페이지 자체에서 구 Vercel `.vercel.app` 주소 참조는 발견되지 않았다.
+- `index.html` canonical은 루트 `https://chrisleepapa.com/`, robots는 `index, follow`이며 구 Vercel 주소 참조가 없다.
+- `js/main.js`에서도 구 Vercel 주소 참조가 발견되지 않았다.
+- `sitemap.xml`에는 `https://chrisleepapa.com/about`이 포함되어 있으며 구 Vercel 주소는 없다.
+- 위 네 파일의 정적 소스에서 표준 도메인과 구 Vercel 주소 참조는 일관된다. 다만 과거 Search Console의 Google 선택 canonical 이력은 실제 Google 색인 상태이므로, 이 소스 검사만으로 해결되었다고 판정하지 않는다.
+
+**판정:** About 페이지의 독립적인 창작자·사이트 설명은 확인되며, canonical/robots/sitemap 소스도 일치한다. 코드 수정은 하지 않았다.
+
+**미완료:** Search Console에서 `/about`의 Google 선택 canonical이 현재도 구 Vercel 도메인인지, 새 크롤링 후 갱신되었는지 확인해야 한다. 실제 브라우저의 모바일/PC 표시와 자동 광고 위치도 미검증이다.
+
+### 다음 단일 작업
+**Journal 1~6의 Article 구조화 데이터, 날짜·작성자·canonical·내부 링크를 한 번에 대조한다.** 이미 확인한 Journal 1의 Article JSON-LD 추가 이력을 포함해 6개 문서 사이의 메타데이터 일관성을 정적 소스로 확인한다.
+
+
+## 2026-11-02 이어서 점검 — Journal 1~6 Article 구조화 데이터
+
+**대상:** `journal-1.html` ~ `journal-6.html`
+
+### 공통 확인
+- 여섯 페이지 모두 canonical이 각 페이지의 `https://chrisleepapa.com/journal-N` 경로와 일치한다.
+- 여섯 페이지 모두 robots `index, follow`.
+- 여섯 페이지 모두 Article JSON-LD 블록 1개가 있고 JSON 파싱 오류가 없다.
+- 여섯 페이지 모두 AdSense 로더 1회, 수동 광고 단위 0개, `adsbygoogle.push` 0회.
+- 각 Article의 headline, author, mainEntityOfPage는 존재하며, mainEntityOfPage는 해당 페이지 canonical과 일치한다.
+- 본문 분량은 정적 태그 제거 기준 약 860~1,975단어로 확인되며, 여섯 문서 모두 제작 경험·과정·배운 점을 설명하는 독립적인 글이다.
+- Journal 내부 링크는 1→2, 2→1·3, 3→2·4, 4→3·5, 5→4, 6→5로 연결된다. Worship 페이지에서도 Journal 6으로 연결되는 링크가 있다.
+
+### 문서별 차이 및 보완 판단
+- Journal 1: Article JSON-LD의 headline, description, URL, mainEntityOfPage, image, author, publisher, articleSection이 유효하게 존재한다. 다만 정확한 게시일/수정일을 확인할 수 있는 근거가 없어 datePublished/dateModified는 넣지 않은 상태다. 날짜를 임의로 만들지 않고 유지한다.
+- Journal 2·3: datePublished `2026-08-01`, dateModified `2026-09-11` 및 image, author, publisher 등이 포함된다.
+- Journal 4·5·6: datePublished/dateModified와 author가 포함된다. Journal 4·5·6은 Article JSON-LD의 image/publisher 세부 필드가 앞선 문서와 다르다. 실제 대표 이미지가 무엇인지 임의로 지정하지 않고, 현재 구조를 유지한다.
+- 모든 문서의 og:image는 존재한다. 일부 문서는 공통 공유 이미지, Journal 6은 `images/My hymn3.jpg`를 사용한다. OG 이미지가 있다는 사실만으로 그것을 기사 대표 이미지로 자동 복사하지 않는다.
+
+**판정:** 구조화 데이터는 여섯 페이지 모두 파싱 가능하고 핵심 식별 정보가 canonical과 일치한다. 날짜·이미지 근거가 확인되지 않은 필드는 임의로 보충하지 않는다. 이번 단계에서 사이트 코드는 수정하지 않았다.
+
+**미완료:** Search Console/리치 결과 테스트에서 실제 Google 해석 결과를 확인하지 못했다. 실제 브라우저의 글 본문, 광고 위치, 모바일/PC 표시도 미검증이다.
+
+### 다음 단일 작업
+**사이트맵에 포함된 URL과 실제 canonical/index 상태, 페이지별 AdSense 로더 수를 다시 대조해 사이트 전체 공개·광고 범위의 최종 정적 매트릭스를 작성한다.** 이미 수정된 develop 파일을 기준으로 확인하고, 광고 제외 대상(Bible/게임/기타 기능 페이지)이 사이트맵이나 자동 광고 범위에 잘못 포함되지 않았는지 함께 점검한다.
+
+
+## 2026-11-02 이어서 점검 — 사이트맵 24개 URL과 광고 적용 범위
+
+### 사이트맵 / robots
+- `sitemap.xml`에 공개 URL 24개가 있다.
+- 24개 모두 실제 HTML 파일의 canonical이 해당 sitemap URL과 일치하며 robots는 `index, follow`.
+- `robots.txt`는 `User-agent: *`에 `Allow: /`를 적용하고 `https://chrisleepapa.com/sitemap.xml`을 가리킨다.
+- 사이트맵 대상 24개 HTML에서 구 Vercel `.vercel.app` 주소 참조는 발견되지 않았다.
+
+### AdSense 로더 정적 매트릭스
+**로더 1회 (18개):**
+- `/`
+- `/wallpaper`
+- `/sistersquad-hub`
+- `/sistersquad`
+- `/sistersquad2`
+- `/yul`
+- `/jung`
+- `/miracleshot`
+- `/tutupupupipi`
+- `/worship`
+- `/worship_eng`
+- `/journal-1` ~ `/journal-6`
+- `/about`
+
+**로더 0회 (6개):**
+- `/music` — 제3자 IP 영감 작품의 권리 검토가 끝날 때까지 광고 제외 유지
+- `/movie` — 팬메이드 영상 및 제3자 IP 권리 검토와 미디어 중심 구성 고려
+- `/bible` — 사용자의 광고 제외 결정 유지
+- `/contact`
+- `/privacy`
+- `/terms`
+
+**공통 정적 결과:**
+- 사이트맵 24개 HTML 모두 수동 광고 단위 `ins.adsbygoogle` 0개.
+- 사이트맵 24개 HTML 모두 직접 `adsbygoogle.push` 호출 0개.
+- 모든 페이지의 H1은 1개였다. 단, Privacy/Terms는 한국어·영어 언어별 H1이 각각 소스에 있으나 `css/common.css`의 `html[lang]` 선택자로 한 언어만 표시하도록 구성되어 있다.
+- AdSense 로더가 있다는 사실은 실제 광고가 표시된다는 뜻이 아니다. 자동 광고 노출 및 위치는 AdSense 설정과 실제 브라우저에서 별도로 확인해야 한다.
+
+### 사이트맵에서 제외된 기능 페이지 확인
+- `/today`: `noindex, follow`, AdSense 로더 0회, sitemap 제외.
+- `/guestbook`: `noindex, follow`, AdSense 로더 0회, sitemap 제외.
+- `/goal`: `noindex, nofollow`, AdSense 로더 0회, sitemap 제외. canonical은 설정되어 있지 않다. 현재 검색 색인 대상이 아닌 게임 실행 페이지이므로 이번에는 추가하지 않았다.
+- `/gameinfo`: `noindex, nofollow`, AdSense 로더 0회, sitemap 제외.
+- `ads.txt`에는 `google.com, pub-3207219520058740, DIRECT, f08c47fec0942fa0` 게시자 라인이 존재한다.
+
+**판정:** develop 소스의 sitemap 24개 URL, canonical, robots, AdSense 로더 범위는 서로 일치한다. Bible/기능 페이지 광고 제외 결정도 코드상 유지된다. 사이트 코드 변경은 하지 않았다.
+
+**미완료:** Google Search Console의 실제 색인/선택 canonical, AdSense Auto ads의 실제 노출 여부, 브라우저 모바일/PC 렌더링은 이 정적 소스 대조로 확인할 수 없다. Music/Movie 및 Bible/찬송가 관련 권리 검토도 별도 미해결이다.
+
+### 다음 단일 작업
+**현재 develop의 최근 변경 커밋과 Vercel 자동 배포 상태를 대조하고, 배포 한도가 풀린 뒤 Preview에서 확인해야 할 페이지별 테스트 목록을 확정한다.** 새 배포를 수동 요청하지 않고 상태 조회만 한다.
+
+
+## 2026-11-02 배포 한도 중 작업 상태 및 Preview 테스트 대기표
+
+### 브랜치 비교
+- GitHub compare 기준 `main` 대비 `develop`은 ahead 47 / behind 0.
+- main에는 반영하지 않았다. main을 develop으로 덮어쓰거나 병합하지 않았다.
+
+### Vercel 자동 배포 상태 조회
+- 이번 세션에서 수동 배포 명령은 실행하지 않았다.
+- Music 콘텐츠 수정 커밋 `832298fc05c61ff6a3b4394e9cefeabce46d86bd`: READY 확인.
+- Worship OG 설명 수정 커밋 `29807c30a62715f41417ac389be506080809d32c`: READY 확인.
+- Journal/ About/ 점검 문서 커밋들의 자동 배포도 READY 상태인 항목을 확인했다.
+- 가장 최근 사이트 전체 매트릭스 문서 커밋 `0d86ab1e6b265e0151f68de87e5ab7112aea961b`: 조회 시점 BUILDING. 문서만 변경한 커밋이므로 사이트 HTML/JS 수정은 포함하지 않는다.
+- 자동 배포가 GitHub 커밋 이후 생성되고 있음을 확인했다. 사용자가 말한 일일 배포 한도 때문에 실제 Preview가 최신 커밋까지 갱신되었다고 단정하지 않는다.
+
+### 배포 가능 시 Preview에서 수행할 테스트
+1. Music: 14개 작품별 이야기, 한국어/영어 전환, Spotify iframe API 및 fallback, 광고 로더 미포함 확인.
+2. Worship: 4개 앨범 카드, Vol.1~3 가사 30개, Spotify 커버 API, 한국어/영어 전환, 자동 광고 위치 확인.
+3. English Worship: SHOUT 15개 가사, Spotify/YouTube 링크, 모바일 가사 아코디언 확인.
+4. About: 창작자 소개·연혁·SNS 링크, canonical 및 공유 미리보기 확인.
+5. Privacy/Terms: 한국어·영어 전환 시 언어별 H1 하나만 표시되는지 확인.
+6. 사이트 공통: 모바일 메뉴, PC/모바일 레이아웃, 콘솔 오류, AdSense 광고가 본문·플레이어·링크와 혼동되지 않는지 확인.
+7. Google 도구: Search Console의 /about 선택 canonical 및 사이트맵 처리 결과, AdSense Auto ads 실제 노출 위치 확인.
+
+**현재 결론:** 배포 한도와 무관하게 GitHub 소스 점검·수정·정적 재검증은 계속할 수 있다. 다만 실제 Preview 렌더링 검증은 최신 배포 READY 확인 후에만 완료 처리한다.
+
+
+## 2026-11-02 AdSense 최우선 재점검 — 콘텐츠 가치 및 개인정보 동의(CMP)
+
+### 적용한 공식 기준
+- Google AdSense 준비 가이드는 고유하고 관련성 있는 콘텐츠, 명확한 탐색, 방문자에게 유용한 독창적 콘텐츠를 확인하도록 안내한다.
+- Google Publisher Policies는 저가치 콘텐츠, 콘텐츠가 없는 화면, 공사 중 화면, 알림·탐색 등 행동 목적 화면에 광고를 게재하지 못하도록 한다. 자동 생성 콘텐츠는 사람의 검토·선별 없이 게시하면 안 된다.
+- 광고가 메뉴·탐색·다운로드 버튼으로 오인되거나 클릭을 유도하는 배치도 금지된다.
+- 출처: Google AdSense 공식 도움말(준비 가이드, Publisher Policies, Site behavior).
+
+### 광고가 있는 창작 페이지 재점검
+대상: `wallpaper.html`, `sistersquad-hub.html`, `sistersquad.html`, `sistersquad2.html`, `yul.html`, `jung.html`, `miracleshot.html`, `tutupupupipi.html`, `index.html`
+
+- Wallpaper: 개인용 무료 배경화면 4개 MP4와 PC PNG 9개, 작품별 설명, 포맷·사용 범위·기기별 설정 가이드, 창작자 노트가 존재한다. 단순 다운로드 목록만 있는 페이지는 아니다.
+- Sister Squad Hub: 캐릭터 14개 이상, 세계관·마법·두 모험의 주제 설명, 시각 자료가 있고 독립적인 소개 콘텐츠가 있다.
+- Sister Squad 1: 현재 약 344단어(HTML 태그/스크립트 제거 기준), 작품 소개·줄거리·캐릭터·창작 동기·창작 과정 기록, YouTube 트레일러와 공식 OST/도서 링크가 있다. 글 분량은 다른 작품 페이지보다 짧아 **콘텐츠 깊이 보완 우선 후보**로 분류한다. 다만 영상·이미지·원작 소개가 있으므로 단어 수만으로 저가치라고 판정하지 않는다.
+- Sister Squad 2: 약 730단어, 영상 3개와 NG 영상 2개, 등장인물·후속 이야기·제작기·작품을 읽는 세 가지 관점이 있다.
+- Yul/Jung 캐릭터 페이지: 각각 약 670/656단어, 캐릭터 프로필·능력·관계·탄생 비화·성장 분석 및 이미지가 있다. 단순 이미지 갤러리 형태가 아니다.
+- Miracle Shot: 약 938단어, 독립 줄거리·캐릭터·성경적 영감·창작 의도·OST 설명과 이미지가 있다. lightbox용 이미지 요소는 `alt=""`로 비어 있으나 동적 이미지 확대용 요소이며, 일반 본문 이미지 26개에는 대체 텍스트가 있다. 이번에는 장식/동적 요소인지 확인 전 임의 수정하지 않았다.
+- TuTu PuPu PiPi: 약 572단어, 캐릭터 소개, 세계관, OST 및 6개 Shorts의 개별 설명, 창작자 노트가 있다.
+- Home: 약 269단어의 일반 텍스트 외에 큐레이션 카드와 프로젝트 진입 동선이 있는 아카이브 랜딩 페이지다. 일반 문서와 단어 수를 직접 비교하지 않는다.
+
+**판정:** 이번에 확인한 페이지들은 단순 외부 영상·이미지 모음만으로 구성된 화면은 아니다. 다만 Sister Squad 1은 작품별 독립 설명이 비교적 짧아 추가 보완 후보로 남긴다. 이번 단계에서 콘텐츠 문구나 광고 코드를 임의로 바꾸지 않았다.
+
+### 개인정보 동의 및 CMP — 계정 설정 확인이 필요한 P0 항목
+- `privacy.html`에는 Google AdSense 광고 쿠키, Google Analytics, 제3자 광고 파트너, 맞춤형 광고 설정 링크가 설명되어 있다.
+- `privacy.html`, `js/main.js`, `js/home-language.js`, `css/common.css`, `index.html`에서 CMP/TCF 동의 UI 또는 `googlefc` / Funding Choices 구현을 확인하지 못했다.
+- 이는 사이트 소스에서 찾지 못했다는 뜻이며, AdSense 계정의 Privacy & messaging에서 Google CMP를 설정했는지는 이 저장소만으로 확인할 수 없다.
+- Google 공식 요구사항: EEA/UK/스위스 사용자에게 개인화 광고를 제공하는 경우 Google 인증 및 IAB TCF 통합 CMP가 필요하다. CMP가 없거나 인증되지 않은 트래픽은 개인화 광고 대상이 되지 않을 수 있다.
+- 따라서 AdSense 계정의 **개인정보 보호 및 메시지(Privacy & messaging)**에서 유럽 규정 메시지 생성·게시 여부, CMP 상태, TCF 신호, 대상 지역을 확인해야 한다. 글로벌 영어 콘텐츠가 있으므로 유럽 방문자 유입 가능성을 무시하지 않는다.
+
 ## 2026-11-02 Book Stacking Master 정적 감사 및 메인 배포 대조
 
 ### Book Stacking Master (booktop.html)

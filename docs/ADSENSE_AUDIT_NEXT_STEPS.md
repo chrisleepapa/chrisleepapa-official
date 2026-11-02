@@ -1398,6 +1398,33 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 - 이는 사이트 소스에서 찾지 못했다는 뜻이며, AdSense 계정의 Privacy & messaging에서 Google CMP를 설정했는지는 이 저장소만으로 확인할 수 없다.
 - Google 공식 요구사항: EEA/UK/스위스 사용자에게 개인화 광고를 제공하는 경우 Google 인증 및 IAB TCF 통합 CMP가 필요하다. CMP가 없거나 인증되지 않은 트래픽은 개인화 광고 대상이 되지 않을 수 있다.
 - 따라서 AdSense 계정의 **개인정보 보호 및 메시지(Privacy & messaging)**에서 유럽 규정 메시지 생성·게시 여부, CMP 상태, TCF 신호, 대상 지역을 확인해야 한다. 글로벌 영어 콘텐츠가 있으므로 유럽 방문자 유입 가능성을 무시하지 않는다.
+- 공식 출처: Google AdSense Help — `Google consent management requirements for serving ads in the EEA, the UK, and Switzerland` 및 `Set up and manage your Consent Management Platform (CMP)`.
+
+### AdSense 우선 위험순위
+1. **P0 — CMP/유럽 규정 메시지:** AdSense 계정 설정 확인 필요. 저장소만으로 완료 판정 불가.
+2. **P1 — Sister Squad 1 독립 콘텐츠 깊이:** 작품별 줄거리·창작 과정의 설명이 상대적으로 짧음. 기존 원고에 근거한 내용 보강을 우선 검토.
+3. **P1 — 저작권/라이선스 증빙:** 음악·영상·이미지·도서 샘플·외부 임베드의 권리 범위를 항목별로 확인. 광고 제외된 Music/Movie 외에도 각 광고 대상 페이지의 이미지·음원·영상 사용권을 검토해야 함.
+4. **P2 — 자동 광고 실제 배치:** 메뉴·다운로드·재생 버튼과 인접하거나 오인될 수 있는 위치, 모바일 화면의 오클릭 위험을 Preview/실기기에서 확인.
+5. **P2 — 실제 색인 및 사이트 승인 상태:** Search Console의 선택 canonical과 AdSense 사이트 검토/정책 센터 상태는 계정 UI에서 확인.
+
+### 다음 작업
+**Sister Squad 1 페이지의 작품별 독창적 설명과 제작 과정 기록을 원작에 근거해 보완하고, 나이·권수 등 기존 페이지 간 정보가 서로 어긋나지 않도록 사실 대조부터 한다.** 사실관계가 확정되지 않은 나이는 임의로 고치지 않는다.
+
+
+### 후속 사실 대조 — Sister Squad 연령 표기
+- `sistersquad.html`의 Book 1 연령 표기(율 11세, 정 7세)는 캐릭터 프로필과 일치한다. `yul.html`은 현재 12세 / 1권 11세, `jung.html` 본문은 현재 8세 / 1권 7세, `sistersquad2.html`은 2권 기준 12세 / 8세로 확인했다.
+- 다만 `jung.html`의 검색·공유 메타 설명 3곳(name description, og:description, twitter:description)은 정이를 7세라고만 표기해 현재 프로필 설명과 시점이 불명확했다.
+- 세 메타 설명을 "현재 8살, 1권에서는 7살"로 구분하고 2권에서 이어지는 모험을 설명하도록 수정했다.
+- develop 커밋: `d00a076c22b37c43807e4f85aa176c1e45d547c6`
+- 본문·캐릭터 설정·이미지·광고 코드는 변경하지 않았다.
+
+### AdSense 최우선 점검 상태 갱신
+- [x] 창작 페이지의 독립적인 설명·창작 과정·미디어 구성 정적 점검
+- [x] Sister Squad 1의 Book 1 연령 표기와 Yul/Jung 프로필 및 Book 2 연령 대조
+- [x] Jung SEO/공유 메타의 연령 시점 불명확 문제 수정
+- [ ] AdSense 계정 Privacy & messaging에서 유럽 규정 메시지와 CMP 인증/TCF 상태 확인
+- [ ] AdSense Policy Center에서 현재 사이트/페이지별 정책 이슈 확인
+- [ ] 실제 Auto ads가 다운로드·재생·메뉴 등 상호작용 요소와 인접하는지 실기기 검증
 
 ## 2026-11-02 Book Stacking Master 정적 감사 및 메인 배포 대조
 

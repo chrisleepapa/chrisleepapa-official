@@ -4,7 +4,7 @@
 - **기준 도메인:** https://chrisleepapa.com/
 - **작업 기준 소스:** GitHub `chrisleepapa/chrisleepapa-official`의 `develop` 브랜치 우선. 검증·사용자 승인 전에는 `main`에 반영하지 않음.
 - **심사 이력:** 사용자가 제공한 기록상 chrisleepapa.com은 2026-10-19 사이트 검토를 신청했고 2026-10-30 두 사유로 거절됨. 현재 AdSense 계정의 사이트 등록/상태 및 재검토 가능 여부는 계정 화면 확인 전까지 미확인. 이 문서는 재심사 준비 점검이며, 새로운 검토 요청을 제출하지 않음.
-- **문서 버전:** Audit 1.17 — 홈페이지 동적 섹션 및 Journal 인덱스 연결 검증 완료
+- **문서 버전:** Audit 1.18 — 실제 심사 대상 main과 develop 차이 점검 완료
 - **최초 점검의 역사적 판정:** Audit 1.0 작성 당시의 판단이며 현재 상태를 뜻하지 않음. 아래 미완료 항목은 실제 존재·운영 여부와 최신 소스를 다시 확인한 뒤에만 유효한 점검 대상으로 채택한다.
 
 ## 최우선 기준 — 실제 AdSense 탈락 사유 (고정)
@@ -485,3 +485,18 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - canonical은 `https://chrisleepapa.com/journal`, robots는 `noindex, follow`, 직접 AdSense 로더는 0개. sitemap에 없는 내부 아카이브 인덱스이며 광고 대상 콘텐츠 페이지로 취급하지 않음.
 - **두 고정 거절 사유 판정:** 이 인덱스 자체는 직접 AdSense 로더가 없으므로 광고가 있는 화면의 복제 콘텐츠/저가치 판정을 적용할 대상이 아님. 홈의 Chris's Note에서 이동하는 기능은 정상이며, 원문 6개 글을 요약해 탐색을 돕는 역할이 확인됨.
 - **조치:** 소스 수정 불필요. 링크·응답·robots·canonical·광고 로더 상태만 확인하고 동일 문서에 기록. develop 외 브랜치 및 production 변경 없음.
+
+
+### 2026-11-02 / Audit 1.18 — 실제 심사 대상 main과 develop 차이 점검
+
+**점검 원칙:** AdSense 검토 대상은 실제 서비스 중인 `https://chrisleepapa.com`이므로 main/Production을 기준으로 현황을 판정하고, 수정은 develop에서 검증한다.
+
+- GitHub compare: `main` HEAD `21b891c15c97de48e6788fc4210ff9ce52ee7c44`, `develop` HEAD `43c2ac4b8f5eaa4bef31ad02c53212799147fda7` (당시 비교 시점). develop은 main보다 42 commits ahead, 0 behind. 비교 결과 변경 파일은 `about.html`, `miracleshot.html`, `tutupupupipi.html`, 공식 점검문서 및 기존 중복 점검문서 정리 등으로 확인됨.
+- 실제 Production의 `/`, `/about`, `/miracleshot`, `/tutupupupipi`, `/sitemap.xml`, `/ads.txt`를 2026-11-02에 직접 요청. 다섯 HTML/XML 경로 모두 HTTP 200. 네 HTML 페이지는 각각 GTM script 1개 + noscript 1개, AdSense loader 1개, 공식 .com canonical, `index, follow` 확인. `/tutupupupipi`는 영상 카드 6개 확인. `ads.txt`는 HTTP 200이며 publisher line `google.com, pub-3207219520058740, DIRECT, f08c47fec0942fa0` 확인. sitemap도 HTTP 200.
+- 홈페이지 `index.html`은 main/develop 파일 SHA가 동일(`c56d154d11629bcb087169118c5e370e6b77b7f1`). 이 점검 범위에서 홈페이지 본문 변경 차이는 없음.
+- **/about — 실제 main의 콘텐츠 품질 문제:** main에는 창작 과정 설명과 항목 목록 뒤에 `영어로 전하는 아카이브 소개`라는 소제목이 나오지만 그 아래 문단은 영어가 아니라 앞선 소개와 의미가 겹치는 한국어 문단임. 실제 Production HTML에서도 확인. develop은 해당 오해를 부르는 중복 소제목/문단을 제거하고, 창작 과정의 두 문단과 네 가지 콘텐츠 분류를 유지함. 이는 중복·혼란을 줄이는 개선이며 복제 콘텐츠 판정 자체를 보장하는 것은 아님.
+- **/tutupupupipi — 실제 main과 develop의 차이:** main은 여섯 영상 카드에 일반적인 `영상 01~06 썸네일` alt 텍스트를 사용함. develop은 각 영상의 실제 주제에 맞는 구체적인 alt와 에피소드 제목·짧은 설명을 제공함. 여섯 카드와 프로젝트 설명, OST 소개는 main에도 존재하므로 main이 단순 임베드 전용 화면은 아님. develop의 추가 정보가 검색 접근성과 개별 영상 식별 측면에서 더 명확함.
+- **/miracleshot:** main과 develop의 차이는 AdSense/Analytics 스크립트 블록의 배치 및 주석 정리 범위에서 확인됨. 양쪽 모두 loader는 각 1개이며, 이번 diff만으로 본문 콘텐츠의 실질적인 차이나 복제 콘텐츠 개선을 판정하지 않음.
+- 해당 develop Preview(`https://chrisleepapa-official-fg219ewhf-chrisleepapas-projects.vercel.app`, 커밋 `bdc8d5eba078319a0dba5d6af2a5c5be98308e1d`)에서 `/about`, `/miracleshot`, `/tutupupupipi` 모두 HTTP 200, GTM 1개, AdSense loader 1개, 공식 canonical, `index, follow` 확인. develop /about에는 잘못된 영어 소개 소제목이 없고, develop /tutupupupipi에는 구체적인 영상 alt와 6개 카드가 확인됨.
+- **조치 및 상태:** 이번 단계에서는 Production을 실제 심사 기준으로 확인하고, 이미 develop에 반영된 /about·/tutupupupipi 개선이 Preview에서 작동하는 것까지 검증함. 아직 main에 반영하지 않음. main의 두 개선 미반영 상태는 사용자 검토/승인 전까지 유지. 새로운 소스 변경 없음.
+- **정책 판단 근거:** Google은 광고가 표시되는 화면에서 외부 복제·임베드 콘텐츠에 추가 설명·큐레이션·가치가 없는 경우를 금지하고, 광고가 게시자 콘텐츠가 없거나 저가치인 화면에 표시되는 것을 금지함. 이 점검은 해당 정책을 기준으로 한 페이지 품질 평가이며 Google의 최종 심사 결과를 예측하거나 보장하지 않음: https://support.google.com/adsense/answer/10502938?hl=en ; https://support.google.com/adsense/answer/10008391?hl=en

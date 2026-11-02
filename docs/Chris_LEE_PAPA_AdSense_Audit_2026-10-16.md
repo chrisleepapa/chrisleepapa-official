@@ -4,7 +4,7 @@
 - **기준 도메인:** https://chrisleepapa.com/
 - **작업 기준 소스:** GitHub `chrisleepapa/chrisleepapa-official`의 `develop` 브랜치 우선. 검증·사용자 승인 전에는 `main`에 반영하지 않음.
 - **심사 신청 여부:** 사용자가 아직 새 도메인에 대한 사이트 검토를 신청하지 않았다고 명시함. 이 문서는 신청 전 준비 점검이며, 심사 신청이나 승인을 의미하지 않음.
-- **문서 버전:** Audit 1.16 — 홈페이지 Chris's Note·Chris's Pick 동적 콘텐츠 점검 완료
+- **문서 버전:** Audit 1.17 — 홈페이지 동적 섹션 및 Journal 인덱스 연결 검증 완료
 - **최초 점검의 역사적 판정:** Audit 1.0 작성 당시의 판단이며 현재 상태를 뜻하지 않음. 아래 미완료 항목은 실제 존재·운영 여부와 최신 소스를 다시 확인한 뒤에만 유효한 점검 대상으로 채택한다.
 
 ## 최우선 기준 — 실제 AdSense 탈락 사유 (고정)
@@ -475,3 +475,13 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **두 고정 거절 사유 판정:** (1) 복제된 콘텐츠 화면 — 소스상 양호. Note는 원문 복제가 아닌 요약 링크이며 Pick은 작품 설명·분류·이동 경로를 제공함. (2) 가치가 별로 없는 콘텐츠 — 소스상 양호. 홈 정적 본문과 프로젝트 맥락이 독립적으로 충분히 존재함. 단, JS 실행 후 실제 브라우저 화면과 매일 선정 결과의 시각적 표시까지 확인한 것은 아님.
 - **조치:** 콘텐츠 수정은 하지 않음. 중복으로 보이는 소개 문구는 현재 위반 증거가 없어 유지. 동일 문서에 이번 점검 근거만 추가. develop 외 브랜치 및 production 변경 없음.
 - **정책 근거:** Google의 복제 콘텐츠 정책은 외부 콘텐츠를 추가 설명·큐레이션·가치 없이 임베드하거나 복사한 화면을 금지하며, 외부 자료를 활용할 때 제작자 고유의 설명·분석·관점을 더하도록 안내함: https://support.google.com/publisherpolicies/answer/11190248?hl=ko
+
+
+### 2026-11-02 / Audit 1.17 — Chris's Note의 Journal 인덱스 연결 검증
+
+- 대상: 홈페이지의 `Chris's Note` 및 각 Journal 하단에서 이동하는 `/journal` 인덱스 경로.
+- GitHub `develop/journal.html`과 최신 develop Preview의 `/journal` 응답을 확인. Preview는 HTTP 200이며, `/journal` 경로가 정상적으로 `journal.html`을 제공함.
+- 페이지에는 Journal 1~6 각각의 제목·요약 카드와 본문 이동 링크가 있으며, 상단에 Creative Journal의 목적과 창작 기록의 범위를 설명함. 링크 대상은 `/journal-1`부터 `/journal-6`까지 구분됨.
+- canonical은 `https://chrisleepapa.com/journal`, robots는 `noindex, follow`, 직접 AdSense 로더는 0개. sitemap에 없는 내부 아카이브 인덱스이며 광고 대상 콘텐츠 페이지로 취급하지 않음.
+- **두 고정 거절 사유 판정:** 이 인덱스 자체는 직접 AdSense 로더가 없으므로 광고가 있는 화면의 복제 콘텐츠/저가치 판정을 적용할 대상이 아님. 홈의 Chris's Note에서 이동하는 기능은 정상이며, 원문 6개 글을 요약해 탐색을 돕는 역할이 확인됨.
+- **조치:** 소스 수정 불필요. 링크·응답·robots·canonical·광고 로더 상태만 확인하고 동일 문서에 기록. develop 외 브랜치 및 production 변경 없음.

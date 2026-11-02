@@ -4,7 +4,7 @@
 - **기준 도메인:** https://chrisleepapa.com/
 - **작업 기준 소스:** GitHub `chrisleepapa/chrisleepapa-official`의 `develop` 브랜치 우선. 검증·사용자 승인 전에는 `main`에 반영하지 않음.
 - **심사 이력:** 사용자가 제공한 기록상 chrisleepapa.com은 2026-10-19 사이트 검토를 신청했고 2026-10-30 두 사유로 거절됨. 현재 AdSense 계정의 사이트 등록/상태 및 재검토 가능 여부는 계정 화면 확인 전까지 미확인. 이 문서는 재심사 준비 점검이며, 새로운 검토 요청을 제출하지 않음.
-- **문서 버전:** Audit 1.28 — 광고 대상 18개 페이지 내부 링크 전수 점검 및 Journal 1 링크 수정
+- **문서 버전:** Audit 1.29 — 홈페이지 Chris's Pick 동적 링크·이미지 및 noscript 대체 구조 점검
 - **최초 점검의 역사적 판정:** Audit 1.0 작성 당시의 판단이며 현재 상태를 뜻하지 않음. 아래 미완료 항목은 실제 존재·운영 여부와 최신 소스를 다시 확인한 뒤에만 유효한 점검 대상으로 채택한다.
 
 ## 최우선 기준 — 실제 AdSense 탈락 사유 (고정)
@@ -649,4 +649,17 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **2차 검사:** 수정 후 나머지 9개 페이지를 재검사한 결과 깨진 로컬 페이지 링크 0건, 존재하지 않는 내부 anchor 0건. Journal 1의 새 /shop 링크도 소스에서 확인함.
 - **범위와 한계:** 이는 저장소 HTML의 href와 id를 대조한 정적 검사임. JavaScript 실행 후 생성되는 동적 링크, 외부 판매처·YouTube·Spotify의 실제 목적지 상태, 모바일/PC 브라우저에서의 클릭 동작은 별도 확인이 필요함. 이번 수정은 develop에만 반영했고 Preview deployment가 생성되기 전이므로 실제 Preview 클릭 테스트 완료로 표시하지 않음.
 - **AdSense 판단:** 광고 대상 18개 페이지의 정적 내부 링크/anchor 검사에서 확인된 단일 깨진 링크를 수정함. 이는 사용자 경험과 페이지 완성도를 높이는 조치이며 두 고정 거절 사유를 직접 해소했다는 증거로 과장하지 않음.
+
+
+
+### 2026-11-02 / Audit 1.29 — 홈페이지 Chris's Pick 동적 링크·이미지 및 noscript 대체 구조 점검
+
+- **Chris's Pick 링크 전수 확인:** home-chris-pick-v2.js의 42개 고유 링크를 분류함. 내부 파일/페이지 경로는 저장소에 존재함. music.html?album=... 링크의 album ID는 music.html의 musicData에 모두 존재하여 해당 앨범을 선택하는 getInitialActiveIndex 로직과 일치함.
+- **동적 해시 링크 확인:** movie.html#furious, #demon-slayer, #iloveyou는 실제 DOM id가 아니라 movie.html의 openVideoFromHash()에서 처리하는 명시적 해시 키임. 해당 키는 videoData 안의 실제 영상 ID(kAkGg2t1Ats, byxLKvBHULk, vlt7VfCA8bM)와 연결되고, 영상 데이터 항목도 확인됨. 단순히 DOM id가 없다는 이유로 깨진 링크로 판정하지 않음.
+- **Worship / Wallpaper 링크 확인:** worship.html의 #my-hymn-collection, #vol1, #vol2, #vol3, #whispers-of-grace, worship_eng.html의 #shout-album, wallpaper.html의 #mobile-wallpaper-studio는 모두 실제 id로 존재함.
+- **Chris's Pick 이미지 참조:** 로컬 이미지 참조 29건을 저장소 파일 트리와 대조한 결과 29/29 존재. YouTube 썸네일 URL 13건은 외부 리소스이므로 로컬 파일 검사와 분리하고, 이번 단계에서 외부 CDN의 실시간 응답은 확인하지 않음.
+- **홈페이지 noscript 구성 확인:** index.html의 noscript 요소 3개 중 GTM noscript iframe은 1개, Chris's Pick 및 Chris's Note 콘텐츠 대체 영역은 각각 1개임. 중복 GTM 삽입이 아니며, Chris's Note의 no-script fallback과 CSS가 존재하고 초기 visibility:hidden 규칙은 제거됨. 정상 JavaScript 환경에서는 noscript 대체 영역이 렌더링되지 않음.
+- **접근성 연결 확인:** Chris's Note 섹션의 aria-labelledby 대상 id가 no-script fallback 제목 및 home-chris-note.js가 생성하는 동적 제목 양쪽에 존재함.
+- **미확인 범위:** 외부 YouTube 썸네일 13건 및 Spotify oEmbed 커버 조회의 실시간 성공 여부, 실제 브라우저의 JavaScript 실행·화면 전환은 미확인. 최신 홈페이지 변경 commit의 Preview deployment가 아직 생성되지 않아 코드 수준 검사만 완료함.
+- **판정:** Chris's Pick의 내부 경로·앨범 deep link·Worship/Wallpaper anchor는 소스 기준 정상. no-script 대체 콘텐츠 및 접근성 연결도 코드에 반영됨. 두 고정 AdSense 거절 사유에 대한 직접적인 위반 증거는 새로 발견하지 못함.
 

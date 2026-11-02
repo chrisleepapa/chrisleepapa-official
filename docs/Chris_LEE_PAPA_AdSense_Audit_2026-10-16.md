@@ -967,3 +967,19 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **배포 응답:** Production 세 페이지 모두 HTTP 200, 각 정식 canonical 일치, `index, follow`, AdSense loader 1개, GTM 1개. develop Preview 세 페이지 모두 HTTP 200, Production canonical 일치, `noindex, nofollow`, AdSense loader 1개, GTM 1개.
 - **판정:** 세 페이지 모두 광고 대상 페이지로 유지할 수 있는 고유 콘텐츠 근거가 확인됨. 이 단계에서 소스 수정 불필요.
 - **점수:** 내부 AdSense 준비도 74/100 유지. 원작 캐릭터의 기원·성장 서사는 긍정적 근거이나, Google의 실제 심사 판단 및 원본 제작 자료 확인을 대체하지 않음.
+
+
+### 2026-11-03 / Audit 1.53 — SHOUT 발매 메타데이터 대조 및 영문 트랙명 정정
+
+- **검사 대상:** develop의 `worship_eng.html` 영문 SHOUT 가사집, 공식 아티스트 배포 메타데이터.
+- **외부 대조 근거:** Amazon Music의 Chris LEE.PAPA 공식 아티스트 페이지/디스코그래피에 SHOUT 앨범이 표시되고, 곡명 `Faithful Still` 및 `Lord, You are my way`가 등록되어 있음. Spotify의 `나의 찬양 vol. 3` 트랙 목록도 확인함.
+- **발견:** 영문 가사집의 06번 제목이 `Faithfull still`, 13번이 `Lord your my way`로 기재되어 공식 발매 곡명과 철자·문법이 불일치함.
+- **조치:** develop의 `worship_eng.html`에서 06번을 `Faithful Still`, 13번을 `Lord, You are my way`로 정정함. 가사 본문, 트랙 순서, 음악 파일 및 외부 링크는 변경하지 않음.
+- **수정 커밋:** develop `029ee6a23e7afeffca2951d70d252f4a555a81bd` — `content: correct SHOUT track titles to match release metadata`.
+- **Vol.3 반복 제목 확인:** Spotify의 공식 트랙 목록에서 01번 `나를 아시는 주님 - Solo`와 05번 `나를 아시는 주님 - 여성 중창`, 06번 `천국을 향해 - 남성 중창`과 08번 `천국을 향해`가 각각 별도 트랙으로 등록된 것을 확인함. 이는 단순 중복이 아니라 보컬/편곡 버전이 다른 곡으로 판단함. 기존 페이지의 보컬 구성 표기는 유지함.
+- **검증 한계:** 공식 아티스트 페이지의 검색 색인에서 곡명은 확인했으나 SHOUT 전체 15곡의 순서와 Spotify 앨범 URL의 실시간 클릭·재생은 완료하지 못함. 이번 조치는 두 개의 명백한 제목 오기만 수정함.
+- **배포 상태:** develop 소스만 수정. main/Production은 변경하지 않았으며, 이 커밋을 포함하는 새 Preview 검증은 아직 수행하지 않음.
+- **판정:** 실제 발매 메타데이터와 일치하도록 영문 제목 2개 정정 완료. Vol.3의 반복 제목은 공식 배포 목록으로 별도 편곡 버전임이 확인되어 중복 오류로 취급하지 않음.
+- **점수:** 내부 AdSense 준비도 74/100 유지. 메타데이터 정확성은 개선되었으나 Google의 복제 콘텐츠 심사 결과를 직접 해소한 증거는 아니므로 점수는 변경하지 않음.
+
+**External evidence:** Amazon Music artist page: https://music.amazon.in/artists/B0FSRQG4TG/chris-lee-papa ; Spotify Vol.3 track listing: https://open.spotify.com/track/06PMJ0wnWQe71CJv8fkdTg

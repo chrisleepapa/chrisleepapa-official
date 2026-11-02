@@ -941,3 +941,16 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **배포 상태:** 이 수정은 develop에만 존재함. 수정 후 새 Preview에서 렌더링·언어 전환·모바일 레이아웃을 검증하지 않았으며, main/Production에는 반영하지 않음.
 - **판정:** 개인 경험 중심의 긴 Journal 본문 2~6의 섹션 구조와 접근성이 개선됨. CSS 클래스와 기존 시각 디자인은 유지했으며, 콘텐츠 자체는 변경하지 않음.
 - **점수:** 내부 AdSense 준비도 74/100 유지. 의미 구조 개선은 긍정적이나, 복제 콘텐츠 거절 사유의 해소를 직접 입증하는 자료는 아니므로 점수는 변경하지 않음.
+
+
+### 2026-11-03 / Audit 1.51 — develop Preview 실제 응답으로 최근 수정분 검증
+
+- **검사 대상:** `develop.chrisleepapa.com`의 실제 Preview 응답 및 Vercel deployment 메타데이터.
+- **확인된 READY Preview:** deployment `dpl_AsahPMS8yo33GEvQZnpexKNin9au`, Preview alias `develop.chrisleepapa.com`, source commit `617ab7b2538d8ae38e479e7b2f518b9af6c970bd` (Journal 5 소제목 H2 전환 커밋).
+- **HTTP/SEO 응답:** Worship, SISTER SQUAD 2, MIRACLE SHOT, Journal 2, Journal 5 페이지 및 홈페이지 스크립트·Miracle Shot 스토리 스크립트 모두 HTTP 200. 페이지 canonical은 각 정식 `chrisleepapa.com` 주소와 일치. Preview는 `noindex, nofollow`로 응답하여 검색 색인 대상이 아님.
+- **수정 결과 확인:** Worship Preview에서 두 내부 아웃트로 메모가 사라짐. SISTER SQUAD 2 Preview에서 세 예고편 iframe의 한·영 접근성 제목이 모두 확인됨. MIRACLE SHOT Preview에서 오래된 `COMING SOON` 문구와 '게임 확장 예정' 문구가 없음. 홈페이지 Chris's Pick 스크립트에서 TikTok URL 0개, 지정한 TuTu YouTube Shorts URL 6개 확인.
+- **Journal 구조:** Journal 2 Preview는 H1 1개/H2 20개, Journal 5 Preview는 H1 1개/H2 7개이며 이전 소제목 div 0개. 따라서 Journal 2~5의 의미 구조 수정은 현재 Preview에서 확인됨.
+- **미포함 변경:** Journal 6 H2 전환 커밋 `dda92c3a42b59060707fbb683b4c7e1b736f0141`은 확인된 READY Preview source commit보다 최신임. Preview의 Journal 6은 여전히 H2 0개, 기존 `div.subhead` 16개로 응답함. 이는 develop 소스 수정이 실패한 것이 아니라, 현재 Preview가 Journal 6 수정 이전 커밋을 가리키기 때문임.
+- **Production/main:** 이번 단계에서는 main/Production을 변경하지 않음. Preview의 noindex/nofollow 설정은 개발 배포에만 해당함.
+- **판정:** 최신 READY Preview에 포함된 수정은 실제 HTTP 응답에서 확인됨. Journal 6만 다음 Preview 빌드에서 재검증해야 함. 현재 점검 결과를 근거로 Production 반영 또는 AdSense 재신청을 진행하지 않음.
+- **점수:** 내부 AdSense 준비도 74/100 유지. Preview의 기술·콘텐츠 수정 검증은 개선되었으나 Google 계정 내 실제 심사 사유 해소 여부는 확인되지 않음.

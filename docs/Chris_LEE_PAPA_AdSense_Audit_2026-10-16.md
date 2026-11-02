@@ -4,7 +4,7 @@
 - **기준 도메인:** https://chrisleepapa.com/
 - **작업 기준 소스:** GitHub `chrisleepapa/chrisleepapa-official`의 `develop` 브랜치 우선. 검증·사용자 승인 전에는 `main`에 반영하지 않음.
 - **심사 이력:** 사용자가 제공한 기록상 chrisleepapa.com은 2026-10-19 사이트 검토를 신청했고 2026-10-30 두 사유로 거절됨. 현재 AdSense 계정의 사이트 등록/상태 및 재검토 가능 여부는 계정 화면 확인 전까지 미확인. 이 문서는 재심사 준비 점검이며, 새로운 검토 요청을 제출하지 않음.
-- **문서 버전:** Audit 1.18 — 실제 심사 대상 main과 develop 차이 점검 완료
+- **문서 버전:** Audit 1.19 — SISTER SQUAD 허브·1편·2편 실서비스 콘텐츠 점검 완료
 - **최초 점검의 역사적 판정:** Audit 1.0 작성 당시의 판단이며 현재 상태를 뜻하지 않음. 아래 미완료 항목은 실제 존재·운영 여부와 최신 소스를 다시 확인한 뒤에만 유효한 점검 대상으로 채택한다.
 
 ## 최우선 기준 — 실제 AdSense 탈락 사유 (고정)
@@ -500,3 +500,16 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - 해당 develop Preview(`https://chrisleepapa-official-fg219ewhf-chrisleepapas-projects.vercel.app`, 커밋 `bdc8d5eba078319a0dba5d6af2a5c5be98308e1d`)에서 `/about`, `/miracleshot`, `/tutupupupipi` 모두 HTTP 200, GTM 1개, AdSense loader 1개, 공식 canonical, `index, follow` 확인. develop /about에는 잘못된 영어 소개 소제목이 없고, develop /tutupupupipi에는 구체적인 영상 alt와 6개 카드가 확인됨.
 - **조치 및 상태:** 이번 단계에서는 Production을 실제 심사 기준으로 확인하고, 이미 develop에 반영된 /about·/tutupupupipi 개선이 Preview에서 작동하는 것까지 검증함. 아직 main에 반영하지 않음. main의 두 개선 미반영 상태는 사용자 검토/승인 전까지 유지. 새로운 소스 변경 없음.
 - **정책 판단 근거:** Google은 광고가 표시되는 화면에서 외부 복제·임베드 콘텐츠에 추가 설명·큐레이션·가치가 없는 경우를 금지하고, 광고가 게시자 콘텐츠가 없거나 저가치인 화면에 표시되는 것을 금지함. 이 점검은 해당 정책을 기준으로 한 페이지 품질 평가이며 Google의 최종 심사 결과를 예측하거나 보장하지 않음: https://support.google.com/adsense/answer/10502938?hl=en ; https://support.google.com/adsense/answer/10008391?hl=en
+
+
+### 2026-11-02 / Audit 1.19 — SISTER SQUAD 허브·1편·2편 실서비스 콘텐츠 점검
+
+**심사 기준:** 실제 Production main의 광고가 표시되는 콘텐츠 화면을 기준으로 복제 콘텐츠 및 저가치 콘텐츠 여부를 확인. GitHub main/develop 소스도 대조함.
+
+- 대상 Production 경로: `/sistersquad-hub`, `/sistersquad`, `/sistersquad2`. 세 경로 모두 HTTP 200, 각각 AdSense loader 1개, GTM script 1개 + noscript 1개, 공식 .com canonical, `index, follow` 확인.
+- 세 페이지의 main/develop HTML은 이번 비교에서 완전히 동일. 이 페이지들에는 이번 점검에서 발견한 미반영 develop 개선 차이가 없음.
+- **SISTER SQUAD 허브:** 23개 이상의 유의미한 설명 문단과 캐릭터별 역할·성격, 세계관, 마법/유물, 1·2편 연결, Visual Archive 안내가 확인됨. 단순 이미지/영상 모음이 아니라 독립적인 세계관 설명 및 탐색 허브 역할을 함. iframe 1개가 있으나 페이지 고유 설명이 충분히 함께 제공됨.
+- **SISTER SQUAD 1:** 두 자매의 성격과 능력, 첫 모험의 줄거리, 창작 동기, 페어리 타운의 세계관, OST 및 영어판 소개, 창작 과정 기록이 확인됨. 7개의 장문 설명 문단이 포함되고 iframe 2개가 있으나, 외부 임베드만으로 구성된 페이지가 아님.
+- **SISTER SQUAD 2:** 가족 구성원과 동료 캐릭터의 서사, 1편 이후의 변화, 주요 장소를 통과하는 여정, 아빠 캐릭터를 이야기 안에 넣은 창작 동기, 작품을 해석하는 세 가지 관점이 확인됨. 12개의 장문 설명 문단 및 iframe 6개가 확인되며, 영상 임베드 주변에 고유 줄거리·캐릭터·제작 배경 설명이 존재함.
+- **두 고정 거절 사유 판정:** (1) 복제 콘텐츠 — 각 페이지가 고유 캐릭터·세계관·줄거리·창작자 관점을 직접 서술하므로 외부 임베드만 제공하는 구조로 보이지 않음. (2) 가치가 별로 없는 콘텐츠 — 세 페이지 모두 프로젝트별 독립 정보와 탐색 가치가 있어 현재 소스 기준 양호. 다만 Google의 최종 판단을 보장하지 않음.
+- **조치:** 소스 수정 불필요. 세 페이지는 main/develop 동일 상태이며, 기존 오리지널 콘텐츠 설명을 유지. 동일한 공식 점검문서에 확인 결과만 추가.

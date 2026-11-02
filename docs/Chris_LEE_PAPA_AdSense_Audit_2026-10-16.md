@@ -4,7 +4,7 @@
 - **기준 도메인:** https://chrisleepapa.com/
 - **작업 기준 소스:** GitHub `chrisleepapa/chrisleepapa-official`의 `develop` 브랜치 우선. 검증·사용자 승인 전에는 `main`에 반영하지 않음.
 - **심사 이력:** 사용자가 제공한 기록상 chrisleepapa.com은 2026-10-19 사이트 검토를 신청했고 2026-10-30 두 사유로 거절됨. 현재 AdSense 계정의 사이트 등록/상태 및 재검토 가능 여부는 계정 화면 확인 전까지 미확인. 이 문서는 재심사 준비 점검이며, 새로운 검토 요청을 제출하지 않음.
-- **문서 버전:** Audit 1.25 — 최신 Production 배포·전체 sitemap URL·GTM 정적 구성 재검증 완료
+- **문서 버전:** Audit 1.26 — Production·develop 현재 상태 정합성 재검증 및 미완료 항목 재분류
 - **최초 점검의 역사적 판정:** Audit 1.0 작성 당시의 판단이며 현재 상태를 뜻하지 않음. 아래 미완료 항목은 실제 존재·운영 여부와 최신 소스를 다시 확인한 뒤에만 유효한 점검 대상으로 채택한다.
 
 ## 최우선 기준 — 실제 AdSense 탈락 사유 (고정)
@@ -125,26 +125,34 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 2. 주요 URL을 로그아웃/시크릿 창과 모바일 화면에서 열어 접근 제한이나 오류가 없는지 확인한다.
 3. 최종 체크리스트를 완료하고 그때만 AdSense의 사이트 검토 요청을 누른다.
 
-## 5. 심사 전 체크리스트
+## 5. 심사 전 체크리스트 — 2026-11-02 최신 확인 기준
 
-### A. 실제 탈락 사유 — 필수 콘텐츠 판정- [ ] 모든 실제 공개 콘텐츠 페이지에서 복제·반복·외부 자료 단순 나열 여부를 확인
-- [ ] 각 페이지의 고유한 설명·해석·경험·창작 기여를 확인
-- [ ] 각 페이지가 방문자에게 주는 독창적 정보와 실질적 효용을 확인
-- [ ] 각 페이지의 내용 깊이·정확성·완성도를 확인
-- [ ] 페이지별로 두 탈락 사유 각각의 판정(양호/개선 필요/위험/확인 불가)과 근거를 기록
-- [ ] 개선한 페이지는 수정 후 실제 화면을 다시 확인해 위험이 해소됐는지 검증
+체크 표시는 실제로 확인한 증거가 있는 항목에만 적용한다. 계정 내부 또는 실제 브라우저 검증이 필요한 항목은 미완료로 남긴다.
 
-### B. 보조 기술·운영 점검 (탈락 사유로 단정하지 않음)
-- [ ] AdSense 사이트 항목이 `chrisleepapa.com`인지 확인
-- [ ] 새 도메인 코드/소유권 확인 상태가 정상
-- [ ] `ads.txt` 공개 응답 확인- [ ] `robots.txt` 접근 및 sitemap 경로 확인
-- [ ] sitemap 모든 URL 응답/리디렉션/canonical 확인
-- [ ] 현재 실제 공개 중인 URL만 대상으로 중복·저가치 여부를 위 A 기준에 따라 판정
-- [ ] Journal 1~6 원본성/본문 품질 심층 검토 및 링크 최신성 확인 완료
-- [ ] About / Contact / Privacy / Terms 푸터 링크와 실제 내용 확인
-- [ ] PC/모바일 메뉴와 주요 버튼/링크 수동 테스트 완료
-- [ ] Search Console 주요 URL 검사 및 sitemap 상태 확인
-- [ ] 사용자 본인이 위 항목을 확인한 뒤에만 검토 요청
+### A. 실제 탈락 사유 — 광고가 있는 콘텐츠 화면
+- [x] 현재 sitemap 24개 URL을 확인하고, 직접 AdSense 로더가 있는 18개 화면을 식별
+- [x] 광고 대상 18개 화면의 콘텐츠를 페이지별로 검토하고 두 고정 사유(복제 콘텐츠 / 가치가 별로 없는 콘텐츠)에 대한 근거를 기록
+- [x] 홈페이지, SISTER SQUAD 허브·1·2, Yul·Jung, MIRACLE SHOT 스토리, TuTuPuPuPiPi, WORSHIP 한국어·영어, Wallpaper, Journal 1~6, About의 현재 본문을 확인
+- [x] 광고 로더가 없는 Music·Movie 및 사용자 지정 제외 페이지를 광고 대상 콘텐츠 심사와 분리
+- [ ] 브라우저에서 광고가 실제 렌더링되는 위치와 주변 콘텐츠를 PC·모바일에서 확인
+- [ ] 로그인/비로그인 및 스크립트 실행 환경에서 모든 동적 섹션의 실제 표시를 확인
+
+### B. 보조 기술·운영 점검
+- [x] Production `ads.txt` HTTP 200 및 게시자 라인 확인
+- [x] Production `robots.txt` HTTP 200 및 전체 크롤링 허용 확인
+- [x] Production sitemap HTTP 200, 24개 URL 확인 및 24/24 응답 HTTP 200
+- [x] 24개 sitemap 페이지의 GTM 로더 1개 및 noscript 1개 확인
+- [x] 직접 GA4 스크립트/inline config 중복 0건 확인
+- [x] AdSense 직접 로더 18/24개 분포 확인: `/music`, `/movie`, `/bible`, `/contact`, `/privacy`, `/terms`는 0개
+- [ ] AdSense 계정의 사이트 등록 상태·코드 감지·정책 센터·Auto ads·재검토 가능 여부 확인
+- [ ] GTM 계정의 현재 게시 버전과 2026-10-30 export v2 대조, GA4 DebugView/실시간 page_view 수신 확인
+- [ ] Search Console의 sitemap 처리 상태, 색인/제외 URL, Google 선택 canonical 확인
+- [ ] PC·모바일의 공통 메뉴, 푸터, 주요 링크·버튼·언어 전환을 실제 브라우저에서 수동 테스트
+- [ ] Contact 전송 기능과 Privacy/Terms의 실제 운영 내용 및 푸터 연결을 확인
+- [ ] 외부 판매처·Spotify·YouTube 등 핵심 외부 링크의 현재 접속 가능 여부 확인
+
+### C. 재심사 제출
+- [ ] 위 미완료 항목을 확인하고 최종 Production을 재검증한 뒤 사용자가 별도로 지시할 때만 AdSense 검토 요청 제출
 
 ## 6. 다음 대화에서 이어가는 방법
 다음 대화에서 이 문서를 기준으로 이어서 진행한다:
@@ -309,7 +317,9 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **심사상 핵심:** AdSense 신청 대상인 `chrisleepapa.com` production은 아직 develop의 About 및 SISTER SQUAD 1 개선 내용을 반영하지 않음. develop에서 수정한 것만으로 현재 실제 심사 대상 사이트가 개선되었다고 볼 수 없음.
 - 기존 작업 원칙대로 main은 수정하지 않음. Audit와 콘텐츠 수정은 develop에서만 진행. 최종 심사 전에는 사용자의 확인 후 develop 변경을 production에 반영하고, `.com` 도메인에서 동일한 본문·광고 코드·canonical·robots 상태를 다시 검증해야 함. 지금은 AdSense 재심사 요청을 제출하지 않음.
 
-### 7.13 Production에 남아 있는 AdSense 우선 위험
+### 7.13 Production에 남아 있는 AdSense 우선 위험 (2026-11-02 당시 역사 기록)
+
+> **현재 상태 참고:** 아래 YouTube Chart·Music 광고 로더·About/SISTER SQUAD 1 미반영 내용은 이 절을 작성했던 과거 시점의 기록이다. 최신 Production 배포와 소스는 Audit 1.24 및 1.26에서 다시 확인했으며, 현재 상태 판정은 이 절보다 뒤의 날짜가 붙은 최신 기록을 따른다. 아래 내용을 현재 미해결 항목으로 재사용하지 않는다.
 
 **2026-11-02 실서비스 응답 비교 결과**
 
@@ -387,6 +397,21 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **GTM 계정 게시 버전 확인:** 현재 연결된 도구 목록에서 Google Tag Manager 전용 계정/컨테이너 조회 도구를 확인하지 못함. 따라서 사용자 제공 GTM v2 내보내기 이후의 최신 게시 버전, 실제 Auto ads 연결 여부는 계정 수준에서 확인 불가로 유지. Vercel HTML의 직접 AdSense 로더 확인과 GTM 계정 설정 확인을 혼동하지 않음.
 
 
+### 2026-11-02 / Audit 1.26 — 현재 브랜치·Production 상태 및 과거 위험 기록 정합성 확인
+
+**점검 목적:** 통합문서의 오래된 Production 위험 기록과 현재 서비스 상태가 충돌하지 않도록 재검증하고, 다음 미완료 항목을 실제 계정 확인 작업으로 좁힘.
+
+- **브랜치 비교:** GitHub `main` 기준 커밋은 Production 배포 커밋 `e098a80b7f25be221edad1911318087c6c1731d1`. 현재 `main...develop` 비교는 diverged로 표시되지만, 변경 파일 목록은 공식 통합점검문서 1개뿐이며 사이트 앱 소스 파일 차이는 없음. 문서 작업만 develop에 유지하고 main/Production은 변경하지 않음.
+- **홈페이지 YouTube Chart 재검증:** main과 develop의 `index.html` blob SHA가 동일(`c56d154d11629bcb087169118c5e370e6b77b7f1`). 두 파일 모두 `youtube-daily-top3`, `youtube-trending-video`, `YouTube Chart`, `youtube-top3-card` 문자열이 0건. 과거 7.13의 YouTube Chart 잔존 경고는 현재 소스 기준 해소된 과거 상태로 분류.
+- **Music·Movie 광고 로더 재검증:** main/develop의 `music.html` blob SHA가 동일(`2af4684d64ae2d103e0e663f928564951d7ea7eb`), 직접 AdSense 로더 0개. `movie.html`도 양쪽 blob SHA가 동일(`a1efa0b8566ad51893ee654c2ee9b891674d54cc`), 직접 로더 0개. 따라서 과거 7.13에 기록된 Production Music 로더 잔존 경고는 현재 소스 기준 해소된 과거 상태이며, 현재 광고 대상 페이지로 재분류하지 않음.
+- **주요 수정 페이지 동기화 확인:** `about.html`, `sistersquad.html`, `tutupupupipi.html`는 main/develop의 blob SHA가 각각 동일함. About은 최신 제작 현황 문구를 포함한 동일 소스이며, SISTER SQUAD 1 및 TuTuPuPuPiPi의 본문 개선도 현재 두 브랜치에 동일하게 존재함. Production 최신 배포 커밋은 Audit 1.24에 기록한 `e098a80...`이며 해당 배포가 READY 상태로 확인된 기록을 유지.
+- **전체 URL·광고 로더 기준 재정리:** 최신 Production sitemap 24개 경로는 모두 HTTP 200. AdSense 직접 로더는 18개 경로에 각 1개, 6개 경로(`/music`, `/movie`, `/bible`, `/contact`, `/privacy`, `/terms`)에는 없음. 24개 모두 GTM script 1개 및 noscript 1개, 직접 GA4 중복 0건. 이전 절의 20개 수치는 최신 결과로 대체.
+- **콘텐츠 점검 진척:** 현재 sitemap 중 직접 광고 로더가 있는 18개 콘텐츠 화면은 페이지별 본문 검토 기록이 존재함. Bible/찬송 및 실제 게임 화면은 사용자의 지시에 따라 콘텐츠 심사 범위에서 제외. Music·Movie는 현재 직접 AdSense 로더가 없어 광고 대상 페이지 평가를 추가하지 않음.
+- **계정 수준 미완료:** 현재 연결된 계정 데이터로 AdSense 사이트 상태/정책센터/Auto ads, GTM 최신 게시 버전, GA4 DebugView, Search Console 색인 데이터를 읽을 수 있는 권한은 확인되지 않음. 2026-10-30 GTM export v2는 과거 내보내기 자료일 뿐 현재 게시 버전 증거가 아니므로 이 항목들은 미완료 유지. 공개 GTM 스크립트 URL을 통한 게시 버전 검증도 이번에는 수행하지 못함.
+- **실제 브라우저 미완료:** 정적 HTML 응답 확인과 실제 PC·모바일 브라우저 렌더링/광고 배치/로그인 상태 상호작용 검증은 구분한다. 모바일 메뉴, 푸터, 주요 버튼·링크, 언어 전환 및 동적 섹션은 아직 완료 처리하지 않음.
+- **두 고정 탈락 사유 판정:** 이번 차수는 신규 콘텐츠 품질 판정이 아니라 기존 기록과 최신 소스 상태의 정합성 점검이다. 콘텐츠 페이지별 기존 판정은 유지하며, 계정 상태·브라우저 광고 렌더링을 확인했다는 의미로 확대 해석하지 않음.
+- **조치:** 사이트 소스 변경 없음. 공식 통합점검문서만 Audit 1.26으로 갱신. develop에만 기록하고 main/Production 변경 및 AdSense 재검토 요청은 하지 않음.
+
 ## 8. 변경 기록
 - **2026-11-02 / Audit 1.14:** Wallpaper, MIRACLE SHOT, SISTER SQUAD Hub, About production·develop 실서비스 본문 대조. Wallpaper의 각 파일별 설명·기기 적용 가이드·사용 제한, Miracle Shot의 고유 줄거리·캐릭터 설명, Hub의 시리즈 안내를 확인. About의 최신 제작 현황 문구는 develop과 production 차이를 확인해 반영 후보로 기록. GTM 최신 게시 버전은 계정 조회 도구 부재로 미확인 처리.
 
@@ -438,7 +463,7 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 ### 최신 기술 확인 결과
 - 2026-11-02 공개 production 기준 `ads.txt`는 HTTP 200이며 게시자 ID `pub-3207219520058740` 한 줄이 일치한다. `robots.txt`도 HTTP 200이며 전체 크롤링 허용 및 공식 sitemap 주소를 제공한다.
 - 공개 sitemap은 24개 URL을 반환한다. 24개 URL의 정적 HTML에서 GTM script/noscript가 각각 1개씩 확인됐고, 직접 GA4 중복 로더/설정은 확인되지 않았다.
-- AdSense 직접 로더는 당시 확인된 24개 URL 중 20개에 각 1개였으며, `/bible`, `/contact`, `/privacy`, `/terms`에는 없었다. `/music`, `/movie`도 로더가 없었고, `/goal`은 noindex/nofollow 및 로더 0개였다. 이 수치는 확인 시점의 정적 HTML 결과이며 이후 소스 변경 시 다시 검사한다.
+- 최신 재검증(Audit 1.24~1.26) 기준 AdSense 직접 로더는 sitemap 24개 URL 중 18개에 각 1개이며, 6개(`/music`, `/movie`, `/bible`, `/contact`, `/privacy`, `/terms`)에는 없다. `/goal`도 noindex/nofollow 및 직접 로더 0개다. 이전 문서에 남아 있던 20개 수치는 과거 스냅샷으로 대체한다. 이 수치는 정적 HTML 내 직접 로더만 센 결과이며, GTM/Auto ads를 통한 실제 광고 삽입 여부를 뜻하지 않는다.
 - GTM export v2(2026-10-30)는 GA4 Google tag 1개(`G-NBGELYQ4TZ`)만 포함하고 AdSense 태그는 없었다. 현재 GTM 계정의 게시 버전과 일치하는지는 미확인이다.
 - AdSense 계정의 실제 사이트 등록/심사 상태, 정책 센터, Auto ads 상태 및 Search Console의 실제 색인 보고서는 로그인 계정 접근이 없어 미확인으로 유지한다. 정적 사이트 검사로 계정 상태를 추정하지 않는다.
 

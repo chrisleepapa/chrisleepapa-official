@@ -4,7 +4,7 @@
 - **기준 도메인:** https://chrisleepapa.com/
 - **작업 기준 소스:** GitHub `chrisleepapa/chrisleepapa-official`의 `develop` 브랜치 우선. 검증·사용자 승인 전에는 `main`에 반영하지 않음.
 - **심사 이력:** 사용자가 제공한 기록상 chrisleepapa.com은 2026-10-19 사이트 검토를 신청했고 2026-10-30 두 사유로 거절됨. 현재 AdSense 계정의 사이트 등록/상태 및 재검토 가능 여부는 계정 화면 확인 전까지 미확인. 이 문서는 재심사 준비 점검이며, 새로운 검토 요청을 제출하지 않음.
-- **문서 버전:** Audit 1.23 — MIRACLE SHOT 스토리 페이지 실서비스 콘텐츠 점검 완료
+- **문서 버전:** Audit 1.24 — 최신 Production 배포·전체 sitemap URL·About·TuTuPuPuPiPi 재검증 완료
 - **최초 점검의 역사적 판정:** Audit 1.0 작성 당시의 판단이며 현재 상태를 뜻하지 않음. 아래 미완료 항목은 실제 존재·운영 여부와 최신 소스를 다시 확인한 뒤에만 유효한 점검 대상으로 채택한다.
 
 ## 최우선 기준 — 실제 AdSense 탈락 사유 (고정)
@@ -556,3 +556,21 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - Spotify 임베드가 있으나, 그 앞뒤에 앨범/스토리의 창작 맥락과 본문 설명이 충분히 존재함. 영상/음원 외부 임베드만으로 페이지가 구성된 것은 아님.
 - **두 고정 거절 사유 판정:** (1) 복제 콘텐츠 — 고유 줄거리·캐릭터·창작자 관점이 중심이므로 현재 소스 기준 양호. (2) 가치가 별로 없는 콘텐츠 — 독립적인 스토리·인물 성장·제작 배경이 충분해 현재 소스 기준 양호.
 - **조치:** 수정 불필요. main과 develop의 실질 본문 동일성을 확인하고, `/goal`과 혼동하지 않도록 분류를 기록. 동일 공식 점검문서에만 반영.
+
+
+### 2026-11-02 / Audit 1.24 — 최신 Production 배포 및 전체 공개 URL 재검증
+
+**점검 기준:** 최신 Production에 실제 배포된 HTML을 확인하고, 현재 sitemap의 모든 공개 페이지를 요청해 응답·광고 로더·GTM을 점검함. 콘텐츠 평가는 고정된 두 탈락 사유만 적용함.
+
+- **배포 상태 정정 및 확인:** 이전에 조회했던 Production 배포 `c5e491bb6b125eb00b1e871163c7d0fb7cca74e8`는 PR #160 병합 커밋보다 이전 버전이었다. 해당 배포를 최신 반영으로 오인하지 않도록 정정함. 이후 GitHub `main`의 병합 커밋 `e098a80b7f25be221edad1911318087c6c1731d1`을 대상으로 Vercel Production 배포 `dpl_E1hRVLpF6heQYWCqn2BKCzVn7NNB`를 새로 생성했고, 상태 `READY`, alias `chrisleepapa.com` 연결을 확인함.
+- GitHub branch 확인: `main` HEAD는 `e098a80b7f25be221edad1911318087c6c1731d1`, `develop` HEAD는 `068e53e25174a6532f9693d39ef40c8400ebc2a4`. 두 브랜치의 tree SHA는 동일(`e1ee1bfa7cbd6fe1ee38822ae965ae089b299fc3))하며, 소스 파일 차이는 없음. main은 develop의 동일 트리를 병합 커밋으로 포함하고 있음.
+- **/about Production 재검증:** HTTP 200, canonical `https://chrisleepapa.com/about`, robots `index, follow`, AdSense loader 1개, GTM script 1개 확인. 과거 문제였던 `영어로 전하는 아카이브 소개`라는 잘못된 소제목이 최신 Production HTML에서 더 이상 나타나지 않음. 창작 과정과 콘텐츠 분류를 설명하는 본문이 유지됨.
+- **/tutupupupipi Production 재검증:** HTTP 200, canonical `https://chrisleepapa.com/tutupupupipi`, robots `index, follow`, AdSense loader 1개, GTM script 1개 확인. 여섯 영상 카드가 모두 존재하며, 각 이미지 alt가 영상의 실제 주제(무지개 찾기, 별 발견, 뚜뚜의 하루, 뿌뿌와 놀이, 삐삐의 비행, 딸기 발견)를 구별하는 구체적 문구로 제공됨. 여섯 카드 각각에 개별 제목과 설명도 존재함.
+- **/about 두 고정 거절 사유 판정:** (1) 복제 콘텐츠 — 창작자의 이력·철학·제작 과정과 프로젝트 분류를 직접 설명하며 외부 자료 단순 나열 구조가 아니므로 양호. (2) 저가치 콘텐츠 — 아카이브의 목적과 창작 배경을 방문자에게 구체적으로 설명하므로 최신 Production HTML 기준 양호.
+- **/tutupupupipi 두 고정 거절 사유 판정:** (1) 복제 콘텐츠 — 캐릭터 설정, 세계관, 여섯 개별 에피소드 설명, OST 및 창작자 노트가 함께 있어 단순 외부 영상 임베드 모음이 아니므로 양호. (2) 저가치 콘텐츠 — 세 캐릭터의 역할과 각 영상의 사건·주제를 구분해 소개하고 공식 OST로 이어지는 독립적인 프로젝트 안내가 있으므로 최신 Production HTML 기준 양호.
+- **전체 sitemap 공개 URL 검사:** 최신 `sitemap.xml`은 홈페이지를 포함해 24개 URL을 포함함. 해당 24개 경로를 Production에서 각각 요청한 결과 모두 HTTP 200. 각 HTML 페이지에 GTM script 1개씩 확인. AdSense loader는 18/24 페이지에 1개씩 존재함.
+- **광고 로더가 없는 6개 경로:** `/music`, `/movie`, `/bible`, `/contact`, `/privacy`, `/terms`. 사용자가 광고 대상에서 제외하도록 지정한 Bible 및 정책/연락 페이지는 콘텐츠 심사 대상으로 재분류하지 않음. `/music`, `/movie`도 현재 AdSense loader가 없어 이번 광고 대상 콘텐츠 판정에서 제외함.
+- **ads.txt / robots.txt / sitemap:** 세 URL 모두 HTTP 200. `ads.txt`에서 `google.com, pub-3207219520058740, DIRECT, f08c47fec0942fa0` 확인. `robots.txt`는 `User-agent: *`, `Allow: /`, 공식 sitemap 경로를 제공함. sitemap에는 24개 URL이 존재함.
+- **sitemap 외 보조 경로 존재 여부 확인:** `/today`, `/shop`, `/gameinfo`, `/journal`은 모두 HTTP 200이나 AdSense loader는 0개. `/today`는 `noindex, follow`, `/gameinfo`는 `noindex, nofollow`, `/journal`은 `noindex, follow`. `/shop`은 `index, follow`이나 sitemap 미포함 및 AdSense loader 0개. 이 경로들은 광고가 표시되는 화면이 아니므로 두 고정 거절 사유의 광고 화면 판정 대상에 포함하지 않고, 공개 경로 현황만 기록함. 삭제된 Prompt Lab, Chris's News, YouTube Chart는 다시 점검 대상으로 추가하지 않음.
+- **한계:** 이번 검증은 Production에서 반환된 초기 HTML 및 HTTP 응답 기준이다. 실제 브라우저의 모바일/PC 상호작용, 모든 이미지 다운로드 성공, 로그인 상태별 화면, AdSense 계정 내부의 사이트 상태/코드 감지/재검토 버튼은 확인하지 못함. AdSense 심사 요청은 제출하지 않음.
+- **종합:** 이번 차수에서 이전 배포에 남아 있던 /about 및 /tutupupupipi의 구버전 노출은 최신 Production 배포 후 해소된 것을 확인함. 전체 sitemap URL 응답과 광고 로더 분포도 최신 Production 기준으로 재기록함. 콘텐츠 두 기준의 양호 판정은 현재 확인한 HTML과 본문에 대한 내부 점검 결과이며, Google의 최종 승인 보장은 아님.

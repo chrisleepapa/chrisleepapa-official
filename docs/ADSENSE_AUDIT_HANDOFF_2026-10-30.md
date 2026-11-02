@@ -4347,3 +4347,18 @@ switch.html (SWITCH) 정적 게임 감사. 이어서 goal.html (골이예요).
 - 조치: 코드 변경 없음.
 - 검증 한계: YouTube 영상의 실제 공개/재생 가능 여부, 외부 링크 실시간 상태, 실제 브라우저/모바일 표시 및 광고 위치는 미검증. main/production 미변경.
 - 다음 단일 작업: `sistersquad-hub.html`의 허브 고유 목적, 개별 작품/캐릭터 페이지로의 링크, 중복 설명 및 이미지 참조를 확인한다.
+
+
+## 2026-11-02 후속 점검 및 수정 — Sister Squad Hub 앵커 링크
+
+- 대상: `sistersquad-hub.html`; 수정 전 blob SHA `cab246530aa0797d452d11dd942144936dce8f3a`, 수정 후 blob SHA `f156fc1d7c039e3a22fac217443edde7021e02b0`.
+- 기본 설정: canonical `https://chrisleepapa.com/sistersquad-hub`, `index, follow`, 직접 AdSense loader 1개.
+- 콘텐츠: 세계관, 율·정 주인공 소개, 가족/요정/조력자/적 캐릭터, 마법과 유물, 1·2편 시리즈 안내, 스토리 가이드, 비주얼 갤러리 및 공식 스티커 링크. 본문 텍스트 추출 약 6,476자.
+- 이미지: 갤러리의 이미지 45개가 모두 develop tree에 존재하고 alt가 설정됨.
+- 내부 링크: `/yul`, `/jung`, `/sistersquad`, `/sistersquad2` 대상 파일 모두 존재함.
+- 발견한 문제: 상단 탐색 카드의 `#characters` 및 `#deep-dive` 링크가 실제 ID와 일치하지 않아 클릭 시 목적지로 이동하지 않는 앵커 오류 2건.
+- 수정: `#characters`를 `#other-characters`로, `#deep-dive`를 `#protagonists`로 변경. 첫 링크의 한국어/영어 안내도 가족·요정·조연 캐릭터 영역에 맞게 수정하고, 두 번째 링크는 율·정 주인공 프로필 영역으로 연결.
+- 재검증: 페이지 내 모든 탐색 앵커 5개(`other-characters`, `world`, `series`, `gallery`, `protagonists`)가 실제 ID와 일치. 이전 잘못된 앵커 2개는 0개. 한국어/영어 문구 변경 확인.
+- 판정: 페이지의 허브 역할과 고유한 세계관 정보는 유지하면서 탐색 오류를 제거함. 복제/저가치 콘텐츠를 이유로 본문을 늘릴 필요는 없음.
+- 검증 한계: develop 소스와 저장소 내 이미지/내부 파일 존재만 확인. 실제 브라우저 클릭·이미지 로딩 및 모바일/PC 레이아웃은 미검증. main/production 미변경.
+- 다음 단일 작업: `yul.html`의 캐릭터 고유 설명, 이미지 참조, 내부 링크 및 반복 콘텐츠를 점검한다.

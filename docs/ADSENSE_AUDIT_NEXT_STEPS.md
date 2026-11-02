@@ -1950,3 +1950,17 @@ Movie 페이지의 Preview 배포/실제 렌더링 확인 가능성을 검증한
 - 추가 확인 필요: 각 페이지의 영상/이미지/구매 링크가 실제로 작동하는지, 소개 문단과 메타 description이 페이지별 고유 내용을 충분히 설명하는지, 허브가 상세 페이지 내용을 단순 재나열하지 않는지 후속 확인. 현재는 코드 정적 검토이며 실제 브라우저 시각 검증은 아님.
 - 현 단계 수정 사항 없음. 페이지 본문을 더 부풀리기보다 실제 작품·창작 과정·독자에게 제공하는 구체 정보가 고유하게 드러나는지 중심으로 이어서 확인.
 - 다음 순서: Sister Squad의 미디어/내부 링크와 독립 가치 확인을 마친 뒤 TuTuPuPuPiPi 페이지 점검.
+
+
+## 2026-11-02 추가 점검 — TuTu PuPu PiPi 독립 콘텐츠 및 미디어 구조
+
+- 대상: `tutupupupipi.html`, canonical `https://chrisleepapa.com/tutupupupipi`, robots `index, follow`.
+- 광고: 페이지 내 AdSense 로더 1개, 수동 광고 슬롯/adsbygoogle.push 호출 0개. 광고 적용 대상 페이지로 분류.
+- 본문: 텍스트 추출 약 2,680자. 캐릭터별 성격·역할·대사, 세계관, 여섯 개 에피소드의 개별 설명, 공식 OST, 창작자 노트가 포함됨. 단순 외부 영상 링크 모음이 아니라 캐릭터·에피소드 기획 의도를 설명하는 고유 본문이 존재함.
+- 이미지: `tutupupupipi_top.png`, `tutu.png`, `pupu.png`, `pipi.png`, `tutupupupipi.png` 5개가 develop `images/` 디렉터리에 존재. 캐릭터 이미지는 구체적 alt 제공.
+- 영상: 여섯 개 카드에 서로 다른 YouTube video ID가 연결되어 있으며, 미리보기 버튼 클릭 시 `youtube-nocookie.com/embed/{videoId}`로 교체하는 인라인 로직 확인. 이미지 로드 실패 시 대체 UI 로직 존재. 실제 브라우저 재생은 아직 테스트하지 않음.
+- 음악: YouTube OST playlist ID `OLAK5uy_lTkP61UkmmjKHmHaH0Ox54kggQeQieSLY` 및 Spotify album ID `5sdI03qLb0yoBQKN7BZ86r` 임베드/외부 링크가 구성되어 있음.
+- 1차 평가: 캐릭터와 에피소드 설명, 창작자 노트가 있어 독립 콘텐츠 가치가 있음. 동일 문구를 반복하는 대량 페이지 형태는 확인되지 않음. 다만 2,680자 정도로 길이가 아주 긴 페이지는 아니므로 실제 영상 6편과 OST가 안정적으로 열리고, 설명이 영상 내용과 정확히 일치하는지 최종 검증이 중요함.
+- 조치: 이번 정적 검토에서 즉시 수정이 필요한 AdSense 콘텐츠 가치/복제 콘텐츠 문제는 확인하지 못함. 소스 변경 없음.
+- 다음 순서: Worship 앨범 소개 페이지를 점검하고, 특히 외부 스트리밍 임베드만으로 구성된 페이지인지, 앨범별 독립 설명과 창작 맥락이 있는지 확인.
+- 검증 한계: 개발 브랜치 GitHub 소스 기준. 배포 일일 한도 문제로 live develop 렌더링 및 실제 영상 재생 테스트는 미실시. main 미반영.

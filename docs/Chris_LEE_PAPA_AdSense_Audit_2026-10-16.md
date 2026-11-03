@@ -1404,4 +1404,4 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **브랜치 반영:** develop commit `c645fdc7e40fc5dc77c0d95a6c4cb1b2629bcbc8`, main commit `7e74a27c68370fe844b3be7ddb17668d44e02ff3`. 두 브랜치 파일 blob SHA는 동일하게 `dea97c1874a3deb09e620c00e6afac835e663a46`.
 - **정적 재검증:** 수정 파일에 `<h1 class="clp-pick-heading">` 0개, `<h2 class="clp-pick-heading">` 1개 확인. 홈페이지 정적 H1은 그대로 유지. Chris's Pick 데이터, 제외 Set, 여섯 개 TuTu 큐레이션 문구 및 기존 복원 디자인은 변경하지 않음.
 - **점수:** 내부 준비도 76/100 유지. 이 수정은 이미 반영된 기술·구조 평가의 회귀를 바로잡은 것으로, 독창성 점수를 추가 가산하지 않음.
-- **Production:** main commit 반영 후 Vercel Production 배포 READY 및 실제 운영 홈페이지 HTML/스크립트에서 H1 1개·동적 H2 구조를 다시 확인해야 최종 완료 처리함.
+- **Production 완료:** Vercel deployment `dpl_CcGuGGZ9XrUc55Jh2BhDaydhkw7X`, commit `7e74a27c68370fe844b3be7ddb17668d44e02ff3`, branch `main`, target `production`, state `READY`, `chrisleepapa.com` alias 연결 및 aliasError 없음. 운영 홈페이지 HTTP 200, 정적 H1 1개 확인. 운영 `js/home-chris-pick-v2.js` HTTP 200, 동적 Chris's Pick H1 0개·H2 1개 확인. Chris's Pick의 실제 렌더링/시각적 레이아웃은 브라우저에서 별도 확인해야 함.

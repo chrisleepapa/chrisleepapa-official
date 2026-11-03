@@ -1309,3 +1309,16 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **미완료:** 실제 브라우저에서 일일 추천 선택 결과, 한국어·영어 전환, 모바일·PC 렌더링, 광고 요청/광고 배치, 스크립트 실패 시 실제 표시를 확인해야 함.
 - **배포:** develop만 수정. main 및 Production 변경 없음.
 - **점수:** 내부 점수 74/100 유지. 홈페이지 정적 구조와 중복 가능성은 개선했으나 Production 런타임 및 GTM/광고 네트워크 확인이 남아 있어 상향하지 않음.
+
+
+### 2026-11-03 / Audit 1.77 — GTM 최신 게시본·Production/Preview 배포 상태 구분
+
+- **GTM 자료:** Library의 `GTM-NGDTQNVG_v2.json`을 다시 열어 확인. exportTime은 2026-10-30 04:10:04, containerVersionId는 2, 컨테이너는 `GTM-NGDTQNVG`, 태그는 `Google tag - GA4` 1개이며 측정 ID는 `G-NBGELYQ4TZ`. 이 export 파일 안에는 AdSense 태그가 없음.
+- **중요한 한계:** 위 자료는 10월 30일에 내보낸 버전 2이므로 11월 3일 현재 GTM Workspace/게시 버전이 여전히 버전 2인지 확인할 수 없음. 실제 브라우저의 GTM 로드 결과와 네트워크 요청도 이 JSON만으로 증명할 수 없음. 현재 대화에서 인증된 GTM Workspace 또는 최신 내보내기 접근이 없어 최신 게시본/실제 요청은 미확정으로 유지.
+- **Production:** Vercel 배포 `dpl_EQgcYc1anHW8r5HoE6JrbKgYppkT` 상태 READY, target production, Git ref `main`, commit `4fb346400b9ab1e8bc55e450ae659baa2f6747f7`. 해당 배포 별칭에 `chrisleepapa.com`이 연결됨. Production은 변경하지 않음.
+- **Preview:** 마지막으로 확인된 develop Preview `dpl_7Uq1t77wwjVBGhepSAu79ygrwGd1` 상태 READY, Git ref `develop`, commit `7f09df785008e6dd2733792376a06965b8ce662c`. `develop.chrisleepapa.com` 별칭이 이 Preview에 연결되어 있음. 이 배포는 이번 작업의 최신 수정 커밋보다 뒤처져 있으므로 현재 수정 사항의 화면 검증에 사용하면 안 됨.
+- **브랜치 비교:** main 대비 develop은 17개 커밋 ahead, 0개 behind. main 전용 커밋은 없음. 최신 develop 소스 수정은 GitHub에 반영되었으나 Vercel의 마지막 확인 Preview에는 아직 반영되지 않음.
+- **광고 코드 정적 확인:** Production main의 `index.html` 및 develop의 `index.html` 모두 GTM snippet 1개와 AdSense loader 1개. 홈페이지 HTML에는 수동 광고 슬롯이 없으나, 이 결과는 Auto ads나 GTM/외부 스크립트가 런타임에 광고를 삽입하지 않는다는 뜻은 아님.
+- **조치/배포:** 이번 단계에서 GTM Workspace, Production, Preview에 어떠한 변경도 하지 않음. 일일 배포 제한 및 사용자 승인 전까지 새 배포를 만들지 않음.
+- **다음 필수 검증:** GTM에서 현재 게시된 버전/게시 시각 확인, 최신 컨테이너 export와 10월 30일 버전 2 비교, 실제 페이지에서 GTM/GA4 중복 page_view 여부 및 광고 요청을 브라우저 Network로 확인.
+- **점수:** 내부 점수 74/100 유지. Production의 현재 main 배포와 GTM 과거 export는 확인했으나 최신 GTM 게시 상태와 실광고 요청이 미확정이므로 점수 상향 근거가 아님.

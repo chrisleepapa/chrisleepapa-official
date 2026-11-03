@@ -2683,7 +2683,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
            own dictionary whenever the global language is changed.
            ========================================================= */
         window.onLangChange = function (lang) {
-            const pageDictionary = window.PAGE_I18N && window.PAGE_I18N[lang];
+            const activeLang = (lang === 'en' || lang === 'ko')
+                ? lang
+                : (document.documentElement.lang === 'en' ? 'en' : 'ko');
+            const pageDictionary = window.PAGE_I18N && window.PAGE_I18N[activeLang];
             if (!pageDictionary) return;
 
             document.querySelectorAll('.seo-section [data-i18n]').forEach(function (element) {
@@ -2693,6 +2696,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 }
             });
         };
+
+        /* Apply the saved language after this page dictionary is registered.
+           This also covers the first render if the shared language system ran earlier. */
+        window.onLangChange(
+            document.documentElement.lang === 'en' ? 'en' : 'ko'
+        );
 
 
         /* =========================================================

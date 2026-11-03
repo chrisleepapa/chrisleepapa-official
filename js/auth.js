@@ -45,7 +45,16 @@
         const form=modal.querySelector('form');form.addEventListener('submit',async e=>{e.preventDefault();const err=modal.querySelector('.auth-error');err.textContent='';initialsInput.value=normalizeInitials(initialsInput.value);const result=await login(initialsInput.value,modal.querySelector(`#${prefix}-pin`).value,true);if(!result.ok){err.textContent=result.error;return}modal.remove();if(typeof options.onSuccess==='function')options.onSuccess(result.user)});initialsInput.focus();
     }
     window.CLPAuth={login,logout,getUser,isLoggedIn,normalizeInitials,validInitials,validPin,clearLegacyTodaySession,sessionKey:SESSION_KEY,supabaseUrl:SUPA_URL,backend:'supabase',showLoginModal};
-    try{const legacy=localStorage.getItem('chrisleepapa-today-session'),current=localStorage.getItem(SESSION_KEY);if(!current&&legacy){const initials=normalizeInitials(legacy);if(validInitials(initials))write(SESSION_KEY,{initials,loginAt:new Date().toISOString(),migrated:true})}}catch(_){ }
+    // Legacy TODAY sessions stored initials only and cannot authenticate Supabase requests.
+    // Remove the incomplete session and require a fresh shared login; never fabricate a PIN hash.
+    try{
+        const raw=localStorage.getItem(SESSION_KEY);
+        if(raw){
+            let current=null;try{current=JSON.parse(raw)}catch(_){}
+            if(!current||!validInitials(current.initials)||!/^[a-f0-9]{64}$/i.test(String(current.pinHash||'')))remove(SESSION_KEY);
+        }
+        remove('chrisleepapa-today-session');
+    }catch(_){ }
     if(/^\/today(?:\.html)?\/?$/i.test(window.location.pathname||'')){
         const loadTodayBridge=()=>{if(document.getElementById('today-auth-bridge'))return;const s=document.createElement('script');s.id='today-auth-bridge';s.src='/js/today-auth-bridge.js?v=20260916';document.head.appendChild(s)};
         if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',loadTodayBridge,{once:true});else setTimeout(loadTodayBridge,0);

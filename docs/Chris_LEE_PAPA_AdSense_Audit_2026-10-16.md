@@ -4,7 +4,7 @@
 - **기준 도메인:** https://chrisleepapa.com/
 - **작업 기준 소스:** GitHub `chrisleepapa/chrisleepapa-official`의 `develop` 브랜치 우선. 검증·사용자 승인 전에는 `main`에 반영하지 않음.
 - **심사 이력:** 사용자가 제공한 기록상 chrisleepapa.com은 2026-10-19 사이트 검토를 신청했고 2026-10-30 두 사유로 거절됨. 현재 AdSense 계정의 사이트 등록/상태 및 재검토 가능 여부는 계정 화면 확인 전까지 미확인. 이 문서는 재심사 준비 점검이며, 새로운 검토 요청을 제출하지 않음.
-- **문서 버전:** Audit 1.82 — Production 24개 URL 전수검증 및 MUSIC ARCHIVE 실제 운영 반영 확인
+- **문서 버전:** Audit 1.83 — Production 24개 URL 전수검증, MUSIC ARCHIVE 반영 및 Chris's Pick H1 회귀 수정
 - **최초 점검의 역사적 판정:** Audit 1.0 작성 당시의 판단이며 현재 상태를 뜻하지 않음. 아래 미완료 항목은 실제 존재·운영 여부와 최신 소스를 다시 확인한 뒤에만 유효한 점검 대상으로 채택한다.
 
 ## 최우선 기준 — 실제 AdSense 탈락 사유 (고정)
@@ -1396,3 +1396,12 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **홈페이지 회귀 확인:** 운영 홈페이지 HTTP 200, Chris's Pick 스크립트 캐시 버전 `20261103-1` 유지. 복원된 Pick 코드에 앞서 발견한 잘못된 문자열 구문 조각이 운영 HTML/스크립트 응답에 남지 않음.
 - **점수:** 내부 준비도 76/100 유지. 이번 단계는 수정한 MUSIC ARCHIVE의 Production 반영을 확인한 것으로, 브라우저 렌더링·광고 Network·GTM 최신 게시본·Google 계정 내부 상태는 여전히 사용자 확인 항목.
 - **완료 범위:** 소스 수정, main 반영, Production READY, 운영 HTML/스크립트 HTTP 확인 완료. AdSense 재심사 신청은 수행하지 않음.
+
+### 2026-11-03 / Audit 1.83 — Chris's Pick 동적 제목 H1 회귀 수정
+
+- **발견:** Audit 1.76에서 홈페이지 정적 H1을 대표 제목으로 유지하고 동적 Chris's Pick 제목을 H2로 변경했다고 기록했으나, 최신 `js/home-chris-pick-v2.js`를 다시 읽었을 때 동적 제목이 H1으로 되돌아가 있었음. 홈페이지 정적 HTML에도 대표 H1이 있으므로 JavaScript 실행 후 H1이 중복될 수 있는 회귀 상태였음.
+- **조치:** `js/home-chris-pick-v2.js`의 동적 Chris's Pick 제목 태그를 H1에서 H2로 수정. `clp-pick-heading` CSS 클래스와 내부 콘텐츠 구조는 그대로 유지해 시각적 표현은 바꾸지 않음. 일일 Pick 제목은 페이지의 주제목이 아니라 홈페이지 내 콘텐츠 섹션 제목으로 계층을 맞춤.
+- **브랜치 반영:** develop commit `c645fdc7e40fc5dc77c0d95a6c4cb1b2629bcbc8`, main commit `7e74a27c68370fe844b3be7ddb17668d44e02ff3`. 두 브랜치 파일 blob SHA는 동일하게 `dea97c1874a3deb09e620c00e6afac835e663a46`.
+- **정적 재검증:** 수정 파일에 `<h1 class="clp-pick-heading">` 0개, `<h2 class="clp-pick-heading">` 1개 확인. 홈페이지 정적 H1은 그대로 유지. Chris's Pick 데이터, 제외 Set, 여섯 개 TuTu 큐레이션 문구 및 기존 복원 디자인은 변경하지 않음.
+- **점수:** 내부 준비도 76/100 유지. 이 수정은 이미 반영된 기술·구조 평가의 회귀를 바로잡은 것으로, 독창성 점수를 추가 가산하지 않음.
+- **Production:** main commit 반영 후 Vercel Production 배포 READY 및 실제 운영 홈페이지 HTML/스크립트에서 H1 1개·동적 H2 구조를 다시 확인해야 최종 완료 처리함.

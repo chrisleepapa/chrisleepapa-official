@@ -2682,10 +2682,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
            Keep the complete About section in sync with this page's
            own dictionary whenever the global language is changed.
            ========================================================= */
-        window.onLangChange = function (lang) {
-            const activeLang = (lang === 'en' || lang === 'ko')
-                ? lang
-                : (document.documentElement.lang === 'en' ? 'en' : 'ko');
+        function applySisterSquadAboutLanguage(lang) {
+            const activeLang = lang === 'en' ? 'en' : 'ko';
             const pageDictionary = window.PAGE_I18N && window.PAGE_I18N[activeLang];
             if (!pageDictionary) return;
 
@@ -2695,13 +2693,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     element.innerHTML = pageDictionary[key];
                 }
             });
-        };
+        }
 
-        /* Apply the saved language after this page dictionary is registered.
-           This also covers the first render if the shared language system ran earlier. */
-        window.onLangChange(
-            document.documentElement.lang === 'en' ? 'en' : 'ko'
-        );
+        /* Keep compatibility with the shared language switcher. */
+        window.onLangChange = applySisterSquadAboutLanguage;
+
+        /* The shared language script changes <html lang>. Observe that source of
+           truth directly so this section updates even if another script replaces
+           or skips the page callback. */
+        const aboutLanguageObserver = new MutationObserver(function () {
+            applySisterSquadAboutLanguage(document.documentElement.lang);
+        });
+        aboutLanguageObserver.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['lang']
+        });
+
+        /* Apply the language already selected for this visit. */
+        applySisterSquadAboutLanguage(document.documentElement.lang);
 
 
         /* =========================================================
@@ -2998,7 +3007,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <script src="js/sistersquad1-ost.js?v=20261029-video-fix" defer></script>
 
     <script
-        src="js/main.js?v=20261013-squad-i18n-v2"
+        src="js/main.js?v=20261103-squad-about-i18n-fix"
         defer
     ></script>
 

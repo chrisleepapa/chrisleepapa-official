@@ -82,6 +82,26 @@ const spotify=id=>`https://open.spotify.com/album/${id}`;const embed=id=>`https:
 function getInitialActiveIndex(){const params=new URLSearchParams(window.location.search);const requested=params.get('album')||params.get('id');if(requested){const index=musicData.findIndex(a=>a.id===requested);if(index>=0)return index}const hash=decodeURIComponent((window.location.hash||'').replace(/^#/,'')).trim();if(hash){const index=musicData.findIndex(a=>a.id===hash||a.title.toLowerCase().replace(/\s+/g,'-')===hash.toLowerCase());if(index>=0)return index}return 0}
 let active=getInitialActiveIndex();const coverCache={};
 const MUSIC_I18N={ko:{music_meta_title:'MUSIC ARCHIVE – Chris LEE.PAPA',music_meta_description:'Chris LEE.PAPA의 공식 MUSIC ARCHIVE. Spotify와 YouTube에서 발매된 AI 음악, 앨범, EP, 싱글과 다양한 창작 음악을 한곳에서 소개합니다.',music_meta_description_short:'Chris LEE.PAPA의 AI 음악, 앨범, EP, 싱글과 다양한 창작 음악을 한곳에서 만나보세요.',music_twitter_description:'Chris LEE.PAPA의 AI 음악과 글로벌 플랫폼 발매 작품을 감상하세요.',music_header_slogan:'AI가 만들어낸 선율, 영혼을 울리는 멜로디',music_spotify_album:'Spotify에서 앨범 듣기 ›',music_youtube_listen:'YouTube에서 듣기 ›',music_albums:'ALBUMS',music_archive_intro:'Chris LEE.PAPA의 음악 작업과 글로벌 플랫폼 발매 작품을 한 곳에서 소개합니다.',music_track:'TRACK',music_tracks:'TRACKS',music_tracklist_spotify:'Spotify에서 트랙리스트 확인',music_total:'TOTAL',type_Album:'Album',type_EP:'EP',type_Single:'Single',type_Instrumental:'Instrumental',type_Vocal:'Vocal'},en:{music_meta_title:'MUSIC ARCHIVE – Chris LEE.PAPA',music_meta_description:'Official MUSIC ARCHIVE of Chris LEE.PAPA. Explore AI-generated music, albums, EPs, singles and creative works released on Spotify and YouTube.',music_meta_description_short:'Discover Chris LEE.PAPA’s AI music, albums, EPs, singles and creative works in one place.',music_twitter_description:'Listen to Chris LEE.PAPA’s AI music and works released on global music platforms.',music_header_slogan:'Melodies created by AI, music that resonates with the soul',music_spotify_album:'Listen to the album on Spotify ›',music_youtube_listen:'Listen on YouTube ›',music_albums:'ALBUMS',music_archive_intro:'Explore Chris LEE.PAPA’s music projects and works released on global platforms in one place.',music_track:'TRACK',music_tracks:'TRACKS',music_tracklist_spotify:'View tracklist on Spotify',music_total:'TOTAL',type_Album:'Album',type_EP:'EP',type_Single:'Single',type_Instrumental:'Instrumental',type_Vocal:'Vocal'}};window.PAGE_I18N=MUSIC_I18N;
+Object.assign(MUSIC_I18N.ko,{
+ music_release_kicker:'FROM IDEA TO RELEASE',
+ music_release_title:'실제 음악 제작과 발매 과정',
+ music_release_h1:'01. 기획과 가사',
+ music_release_p1:'작품의 주제와 전달하고 싶은 감정, 장르와 보컬·악기 방향은 창작자가 먼저 정합니다. 가사가 필요한 곡은 GPT가 초안을 작성하도록 활용할 수 있지만, 문장을 그대로 확정하지 않고 직접 읽고 수정·보완해 최종 가사와 표현을 결정합니다. 곡의 출발점과 최종 메시지는 창작자의 기획에 있습니다.',
+ music_release_h2:'02. Suno로 제작하고 결과를 선별하기',
+ music_release_p2:'음악 생성 단계에서는 Suno를 유료 구독하던 기간에 작품을 제작했습니다. 생성 결과를 모두 완성본으로 간주하지 않고, 처음 정한 주제와 감정에 맞는 결과인지 듣고 비교해 사용할 버전을 선택합니다. AI 도구는 보컬과 연주가 포함된 음원을 구현하는 데 활용하며, 어떤 결과를 작품으로 남길지는 창작자가 판단합니다.',
+ music_release_h3:'03. WAV로 내보내고 공식 발매하기',
+ music_release_p3:'최종 선택한 음원은 WAV 파일로 내려받아 DistroKid를 통해 배포했습니다. 발매된 작품은 Spotify와 YouTube 등 공식 음악 플랫폼의 앨범·트랙 페이지로 연결합니다. 이 아카이브는 감상 링크만 나열하는 대신 각 작품의 주제, 제작 방향과 감상 포인트를 함께 기록해 결과물이 어떤 창작 의도에서 출발했는지 설명합니다.'
+});
+Object.assign(MUSIC_I18N.en,{
+ music_release_kicker:'FROM IDEA TO RELEASE',
+ music_release_title:'The Music Creation & Release Process',
+ music_release_h1:'01. Concept & Lyrics',
+ music_release_p1:'The creator first defines each work’s theme, intended emotion, genre, and vocal or instrumental direction. When lyrics are needed, GPT may help draft an initial version, but the text is carefully reviewed, revised, and refined before the final lyrics and wording are chosen. The concept and final message remain guided by the creator.',
+ music_release_h2:'02. Production with Suno & Creative Selection',
+ music_release_p2:'These tracks were created while the creator had an active paid Suno subscription. Generated results are not automatically treated as finished works. Each version is listened to and compared with the original theme and emotion before one is selected. AI supports the production of vocals and instrumentation, while the creator decides which result becomes part of the final work.',
+ music_release_h3:'03. WAV Export & Official Release',
+ music_release_p3:'The selected final audio was exported as WAV and distributed through DistroKid. Released works link to their official album and track pages on platforms such as Spotify and YouTube. Rather than listing listening links alone, this archive records each work’s concept, production direction, and listening notes to explain the creative intent behind each release.'
+});
 function musicLang(){return document.documentElement.lang==='en'?'en':'ko'}function musicT(key){return MUSIC_I18N[musicLang()][key]??key}function musicType(type){return musicT(`type_${type}`)}function musicTrackLabel(count){return count===1?musicT('music_track'):musicT('music_tracks')}
 async function loadCover(album){if(coverCache[album.id])return coverCache[album.id];try{const r=await fetch(oembed(album.id),{cache:'force-cache'});if(!r.ok)throw new Error('oEmbed failed');const d=await r.json();if(d.thumbnail_url){coverCache[album.id]=d.thumbnail_url;return d.thumbnail_url}}catch(e){console.warn('Spotify cover unavailable:',album.title,e)}return ''}
 function setImageSource(img,album){const url=coverCache[album.id];if(url){img.src=url;img.style.visibility='visible'}else{img.removeAttribute('src');img.style.visibility='hidden'}img.onerror=()=>{img.removeAttribute('src');img.style.visibility='hidden'}}async function hydrateCovers(){await Promise.all(musicData.map(a=>loadCover(a)));renderPlaylist();renderActive()}
@@ -138,21 +158,34 @@ function refreshMusicLanguage(){renderPlaylist();renderActive()}renderPlaylist()
 <script src="js/music-production-notes.js?v=20261103-1"></script>
 <script src="js/main.js"></script>
 
-<section aria-labelledby="music-case-notes-title" style="max-width:1080px;margin:48px auto;padding:0 20px;">
+<section id="music-release-notes" aria-labelledby="music-case-notes-title" style="max-width:1080px;margin:48px auto;padding:0 20px;">
   <div style="border:1px solid rgba(201,168,76,.22);border-radius:18px;padding:clamp(22px,4vw,38px);background:transparent;color:inherit;line-height:1.9;">
-    <p style="color:#8a6a22;letter-spacing:.16em;font-size:.72rem;margin:0 0 8px;">FROM IDEA TO RELEASE</p>
-    <h2 id="music-case-notes-title" style="color:#8a6a22;margin:0 0 18px;">실제 음악 제작과 발매 과정 · From Idea to Release</h2>
-    <h3 style="color:#8a6a22;">01. 기획과 가사 · Concept &amp; Lyrics</h3>
-    <p>작품의 주제와 전달하고 싶은 감정, 장르와 보컬·악기 방향은 창작자가 먼저 정합니다. 가사가 필요한 곡은 GPT가 초안을 작성하도록 활용할 수 있지만, 문장을 그대로 확정하지 않고 직접 읽고 수정·보완해 최종 가사와 표현을 결정합니다. 곡의 출발점과 최종 메시지는 창작자의 기획에 있습니다.</p>
-    <p><em>English:</em> The creator defines each work’s theme, intended emotion, genre, and vocal or instrumental direction. When lyrics are needed, GPT may help draft an initial version, but the text is reviewed, revised, and completed by the creator. The concept and final message remain creator-led.</p>
-    <h3 style="color:#8a6a22;">02. Suno로 제작하고 결과를 선별하기 · Production &amp; Selection</h3>
-    <p>음악 생성 단계에서는 Suno를 유료 구독하던 기간에 작품을 제작했습니다. 생성 결과를 모두 완성본으로 간주하지 않고, 처음 정한 주제와 감정에 맞는 결과인지 듣고 비교해 사용할 버전을 선택합니다. AI 도구는 보컬과 연주가 포함된 음원을 구현하는 데 활용하며, 어떤 결과를 작품으로 남길지는 창작자가 판단합니다.</p>
-    <p><em>English:</em> The music was created while the creator had an active paid Suno subscription. Generated results are not automatically treated as finished works: they are listened to and compared against the original concept and emotion before a version is selected. Suno supports the realization of vocals and instrumentation; the creator decides which result becomes part of the archive.</p>
-    <h3 style="color:#8a6a22;">03. WAV로 내보내고 공식 발매하기 · WAV Export &amp; Release</h3>
-    <p>최종 선택한 음원은 WAV 파일로 내려받아 DistroKid를 통해 배포했습니다. 발매된 작품은 Spotify와 YouTube 등 공식 음악 플랫폼의 앨범·트랙 페이지로 연결합니다. 이 아카이브는 감상 링크만 나열하는 대신 각 작품의 주제, 제작 방향과 감상 포인트를 함께 기록해 결과물이 어떤 창작 의도에서 출발했는지 설명합니다.</p>
-    <p><em>English:</em> Selected final audio is exported as WAV and submitted for distribution through DistroKid. Released works are linked to their official album or track pages on platforms such as Spotify and YouTube. Rather than listing listening links alone, this archive records each work’s concept, production direction, and listening notes to explain the creative intent behind the release.</p>
+    <p data-i18n="music_release_kicker" style="color:#8a6a22;letter-spacing:.16em;font-size:.72rem;margin:0 0 8px;">FROM IDEA TO RELEASE</p>
+    <h2 id="music-case-notes-title" data-i18n="music_release_title" style="color:#8a6a22;margin:0 0 18px;">실제 음악 제작과 발매 과정</h2>
+    <h3 data-i18n="music_release_h1" style="color:#8a6a22;">01. 기획과 가사</h3>
+    <p data-i18n="music_release_p1">작품의 주제와 전달하고 싶은 감정, 장르와 보컬·악기 방향은 창작자가 먼저 정합니다. 가사가 필요한 곡은 GPT가 초안을 작성하도록 활용할 수 있지만, 문장을 그대로 확정하지 않고 직접 읽고 수정·보완해 최종 가사와 표현을 결정합니다. 곡의 출발점과 최종 메시지는 창작자의 기획에 있습니다.</p>
+    <h3 data-i18n="music_release_h2" style="color:#8a6a22;">02. Suno로 제작하고 결과를 선별하기</h3>
+    <p data-i18n="music_release_p2">음악 생성 단계에서는 Suno를 유료 구독하던 기간에 작품을 제작했습니다. 생성 결과를 모두 완성본으로 간주하지 않고, 처음 정한 주제와 감정에 맞는 결과인지 듣고 비교해 사용할 버전을 선택합니다. AI 도구는 보컬과 연주가 포함된 음원을 구현하는 데 활용하며, 어떤 결과를 작품으로 남길지는 창작자가 판단합니다.</p>
+    <h3 data-i18n="music_release_h3" style="color:#8a6a22;">03. WAV로 내보내고 공식 발매하기</h3>
+    <p data-i18n="music_release_p3">최종 선택한 음원은 WAV 파일로 내려받아 DistroKid를 통해 배포했습니다. 발매된 작품은 Spotify와 YouTube 등 공식 음악 플랫폼의 앨범·트랙 페이지로 연결합니다. 이 아카이브는 감상 링크만 나열하는 대신 각 작품의 주제, 제작 방향과 감상 포인트를 함께 기록해 결과물이 어떤 창작 의도에서 출발했는지 설명합니다.</p>
   </div>
 </section>
+<script>
+(function(){
+  const section=document.getElementById('music-release-notes');
+  if(!section)return;
+  function applyMusicReleaseLanguage(){
+    const lang=document.documentElement.lang==='en'?'en':'ko';
+    const dict=(window.PAGE_I18N&&window.PAGE_I18N[lang])||{};
+    section.querySelectorAll('[data-i18n]').forEach(el=>{
+      const value=dict[el.dataset.i18n];
+      if(value!==undefined)el.textContent=value;
+    });
+  }
+  applyMusicReleaseLanguage();
+  new MutationObserver(applyMusicReleaseLanguage).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+})();
+</script>
 
 </body>
 </html>

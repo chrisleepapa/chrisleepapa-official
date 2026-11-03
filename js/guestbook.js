@@ -835,7 +835,22 @@
     const section = wrapper.firstElementChild;
 
     if (footer) {
-      footer.parentNode.insertBefore(section, footer);
+      const isMusicPage = /^\/music\/?$/.test(location.pathname);
+
+      if (isMusicPage) {
+        /* Enforce the exact Music page order:
+           From Idea to Release -> Guestbook -> Footer. */
+        document.body.appendChild(footer);
+        const releaseNotes = document.getElementById('music-release-notes');
+
+        if (releaseNotes) {
+          releaseNotes.insertAdjacentElement('afterend', section);
+        } else {
+          footer.parentNode.insertBefore(section, footer);
+        }
+      } else {
+        footer.parentNode.insertBefore(section, footer);
+      }
     } else {
       document.body.appendChild(section);
     }

@@ -4,7 +4,7 @@
 - **기준 도메인:** https://chrisleepapa.com/
 - **작업 기준 소스:** GitHub `chrisleepapa/chrisleepapa-official`의 `develop` 브랜치 우선. 검증·사용자 승인 전에는 `main`에 반영하지 않음.
 - **심사 이력:** 사용자가 제공한 기록상 chrisleepapa.com은 2026-10-19 사이트 검토를 신청했고 2026-10-30 두 사유로 거절됨. 현재 AdSense 계정의 사이트 등록/상태 및 재검토 가능 여부는 계정 화면 확인 전까지 미확인. 이 문서는 재심사 준비 점검이며, 새로운 검토 요청을 제출하지 않음.
-- **문서 버전:** Audit 1.81 — Production 24개 URL 전수 HTTP/광고 코드 검증 및 MUSIC ARCHIVE 제작 이력 보강
+- **문서 버전:** Audit 1.82 — Production 24개 URL 전수검증 및 MUSIC ARCHIVE 실제 운영 반영 확인
 - **최초 점검의 역사적 판정:** Audit 1.0 작성 당시의 판단이며 현재 상태를 뜻하지 않음. 아래 미완료 항목은 실제 존재·운영 여부와 최신 소스를 다시 확인한 뒤에만 유효한 점검 대상으로 채택한다.
 
 ## 최우선 기준 — 실제 AdSense 탈락 사유 (고정)
@@ -1383,7 +1383,7 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **MUSIC ARCHIVE 광고 분리:** Production `/music`은 AdSense loader와 publisher ID가 모두 0개인 것을 재확인. 애니메이션 원작을 연상시키는 팬 작업이 섞인 음악 아카이브를 광고 대상에서 제외한 기존 의도적 분리 상태를 변경하지 않음. `/movie`도 동일하게 직접 AdSense 코드 0개.
 - **내부 준비도 점수 재산정:** 기존 74/100을 자동 유지하지 않고 Audit 1.36의 동일 배점표로 재평가함. 크롤링·기술 무결성 **20/20**(유지), 광고 코드 분리·태그 위생 **17/20**(유지), 독창성·콘텐츠 가치 **26/35**(기존 24점에서 +2: SISTER SQUAD 독자 활용 안내, TuTu 소개 중복 해소, WORSHIP 제작 과정·언어 보완, MUSIC ARCHIVE 실제 제작·발매 이력의 구체화), 사용자 경험·접근성 정적 검사 **10/15**(유지: 서버 응답은 전수 확인했으나 실제 브라우저·모바일·키보드 동작은 미검증), 외부 계정·Google 측 확인 **3/10**(유지: AdSense 계정·GTM 최신 게시본·Search Console은 직접 확인 불가). **새 총점 76/100 (+2)**.
 - **점수 해석:** 76점은 이 사이트의 내부 정적 준비도 지표이며 Google 공식 점수·승인 확률이 아님. 실제 브라우저 광고 요청 및 GTM 게시본, 계정 상태가 미확인인 상태에서 높은 점수를 임의로 부여하지 않음.
-- **현재 Production 확인 결과:** 이 Audit 작성 시점의 운영 main 배포는 24개 sitemap URL 모두 HTTP 200이며, 광고 코드 18개 대상/6개 제외 분포가 정확히 일치함. 이번 MUSIC ARCHIVE 수정은 develop에서 재검토한 뒤 main에 동일 변경을 반영함. Production 배포 상태와 새 음악 문구의 실제 운영 반영은 배포 완료 후 별도 확인함.
+- **현재 Production 확인 결과:** 이 Audit 작성 시점의 운영 main 배포는 24개 sitemap URL 모두 HTTP 200이며, 광고 코드 18개 대상/6개 제외 분포가 정확히 일치함. 이번 MUSIC ARCHIVE 수정은 develop에서 재검토한 뒤 main에 동일 변경을 반영했으며, Production READY 및 새 음악 문구의 실제 운영 반영은 Audit 1.82에서 확인함.
 - **사용자 직접 확인으로 남기는 항목:** 실제 브라우저 PC·모바일 시각 렌더링, 한국어↔영어 전환, Spotify/YouTube 재생, 스크립트 실패 시 fallback, 광고 실제 노출 위치·Network 요청, AdSense/GTM/Search Console 계정 내부 상태. 이 항목은 확인하지 않은 채 완료 표시하지 않음.
 
 ### 2026-11-03 / Audit 1.82 — MUSIC ARCHIVE Production 반영 및 실제 운영 HTML 재검증

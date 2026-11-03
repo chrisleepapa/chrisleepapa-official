@@ -1385,3 +1385,14 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **점수 해석:** 76점은 이 사이트의 내부 정적 준비도 지표이며 Google 공식 점수·승인 확률이 아님. 실제 브라우저 광고 요청 및 GTM 게시본, 계정 상태가 미확인인 상태에서 높은 점수를 임의로 부여하지 않음.
 - **현재 Production 확인 결과:** 이 Audit 작성 시점의 운영 main 배포는 24개 sitemap URL 모두 HTTP 200이며, 광고 코드 18개 대상/6개 제외 분포가 정확히 일치함. 이번 MUSIC ARCHIVE 수정은 develop에서 재검토한 뒤 main에 동일 변경을 반영함. Production 배포 상태와 새 음악 문구의 실제 운영 반영은 배포 완료 후 별도 확인함.
 - **사용자 직접 확인으로 남기는 항목:** 실제 브라우저 PC·모바일 시각 렌더링, 한국어↔영어 전환, Spotify/YouTube 재생, 스크립트 실패 시 fallback, 광고 실제 노출 위치·Network 요청, AdSense/GTM/Search Console 계정 내부 상태. 이 항목은 확인하지 않은 채 완료 표시하지 않음.
+
+### 2026-11-03 / Audit 1.82 — MUSIC ARCHIVE Production 반영 및 실제 운영 HTML 재검증
+
+- **Production 배포:** Vercel deployment `dpl_Hq7MCbAiUFdGWeBKjk5NXYctzBEL`, commit `62438b6540cc02eb5a0d55716d7f2150381438e3`, branch `main`, target `production`, state `READY`. `chrisleepapa.com` 별칭이 연결되었고 aliasError는 없음.
+- **실제 운영 페이지:** `https://chrisleepapa.com/music` HTTP 200. 최신 HTML에 「실제 음악 제작과 발매 과정」 섹션 및 영어 설명이 존재함.
+- **스크립트 캐시:** 운영 HTML이 `js/music-production-notes.js?v=20261103-1`을 참조하며 이전 `v=20261013` 참조는 0건. 실제 스크립트 URL `https://chrisleepapa.com/js/music-production-notes.js`도 HTTP 200.
+- **렌더링 안전장치 정적 확인:** 초기 앨범 목록을 위한 `renderArchive()` fallback이 운영 HTML에 남아 있고, 언어 변경 함수는 해당 목록으로 스토리 설명을 덮어쓰지 않도록 구성됨. 이는 코드 구조 확인이며 실제 브라우저 상호작용 테스트는 아님.
+- **광고 제외 유지:** 운영 `/music` HTML에서 AdSense loader 0개. 이전 Production 전수검사에서 확인한 `/music` 제외 상태가 이번 변경 후에도 유지됨.
+- **홈페이지 회귀 확인:** 운영 홈페이지 HTTP 200, Chris's Pick 스크립트 캐시 버전 `20261103-1` 유지. 복원된 Pick 코드에 앞서 발견한 잘못된 문자열 구문 조각이 운영 HTML/스크립트 응답에 남지 않음.
+- **점수:** 내부 준비도 76/100 유지. 이번 단계는 수정한 MUSIC ARCHIVE의 Production 반영을 확인한 것으로, 브라우저 렌더링·광고 Network·GTM 최신 게시본·Google 계정 내부 상태는 여전히 사용자 확인 항목.
+- **완료 범위:** 소스 수정, main 반영, Production READY, 운영 HTML/스크립트 HTTP 확인 완료. AdSense 재심사 신청은 수행하지 않음.

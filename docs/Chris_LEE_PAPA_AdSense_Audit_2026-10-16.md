@@ -4,7 +4,7 @@
 - **기준 도메인:** https://chrisleepapa.com/
 - **작업 기준 소스:** GitHub `chrisleepapa/chrisleepapa-official`의 `develop` 브랜치 우선. 검증·사용자 승인 전에는 `main`에 반영하지 않음.
 - **심사 이력:** 사용자가 제공한 기록상 chrisleepapa.com은 2026-10-19 사이트 검토를 신청했고 2026-10-30 두 사유로 거절됨. 현재 AdSense 계정의 사이트 등록/상태 및 재검토 가능 여부는 계정 화면 확인 전까지 미확인. 이 문서는 재심사 준비 점검이며, 새로운 검토 요청을 제출하지 않음.
-- **문서 버전:** Audit 1.71 — GTM v2 내보내기 재확인 및 현재 게시본 구분
+- **문서 버전:** Audit 1.81 — Production 24개 URL 전수 HTTP/광고 코드 검증 및 MUSIC ARCHIVE 제작 이력 보강
 - **최초 점검의 역사적 판정:** Audit 1.0 작성 당시의 판단이며 현재 상태를 뜻하지 않음. 아래 미완료 항목은 실제 존재·운영 여부와 최신 소스를 다시 확인한 뒤에만 유효한 점검 대상으로 채택한다.
 
 ## 최우선 기준 — 실제 AdSense 탈락 사유 (고정)
@@ -1365,3 +1365,23 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **정적 검증:** 변경 후 Pick 후보 제외 Set에 SISTER SQUAD 2 본편이 존재하는지, TuTu의 6개 새 문구가 기존 상세 페이지의 6개 카드 문장과 일치하지 않는지, 원본 상세 페이지 파일은 변경되지 않았는지 재조회함.
 - **브랜치/배포:** main에 반영. GitHub push 후 Production 배포 상태와 실제 도메인 반영 여부는 별도 확인.
 - **AdSense 판정:** Pick 자체는 짧은 소개와 상세 페이지 연결이라는 허브/큐레이션 역할로 유지 가능. 반복 문구와 동일 영상의 동일 화면 중복은 줄이는 것이 바람직함. 이번 조치는 해당 반복 요소만 개선하며 AdSense 승인이나 정책 적합성을 보장하지 않음.
+
+### 2026-11-03 / Audit 1.81 — Production 24개 URL 전수 응답·광고 코드 검증 및 MUSIC ARCHIVE 실질 제작 이력 보강
+
+- **기준 도메인:** `https://chrisleepapa.com/`. Vercel Production의 현재 main 배포를 기준으로 서버가 반환한 HTML을 확인함. 이 검사는 HTTP 응답과 정적 HTML 검증이며, 브라우저 JavaScript 실행·광고 네트워크 요청·화면 렌더링을 대신하지 않음.
+- **Sitemap:** Production `/sitemap.xml` HTTP 200. 실제 포함 URL 24개를 읽어 각 경로를 개별 요청함.
+- **응답 결과:** 24/24 URL HTTP 200. 24/24 페이지에 비어 있지 않은 title, 24/24 페이지에 `https://chrisleepapa.com` 기준의 해당 경로 canonical이 존재하고 요청한 경로와 일치함.
+- **H1 구조:** 22/24 페이지는 정적 HTML에 H1 1개. `/privacy`와 `/terms`는 한국어·영어 번역 콘텐츠를 각각 보유하므로 소스에 H1이 각각 2개 존재함. 두 페이지는 `css/common.css`의 `html[lang="ko"] .i18n-en { display:none }` 및 `html[lang="en"] .i18n-ko { display:none }` 규칙으로 현재 언어에 해당하는 섹션만 표시하도록 구성되어 있어, 소스의 H1 개수 2를 동시에 보이는 중복 H1로 판정하지 않음. 실제 언어 전환 렌더링은 브라우저 확인 항목으로 남김.
+- **Production AdSense 코드 분포:** 광고 대상 18개 페이지는 각각 AdSense loader 1개 및 publisher ID 1개. 제외 경로 6개(`/music`, `/movie`, `/bible`, `/contact`, `/privacy`, `/terms`)는 각각 직접 AdSense loader 0개 및 publisher ID 0개. 기존 제외 정책과 실제 운영 HTML이 일치함. 특히 Bible·찬송 페이지에는 직접 광고 코드를 추가하지 않음.
+- **GTM 정적 분포:** sitemap의 24개 페이지 모두 GTM loader 1개. GTM 컨테이너가 실행하는 최신 게시 태그 구성 및 런타임 광고 주입 여부는 정적 HTML만으로 판정하지 않으며, 2026-10-30 export version 2 이후의 게시 버전은 계속 미확인으로 둠.
+- **운영 파일:** Production `/ads.txt` HTTP 200이며 게시자 라인 `google.com, pub-3207219520058740, DIRECT, f08c47fec0942fa0` 확인. `/robots.txt` HTTP 200, 전체 크롤링 허용 및 Production sitemap 주소 확인.
+- **MUSIC ARCHIVE 발견:** `music.html`의 앨범 아카이브는 최초 렌더러 `renderArchive()`와 별도 스토리 렌더러 `renderMusicStories()`가 같은 `#archive-list`를 순차적으로 다시 그리는 구조였음. 언어 전환 시 첫 번째 MutationObserver가 앨범 목록을 다시 그린 직후 두 번째 observer가 스토리 설명으로 덮어써 불필요한 DOM 재생성이 발생할 수 있었음.
+- **MUSIC ARCHIVE 조치:** 초기 로딩의 `renderArchive()`는 유지해 스토리 렌더러 실패 시 앨범 목록 fallback을 보존. 언어 변경 함수에서는 `renderArchive()` 호출을 제거해 스토리 렌더러가 만든 작품별 설명을 불필요하게 덮어쓰지 않도록 수정. 앨범 목록 14개, 한국어·영어 스토리 설명 14개씩 존재하는 것을 정적 소스에서 확인.
+- **제작 기록 캐시:** `music.html`의 `js/music-production-notes.js` 참조 버전이 `20261013`으로 오래되어 있었음. 파일 내용을 바꾸지 않고 참조 query를 `20261103-1`로 갱신해 브라우저가 최신 제작 기록 스크립트를 요청하도록 조치.
+- **MUSIC ARCHIVE 제작 이력 보강:** 일반적인 AI 제작 설명만 반복하지 않도록 실제 제작·발매 과정을 별도 한국어·영어 섹션으로 정리함. 창작자가 주제·감정·장르·보컬/악기 방향을 기획하고 GPT 초안을 직접 수정·보완한 점, 유료 Suno 구독 중 제작한 점, 생성 결과를 비교해 최종 버전을 선택한 점, WAV 파일을 내려받아 DistroKid로 배포하고 Spotify·YouTube 공식 작품 페이지로 연결한 점을 명시. 확인되지 않은 세부 프롬프트나 편집 이력은 만들지 않음.
+- **작품별 기록 정합성:** `js/music-production-notes.js`의 개별 제작 기록 14개와 영어 설명 14개를 대조해 누락 0개 확인. 기존 설명은 실제 입력 프롬프트 원문이 아니라 작품 성격에 기반한 참고용 재구성임을 명시하는 기존 안내를 유지.
+- **MUSIC ARCHIVE 광고 분리:** Production `/music`은 AdSense loader와 publisher ID가 모두 0개인 것을 재확인. 애니메이션 원작을 연상시키는 팬 작업이 섞인 음악 아카이브를 광고 대상에서 제외한 기존 의도적 분리 상태를 변경하지 않음. `/movie`도 동일하게 직접 AdSense 코드 0개.
+- **내부 준비도 점수 재산정:** 기존 74/100을 자동 유지하지 않고 Audit 1.36의 동일 배점표로 재평가함. 크롤링·기술 무결성 **20/20**(유지), 광고 코드 분리·태그 위생 **17/20**(유지), 독창성·콘텐츠 가치 **26/35**(기존 24점에서 +2: SISTER SQUAD 독자 활용 안내, TuTu 소개 중복 해소, WORSHIP 제작 과정·언어 보완, MUSIC ARCHIVE 실제 제작·발매 이력의 구체화), 사용자 경험·접근성 정적 검사 **10/15**(유지: 서버 응답은 전수 확인했으나 실제 브라우저·모바일·키보드 동작은 미검증), 외부 계정·Google 측 확인 **3/10**(유지: AdSense 계정·GTM 최신 게시본·Search Console은 직접 확인 불가). **새 총점 76/100 (+2)**.
+- **점수 해석:** 76점은 이 사이트의 내부 정적 준비도 지표이며 Google 공식 점수·승인 확률이 아님. 실제 브라우저 광고 요청 및 GTM 게시본, 계정 상태가 미확인인 상태에서 높은 점수를 임의로 부여하지 않음.
+- **현재 Production 확인 결과:** 이 Audit 작성 시점의 운영 main 배포는 24개 sitemap URL 모두 HTTP 200이며, 광고 코드 18개 대상/6개 제외 분포가 정확히 일치함. 이번 MUSIC ARCHIVE 수정은 develop에서 재검토한 뒤 main에 동일 변경을 반영함. Production 배포 상태와 새 음악 문구의 실제 운영 반영은 배포 완료 후 별도 확인함.
+- **사용자 직접 확인으로 남기는 항목:** 실제 브라우저 PC·모바일 시각 렌더링, 한국어↔영어 전환, Spotify/YouTube 재생, 스크립트 실패 시 fallback, 광고 실제 노출 위치·Network 요청, AdSense/GTM/Search Console 계정 내부 상태. 이 항목은 확인하지 않은 채 완료 표시하지 않음.

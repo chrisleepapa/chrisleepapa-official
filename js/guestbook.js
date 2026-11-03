@@ -835,6 +835,12 @@
     const section = wrapper.firstElementChild;
 
     if (footer) {
+      /* Music archive has editorial sections after main.js loads. Move its footer
+         container to the true end first, then place the guestbook immediately
+         before it so the guestbook is the final content section on the page. */
+      if (/^\\/music\\/?$/.test(location.pathname)) {
+        document.body.appendChild(footer);
+      }
       footer.parentNode.insertBefore(section, footer);
     } else {
       document.body.appendChild(section);

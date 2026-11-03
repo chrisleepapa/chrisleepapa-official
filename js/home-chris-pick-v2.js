@@ -90,7 +90,7 @@
   function getDailyPick(picks){const eligible=picks.filter(p=>!HOMEPAGE_PICK_EXCLUSIONS.has(p.title));const pool=eligible.length?eligible:picks;let hash=2166136261;const key=getTodayKey();for(let i=0;i<key.length;i++){hash^=key.charCodeAt(i);hash=Math.imul(hash,16777619);}return pool[(hash>>>0)%pool.length];}
   function getLang(){return (window.getCurrentLang?window.getCurrentLang():document.documentElement.lang||'ko').toString().toLowerCase().startsWith('en')?'en':'ko';}
   const EN_TITLE_MAP={
-    'SISTER SQUAD 2 · 본편':'SISTER SQUAD 2 · Full Story','사랑한다고':'I Love You','2026 난리났어':'2026 — It’s Wild','벽력일섬':'Thunderclap and Flash','영역전개':'Domain Expansion',
+    'SISTER SQUAD 2 · 본편':'SISTER SQUAD 2 · Full Story','사랑한다고':'I Love You','나의 찬양 Vol.1':'My Hymn Vol.1','나의 찬양 Vol.2':'My Hymn Vol.2','나의 찬양 Vol.3':'My Hymn Vol.3','2026 난리났어':'2026 — It’s Wild','벽력일섬':'Thunderclap and Flash','영역전개':'Domain Expansion',
     '역대급 출연진 귀칼 실사 촬영 현장 #귀멸의칼날':'Demon Slayer Live-Action Set — Behind the Scenes','사랑한다고 MV':'I Love You — Music Video',
     '체인소맨 Rev It Up':'Chainsaw Man — Rev It Up','주술회전 영역전개':'Jujutsu Kaisen — Domain Expansion','귀멸의칼날 벽력일섬':'Demon Slayer — Thunderclap and Flash',
     '귀멸의칼날 난리났어':'Demon Slayer — It’s Wild','로봇전쟁 Final Round':'Robot War — Final Round','귀멸의칼날 촬영준비':'Demon Slayer — Preparing to Film',

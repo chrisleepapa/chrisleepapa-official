@@ -327,7 +327,7 @@ function getBibleJourneyChapters(){
     if(!grouped.has(key))grouped.set(key,{book:bookNo,chapter:chapterNo,verses:[]});
     grouped.get(key).verses.push(v);
   }
-  return [...grouped.values()].sort((a,b)=>bibleJourneyBookNumber(a.book)-bibleJourneyBookNumber(b.book)||a.chapter-b.chapter);
+  return [...grouped.values()].sort((a,b)=>a.book-b.book||a.chapter-b.chapter);
 }
 let openBibleJourneyIndex=null;
 function renderBibleJourneyReflection(saved,today,show){

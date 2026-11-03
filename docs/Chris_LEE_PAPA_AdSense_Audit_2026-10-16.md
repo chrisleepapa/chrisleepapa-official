@@ -1322,3 +1322,14 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **조치/배포:** 이번 단계에서 GTM Workspace, Production, Preview에 어떠한 변경도 하지 않음. 일일 배포 제한 및 사용자 승인 전까지 새 배포를 만들지 않음.
 - **다음 필수 검증:** GTM에서 현재 게시된 버전/게시 시각 확인, 최신 컨테이너 export와 10월 30일 버전 2 비교, 실제 페이지에서 GTM/GA4 중복 page_view 여부 및 광고 요청을 브라우저 Network로 확인.
 - **점수:** 내부 점수 74/100 유지. Production의 현재 main 배포와 GTM 과거 export는 확인했으나 최신 GTM 게시 상태와 실광고 요청이 미확정이므로 점수 상향 근거가 아님.
+
+
+### 2026-11-03 / Audit 1.78 — 광고 제외 4개 경로 AdSense loader 재검증
+
+- **대상:** develop의 `bible.html`, `contact.html`, `privacy.html`, `terms.html`.
+- **확인 결과:** 네 페이지 모두 AdSense loader 0개, publisher ID `ca-pub-3207219520058740` 직접 표기 0개. 각 페이지에는 GTM script 1개가 존재함.
+- **Canonical:** `https://chrisleepapa.com/bible`, `/contact`, `/privacy`, `/terms`로 각 페이지의 공식 .com canonical 확인.
+- **구조:** Bible과 Contact는 H1 1개. Privacy와 Terms는 정적 HTML에서 H1 2개가 확인되어 향후 접근성/제목 계층 점검 대상으로 기록하되, 이번 AdSense 제외 점검에서는 광고 코드 변경 없이 유지.
+- **조치:** 네 페이지 모두 소스 수정 없음. 성경/찬송 콘텐츠에 광고 로더나 publisher ID를 추가하지 않음.
+- **한계:** GTM script가 존재하므로 10월 30일 export 이후 컨테이너 게시본이 변경되었는지, GTM을 통한 광고 관련 태그가 없는지는 최신 GTM export 또는 실제 브라우저 Network 확인 전까지 미확정.
+- **점수:** 내부 점수 74/100 유지. 제외 경로의 직접 AdSense 코드 제거 상태는 정적 소스상 양호하나 GTM 최신 게시본/실제 요청 검증이 남아 있음.

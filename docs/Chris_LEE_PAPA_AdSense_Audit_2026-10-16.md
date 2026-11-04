@@ -2151,7 +2151,7 @@ develop의 현재 소스에서 다음 16개 파일의 `href` / `src` 외부 URL�
 - NG 영상 카드에 한국어·영어 번역 키를 연결하고 본편 제작 비하인드라는 맥락을 보강함.
 - iframe ID·영상 순서·본편 영상 및 캐릭터/작품 본문은 변경하지 않음.
 - develop commit: `6ff73da87bbfe57be9cd107c5eaddf14640f9b80`.
-- SISTER SQUAD 2 수정은 `6ff73da87bbfe57be9cd107c5eaddf14640f9b80`에서 기록됨. Movie 페이지의 마지막 수정 커밋은 `7422da5899fd5945a6bc8aa573397f0ebafa69c0`.
+- develop commit: `6ff73da87bbfe57be9cd107c5eaddf14640f9b80`.
 - **실제 브라우저 화면 검증 전.** 최신 통합문서 커밋까지 Vercel Preview 배포 상태 확인이 필요함. main/Production 변경 없음.
 
 ### 2026-11-04 / Audit 2.07 — Movie Archive 실제 영상 정보 대조 및 설명 보강
@@ -2182,7 +2182,7 @@ develop의 현재 소스에서 다음 16개 파일의 `href` / `src` 외부 URL�
 - 기존 페이지 소개에 있던 “신앙과 예술이 만나는 시네마틱 단편”은 현재 대표 영상 구성과 맞지 않아 제거하고, 실제 페이지에 있는 오리지널 뮤직비디오·AI 팬 콘셉트·로봇 액션·세로형 작품으로 정리함.
 - 광고 제외 정책은 그대로 유지: Movie 페이지의 AdSense loader 제외 상태를 변경하지 않음.
 - develop commits: `b324458d678e317b0eadde42c23594de0eb284e6` (영상 설명/팬 콘셉트·세로형 카드 보강), `7422da5899fd5945a6bc8aa573397f0ebafa69c0` (한국어·영어 meta/OG 설명 동기화).
-- **아직 Vercel 배포 및 실제 브라우저 화면 검증 전.** main/Production 변경 없음.
+- **실제 브라우저 화면 검증 전.** 최신 통합문서 커밋까지 Vercel Preview 배포 상태 확인이 필요함. main/Production 변경 없음.
 
 #### 3) AdSense 관점 판정
 - 두 페이지 모두 단순 영상 임베드에 그치지 않도록 영상별 맥락, 창작 의도, 제작 과정, 작품 해설을 보강함. 이는 “복제된 콘텐츠가 있는 화면”과 “가치가 별로 없는 콘텐츠”라는 고정 심사 기준에 대응하는 콘텐츠 설명 개선임.

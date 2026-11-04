@@ -1998,3 +1998,17 @@ develop의 현재 소스에서 다음 16개 파일의 `href` / `src` 외부 URL�
 - **완료:** 최신 GitHub main/develop 및 Vercel Production/develop 상태 재확인, 브랜치 분기 확인, 광고 제외 8개 경로 고정, 광고 대상 16개 페이지 외부 링크의 소스상 존재 확인.
 - **미완료:** GTM Published/GA4 DebugView, 실제 PC·모바일 브라우저 렌더링과 Network 요청, 외부 링크 목적지의 실제 정상 여부, AdSense 계정 상태, Search Console 색인 상태.
 - **수정/배포:** 사이트 코드 수정 없음. 통합 점검문서만 develop에서 갱신. main/Production 변경 없음.
+
+
+### 2026-11-04 / Audit 2.03 — GTM Published 버전 2 상세 설정 확인
+
+- 사용자가 제공한 GTM 버전 2 상세 화면에서 게시 상태 및 태그 구성을 확인함.
+- 게시 버전: 2. 게시자: `myeongheon.mung@gmail.com`. 게시 시각: 2026-10-15 10:43.
+- 태그: `Google tag - GA4` 1개 추가됨.
+- 측정 ID: `G-NBGELYQ4TZ`.
+- 태그의 실행 트리거: `All Pages` (활동 기록에 표시됨).
+- 버전 설명에도 공식 도메인 `chrisleepapa.com`의 GA4 Google tag 및 All Pages 설정이 명시됨.
+- **완료:** 현재 Published 버전 2의 GA4 태그 이름, 측정 ID, All Pages 트리거를 사용자 제공 상세 화면으로 확인. 2026-10-30 export의 GA4 ID 및 All Pages 정보와 일치.
+- **미완료:** 실제 사이트에서 GA4 요청이 발생하는지, GA4 실시간/DebugView 수집 여부, page_view 중복 여부, 동의 상태에 따른 동작, 광고 제외 8개 경로에서 실제 광고 네트워크 요청이 없는지 여부.
+- 다음 순서: 실제 PC/모바일 페이지에서 Network 및 GA4 DebugView를 확인하고, 이후 광고 제외 8개 경로의 광고 요청 여부를 검증한다. GTM 설정 자체는 현 단계에서 변경하지 않는다.
+- main/Production 변경 없음. 사이트 코드 변경 없음.

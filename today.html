@@ -141,6 +141,7 @@ let bibleVerses=[]; let verse=['말씀을 불러오는 중입니다.','BIBLE','L
 // Share one external Bible download between Today's Word and My Bible Journey.
 // The full Bible JSON is large; fetching it twice in parallel can leave one section blank on mobile.
 let bibleDatasetPromise=null;
+let bibleDatasetLoadError=false;
 async function loadBibleDataset(){
   if(!bibleDatasetPromise){
     bibleDatasetPromise=(async()=>{
@@ -151,16 +152,23 @@ async function loadBibleDataset(){
       let lastError=null;
       for(const url of sources){
         try{
-          const response=await fetch(url);
-          if(!response.ok)throw new Error('Bible data request failed ('+response.status+')');
-          const data=await response.json();
+          const controller=new AbortController();
+          const timeout=setTimeout(()=>controller.abort(),15000);
+          let data;
+          try{
+            const response=await fetch(url,{signal:controller.signal,cache:'force-cache'});
+            if(!response.ok)throw new Error('Bible data request failed ('+response.status+')');
+            data=await response.json();
+          }finally{clearTimeout(timeout)}
           const verses=(Array.isArray(data)?data:[]).filter(v=>v&&(v.content!=null||v.text!=null)&&v.book!=null&&v.chapter!=null&&v.verse!=null);
           if(!verses.length)throw new Error('Bible dataset is empty or has an unexpected format');
           bibleVerses=verses;
+          bibleDatasetLoadError=false;
           return verses;
         }catch(error){lastError=error}
       }
       bibleDatasetPromise=null;
+      bibleDatasetLoadError=true;
       throw lastError||new Error('Bible data could not be loaded');
     })();
   }
@@ -361,7 +369,7 @@ function getBibleJourneyChapters(){
     if(!grouped.has(key))grouped.set(key,{book:bookNo,chapter:chapterNo,verses:[]});
     grouped.get(key).verses.push(v);
   }
-  return [...grouped.values()].sort((a,b)=>a.book-b.book||a.chapter-b.chapter);
+  return [...grouped.values()].sort((a,b)=>bibleJourneyBookNumber(a.book)-bibleJourneyBookNumber(b.book)||a.chapter-b.chapter);
 }
 let openBibleJourneyIndex=null;
 function renderBibleJourneyReflection(saved,today,show){
@@ -394,8 +402,21 @@ async function saveBibleJourneyReflection(){
 function renderBibleJourney(){
   const listEl=document.getElementById('journeyChapterList'),refEl=document.getElementById('journeyRef'),passageEl=document.getElementById('journeyPassage'),progressEl=document.getElementById('journeyProgress'),btn=document.getElementById('journeyCompleteBtn');
   if(!listEl||!refEl||!passageEl||!progressEl||!btn)return;
-  if(!Array.isArray(bibleVerses)||!bibleVerses.length){listEl.textContent='성경 목록을 불러오는 중입니다.';refEl.hidden=true;passageEl.hidden=true;btn.hidden=true;return}
-  if(!bibleJourneyLoaded){listEl.innerHTML='';refEl.hidden=true;passageEl.hidden=true;btn.hidden=true;progressEl.textContent=bibleJourneyLoadError?'통독 기록을 서버에서 불러오지 못했습니다. 연결을 확인한 뒤 새로고침해 주세요.':'Supabase에서 통독 기록을 불러오는 중…';return}
+  if(!bibleJourneyLoaded){
+    listEl.innerHTML='';refEl.hidden=true;passageEl.hidden=true;btn.hidden=true;
+    progressEl.textContent=bibleJourneyLoadError?'통독 기록을 서버에서 불러오지 못했습니다. 연결을 확인한 뒤 새로고침해 주세요.':'Supabase에서 통독 기록을 불러오는 중…';
+    return;
+  }
+  if(!Array.isArray(bibleVerses)||!bibleVerses.length){
+    const saved=getJSON(bibleJourneyKey(),{nextChapterIndex:0,completedDays:0});
+    const today=localDate();
+    const count=saved.lastReadAt===today?Math.max(0,Number(saved.dailyReadCount)||0):0;
+    const total=Math.max(0,Number(saved.nextChapterIndex)||0);
+    progressEl.textContent='오늘 '+count+'/4장 완료 · 전체 '+total+'장 읽음 · '+(bibleDatasetLoadError?'성경 본문 연결에 실패했습니다. 다시 불러오는 중…':'성경 목록 불러오는 중…');
+    listEl.textContent=bibleDatasetLoadError?'성경 목록을 불러오지 못했습니다. 잠시 후 새로고침해 주세요.':'오늘 읽을 4장 목록을 준비하고 있습니다…';
+    refEl.hidden=true;passageEl.hidden=true;btn.hidden=true;
+    return;
+  }
   const chapters=getBibleJourneyChapters();
   if(!chapters.length){listEl.textContent='성경 목록을 불러오지 못했습니다. 잠시 후 다시 열어 주세요.';refEl.hidden=true;passageEl.hidden=true;btn.hidden=true;return}
   const saved=getJSON(bibleJourneyKey(),{nextChapterIndex:0,completedDays:0});
@@ -438,11 +459,13 @@ async function loadBibleJourneyBibleData(){
     await loadBibleDataset();
     renderBibleJourney();
   }catch(error){
+    bibleDatasetLoadError=true;
     console.error('My Bible Journey Bible data load failed:',error);
     if(!Array.isArray(bibleVerses)||!bibleVerses.length){
       if(listEl)listEl.textContent='성경 본문을 불러오지 못했습니다. 잠시 후 새로고침해 주세요.';
       if(progressEl)progressEl.textContent='성경 본문 데이터 연결을 확인해 주세요.';
     }
+    renderBibleJourney();
   }
 }
 function openBibleJourneyChapter(index){

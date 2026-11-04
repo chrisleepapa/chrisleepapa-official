@@ -5,10 +5,18 @@
   const FALLBACK_IMAGE = 'https://www.publicdomainpictures.net/pictures/60000/velka/bible-open-to-psalm-118-1378400894gXP.jpg';
 
   function removeDuplicateIntroBlocks() {
-    // The Bible page now owns its static banner and explanatory sections.
-    // Do not remove the mid-page text blocks; they are intentional content.
+    // Keep the detailed creator story, but remove the older short motivation block
+    // that was re-inserted immediately before the shared guestbook.
     const creationContext = document.getElementById('bible-creation-context');
     if (creationContext) creationContext.remove();
+  }
+
+  function watchForDuplicateCreationContext() {
+    if (!document.body || window.__clpBibleCreationContextObserver) return;
+    const observer = new MutationObserver(() => removeDuplicateIntroBlocks());
+    observer.observe(document.body, { childList: true, subtree: true });
+    window.__clpBibleCreationContextObserver = observer;
+    removeDuplicateIntroBlocks();
   }
 
   function applyBibleLayout() {
@@ -145,6 +153,7 @@
 
   function init() {
     applyBibleLayout();
+    watchForDuplicateCreationContext();
     installTop5ProgressSync();
     setTimeout(applyBibleLayout, 500);
     setTimeout(applyBibleLayout, 1500);

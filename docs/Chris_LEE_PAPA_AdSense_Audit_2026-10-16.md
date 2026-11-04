@@ -2294,3 +2294,13 @@ develop의 현재 소스에서 다음 16개 파일의 `href` / `src` 외부 URL�
   5. AdSense 계정 상태 및 Search Console 색인·canonical 보고서는 사용자가 직접 확인 가능한 계정 화면에서 검증.
 - AdSense 재검토 요청은 제출하지 않았다. 사용자 별도 지시 전까지 제출하지 않는다.
 
+
+
+#### 6) About·Contact·Privacy·Terms 공개 본문 간단 확인
+- 네 페이지 모두 Production HTTP 200 응답.
+- `/contact`의 공개 연락처는 `papamunglog@gmail.com`; `/terms`에도 같은 주소가 표시됨. 이는 2026-11-03에 Terms 연락처를 해당 주소로 통일해 달라는 사용자의 결정과 일치한다.
+- `/privacy`에는 문의 주소로 `chrisleepapa@gmail.com`이 표시됨. Contact/Terms와 주소가 다르지만 개인정보 관련 별도 문의 주소로 의도했을 가능성을 배제할 수 없어 이번 점검에서는 임의 변경하지 않고 **확인 필요**로 기록한다.
+- Contact 본문에는 “24시간 이내” 응답 안내가 표시됨. 실제 운영상 해당 응답 약속을 계속 지킬 수 있는지 확인 전까지 문구를 수정하지 않는다.
+- About에는 창작자 소개, Sister Squad 기획 배경, AI 도구 활용과 창작 철학이 실제 본문 텍스트로 확인됨.
+- **미완료:** Contact 폼/메일 링크 실제 전송, Privacy/Terms의 모든 외부 정책 링크 및 공통 푸터 연결은 브라우저 상호작용 검증 전까지 미완료.
+

@@ -100,7 +100,11 @@
   function injectBibleCreatorStory() {
     if (document.getElementById('bible-creator-story')) return;
 
-    const footer = document.querySelector('footer');
+    // Shared site footer is mounted in #site-footer (a DIV), not a semantic <footer>.
+    // Keep this page-specific editorial section above the shared guestbook and footer.
+    const insertionPoint = document.getElementById('guestbook-section')
+      || document.getElementById('site-footer')
+      || document.querySelector('footer');
     const section = document.createElement('section');
     section.id = 'bible-creator-story';
     section.setAttribute('aria-labelledby', 'bible-creator-story-title');
@@ -276,8 +280,11 @@
       </div>
     `;
 
-    if (footer) footer.parentNode.insertBefore(section, footer);
-    else document.body.appendChild(section);
+    if (insertionPoint && insertionPoint.parentNode) {
+      insertionPoint.parentNode.insertBefore(section, insertionPoint);
+    } else {
+      document.body.appendChild(section);
+    }
 
     installBibleCreatorStoryLanguage(section);
   }

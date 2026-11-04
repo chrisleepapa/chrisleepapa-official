@@ -9,7 +9,7 @@
     async function hash(value){const data=new TextEncoder().encode(value);const digest=await crypto.subtle.digest('SHA-256',data);return [...new Uint8Array(digest)].map(b=>b.toString(16).padStart(2,'0')).join('')}
     function normalizeInitials(v){return String(v||'').trim().toUpperCase()}
     function validInitials(v){return /^[A-Z]{3}$/.test(v)} function validPin(v){return /^\d{4}$/.test(String(v||''))}
-    function getUser(){const s=read(SESSION_KEY,null);return s&&validInitials(s.initials)?s:null} function isLoggedIn(){return !!getUser()}
+    function getUser(){const s=read(SESSION_KEY,null);return s&&validInitials(s.initials)&&/^[a-f0-9]{64}$/i.test(String(s.pinHash||''))?s:null} function isLoggedIn(){return !!getUser()}
     async function supabaseRPC(name,body){try{const r=await fetch(`${SUPA_URL}/rest/v1/rpc/${name}`,{method:'POST',headers:{apikey:SUPA_KEY,Authorization:`Bearer ${SUPA_KEY}`,'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(body)});if(!r.ok)return{ok:false,status:r.status};return{ok:true,data:await r.json()}}catch(_){return{ok:false,status:0}}}
     async function login(initials,pin,createIfMissing=true){initials=normalizeInitials(initials);pin=String(pin||'').trim();if(!validInitials(initials))return{ok:false,error:'이니셜은 영문 3자리로 입력해주세요.'};if(!validPin(pin))return{ok:false,error:'PIN은 숫자 4자리로 입력해주세요.'};const pinHash=await hash(pin),key=ACCOUNT_PREFIX+initials,localAccount=read(key,null);const remote=await supabaseRPC('clp_login',{p_initials:initials,p_pin_hash:pinHash,p_create_if_missing:!!createIfMissing});if(remote.ok){const result=Array.isArray(remote.data)?remote.data[0]:remote.data;if(!result||result.ok!==true)return{ok:false,error:result?.error||'로그인 정보를 확인해주세요.'}}else if(localAccount&&localAccount.pinHash!==pinHash)return{ok:false,error:'PIN이 일치하지 않습니다.'};else if(!localAccount&&!createIfMissing)return{ok:false,error:'등록되지 않은 계정입니다.'};if(!localAccount)write(key,{initials,pinHash,createdAt:new Date().toISOString()});const session={initials,pinHash,loginAt:new Date().toISOString(),backend:remote.ok?'supabase':'local-cache'};write(SESSION_KEY,session);window.dispatchEvent(new CustomEvent('chrisleepapa-auth-change',{detail:{user:session}}));hydrateTodayFromSupabase(session).catch(()=>{});return{ok:true,user:session,initials}}
     function logout(){remove(SESSION_KEY);window.dispatchEvent(new CustomEvent('chrisleepapa-auth-change',{detail:{user:null}}))}
@@ -45,7 +45,16 @@
         const form=modal.querySelector('form');form.addEventListener('submit',async e=>{e.preventDefault();const err=modal.querySelector('.auth-error');err.textContent='';initialsInput.value=normalizeInitials(initialsInput.value);const result=await login(initialsInput.value,modal.querySelector(`#${prefix}-pin`).value,true);if(!result.ok){err.textContent=result.error;return}modal.remove();if(typeof options.onSuccess==='function')options.onSuccess(result.user)});initialsInput.focus();
     }
     window.CLPAuth={login,logout,getUser,isLoggedIn,normalizeInitials,validInitials,validPin,clearLegacyTodaySession,sessionKey:SESSION_KEY,supabaseUrl:SUPA_URL,backend:'supabase',showLoginModal};
-    try{const legacy=localStorage.getItem('chrisleepapa-today-session'),current=localStorage.getItem(SESSION_KEY);if(!current&&legacy){const initials=normalizeInitials(legacy);if(validInitials(initials))write(SESSION_KEY,{initials,loginAt:new Date().toISOString(),migrated:true})}}catch(_){ }
+    // Legacy TODAY sessions stored initials only and cannot authenticate Supabase requests.
+    // Remove the incomplete session and require a fresh shared login; never fabricate a PIN hash.
+    try{
+        const raw=localStorage.getItem(SESSION_KEY);
+        if(raw){
+            let current=null;try{current=JSON.parse(raw)}catch(_){}
+            if(!current||!validInitials(current.initials)||!/^[a-f0-9]{64}$/i.test(String(current.pinHash||'')))remove(SESSION_KEY);
+        }
+        remove('chrisleepapa-today-session');
+    }catch(_){ }
     if(/^\/today(?:\.html)?\/?$/i.test(window.location.pathname||'')){
         const loadTodayBridge=()=>{if(document.getElementById('today-auth-bridge'))return;const s=document.createElement('script');s.id='today-auth-bridge';s.src='/js/today-auth-bridge.js?v=20260916';document.head.appendChild(s)};
         if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',loadTodayBridge,{once:true});else setTimeout(loadTodayBridge,0);

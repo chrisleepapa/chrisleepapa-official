@@ -4,7 +4,7 @@
 - **기준 도메인:** https://chrisleepapa.com/
 - **작업 기준 소스:** GitHub `chrisleepapa/chrisleepapa-official`의 `develop` 브랜치 우선. 검증·사용자 승인 전에는 `main`에 반영하지 않음.
 - **심사 이력:** 사용자가 제공한 기록상 chrisleepapa.com은 2026-10-19 사이트 검토를 신청했고 2026-10-30 두 사유로 거절됨. 현재 AdSense 계정의 사이트 등록/상태 및 재검토 가능 여부는 계정 화면 확인 전까지 미확인. 이 문서는 재심사 준비 점검이며, 새로운 검토 요청을 제출하지 않음.
-- **문서 버전:** Audit 2.08 — 2026-11-04 최신 SISTER SQUAD 2 본편 및 Movie Archive 영상 내용 대조·설명 보강, develop 배포 확인 기록
+- **문서 버전:** Audit 2.10 — 2026-11-04 Production 최신 배포·24개 URL·16/8 광고 코드 분포 및 SISTER SQUAD 2/Movie 반영 검증
 - **최초 점검의 역사적 판정:** Audit 1.0 작성 당시의 판단이며 현재 상태를 뜻하지 않음. 아래 미완료 항목은 실제 존재·운영 여부와 최신 소스를 다시 확인한 뒤에만 유효한 점검 대상으로 채택한다.
 
 ## 최우선 기준 — 실제 AdSense 탈락 사유 (고정)
@@ -58,10 +58,10 @@
 | ID | 항목 | 현재 결과 | 위험도 | 이유 / 다음 조치 |
 |---|---|---|---|---|
 | A-01 | 기준 도메인과 canonical | **대체로 양호** | 중 | 홈페이지 `index.html`의 canonical 및 OG URL은 `https://chrisleepapa.com/`. 주요 정적 페이지에도 새 도메인 canonical이 존재함. 전체 URL에 대해 일관성 검사가 더 필요함. |
-| A-02 | AdSense 스크립트 | **Production/develop 16/8 확인** | 중 | develop sitemap 24개 중 광고 대상 16개는 loader/publisher 각 1개, 제외 8개는 각 0개로 전수 확인. 최신 Production main의 24개 HTML 재검사(Audit 1.90)에서도 광고 대상 16개는 loader/publisher 각 1개, 제외 8개는 각 0개로 확인됨. GTM 런타임 광고 주입 여부는 미확인. GTM 런타임 광고 주입 여부는 미확인. |
-| A-03 | `ads.txt` | **소스상 정상** | 낮음 | `google.com, pub-3207219520058740, DIRECT, f08c47fec0942fa0` 한 줄 확인. 실제 공개 URL `https://chrisleepapa.com/ads.txt` 응답도 브라우저에서 확인할 것. |
-| A-04 | `robots.txt` | **소스상 허용** | 낮음 | `User-agent: *` / `Allow: /` 및 새 도메인 sitemap 주소가 확인됨. 실제 응답과 Google 크롤러 차단 여부는 Search Console에서 재확인. |
-| A-05 | Sitemap 구성 | **develop sitemap 24개 URL 확인** | 낮음 | develop의 sitemap.xml에서 URL 24개를 확인하고 광고 대상 16개 URL은 Preview HTTP 200까지 확인. 오전 Search Console 제출 후 실제 처리·색인 상태는 계정 접근이 없어 별도 미확인. |
+| A-02 | AdSense 스크립트 | **Production 16/8 재확인** | 중 | 2026-11-04 최신 Production 배포의 sitemap 24개 URL을 모두 조회. 광고 대상 16개는 loader/publisher 각 1개, 제외 8개는 각 0개로 확인. GTM 런타임 광고 주입 여부와 실제 광고 요청은 미확인. |
+| A-03 | `ads.txt` | **Production HTTP 200 확인** | 낮음 | `https://chrisleepapa.com/ads.txt` 응답 HTTP 200, `google.com, pub-3207219520058740, DIRECT, f08c47fec0942fa0` 한 줄 확인. |
+| A-04 | `robots.txt` | **Production HTTP 200 확인** | 낮음 | 공개 응답 HTTP 200. `User-agent: *`, `Allow: /`, 공식 sitemap 주소 확인. Google 색인/크롤링 실제 처리 상태는 Search Console에서 별도 확인. |
+| A-05 | Sitemap 구성 | **Production 24/24 HTTP 200 확인** | 낮음 | 2026-11-04 Production sitemap에서 24개 URL 확인, 24개 URL 모두 HTTP 200. 확인한 페이지의 canonical·robots 메타 존재. Search Console의 실제 처리·색인 상태는 별도 미확인. |
 | A-06 | 홈페이지 Chris's News | **해소된 과거 항목** | 낮음 | 2026-11-02 이후 main의 index.html, js/home-chris-note.js, js/home-chris-pick-v2.js 재확인에서 Chris's News 및 관련 로딩 문구가 현재 공개 소스에 존재하지 않음. 사용자가 이미 삭제한 항목이므로 신규 위험이나 수정 과제로 되살리지 않음. |
 | A-07 | 독창적 콘텐츠 | **develop 광고 대상 16개 페이지 정적·Preview 응답 점검 완료, 런타임 확인 잔여** | 중 | Audit 1.86~1.87에서 16개 페이지 본문·임베드 맥락·동적 콘텐츠 구조를 재확인하고 모두 Preview HTTP 200 확인. 홈페이지 목적 문구와 TuTu 6개 에피소드 설명을 보강함. 실제 브라우저 상호작용, 광고 요청, 외부 원본과의 대조는 별도 미완료. |
 | A-08 | 개인정보처리방침 | **핵심 내용 있음, 최종 검토 필요** | 중 | 운영자 및 연락처, 자동 수집 정보, 방명록 데이터, 쿠키, Google AdSense/Analytics, 제3자 광고 파트너 관련 설명이 포함됨. 실제 운영 데이터 처리 방식과 일치하는지, 맞춤 광고 비활성화 안내/정책 링크가 실제 클릭 가능한지 확인. |
@@ -125,7 +125,7 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 2. 주요 URL을 로그아웃/시크릿 창과 모바일 화면에서 열어 접근 제한이나 오류가 없는지 확인한다.
 3. 최종 체크리스트를 완료하고 그때만 AdSense의 사이트 검토 요청을 누른다.
 
-## 5. 심사 전 체크리스트 — 2026-11-02 최신 확인 기준
+## 5. 심사 전 체크리스트 — 2026-11-04 최신 Production 확인 기준
 
 체크 표시는 실제로 확인한 증거가 있는 항목에만 적용한다. 계정 내부 또는 실제 브라우저 검증이 필요한 항목은 미완료로 남긴다.
 
@@ -2252,3 +2252,45 @@ develop의 현재 소스에서 다음 16개 파일의 `href` / `src` 외부 URL�
 - Vercel Preview 배포 및 실제 develop URL의 응답 검증은 후속 확인 필요.
 - 실제 모바일 화면 렌더링과 언어 전환은 아직 기기에서 확인하지 않았다.
 - main/Production 변경 없음. 사용자 별도 지시 전까지 main 병합 금지.
+
+
+### 2026-11-04 / Audit 2.10 — 최신 Production 배포 및 통합 점검 재검증
+
+**점검 기준:** 공식 운영 도메인 `https://chrisleepapa.com`, Vercel Production 배포 `dpl_2s3JeivVUj7knHcdnexGJUea1qqf`, source commit `846c3beaef97c5b59d34a2ef3e5284b5d445dd2e`.
+
+#### 1) 브랜치·배포 일치 확인
+- 점검 시작 시 GitHub `main`과 `develop` 비교 결과 **identical**, 양쪽 SHA `846c3beaef97c5b59d34a2ef3e5284b5d445dd2e`, ahead/behind 0.
+- Vercel Production 배포 `dpl_2s3JeivVUj7knHcdnexGJUea1qqf`: **READY**, alias `chrisleepapa.com`, aliasError 없음.
+- 운영 도메인의 Movie 페이지 HTTP 200 및 최신 HTML을 확인. 이번 배포는 위 커밋의 Production 적용을 완료함.
+- 이 Audit 기록을 남기기 위해 이후 `develop`의 통합 점검문서만 갱신한다. 따라서 문서 커밋 이후에는 문서 파일 1개 때문에 main/develop 커밋이 다시 달라질 수 있으며, 사이트 코드와 현재 Production 배포 소스는 변경하지 않는다.
+
+#### 2) Production sitemap·기본 응답 전수 재확인
+- `https://chrisleepapa.com/sitemap.xml`: HTTP 200, URL 24개.
+- Sitemap에 기재된 24개 URL을 각각 조회한 결과 모두 HTTP 200.
+- 조회한 24개 페이지에서 canonical 및 robots 메타 태그 존재를 확인했다. 하위 세부 경로의 canonical 값은 페이지별로 확인 가능한 범위에서 공식 도메인과 일치했다.
+- 24개 페이지 모두 GTM script 1개 및 GTM noscript 1개 확인.
+- `/ads.txt`: HTTP 200, 게시자 라인 `google.com, pub-3207219520058740, DIRECT, f08c47fec0942fa0` 확인.
+- `/robots.txt`: HTTP 200, `User-agent: *`, `Allow: /`, 공식 sitemap 경로 확인.
+
+#### 3) AdSense 직접 코드 분포 — 최신 Production
+- 광고 대상 16개 페이지: `/`, `/sistersquad-hub`, `/sistersquad`, `/sistersquad2`, `/yul`, `/jung`, `/miracleshot`, `/tutupupupipi`, `/wallpaper`, `/about`, `/journal-1`~`/journal-6`.
+- 위 16개 페이지 각각에서 AdSense loader 1개 및 publisher ID 1개 확인.
+- 사용자 확정 광고 제외 8개 `/music`, `/movie`, `/bible`, `/worship`, `/worship_eng`, `/contact`, `/privacy`, `/terms` 각각에서 AdSense loader 0개 및 publisher ID 0개 확인.
+- **판정:** 직접 HTML 코드 배치는 확정된 16/8 정책과 일치. 이것은 GTM을 통한 런타임 광고 삽입 여부나 실제 광고 요청/노출을 증명하지 않는다. AdSense 미승인 상태에서 광고가 실제 송출됐다고 가정하지 않는다.
+
+#### 4) 복제 콘텐츠 위험 관련 실제 반영 확인
+- 홈페이지 `/`: SISTER SQUAD 2 본편 iframe ID `sKkPYaMM75A`가 없음. 대신 `/images/sistersquad2_poster.jpg` 포스터와 `/sistersquad2` 전용 페이지 링크가 있음.
+- `/sistersquad2`: 본편 iframe `sKkPYaMM75A`가 유지됨. 따라서 같은 본편이 홈페이지와 전용 페이지에 동시에 직접 임베드되는 구조는 Production에서 제거된 상태.
+- `/movie`: HTTP 200, AdSense loader/publisher ID 0개. `.movie-note-video` 제작노트 중복 영상 요소 0개, Featured Playlist 관련 마크업은 유지됨. 제작노트의 텍스트 콘텐츠 영역은 남아 있음.
+- **콘텐츠 판정:** 중복 노출을 줄이고 영상별 고유 페이지/제작 설명으로 역할을 나눈 구조 개선이 Production에 반영됨. 이것만으로 Google의 복제 콘텐츠 정책 준수나 승인 여부를 확정하지 않는다.
+
+#### 5) 내부 준비도 점수 및 남은 작업
+- 기존 Production 내부 준비도 **77/100**을 유지한다. 이번 차수는 배포·HTTP·정적 광고 코드 분포를 최신 운영본에서 재확인한 것이며, 실제 브라우저 UX, GTM/GA4 런타임, AdSense 계정 및 Search Console 내부 자료를 검증하지 못했으므로 점수는 올리지 않는다.
+- 미완료 우선순위:
+  1. PC·모바일 브라우저에서 실제 메뉴, 푸터, 언어 전환, 영상/버튼, 동적 섹션 및 광고 제외 화면을 수동 확인.
+  2. GTM Published 버전·GA4 DebugView/실시간 page_view·중복 태그 여부 확인.
+  3. Privacy/Terms/Contact의 실제 운영 내용, 폼 전송, 푸터 링크 확인.
+  4. Spotify·YouTube·출판 판매처 등 핵심 외부 링크의 목적지/접속 확인.
+  5. AdSense 계정 상태 및 Search Console 색인·canonical 보고서는 사용자가 직접 확인 가능한 계정 화면에서 검증.
+- AdSense 재검토 요청은 제출하지 않았다. 사용자 별도 지시 전까지 제출하지 않는다.
+

@@ -4,7 +4,7 @@
 - **기준 도메인:** https://chrisleepapa.com/
 - **작업 기준 소스:** GitHub `chrisleepapa/chrisleepapa-official`의 `develop` 브랜치 우선. 검증·사용자 승인 전에는 `main`에 반영하지 않음.
 - **심사 이력:** 사용자가 제공한 기록상 chrisleepapa.com은 2026-10-19 사이트 검토를 신청했고 2026-10-30 두 사유로 거절됨. 현재 AdSense 계정의 사이트 등록/상태 및 재검토 가능 여부는 계정 화면 확인 전까지 미확인. 이 문서는 재심사 준비 점검이며, 새로운 검토 요청을 제출하지 않음.
-- **문서 버전:** Audit 1.94 — 2026-11-04 콘텐츠 심층 검토 및 Production 16/8 광고 코드 재검증
+- **문서 버전:** Audit 1.95 — 2026-11-04 콘텐츠 심층 검토 및 sitemap 외 HTML 광고 코드 전수 확인
 - **최초 점검의 역사적 판정:** Audit 1.0 작성 당시의 판단이며 현재 상태를 뜻하지 않음. 아래 미완료 항목은 실제 존재·운영 여부와 최신 소스를 다시 확인한 뒤에만 유효한 점검 대상으로 채택한다.
 
 ## 최우선 기준 — 실제 AdSense 탈락 사유 (고정)
@@ -67,7 +67,7 @@
 | A-08 | 개인정보처리방침 | **핵심 내용 있음, 최종 검토 필요** | 중 | 운영자 및 연락처, 자동 수집 정보, 방명록 데이터, 쿠키, Google AdSense/Analytics, 제3자 광고 파트너 관련 설명이 포함됨. 실제 운영 데이터 처리 방식과 일치하는지, 맞춤 광고 비활성화 안내/정책 링크가 실제 클릭 가능한지 확인. |
 | A-09 | 이용약관 / About / Contact | **소스 존재** | 중 | 페이지 파일과 새 도메인 canonical을 확인함. 화면 하단/공통 푸터에서 쉽게 접근되는지, 연락처가 유효한지, 페이지 내용이 최신인지 실제 화면 확인 필요. Contact 메타 설명에 “24시간 이내 응답” 같은 운영 약속이 현재도 사실인지 검토. |
 | A-10 | 분석 태그 | **GTM 존재, GA 연결 상태 미확정** | 중 | 홈페이지 소스에 GTM 컨테이너 `GTM-NGDTQNVG`가 있음. 컨테이너 내부에서 GA4 측정 ID `G-NBGELYQ4TZ`가 올바르게 연결되고 중복 태깅이 없는지는 GTM/GA 실시간 보고서로 검증해야 함. |
-| A-11 | 오래된/비심사 페이지 | **정리 상태 검증 필요** | 중~높음 | sitemap에서 `/today`, `/shop`, `/gameinfo`는 빠져 있으나 파일은 저장소에 남아 있음. 파일 존재만으로 문제가 되는 것은 아니지만, 내부 링크/검색 색인/리디렉션/노출 여부를 확인해 공개 범위를 명확히 할 것. |
+| A-11 | Sitemap 외 HTML 페이지 | **직접 광고 코드 없음, 공개 범위 일부 확인** | 낮음~중 | main/develop 모두 sitemap 외 HTML 13개를 확인. 12개 페이지는 AdSense loader/publisher ID 0개, GTM loader 1개. `/shop`만 `index, follow`이며 sitemap에는 없음. `/journal`, `/guestbook`은 `noindex, follow`; 게임·내부 페이지 7개는 `noindex, nofollow`; Naver 인증 파일은 GTM/robots/canonical 없음. GTM을 통한 런타임 광고 삽입 여부는 별도 미확인. `/shop`을 검색 노출할지 sitemap에 포함할지 또는 noindex할지는 운영 의도 확인 후 결정하되, 임의 변경하지 않음. |
 | A-12 | 사이트 접근성/사용자 경험 | **미완료** | 높음 | 공식 가이드는 독창적 콘텐츠, 명확한 내비게이션, 완성된 페이지와 접근 가능성을 강조함. 모바일 메뉴, 푸터, 버튼, 링크, 로딩 상태, 오류 페이지를 실제로 테스트해야 함. |
 
 ## 3. 근거와 해석
@@ -1596,3 +1596,25 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **검증 한계:** 정적 HTML 본문과 링크 목적지 문자열을 확인했으며 링크의 실시간 HTTP 응답, 실제 브라우저 화면, 모바일 가독성, 외부 원문과의 문장 단위 비교는 미검증.
 
 **이번 차수 결론:** Journal 1~6은 두 고정 거절 사유 기준으로 **정적 소스상 양호**. Journal 2 가격표만 향후 최신성 관리 대상으로 남김. /journal 색인 페이지는 실제 존재를 확인했으며, sitemap 포함 여부 및 광고 적용 여부는 별도 기술 점검 항목으로 남김.
+
+
+### 2026-11-04 / Audit 1.95 — sitemap 외 HTML 13개 페이지의 광고 코드·색인 지시 전수 확인
+
+**점검 목적:** sitemap 24개에 포함되지 않은 HTML 파일이 실제로 광고 화면을 추가로 만들거나, 검색엔진에 의도치 않게 노출되는지 확인. GitHub main과 develop 각각의 루트 HTML 파일을 sitemap 목록과 대조하고, 각 비포함 파일의 AdSense loader, publisher ID, GTM loader, canonical, robots meta를 정적 검사함.
+
+- **대상:** main 13개, develop 13개 sitemap 외 HTML 파일. 두 브랜치에서 파일 목록과 아래 코드/메타 상태가 동일함.
+- **직접 AdSense 코드:** 13개 모두 AdSense loader 0개 및 publisher ID 0개. 따라서 이 파일들에는 HTML 직접 삽입 방식의 AdSense 코드가 없음.
+- **GTM:** Naver 소유권 확인 파일 1개를 제외한 12개 HTML에 GTM loader 각 1개. GTM 컨테이너의 현재 Published 버전에서 광고 태그가 있는지는 확인하지 못했으므로, 직접 AdSense 코드 0개가 런타임 광고 요청 0개를 증명하지는 않음.
+- **색인 지시 및 canonical 상태:**
+  - booktop.html, curling.html, fiveinrow.html, game.html, gameinfo.html, switch.html, tetris.html: noindex, nofollow, canonical은 공식 .com 경로로 존재.
+  - goal.html: noindex, nofollow, canonical 없음. noindex 상태이므로 현재 소스만으로 별도 수정 필요라고 판단하지 않음.
+  - guestbook.html, journal.html: noindex, follow, 공식 .com canonical 존재.
+  - today.html: noindex, follow, 공식 .com canonical 존재.
+  - shop.html: index, follow, 공식 .com canonical 존재하지만 sitemap에는 미포함. 직접 AdSense 코드 0개.
+  - naver8c846221d6596a175ea38d4f8e3ec89a.html: 소유권 확인용 파일로 AdSense/GTM/robots/canonical 없음.
+- **중요한 예외 — /shop:** 검색엔진에 색인 허용(index, follow) 상태이지만 sitemap에는 포함되지 않음. 이 사실만으로 정책 위반 또는 심사 탈락 원인이라고 단정하지 않음. Shop을 검색 결과에 노출하려는 의도라면 sitemap 포함 여부를 결정하고, 비공개/비심사 목적이라면 noindex 여부를 검토할 수 있음. 사용자 의도 확인 전에는 변경하지 않음.
+- **/journal 및 /guestbook:** 실제 파일과 canonical이 존재하며 noindex, follow로 설정되어 있어 sitemap 미포함 상태와 대체로 일관됨. /journal은 Journal 1~6 및 홈페이지에서 연결되는 색인 페이지이며, 개별 글과 구분된 안내 역할을 함.
+- **결론:** sitemap 외 HTML에서 직접 AdSense 코드가 추가로 발견된 페이지는 0개. 공개 범위 측면에서 별도 확인 대상으로 남는 것은 /shop의 index/follow + sitemap 미포함 상태이며, 현재 AdSense 직접 광고 화면은 아님. main/develop 모두 이 상태가 같음.
+- **검증 한계:** 정적 HTML 메타와 코드만 확인. 실제 Google 색인 상태, HTTP 응답·리디렉션, GTM 런타임 태그, Googlebot 렌더링은 미확인. 이번 단계에서는 소스 변경하지 않음.
+
+**이번 차수 결론:** sitemap 외 13개 HTML의 직접 AdSense 코드 0/13, publisher ID 0/13을 main/develop에서 확인. /shop 검색 노출 의도만 운영 결정 후보로 남기고, 나머지 noindex/no-follow 상태는 현재 소스에서 확인한 대로 유지.

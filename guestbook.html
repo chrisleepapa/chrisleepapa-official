@@ -112,6 +112,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         }
 
         @keyframes shimmer { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+
+        /* Responsive refinement: preserve the centered gold hero while reducing excess spacing on compact screens. */
+        @media (max-width: 900px) {
+            .page-hero { padding: calc(var(--nav-height) + 58px) 22px 46px; }
+            .page-hero-title { letter-spacing: .09em; }
+            .page-hero-tag { letter-spacing: clamp(2px, .7vw, 4px); }
+        }
+        @media (max-width: 600px) {
+            .page-hero { padding: calc(var(--nav-height) + 42px) 18px 38px; }
+            .page-hero-title { font-size: clamp(2rem, 10vw, 2.8rem); letter-spacing: .07em; }
+            .page-hero-sub { font-size: .82rem; line-height: 1.7; letter-spacing: .04em; }
+            .page-hero-divider { margin-top: 16px; }
+        }
+
     </style>
   <meta name="robots" content="noindex, follow">
   <link rel="canonical" href="https://chrisleepapa.com/guestbook">

@@ -279,7 +279,27 @@
         #yt-player-container {
             position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none; z-index: -1;
         }
-    </style>
+    
+        /* Responsive UI refinement — canvas/game physics remain untouched. */
+        @media (max-width: 600px) {
+            .hud-panel { padding: 8px 10px; border-radius: 7px; }
+            #controls-hint {
+                bottom: max(72px, env(safe-area-inset-bottom, 72px));
+                padding-inline: 14px;
+                font-size: clamp(.78rem, 3.2vw, .95rem);
+                line-height: 1.5;
+                overflow-wrap: break-word;
+            }
+            .modal { width: min(92vw, 380px); padding: 20px 16px; }
+            .floating-chat {
+                max-width: 90vw;
+                white-space: normal;
+                font-size: clamp(1.1rem, 5vw, 1.7rem);
+                line-height: 1.25;
+                text-align: center;
+            }
+        }
+</style>
     <script src="/js/game-auth.js"></script>
   <meta name="description" content="물리 엔진 기반으로 떨어지는 책을 차곡차곡 쌓아 기록에 도전하는 캐주얼 웹게임입니다. 균형과 타이밍을 활용해 더 높은 책탑을 만들어보세요.">
   <meta name="robots" content="noindex, nofollow">

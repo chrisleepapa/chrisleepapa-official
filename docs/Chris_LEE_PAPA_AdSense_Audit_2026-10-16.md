@@ -1517,3 +1517,13 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **Search Console 한계:** 사용자가 2026-11-03 보고한 5개 URL의 최신 개별 검사 결과와 Google 선택 canonical은 Google Search Console 계정 데이터가 필요함. 이번 소스 검사는 Google이 실제로 선택한 canonical을 증명하지 않으며, 5개 URL 각각의 색인 상태도 확인하지 못함. 과거 문제를 해결 완료로 표시하지 않음.
 - **결론:** 현재 Production 배포 커밋의 sitemap 24개 페이지는 HTML 소스 기준 공식 .com canonical 24/24, `index, follow` 24/24, 직접 AdSense 코드 16/8, GTM script/noscript 각 24/24로 정합성이 확인됨. 이 단계에서 발견된 HTML canonical 오류나 구 도메인 canonical 잔존은 없어 소스 수정은 하지 않음. 실제 응답 헤더·구 도메인 리디렉션·Google 선택 canonical·5개 URL 색인 상태·실제 브라우저 렌더링은 미완료.
 - **다음 순서:** (1) Google Search Console의 5개 URL별 최신 검사 결과와 Google 선택 canonical을 확인하고, (2) 실제 HTTP 리디렉션 및 응답 헤더를 측정하고, (3) GTM 게시 버전/GA4 DebugView 및 광고 제외 페이지의 런타임 광고 요청을 확인한다. 계정 접근 또는 실제 브라우저 세션이 필요한 단계는 확인 전까지 미완료로 유지한다.
+
+
+### 2026-11-04 / Audit 1.91 — Production 24개 페이지 GA4 직접 삽입 중복 재검사
+
+- **검사 대상:** 최신 Production main 배포 commit `62125bf478454abac32b3f071d0f5d7bae2b492f`에 포함된 sitemap 24개 HTML 파일.
+- **GTM 컨테이너:** 24/24 페이지에서 `GTM-NGDTQNVG`의 GTM loader가 정확히 1개씩 확인됨.
+- **직접 GA4 삽입:** 24/24 페이지에서 `googletagmanager.com/gtag/js` 직접 로드 0개, inline `gtag('config', ...)` 0개, GA4 측정 ID `G-NBGELYQ4TZ` 직접 삽입 0개, Google tag ID `GT-5MJDBTR2` 직접 삽입 0개.
+- **판정:** 현재 main의 HTML에는 GTM과 별도로 GA4를 직접 설치한 중복 흔적이 없음. 다만 GTM 컨테이너 안의 실제 게시 버전, 태그 실행, GA4 실시간 page_view 수신은 소스만으로 확인할 수 없으므로 미완료 유지.
+- **GTM export 참고:** Library의 `GTM-NGDTQNVG_v2.json`은 2026-10-30 export된 container version 2이며, GA4 Google tag `G-NBGELYQ4TZ` 1개와 All Pages trigger를 기록하고 있음. 이 export가 현재 계정의 최신 게시 버전이라고 단정하지 않음.
+- **다음 조치:** GTM 계정의 현재 Published version과 export version 2를 대조하고, Preview/Debug 및 GA4 DebugView에서 대표 페이지별 page_view가 한 번만 발생하는지 확인해야 함. 광고 제외 8개 페이지에서는 런타임 AdSense 요청이 발생하지 않는지도 별도로 확인해야 함.

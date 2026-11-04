@@ -4,7 +4,7 @@
 - **기준 도메인:** https://chrisleepapa.com/
 - **작업 기준 소스:** GitHub `chrisleepapa/chrisleepapa-official`의 `develop` 브랜치 우선. 검증·사용자 승인 전에는 `main`에 반영하지 않음.
 - **심사 이력:** 사용자가 제공한 기록상 chrisleepapa.com은 2026-10-19 사이트 검토를 신청했고 2026-10-30 두 사유로 거절됨. 현재 AdSense 계정의 사이트 등록/상태 및 재검토 가능 여부는 계정 화면 확인 전까지 미확인. 이 문서는 재심사 준비 점검이며, 새로운 검토 요청을 제출하지 않음.
-- **문서 버전:** Audit 1.97 — 2026-11-04 콘텐츠 심층 검토·미디어 경로 무결성 검증
+- **문서 버전:** Audit 2.02 — 2026-11-04 최신 브랜치·배포 재검증, 외부 링크 정적 조사 및 GTM/브라우저 검증 한계 기록
 - **최초 점검의 역사적 판정:** Audit 1.0 작성 당시의 판단이며 현재 상태를 뜻하지 않음. 아래 미완료 항목은 실제 존재·운영 여부와 최신 소스를 다시 확인한 뒤에만 유효한 점검 대상으로 채택한다.
 
 ## 최우선 기준 — 실제 AdSense 탈락 사유 (고정)
@@ -1921,7 +1921,7 @@ main/develop 각각 sitemap에 없는 HTML 13개를 확인했다.
 
 ## 10. 현재 상태 한 줄 요약
 
-**2026-11-04 현재: AdSense 광고 대상 콘텐츠 16개 정적 검토, 로컬 미디어 125/125, 내부 링크 누락 0건, Prompt Lab/World Lore 잔여 내비게이션 코드 제거까지 확인했다. Audit 2.01에서 운영 인수인계 내용을 본 문서 하나로 통합하고 별도 파일을 삭제했다. 최신 문서 삭제 커밋의 Vercel 배포는 QUEUED로 확인되어 READY 여부는 재확인해야 한다. main/Production은 변경하지 않았다. 다음은 GTM Published 태그와 실제 PC/모바일 렌더링 검증이다.**
+**2026-11-04 Audit 2.02 현재: develop HEAD `896111bc4a86a9a8cac4b46d669405b40141e1ce`, Vercel develop 배포 `dpl_9EqkU6Rmnz79ZeojLMw1BotLfSES` READY. main HEAD `62125bf478454abac32b3f071d0f5d7bae2b492f`, Production 배포 `dpl_F7WvDyQUeNwo5qUePaHWYH8RH1VF` READY. 브랜치는 diverged(develop +25 / -9)이며 이번 작업에서 main/Production 변경 없음. 광고 대상 16개 페이지의 외부 링크 속성 및 목적지 목록을 소스에서 정적 추출했으나, 외부 사이트와 develop Preview URL은 웹 확인 도구에서 일부 접근 불가/캐시 미스가 발생해 링크 정상·오류를 판정하지 않음. GTM Published 버전과 실제 PC/모바일 브라우저 렌더링은 연결된 계정/브라우저 검증 수단 부재로 미완료 유지. 다음은 GTM Published 및 GA4 DebugView 확인(계정 권한 필요), develop 실제 브라우저 검사, 이후 AdSense·Search Console 계정 상태 확인이다.**
 
 
 ## 단일 문서 유지 규칙
@@ -1943,3 +1943,57 @@ main/develop 각각 sitemap에 없는 HTML 13개를 확인했다.
 ### Audit 2.01 정정 — 과거 두 문서 안내의 효력 종료
 
 Audit 2.00에는 당시 생성했던 별도 인수인계 파일을 함께 유지한다고 기록되어 있으나, 사용자의 요청으로 Audit 2.01에서 해당 파일의 내용을 본 문서에 전부 편입하고 별도 파일을 삭제했다. 따라서 현재 유효한 기준 문서는 `docs/Chris_LEE_PAPA_AdSense_Audit_2026-10-16.md` 하나뿐이다. Audit 2.00의 두 문서 유지 문구 및 운영 인수인계 본문 안에 남아 있던 과거의 두 문서 참조는 이 정정 항목으로 대체한다.
+
+
+### 2026-11-04 / Audit 2.02 — 최신 저장소·배포 재검증 및 외부 링크 조사
+
+#### 1) 작업 시작 전 현재 상태 재확인
+
+- 통합 기준 문서: `docs/Chris_LEE_PAPA_AdSense_Audit_2026-10-16.md` / develop에서 직접 읽음. Audit 2.01까지의 기록과 단일 문서 유지 규칙 확인.
+- develop HEAD: `896111bc4a86a9a8cac4b46d669405b40141e1ce` (커밋 메시지: 단일 점검문서 기준 명확화).
+- Vercel develop: `dpl_9EqkU6Rmnz79ZeojLMw1BotLfSES`, branch develop, commit 위 SHA, state READY, alias `develop.chrisleepapa.com`.
+- main HEAD: `62125bf478454abac32b3f071d0f5d7bae2b492f`.
+- Vercel Production: `dpl_F7WvDyQUeNwo5qUePaHWYH8RH1VF`, branch main, commit 위 SHA, target production, state READY.
+- GitHub 비교 `main...develop`: status diverged, develop ahead 25 / behind 9. 비교 변경 파일: 통합 점검문서, `index.html`, `js/main.js`, `tutupupupipi.html`, `worship.html`, `worship_eng.html`. 이 결과는 브랜치가 동일하다는 뜻이 아니며, main의 별도 변경을 보존해야 함을 의미한다.
+- 이번 작업은 develop 문서 확인·정적 조사만 수행. main, Production, DNS, AdSense 검토 요청은 변경하지 않음.
+
+#### 2) 광고 제외 경로 고정 재확인
+
+다음 8개 경로는 기존 확정사항 그대로 유지하며 임의 변경하지 않는다: `/music`, `/movie`, `/bible`, `/worship`, `/worship_eng`, `/contact`, `/privacy`, `/terms`.
+
+#### 3) 광고 대상 16개 페이지 외부 링크 정적 조사
+
+develop의 현재 소스에서 다음 16개 파일의 `href` / `src` 외부 URL을 추출해 확인했다: `index.html`, `wallpaper.html`, `sistersquad-hub.html`, `sistersquad.html`, `sistersquad2.html`, `yul.html`, `jung.html`, `miracleshot.html`, `tutupupupipi.html`, `journal-1.html`~`journal-6.html`, `about.html`.
+
+- 공식 채널·음원: YouTube 채널/영상/재생목록, Spotify 아티스트/앨범 링크가 페이지 소스에 존재.
+- 출판: SISTER SQUAD 1의 Amazon 샘플 링크가 소스에 존재.
+- 프로젝트/외부 참고: Hub의 Naver 링크 3개, Journal 1의 SELF 기사, Journal 2의 D&B Skywork 회사 프로필 링크가 소스에 존재.
+- TuTuPuPuPiPi: 6개 YouTube Shorts의 썸네일과 재생 링크, Spotify 앨범 및 YouTube 음악 재생목록 링크가 소스에 존재.
+- About: YouTube 채널, Spotify 아티스트, TikTok 프로필 링크가 소스에 존재.
+- 이는 URL이 HTML에 연결되어 있다는 정적 확인이다. 대상 사이트가 실제로 열리고 콘텐츠가 올바른지는 별도 검증이며, URL 문자열이 존재한다는 이유만으로 정상 판정하지 않았다.
+
+#### 4) 실제 접근 검증 시도와 한계
+
+- `https://develop.chrisleepapa.com/` 및 대표 경로(`/tutupupupipi`, `/sistersquad2`, `/wallpaper`, `/about`)를 웹 페이지 열기 기능으로 확인하려 했으나 모두 접근 불가 응답을 반환했다. Vercel 배포 API의 READY 상태 및 alias 정보와 모순되는 것으로 단정하지 않으며, 실제 브라우저에서 렌더링이 실패한다고 판단하지 않는다.
+- YouTube 채널, Spotify 아티스트, Amazon 책 페이지, SELF 기사, TikTok 프로필을 열어 확인하려 했으나 Cache miss 또는 접근 불가 응답이 발생했다. D&B 페이지는 JavaScript 활성화 안내만 반환했다.
+- 위 결과는 웹 확인 도구의 접근 한계일 수 있으므로 링크가 끊겼다고 판정하지 않는다. 외부 링크의 최종 정상 여부는 미확인으로 유지한다.
+
+#### 5) GTM Published 확인 가능 여부
+
+- 현재 사용 가능한 연결 도구 목록에서 Google Tag Manager 컨테이너의 Published 버전/태그/트리거를 직접 조회하는 전용 연결을 찾지 못했다.
+- Library의 `GTM-NGDTQNVG_v2.json`은 과거 2026-10-30 export version 2라는 기존 기록만 유효하다. 현재 Published 버전이라고 간주하지 않는다.
+- GTM Published 버전, AdSense 태그 및 제외 8개 경로의 런타임 광고 요청, GA4 `G-NBGELYQ4TZ` 중복 page_view 여부는 미확인으로 유지한다. 계정 접근 없이 완료 처리하지 않는다.
+
+#### 6) 다음 실제 작업 순서
+
+1. GTM 계정의 현재 Published 버전과 과거 export v2를 대조하고, Google tag/GA4 트리거 및 AdSense 태그 유무를 확인한다. 계정 권한이 없으면 사용자에게 GTM의 Published 버전 화면 또는 export 제공을 요청해야 한다.
+2. develop Preview를 실제 PC/모바일 브라우저에서 확인한다: 첫 화면, 동적 섹션, 메뉴, 언어 전환, YouTube/Spotify 재생, 광고 위치와 주변 콘텐츠, 제외 8개 경로의 광고 요청 여부.
+3. 광고 대상 16개 페이지의 외부 링크를 브라우저에서 실제 열어 목적지·콘텐츠 일치 여부를 확인한다. 단순 접근 실패만으로 제거하지 않는다.
+4. AdSense 및 Search Console 계정 내부 상태는 직접 확인 가능한 권한이 없으면 미완료로 유지한다.
+5. 모든 수정은 develop에서만 하고, 실제 결함이 입증된 경우 최소 범위로 수정한다. main/Production은 사용자의 별도 명시 승인 전까지 변경하지 않는다.
+
+#### 7) 현재 판정
+
+- **완료:** 최신 GitHub main/develop 및 Vercel Production/develop 상태 재확인, 브랜치 분기 확인, 광고 제외 8개 경로 고정, 광고 대상 16개 페이지 외부 링크의 소스상 존재 확인.
+- **미완료:** GTM Published/GA4 DebugView, 실제 PC·모바일 브라우저 렌더링과 Network 요청, 외부 링크 목적지의 실제 정상 여부, AdSense 계정 상태, Search Console 색인 상태.
+- **수정/배포:** 사이트 코드 수정 없음. 통합 점검문서만 develop에서 갱신. main/Production 변경 없음.

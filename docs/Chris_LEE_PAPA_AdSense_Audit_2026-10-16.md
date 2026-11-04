@@ -4,7 +4,7 @@
 - **기준 도메인:** https://chrisleepapa.com/
 - **작업 기준 소스:** GitHub `chrisleepapa/chrisleepapa-official`의 `develop` 브랜치 우선. 검증·사용자 승인 전에는 `main`에 반영하지 않음.
 - **심사 이력:** 사용자가 제공한 기록상 chrisleepapa.com은 2026-10-19 사이트 검토를 신청했고 2026-10-30 두 사유로 거절됨. 현재 AdSense 계정의 사이트 등록/상태 및 재검토 가능 여부는 계정 화면 확인 전까지 미확인. 이 문서는 재심사 준비 점검이며, 새로운 검토 요청을 제출하지 않음.
-- **문서 버전:** Audit 2.07 — 2026-11-04 최신 SISTER SQUAD 2 본편 및 Movie Archive 영상 내용 대조·설명 보강 기록
+- **문서 버전:** Audit 2.08 — 2026-11-04 최신 SISTER SQUAD 2 본편 및 Movie Archive 영상 내용 대조·설명 보강, develop 배포 확인 기록
 - **최초 점검의 역사적 판정:** Audit 1.0 작성 당시의 판단이며 현재 상태를 뜻하지 않음. 아래 미완료 항목은 실제 존재·운영 여부와 최신 소스를 다시 확인한 뒤에만 유효한 점검 대상으로 채택한다.
 
 ## 최우선 기준 — 실제 AdSense 탈락 사유 (고정)
@@ -2188,3 +2188,17 @@ develop의 현재 소스에서 다음 16개 파일의 `href` / `src` 외부 URL�
 - 두 페이지 모두 단순 영상 임베드에 그치지 않도록 영상별 맥락, 창작 의도, 제작 과정, 작품 해설을 보강함. 이는 “복제된 콘텐츠가 있는 화면”과 “가치가 별로 없는 콘텐츠”라는 고정 심사 기준에 대응하는 콘텐츠 설명 개선임.
 - 영상 설명을 추가했다고 Google 심사 통과를 보장하지 않음. 저작권/팬 콘셉트 표시와 페이지 자체의 독창적 기여는 계속 확인해야 함.
 - 이번 수정은 develop에만 적용. 사용자 별도 지시 전까지 main/Production 병합 금지.
+
+
+#### 4) Audit 2.08 — develop 배포 상태 확인 (2026-11-04)
+- Vercel 공식 develop alias `https://develop.chrisleepapa.com` 조회 결과: **READY**.
+- 배포 ID: `dpl_GwtnMzguo7m2k3DhXKuxopdRE2gK`.
+- 배포 source commit: `b55b3e54ac018758edf188c5eb2bf0f5dac5c637`, branch `develop`, alias 오류 없음.
+- 이 배포 소스에는 SISTER SQUAD 2 페이지 수정(`6ff73da...`)과 Movie 페이지 수정(`7422da...`)이 모두 포함됨.
+- GitHub develop의 최종 통합문서 정정 commit `25b0ef9ad8aa244e31383f06612382b081613e12`는 위 READY 배포 이후의 문서 정정 commit이다. 페이지 HTML 변경은 없으며, 해당 문서 전용 배포는 별도로 QUEUED 상태로 확인됨.
+- GitHub develop 파일 정적 재검증:
+  - `sistersquad2.html`: 5개 고유 YouTube iframe ID 유지, 본편 길이 12분 54초 반영, NG 영상 한국어/영어 키 존재.
+  - `movie.html`: AdSense loader 0개 유지, AI 팬 콘셉트 안내 및 세로형 영상 설명 반영, 페이지 메타 설명 수정 확인.
+  - 통합 문서: Audit 2.06 및 2.07 모두 존재, 마지막 Movie 수정 commit 기록 확인.
+- **배포 판정:** develop 사이트 코드 배포는 READY. HTTP 소스·GitHub 소스와 Vercel 상태를 확인했으나, 실제 기기에서의 화면 레이아웃/언어 전환/재생 버튼 터치 테스트는 사용자의 최종 확인이 필요하다.
+- **main/Production은 변경하지 않음.** main merge 및 Production 배포는 사용자의 별도 지시 전까지 보류한다.

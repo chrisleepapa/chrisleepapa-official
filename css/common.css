@@ -1066,3 +1066,74 @@ html {
     height: 30px;
   }
 }
+
+/* Extend the same safe text/width behavior to homepage and media-page sections
+   that use section-level wrappers instead of a shared .page-wrapper. */
+:where(
+  #chris-pick,
+  #chris-note,
+  #home-ss2-story,
+  #faith-journey,
+  #home-actions,
+  .home-static-content,
+  .theater-wrapper,
+  .archive,
+  .music-creation-notes,
+  .wallpaper-hero,
+  .wallpaper-studio,
+  .wallpaper-editorial,
+  .creation-notes-inner,
+  .tutu-page,
+  .tutu-character,
+  .tutu-feature-art
+) {
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
+}
+
+:where(
+  #chris-pick,
+  #chris-note,
+  #home-ss2-story,
+  #faith-journey,
+  #home-actions,
+  .home-static-content,
+  .theater-wrapper,
+  .archive,
+  .music-creation-notes,
+  .wallpaper-hero,
+  .wallpaper-studio,
+  .wallpaper-editorial,
+  .creation-notes-inner,
+  .tutu-page,
+  .tutu-character,
+  .tutu-feature-art
+) :where(h1, h2, h3, h4) {
+  max-width: 100%;
+  overflow-wrap: break-word;
+  text-wrap: balance;
+}
+
+:where(
+  #chris-pick,
+  #chris-note,
+  #home-ss2-story,
+  #faith-journey,
+  #home-actions,
+  .home-static-content,
+  .theater-wrapper,
+  .archive,
+  .music-creation-notes,
+  .wallpaper-hero,
+  .wallpaper-studio,
+  .wallpaper-editorial,
+  .creation-notes-inner,
+  .tutu-page,
+  .tutu-character,
+  .tutu-feature-art
+) :where(p, li, blockquote, figcaption) {
+  overflow-wrap: break-word;
+  word-break: keep-all;
+}
+

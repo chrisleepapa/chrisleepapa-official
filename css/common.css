@@ -6,7 +6,7 @@
 @import url('sistersquad2-responsive.css');
 @import url('world-lore-responsive.css');
 @import url('game-responsive.css');
-@import url('site-responsive.css');
+
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@300;400;500;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
 :root{--gold:#c9a84c;--gold-light:#e8d08a;--bg:#030305;--card-bg:#0a0a0c;--text:#e0e0e0;--text-soft:rgba(224,224,224,.68);--text-muted:rgba(224,224,224,.42);--border:rgba(201,168,76,.18);--border-strong:rgba(201,168,76,.35);--nav-height:82px;--mobile-nav-height:72px;--content-max-width:1400px;--ease:cubic-bezier(.22,1,.36,1)}*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond','Noto Sans KR',serif;overflow-x:hidden;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;padding-bottom:0}a{text-decoration:none;color:inherit}button,input,textarea,select{font:inherit}button{-webkit-tap-highlight-color:transparent}ul,ol{list-style:none}img{max-width:100%;height:auto;-webkit-user-drag:none}::selection{background:rgba(201,168,76,.25);color:#fff}html[lang="ko"] .i18n-en{display:none!important}html[lang="en"] .i18n-ko{display:none!important}
 #scroll-progress{position:fixed;top:0;left:0;width:0;height:2px;background:var(--gold);z-index:3000;transition:width .1s linear}#mouse-orb{position:fixed;width:300px;height:300px;border-radius:50%;pointer-events:none;z-index:0;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(201,168,76,.055) 0%,transparent 70%);transition:left .08s ease,top .08s ease}
@@ -906,3 +906,163 @@ html[data-theme="light"] body:has(.journal-body) .tag{color:#765b17!important}
 html[data-theme="light"] section[aria-label="Related worship"]>div{color:#f2dfaa!important}
 html[data-theme="light"] section[aria-label="Related worship"]>p{color:#fff!important}
 html[data-theme="light"] section[aria-label="Related worship"]>a[href$="/worship"]{color:#fff4d6!important}
+
+/* =========================================================
+   SITE-WIDE RESPONSIVE SAFETY LAYER
+   Preserve the existing visual identity and page-specific layouts.
+   This layer only improves shrink behavior, text wrapping and tablet navigation.
+   ========================================================= */
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Media must never force a page wider than its available column. */
+:where(img, picture, video, canvas, iframe) {
+  max-width: 100%;
+}
+
+/* Shared page shells: allow their contents to shrink without changing their design. */
+:where(
+  .page-wrapper,
+  .container,
+  .tutu-wrap,
+  .sq-wrap,
+  .lore-wrap,
+  .wallpaper-studio-inner,
+  .interactive-player-wrapper,
+  .bible-container,
+  .today-wrap,
+  .shop-shell
+) {
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* Keep Korean words intact where possible while allowing long titles to wrap. */
+:where(
+  .page-wrapper,
+  .container,
+  .tutu-wrap,
+  .sq-wrap,
+  .lore-wrap,
+  .wallpaper-studio-inner,
+  .interactive-player-wrapper,
+  .bible-container,
+  .today-wrap,
+  .shop-shell
+) :where(h1, h2, h3, h4) {
+  max-width: 100%;
+  overflow-wrap: break-word;
+  text-wrap: balance;
+}
+
+:where(
+  .page-wrapper,
+  .container,
+  .tutu-wrap,
+  .sq-wrap,
+  .lore-wrap,
+  .wallpaper-studio-inner,
+  .interactive-player-wrapper,
+  .bible-container,
+  .today-wrap,
+  .shop-shell
+) :where(p, li, blockquote, figcaption) {
+  overflow-wrap: break-word;
+  word-break: keep-all;
+}
+
+/* Prevent long card content from widening shared grid layouts. */
+:where(
+  .albums-grid,
+  .story-grid,
+  .music-creation-grid,
+  .today-grid,
+  .tutu-explore-grid,
+  .tutu-video-list,
+  .tutu-ost-grid,
+  .sq-explore,
+  .sq-gallery,
+  .sq-origin,
+  .sq-themes,
+  .sq-sisters,
+  .sq-flow,
+  .sq-links,
+  .wallpaper-grid,
+  .desktop-wallpaper-grid,
+  .wallpaper-editorial-grid,
+  .wallpaper-section-nav,
+  .home-actions-grid,
+  .home-static-projects,
+  .faith-journey-cards,
+  .book-grid,
+  .ogq-products,
+  .creation-note-grid,
+  .movie-creation-grid,
+  .shorts-grid,
+  .quiz-options,
+  .journey-chapter-list,
+  .character-grid,
+  .faction-grid,
+  .photo-grid,
+  .lore-grid,
+  .game-grid,
+  .album-grid,
+  .track-grid,
+  .playlist-grid,
+  .video-grid,
+  .movie-grid,
+  .archive-list
+) > * {
+  min-width: 0;
+}
+
+/* Compact the existing desktop navigation on portrait/small tablets.
+   The mobile navigation breakpoint and all navigation content stay unchanged. */
+@media (min-width: 761px) and (max-width: 900px) {
+  #main-nav {
+    padding-inline: 16px;
+  }
+
+  .brand-logo {
+    min-width: 142px;
+  }
+
+  .brand-logo-main {
+    font-size: .9rem;
+    letter-spacing: .1em;
+  }
+
+  .brand-logo-sub {
+    font-size: .34rem;
+    letter-spacing: .2em;
+  }
+
+  .desktop-nav {
+    gap: 9px;
+    margin-right: 8px;
+  }
+
+  .desktop-nav-link {
+    font-size: .52rem;
+    letter-spacing: .05em;
+  }
+
+  .nav-right {
+    gap: 6px;
+  }
+
+  .lang-current {
+    height: 30px;
+    padding-inline: 8px;
+    font-size: .56rem;
+  }
+
+  .share-trigger {
+    width: 30px;
+    height: 30px;
+  }
+}

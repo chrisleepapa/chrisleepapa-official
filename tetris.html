@@ -266,7 +266,32 @@
         #yt-player-container {
             position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none; z-index: -1;
         }
-    </style>
+    
+        /* Responsive UI refinement — keep the playfield and touch hit areas intact. */
+        @media (max-width: 600px) {
+            .screen {
+                padding-left: 14px;
+                padding-right: 14px;
+            }
+            .title-main { font-size: clamp(1.85rem, 8.8vw, 2.5rem); line-height: 1.12; }
+            .title-sub { font-size: clamp(1rem, 4.8vw, 1.25rem); letter-spacing: .12em; line-height: 1.35; }
+            .glass-panel { padding: 19px 14px; border-radius: 20px; }
+            .input-neon { font-size: clamp(1.3rem, 6vw, 1.7rem); letter-spacing: .18em; padding: 10px 8px; }
+            #hud { padding: max(env(safe-area-inset-top, 10px), 10px) 9px 7px; gap: 6px; }
+            .hud-item { padding: 6px 8px; border-radius: 9px; }
+            .hud-val { font-size: 17px; }
+            #game-start-overlay { padding: 12px; }
+            #game-start-overlay .start-card { padding: 22px 16px; }
+            #game-start-overlay .start-title { font-size: 1.35rem; }
+            #game-start-overlay .start-desc { font-size: .76rem; line-height: 1.6; }
+            .gameover-card { padding: 22px 15px; width: min(88%, 360px); border-radius: 22px; }
+        }
+        @media (max-height: 680px) and (orientation: landscape) {
+            .screen { overflow-y: auto; overscroll-behavior: contain; padding-top: 12px; padding-bottom: 12px; }
+            .title-sub { margin-bottom: 16px; }
+            .glass-panel { padding: 15px 14px; }
+        }
+</style>
     <script src="/js/game-auth.js"></script>
   <meta name="description" content="TETRIS — Chris LEE.PAPA. Chris LEE.PAPA의 The Creative Archive 콘텐츠 페이지입니다.">
   <meta name="robots" content="noindex, nofollow">

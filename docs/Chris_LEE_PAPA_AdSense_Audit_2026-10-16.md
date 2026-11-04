@@ -4,7 +4,7 @@
 - **기준 도메인:** https://chrisleepapa.com/
 - **작업 기준 소스:** GitHub `chrisleepapa/chrisleepapa-official`의 `develop` 브랜치 우선. 검증·사용자 승인 전에는 `main`에 반영하지 않음.
 - **심사 이력:** 사용자가 제공한 기록상 chrisleepapa.com은 2026-10-19 사이트 검토를 신청했고 2026-10-30 두 사유로 거절됨. 현재 AdSense 계정의 사이트 등록/상태 및 재검토 가능 여부는 계정 화면 확인 전까지 미확인. 이 문서는 재심사 준비 점검이며, 새로운 검토 요청을 제출하지 않음.
-- **문서 버전:** Audit 1.85 — Worship 광고 제외 정합성 수정 및 Production 재점검 대기
+- **문서 버전:** Audit 1.87 — 홈페이지·TuTu 콘텐츠 보강, develop Preview 전수 응답 및 16/8 광고 코드 분포 확인
 - **최초 점검의 역사적 판정:** Audit 1.0 작성 당시의 판단이며 현재 상태를 뜻하지 않음. 아래 미완료 항목은 실제 존재·운영 여부와 최신 소스를 다시 확인한 뒤에만 유효한 점검 대상으로 채택한다.
 
 ## 최우선 기준 — 실제 AdSense 탈락 사유 (고정)
@@ -58,12 +58,12 @@
 | ID | 항목 | 현재 결과 | 위험도 | 이유 / 다음 조치 |
 |---|---|---|---|---|
 | A-01 | 기준 도메인과 canonical | **대체로 양호** | 중 | 홈페이지 `index.html`의 canonical 및 OG URL은 `https://chrisleepapa.com/`. 주요 정적 페이지에도 새 도메인 canonical이 존재함. 전체 URL에 대해 일관성 검사가 더 필요함. |
-| A-02 | AdSense 스크립트 | **소스상 존재** | 중 | 홈페이지와 개인정보처리방침 등에 `ca-pub-3207219520058740` 코드가 보임. 실제 사이트 검토 도구가 코드를 감지하는지는 AdSense 계정에서 확인해야 함. |
+| A-02 | AdSense 스크립트 | **develop 16/8 분리 확인, Production 반영 대기** | 중 | develop sitemap 24개 중 광고 대상 16개는 loader/publisher 각 1개, 제외 8개는 각 0개로 전수 확인. 다만 main/Production의 Worship 한국어·영어 페이지에는 loader/publisher가 각각 1개 남아 있어 운영은 아직 18/6 상태이며, develop→main 반영 전까지 운영 상태와 구분해야 함. GTM 런타임 광고 주입 여부는 미확인. |
 | A-03 | `ads.txt` | **소스상 정상** | 낮음 | `google.com, pub-3207219520058740, DIRECT, f08c47fec0942fa0` 한 줄 확인. 실제 공개 URL `https://chrisleepapa.com/ads.txt` 응답도 브라우저에서 확인할 것. |
 | A-04 | `robots.txt` | **소스상 허용** | 낮음 | `User-agent: *` / `Allow: /` 및 새 도메인 sitemap 주소가 확인됨. 실제 응답과 Google 크롤러 차단 여부는 Search Console에서 재확인. |
-| A-05 | Sitemap 구성 | **현재 소스 기준 확인** | 낮음 | main의 sitemap.xml에서 공개 URL 24개를 확인. 실제 Google Search Console의 처리·색인 상태는 계정 접근이 없어 별도 미확인. |
+| A-05 | Sitemap 구성 | **develop sitemap 24개 URL 확인** | 낮음 | develop의 sitemap.xml에서 URL 24개를 확인하고 광고 대상 16개 URL은 Preview HTTP 200까지 확인. 오전 Search Console 제출 후 실제 처리·색인 상태는 계정 접근이 없어 별도 미확인. |
 | A-06 | 홈페이지 Chris's News | **해소된 과거 항목** | 낮음 | 2026-11-02 이후 main의 index.html, js/home-chris-note.js, js/home-chris-pick-v2.js 재확인에서 Chris's News 및 관련 로딩 문구가 현재 공개 소스에 존재하지 않음. 사용자가 이미 삭제한 항목이므로 신규 위험이나 수정 과제로 되살리지 않음. |
-| A-07 | 독창적 콘텐츠 | **페이지별 정적 본문 검토 완료, 런타임 확인 잔여** | 중 | sitemap의 광고 대상 18개 페이지에 대한 본문·구조 검토 기록이 Audit 1.2~1.68에 있음. 제작 경험·작품별 설명·캐릭터/세계관·가사/앨범 해설을 확인했으며, 정적 소스 기준으로 즉시 보강이 필요한 빈 페이지는 발견하지 않음. 실제 브라우저 렌더링과 광고 요청은 별도 미완료. |
+| A-07 | 독창적 콘텐츠 | **develop 광고 대상 16개 페이지 정적·Preview 응답 점검 완료, 런타임 확인 잔여** | 중 | Audit 1.86~1.87에서 16개 페이지 본문·임베드 맥락·동적 콘텐츠 구조를 재확인하고 모두 Preview HTTP 200 확인. 홈페이지 목적 문구와 TuTu 6개 에피소드 설명을 보강함. 실제 브라우저 상호작용, 광고 요청, 외부 원본과의 대조는 별도 미완료. |
 | A-08 | 개인정보처리방침 | **핵심 내용 있음, 최종 검토 필요** | 중 | 운영자 및 연락처, 자동 수집 정보, 방명록 데이터, 쿠키, Google AdSense/Analytics, 제3자 광고 파트너 관련 설명이 포함됨. 실제 운영 데이터 처리 방식과 일치하는지, 맞춤 광고 비활성화 안내/정책 링크가 실제 클릭 가능한지 확인. |
 | A-09 | 이용약관 / About / Contact | **소스 존재** | 중 | 페이지 파일과 새 도메인 canonical을 확인함. 화면 하단/공통 푸터에서 쉽게 접근되는지, 연락처가 유효한지, 페이지 내용이 최신인지 실제 화면 확인 필요. Contact 메타 설명에 “24시간 이내 응답” 같은 운영 약속이 현재도 사실인지 검토. |
 | A-10 | 분석 태그 | **GTM 존재, GA 연결 상태 미확정** | 중 | 홈페이지 소스에 GTM 컨테이너 `GTM-NGDTQNVG`가 있음. 컨테이너 내부에서 GA4 측정 ID `G-NBGELYQ4TZ`가 올바르게 연결되고 중복 태깅이 없는지는 GTM/GA 실시간 보고서로 검증해야 함. |
@@ -1471,3 +1471,32 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **Preview 배포:** Vercel develop deployment `dpl_B7zjso6Dgn1ZuWxYbkwZM3NxwxY6`, commit `c430a37de8b58232ab147da51939a1b0c0400060`, state `READY`, alias `https://develop.chrisleepapa.com`, aliasError 없음. GitHub 소스와 배포 커밋은 일치. Preview URL의 페이지별 실제 응답 및 브라우저 렌더링은 도구 접근 제한으로 별도 검증하지 못함.
 - **운영 보호:** main/Production은 변경하지 않음. 사용자 확인 및 명시적 반영 지시 전까지 운영 도메인에 적용하지 않음.
 - **다음 순서:** (1) 홈 소개 문구의 반복 메시지 정리 후보 검토, (2) TuTuPuPuPiPi 에피소드별 고유 설명이 실제로 충분한지 추가 검토, (3) 16개 광고 대상 페이지의 동적 영역·실제 화면 확인 가능 범위 점검, (4) GTM 게시 버전/AdSense 광고 요청/계정 심사 상태는 사용자 계정 확인 전까지 미완료 유지.
+
+
+### 2026-11-04 / Audit 1.87 — 홈페이지·TuTu 콘텐츠 보강, Preview 16개 응답 및 16/8 광고 코드 분포 전수 확인
+
+**작업 범위:** 사용자 요청에 따라 develop에서 홈페이지 소개 문구와 TuTuPuPuPiPi 6개 에피소드 설명만 수정. 이후 최신 Preview 응답, 광고 대상 16개 URL, 동적 콘텐츠·임베드 주변의 고유 설명, sitemap 24개 전체의 직접 AdSense 코드 분포를 확인함. main/Production은 수정하지 않음.
+
+- **홈페이지 중복 정리:** 상단 Chris's Pick의 대체 문구가 아카이브 전체 목적을 반복 설명하지 않고 선택된 작품의 배경·제작 이야기와 상세 프로젝트 페이지로 안내하도록 변경. 하단 home_static_intro는 아카이브의 일반 목적을 다시 선언하는 대신 SISTER SQUAD의 확장 과정, 음악·워십의 창작 의도, AI 그림·영상 및 독립 출판의 실제 도구·수정·선택·시행착오를 설명하도록 변경. 한국어·영어 문구를 함께 수정. Journal의 여섯 편 소개를 담당하는 js/home-chris-note.js 동적 콘텐츠는 변경하지 않음.
+- **홈페이지 커밋:** 064c6e37ef5009f5ed2c4fadad7e58caed97b501.
+- **TuTu 에피소드 설명:** tutupupupipi.html의 여섯 영상 카드 설명을 한국어·영어 모두 보강. ① 구름 뒤 무지개 찾기, ② 하늘에서 떨어진 별 발견, ③ 뚜뚜가 앞장서 친구들을 이끄는 하루, ④ 뿌뿌가 평범한 휴식 시간을 놀이로 바꾸는 하루, ⑤ 삐삐의 하늘 비행, ⑥ 풀숲에서 빨간 딸기를 함께 발견하는 순간으로 각각 초점을 구별함. 실제 영상에서 확인되지 않은 구체적 대사·행동·결말은 추가하지 않고 기존 제목과 페이지가 이미 설명한 사건만 구체화함.
+- **TuTu 커밋:** be685a5576c7742f886ebabfae1144483a9364fb. 최신 develop Preview 커밋에는 홈페이지 변경 커밋도 선행 포함됨.
+- **Preview 배포:** Vercel deployment dpl_Cgph7vSz1ezeZBAWwsa7zKvv8S8X, commit be685a5576c7742f886ebabfae1144483a9364fb, branch develop, state READY, deployment URL https://chrisleepapa-official-c3cxaytas-chrisleepapas-projects.vercel.app, alias develop.chrisleepapa.com. aliasError 없음.
+- **실제 Preview HTTP 응답:** 홈페이지 / HTTP 200, TuTu /tutupupupipi HTTP 200. 응답 HTML에서 수정한 홈페이지 소개 문구 및 TuTu 에피소드 설명이 실제 Preview에 포함된 것을 확인.
+- **광고 대상 16개 응답:** 다음 16개 경로가 최신 Preview에서 모두 HTTP 200: /, /wallpaper, /sistersquad-hub, /sistersquad, /sistersquad2, /yul, /jung, /miracleshot, /tutupupupipi, /journal-1, /journal-2, /journal-3, /journal-4, /journal-5, /journal-6, /about. 각 응답에서 페이지 제목도 확인.
+- **동적 콘텐츠·임베드 맥락:**
+  - Home: Chris's Pick 동적 섹션과 Journal 카드 렌더러가 별도 스크립트로 구성되며, 고정 SISTER SQUAD 2 본편 임베드에는 작품 줄거리·제작 배경 안내가 배치됨.
+  - Wallpaper: 자체 호스팅 영상 5개(컬렉션 영상 1, 모바일 미리보기 4)와 장면별 alt/caption, 기기별 활용 안내가 존재. 지연 재생/화면 노출 기반 영상 제어 코드도 확인.
+  - SISTER SQUAD 1: 첫 권의 스토리 소개와 YouTube 본편, OST 안내 및 공식 감상 경로가 함께 배치됨.
+  - SISTER SQUAD 2: 예고편 3개, 비하인드 영상, 본편 영상 총 5개 YouTube 임베드에 각각 영상 역할·제목·설명과 본편 안내가 붙어 있음.
+  - MIRACLE SHOT: 코치·아이들·풋살 공동체·위기와 성장 서사가 먼저 제공되고 Spotify OST가 함께 배치됨. 단순 음악 임베드 페이지가 아님.
+  - TuTuPuPuPiPi: 6개 Shorts는 썸네일과 설명을 먼저 보여주고 사용자가 재생을 누르면 YouTube iframe을 생성하는 방식. YouTube/Spotify OST 플레이어 2개와 별도의 창작자 노트가 있음.
+  - Hub, YUL, JUNG, Journal 1~6, About: GTM noscript를 제외한 외부 미디어 임베드에 의존하지 않고 각자의 세계관·캐릭터·실제 제작 경험·운영자 소개를 정적 본문 및 번역 사전으로 제공.
+- **런타임 검증 한계:** Preview HTML 응답과 소스 구조는 확인했으나 실제 PC/모바일 브라우저에서 JS 실행 후의 시각 렌더링, 모든 영상·음원 재생, 언어 전환, 광고 Network 요청까지 확인한 것은 아님. 외부 YouTube/Spotify 원본 계정의 소유권이나 원본 영상 내용 전체를 독립 재생 대조한 것도 아님.
+- **Sitemap 및 직접 AdSense 코드 분포:** develop sitemap.xml에서 총 24개 URL 확인. 광고 대상 16개는 모두 AdSense loader 1개 및 publisher ID 1개, GTM script 1개 및 GTM noscript 1개. 비광고 8개(/music, /movie, /bible, /worship, /worship_eng, /contact, /privacy, /terms)는 모두 AdSense loader 0개 및 publisher ID 0개, GTM script/noscript 각 1개. 총 직접 AdSense loader 16개, publisher ID 16개. 분포가 요청한 16/8과 일치.
+- **중요한 Production 차이:** main의 worship.html과 worship_eng.html을 별도 조회한 결과 각 AdSense loader 1개 및 publisher ID 1개가 아직 존재함. 따라서 main/Production의 현행 분포는 기존 18개 광고 대상 / 6개 제외이며, develop의 16/8 분포가 Production에 이미 반영되었다고 말할 수 없음. main/Production은 이번 작업에서 수정하지 않았음.
+- **브랜치 차이:** GitHub 비교 기준 main 대비 develop은 ahead 6, behind 2, status diverged. 변경 파일은 이 문서, index.html, tutupupupipi.html, worship.html, worship_eng.html. 별도 병합 전 충돌과 두 브랜치 고유 커밋을 검토해야 함. 사용자 명시 승인 전 main 병합·Production 배포 금지.
+- **내부 점수 재산정:** Audit 1.36의 동일 배점표 유지. 크롤링·기술 무결성 20/20(24개 sitemap URL, 광고 대상 16/16 Preview HTTP 200, 페이지 canonical 확인 및 기존 기술 검사 결과 유지), 광고 코드 분리·태그 위생 17/20(develop의 16/8 직접 로더 정합성 확인. GTM 게시본 및 런타임 광고 삽입 미확인으로 추가점수 없음), 독창성·콘텐츠 가치 27/35(기존 26점에서 +1: 홈페이지 반복 소개를 제작 과정 중심으로 분리하고 TuTu 6개 에피소드 설명의 구체성과 개별성을 한국어·영어로 보강. 단, 외부 원본 대조와 실제 영상 장면 검증은 미완료), 사용자 경험·접근성 정적 검사 10/15(Preview 16/16 HTTP 200이나 실제 PC/모바일 상호작용·접근성은 미검증), 외부 계정·Google 측 확인 3/10(AdSense 계정, Search Console 색인, GTM 게시 버전 및 실제 광고 요청 미확인). develop 후보 내부 점수 77/100 (+1).
+- **점수 구분:** 77/100은 수정된 develop Preview 후보에 대한 내부 정적 준비도 점수이며 Google 공식 점수·승인 확률이 아님. main/Production은 Worship 광고 제외와 두 페이지 콘텐츠 수정이 아직 반영되지 않았으므로 Production에 77점을 적용하지 않음. 현행 Production의 직전 내부 점수 76/100은 유지하되, 운영 코드 분포는 18/6으로 구분 기록.
+- **미완료:** 실제 브라우저 렌더링·영상/음원 재생·언어 전환, GTM 최신 게시본 및 광고 Network 요청, AdSense 계정 상태, Search Console의 sitemap 처리·색인 결과. 사용자가 계정 화면에서 직접 확인할 부분은 완료로 표시하지 않음.
+- **다음 단계:** develop Preview에서 사용자가 두 콘텐츠 수정 결과를 확인한 후, main과 develop의 diverged history 및 5개 변경 파일 diff를 검토하고 사용자가 명시적으로 요청하는 경우에만 병합·Production 반영. 그 전까지 운영 도메인 변경 금지.

@@ -2673,3 +2673,49 @@ develop의 현재 소스에서 다음 16개 파일의 `href` / `src` 외부 URL�
 - 이번 내용은 기존 통합 점검문서에만 기록한다.
 - 사이트 소스는 수정하지 않았다. 문서만 `develop`에 반영한다.
 - `main`/Production 배포 및 AdSense 재검토 요청은 하지 않는다.
+
+
+### 2026-11-04 / Audit 2.19 — JOURNAL-4 URL 색인 및 SISTER SQUAD 배포 소스 대조
+
+#### 1) 사용자 제공 Search Console URL 검사 결과
+- URL: `https://chrisleepapa.com/journal-4`
+- Google 등록: 등록됨
+- 페이지 색인 생성: 생성됨
+- HTTPS: 페이지가 HTTPS를 통해 제공됨
+- **판정:** 정상. 이 결과에서 페이지 색인 관련 오류는 확인되지 않았다.
+
+#### 2) SISTER SQUAD Production / develop 배포 대조
+- Vercel Production 최신 조회 결과:
+  - 배포 상태: `READY`
+  - 브랜치: `main`
+  - 커밋: `846c3beaef97c5b59d34a2ef3e5284b5d445dd2e`
+  - 배포 URL: `chrisleepapa-official-lq19x1mf2-chrisleepapas-projects.vercel.app`
+- Vercel develop Preview 최신 조회 결과:
+  - 배포 상태: `READY`
+  - 브랜치: `develop`
+  - 커밋: `05389824aaa49ab02e723679748f89407d850b1e`
+- GitHub에서 `sistersquad.html`을 `main`과 `develop` 양쪽에서 다시 읽어 비교했다.
+  - 두 파일 내용은 완전히 동일하다(각 2,980줄).
+  - 양쪽 모두 `VideoObject` / `uploadDate` JSON-LD를 포함하지 않는다.
+  - 양쪽 모두 원본 업로드 날짜를 검증하지 못해 VideoObject를 넣지 않는다는 HTML 주석이 있다.
+  - 공식 트레일러 iframe은 양쪽 모두 동일한 YouTube-nocookie embed URL을 사용한다.
+- **중요한 제한:** 이 대조는 Git 저장소의 현재 main/develop 파일과 Vercel 배포 메타데이터 비교다. 실제 Production 응답 HTML을 네트워크에서 직접 가져오는 시도는 현재 실행 환경의 DNS 연결 실패로 완료하지 못했다. 따라서 Production 런타임 HTML에 VideoObject가 없다고 아직 단정하지 않는다.
+- 사용자가 공유한 Search Console은 VideoObject 항목을 감지하고 있으므로, Search Console의 마지막 크롤링 시점에 수집된 이전 HTML/구조화 데이터일 가능성 또는 런타임 삽입 여부가 남아 있다. 현재 증거만으로 원인을 확정하지 않는다.
+
+#### 3) 조치 및 다음 단계
+1. 코드에는 수정하지 않았다. 실제 업로드 시각을 검증하지 못했으므로 `2026-01-01`에 임의의 시간대나 시간을 붙이지 않는다.
+2. Search Console에서 `/sistersquad`의 동영상 상세 경고가 남아 있는지, URL 검사에서 **실제 페이지 테스트** 결과도 같은 VideoObject를 감지하는지 확인한다.
+3. 실제 페이지 테스트에서도 VideoObject가 검출되면 HTML 내 JSON-LD뿐 아니라 클라이언트 스크립트/서드파티 주입을 추가 조사한다. 실제 페이지 테스트에서는 검출되지 않으면 이전 크롤링 결과가 남아 있는지 재크롤링 이후 확인한다.
+4. 다음 URL 검사를 계속해 과거 GSC에서 문제로 표시된 나머지 URL을 개별 확인한다.
+
+#### 4) 확인 완료 URL 목록
+- `https://chrisleepapa.com/`: 등록됨, 페이지 색인 생성됨, 동영상 색인 없음.
+- `https://chrisleepapa.com/about`: 등록됨, 페이지 색인 생성됨, HTTPS 정상.
+- `https://chrisleepapa.com/tutupupupipi`: 등록됨, 페이지 색인 생성됨, HTTPS 정상.
+- `https://chrisleepapa.com/sistersquad`: 등록됨, 페이지 색인 생성됨, HTTPS 정상. VideoObject 1개 감지, uploadDate 관련 비심각 경고 2개. 동영상 색인 없음.
+- `https://chrisleepapa.com/journal-4`: 등록됨, 페이지 색인 생성됨, HTTPS 정상.
+
+#### 5) 문서·배포 경계
+- 이번 결과를 기존 통합 점검문서에만 추가했다.
+- 소스 수정, main 병합, Production 배포, AdSense 재검토 요청은 하지 않는다.
+- 본 항목은 사용자 제공 GSC 화면과 저장소/Vercel 메타데이터 확인 결과를 구분해 기록한다.

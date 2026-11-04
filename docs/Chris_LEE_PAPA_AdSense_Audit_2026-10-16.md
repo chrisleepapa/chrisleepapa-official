@@ -2120,5 +2120,5 @@ develop의 현재 소스에서 다음 16개 파일의 `href` / `src` 외부 URL�
 - 포스터 이미지 URL도 Preview에서 HTTP 200 확인.
 - **검증 통과:** 홈페이지 반복 본편 iframe 제거, 포스터 링크 대체, 전용 페이지 본편 영상 유지, 정적 리소스 접근 정상.
 - **검증 범위 한계:** HTTP 응답 및 HTML·이미지 존재 검증이다. 실제 데스크톱/모바일 브라우저에서의 시각적 배치, 키보드 포커스, 클릭 동작은 자동 브라우저 세션을 통한 검증이 아니므로 미완료로 유지한다.
-- 최종 branch 비교 결과: develop은 main보다 ahead 4 / behind 10인 diverged 상태이며, 실제 변경 파일은 본 통합 점검문서와 `index.html` 두 개뿐이다. ahead 4는 develop 고유 커밋 수이며, 수정 파일 수 2개와는 다른 수치다.
+- 최종 branch 비교 결과: main/develop은 과거 커밋 이력 차이로 diverged 상태다. 비교 API의 ahead/behind 수치는 이력 차이를 포함하므로 소스 변경량으로 해석하지 않는다. 현재 main 대비 실제 변경 파일은 본 통합 점검문서와 `index.html` 두 개뿐이며, merge 전 이 두 파일의 diff를 기준으로 검토한다.
 - Production main/배포는 계속 기존 commit `743cde515973e7ebd39c51cd7a0a7b1551ab1de6` 상태이며 수정하지 않음.

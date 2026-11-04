@@ -2438,3 +2438,10 @@ develop의 현재 소스에서 다음 16개 파일의 `href` / `src` 외부 URL�
 4. 이미 완료된 GTM 버전 2 및 태그/트리거 설정 대조는 반복하지 않는다.
 - 이번 차수에서는 사이트 코드 변경 없음. 통합 점검문서 이 파일 하나만 `develop`에서 갱신한다.
 - `main`/Production 배포와 AdSense 재검토 신청은 하지 않는다.
+
+
+#### 6) 2026-11-04 배포 상태 보충
+- Audit 2.13 기록 커밋: `818819d753f24c188ebd5fa8edba52891f004f2f` (develop).
+- 해당 커밋의 Preview 배포를 시도했으나 Vercel API가 `402 payment_required`, `api-deployments-free-per-day` 한도 초과(재시도 가능 시점 약 24시간 후)로 거부했다.
+- 따라서 이 문서 커밋은 GitHub `develop`에 저장됐지만, 해당 SHA의 Vercel Preview 배포는 생성되지 않았다. 기존 이전 develop 배포의 READY 상태를 최신 문서 배포 완료로 오인하지 않는다.
+- `main`/Production에는 변경이나 배포가 없다. 사용자의 승인 없이 Production 배포를 시도하지 않는다.

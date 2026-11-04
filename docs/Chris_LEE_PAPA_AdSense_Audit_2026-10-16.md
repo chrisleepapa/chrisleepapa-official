@@ -1674,3 +1674,24 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - 누락 경로가 없어 소스 수정은 하지 않음.
 
 **결론:** 광고 대상 16개 페이지의 정적 HTML에서 추출한 로컬 href/src/poster 경로가 모두 develop 저장소 내 파일과 연결됨. 이번 검사 범위에서 깨진 내부 링크·정적 리소스 경로는 0건.
+
+
+### 2026-11-04 / Audit 2.00 — 다른 대화방·AI를 위한 인수인계 기준 확정
+
+**목적:** 새 ChatGPT 대화방이나 다른 AI/개발자가 이 작업을 이어받을 때 프로젝트 목표, 사용자 확정 정책, 저장소/배포 구조, 확인된 결과, 수정 내역, 미확인 사항, 다음 순서를 재추측하지 않도록 별도 실행 인수인계 문서를 작성함.
+
+- 신규 인수인계 문서: `docs/AI_HANDOFF_ADSENSE_AUDIT_2026-11-04.md`
+- 이 문서는 본 통합 점검문서와 함께 읽어야 하며, 이후 AI/작업자는 먼저 두 문서를 확인한 뒤 GitHub의 최신 main/develop HEAD 및 Vercel 최신 배포 상태를 다시 조회해야 함.
+- 광고 제외 8개 경로, 두 가지 실제 거절 사유, 사용자 승인 전 main/Production 변경 금지, 이미 양호한 콘텐츠를 근거 없이 재작성하지 않는 원칙, 실제 확인하지 않은 사항을 완료로 보고하지 않는 원칙을 명시함.
+- 현재까지 확인된 Production HTML 광고/GTM 설치 검사, 16개 광고 대상 페이지 콘텐츠 검토, sitemap 외 HTML, 미디어 125/125, 내부 링크 경로 누락 0건, 삭제 메뉴 잔여 코드 수정, 배포 커밋/ID, 검증 한계 및 다음 작업 순서를 정리함.
+- 다음 우선 작업은 GTM 컨테이너 `GTM-NGDTQNVG`의 현재 Published 버전 확인과 develop의 실제 PC/모바일 브라우저 렌더링 검사임. GTM 계정 접근 권한이 없으면 과거 export를 현재 게시 버전으로 오인하지 말고 미확인으로 기록함.
+
+**현재 기준 상태 (2026-11-04):**
+- develop HEAD: `941b88da2e36147cb8cacefd990ab68dd1552104` (인수인계 문서 추가 커밋)
+- 직전 사이트 소스 수정: `js/main.js`에서 Prompt Lab / World Lore의 잔여 내비게이션 상태 판별 코드 제거. 소스 커밋 `9883209ee8a56b7925be4e0efa5d4023de4d5fae`.
+- 통합 점검문서 Audit 1.99 기록 커밋: `c43aa7aef8c5524deebcc21af4e00dcda97a629c`.
+- 직전 확인된 develop 배포: `dpl_5W3ufCAieNWvycRFsuUg2Qnc4Fqr`, commit `c43aa7aef8c5524deebcc21af4e00dcda97a629c`, READY, alias `develop.chrisleepapa.com`. 이후 인수인계 문서 추가 커밋은 새 Vercel 배포를 유발할 수 있으므로 현재 최신 배포는 후속 확인 대상.
+- main/Production은 변경하지 않음.
+- main과 develop은 diverged 상태이며, 직전 비교에서 develop 19 commits ahead / main 9 commits ahead. 최신 인수인계 문서 커밋 반영 후 수치는 달라졌을 수 있으므로 작업 시 재조회.
+
+**결론:** 본 통합 점검문서는 실제 점검 결과의 이력·근거를 보관하고, 신규 인수인계 문서는 다른 대화방/AI가 즉시 이어서 실행할 수 있는 운영 지침과 현재 상태를 제공한다. 두 문서를 함께 유지·갱신한다.

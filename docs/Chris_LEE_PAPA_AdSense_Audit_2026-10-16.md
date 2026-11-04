@@ -2012,3 +2012,52 @@ develop의 현재 소스에서 다음 16개 파일의 `href` / `src` 외부 URL�
 - **미완료:** 실제 사이트에서 GA4 요청이 발생하는지, GA4 실시간/DebugView 수집 여부, page_view 중복 여부, 동의 상태에 따른 동작, 광고 제외 8개 경로에서 실제 광고 네트워크 요청이 없는지 여부.
 - 다음 순서: 실제 PC/모바일 페이지에서 Network 및 GA4 DebugView를 확인하고, 이후 광고 제외 8개 경로의 광고 요청 여부를 검증한다. GTM 설정 자체는 현 단계에서 변경하지 않는다.
 - main/Production 변경 없음. 사이트 코드 변경 없음.
+
+
+### 2026-11-04 / Audit 2.04 — Production main 최신 배포의 AdSense 정적 재채점
+
+**점검 기준:** 공식 운영 도메인 `https://chrisleepapa.com`, Production 배포 `dpl_FJSc1Eoj93DjyJFxh6c88bGWMJoY`, main commit `743cde515973e7ebd39c51cd7a0a7b1551ab1de6`.  
+**단일 기준 문서:** 본 파일만 유지. 사이트 코드 수정이나 AdSense 검토 요청 제출은 수행하지 않음.
+
+#### 1) 현재 배포·브랜치 확인
+- Production 배포 상태: **READY**.
+- 배포 대상: `main`; 배포 커밋: `743cde515973e7ebd39c51cd7a0a7b1551ab1de6`.
+- 공식 alias: `chrisleepapa.com`; alias 오류 없음.
+- GitHub main/develop 비교에서 변경 파일 목록은 0개이며, 커밋 그래프상 main이 develop보다 10 commits 앞서 있는 `behind` 상태. 따라서 **커밋 SHA가 같다는 뜻은 아니지만 파일 트리는 현재 동일**한 것으로 확인. 이전 문서에 기록된 Production 18/6 분포 및 develop 후보만 16/8이라는 설명은 이번 배포 이후의 현재 상태로 사용하지 않는다.
+- 이번 작업은 Production 소스 점검과 본 문서의 develop 기록만 수행. main/Production 소스는 변경하지 않음.
+
+#### 2) Production sitemap 및 광고 코드 분포
+- `https://chrisleepapa.com/sitemap.xml`의 URL: **24개**.
+- 광고 대상 16개: `/`, `/sistersquad-hub`, `/sistersquad`, `/sistersquad2`, `/yul`, `/jung`, `/miracleshot`, `/tutupupupipi`, `/wallpaper`, `/about`, `/journal-1`~`/journal-6`.
+- 위 16개 Production HTML을 각각 조회한 결과: AdSense loader **1개씩**, publisher ID `ca-pub-3207219520058740` **1개씩**, GTM script **1개씩**, GTM noscript **1개씩**, canonical **1개씩**, robots meta **1개씩**.
+- 광고 제외 8개: `/music`, `/movie`, `/bible`, `/worship`, `/worship_eng`, `/contact`, `/privacy`, `/terms`.
+- 위 8개 Production HTML 각각에서 AdSense loader **0개**, publisher ID **0개**를 확인. GTM script, canonical, robots meta는 각각 1개씩 확인.
+- 따라서 현재 Production 직접 코드 분포는 **광고 대상 16 / 광고 제외 8**이며, 사용자가 확정한 광고 제외 정책과 일치한다.
+- 홈페이지·콘텐츠 16개 페이지는 운영 HTML 응답 본문을 모두 받아 정적 검사를 수행했다. sitemap XML도 실제 운영 응답 본문에서 24개 URL을 확인했다. 본문을 반환받은 사실은 실제 브라우저의 모든 동적 기능·광고 요청 성공을 뜻하지 않는다.
+
+#### 3) 고정 거절 사유 2개 기준 콘텐츠 판정
+- Audit 1.86의 광고 대상 16개 정적 콘텐츠 검토에서 페이지 간 완전 동일 본문 블록 0건, 명확한 고위험 콘텐츠 페이지 0건으로 기록되어 있음.
+- 기존 세부 평가에서 작품·캐릭터·창작 과정·제작자 경험을 설명하는 고유 본문이 확인된 페이지는 양호 또는 개선 후 양호로 유지한다. 완전 동일 문단 검사만으로 의미상 유사성, 외부 원문과의 복제 여부 또는 Google의 최종 판단을 보증하지 않는다.
+- 이번 Production 재검사에서 직접 광고 코드 분포가 16/8로 정상임을 확인했으나, 화면에 실제 광고가 표시되는 위치·광고 주변 콘텐츠·GTM 런타임 삽입 여부는 브라우저 Network 검증 전까지 미확인으로 유지한다.
+- 삭제된 Prompt Lab, Chris's News 등은 현재 점검 대상으로 되살리지 않는다. 광고 제외 8개 경로도 콘텐츠 심사 대상으로 확대하지 않는다.
+
+#### 4) 내부 준비도 점수 — Production 현재 기준
+| 평가 항목 | 점수 | 근거 |
+|---|---:|---|
+| 크롤링·기술 무결성 | **20/20** | sitemap 24개 URL, 공식 도메인 운영 페이지 본문 조회, canonical/robots 정적 구조 확인 및 기존 URL·리소스 점검 결과 |
+| 광고 코드 분리·태그 위생 | **17/20** | Production 광고 대상 16/16 loader·publisher 1개, 제외 8/8 loader·publisher 0개. GTM Published 최신본 및 실제 광고 Network 요청 미확인 |
+| 독창성·콘텐츠 가치 | **27/35** | 16개 광고 대상의 기존 정적 심층검토와 고유 창작·제작 설명 근거. 외부 원문 대조 및 브라우저 동적 콘텐츠 확인은 미완료 |
+| 사용자 경험·접근성 | **10/15** | 공개 HTML 및 기본 메타 구조 확인. PC·모바일 실제 렌더링, 키보드·상호작용·언어 전환은 미검증 |
+| Google 계정·외부 검증 | **3/10** | GTM Published 최신 상태/DebugView, AdSense 계정·사이트 상태, Search Console 색인 보고서 직접 확인 불가 |
+| **합계** | **77/100** | 내부 정적 준비도 지표. Google 공식 점수나 승인 확률이 아님 |
+
+**점수 판정:** Production 현재 내부 점수는 **77/100**. 이전 Audit 1.86에서 develop 후보로 산정했던 77점을 이번 Production 배포의 파일 트리 동일성 및 직접 광고 코드 분포 재검증을 거쳐 운영 사이트 점수로 적용한다. 이는 Google의 승인 가능성을 수치화한 것이 아니며, 브라우저·GTM·계정 검증이 끝나지 않아 추가 가산하지 않는다.
+
+#### 5) 미완료 항목과 다음 순서
+1. GTM `GTM-NGDTQNVG`의 최신 Published 버전에서 태그·트리거를 확인하고, GA4 `G-NBGELYQ4TZ` page_view 중복 여부 및 광고 관련 태그 존재 여부 확인.
+2. PC·모바일 실제 브라우저에서 광고 대상 16개 페이지의 동적 섹션, 언어 전환, 이미지·영상 재생, 광고 배치 및 광고 제외 8개 경로의 Network 요청 확인.
+3. 외부 YouTube·Spotify·출판 링크의 실제 목적지와 콘텐츠 일치 여부 확인. 단순 접근 도구 실패만으로 링크를 제거하지 않음.
+4. AdSense 계정의 사이트 등록/코드 감지/정책 상태 및 Search Console sitemap·색인 결과 확인. 계정 접근 없이 완료 처리하지 않음.
+5. 실제 결함이 확인될 때만 develop에서 최소 수정하고, 사용자가 별도로 지시하기 전에는 main/Production 변경 및 AdSense 검토 요청을 하지 않음.
+
+**이번 차수 결론:** Production 정적 HTML의 직접 광고 코드 분포는 사용자 확정 정책과 정확히 일치한다. 현재 내부 점수는 77/100. 콘텐츠의 정적 독창성 근거는 양호하지만, 실제 광고 요청·GTM 최신 게시본·브라우저 렌더링·Google 계정 상태가 남아 있으므로 이를 완료 또는 승인 보장으로 표현하지 않는다.

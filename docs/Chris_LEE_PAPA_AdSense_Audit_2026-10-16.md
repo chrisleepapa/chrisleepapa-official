@@ -2601,3 +2601,32 @@ develop의 현재 소스에서 다음 16개 파일의 `href` / `src` 외부 URL�
 - 사이트 코드, sitemap, canonical, robots, Search Console 설정은 변경하지 않았다.
 - 문서 변경은 `develop` 브랜치에만 반영한다. `main` 및 Production 배포는 하지 않는다.
 - AdSense 재검토 요청은 제출하지 않는다.
+
+### 2026-11-04 / Audit 2.17 — 사용자 제공 Search Console URL 검사 결과
+
+**검사 속성:** 정식 도메인 `sc-domain:chrisleepapa.com`  
+**검사 방법:** 사용자가 로그인된 Google Search Console의 URL 검사 결과를 직접 확인해 전달. 아래 결과는 도구가 직접 조회한 값이 아니라 사용자 제공 화면 내용에 근거한다.
+
+#### 1) 페이지 색인 확인 — 4개 URL
+
+| URL | Google 등록 | 페이지 색인 | HTTPS | 동영상 색인/개선사항 |
+|---|---|---|---|---|
+| `https://chrisleepapa.com/` | 등록됨 | 색인 생성됨 | 이번 공유 화면에서 별도 HTTPS 항목 미확인 | 색인된 동영상 없음 |
+| `https://chrisleepapa.com/about` | 등록됨 | 색인 생성됨 | HTTPS 제공 확인 | 공유된 화면에서 동영상 항목 미확인 |
+| `https://chrisleepapa.com/tutupupupipi` | 등록됨 | 색인 생성됨 | HTTPS 제공 확인 | 공유된 화면에서 동영상 항목 미확인 |
+| `https://chrisleepapa.com/sistersquad` | 등록됨 | 색인 생성됨 | HTTPS 제공 확인 | 색인된 동영상 없음. 동영상 항목 유효 1개 감지, 심각하지 않은 문제 1건 표시 |
+
+- **판정:** 지금까지 직접 URL 검사 결과를 공유받은 4개 URL은 모두 Google에 등록되어 있고 페이지 색인이 생성되어 있다.
+- 홈페이지의 동영상 색인 없음은 페이지 색인 실패를 의미하지 않는다.
+- `/sistersquad`의 동영상 구조화 데이터/개선사항은 페이지 색인과 별도 영역이다. 유효한 항목 1개가 감지되었으나 비심각 문제의 구체적인 설명을 아직 확인하지 못했다. 문제 내용을 열어 상세 메시지와 영향을 받는 동영상 항목을 확인하기 전까지는 수정 필요 여부를 판정하지 않는다.
+- 동영상 색인 없음만으로 동영상 구조화 데이터 오류 또는 AdSense 탈락 사유라고 단정하지 않는다.
+
+#### 2) 다음 단계
+1. `/sistersquad`의 URL 검사 결과에서 **동영상 > 유효한 항목 1개** 및 **심각하지 않은 문제**를 눌러 상세 메시지를 확인한다. 문제 이름과 설명을 기록한 뒤 실제 수정 필요 여부를 판단한다.
+2. 다음 URL `https://chrisleepapa.com/journal-4`를 URL 검사한다.
+3. 이후 Search Console에서 과거 문제가 표시된 나머지 URL을 확인한다. 모든 결과는 페이지 색인과 동영상 색인을 분리해 기록한다.
+
+#### 3) 문서·배포 경계
+- 이번 결과는 이 통합 점검문서에만 기록한다. 별도 문서는 만들지 않는다.
+- 사이트 소스, sitemap, canonical, robots, 광고 코드 및 Search Console 설정은 변경하지 않았다.
+- 문서 변경은 `develop` 브랜치에만 적용한다. `main`/Production 배포와 AdSense 재검토 신청은 하지 않는다.

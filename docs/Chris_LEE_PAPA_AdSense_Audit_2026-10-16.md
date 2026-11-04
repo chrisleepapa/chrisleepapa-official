@@ -1982,6 +1982,7 @@ develop의 현재 소스에서 다음 16개 파일의 `href` / `src` 외부 URL�
 
 - 현재 사용 가능한 연결 도구 목록에서 Google Tag Manager 컨테이너의 Published 버전/태그/트리거를 직접 조회하는 전용 연결을 찾지 못했다.
 - Library의 `GTM-NGDTQNVG_v2.json`은 과거 2026-10-30 export version 2라는 기존 기록만 유효하다. 현재 Published 버전이라고 간주하지 않는다.
+- Library 원본 `GTM-NGDTQNVG_v2.json`을 다시 열어 세부 내용을 확인함: export time `2026-10-30 04:10:04`, container version `2`, 컨테이너 `GTM-NGDTQNVG` (`chrisleepapa-official`). export 안의 tag 배열은 1개이며, `Google tag - GA4` (`googtag`)의 측정 ID는 `G-NBGELYQ4TZ`, firing trigger ID는 `2147479553`(export 설명상 All Pages), `ONCE_PER_EVENT` 설정임. 이 export의 tag 목록에는 AdSense 태그가 보이지 않는다. 단, 이 자료는 2026-10-30 당시 version 2 export일 뿐이므로 현재 Published 컨테이너에 동일하게 적용되어 있다고 볼 수 없다. consent status는 `NOT_SET`로 기록되어 있어 실제 동의 관리 정책과 일치하는지도 별도 확인이 필요하다.
 - GTM Published 버전, AdSense 태그 및 제외 8개 경로의 런타임 광고 요청, GA4 `G-NBGELYQ4TZ` 중복 page_view 여부는 미확인으로 유지한다. 계정 접근 없이 완료 처리하지 않는다.
 
 #### 6) 다음 실제 작업 순서

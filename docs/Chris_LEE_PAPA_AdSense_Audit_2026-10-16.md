@@ -2832,3 +2832,465 @@ develop의 현재 소스에서 다음 16개 파일의 `href` / `src` 외부 URL�
 - 기존 통합 점검문서에만 기록했다. 별도 문서는 만들지 않았다.
 - 사이트 소스, 동영상 임베드, 구조화 데이터는 변경하지 않았다.
 - 문서 변경은 `develop` 브랜치에만 적용한다. `main` 병합, Production 배포, AdSense 재검토 요청은 하지 않는다.
+
+
+---
+
+## main 브랜치에서만 보존되던 기존 통합 점검 기록
+
+아래 기록은 main 브랜치에만 추가되어 있던 Audit 2.10 및 그 하위 점검 내용이다. develop의 후속 Audit 2.10~2.23 기록과 함께 단일 통합 문서에 보존한다. 기존 기록의 당시 판정·수치는 현재 상태로 오인하지 말고 각 기록의 기준 시점에 따라 해석한다.
+
+### 2026-11-04 / Audit 2.10 — Firecrawl Production 전체 사이트 탐색 및 크롤링
+
+**대상:** 운영 도메인 `https://chrisleepapa.com/`만 조사. develop 및 GitHub 소스는 이번 크롤링의 대상이 아님. 사이트 코드 수정, AdSense 설정 변경, Search Console 색인 요청 및 Production 배포는 수행하지 않음.
+
+#### 1) Firecrawl 도구 및 실행 범위
+- Firecrawl 계정 인증/크레딧 조회가 정상 응답함.
+- 별도 Alexandria 사이트 전용 provider는 탐색되지 않아 Firecrawl 자체의 URL Map, Crawl, Scrape 기능을 사용함.
+- URL Map 작업 ID: `01a1a6bf-4ee2-7350-a3af-99799a77ce79`.
+- URL Map에서 총 82개 URL을 발견함. HTML 경로 외에 `/images/hymn/` 아래 PDF 파일 다수가 포함되어 있어, 이 수치를 HTML 페이지 수로 해석하지 않음.
+- Crawl 작업 ID: `01a1a6bd-4dad-711d-a9dc-9bf77a10d3b3`.
+- Crawl은 35개 페이지 결과를 반환했고, 결과의 HTTP 상태 코드는 모두 200으로 집계됨. 다만 11개 URL에서 동시 처리/수집 경고가 함께 반환되어 해당 페이지는 개별 재수집 전까지 본문 완전성을 확정하지 않음.
+- 총 수집 본문 길이 합계: 약 216,388자. 본문 길이는 품질 점수나 AdSense 승인 기준으로 사용하지 않음.
+
+#### 2) 실제 콘텐츠·기술 관찰
+| 항목 | Production에서 관찰한 사실 | 판정 및 후속 조치 |
+|---|---|---|
+| Sitemap | `/sitemap.xml` HTTP 200. Firecrawl이 읽은 XML에는 24개 URL 항목이 포함됨. | sitemap 자체의 접근은 확인. sitemap 24개 URL과 Crawl 35개 결과의 정확한 일대일 대조 및 각 URL의 개별 응답 검증은 미완료. |
+| URL Map | 82개 URL 발견. 페이지 외 PDF 등 파일 URL 포함. | PDF가 URL Map에 포함된 사실만으로 검색 노출 또는 광고 대상이라고 판단하지 않음. |
+| Prompt Lab | `/prompt-lab` 직접 Scrape 결과 HTTP 404, Vercel `404: NOT_FOUND`. sitemap에는 없음. | 사용자가 제거한 페이지가 실제로 활성 콘텐츠로 남아 있는 것은 확인되지 않음. 404 상태 기록만 유지하며 복구/재등록 과제로 만들지 않음. |
+| `/shop` | Crawl metadata에서 canonical 값이 추출되지 않음. HTTP 응답은 200. | canonical 태그가 실제 HTML에 없는지 아직 확정하지 않음. 원본 HTML/브라우저 검증 필요. |
+| `/goal` | 후속 raw HTML 검사에서도 canonical 및 meta description 태그가 확인되지 않음. HTTP 200. robots는 `noindex, nofollow`. | **실제 HTML head 태그 누락 확인.** 단, noindex 게임 화면이므로 AdSense 콘텐츠 심사 대상과 혼동하지 말고 기술 개선 여부를 운영 목적과 대조. |
+| `/today`, `/journal` | robots metadata가 각각 `noindex, follow`로 추출됨. | 현재 색인 제외 의도와 일치하는지 확인 필요. 임의로 index로 변경하지 않음. |
+| 내부 게임/도구 경로 | `/gameinfo`, `/goal`, `/booktop`, `/game`, `/fiveinrow`, `/curling`, `/tetris`, `/switch`에서 `noindex, nofollow` metadata가 추출됨. | 운영 의도 및 sitemap 포함 여부와 대조 필요. robots 메타데이터만으로 오류라고 단정하지 않음. |
+| 수집 경고 | `/today`, `/shop`, `/gameinfo`, `/journal`, `/goal`, `/booktop`, `/game`, `/fiveinrow`, `/curling`, `/tetris`, `/switch` 등 11개에서 경고. | 각 URL을 낮은 동시성으로 개별 Scrape하여 본문 누락 여부를 재검증해야 함. |
+
+#### 3) AdSense 고정 심사 사유에 대한 현재 판정
+- 이번 Firecrawl 결과는 사이트의 URL 구조, 초기 수집 본문, metadata 및 robots 정보를 확인하는 1차 기술 탐색임.
+- 이 자료만으로 ① “복제된 콘텐츠가 있는 화면에 Google 게재 광고” 또는 ② “가치가 별로 없는 콘텐츠” 중 어느 사유가 실제로 존재한다고 확정하지 않음.
+- 페이지별 독창적 기여, 외부 임베드에 더해진 설명·분석·제작자 경험, 방문자 효용 및 내용 완성도는 페이지 본문을 개별 검토한 뒤 두 고정 사유 각각에 대해 판정해야 함.
+- HTTP 200은 페이지가 응답했다는 뜻일 뿐, 콘텐츠 품질·브라우저 렌더링·광고 적합성 또는 Google 색인을 보증하지 않음.
+- robots의 noindex는 기술적 색인 제어 관찰이며, 그 자체를 AdSense 거절 원인으로 취급하지 않음.
+
+#### 4) 체크리스트 반영
+- [x] Production 도메인 기준 Firecrawl URL Map 실행
+- [x] Production 도메인 기준 Firecrawl Crawl 완료 및 작업 ID 기록
+- [x] sitemap.xml 직접 Scrape 및 HTTP 200 확인, 24개 URL 항목 파악
+- [x] 삭제된 Prompt Lab URL 직접 확인: HTTP 404, sitemap 미포함
+- [x] Crawl에서 발견한 canonical/description/robots metadata 관찰값 기록
+- [x] Crawl 경고 11개 URL 개별 재수집 및 본문 완전성 확인 (11/11 모두 개별 Scrape HTTP 200, 재수집 경고 없음)
+- [x] sitemap 24개 URL과 Crawl 결과를 URL 단위로 대조: 24/24 모두 Crawl 결과에 존재, 누락 0, 각 HTTP 200 확인
+- [x] Shop 원본 HTML에서 canonical·description 실제 태그 확인 (둘 다 존재)
+- [x] Goal 원본 HTML에서 canonical·description 태그 누락 확인 (HTTP 200, noindex/nofollow)
+- [ ] Today/Journal 및 게임 경로의 noindex 설정이 현재 운영 의도와 일치하는지 확인
+- [ ] 광고 대상 페이지 각각의 실제 본문을 두 고정 AdSense 거절 사유로 판정하고 기존 콘텐츠 점검표에 근거 추가
+- [ ] PC·모바일 브라우저 렌더링 및 동적 콘텐츠 확인
+
+#### 5) 다음 실행 순서
+1. 먼저 Crawl 경고 11개 URL을 개별 Scrape해 수집 누락과 실제 페이지 오류를 분리한다.
+2. sitemap의 24개 URL과 실제 Crawl URL을 정규화해 누락/추가 주소를 확인한다.
+3. Shop 및 Goal의 원본 HTML metadata를 확인한다.
+4. noindex 경로는 현재 sitemap·내부 링크·운영 목적과 대조하되, 확인 전에는 변경하지 않는다.
+5. 그 다음 광고 대상 콘텐츠 페이지를 고정된 두 거절 사유로 검토하고, 개선이 필요하면 develop에서만 최소 수정·검증한다.
+
+**변경 이력:** 이 Audit 2.10은 점검문서만 갱신한다. 사이트 소스, main/develop 배포, AdSense 계정, GTM 및 Search Console 설정은 변경하지 않았다.
+
+
+#### 6) Audit 2.10 후속 검증 — Crawl 경고 URL 개별 재수집 1차
+- Firecrawl 초기 Crawl에서 경고가 발생한 11개 URL 중 5개를 개별 Scrape로 재검증함: `/today`, `/shop`, `/gameinfo`, `/journal`, `/goal`.
+- 5개 모두 HTTP 200, 개별 Scrape에서는 경고가 재현되지 않음. 반환된 본문 길이: Today 2,043자, Shop 4,188자, Game Center 4,857자, Journal 2,474자, Goal 1,284자. 이는 추출된 Markdown 길이이며 실제 콘텐츠 가치의 척도가 아님.
+- robots 결과는 초기 Crawl과 일치: Today/Journal `noindex, follow`; Game Center/Goal `noindex, nofollow`. Shop은 `index, follow`.
+- Shop raw HTML(약 69,054자)에서 다음 태그를 직접 확인함:
+  - `<link rel="canonical" href="https://chrisleepapa.com/shop">`
+  - meta description: “Chris LEE.PAPA 공식 북스토어. SISTER SQUAD, MIRACLE SHOT, 종이책과 전자책을 만나보세요.”
+  - 따라서 Shop canonical/description 누락은 아님. 초기 metadata 추출에서 값이 누락된 것으로 정정.
+- Goal raw HTML(약 14,625자)에서는 canonical link, meta description, og:url 태그를 찾지 못함. HTTP 200이며 `noindex, nofollow`. 기술 메타데이터 누락은 확인했으나, 게임 화면은 현재 noindex 처리되어 있으므로 AdSense 콘텐츠 거절 사유로 단정하지 않음.
+- **남은 Crawl 경고 URL 6개:** `/booktop`, `/game`, `/fiveinrow`, `/curling`, `/tetris`, `/switch`. 이들에 대한 개별 재수집은 미완료.
+- Checklist 진행률: 경고 URL 11개 중 5개 개별 재수집 완료, 6개 미완료. 전체 11개 점검 완료로 체크하지 않음.
+
+
+#### 7) Audit 2.10 후속 검증 — 경고 URL 11/11 및 Sitemap 대조 완료
+- 초기 Crawl 경고 URL 11개 모두 개별 Scrape로 재검증 완료. 전부 HTTP 200이며 개별 Scrape 결과에서 경고/오류가 재현되지 않음.
+- 추가 6개 결과:
+  - `/booktop`: HTTP 200, `noindex, nofollow`, 본문 287자. 실제 게임 UI와 로그인 안내가 수집됨.
+  - `/game`: HTTP 200, `noindex, nofollow`, 본문 973자. Sister Squad 보드게임 규칙·캐릭터·플레이 설명이 수집됨.
+  - `/fiveinrow`: HTTP 200, `noindex, nofollow`, 본문 827자. 오목 규칙·대전 모드·캐릭터 선택 설명이 수집됨.
+  - `/curling`: HTTP 200, `noindex, nofollow`, 본문 914자. 게임 규칙·진영·전략 설명이 수집됨.
+  - `/tetris`: HTTP 200, `noindex, nofollow`, 본문 746자. 조작 방법·모바일 플레이·제작 배경 설명이 수집됨.
+  - `/switch`: HTTP 200, `noindex, nofollow`, 본문 2,388자. 게임 설명 및 공통 내비게이션이 수집됨.
+- Sitemap raw HTML에서 정확히 24개의 `<loc>` 주소를 추출하고 Crawl 35개 결과와 정규화된 URL 문자열 기준으로 대조함.
+- **Sitemap URL 24/24 모두 Crawl 결과에 존재, sitemap URL 중 Crawl 누락 0건.** Crawl 결과에만 있는 추가 URL은 11개이며 `/today`, `/shop`, `/gameinfo`, `/journal`, `/goal`, `/booktop`, `/game`, `/fiveinrow`, `/curling`, `/tetris`, `/switch`.
+- Sitemap 외 추가 11개 중 `/shop`은 `index, follow`; 나머지 10개는 noindex 설정으로 확인됨. 특히 Shop은 색인 허용 상태이나 sitemap에서 제외되어 있으므로, 의도된 운영 설정인지 확인 대상으로 남김. 임의로 sitemap에 추가하거나 noindex로 바꾸지 않음.
+- **기술 탐색 판정:** sitemap 및 Crawl URL 일치 검사는 완료. 다만 sitemap 외 Shop의 sitemap 포함 여부와 noindex 페이지들의 의도 확인은 미완료. 이 사실만으로 AdSense 거절 원인을 단정하지 않음.
+
+
+#### 8) Audit 2.10 후속 검증 — Shop 및 Goal의 광고 코드·본문 성격 확인
+- `/shop` Production raw HTML와 본문을 개별 수집해 확인함:
+  - HTTP 200, `index, follow`, canonical `https://chrisleepapa.com/shop`, meta description 존재.
+  - 직접 AdSense loader 0개, publisher ID 0개, GTM loader 1개. GTM을 통한 런타임 광고 삽입 여부는 GTM 게시 버전/브라우저 네트워크 검증 전까지 미확인.
+  - 본문은 SISTER SQUAD 1·2 및 MIRACLE SHOT의 종이책·전자책·오디오북·컬러링북 소개, 각 상품의 간단한 줄거리/독자 안내, YES24·영풍문고·Amazon·Google Play 등 판매처 연결, OGQ 이모티콘 링크, 방명록으로 구성됨.
+  - 따라서 단순 외부 판매처 링크만 나열된 화면은 아니며, 작품별 자체 소개와 구매 형태를 제공함. 다만 작품 설명은 간결한 상품 안내 수준이므로, 콘텐츠 품질을 높일 필요가 있는지 판단할 때는 각 작품 본문 페이지와의 중복 정도 및 Shop 페이지의 독립적 방문 효용을 함께 확인해야 함.
+  - Shop은 `index, follow`인데 sitemap 24개에는 포함되지 않음. 검색 노출 의도는 확인 전이며 임의로 sitemap 추가/robots 변경하지 않음.
+- `/goal` Production raw HTML와 본문을 개별 수집해 확인함:
+  - HTTP 200, `noindex, nofollow`, canonical 태그 없음, meta description 태그 없음.
+  - 직접 AdSense loader 0개, publisher ID 0개, GTM loader 1개.
+  - 본문은 MIRACLE SHOT 캐릭터 선택, 점수판 조준·슛 조작, 라운드/점수 표시, 재경기 및 계정 로그인 안내를 제공하는 인터랙티브 게임 화면임.
+  - noindex/nofollow 및 직접 AdSense 코드 부재를 확인했으므로 현재 공개 색인 대상 콘텐츠 페이지와 구분한다. metadata 누락은 기술 관찰로만 기록하며 실제 AdSense 거절 사유로 연결하지 않음.
+- 두 URL 모두 직접 AdSense loader가 없다는 것은 확인했으나, GTM 런타임 태그 실행 여부는 별도 미확인으로 남김.
+
+
+#### 9) Audit 2.10 후속 검증 — 광고 대상 16개 페이지의 실제 본문 1차 심사
+
+- 기준: 2026-11-04 Production `https://chrisleepapa.com`의 광고 대상 16개 URL을 Firecrawl로 개별 재수집하고, 공통 내비게이션/공유 UI를 본문 가치로 계산하지 않도록 본문 영역을 분리해 검토함.
+- 범위: `/`, `/sistersquad-hub`, `/sistersquad`, `/sistersquad2`, `/yul`, `/jung`, `/miracleshot`, `/tutupupupipi`, `/wallpaper`, `/about`, `/journal-1`~`/journal-6`.
+- 이 검토는 실제 페이지 본문과 구조에 대한 정성 평가이며, Google의 내부 복제 판정 시스템 또는 외부 원문과의 표절 검사를 대체하지 않는다.
+
+| 페이지 | 본문에서 확인한 고유 기여 | 복제 콘텐츠 화면 위험 | 저가치 콘텐츠 위험 | 판단 근거 및 후속 |
+|---|---|---|---|---|
+| 홈 `/` | 오늘의 선정 작품, SISTER SQUAD 2 소개, 아카이브 분류, 6편 저널 안내 | 낮음~보통 | 보통 | 아카이브형 랜딩 페이지로서 탐색 기능이 중심. 상세 작품 소개를 중복 복사하지 않고 각 원문 페이지로 연결하는 현재 구조는 합리적. 다만 독립적인 장문 콘텐츠보다 허브 역할이 강하므로 홈 자체를 심사 핵심 콘텐츠로 과대평가하지 않음. |
+| `/sistersquad-hub` | 루미나·아르카디아·죽음의 늪·거인의 등뼈·고요의 계곡 등 세계관, 캐릭터·유물·시리즈 안내 | 낮음~보통 | 낮음 | 세계관 설정과 캐릭터 관계 등 자체 서술이 확인됨. 하위 시리즈/캐릭터 페이지와 정보가 일부 겹치므로 허브는 개요·관계·세계관 탐색에 집중하고 세부 서사는 각 전용 페이지에서 확장하는 구성이 적절. |
+| `/sistersquad` | 1권의 줄거리, 두 자매의 능력과 성장, 창작 배경, OST 및 영문판 안내 | 낮음 | 낮음~보통 | 작품의 이야기와 제작 배경이 서술되어 단순 영상/외부 링크 모음은 아님. 허브 및 캐릭터 프로필과 일부 설정 공유는 자연스러운 시리즈 정보 중복으로 보이나, 문단 단위 반복 여부는 추가 교차 대조 대상으로 남김. |
+| `/sistersquad2` | 3개 예고편의 서로 다른 맥락, 본편 12분 54초 소개, 가족 캐릭터 변화, 6개 여정 단계 및 주제 | 낮음 | 낮음 | 영상별 설명과 본편의 서사·인물 성장·장소별 여정이 독립적으로 제공됨. 영상 임베드 자체만으로 가치가 형성되는 페이지가 아님. |
+| `/yul` | 율의 성격·능력·성장, 염력 설정, 인용 대사, 다수의 캐릭터 아트워크 | 보통 | 보통 | 독립 캐릭터 프로필은 존재하나 SISTER SQUAD 허브 및 1·2권 본문과 율의 나이·능력·모험 요약이 겹침. 갤러리 중심의 반복 설명을 피하고, 캐릭터별 고유 선택·장면 해설·디자인 변화 등 프로필 고유 정보의 비중을 유지할 필요. |
+| `/jung` | 정이의 성격·교감/테이밍 능력, 성장, 인용 대사, 캐릭터 아트워크 | 보통 | 보통 | 율 프로필과 구조가 유사하고 시리즈 개요와 줄거리 정보가 일부 겹침. 정이만의 교감 방식, 주요 장면, 디자인/능력 발전을 중심으로 독립적 정보가 드러나도록 관리할 필요. |
+| `/miracleshot` | 풋살 공동체의 서사, 이 코치의 동기, 네 아이의 결핍·재능, 성경 인물 연결 | 낮음 | 낮음~보통 | 캐릭터와 이야기의 자체 설명, 작품 세계관이 확인됨. 외부 영상/게임 임베드보다 작품 자체의 설명이 중심인지 페이지 전체를 기준으로 후속 검증. |
+| `/tutupupupipi` | 세 캐릭터의 역할·성격, 작은 사건 6편의 소개, 프로젝트의 정서와 OST 연결 | 낮음~보통 | 보통 | 고유 캐릭터와 에피소드 설명이 있으나 각 에피소드의 상세한 줄거리·창작 의도·교육/놀이 가치 설명은 비교적 간결함. 영상 목록만 나열되는 구간이 본문 대부분을 차지하지 않도록 에피소드별 자체 설명의 깊이를 확인할 필요. |
+| `/wallpaper` | 모바일 4편·PC 9점, 작품 설명, 포맷·개인용 라이선스·다운로드 안내 | 낮음 | 보통 | 사용자가 실제 이용할 수 있는 작품 미리보기·다운로드·사용 조건·기기별 안내가 있음. 다만 이미지/영상 컬렉션형 페이지이므로 각 작품의 창작 배경과 시각적 선택, 기기별 적용 안내가 충분한지 점검할 필요. |
+| `/about` | 창작자 소개, 창작 여정, AI 도구의 역할, 프로젝트 철학과 아카이브 구성 | 낮음 | 낮음 | 게시자와 창작 활동의 맥락을 직접 설명하며, 사이트의 주체와 고유 기여를 이해하는 데 도움을 줌. |
+| `/journal-1` | 두 딸과 함께 이야기를 시작한 계기, AI 도구를 창작 도구로 사용한 경험, 공동 창작 과정 | 낮음 | 낮음 | 개인 경험 중심의 창작 에세이로 일반적인 AI 소개와 구별되는 구체적 경험이 있음. |
+| `/journal-2` | Skywork 활용, 첫 프롬프트, 도구 선택·비교, 그림 소설 제작의 실제 단계 | 보통 | 보통 | 실제 프롬프트와 제작 과정이 있어 고유성이 있으나, 도구 기능·가격·설립 정보는 시간이 지나면 낡을 수 있고 일반적인 AI 도구 소개와 겹칠 수 있음. 현재 사용 경험과 당시 비교 정보의 기준 시점을 명확히 유지할 필요. |
+| `/journal-3` | SISTER SQUAD 실제 출판 준비, 원고 검수, 판형·표지·본문·ISBN·POD 경험 | 낮음 | 낮음~보통 | 실제 출판 과정에서의 판단과 체크 항목이 구체적임. 일반적인 POD 안내와 실제 경험을 분리하고 플랫폼 정책·가격 등 변경 가능 정보는 공식 안내 확인 시점을 밝혀야 함. |
+| `/journal-4` | 캐릭터 일관성 기준, AI 이미지 반복 생성·선택, 딸들의 피드백, 삽화 검수 | 낮음 | 낮음 | 캐릭터 디자인의 구체적 판단 기준과 시행착오가 기록되어 자체 경험 기반 콘텐츠로 평가. |
+| `/journal-5` | 직장·가족과 창작 시간 배분, 짧은 작업 단위, AI 활용에 대한 실제 관점 | 낮음 | 낮음~보통 | 개인의 작업 루틴과 시행착오가 중심. 일반적인 시간관리 조언과 겹칠 수 있으나 1인칭 경험·구체적 시간 단위·프로젝트 운영 사례가 차별점. |
+| `/journal-6` | 워십 창작 동기, 기도에서 가사로 이어지는 단계, AI 음악 결과의 선택·수정, 창작자의 고백 | 낮음 | 낮음~보통 | 개인적 신앙·창작 경험과 제작 절차가 확인됨. 워십 앨범/음원 임베드가 있더라도 본문 고유 설명이 페이지의 중심을 유지하는지 브라우저 렌더링 단계에서 확인. |
+
+##### 1차 심사 종합
+
+- 16개 페이지에서 단순 외부 영상·음원 임베드만 제공하는 형태가 아니라, 작품 서사·캐릭터 설정·창작 배경·실제 제작 경험·사용 안내 등 게시자 고유의 설명이 확인됨.
+- **복제 콘텐츠 위험의 상대적 관찰 지점:** `/yul`, `/jung`의 캐릭터 프로필은 허브와 SISTER SQUAD 1·2의 인물/줄거리 정보와 일부 중첩될 수 있음. 이는 동일 IP 내 필요한 설정 반복일 수 있으므로 자동 위반으로 단정하지 않으며, 캐릭터 전용 페이지의 독립 정보가 유지되는지 확인한다.
+- **저가치 콘텐츠 위험의 상대적 관찰 지점:** 홈은 아카이브 허브 성격, `/wallpaper`는 작품 컬렉션/다운로드 안내, `/tutupupupipi`는 짧은 에피소드·캐릭터 소개 중심이므로 각 페이지의 독립적 방문 효용을 계속 강화할 후보이다. 현재 본문만으로 정책 위반이라고 단정하지 않는다.
+- 저널 2의 AI 도구 정보와 저널 3의 출판 절차는 변경 가능한 외부 정보가 포함될 수 있으므로 작성 당시 기준임을 표시하고 공식 최신 안내와 구별하는 것이 바람직하다.
+- 이 단계에서는 페이지 소스 수정이 필요하다고 확정할 만큼의 결함을 발견하지 못했다. 따라서 임의로 develop/main 소스를 변경하지 않았다.
+- 본문 텍스트 수집은 성공했으나, 실제 PC·모바일 브라우저에서의 레이아웃, 이미지/영상 로딩, 언어 전환, 광고 코드 주변의 콘텐츠 배치, 클릭 가능한 동작은 아직 검증하지 않았다.
+- 외부 YouTube·Spotify·출판 링크의 실제 목적지와 링크 대상 콘텐츠 일치 여부도 별도 미완료로 유지한다.
+
+##### 체크리스트 업데이트
+
+- [x] 광고 대상 16개 Production URL의 본문 개별 재수집 및 본문 내용 1차 검토
+- [x] 16개 페이지별 고유 기여·복제 위험·저가치 위험을 구분해 기록
+- [x] `/yul`, `/jung`과 SISTER SQUAD 허브/1·2 본문 간 7단어 연속 구간 중복률 대조(자동 유사도 지표 한계 명시)
+- [ ] 홈·Wallpaper·TuTuPuPuPiPi의 독립적 방문 효용과 이미지/영상 중심 구간 브라우저 확인
+- [ ] PC·모바일 실제 브라우저 렌더링 및 동적 콘텐츠 확인
+- [ ] 외부 YouTube·Spotify·출판 링크 목적지 및 콘텐츠 일치 확인
+
+**이번 단계 변경 범위:** 통합점검문서만 갱신한다. 사이트 소스, main/develop 배포, AdSense 계정, GTM 및 Search Console 설정은 변경하지 않았다.
+
+
+#### 10) Audit 2.10 후속 검증 — SISTER SQUAD 시리즈·캐릭터 페이지 간 텍스트 중복 대조
+
+- Production에서 `/sistersquad-hub`, `/sistersquad`, `/sistersquad2`, `/yul`, `/jung` 5개 페이지를 다시 수집하고, 공통 내비게이션 일부를 제거한 본문 텍스트로 7단어 연속 구간(shingle) 중복을 비교함.
+- 이 수치는 문장/문단의 문자 단위 또는 의미상 중복을 찾기 위한 탐색 지표이며, Google의 복제 콘텐츠 판정·표절 판정과 동일하지 않음. 동일 IP의 고유명사·공통 설정 문구는 자연스럽게 일부 겹칠 수 있음.
+
+| 페이지 쌍 | 공유된 7단어 구간 | 더 짧은 페이지 기준 비율 | 해석 |
+|---|---:|---:|---|
+| `/sistersquad` ↔ `/sistersquad2` | 58 | 7.7% | 시리즈 공통 소개·세계관 용어·공통 UI 문구 영향 가능성. 실제 동일 장문 문단 복사로 판단하지 않음. |
+| `/yul` ↔ `/jung` | 32 | 3.9% | 프로필의 공통 구조 및 동일 세계관 용어 영향 가능성. 각 캐릭터 고유 능력·성격 설명은 별도 서술로 확인됨. |
+| `/sistersquad-hub` ↔ `/sistersquad2` | 13 | 1.0% | 낮은 구간 중복. |
+| `/sistersquad` ↔ `/yul` | 11 | 1.5% | 낮은 구간 중복. |
+| `/sistersquad` ↔ `/jung` | 11 | 1.5% | 낮은 구간 중복. |
+| `/sistersquad-hub` ↔ `/yul` | 8 | 1.0% | 낮은 구간 중복. |
+| `/sistersquad-hub` ↔ `/jung` | 8 | 1.0% | 낮은 구간 중복. |
+| `/sistersquad-hub` ↔ `/sistersquad` | 5 | 0.7% | 낮은 구간 중복. |
+| `/sistersquad2` ↔ `/yul` | 3 | 0.4% | 낮은 구간 중복. |
+| `/sistersquad2` ↔ `/jung` | 3 | 0.4% | 낮은 구간 중복. |
+
+- 캐릭터 프로필 `/yul`과 `/jung`은 각각 4천 자 이상 본문에서 고유 능력, 성장, 인용 대사 및 개별 비주얼 아카이브를 제공한다. 두 프로필 간 공유 7단어 구간은 더 짧은 본문 기준 3.9%로 확인되며, 이 수치만으로 반복 콘텐츠 문제를 뒷받침하지 않는다.
+- 가장 높은 쌍인 SISTER SQUAD 1·2의 7.7%도 공통 IP 소개와 시리즈 용어의 영향 가능성이 있어 문제 문단으로 확정하지 않는다. 페이지별 고유 서사(1권의 페어리 타운 모험 / 2권의 루미나 회복 여정)는 수집 본문에서 구분되어 확인됨.
+- **판정:** 이번 텍스트 구간 비교에서는 캐릭터 프로필을 포함해 실질적 장문 본문 복제가 의심된다는 근거가 확인되지 않았다. 따라서 이 결과만을 이유로 문구 삭제나 페이지 통합을 수행하지 않는다.
+- 체크리스트: 캐릭터/시리즈 페이지 5개 간 자동 구간 중복 대조 완료. 의미상 유사성, 이미지 재사용, Google의 내부 판정은 이 검사만으로 확정할 수 없으며 브라우저 및 별도 출처 대조는 미완료.
+- 사이트 소스와 배포는 변경하지 않았으며 통합점검문서만 갱신함.
+
+
+#### 11) Audit 2.10 후속 검증 — Production 35개 URL의 직접 AdSense 코드·GTM 재대조
+
+- 기준일: 2026-11-04 KST. Production https://chrisleepapa.com 의 sitemap 24개 URL과 Crawl 추가 URL 11개, 총 35개에 대해 Firecrawl raw HTML을 개별 재수집해 직접 AdSense loader, publisher ID, GTM 삽입 여부를 대조함.
+- 판정 범위는 HTML에 직접 포함된 코드임. adsbygoogle.js 및 pagead2.googlesyndication.com/pagead/js 로더와 ca-pub-3207219520058740 publisher ID를 확인했으며, 코드가 있다는 사실만으로 Google이 실제 광고를 게재했다고 판정하지 않음.
+- Sitemap 24개 중 직접 AdSense loader와 publisher ID가 함께 확인된 URL은 16개: /, /wallpaper, /sistersquad-hub, /sistersquad, /sistersquad2, /yul, /jung, /miracleshot, /tutupupupipi, /journal-1, /journal-2, /journal-3, /journal-4, /journal-5, /journal-6, /about.
+- Sitemap 24개 중 직접 AdSense loader 및 publisher ID가 확인되지 않은 URL은 8개: /music, /movie, /bible, /worship, /worship_eng, /contact, /privacy, /terms.
+- 사용자가 광고 제거를 요청한 /movie는 현재 Production raw HTML에서 adsbygoogle.js, pagead loader, publisher ID 모두 0개로 확인됨. /music, /worship, /worship_eng도 같은 상태이나, 이 3개 경로의 광고 제외가 의도된 운영 정책인지는 별도 확인 대상으로 남김. 사용자가 명시한 제외 경로 /bible, /contact, /privacy, /terms에는 직접 AdSense 코드가 없음을 재확인함.
+- Sitemap 외 Crawl 추가 URL 11개(/today, /shop, /gameinfo, /journal, /goal, /booktop, /game, /fiveinrow, /curling, /tetris, /switch)는 11/11 모두 직접 AdSense loader 0개, publisher ID 0개로 확인됨. /shop은 index, follow; /today와 /journal은 noindex, follow; 나머지 게임/도구 8개는 noindex, nofollow.
+- 35개 전체에서 GTM script와 noscript가 각각 1개씩 존재함(raw HTML의 GTM URL 문자열 2회). 공개 GTM 컨테이너 GTM-NGDTQNVG의 현재 제공 JavaScript 설정에서는 Google tag G-NBGELYQ4TZ 1개가 확인되었고, AdSense tag 또는 adsbygoogle 설정은 확인되지 않음. 따라서 현재 확인 가능한 GTM 설정만으로 AdSense 태그가 실행된다는 근거는 없음.
+- 이전 점검의 “AdSense loader 20개” 집계와 현재 스냅샷의 16개는 불일치함. 현재 35개 URL을 개별 raw HTML로 재확인한 결과 16개에서만 직접 loader가 재현되었고, 나머지 19개(사이트맵 내 8개 + 추가 URL 11개)는 loader가 없음. 과거 20개 집계가 다른 시점의 코드였는지, 다른 집계 기준이었는지 이 기록만으로 확정하지 않음. 이번 2026-11-04 결과를 현재 Production 기준값으로 기록하며 과거 숫자를 동일한 사실처럼 덮어쓰지 않음.
+- 직접 loader 존재는 광고 코드가 페이지에 포함되었다는 사실만 의미함. 승인/실제 게재 상태, 광고 요청·응답, 화면에 광고가 실제 렌더링되었는지는 입증하지 못함. 사용자가 AdSense 승인 이력이 없다고 밝힌 사실을 고려해 “Google served ads” 거절 사유를 실제 게재 사실로 단정하지 않음. 실제 광고 요청/응답은 브라우저 네트워크 검사 또는 Google 측 계정 근거가 있어야 판정 가능함.
+- 이번 확인은 Production 소스·GTM·AdSense 계정·Search Console 설정을 변경하지 않았으며, 코드 점검과 문서화만 수행함.
+
+##### 11-A) 현재 직접 AdSense 코드 인벤토리
+
+| 그룹 | URL | 결과 |
+|---|---|---|
+| 직접 loader 있음 (16) | /, /wallpaper, /sistersquad-hub, /sistersquad, /sistersquad2, /yul, /jung, /miracleshot, /tutupupupipi, /journal-1~6, /about | 각 URL에서 adsbygoogle.js 1개, pagead loader 1개, ca-pub-3207219520058740 확인 |
+| 직접 loader 없음 (Sitemap 8) | /music, /movie, /bible, /worship, /worship_eng, /contact, /privacy, /terms | 각 URL에서 loader 0개, publisher ID 0개 |
+| 직접 loader 없음 (Sitemap 외 11) | /today, /shop, /gameinfo, /journal, /goal, /booktop, /game, /fiveinrow, /curling, /tetris, /switch | 각 URL에서 loader 0개, publisher ID 0개 |
+
+##### 11-B) 이 단계 체크리스트
+
+- [x] Sitemap 24개 URL의 직접 AdSense loader/publisher ID raw HTML 재검증
+- [x] Sitemap 외 Crawl 추가 URL 11개의 직접 AdSense loader/publisher ID raw HTML 재검증
+- [x] 현재 Production 직접 loader 16개 URL 및 미포함 19개 URL 목록 기록
+- [x] Movie 페이지 직접 AdSense loader 제거 상태 확인
+- [x] GTM 공개 컨테이너의 현재 제공 설정에서 GA 태그와 AdSense 태그 구분
+- [ ] 이전 20개 집계와 현재 16개 집계의 시점/기준 차이 확인
+- [ ] /music, /worship, /worship_eng의 광고 제외가 의도된 정책인지 기존 운영 결정과 대조
+- [ ] 실제 광고 요청·응답 및 광고 렌더링 여부 확인 (현재 HTML/GTM 정적 검사만으로는 판정 불가)
+
+#### 12) Audit 2.10 후속 검증 — 모바일 본문 추출 및 TuTuPuPuPiPi 외부 링크 확인
+
+- Firecrawl 모바일 모드로 홈 /, /wallpaper, /tutupupupipi를 다시 수집함. 모바일 페이지 본문 텍스트 및 페이지 구조는 추출되었으나, 스크린샷 이미지를 실제 육안으로 비교하는 단계는 완료하지 않았으므로 모바일 레이아웃/가독성 검증 완료로 체크하지 않음.
+- Wallpaper 본문은 모바일 배경 영상 4개, PC 배경 이미지 9개, 작품 안내, 파일/기기별 이용 안내 및 개인 이용 관련 설명을 제공함. 이미지/영상 컬렉션 성격이 있으므로 실제 화면에서 미디어와 설명의 배치·가독성은 브라우저 확인 필요.
+- TuTuPuPuPiPi 본문에서 추출한 YouTube Shorts 6개 URL을 각각 개별 Scrape한 결과 6/6 HTTP 200이며, 제목은 프로젝트 일반 소개 및 EP01~EP05의 캐릭터/이야기 제목과 일치함.
+- Spotify 앨범 https://open.spotify.com/album/5sdI03qLb0yoBQKN7BZ86r 는 HTTP 200이며, 앨범명 뚜뚜뿌뿌삐삐_TuTuPuPuPiPi_One, 아티스트 Chris LEE.PAPA, 2026년 발매, 6곡·총 9분 19초가 공개 페이지에서 확인됨.
+- YouTube 자동 생성 OST playlist https://youtube.com/playlist?list=OLAK5uy_lTkP61UkmmjKHmHaH0Ox54kggQeQieSLY 는 페이지 메타데이터 응답 HTTP 200이었으나, Firecrawl 본문 추출은 YouTube 측 401 오류 화면을 반환함. 이는 사이트 링크의 HTTP 오류를 뜻하지 않으며, 플레이리스트 실제 재생/트랙 구성은 별도 브라우저 확인 전까지 미검증으로 둠.
+- 외부 링크 검사 결과는 TuTuPuPuPiPi 페이지의 해당 링크에 한정하며, 전체 사이트의 모든 YouTube·Spotify·출판 판매 링크 검증으로 확대 해석하지 않음.
+
+##### 12-A) 이 단계 체크리스트
+
+- [x] 홈·Wallpaper·TuTuPuPuPiPi의 모바일 모드 본문 추출
+- [x] TuTuPuPuPiPi 페이지 YouTube Shorts 6개 개별 HTTP 200 및 제목 확인
+- [x] TuTuPuPuPiPi Spotify 앨범의 앨범명·아티스트·트랙 수·총 재생시간 확인
+- [ ] 모바일 스크린샷 육안 검토 및 실제 기기 레이아웃·가독성 확인
+- [ ] YouTube OST playlist 실제 브라우저 재생/트랙 확인
+- [ ] 전체 사이트 외부 YouTube·Spotify·출판 링크 목적지 및 콘텐츠 일치 확인
+
+**이번 단계 변경 범위:** 통합점검문서만 갱신한다. Production/develop 사이트 소스, 배포, GTM 설정, AdSense 계정, Search Console 설정은 변경하지 않았다.
+
+
+#### 13) Audit 2.10 후속 검증 — Sitemap·noindex 설정의 저장소 원본 의도 대조
+
+- Production에서 관찰한 robots 결과를 main 저장소의 원본 설정과 대조함.
+- main의 sitemap.xml 원본은 정적 URL 목록이며 현재 24개 URL을 명시함. Shop URL은 파일의 모든 섹션에서 빠져 있음. 이는 Firecrawl 추출 누락이 아니라 저장소에 커밋된 sitemap 자체의 누락임.
+- Shop은 Production HTML에서 index, follow 및 canonical https://chrisleepapa.com/shop 상태이고, 공통 내비게이션에서도 접근 가능함. 따라서 현재 상태는 “검색 허용 페이지이지만 sitemap에는 미포함”으로 확정함. sitemap에서 제외하려는 명시적 주석이나 정책 설명은 원본에서 확인되지 않았으므로, 의도된 제외인지 단순 누락인지는 아직 확정하지 않음. 임의로 sitemap을 수정하지 않음.
+- /today는 today.html의 meta robots noindex, follow로 설정되어 있음. /journal은 journal.html의 meta robots noindex, follow로 설정되어 있음. 두 페이지 모두 sitemap에 포함되지 않으며, 원본 HTML에 noindex가 명시되어 있으므로 현재 검색 색인 제외가 우연한 Firecrawl metadata 오류가 아님을 확인함. follow 설정은 페이지 자체 색인은 막되 링크 탐색은 허용하는 현재 구성임.
+- 게임/도구 8개 경로 /gameinfo, /goal, /booktop, /game, /fiveinrow, /curling, /tetris, /switch는 vercel.json의 개별 X-Robots-Tag noindex, nofollow 헤더 규칙으로 설정되어 있음. 8개 모두 sitemap에서 제외되어 있으며, 원본 배포 설정과 Production 관찰값이 일치함.
+- 따라서 Today/Journal 및 8개 게임/도구 경로의 noindex는 저장소에서 명시적으로 설정한 상태로 확인 완료. 이는 AdSense 거절 원인으로 해석하지 않음.
+- **Shop 후속 권고:** Shop은 색인 허용·canonical·내부 내비게이션은 있으나 sitemap에서 누락되어 있음. 검색 노출을 원하는 페이지라면 sitemap 추가가 기술적으로 일관된 조치일 수 있지만, 현재는 운영 의도가 확인되지 않았으므로 변경 보류.
+- 확인 파일: main/sitemap.xml (현재 blob SHA 9526d1ee1d3457540a3aa08dca33f654cedf4c9b), main/today.html, main/journal.html, main/vercel.json. 이번 검사는 저장소 원본과 Production 상태의 일치 여부만 확인했으며 파일이나 배포를 변경하지 않음.
+
+##### 13-A) 이 단계 체크리스트
+
+- [x] Today noindex, follow가 today.html 원본에 명시되어 있음을 확인
+- [x] Journal index page noindex, follow가 journal.html 원본에 명시되어 있음을 확인
+- [x] 8개 게임/도구 경로 noindex, nofollow가 vercel.json 원본에 명시되어 있음을 확인
+- [x] 게임/도구 8개 경로가 sitemap에서 제외되어 있음을 확인
+- [x] Shop이 index, follow 및 canonical 상태이나 sitemap 원본에서 빠져 있음을 확인
+- [ ] Shop sitemap 제외가 의도인지 단순 누락인지 운영 의도 확정
+- [ ] 사용자 승인 후 Shop을 sitemap에 추가할지 결정 (현재 변경하지 않음)
+
+**이번 단계 변경 범위:** 통합점검문서에만 결과를 추가한다. sitemap.xml, robots 설정, 사이트 소스 및 Production 배포는 수정하지 않았다.
+
+
+#### 14) Audit 2.10 후속 검증 — 광고 대상 핵심 페이지의 원본 콘텐츠·실질 가치 검토
+
+- 기준일: 2026-11-04 KST. Production 페이지 본문 추출 결과를 바탕으로 광고 코드가 포함된 주요 콘텐츠 페이지를 정성 검토함. 이는 Google의 내부 품질 점수를 재현한 것이 아님.
+- 검토 원칙: 외부 동영상·음원·이미지 embed 유무만 보지 않고, 페이지 자체에 창작자 고유의 설명·서사·해설·캐릭터 정보·제작 과정·감상 안내·이용 안내가 있어 방문자가 얻는 독립적인 가치가 있는지 확인함. 작품의 직접 제작·수정·배포 여부는 사용자가 제공한 설명과 사이트 본문을 근거로 기록하며, 법적 권리 소유권을 별도 검증한 것으로 표현하지 않음.
+
+##### 14-A) SISTER SQUAD 2
+
+- 본편 영상 외에 예고편 3편, NG/제작 비하인드, 12분 54초 본편의 관점을 각각 설명함.
+- 율이·정이·아빠 크리스·엄마 제인의 성격·갈등·대사, 6단계 여정(루미나 → 희망 시장/아르카디아 → 죽음의 늪 → 거인의 등뼈 → 고요의 계곡 → 귀환/정화), 조력자·적대자 캐릭터 설명이 독립 본문으로 제공됨.
+- 인물별 성장 해설, OST 소개, About the Author, 아빠 캐릭터를 이야기 안에 넣은 창작 배경(Making Of), 독자가 읽을 세 가지 관점, 가족과 나눌 세 가지 토론 질문이 확인됨.
+- **판정:** 본문 자체가 작품의 줄거리·인물·주제·제작 의도·독자 활동을 설명하므로 단순 YouTube embed 페이지로 볼 근거가 없음. 모바일 실제 기기 레이아웃과 스크린샷 육안 검토는 미완료.
+
+##### 14-B) Miracle Shot / SISTER SQUAD 1 / Hub / About
+
+- Miracle Shot 본문 추출 7,626자(내비게이션/UI 포함). 풋살 공동체를 통한 성장 이야기, 이 코치와 황·길·고·영 캐릭터 소개, 인물별 성장·팀워크 해설, 성경 인물에서 얻은 영감, 풋살을 이야기 매개로 선택한 제작 배경(Making Of), OST 및 게임 연결이 확인됨.
+- SISTER SQUAD 1에는 작품 소개, 율이·정이의 차이, 첫 번째 모험, 세계관 설명, 작품을 읽는 세 가지 관점, 가족 토론 질문, 창작 과정 기록이 있음.
+- SISTER SQUAD Hub에는 루미나·아르카디아·죽음의 늪·거인의 등뼈·고요의 계곡·희망 시장 등 세계관 장소, 인물·마법·유물 설명, 두 모험의 주제 및 비주얼 아카이브가 있음.
+- About에는 창작자 소개, 개인 창작 여정, 창작 철학, 아카이브 구성 방식 및 프로젝트 연혁이 있음.
+- 앞선 시리즈 5개 페이지의 7단어 구간 비교에서 SISTER SQUAD 1·2 사이 공유 구간은 7.7%였으나 공통 세계관 용어·시리즈 소개의 영향 가능성이 있으며 동일 장문 문단 복제 근거는 확인되지 않았음.
+- **판정:** 시리즈 공통 용어·인물명·공통 UI는 IP 연속성으로 구분하고 각 페이지의 고유 서사·장소·인물 설명을 확인함. 현 단계에서 중복을 이유로 삭제·통합할 근거는 없음.
+
+##### 14-C) Journal 1~6
+
+| 페이지 | 추출 길이(내비게이션/UI 포함) | 고유 주제 |
+|---|---:|---|
+| Journal 1 | 5,035자 | 두 딸과 Sister Squad 이야기를 시작한 계기, 가족 협업, AI 활용 초기 시행착오 |
+| Journal 2 | 6,835자 | Skywork 그림 소설 제작, 프롬프트·세계관·캐릭터 일관성·초안 검토·퇴고 |
+| Journal 3 | 5,486자 | POD 출판, 원고·표지·본문 규격, ISBN·유통·가격·업로드 후 수정 경험 |
+| Journal 4 | 5,572자 | 실제 아이들의 성격에서 출발한 캐릭터 디자인, AI 이미지 반복 생성, 아이들의 피드백 |
+| Journal 5 | 4,839자 | 직장·가족과 창작 병행, 짧은 시간 활용, 프로젝트 우선순위, AI 결과 검토 |
+| Journal 6 | 11,161자 | 찬양 창작 동기·작업 단계·AI 활용에서의 창작자 판단·가족·개인 기도 |
+
+- 여섯 글은 창작 시작, 도구 사용, POD 출판, 캐릭터/삽화, 일상 속 창작, 워십 음악이라는 서로 다른 주제를 다루며 1인칭 경험과 구체적인 작업 과정이 있음. 동일 문서를 제목만 바꿔 반복한 형태로 보이지 않음.
+- Journal 6은 한국어 본문 뒤에 영어 번역을 함께 수록함. 외부 복제의 증거는 아니나 동일 의미의 번역문이 페이지 길이의 상당 부분을 차지하므로, 언어별 독자 가치와 별개로 번역 중복 분량은 향후 편집 시 고려할 사항임.
+- 공통 방명록·다음 글 링크는 템플릿 UI로 보고 본문 고유 콘텐츠와 분리함.
+- **판정:** Journal 1~6은 개별 창작 경험을 설명하는 원본 에세이 묶음으로 평가함. 이번 검토에서 본문 복제 근거는 확인되지 않음.
+
+##### 14-D) TuTuPuPuPiPi / Wallpaper / Home
+
+- TuTuPuPuPiPi에는 세 캐릭터의 개별 성격·역할·대사·장점, 여섯 편의 짧은 영상이 다루는 사건, 우정·호기심·발견이라는 프로젝트 주제, 공식 OST 안내가 있음. Shorts 6개는 앞선 개별 링크 검사에서 각각 HTTP 200, Spotify 앨범 페이지도 HTTP 200으로 확인됨.
+- Wallpaper에는 모바일 무빙 월페이퍼 4개와 PC 이미지 9개, 작품별 장면 설명, MP4/세로형 포맷 안내, 미리보기·저장 안내, 개인 이용 라이선스, Android/iPhone/PC 설정 안내가 있음. 미디어 컬렉션 자체가 핵심 가치이며 작품별 설명은 일부 짧고 반복되지만 이용 방법·사용 범위·기기별 설정 안내가 추가 가치를 제공함.
+- Home은 오늘의 선정 작품, SISTER SQUAD 2 소개, 창작 기록, Chris's Note, 성경/워십으로 이어지는 편집형 랜딩 페이지임. 개별 상세 페이지보다 요약형임.
+- **판정 및 우선순위:** TuTuPuPuPiPi는 캐릭터·에피소드 설명이 있어 embed 전용 페이지로 보기 어려움(낮은 위험). Wallpaper는 원본 창작물 갤러리와 이용 안내가 있으나 텍스트 설명은 에세이형 페이지보다 얕음(중간 위험). Home은 랜딩/탐색 성격이므로 독립 콘텐츠보다 내비게이션에 치우치지 않도록 대표 작품과 편집 설명을 유지할 필요가 있음(중간 위험). 즉시 삭제나 광고 제거 결론은 아님.
+
+##### 14-E) 참고 페이지 Shop / Music
+
+- Shop은 index, follow 및 canonical 상태이나 sitemap에는 미포함(섹션 13). 책별 요약·판본 설명·구매처 링크·OGQ 상품 안내가 있으며 직접 AdSense loader는 없음. 판매 목록 페이지 특성상 상세 작품 페이지보다 설명이 짧음.
+- Music은 앨범별 주제 설명, 작품별 음악 제작 기록, Suno 활용·WAV 출력·공식 배포 등 제작 과정 설명을 포함하며 직접 AdSense loader는 없음. 이번 광고 loader 대상 페이지의 품질 판정 점수에는 포함하지 않음.
+
+##### 14-F) 종합 판정과 남은 작업
+
+- 광고 코드가 있는 주요 창작 콘텐츠 페이지에서 창작자 고유 서사, 제작 경험, 인물·작품 설명, 감상/토론 가이드, 이용 안내 등 자체 콘텐츠가 다수 확인됨. 특히 SISTER SQUAD 1·2, Miracle Shot, Journal 1~6은 외부 embed만으로 구성된 페이지가 아님.
+- 현재 확인 범위에서는 사이트 전체가 다른 곳의 콘텐츠를 그대로 모아 둔 구조라는 가설을 뒷받침하는 증거를 발견하지 못함. 다만 각 YouTube·Spotify 원본 계정의 소유/권한, 이미지 제작·편집 이력, Google의 실제 크롤링 시점 및 내부 판단은 별도 증거 없이 확정하지 않음.
+- [ ] Wallpaper의 PC 이미지 9개·모바일 영상 4개 개별 설명이 작품 차이를 충분히 전달하는지 시각적 화면 검토
+- [ ] Home의 광고 영역이 실제 publisher-content와 함께 보이는지, 랜딩 페이지가 단순 내비게이션처럼 보이지 않는지 브라우저 화면 검토
+- [ ] SISTER SQUAD 2 포함 핵심 페이지 모바일 스크린샷 육안 검토 및 실제 기기 가독성 확인
+- [ ] 광고 대상 페이지의 YouTube·Spotify embed 원본을 채널/계정 단위로 대조
+- [ ] AdSense 실제 광고 요청·응답·렌더링은 승인된 계정 근거 또는 브라우저 Network 로그 없이 확정하지 않음
+
+#### 15) 공식 Google Publisher Policies 기준으로 거절 사유 재해석
+
+- 기준일: 2026-11-04 KST. 공식 Google Publisher Policies 및 관련 도움말을 확인함.
+- “Google-served ads on screens with replicated content” 정책은 다른 웹사이트에서 복사한 콘텐츠를 자체 사이트에 게시하면서 큐레이션·논평·추가 가치를 제공하지 않는 경우를 금지함. 예시에는 가치 없는 미러링·프레이밍·스크래핑·재작성, 수동 검토/큐레이션 없는 자동 생성 콘텐츠, 타 사이트 콘텐츠의 사실상 재게시, 실질적인 추가 가치 없이 동영상·이미지 등 외부 미디어 embed에 전념한 사이트가 포함됨.
+- Google은 외부 자료, 특히 embed 동영상을 사용할 때 창작자 고유의 전문지식·개선 아이디어·리뷰·개인적 생각 등 원본 가치를 추가하라고 안내함.
+- “Google-served ads on screens without publisher-content” 정책은 publisher-content가 없거나 가치가 낮은 화면, 공사 중 화면, 알림·내비게이션 등 행동 목적 화면에 광고를 게재하지 못하도록 규정하며 자동 생성 콘텐츠는 수동 검토/큐레이션 없이 광고를 게재해서는 안 된다고 설명함.
+- 공식 원문:
+  - Replicated content: https://support.google.com/publisherpolicies/answer/11190248?hl=en
+  - Google Publisher Policies: https://support.google.com/adsense/answer/10502938
+  - Low-value / no publisher-content: https://support.google.com/publisherpolicies/answer/11112688
+- 이번 Production 콘텐츠 검사에서는 다수 페이지가 창작자 고유 설명·서사·제작 기록을 포함하여 외부 embed만으로 이루어진 구조라는 직접 근거는 확인되지 않음. 사용자가 직접 기획·수정·제작·배포했다고 밝힌 창작물과 그 작품의 독립적인 상세 설명은 추가 가치 판단에 중요한 정황임. AI 도구 사용 여부만으로 자동 승인/불승인을 단정하지 않고, 실제 페이지의 원본성·편집·검수·추가 가치를 기준으로 관리해야 함.
+- **두 거절 사유를 분리해 관리:**
+  1. Replicated content: 제3자 콘텐츠 복사·재게시 또는 부가 가치 없는 embed가 실제 광고 대상 화면에 존재하는지 확인하는 문제. 현재 고유 콘텐츠가 확인된 페이지가 다수이나, 각 embed 원본 권한과 개별 화면 검토가 남아 있음.
+  2. Low-value content: publisher-content 자체가 부족하거나 페이지가 탐색/기능/갤러리 중심으로만 보이는지 확인하는 문제. Home·Wallpaper를 우선 시각 검토 후보로 두고, 나머지 창작 페이지는 본문 깊이와 개별 차별성이 확인된 범위에서 상대적으로 양호한 정황으로 기록함.
+- 직접 AdSense loader가 16개 페이지에 있다는 사실은 HTML에 코드가 있다는 의미일 뿐 Google이 실제 광고를 serving했다는 증거가 아님. 사용자가 AdSense 승인 이력이 없다고 밝힌 점과 “Google served ads” 문구를 해석할 때 이 구분을 유지함. 실제 광고 요청·응답·렌더링은 승인된 계정 근거 또는 브라우저 Network 로그 없이 확정하지 않음.
+- **이번 단계 변경 범위:** Production/develop 소스, 배포, AdSense 계정, GTM, Search Console은 변경하지 않음. 기존 통합점검문서에만 검증 결과를 추가함.
+
+
+#### 16) Journal 1~6 본문 간 반복 문구 정량 비교
+
+- 기준일: 2026-11-04 KST. Journal 1~6의 Production 본문을 다시 수집해 기사 본문만 비교함. 공통 내비게이션, Share Archive 공통 영역, 하단 방명록/다음 글 UI는 비교에서 제외함.
+- 본문 텍스트를 소문자화·공백 정리한 뒤 연속 7단어 구간(7-word shingles)의 중복 개수를 계산하고, 더 짧은 본문의 구간 집합을 분모로 비율을 산출함.
+- 가장 높은 본문 간 중복은 Journal 1 ↔ Journal 2의 2.35%(공유 구간 20개)였음. 다음은 Journal 1 ↔ Journal 3 2.00%, Journal 1 ↔ Journal 4 2.00%, Journal 2 ↔ Journal 4 1.80%, Journal 2 ↔ Journal 3 및 Journal 3 ↔ Journal 4 각 1.69%임. 그 밖의 비교도 1.45% 이하였음.
+- 앞선 단순 전체 페이지 비교에서는 공통 UI가 포함되어 9~10%대 중복으로 보였으나, 기사 본문만 분리한 후에는 최대 2.35%로 낮아짐. 공통 UI가 전체 페이지 중복 수치를 부풀린다는 점을 확인함.
+- **판정:** Journal 1~6의 본문은 서로 다른 경험과 제작 단계를 다루며, 7단어 구간 비교에서 장문 복제 의심을 뒷받침하는 높은 중복은 확인되지 않음. 이 비교는 문장 의미의 유사성, 외부 웹사이트와의 복제 여부, 번역문 중복을 검증하는 검사는 아님.
+- [x] 공통 UI를 제외한 Journal 1~6 기사 본문 분리
+- [x] 본문 간 7단어 구간 비교 및 최대 중복률 확인
+- [ ] 외부 웹사이트·출판물과의 복제 여부는 별도 출처 대조가 필요
+- **이번 단계 변경 범위:** 기존 통합점검문서만 갱신함. Production/develop 소스와 배포는 변경하지 않음.
+
+
+#### 17) 실제 광고 슬롯·화면 송출 여부와 반응형 레이아웃 실측
+
+- 기준일: 2026-11-04 KST. Production에서 직접 AdSense loader가 확인된 16개 URL을 실제 브라우저 DOM으로 개별 점검함.
+- 16/16 페이지에서 adsbygoogle.js loader는 존재했으나 검사 시점에 다음 항목은 모두 0개였음: ins.adsbygoogle 광고 슬롯, data-ad-slot 속성, Google 광고 iframe, adsbygoogle.push(...) 호출.
+- 따라서 현재 브라우저에서 광고 단위가 실제로 삽입·렌더링된 증거는 확인하지 못함. 이는 실제 네트워크 요청 전체를 부정하는 결과가 아니며, 브라우저 네트워크 로그는 이번 세션에서 요청 기록을 확보하지 못했으므로 Google 광고 요청·응답 여부는 미확인으로 남김.
+- AdSense loader 코드가 HTML에 존재하는 것과 Google 광고가 실제 화면에 송출된 것은 서로 다른 사실임. 사용자가 사이트 승인·광고 게재 이력이 없다고 설명한 점을 고려해 “Google served ads” 거절 문구를 실제 광고 노출 사실로 단정하지 않음.
+
+##### 17-A) 반응형 레이아웃 폭별 측정
+
+- Production에서 Home, SISTER SQUAD 2, Wallpaper, Miracle Shot, Journal 4, TuTuPuPuPiPi를 브라우저로 열어 320/390/768/1024/1536px 등 모바일·태블릿·데스크톱 폭을 검사함.
+- 5개 주요 콘텐츠 페이지(SISTER SQUAD 2, Wallpaper, Miracle Shot, Journal 4, TuTuPuPuPiPi)는 320, 360, 390, 768, 1024, 1536, 1920px에서 문서 전체의 수평 overflow가 확인되지 않았음.
+- Home은 320, 360, 390, 414, 700, 720, 760, 768, 900, 1024, 1280, 1536, 1920px에서 document scrollWidth가 clientWidth를 넘지 않았음.
+- SISTER SQUAD 2의 영상 카드 목록은 내부 가로 스크롤 컨테이너를 사용하는 구조여서 다음 카드가 화면 밖에 일부 보이는 것은 페이지 전체 overflow가 아님. 다만 이전에는 키보드 포커스 대상이 아니어서 스크롤 접근성이 부족했음. develop에 tabindex, region role, accessible label을 추가함.
+- 모바일 하단 메뉴의 주요 링크/버튼은 대체로 44px 이상의 터치 영역을 확보하고, footer 끝부분과 하단 고정 메뉴가 겹치지 않는 것을 측정함. 상단 언어·테마 조작 버튼의 실제 시각 크기와 작은 화면에서의 조작 편의성은 후속 시각 검토 대상으로 남김.
+- 이 결과는 DOM 기반 폭 측정과 브라우저 렌더링 검사이며, 모든 기기·브라우저의 스크린샷을 육안 검수한 것으로 과장하지 않음.
+
+##### 17-B) Home의 누적 레이아웃 이동(CLS) 원인과 검증
+
+- Production 기준 브라우저 실측: Home CLS 모바일 390px = 0.3575, 데스크톱 1536px = 0.184. Google의 “좋음” 기준 0.1 이하를 초과함.
+- 원인 확인: Chris's Pick 영역은 스크립트 실행 전 정적 fallback 높이가 모바일 390px에서 332px였고, home-chris-pick-v2.js가 동적 카드로 교체한 뒤 891px가 되었음. 초기 영역 높이가 확보되지 않아 콘텐츠 교체 시 약 559px의 큰 레이아웃 이동이 발생함.
+- develop의 첫 번째 수정 커밋 70dc692dbcd3ab9d4d1b26fccfc8f2e989ebe002에서 동적 카드가 렌더링되기 전 높이를 예약하도록 min-height를 추가함.
+- 해당 커밋의 Vercel Preview에서 재검증: 모바일 390px CLS 0.0006, 데스크톱 1536px CLS 0.0. 측정된 Home 섹션 높이는 모바일 950px, 데스크톱 720px로 초기 렌더링부터 공간을 예약함.
+- **판정:** 확인된 가장 큰 레이아웃 이동 원인을 실제로 줄였으며 Preview 실측상 개선됨. 단, 이는 단일 브라우저 실험실 측정이며 실제 사용자 필드 데이터(CrUX)의 대체 자료는 아님. INP는 이번 측정에서 상호작용이 발생하지 않아 산출되지 않음.
+
+##### 17-C) 자동 접근성 검사에서 확인한 개선 대상
+
+- Production 초기 검사에서 주요 페이지별로 다음 문제를 확인함.
+  - Home: 동적 콘텐츠 영역의 CLS와 footer mount가 중첩된 contentinfo landmark 문제
+  - Miracle Shot: 밝은 배경 위 시안·금색·녹색 보조 글자와 트랙 번호의 대비 부족
+  - SISTER SQUAD 2: 밝은 배경 위 회색 faction 설명의 대비 부족, 영상 가로 스크롤 영역의 키보드 접근성 부족, 제목 letter-spacing의 inline !important
+  - SISTER SQUAD 1: 밝은 배경 위 금색 Journal 링크의 대비 부족, 제목 letter-spacing의 inline !important
+  - Journal 1~4: main landmark 부재로 본문·상단 링크가 landmark 밖에 놓이는 문제
+  - Journal 5~6: 상단 tag의 대비 부족. Journal 6의 Related Worship 영역은 어두운 배경 위 일부 글자 대비 부족
+  - 공통 헤더: Projects 드롭다운에 role=menu를 선언했으나 하위 링크 구조가 menu 역할 요건과 맞지 않아 ARIA 검사 오류가 반복됨
+- YouTube iframe 내부에서 보고된 ARIA 오류는 제3자 YouTube player DOM이므로 사이트 자체 코드 오류와 구분함.
+
+#### 18) 반응형·접근성 개선 — develop에 수정 반영, Preview 재검증 대기
+
+- 사용자 요청에 따라 Production 소스는 변경하지 않고 develop에서 우선 수정함.
+- **Preview에서 검증된 수정:**
+  - Home Chris's Pick 높이 예약: 모바일 CLS 0.3575 → 0.0006, 데스크톱 0.184 → 0.0.
+  - 공통 CSS의 1차 light-theme 대비 보강 후 TuTuPuPuPiPi 페이지의 axe 검사 위반 0건을 확인함.
+  - Home의 금색 보조 문구 및 Chris's Note meta의 일부 대비 부족도 1차 CSS 수정 후 axe 위반에서 사라졌음. Home footer landmark 문제는 index 변경이 포함되지 않은 Preview에서 여전히 관찰됨.
+- **develop에 추가 커밋했으나 최신 Preview가 없어 아직 브라우저 재검증하지 못한 수정:**
+  - 공통 헤더: 데스크톱 드롭다운을 잘못된 ARIA menu 패턴 대신 disclosure navigation 구조로 정리하고 aria-controls를 부여함.
+  - Miracle Shot: 시안색 강조 문구, Spotify 앨범 유형, 트랙 번호, SEO 제목의 light-theme 대비 보강.
+  - SISTER SQUAD 1: Journal 링크 대비 보강, 제목 letter-spacing 조정, Get the Book 영역의 region semantics 추가.
+  - SISTER SQUAD 2: faction 설명 대비 보강, 영상 스크롤 영역에 키보드 포커스·접근 가능한 이름 부여, section region semantics 및 제목 letter-spacing 조정.
+  - Journal 1~4: 본문 wrapper를 main landmark로 변경.
+  - Journal 5~6: 상단 tag와 Journal 6의 Related Worship 텍스트 대비 보강.
+  - Home: site-footer mount wrapper를 중첩 footer에서 일반 div로 변경해 contentinfo 중복 문제를 해결하도록 수정.
+- 보강 색상은 계산상 WCAG AA 일반 텍스트 대비 4.5:1 이상을 목표로 선정함. 예: #765b17/#f7f5f0 5.88:1, #176b38/#ffffff 6.57:1, #f2dfaa/#515155 5.99:1, #fff4d6/#646366 5.45:1. 이 수치는 색상 조합 계산 결과이며 최신 Preview의 axe 검사 통과를 의미하지 않음.
+
+#### 19) Preview 배포 제한·브랜치 보호 상태
+
+- develop 최신 HEAD: c0d7241e28a36d133a7f765dec6fb3570cba53e2 (fix: add main landmark to journal article page).
+- main과 develop 비교: develop 28 commits ahead, 10 commits behind. 따라서 현재 두 브랜치는 단순 fast-forward 상태가 아니며 지금 develop 전체를 main에 덮어쓰거나 병합하면 안 됨. 사용자의 기존 승인 절차에 따라 별도 diff 검토 후 처리해야 함.
+- 최신으로 확인된 Vercel develop Preview는 70dc692... 커밋이며 후속 develop 커밋은 아직 해당 Preview에 반영되지 않았음.
+- 최신 develop HEAD를 대상으로 Preview 배포를 생성하려 했으나 Vercel API가 api-deployments-free-per-day 일일 한도 초과(24시간 후 재시도)를 반환함. Production 배포는 시도하지 않았으며 변경하지 않음.
+- 현재 확인된 Production 최신 배포는 문서 갱신 커밋 2fe7f008623f5e8bf6f532ef07685aeec86d4030이며 Vercel 상태 READY임. 해당 커밋은 통합점검문서 갱신만 포함하며, 이 작업에서 사이트 소스 변경은 Production에 반영하지 않음.
+- **다음 검증 순서:** Vercel Preview 한도 해제 후 최신 develop HEAD 배포 → 16개 광고 대상 페이지 및 주요 제외 페이지의 모바일/태블릿/데스크톱 재검사 → axe 재검사 → CLS/LCP/INP 재측정 → 실제 브라우저 광고 요청 확인 → 통합점검문서의 완료 체크 갱신.
+- Product Design 플러그인은 반응형 UI 시각 검토 보조를 위해 연결 제안함. 사용자의 연결 승인 전에는 해당 플러그인을 사용할 수 없으며, 현재 Firecrawl 브라우저·GitHub·Vercel·Windsor.ai 연결 범위에서 계속 점검함.
+- **이번 단계 변경 범위:** 사이트 코드 변경은 develop 브랜치에만 반영. main에는 통합점검문서만 갱신. Production 사이트와 Production 배포는 변경하지 않음.
+
+
+#### 20) Windsor.ai Search Console·GA4 실측 데이터로 디스플레이 우선순위 결정
+
+- 기준일: 2026-11-04 KST. 연결된 Windsor.ai Search Console과 GA4 데이터를 직접 조회함.
+
+##### 20-A) Search Console 최근 3개월
+
+- 도메인 속성 sc-domain:chrisleepapa.com의 최근 3개월 검색 실적:
+  - 총 노출 5회, 클릭 0회, 검색 결과 행 2개.
+  - Home: query “ai mathematician”, 데스크톱, 노출 1회, 클릭 0, 평균 순위 8.
+  - Journal 4: query “프롬프트의 딸들”, 모바일, 노출 4회, 클릭 0, 평균 순위 23.5.
+- Sitemap https://chrisleepapa.com/sitemap.xml: 제출 24개, 오류 0, 경고 0. 마지막 제출 2026-11-03 23:08:41 UTC, 마지막 다운로드 2026-11-03 23:08:43 UTC.
+- **판정:** Sitemap 제출·다운로드는 정상이나 최근 3개월 검색 노출이 매우 적음. 이는 AdSense의 공식 불승인 조건이라고 단정할 수 없지만, 검색 엔진에서 사이트 콘텐츠가 충분히 발견·노출되고 있지 않다는 실질적인 가시성 신호임. 24개 제출은 24개 모두 색인되었다는 뜻이 아니므로 URL별 색인 상태는 Search Console URL 검사에서 별도 확인해야 함.
+- 검색어 “ai mathematician”은 Home과의 주제 관련성이 불분명하므로 실제 검색결과 스니펫·본문과 일치하는지 추후 점검 후보로 둠. Journal 4의 “프롬프트의 딸들”은 본문 주제와 연관된 검색어이나 노출 순위 23.5, 클릭 0임.
+
+##### 20-B) GA4 최근 28일 화면 해상도
+
+- GA4 속성 534734582의 최근 28일 화면 해상도별 세션 집계:
+  - 360×800: 169 sessions, 9 active users, 143 engaged sessions. 주요 브라우저/OS 조합은 Android Chrome.
+  - 1536×864: 49 sessions, 4 active users, 43 engaged sessions. 주요 브라우저/OS 조합은 Windows Chrome.
+  - 1920×1080: 31 sessions, 26 active users, 12 engaged sessions.
+  - 800×600: 61 sessions, 61 active users, 9 engaged sessions. 주요 조합은 Linux Chrome으로, 다른 해상도와 비교해 active users 대비 engaged sessions 비율이 낮고 비정상적으로 단순한 해상도임.
+  - 390×844: 7 sessions, 7 active users, 3 engaged sessions. 주요 조합은 iOS Safari.
+- 화면 해상도 차원은 사용자별 중복 집계가 있을 수 있으므로 active users를 해상도 간 합산해 전체 고유 사용자 수로 해석하지 않음.
+- 800×600/Linux Chrome 트래픽은 자동화·모니터링·테스트일 가능성이 있으나 확정 증거는 없음. 내부 트래픽 및 봇 필터링 상태를 확인하기 전까지 실제 방문자의 UX 우선순위로 과대평가하지 않음.
+- **반응형 UX 우선순위:** 실제 측정된 이용 환경에 따라 1순위 360×800 Android, 2순위 1536×864 Windows 데스크톱, 3순위 1920×1080 대형 데스크톱으로 설정함. 390×844 iOS Safari는 낮은 세션 수에도 불구하고 실제 모바일 브라우저 호환성 확인 대상으로 유지함.
+- **판정:** 임의의 breakpoint만 가정하지 않고 GA4의 실제 화면 해상도를 반영해 반응형 테스트 폭을 우선 배정함. 향후에는 360px·390px·414px 모바일, 768px 태블릿, 1536px·1920px 데스크톱을 정기 회귀 테스트 기준으로 사용함.
+- [x] Search Console 최근 3개월 검색 실적 확인
+- [x] Sitemap 제출·오류·마지막 다운로드 확인
+- [x] GA4 최근 28일 화면 해상도별 세션 분포 확인
+- [ ] GA4 내부 트래픽·자동화 트래픽 필터 설정 및 800×600/Linux 세션의 성격 확인
+- [ ] Search Console URL 검사로 주요 16개 광고 대상 URL의 실제 색인·표준 URL 상태 확인
+- **이번 단계 변경 범위:** 데이터 조회만 수행. Search Console·GA4 설정, 사이트 소스 및 Production 배포는 변경하지 않음.
+
+
+##### 20-C) GA4 최근 28일 페이지별 세션 — 광고 대상 우선순위
+
+- 같은 GA4 조회에서 페이지 경로와 화면 해상도를 함께 묶어 확인함. 최근 28일 세션 상위 페이지:
+  - Home 277 sessions / 165 engaged sessions
+  - Bible 83 / 73 (사용자가 광고 대상에서 제외한 페이지)
+  - Today 64 / 60 (광고 대상 제외)
+  - SISTER SQUAD Hub 44 / 38
+  - SISTER SQUAD 2 42 / 42
+  - SISTER SQUAD 1 27 / 27
+  - Wallpaper 22 / 21
+  - TuTuPuPuPiPi 17 / 17
+  - About 16 / 16
+  - Miracle Shot 15 / 15
+  - Music 15 / 15 (현재 직접 AdSense loader 없음)
+- 주요 광고 대상 페이지의 360×800 해상도 세션: Home 121, SISTER SQUAD 2 28, SISTER SQUAD Hub 19, SISTER SQUAD 1 17, Wallpaper 17, TuTuPuPuPiPi 11, Miracle Shot 11.
+- **판정:** AdSense 대상 창작 페이지의 실제 방문은 Home, SISTER SQUAD Hub, SISTER SQUAD 2, SISTER SQUAD 1에 상대적으로 집중됨. 모바일 360×800은 광고 대상 핵심 페이지에서 반복적으로 가장 큰 화면 해상도이므로 가장 높은 반응형 회귀 테스트 우선순위로 확정함. Bible·Today는 세션 수가 높더라도 사용자 정책에 따라 광고 대상 점검과 광고 배치 후보에서 계속 제외함.
+- GA4 sessions와 engaged sessions는 사용자 수와 다르며, 페이지 간 중복 방문이 가능함. 따라서 이 숫자를 고유 방문자 수로 합산하지 않음.

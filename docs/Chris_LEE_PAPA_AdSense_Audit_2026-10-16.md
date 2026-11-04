@@ -145,7 +145,8 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - [x] 직접 GA4 스크립트/inline config 중복 0건 확인
 - [x] AdSense 직접 로더 16/24개 분포 확인: `/music`, `/movie`, `/bible`, `/worship`, `/worship_eng`, `/contact`, `/privacy`, `/terms`는 0개
 - [ ] AdSense 계정의 사이트 등록 상태·코드 감지·정책 센터·Auto ads·재검토 가능 여부 확인
-- [ ] GTM 계정의 현재 게시 버전과 2026-10-30 export v2 대조, GA4 DebugView/실시간 page_view 수신 확인
+- [x] GTM 게시 버전 확인: 버전 2(실시간·최신), `GA4 Google tag 설정 - chrisleepapa.com`, 2026-10-15 게시 — 2026-11-04 사용자 제공 GTM 화면으로 확인
+- [ ] GTM 버전 2와 2026-10-30 export v2 구성 대조 및 GA4 DebugView/실시간 `page_view` 수신 확인
 - [ ] Search Console의 sitemap 처리 상태, 색인/제외 URL, Google 선택 canonical 확인
 - [ ] PC·모바일의 공통 메뉴, 푸터, 주요 링크·버튼·언어 전환을 실제 브라우저에서 수동 테스트
 - [ ] Contact 전송 기능과 Privacy/Terms의 실제 운영 내용 및 푸터 연결을 확인
@@ -2343,3 +2344,46 @@ develop의 현재 소스에서 다음 16개 파일의 `href` / `src` 외부 URL�
 - 문서 갱신은 `develop`에만 반영하며, `main` 및 Production 배포는 변경하지 않는다.
 - 문서 커밋 후 main/develop 차이는 점검문서 파일 1개에 한정되며, 사이트 코드가 달라졌다는 의미가 아니다.
 - AdSense 내부 준비도는 기존 **77/100**을 유지한다. GA4 실시간 수집, GTM Published 버전, 외부 링크 도달성 및 브라우저 상호작용이 미확인이라 점수를 올리지 않는다.
+
+
+### 2026-11-04 / Audit 2.12 — Production 광고 코드 런타임 전 단계 점검 및 GTM 게시 버전 증거 반영
+
+**점검 기준:** 운영 도메인 `https://chrisleepapa.com`의 HTTP 응답 HTML. 이번 확인은 서버가 반환한 HTML을 조회한 정적 검사이며, PC/모바일 브라우저에서 JavaScript를 실행하고 네트워크 패널을 관찰한 실기기 검증은 아니다.
+
+#### 1) GTM 게시 버전 확인 — 완료
+- 사용자가 제공한 Google Tag Manager 화면에서 컨테이너 `GTM-NGDTQNVG`의 게시 버전이 **버전 2 / 실시간·최신**임을 확인했다.
+- 버전 이름: `GA4 Google tag 설정 - chrisleepapa.com`.
+- 게시일 및 게시자: 2026-10-15 / `myeongheon.mung@gmail.com`.
+- 버전 1은 `Empty Container`(2026-04-29)로 표시됨.
+- 이 증거로 **현재 게시 버전 번호 확인은 완료** 처리한다. 이 항목을 다시 미완료로 돌리거나 재확인하지 않는다.
+- 단, 버전 2의 상세 태그/트리거 구성을 2026-10-30 export와 대조한 것, GA4 DebugView/실시간 `page_view` 수신을 확인한 것은 아니다. 이 두 항목은 별도 미완료로 유지한다.
+
+#### 2) Production 24개 URL의 HTML 광고 코드 교차 확인
+- 기존 Production sitemap에 기록된 24개 URL을 운영 도메인에서 다시 요청했고, 24개 모두 HTTP 200 응답을 받았다.
+- 광고 대상 16개(`/`, `/sistersquad-hub`, `/sistersquad`, `/sistersquad2`, `/yul`, `/jung`, `/miracleshot`, `/tutupupupipi`, `/wallpaper`, `/about`, `/journal-1`~`/journal-6`):
+  - AdSense loader 각 1개
+  - publisher ID `ca-pub-3207219520058740` 각 1개
+  - 초기 HTML의 광고 슬롯 마크업 0개
+  - 초기 HTML의 `adsbygoogle.push` 호출 0개
+  - GTM loader 각 1개
+- 광고 제외 8개(`/music`, `/movie`, `/bible`, `/worship`, `/worship_eng`, `/contact`, `/privacy`, `/terms`):
+  - AdSense loader 0개
+  - publisher ID 0개
+  - 초기 HTML의 광고 슬롯 마크업 0개
+  - 초기 HTML의 `adsbygoogle.push` 호출 0개
+  - GTM loader 각 1개
+- **판정:** 직접 HTML에 선언된 AdSense 코드의 16/8 분포는 기존 운영 정책과 일치한다. 제외 8개에 직접 광고 로더가 다시 들어간 흔적은 발견되지 않았다.
+
+#### 3) PC·모바일 실제 광고 요청 검증 — 미완료 유지
+- 이번 서버 HTML 조회는 브라우저의 PC/모바일 User-Agent별 실행, JavaScript 실행 후 DOM, 네트워크 요청 목록을 제공하지 않는다.
+- 따라서 실제 PC/모바일에서 `pagead2.googlesyndication.com`, `googleads.g.doubleclick.net` 등으로 광고 요청이 발생하는지, GTM이 런타임에서 광고 관련 스크립트를 삽입하는지, 광고가 렌더링되는지 확인하지 못했다.
+- AdSense가 아직 승인되지 않았다는 사용자의 설명을 유지하며, 광고가 실제 송출됐다고 추정하지 않는다.
+- 브라우저 자동화/네트워크 관찰 수단이 제공되지 않은 현재 환경에서는 이 항목을 완료 처리할 수 없다. 사용자가 직접 개발자 도구를 열어야 한다고 요구하지 않으며, 가능한 자동화 수단이 확보되면 이어서 검증한다.
+
+#### 4) 다음 순서
+1. PC·모바일 브라우저에서 초기 HTML 이후 실제 광고 네트워크 요청 및 GTM 런타임 삽입 여부 확인(미완료).
+2. GTM 버전 2 상세 설정과 2026-10-30 export v2 대조(미완료).
+3. GA4 DebugView/실시간 `page_view` 수신 확인(미완료).
+4. 그다음 광고 제외 경로의 런타임 삽입 여부와 핵심 외부 링크 도달성 확인.
+- 이 차수에서 사이트 소스 코드는 수정하지 않았다. 통합 점검문서만 `develop`에 갱신한다.
+- `main` 및 Production은 변경하지 않는다. AdSense 검토 요청도 제출하지 않는다.

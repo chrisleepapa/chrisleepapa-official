@@ -2223,8 +2223,9 @@ develop의 현재 소스에서 다음 16개 파일의 `href` / `src` 외부 URL�
 - Movie 페이지의 광고 제외 설정은 변경하지 않았다.
 
 **검증 상태**
-- 소스 수정 커밋: `685f1fba7ef4ac34094d5d7f961f8d6a139890f9`.
+- 소스 수정 커밋: `685f1fba7ef4ac34094d5d7f961f8d6a139890f9` (재생목록 UI), `73c47a4ac26264f7f33fc303b29bf4c3c81e87ae` (OG/Twitter 설명 메타데이터 동기화).
 - `renderFeaturedNav()`에서 세 영상의 제목·설명·배지를 표시하도록 코드 확인.
 - 언어 전환 콜백에서 `renderFeaturedNav()` 재호출 확인.
-- **Vercel Preview 배포 및 실제 모바일 화면 검증은 아직 대기.**
+- UI 코드 커밋 `685f1fba7ef4ac34094d5d7f961f8d6a139890f9`의 Preview는 READY 및 HTTP 200 응답을 확인했고, 정적 응답에서 새 재생목록 제목·썸네일·설명 클래스·3개 영상 ID를 확인했다.
+- 최종 메타데이터 수정 및 이 통합문서 커밋의 Preview 배포 상태는 별도 확인 필요. 실제 모바일 화면 렌더링은 아직 미검증.
 - main/Production 변경 없음.

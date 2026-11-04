@@ -150,9 +150,15 @@
             scroll-snap-align:start;
         }
         .ss2-story-video-card h3 {
-            margin:0 0 12px; color:var(--gold-light); font-family:'Cinzel',serif;
-            font-size:.9rem; letter-spacing:.08em;
+            margin:0 0 9px; color:var(--gold-light); font-family:'Cinzel',serif;
+            font-size:.9rem; letter-spacing:.04em; line-height:1.5;
         }
+        .ss2-video-caption {
+            max-width:300px; min-height:4.8em; margin:0 auto 12px;
+            color:#d5d5e0; font-size:.78rem; line-height:1.7; text-align:center;
+            word-break:keep-all;
+        }
+        html[data-theme="light"] .ss2-video-caption { color:#4a453d; }
         .ss2-story-video-shell {
             width:100%; max-width:300px; aspect-ratio:9/16; position:relative;
             overflow:hidden; margin:0 auto; border-radius:18px;
@@ -416,25 +422,29 @@
             </div>
             <div class="ss2-story-videos">
                 <article class="ss2-story-video-card">
-                    <h3 data-i18n="story_video_trailer1">영상 1</h3>
+                    <h3 data-i18n="story_video_trailer1">예고편 1 · 요정마을의 응급상황</h3>
+                    <p class="ss2-video-caption" data-i18n="story_video_trailer1_desc">저주받은 요정마을에서 긴급 구조 신호가 전해집니다. 율이와 정이, 그리고 아빠는 다시 모험에 나설 수 있을까요?</p>
                     <div class="ss2-story-video-shell">
                         <iframe src="https://www.youtube-nocookie.com/embed/USfDxu7IuxU?playsinline=1&rel=0" title="SISTER SQUAD 2 — Preview Trailer 1 / 예고편 1" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                     </div>
                 </article>
                 <article class="ss2-story-video-card">
-                    <h3 data-i18n="story_video_trailer2">영상 2</h3>
+                    <h3 data-i18n="story_video_trailer2">예고편 2 · 엄마만 돌려돌려</h3>
+                    <p class="ss2-video-caption" data-i18n="story_video_trailer2_desc">끝없이 이어지는 집안일과 숙제 확인, 저녁 준비까지. 가족의 익숙한 하루를 유쾌한 리듬과 노래로 담은 일상 코미디입니다.</p>
                     <div class="ss2-story-video-shell">
                         <iframe src="https://www.youtube-nocookie.com/embed/dcvLikVol0A?playsinline=1&rel=0" title="SISTER SQUAD 2 — Preview Trailer 2 / 예고편 2" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                     </div>
                 </article>
                 <article class="ss2-story-video-card">
-                    <h3 data-i18n="story_video_trailer3">영상 3</h3>
+                    <h3 data-i18n="story_video_trailer3">예고편 3 · 늙은 요정의 노래</h3>
+                    <p class="ss2-video-caption" data-i18n="story_video_trailer3_desc">무너진 마을의 작은 불빛과 음식을 나누는 마음. 절망 속에서도 희망을 놓지 않는 요정의 노래가 울려 퍼집니다.</p>
                     <div class="ss2-story-video-shell">
                         <iframe src="https://www.youtube-nocookie.com/embed/JAJUJ77N-aE?playsinline=1&rel=0" title="SISTER SQUAD 2 — Preview Trailer 3 / 예고편 3" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                     </div>
                 </article>
                 <article class="ss2-story-video-card">
-                    <h3>NG 영상 · NG CUT</h3>
+                    <h3>NG 영상 · 제작 비하인드</h3>
+                    <p class="ss2-video-caption">시간을 멈추는 마법과 시공간 왜곡, 프리티와의 재회 장면 등을 담은 NG 컷과 촬영 뒷이야기입니다.</p>
                     <div class="ss2-story-video-shell">
                         <iframe src="https://www.youtube-nocookie.com/embed/c1PrzobN_MI?playsinline=1&rel=0" title="SISTER SQUAD 2 — NG 영상 (Behind the Scenes)" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                     </div>
@@ -674,14 +684,17 @@
                 ost_note_p:       'SISTER SQUAD 2의 놀라운 오리지널 사운드트랙을 지금 만나보세요. 유튜브, 애플뮤직, 스포티파이 등 주요 스트리밍 플랫폼에 출시되었습니다.',
                 story_video_kicker: 'SISTER SQUAD 2 · MOVIES',
                 story_video_title: 'SISTER SQUAD 2 영상',
-                story_video_desc: 'SISTER SQUAD 2의 세 편의 예고편과 약 15분 분량의 본편 영상을 만나보세요.',
-                story_video_promo: '율이와 정이, 그리고 아빠 크리스의 두 번째 모험. 아래에서 본편을 지금 감상할 수 있습니다.',
-                story_video_trailer1: '예고편 1',
-                story_video_trailer2: '예고편 2',
-                story_video_trailer3: '예고편 3',
+                story_video_desc: '세 편의 예고편은 위기, 가족의 일상, 희망의 노래라는 서로 다른 시선으로 두 번째 모험을 소개합니다. 12분 54초 본편에서는 루미나의 회복을 위한 여정을 만나보세요.',
+                story_video_promo: '폐허가 된 루미나에서 시작된 구조 요청. 율이와 정이, 아빠 크리스는 죽음의 늪과 고대 유적, 쌍둥이 그리핀의 시련을 지나 마을을 되살릴 희망을 찾아 나섭니다.',
+                story_video_trailer1: '예고편 1 · 요정마을의 응급상황',
+                story_video_trailer1_desc: '저주받은 요정마을에서 긴급 구조 신호가 전해집니다. 율이와 정이, 그리고 아빠는 다시 모험에 나설 수 있을까요?',
+                story_video_trailer2: '예고편 2 · 엄마만 돌려돌려',
+                story_video_trailer2_desc: '끝없이 이어지는 집안일과 숙제 확인, 저녁 준비까지. 가족의 익숙한 하루를 유쾌한 리듬과 노래로 담은 일상 코미디입니다.',
+                story_video_trailer3: '예고편 3 · 늙은 요정의 노래',
+                story_video_trailer3_desc: '무너진 마을의 작은 불빛과 음식을 나누는 마음. 절망 속에서도 희망을 놓지 않는 요정의 노래가 울려 퍼집니다.',
                 story_video_full_kicker: '✦ THE FEATURE PRESENTATION ✦',
                 story_video_full_title: '본편 영상',
-                story_video_full_note: '율이와 정이, 그리고 아빠 크리스의 두 번째 모험을 지금 만나보세요.',
+                story_video_full_note: '12분 54초의 판타지 모험. 루미나를 되살리기 위한 자매의 시련과 선택, 포포의 희생, 마을의 회복과 귀환을 함께 만나보세요.',
                 story_video_full_watch: '▶ 유튜브에서 본편 보기 ↗',
                 media_sec_title:  '주요 장면',
                 story_desc:       '요정 마을 루미나에 평화를 찾아줬던 두 영웅, 율이와 정이는 평범한 일상으로 돌아옵니다.<br>하지만 <b>율이는 뾰족한 사춘기 소녀</b>가, <b>정이는 독립심 강한 초등학생</b>이 되어 자매 사이엔 미묘한 긴장감이 흐릅니다.<br><br>그러던 어느 날, 루미나에서 온 구조 신호. 숨겨진 과거와 트라우마를 간직한 아빠와 함께 다시 \'속삭임의 책\'을 펼치지만, 그들을 맞이한 루미나는 <b>잿빛의 폐허</b>였습니다.<br><br>자매는 저주의 근원을 파헤치기 위한 두 번째 여정을 시작합니다. 매번 충돌하면서도 진정한 자매애를 깨달아가는 율이와 정이, 그리고 과거의 실패를 마주하며 딸들을 지키기 위해 비장한 희생을 선택하는 아빠. 절망 속에서도 유머를 잃지 않는 조력자들과 함께, <b>\'함께\'라는 힘의 위대함</b>을 증명하는 감동적이고 유쾌한 여정입니다.',
@@ -752,14 +765,17 @@
                 ost_note_p:       'Discover the amazing original soundtrack of Sister Squad 2, now streaming on YouTube, Apple Music, Spotify and more.',
                 story_video_kicker: 'SISTER SQUAD 2 · MOVIES',
                 story_video_title: 'SISTER SQUAD 2 — Movies',
-                story_video_desc: 'Watch three previews and the full SISTER SQUAD 2 story, approximately 15 minutes long.',
-                story_video_promo: 'Yul, Jung, and their dad Chris begin a second adventure. Watch the full story below.',
-                story_video_trailer1: 'Preview Trailer 1',
-                story_video_trailer2: 'Preview Trailer 2',
-                story_video_trailer3: 'Preview Trailer 3',
+                story_video_desc: 'The three previews introduce the second adventure through an emergency, everyday family comedy, and a song of hope. The 12-minute-54-second feature follows the journey to restore Lumina.',
+                story_video_promo: 'A distress signal comes from a ruined Lumina. Yul, Jung, and their father Chris cross the Swamp of Death, ancient ruins, and the trial of the twin griffins in search of hope for the village.',
+                story_video_trailer1: 'Preview 1 · Emergency in the Fairy Village',
+                story_video_trailer1_desc: 'A distress call arrives from the cursed fairy village. Will Yul, Jung, and their dad answer the call and begin another adventure?',
+                story_video_trailer2: 'Preview 2 · Mom, Round and Round',
+                story_video_trailer2_desc: 'Chores, laundry, homework checks, and dinner keep coming around. This playful family song turns the rhythm of everyday home life into comedy.',
+                story_video_trailer3: 'Preview 3 · The Old Fairy’s Song',
+                story_video_trailer3_desc: 'A small light beneath the ruins, food shared with others, and a song that refuses to let go of hope through a difficult night.',
                 story_video_full_kicker: '✦ THE FEATURE PRESENTATION ✦',
                 story_video_full_title: 'Full Story',
-                story_video_full_note: 'Join Yul, Jung, and their dad Chris on their second adventure.',
+                story_video_full_note: 'A 12-minute-54-second fantasy adventure: the sisters’ trials and choices, Popo’s sacrifice, Lumina’s restoration, and the journey home.',
                 story_video_full_watch: '▶ Watch the full story on YouTube ↗',
                 media_sec_title:  'Highlights: Key Scenes',
                 story_desc:       'Yul and Jung, the two heroes who once brought peace to the fairy village of Lumina, return to ordinary life.<br>But <b>Yul has become a prickly teenager</b>, and <b>Jung a fiercely independent grade-schooler</b> — a quiet tension now runs between the sisters.<br><br>Then one day, a distress signal arrives from Lumina. Together with their father, who hides a past full of secrets and trauma, they open the \'Whispering Book\' once more — only to find Lumina reduced to ash-grey ruins.<br><br>The sisters set out on a second journey to uncover the root of the curse. Clashing again and again, Yul and Jung come to understand true sisterhood, while their father confronts his past failures and chooses a solemn sacrifice to protect his daughters. With the help of allies who never lose their humor even in despair, they prove the power of standing <b>together</b> — a moving, joyful adventure once more.',

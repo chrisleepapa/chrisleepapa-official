@@ -153,7 +153,7 @@ main/develop 각각 sitemap에 없는 HTML 13개를 확인했다.
 - 파일: `docs/Chris_LEE_PAPA_AdSense_Audit_2026-10-16.md`
 - Audit 1.98: 삭제 페이지 잔여 참조 정리
 - Audit 1.99: 광고 대상 16개 페이지 내부 링크·정적 파일 경로 검사
-- 최신 커밋: `c43aa7aef8c5524deebcc21af4e00dcda97a629c`
+- Audit 1.99 기록 커밋: `c43aa7aef8c5524deebcc21af4e00dcda97a629c`
 - 최신 Vercel develop 배포:
   - ID: `dpl_5W3ufCAieNWvycRFsuUg2Qnc4Fqr`
   - 상태: **READY**

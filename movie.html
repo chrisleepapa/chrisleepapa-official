@@ -232,7 +232,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             .shorts-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
             .shorts-section { padding: 40px 15px; }
         }
-    </style>
+    
+/* Tablet refinement: preserve the cinematic layout while preventing narrow three-column copy cards. */
+@media (min-width: 701px) and (max-width: 900px) {
+  .theater-wrapper { padding-left: 18px; padding-right: 18px; }
+  .screen-info { padding: 28px 22px; }
+  .movie-creation-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .carousel-container { gap: 14px; }
+  .thumbnail-card { flex-basis: 240px; }
+}
+
+</style>
   <meta name="robots" content="index, follow">
 </head>
 <body>

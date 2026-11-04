@@ -1500,3 +1500,20 @@ Google AdSense는 독창적이고 관련성 있는 콘텐츠, 명확하고 사�
 - **점수 구분:** 77/100은 수정된 develop Preview 후보에 대한 내부 정적 준비도 점수이며 Google 공식 점수·승인 확률이 아님. main/Production은 Worship 광고 제외와 두 페이지 콘텐츠 수정이 아직 반영되지 않았으므로 Production에 77점을 적용하지 않음. 현행 Production의 직전 내부 점수 76/100은 유지하되, 운영 코드 분포는 18/6으로 구분 기록.
 - **미완료:** 실제 브라우저 렌더링·영상/음원 재생·언어 전환, GTM 최신 게시본 및 광고 Network 요청, AdSense 계정 상태, Search Console의 sitemap 처리·색인 결과. 사용자가 계정 화면에서 직접 확인할 부분은 완료로 표시하지 않음.
 - **다음 단계:** develop Preview에서 사용자가 두 콘텐츠 수정 결과를 확인한 후, main과 develop의 diverged history 및 5개 변경 파일 diff를 검토하고 사용자가 명시적으로 요청하는 경우에만 병합·Production 반영. 그 전까지 운영 도메인 변경 금지.
+
+
+### 2026-11-04 / Audit 1.90 — 최신 Production 배포 기준 24개 URL canonical·광고 코드·GTM 정합성 재검증
+
+**점검 목적:** Search Console에서 과거 확인된 5개 URL 문제 및 Google이 구 Vercel 도메인을 canonical로 선택했던 사례를 고려해, 현재 배포 소스의 canonical·robots·AdSense 직접 코드·GTM 삽입을 sitemap 전체에서 다시 확인함. 이번 점검은 실제 Production 심사 대상을 기준으로 수행했으며, 코드 수정이나 재심사 요청은 하지 않음.
+
+- **최신 배포 식별:** Vercel Production 최신 배포는 `dpl_F7WvDyQUeNwo5qUePaHWYH8RH1VF`, 상태 `READY`, alias `chrisleepapa.com`, Git ref `main`, commit `62125bf478454abac32b3f071d0f5d7bae2b492f`, aliasError 없음. 최신 develop Preview는 `dpl_9MTftcNdoRMucPhJEuqjtrWPHXB9`, 상태 `READY`, alias `develop.chrisleepapa.com`, commit `013c842240e9a25b0736d52e45f532fda9bf889b`.
+- **Sitemap 소스 정합성:** main과 develop의 `sitemap.xml` blob SHA가 동일(`9526d1ee1d3457540a3aa08dca33f654cedf4c9b)). 24개 URL 목록은 두 브랜치에서 일치함.
+- **Production main 24개 HTML의 canonical:** sitemap에 포함된 24개 HTML 파일을 각각 GitHub main에서 다시 읽어 확인. 모든 페이지에 canonical link가 정확히 1개씩 존재하며, 전부 `https://chrisleepapa.com/` 공식 도메인의 해당 경로를 가리킴. 구 `chrisleepapa-official.vercel.app` 도메인을 canonical로 지정한 HTML은 24개 중 0개.
+- **Robots meta:** 24개 sitemap HTML 모두 `index, follow` 1개씩 확인. 이 결과는 HTML meta 기준이며 실제 HTTP `X-Robots-Tag` 헤더와 Googlebot의 최종 수신 결과를 확인했다는 뜻은 아님.
+- **AdSense 직접 코드 분포:** 광고 대상 16개 페이지는 각각 AdSense loader 1개 및 publisher ID 1개. 사용자 지정 제외 8개(`/music`, `/movie`, `/bible`, `/worship`, `/worship_eng`, `/contact`, `/privacy`, `/terms`)는 loader 0개 및 publisher ID 0개. 따라서 Production main의 직접 코드 분포는 16/8로 확인됨.
+- **GTM:** 24개 sitemap HTML 각각 GTM loader 1개와 GTM noscript iframe 1개. 직접 GA4 중복 여부 및 GTM 컨테이너 내부의 최신 게시 버전/실제 태그 실행 여부는 이번 정적 파일 검사 범위에 포함되지 않음.
+- **구 Vercel 도메인 문자열 조사:** main 코드 검색에서 구 도메인 문자열은 `vercel.json`의 host 조건부 영구 리디렉션 규칙과 점검 문서의 과거 기록에서만 발견됨. 24개 sitemap HTML의 본문·canonical·메타데이터에는 구 도메인 참조가 없음. `vercel.json`은 구 도메인의 일반 경로를 동일 경로의 공식 .com으로 영구 리디렉션하고 `/world-lore`는 `/sistersquad-hub`로 보냄. 규칙은 소스상 의도된 정규화 설정으로 보여 임의 변경하지 않음. 다만 이번 실행 환경에서 실제 HTTP Location 응답을 재측정하지 못했으므로 현재 리디렉션 동작은 별도 미확인으로 남김.
+- **브랜치 안전:** 현재 main과 develop은 GitHub compare 기준 diverged이며 main 대비 develop ahead 7 / behind 9. 비교 파일은 점검문서와 홈페이지·TuTu·Worship 관련 4개 HTML임. TODAY 등 main 전용 변경이 있으므로 develop 전체를 main에 덮어쓰거나 임의 병합하지 않음.
+- **Search Console 한계:** 사용자가 2026-11-03 보고한 5개 URL의 최신 개별 검사 결과와 Google 선택 canonical은 Google Search Console 계정 데이터가 필요함. 이번 소스 검사는 Google이 실제로 선택한 canonical을 증명하지 않으며, 5개 URL 각각의 색인 상태도 확인하지 못함. 과거 문제를 해결 완료로 표시하지 않음.
+- **결론:** 현재 Production 배포 커밋의 sitemap 24개 페이지는 HTML 소스 기준 공식 .com canonical 24/24, `index, follow` 24/24, 직접 AdSense 코드 16/8, GTM script/noscript 각 24/24로 정합성이 확인됨. 이 단계에서 발견된 HTML canonical 오류나 구 도메인 canonical 잔존은 없어 소스 수정은 하지 않음. 실제 응답 헤더·구 도메인 리디렉션·Google 선택 canonical·5개 URL 색인 상태·실제 브라우저 렌더링은 미완료.
+- **다음 순서:** (1) Google Search Console의 5개 URL별 최신 검사 결과와 Google 선택 canonical을 확인하고, (2) 실제 HTTP 리디렉션 및 응답 헤더를 측정하고, (3) GTM 게시 버전/GA4 DebugView 및 광고 제외 페이지의 런타임 광고 요청을 확인한다. 계정 접근 또는 실제 브라우저 세션이 필요한 단계는 확인 전까지 미완료로 유지한다.

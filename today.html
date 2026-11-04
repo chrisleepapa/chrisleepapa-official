@@ -90,7 +90,39 @@ html[data-theme="light"] .today-journey{background:linear-gradient(145deg,#fffdf
 html[data-theme="light"] .today-journey p{color:rgba(37,37,37,.72)}
 html[data-theme="light"] .today-journey h2,html[data-theme="light"] .today-journey a{color:#765b17}
 
-    </style>
+    
+/* Responsive refinement: keep Today cards readable without changing behavior. */
+@media (min-width:701px) and (max-width:980px){
+  .today-wrap{width:min(1100px,94vw)}
+  .today-grid{gap:14px}
+  .today-card{padding:22px}
+  .today-routine{padding:20px}
+}
+@media (max-width:700px){
+  body{padding-top:78px;padding-bottom:76px}
+  .today-wrap{width:calc(100% - 28px)}
+  .today-hero{padding:24px 0 20px}
+  .today-title{font-size:clamp(2.35rem,12vw,4rem);letter-spacing:.06em}
+  .today-date{font-size:.82rem}
+  .today-profile{gap:8px}
+  .profile-pill,.profile-btn,.today-streak,.today-checkin{font-size:.7rem;padding:7px 11px}
+  .today-routine{padding:18px 16px;border-radius:16px}
+  .today-grid{grid-template-columns:minmax(0,1fr);gap:13px}
+  .today-card{min-width:0;padding:20px 17px;border-radius:16px}
+  .today-card h2{font-size:.94rem;letter-spacing:.08em;margin-bottom:14px}
+  .verse{font-size:1.04rem;line-height:1.85;overflow-wrap:anywhere}
+  .today-form{flex-wrap:wrap}
+  .today-form input{min-width:0;flex:1 1 180px}
+  .today-form .today-btn{min-height:42px}
+  .today-word-actions{flex-wrap:wrap;align-items:stretch}
+  .today-word-actions>*{max-width:100%}
+}
+@media (max-width:380px){
+  .today-wrap{width:calc(100% - 22px)}
+  .today-card{padding:18px 14px}
+  .today-word-head{align-items:flex-start;flex-wrap:wrap}
+}
+</style>
   <title>TODAY — Chris LEE.PAPA</title>
   <link rel="canonical" href="https://chrisleepapa.com/today">
   <meta property="og:title" content="TODAY — Chris LEE.PAPA">

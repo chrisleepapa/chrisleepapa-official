@@ -2061,3 +2061,51 @@ develop의 현재 소스에서 다음 16개 파일의 `href` / `src` 외부 URL�
 5. 실제 결함이 확인될 때만 develop에서 최소 수정하고, 사용자가 별도로 지시하기 전에는 main/Production 변경 및 AdSense 검토 요청을 하지 않음.
 
 **이번 차수 결론:** Production 정적 HTML의 직접 광고 코드 분포는 사용자 확정 정책과 정확히 일치한다. 현재 내부 점수는 77/100. 콘텐츠의 정적 독창성 근거는 양호하지만, 실제 광고 요청·GTM 최신 게시본·브라우저 렌더링·Google 계정 상태가 남아 있으므로 이를 완료 또는 승인 보장으로 표현하지 않는다.
+
+
+
+### 2026-11-04 / Audit 2.05 — Production main 본문 정밀 재점검 및 develop 중복 영상 최소 수정
+
+**점검 원칙:** Production main을 기준선으로 조사하고, 수정은 develop에만 반영한다. Google AdSense 승인 전이므로 실제 광고 송출·광고 요청 검증은 수행하지 않으며, 승인 전 확인 가능한 소스·페이지 구조·콘텐츠 독창성만 판정한다.
+
+#### 1) Production 기준선 재확인
+- 운영 도메인: `https://chrisleepapa.com`.
+- Production 배포: `dpl_FJSc1Eoj93DjyJFxh6c88bGWMJoY`, 상태 READY, main commit `743cde515973e7ebd39c51cd7a0a7b1551ab1de6`.
+- main의 광고 대상 16개 HTML을 GitHub main에서 직접 읽어 페이지별 본문, 제목, 소제목, 이미지, iframe, 광고 코드 구조를 점검함.
+- 광고 대상 16개는 각 페이지에 AdSense loader 1개. 다만 `<ins class="adsbygoogle">`, `adsbygoogle.push()`, `data-ad-slot`은 16개 소스 어디에서도 발견되지 않음. 따라서 현재 확인된 것은 AdSense 공통 loader의 존재이며, 페이지별 수동 광고 단위 배치가 확인된 것은 아님. Auto ads 설정 및 계정 측 상태는 별도.
+- 광고 제외 8개 페이지의 운영 HTML에서는 AdSense loader와 publisher ID가 모두 0개로 재확인됨.
+- `ads.txt` 공개 응답 HTTP 200 및 publisher 한 줄, `robots.txt` 공개 응답 HTTP 200 및 전체 허용, sitemap 24개 URL을 확인함.
+
+#### 2) 콘텐츠 독창성·복제 위험 점검
+- 광고 대상 16개 페이지의 본문 텍스트·제목 구조를 추출해 교차 비교했으며, 서로 다른 페이지 사이에서 정확히 동일한 장문 문단은 발견되지 않음. 이는 의미상 유사성, 제3자 원문과의 유사성, Google의 최종 판정을 보증하는 검사는 아님.
+- SISTER SQUAD Hub, SISTER SQUAD 1·2, Yul/Jung 캐릭터 프로필은 서로 다른 역할(세계관 개요, 각 권 소개, 인물별 심층 설정)을 갖고 있으며 각 페이지에 개별 설명과 제작 맥락이 존재함.
+- TuTu PuPu PiPi는 세 캐릭터의 성격·세계관·OST와 여섯 에피소드 각각의 설명 및 제작자 노트를 포함함.
+- MIRACLE SHOT은 세계관·인물별 설명·주제 해석이 있으며, 빈 alt 이미지 1개는 본문 이미지가 아니라 동적 라이트박스의 초기 빈 이미지 요소로 확인됨.
+- Wallpaper는 작품별 설명 및 모바일/PC 사용 맥락을 포함함.
+- Journal 1~6은 창작 시작, AI 도구 사용, POD 출판, 캐릭터 디자인, 직장과 창작 병행, 워십 제작 등 서로 다른 실제 경험을 다룸. Journal 1과 4의 일부 한국어 문장이 소스 문자열상 중복되는 현상은 본문 HTML의 중복 출력이 아니라 언어 전환용 스크립트 데이터에도 동일 문장이 보관된 구조로 확인됨. 본문 DOM에는 각 한국어 본문 블록이 하나씩 존재함.
+- SISTER SQUAD 2 전용 페이지에는 예고편 3개, NG 영상, 본편 등 서로 다른 영상 5개가 있으며, 각각의 영상 제목과 작품 설명이 있음.
+
+#### 3) 발견된 반복 미디어 위험 및 판단
+- Production main의 홈페이지 `/`와 전용 페이지 `/sistersquad2` 양쪽에 동일한 본편 YouTube 영상 `sKkPYaMM75A`가 직접 삽입되어 있음을 확인함.
+- 두 페이지의 본문 설명과 구성은 서로 다르므로 이것만으로 복제 콘텐츠 위반이라고 단정할 수 없음. 다만 동일한 본편 영상이 광고 대상 화면 두 곳에서 반복될 필요는 낮고, 사용자가 고정한 거절 사유(복제된 콘텐츠가 있는 화면에 광고 게재)에 비추어 불필요한 반복 노출 위험을 줄이는 편이 합리적임.
+- 이에 홈페이지에서는 본편 iframe을 제거하고 기존 포스터 `/images/sistersquad2_poster.jpg`를 사용해 `/sistersquad2` 전용 페이지로 연결하도록 develop에서 최소 수정함. 전용 페이지의 예고편·NG·본편 영상과 작품 구성은 변경하지 않음.
+- 홈페이지 설명 문구도 더 이상 홈페이지에서 바로 영상을 재생한다고 오해하지 않도록 한국어·영어 문구를 함께 조정함.
+- 이 조치는 복제 콘텐츠 위험을 줄이는 예방적 구조 개선이며, 과거 Google 거절의 원인을 확정한 것은 아님.
+
+#### 4) develop 수정 기록 및 검증 대기
+- 수정 브랜치: `develop`만. 파일: `index.html` 1개.
+- commit: `c37f6153a2c2d01934136f25011c9b2d3bb532e2`.
+- 변경 사항: 홈페이지의 SISTER SQUAD 2 본편 iframe 제거, 포스터 링크로 대체, 한국어·영어 설명 갱신, 포커스 표시 CSS 추가.
+- 변경 전 정적 검증: 홈페이지에 본편 iframe 존재, `/sistersquad2`에도 동일 영상 존재.
+- 변경 후 소스 검증: 홈페이지의 해당 iframe URL 제거, 포스터 파일 참조 및 `/sistersquad2` 링크 존재, CTA 문구와 영상 안내 문구 일치.
+- Vercel develop 배포 ID `dpl_45wFrLsRBGJaZsZ6QvKMGaZTxtQ5`가 commit `c37f6153a2c2d01934136f25011c9b2d3bb532e2`로 생성되었으며, 마지막 확인 시 BUILDING. READY 이후 Preview 실제 응답과 모바일/PC 화면 확인을 수행해야 함.
+- main/Production에는 어떠한 변경도 하지 않음.
+
+#### 5) 현재 판정 및 다음 작업
+- **Production main 완료:** 16개 광고 대상 본문 및 구조 조사, 8개 광고 제외 코드 확인, ads.txt/robots/sitemap 공개 응답, 페이지 간 정확한 장문 문단 중복 조사.
+- **확인된 개선 후보:** 홈페이지와 SISTER SQUAD 2 전용 페이지 간 동일 본편 영상 iframe 중복.
+- **develop 수정 완료·배포 검증 대기:** 홈페이지 iframe을 전용 페이지 링크형 포스터로 대체.
+- **아직 미확인:** 새 develop Preview READY 상태, 실제 PC/모바일 렌더링과 링크 클릭·언어 전환, Google 계정 내부 상태. 승인 전 실제 광고 송출 검증은 이번 작업의 대상이 아님.
+- **다음 순서:** (1) develop Preview READY 확인, (2) 홈페이지 포스터 노출·전용 페이지 이동·모바일 배치 확인, (3) `/sistersquad2` 본편 영상 유지 확인, (4) 결과를 본 문서에 기록. 다른 위험이 발견되면 같은 방식으로 develop에서만 최소 수정한다.
+- **Production 배포 및 main 병합은 사용자의 별도 명시 지시 전까지 하지 않는다.**
+

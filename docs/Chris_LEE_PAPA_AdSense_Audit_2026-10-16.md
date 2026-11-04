@@ -2109,3 +2109,16 @@ develop의 현재 소스에서 다음 16개 파일의 `href` / `src` 외부 URL�
 - **다음 순서:** (1) develop Preview READY 확인, (2) 홈페이지 포스터 노출·전용 페이지 이동·모바일 배치 확인, (3) `/sistersquad2` 본편 영상 유지 확인, (4) 결과를 본 문서에 기록. 다른 위험이 발견되면 같은 방식으로 develop에서만 최소 수정한다.
 - **Production 배포 및 main 병합은 사용자의 별도 명시 지시 전까지 하지 않는다.**
 
+
+
+#### 6) Audit 2.05 develop Preview 배포 및 응답 검증 결과
+- 최신 develop 기록 커밋: `348a15e37db008297fece0ee03c147583a88cac4`.
+- Vercel Preview 배포 `dpl_7oT1sf6wkk636fnNirQoyuZrHcAf` 상태 **READY**, 공식 develop alias `develop.chrisleepapa.com` 연결, alias 오류 없음.
+- 불변 Preview URL `https://chrisleepapa-official-md4bcvoif-chrisleepapas-projects.vercel.app`의 홈페이지와 `/sistersquad2`를 각각 조회해 HTTP 200 확인.
+- Preview 홈페이지 HTML: 포스터 경로 `/images/sistersquad2_poster.jpg` 존재, `/sistersquad2` 링크 존재, 반복 본편 iframe URL `sKkPYaMM75A` 없음.
+- Preview `/sistersquad2` HTML: 본편 iframe `sKkPYaMM75A`, 예고편 3개, NG 영상 iframe이 그대로 존재함.
+- 포스터 이미지 URL도 Preview에서 HTTP 200 확인.
+- **검증 통과:** 홈페이지 반복 본편 iframe 제거, 포스터 링크 대체, 전용 페이지 본편 영상 유지, 정적 리소스 접근 정상.
+- **검증 범위 한계:** HTTP 응답 및 HTML·이미지 존재 검증이다. 실제 데스크톱/모바일 브라우저에서의 시각적 배치, 키보드 포커스, 클릭 동작은 자동 브라우저 세션을 통한 검증이 아니므로 미완료로 유지한다.
+- 최종 branch 비교에서 develop은 main보다 2개 문서/코드 변경 커밋이 앞서고 main의 과거 커밋 이력 차이로 behind 10인 diverged 상태임. 현재 develop의 main 대비 변경 파일은 본 통합 점검문서와 `index.html` 두 개뿐이다.
+- Production main/배포는 계속 기존 commit `743cde515973e7ebd39c51cd7a0a7b1551ab1de6` 상태이며 수정하지 않음.

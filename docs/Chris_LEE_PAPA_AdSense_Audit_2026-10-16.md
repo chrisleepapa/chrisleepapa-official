@@ -2630,3 +2630,46 @@ develop의 현재 소스에서 다음 16개 파일의 `href` / `src` 외부 URL�
 - 이번 결과는 이 통합 점검문서에만 기록한다. 별도 문서는 만들지 않는다.
 - 사이트 소스, sitemap, canonical, robots, 광고 코드 및 Search Console 설정은 변경하지 않았다.
 - 문서 변경은 `develop` 브랜치에만 적용한다. `main`/Production 배포와 AdSense 재검토 신청은 하지 않는다.
+
+
+### 2026-11-04 / Audit 2.18 — SISTER SQUAD 동영상 구조화 데이터 경고 상세 확인
+
+#### 1) Search Console 사용자 제공 상세 결과
+- 페이지: `https://chrisleepapa.com/sistersquad`
+- 동영상: **SISTER SQUAD Cinematic Trailer**
+- 유형: `VideoObject`
+- 감지된 값:
+  - `name`: SISTER SQUAD Cinematic Trailer
+  - `description`: SISTER SQUAD 두 자매의 마법 세계 모험을 소개하는 공식 시네마틱 트레일러.
+  - `thumbnailUrl`: `https://chrisleepapa.com/images/og_share.png`
+  - `uploadDate`: `2026-01-01`
+  - `embedUrl`: `https://www.youtube.com/embed/C0lluI-l0gc`
+  - `contentUrl`: `https://www.youtube.com/watch?v=C0lluI-l0gc`
+- Google이 표시한 중요하지 않은 문제 2개:
+  1. `uploadDate`의 datetime 값이 잘못됨(선택사항).
+  2. `uploadDate` datetime 속성에 시간대가 누락됨(선택사항).
+- **해석:** 두 경고 모두 동일한 `uploadDate` 값의 형식/시간대에 관한 것이다. 필수 속성 누락이나 페이지 색인 실패로 표시된 것은 아니다. Search Console 화면상 페이지 색인은 정상이고 VideoObject 항목도 감지되었다. 동영상 검색 노출에 사용할 수 있는 개선 권고 성격으로 분리해 관리한다.
+
+#### 2) develop 소스 대조
+- 현재 `develop/sistersquad.html`의 JSON-LD 구간을 확인했다.
+- 해당 소스에는 `Person` 구조화 데이터가 있고, VideoObject는 포함하지 않는다.
+- 주석에 “원본 YouTube에서 uploadDate를 검증하지 못했으므로 VideoObject schema를 두지 않는다”는 의도가 명시되어 있다.
+- 페이지의 공식 트레일러 iframe은 `https://www.youtube-nocookie.com/embed/C0lluI-l0gc?rel=0`를 사용한다.
+- 따라서 사용자가 Search Console에서 확인한 VideoObject와 현재 develop 파일의 구조화 데이터 상태 사이에 차이가 있다. 현재 공개 Production이 어느 배포 소스/시점에서 이 VideoObject를 제공했는지 이번 확인만으로 확정하지 않는다. Preview/Production 배포 커밋 대조가 필요하다.
+
+#### 3) 조치 및 판정
+- 실제 YouTube 원본 업로드 날짜와 시간대가 확인되지 않았으므로 `2026-01-01`에 임의로 시간 또는 시간대를 덧붙이지 않는다.
+- `uploadDate`는 선택 속성이며, 현재 develop 소스는 검증되지 않은 VideoObject를 이미 제외하고 있으므로 이번 경고를 없애기 위한 별도 코드 수정은 하지 않는다.
+- Google의 경고 2개는 중요하지 않은 항목으로 분류되어 있으며, 이 결과만으로 페이지 색인이나 AdSense의 두 실제 거절 사유(복제 콘텐츠 / 가치가 별로 없는 콘텐츠)에 문제가 있다고 판단하지 않는다.
+- **현재 판정:** 사용자 제공 Production URL 검사에서는 비심각한 VideoObject uploadDate 경고 2개 확인. develop 소스에서는 VideoObject 미사용 확인. Production과 develop 간 구조화 데이터 차이의 배포 원인은 미확정.
+
+#### 4) 다음 단계
+1. Vercel의 현재 Production 배포 커밋과 develop Preview 배포 커밋을 대조해 어느 소스가 공개 중인지 확인한다.
+2. Production HTML의 실제 JSON-LD 응답을 읽어 VideoObject가 현재도 제공되는지 확인한다.
+3. VideoObject가 Production에 남아 있고 업로드 시각을 공식 원본에서 검증할 수 없다면, 선택 속성인 `uploadDate`를 제거하는 방식이 적절한지 검토한다. 날짜를 추정해 보정하지 않는다.
+4. 이후 `https://chrisleepapa.com/journal-4` URL 검사를 계속한다.
+
+#### 5) 문서·배포 경계
+- 이번 내용은 기존 통합 점검문서에만 기록한다.
+- 사이트 소스는 수정하지 않았다. 문서만 `develop`에 반영한다.
+- `main`/Production 배포 및 AdSense 재검토 요청은 하지 않는다.

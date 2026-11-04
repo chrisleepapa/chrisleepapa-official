@@ -56,7 +56,19 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     html[data-theme="light"] .journal-note strong{color:#71500d}
     @keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}@keyframes shimmer{0%{background-position:200% center}100%{background-position:-200% center}}
     @media(max-width:700px){.page-wrapper{width:min(100% - 28px,600px);padding-top:calc(var(--nav-height) + 45px)}.journal-grid{grid-template-columns:1fr;gap:14px}.journal-card{min-height:auto;padding:25px 23px}.intro{font-size:.9rem}.journal-note{padding:20px}}
-  </style>
+  
+/* Tablet typography refinement; retain the existing two-column journal layout. */
+@media (min-width: 701px) and (max-width: 980px) {
+  .page-wrapper { width: min(100% - 44px, 900px); }
+  .page-header { margin-bottom: 42px; }
+  .intro { max-width: 660px; font-size: .92rem; line-height: 1.85; }
+  .journal-grid { gap: 14px; }
+  .journal-card { min-height: 220px; padding: 24px 22px; }
+  .journal-card h2 { line-height: 1.4; text-wrap: balance; }
+  .journal-card p { line-height: 1.8; }
+  .journal-note { padding: 21px 22px; }
+}
+</style>
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="JOURNAL — Chris LEE.PAPA">
   <meta name="twitter:description" content="Chris LEE.PAPA의 창작 기록과 제작 과정, AI 음악·영상·그림책·Sister Squad·웹게임에 관한 이야기를 담은 공식 Creative Journal입니다.">

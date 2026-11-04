@@ -2304,3 +2304,42 @@ develop의 현재 소스에서 다음 16개 파일의 `href` / `src` 외부 URL�
 - About에는 창작자 소개, Sister Squad 기획 배경, AI 도구 활용과 창작 철학이 실제 본문 텍스트로 확인됨.
 - **미완료:** Contact 폼/메일 링크 실제 전송, Privacy/Terms의 모든 외부 정책 링크 및 공통 푸터 연결은 브라우저 상호작용 검증 전까지 미완료.
 
+
+
+### 2026-11-04 / Audit 2.11 — GTM·GA4 설치 구조 및 핵심 외부 링크 인벤토리 점검
+
+**점검 대상:** GitHub `develop`의 sitemap 대상 HTML 24개와 각 페이지의 외부 링크 앵커. 이번 차수는 소스 정적 점검이며, Google 계정 내부의 GTM 게시 컨테이너·GA4 실시간 데이터에 로그인해 확인한 것은 아니다.
+
+#### 1) GTM·GA4 설치 코드 전수 확인
+- Sitemap 대상 24개 HTML을 개별 조회했다.
+- 24/24 페이지에서 `https://www.googletagmanager.com/gtm.js` 로딩 코드가 정확히 1개씩 존재한다.
+- 24/24 페이지에서 동일 컨테이너 `GTM-NGDTQNVG`의 `noscript` iframe이 정확히 1개씩 존재한다.
+- 24개 HTML에서 별도 `gtag.js` 로더 0개, 직접 `gtag()` 호출 0개, GA4 측정 ID(`G-`) 직접 표기 0개, Google tag ID(`GT-`) 직접 표기 0개를 확인했다.
+- HTML에 직접 GA4 태그가 중복 설치된 정황은 발견되지 않았다. 현재 구조는 각 페이지가 GTM 컨테이너를 한 번 불러오고, GA4 설정은 GTM 컨테이너 내부에서 관리되는 구조로 해석된다.
+- **확인 불가:** GTM 내부의 GA4 구성 태그가 실제로 존재하는지, 해당 태그가 Published 버전에 포함되어 있는지, All Pages 트리거가 활성인지, 실제 `page_view`가 GA4 속성 `G-NBGELYQ4TZ`로 전송되는지는 Google Tag Manager/Analytics 계정 내부 확인이 필요하다. 기존에 기록된 Google tag ID `GT-5MJDBTR2`도 HTML 직접 삽입 여부는 0건이며, GTM 내부 구성 상태는 별도 확인 전까지 미확정이다.
+- 따라서 이번 결과는 **GTM 설치 중복 없음(정적 소스 기준)**으로 판정하며, **GA4 수집 정상** 또는 **GTM Published 설정 정상**으로 판정하지 않는다.
+- Google 계정 연결 플러그인 없이 외부에서 GTM 컨테이너 스크립트 원문을 직접 열어 내부 게시 설정을 검증할 수 없었다. 계정 내부 확인 전까지 해당 항목은 미완료로 유지한다.
+
+#### 2) AdSense 직접 코드 분포 교차 확인
+- 광고 대상 16개 페이지에서 AdSense loader 각 1개, 광고 제외 8개 페이지에서 loader 0개인 기존 분포를 develop 소스에서도 재확인했다.
+- 모든 24개 페이지의 GTM 설치는 광고 대상/제외 여부와 관계없이 1개씩 동일하다.
+- GTM이 페이지에 존재한다는 사실만으로 광고가 실제 송출되거나 광고 요청이 발생했다고 판단하지 않는다. AdSense 미승인 상태라는 기존 전제를 유지한다.
+
+#### 3) 핵심 외부 링크 인벤토리
+- 창작자 공식 채널: YouTube `@chrisleepapaofficial`, Spotify 아티스트 `6zhb0e3KvoFY5pcefQUHA6`, TikTok `@chrisleepapa`, Instagram 및 Facebook.
+- 작품·배포 링크: SISTER SQUAD YouTube 본편/재생목록, Spotify 앨범, Amazon 도서 미리보기 `B0HHNBK12Q`, TuTuPuPuPiPi YouTube 재생목록·Shorts 및 Spotify 앨범, Worship 앨범의 Spotify·YouTube 재생목록.
+- 캐릭터 이모티콘: SISTER SQUAD Hub의 Naver 단축 링크 3개(`5AuHtDXZ`, `FAAJ5Qd4`, `5imsUQUk`).
+- 외부 참고자료: Journal 1의 SELF 기사, Journal 2의 Skywork 기업 프로필.
+- 개인정보 페이지의 외부 정책·기관 링크: Google 개인정보/파트너 사이트/광고 설정, 개인정보보호위원회, 개인정보분쟁조정위원회.
+- 소스에서 실제 앵커 텍스트와 URL의 연결을 확인했으며, 이 단계에서는 링크가 페이지 코드에 존재하는지와 연결 대상의 종류만 확인했다.
+
+#### 4) 외부 링크 도달성 및 기능 검증 한계
+- 외부 서비스의 최종 HTTP 응답, 리디렉션 후 목적지, 로그인/지역 제한, Spotify/YouTube 플레이어 실제 재생, Amazon 미리보기 접근 가능 여부, Naver 단축 링크의 최종 스토어 목적지는 이번 환경에서 독립적으로 검증하지 못했다.
+- 따라서 외부 링크는 **소스 연결 존재 확인**으로만 기록하고, **실제 접속/재생 정상**으로 표시하지 않는다.
+- 다음 단계에서 핵심 링크를 실제 브라우저로 열어 목적지와 동작을 확인하고, 접근 불가 또는 잘못된 연결이 확인될 때만 develop에서 수정한다.
+
+#### 5) 브랜치·문서 상태
+- 이번 차수에서는 사이트 HTML/JS를 수정하지 않았다. 기존 통합 점검문서 이 파일 하나에 Audit 2.11 결과만 추가한다.
+- 문서 갱신은 `develop`에만 반영하며, `main` 및 Production 배포는 변경하지 않는다.
+- 문서 커밋 후 main/develop 차이는 점검문서 파일 1개에 한정되며, 사이트 코드가 달라졌다는 의미가 아니다.
+- AdSense 내부 준비도는 기존 **77/100**을 유지한다. GA4 실시간 수집, GTM Published 버전, 외부 링크 도달성 및 브라우저 상호작용이 미확인이라 점수를 올리지 않는다.

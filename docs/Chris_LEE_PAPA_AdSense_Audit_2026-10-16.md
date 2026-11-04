@@ -4,7 +4,7 @@
 - **기준 도메인:** https://chrisleepapa.com/
 - **작업 기준 소스:** GitHub `chrisleepapa/chrisleepapa-official`의 `develop` 브랜치 우선. 검증·사용자 승인 전에는 `main`에 반영하지 않음.
 - **심사 이력:** 사용자가 제공한 기록상 chrisleepapa.com은 2026-10-19 사이트 검토를 신청했고 2026-10-30 두 사유로 거절됨. 현재 AdSense 계정의 사이트 등록/상태 및 재검토 가능 여부는 계정 화면 확인 전까지 미확인. 이 문서는 재심사 준비 점검이며, 새로운 검토 요청을 제출하지 않음.
-- **문서 버전:** Audit 2.15 — 2026-11-04 Windsor.ai Search Console 연결·검색 실적 및 사이트맵 데이터 확인
+- **문서 버전:** Audit 2.16 — 2026-11-04 Search Console 색인 상세 보고 기능 범위 확인 및 검증 한계 기록
 - **최초 점검의 역사적 판정:** Audit 1.0 작성 당시의 판단이며 현재 상태를 뜻하지 않음. 아래 미완료 항목은 실제 존재·운영 여부와 최신 소스를 다시 확인한 뒤에만 유효한 점검 대상으로 채택한다.
 
 ## 최우선 기준 — 실제 AdSense 탈락 사유 (고정)
@@ -2560,3 +2560,44 @@ develop의 현재 소스에서 다음 16개 파일의 `href` / `src` 외부 URL�
 - 사이트 소스, GTM, AdSense 코드, 사이트맵 및 Search Console 설정은 변경하지 않았다.
 - 변경은 `develop` 브랜치에만 커밋한다. `main` 및 Production 배포는 하지 않는다.
 - Windsor.ai Search Console은 읽기 전용 데이터 조회로만 사용했다.
+
+### 2026-11-04 / Audit 2.16 — Search Console 색인 상세 보고 기능 범위 확인
+
+#### 1) 연결된 Windsor.ai Search Console 데이터 범위 재확인
+- 정식 속성 `sc-domain:chrisleepapa.com`에 대해 사용 가능한 필드 전체를 다시 조회했다.
+- 현재 제공되는 데이터 테이블은 **Search Analytics**와 **Sitemaps**다.
+- Search Analytics에서 제공되는 것은 날짜·페이지·검색어·국가·기기·클릭·노출·CTR·평균 게재순위 등의 검색 실적 데이터다.
+- Sitemaps에서 제공되는 것은 사이트맵 URL, 제출 URL 수, 오류·경고 수, 제출/다운로드 시각 등이다.
+- 현재 Windsor.ai Search Console 커넥터의 필드 목록에는 URL별 **색인됨/색인 제외 사유, 크롤링 상태, Google 선택 canonical, 사용자 선언 canonical, URL 검사 결과**를 조회하는 필드나 별도 URL Inspection 작업이 없다.
+- 따라서 이 커넥터만으로 요청한 URL 색인 보고서와 canonical 검증을 완료할 수 없다. 확인할 수 없는 데이터를 추정하거나, 검색 노출이 없다는 이유로 미색인 판정을 내리지 않는다.
+
+#### 2) Sitemaps의 `indexed` 필드 처리 주의
+- Sitemaps 데이터에 `indexed`라는 필드가 노출되지만 Windsor.ai 필드 설명에서 **deprecated(사용 중단)**로 명시되어 있다.
+- 이번 조회에서 해당 필드 값은 0으로 반환됐으나, 사용 중단 필드이므로 이를 실제 색인 URL 0개라는 의미로 해석하지 않는다.
+- 현재 유효하게 확인된 사이트맵 값은 제출 24, 오류 0, 경고 0, 최근 다운로드 기록 존재다.
+- **판정:** 사이트맵 제출/가져오기 상태는 확인 완료. 개별 URL 색인 여부는 확인 불가/미완료.
+
+#### 3) Search Analytics로 확인 가능한 검색 노출과 한계
+- 최근 28일 검색 실적의 페이지별 보고서에서 12개 URL이 반환됐으며, 홈페이지, Yul, Bible, TuTuPuPuPiPi, SISTER SQUAD, SISTER SQUAD Hub, Journal 4·6, Music, Terms, Worship English 및 찬송 PDF URL이 포함됐다.
+- 검색 노출/클릭이 있는 URL은 해당 기간 Google 검색 실적 데이터가 발생한 사실을 뒷받침한다. 그러나 검색 실적 보고서는 전체 색인 목록이 아니므로, 반환되지 않은 sitemap URL이 미색인이라고 단정할 수 없다.
+- 광고 제외 페이지(Bible, Music, Worship English, Terms 및 찬송 PDF 포함)의 검색 노출은 광고 대상 분류 변경 근거가 아니다. 기존 광고 제외 정책을 유지한다.
+- 이전 조회에서 페이지별 합계와 날짜별 합계가 달랐던 사실은 Audit 2.15의 원자료와 주의사항을 유지한다. 임의로 합산·보정하지 않는다.
+
+#### 4) 실제 URL 검사에 필요한 절차 — 사용자 계정 화면에서만 확인 가능
+- 정확한 색인/제외 사유와 Google 선택 canonical을 보려면 Google Search Console의 정식 도메인 속성에서 **URL 검사** 및 **페이지 색인 생성** 보고서를 열어야 한다.
+- 우선 검사할 URL:
+  1. `https://chrisleepapa.com/`
+  2. `https://chrisleepapa.com/about`
+  3. `https://chrisleepapa.com/tutupupupipi`
+  4. `https://chrisleepapa.com/sistersquad`
+  5. `https://chrisleepapa.com/journal-4`
+  6. Search Console에서 문제가 표시된 나머지 URL
+- 각 URL에 대해 결과의 색인 상태, 페이지 가져오기/크롤링 상태, 사용자 선언 canonical, Google 선택 canonical 및 제외 사유를 확인해야 한다.
+- 이 작업은 로그인된 Google Search Console의 URL 검사 기능 또는 Search Console URL Inspection API가 필요하다. 현재 연결된 Windsor.ai 도구에는 이 기능이 없고, 이 실행 환경에는 사용자의 Google 계정 UI를 대신 열어 검사할 인증된 브라우저 세션이 없다.
+- 따라서 이 단계는 사용자에게 URL 검사 결과 화면을 공유받아야만 마무리할 수 있다. 화면을 받으면 URL별로 결과를 정리하고, 수정이 필요한 경우에만 develop에서 대응한다.
+
+#### 5) 문서·배포 경계
+- 이 통합 점검문서에 Audit 2.16을 추가한다. 별도 문서나 새 handoff 파일을 만들지 않는다.
+- 사이트 코드, sitemap, canonical, robots, Search Console 설정은 변경하지 않았다.
+- 문서 변경은 `develop` 브랜치에만 반영한다. `main` 및 Production 배포는 하지 않는다.
+- AdSense 재검토 요청은 제출하지 않는다.

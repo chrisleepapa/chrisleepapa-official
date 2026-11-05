@@ -3396,3 +3396,33 @@ Firecrawl을 사용해 Production의 핵심 콘텐츠 및 정책 페이지를 �
 - AdSense 검토 요청 제출은 사용자가 별도로 지시하기 전까지 수행하지 않는다.
 
 **이번 Audit 2.24 변경 범위:** 이 통합점검문서의 `develop` 사본에 점검 기록만 추가한다. 사이트 소스, AdSense 계정, GTM, Search Console, Production은 변경하지 않는다.
+
+
+## 2026-11-05 / Audit 2.25 — 사용자 승인 보완 작업
+
+### 2.25-A) 공식 문의 이메일 통일
+- 사용자가 공식 연락처를 `papamunglog@gmail.com`으로 지정함.
+- `privacy.html` 내 기존 `chrisleepapa@gmail.com`을 본문 표시 주소와 mailto 링크 모두 `papamunglog@gmail.com`으로 변경.
+- `contact.html` 및 `terms.html`은 이미 동일한 주소를 사용하고 있어 변경 불필요.
+- GitHub 코드 검색에서 이전 주소는 `privacy.html` 한 곳에서만 확인됨. 배포 후 Production의 세 페이지를 다시 실시간 확인할 것.
+
+### 2.25-B) 콘텐츠 보강
+- `wallpaper.html`: 기존 디자인·이미지·영상·다운로드 동작을 유지하면서 Creator's Note의 설명을 확장. 모바일 4개 MP4와 PC 9개 PNG의 매체별 감상 목적 차이, 화면 비율·아이콘 배치에 따른 원본 구도 확인 방법을 명확히 안내.
+- `tutupupupipi.html`: 기존 여섯 Shorts 및 캐릭터·세계관·OST를 유지하고, 각 에피소드의 고유한 이야기 역할을 설명하는 6개 항목의 에피소드 가이드 추가. 한국어/영어 번역 키를 함께 추가하고 모바일 1열/태블릿 2열/데스크톱 3열 레이아웃 및 라이트 모드 가독성 규칙 추가.
+- 영상 ID, 외부 링크, 캐릭터 이미지, 음악 임베드, 기존 페이지 섹션은 변경하지 않음.
+
+### 2.25-C) AdSense 계정 내부 확인 — 인증 대기
+- 사용자가 AdSense onboarding URL을 제공함: `https://adsense.google.com/adsense/u/0/pub-3207219520058740/onboarding`.
+- 연결된 브라우저 프로필은 현재 Google 로그인 사이트가 저장되어 있지 않아 인증 상태를 확인할 수 없음. 계정 내부 화면을 확인하거나 조작하지 않았음.
+- 사용자가 기존 기본 브라우저 프로필에 해당 Google 계정으로 이미 로그인되어 있는지 확인하거나, 브라우저 로그인 세션을 새로 저장하도록 승인한 후 읽기 전용으로 계정 상태를 확인한다.
+- 비밀번호·인증 코드·복구 코드 등은 채팅으로 요청하지 않음. 사용자가 별도로 지시하지 않는 한 사이트 심사 제출/재검토 버튼은 누르지 않음.
+
+### 2.25-D) 정책 기준
+- Google의 복제 콘텐츠 정책은 외부 embed 자체를 일괄 금지하는 것이 아니라, 추가 논평·큐레이션·독창적 가치가 없는 화면에서 광고 게재를 금지함.
+- Google은 사이트 심사 시 가입 URL 외의 다른 페이지도 검토할 수 있다고 설명하므로, 사이트 전체의 콘텐츠 품질·탐색·정책 정합성을 계속 확인한다.
+- 근거: https://support.google.com/publisherpolicies/answer/11190248?hl=en
+- 근거: https://support.google.com/adsense/answer/81904?hl=en
+
+### 2.25-E) 검증 및 배포 상태
+- 이번 변경은 `develop`에서만 수행한다. main/Production에는 자동 반영하지 않는다.
+- 파일 수정 후 diff, 번역 키 누락, 섹션 구조, HTML/CSS 문법 및 Vercel Preview를 확인한다. Preview READY 및 실제 화면 검증 후 별도 보고한다.

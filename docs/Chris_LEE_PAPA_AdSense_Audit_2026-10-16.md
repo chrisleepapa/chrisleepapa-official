@@ -3426,3 +3426,130 @@ Firecrawl을 사용해 Production의 핵심 콘텐츠 및 정책 페이지를 �
 ### 2.25-E) 검증 및 배포 상태
 - 이번 변경은 `develop`에서만 수행한다. main/Production에는 자동 반영하지 않는다.
 - 파일 수정 후 diff, 번역 키 누락, 섹션 구조, HTML/CSS 문법 및 Vercel Preview를 확인한다. Preview READY 및 실제 화면 검증 후 별도 보고한다.
+
+
+## 2026-11-05 / Audit 2.26 — 반복 미완료 항목 최종 종결 및 Production 24개 URL 실측
+
+### 이 기록의 우선 적용 원칙
+- 이 Audit 2.26은 Audit 2.24~2.25의 미완료 목록 중 이번에 실측으로 해결되었거나 애드센스 심사와 직접 관련이 없어 보류할 필요가 없는 항목을 종결하는 최신 상태 기록이다.
+- 아래에서 **종결** 또는 **비차단/N/A**로 분류한 항목은 다음 점검에서 미완료 항목으로 반복 제시하지 않는다. 새로운 오류 증거가 발견되거나 사용자가 별도 요청한 경우에만 다시 연다.
+- Supabase 보안 구조 및 AdSense 계정 내부 사정은 사용자가 운영 목적과 처리 방식을 설명하고 본인이 계정 관련 설명을 진행하기로 결정했다. 이를 사이트 콘텐츠의 결함이나 반복적인 기술 미완료 항목으로 재분류하지 않는다.
+- 사이트 코드·GTM 설정·AdSense 계정·Search Console 설정은 변경하지 않았다. Production 읽기 전용 실측 및 통합점검문서 기록만 수행했다.
+
+### 2.26-A) Sitemap 24개 URL Production 전수 HTTP 및 AdSense 코드 분포
+
+Production `https://chrisleepapa.com/sitemap.xml`을 직접 읽고 포함된 24개 URL 각각에 HTTP 요청을 수행했다.
+
+- sitemap 항목: **24개**
+- 개별 페이지 HTTP 응답: **24/24 HTTP 200**
+- AdSense loader 및 publisher ID: 광고 대상 **16/16 페이지에 각각 1개**
+- AdSense loader 및 publisher ID: 광고 제외 **8/8 페이지에 각각 0개**
+- GTM: 24/24 페이지에 GTM script + noscript 구성 확인
+
+| 구분 | URL | HTTP | AdSense loader | Publisher ID |
+|---|---|---:|---:|---:|
+| 광고 대상 | / | 200 | 1 | 1 |
+| 광고 대상 | /wallpaper | 200 | 1 | 1 |
+| 광고 대상 | /sistersquad-hub | 200 | 1 | 1 |
+| 광고 대상 | /sistersquad | 200 | 1 | 1 |
+| 광고 대상 | /sistersquad2 | 200 | 1 | 1 |
+| 광고 대상 | /yul | 200 | 1 | 1 |
+| 광고 대상 | /jung | 200 | 1 | 1 |
+| 광고 대상 | /miracleshot | 200 | 1 | 1 |
+| 광고 대상 | /tutupupupipi | 200 | 1 | 1 |
+| 광고 대상 | /journal-1 ~ /journal-6 | 200 | 각 1 | 각 1 |
+| 광고 대상 | /about | 200 | 1 | 1 |
+| 광고 제외 | /music, /movie, /bible, /worship, /worship_eng, /contact, /privacy, /terms | 200 | 각 0 | 각 0 |
+
+- 사용자가 지정한 핵심 제외 경로 `/bible`, `/contact`, `/privacy`, `/terms`에는 직접 AdSense loader와 publisher ID가 없다.
+- Music, Movie, Worship, Worship English도 동일하게 직접 AdSense loader와 publisher ID가 없다.
+- 따라서 과거에 기록한 **16/8 분리 상태는 현재 Production에서 다시 확인되었으며 정상**이다. 이 항목은 종결한다.
+
+### 2.26-B) 현재 Published GTM 컨테이너 및 GA4 태그 실측
+
+- 현재 공개된 `https://www.googletagmanager.com/gtm.js?id=GTM-NGDTQNVG` 응답을 직접 가져와 검사했다.
+- 컨테이너 응답 크기: 352,454 bytes.
+- GA4 측정 ID `G-NBGELYQ4TZ`: Published 컨테이너 응답에 1회 존재.
+- AdSense publisher ID `ca-pub-3207219520058740`: Published GTM 응답에 없음.
+- AdSense loader `adsbygoogle.js`: Published GTM 응답에 없음.
+- 구형/별도 Google tag ID `GT-5MJDBTR2`: 현재 저장소 코드 및 Published GTM 응답에서 발견되지 않음. 현재 확인된 GA4 연결은 GTM 컨테이너 내 `G-NBGELYQ4TZ`이다.
+- 저장소 코드 검색에서 `adsbygoogle.push` 및 `<ins class="adsbygoogle"` 광고 슬롯 구현은 검색 결과가 없었다. 따라서 현재 소스상 AdSense loader는 16개 페이지에만 설치되어 있고, 명시적인 광고 슬롯 마크업을 삽입한 상태는 확인되지 않았다.
+- 직접 GA4 스크립트와 GTM GA4가 중복으로 설치된 흔적은 현재 확인 범위에서 발견되지 않았다.
+- **판정:** 최신 Published GTM의 GA4 연결은 확인했고, GTM에서 AdSense 코드를 중복 주입하는 정황은 발견되지 않았다. GTM 태그 위생 점검은 종결한다. 향후 GTM을 변경하지 않는 한 같은 검사를 반복하지 않는다.
+
+### 2.26-C) GA4 광고 이벤트 및 검색 데이터 확인
+
+- Windsor.ai로 연결된 GA4 속성 `534734582`에서 최근 90일 `event_name = ad_impression`을 조회했다.
+- 결과: **0 rows / ad_impression 이벤트 0건**.
+- 이 값은 GA4에서 광고 노출 이벤트가 수집되지 않았다는 의미이며, 광고 요청 자체가 전혀 발생하지 않았다는 증거로 확대 해석하지 않는다.
+- 사용자는 아직 AdSense 승인 및 실제 광고 게재가 이뤄지지 않았다고 설명했다. 실제 광고가 승인·게재되지 않은 현재 단계에서는 광고 iframe·광고 주변 레이아웃의 Network 검증을 심사 준비의 필수 차단 조건으로 유지하지 않는다.
+- 향후 실제 광고가 승인되어 송출되는 시점에 광고 렌더링 및 배치 검증을 수행한다. 그 전에는 이 항목을 **비차단/N/A**로 처리한다.
+
+### 2.26-D) Search Console Sitemap 및 개별 URL 검사 항목 종결
+
+- Search Console 연결 속성 `sc-domain:chrisleepapa.com`의 Sitemap 데이터를 다시 조회했다.
+- `https://chrisleepapa.com/sitemap.xml`: 제출 24, 오류 0, 경고 0.
+- 마지막 제출: 2026-11-03 23:08:41 UTC.
+- 마지막 다운로드: 2026-11-03 23:08:43 UTC.
+- Sitemap 제출·다운로드 및 Production 24개 URL HTTP 200이 확인되었다.
+- 개별 URL의 Google 색인/선택 canonical 확인은 Search Console URL 검사 영역의 별도 SEO 작업이다. 이것은 현재 확인된 두 AdSense 거절 사유(복제 콘텐츠, 가치가 낮은 콘텐츠)의 필수 해결 조건으로 취급하지 않는다.
+- 따라서 개별 URL 색인 확인은 애드센스 심사 준비의 미완료 차단 항목에서 제거한다. 색인 상태가 필요한 경우 별도 SEO 업무로만 다룬다.
+
+### 2.26-E) 콘텐츠 보강 완료 — Wallpaper 및 TuTuPuPuPiPi 실시간 본문 확인
+
+- Production Wallpaper 페이지를 실시간 수집해 다음을 확인했다.
+  - 모바일 MP4 4개 각각의 제목·장면 설명·개인 사용 안내가 존재한다.
+  - 창작자 노트가 모바일의 움직임과 PC 정지 이미지의 사용 목적 차이를 설명한다.
+  - PC PNG 9개가 개별 작품 카드와 다운로드 링크로 제공된다.
+  - PC 컬렉션 전체에 원본 비율·화면 비율·아이콘 배치에 따른 크롭 주의사항과 사용 안내가 존재한다.
+  - Android, iPhone, Windows, macOS별 설정 방법이 안내되어 있다.
+- PC PNG 9개는 개별 장면을 설명하는 별도 에세이형 캡션 대신 번호별 카탈로그 카드로 구성되어 있다. 페이지 목적은 배경화면 갤러리이며, 전체 컬렉션 안내·창작자 노트·모바일 작품별 설명·기기별 이용 가이드가 함께 제공된다. 모든 이미지에 긴 설명을 추가하는 것은 현재 두 AdSense 거절 사유를 해결하기 위한 필수 조치로 보지 않는다.
+- Production TuTuPuPuPiPi 페이지에서 캐릭터별 역할·성격과 6개 에피소드별 고유 사건 및 이야기 역할을 각각 확인했다. 여섯 에피소드의 설명은 서로 다른 사건(무지개 탐색, 별 발견, TuTu의 리더십, PuPu의 놀이, PiPi의 비행, 함께 찾은 딸기)을 다룬다.
+- 두 페이지 모두 콘텐츠 보강이 Production에 실제 반영된 상태다. 이 항목은 종결하며 동일한 에피소드 설명 또는 Wallpaper 작품별 텍스트 추가를 반복 미완료로 제시하지 않는다.
+
+### 2.26-F) 개인정보처리방침 문의 주소 실시간 일치 확인
+
+- Production `privacy.html`, `contact.html`, `terms.html` 및 GitHub main 소스 세 파일을 다시 대조했다.
+- 세 파일 모두 `papamunglog@gmail.com`을 사용한다.
+- 세 파일에서 과거 주소 `chrisleepapa@gmail.com`은 발견되지 않았다.
+- 본문 표시 주소 및 mailto 링크 모두 통일된 상태다.
+- 이 항목은 종결한다.
+
+### 2.26-G) 과거 미완료 항목의 최종 처리표
+
+| 과거 반복 항목 | 최종 처리 | 이후 운영 원칙 |
+|---|---|---|
+| Wallpaper 개별 작품 설명 부족 | 비차단으로 종결 | 현재 갤러리 설명·창작자 노트·이용 가이드 유지. 새로운 콘텐츠 결함 증거가 없으면 재요구하지 않음 |
+| TuTuPuPuPiPi 6개 에피소드 설명 | 종결 | Production에서 6개 개별 설명 확인. 재점검 반복 금지 |
+| GTM 최신 Published 버전 | 종결 | Published 응답에서 GA4 ID 및 AdSense 코드 부재 확인. 컨테이너 변경 시에만 재검사 |
+| 실제 광고 Network/iframe 검사 | 비차단/N/A | 승인 및 실제 광고 송출 후에만 수행 |
+| 개인정보처리방침 문의 주소 | 종결 | Privacy/Contact/Terms 모두 동일 주소 |
+| 개인정보 보관·삭제·국외 처리 관련 Supabase 설명 | 사용자 설명으로 처리 | 사용자가 설명하기로 한 운영 맥락을 반복 미완료로 제시하지 않음. 별도 요청이나 실제 모순 증거가 있을 때만 검토 |
+| AdSense 계정 사이트 상태·정책 센터 | 사용자 계정 설명·대응 영역 | 로그인/계정 확인을 반복 요청하지 않음. 사용자가 계정 화면을 공유하거나 직접 도움을 요청할 때만 지원 |
+| Search Console 개별 URL 색인·canonical | 애드센스 차단 항목에서 제외 | 필요 시 별도 SEO 업무 |
+| PC·모바일 광고 주변 배치 검사 | 비차단/N/A | 실제 광고 슬롯/송출이 생기기 전까지 AdSense blocker로 제시하지 않음 |
+| GA4 내부 트래픽·800×600 세션 분류 | 애드센스 심사와 무관한 분석 개선 | 현재 AdSense 심사 미완료 항목에서 제거 |
+
+### 2.26-H) 최신 내부 준비도 점수 재산정
+
+같은 100점 배점 체계를 유지하되, 이번 실측 결과를 반영했다.
+
+| 평가 항목 | 점수 | 근거 |
+|---|---:|---|
+| 크롤링·기술 무결성 | **20/20** | Sitemap 24개 URL 전수 HTTP 200, sitemap 오류·경고 0 |
+| 광고 코드 분리·태그 위생 | **19/20** | Production 16/8 정확한 분리, 24/24 GTM, Published GTM에 GA4 ID 확인 및 AdSense 코드 부재. 브라우저 Network의 실제 광고 요청은 광고 미송출 상태이므로 비차단 |
+| 독창성·콘텐츠 가치 | **29/35** | 주요 창작 페이지의 고유 본문, Wallpaper 창작자 노트 및 작품 안내, TuTu 6개 에피소드 설명 확인. 외부 원본 전수 대조는 수행 범위 밖이며 별도 근거 없이 만점 부여하지 않음 |
+| 사용자 경험·접근성 | **10/15** | 페이지 응답·본문 및 반응형 구조는 확인했으나 모든 화면 크기의 실제 상호작용·키보드 접근성을 전수 실사용 테스트한 점수는 아님 |
+| Google 계정·외부 검증 | **8/10** | Search Console sitemap, GA4 데이터, Published GTM 확인. 계정 내부 최종 심사 상태는 사용자 설명·대응 영역으로 구분 |
+| **합계** | **86/100** | 내부 준비도 지표이며 Google 공식 점수 또는 승인 확률이 아님 |
+
+- 직전 내부 평가 82/100 대비 **86/100 (+4)**.
+- 현재 두 실제 거절 사유에 대해 실시간 본문 근거와 콘텐츠 보강이 확인되었고, 기술적 분리 상태도 24개 URL에서 다시 확인했다.
+- **현재 AdSense 심사 준비 단계에서 반복 제시할 미완료 차단 항목은 없다.** 향후 새로 확인된 실제 결함만 별도 Audit 번호로 기록한다.
+- AdSense 재검토 요청 제출은 사용자가 별도로 지시하기 전까지 수행하지 않는다.
+
+### 2.26-I) 브랜치 및 변경 범위
+- 점검 대상 Production은 GitHub `main`에 배포된 운영 사이트다.
+- 이번 작업은 읽기 전용 Production 점검과 본 통합점검문서의 `develop` 기록 갱신만 수행한다.
+- 사이트 HTML/CSS/JS, GTM, AdSense, Search Console, Supabase 설정은 변경하지 않았다.
+- `main` 및 Production 배포는 변경하지 않는다.

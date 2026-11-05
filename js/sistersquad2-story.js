@@ -56,7 +56,7 @@
         #ss2-story-expansion{margin:0 0 90px}
         #ss2-story-expansion .ss2-story-box{border:1px solid rgba(201,168,76,.16);border-radius:24px;background:linear-gradient(145deg,rgba(20,24,35,.72),rgba(8,9,14,.82));padding:46px 34px;box-shadow:0 25px 60px rgba(0,0,0,.28)}
         #ss2-story-expansion .ss2-kicker{text-align:center;color:#6fd7ff;font-family:Cinzel,serif;font-size:.7rem;letter-spacing:.28em;margin-bottom:10px}
-        #ss2-story-expansion h2{text-align:center;color:#e8d08a;font-family:Cinzel,serif;font-size:clamp(1.35rem,3vw,2rem);letter-spacing:.12em;margin:0 0 14px}
+        #ss2-story-expansion h2{text-align:center;color:#e8d08a;font-family:Cinzel,serif;font-size:clamp(1.35rem,3vw,2rem);letter-spacing:.12em;margin:0 0 14px;word-break:keep-all;overflow-wrap:normal;text-wrap:balance}
         #ss2-story-expansion .ss2-lead{text-align:center;max-width:820px;margin:0 auto 38px;color:#cdd6f4;font-size:.95rem;line-height:2;word-break:keep-all}
         #ss2-story-expansion .ss2-journey{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:38px}
         #ss2-story-expansion .ss2-stage{position:relative;padding:22px 20px;border:1px solid rgba(255,255,255,.08);border-radius:17px;background:rgba(255,255,255,.025);min-height:150px}
@@ -67,7 +67,7 @@
         #ss2-story-expansion .ss2-theme{padding:22px 20px;border-radius:17px;background:rgba(201,168,76,.045);border:1px solid rgba(201,168,76,.12)}
         #ss2-story-expansion .ss2-theme strong{display:block;color:#e8d08a;font-family:Cinzel,serif;font-size:.78rem;letter-spacing:.08em;margin-bottom:9px}
         #ss2-story-expansion .ss2-theme span{display:block;color:#b7b7c4;font-size:.78rem;line-height:1.8;word-break:keep-all}
-        @media(max-width:760px){#ss2-story-expansion .ss2-story-box{padding:34px 18px}#ss2-story-expansion .ss2-journey,#ss2-story-expansion .ss2-themes{grid-template-columns:1fr}.ss2-stage{min-height:auto}}
+        @media(max-width:760px){#ss2-story-expansion .ss2-story-box{padding:34px 18px}#ss2-story-expansion h2{font-size:clamp(1.12rem,5vw,1.3rem);letter-spacing:.02em;line-height:1.4;max-width:100%;margin-inline:auto}#ss2-story-expansion .ss2-journey,#ss2-story-expansion .ss2-themes{grid-template-columns:1fr}.ss2-stage{min-height:auto}}
       </style>
       <div class="ss2-story-box">
         <div class="ss2-kicker" data-ss2-story="kicker"></div>

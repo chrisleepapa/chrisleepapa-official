@@ -31,23 +31,6 @@ self.addEventListener('fetch', (event) => {
         }
       }
 
-      if (url.pathname === '/worship' || url.pathname === '/worship.html') {
-        if (type.includes('text/html')) {
-          const html = await response.text();
-          const coverScript = '<script src="/js/worship-vol2-cover-fix.js?v=20260914"></script>';
-          const confessionScript = '<script src="/js/worship-confession.js?v=20260914"></script>';
-          const bannerScript = '<script src="/js/worship-banner.js?v=20261013-i18n"></script>';
-          let patched = html;
-          if (!patched.includes('/js/worship-vol2-cover-fix.js')) {
-            const mainScript = '<script src="js/main.js"></script>';
-            patched = patched.includes(mainScript) ? patched.replace(mainScript, `${coverScript}${mainScript}`) : patched.replace('</body>', `${coverScript}</body>`);
-          }
-          if (!patched.includes('/js/worship-confession.js')) patched = patched.replace('</body>', `${confessionScript}</body>`);
-          if (!patched.includes('/js/worship-banner.js')) patched = patched.replace('</body>', `${bannerScript}</body>`);
-          return new Response(patched, { status: response.status, statusText: response.statusText, headers: response.headers });
-        }
-      }
-
       if (url.pathname === '/' || url.pathname === '/index.html') {
         if (type.includes('text/html')) {
           const html = await response.text();

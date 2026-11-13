@@ -27,16 +27,6 @@
     script.dataset.clpPlayResponsive = 'true';
     document.head.appendChild(script);
   }
-  function loadFaithResponsive() {
-    const path = location.pathname.replace(/\/$/, '');
-    if (!['/bible', '/worship', '/worship_eng'].includes(path)) return;
-    if (document.querySelector('script[data-clp-faith-responsive]')) return;
-    const script = document.createElement('script');
-    script.src = '/js/faith-mobile-responsive.js?v=20260915-2';
-    script.async = true;
-    script.dataset.clpFaithResponsive = 'true';
-    document.head.appendChild(script);
-  }
   function syncMovieShortsLanguage() {
     const path = location.pathname.replace(/\/$/, '');
     if (!['/movie', '/movie.html'].includes(path)) return;
@@ -85,7 +75,6 @@
     loadPageBanners();
     loadGameCreatorNote();
     loadPlayResponsive();
-    loadFaithResponsive();
     syncMovieShortsLanguage();
     if (window.__clpDesktopNavFixInitialized) return;
     const nav = document.getElementById('main-nav');

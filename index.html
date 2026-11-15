@@ -53,6 +53,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="/css/common.css">
 <link rel="stylesheet" href="/css/creator.css">
+<link rel="stylesheet" href="/css/creative-motion.css">
 <script>window.PAGE_I18N = {
   "ko": {
     "meta_title": "Chris LEE.PAPA | 책, 영상, 음악 그리고 제작기",
@@ -144,20 +145,35 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <a class="skip-to-main" href="#main-content"><span data-i18n="home_skip">본문 바로가기</span></a>
 <header id="site-nav"><a class="home-fallback-brand" href="/">CHRIS LEE.PAPA</a></header>
 <main id="main-content">
-  <section class="creator-shell creator-hero" aria-labelledby="home-title">
+  <section class="motion-stage" aria-labelledby="home-title">
+    <div class="stage-atmosphere" aria-hidden="true"></div>
+    <div class="creator-shell creator-hero">
     <div class="hero-copy">
       <p class="creator-kicker" lang="en">CHRIS LEE.PAPA STUDIO</p>
-      <h1 id="home-title"><span data-i18n="hero_a">두 딸과 시작한</span><br><span data-i18n="hero_b">이야기</span></h1>
+      <h1 id="home-title"><span class="stage-line"><span data-i18n="hero_a">두 딸과 시작한</span></span><span class="stage-line"><span data-i18n="hero_b">이야기</span></span></h1>
       <p class="hero-summary"><span data-i18n="hero_summary">가족의 상상에서 시작된 SISTER SQUAD. 이야기와 그림이 한 권의 책, 한 편의 영상이 되기까지 직접 만들고 기록합니다.</span></p>
       <div class="hero-actions">
         <a class="creator-button" href="/sistersquad-hub"><span data-i18n="hero_works">SISTER SQUAD 만나기</span> <span aria-hidden="true">↗</span></a>
         <a class="creator-text-link" href="/journal"><span data-i18n="hero_journal">제작기 읽기</span> <span aria-hidden="true">→</span></a>
       </div>
     </div>
-    <a class="hero-art" href="/sistersquad2">
-      <img src="/assets/home/sister-squad-2.webp" alt="" width="560" height="740" fetchpriority="high">
-      <div class="hero-art-caption"><div><strong>SISTER SQUAD 2</strong><span><span data-i18n="hero_subtitle">저주받은 요정마을</span></span></div><span class="hero-art-arrow" aria-hidden="true">↗</span></div>
-    </a>
+    <div class="stage-media" id="stage-media">
+      <a class="hero-art" href="/sistersquad2">
+        <div class="stage-frames" id="stage-frames" aria-hidden="true">
+          <img class="stage-frame is-current" src="/assets/home/sister-squad-2.webp" alt="" width="560" height="740" fetchpriority="high">
+          <img class="stage-frame" src="/assets/home/scene-griffins.webp" alt="" width="540" height="715" decoding="async" fetchpriority="low">
+          <img class="stage-frame" src="/assets/home/scene-forest.webp" alt="" width="540" height="715" decoding="async" fetchpriority="low">
+        </div>
+        <div class="hero-art-caption"><div><strong>SISTER SQUAD 2</strong><span><span data-i18n="hero_subtitle">저주받은 요정마을</span></span></div><span class="hero-art-arrow" aria-hidden="true">↗</span></div>
+      </a>
+      <div class="stage-controls" role="group" aria-label="장면 미리보기" data-label-ko="장면 미리보기" data-label-en="Scene preview" hidden>
+        <button class="scene-button" type="button" data-scene="0" aria-controls="stage-frames" aria-pressed="true" aria-label="표지" data-label-ko="표지" data-label-en="Cover"><span aria-hidden="true">01</span></button>
+        <button class="scene-button" type="button" data-scene="1" aria-controls="stage-frames" aria-pressed="false" aria-label="그리핀 전투" data-label-ko="그리핀 전투" data-label-en="The griffin battle"><span aria-hidden="true">02</span></button>
+        <button class="scene-button" type="button" data-scene="2" aria-controls="stage-frames" aria-pressed="false" aria-label="숲의 장면" data-label-ko="숲의 장면" data-label-en="In the forest"><span aria-hidden="true">03</span></button>
+        <button class="scene-button scene-toggle" type="button" aria-label="자동 전환 일시정지"><span class="scene-symbol" aria-hidden="true">Ⅱ</span></button>
+      </div>
+    </div>
+    </div>
   </section>
   <section class="creator-shell" aria-label="SISTER SQUAD 2">
     <a class="feature-strip" href="/sistersquad2#ss2-full-story">
@@ -236,5 +252,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </main>
 <div id="site-footer"></div>
 <script src="/js/main.js" defer></script>
+<script src="/js/creative-motion.js" defer></script>
 </body>
 </html>

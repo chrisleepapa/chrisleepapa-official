@@ -30,11 +30,18 @@ html[data-theme="light"] #main-nav.site-navigation {
 #main-nav.site-navigation .desktop-nav-link:hover,
 #main-nav.site-navigation .desktop-nav-link.active {
   color: var(--nav-accent);
-  text-decoration: underline; text-underline-offset: 7px; text-decoration-thickness: 2px;
 }
 html[data-theme="light"] #main-nav.site-navigation .desktop-nav-link.active,
 html[data-theme="light"] #main-nav.site-navigation .desktop-nav-link:hover { color: var(--nav-accent) !important; }
-#main-nav.site-navigation .desktop-nav-link::after { content: none; }
+#main-nav.site-navigation .desktop-nav-link::after {
+  content: ""; position: absolute; inset: auto 3px 7px; height: 2px;
+  background: currentColor; border-radius: 2px;
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .25s cubic-bezier(.18,.65,.25,1);
+}
+#main-nav.site-navigation .desktop-nav-link:hover::after,
+#main-nav.site-navigation .desktop-nav-link.active::after,
+#main-nav.site-navigation .desktop-nav-link:focus-visible::after { transform: scaleX(1); }
 html:not([lang="en"]) .nav-label-en, html[lang="en"] .nav-label-ko { display: none !important; }
 @media (max-width:760px) {
   #main-nav.site-navigation { justify-content: flex-start; padding-inline: 18px; }
@@ -60,4 +67,18 @@ html:not([lang="en"]) .nav-label-en, html[lang="en"] .nav-label-ko { display: no
   #mobileBottomNav .mobile-nav-item.active { color: var(--nav-accent); }
   html[data-theme="light"] #mobileBottomNav .mobile-nav-item.active { color: var(--nav-accent) !important; }
   #mobileBottomNav .mobile-nav-icon { font-size: 1.1rem; }
+}
+@media (max-width:760px) {
+  #mobileBottomNav .mobile-nav-icon {
+    display: grid; place-items: center; width: 33px; height: 27px;
+    border-radius: 12px;
+    transition: transform .2s cubic-bezier(.2,.65,.22,1), background .2s;
+  }
+  #mobileBottomNav .mobile-nav-item.active .mobile-nav-icon { background: var(--nav-rule); }
+  #mobileBottomNav .mobile-nav-item:active .mobile-nav-icon { transform: scale(.83); }
+}
+@media (prefers-reduced-motion: reduce) {
+  #main-nav.site-navigation .desktop-nav-link::after,
+  #mobileBottomNav .mobile-nav-icon { transition: none; }
+  #mobileBottomNav .mobile-nav-item:active .mobile-nav-icon { transform: none; }
 }

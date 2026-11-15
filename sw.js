@@ -31,17 +31,6 @@ self.addEventListener('fetch', (event) => {
         }
       }
 
-      if (url.pathname === '/' || url.pathname === '/index.html') {
-        if (type.includes('text/html')) {
-          const html = await response.text();
-          const script = '<script src="/js/home-chris-pick-i18n.js?v=20260916"></script>';
-          if (!html.includes('/js/home-chris-pick-i18n.js')) {
-            const patched = html.replace('</body>', `${script}</body>`);
-            return new Response(patched, { status: response.status, statusText: response.statusText, headers: response.headers });
-          }
-        }
-      }
-
       return response;
     } catch (error) {
       return new Response('인터넷 연결이 원활하지 않습니다.', { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });

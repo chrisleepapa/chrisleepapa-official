@@ -828,6 +828,9 @@
      초기화
      ══════════════════════════════════════ */
   async function init() {
+    // Keep user-generated entries on the dedicated, noindex guestbook page only.
+    if (!/^\/guestbook(?:\.html)?\/?$/i.test(window.location.pathname)) return;
+    if (document.getElementById('guestbook-section')) return;
     /* site-footer 바로 앞에 삽입 */
     const footer  = document.getElementById('site-footer');
     const wrapper = document.createElement('div');

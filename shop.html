@@ -160,6 +160,16 @@ html[data-theme="dark"] .book-action{background:#a6b5ff;color:#171a35}
  .collection-intro{font-size:1rem;line-height:1.8}
  .feature-copy p,.ogq-desc{font-size:.95rem;line-height:1.75}
 }
+
+.shop-guide-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.shop-guide-item{padding:26px;background:#fffdfa;border:1px solid #d9d9e0}
+.shop-guide-item h3{font-size:1.15rem;line-height:1.35;margin:0 0 14px;color:#2544cb}
+.shop-guide-item p{font-size:.95rem;line-height:1.85;color:#525664;word-break:keep-all;margin:0 0 16px}
+.shop-guide-item a{display:inline-block;color:#2544cb;font-weight:700;padding:7px 0;text-decoration:underline;text-underline-offset:4px}
+html[data-theme="dark"] .shop-guide-item{background:#1d2030;border-color:#393c50}
+html[data-theme="dark"] .shop-guide-item h3,html[data-theme="dark"] .shop-guide-item a{color:#a6b5ff}
+html[data-theme="dark"] .shop-guide-item p{color:#c4c6d3}
+@media(max-width:760px){.shop-guide-grid{grid-template-columns:minmax(0,1fr);gap:14px}.shop-guide-item{padding:22px}}
 </style>
 <link rel="manifest" href="/manifest.json">
 </head>
@@ -226,6 +236,17 @@ html[data-theme="dark"] .book-action{background:#a6b5ff;color:#171a35}
       <a class="ogq-link" href="https://naver.me/5AuHtDXZ" target="_blank" rel="noopener noreferrer"><span data-i18n="ogq_link_1">이모티콘 컬렉션 01</span><span>↗</span></a>
       <a class="ogq-link" href="https://naver.me/FAAJ5Qd4" target="_blank" rel="noopener noreferrer"><span data-i18n="ogq_link_2">이모티콘 컬렉션 02</span><span>↗</span></a>
       <a class="ogq-link" href="https://naver.me/5imsUQUk" target="_blank" rel="noopener noreferrer"><span data-i18n="ogq_link_3">이모티콘 컬렉션 03</span><span>↗</span></a>
+    </div>
+  </section>
+  <section class="collection shop-reading-guide" aria-labelledby="shop-reading-guide-title">
+    <div class="collection-head"><div>
+      <p class="collection-overline"><span class="nav-label-ko" lang="ko">작품 선택 가이드</span><span class="nav-label-en" lang="en">READER'S GUIDE</span></p>
+      <h2 class="collection-title" id="shop-reading-guide-title"><span class="nav-label-ko" lang="ko">어떤 이야기부터 읽을까요?</span><span class="nav-label-en" lang="en">Where should I begin?</span></h2>
+    </div></div>
+    <div class="shop-guide-grid">
+      <article class="shop-guide-item"><h3>SISTER SQUAD 1</h3><p class="nav-label-ko" lang="ko">율이와 정이를 처음 만난다면 첫 번째 모험부터 시작해 보세요. 두 자매의 성격과 마법 세계의 출발점을 이해할 수 있습니다.</p><p class="nav-label-en" lang="en">Meet Yuli and Jung in their first adventure and discover where their magical world begins.</p><a href="/sistersquad"><span class="nav-label-ko" lang="ko">첫 번째 이야기 알아보기</span><span class="nav-label-en" lang="en">Explore book one</span> ↗</a></article>
+      <article class="shop-guide-item"><h3>SISTER SQUAD 2</h3><p class="nav-label-ko" lang="ko">첫 모험 이후 더 넓어진 세계를 만나고 싶다면 두 번째 이야기로 이어가세요. 저주받은 루미나와 가족의 선택이 중심입니다.</p><p class="nav-label-en" lang="en">Continue into a wider world as the family faces a curse over Lumina and difficult choices.</p><a href="/sistersquad2"><span class="nav-label-ko" lang="ko">두 번째 이야기 알아보기</span><span class="nav-label-en" lang="en">Explore book two</span> ↗</a></article>
+      <article class="shop-guide-item"><h3>MIRACLE SHOT</h3><p class="nav-label-ko" lang="ko">마법 판타지보다 스포츠와 팀워크가 끌린다면 이 작품을 추천합니다. 풋살을 통해 실패와 도전을 마주하는 성장 이야기입니다.</p><p class="nav-label-en" lang="en">Prefer sports and teamwork? Follow a futsal story about setbacks, trust, and trying again.</p><a href="/miracleshot"><span class="nav-label-ko" lang="ko">작품 배경 알아보기</span><span class="nav-label-en" lang="en">Explore the story</span> ↗</a></article>
     </div>
   </section>
   <p class="shop-endnote" data-i18n="shop_note">각 구매 버튼은 해당 공식 서점 또는 플랫폼의 상품 페이지로 연결됩니다.</p>

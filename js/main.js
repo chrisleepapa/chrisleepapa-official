@@ -2,12 +2,7 @@
 (() => {
   'use strict';
 
-  const sites = {
-    'https://chrisleepapa.com': { name: 'ChrisPapa', icon: '/images/icon-192.png?v=studio-blue', theme: 'creative' },
-    'https://faith.chrisleepapa.com': { name: 'Faith', icon: '/icons/icon-192.png?v=faith-teal', theme: 'faith' }
-  };
-  const site = sites[location.origin];
-  if (!site) return;
+  if (location.origin !== 'https://chrisleepapa.com') return;
 
   const standalone = window.matchMedia('(display-mode: standalone), (display-mode: window-controls-overlay)');
   const installedMode = () => standalone.matches || navigator.standalone === true;
@@ -18,28 +13,35 @@
     || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
   const appleSafari = appleMobile && /Version\//.test(userAgent) && /Safari\//.test(userAgent)
     && !/CriOS|FxiOS|EdgiOS|OPiOS/.test(userAgent);
-  const androidChrome = /Android/.test(userAgent) && Number(userAgent.match(/Chrome\/(\d+)/)?.[1]) >= 84
-    && !/SamsungBrowser|EdgA|OPR\/|Whale|UCBrowser|MiuiBrowser|YaBrowser|DuckDuckGo|; wv\)/.test(userAgent);
-  const canCheckInstalled = typeof navigator.getInstalledRelatedApps === 'function';
+  const android = /Android/.test(userAgent);
+  const samsungInternet = /SamsungBrowser\//.test(userAgent);
+  const inApp = /; wv\)|KAKAOTALK|NAVER\(inapp|FBAN|FBAV|Instagram|TikTok|BytedanceWebview/i.test(userAgent);
+  const manualHelp = appleMobile ? (appleSafari && !inApp ? 'ios' : 'iosExternal')
+    : android ? (inApp ? 'androidExternal' : samsungInternet ? 'samsung' : 'android') : null;
   const copy = {
     ko: {
       title: '홈 화면에 추가', description: '아이콘을 눌러 바로 열어 보세요.',
       install: '추가하기', later: '나중에', installed: '이미 추가했어요',
       ios: 'Safari의 공유 메뉴에서 ‘홈 화면에 추가’를 선택하세요. ‘웹 앱으로 열기’가 보이면 켜고 추가하세요.',
-      android: 'Chrome 메뉴(⋮)에서 ‘홈 화면에 추가’ 또는 ‘앱 설치’를 선택하세요.'
+      iosExternal: '이 페이지를 Safari에서 열고, 공유 메뉴에서 ‘홈 화면에 추가’를 선택하세요.',
+      android: '브라우저 메뉴에서 ‘홈 화면에 추가’, ‘앱 설치’ 또는 ‘설치 및 바로가기 만들기’를 선택하세요.',
+      samsung: '삼성 인터넷 메뉴에서 ‘현재 페이지 추가’를 누른 뒤 ‘홈 화면’을 선택하세요.',
+      androidExternal: '앱 메뉴에서 ‘브라우저로 열기’를 선택하세요. Chrome이나 삼성 인터넷에서 열린 뒤 ‘홈 화면에 추가’를 선택하세요.'
     },
     en: {
       title: 'Add to your home screen', description: 'Open it in one tap from its icon.',
       install: 'Add app', later: 'Not now', installed: 'Already added',
       ios: 'In Safari, open Share and choose Add to Home Screen. Turn on Open as Web App if shown, then tap Add.',
-      android: 'Open the Chrome menu (⋮) and choose Add to Home screen or Install app.'
+      iosExternal: 'Open this page in Safari, then open Share and choose Add to Home Screen.',
+      android: 'Open the browser menu and choose Add to Home screen, Install app, or Install and create shortcut.',
+      samsung: 'In Samsung Internet, open the menu, tap Add page to, and choose Home screen.',
+      androidExternal: 'Choose Open in browser from the app menu. In Chrome or Samsung Internet, choose Add to Home screen.'
     }
   };
   const stateKey = 'clp-home-screen-install';
   const sevenDays = 7 * 24 * 60 * 60 * 1000;
   let nativeOffer = null;
   let detectedInstall = false;
-  let canOfferAndroidInstructions = false;
   let manualReady = false;
   let dismissedThisPage = false;
   let instructionsOpen = false;
@@ -65,7 +67,7 @@
 
   function render() {
     const stored = readPreference();
-    const manual = manualReady && (appleSafari || canOfferAndroidInstructions);
+    const manual = manualReady && manualHelp;
     if (detectedInstall || installedMode() || dismissedThisPage || stored === 'already-added'
       || Number(stored) > Date.now() || (!nativeOffer && !manual)) {
       hideCard();
@@ -75,12 +77,12 @@
     if (!card) mount();
 
     const words = copy[document.documentElement.lang.startsWith('en') ? 'en' : 'ko'];
-    parts.title.textContent = words.title + ' · ' + site.name;
+    parts.title.textContent = words.title + ' · ChrisPapa';
     parts.description.textContent = words.description;
     parts.add.textContent = words.install;
     parts.later.textContent = words.later;
     parts.installed.textContent = words.installed;
-    parts.help.textContent = appleSafari ? words.ios : words.android;
+    parts.help.textContent = words[manualHelp] || '';
     parts.help.hidden = !manual || !instructionsOpen;
     parts.installed.hidden = !manual;
     card.hidden = false;
@@ -102,6 +104,7 @@
       if (choice?.outcome === 'accepted') detectedInstall = true;
       else dismiss();
     } catch {
+      manualReady = true;
       instructionsOpen = true;
     } finally {
       asking = false;
@@ -111,7 +114,7 @@
 
   function mount() {
     card = document.createElement('aside');
-    card.className = 'home-install home-install--' + site.theme;
+    card.className = 'home-install home-install--creative';
     card.setAttribute('aria-labelledby', 'home-install-title');
     card.hidden = true;
     card.innerHTML = '<img class="home-install-icon" alt="" width="44" height="44">'
@@ -121,7 +124,7 @@
       + '<button class="home-install-done" type="button" hidden></button></div>'
       + '<p class="home-install-help" role="status" hidden></p>';
     const select = selector => card.querySelector(selector);
-    select('img').src = site.icon;
+    select('img').src = '/images/icon-192.png?v=studio-blue';
     parts = {
       title: select('strong'), description: select('.home-install-copy p'), add: select('.home-install-add'),
       later: select('.home-install-later'), installed: select('.home-install-done'), help: select('.home-install-help')
@@ -149,22 +152,19 @@
   });
 
   async function start() {
-    if (canCheckInstalled) {
-      try {
-        const apps = await navigator.getInstalledRelatedApps();
-        detectedInstall ||= apps.some(app => app.platform === 'webapp'
-          && (app.id === location.origin + '/' || app.id === location.origin
-            || (app.url && new URL(app.url, location.origin).origin === location.origin)));
-        canOfferAndroidInstructions = androidChrome && !detectedInstall;
-      } catch {}
-    }
-    render();
-    if (appleSafari || canOfferAndroidInstructions) {
+    if (manualHelp) {
       window.setTimeout(() => {
         manualReady = true;
         render();
       }, 1600);
     }
+    try {
+      const apps = await navigator.getInstalledRelatedApps?.();
+      detectedInstall ||= apps?.some(app => app.platform === 'webapp'
+        && (app.id === location.origin + '/' || app.id === location.origin
+          || (app.url && new URL(app.url, location.origin).origin === location.origin))) === true;
+    } catch {}
+    render();
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', start, { once: true });

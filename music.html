@@ -60,32 +60,44 @@ html[data-theme="light"] .lp-bar{background:linear-gradient(180deg,#f8f2e6,#e8df
 }
 
 </style>
-<style id="archive-editorial-style">
-.music-editorial{max-width:1120px;margin:30px auto 26px;padding:36px clamp(20px,4vw,50px);display:flex;justify-content:space-between;align-items:end;gap:26px;border:1px solid #b5a17b;border-radius:20px;background:radial-gradient(circle at 87% 15%,rgba(197,159,86,.2),transparent 44%),#211d1b;color:#f8eddb;box-shadow:0 15px 38px rgba(28,20,12,.16)}
-.music-editorial .archive-eyebrow{color:#d5b878;font-size:.7rem;letter-spacing:.19em;font-weight:850}.music-editorial h1{font-size:clamp(1.8rem,4vw,3.2rem);letter-spacing:-.05em;margin:12px 0;line-height:1.2}.music-editorial p{max-width:630px;line-height:1.85;color:#e2d7c5;margin:0}.music-editorial>a{border-bottom:2px solid #d5b878;color:#f8eddb;text-decoration:none;font-weight:800;white-space:nowrap;padding:10px 0}
-html[data-theme="light"] .music-editorial{background:#f6f0e3;color:#332719;border-color:#cbb995}html[data-theme="light"] .music-editorial p{color:#63533e}html[data-theme="light"] .music-editorial .archive-eyebrow,html[data-theme="light"] .music-editorial>a{color:#785628}
-@media(max-width:700px){.music-editorial{margin:18px 14px;display:block;padding:26px 21px}.music-editorial>a{display:inline-block;margin-top:16px}}
-</style>
-<style id="archive-refinement">
-.music-editorial{margin:28px auto 24px;max-width:1100px;padding:30px clamp(20px,4vw,46px);border-radius:10px;box-shadow:none}
-.music-editorial .archive-eyebrow{font-size:11px;font-weight:650;letter-spacing:.12em}
-.music-editorial h1{font-size:clamp(26px,4vw,44px);font-weight:650;letter-spacing:-.045em;line-height:1.2;margin:12px 0}
-.music-editorial p{font-size:clamp(14px,1.4vw,16px);line-height:1.8;max-width:610px}
-.music-editorial>a{font-size:13px;font-weight:650}
-@media(max-width:700px){.music-editorial{margin:18px 14px;padding:25px 22px}.music-editorial h1{font-size:28px}}
-</style>
-<style id="reading-ux-2026">
-/* Listening room: preserve the player, simplify explanatory reading sections */
-.music-editorial{max-width:1100px;margin:20px auto 26px;padding:24px 26px;border:0;border-bottom:1px solid rgba(201,168,76,.38);border-radius:0;background:transparent;box-shadow:none;color:inherit}
-.music-editorial h1{font-family:Pretendard,'Noto Sans KR',sans-serif!important;font-size:clamp(24px,3.5vw,36px)!important;font-weight:750!important;letter-spacing:-.035em!important;line-height:1.3!important}
-.music-editorial p{font-size:15px!important;line-height:1.72!important;color:inherit!important;opacity:.85}
-.music-editorial>a{color:#c9a84c}
-.archive,.music-creation-notes{max-width:900px!important;margin-left:auto!important;margin-right:auto!important;padding-left:22px!important;padding-right:22px!important}
-.archive-box,.music-creation-box{padding-top:24px!important}
-.archive h2,.music-creation-box h2{font-family:Pretendard,'Noto Sans KR',sans-serif!important;font-size:clamp(22px,3vw,30px)!important;font-weight:700!important;letter-spacing:-.025em!important;line-height:1.4!important}
-.archive-intro,.music-creation-lead,.music-creation-box p,.archive-box p{font-family:Pretendard,'Noto Sans KR',sans-serif!important;font-size:15px!important;line-height:1.75!important;letter-spacing:-.012em!important}
-.archive h3,.music-creation-box h3{font-family:Pretendard,'Noto Sans KR',sans-serif!important;font-size:17px!important;font-weight:700!important;letter-spacing:-.01em!important;line-height:1.45!important;margin:28px 0 12px!important}
-@media(max-width:700px){.music-editorial{margin:12px 18px 26px;padding:20px 0;display:block}.music-editorial h1{font-size:24px!important}.music-editorial>a{display:inline-block;margin-top:12px}.archive,.music-creation-notes{padding-left:18px!important;padding-right:18px!important}.archive-list{grid-template-columns:minmax(0,1fr)!important}.archive-intro,.music-creation-lead,.music-creation-box p,.archive-box p{font-size:15px!important;line-height:1.7!important}}
+
+
+
+<style id="redesign-2026-music">
+/* Music discovery 2026: album-first, compact player, editorial notes. */
+body{background:#f6f4ee!important;color:#202534!important;font-family:Inter,Pretendard,'Noto Sans KR',system-ui,sans-serif!important}
+.page-header{min-height:0!important;padding:44px 24px 15px!important;background:#f6f4ee!important;color:#202534!important}
+.page-header>div{width:min(1160px,100%)!important}
+.page-header>div>div:first-child{color:#2544cb!important;letter-spacing:.1em!important;font-size:11px!important}
+.header-title{font-family:Inter,Pretendard,system-ui,sans-serif!important;font-size:clamp(45px,9vw,94px)!important;line-height:1!important;letter-spacing:-.075em!important;font-weight:850!important;color:#202534!important}
+.header-slogan{color:#687080!important;font-size:14px!important;letter-spacing:0!important;line-height:1.6!important}
+.music-editorial{max-width:1160px!important;margin:0 auto 30px!important;padding:0 24px 20px!important;display:block!important;background:transparent!important;border:0!important;box-shadow:none!important;color:#202534!important}
+.music-editorial .archive-eyebrow,.music-editorial h1,.music-editorial>a{display:none!important}
+.music-editorial p{font-size:14px!important;line-height:1.65!important;max-width:650px!important;color:#687080!important}
+.interactive-player-wrapper.lp-bar{max-width:1160px!important;margin:0 auto 48px!important;padding:0!important;border-radius:18px!important;background:#111b33!important;border:1px solid #283854!important;box-shadow:0 14px 42px rgba(20,33,58,.12)!important;display:grid!important;grid-template-columns:minmax(0,1fr) 280px!important;overflow:hidden!important}
+.lp-bar:before{display:none!important}
+.bar-sign{grid-column:1/-1;height:auto!important;padding:18px 24px!important;border-bottom:1px solid #344159!important;font-family:Inter,system-ui,sans-serif!important;letter-spacing:.08em!important}
+.bar-sign span{color:#94a5c3!important}.bar-sign b{font-family:Inter,system-ui,sans-serif!important;font-weight:750!important;color:#fff!important}
+.bar-sign small{color:#8d9db8!important}
+.player-focus{grid-column:1!important;display:grid!important;grid-template-columns:minmax(0,220px) minmax(0,1fr)!important;gap:28px!important;align-items:center!important;padding:32px!important}
+.turntable-zone{min-height:250px!important;max-height:300px!important;overflow:hidden!important}
+.turntable{width:220px!important;max-width:95%!important}
+.album-art-large{max-width:210px!important;max-height:210px!important;aspect-ratio:1!important}
+.player-details{min-width:0!important;padding:0!important}
+.active-info h2,#main-title{font-family:Inter,Pretendard,'Noto Sans KR',sans-serif!important;font-size:clamp(22px,2.6vw,34px)!important;letter-spacing:-.04em!important;line-height:1.25!important;font-weight:750!important;color:#fff!important}
+.spotify-container{width:100%!important;max-width:100%!important}
+.spotify-container iframe{width:100%!important;max-width:100%!important}
+.playlist-sidebar{grid-column:2!important;grid-row:2!important;min-width:0!important;padding:24px 18px!important;border-left:1px solid #344159!important;background:#17233c!important;max-height:560px!important;overflow-y:auto!important}
+.playlist-header{font-size:13px!important;font-weight:700!important}
+#playlist-container{min-width:0!important}
+.archive,.music-creation-notes,#music-release-notes{max-width:900px!important;margin:40px auto!important;padding:0 24px!important;color:#202534!important}
+.archive-box,.music-creation-box,#music-release-notes>div{padding:28px 0!important;border:0!important;border-top:1px solid #d9dce4!important;border-radius:0!important;background:none!important;box-shadow:none!important}
+.archive h2,.music-creation-box h2,#music-release-notes h2{font-family:Inter,Pretendard,'Noto Sans KR',sans-serif!important;color:#202534!important;font-size:clamp(23px,3vw,31px)!important;font-weight:750!important;line-height:1.35!important;letter-spacing:-.04em!important}
+.archive h3,.music-creation-box h3,#music-release-notes h3{font-size:18px!important;color:#2544cb!important;line-height:1.45!important}
+.archive p,.music-creation-box p,#music-release-notes p{font-size:15px!important;line-height:1.75!important;color:#3f4655!important}
+.archive-list{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:18px!important}
+@media(max-width:850px){.interactive-player-wrapper.lp-bar{margin:0 18px 35px!important;display:block!important}.player-focus{display:grid!important;grid-template-columns:minmax(0,150px) minmax(0,1fr)!important;gap:20px!important;padding:22px!important}.turntable-zone{min-height:175px!important;max-height:210px!important}.turntable{width:155px!important}.album-art-large{max-width:145px!important;max-height:145px!important}.playlist-sidebar{max-height:none!important;overflow:visible!important;border-left:0!important;border-top:1px solid #344159!important;padding:20px!important}.page-header{padding:28px 18px 12px!important}.music-editorial{padding:0 18px 16px!important}.archive,.music-creation-notes,#music-release-notes{padding:0 18px!important}}
+@media(max-width:560px){.header-title{font-size:50px!important}.player-focus{display:block!important;padding:22px 18px!important}.turntable-zone{min-height:195px!important;max-height:195px!important;margin-bottom:15px!important}.turntable{width:180px!important}.album-art-large{max-width:160px!important;max-height:160px!important}.bar-sign{padding:16px 18px!important}.bar-sign small{display:none!important}.archive-list{grid-template-columns:minmax(0,1fr)!important}}
 </style>
 </head>
 <body>

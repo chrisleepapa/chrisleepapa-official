@@ -23,16 +23,16 @@
      ══════════════════════════════════════ */
   const GB_I18N = {
     ko: {
-      tag:            '✦ &nbsp; Guestbook &nbsp; ✦',
+      tag:            '✦ &nbsp; 방명록 &nbsp; ✦',
       title:          '당신의 <span>발자국</span>을 남겨주세요',
-      label_nickname: 'Nickname',
-      label_message:  'Message',
+      label_nickname: '닉네임',
+      label_message:  '메시지',
       name_hint_default: '영문 3글자',
       name_hint_more:    n => `${n}글자 더 입력해주세요`,
       name_hint_done:    '✓ 완성',
       message_placeholder: '이곳에 방문한 소감, 응원의 말을 남겨주세요 ✦',
       submit_btn:     '남기기',
-      list_label:     'Messages',
+      list_label:     '메시지 목록',
       empty_text:     '가장 먼저 방명록에 메시지를 남겨보세요',
       load_more:      '더 보기',
       aria_label:     '방명록',

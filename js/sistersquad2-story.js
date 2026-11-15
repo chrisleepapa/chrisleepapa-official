@@ -6,7 +6,9 @@
 
   const translations={
     ko:{
-      kicker:'THE SECOND JOURNEY',
+      kicker:'두 번째 여정',
+      journey:'SISTER SQUAD 2의 여정',
+      stops:['루미나','희망 시장','죽음의 늪','거인의 등뼈','고요의 계곡','귀환'],
       title:'루미나에서 아르카디아까지',
       lead:'1년 전 루미나를 구했던 율이와 정이는 다시 평범한 일상으로 돌아왔습니다. 그러나 고대의 저주와 <b style="color:#6fd7ff">혼돈의 시간</b> 파편이 결합하면서 루미나는 생명력을 잃은 잿빛 폐허가 됩니다. 자매와 아빠 크리스는 유일한 희망인 <b style="color:#e8d08a">월광초</b>를 찾아 아르카디아로 향하고, 그 과정에서 가족과 서로를 믿는 법을 다시 배웁니다.',
       stages:[
@@ -18,13 +20,15 @@
         ['루미나의 정화','자매와 프리티가 월광초를 손에 넣고 루미나로 돌아옵니다. 월광초와 생명의 샘, 그리고 요정들의 희망이 무너진 생명을 다시 일으킵니다.']
       ],
       themes:[
-        ['율이 · CONTROL → TRUST','완벽한 계획으로 동생을 통제하려던 율이는 모든 것을 통제할 수 없다는 사실을 받아들이고 정이의 선택을 믿는 법을 배웁니다.'],
-        ['정이 · INTUITION → TAMER','언니의 판단에만 의존하지 않고 자신의 직관을 믿습니다. 위기의 순간 태고의 야생 영혼까지 깨우며 진정한 테이밍 마스터로 성장합니다.'],
-        ['CHRIS · FEAR → SACRIFICE','카이를 잃은 죄책감 때문에 두려워했던 시간 마법을 다시 사용합니다. 딸들을 대신해 싸우기보다 끝까지 곁에 서는 아빠가 됩니다.']
+        ['율이 · 통제에서 신뢰로','완벽한 계획으로 동생을 통제하려던 율이는 모든 것을 통제할 수 없다는 사실을 받아들이고 정이의 선택을 믿는 법을 배웁니다.'],
+        ['정이 · 직관을 믿고 성장하다','언니의 판단에만 의존하지 않고 자신의 직관을 믿습니다. 위기의 순간 태고의 야생 영혼까지 깨우며 진정한 테이밍 마스터로 성장합니다.'],
+        ['크리스 · 두려움에서 희생으로','카이를 잃은 죄책감 때문에 두려워했던 시간 마법을 다시 사용합니다. 딸들을 대신해 싸우기보다 끝까지 곁에 서는 아빠가 됩니다.']
       ]
     },
     en:{
       kicker:'THE SECOND JOURNEY',
+      journey:'SISTER SQUAD 2 journey',
+      stops:['LUMINA','HOPE MARKET','SWAMP OF DEATH',"GIANT’S SPINE",'VALLEY OF SILENCE','RETURN'],
       title:'From Lumina to Arcadia',
       lead:'Yul and Jung, who saved Lumina a year ago, have returned to ordinary life. But when fragments of an ancient curse merge with <b style="color:#6fd7ff">Chaos Time</b>, Lumina becomes an ash-grey ruin stripped of life. The sisters and their father Chris journey to Arcadia in search of the last hope, the <b style="color:#e8d08a">Moonlight Herb</b>, and along the way learn once again how to trust their family and each other.',
       stages:[
@@ -73,8 +77,8 @@
         <div class="ss2-kicker" data-ss2-story="kicker"></div>
         <h2 data-ss2-story="title"></h2>
         <p class="ss2-lead" data-ss2-story="lead"></p>
-        <div class="ss2-journey" aria-label="SISTER SQUAD 2 journey">
-          ${translations.ko.stages.map((_,i)=>`<article class="ss2-stage"><div class="ss2-stage-num">0${i+1} · ${['LUMINA','HOPE MARKET','DEATH SWAMP',"GIANT'S SPINE",'SILENT VALLEY','RETURN'][i]}</div><h3 data-ss2-stage-title="${i}"></h3><p data-ss2-stage-desc="${i}"></p></article>`).join('')}
+        <div class="ss2-journey" aria-label="SISTER SQUAD 2의 여정">
+          ${translations.ko.stages.map((_,i)=>`<article class="ss2-stage"><div class="ss2-stage-num" data-ss2-stage-number="${i}"></div><h3 data-ss2-stage-title="${i}"></h3><p data-ss2-stage-desc="${i}"></p></article>`).join('')}
         </div>
         <div class="ss2-themes">
           ${translations.ko.themes.map((_,i)=>`<div class="ss2-theme"><strong data-ss2-theme-title="${i}"></strong><span data-ss2-theme-desc="${i}"></span></div>`).join('')}
@@ -91,6 +95,11 @@
       if(kicker) kicker.textContent=t.kicker;
       if(title) title.textContent=t.title;
       if(lead) lead.innerHTML=t.lead;
+      section.querySelector('.ss2-journey').setAttribute('aria-label',t.journey);
+      section.querySelectorAll('[data-ss2-stage-number]').forEach(el=>{
+        const i=Number(el.dataset.ss2StageNumber);
+        el.textContent=`0${i+1} · ${t.stops[i]}`;
+      });
       section.querySelectorAll('[data-ss2-stage-title]').forEach(el=>{
         const i=Number(el.dataset.ss2StageTitle);
         el.textContent=t.stages[i][0];

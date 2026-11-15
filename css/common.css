@@ -877,3 +877,12 @@ html {
 @media (display-mode: standalone), (display-mode: window-controls-overlay) {
   .home-install { display: none !important; }
 }
+
+/* Unified Creative Archive brand tokens for all pages importing common.css.
+   Keep project-specific artwork and dark cinematic backgrounds intact. */
+:root { --brand-blue:#2544cb; --brand-blue-soft:#a6b5ff; --brand-paper:#f6f4ee; --brand-ink:#171a25; }
+:where(a,button,input,select,textarea):focus-visible { outline:3px solid var(--brand-blue); outline-offset:3px; }
+html[data-theme="dark"] :where(a,button,input,select,textarea):focus-visible { outline-color:var(--brand-blue-soft); }
+@media(max-width:760px) {
+  :where(main,article,section) :where(p,li) { overflow-wrap:break-word; word-break:keep-all; }
+}

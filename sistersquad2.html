@@ -170,6 +170,10 @@
             display:block; width:100%; height:100%; position:absolute; inset:0;
             border:0; background:#000;
         }
+        #ss2-full-story { scroll-margin-top: 88px; }
+        .ss2-trailers { margin-top: 22px; }
+        .ss2-trailers summary { cursor: pointer; padding: 12px; border: 1px solid currentColor; border-radius: 10px; }
+        .ss2-trailers[open] .ss2-story-videos { margin-top: 14px; }
         .ss2-full-story {
             position:relative; isolation:isolate; width:100%; overflow:hidden;
             display:flex; flex-direction:column; align-items:center;
@@ -412,15 +416,40 @@
     </header>
 
     <div class="container">
+        <section class="ss2-story-section" id="ss2-book-preview" aria-labelledby="ss2-preview-title">
+            <div class="ss2-story-copy">
+                <h2 id="ss2-preview-title" data-i18n="preview_title">영문판 미리 읽기</h2>
+                <p data-i18n="preview_intro">루미나를 구한 지 1년. 율이는 사춘기를 맞고 정이는 한층 독립적이 됩니다. 새 모험을 시작하기 전, 영문판 서문은 두 자매 사이에 생긴 거리부터 보여줍니다.</p>
+                <blockquote lang="en" style="margin:18px 0;padding:0 0 0 16px;border-left:3px solid #957540;max-width:38rem;text-align:left;line-height:1.8">One year after saving Lumina, Yul and Jung are changing. Yul faces adolescence, while Jung grows more independent. Though they love each other, the sisters are drifting apart.</blockquote>
+                <p data-i18n="preview_credit">SISTER SQUAD 2 영문판 서문 발췌 · 원작 Chris LEE.PAPA</p>
+                <p data-i18n="preview_note">첫 모험에서는 두 자매가 마을을 어떻게 지킬지가 중심이었습니다. 두 번째 모험에서는 같은 편인 두 사람이 서로 다른 판단을 내릴 때 어떻게 함께 갈 수 있는지 묻고 싶었습니다.</p>
+                <p><a href="/journal-7" data-i18n="preview_journal">영문판 출판 과정 읽기 →</a> · <a href="#ss2-full-story" data-i18n="preview_watch">본편으로 이동 ↓</a></p>
+            </div>
+        </section>
+<section aria-labelledby="ss2-reading-guide" style="max-width:900px;margin:44px auto;padding:0 20px;">
+<div style="border:1px solid rgba(201,168,76,.22);border-radius:18px;padding:clamp(22px,4vw,36px);background:transparent;color:inherit;line-height:1.95;">
+<p data-i18n="themes_journey_kicker" style="color:#8a6a22;letter-spacing:.16em;font-size:.72rem;margin:0 0 8px;">THEMES & JOURNEY</p>
+<h2 id="ss2-reading-guide" data-i18n="themes_journey_title" style="color:#8a6a22;margin:0 0 18px;">SISTER SQUAD 2를 읽는 세 가지 관점</h2>
+<h3 data-i18n="themes_journey_h1" style="color:#8a6a22;">1. 폐허를 되돌리는 일은 전투만으로 끝나지 않는다</h3>
+<p data-i18n="themes_journey_p1">잿빛으로 변한 루미나를 되살리는 목표는 단순히 적을 쓰러뜨리는 임무와 다릅니다. 자매는 위험한 장소를 통과하고 월광초를 찾아야 하지만, 그 여정은 이미 상처 입은 세계를 다시 믿을 수 있는 곳으로 바꾸려는 시도이기도 합니다. 그래서 모험의 성취는 승리의 순간뿐 아니라 포기하지 않고 서로를 돌보는 선택에 담깁니다.</p>
+<h3 data-i18n="themes_journey_h2" style="color:#8a6a22;">2. 각 장소는 인물의 다른 두려움을 시험한다</h3>
+<p data-i18n="themes_journey_p2">죽음의 늪은 환영과 두려움을 마주하는 여정의 위험을, 거인의 등뼈는 서로를 믿고 협력해야 하는 시험을, 고요의 계곡은 마지막 목표에 도달하기 전의 집중과 결단을 상징합니다. 이 장소들은 배경 장식이 아니라 자매가 어떤 방식으로 성장하고 있는지 드러내는 단계입니다.</p>
+<h3 data-i18n="themes_journey_h3" style="color:#8a6a22;">3. 가족은 대신 싸워주는 사람만을 뜻하지 않는다</h3>
+<p data-i18n="themes_journey_p3">두 번째 모험에서 아빠 크리스가 이야기 안에 함께하는 이유는 모든 문제를 대신 해결하기 위해서가 아닙니다. 부모도 두려움과 상처를 가진 인물이며, 아이들과 함께 선택하고 책임지는 존재라는 점을 보여줍니다. 자매 역시 서로를 보호하면서도 각자 판단하고 행동해야 합니다. 이 균형이 가족 서사의 중심입니다.</p>
+
+</div></section>
         <!-- SISTER SQUAD 2: official video section -->
         <section class="ss2-story-section" id="ss2-story-video" aria-labelledby="ss2-story-video-title">
             <div class="ss2-story-copy">
                 <span class="ss2-story-kicker" data-i18n="story_video_kicker">SISTER SQUAD 2 · MOVIES</span>
                 <h2 id="ss2-story-video-title" data-i18n="story_video_title">SISTER SQUAD 2 영상</h2>
                 <p data-i18n="story_video_desc">세 편의 예고편은 위기, 가족의 일상, 희망의 노래라는 서로 다른 시선으로 두 번째 모험을 소개합니다. 12분 54초 본편에서는 루미나의 회복을 위한 여정을 만나보세요.</p>
+                <p data-i18n="story_film_credit">원작·영상 제작 · Chris LEE.PAPA · 공식 YouTube 채널</p>
                 <p class="ss2-story-promo" data-i18n="story_video_promo">율이와 정이, 그리고 아빠 크리스의 두 번째 모험. 아래에서 본편을 지금 감상할 수 있습니다.</p>
             </div>
-            <div class="ss2-story-videos" role="region" aria-label="SISTER SQUAD 2 story videos" tabindex="0">
+            <details class="ss2-trailers">
+              <summary><span data-i18n="trailer_details">예고편 3편과 제작 비하인드 보기</span></summary>
+              <div class="ss2-story-videos" role="region" aria-label="SISTER SQUAD 2 story videos" tabindex="0">
                 <article class="ss2-story-video-card">
                     <h3 data-i18n="story_video_trailer1">예고편 1 · 요정마을의 응급상황</h3>
                     <p class="ss2-video-caption" data-i18n="story_video_trailer1_desc">저주받은 요정마을에서 긴급 구조 신호가 전해집니다. 율이와 정이, 그리고 아빠는 다시 모험에 나설 수 있을까요?</p>
@@ -450,7 +479,8 @@
                     </div>
                 </article>
             </div>
-            <div class="ss2-full-story" role="region" aria-labelledby="ss2-full-story-title">
+            </details>
+            <div class="ss2-full-story" id="ss2-full-story" role="region" aria-labelledby="ss2-full-story-title">
                 <span class="ss2-full-story-kicker" data-i18n="story_video_full_kicker">✦ THE FEATURE PRESENTATION ✦</span>
                 <h3 id="ss2-full-story-title" data-i18n="story_video_full_title">FULL STORY</h3>
                 <p class="ss2-full-story-note" data-i18n="story_video_full_note">12분 54초의 판타지 모험. 죽음의 늪의 글루톤과 고대 유적의 시련, 쌍둥이 그리핀 스콜과 게일의 전투를 지나 월광초로 저주받은 루미나를 정화하는 이야기입니다. 포포의 희생과 가족의 귀환까지 본편의 여정을 감상해 보세요.</p>
@@ -560,18 +590,7 @@
         </section>
         <!-- ── SEO 블록 끝 ── -->
 
-<section aria-labelledby="ss2-reading-guide" style="max-width:900px;margin:44px auto;padding:0 20px;">
-<div style="border:1px solid rgba(201,168,76,.22);border-radius:18px;padding:clamp(22px,4vw,36px);background:transparent;color:inherit;line-height:1.95;">
-<p data-i18n="themes_journey_kicker" style="color:#8a6a22;letter-spacing:.16em;font-size:.72rem;margin:0 0 8px;">THEMES & JOURNEY</p>
-<h2 id="ss2-reading-guide" data-i18n="themes_journey_title" style="color:#8a6a22;margin:0 0 18px;">SISTER SQUAD 2를 읽는 세 가지 관점</h2>
-<h3 data-i18n="themes_journey_h1" style="color:#8a6a22;">1. 폐허를 되돌리는 일은 전투만으로 끝나지 않는다</h3>
-<p data-i18n="themes_journey_p1">잿빛으로 변한 루미나를 되살리는 목표는 단순히 적을 쓰러뜨리는 임무와 다릅니다. 자매는 위험한 장소를 통과하고 월광초를 찾아야 하지만, 그 여정은 이미 상처 입은 세계를 다시 믿을 수 있는 곳으로 바꾸려는 시도이기도 합니다. 그래서 모험의 성취는 승리의 순간뿐 아니라 포기하지 않고 서로를 돌보는 선택에 담깁니다.</p>
-<h3 data-i18n="themes_journey_h2" style="color:#8a6a22;">2. 각 장소는 인물의 다른 두려움을 시험한다</h3>
-<p data-i18n="themes_journey_p2">죽음의 늪은 환영과 두려움을 마주하는 여정의 위험을, 거인의 등뼈는 서로를 믿고 협력해야 하는 시험을, 고요의 계곡은 마지막 목표에 도달하기 전의 집중과 결단을 상징합니다. 이 장소들은 배경 장식이 아니라 자매가 어떤 방식으로 성장하고 있는지 드러내는 단계입니다.</p>
-<h3 data-i18n="themes_journey_h3" style="color:#8a6a22;">3. 가족은 대신 싸워주는 사람만을 뜻하지 않는다</h3>
-<p data-i18n="themes_journey_p3">두 번째 모험에서 아빠 크리스가 이야기 안에 함께하는 이유는 모든 문제를 대신 해결하기 위해서가 아닙니다. 부모도 두려움과 상처를 가진 인물이며, 아이들과 함께 선택하고 책임지는 존재라는 점을 보여줍니다. 자매 역시 서로를 보호하면서도 각자 판단하고 행동해야 합니다. 이 균형이 가족 서사의 중심입니다.</p>
 
-</div></section>
 
 <section aria-labelledby="ss2-family-talk" style="max-width:900px;margin:42px auto 64px;padding:0 20px;">
 <div style="border:1px solid rgba(111,215,255,.22);border-radius:18px;padding:clamp(22px,4vw,34px);background:rgba(10,18,28,.34);color:inherit;line-height:1.9;">
@@ -597,9 +616,9 @@
 <section aria-label="Related Sister Squad content" style="max-width:900px;margin:70px auto 20px;text-align:center;">
 <div style="border:1px solid rgba(111,215,255,.18);border-radius:18px;padding:26px 24px;background:rgba(10,10,18,.62);">
 <div style="font-family:Cinzel,serif;color:#c9a84c;font-size:.72rem;letter-spacing:.22em;margin-bottom:16px;">EXPLORE SISTER SQUAD</div>
-<p style="color:#a0a0b5;font-size:.88rem;line-height:1.8;margin:0 0 18px;" data-i18n="related_world_desc">SISTER SQUAD 2의 이야기와 연결된 세계관과 게임을 더 만나보세요.</p>
+<p style="color:#a0a0b5;font-size:.88rem;line-height:1.8;margin:0 0 18px;" data-i18n="related_world_desc">SISTER SQUAD의 세계관과 영문판 제작 후기를 만나보세요.</p>
 <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;">
-<a href="/gameinfo" style="display:inline-flex;align-items:center;padding:9px 16px;border:1px solid rgba(201,168,76,.35);border-radius:999px;color:#e8d08a;font-size:.78rem;">GAME →</a>
+<a href="/sistersquad-hub">SISTER SQUAD</a> · <a href="/journal-7">Journal 07</a>
 </div></div></section>
 
 <!-- =========================================================
@@ -623,6 +642,15 @@
     <script>
         window.PAGE_I18N = {
             ko: {
+                preview_title: "영문판 미리 읽기",
+                preview_intro: "루미나를 구한 지 1년. 율이는 사춘기를 맞고 정이는 한층 독립적이 됩니다. 새 모험을 시작하기 전, 영문판 서문은 두 자매 사이에 생긴 거리부터 보여줍니다.",
+                preview_credit: "SISTER SQUAD 2 영문판 서문 발췌 · 원작 Chris LEE.PAPA",
+                preview_note: "첫 모험에서는 두 자매가 마을을 어떻게 지킬지가 중심이었습니다. 두 번째 모험에서는 같은 편인 두 사람이 서로 다른 판단을 내릴 때 어떻게 함께 갈 수 있는지 묻고 싶었습니다.",
+                preview_journal: "영문판 출판 과정 읽기 →",
+                preview_watch: "본편으로 이동 ↓",
+                story_film_credit: "원작·영상 제작 · Chris LEE.PAPA · 공식 YouTube 채널",
+                trailer_details: "예고편 3편과 제작 비하인드 보기",
+
                 share_desc:       '잿빛으로 물든 요정마을을 구하는 자매의 두 번째 여정을 소중한 사람들에게 전하세요.',
                 themes_journey_kicker: '주제와 여정',
                 themes_journey_title: 'SISTER SQUAD 2를 읽는 세 가지 관점',
@@ -646,7 +674,7 @@
                 book_description: '율과 정의 두 번째 여정, 잿빛 요정 마을에 숨겨진 비밀을 책으로 만나보세요.',
                 book_button: '책 만나보기',
                 book_button_aria: 'Sister Squad 2 책 만나보기',
-                related_world_desc: 'SISTER SQUAD 2의 이야기와 연결된 세계관과 게임을 더 만나보세요.',
+                related_world_desc: 'SISTER SQUAD의 세계관과 영문판 제작 후기를 만나보세요.',
                 header_title:     'SISTER SQUAD 2',
                 header_slogan:    '저주받은 요정마을',
                 story_label:      'THE STORY',
@@ -706,6 +734,15 @@
                 seo_making_desc: '1편을 쓸 때는 두 자매만으로 충분했습니다. 그런데 2편을 구상하면서, 저는 자꾸 이야기 안에 <strong style="color:#e8d08a;">아빠 캐릭터</strong>를 세우고 싶다는 생각이 들었습니다. 아이들이 자라날수록 부모는 더 이상 모든 걸 대신 해결해줄 수 없다는 것을, 대신 함께 두려움을 마주하는 존재가 되어야 한다는 것을 배우고 있었기 때문입니다. 그래서 2편의 아빠는 완벽한 영웅이 아니라, <strong style="color:#c9a84c;">과거의 트라우마를 안고도 다시 딸들 곁에 서기로 결심하는 인물</strong>로 그렸습니다. 자매가 서로 부딪히며 진짜 자매애를 배우는 동안, 아빠 역시 딸들을 지키는 방법이 대신 싸워주는 것이 아니라 곁에 있어 주는 것임을 깨닫습니다.'
             },
             en: {
+                preview_title: "Read the English edition",
+                preview_intro: "A year after saving Lumina, Yul faces adolescence while Jung grows more independent. Before the next adventure begins, the English introduction shows the distance growing between the two sisters.",
+                preview_credit: "From the introduction to the English edition of SISTER SQUAD 2 · by Chris LEE.PAPA",
+                preview_note: "In the first adventure, the sisters had to find a way to protect a village. In the second, I wanted to ask how two people on the same side can keep going when they see the problem differently.",
+                preview_journal: "Read about publishing the English edition →",
+                preview_watch: "Jump to the film ↓",
+                trailer_details: "Watch three trailers and the making-of",
+                story_film_credit: "Original story and film production by Chris LEE.PAPA · Official YouTube channel",
+
                 share_desc:       'Share the sisters\' second journey to save a cursed fairy village.',
                 themes_journey_kicker: 'THEMES & JOURNEY',
                 themes_journey_title: 'Three Ways to Read SISTER SQUAD 2',
@@ -729,7 +766,7 @@
                 book_description: 'Join Yul and Jung on their second journey and uncover the secrets hidden in the ashen fairy village.',
                 book_button: 'GET THE BOOK',
                 book_button_aria: 'Get the Sister Squad 2 book',
-                related_world_desc: 'Explore more of the world and games connected to SISTER SQUAD 2.',
+                related_world_desc: 'Explore the SISTER SQUAD world and read how the English edition was made.',
                 header_title:     'SISTER SQUAD 2',
                 header_slogan:    'The Cursed Fairy Village',
                 story_label:      'THE STORY',

@@ -1,0 +1,37 @@
+.creator-journal .journal-case { width: min(790px, calc(100% - 36px)); }
+.journal-case .case-heading { border-bottom: 1px solid var(--rule); padding-bottom: 22px; }
+.journal-case .case-heading .creator-kicker { margin-top: 20px; margin-bottom: 12px; }
+.creator-journal .journal-case h1 {
+  font-size: clamp(1.95rem, 4.9vw, 3.65rem);
+  line-height: 1.17;
+  letter-spacing: -.055em;
+}
+.journal-case h2 { margin: 0 0 12px; font-size: clamp(1.22rem, 3vw, 1.72rem); letter-spacing: -.04em; line-height: 1.35; }
+.journal-case p, .journal-case li { line-height: 1.85; word-break: keep-all; overflow-wrap: anywhere; }
+.journal-case p { margin: 12px 0; }
+.journal-case section { padding: clamp(26px, 5vw, 40px) 0; border-bottom: 1px solid var(--rule); }
+.journal-case .case-byline, .journal-case .case-caption { font-size: .85rem; color: var(--subtle); }
+.journal-case .case-lead { color: var(--subtle); font-size: 1.04rem; }
+.journal-case section a { color: var(--accent); text-decoration: underline; text-underline-offset: .2em; }
+.journal-case ol { margin: 0; padding-left: 1.3em; }
+.journal-case li + li { margin-top: 9px; }
+.case-measurements, .case-edges { display: grid; gap: 12px; margin: 22px 0; }
+.case-measurements { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.case-measurements > div, .case-edges figure {
+  margin: 0;
+  border: 1px solid var(--rule);
+  background: var(--panel);
+  border-radius: 12px;
+}
+.case-measurements > div { padding: 12px 15px; }
+.case-measurements dt { color: var(--subtle); font-size: .84rem; font-weight: 600; }
+.case-measurements dd { margin: 4px 0 0; font-weight: 700; font-variant-numeric: tabular-nums; }
+.case-edges { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.case-edges figure { overflow: hidden; }
+.case-edges img { display: block; width: 100%; height: auto; }
+.case-edges figcaption { padding: 10px 12px; font-size: .8rem; color: var(--subtle); }
+.case-nav { display: flex; flex-wrap: wrap; justify-content: space-between; column-gap: 20px; margin-top: 12px; }
+@media (max-width: 520px) {
+  .case-measurements { grid-template-columns: 1fr; gap: 6px; }
+  .case-edges { grid-template-columns: 1fr; }
+}

@@ -130,3 +130,9 @@
 - movie.html: 영상 제작 노트의 장식적 컨테이너/그림자 축소, 한 열 모바일 배치, 제목과 문단 가독성 개선. develop 커밋 4968417.
 - music.html: LP 플레이어는 유지하고 앨범·제작 기록의 본문, 소제목, 모바일 앨범 목록 간격 정비. develop 커밋 ddefd00.
 - CSS 기반 소스 수정이며 실제 모바일 렌더링, 상호작용, 최신 Vercel READY, Production 반영은 검증 전. 페이지 전체의 완전한 리디자인으로 표기하지 않음.
+
+## 20. Movie 대표 영상 UX 및 누락된 Shorts 8개 복구 (2026-11-16)
+- 사용자가 대표 영상 2개 중복 표시 및 다수 쇼츠 소실을 지적. GitHub movie.html 과거 커밋 64bd3311f에서 YouTube Shorts 8개 링크·썸네일·제목·한영 소개를 확인. 현재 develop에는 1개만 남아 있던 사실 검증.
+- 과거 정상 쇼츠 섹션 8개를 그대로 복원. 영상 ID: gQ4Ip6cyr1U, z-2LOBuWos8, pGibrT9Pp3I, VXWdSOXGwKQ, XjSUJRduAzI, MYlAYewAdu4, 0d-rUizVukQ, tgR1Kq3fGWE.
+- 대표 영상은 기존 FURIOUS와 사랑한다고 2개를 유지하되 재생기는 하나만 두고 선택 목록을 모바일 세로 2행, 데스크톱 2열로 압축. Shorts는 모바일 2열, 데스크톱 4열로 단순화. Movie AdSense 제외 유지.
+- develop 커밋 6b2ecda. 실제 브라우저/모바일 영상 재생·외부 YouTube 접근 및 Vercel READY/Production은 검증 전.

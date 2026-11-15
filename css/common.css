@@ -826,3 +826,54 @@ html {
   word-break: keep-all;
 }
 
+
+/* Home screen installation */
+.home-install[hidden], .home-install [hidden] { display: none !important; }
+.home-install {
+  --install-accent: #283f92;
+  position: fixed;
+  z-index: 10008;
+  inset-inline-end: max(16px, env(safe-area-inset-right));
+  inset-block-end: calc(max(16px, env(safe-area-inset-bottom)) + var(--mobile-nav-height, 0px));
+  width: min(390px, calc(100% - 32px));
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  align-items: center;
+  gap: 9px 12px;
+  padding: 13px;
+  border: 1px solid #d5dce8;
+  border-radius: 16px;
+  background: #fff;
+  color: #182337;
+  box-shadow: 0 8px 30px #14203533;
+  font: 400 14px/1.45 system-ui, sans-serif;
+  text-align: start;
+}
+.home-install--faith { --install-accent: #12615e; }
+.home-install-icon { display: block; border-radius: 11px; }
+.home-install-copy strong { display: block; font-size: 15px; }
+.home-install-copy p, .home-install-help { margin: 2px 0 0; color: #425067; }
+.home-install-actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px; }
+.home-install-actions button {
+  padding: 6px 9px;
+  min-height: 40px;
+  border: 1px solid #d5dce8;
+  border-radius: 8px;
+  background: #fff;
+  color: #182337;
+  font: inherit;
+  cursor: pointer;
+}
+.home-install-actions .home-install-add { background: var(--install-accent); border-color: var(--install-accent); color: #fff; font-weight: 700; }
+.home-install-actions button:focus-visible { outline: 2px solid var(--install-accent); outline-offset: 2px; }
+.home-install-help { grid-column: 1 / -1; padding-top: 7px; border-top: 1px solid #d5dce8; }
+@media (max-width: 760px) {
+  .home-install--faith { inset-block-end: calc(74px + env(safe-area-inset-bottom)); }
+  .faith-locked .home-install--faith { inset-block-end: max(12px, env(safe-area-inset-bottom)); }
+}
+@media (max-height: 580px) {
+  .faith-locked .home-install--faith { inset-block-start: max(8px, env(safe-area-inset-top)); inset-block-end: auto; }
+}
+@media (display-mode: standalone), (display-mode: window-controls-overlay) {
+  .home-install { display: none !important; }
+}

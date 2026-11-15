@@ -161,3 +161,25 @@
 @media(prefers-reduced-motion: reduce) {
   .music-tile-play { transition: none; }
 }
+
+.music-feature-actions #spotlight-listen {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  border: 0;
+  font: inherit;
+  font-size: .86rem;
+  font-weight: 760;
+}
+.music-inline-player { margin-top: 12px; }
+.music-inline-player .spotify-container { min-height: 152px; }
+.music-inline-player iframe { width: 100%; height: 152px; border: 0; border-radius: 12px; }
+.music-inline-player #music-play-status { color: var(--spotlight-muted); font-size: .8rem; margin: 5px 0 0; }
+.music-inline-player #music-play-status:empty { display: none; }
+.music-platform-links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 5px; }
+.music-platform-links a { color: var(--spotlight-muted); font-size: .78rem; text-decoration: none; }
+.music-platform-links a:hover { text-decoration: underline; }
+.music-playing .feature-disc { animation: spotlight-disc 7s linear infinite; }
+@keyframes spotlight-disc { to { transform: rotate(1turn); } }
+@media(prefers-reduced-motion: reduce) { .music-playing .feature-disc { animation: none; } }

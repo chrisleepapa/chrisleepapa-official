@@ -50,10 +50,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div id="site-nav"></div>
 <main id="main-content" class="creator-shell media-shell">
-<header class="music-feature" aria-labelledby="music-heading">
+<header class="music-feature" id="music-feature" tabindex="-1" aria-labelledby="music-heading">
   <div class="music-feature-copy">
     <h1 id="music-heading"><span class="i18n-ko">음악 아카이브</span><span class="i18n-en" lang="en">Music archive</span></h1>
-    <p class="music-feature-label"><span class="i18n-ko">먼저 들어볼 작품</span><span class="i18n-en" lang="en">Featured releases</span></p>
+    <p class="music-feature-label" id="spotlight-label"><span class="i18n-ko">먼저 들어볼 작품</span><span class="i18n-en" lang="en">Featured releases</span></p>
     <div id="music-spotlight-copy" aria-live="polite">
       <h2 id="spotlight-title">When the city stood still</h2>
       <p id="spotlight-story"><span class="i18n-ko">멈춰버린 도시의 시간에 사랑하는 사람과의 추억을 담았습니다.</span><span class="i18n-en" lang="en">Memories of a loved one, held in a city that seems to stand still.</span></p>
@@ -182,7 +182,6 @@ const coverCache={
   "7l1VJIlO92vwthgoV6GbYl": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02270a97d0f79003fdc9e057cb",
   "6no8VzcEDYQ92X4n3GZJXy": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e023bcaaf7cc1a8f5167fd7a001"
 };
-let featured=0;
 let mood='all';
 const text= (ko,en)=>musicLang()==='en'?en:ko;
 const byId=id=>document.getElementById(id);
@@ -190,23 +189,29 @@ const storyFor=album=>MUSIC_STORIES[musicLang()][album.title]||'';
 const motion=()=>matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth';
 
 function showSpotlight(){
-  const album=musicData[featured];
+  const album=musicData[active];
   byId('spotlight-title').textContent=album.title;
   byId('spotlight-story').textContent=storyFor(album);
   byId('spotlight-cover').src=coverCache[album.id];
-  document.querySelector('.music-feature').dataset.feature=String(featured);
+  byId('music-feature').dataset.feature=String(active);
+  const isFeatured=[0,1,5].includes(active);
+  byId('spotlight-label').textContent=isFeatured?text('먼저 들어볼 작품','Featured releases'):text('선택한 앨범','Selected release');
   document.querySelectorAll('[data-feature]').forEach(button=>{
-    button.setAttribute('aria-pressed',String(Number(button.dataset.feature)===featured));
+    button.setAttribute('aria-pressed',String(Number(button.dataset.feature)===active));
   });
 }
 
-function selectAlbum(index){
+function selectAlbum(index,destination){
   if(index!==active){
     active=index;
+    showSpotlight();
     renderActive();
   }
-  byId('listening').focus({preventScroll:true});
-  byId('listening').scrollIntoView({behavior:motion()});
+  if(destination){
+    const section=byId(destination);
+    section.focus({preventScroll:true});
+    section.scrollIntoView({behavior:motion()});
+  }
 }
 
 function renderPlaylist(){
@@ -225,7 +230,7 @@ function renderPlaylist(){
     button.querySelector('strong').textContent=album.title;
     button.querySelector('small').textContent=musicType(album.type);
     setImageSource(button.querySelector('img'),album);
-    button.addEventListener('click',()=>selectAlbum(index));
+    button.addEventListener('click',()=>selectAlbum(index,'music-feature'));
     grid.append(button);
   }
   showSelection();
@@ -253,12 +258,11 @@ function paintAlbumCover(){
 }
 
 document.querySelectorAll('[data-feature]').forEach(button=>button.addEventListener('click',()=>{
-  featured=Number(button.dataset.feature);
-  showSpotlight();
+  selectAlbum(Number(button.dataset.feature));
 }));
 byId('spotlight-listen').addEventListener('click',event=>{
   event.preventDefault();
-  selectAlbum(featured);
+  selectAlbum(active,'listening');
 });
 document.querySelectorAll('[data-mood]').forEach(button=>button.addEventListener('click',()=>{
   mood=button.dataset.mood;

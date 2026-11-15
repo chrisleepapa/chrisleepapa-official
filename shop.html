@@ -99,6 +99,27 @@ a{color:inherit;text-decoration:none}
 @media(max-width:560px){.shop-shell{padding-left:16px;padding-right:16px}.shop-masthead:before{background:linear-gradient(180deg,rgba(22,31,26,.8),rgba(22,31,26,.97) 58%),url('images/bookstore.jpg') center/cover}.shop-masthead-inner{display:flex;flex-direction:column-reverse;align-items:stretch;gap:0;padding-top:25px;padding-bottom:34px}.shop-stage{min-height:220px;margin-bottom:5px}.shop-stage-halo{width:190px;height:190px}.shop-stage-book{width:52%;height:220px}.shop-stage-caption{right:2px;bottom:3px;max-width:135px;padding:9px 10px;font-size:9px}.shop-eyebrow{font-size:9px;letter-spacing:.15em}.shop-masthead h1{margin:15px 0 12px;font-size:clamp(36px,10vw,50px)}.shop-lead{font-size:13px;line-height:1.85}.shop-hero-meta{font-size:9px;line-height:1.8}.shop-hero-cta{margin-top:20px}.shop-hero-cta a{min-height:42px;padding:0 13px;font-size:10px}.shop-index-inner{padding-top:14px;padding-bottom:14px}.shop-index-links{gap:8px 16px}.shop-index-links a{font-size:11px}.shop-main{padding-top:46px;padding-bottom:60px}.collection{margin-bottom:58px}.collection-head{gap:8px;margin-bottom:16px}.collection-title{font-size:25px}.collection-count{font-size:9px}.collection-intro{font-size:12px;line-height:1.9;margin-bottom:18px}.book-grid{gap:10px}.book-visual{min-height:0;height:clamp(155px,48vw,215px);padding:10px}.book-visual:after{inset:7px}.book-visual img{height:100%;max-height:190px}.book-info{padding:11px 10px 12px}.book-format{font-size:8px;margin-bottom:7px;padding:3px 6px}.book-title{font-size:12px;line-height:1.35}.book-desc{min-height:55px;font-size:10px;line-height:1.55;margin-bottom:12px}.book-action{min-height:36px;padding:7px 5px;font-size:9px}.feature-card{grid-template-columns:1fr;gap:15px;padding:14px}.feature-art{min-height:185px}.feature-art img{height:170px}.feature-copy h3{font-size:22px}.feature-copy p{font-size:12px}.feature-copy .book-actions{display:grid;grid-template-columns:1fr 1fr}.feature-copy .book-action{min-width:0}.ogq-section{padding:20px 16px;margin-bottom:55px}.ogq-title{font-size:22px}.ogq-desc{font-size:12px}.ogq-products{gap:8px}.ogq-link{min-height:50px;padding:11px 12px;font-size:11px}}
 @media(max-width:350px){.shop-shell{padding-left:12px;padding-right:12px}.book-grid{gap:8px}.book-visual{height:150px}.book-info{padding:9px 8px}.book-title{font-size:11px}.book-desc{font-size:9px;min-height:60px}.book-action{font-size:8px}.shop-masthead h1{font-size:34px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+
+/* Creative Archive palette: shared cobalt, warm paper, accessible card text. */
+:root { --paper:#f6f4ee; --paper2:#eeedf2; --ink:#171a25; --muted:#525664; --gold:#2544cb; --gold2:#4567e6; --line:#d9d9e0; --rust:#2544cb; --green:#2544cb; }
+.shop-masthead { background:#171d39; color:#fff; }
+.shop-masthead:before { background:linear-gradient(90deg,rgba(14,22,57,.97) 0%,rgba(20,30,73,.88) 45%,rgba(20,30,73,.24) 100%),url('images/bookstore.jpg') center/cover; }
+.shop-eyebrow,.shop-hero-meta { color:#c4ceff; }
+.shop-eyebrow:before { background:#a6b5ff; }
+.shop-hero-cta a { border-color:#a6b5ff; }
+.shop-hero-cta .primary { background:#c4ceff; border-color:#c4ceff; color:#171a35; }
+.shop-index { background:#e9ecfa; border-bottom-color:#d9d9e0; }
+.shop-index-label,.shop-index-links a { color:#273c9c; }
+.book-card { background:#fffdfa; border-color:#d9d9e0; }
+.book-visual { background:linear-gradient(145deg,#e8ebfa,#f8f8fc 65%,#e8ebfa); }
+.shop-stage-caption { background:#fffdfa; color:#171a25; }
+html[data-theme="dark"] { --paper:#11121a; --paper2:#1d2030; --ink:#f4f2ec; --muted:#b9b9c9; --gold:#a6b5ff; --gold2:#c4ceff; --line:#393c50; --rust:#a6b5ff; --green:#a6b5ff; }
+html[data-theme="dark"] .shop-index { background:#1d2030; border-bottom-color:#393c50; }
+html[data-theme="dark"] .shop-index-label,html[data-theme="dark"] .shop-index-links a { color:#c4ceff; }
+html[data-theme="dark"] .book-card { background:#1d2030; border-color:#393c50; }
+html[data-theme="dark"] .book-visual { background:linear-gradient(145deg,#252a40,#1d2030); }
+html[data-theme="dark"] .collection-intro,html[data-theme="dark"] .collection-count { color:#b9b9c9; }
+@media(max-width:590px) { .shop-shell { padding-left:20px; padding-right:20px; } .collection-intro { font-size:1rem; line-height:1.8; } }
 </style>
 <link rel="manifest" href="/manifest.json">
 </head>

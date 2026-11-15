@@ -56,6 +56,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <link rel="stylesheet" href="/css/creator.css">
 <link rel="stylesheet" href="/css/media-archive.css?v=1">
+<link rel="stylesheet" href="/css/film-editorial.css?v=1">
 </head>
 <body class="creator-page media-page media-film">
 <!-- Google Tag Manager (noscript) -->
@@ -68,63 +69,72 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div id="site-nav"></div>
 
 <main id="main-content" class="creator-shell media-shell">
-<header class="media-masthead">
-  <p class="media-byline">CHRIS LEE.PAPA</p>
-  <h1><span class="i18n-ko">영상 아카이브</span><span class="i18n-en" lang="en">Film archive</span></h1>
-  <p class="media-summary"><span class="i18n-ko">직접 기획하고 편집한 뮤직비디오와 단편. 작품을 보고, 장면 뒤의 제작 과정도 읽어보세요.</span><span class="i18n-en" lang="en">Music videos and shorts I planned and edited, with notes on the decisions behind the scenes.</span></p>
-  <nav class="media-jumps" aria-label="영상 아카이브"><a href="#screening"><span class="i18n-ko">대표 영상</span><span class="i18n-en" lang="en">Featured films</span></a><a href="#shorts"><span class="i18n-ko">쇼츠</span><span class="i18n-en" lang="en">Short films</span></a><a href="#film-notes"><span class="i18n-ko">제작 기록</span><span class="i18n-en" lang="en">Production notes</span></a></nav>
-</header><section class="media-section film-stage" id="screening" aria-labelledby="featured-playlist-title">
-  <div class="film-player">
-    <div class="main-screen" id="main-video-container">
-      <iframe id="main-video-player" src="https://www.youtube.com/embed/kAkGg2t1Ats?autoplay=0&amp;enablejsapi=1" title="FURIOUS" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe>
-    </div>
-    <div class="screen-info">
-      <span class="video-badge" id="main-video-badge">뮤직비디오</span>
-      <h2 id="main-video-title">FURIOUS</h2>
-      <p id="main-video-desc">거대한 폭발과 공중전이 펼쳐지는 디스토피아적 사이버펑크 액션을 오리지널 음악과 생성형 AI 비주얼로 구성한 뮤직비디오입니다. 전쟁과 충돌이 남기는 상처에 대한 분노와 안타까움이 작품의 정서를 이룹니다.</p>
-      <div class="media-actions"><a class="media-action" id="watch-on-youtube" href="https://www.youtube.com/watch?v=kAkGg2t1Ats" target="_blank" rel="noopener"><span class="i18n-ko">YouTube에서 보기 ↗</span><span class="i18n-en" lang="en">Watch on YouTube ↗</span></a><button class="media-action" type="button" onclick="expandToLandscape()"><span class="i18n-ko">전체 화면</span><span class="i18n-en" lang="en">Full screen</span></button></div>
+<header class="film-premiere" id="screening" aria-labelledby="main-video-title">
+  <div class="film-premiere-copy">
+    <h1 class="film-archive-label"><span class="i18n-ko">영상 아카이브</span><span class="i18n-en" lang="en">Film archive</span></h1>
+    <p class="film-now-type" id="main-video-badge">뮤직비디오</p>
+    <h2 id="main-video-title" aria-live="polite">FURIOUS</h2>
+    <p id="main-video-desc">거대한 폭발과 공중전이 펼쳐지는 디스토피아적 사이버펑크 액션을 오리지널 음악과 생성형 AI 비주얼로 구성한 뮤직비디오입니다. 전쟁과 충돌이 남기는 상처에 대한 분노와 안타까움이 작품의 정서를 이룹니다.</p>
+    <div class="film-screen-actions">
+      <button class="film-watch" id="film-play-button" type="button"><span aria-hidden="true">▶</span><span class="i18n-ko">재생</span><span class="i18n-en" lang="en">Play</span></button>
+      <a id="watch-on-youtube" href="https://www.youtube.com/watch?v=kAkGg2t1Ats" target="_blank" rel="noopener"><span class="i18n-ko">YouTube에서 보기</span><span class="i18n-en" lang="en">Watch on YouTube</span> <span aria-hidden="true">↗</span></a>
+      <button class="film-fullscreen" id="film-fullscreen" type="button" hidden><span class="i18n-ko">전체 화면</span><span class="i18n-en" lang="en">Full screen</span></button>
     </div>
   </div>
-  <div class="featured-nav">
-    <h2 id="featured-playlist-title"><span class="i18n-ko">대표 영상</span><span class="i18n-en" lang="en">Featured films</span></h2>
-    <div class="featured-track" id="featured-track"></div>
-    <noscript><ul><li><a href="https://www.youtube.com/watch?v=kAkGg2t1Ats">FURIOUS</a></li><li><a href="https://www.youtube.com/watch?v=byxLKvBHULk"><span class="i18n-ko">귀멸의 칼날 실사 촬영 현장</span><span class="i18n-en" lang="en">Demon Slayer Live-Action</span></a></li><li><a href="https://www.youtube.com/watch?v=vlt7VfCA8bM"><span class="i18n-ko">사랑한다고</span><span class="i18n-en" lang="en">Love Song</span></a></li></ul></noscript>
+  <div class="film-screen" id="main-video-container">
+    <img id="film-poster" alt="" width="480" height="270" src="https://img.youtube.com/vi/kAkGg2t1Ats/hqdefault.jpg" fetchpriority="high">
   </div>
+</header>
+<nav class="film-jumpbar" aria-label="영상 아카이브">
+  <a href="#featured"><span class="i18n-ko">대표 작품</span><span class="i18n-en" lang="en">Featured films</span></a>
+  <a href="#shorts"><span class="i18n-ko">쇼츠</span><span class="i18n-en" lang="en">Short films</span></a>
+  <a href="#film-notes"><span class="i18n-ko">제작 기록</span><span class="i18n-en" lang="en">Production notes</span></a>
+</nav>
+<section class="media-section film-catalogue" id="featured" aria-labelledby="featured-playlist-title">
+  <h2 id="featured-playlist-title"><span class="i18n-ko">대표 작품</span><span class="i18n-en" lang="en">Featured films</span></h2>
+  <div id="featured-track" class="film-picks"></div>
+  <noscript><ul><li><a href="https://www.youtube.com/watch?v=kAkGg2t1Ats">FURIOUS</a></li><li><a href="https://www.youtube.com/watch?v=byxLKvBHULk">귀멸의 칼날 실사 촬영 현장</a></li><li><a href="https://www.youtube.com/watch?v=vlt7VfCA8bM">사랑한다고</a></li></ul></noscript>
 </section>
 <section class="media-shorts-section media-section" id="shorts" aria-labelledby="shorts-title">
         <h2 class="media-shorts-heading" id="shorts-title"><span class="i18n-ko">쇼츠</span><span class="i18n-en" lang="en">Short films</span></h2>
         <p class="media-shorts-intro i18n-ko">생성형 AI로 다양한 영상 표현 방식을 실험한 짧은 작품 모음입니다. 애니메이션 캐릭터를 실제 촬영 현장에 배치한 팬 콘셉트 영상, 직접 기획한 음악을 바탕으로 만든 뮤직비디오, 로봇 액션 등 서로 다른 아이디어를 짧은 이야기로 구성했습니다. 각 영상은 기획 의도에 맞춰 장면을 생성하고 선별·편집해 YouTube Shorts로 공개했습니다.</p>
         <p class="media-shorts-intro i18n-en">A collection of short works exploring different forms of visual storytelling with generative AI. The archive includes fan-concept videos that place anime characters on imagined live-action sets, music videos built around music I developed, and robot-action scenes. Each short is planned, generated, selected, and edited around its own concept before being released as a YouTube Short.</p>
+        <div class="film-short-filters" role="group" aria-label="쇼츠 분류">
+            <button type="button" data-short-filter="all" aria-pressed="true"><span class="i18n-ko">전체</span><span class="i18n-en">All</span></button>
+            <button type="button" data-short-filter="demon" aria-pressed="false"><span class="i18n-ko">귀멸의 칼날</span><span class="i18n-en">Demon Slayer</span></button>
+            <button type="button" data-short-filter="anime" aria-pressed="false"><span class="i18n-ko">기타 애니메이션</span><span class="i18n-en">Other anime</span></button>
+            <button type="button" data-short-filter="robot" aria-pressed="false"><span class="i18n-ko">로봇 액션</span><span class="i18n-en">Robot action</span></button>
+        </div>
         <div class="media-shorts-grid">
-            <a href="https://www.youtube.com/shorts/gQ4Ip6cyr1U" target="_blank" rel="noopener" class="media-shorts-link">
+            <a href="https://www.youtube.com/shorts/gQ4Ip6cyr1U" target="_blank" rel="noopener" class="media-shorts-link" data-short-kind="anime">
                 <img class="media-shorts-thumb" src="https://img.youtube.com/vi/gQ4Ip6cyr1U/maxresdefault.jpg" alt="" loading="lazy">
                 <div class="media-shorts-title i18n-ko">체인소맨 Rev It Up</div><div class="media-shorts-title i18n-en">Chainsaw Man Rev It Up</div><div class="media-shorts-play-overlay" aria-hidden="true"><span>▶</span></div>
             </a>
-            <a href="https://www.youtube.com/shorts/z-2LOBuWos8" target="_blank" rel="noopener" class="media-shorts-link">
+            <a href="https://www.youtube.com/shorts/z-2LOBuWos8" target="_blank" rel="noopener" class="media-shorts-link" data-short-kind="anime">
                 <img class="media-shorts-thumb" src="https://img.youtube.com/vi/z-2LOBuWos8/maxresdefault.jpg" alt="" loading="lazy">
                 <div class="media-shorts-title i18n-ko">주술회전 영역전개</div><div class="media-shorts-title i18n-en">Jujutsu Kaisen Domain Expansion</div><div class="media-shorts-play-overlay" aria-hidden="true"><span>▶</span></div>
             </a>
-            <a href="https://www.youtube.com/shorts/pGibrT9Pp3I" target="_blank" rel="noopener" class="media-shorts-link">
+            <a href="https://www.youtube.com/shorts/pGibrT9Pp3I" target="_blank" rel="noopener" class="media-shorts-link" data-short-kind="demon">
                 <img class="media-shorts-thumb" src="https://img.youtube.com/vi/pGibrT9Pp3I/maxresdefault.jpg" alt="" loading="lazy">
                 <div class="media-shorts-title i18n-ko">귀멸의칼날 벽력일섬</div><div class="media-shorts-title i18n-en">Demon Slayer Thunderclap and Flash</div><div class="media-shorts-play-overlay" aria-hidden="true"><span>▶</span></div>
             </a>
-            <a href="https://www.youtube.com/shorts/VXWdSOXGwKQ" target="_blank" rel="noopener" class="media-shorts-link">
+            <a href="https://www.youtube.com/shorts/VXWdSOXGwKQ" target="_blank" rel="noopener" class="media-shorts-link" data-short-kind="demon">
                 <img class="media-shorts-thumb" src="https://img.youtube.com/vi/VXWdSOXGwKQ/maxresdefault.jpg" alt="" loading="lazy">
                 <div class="media-shorts-title i18n-ko">귀멸의칼날 난리났어</div><div class="media-shorts-title i18n-en">Demon Slayer What a Riot</div><div class="media-shorts-play-overlay" aria-hidden="true"><span>▶</span></div>
             </a>
-            <a href="https://www.youtube.com/shorts/XjSUJRduAzI" target="_blank" rel="noopener" class="media-shorts-link">
+            <a href="https://www.youtube.com/shorts/XjSUJRduAzI" target="_blank" rel="noopener" class="media-shorts-link" data-short-kind="robot">
                 <img class="media-shorts-thumb" src="https://img.youtube.com/vi/XjSUJRduAzI/maxresdefault.jpg" alt="" loading="lazy">
                 <div class="media-shorts-title i18n-ko">로봇전쟁 Final Round</div><div class="media-shorts-title i18n-en">Robot War Final Round</div><div class="media-shorts-play-overlay" aria-hidden="true"><span>▶</span></div>
             </a>
-            <a href="https://www.youtube.com/shorts/MYlAYewAdu4" target="_blank" rel="noopener" class="media-shorts-link">
+            <a href="https://www.youtube.com/shorts/MYlAYewAdu4" target="_blank" rel="noopener" class="media-shorts-link" data-short-kind="demon">
                 <img class="media-shorts-thumb" src="https://img.youtube.com/vi/MYlAYewAdu4/maxresdefault.jpg" alt="" loading="lazy">
                 <div class="media-shorts-title i18n-ko">귀멸의칼날 촬영준비</div><div class="media-shorts-title i18n-en">Demon Slayer Preparing for the Shoot</div><div class="media-shorts-play-overlay" aria-hidden="true"><span>▶</span></div>
             </a>
-            <a href="https://www.youtube.com/shorts/0d-rUizVukQ" target="_blank" rel="noopener" class="media-shorts-link">
+            <a href="https://www.youtube.com/shorts/0d-rUizVukQ" target="_blank" rel="noopener" class="media-shorts-link" data-short-kind="demon">
                 <img class="media-shorts-thumb" src="https://img.youtube.com/vi/0d-rUizVukQ/maxresdefault.jpg" alt="" loading="lazy">
                 <div class="media-shorts-title i18n-ko">귀멸의칼날 촬영 비하인드</div><div class="media-shorts-title i18n-en">Demon Slayer Behind the Scenes</div><div class="media-shorts-play-overlay" aria-hidden="true"><span>▶</span></div>
             </a>
-            <a href="https://www.youtube.com/shorts/tgR1Kq3fGWE" target="_blank" rel="noopener" class="media-shorts-link">
+            <a href="https://www.youtube.com/shorts/tgR1Kq3fGWE" target="_blank" rel="noopener" class="media-shorts-link" data-short-kind="demon">
                 <img class="media-shorts-thumb" src="https://img.youtube.com/vi/tgR1Kq3fGWE/maxresdefault.jpg" alt="" loading="lazy">
                 <div class="media-shorts-title i18n-ko">귀멸의칼날 Flash bang</div><div class="media-shorts-title i18n-en">Demon Slayer Flash Bang</div><div class="media-shorts-play-overlay" aria-hidden="true"><span>▶</span></div>
             </a>
@@ -257,15 +267,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         const videoData = [
             {
                 id: 'kAkGg2t1Ats',
-                title_ko: "이게 AI 로 되네? 그냥 만들어본 뮤직비디오 'FURIOUS 💥'",
-                title_en: "Is this AI? Music Video 'FURIOUS 💥'",
+                title_ko: "FURIOUS",
+                title_en: "FURIOUS",
                 badge_ko: '뮤직비디오', badge_en: 'Music video',
                 desc_ko: '거대한 폭발과 공중전이 펼쳐지는 디스토피아적 사이버펑크 액션을 오리지널 음악과 생성형 AI 비주얼로 구성한 뮤직비디오입니다. 전쟁과 충돌이 남기는 상처에 대한 분노와 안타까움이 작품의 정서를 이룹니다.',
                 desc_en: 'A dystopian cyberpunk action music video featuring large-scale explosions and aerial combat, built around original music and generative AI visuals, with an emotional undercurrent shaped by the human cost of conflict.'
             },
 {
                 id: 'byxLKvBHULk',
-                title_ko: '역대급 출연진 귀칼 실사 촬영 현장 #귀멸의칼날',
+                title_ko: '귀멸의 칼날 실사 촬영 현장',
                 title_en: 'Behind the Scenes of Demon Slayer Live-Action',
                 badge_ko: '팬 콘셉트 영상', badge_en: 'Fan concept film',
                 desc_ko: '인기 일본 애니메이션 귀멸의 칼날에 등장하는 캐릭터들이 실제 영화나 드라마의 촬영 현장에 존재한다면 어떤 모습일지를 상상해 AI 영상으로 만들어본 작품입니다. 애니메이션 캐릭터와 현실적인 촬영 공간을 결합해 애니메이션과 실사의 경계를 넘나드는 장면을 표현했습니다.',
@@ -273,8 +283,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             },
             {
                 id: 'vlt7VfCA8bM',
-                title_ko: '사랑한다고 뮤직비디오',
-                title_en: 'Love Song Music Video',
+                title_ko: '사랑한다고',
+                title_en: 'Love Song',
                 badge_ko: '뮤직비디오', badge_en: 'Music video',
                 desc_ko: '소중한 가족, 친구, 연인을 먼저 떠나보낸 사람들이 느끼는 말로 다 표현할 수 없는 슬픔과 그리움을 담아낸 뮤직비디오입니다. 이별 이후에도 마음속에 남아 있는 사랑과 추억을 음악과 영상으로 표현하고자 했습니다.',
                 desc_en: 'A music video expressing the indescribable grief and longing felt by those who have lost a beloved family member, friend, or partner. It was created to capture the love and memories that remain in the heart even after farewell.'
@@ -282,92 +292,117 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         ];
 
         let activeVideoIndex = 0;
+        const film = id => document.getElementById(id);
+        const filmLanguage = () => document.documentElement.lang === 'en' ? 'en' : 'ko';
+        const filmBehavior = () => matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth';
 
-        function expandToLandscape() {
-            const iframe = document.getElementById('main-video-player');
-            if (!iframe) return;
-            if (iframe.requestFullscreen) iframe.requestFullscreen().then(lockLandscape).catch(() => {});
-            else if (iframe.webkitRequestFullscreen) { iframe.webkitRequestFullscreen(); lockLandscape(); }
+        function updateMainVideoInfo() {
+            const language=filmLanguage();
+            const video=videoData[activeVideoIndex];
+            film('main-video-title').textContent=video['title_'+language];
+            film('main-video-badge').textContent=video['badge_'+language];
+            film('main-video-desc').textContent=video['desc_'+language];
+            film('watch-on-youtube').href='https://www.youtube.com/watch?v='+video.id;
+            const poster='https://img.youtube.com/vi/'+video.id+'/hqdefault.jpg';
+            if(film('film-poster').getAttribute('src')!==poster)film('film-poster').src=poster;
+            const player=film('main-video-player');
+            if(player)player.title=video['title_'+language];
         }
-        function lockLandscape() {
-            if (window.screen && screen.orientation && screen.orientation.lock) {
-                screen.orientation.lock('landscape').catch(() => {});
+
+        function startFilm(moveToScreen=false) {
+            const video=videoData[activeVideoIndex];
+            let player=film('main-video-player');
+            if(!player){
+                player=document.createElement('iframe');
+                player.id='main-video-player';
+                player.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen';
+                player.allowFullscreen=true;
+                player.tabIndex=0;
+                film('main-video-container').append(player);
+            }
+            if(player.dataset.video!==video.id){
+                player.dataset.video=video.id;
+                player.src='https://www.youtube.com/embed/'+video.id+'?autoplay=1&playsinline=1';
+            }
+            player.title=video['title_'+filmLanguage()];
+            film('film-poster').hidden=true;
+            film('film-fullscreen').hidden=false;
+            if(moveToScreen){
+                player.focus({preventScroll:true});
+                film('main-video-container').scrollIntoView({behavior:filmBehavior(),block:'center'});
             }
         }
 
-        function updateMainVideoInfo() {
-            const lang = (typeof window.getCurrentLang === 'function') ? window.getCurrentLang() : 'ko';
-            const v = videoData[activeVideoIndex];
-            if (!v) return;
-            const mainTitle = document.getElementById('main-video-title');
-            const mainBadge = document.getElementById('main-video-badge');
-            const mainDesc  = document.getElementById('main-video-desc');
-            if (mainTitle) mainTitle.textContent = v[`title_${lang}`];
-            if (mainBadge) mainBadge.textContent = v[`badge_${lang}`];
-            if (mainDesc) mainDesc.textContent = v[`desc_${lang}`];
-            document.getElementById('main-video-player').title = v[`title_${lang}`];
-            document.getElementById('watch-on-youtube').href = 'https://www.youtube.com/watch?v=' + v.id;
-        }
-
-        function escapeFeaturedText(value) {
-            return String(value || '').replace(/[&<>"']/g, function (char) {
-                return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char];
+        function syncFeaturedNav() {
+            film('featured-track').querySelectorAll('button[data-film]').forEach(button=>{
+                const selected=Number(button.dataset.film)===activeVideoIndex;
+                button.classList.toggle('active',selected);
+                button.setAttribute('aria-pressed',String(selected));
             });
         }
 
         function renderFeaturedNav() {
-            const lang = (typeof window.getCurrentLang === 'function') ? window.getCurrentLang() : 'ko';
-            const track = document.getElementById('featured-track');
-            if (!track) return;
-            track.innerHTML = videoData.map((v, i) => {
-                const title = v[`title_${lang}`] || v.title_ko;
-                const badge = v[`badge_${lang}`] || v.badge_ko;
-                const selected = i === activeVideoIndex;
-                return '<button type="button" class="featured-card' + (selected ? ' active' : '') + '" onclick="loadMainVideo(' + i + ', true)" aria-pressed="' + selected + '" aria-label="' + escapeFeaturedText(title) + '">' +
-                    '<img class="featured-card-thumb" src="https://img.youtube.com/vi/' + v.id + '/mqdefault.jpg" alt="" loading="lazy">' +
-                    '<span class="featured-card-copy">' +
-                        '<span class="featured-card-badge">' + escapeFeaturedText(badge) + '</span>' +
-                        '<span class="featured-card-label">' + escapeFeaturedText(title) + '</span>' +
-                    '</span>' +
-                    '<span class="featured-card-play" aria-hidden="true">' + (selected ? '▶' : '▷') + '</span>' +
-                '</button>';
-            }).join('');
+            const language=filmLanguage();
+            const track=film('featured-track');
+            track.replaceChildren(...videoData.map((video,index)=>{
+                const button=document.createElement('button');
+                button.type='button';
+                button.className='film-pick';
+                button.dataset.film=String(index);
+                button.innerHTML='<span class="film-pick-art"><img alt="" width="320" height="180" loading="lazy"><span class="film-pick-play" aria-hidden="true">▶</span></span><span class="film-pick-label"><small></small><strong></strong></span>';
+                button.querySelector('img').src='https://img.youtube.com/vi/'+video.id+'/mqdefault.jpg';
+                button.querySelector('small').textContent=video['badge_'+language];
+                button.querySelector('strong').textContent=video['title_'+language];
+                button.addEventListener('click',()=>loadMainVideo(index,true));
+                return button;
+            }));
+            syncFeaturedNav();
         }
 
-        function loadMainVideo(i, fromPicker = false) {
-            activeVideoIndex = i;
-            const v = videoData[i];
-            if (!v) return;
-            const mainPlayer = document.getElementById('main-video-player');
-            if (mainPlayer && mainPlayer.src.indexOf(v.id) === -1) {
-                mainPlayer.src = 'https://www.youtube.com/embed/' + v.id + '?autoplay=1&enablejsapi=1';
-            }
+        function loadMainVideo(index, play=false) {
+            const video=videoData[index];
+            if(!video)return;
+            activeVideoIndex=index;
             updateMainVideoInfo();
-            renderFeaturedNav();
-            window.__movieActiveVideoIndex = i;
-            window.dispatchEvent(new CustomEvent('movieVideoChanged', { detail: { index: i, id: v.id } }));
-            if (fromPicker) document.querySelectorAll('.featured-card')[i]?.focus({preventScroll:true});
-            if (!fromPicker || matchMedia('(max-width: 760px)').matches)
-                document.getElementById('screening').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
+            syncFeaturedNav();
+            if(play)startFilm(true);
+            else{
+                film('main-video-player')?.remove();
+                film('film-poster').hidden=false;
+                film('film-fullscreen').hidden=true;
+                film('screening').scrollIntoView({behavior:filmBehavior()});
+            }
+            window.__movieActiveVideoIndex=index;
+            window.dispatchEvent(new CustomEvent('movieVideoChanged',{detail:{index,id:video.id}}));
         }
-        function safeNavigate(url) { if (url && url.trim() !== '') window.location.assign(url); }
 
-        // Chris's Pick deep links: select the requested video and bring the player into view.
-        function openVideoFromHash() {
-            const hash = (window.location.hash || '').slice(1).toLowerCase();
-            const hashVideoIds = {
-                furious: 'kAkGg2t1Ats',
-                iloveyou: 'vlt7VfCA8bM',
-                'saranghandago': 'vlt7VfCA8bM'
-            };
-            const targetId = hashVideoIds[hash];
-            if (!targetId) return;
-            const index = videoData.findIndex(function(video) { return video.id === targetId; });
-            if (index < 0) return;
-            loadMainVideo(index);
+        film('film-play-button').addEventListener('click',()=>startFilm(true));
+        film('film-fullscreen').addEventListener('click',async()=>{
+            const player=film('main-video-player');
+            if(!player)return;
+            try{
+                if(player.requestFullscreen)await player.requestFullscreen();
+                else player.webkitRequestFullscreen?.();
+                await screen.orientation?.lock?.('landscape');
+            }catch{}
+        });
+        function openVideoFromHash(){
+            const hash=window.location.hash.slice(1).toLowerCase();
+            const ids={furious:'kAkGg2t1Ats',iloveyou:'vlt7VfCA8bM',saranghandago:'vlt7VfCA8bM'};
+            const index=videoData.findIndex(video=>video.id===ids[hash]);
+            if(index>=0)loadMainVideo(index);
         }
-        window.addEventListener('DOMContentLoaded', openVideoFromHash);
-        window.addEventListener('hashchange', openVideoFromHash);
+
+        const filters=[...document.querySelectorAll('[data-short-filter]')];
+        const shortFilms=[...document.querySelectorAll('.media-shorts-link')];
+        filters.forEach(button=>button.addEventListener('click',()=>{
+            filters.forEach(filter=>filter.setAttribute('aria-pressed',String(filter===button)));
+            const category=button.dataset.shortFilter;
+            shortFilms.forEach(short=>{short.hidden=category!=='all'&&short.dataset.shortKind!==category});
+        }));
+        updateMainVideoInfoAndList();
+        window.addEventListener('DOMContentLoaded',openVideoFromHash);
+        window.addEventListener('hashchange',openVideoFromHash);
     </script>
 
     <!-- Shared site navigation -->

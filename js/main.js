@@ -1,3 +1,178 @@
+/* Home screen installation */
+(() => {
+  'use strict';
+
+  const sites = {
+    'https://chrisleepapa.com': { name: 'ChrisPapa', icon: '/images/icon-192.png?v=studio-blue', theme: 'creative' },
+    'https://faith.chrisleepapa.com': { name: 'Faith', icon: '/icons/icon-192.png?v=faith-teal', theme: 'faith' }
+  };
+  const site = sites[location.origin];
+  if (!site) return;
+
+  const standalone = window.matchMedia('(display-mode: standalone), (display-mode: window-controls-overlay)');
+  const installedMode = () => standalone.matches || navigator.standalone === true;
+  if (installedMode()) return;
+
+  const userAgent = navigator.userAgent;
+  const appleMobile = /iPhone|iPad|iPod/.test(userAgent)
+    || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const appleSafari = appleMobile && /Version\//.test(userAgent) && /Safari\//.test(userAgent)
+    && !/CriOS|FxiOS|EdgiOS|OPiOS/.test(userAgent);
+  const androidChrome = /Android/.test(userAgent) && Number(userAgent.match(/Chrome\/(\d+)/)?.[1]) >= 84
+    && !/SamsungBrowser|EdgA|OPR\/|Whale|UCBrowser|MiuiBrowser|YaBrowser|DuckDuckGo|; wv\)/.test(userAgent);
+  const canCheckInstalled = typeof navigator.getInstalledRelatedApps === 'function';
+  const copy = {
+    ko: {
+      title: '홈 화면에 추가', description: '아이콘을 눌러 바로 열어 보세요.',
+      install: '추가하기', later: '나중에', installed: '이미 추가했어요',
+      ios: 'Safari의 공유 메뉴에서 ‘홈 화면에 추가’를 선택하세요. ‘웹 앱으로 열기’가 보이면 켜고 추가하세요.',
+      android: 'Chrome 메뉴(⋮)에서 ‘홈 화면에 추가’ 또는 ‘앱 설치’를 선택하세요.'
+    },
+    en: {
+      title: 'Add to your home screen', description: 'Open it in one tap from its icon.',
+      install: 'Add app', later: 'Not now', installed: 'Already added',
+      ios: 'In Safari, open Share and choose Add to Home Screen. Turn on Open as Web App if shown, then tap Add.',
+      android: 'Open the Chrome menu (⋮) and choose Add to Home screen or Install app.'
+    }
+  };
+  const stateKey = 'clp-home-screen-install';
+  const sevenDays = 7 * 24 * 60 * 60 * 1000;
+  let nativeOffer = null;
+  let detectedInstall = false;
+  let canOfferAndroidInstructions = false;
+  let manualReady = false;
+  let dismissedThisPage = false;
+  let instructionsOpen = false;
+  let asking = false;
+  let card;
+  let parts;
+
+  function readPreference() {
+    try { return localStorage.getItem(stateKey); } catch { return null; }
+  }
+
+  function hideCard() {
+    if (card) card.hidden = true;
+  }
+
+  function dismiss(alreadyInstalled = false) {
+    dismissedThisPage = true;
+    try {
+      localStorage.setItem(stateKey, alreadyInstalled ? 'already-added' : String(Date.now() + sevenDays));
+    } catch {}
+    hideCard();
+  }
+
+  function render() {
+    const stored = readPreference();
+    const manual = manualReady && (appleSafari || canOfferAndroidInstructions);
+    if (detectedInstall || installedMode() || dismissedThisPage || stored === 'already-added'
+      || Number(stored) > Date.now() || (!nativeOffer && !manual)) {
+      hideCard();
+      return;
+    }
+    if (!document.body || asking) return;
+    if (!card) mount();
+
+    const words = copy[document.documentElement.lang.startsWith('en') ? 'en' : 'ko'];
+    parts.title.textContent = words.title + ' · ' + site.name;
+    parts.description.textContent = words.description;
+    parts.add.textContent = words.install;
+    parts.later.textContent = words.later;
+    parts.installed.textContent = words.installed;
+    parts.help.textContent = appleSafari ? words.ios : words.android;
+    parts.help.hidden = !manual || !instructionsOpen;
+    parts.installed.hidden = !manual;
+    card.hidden = false;
+  }
+
+  async function add() {
+    if (!nativeOffer) {
+      instructionsOpen = true;
+      render();
+      return;
+    }
+    const offer = nativeOffer;
+    asking = true;
+    nativeOffer = null;
+    hideCard();
+    try {
+      const result = await offer.prompt();
+      const choice = result?.outcome ? result : await offer.userChoice;
+      if (choice?.outcome === 'accepted') detectedInstall = true;
+      else dismiss();
+    } catch {
+      instructionsOpen = true;
+    } finally {
+      asking = false;
+      render();
+    }
+  }
+
+  function mount() {
+    card = document.createElement('aside');
+    card.className = 'home-install home-install--' + site.theme;
+    card.setAttribute('aria-labelledby', 'home-install-title');
+    card.hidden = true;
+    card.innerHTML = '<img class="home-install-icon" alt="" width="44" height="44">'
+      + '<div class="home-install-copy"><strong id="home-install-title"></strong><p></p></div>'
+      + '<div class="home-install-actions"><button class="home-install-add" type="button"></button>'
+      + '<button class="home-install-later" type="button"></button>'
+      + '<button class="home-install-done" type="button" hidden></button></div>'
+      + '<p class="home-install-help" role="status" hidden></p>';
+    const select = selector => card.querySelector(selector);
+    select('img').src = site.icon;
+    parts = {
+      title: select('strong'), description: select('.home-install-copy p'), add: select('.home-install-add'),
+      later: select('.home-install-later'), installed: select('.home-install-done'), help: select('.home-install-help')
+    };
+    parts.add.addEventListener('click', add);
+    parts.later.addEventListener('click', () => dismiss());
+    parts.installed.addEventListener('click', () => dismiss(true));
+    document.body.append(card);
+    new MutationObserver(render).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+  }
+
+  window.addEventListener('beforeinstallprompt', event => {
+    event.preventDefault();
+    if (typeof event.prompt === 'function') nativeOffer = event;
+    render();
+  });
+  window.addEventListener('appinstalled', () => {
+    nativeOffer = null;
+    detectedInstall = true;
+    hideCard();
+  });
+  standalone.addEventListener?.('change', render);
+  window.addEventListener('storage', event => {
+    if (event.key === stateKey || event.key === null) render();
+  });
+
+  async function start() {
+    if (canCheckInstalled) {
+      try {
+        const apps = await navigator.getInstalledRelatedApps();
+        detectedInstall ||= apps.some(app => app.platform === 'webapp'
+          && (app.id === location.origin + '/' || app.id === location.origin
+            || (app.url && new URL(app.url, location.origin).origin === location.origin)));
+        canOfferAndroidInstructions = androidChrome && !detectedInstall;
+      } catch {}
+    }
+    render();
+    if (appleSafari || canOfferAndroidInstructions) {
+      window.setTimeout(() => {
+        manualReady = true;
+        render();
+      }, 1600);
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start, { once: true });
+  } else {
+    start();
+  }
+})();
+
 
 /* Theme preference: default to light mode; keep the user's saved choice. */
 (function(){

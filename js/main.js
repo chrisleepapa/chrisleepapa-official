@@ -121,7 +121,7 @@ function initScrollProgress(){const bar=document.getElementById('scroll-progress
 function initNavScroll(){const nav=document.getElementById('main-nav');if(!nav)return;const update=()=>nav.classList.toggle('scrolled',(window.scrollY||0)>40);window.addEventListener('scroll',update,{passive:true});update();}
 function initActiveNavLink(){
   const page = getCurrentPageKey();
-  const journal = /^journal(?:-[1-6])?$/.test(page);
+  const journal = /^journal(?:-\d+)?$/.test(page);
   const work = /^(?:sistersquad(?:-hub|2)?|yul|jung|miracleshot|music|movie|wallpaper)$/.test(page);
   const section = journal ? 'journal' : work ? 'works' : page;
   function update(){

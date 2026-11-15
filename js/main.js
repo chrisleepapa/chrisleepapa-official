@@ -268,6 +268,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
    Pages that already load guestbook.js keep their existing single instance. */
 (function ensureSharedGuestbook(){
   function loadGuestbookIfNeeded(){
+    if(!/^\/guestbook(?:\.html)?\/?$/i.test(window.location.pathname)) return;
     if(!document.getElementById('site-footer')) return;
     if(document.getElementById('guestbook-section')) return;
     if(Array.from(document.scripts).some(script => /(?:^|\/)guestbook\.js(?:[?#]|$)/i.test(script.getAttribute('src') || ''))) return;

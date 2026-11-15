@@ -136,3 +136,8 @@
 - 과거 정상 쇼츠 섹션 8개를 그대로 복원. 영상 ID: gQ4Ip6cyr1U, z-2LOBuWos8, pGibrT9Pp3I, VXWdSOXGwKQ, XjSUJRduAzI, MYlAYewAdu4, 0d-rUizVukQ, tgR1Kq3fGWE.
 - 대표 영상은 기존 FURIOUS와 사랑한다고 2개를 유지하되 재생기는 하나만 두고 선택 목록을 모바일 세로 2행, 데스크톱 2열로 압축. Shorts는 모바일 2열, 데스크톱 4열로 단순화. Movie AdSense 제외 유지.
 - develop 커밋 6b2ecda. 실제 브라우저/모바일 영상 재생·외부 YouTube 접근 및 Vercel READY/Production은 검증 전.
+
+## 21. Movie 대표 영상 3편 원상 복구 (2026-11-16)
+- 사용자가 대표 영상은 FURIOUS, 귀멸의 칼날 실사 촬영 현장, 사랑한다고 총 3편임을 지적. 과거 movie.html 커밋 64bd3311f에서 실제 videoData 3편 확인. 이후 현재 develop에서는 귀멸의 칼날 ID byxLKvBHULk가 빠져 있었음.
+- 기존 한국어·영어 제목/설명/배지를 그대로 복구하고 대표 영상 카운터를 2 VIDEOS에서 3 VIDEOS로 수정. 재생기는 하나, 선택 가능한 영상 3편. 쇼츠 8개 복구 상태 유지.
+- develop 커밋 a99faed. Production 및 모바일 영상 재생은 미검증. 팬 콘셉트 영상이라는 성격을 명확히 유지.

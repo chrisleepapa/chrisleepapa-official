@@ -147,3 +147,8 @@
 - movie.html: 기존 누적 인트로 보정 CSS 4개 정리, 시네마틱 타이포그래피, 단일 16:9 재생 화면, 대표 영상 3편 선택 목록, 쇼츠 8편의 모바일 2열/PC 4열 아카이브, 단순한 제작 노트 구성. 영상 ID kAkGg2t1Ats/byxLKvBHULk/vlt7VfCA8bM 및 Shorts 8편 보존 확인. 개발 커밋 2946ce6.
 - music.html: 이전 누적 인트로 CSS 3개 정리, 웜 페이퍼+코발트 컬러, 콤팩트한 플레이어/앨범 선택 영역, 독립적인 음악 아카이브와 제작 기록. 기존 LP 장치와 Spotify/YouTube 연결 데이터 유지. 개발 커밋 e6844a4.
 - 아직 미확인: 실제 브라우저 렌더링, 모바일 클릭/재생, 최신 Vercel 배포, Production. 소스 코드 반영과 운영 반영을 혼동하지 말 것.
+
+## 23. Movie 모바일 제작 기록 전면 정리 및 Vercel 배포 한도 확인 (2026-11-16)
+- 사용자 제공 모바일 스크린샷: FURIOUS 제작 기록이 흰색 둥근 카드 안에서 큰 본문/과도한 줄 간격으로 표시되어 불편. movie.html에 `movie-reading-final` 스타일을 추가해 카드 테두리·배경·그림자 제거, 제목/본문 계층 재정리, 모바일 1열 읽기 구성. 기존 설명 및 영상 링크 유지. 개발 커밋 ee7dd770.
+- 소스 확인: `videoData` 3개(kAkGg2t1Ats, byxLKvBHULk, vlt7VfCA8bM), Shorts 링크 8개가 develop에 존재함. 현재 화면에 1개만 보이는 이유는 최신 코드가 실제 배포되지 않았기 때문일 가능성이 높으나, 배포된 파일/런타임의 실제 상태는 별도 검증 필요.
+- 최신 develop SHA ee7dd770으로 Vercel `create_deployment` 직접 호출했으나 402 `api-deployments-free-per-day`(무료 플랜 하루 100회 초과), retryAfter 86400 오류. **배포 불가** 확인. 추가 유료 업그레이드/크레딧 사용하지 않음. Production 변경 없음. 배포 한도 초기화 후 단일 배포, 실제 모바일 검증, 운영 반영 필요.

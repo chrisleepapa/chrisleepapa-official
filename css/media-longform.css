@@ -1,0 +1,166 @@
+.media-editorial {
+  --editorial-still: #141c35;
+  --editorial-tint: #e8ebf8;
+  --editorial-serif: 'Noto Serif KR', Georgia, serif;
+  padding-block-start: clamp(20px,4vw,42px);
+  border-top: 1px solid var(--rule);
+}
+html[data-theme="dark"] .media-editorial { --editorial-tint: #252b45; }
+.media-editorial .editorial-header { margin-bottom: clamp(20px,4vw,44px); max-width: 710px; }
+.media-editorial .editorial-header h2 {
+  font-size: clamp(1.95rem,4.4vw,3.7rem);
+  letter-spacing: -.055em;
+  line-height: 1.08;
+}
+.media-editorial p {
+  margin: 0 0 1em;
+  color: var(--subtle);
+  font-size: 1rem;
+  line-height: 1.72;
+}
+.editorial-header p { margin: 12px 0 0; }
+.media-editorial blockquote {
+  margin: 1.2em 0;
+  padding: 2px 0 2px 16px;
+  border-inline-start: 3px solid var(--accent);
+  color: var(--ink);
+  font: 600 clamp(1.05rem,2.3vw,1.36rem)/1.6 var(--editorial-serif);
+  letter-spacing: -.025em;
+}
+.media-editorial .editorial-link { color: var(--accent); font-size: .89rem; font-weight: 780; text-underline-offset: .18em; }
+.media-editorial .editorial-kicker {
+  margin: 0 0 8px;
+  color: var(--accent);
+  font-size: .77rem;
+  font-weight: 800;
+  letter-spacing: .04em;
+}
+.media-editorial .editorial-deck {
+  margin: 10px 0 0;
+  font-size: 1.04rem;
+  font-weight: 650;
+  color: var(--ink);
+}
+
+.film-essay {
+  display: grid;
+  grid-template-columns: minmax(0,1.13fr) minmax(0,1fr);
+  grid-template-areas: "visual title" "visual prose";
+  grid-template-rows: auto 1fr;
+  gap: 13px clamp(20px,5vw,62px);
+  border-top: 1px solid var(--rule);
+  padding: clamp(20px,4vw,42px) 0;
+}
+.film-essay--reverse { grid-template-columns: minmax(0,1fr) minmax(0,1.13fr); grid-template-areas: "title visual" "prose visual"; }
+.film-essay-head { grid-area: title; }
+.film-essay-prose { grid-area: prose; min-width: 0; }
+.media-editorial .film-essay-head h3 {
+  margin: 0;
+  font: 650 clamp(1.65rem,3.6vw,3rem)/1.22 var(--editorial-serif);
+  letter-spacing: -.05em;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+.film-essay-visual { grid-area: visual; margin: 0; align-self: start; }
+.film-essay-visual img {
+  display: block; width: 100%; height: auto; aspect-ratio: 16/10; object-fit: cover;
+  border-radius: 12px; background: var(--editorial-still);
+}
+.film-essay-visual figcaption { padding: 7px 0 0; color: var(--subtle); font-size: .76rem; }
+.media-editorial.editorial-about {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) minmax(0,1.12fr);
+  gap: 14px clamp(20px,5vw,62px);
+  padding: clamp(18px,3.5vw,40px);
+  border: 0;
+  border-radius: 14px;
+  background: var(--editorial-tint);
+}
+.media-editorial.editorial-about h3 { margin-top: 0; }
+.media-editorial.editorial-about p { margin: 10px 0 0; }
+
+.editorial-process {
+  background: var(--editorial-tint);
+  padding: clamp(17px,3.6vw,38px);
+  border-radius: 14px;
+}
+.media-editorial .editorial-process > h3 { margin: 0 0 13px; color: var(--ink); font-size: clamp(1.22rem,2.6vw,1.85rem); }
+.editorial-process ol {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 13px clamp(12px,2.6vw,32px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: release-step;
+}
+.editorial-process li { counter-increment: release-step; padding-top: 12px; border-top: 1px solid var(--rule); }
+.editorial-process li::before { content: "0" counter(release-step); color: var(--accent); font-size: .85rem; font-weight: 800; }
+.media-editorial .editorial-process li h3 { margin: 4px 0 7px; font-size: 1.02rem; }
+.media-editorial .editorial-process p { margin: 0; }
+
+.editorial-music-essay {
+  display: grid;
+  grid-template-columns: minmax(0,.74fr) minmax(0,1fr);
+  gap: 20px clamp(20px,6vw,75px);
+  padding-top: clamp(27px,5vw,65px);
+  align-items: start;
+}
+.media-editorial .editorial-essay-lead h3 {
+  margin-top: 0;
+  font: 650 clamp(1.45rem,3vw,2.42rem)/1.25 var(--editorial-serif);
+}
+.editorial-essay-part { border-top: 1px solid var(--rule); padding: 13px 0 0; }
+.media-editorial .editorial-essay-part h4 { margin: 0 0 6px; color: var(--ink); font-size: 1.03rem; }
+.editorial-choices { display: grid; gap: 8px; margin: 0 0 18px; }
+.editorial-choices div { color: var(--subtle); font-size: .94rem; line-height: 1.6; }
+.editorial-choices strong { display: inline-block; color: var(--accent); margin-inline-end: 8px; }
+
+.music-note-entry { border-top: 1px solid var(--rule); }
+.music-note-entry:last-child { border-bottom: 1px solid var(--rule); }
+.music-note-entry > summary {
+  display: grid; grid-template-columns: 64px minmax(0,1fr) 18px; gap: 13px; align-items: center; cursor: pointer;
+  padding: 12px 3px; list-style: none;
+}
+.music-note-entry > summary::-webkit-details-marker { display: none; }
+.music-note-entry > summary:hover .music-note-caption strong { color: var(--accent); }
+.music-note-cover {
+  display: block; width: 64px; aspect-ratio: 1; border-radius: 7px; overflow: hidden; background: var(--editorial-tint);
+}
+.music-note-cover img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.music-note-caption { min-width: 0; }
+.music-note-caption strong { display: block; color: var(--ink); font-size: 1.11rem; line-height: 1.24; overflow-wrap: anywhere; }
+.music-note-caption > span { display: block; margin-top: 5px; color: var(--subtle); font-size: .91rem; line-height: 1.47; }
+.music-note-chevron { width: 9px; height: 9px; border: solid var(--accent); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+.music-note-entry[open] .music-note-chevron { transform: rotate(225deg); }
+.music-note-body {
+  display: grid;
+  grid-template-columns: minmax(0,1.15fr) minmax(0,1fr);
+  gap: 9px 22px;
+  padding: 0 3px 18px 80px;
+}
+.media-editorial .music-note-body h3 { margin: 0 0 5px; font-size: .99rem; }
+.music-note-listening { padding: 12px; border-inline-start: 2px solid var(--accent); background: var(--editorial-tint); }
+.media-editorial .music-note-listening p, .media-editorial .music-note-direction p { margin: 0; }
+.music-note-direction { padding: 10px 0; }
+.music-note-prompt { grid-column: 1 / -1; }
+.music-note-prompt summary { color: var(--accent); font-size: .86rem; font-weight: 760; cursor: pointer; }
+.media-editorial .music-note-prompt p { margin: 8px 0 2px; font-size: .83rem; }
+.music-note-prompt pre { margin: 0; padding: 9px 0; font: inherit; font-size: .89rem; color: var(--ink); white-space: pre-wrap; overflow-wrap: anywhere; }
+
+@media(max-width: 760px) {
+  .film-essay, .film-essay--reverse {
+    grid-template-columns: minmax(0,1fr);
+    grid-template-areas: "title" "visual" "prose";
+    grid-template-rows: auto;
+    gap: 13px;
+  }
+  .media-editorial.editorial-about, .editorial-process ol, .editorial-music-essay, .music-note-body {
+    grid-template-columns: minmax(0,1fr);
+  }
+  .music-note-body { padding: 0 3px 17px; }
+  .music-note-entry > summary { grid-template-columns: 52px minmax(0,1fr) 15px; gap: 10px; }
+  .music-note-cover { width: 52px; }
+  .music-note-caption strong { font-size: 1rem; }
+  .music-note-caption > span { font-size: .85rem; }
+}

@@ -32,11 +32,62 @@ const EN={
 'Zumba ver.1':['High-energy fitness music that invites you to surrender to fantastic beats and move naturally.','Emphasize driving percussion, repeating rhythms, lively bass and bright hooks that keep the body moving during dance and workouts.','Notice whether the beat guides movement, the percussion and bass maintain momentum, and the recurring hooks sustain workout energy.']
 };
 const LABELS={ko:['✦ 작품별 음악 제작 기록','각 작품의 분위기와 주제, 제작 방향, 감상 포인트를 기준으로 정리한 창작 기록입니다. 아래 프롬프트는 실제 입력값을 그대로 인용한 것이 아니라 작품의 성격을 바탕으로 재구성한 참고용 프롬프트입니다. 공개된 작업 정보만으로 확인할 수 없는 제작 이력은 임의로 만들지 않았습니다.','작품의 출발점','제작 방향','감상 포인트','제작 프롬프트','작품의 분위기와 주제를 바탕으로 재구성한 참고용 프롬프트'],en:['✦ MUSIC PRODUCTION NOTES','Creative notes organized around each work’s theme, production direction and listening points. These prompts are illustrative reconstructions, not verbatim records of original inputs. Unverified production details have not been invented.','Creative Starting Point','Production Direction','What to Listen For','Creative Prompt','Illustrative prompt reconstructed from the work’s mood and theme']};
-const old=document.querySelector('.music-creation-notes');if(!old)return;
-const s=document.createElement('section');
-s.className='media-section media-reading music-work-notes';
-s.setAttribute('aria-labelledby','music-production-heading');
-s.innerHTML='<h2 id="music-production-heading"></h2><p class="music-creation-lead"></p><div id="music-production-record-list"></div>';
-old.after(s);
-const list=s.querySelector('#music-production-record-list');function render(){const lang=document.documentElement.lang==='en'?'en':'ko',L=LABELS[lang];s.querySelector('h2').textContent=L[0];s.querySelector('.music-creation-lead').textContent=L[1];list.innerHTML=Object.entries(R).map(([t,v])=>{const b=lang==='en'&&EN[t]?EN[t]:v;return '<article class="music-production-record"><h3>'+t+'</h3><div class="music-production-grid"><div><strong>'+L[2]+'</strong><p>'+b[0]+'</p></div><div><strong>'+L[3]+'</strong><p>'+b[1]+'</p></div><div><strong>'+L[4]+'</strong><p>'+b[2]+'</p></div></div><div class="music-production-prompt"><strong>'+L[5]+'</strong><pre>'+v[3]+'</pre><small>'+L[6]+'</small></div></article>'}).join('')}render();new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+const essay=document.querySelector('.music-creation-notes');
+if(!essay)return;
+const section=document.createElement('section');
+section.className='media-section media-editorial music-work-notes';
+section.setAttribute('aria-labelledby','music-production-heading');
+section.innerHTML='<div class="editorial-header"><h2 id="music-production-heading"></h2><p></p></div><div id="music-production-record-list"></div>';
+essay.after(section);
+
+const list=section.querySelector('#music-production-record-list');
+function render(){
+  const lang=document.documentElement.lang==='en'?'en':'ko';
+  const labels=LABELS[lang];
+  const oldOpen=list.querySelector('details[open]')?.dataset.releaseTitle;
+  const firstRender=!list.childElementCount;
+  section.querySelector('h2').textContent=lang==='en'?'Behind each release':'작품별 제작 노트';
+  section.querySelector('.editorial-header p').textContent=lang==='en'
+    ?'Choose a release to read how it began, how it was shaped, and what to listen for.'
+    :'앨범을 펼치면 작업의 출발점과 제작 방향, 감상 포인트를 볼 수 있습니다.';
+  list.replaceChildren(...Object.entries(R).map(([title,original],index)=>{
+    const notes=lang==='en'&&EN[title]?EN[title]:original;
+    const album=musicData.find(item=>item.title===title);
+    const entry=document.createElement('details');
+    entry.className='music-note-entry';
+    entry.name='music-editorial-notes';
+    entry.dataset.releaseTitle=title;
+    entry.open=oldOpen===title||(firstRender&&index===0);
+    entry.innerHTML=`<summary>
+      <span class="music-note-cover"></span>
+      <span class="music-note-caption"><strong></strong><span></span></span>
+      <span class="music-note-chevron" aria-hidden="true"></span>
+    </summary>
+    <div class="music-note-body">
+      <div class="music-note-direction"><h3></h3><p></p></div>
+      <aside class="music-note-listening"><h3></h3><p></p></aside>
+      <details class="music-note-prompt"><summary></summary><p></p><pre lang="en"></pre></details>
+    </div>`;
+    if(album&&coverCache[album.id]){
+      const image=document.createElement('img');
+      image.src=coverCache[album.id];
+      image.alt='';
+      image.width=image.height=96;
+      image.loading='lazy';
+      entry.querySelector('.music-note-cover').append(image);
+    }
+    entry.querySelector('.music-note-caption strong').textContent=title;
+    entry.querySelector('.music-note-caption span').textContent=notes[0];
+    entry.querySelector('.music-note-direction h3').textContent=labels[3];
+    entry.querySelector('.music-note-direction p').textContent=notes[1];
+    entry.querySelector('.music-note-listening h3').textContent=labels[4];
+    entry.querySelector('.music-note-listening p').textContent=notes[2];
+    entry.querySelector('.music-note-prompt summary').textContent=labels[5];
+    entry.querySelector('.music-note-prompt p').textContent=labels[6];
+    entry.querySelector('.music-note-prompt pre').textContent=original[3];
+    return entry;
+  }));
+}
+render();
+new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 })();

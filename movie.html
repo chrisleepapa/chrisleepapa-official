@@ -46,264 +46,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     <link rel="stylesheet" href="css/common.css">
 
-    <style>
-        /* ── movie.html 전용 스타일 ── */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --gold: #c9a84c; --gold-light: #e8d08a; --cyan: #4a90e2;
-            --bg: #030305; --text: #f0ece4; --text-dim: #9a9490;
-            --nav-height: 70px;
-        }
-        html { scroll-behavior: smooth; background-color: var(--bg); }
-        body {
-            background-color: var(--bg); color: var(--text);
-            font-family: 'Pretendard', 'Noto Serif KR', serif;
-            line-height: 1.6; overflow-x: hidden;
-            background-image:
-                radial-gradient(circle at top left, rgba(20, 20, 40, 0.8), transparent 60%),
-                radial-gradient(circle at bottom right, rgba(10, 10, 25, 0.9), transparent 60%);
-            -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
-        }
-        img { -webkit-user-drag: none; }
-        a { text-decoration: none; color: inherit; }
-        button { appearance: none; background: none; border: 0; padding: 0; font: inherit; color: inherit; }
-        body::before {
-            content: ''; position: fixed; inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-            pointer-events: none; z-index: 900; opacity: 0.3;
-        }
-
-        /* ── 페이지 헤더 ── */
-        .page-header { position: relative; width: 100%; height: 350px; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; padding-top: var(--nav-height); }
-        #stars-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
-        .header-content { position: relative; z-index: 3; text-align: center; animation: fadeUp 1.2s ease both; }
-        .header-title { font-family: 'Cinzel', serif; font-size: clamp(2rem, 8vw, 3.5rem); font-weight: 700; letter-spacing: 0.15em; color: #ffffff; text-shadow: 0 0 20px rgba(255, 255, 255, 0.3); margin-bottom: 10px; }
-        .header-slogan { font-size: clamp(0.85rem, 2vw, 1rem); color: var(--text-dim); letter-spacing: 1px; }
-
-        /* ── 메인 씨어터 ── */
-        .theater-wrapper { max-width: 1100px; margin: 0 auto 40px; padding: 0 20px; animation: fadeUp 1s ease 0.2s both; position: relative; z-index: 10; }
-        .main-screen { position: relative; width: 100%; padding-bottom: 56.25%; background: #000; border-radius: 16px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.8); z-index: 10; }
-        .main-screen iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
-        .expand-landscape-btn {
-            position: absolute; top: 15px; right: 15px;
-            background: rgba(0, 0, 0, 0.7); color: #fff;
-            border: 1px solid rgba(255,255,255,0.4); padding: 8px 16px;
-            border-radius: 8px; font-size: 0.85rem; font-weight: 700;
-            cursor: pointer; z-index: 20; backdrop-filter: blur(5px);
-            transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            display: flex; align-items: center; gap: 6px;
-        }
-        .expand-landscape-btn:hover { background: var(--cyan); border-color: #fff; transform: scale(1.05); }
-        .screen-info {
-            margin-top: -20px; padding: 50px 40px 40px;
-            background: rgba(15, 15, 20, 0.4); border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 0 0 24px 24px; backdrop-filter: blur(20px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.4); position: relative; z-index: 5;
-            display: flex; flex-direction: column; gap: 10px;
-        }
-        .video-badge { align-self: flex-start; padding: 6px 16px; background: rgba(74, 144, 226, 0.1); color: #4a90e2; border: 1px solid rgba(74, 144, 226, 0.3); border-radius: 20px; font-size: 0.85rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
-        .video-title { font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 700; color: #ffffff; line-height: 1.4; }
-        .video-desc { font-size: 1.05rem; color: #a0a0b5; font-weight: 300; line-height: 1.8; max-width: 850px; word-break: keep-all; }
-
-        /* ── FEATURED 영상 재생목록: 썸네일 오버레이 대신 읽기 쉬운 리스트 ── */
-        .featured-nav { max-width: 1100px; margin: 18px auto 0; padding: 0 20px; position: relative; z-index: 20; }
-        .featured-playlist-heading { display:flex; align-items:flex-end; justify-content:space-between; gap:18px; margin-bottom:12px; padding:0 2px; }
-        .featured-playlist-kicker { color:#c9a84c; font-size:.68rem; font-weight:800; letter-spacing:.18em; margin:0 0 5px; }
-        .featured-playlist-heading h3 { color:#f5f1e8; font-size:1.08rem; font-weight:750; letter-spacing:.01em; margin:0; }
-        .featured-playlist-subtitle { color:#b9b6b0; font-size:.82rem; line-height:1.5; margin:5px 0 0; }
-        .featured-playlist-count { flex:0 0 auto; color:#e8d08a; border:1px solid rgba(201,168,76,.32); background:rgba(201,168,76,.08); border-radius:999px; padding:6px 10px; font-size:.68rem; font-weight:800; letter-spacing:.08em; }
-        .featured-track { display:flex; flex-direction:column; gap:8px; min-width:0; }
-        .featured-card { width:100%; min-width:0; display:grid; grid-template-columns:116px minmax(0,1fr) 34px; align-items:center; gap:15px; padding:9px 13px 9px 9px; text-align:left; color:#f7f4ed; border:1px solid rgba(255,255,255,.13); border-radius:13px; background:linear-gradient(105deg,rgba(27,27,34,.98),rgba(13,13,19,.98)); cursor:pointer; opacity:1; transition:border-color .2s ease,background .2s ease,transform .2s ease,box-shadow .2s ease; }
-        .featured-card:hover { border-color:rgba(201,168,76,.62); background:linear-gradient(105deg,rgba(39,35,27,.98),rgba(17,16,20,.98)); transform:translateX(2px); }
-        .featured-card.active { border-color:#c9a84c; background:linear-gradient(105deg,rgba(66,52,24,.55),rgba(19,18,22,.98)); box-shadow:inset 3px 0 0 #c9a84c,0 5px 18px rgba(0,0,0,.2); }
-        .featured-card-thumb { width:116px; aspect-ratio:16/9; object-fit:cover; display:block; border-radius:8px; background:#050505; }
-        .featured-card-copy { display:flex; flex-direction:column; gap:4px; min-width:0; }
-        .featured-card-topline { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
-        .featured-card-number { color:#c9a84c; font-size:.68rem; font-weight:800; letter-spacing:.12em; }
-        .featured-card-badge { color:#d7c28c; font-size:.62rem; font-weight:800; letter-spacing:.08em; }
-        .featured-card-label { color:#fff; font-size:.94rem; line-height:1.4; font-weight:750; overflow-wrap:anywhere; }
-        .featured-card-desc { color:#c0bdc4; font-size:.78rem; line-height:1.55; font-weight:400; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
-        .featured-card-play { width:30px; height:30px; display:flex; align-items:center; justify-content:center; border:1px solid rgba(201,168,76,.4); border-radius:50%; color:#e8d08a; font-size:.8rem; background:rgba(201,168,76,.08); }
-        .featured-card.active .featured-card-play { color:#080808; background:#e8d08a; border-color:#e8d08a; }
-        .featured-card:focus-visible { outline:3px solid #e8d08a; outline-offset:3px; }
-        @media (max-width:700px) {
-            .featured-nav { padding:0 14px; margin-top:14px; }
-            .featured-playlist-heading { align-items:center; gap:8px; }
-            .featured-playlist-heading h3 { font-size:.98rem; }
-            .featured-playlist-subtitle { font-size:.75rem; }
-            .featured-playlist-count { font-size:.6rem; padding:5px 8px; }
-            .featured-track { gap:7px; }
-            .featured-card { grid-template-columns:88px minmax(0,1fr) 28px; gap:10px; padding:8px; border-radius:11px; }
-            .featured-card-thumb { width:88px; border-radius:7px; }
-            .featured-card-label { font-size:.82rem; }
-            .featured-card-desc { font-size:.7rem; line-height:1.45; -webkit-line-clamp:2; }
-            .featured-card-play { width:26px; height:26px; font-size:.72rem; }
-            .featured-card-badge { font-size:.56rem; }
-        }
-
-        /* ── FURIOUS 제작 기록 ── */
-        .creation-notes { max-width: 1100px; margin: 0 auto 80px; padding: 0 20px; position: relative; z-index: 10; }
-        .creation-notes-inner { padding: 42px 44px; border: 1px solid rgba(201,168,76,0.18); border-radius: 22px; background: linear-gradient(145deg, rgba(201,168,76,0.06), rgba(10,10,18,0.72)); box-shadow: 0 18px 50px rgba(0,0,0,0.35); }
-        .creation-notes-kicker { color: #c9a84c; font-family: 'Cinzel',serif; font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 10px; }
-        .creation-notes-title { color: #fff; font-family: 'Cinzel',serif; font-size: clamp(1.35rem,3vw,1.9rem); letter-spacing: 1px; margin-bottom: 18px; }
-        .creation-notes-intro { color: #c8c4bc; font-size: 1rem; line-height: 1.95; max-width: 900px; margin-bottom: 30px; word-break: keep-all; }
-        .creation-note-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px; }
-        .creation-note { padding: 24px; border-radius: 16px; background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.07); }
-        .creation-note h4 { color: #e8d08a; font-size: 0.95rem; letter-spacing: 0.5px; margin-bottom: 10px; }
-        .creation-note p { color: #aaa6a0; font-size: 0.9rem; line-height: 1.9; word-break: keep-all; }
-        .movie-creation-grid { grid-template-columns: repeat(3, minmax(0,1fr)); align-items: stretch; }
-        .movie-creation-card { display: flex; flex-direction: column; gap: 0; }
-        .movie-creation-card h3 { color: #fff; font-family: 'Cinzel', serif; font-size: 1.05rem; letter-spacing: 0.4px; margin-bottom: 12px; }
-        .movie-creation-card h4 { margin-top: 18px; }
-        .movie-note-lead { color: #d1cbc1 !important; font-size: 0.93rem !important; line-height: 1.85 !important; }
-        .movie-creation-card .i18n-en { display: none; }
-        html[lang="en"] .movie-creation-card .i18n-ko { display: none; }
-        html[lang="en"] .movie-creation-card .i18n-en { display: block; }
-        .creation-prompt { grid-column: 1 / -1; }
-        .creation-prompt pre { margin-top: 12px; padding: 18px; overflow-x: auto; border-radius: 12px; background: rgba(0,0,0,0.38); border: 1px solid rgba(201,168,76,0.12); color: #d8d3c8; font: 0.78rem/1.75 'Pretendard', sans-serif; white-space: pre-wrap; word-break: break-word; }
-        @media (max-width: 700px) {
-            .creation-notes-inner { padding: 30px 20px; }
-            .creation-note-grid, .movie-creation-grid { grid-template-columns: 1fr; }
-            .creation-prompt { grid-column: auto; }
-        }
-
-        /* ── 캐러셀 ── */
-        .carousel-section { max-width: 1100px; margin: 0 auto 80px; padding: 0 20px; position: relative; z-index: 10; }
-        .carousel-heading { font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--gold); margin-bottom: 20px; font-weight: 600; letter-spacing: 0.15em; border-bottom: 1px solid rgba(201,168,76,0.2); padding-bottom: 15px; }
-        .carousel-container { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 20px; scroll-snap-type: x mandatory; }
-        .carousel-container::-webkit-scrollbar { height: 4px; }
-        .carousel-container::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
-        .thumbnail-card { flex: 0 0 280px; scroll-snap-align: start; cursor: pointer; border-radius: 16px; overflow: hidden; position: relative; transition: all 0.3s ease; border: 2px solid transparent; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
-        .thumbnail-card.active { border-color: #4a90e2; box-shadow: 0 0 25px rgba(74, 144, 226, 0.4); transform: scale(0.98); }
-        .thumb-img { width: 100%; height: 158px; background-size: cover; background-position: center; transition: 0.5s ease; }
-        .thumb-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0.1)); display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; opacity: 0.8; }
-        .thumb-title { color: #fff; font-size: 0.95rem; font-weight: 500; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; }
-
-        /* ── 쇼츠 ── */
-        .shorts-section { max-width: 1100px; margin: 0 auto 100px; padding: 50px 30px; background: rgba(255,255,255,0.01); border-radius: 24px; border: 1px solid rgba(255,255,255,0.03); backdrop-filter: blur(10px); position: relative; z-index: 10; }
-        .shorts-heading { font-family: 'Cinzel', serif; font-size: 1.4rem; letter-spacing: 2px; color: #e0e0ff; margin-bottom: 40px; text-align: center; font-weight: 700; }
-        .shorts-intro { max-width: 850px; margin: -16px auto 36px; color: #a0a0b5; font-size: 0.95rem; line-height: 1.9; text-align: center; word-break: keep-all; }
-        .shorts-intro-en { display: none; }
-        .shorts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 25px; }
-        .shorts-link { position: relative; width: 100%; padding-bottom: 177.78%; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 30px rgba(0,0,0,0.6); transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease; border: 1px solid rgba(255,255,255,0.1); display: block; text-decoration: none; cursor: pointer; }
-        .shorts-link:hover { transform: translateY(-10px) scale(1.02); border-color: #dc2626; box-shadow: 0 20px 40px rgba(220, 38, 38, 0.4); }
-        .shorts-thumb { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.8); transition: transform 0.6s ease, filter 0.4s ease; display: block; }
-        .shorts-link:hover .shorts-thumb { filter: brightness(1.1); transform: scale(1.08); }
-        .shorts-title { position: absolute; left: 0; right: 0; bottom: 0; z-index: 4; padding: 34px 12px 12px; background: linear-gradient(to top, rgba(0,0,0,0.92), rgba(0,0,0,0)); color: #fff; font: 600 0.82rem/1.35 Pretendard, sans-serif; text-align: left; word-break: keep-all; text-shadow: 0 1px 3px rgba(0,0,0,0.8); pointer-events: none; }
-        .shorts-title.i18n-en { display: none; }
-        html[lang="en"] .shorts-title.i18n-ko { display: none !important; }
-        html[lang="en"] .shorts-title.i18n-en { display: block !important; }
-        .shorts-link:hover .shorts-title { color: #e8d08a; }
-        @media (max-width: 700px) { .shorts-title { font-size: 0.76rem; padding: 30px 10px 10px; } }
-        .shorts-play-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.2); transition: 0.3s; }
-        .shorts-play-overlay span { width: 50px; height: 50px; background: rgba(220, 38, 38, 0.85); backdrop-filter: blur(5px); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.2rem; border: none; transition: 0.3s; }
-        .shorts-link:hover .shorts-play-overlay span { transform: scale(1.2); background: #ff0000; box-shadow: 0 0 15px rgba(255, 0, 0, 0.6); }
-
-        /* ── Light Mode: Shorts readability ── */
-        html[data-theme="light"] .shorts-section {
-            background: rgba(255,255,255,0.72);
-            border-color: rgba(20,20,30,0.10);
-        }
-        html[data-theme="light"] .shorts-heading {
-            color: #24212a;
-        }
-        html[data-theme="light"] .shorts-intro {
-            color: #5d5963;
-        }
-        html[data-theme="light"] .shorts-link {
-            border-color: rgba(20,20,30,0.14);
-            box-shadow: 0 15px 30px rgba(20,20,30,0.18);
-        }
-        html[data-theme="light"] .shorts-title {
-            color: #ffffff !important;
-            text-shadow: 0 1px 4px rgba(0,0,0,0.95), 0 0 10px rgba(0,0,0,0.35);
-            background: linear-gradient(to top, rgba(0,0,0,0.94), rgba(0,0,0,0.02));
-        }
-        html[data-theme="light"] .shorts-link:hover .shorts-title {
-            color: #ffe9a6 !important;
-        }
-
-
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-
-        @media (max-width: 900px) {
-            .page-header { height: 250px; }
-            .screen-info { padding: 30px 20px; }
-            .shorts-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
-            .shorts-section { padding: 40px 15px; }
-        }
     
-/* Tablet refinement: preserve the cinematic layout while preventing narrow three-column copy cards. */
-@media (min-width: 701px) and (max-width: 900px) {
-  .theater-wrapper { padding-left: 18px; padding-right: 18px; }
-  .screen-info { padding: 28px 22px; }
-  .movie-creation-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .carousel-container { gap: 14px; }
-  .thumbnail-card { flex-basis: 240px; }
-}
-
-</style>
   <meta name="robots" content="index, follow">
 
 
 
 
-<style id="redesign-2026-film">
-/* Film editorial 2026: one screen, a quiet title list, visible shorts. */
-body{background:#0c1018!important;background-image:none!important;color:#edf0f5!important;font-family:Inter,Pretendard,'Noto Sans KR',system-ui,sans-serif!important}
-body::before{display:none!important}
-.page-header{height:auto!important;min-height:0!important;padding:50px 24px 18px!important;background:transparent!important}
-#stars-canvas{display:none!important}.header-content{width:min(1120px,100%);text-align:left!important;animation:none!important}
-.header-title{font-family:Inter,Pretendard,system-ui,sans-serif!important;font-size:clamp(38px,8vw,82px)!important;letter-spacing:-.075em!important;font-weight:850!important;text-shadow:none!important;line-height:1!important;margin:0!important}
-.header-slogan{font-size:14px!important;letter-spacing:-.01em!important;margin:14px 0 0!important;color:#a5afc1!important}
-.movie-editorial{max-width:1120px!important;margin:0 auto 26px!important;padding:0 24px 18px!important;border:0!important;background:none!important;box-shadow:none!important;display:block!important}
-.movie-editorial .archive-eyebrow,.movie-editorial h1,.movie-editorial>a{display:none!important}
-.movie-editorial p{font-size:14px!important;line-height:1.65!important;color:#a5afc1!important;max-width:600px!important}
-.theater-wrapper{width:min(1120px,100%)!important;max-width:1120px!important;margin:0 auto!important;padding:0 24px!important;display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:0!important;background:none!important;border:0!important;box-shadow:none!important}
-.main-screen{width:100%!important;max-width:none!important;aspect-ratio:16/9!important;height:auto!important;overflow:hidden!important;border-radius:14px!important;border:1px solid #2a3547!important;background:#000!important;box-shadow:none!important}
-.main-screen iframe{display:block!important;width:100%!important;height:100%!important;aspect-ratio:16/9!important}
-.expand-landscape-btn{z-index:5!important}
-.screen-info{padding:24px 0 30px!important;max-width:900px!important;margin:0!important;text-align:left!important;border:0!important;background:none!important}
-.video-title{font-family:Inter,Pretendard,'Noto Sans KR',sans-serif!important;font-size:clamp(21px,3vw,30px)!important;line-height:1.35!important;font-weight:750!important;letter-spacing:-.035em!important;margin:10px 0!important}
-.video-desc{font-size:14px!important;line-height:1.7!important;max-width:700px!important;color:#b3becc!important}
-.video-badge{font-size:10px!important;letter-spacing:.1em!important}
-.featured-nav{order:2!important;width:100%!important;max-width:none!important;margin:0 0 35px!important;padding:20px 0!important;border-top:1px solid #283344!important;border-bottom:1px solid #283344!important;background:none!important;border-radius:0!important;box-shadow:none!important}
-.featured-playlist-heading{display:flex!important;align-items:center!important;justify-content:space-between!important;margin-bottom:16px!important}
-.featured-playlist-heading h3{font-size:18px!important;font-weight:750!important}
-.featured-playlist-subtitle{font-size:12px!important}
-.featured-track{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:12px!important}
-.featured-card{min-width:0!important;display:grid!important;grid-template-columns:92px minmax(0,1fr)!important;gap:10px!important;padding:10px!important;border:1px solid #2b3546!important;background:#151c29!important;border-radius:10px!important;box-shadow:none!important}
-.featured-card-thumb{width:92px!important;height:58px!important;border-radius:6px!important}
-.featured-card-label{font-size:12px!important;line-height:1.4!important;font-weight:650!important}
-.featured-card-desc,.featured-card-topline,.featured-card-play{display:none!important}
-.creation-notes,.shorts-section{max-width:1120px!important;margin:55px auto!important;padding:0 24px!important;background:none!important;border:0!important;box-shadow:none!important}
-.creation-notes-inner{padding:24px 0!important;border:0!important;border-top:1px solid #2a3547!important;border-radius:0!important;background:none!important}
-.creation-notes-title,.shorts-heading{font-size:clamp(22px,3vw,32px)!important;font-weight:750!important;line-height:1.3!important;letter-spacing:-.04em!important;color:#f0f2f6!important}
-.creation-note-grid,.movie-creation-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:20px!important}
-.creation-note,.movie-creation-card{min-width:0!important;padding:0!important;background:none!important;border:0!important;box-shadow:none!important}
-.shorts-grid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:16px!important}
-.shorts-link{min-width:0!important;border-radius:10px!important;overflow:hidden!important}
-.shorts-thumb{display:block;width:100%;aspect-ratio:9/16;object-fit:cover}
-.shorts-title{font-size:13px!important;line-height:1.45!important}
-@media(max-width:760px){.page-header{padding:28px 18px 10px!important}.header-title{font-size:44px!important}.movie-editorial{padding:0 18px 15px!important}.theater-wrapper{padding:0 14px!important}.main-screen{border-radius:9px!important}.screen-info{padding:18px 4px 25px!important}.featured-nav{margin-bottom:24px!important}.featured-track{grid-template-columns:1fr!important;gap:8px!important}.featured-card{grid-template-columns:86px minmax(0,1fr)!important}.featured-card-thumb{width:86px!important;height:54px!important}.creation-notes,.shorts-section{padding:0 18px!important;margin:34px auto!important}.creation-note-grid,.movie-creation-grid{grid-template-columns:minmax(0,1fr)!important}.shorts-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}}
-</style>
-<style id="movie-reading-final">
-/* Modern editorial production journal: no narrow stacked text cards */
-.creation-notes{width:min(100%,1120px)!important;max-width:1120px!important;padding:0 24px!important;margin:36px auto 58px!important}
-.creation-notes-inner{border:0!important;border-top:1px solid #354054!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;padding:28px 0!important}
-.creation-notes-kicker{font:700 11px/1.4 Inter,Pretendard,sans-serif!important;letter-spacing:.12em!important;color:#8ca6dc!important}
-.creation-notes-title{font:750 clamp(23px,3vw,32px)/1.3 Inter,Pretendard,'Noto Sans KR',sans-serif!important;letter-spacing:-.04em!important;color:#f2f4fa!important;margin:10px 0 12px!important}
-.creation-notes-intro{font:400 15px/1.7 Inter,Pretendard,'Noto Sans KR',sans-serif!important;color:#b7c2d4!important;max-width:720px!important;margin:0 0 25px!important}
-.movie-creation-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:32px!important}
-.movie-creation-card{padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;display:block!important}
-.movie-creation-card h3{font:750 19px/1.4 Inter,Pretendard,'Noto Sans KR',sans-serif!important;letter-spacing:-.03em!important;color:#edf1fa!important;margin:0 0 12px!important}
-.movie-creation-card h4{font:700 14px/1.45 Inter,Pretendard,'Noto Sans KR',sans-serif!important;color:#9cb5f3!important;margin:20px 0 8px!important}
-.movie-creation-card p,.movie-creation-card .movie-note-lead{font:400 15px/1.72 Inter,Pretendard,'Noto Sans KR',sans-serif!important;color:#bfc8d6!important;letter-spacing:-.01em!important;margin:0 0 12px!important;word-break:keep-all!important;overflow-wrap:break-word!important}
-.movie-creation-card .i18n-ko,.movie-creation-card .i18n-en{max-width:100%!important}
-@media(max-width:760px){.creation-notes{padding:0 18px!important;margin:28px auto 44px!important}.creation-notes-inner{padding:20px 0!important}.creation-notes-title{font-size:23px!important}.creation-notes-intro{font-size:14px!important;line-height:1.7!important}.movie-creation-grid{grid-template-columns:minmax(0,1fr)!important;gap:26px!important}.movie-creation-card{padding:0 0 23px!important;border-bottom:1px solid #2d394c!important}.movie-creation-card h3{font-size:18px!important}.movie-creation-card h4{font-size:14px!important}.movie-creation-card p,.movie-creation-card .movie-note-lead{font-size:14px!important;line-height:1.7!important}.shorts-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important}.shorts-link{display:block!important;visibility:visible!important;opacity:1!important}}
-</style>
+
+
+<link rel="stylesheet" href="/css/creator.css">
+<link rel="stylesheet" href="/css/media-archive.css?v=1">
 </head>
-<body>
+<body class="creator-page media-page media-film">
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NGDTQNVG"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -313,53 +67,73 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- ★ 공통 헤더 -->
     <div id="site-nav"></div>
 
-    <header class="page-header">
-        <canvas id="stars-canvas"></canvas>
-        <div class="header-content">
-            <h1 class="header-title" data-i18n="header_title">MOVIE ARCHIVE</h1>
-            <p class="header-slogan" data-i18n="header_slogan">프레임에 담긴 무한한 세계</p>
+<main id="main-content" class="creator-shell media-shell">
+<header class="media-masthead">
+  <p class="media-byline">CHRIS LEE.PAPA</p>
+  <h1><span class="i18n-ko">영상 아카이브</span><span class="i18n-en" lang="en">Film archive</span></h1>
+  <p class="media-summary"><span class="i18n-ko">직접 기획하고 편집한 뮤직비디오와 단편. 작품을 보고, 장면 뒤의 제작 과정도 읽어보세요.</span><span class="i18n-en" lang="en">Music videos and shorts I planned and edited, with notes on the decisions behind the scenes.</span></p>
+  <nav class="media-jumps" aria-label="영상 아카이브"><a href="#screening"><span class="i18n-ko">대표 영상</span><span class="i18n-en" lang="en">Featured films</span></a><a href="#shorts"><span class="i18n-ko">쇼츠</span><span class="i18n-en" lang="en">Short films</span></a><a href="#film-notes"><span class="i18n-ko">제작 기록</span><span class="i18n-en" lang="en">Production notes</span></a></nav>
+</header><section class="media-section film-stage" id="screening" aria-labelledby="featured-playlist-title">
+  <div class="film-player">
+    <div class="main-screen" id="main-video-container">
+      <iframe id="main-video-player" src="https://www.youtube.com/embed/kAkGg2t1Ats?autoplay=0&amp;enablejsapi=1" title="FURIOUS" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe>
+    </div>
+    <div class="screen-info">
+      <span class="video-badge" id="main-video-badge">뮤직비디오</span>
+      <h2 id="main-video-title">FURIOUS</h2>
+      <p id="main-video-desc">거대한 폭발과 공중전이 펼쳐지는 디스토피아적 사이버펑크 액션을 오리지널 음악과 생성형 AI 비주얼로 구성한 뮤직비디오입니다. 전쟁과 충돌이 남기는 상처에 대한 분노와 안타까움이 작품의 정서를 이룹니다.</p>
+      <div class="media-actions"><a class="media-action" id="watch-on-youtube" href="https://www.youtube.com/watch?v=kAkGg2t1Ats" target="_blank" rel="noopener"><span class="i18n-ko">YouTube에서 보기 ↗</span><span class="i18n-en" lang="en">Watch on YouTube ↗</span></a><button class="media-action" type="button" onclick="expandToLandscape()"><span class="i18n-ko">전체 화면</span><span class="i18n-en" lang="en">Full screen</span></button></div>
+    </div>
+  </div>
+  <div class="featured-nav">
+    <h2 id="featured-playlist-title"><span class="i18n-ko">대표 영상</span><span class="i18n-en" lang="en">Featured films</span></h2>
+    <div class="featured-track" id="featured-track"></div>
+    <noscript><ul><li><a href="https://www.youtube.com/watch?v=kAkGg2t1Ats">FURIOUS</a></li><li><a href="https://www.youtube.com/watch?v=byxLKvBHULk"><span class="i18n-ko">귀멸의 칼날 실사 촬영 현장</span><span class="i18n-en" lang="en">Demon Slayer Live-Action</span></a></li><li><a href="https://www.youtube.com/watch?v=vlt7VfCA8bM"><span class="i18n-ko">사랑한다고</span><span class="i18n-en" lang="en">Love Song</span></a></li></ul></noscript>
+  </div>
+</section>
+<section class="media-shorts-section media-section" id="shorts" aria-labelledby="shorts-title">
+        <h2 class="media-shorts-heading" id="shorts-title"><span class="i18n-ko">쇼츠</span><span class="i18n-en" lang="en">Short films</span></h2>
+        <p class="media-shorts-intro i18n-ko">생성형 AI로 다양한 영상 표현 방식을 실험한 짧은 작품 모음입니다. 애니메이션 캐릭터를 실제 촬영 현장에 배치한 팬 콘셉트 영상, 직접 기획한 음악을 바탕으로 만든 뮤직비디오, 로봇 액션 등 서로 다른 아이디어를 짧은 이야기로 구성했습니다. 각 영상은 기획 의도에 맞춰 장면을 생성하고 선별·편집해 YouTube Shorts로 공개했습니다.</p>
+        <p class="media-shorts-intro i18n-en">A collection of short works exploring different forms of visual storytelling with generative AI. The archive includes fan-concept videos that place anime characters on imagined live-action sets, music videos built around music I developed, and robot-action scenes. Each short is planned, generated, selected, and edited around its own concept before being released as a YouTube Short.</p>
+        <div class="media-shorts-grid">
+            <a href="https://www.youtube.com/shorts/gQ4Ip6cyr1U" target="_blank" rel="noopener" class="media-shorts-link">
+                <img class="media-shorts-thumb" src="https://img.youtube.com/vi/gQ4Ip6cyr1U/maxresdefault.jpg" alt="" loading="lazy">
+                <div class="media-shorts-title i18n-ko">체인소맨 Rev It Up</div><div class="media-shorts-title i18n-en">Chainsaw Man Rev It Up</div><div class="media-shorts-play-overlay" aria-hidden="true"><span>▶</span></div>
+            </a>
+            <a href="https://www.youtube.com/shorts/z-2LOBuWos8" target="_blank" rel="noopener" class="media-shorts-link">
+                <img class="media-shorts-thumb" src="https://img.youtube.com/vi/z-2LOBuWos8/maxresdefault.jpg" alt="" loading="lazy">
+                <div class="media-shorts-title i18n-ko">주술회전 영역전개</div><div class="media-shorts-title i18n-en">Jujutsu Kaisen Domain Expansion</div><div class="media-shorts-play-overlay" aria-hidden="true"><span>▶</span></div>
+            </a>
+            <a href="https://www.youtube.com/shorts/pGibrT9Pp3I" target="_blank" rel="noopener" class="media-shorts-link">
+                <img class="media-shorts-thumb" src="https://img.youtube.com/vi/pGibrT9Pp3I/maxresdefault.jpg" alt="" loading="lazy">
+                <div class="media-shorts-title i18n-ko">귀멸의칼날 벽력일섬</div><div class="media-shorts-title i18n-en">Demon Slayer Thunderclap and Flash</div><div class="media-shorts-play-overlay" aria-hidden="true"><span>▶</span></div>
+            </a>
+            <a href="https://www.youtube.com/shorts/VXWdSOXGwKQ" target="_blank" rel="noopener" class="media-shorts-link">
+                <img class="media-shorts-thumb" src="https://img.youtube.com/vi/VXWdSOXGwKQ/maxresdefault.jpg" alt="" loading="lazy">
+                <div class="media-shorts-title i18n-ko">귀멸의칼날 난리났어</div><div class="media-shorts-title i18n-en">Demon Slayer What a Riot</div><div class="media-shorts-play-overlay" aria-hidden="true"><span>▶</span></div>
+            </a>
+            <a href="https://www.youtube.com/shorts/XjSUJRduAzI" target="_blank" rel="noopener" class="media-shorts-link">
+                <img class="media-shorts-thumb" src="https://img.youtube.com/vi/XjSUJRduAzI/maxresdefault.jpg" alt="" loading="lazy">
+                <div class="media-shorts-title i18n-ko">로봇전쟁 Final Round</div><div class="media-shorts-title i18n-en">Robot War Final Round</div><div class="media-shorts-play-overlay" aria-hidden="true"><span>▶</span></div>
+            </a>
+            <a href="https://www.youtube.com/shorts/MYlAYewAdu4" target="_blank" rel="noopener" class="media-shorts-link">
+                <img class="media-shorts-thumb" src="https://img.youtube.com/vi/MYlAYewAdu4/maxresdefault.jpg" alt="" loading="lazy">
+                <div class="media-shorts-title i18n-ko">귀멸의칼날 촬영준비</div><div class="media-shorts-title i18n-en">Demon Slayer Preparing for the Shoot</div><div class="media-shorts-play-overlay" aria-hidden="true"><span>▶</span></div>
+            </a>
+            <a href="https://www.youtube.com/shorts/0d-rUizVukQ" target="_blank" rel="noopener" class="media-shorts-link">
+                <img class="media-shorts-thumb" src="https://img.youtube.com/vi/0d-rUizVukQ/maxresdefault.jpg" alt="" loading="lazy">
+                <div class="media-shorts-title i18n-ko">귀멸의칼날 촬영 비하인드</div><div class="media-shorts-title i18n-en">Demon Slayer Behind the Scenes</div><div class="media-shorts-play-overlay" aria-hidden="true"><span>▶</span></div>
+            </a>
+            <a href="https://www.youtube.com/shorts/tgR1Kq3fGWE" target="_blank" rel="noopener" class="media-shorts-link">
+                <img class="media-shorts-thumb" src="https://img.youtube.com/vi/tgR1Kq3fGWE/maxresdefault.jpg" alt="" loading="lazy">
+                <div class="media-shorts-title i18n-ko">귀멸의칼날 Flash bang</div><div class="media-shorts-title i18n-en">Demon Slayer Flash Bang</div><div class="media-shorts-play-overlay" aria-hidden="true"><span>▶</span></div>
+            </a>
         </div>
-    </header>
+    </section>
 
-    <section class="archive-editorial movie-editorial" aria-label="Movie archive introduction"><div><span class="archive-eyebrow">CHRIS LEE.PAPA / SCREENING ROOM</span><h1><span class="nav-label-ko" lang="ko">이야기가 움직이는 순간.</span><span class="nav-label-en" lang="en">Stories in motion.</span></h1><p><span class="nav-label-ko" lang="ko">직접 만든 영상과 제작 노트를 한곳에 모았습니다. 위에서 작품을 감상하고, 아래에서 장면 뒤의 선택을 살펴보세요.</span><span class="nav-label-en" lang="en">Watch original films, then explore the creative decisions behind the scenes.</span></p></div><a href="#main-video-container"><span class="nav-label-ko" lang="ko">상영 시작 ↓</span><span class="nav-label-en" lang="en">START WATCHING ↓</span></a></section>
-<main class="theater-wrapper">
-        <div class="main-screen" id="main-video-container">
-            <iframe id="main-video-player"
-                src="https://www.youtube.com/embed/kAkGg2t1Ats?autoplay=0&enablejsapi=1"
-                title="Main Video" frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-                allowfullscreen></iframe>
-            <button class="expand-landscape-btn" type="button" onclick="expandToLandscape()" data-i18n="expand_btn">⛶ 전체화면 (가로)</button>
-        </div>
-            <section class="featured-nav" aria-labelledby="featured-playlist-title">
-                <div class="featured-playlist-heading">
-                    <div>
-                        <p class="featured-playlist-kicker">NOW SHOWING</p>
-                        <h3 id="featured-playlist-title">
-                            <span class="i18n-ko">대표 영상 재생목록</span>
-                            <span class="i18n-en">FEATURED PLAYLIST</span>
-                        </h3>
-                        <p class="featured-playlist-subtitle">
-                            <span class="i18n-ko">영상을 선택하면 위 플레이어에서 바로 재생됩니다.</span>
-                            <span class="i18n-en">Choose a title to play it in the main player above.</span>
-                        </p>
-                    </div>
-                    <span class="featured-playlist-count">3 VIDEOS</span>
-                </div>
-                <div class="featured-track" id="featured-track" role="list" aria-label="대표 영상 목록"></div>
-            </section>
-        <div class="screen-info">
-            <span class="video-badge" id="main-video-badge">FEATURED</span>
-            <h2 class="video-title" id="main-video-title">이게 AI 로 되네? 그냥 만들어본 뮤직비디오 'FURIOUS 💥'</h2>
-            <p class="video-desc" id="main-video-desc">디스토피아적 사이버펑크 세계를 배경으로 거대한 폭발과 공중전, 긴장감 있는 액션을 묵직한 오리지널 음악과 생성형 AI 비주얼로 구성한 뮤직비디오입니다. 전쟁과 충돌이 남기는 상처에 대한 문제의식도 작품의 정서적 바탕에 담았습니다.</p>
-            <p class="video-desc"><span class="nav-label-ko">기획·연출·편집 · Chris LEE.PAPA</span><span class="nav-label-en" lang="en">Concept, direction and editing · Chris LEE.PAPA</span> · <a href="https://www.youtube.com/@chrisleepapaofficial">YouTube</a></p>
-        </div>
-    </main>
-
-    <section class="creation-notes" aria-labelledby="movie-creation-notes-title">
+    <section class="creation-notes media-section media-reading" id="film-notes" aria-labelledby="movie-creation-notes-title">
         <div class="creation-notes-inner">
-            <p class="creation-notes-kicker">✦ &nbsp; MOVIE · CREATION NOTES</p>
-            <h2 class="creation-notes-title" id="movie-creation-notes-title">영상 제작 노트</h2>
+            <h2 class="creation-notes-title" id="movie-creation-notes-title"><span class="i18n-ko">영상 제작 노트</span><span class="i18n-en" lang="en">Production notes</span></h2>
 
             <p class="creation-notes-intro i18n-ko">영상 작품들이 어떤 생각에서 출발했고, 생성형 AI를 어떻게 활용해 장면과 이야기를 완성했는지 기록했습니다. 결과물만 보여주는 대신 기획, 시각화, 편집 과정과 창작 의도를 함께 소개합니다.</p>
             <p class="creation-notes-intro i18n-en">These production notes document how the featured videos began as ideas and became finished works through generative AI, visual development, and editing. They share the creative intent and process behind each work, not just the final result.</p>
@@ -418,67 +192,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 
-    <section class="shorts-section">
-        <h3 class="shorts-heading" data-i18n="shorts_heading">VERTICAL ARCHIVES</h3>
-        <p class="shorts-intro i18n-ko">생성형 AI로 다양한 영상 표현 방식을 실험한 짧은 작품 모음입니다. 애니메이션 캐릭터를 실제 촬영 현장에 배치한 팬 콘셉트 영상, 직접 기획한 음악을 바탕으로 만든 뮤직비디오, 로봇 액션 등 서로 다른 아이디어를 짧은 이야기로 구성했습니다. 각 영상은 기획 의도에 맞춰 장면을 생성하고 선별·편집해 YouTube Shorts로 공개했습니다.</p>
-        <p class="shorts-intro shorts-intro-en i18n-en">A collection of short works exploring different forms of visual storytelling with generative AI. The archive includes fan-concept videos that place anime characters on imagined live-action sets, music videos built around music I developed, and robot-action scenes. Each short is planned, generated, selected, and edited around its own concept before being released as a YouTube Short.</p>
-        <div class="shorts-grid">
-            <a href="https://www.youtube.com/shorts/gQ4Ip6cyr1U" target="_blank" rel="noopener" class="shorts-link" aria-label="체인소맨 Rev It Up — Chris LEE.PAPA YouTube Short">
-                <img class="shorts-thumb" src="https://img.youtube.com/vi/gQ4Ip6cyr1U/maxresdefault.jpg" alt="체인소맨 Rev It Up — Chris LEE.PAPA YouTube Short" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.8);">
-                <div class="shorts-title i18n-ko">체인소맨 Rev It Up</div><div class="shorts-title i18n-en">Chainsaw Man Rev It Up</div><div class="shorts-play-overlay"><span>▶</span></div>
-            </a>
-            <a href="https://www.youtube.com/shorts/z-2LOBuWos8" target="_blank" rel="noopener" class="shorts-link" aria-label="주술회전 영역전개 — Chris LEE.PAPA YouTube Short">
-                <img class="shorts-thumb" src="https://img.youtube.com/vi/z-2LOBuWos8/maxresdefault.jpg" alt="주술회전 영역전개 — Chris LEE.PAPA YouTube Short" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.8);">
-                <div class="shorts-title i18n-ko">주술회전 영역전개</div><div class="shorts-title i18n-en">Jujutsu Kaisen Domain Expansion</div><div class="shorts-play-overlay"><span>▶</span></div>
-            </a>
-            <a href="https://www.youtube.com/shorts/pGibrT9Pp3I" target="_blank" rel="noopener" class="shorts-link" aria-label="귀멸의칼날 벽력일섬 — Chris LEE.PAPA YouTube Short">
-                <img class="shorts-thumb" src="https://img.youtube.com/vi/pGibrT9Pp3I/maxresdefault.jpg" alt="귀멸의칼날 벽력일섬 — Chris LEE.PAPA YouTube Short" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.8);">
-                <div class="shorts-title i18n-ko">귀멸의칼날 벽력일섬</div><div class="shorts-title i18n-en">Demon Slayer Thunderclap and Flash</div><div class="shorts-play-overlay"><span>▶</span></div>
-            </a>
-            <a href="https://www.youtube.com/shorts/VXWdSOXGwKQ" target="_blank" rel="noopener" class="shorts-link" aria-label="귀멸의칼날 난리났어 — Chris LEE.PAPA YouTube Short">
-                <img class="shorts-thumb" src="https://img.youtube.com/vi/VXWdSOXGwKQ/maxresdefault.jpg" alt="귀멸의칼날 난리났어 — Chris LEE.PAPA YouTube Short" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.8);">
-                <div class="shorts-title i18n-ko">귀멸의칼날 난리났어</div><div class="shorts-title i18n-en">Demon Slayer What a Riot</div><div class="shorts-play-overlay"><span>▶</span></div>
-            </a>
-            <a href="https://www.youtube.com/shorts/XjSUJRduAzI" target="_blank" rel="noopener" class="shorts-link" aria-label="로봇전쟁 Final Round — Chris LEE.PAPA YouTube Short">
-                <img class="shorts-thumb" src="https://img.youtube.com/vi/XjSUJRduAzI/maxresdefault.jpg" alt="로봇전쟁 Final Round — Chris LEE.PAPA YouTube Short" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.8);">
-                <div class="shorts-title i18n-ko">로봇전쟁 Final Round</div><div class="shorts-title i18n-en">Robot War Final Round</div><div class="shorts-play-overlay"><span>▶</span></div>
-            </a>
-            <a href="https://www.youtube.com/shorts/MYlAYewAdu4" target="_blank" rel="noopener" class="shorts-link" aria-label="귀멸의칼날 촬영준비 — Chris LEE.PAPA YouTube Short">
-                <img class="shorts-thumb" src="https://img.youtube.com/vi/MYlAYewAdu4/maxresdefault.jpg" alt="귀멸의칼날 촬영준비 — Chris LEE.PAPA YouTube Short" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.8);">
-                <div class="shorts-title i18n-ko">귀멸의칼날 촬영준비</div><div class="shorts-title i18n-en">Demon Slayer Preparing for the Shoot</div><div class="shorts-play-overlay"><span>▶</span></div>
-            </a>
-            <a href="https://www.youtube.com/shorts/0d-rUizVukQ" target="_blank" rel="noopener" class="shorts-link" aria-label="귀멸의칼날 촬영 비하인드 — Chris LEE.PAPA YouTube Short">
-                <img class="shorts-thumb" src="https://img.youtube.com/vi/0d-rUizVukQ/maxresdefault.jpg" alt="귀멸의칼날 촬영 비하인드 — Chris LEE.PAPA YouTube Short" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.8);">
-                <div class="shorts-title i18n-ko">귀멸의칼날 촬영 비하인드</div><div class="shorts-title i18n-en">Demon Slayer Behind the Scenes</div><div class="shorts-play-overlay"><span>▶</span></div>
-            </a>
-            <a href="https://www.youtube.com/shorts/tgR1Kq3fGWE" target="_blank" rel="noopener" class="shorts-link" aria-label="귀멸의칼날 Flash bang — Chris LEE.PAPA YouTube Short">
-                <img class="shorts-thumb" src="https://img.youtube.com/vi/tgR1Kq3fGWE/maxresdefault.jpg" alt="귀멸의칼날 Flash bang — Chris LEE.PAPA YouTube Short" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.8);">
-                <div class="shorts-title i18n-ko">귀멸의칼날 Flash bang</div><div class="shorts-title i18n-en">Demon Slayer Flash Bang</div><div class="shorts-play-overlay"><span>▶</span></div>
-            </a>
-        </div>
-    </section>
 
-    <!-- ── SEO 영상 소개 블록 ── -->
-    <section style="max-width:960px; margin:0 auto 60px; padding:0 24px;">
-        <div style="border:1px solid rgba(201,168,76,0.15); border-radius:20px; padding:36px 40px; background:rgba(10,10,18,0.7);">
-            <h2 style="font-family:'Cinzel',serif; color:#c9a84c; font-size:1.05rem; letter-spacing:2px; margin-bottom:8px;">✦ &nbsp; MOVIE ARCHIVE</h2>
-            <p style="color:#888; font-size:0.82rem; letter-spacing:1px; margin-bottom:24px; font-family:'Cinzel',serif;">CHRIS LEE.PAPA · YOUTUBE CHANNEL</p>
-            <p style="color:#c8c4bc; font-size:0.93rem; line-height:1.9; margin-bottom:32px; word-break:keep-all; text-align:left;" class="i18n-ko">
-                <strong style="color:#e8d08a;">Chris LEE.PAPA</strong>의 영상 아카이브입니다. 생성형 AI 비주얼과 직접 기획한 음악을 결합한 <strong style="color:#c9a84c;">오리지널 뮤직비디오</strong>와 로봇 액션 단편을 모았습니다. 작품별 영상과 제작 의도, 창작 과정도 함께 소개합니다.
+    <section class="media-section media-reading media-process">
+        <div>
+            <h2><span class="i18n-ko">영상 아카이브 소개</span><span class="i18n-en" lang="en">About the film archive</span></h2>
+            <p class="i18n-ko">
+                <strong>Chris LEE.PAPA</strong>의 영상 아카이브입니다. 생성형 AI 비주얼과 직접 기획한 음악을 결합한 <strong>오리지널 뮤직비디오</strong>와 로봇 액션 단편을 모았습니다. 작품별 영상과 제작 의도, 창작 과정도 함께 소개합니다.
             </p>
-            <p style="color:#c8c4bc; font-size:0.93rem; line-height:1.9; margin-bottom:32px; word-break:keep-all; text-align:left;" class="i18n-en">
-                This is the video archive of <strong style="color:#e8d08a;">Chris LEE.PAPA</strong>, featuring <strong style="color:#c9a84c;">original music videos</strong> combining planned music with generative AI visuals, alongside a vertical robot action short. Each featured project is accompanied by notes on its creative intent and production process.
+            <p class="i18n-en">
+                This is the video archive of <strong>Chris LEE.PAPA</strong>, featuring <strong>original music videos</strong> combining planned music with generative AI visuals, alongside a vertical robot action short. Each featured project is accompanied by notes on its creative intent and production process.
             </p>
 
-            <div style="background:rgba(201,168,76,0.05); border-radius:14px; padding:24px 28px;">
-                <h3 style="font-family:'Cinzel',serif; color:#c9a84c; font-size:0.85rem; letter-spacing:2px; margin-bottom:14px;">✦ &nbsp; HOW IT'S MADE</h3>
-                <p style="color:#a0a0b5; font-size:0.88rem; line-height:1.9; word-break:keep-all; text-align:left;" class="i18n-ko">영상마다 먼저 주제와 전달할 감정을 정하고, 필요한 장면을 생성형 AI로 만든 뒤 의도에 맞는 결과를 선별해 편집합니다. 오리지널 뮤직비디오는 직접 기획한 음악과 영상의 흐름을 맞춰 완성합니다. 이 페이지에는 완성 영상뿐 아니라 작품별 기획 의도와 제작 과정, 작업을 통해 배운 점도 함께 기록합니다. 영상은 <strong style="color:#c9a84c;">YouTube 채널 @chrisleepapaofficial</strong>에서 감상할 수 있습니다.</p>
-                <p style="color:#a0a0b5; font-size:0.88rem; line-height:1.9; word-break:keep-all; text-align:left;" class="i18n-en">Each video begins with a concept and the feeling it should communicate. Visual material is generated with AI, then selected and edited to serve that idea. Original music videos are developed around music I have planned. This archive brings together the finished works with notes on their ideas, production decisions, and lessons learned. Videos are available on the YouTube channel @chrisleepapaofficial.</p>
+            <div>
+                <h3><span class="i18n-ko">영상 제작 방식</span><span class="i18n-en" lang="en">How the films are made</span></h3>
+                <p class="i18n-ko">영상마다 먼저 주제와 전달할 감정을 정하고, 필요한 장면을 생성형 AI로 만든 뒤 의도에 맞는 결과를 선별해 편집합니다. 오리지널 뮤직비디오는 직접 기획한 음악과 영상의 흐름을 맞춰 완성합니다. 이 페이지에는 완성 영상뿐 아니라 작품별 기획 의도와 제작 과정, 작업을 통해 배운 점도 함께 기록합니다. 영상은 <strong>YouTube 채널 @chrisleepapaofficial</strong>에서 감상할 수 있습니다.</p>
+                <p class="i18n-en">Each video begins with a concept and the feeling it should communicate. Visual material is generated with AI, then selected and edited to serve that idea. Original music videos are developed around music I have planned. This archive brings together the finished works with notes on their ideas, production decisions, and lessons learned. Videos are available on the YouTube channel @chrisleepapaofficial.</p>
             </div>
         </div>
     </section>
 
-    <!-- ★ 공통 푸터 — guestbook.js 가 이 앞에 공통 방명록을 자동 삽입합니다 -->
+</main>
     <div id="site-footer"></div>
 
     <!-- ★ 페이지 전용 i18n -->
@@ -508,57 +241,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             }
         };
 
-        window.onLangChange = function(lang) {
-            updateMainVideoInfo();
-            renderCarousel();
-            renderFeaturedNav();
-        };
+        window.onLangChange = updateMainVideoInfoAndList;
+        window.onMainReady = updateMainVideoInfoAndList;
+        document.querySelectorAll('.media-shorts-thumb').forEach(image => {
+            const useSmallerThumbnail = () => { image.src = image.src.replace('maxresdefault.jpg', 'hqdefault.jpg'); };
+            if (image.complete && !image.naturalWidth) useSmallerThumbnail();
+            else image.addEventListener('error', useSmallerThumbnail, {once:true});
+        });
 
-        window.onMainReady = function() {
-            const canvas = document.getElementById('stars-canvas');
-            const ctx = canvas ? canvas.getContext('2d') : null;
-            let stars = [];
-            function resize() {
-                if (!canvas) return;
-                canvas.width = window.innerWidth;
-                canvas.height = 350;
-                initStars();
-            }
-            function initStars() {
-                if (!canvas) return;
-                stars = [];
-                const count = (canvas.width * canvas.height) / 6000;
-                for (let i = 0; i < count; i++) {
-                    stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 1.5 + 0.2, opacity: Math.random(), speed: Math.random() * 0.02 + 0.005 });
-                }
-            }
-            function draw() {
-                if (!canvas || !ctx) return;
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                stars.forEach(s => {
-                    s.opacity += s.speed;
-                    if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed;
-                    ctx.beginPath();
-                    ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0, s.opacity)})`;
-                    ctx.fill();
-                });
-                requestAnimationFrame(draw);
-            }
-            window.addEventListener('resize', resize);
-            resize();
-            draw();
+        function updateMainVideoInfoAndList() {
             updateMainVideoInfo();
-            renderCarousel();
             renderFeaturedNav();
-        };
+        }
 
         const videoData = [
             {
                 id: 'kAkGg2t1Ats',
                 title_ko: "이게 AI 로 되네? 그냥 만들어본 뮤직비디오 'FURIOUS 💥'",
                 title_en: "Is this AI? Music Video 'FURIOUS 💥'",
-                badge_ko: 'FEATURED', badge_en: 'FEATURED',
+                badge_ko: '뮤직비디오', badge_en: 'Music video',
                 desc_ko: '거대한 폭발과 공중전이 펼쳐지는 디스토피아적 사이버펑크 액션을 오리지널 음악과 생성형 AI 비주얼로 구성한 뮤직비디오입니다. 전쟁과 충돌이 남기는 상처에 대한 분노와 안타까움이 작품의 정서를 이룹니다.',
                 desc_en: 'A dystopian cyberpunk action music video featuring large-scale explosions and aerial combat, built around original music and generative AI visuals, with an emotional undercurrent shaped by the human cost of conflict.'
             },
@@ -566,7 +267,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 id: 'byxLKvBHULk',
                 title_ko: '역대급 출연진 귀칼 실사 촬영 현장 #귀멸의칼날',
                 title_en: 'Behind the Scenes of Demon Slayer Live-Action',
-                badge_ko: 'CINEMATIC', badge_en: 'CINEMATIC',
+                badge_ko: '팬 콘셉트 영상', badge_en: 'Fan concept film',
                 desc_ko: '인기 일본 애니메이션 귀멸의 칼날에 등장하는 캐릭터들이 실제 영화나 드라마의 촬영 현장에 존재한다면 어떤 모습일지를 상상해 AI 영상으로 만들어본 작품입니다. 애니메이션 캐릭터와 현실적인 촬영 공간을 결합해 애니메이션과 실사의 경계를 넘나드는 장면을 표현했습니다.',
                 desc_en: 'An AI video imagining what the characters from the popular Japanese anime Demon Slayer might look like on a real film or drama set. It combines familiar animated characters with realistic production environments to explore the boundary between animation and live action.'
             },
@@ -574,7 +275,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 id: 'vlt7VfCA8bM',
                 title_ko: '사랑한다고 뮤직비디오',
                 title_en: 'Love Song Music Video',
-                badge_ko: 'CINEMATIC', badge_en: 'CINEMATIC',
+                badge_ko: '뮤직비디오', badge_en: 'Music video',
                 desc_ko: '소중한 가족, 친구, 연인을 먼저 떠나보낸 사람들이 느끼는 말로 다 표현할 수 없는 슬픔과 그리움을 담아낸 뮤직비디오입니다. 이별 이후에도 마음속에 남아 있는 사랑과 추억을 음악과 영상으로 표현하고자 했습니다.',
                 desc_en: 'A music video expressing the indescribable grief and longing felt by those who have lost a beloved family member, friend, or partner. It was created to capture the love and memories that remain in the heart even after farewell.'
             }
@@ -585,7 +286,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         function expandToLandscape() {
             const iframe = document.getElementById('main-video-player');
             if (!iframe) return;
-            if (iframe.requestFullscreen) iframe.requestFullscreen().then(lockLandscape);
+            if (iframe.requestFullscreen) iframe.requestFullscreen().then(lockLandscape).catch(() => {});
             else if (iframe.webkitRequestFullscreen) { iframe.webkitRequestFullscreen(); lockLandscape(); }
         }
         function lockLandscape() {
@@ -603,21 +304,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             const mainDesc  = document.getElementById('main-video-desc');
             if (mainTitle) mainTitle.textContent = v[`title_${lang}`];
             if (mainBadge) mainBadge.textContent = v[`badge_${lang}`];
-            if (mainDesc)  mainDesc.textContent  = v[`desc_${lang}`];
-        }
-
-        function renderCarousel() {
-            const lang = (typeof window.getCurrentLang === 'function') ? window.getCurrentLang() : 'ko';
-            const cards = document.querySelectorAll('#carousel-list .thumbnail-card');
-            cards.forEach((card, i) => {
-                card.classList.toggle('active', i === activeVideoIndex);
-                const v = videoData[i];
-                if (!v) return;
-                const titleEl = card.querySelector('.thumb-title');
-                if (titleEl) titleEl.textContent = v[`title_${lang}`];
-                const img = card.querySelector('.thumb-img');
-                if (img) img.alt = `${v[`title_${lang}`]} — ${v[`badge_${lang}`]}`;
-            });
+            if (mainDesc) mainDesc.textContent = v[`desc_${lang}`];
+            document.getElementById('main-video-player').title = v[`title_${lang}`];
+            document.getElementById('watch-on-youtube').href = 'https://www.youtube.com/watch?v=' + v.id;
         }
 
         function escapeFeaturedText(value) {
@@ -632,30 +321,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             if (!track) return;
             track.innerHTML = videoData.map((v, i) => {
                 const title = v[`title_${lang}`] || v.title_ko;
-                const desc = v[`desc_${lang}`] || v.desc_ko;
                 const badge = v[`badge_${lang}`] || v.badge_ko;
                 const selected = i === activeVideoIndex;
-                return '<button type="button" role="listitem" class="featured-card' + (selected ? ' active' : '') + '" onclick="loadMainVideo(' + i + ')" aria-pressed="' + selected + '" aria-label="' + escapeFeaturedText(title) + '">' +
+                return '<button type="button" class="featured-card' + (selected ? ' active' : '') + '" onclick="loadMainVideo(' + i + ', true)" aria-pressed="' + selected + '" aria-label="' + escapeFeaturedText(title) + '">' +
                     '<img class="featured-card-thumb" src="https://img.youtube.com/vi/' + v.id + '/mqdefault.jpg" alt="" loading="lazy">' +
                     '<span class="featured-card-copy">' +
-                        '<span class="featured-card-topline"><span class="featured-card-number">' + String(i + 1).padStart(2, '0') + '</span><span class="featured-card-badge">' + escapeFeaturedText(badge) + '</span></span>' +
+                        '<span class="featured-card-badge">' + escapeFeaturedText(badge) + '</span>' +
                         '<span class="featured-card-label">' + escapeFeaturedText(title) + '</span>' +
-                        '<span class="featured-card-desc">' + escapeFeaturedText(desc) + '</span>' +
                     '</span>' +
                     '<span class="featured-card-play" aria-hidden="true">' + (selected ? '▶' : '▷') + '</span>' +
                 '</button>';
             }).join('');
         }
 
-        function loadPreviousFeatured() {
-            loadMainVideo((activeVideoIndex - 1 + videoData.length) % videoData.length);
-        }
-
-        function loadNextFeatured() {
-            loadMainVideo((activeVideoIndex + 1) % videoData.length);
-        }
-
-        function loadMainVideo(i) {
+        function loadMainVideo(i, fromPicker = false) {
             activeVideoIndex = i;
             const v = videoData[i];
             if (!v) return;
@@ -664,12 +343,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 mainPlayer.src = 'https://www.youtube.com/embed/' + v.id + '?autoplay=1&enablejsapi=1';
             }
             updateMainVideoInfo();
-            renderCarousel();
             renderFeaturedNav();
             window.__movieActiveVideoIndex = i;
             window.dispatchEvent(new CustomEvent('movieVideoChanged', { detail: { index: i, id: v.id } }));
-            const tw = document.querySelector('.theater-wrapper');
-            if (tw) window.scrollTo({ top: tw.offsetTop - 120, behavior: 'smooth' });
+            if (fromPicker) document.querySelectorAll('.featured-card')[i]?.focus({preventScroll:true});
+            if (!fromPicker || matchMedia('(max-width: 760px)').matches)
+                document.getElementById('screening').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
         }
         function safeNavigate(url) { if (url && url.trim() !== '') window.location.assign(url); }
 
@@ -691,9 +370,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         window.addEventListener('hashchange', openVideoFromHash);
     </script>
 
-    <!-- ★ 공통 스크립트 & 공통 방명록 -->
+    <!-- Shared site navigation -->
     <script src="js/main.js"></script>
-    <script src="js/guestbook.js"></script>
 
 </body>
 </html>

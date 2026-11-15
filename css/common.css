@@ -5,7 +5,6 @@
 @import url('sistersquad-responsive.css');
 @import url('sistersquad2-responsive.css');
 @import url('world-lore-responsive.css');
-@import url('game-responsive.css');
 
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@300;400;500;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
 :root{--gold:#c9a84c;--gold-light:#e8d08a;--bg:#030305;--card-bg:#0a0a0c;--text:#e0e0e0;--text-soft:rgba(224,224,224,.68);--text-muted:rgba(224,224,224,.42);--border:rgba(201,168,76,.18);--border-strong:rgba(201,168,76,.35);--nav-height:82px;--mobile-nav-height:72px;--content-max-width:1400px;--ease:cubic-bezier(.22,1,.36,1)}*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond','Noto Sans KR',serif;overflow-x:hidden;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;padding-bottom:0}a{text-decoration:none;color:inherit}button,input,textarea,select{font:inherit}button{-webkit-tap-highlight-color:transparent}ul,ol{list-style:none}img{max-width:100%;height:auto;-webkit-user-drag:none}::selection{background:rgba(201,168,76,.25);color:#fff}html[lang="ko"] .i18n-en{display:none!important}html[lang="en"] .i18n-ko{display:none!important}
@@ -177,27 +176,6 @@ html[data-theme="light"] .lang-current,html[data-theme="light"] .share-trigger,h
 html[data-theme="light"] .mobile-nav-item,html[data-theme="light"] .mobile-more-links a span,html[data-theme="light"] .mobile-project-title span{color:#3a3833!important}
 html[data-theme="light"] .mobile-more-links a small,html[data-theme="light"] .mobile-project-title small{color:rgba(37,37,37,.66)!important}
 
-/* TODAY LIGHT THEME — all daily archive surfaces and text */
-html[data-theme="light"] .today-wrap{color:#29251f!important;background:#f7f5f0!important}
-html[data-theme="light"] .today-wrap .today-kicker,html[data-theme="light"] .today-wrap .routine-kicker{color:#765b17!important}
-html[data-theme="light"] .today-wrap .today-title,html[data-theme="light"] .today-wrap .routine-title{color:#29251f!important;text-shadow:none!important}
-html[data-theme="light"] .today-wrap .today-date,html[data-theme="light"] .today-wrap .today-footer{color:rgba(37,37,37,.60)!important}
-html[data-theme="light"] .today-wrap .profile-pill,html[data-theme="light"] .today-wrap .today-streak{color:#3a3833!important;background:#fff!important;border-color:rgba(93,72,24,.16)!important}
-html[data-theme="light"] .today-wrap .today-card,html[data-theme="light"] .today-wrap .today-routine{background:#fff!important;color:#29251f!important;border-color:rgba(93,72,24,.16)!important;box-shadow:0 12px 32px rgba(30,25,15,.06)!important}
-html[data-theme="light"] .today-wrap .today-card h2,html[data-theme="light"] .today-wrap .today-routine h2{color:#29251f!important}
-html[data-theme="light"] .today-wrap .verse{color:#29251f!important}
-html[data-theme="light"] .today-wrap .verse-ref{color:#765b17!important}
-html[data-theme="light"] .today-wrap .today-word-first{background:linear-gradient(145deg,#fffdf8,#f7f3e9)!important}
-html[data-theme="light"] .today-wrap .today-share{background:#fff!important;color:#765b17!important;border-color:rgba(93,72,24,.22)!important}
-html[data-theme="light"] .today-wrap .today-link,html[data-theme="light"] .today-wrap .today-btn,html[data-theme="light"] .today-wrap .quiz-next{color:#29251f!important}
-html[data-theme="light"] .today-wrap input,html[data-theme="light"] .today-wrap textarea{background:#fff!important;color:#29251f!important;border-color:rgba(37,37,37,.18)!important}
-html[data-theme="light"] .today-wrap input::placeholder,html[data-theme="light"] .today-wrap textarea::placeholder{color:rgba(37,37,37,.48)!important}
-html[data-theme="light"] .today-wrap .today-quiz,html[data-theme="light"] .today-wrap .quiz-option,html[data-theme="light"] .today-wrap .quiz-feedback,html[data-theme="light"] .today-wrap .quiz-result{color:#29251f!important}
-html[data-theme="light"] .today-wrap .quiz-option{background:#fff!important;border-color:rgba(37,37,37,.14)!important}
-html[data-theme="light"] .today-wrap .quiz-option:hover{background:#f7f3e9!important;border-color:rgba(139,106,25,.35)!important}
-html[data-theme="light"] .today-wrap .routine-meta,html[data-theme="light"] .today-wrap .quiz-count{color:rgba(37,37,37,.60)!important}
-
-
 /* PROJECTS LIGHT THEME — readable text and light card surfaces */
 html[data-theme="light"] body:has(.sq-wrap),
 html[data-theme="light"] body:has(.character-detail-grid),
@@ -319,15 +297,12 @@ html[data-theme="light"] body:has(.char-card) h1,
 html[data-theme="light"] body:has(.synopsis-section) h1{color:#29251f!important;text-shadow:none!important}
 
 
-/* PLAY / FAITH / MORE LIGHT THEME — readable text and light cards */
+/* Music, movies and page wrappers in light mode */
 html[data-theme="light"] body:has(.interactive-player-wrapper),
 html[data-theme="light"] body:has(.theater-wrapper),
-html[data-theme="light"] body:has(.game-selection-wrapper),
-html[data-theme="light"] body:has(.bible-container),
-html[data-theme="light"] body:has(.albums-grid),
 html[data-theme="light"] body:has(.page-wrapper){background:#f7f5f0!important;color:#29251f!important}
 
-/* PLAY — Music / Movie / Game */
+/* Music and movies */
 html[data-theme="light"] .archive-box,
 html[data-theme="light"] .music-creation-box,
 html[data-theme="light"] .music-creation-card,
@@ -336,25 +311,21 @@ html[data-theme="light"] .archive-album,
 html[data-theme="light"] .creation-notes,
 html[data-theme="light"] .movie-creation-card,
 html[data-theme="light"] .featured-card,
-html[data-theme="light"] .shorts-link,
-html[data-theme="light"] .game-card{background:#fff!important;color:#29251f!important;border-color:rgba(93,72,24,.16)!important;box-shadow:0 10px 28px rgba(30,25,15,.06)!important}
+html[data-theme="light"] .shorts-link{background:#fff!important;color:#29251f!important;border-color:rgba(93,72,24,.16)!important;box-shadow:0 10px 28px rgba(30,25,15,.06)!important}
 html[data-theme="light"] .archive-intro,
 html[data-theme="light"] .music-creation-lead,
 html[data-theme="light"] .music-creation-note,
 html[data-theme="light"] .music-story-text,
 html[data-theme="light"] .creation-notes-intro,
 html[data-theme="light"] .movie-creation-card p,
-html[data-theme="light"] .shorts-intro,
-html[data-theme="light"] .game-card-desc{color:#514d45!important}
+html[data-theme="light"] .shorts-intro{color:#514d45!important}
 html[data-theme="light"] .archive-total,
-html[data-theme="light"] .creation-notes-kicker,
-html[data-theme="light"] .game-tag{color:#765b17!important}
+html[data-theme="light"] .creation-notes-kicker{color:#765b17!important}
 html[data-theme="light"] .archive-album-title,
 html[data-theme="light"] .music-creation-card h3,
 html[data-theme="light"] .creation-notes-title,
 html[data-theme="light"] .movie-creation-card h3,
-html[data-theme="light"] .shorts-title,
-html[data-theme="light"] .game-card-title{color:#29251f!important;text-shadow:none!important}
+html[data-theme="light"] .shorts-title{color:#29251f!important;text-shadow:none!important}
 html[data-theme="light"] .archive-list,
 html[data-theme="light"] .playlist-sidebar,
 html[data-theme="light"] .playlist-header,
@@ -364,36 +335,6 @@ html[data-theme="light"] .playlist-sidebar a,
 html[data-theme="light"] .music-creation-card a{color:#5f4a17!important}
 html[data-theme="light"] .featured-nav,
 html[data-theme="light"] .screen-info{color:#29251f!important}
-html[data-theme="light"] .game-card-content-wrap{background:#fff!important;color:#29251f!important}
-html[data-theme="light"] .game-card-title{color:#29251f!important}
-
-/* FAITH — Bible */
-html[data-theme="light"] .bible-container{color:#29251f!important}
-html[data-theme="light"] .selector-panel,
-html[data-theme="light"] .panel-header-tools,
-html[data-theme="light"] .bible-reader,
-html[data-theme="light"] .quiz-q-block,
-html[data-theme="light"] .archive-item,
-html[data-theme="light"] .archive-item-memo,
-html[data-theme="light"] .top5-leaderboard{background:#fff!important;color:#29251f!important;border-color:rgba(93,72,24,.16)!important;box-shadow:0 10px 28px rgba(30,25,15,.06)!important}
-html[data-theme="light"] .selector-panel h2,
-html[data-theme="light"] .chapter-heading,
-html[data-theme="light"] .selected-book-title,
-html[data-theme="light"] .archive-item-title{color:#29251f!important}
-html[data-theme="light"] .chapter-heading .en-sub,
-html[data-theme="light"] .archive-item-text{color:#514d45!important}
-html[data-theme="light"] .testament-tab,
-html[data-theme="light"] .book-list-grid button,
-html[data-theme="light"] .chapter-grid-row button{background:#fff!important;color:#29251f!important;border-color:rgba(93,72,24,.16)!important}
-html[data-theme="light"] .testament-tab.active{background:#29251f!important;color:#fff!important}
-html[data-theme="light"] .verse-wrapper,
-html[data-theme="light"] .verse-container{color:#29251f!important}
-html[data-theme="light"] .verse-text{color:#29251f!important}
-html[data-theme="light"] .verse-num{color:#765b17!important}
-html[data-theme="light"] .memo-textarea{background:#fff!important;color:#29251f!important;border-color:rgba(37,37,37,.18)!important}
-html[data-theme="light"] .rank-item{background:#f7f3e9!important;color:#29251f!important}
-html[data-theme="light"] .app-modal-content{background:#fff!important;color:#29251f!important}
-html[data-theme="light"] .app-modal-content input{background:#fff!important;color:#29251f!important;border-color:rgba(37,37,37,.18)!important}
 
 /* FAITH — Korean / English Worship */
 html[data-theme="light"] .intro,
@@ -440,120 +381,10 @@ html[data-theme="light"] .action-btn{background:#29251f!important;color:#fff!imp
 
 
 /* =========================================================
-   LIGHT THEME — FAITH / MORE SUBPAGES FINAL CONTRAST PASS
+   LIGHT THEME — ABOUT, CONTACT AND POLICY PAGES
    Inline page styles on these legacy pages load after common.css,
    so these scoped !important rules intentionally win in Light mode.
    ========================================================= */
-
-/* ---------- BIBLE ---------- */
-html[data-theme="light"] body:has(.bible-container),
-html[data-theme="light"] body:has(.bible-container) .bible-container{
-  background:#f7f5f0!important;
-  color:#29251f!important;
-}
-html[data-theme="light"] body:has(.bible-container) .page-title,
-html[data-theme="light"] body:has(.bible-container) .chapter-heading,
-html[data-theme="light"] body:has(.bible-container) .selected-book-title,
-html[data-theme="light"] body:has(.bible-container) .verse-text,
-html[data-theme="light"] body:has(.bible-container) .verse-main,
-html[data-theme="light"] body:has(.bible-container) .quiz-q-text,
-html[data-theme="light"] body:has(.bible-container) .archive-item-title,
-html[data-theme="light"] body:has(.bible-container) .archive-item-text{
-  color:#29251f!important;
-  -webkit-text-fill-color:#29251f!important;
-  text-shadow:none!important;
-}
-html[data-theme="light"] body:has(.bible-container) .selector-panel,
-html[data-theme="light"] body:has(.bible-container) .bible-reader,
-html[data-theme="light"] body:has(.bible-container) .archive-item,
-html[data-theme="light"] body:has(.bible-container) .top5-leaderboard,
-html[data-theme="light"] body:has(.bible-container) .quiz-q-block,
-html[data-theme="light"] body:has(.bible-container) .app-modal-content{
-  background:#fff!important;
-  color:#29251f!important;
-  border-color:rgba(93,72,24,.18)!important;
-  box-shadow:0 12px 32px rgba(30,25,15,.07)!important;
-}
-html[data-theme="light"] body:has(.bible-container) .testament-tab,
-html[data-theme="light"] body:has(.bible-container) .chapter-grid-row button,
-html[data-theme="light"] body:has(.bible-container) .ch-nav-btn,
-html[data-theme="light"] body:has(.bible-container) .tool-action-btn,
-html[data-theme="light"] body:has(.bible-container) .vt-btn{
-  color:#403a31!important;
-  background:#fff!important;
-  border-color:rgba(93,72,24,.18)!important;
-}
-html[data-theme="light"] body:has(.bible-container) .testament-tab.active,
-html[data-theme="light"] body:has(.bible-container) .chapter-grid-row button.active{
-  color:#765b17!important;
-  background:#f7f1df!important;
-}
-html[data-theme="light"] body:has(.bible-container) .en-sub,
-html[data-theme="light"] body:has(.bible-container) .verse-num,
-html[data-theme="light"] body:has(.bible-container) .rank-pct,
-html[data-theme="light"] body:has(.bible-container) .archive-item-badges{
-  color:#765b17!important;
-}
-html[data-theme="light"] body:has(.bible-container) .memo-textarea,
-html[data-theme="light"] body:has(.bible-container) .auth-input{
-  background:#fff!important;
-  color:#29251f!important;
-  border-color:rgba(37,37,37,.18)!important;
-}
-html[data-theme="light"] body:has(.bible-container) .memo-textarea::placeholder,
-html[data-theme="light"] body:has(.bible-container) .auth-input::placeholder{
-  color:rgba(37,37,37,.48)!important;
-}
-html[data-theme="light"] body:has(.bible-container) .archive-item-header,
-html[data-theme="light"] body:has(.bible-container) .rank-item{
-  color:#403a31!important;
-  border-color:rgba(37,37,37,.10)!important;
-}
-
-/* ---------- WORSHIP / ENGLISH WORSHIP ---------- */
-html[data-theme="light"] body:has(.albums-grid){
-  background:#f7f5f0!important;
-  color:#29251f!important;
-}
-html[data-theme="light"] body:has(.albums-grid) .header-title,
-html[data-theme="light"] body:has(.albums-grid) .intro h2,
-html[data-theme="light"] body:has(.albums-grid) .section-heading h2,
-html[data-theme="light"] body:has(.albums-grid) .album-title,
-html[data-theme="light"] body:has(.albums-grid) .story-card,
-html[data-theme="light"] body:has(.albums-grid) .lyrics-title,
-html[data-theme="light"] body:has(.albums-grid) .lyrics-body,
-html[data-theme="light"] body:has(.albums-grid) .final-note{
-  color:#29251f!important;
-  -webkit-text-fill-color:#29251f!important;
-  text-shadow:none!important;
-}
-html[data-theme="light"] body:has(.albums-grid) .header-slogan,
-html[data-theme="light"] body:has(.albums-grid) .intro p,
-html[data-theme="light"] body:has(.albums-grid) .section-heading p,
-html[data-theme="light"] body:has(.albums-grid) .album-desc,
-html[data-theme="light"] body:has(.albums-grid) .lyrics-meta,
-html[data-theme="light"] body:has(.albums-grid) .lyrics-intro{
-  color:#5d584f!important;
-}
-html[data-theme="light"] body:has(.albums-grid) .album-card{
-  background:#fff!important;
-  border-color:rgba(93,72,24,.18)!important;
-  box-shadow:0 14px 36px rgba(30,25,15,.09)!important;
-}
-html[data-theme="light"] body:has(.albums-grid) .story-card,
-html[data-theme="light"] body:has(.albums-grid) .lyrics-book{
-  background:#fff!important;
-  border-color:rgba(93,72,24,.16)!important;
-  box-shadow:0 10px 28px rgba(30,25,15,.06)!important;
-}
-html[data-theme="light"] body:has(.albums-grid) .lyrics-item{
-  border-color:rgba(37,37,37,.12)!important;
-}
-html[data-theme="light"] body:has(.albums-grid) .stream-btn{
-  color:#765b17!important;
-  background:#fff!important;
-  border-color:rgba(93,72,24,.24)!important;
-}
 
 /* ---------- ABOUT ---------- */
 html[data-theme="light"] body:has(.identity-block){
@@ -645,79 +476,8 @@ html[data-theme="light"] body:has(.policy-block) .policy-list li::before{
 }
 
 
-/* LIGHT MODE — FAITH text contrast refinement */
-html[data-theme="light"] body:has(.bible-container),
-html[data-theme="light"] body:has(.albums-grid){
-  color:#1f1d19!important;
-}
-html[data-theme="light"] body:has(.bible-container) .selector-panel *,
-html[data-theme="light"] body:has(.bible-container) .bible-reader *,
-html[data-theme="light"] body:has(.bible-container) .archive-item *,
-html[data-theme="light"] body:has(.bible-container) .top5-leaderboard *,
-html[data-theme="light"] body:has(.bible-container) .quiz-q-block *{
-  text-shadow:none!important;
-}
-html[data-theme="light"] body:has(.bible-container) .selector-panel,
-html[data-theme="light"] body:has(.bible-container) .bible-reader,
-html[data-theme="light"] body:has(.bible-container) .archive-item,
-html[data-theme="light"] body:has(.bible-container) .top5-leaderboard,
-html[data-theme="light"] body:has(.bible-container) .quiz-q-block{
-  color:#29251f!important;
-}
-html[data-theme="light"] body:has(.bible-container) .selector-panel h1,
-html[data-theme="light"] body:has(.bible-container) .selector-panel h2,
-html[data-theme="light"] body:has(.bible-container) .selector-panel h3,
-html[data-theme="light"] body:has(.bible-container) .bible-reader h1,
-html[data-theme="light"] body:has(.bible-container) .bible-reader h2,
-html[data-theme="light"] body:has(.bible-container) .bible-reader h3,
-html[data-theme="light"] body:has(.bible-container) .archive-item-title,
-html[data-theme="light"] body:has(.bible-container) .quiz-q-text{
-  color:#181612!important;
-}
-html[data-theme="light"] body:has(.bible-container) .verse-text{
-  color:#24211c!important;
-  font-weight:500!important;
-}
-html[data-theme="light"] body:has(.bible-container) .archive-item-text,
-html[data-theme="light"] body:has(.bible-container) .rank-item,
-html[data-theme="light"] body:has(.bible-container) .en-sub{
-  color:#454039!important;
-}
-html[data-theme="light"] body:has(.bible-container) .verse-num,
-html[data-theme="light"] body:has(.bible-container) .rank-pct{
-  color:#765b17!important;
-}
-
-html[data-theme="light"] body:has(.albums-grid) .intro h2,
-html[data-theme="light"] body:has(.albums-grid) .section-heading h2,
-html[data-theme="light"] body:has(.albums-grid) .album-title,
-html[data-theme="light"] body:has(.albums-grid) .story-card,
-html[data-theme="light"] body:has(.albums-grid) .lyrics-title,
-html[data-theme="light"] body:has(.albums-grid) .lyrics-body,
-html[data-theme="light"] body:has(.albums-grid) .final-note{
-  color:#1f1d19!important;
-  -webkit-text-fill-color:#1f1d19!important;
-  font-weight:500!important;
-}
-html[data-theme="light"] body:has(.albums-grid) .intro p,
-html[data-theme="light"] body:has(.albums-grid) .section-heading p,
-html[data-theme="light"] body:has(.albums-grid) .album-desc,
-html[data-theme="light"] body:has(.albums-grid) .lyrics-meta,
-html[data-theme="light"] body:has(.albums-grid) .lyrics-intro{
-  color:#454039!important;
-  opacity:1!important;
-}
-html[data-theme="light"] body:has(.albums-grid) .story-number,
-html[data-theme="light"] body:has(.albums-grid) .album-badge,
-html[data-theme="light"] body:has(.albums-grid) .kicker,
-html[data-theme="light"] body:has(.albums-grid) .section-kicker{
-  color:#765b17!important;
-  opacity:1!important;
-}
-
-
 /* =========================================================
-   PLAY — MUSIC / MOVIE / GAME CENTER
+   MUSIC AND MOVIE PAGES
    Premium Light Theme
    ========================================================= */
 
@@ -836,49 +596,6 @@ html[data-theme="light"] body:has(.theater-wrapper) .shorts-section{
 html[data-theme="light"] body:has(.theater-wrapper) .shorts-heading{color:#29251f!important}
 html[data-theme="light"] body:has(.theater-wrapper) .shorts-intro{color:#5b564e!important}
 
-/* GAME CENTER */
-html[data-theme="light"] body:has(.game-selection-wrapper){
-  background:#f5f2eb!important;color:#29251f!important;
-  background-image:radial-gradient(circle at 50% 0,rgba(201,168,76,.10),transparent 48%)!important;
-}
-html[data-theme="light"] body:has(.game-selection-wrapper) .section-heading-tag{color:#765b17!important}
-html[data-theme="light"] body:has(.game-selection-wrapper) .section-heading-title{color:#29251f!important}
-html[data-theme="light"] body:has(.game-selection-wrapper) .game-selection-wrapper > div > p{
-  color:#514c44!important;
-}
-html[data-theme="light"] body:has(.game-selection-wrapper) .game-selection-wrapper > div > p strong{
-  color:#765b17!important;
-}
-html[data-theme="light"] body:has(.game-selection-wrapper) .game-card{
-  background:linear-gradient(145deg,#fff,#f5f1e7)!important;
-  border-color:rgba(93,72,24,.17)!important;
-  box-shadow:0 16px 38px rgba(30,25,15,.10)!important;
-  color:#29251f!important;
-}
-html[data-theme="light"] body:has(.game-selection-wrapper) .game-card-title{color:#29251f!important;text-shadow:none!important}
-html[data-theme="light"] body:has(.game-selection-wrapper) .game-card-desc{color:#514c44!important}
-html[data-theme="light"] body:has(.game-selection-wrapper) .game-card-image-mode{
-  background:#fff!important;
-}
-html[data-theme="light"] body:has(.game-selection-wrapper) .game-card-image-mode .card-overlay{
-  background:linear-gradient(to bottom,rgba(255,255,255,.02),rgba(18,16,12,.88) 86%)!important;
-}
-html[data-theme="light"] body:has(.game-selection-wrapper) .game-card-image-mode .game-card-title,
-html[data-theme="light"] body:has(.game-selection-wrapper) .game-card-image-mode .game-card-desc{
-  color:#fff!important;text-shadow:0 1px 5px rgba(0,0,0,.65)!important;
-}
-html[data-theme="light"] body:has(.game-selection-wrapper) .tag-maze{
-  background:rgba(255,255,255,.82)!important;color:#3d3933!important;border-color:rgba(37,37,37,.18)!important;
-}
-html[data-theme="light"] body:has(.game-selection-wrapper) .tag-blue-marble{
-  color:#765b17!important;background:#fff9e8!important;
-}
-html[data-theme="light"] body:has(.game-selection-wrapper) .tag-omok{color:#55459a!important}
-html[data-theme="light"] body:has(.game-selection-wrapper) .tag-tetris{color:#b51b70!important}
-html[data-theme="light"] body:has(.game-selection-wrapper) .tag-switch{color:#8a4d22!important}
-
-
-
 /* AdSense UX audit 2026-11-04: reserve the dynamic Home feature and restore readable light-theme contrast. */
 #chris-pick{min-height:clamp(660px,56vw,720px)}
 @media(max-width:700px){#chris-pick{min-height:950px}}
@@ -889,7 +606,6 @@ html[data-theme="light"] body:has(.coach-card) .info-label,
 html[data-theme="light"] body:has(.coach-card) .bible-name,
 html[data-theme="light"] body:has(.coach-card) .flip-hint{color:#765b17!important}
 html[data-theme="light"] body:has(.poster-wrapper) .faction-desc{color:#514d45!important}
-html[data-theme="light"] body:has(.tutu-hero-button) .tutu-button{color:#765b17!important}
 
 
 /* AdSense UX audit follow-up: strengthen remaining light-mode text contrast. */
@@ -927,13 +643,10 @@ html {
 :where(
   .page-wrapper,
   .container,
-  .tutu-wrap,
   .sq-wrap,
   .lore-wrap,
   .wallpaper-studio-inner,
   .interactive-player-wrapper,
-  .bible-container,
-  .today-wrap,
   .shop-shell
 ) {
   box-sizing: border-box;
@@ -945,13 +658,10 @@ html {
 :where(
   .page-wrapper,
   .container,
-  .tutu-wrap,
   .sq-wrap,
   .lore-wrap,
   .wallpaper-studio-inner,
   .interactive-player-wrapper,
-  .bible-container,
-  .today-wrap,
   .shop-shell
 ) :where(h1, h2, h3, h4) {
   max-width: 100%;
@@ -962,13 +672,10 @@ html {
 :where(
   .page-wrapper,
   .container,
-  .tutu-wrap,
   .sq-wrap,
   .lore-wrap,
   .wallpaper-studio-inner,
   .interactive-player-wrapper,
-  .bible-container,
-  .today-wrap,
   .shop-shell
 ) :where(p, li, blockquote, figcaption) {
   overflow-wrap: break-word;
@@ -980,10 +687,6 @@ html {
   .albums-grid,
   .story-grid,
   .music-creation-grid,
-  .today-grid,
-  .tutu-explore-grid,
-  .tutu-video-list,
-  .tutu-ost-grid,
   .sq-explore,
   .sq-gallery,
   .sq-origin,
@@ -997,7 +700,6 @@ html {
   .wallpaper-section-nav,
   .home-actions-grid,
   .home-static-projects,
-  .faith-journey-cards,
   .book-grid,
   .ogq-products,
   .creation-note-grid,
@@ -1009,7 +711,6 @@ html {
   .faction-grid,
   .photo-grid,
   .lore-grid,
-  .game-grid,
   .album-grid,
   .track-grid,
   .playlist-grid,
@@ -1073,7 +774,6 @@ html {
   #chris-pick,
   #chris-note,
   #home-ss2-story,
-  #faith-journey,
   #home-actions,
   .home-static-content,
   .theater-wrapper,
@@ -1082,10 +782,7 @@ html {
   .wallpaper-hero,
   .wallpaper-studio,
   .wallpaper-editorial,
-  .creation-notes-inner,
-  .tutu-page,
-  .tutu-character,
-  .tutu-feature-art
+  .creation-notes-inner
 ) {
   box-sizing: border-box;
   min-width: 0;
@@ -1096,7 +793,6 @@ html {
   #chris-pick,
   #chris-note,
   #home-ss2-story,
-  #faith-journey,
   #home-actions,
   .home-static-content,
   .theater-wrapper,
@@ -1105,10 +801,7 @@ html {
   .wallpaper-hero,
   .wallpaper-studio,
   .wallpaper-editorial,
-  .creation-notes-inner,
-  .tutu-page,
-  .tutu-character,
-  .tutu-feature-art
+  .creation-notes-inner
 ) :where(h1, h2, h3, h4) {
   max-width: 100%;
   overflow-wrap: break-word;
@@ -1119,7 +812,6 @@ html {
   #chris-pick,
   #chris-note,
   #home-ss2-story,
-  #faith-journey,
   #home-actions,
   .home-static-content,
   .theater-wrapper,
@@ -1128,10 +820,7 @@ html {
   .wallpaper-hero,
   .wallpaper-studio,
   .wallpaper-editorial,
-  .creation-notes-inner,
-  .tutu-page,
-  .tutu-character,
-  .tutu-feature-art
+  .creation-notes-inner
 ) :where(p, li, blockquote, figcaption) {
   overflow-wrap: break-word;
   word-break: keep-all;

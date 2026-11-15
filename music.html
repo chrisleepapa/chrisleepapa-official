@@ -40,7 +40,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <link rel="stylesheet" href="/css/creator.css">
 <link rel="stylesheet" href="/css/media-archive.css?v=1">
-<link rel="stylesheet" href="/css/music-editorial.css?v=1">
+<link rel="stylesheet" href="/css/music-editorial.css?v=2">
 </head>
 <body class="creator-page media-page media-music">
 <!-- Google Tag Manager (noscript) -->
@@ -59,8 +59,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p id="spotlight-story"><span class="i18n-ko">멈춰버린 도시의 시간에 사랑하는 사람과의 추억을 담았습니다.</span><span class="i18n-en" lang="en">Memories of a loved one, held in a city that seems to stand still.</span></p>
     </div>
     <div class="music-feature-actions">
-      <a id="spotlight-listen" href="#listening"><span aria-hidden="true">▶</span><span class="i18n-ko">이 앨범 듣기</span><span class="i18n-en" lang="en">Listen to this release</span></a>
+      <button id="spotlight-listen" type="button" aria-controls="spotify-container" aria-pressed="false"><span class="music-play-icon" aria-hidden="true">▶</span><span class="music-play-label">이 앨범 듣기</span></button>
       <a href="#releases"><span class="i18n-ko">앨범 둘러보기</span><span class="i18n-en" lang="en">Browse releases</span> <span aria-hidden="true">↓</span></a>
+    </div>
+    <div class="music-inline-player">
+      <div class="spotify-container" id="spotify-container"></div>
+      <p id="music-play-status" role="status"></p>
+      <div class="music-platform-links">
+        <a id="main-external-link" href="https://open.spotify.com/album/5qWOsYCJgw1bmXqvko7Thv" target="_blank" rel="noopener">Spotify ↗</a>
+        <a id="main-youtube-link" target="_blank" rel="noopener" hidden>YouTube ↗</a>
+      </div>
     </div>
   </div>
   <div class="music-feature-visual">
@@ -77,7 +85,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="music-section-heading">
     <div>
       <h2 id="release-picker"><span class="i18n-ko">기분에 맞춰 골라 듣기</span><span class="i18n-en" lang="en">Find your next listen</span></h2>
-      <p><span class="i18n-ko">앨범을 고르면 아래 감상 화면에서 곡 목록과 작품 이야기를 볼 수 있습니다.</span><span class="i18n-en" lang="en">Choose a release to see its listening notes and tracks in the player below.</span></p>
+      <p><span class="i18n-ko">앨범을 고르면 상단에서 그 작품의 이야기와 음악을 만날 수 있습니다.</span><span class="i18n-en" lang="en">Choose a release to hear it and read its story in the player above.</span></p>
     </div>
     <a href="#music-notes" class="music-text-link"><span class="i18n-ko">음악 제작 기록</span><span class="i18n-en" lang="en">Production notes</span> <span aria-hidden="true">↘</span></a>
   </div>
@@ -90,20 +98,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
   <p id="music-filter-count" class="music-filter-count" aria-live="polite"></p>
   <div id="playlist-container"></div>
-</section>
-<section class="media-section record-player" id="listening" tabindex="-1" aria-labelledby="main-title">
-  <div class="record-art">
-    <div id="main-cover" class="album-art-large" role="img"></div>
-    <div class="vinyl-record" aria-hidden="true"></div>
-  </div>
-  <div class="player-details">
-    <p class="media-byline"><span class="i18n-ko">선택한 앨범</span><span class="i18n-en" lang="en">Selected release</span></p>
-    <h2 id="main-title" aria-live="polite">When the city stood still</h2>
-    <p id="main-type" class="active-badge"></p>
-    <p id="main-story" class="music-current-story"></p>
-    <div class="spotify-container" id="spotify-container"></div>
-    <div class="media-actions"><a class="media-action" id="main-external-link" target="_blank" rel="noopener" href="https://open.spotify.com/album/5qWOsYCJgw1bmXqvko7Thv"><span class="i18n-ko">Spotify에서 듣기 ↗</span><span class="i18n-en" lang="en">Listen on Spotify ↗</span></a><a class="media-action" id="main-youtube-link" target="_blank" rel="noopener" hidden><span class="i18n-ko">YouTube에서 듣기 ↗</span><span class="i18n-en" lang="en">Listen on YouTube ↗</span></a></div>
-  </div>
 </section>
 <section class="media-section media-reading" id="album-details">
   <details class="music-tracklists">
@@ -244,80 +238,145 @@ function showSelection(){
   });
 }
 
-function showAlbumText(){
-  const album=musicData[active];
-  byId('main-type').textContent=musicType(album.type);
-  byId('main-story').textContent=storyFor(album);
-}
-
-function paintAlbumCover(){
-  const album=musicData[active];
-  const cover=byId('main-cover');
-  cover.style.backgroundImage=coverCache[album.id]?`url("${coverCache[album.id]}")`:'';
-  cover.setAttribute('aria-label',album.title);
-}
-
 document.querySelectorAll('[data-feature]').forEach(button=>button.addEventListener('click',()=>{
   selectAlbum(Number(button.dataset.feature));
 }));
-byId('spotlight-listen').addEventListener('click',event=>{
-  event.preventDefault();
-  selectAlbum(active,'listening');
-});
 document.querySelectorAll('[data-mood]').forEach(button=>button.addEventListener('click',()=>{
   mood=button.dataset.mood;
   document.querySelectorAll('[data-mood]').forEach(option=>option.setAttribute('aria-pressed',String(option===button)));
   renderPlaylist();
 }));
-let spotifyController=null;let spotifyApi=null;let spotifyApiTimer=null;
-function setRecordPlaying(playing){const on=!!playing;document.getElementById('main-cover')?.classList.toggle('is-playing',on);document.querySelector('.vinyl-record')?.classList.toggle('is-playing',on);document.documentElement.classList.toggle('music-is-playing',on)}
-function fallbackSpotifyEmbed(album){
-  const box=document.getElementById('spotify-container');
-  if(!box)return;
-  box.innerHTML=`<iframe id="spotify-fallback" src="${embed(album.id)}" title="${album.title} Spotify player" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" style="width:100%;height:210px;border:0;border-radius:10px"></iframe>`;
+let spotifyApi=null;
+let playerSession=null;
+let isPlaying=false;
+
+function updatePlayButton(){
+  const button=byId('spotlight-listen');
+  button.querySelector('.music-play-icon').textContent=isPlaying?'Ⅱ':'▶';
+  button.querySelector('.music-play-label').textContent=isPlaying
+    ?text('일시정지','Pause'):text('이 앨범 듣기','Listen to this release');
+  button.setAttribute('aria-pressed',String(isPlaying));
 }
-function createSpotifyEmbed(){
-  if(!spotifyApi||spotifyController)return;
-  const el=document.getElementById('spotify-embed');
-  if(!el)return;
-  const album=musicData[active];
+
+function setPlaying(value){
+  isPlaying=value;
+  byId('music-feature').classList.toggle('music-playing',value);
+  updatePlayButton();
+  if(value)byId('music-play-status').textContent='';
+}
+
+function helpWithPlayback(){
+  byId('music-play-status').textContent=text(
+    '재생이 시작되지 않으면 바로 아래 Spotify의 ▶를 눌러 주세요.',
+    'If playback does not start, press Play in the Spotify player below.'
+  );
+}
+
+function requestPlayback(session){
+  if(playerSession!==session)return;
+  if(!session.controller||!session.ready){
+    session.playRequested=true;
+    if(session.usingFallback)helpWithPlayback();
+    return;
+  }
+  session.playRequested=false;
   try{
-    spotifyApi.createController(el,{width:'100%',height:210,url:spotify(album.id)},controller=>{
-      if(musicData[active]!==album){controller.destroy?.();return}
-      spotifyController=controller;
-      clearTimeout(spotifyApiTimer);
-      controller.addListener('ready',()=>{setRecordPlaying(false)});
-      controller.addListener('playback_started',()=>setRecordPlaying(true));
-      controller.addListener('playback_update',e=>setRecordPlaying(!e.data.isPaused&&!e.data.isBuffering));
-    });
-    spotifyApiTimer=setTimeout(()=>{if(!spotifyController&&musicData[active]===album)fallbackSpotifyEmbed(album)},3500);
-  }catch(err){
-    console.warn('Spotify iframe API failed:',err);
-    fallbackSpotifyEmbed(album);
+    if(isPlaying){
+      clearTimeout(session.hintTimer);
+      session.controller.pause();
+    }else{
+      session.controller.resume();
+      clearTimeout(session.hintTimer);
+      session.hintTimer=setTimeout(()=>{
+        if(playerSession===session&&!isPlaying)helpWithPlayback();
+      },2200);
+    }
+  }catch{
+    helpWithPlayback();
   }
 }
-window.onSpotifyIframeApiReady=api=>{spotifyApi=api;createSpotifyEmbed()};
-function renderActive(){
-  const a=musicData[active];
-  setRecordPlaying(false);
-  document.getElementById('main-title').textContent=a.title;
-  showAlbumText();
-  document.getElementById('main-external-link').href=spotify(a.id);
-  const y=document.getElementById('main-youtube-link');y.href=a.youtube;y.hidden=!a.youtube;
-  const box=document.getElementById('spotify-container');
-  spotifyController?.destroy?.();
-  box.innerHTML='<div id="spotify-embed"></div>';
-  spotifyController=null;
-  paintAlbumCover();
-  showSelection();
-  if(spotifyApi)createSpotifyEmbed();else setTimeout(()=>{if(musicData[active]===a&&!spotifyController&&!document.querySelector('#spotify-fallback'))fallbackSpotifyEmbed(a)},1800);const playerBox=document.getElementById('spotify-container');playerBox?.addEventListener('pointerdown',()=>{if(window.matchMedia('(max-width:700px)').matches)setRecordPlaying(true)},{once:true});
+
+function showFallback(session){
+  if(playerSession!==session||session.ready||session.usingFallback)return;
+  session.usingFallback=true;
+  clearTimeout(session.fallbackTimer);
+  session.controller?.destroy?.();
+  session.controller=null;
+  const player=document.createElement('iframe');
+  player.src=embed(session.album.id);
+  player.title='Spotify · '+session.album.title;
+  player.allow='autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
+  byId('spotify-container').replaceChildren(player);
+  if(session.playRequested)helpWithPlayback();
 }
+
+function mountSpotifyController(session){
+  const placeholder=byId('spotify-embed');
+  if(!spotifyApi||!session||session.usingFallback||session.mounting||!placeholder)return;
+  session.mounting=true;
+  try{
+    spotifyApi.createController(placeholder,{width:'100%',height:152,url:spotify(session.album.id)},controller=>{
+      if(playerSession!==session||session.usingFallback){
+        controller.destroy?.();
+        return;
+      }
+      session.controller=controller;
+      controller.addListener('ready',()=>{
+        if(playerSession!==session||session.usingFallback)return;
+        session.ready=true;
+        clearTimeout(session.fallbackTimer);
+        if(session.playRequested)requestPlayback(session);
+      });
+      controller.addListener('playback_started',()=>{
+        if(playerSession===session&&!session.usingFallback)setPlaying(true);
+      });
+      controller.addListener('playback_update',event=>{
+        if(playerSession===session&&!session.usingFallback)setPlaying(!event.data.isPaused);
+      });
+    });
+  }catch{
+    showFallback(session);
+  }
+}
+
+window.onSpotifyIframeApiReady=api=>{
+  spotifyApi=api;
+  mountSpotifyController(playerSession);
+};
+
+function renderActive(){
+  if(playerSession){
+    clearTimeout(playerSession.fallbackTimer);
+    clearTimeout(playerSession.hintTimer);
+    playerSession.controller?.destroy?.();
+  }
+  const album=musicData[active];
+  const session={album};
+  playerSession=session;
+  byId('music-play-status').textContent='';
+  setPlaying(false);
+  const spotifyLink=byId('main-external-link');
+  spotifyLink.href=spotify(album.id);
+  const youtubeLink=byId('main-youtube-link');
+  youtubeLink.href=album.youtube;
+  youtubeLink.hidden=!album.youtube;
+  const placeholder=document.createElement('div');
+  placeholder.id='spotify-embed';
+  byId('spotify-container').replaceChildren(placeholder);
+  session.fallbackTimer=setTimeout(()=>showFallback(session),4500);
+  mountSpotifyController(session);
+  showSelection();
+}
+
+byId('spotlight-listen').addEventListener('click',()=>{
+  if(playerSession)requestPlayback(playerSession);
+});
 function renderArchive(){const box=document.getElementById('archive-list');let total=0,allCountsKnown=true;box.innerHTML=musicData.map(a=>{const count=a.trackCount??(a.tracks.length?a.tracks.length:null);if(count===null)allCountsKnown=false;else total+=count;const hasCompleteTrackList=a.tracks.length>0&&(a.trackCount==null||a.tracks.length===a.trackCount);const shown=hasCompleteTrackList?`<div class="archive-tracks">${a.tracks.map((t,i)=>`<div class="archive-track"><b>${i+1}</b> ${t}</div>`).join('')}</div>`:`<div class="archive-track">${musicT('music_tracklist_spotify')}</div>`;const countLabel=count===null?'':` · ${count} ${musicTrackLabel(count)}`;return `<div class="archive-album"><div class="archive-album-title">${a.title} · ${musicType(a.type)}${countLabel}</div>${shown}</div>`}).join('');const totalEl=document.getElementById('archive-total');if(totalEl)totalEl.textContent=allCountsKnown?`${musicT('music_total')} ${total} ${musicT('music_tracks')}`:''}
 function refreshMusicLanguage(){
   showSpotlight();
   renderPlaylist();
   renderArchive();
-  showAlbumText();
+  updatePlayButton();
 }
 refreshMusicLanguage();
 renderActive();

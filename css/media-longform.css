@@ -54,6 +54,14 @@ html[data-theme="dark"] .media-editorial { --editorial-tint: #252b45; }
 .film-essay--reverse { grid-template-columns: minmax(0,1fr) minmax(0,1.13fr); grid-template-areas: "title visual" "prose visual"; }
 .film-essay-head { grid-area: title; }
 .film-essay-prose { grid-area: prose; min-width: 0; }
+.media-editorial .film-watch-note {
+  margin: 16px 0;
+  padding: 12px 15px;
+  border-inline-start: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  background: var(--editorial-tint);
+}
+.film-watch-note strong { display: block; margin-bottom: 3px; color: var(--ink); }
 .media-editorial .film-essay-head h3 {
   margin: 0;
   font: 650 clamp(1.65rem,3.6vw,3rem)/1.22 var(--editorial-serif);
@@ -264,6 +272,22 @@ html[data-theme="dark"] .media-editorial { --editorial-tint: #252b45; }
   color: var(--ink);
   font-size: 1.12rem;
 }
+.music-note-player-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 8px;
+  border: 0;
+  padding: 0;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  font-weight: 750;
+  text-decoration: underline;
+  text-underline-offset: .2em;
+  cursor: pointer;
+}
+.music-note-player-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .music-note-prompt {
   margin-top: clamp(16px, 2.5vw, 26px);
   border-top: 1px solid var(--rule);

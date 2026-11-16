@@ -235,3 +235,13 @@ html[data-theme="dark"] .media-editorial { --editorial-tint: #252b45; }
 .media-music .music-note-body{grid-template-columns:minmax(0,1fr);gap:18px;padding:12px 5px 22px}
 .media-music .music-note-body p{font-size:14px;line-height:1.75}
 }
+
+/* Mobile editorial readability: preserve content without horizontal clipping. */
+@media (max-width: 760px) {
+  .media-editorial, .media-editorial article, .media-editorial section { min-width: 0; max-width: 100%; }
+  .media-editorial h2, .media-editorial h3, .media-editorial p,
+  .media-music .music-note-caption, .media-music .music-note-body { overflow-wrap: anywhere; }
+  .media-editorial img, .media-editorial iframe, .media-editorial video { max-width: 100%; }
+  .media-editorial pre { max-width: 100%; overflow-x: auto; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .media-editorial .editorial-header h2 { font-size: clamp(1.7rem, 8vw, 2.5rem); line-height: 1.2; }
+}

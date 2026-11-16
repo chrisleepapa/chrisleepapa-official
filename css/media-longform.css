@@ -211,3 +211,27 @@ html[data-theme="dark"] .media-editorial { --editorial-tint: #252b45; }
   .music-note-caption strong { font-size: 1rem; }
   .music-note-caption > span { font-size: .85rem; }
 }
+
+/* Album-by-album production notes only: restrained release-list styling.
+   Does not affect the production-process or creator-choices essays. */
+.media-music .music-note-entry{border-top:1px solid var(--rule);background:transparent}
+.media-music .music-note-entry:last-child{border-bottom:1px solid var(--rule)}
+.media-music .music-note-entry>summary{grid-template-columns:76px minmax(0,1fr) 22px;gap:20px;padding:20px 8px;min-height:104px;transition:background .18s ease}
+.media-music .music-note-entry>summary:hover{background:var(--editorial-tint)}
+.media-music .music-note-cover{width:76px;border-radius:9px}
+.media-music .music-note-caption strong{font-size:clamp(17px,1.6vw,22px);line-height:1.35;letter-spacing:-.025em}
+.media-music .music-note-caption>span{font-size:14px;line-height:1.65;margin-top:6px}
+.media-music .music-note-entry[open]>summary{background:var(--editorial-tint)}
+.media-music .music-note-body{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px 34px;padding:22px 24px 32px 104px}
+.media-music .music-note-direction,.media-music .music-note-listening{padding:0;background:transparent;border:0}
+.media-music .music-note-listening{border-left:2px solid var(--accent);padding-left:20px}
+.media-music .music-note-body h3{font-size:15px;line-height:1.45;margin-bottom:10px}
+.media-music .music-note-body p{font-size:15px;line-height:1.8;max-width:65ch}
+@media(max-width:760px){
+.media-music .music-note-entry>summary{grid-template-columns:56px minmax(0,1fr) 16px;gap:12px;padding:14px 4px;min-height:80px}
+.media-music .music-note-cover{width:56px}
+.media-music .music-note-caption strong{font-size:16px}
+.media-music .music-note-caption>span{font-size:13px}
+.media-music .music-note-body{grid-template-columns:minmax(0,1fr);gap:18px;padding:12px 5px 22px}
+.media-music .music-note-body p{font-size:14px;line-height:1.75}
+}

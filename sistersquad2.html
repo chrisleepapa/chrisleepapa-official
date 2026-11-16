@@ -398,70 +398,63 @@
     <link rel="stylesheet" href="/css/creator.css">
     <link rel="stylesheet" href="/css/book-work.css?v=1">
     <style>
-        .ss2-shorts { margin: clamp(40px, 8vw, 100px) auto; scroll-margin-top: 96px; }
+        .ss2-shorts { margin: clamp(38px, 7vw, 84px) auto; scroll-margin-top: 96px; }
         .ss2-shorts + .ss2-story-section .ss2-full-story { margin-top: 0; }
-        .ss2-shorts-heading { margin-bottom: 20px; }
-        .ss2-shorts-heading h2, .ss2-shorts-feature h3, .ss2-shorts-bar h3 {
-            color: inherit; font-family: Pretendard, Inter, system-ui, sans-serif;
-            line-height: 1.12; letter-spacing: -.045em; overflow-wrap: anywhere; word-break: keep-all;
+        .ss2-shorts h2, .ss2-shorts-series {
+            color: var(--ink); margin: 0 0 16px;
+            font: 800 clamp(1.5rem, 5vw, 3.15rem)/1.12 Pretendard, Inter, system-ui, sans-serif;
+            letter-spacing: -.048em; word-break: keep-all;
         }
-        .ss2-shorts-heading h2 { margin: 0 0 9px; font-size: clamp(1.75rem, 5vw, 3.65rem); color: var(--ink); }
-        .ss2-shorts-heading p { margin: 0; color: var(--subtle); word-break: keep-all; }
-        .ss2-shorts-feature {
-            display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .45fr);
-            align-items: center; gap: clamp(12px, 4vw, 46px);
-            min-height: 156px; padding: clamp(16px, 4vw, 42px); overflow: hidden;
-            background: radial-gradient(ellipse at 90% 35%, #4254d4, transparent 70%), #151c4a;
-            border-radius: 16px; color: #fff !important; text-decoration: none;
+        .ss2-shorts .ss2-shorts-series { margin: 26px 0 12px; font-size: clamp(1.2rem, 3vw, 1.85rem); }
+        .ss2-clip {
+            display: block; min-width: 0; overflow: hidden; border-radius: 13px; text-decoration: none;
+            color: var(--ink) !important; background: var(--panel); border: 1px solid var(--rule);
         }
-        .ss2-shorts-feature img {
-            display: block; width: auto; max-width: 100%; max-height: clamp(108px, 23vw, 215px);
-            height: auto; justify-self: center; border-radius: 4px 8px 8px 4px;
-            box-shadow: 3px 0 #aeb9ee, 12px 10px 25px #0b1034;
-            transform: rotate(5deg); transition: transform .23s;
+        .ss2-clip-image { position: relative; isolation: isolate; overflow: hidden; aspect-ratio: 4 / 5; background: #1b2143; }
+        .ss2-clip-image::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(0deg,#07091b4a,transparent 58%); }
+        .ss2-clip-image img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .28s ease; }
+        .ss2-clip-play {
+            position: absolute; z-index: 1; inset: 50% auto auto 50%; transform: translate(-50%,-50%);
+            display: grid; place-items: center; width: clamp(43px, 8vw, 59px); aspect-ratio: 1;
+            border: 1px solid #ffffffaf; border-radius: 50%; background: #0f142bd9;
+            color: #fff; box-shadow: 0 5px 22px #090c356b; font-size: 1.12rem;
         }
-        .ss2-shorts-feature h3 { margin: 6px 0 14px; font-size: clamp(1.42rem, 4vw, 3rem); }
-        .ss2-shorts-tag { margin: 0; color: #d1dbff; font-size: .84rem; font-weight: 750; }
-        .ss2-shorts-watch { color: inherit; font-size: .81rem; font-weight: 730; }
-        .ss2-shorts-bar { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin: 20px 0 10px; }
-        .ss2-shorts-bar h3 { margin: 0; color: var(--ink); font-size: clamp(1.14rem, 3vw, 1.7rem); }
-        .ss2-shorts-controls { display: flex; gap: 6px; }
-        .ss2-shorts-controls button {
-            display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
-            border: 1px solid var(--rule); background: var(--panel); color: var(--ink); cursor: pointer;
+        .ss2-clip-copy { display: grid; gap: 5px; padding: 11px 13px 14px; }
+        .ss2-clip-copy strong { font-size: clamp(.98rem, 2.4vw, 1.22rem); line-height: 1.29; word-break: keep-all; overflow-wrap: anywhere; }
+        .ss2-clip-label { color: var(--accent); font-size: .78rem; font-weight: 760; }
+        .ss2-clip--feature {
+            display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .83fr); align-items: stretch;
+            background: linear-gradient(125deg,#111530,#2d45a8); border: 0; color: #fff !important;
         }
-        .ss2-shorts-controls button[aria-disabled="true"] { opacity: .46; cursor: default; }
-        .ss2-shorts-sr {
-            position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+        .ss2-clip--feature .ss2-clip-image { aspect-ratio: 1; max-height: 350px; }
+        .ss2-clip--feature .ss2-clip-copy { align-content: center; gap: 8px; padding: clamp(12px, 5vw, 55px); }
+        .ss2-clip--feature .ss2-clip-copy strong { font-size: clamp(1.25rem, 4vw, 2.75rem); line-height: 1.13; letter-spacing: -.045em; }
+        .ss2-clip--feature .ss2-clip-label { color: #d0dcff; }
+        .ss2-clip-lead { color: #e4eaff; font-size: clamp(.81rem, 1.6vw, 1rem); line-height: 1.48; word-break: keep-all; }
+        .ss2-clips-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: clamp(9px, 2.1vw, 21px); }
+        .ss2-clip-dialog {
+            width: min(calc(100% - 25px), 390px); max-height: calc(100dvh - 18px);
+            border: 1px solid var(--rule); border-radius: 15px; padding: 10px 13px;
+            background: var(--panel); color: var(--ink);
         }
-        .ss2-shorts-track {
-            display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - 24px) / 3); gap: 12px;
-            margin: 0; padding: 5px 5px 12px; list-style: none;
-            overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 5px;
-            scrollbar-color: var(--accent) var(--paper);
+        .ss2-clip-dialog::backdrop { background: #080b1ada; }
+        .ss2-clip-dialog-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+        .ss2-clip-dialog-top h3 { margin: 0; color: var(--ink); font-size: 1.05rem; }
+        .ss2-clip-close {
+            display: grid; place-items: center; width: 44px; height: 44px; color: var(--ink);
+            font-size: 1.65rem; cursor: pointer;
         }
-        .ss2-shorts-track > li { min-width: 0; scroll-snap-align: start; }
-        .ss2-shorts-card {
-            display: flex; flex-direction: column; align-items: flex-start; gap: 7px; height: 100%; min-height: 154px;
-            padding: 14px; border: 1px solid var(--rule); border-radius: 11px; background: var(--panel);
-            color: var(--ink) !important; text-decoration: none; word-break: keep-all; overflow-wrap: anywhere;
+        .ss2-clip-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+        .ss2-clip-player { width: min(100%, 40dvh); aspect-ratio: 9 / 16; margin: 0 auto; background: #111530; }
+        .ss2-clip-player iframe { display: block; width: 100%; height: 100%; border: 0; }
+        .ss2-clip-fallback { display: flex; align-items: center; justify-content: center; min-height: 44px; color: var(--accent) !important; font-weight: 750; }
+        @media (hover: hover) { .ss2-clip:hover img { transform: scale(1.055); } }
+        @media (max-width: 600px) {
+            .ss2-clips-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+            .ss2-clip--feature .ss2-clip-image { aspect-ratio: 4 / 5; }
+            .ss2-clip-copy { padding-inline: 10px; }
         }
-        .ss2-shorts-episode {
-            display: flex; justify-content: space-between; width: 100%; gap: 8px;
-            color: var(--accent); font-size: .8rem; font-weight: 760;
-        }
-        .ss2-shorts-track > li:nth-child(3n + 1) .ss2-shorts-card { border-top: 3px solid #667cff; }
-        .ss2-shorts-track > li:nth-child(3n + 2) .ss2-shorts-card { border-top: 3px solid #b664d1; }
-        .ss2-shorts-track > li:nth-child(3n) .ss2-shorts-card { border-top: 3px solid #36a5aa; }
-        .ss2-shorts-card strong { font-size: 1.08rem; line-height: 1.32; }
-        .ss2-shorts-card p { margin: 0 0 5px; color: var(--subtle); font-size: .87rem; line-height: 1.46; }
-        .ss2-shorts-card .ss2-shorts-watch { margin-top: auto; color: var(--accent); }
-        @media (hover: hover) {
-            .ss2-shorts-feature:hover img { transform: rotate(0); }
-            .ss2-shorts-card:hover { border-color: var(--accent); }
-        }
-        @media (max-width: 720px) { .ss2-shorts-track { grid-auto-columns: min(77%, 280px); } }
-        @media (prefers-reduced-motion: reduce) { .ss2-shorts-feature img { transition: none; } }
+        @media (prefers-reduced-motion: reduce) { .ss2-clip-image img { transition: none; } }
     </style>
 </head>
 <body class="creator-page book-work book-work--sister-squad-2">
@@ -555,79 +548,91 @@
         </section>
 
         <section class="ss2-shorts" id="ss2-shorts" aria-labelledby="ss2-shorts-title">
-            <header class="ss2-shorts-heading">
-                <h2 id="ss2-shorts-title"><span class="nav-label-ko" lang="ko">본편 밖의 시스터스쿼드</span><span class="nav-label-en" lang="en">Sister Squad off script</span></h2>
-                <p><span class="nav-label-ko" lang="ko">대환장 NG부터 불과 얼음의 그리핀이 합류한 에픽 댄스까지.</span><span class="nav-label-en" lang="en">From bloopers to an epic dance battle with the fire and ice griffins.</span></p>
-            </header>
-            <a class="ss2-shorts-feature" href="https://www.facebook.com/reel/28359338567077419/" target="_blank" rel="noopener noreferrer">
-                <div>
-                    <p class="ss2-shorts-tag"><span class="nav-label-ko" lang="ko">촬영 비하인드</span><span class="nav-label-en" lang="en">Behind the scenes</span></p>
-                    <h3><span class="nav-label-ko" lang="ko">대환장 NG 모음</span><span class="nav-label-en" lang="en">Bloopers &amp; outtakes</span></h3>
-                    <span class="ss2-shorts-watch"><span class="nav-label-ko" lang="ko">Facebook에서 보기</span><span class="nav-label-en" lang="en">Watch on Facebook</span> <span aria-hidden="true">↗</span></span>
-                </div>
-                <img src="/assets/shop/sister-squad-2.webp" width="537" height="760" loading="lazy" alt="">
-            </a>
-            <div class="ss2-shorts-bar">
-                <h3 id="ss2-dance-title"><span class="nav-label-ko" lang="ko">에픽 댄스 챌린지</span><span class="nav-label-en" lang="en">Epic dance challenge</span></h3>
-                <div class="ss2-shorts-controls" hidden>
-                    <button type="button" data-step="-1" aria-controls="ss2-dance-track">
-                        <span class="ss2-shorts-sr"><span class="nav-label-ko" lang="ko">이전 편</span><span class="nav-label-en" lang="en">Previous episode</span></span><span aria-hidden="true">←</span>
-                    </button>
-                    <button type="button" data-step="1" aria-controls="ss2-dance-track">
-                        <span class="ss2-shorts-sr"><span class="nav-label-ko" lang="ko">다음 편</span><span class="nav-label-en" lang="en">Next episode</span></span><span aria-hidden="true">→</span>
-                    </button>
-                </div>
-            </div>
-            <ol id="ss2-dance-track" class="ss2-shorts-track" aria-labelledby="ss2-dance-title">
-                <li>
-                    <a class="ss2-shorts-card" href="https://www.facebook.com/reel/1086306934222013/" target="_blank" rel="noopener noreferrer">
-                        <span class="ss2-shorts-episode"><span class="nav-label-ko" lang="ko">1편</span><span class="nav-label-en" lang="en">Episode 1</span> <span aria-hidden="true">▶</span></span>
+            <h2 id="ss2-shorts-title"><span class="nav-label-ko" lang="ko">본편 밖의 시스터스쿼드</span><span class="nav-label-en" lang="en">Sister Squad off script</span></h2>
+            <a class="ss2-clip ss2-clip--feature" href="https://www.facebook.com/reel/28359338567077419/" target="_blank" rel="noopener noreferrer">
+                    <div class="ss2-clip-image">
+                        <img src="/assets/sister-squad-2/reel-1.jpg" alt="" loading="lazy" decoding="async">
+                        <span class="ss2-clip-play" aria-hidden="true">▶</span>
+                    </div>
+                    <div class="ss2-clip-copy">
+                        <span class="ss2-clip-label"><span class="nav-label-ko" lang="ko">촬영 비하인드</span><span class="nav-label-en" lang="en">Behind the scenes</span></span>
+                        <strong><span class="nav-label-ko" lang="ko">대환장 NG 모음</span><span class="nav-label-en" lang="en">Bloopers &amp; outtakes</span></strong>
+                        <span class="ss2-clip-lead"><span class="nav-label-ko" lang="ko">애니메이션을 만들며 나온 웃긴 실수들을 모았습니다.</span><span class="nav-label-en" lang="en">A compilation of funny outtakes from making the animation.</span></span>
+                    </div>
+                </a>
+            <h3 class="ss2-shorts-series"><span class="nav-label-ko" lang="ko">에픽 댄스 챌린지</span><span class="nav-label-en" lang="en">Epic Dance Challenge</span></h3>
+            <div class="ss2-clips-grid">
+                <a class="ss2-clip" href="https://www.facebook.com/reel/1086306934222013/" target="_blank" rel="noopener noreferrer">
+                    <div class="ss2-clip-image">
+                        <img src="/assets/sister-squad-2/reel-2.jpg" alt="" loading="lazy" decoding="async">
+                        <span class="ss2-clip-play" aria-hidden="true">▶</span>
+                    </div>
+                    <div class="ss2-clip-copy">
+                        <span class="ss2-clip-label"><span class="nav-label-ko" lang="ko">에픽 댄스 1편</span><span class="nav-label-en" lang="en">Epic Dance · Episode 1</span></span>
                         <strong><span class="nav-label-ko" lang="ko">비트에 올라타기</span><span class="nav-label-en" lang="en">Catch the beat</span></strong>
-                        <p><span class="nav-label-ko" lang="ko">리듬을 잘게 쪼개는 첫 스텝.</span><span class="nav-label-en" lang="en">The first steps play with the rhythm.</span></p>
-                        <span class="ss2-shorts-watch"><span class="nav-label-ko" lang="ko">Facebook에서 보기</span><span class="nav-label-en" lang="en">Watch on Facebook</span> <span aria-hidden="true">↗</span></span>
-                    </a>
-                </li>
-                <li>
-                    <a class="ss2-shorts-card" href="https://www.facebook.com/reel/29110127591933339/" target="_blank" rel="noopener noreferrer">
-                        <span class="ss2-shorts-episode"><span class="nav-label-ko" lang="ko">2편</span><span class="nav-label-en" lang="en">Episode 2</span> <span aria-hidden="true">▶</span></span>
+                    </div>
+                </a>
+                <a class="ss2-clip" href="https://www.facebook.com/reel/29110127591933339/" target="_blank" rel="noopener noreferrer">
+                    <div class="ss2-clip-image">
+                        <img src="/assets/sister-squad-2/reel-3.jpg" alt="" loading="lazy" decoding="async">
+                        <span class="ss2-clip-play" aria-hidden="true">▶</span>
+                    </div>
+                    <div class="ss2-clip-copy">
+                        <span class="ss2-clip-label"><span class="nav-label-ko" lang="ko">에픽 댄스 2편</span><span class="nav-label-en" lang="en">Epic Dance · Episode 2</span></span>
                         <strong><span class="nav-label-ko" lang="ko">리듬 이어가기</span><span class="nav-label-en" lang="en">Keep the rhythm</span></strong>
-                        <p><span class="nav-label-ko" lang="ko">캐릭터들의 에픽 댄스 두 번째 라운드.</span><span class="nav-label-en" lang="en">Round two of the character dance challenge.</span></p>
-                        <span class="ss2-shorts-watch"><span class="nav-label-ko" lang="ko">Facebook에서 보기</span><span class="nav-label-en" lang="en">Watch on Facebook</span> <span aria-hidden="true">↗</span></span>
-                    </a>
-                </li>
-                <li>
-                    <a class="ss2-shorts-card" href="https://www.facebook.com/reel/1814318627040965/" target="_blank" rel="noopener noreferrer">
-                        <span class="ss2-shorts-episode"><span class="nav-label-ko" lang="ko">3편</span><span class="nav-label-en" lang="en">Episode 3</span> <span aria-hidden="true">▶</span></span>
+                    </div>
+                </a>
+                <a class="ss2-clip" href="https://www.facebook.com/reel/1814318627040965/" target="_blank" rel="noopener noreferrer">
+                    <div class="ss2-clip-image">
+                        <img src="/assets/sister-squad-2/reel-4.jpg" alt="" loading="lazy" decoding="async">
+                        <span class="ss2-clip-play" aria-hidden="true">▶</span>
+                    </div>
+                    <div class="ss2-clip-copy">
+                        <span class="ss2-clip-label"><span class="nav-label-ko" lang="ko">에픽 댄스 3편</span><span class="nav-label-en" lang="en">Epic Dance · Episode 3</span></span>
                         <strong><span class="nav-label-ko" lang="ko">프레임까지 쪼갠 스텝</span><span class="nav-label-en" lang="en">Frame-by-frame moves</span></strong>
-                        <p><span class="nav-label-ko" lang="ko">밤마다 렌더링하며 다듬은 세 번째 춤.</span><span class="nav-label-en" lang="en">The third routine, fine-tuned through late-night renders.</span></p>
-                        <span class="ss2-shorts-watch"><span class="nav-label-ko" lang="ko">Facebook에서 보기</span><span class="nav-label-en" lang="en">Watch on Facebook</span> <span aria-hidden="true">↗</span></span>
-                    </a>
-                </li>
-                <li>
-                    <a class="ss2-shorts-card" href="https://www.facebook.com/reel/1632640358503345/" target="_blank" rel="noopener noreferrer">
-                        <span class="ss2-shorts-episode"><span class="nav-label-ko" lang="ko">4편</span><span class="nav-label-en" lang="en">Episode 4</span> <span aria-hidden="true">▶</span></span>
+                    </div>
+                </a>
+                <a class="ss2-clip" href="https://www.facebook.com/reel/1632640358503345/" target="_blank" rel="noopener noreferrer">
+                    <div class="ss2-clip-image">
+                        <img src="/assets/sister-squad-2/reel-5.jpg" alt="" loading="lazy" decoding="async">
+                        <span class="ss2-clip-play" aria-hidden="true">▶</span>
+                    </div>
+                    <div class="ss2-clip-copy">
+                        <span class="ss2-clip-label"><span class="nav-label-ko" lang="ko">에픽 댄스 4편</span><span class="nav-label-en" lang="en">Epic Dance · Episode 4</span></span>
                         <strong><span class="nav-label-ko" lang="ko">불과 얼음의 그리핀</span><span class="nav-label-en" lang="en">Fire &amp; ice griffins</span></strong>
-                        <p><span class="nav-label-ko" lang="ko">그리핀까지 합류한 댄스 배틀.</span><span class="nav-label-en" lang="en">The griffins join the dance battle.</span></p>
-                        <span class="ss2-shorts-watch"><span class="nav-label-ko" lang="ko">Facebook에서 보기</span><span class="nav-label-en" lang="en">Watch on Facebook</span> <span aria-hidden="true">↗</span></span>
-                    </a>
-                </li>
-                <li>
-                    <a class="ss2-shorts-card" href="https://www.facebook.com/reel/1697304078765115/" target="_blank" rel="noopener noreferrer">
-                        <span class="ss2-shorts-episode"><span class="nav-label-ko" lang="ko">5편</span><span class="nav-label-en" lang="en">Episode 5</span> <span aria-hidden="true">▶</span></span>
+                    </div>
+                </a>
+                <a class="ss2-clip" href="https://www.facebook.com/reel/1697304078765115/" target="_blank" rel="noopener noreferrer">
+                    <div class="ss2-clip-image">
+                        <img src="/assets/sister-squad-2/reel-6.jpg" alt="" loading="lazy" decoding="async">
+                        <span class="ss2-clip-play" aria-hidden="true">▶</span>
+                    </div>
+                    <div class="ss2-clip-copy">
+                        <span class="ss2-clip-label"><span class="nav-label-ko" lang="ko">에픽 댄스 5편</span><span class="nav-label-en" lang="en">Epic Dance · Episode 5</span></span>
                         <strong><span class="nav-label-ko" lang="ko">선글라스 자매</span><span class="nav-label-en" lang="en">Sisters in shades</span></strong>
-                        <p><span class="nav-label-ko" lang="ko">선글라스를 쓴 두 자매의 칼군무.</span><span class="nav-label-en" lang="en">The sisters dance in sync in their shades.</span></p>
-                        <span class="ss2-shorts-watch"><span class="nav-label-ko" lang="ko">Facebook에서 보기</span><span class="nav-label-en" lang="en">Watch on Facebook</span> <span aria-hidden="true">↗</span></span>
-                    </a>
-                </li>
-                <li>
-                    <a class="ss2-shorts-card" href="https://www.facebook.com/reel/1472730781461473/" target="_blank" rel="noopener noreferrer">
-                        <span class="ss2-shorts-episode"><span class="nav-label-ko" lang="ko">6편</span><span class="nav-label-en" lang="en">Episode 6</span> <span aria-hidden="true">▶</span></span>
+                    </div>
+                </a>
+                <a class="ss2-clip" href="https://www.facebook.com/reel/1472730781461473/" target="_blank" rel="noopener noreferrer">
+                    <div class="ss2-clip-image">
+                        <img src="/assets/sister-squad-2/reel-7.jpg" alt="" loading="lazy" decoding="async">
+                        <span class="ss2-clip-play" aria-hidden="true">▶</span>
+                    </div>
+                    <div class="ss2-clip-copy">
+                        <span class="ss2-clip-label"><span class="nav-label-ko" lang="ko">에픽 댄스 6편</span><span class="nav-label-en" lang="en">Epic Dance · Episode 6</span></span>
                         <strong><span class="nav-label-ko" lang="ko">댄스 파티 피날레</span><span class="nav-label-en" lang="en">Dance party finale</span></strong>
-                        <p><span class="nav-label-ko" lang="ko">강렬한 비트와 칼군무로 마무리하는 여섯 번째 춤.</span><span class="nav-label-en" lang="en">The sixth round closes out the dance party at full energy.</span></p>
-                        <span class="ss2-shorts-watch"><span class="nav-label-ko" lang="ko">Facebook에서 보기</span><span class="nav-label-en" lang="en">Watch on Facebook</span> <span aria-hidden="true">↗</span></span>
-                    </a>
-                </li>
-            </ol>
+                    </div>
+                </a>
+            </div>
+            <dialog class="ss2-clip-dialog" aria-labelledby="ss2-clip-dialog-title">
+                <div class="ss2-clip-dialog-top">
+                    <h3 id="ss2-clip-dialog-title"></h3>
+                    <form method="dialog"><button class="ss2-clip-close" type="submit">
+                        <span class="ss2-clip-sr"><span class="nav-label-ko" lang="ko">닫기</span><span class="nav-label-en" lang="en">Close</span></span><span aria-hidden="true">×</span>
+                    </button></form>
+                </div>
+                <div class="ss2-clip-player"></div>
+                <a class="ss2-clip-fallback" target="_blank" rel="noopener noreferrer"><span class="nav-label-ko" lang="ko">Facebook에서 보기</span><span class="nav-label-en" lang="en">Watch on Facebook</span> ↗</a>
+            </dialog>
         </section>
 
         <section class="ss2-story-section" aria-labelledby="ss2-full-story-title">
@@ -1079,25 +1084,32 @@
 
     <script>
         (() => {
-            const track = document.getElementById('ss2-dance-track');
-            const controls = document.querySelector('#ss2-shorts .ss2-shorts-controls');
-            const [previous, next] = controls.querySelectorAll('button');
-            const update = () => {
-                previous.setAttribute('aria-disabled', String(track.scrollLeft <= 2));
-                next.setAttribute('aria-disabled',
-                    String(track.scrollWidth - track.clientWidth - track.scrollLeft <= 2));
-            };
-            controls.addEventListener('click', (event) => {
-                const button = event.target.closest('button');
-                if (!button || button.getAttribute('aria-disabled') === 'true') return;
-                const step = track.children[1].offsetLeft - track.firstElementChild.offsetLeft;
-                const behavior = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth';
-                track.scrollBy({ left: step * Number(button.dataset.step), behavior });
+            const gallery = document.getElementById('ss2-shorts');
+            const dialog = gallery.querySelector('.ss2-clip-dialog');
+            const player = dialog.querySelector('.ss2-clip-player');
+            const title = dialog.querySelector('h3');
+            const fallback = dialog.querySelector('.ss2-clip-fallback');
+            gallery.addEventListener('click', (event) => {
+                const clip = event.target.closest('.ss2-clip');
+                if (!clip || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || !dialog.showModal) return;
+                event.preventDefault();
+                title.textContent = clip.querySelector('strong').innerText;
+                fallback.href = clip.href;
+                dialog.showModal();
+                const width = Math.round(player.clientWidth);
+                const embed = new URL('https://www.facebook.com/plugins/video.php');
+                embed.search = new URLSearchParams({
+                    href: clip.href, show_text: 'false', width: String(width),
+                    height: String(Math.round(width * 16 / 9))
+                });
+                const frame = document.createElement('iframe');
+                frame.title = title.textContent;
+                frame.allow = 'autoplay; encrypted-media; picture-in-picture; web-share';
+                frame.allowFullscreen = true;
+                frame.src = embed;
+                player.replaceChildren(frame);
             });
-            track.addEventListener('scroll', update, { passive: true });
-            window.addEventListener('resize', update);
-            update();
-            controls.hidden = false;
+            dialog.addEventListener('close', () => player.replaceChildren());
         })();
     </script>
 </body>

@@ -68,18 +68,89 @@
 .shop-button:hover { background: #fff; border-color: #fff; color: #182450; }
 .shop-masthead a:focus-visible { outline-color: #fff; }
 .shop-hero-art {
+  position: relative;
+  isolation: isolate;
   display: grid;
   place-items: center;
   padding: 8px;
+  perspective: 920px;
+  --book-stand: #111a36;
+  --book-shadow: rgba(1, 5, 18, .64);
 }
-.shop-hero-art img {
+
+.shop-hero-art > .shop-book { width: min(100%, 268px); }
+
+.shop-book {
+  --book-depth: clamp(12px, 2vw, 23px);
+  --book-angle: -21deg;
+  --book-binding: #252a40;
+  position: relative;
+  z-index: 1;
   display: block;
-  width: min(100%, 268px);
-  height: auto;
-  border-radius: 3px 10px 10px 3px;
-  box-shadow: 0 20px 44px rgba(0,0,0,.43), -6px 3px 0 #0f1733;
-  transform: rotate(4deg);
+  transform-style: preserve-3d;
+  transform: rotateX(3deg) rotateY(var(--book-angle));
 }
+.shop-book--sister-squad-1 { --book-binding: #3d274a; }
+.shop-book--sister-squad-2 { --book-binding: #142242; }
+.shop-book--miracle-shot { --book-binding: #17413d; }
+.shop-book img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 2px 4px 4px 2px;
+  box-shadow: 0 0 0 1px var(--book-binding);
+}
+
+/* The paper block folds back from the outer edge of the cover. */
+.shop-book::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 100%;
+  width: var(--book-depth);
+  border-inline: 2px solid var(--book-binding);
+  border-radius: 1px;
+  background:
+    linear-gradient(90deg, rgba(55, 43, 34, .33), transparent 36%, rgba(255,255,255,.32) 73%, rgba(55, 43, 34, .2)),
+    repeating-linear-gradient(90deg, #e5dcc9 0 1px, #faf3e5 1px 2.5px);
+  transform-origin: left center;
+  transform: rotateY(90deg);
+}
+.shop-book::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 2px 4px 4px 2px;
+  background: linear-gradient(90deg, rgba(0,0,0,.58), rgba(0,0,0,.13) 2%, rgba(255,255,255,.2) 3%, transparent 6%, transparent 97%, rgba(0,0,0,.26));
+  pointer-events: none;
+  transform: translateZ(1px);
+}
+
+.shop-hero-art::before,
+.shop-shelf-art::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset-inline: 12%;
+  bottom: 1px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--book-shadow);
+  filter: blur(12px);
+}
+.shop-hero-art::after,
+.shop-shelf-art::after {
+  content: "";
+  position: absolute;
+  z-index: -2;
+  inset-inline: 10%;
+  bottom: 1px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--book-stand);
+}
+
 .shop-index { border-bottom: 1px solid var(--rule); background: var(--panel); }
 .shop-index-inner {
   display: flex;
@@ -112,28 +183,35 @@
 }
 .shop-shelf:first-child { padding-top: 0; }
 .shop-shelf-art {
+  position: relative;
+  isolation: isolate;
   display: grid;
   place-items: center;
   padding: clamp(17px, 3.5vw, 42px);
   border-radius: 16px;
   background: #e6e0f4;
+  perspective: 850px;
+  --book-shadow: rgba(31, 24, 47, .36);
+  --book-stand: rgba(54, 42, 78, .16);
 }
 #shop-sister-squad-2 .shop-shelf-art { background: #dce6fa; }
 #shop-miracle-shot .shop-shelf-art { background: #dceae3; }
-html[data-theme="dark"] .shop-shelf-art { background: #30294b; }
+html[data-theme="dark"] .shop-shelf-art {
+  background: #30294b;
+  --book-shadow: rgba(0, 0, 0, .58);
+  --book-stand: rgba(0, 0, 0, .27);
+}
 html[data-theme="dark"] #shop-sister-squad-2 .shop-shelf-art { background: #243358; }
 html[data-theme="dark"] #shop-miracle-shot .shop-shelf-art { background: #243d39; }
-.shop-shelf-art a { display: block; width: min(100%, 248px); }
-.shop-shelf-art img {
+.shop-shelf-art::before, .shop-shelf-art::after { bottom: clamp(12px, 2.8vw, 31px); }
+.shop-shelf-art a {
   display: block;
-  width: 100%;
-  height: auto;
-  border-radius: 2px 7px 7px 2px;
-  box-shadow: 0 13px 25px rgba(20,25,44,.26);
-  transition: transform .2s ease;
+  width: min(100%, 248px);
+  transform-style: preserve-3d;
 }
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .shop-shelf-art a:hover img { transform: translateY(-3px); }
+  .shop-shelf-art .shop-book { transition: transform .22s ease; }
+  .shop-shelf-art a:hover .shop-book { transform: rotateX(3deg) rotateY(-12deg) translateY(-4px); }
 }
 .shop-category { margin: 0 0 10px; color: var(--accent); font-size: .86rem; font-weight: 800; }
 .shop-shelf-copy { min-width: 0; }
@@ -220,7 +298,8 @@ html[data-theme="dark"] #shop-miracle-shot .shop-shelf-art { background: #243d39
   .shop-masthead-inner, .shop-shelf, .ogq-products, .shop-guide-grid { grid-template-columns: minmax(0,1fr); }
   .shop-masthead-inner { gap: 21px; padding-block: 25px 31px; }
   .shop-hero-art { grid-row: 1; }
-  .shop-hero-art img { width: min(52%, 166px); }
+  .shop-hero-art > .shop-book { width: min(52%, 166px); }
+  .shop-book { --book-angle: -17deg; }
   .shop-hero-copy h1 { font-size: clamp(2rem, 9vw, 3.15rem); }
   .shop-hero-feature { margin-top: 17px; }
   .shop-index-links { gap: 0 4px; }

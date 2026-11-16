@@ -2041,6 +2041,43 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     </style>
     <link rel="stylesheet" href="/css/creator.css">
     <link rel="stylesheet" href="/css/book-work.css?v=3">
+<style>
+.ss1-reader { width: min(930px, 100%); margin: clamp(34px, 6vw, 78px) auto; }
+.ss1-reader :is(h2, h3) {
+    margin: 0; color: var(--ink); font-family: Pretendard, Inter, system-ui, sans-serif;
+    line-height: 1.22; letter-spacing: -.04em; word-break: keep-all;
+}
+.ss1-reader h2 { font-size: clamp(1.36rem, 3.6vw, 2.15rem); }
+.ss1-reader h3 { font-size: 1.15rem; }
+.ss1-reader p { margin: 8px 0 0; line-height: 1.72; color: var(--subtle); word-break: keep-all; }
+.ss1-reader-intro {
+    padding: clamp(20px, 5vw, 46px); background: var(--panel);
+    border: 1px solid var(--rule); border-inline-start: 4px solid var(--accent); border-radius: 4px 13px 13px 4px;
+}
+.ss1-reader-intro h2 { font-size: clamp(1.65rem, 5vw, 3.15rem); }
+.ss1-reader-intro p { max-width: 66ch; margin-top: 14px; }
+.ss1-reader-block { margin-top: clamp(26px, 5vw, 50px); }
+.ss1-character-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+.ss1-character-grid article { min-width: 0; padding: 15px 18px; border: 1px solid var(--rule); border-radius: 9px; background: var(--panel); }
+.ss1-reader a { color: var(--accent) !important; text-decoration: none; font-weight: 750; }
+.ss1-reader a:hover { text-decoration: underline; text-underline-offset: .19em; }
+.ss1-character-grid a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; }
+.ss1-guide-list { margin: 12px 0 0; padding: 0 0 0 1.7rem; }
+.ss1-guide-list li { padding: 12px 0 12px 4px; border-top: 1px solid var(--rule); }
+.ss1-guide-list li::marker { color: var(--accent); font-weight: 800; }
+.ss1-guide-list strong { color: var(--ink); font-size: 1.04rem; }
+.ss1-guide-list p { margin-top: 4px; }
+.ss1-family { padding: 17px clamp(15px, 3.5vw, 29px); border-radius: 10px; background: var(--book-wash); }
+.ss1-questions { margin: 10px 0 0; padding-inline-start: 1.3rem; }
+.ss1-questions p { margin-top: 5px; }
+.ss1-journal-links { padding: 0; margin: 12px 0 0; list-style: none; border: 1px solid var(--rule); border-radius: 9px; background: var(--panel); }
+.ss1-journal-links li + li { border-top: 1px solid var(--rule); }
+.ss1-journal-links a { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 47px; padding: 8px 13px; }
+@media (max-width: 520px) {
+    .ss1-character-grid { grid-template-columns: minmax(0, 1fr); }
+    .ss1-reader p { font-size: .97rem; }
+}
+</style>
 </head>
 
 <body class="creator-page book-work book-work--sister-squad-1">
@@ -2161,218 +2198,64 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
              SEO / ABOUT
              ===================================================== -->
 
-        <section
-            class="seo-section"
-            aria-labelledby="about-sister-squad"
-        >
+        <section class="ss1-reader" aria-labelledby="about-sister-squad">
+            <header class="ss1-reader-intro">
+                <h2 id="about-sister-squad"><span class="nav-label-ko" lang="ko">속삭이는 책이 열리던 날</span><span class="nav-label-en" lang="en">The day the whispering book opened</span></h2>
+                <p><span class="nav-label-ko" lang="ko">집 안에서 발견한 오래된 마법책이 열리자 율이와 정이는 어둠의 세력이 위협하는 요정 마을에 들어섭니다. 율이는 단서를 분석하고 염력으로 길을 열며, 정이는 살아 있는 존재들과 교감해 동료의 힘을 모읍니다. 두 자매가 서로의 다른 능력을 믿기 시작하면서 마을을 지킬 방법도 달라집니다.</span><span class="nav-label-en" lang="en">When an old magic book opens at home, Yul and Jung enter Fairy Town, which is threatened by the forces of darkness. Yul follows clues and opens paths with telekinesis, while Jung connects with living things and rallies their allies. Learning to trust each other changes how the sisters can protect the village.</span></p>
+            </header>
 
-            <div class="seo-box">
-
-                <h2
-                    id="about-sister-squad"
-                    class="seo-main-title"
-                >
-                    <span data-i18n="seo_main_title">✦ &nbsp; ABOUT SISTER SQUAD</span>
-                </h2>
-
-
-                <!-- STORY -->
-                <div class="seo-block">
-
-                    <h3 class="seo-heading" data-i18n="seo_story_title">
-                        📖 THE STORY
-                    </h3>
-
-                    <p
-                        class="seo-text"
-                        data-i18n="seo_story_desc"
-                    >
-                        어느 날, 오래된 마법 책이 열리는 순간 두 자매의 세계가 바뀝니다.
-                        <strong style="color:#e8d08a;">
-                            T 언니 율(11세)
-                        </strong>
-                        은 냉철한 이성과 분석력으로 위기를 헤쳐나가고,
-                        <strong style="color:#e8d08a;">
-                            F 동생 정(7세)
-                        </strong>
-                        은 따뜻한 공감 능력으로 모든 생명과 교감합니다.
-                        서로 정반대의 성격을 가진 두 자매는 어둠의 군주가 지배하는
-                        <strong style="color:#c9a84c;">
-                            페어리 타운(Fairy Town)
-                        </strong>
-                        에서 마법사, 용사, 정령술사 동료들과 함께 세상을 구하는 여정을 떠납니다.
-                        싸움의 끝에서 그들이 깨닫는 것 —
-                        진정한 용기는 힘이 아니라
-                        <strong style="color:#e8d08a;">
-                            가족의 사랑
-                        </strong>
-                        에서 온다는 것입니다.
-                    </p>
-
+            <section class="ss1-reader-block" aria-labelledby="ss1-character-heading">
+                <h2 id="ss1-character-heading"><span class="nav-label-ko" lang="ko">두 자매</span><span class="nav-label-en" lang="en">The two sisters</span></h2>
+                <div class="ss1-character-grid">
+                    <article>
+                        <h3><span class="nav-label-ko" lang="ko">율이</span><span class="nav-label-en" lang="en">Yul</span></h3>
+                        <p><span class="nav-label-ko" lang="ko">단서를 분석하는 열한 살 언니. 동생을 지키려는 마음이 염력으로 깨어납니다.</span><span class="nav-label-en" lang="en">The eleven-year-old big sister follows the clues. Her wish to protect Jung awakens her telekinesis.</span></p>
+                        <a href="/yul"><span class="nav-label-ko" lang="ko">율이 더 알아보기</span><span class="nav-label-en" lang="en">Meet Yul</span> <span aria-hidden="true">→</span></a>
+                    </article>
+                    <article>
+                        <h3><span class="nav-label-ko" lang="ko">정이</span><span class="nav-label-en" lang="en">Jung</span></h3>
+                        <p><span class="nav-label-ko" lang="ko">작은 생명의 마음까지 알아채는 일곱 살 동생. 서로 다른 존재들이 함께할 방법을 찾습니다.</span><span class="nav-label-en" lang="en">The seven-year-old little sister notices even the smallest living things. She finds ways for very different creatures to work together.</span></p>
+                        <a href="/jung"><span class="nav-label-ko" lang="ko">정이 더 알아보기</span><span class="nav-label-en" lang="en">Meet Jung</span> <span aria-hidden="true">→</span></a>
+                    </article>
                 </div>
+            </section>
 
-
-                <!-- CHARACTERS -->
-                <div class="seo-block">
-
-                    <h3 class="seo-heading" data-i18n="seo_characters_title">
-                        ⚔️ CHARACTERS
-                    </h3>
-
-
-                    <div class="character-detail-grid">
-
-                        <article class="character-detail">
-
-                            <div class="detail-role" data-i18n="seo_yul_role">
-                                THE BRAVE LEADER
-                            </div>
-
-                            <div
-                                class="detail-name"
-                                data-i18n="seo_yul_name"
-                            >
-                                율 (Yul) · 11세
-                            </div>
-
-                            <p
-                                class="detail-description"
-                                data-i18n="seo_yul_desc"
-                            >
-                                냉철한 이성과 분석력을 가진 언니.
-                                동생을 지키기 위해 강력한
-                                <strong style="color:#c9a84c;">
-                                    염력(念力)
-                                </strong>
-                                을 각성시킵니다.
-                                어떤 위기에서도 흔들리지 않는 팀의 리더.
-                            </p>
-
-                        </article>
-
-
-                        <article class="character-detail">
-
-                            <div class="detail-role" data-i18n="seo_jung_role">
-                                THE HEART WEAVER
-                            </div>
-
-                            <div
-                                class="detail-name"
-                                data-i18n="seo_jung_name"
-                            >
-                                정 (Jung) · 7세
-                            </div>
-
-                            <p
-                                class="detail-description"
-                                data-i18n="seo_jung_desc"
-                            >
-                                풍부한 감성과 따뜻한 마음을 가진 동생.
-                                살아 숨 쉬는 모든 것과 교감하며
-                                <strong style="color:#c9a84c;">
-                                    기적
-                                </strong>
-                                을 만들어냅니다.
-                                팀의 가장 큰 힘은 그녀의 사랑입니다.
-                            </p>
-
-                        </article>
-
-                    </div>
-
-                </div>
-
-                <!-- BOOK ONE: central conflict and reader value -->
-                <div class="seo-block">
-                    <h3 class="seo-heading" data-i18n="seo_first_adventure_title">
-                        ✦ THE FIRST ADVENTURE
-                    </h3>
-                    <p class="seo-text" data-i18n="seo_first_adventure_desc">
-                        이야기는 두 자매가 집 안에서 발견한 오래된 마법책 ‘속삭이는 책’을 펼치면서 시작됩니다. 책이 열리자 자매는 페어리 타운으로 들어가고, 그곳에서 요정 친구들을 만나 마을을 위협하는 어둠의 세력과 마주합니다. 처음부터 모든 일을 해낼 수 있는 영웅은 아니었던 두 자매는 서로의 다른 능력을 이해하고, 함께 훈련하며 위기에 맞설 방법을 찾아갑니다. 율은 단서를 분석하고 염력으로 길을 열며, 정은 살아 있는 존재들과 교감하고 마음을 이어 동료들과 힘을 모읍니다. 이 모험은 강한 힘으로 적을 물리치는 데서 끝나지 않습니다. 서로의 차이를 약점으로 여기지 않고 믿음으로 연결할 때, 가족과 친구를 지키는 용기가 어떻게 자라는지를 보여줍니다.
-                    </p>
-                </div>
-
-                <!-- CREATOR'S NOTE: original IP context, not another character card -->
-                <div class="seo-block">
-                    <h3 class="seo-heading" data-i18n="seo_author_title">
-                        ✦ WHY I CREATED SISTER SQUAD
-                    </h3>
-                    <p class="seo-text" data-i18n="seo_author_desc">
-                        Chris LEE.PAPA는 두 딸 율이와 정이를 모티프로 Sister Squad 오리지널 IP를 창작했습니다. 교회 어린이 사역 경험에서 얻은 마음을 바탕으로, 용기와 사랑의 가치를 어린이와 가족이 함께 즐길 수 있는 판타지 모험으로 담았습니다. 이야기는 소설에 머물지 않고 OST, 컬러링북, 캐릭터와 게임으로 이어지며 하나의 창작 세계로 확장됩니다.
-                    </p>
-                </div>
-
-                <!-- WORLD-BUILDING NOTE: original creator commentary -->
-                <div class="seo-block">
-                    <h3 class="seo-heading" data-i18n="seo_making_title">
-                        🌍 WORLD — 페어리 타운이 태어난 이야기
-                    </h3>
-                    <p class="seo-text" data-i18n="seo_making_desc">
-                        페어리 타운은 오래된 마법 책 속에 잠들어 있던 세계입니다. 이 세계를 구상할 때 가장 중요하게 생각한 것은 아이들이 실제로 걸어 들어갈 수 있을 것 같은 공간을 만드는 일이었습니다. 요정 마을의 골목과 대장간, 비밀스러운 문 같은 장소는 두 딸이 좋아하는 반짝이는 것과 작은 동물, 숨겨진 공간에서 아이디어를 얻었습니다. 어둠의 군주가 지배하는 위기의 땅이지만, 이야기의 중심에는 진심 어린 사랑과 서로를 지키려는 용기가 있습니다. 한 가정의 작은 상상에서 출발한 이야기가 하나의 세계로 자라난 과정을 이 공간에 담았습니다.
-                    </p>
-                </div>
-
-                <div class="seo-block">
-                    <h3 class="seo-heading" id="book-reader" data-i18n="reader_guide_title">📚 작품을 더 깊이 읽는 세 가지 관점</h3>
-                    <p class="seo-text" data-i18n="reader_guide_intro">SISTER SQUAD 1을 읽을 때 아래 관점을 따라가면 모험의 흐름과 인물의 성장을 더 풍부하게 발견할 수 있습니다.</p>
-                    <ol class="book-reading-list">
+            <section class="ss1-reader-block" aria-labelledby="book-reader">
+                <h2 id="book-reader"><span class="nav-label-ko" lang="ko">세 가지 읽는 길잡이</span><span class="nav-label-en" lang="en">Three ways to read the story</span></h2>
+<ol class="ss1-guide-list">
                         <li>
                             <strong data-i18n="reader_guide_1_title">판타지 모험으로 읽기</strong>
-                            <p class="seo-text" data-i18n="reader_guide_1_desc">속삭이는 책이 열리며 시작되는 페어리 타운의 여정을 따라가 보세요. 장소와 동료, 어둠의 세력이 어떤 역할을 하는지 살펴보면 이야기의 흐름을 더 쉽게 이해할 수 있습니다.</p>
+                            <p data-i18n="reader_guide_1_desc">속삭이는 책이 열리며 시작되는 페어리 타운의 여정을 따라가 보세요. 장소와 동료, 어둠의 세력이 어떤 역할을 하는지 살펴보면 이야기의 흐름을 더 쉽게 이해할 수 있습니다.</p>
                         </li>
                         <li>
                             <strong data-i18n="reader_guide_2_title">서로 다른 자매의 성장으로 읽기</strong>
-                            <p class="seo-text" data-i18n="reader_guide_2_desc">율의 분석력과 염력, 정의 공감과 교감 능력이 어떤 순간에 힘을 발휘하는지 찾아보세요. 두 사람의 차이가 갈등을 만들기도 하지만, 서로의 빈틈을 채우는 힘이 되기도 합니다.</p>
+                            <p data-i18n="reader_guide_2_desc">율의 분석력과 염력, 정의 공감과 교감 능력이 어떤 순간에 힘을 발휘하는지 찾아보세요. 두 사람의 차이가 갈등을 만들기도 하지만, 서로의 빈틈을 채우는 힘이 되기도 합니다.</p>
                         </li>
                         <li>
                             <strong data-i18n="reader_guide_3_title">용기와 가족의 사랑으로 읽기</strong>
-                            <p class="seo-text" data-i18n="reader_guide_3_desc">두 자매가 가족과 친구를 지키기 위해 선택하는 행동에 주목해 보세요. 이 이야기에서 용기는 혼자 강해지는 것이 아니라, 누군가를 위해 함께 서는 마음으로 자랍니다.</p>
+                            <p data-i18n="reader_guide_3_desc">두 자매가 가족과 친구를 지키기 위해 선택하는 행동에 주목해 보세요. 이 이야기에서 용기는 혼자 강해지는 것이 아니라, 누군가를 위해 함께 서는 마음으로 자랍니다.</p>
                         </li>
                     </ol>
-                </div>
+            </section>
 
-                <div class="seo-block">
-                    <h3 class="seo-heading" data-i18n="family_talk_title">💬 가족과 함께 나누는 이야기</h3>
-                    <p class="seo-text" data-i18n="family_talk_intro">책을 읽은 뒤 정답을 찾기보다 각자의 생각과 이유를 편하게 나눠보세요.</p>
-                    <ol class="book-reading-list">
-                        <li><p class="seo-text" data-i18n="family_talk_q1">율과 정이는 서로 성격이 다른데, 각자의 능력이 어떤 위기에서 도움이 되었나요?</p></li>
-                        <li><p class="seo-text" data-i18n="family_talk_q2">두 자매가 훈련하고 동료들과 협력하면서 처음과 달라진 점은 무엇인가요?</p></li>
-                        <li><p class="seo-text" data-i18n="family_talk_q3">이 이야기에서 진정한 용기는 무엇일까요? 힘으로 이기는 것과 누군가를 지키는 것의 차이를 이야기해 보세요.</p></li>
+            <section class="ss1-reader-block ss1-family" aria-labelledby="ss1-family-heading">
+                <h2 id="ss1-family-heading"><span class="nav-label-ko" lang="ko">가족과 함께 나누는 이야기</span><span class="nav-label-en" lang="en">Questions to share as a family</span></h2>
+                <p data-i18n="family_talk_intro">책을 읽은 뒤 정답을 찾기보다 각자의 생각과 이유를 편하게 나눠보세요.</p>
+<ol class="ss1-questions">
+                        <li><p data-i18n="family_talk_q1">율과 정이는 서로 성격이 다른데, 각자의 능력이 어떤 위기에서 도움이 되었나요?</p></li>
+                        <li><p data-i18n="family_talk_q2">두 자매가 훈련하고 동료들과 협력하면서 처음과 달라진 점은 무엇인가요?</p></li>
+                        <li><p data-i18n="family_talk_q3">이 이야기에서 진정한 용기는 무엇일까요? 힘으로 이기는 것과 누군가를 지키는 것의 차이를 이야기해 보세요.</p></li>
                     </ol>
-                </div>
+            </section>
 
-                <!-- CREATION JOURNAL: links to the documented human-led process -->
-                <div class="seo-block">
-                    <h3 class="seo-heading" data-i18n="seo_journal_title">
-                        ✦ 창작 과정 기록
-                    </h3>
-                    <p class="seo-text" data-i18n="seo_journal_intro">
-                        Sister Squad가 하나의 이야기와 작품으로 완성되기까지의 실제 기록을 살펴보세요.
-                    </p>
-                    <ul class="creation-journal-list" style="list-style:none;display:grid;gap:12px;margin-top:16px;padding:0;">
-                        <li>
-                            <a href="/journal-1" style="color:var(--gold-light);text-decoration:underline;text-underline-offset:4px;" data-i18n="seo_journal_1">
-                                이야기의 시작 — 가족의 경험에서 출발한 창작
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/journal-2" style="color:var(--gold-light);text-decoration:underline;text-underline-offset:4px;" data-i18n="seo_journal_2">
-                                원고 구성과 수정 — AI 초안을 선택하고 다듬은 과정
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/journal-4" style="color:var(--gold-light);text-decoration:underline;text-underline-offset:4px;" data-i18n="seo_journal_4">
-                                캐릭터와 삽화 — 디자인 기준과 검수 과정
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-
-
-
-            </div>
-
+            <section class="ss1-reader-block" aria-labelledby="ss1-journal-heading">
+                <h2 id="ss1-journal-heading"><span class="nav-label-ko" lang="ko">저널에서 읽는 제작기</span><span class="nav-label-en" lang="en">Behind the book in the journal</span></h2>
+                <ul class="ss1-journal-links">
+                    <li><a href="/journal-1"><span><span class="nav-label-ko" lang="ko">이야기의 출발점</span><span class="nav-label-en" lang="en">Where the story began</span></span><span aria-hidden="true">→</span></a></li>
+                    <li><a href="/journal-2"><span><span class="nav-label-ko" lang="ko">초안이 그림 소설이 되기까지</span><span class="nav-label-en" lang="en">From first draft to illustrated novel</span></span><span aria-hidden="true">→</span></a></li>
+                    <li><a href="/journal-4"><span><span class="nav-label-ko" lang="ko">율이와 정이의 캐릭터 디자인</span><span class="nav-label-en" lang="en">Designing Yul and Jung</span></span><span aria-hidden="true">→</span></a></li>
+                </ul>
+            </section>
         </section>
 
     </main>

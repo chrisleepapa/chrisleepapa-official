@@ -170,7 +170,7 @@
             display:block; width:100%; height:100%; position:absolute; inset:0;
             border:0; background:#000;
         }
-        #ss2-book-preview, #ss2-full-story { scroll-margin-top: 88px; }
+        #ss2-full-story { scroll-margin-top: 88px; }
         .ss2-trailers { margin-top: 22px; }
         .ss2-trailers summary { cursor: pointer; padding: 12px; border: 1px solid currentColor; border-radius: 10px; }
         .ss2-trailers[open] .ss2-story-videos { margin-top: 14px; }
@@ -398,6 +398,7 @@
     <link rel="stylesheet" href="/css/creator.css">
     <link rel="stylesheet" href="/css/book-work.css?v=2">
     <style>
+        .ss2-making-of { max-width: 620px; margin: 16px auto 0; }
         .ss2-shorts { margin: clamp(38px, 7vw, 84px) auto; scroll-margin-top: 96px; }
         .ss2-shorts + .ss2-story-section .ss2-full-story { margin-top: 0; }
         .ss2-shorts h2, .ss2-shorts-series {
@@ -479,22 +480,12 @@
             <div class="book-intro-links">
                 <a href="#ss2-reading-guide"><span class="nav-label-ko" lang="ko">읽는 길잡이</span><span class="nav-label-en" lang="en">Reading guide</span> <span aria-hidden="true">↓</span></a>
                 <a href="#ss2-shorts"><span class="nav-label-ko" lang="ko">쇼츠</span><span class="nav-label-en" lang="en">Shorts</span> <span aria-hidden="true">↓</span></a>
-                <a href="#ss2-story-video"><span class="nav-label-ko" lang="ko">영상</span><span class="nav-label-en" lang="en">Watch</span> <span aria-hidden="true">↓</span></a>
+                <a href="#ss2-full-story"><span class="nav-label-ko" lang="ko">본편</span><span class="nav-label-en" lang="en">Full film</span> <span aria-hidden="true">↓</span></a>
             </div>
         </div>
     </header>
 
     <main class="container">
-        <section class="ss2-story-section" id="ss2-book-preview" aria-labelledby="ss2-preview-title">
-            <div class="ss2-story-copy">
-                <h2 id="ss2-preview-title" data-i18n="preview_title">영문판 미리 읽기</h2>
-                <p data-i18n="preview_intro">루미나를 구한 지 1년. 율이는 사춘기를 맞고 정이는 한층 독립적이 됩니다. 새 모험을 시작하기 전, 영문판 서문은 두 자매 사이에 생긴 거리부터 보여줍니다.</p>
-                <blockquote data-i18n="preview_quote">루미나를 구한 지 1년, 율이와 정이는 달라지고 있습니다. 율이는 사춘기를 맞고, 정이는 점점 자기 힘으로 해보려 합니다. 서로를 아끼지만 두 자매의 사이는 조금씩 멀어지고 있습니다.</blockquote>
-                <p data-i18n="preview_credit">SISTER SQUAD 2 영문판 서문 발췌 번역 · 원작 Chris LEE.PAPA</p>
-                <p data-i18n="preview_note">첫 모험에서는 두 자매가 마을을 어떻게 지킬지가 중심이었습니다. 두 번째 모험에서는 같은 편인 두 사람이 서로 다른 판단을 내릴 때 어떻게 함께 갈 수 있는지 묻고 싶었습니다.</p>
-                <p><a href="/journal-7" data-i18n="preview_journal">영문판 출판 과정 읽기 →</a> · <a href="#ss2-full-story" data-i18n="preview_watch">본편으로 이동 ↓</a></p>
-            </div>
-        </section>
 <section class="book-editorial" aria-labelledby="ss2-reading-guide">
 <div>
 <p data-i18n="themes_journey_kicker">주제와 여정</p>
@@ -507,49 +498,6 @@
 <p data-i18n="themes_journey_p3">두 번째 모험에서 아빠 크리스가 이야기 안에 함께하는 이유는 모든 문제를 대신 해결하기 위해서가 아닙니다. 부모도 두려움과 상처를 가진 인물이며, 아이들과 함께 선택하고 책임지는 존재라는 점을 보여줍니다. 자매 역시 서로를 보호하면서도 각자 판단하고 행동해야 합니다. 이 균형이 가족 서사의 중심입니다.</p>
 
 </div></section>
-        <!-- SISTER SQUAD 2: official video section -->
-        <section class="ss2-story-section" id="ss2-story-video" aria-labelledby="ss2-story-video-title">
-            <div class="ss2-story-copy">
-                <span class="ss2-story-kicker" data-i18n="story_video_kicker">SISTER SQUAD 2 · 영상</span>
-                <h2 id="ss2-story-video-title" data-i18n="story_video_title">SISTER SQUAD 2 영상</h2>
-                <p data-i18n="story_video_desc">세 편의 예고편은 위기, 가족의 일상, 희망의 노래라는 서로 다른 시선으로 두 번째 모험을 소개합니다. 12분 54초 본편에서는 루미나의 회복을 위한 여정을 만나보세요.</p>
-                <p data-i18n="story_film_credit">원작·영상 제작 · Chris LEE.PAPA · 공식 YouTube 채널</p>
-                <p class="ss2-story-promo" data-i18n="story_video_promo">율이와 정이, 그리고 아빠 크리스의 두 번째 모험. 아래에서 본편을 지금 감상할 수 있습니다.</p>
-            </div>
-            <details class="ss2-trailers">
-              <summary><span data-i18n="trailer_details">예고편 3편과 제작 뒷이야기 보기</span></summary>
-              <div class="ss2-story-videos" role="region" aria-label="SISTER SQUAD 2 예고편과 제작 뒷이야기" data-i18n-aria-label="video_region_aria" tabindex="0">
-                <article class="ss2-story-video-card">
-                    <h3 data-i18n="story_video_trailer1">예고편 1 · 요정마을의 응급상황</h3>
-                    <p class="ss2-video-caption" data-i18n="story_video_trailer1_desc">저주받은 요정마을에서 긴급 구조 신호가 전해집니다. 율이와 정이, 그리고 아빠는 다시 모험에 나설 수 있을까요?</p>
-                    <div class="ss2-story-video-shell">
-                        <iframe src="https://www.youtube-nocookie.com/embed/USfDxu7IuxU?playsinline=1&rel=0" title="SISTER SQUAD 2 예고편 1" data-i18n-title="video_title_6" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                    </div>
-                </article>
-                <article class="ss2-story-video-card">
-                    <h3 data-i18n="story_video_trailer2">예고편 2 · 엄마만 돌려돌려</h3>
-                    <p class="ss2-video-caption" data-i18n="story_video_trailer2_desc">끝없이 이어지는 집안일과 숙제 확인, 저녁 준비까지. 가족의 익숙한 하루를 유쾌한 리듬과 노래로 담은 일상 코미디입니다.</p>
-                    <div class="ss2-story-video-shell">
-                        <iframe src="https://www.youtube-nocookie.com/embed/dcvLikVol0A?playsinline=1&rel=0" title="SISTER SQUAD 2 예고편 2" data-i18n-title="video_title_7" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                    </div>
-                </article>
-                <article class="ss2-story-video-card">
-                    <h3 data-i18n="story_video_trailer3">예고편 3 · 늙은 요정의 노래</h3>
-                    <p class="ss2-video-caption" data-i18n="story_video_trailer3_desc">무너진 마을의 작은 불빛과 음식을 나누는 마음. 절망 속에서도 희망을 놓지 않는 요정의 노래가 울려 퍼집니다.</p>
-                    <div class="ss2-story-video-shell">
-                        <iframe src="https://www.youtube-nocookie.com/embed/JAJUJ77N-aE?playsinline=1&rel=0" title="SISTER SQUAD 2 예고편 3" data-i18n-title="video_title_8" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                    </div>
-                </article>
-                <article class="ss2-story-video-card">
-                    <h3 data-i18n="story_video_ng_title">실수 장면과 제작 뒷이야기</h3>
-                    <p class="ss2-video-caption" data-i18n="story_video_ng_desc">시간 정지와 시공간 왜곡, 프리티와의 재회 등 본편의 판타지 장면을 담은 NG 컷과 제작 비하인드입니다.</p>
-                    <div class="ss2-story-video-shell">
-                        <iframe src="https://www.youtube-nocookie.com/embed/c1PrzobN_MI?playsinline=1&rel=0" title="SISTER SQUAD 2 제작 뒷이야기" data-i18n-title="video_title_9" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                    </div>
-                </article>
-            </div>
-            </details>
-        </section>
 
         <section class="ss2-shorts" id="ss2-shorts" aria-labelledby="ss2-shorts-title">
             <h2 id="ss2-shorts-title"><span class="nav-label-ko" lang="ko">본편 밖의 시스터스쿼드</span><span class="nav-label-en" lang="en">Sister Squad off script</span></h2>
@@ -639,7 +587,7 @@
             </dialog>
         </section>
 
-        <section class="ss2-story-section" aria-labelledby="ss2-full-story-title">
+        <section class="ss2-story-section" id="ss2-story-video" aria-labelledby="ss2-full-story-title">
             <div class="ss2-full-story" id="ss2-full-story" role="region" aria-labelledby="ss2-full-story-title">
                 <span class="ss2-full-story-kicker" data-i18n="story_video_full_kicker">✦ 본편 상영 ✦</span>
                 <h3 id="ss2-full-story-title" data-i18n="story_video_full_title">본편 영상</h3>
@@ -651,6 +599,18 @@
                     <a href="https://youtu.be/sKkPYaMM75A?si=zUwDcwd493RIvkdH" target="_blank" rel="noopener noreferrer" data-i18n="story_video_full_watch">▶ 유튜브에서 본편 보기 ↗</a>
                 </div>
             </div>
+            <details class="ss2-trailers">
+                <summary><span data-i18n="trailer_details">제작 뒷이야기 보기</span></summary>
+                <div class="ss2-making-of">
+                    <article class="ss2-story-video-card">
+                    <h3 data-i18n="story_video_ng_title">실수 장면과 제작 뒷이야기</h3>
+                    <p class="ss2-video-caption" data-i18n="story_video_ng_desc">시간 정지와 시공간 왜곡, 프리티와의 재회 등 본편의 판타지 장면을 담은 NG 컷과 제작 비하인드입니다.</p>
+                    <div class="ss2-story-video-shell">
+                        <iframe src="https://www.youtube-nocookie.com/embed/c1PrzobN_MI?playsinline=1&rel=0" title="SISTER SQUAD 2 제작 뒷이야기" data-i18n-title="video_title_9" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    </div>
+                </article>
+                </div>
+            </details>
         </section>
 
         <h2 class="section-title" data-i18n="char_sec_title">가족</h2>
@@ -805,11 +765,7 @@
                 yul_alt: "율이",
                 jung_alt: "정이",
                 related_aria: "SISTER SQUAD 관련 콘텐츠",
-                video_region_aria: "SISTER SQUAD 2 예고편과 제작 뒷이야기",
                 book_region_aria: "책 구매",
-                video_title_6: "SISTER SQUAD 2 예고편 1",
-                video_title_7: "SISTER SQUAD 2 예고편 2",
-                video_title_8: "SISTER SQUAD 2 예고편 3",
                 video_title_9: "SISTER SQUAD 2 제작 뒷이야기",
                 video_title_10: "SISTER SQUAD 2 본편 영상",
                 meta_title: "SISTER SQUAD 2 — 저주받은 요정마을 | Chris LEE.PAPA",
@@ -818,21 +774,13 @@
                 meta_description: "Sister Squad 2: 저주받은 요정마을 — 사춘기 소녀가 된 언니 율이와 독립심 강한 초등학생 동생 정이, 그리고 아빠 크리스가 잿빛으로 변한 요정마을 루미나를 구하기 위해 떠나는 두 번째 모험. Chris LEE.PAPA 원작 판타지 소설.",
                 og_description: "Sister Squad 2: 저주받은 요정마을 — 사춘기 소녀가 된 언니 율이와 독립심 강한 초등학생 동생 정이, 그리고 아빠 크리스가 잿빛으로 변한 요정마을 루미나를 구하기 위해 떠나는 두 번째 모험. Chris LEE.PAPA 원작 판타지 소설.",
                 twitter_description: "Sister Squad 2: 저주받은 요정마을 — 사춘기 소녀가 된 언니 율이와 독립심 강한 초등학생 동생 정이, 그리고 아빠 크리스가 잿빛으로 변한 요정마을 루미나를 구하기 위해 떠나는 두 번째 모험. Chris LEE.PAPA 원작 판타지 소설.",
-                preview_quote: "루미나를 구한 지 1년, 율이와 정이는 달라지고 있습니다. 율이는 사춘기를 맞고, 정이는 점점 자기 힘으로 해보려 합니다. 서로를 아끼지만 두 자매의 사이는 조금씩 멀어지고 있습니다.",
                 about_work_title: "✦ SISTER SQUAD 2 소개",
                 about_journey_title: "📖 두 번째 여정",
                 about_author_title: "✦ 작가 소개",
                 related_title: "SISTER SQUAD 더 보기",
                 related_journal_link: "제작기 7편",
 
-                preview_title: "영문판 미리 읽기",
-                preview_intro: "루미나를 구한 지 1년. 율이는 사춘기를 맞고 정이는 한층 독립적이 됩니다. 새 모험을 시작하기 전, 영문판 서문은 두 자매 사이에 생긴 거리부터 보여줍니다.",
-                preview_credit: "SISTER SQUAD 2 영문판 서문 발췌 번역 · 원작 Chris LEE.PAPA",
-                preview_note: "첫 모험에서는 두 자매가 마을을 어떻게 지킬지가 중심이었습니다. 두 번째 모험에서는 같은 편인 두 사람이 서로 다른 판단을 내릴 때 어떻게 함께 갈 수 있는지 묻고 싶었습니다.",
-                preview_journal: "영문판 출판 과정 읽기 →",
-                preview_watch: "본편으로 이동 ↓",
-                story_film_credit: "원작·영상 제작 · Chris LEE.PAPA · 공식 YouTube 채널",
-                trailer_details: "예고편 3편과 제작 뒷이야기 보기",
+                trailer_details: "제작 뒷이야기 보기",
 
                 share_desc:       '잿빛으로 물든 요정마을을 구하는 자매의 두 번째 여정을 소중한 사람들에게 전하세요.',
                 themes_journey_kicker: '주제와 여정',
@@ -893,16 +841,6 @@
                 villain_griffin_name: '쌍둥이 그리핀, 스콜 &amp; 게일',
                 villain_griffin_desc: '전설의 약초 \'월광초\'를 지키는 냉기와 화염의 수호자. 생명과 감각이 서로 이어져 있어 완벽한 팀워크로만 공략할 수 있다.',
                 ost_note_p:       'SISTER SQUAD 2의 놀라운 오리지널 사운드트랙을 지금 만나보세요. 유튜브, 애플뮤직, 스포티파이 등 주요 스트리밍 플랫폼에 출시되었습니다.',
-                story_video_kicker: "SISTER SQUAD 2 · 영상",
-                story_video_title: 'SISTER SQUAD 2 영상',
-                story_video_desc: '세 편의 예고편은 위기, 가족의 일상, 희망의 노래라는 서로 다른 시선으로 두 번째 모험을 소개합니다. 12분 54초 본편에서는 루미나의 회복을 위한 여정을 만나보세요.',
-                story_video_promo: '폐허가 된 루미나에서 시작된 구조 요청. 율이와 정이, 아빠 크리스는 죽음의 늪과 고대 유적, 쌍둥이 그리핀의 시련을 지나 마을을 되살릴 희망을 찾아 나섭니다.',
-                story_video_trailer1: '예고편 1 · 요정마을의 응급상황',
-                story_video_trailer1_desc: '저주받은 요정마을에서 긴급 구조 신호가 전해집니다. 율이와 정이, 그리고 아빠는 다시 모험에 나설 수 있을까요?',
-                story_video_trailer2: '예고편 2 · 엄마만 돌려돌려',
-                story_video_trailer2_desc: '끝없이 이어지는 집안일과 숙제 확인, 저녁 준비까지. 가족의 익숙한 하루를 유쾌한 리듬과 노래로 담은 일상 코미디입니다.',
-                story_video_trailer3: '예고편 3 · 늙은 요정의 노래',
-                story_video_trailer3_desc: '무너진 마을의 작은 불빛과 음식을 나누는 마음. 절망 속에서도 희망을 놓지 않는 요정의 노래가 울려 퍼집니다.',
                 story_video_ng_title: "실수 장면과 제작 뒷이야기",
                 story_video_ng_desc: '시간 정지와 시공간 왜곡, 프리티와의 재회 등 본편의 판타지 장면을 담은 NG 컷과 제작 비하인드입니다.',
                 story_video_full_kicker: "✦ 본편 상영 ✦",
@@ -921,11 +859,7 @@
                 yul_alt: "Yul",
                 jung_alt: "Jung",
                 related_aria: "Related SISTER SQUAD content",
-                video_region_aria: "SISTER SQUAD 2 trailers and making-of",
                 book_region_aria: "Get the book",
-                video_title_6: "SISTER SQUAD 2 Trailer 1",
-                video_title_7: "SISTER SQUAD 2 Trailer 2",
-                video_title_8: "SISTER SQUAD 2 Trailer 3",
                 video_title_9: "SISTER SQUAD 2 Behind the Scenes",
                 video_title_10: "SISTER SQUAD 2 Full Film",
                 meta_title: "SISTER SQUAD 2 — The Cursed Fairy Village | Chris LEE.PAPA",
@@ -934,20 +868,12 @@
                 meta_description: "Yul, Jung, and their father Chris set out to save the cursed fairy village of Lumina in their second adventure, an original fantasy by Chris LEE.PAPA.",
                 og_description: "Yul, Jung, and their father Chris set out to save the cursed fairy village of Lumina in their second adventure, an original fantasy by Chris LEE.PAPA.",
                 twitter_description: "Yul, Jung, and their father Chris set out to save the cursed fairy village of Lumina in their second adventure, an original fantasy by Chris LEE.PAPA.",
-                preview_quote: "One year after saving Lumina, Yul and Jung are changing. Yul faces adolescence, while Jung grows more independent. Though they love each other, the sisters are drifting apart.",
                 about_work_title: "✦ About SISTER SQUAD 2",
                 about_journey_title: "📖 The Journey Continues",
                 about_author_title: "✦ About the Author",
                 related_title: "Explore SISTER SQUAD",
                 related_journal_link: "Journal 07",
-                preview_title: "Read the English edition",
-                preview_intro: "A year after saving Lumina, Yul faces adolescence while Jung grows more independent. Before the next adventure begins, the English introduction shows the distance growing between the two sisters.",
-                preview_credit: "From the introduction to the English edition of SISTER SQUAD 2 · by Chris LEE.PAPA",
-                preview_note: "In the first adventure, the sisters had to find a way to protect a village. In the second, I wanted to ask how two people on the same side can keep going when they see the problem differently.",
-                preview_journal: "Read about publishing the English edition →",
-                preview_watch: "Jump to the film ↓",
-                trailer_details: "Watch three trailers and the making-of",
-                story_film_credit: "Original story and film production by Chris LEE.PAPA · Official YouTube channel",
+                trailer_details: "Watch the making-of",
 
                 share_desc:       'Share the sisters\' second journey to save a cursed fairy village.',
                 themes_journey_kicker: 'THEMES & JOURNEY',
@@ -1008,16 +934,6 @@
                 villain_griffin_name: 'Twin Griffins, Squall & Gale',
                 villain_griffin_desc: 'The final guardians of the legendary Moonlight Herb, wielding frost and flame. Their lives and senses are linked — only perfect teamwork can defeat them.',
                 ost_note_p:       'Discover the amazing original soundtrack of Sister Squad 2, now streaming on YouTube, Apple Music, Spotify and more.',
-                story_video_kicker: 'SISTER SQUAD 2 · MOVIES',
-                story_video_title: 'SISTER SQUAD 2 — Movies',
-                story_video_desc: 'The three previews introduce the second adventure through an emergency, everyday family comedy, and a song of hope. The 12-minute-54-second feature follows the journey to restore Lumina.',
-                story_video_promo: 'A distress signal comes from a ruined Lumina. Yul, Jung, and their father Chris cross the Swamp of Death, ancient ruins, and the trial of the twin griffins in search of hope for the village.',
-                story_video_trailer1: 'Preview 1 · Emergency in the Fairy Village',
-                story_video_trailer1_desc: 'A distress call arrives from the cursed fairy village. Will Yul, Jung, and their dad answer the call and begin another adventure?',
-                story_video_trailer2: 'Preview 2 · Mom, Round and Round',
-                story_video_trailer2_desc: 'Chores, laundry, homework checks, and dinner keep coming around. This playful family song turns the rhythm of everyday home life into comedy.',
-                story_video_trailer3: 'Preview 3 · The Old Fairy’s Song',
-                story_video_trailer3_desc: 'A small light beneath the ruins, food shared with others, and a song that refuses to let go of hope through a difficult night.',
                 story_video_ng_title: 'Bloopers · Behind the Scenes',
                 story_video_ng_desc: 'Outtakes and production moments around the story’s time-stop magic, space-time distortions, and reunion with Preety.',
                 story_video_full_kicker: '✦ THE FEATURE PRESENTATION ✦',

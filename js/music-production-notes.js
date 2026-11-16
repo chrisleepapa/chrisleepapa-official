@@ -31,63 +31,121 @@ const EN={
 'JPOP ver.1':['A work blending the distinctive feel of Japanese music, from energetic idol pop to emotionally charged rock-ballad remixes.','Present the bright momentum of idol pop alongside the dramatic emotional arc of rock ballads, with memorable choruses and strong band energy.','Listen for the contrast between upbeat idol-pop drive and the emotional lift of rock ballads, especially the chorus melody, drums and guitars.'],
 'Zumba ver.1':['High-energy fitness music that invites you to surrender to fantastic beats and move naturally.','Emphasize driving percussion, repeating rhythms, lively bass and bright hooks that keep the body moving during dance and workouts.','Notice whether the beat guides movement, the percussion and bass maintain momentum, and the recurring hooks sustain workout energy.']
 };
-const LABELS={ko:['✦ 작품별 음악 제작 기록','각 작품의 분위기와 주제, 제작 방향, 감상 포인트를 기준으로 정리한 창작 기록입니다. 아래 프롬프트는 실제 입력값을 그대로 인용한 것이 아니라 작품의 성격을 바탕으로 재구성한 참고용 프롬프트입니다. 공개된 작업 정보만으로 확인할 수 없는 제작 이력은 임의로 만들지 않았습니다.','작품의 출발점','제작 방향','감상 포인트','제작 프롬프트','작품의 분위기와 주제를 바탕으로 재구성한 참고용 프롬프트'],en:['✦ MUSIC PRODUCTION NOTES','Creative notes organized around each work’s theme, production direction and listening points. These prompts are illustrative reconstructions, not verbatim records of original inputs. Unverified production details have not been invented.','Creative Starting Point','Production Direction','What to Listen For','Creative Prompt','Illustrative prompt reconstructed from the work’s mood and theme']};
-const essay=document.querySelector('.music-creation-notes');
-if(!essay)return;
-const section=document.createElement('section');
-section.className='media-section media-editorial music-work-notes';
-section.setAttribute('aria-labelledby','music-production-heading');
-section.innerHTML='<div class="editorial-header"><h2 id="music-production-heading"></h2><p></p></div><div id="music-production-record-list"></div>';
-essay.after(section);
+const labelsByLanguage = {
+  ko: {
+    heading: '작품별 제작 노트',
+    intro: '작품을 선택해 작업의 출발점, 제작 방향, 감상 포인트를 살펴보세요.',
+    picker: '작품 선택',
+    direction: '제작 방향',
+    listening: '감상 포인트',
+    prompt: '제작 프롬프트',
+    promptNote: '작품의 분위기와 주제를 바탕으로 재구성한 참고용 프롬프트'
+  },
+  en: {
+    heading: 'Behind each release',
+    intro: 'Choose a release to read how it began, how it was shaped, and what to listen for.',
+    picker: 'Choose a release',
+    direction: 'Production Direction',
+    listening: 'What to Listen For',
+    prompt: 'Creative Prompt',
+    promptNote: 'Illustrative prompt reconstructed from the work’s mood and theme'
+  }
+};
+const essay = document.querySelector('.music-creation-notes');
+if (!essay) return;
 
-const list=section.querySelector('#music-production-record-list');
-function render(){
-  const lang=document.documentElement.lang==='en'?'en':'ko';
-  const labels=LABELS[lang];
-  const oldOpen=list.querySelector('details[open]')?.dataset.releaseTitle;
-  const firstRender=!list.childElementCount;
-  section.querySelector('h2').textContent=lang==='en'?'Behind each release':'작품별 제작 노트';
-  section.querySelector('.editorial-header p').textContent=lang==='en'
-    ?'Choose a release to read how it began, how it was shaped, and what to listen for.'
-    :'앨범을 펼치면 작업의 출발점과 제작 방향, 감상 포인트를 볼 수 있습니다.';
-  list.replaceChildren(...Object.entries(R).map(([title,original],index)=>{
-    const notes=lang==='en'&&EN[title]?EN[title]:original;
-    const album=(typeof musicData!=='undefined'&&Array.isArray(musicData)?musicData:[]).find(item=>item.title===title);
-    const entry=document.createElement('details');
-    entry.className='music-note-entry';
-    entry.name='music-editorial-notes';
-    entry.dataset.releaseTitle=title;
-    entry.open=oldOpen===title||(firstRender&&index===0);
-    entry.innerHTML=`<summary>
+const section = document.createElement('section');
+section.id = 'music-work-notes';
+section.className = 'media-section media-editorial music-work-notes';
+section.setAttribute('aria-labelledby', 'music-production-heading');
+section.innerHTML = `
+  <div class="editorial-header"><h2 id="music-production-heading"></h2><p></p></div>
+  <div class="music-note-layout">
+    <div class="music-note-picker" role="group" aria-labelledby="music-note-picker-title">
+      <p id="music-note-picker-title"></p>
+      <div class="music-note-options"></div>
+    </div>
+    <div class="music-note-reader" id="music-production-record-list" aria-live="polite"></div>
+  </div>`;
+essay.after(section);
+const jump = document.querySelector('a[href="#music-work-notes"]');
+if (jump) jump.hidden = false;
+
+const options = section.querySelector('.music-note-options');
+const reader = section.querySelector('.music-note-reader');
+let selectedIndex = 0;
+const entries = Object.entries(R).map(([title, original], index) => {
+  const album = typeof musicData === 'undefined' ? null : musicData.find(item => item.title === title);
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'music-note-option';
+  button.innerHTML = '<span class="music-note-cover"></span><span class="music-note-option-title"></span>';
+  button.querySelector('.music-note-option-title').textContent = title;
+
+  const panel = document.createElement('article');
+  panel.id = `music-work-note-${index + 1}`;
+  panel.className = 'music-note-panel';
+  panel.innerHTML = `
+    <header class="music-note-masthead">
       <span class="music-note-cover"></span>
-      <span class="music-note-caption"><strong></strong><span></span></span>
-      <span class="music-note-chevron" aria-hidden="true"></span>
-    </summary>
+      <div><h3></h3><p></p></div>
+    </header>
     <div class="music-note-body">
-      <div class="music-note-direction"><h3></h3><p></p></div>
-      <aside class="music-note-listening"><h3></h3><p></p></aside>
-      <details class="music-note-prompt"><summary></summary><p></p><pre lang="en"></pre></details>
-    </div>`;
-    if(album&&coverCache[album.id]){
-      const image=document.createElement('img');
-      image.src=coverCache[album.id];
-      image.alt='';
-      image.width=image.height=96;
-      image.loading='lazy';
-      entry.querySelector('.music-note-cover').append(image);
+      <section class="music-note-direction"><h4></h4><p></p></section>
+      <section class="music-note-listening"><h4></h4><p></p></section>
+    </div>
+    <details class="music-note-prompt"><summary></summary><p></p><pre lang="en"></pre></details>`;
+  panel.querySelector('h3').textContent = title;
+  panel.querySelector('.music-note-prompt pre').textContent = original[3];
+  button.setAttribute('aria-controls', panel.id);
+
+  if (album && coverCache[album.id]) {
+    for (const cover of [button.querySelector('.music-note-cover'), panel.querySelector('.music-note-cover')]) {
+      const image = document.createElement('img');
+      image.alt = '';
+      image.loading = 'lazy';
+      image.width = image.height = 128;
+      setImageSource(image, album);
+      cover.append(image);
     }
-    entry.querySelector('.music-note-caption strong').textContent=title;
-    entry.querySelector('.music-note-caption span').textContent=notes[0];
-    entry.querySelector('.music-note-direction h3').textContent=labels[3];
-    entry.querySelector('.music-note-direction p').textContent=notes[1];
-    entry.querySelector('.music-note-listening h3').textContent=labels[4];
-    entry.querySelector('.music-note-listening p').textContent=notes[2];
-    entry.querySelector('.music-note-prompt summary').textContent=labels[5];
-    entry.querySelector('.music-note-prompt p').textContent=labels[6];
-    entry.querySelector('.music-note-prompt pre').textContent=original[3];
-    return entry;
-  }));
+  }
+
+  panel.hidden = index !== 0;
+  button.setAttribute('aria-pressed', index === 0);
+  button.addEventListener('click', () => {
+    if (index === selectedIndex) return;
+    const current = entries[selectedIndex];
+    current.panel.hidden = true;
+    current.button.setAttribute('aria-pressed', 'false');
+    panel.hidden = false;
+    button.setAttribute('aria-pressed', 'true');
+    selectedIndex = index;
+  });
+
+  options.append(button);
+  reader.append(panel);
+  return { title, original, panel, button };
+});
+
+function renderLanguage() {
+  const lang = musicLang();
+  const labels = labelsByLanguage[lang];
+  section.querySelector('h2').textContent = labels.heading;
+  section.querySelector('.editorial-header p').textContent = labels.intro;
+  section.querySelector('#music-note-picker-title').textContent = labels.picker;
+
+  for (const { title, original, panel } of entries) {
+    const notes = lang === 'en' ? EN[title] : original;
+    panel.querySelector('.music-note-masthead p').textContent = notes[0];
+    panel.querySelector('.music-note-direction h4').textContent = labels.direction;
+    panel.querySelector('.music-note-direction p').textContent = notes[1];
+    panel.querySelector('.music-note-listening h4').textContent = labels.listening;
+    panel.querySelector('.music-note-listening p').textContent = notes[2];
+    panel.querySelector('.music-note-prompt summary').textContent = labels.prompt;
+    panel.querySelector('.music-note-prompt p').textContent = labels.promptNote;
+  }
 }
-render();
-new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+
+renderLanguage();
+new MutationObserver(renderLanguage).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
 })();

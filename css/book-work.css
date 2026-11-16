@@ -214,123 +214,130 @@
 .book-work main .ss2-story-video-card :is(h3, p) { color: var(--ink) !important; }
 .book-work main .ss2-story-promo { color: var(--subtle) !important; border-color: var(--accent); }
 
-/* Sister Squad book openings. */
-.book-intro {
-  --intro-tint: #e2e5f7;
-  --intro-edge: #c1c8e8;
-  --intro-cover-shadow: #20294c54;
+/* Sister Squad series banners. */
+.ss-book-banner {
+  --banner-bg: #19142b;
+  --banner-tint: #2c214a;
+  --banner-color: #f7dfb9;
+  --banner-framing: 50% 49%;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, .73fr);
-  grid-template-areas: "title art" "actions art";
-  grid-template-rows: 1fr auto;
-  align-items: end;
-  gap: 24px clamp(28px, 6vw, 88px);
-  width: min(1100px, calc(100% - 48px));
-  margin: 22px auto clamp(30px, 5.5vw, 72px);
-  padding: clamp(22px, 5vw, 65px) 0;
-  border-block: 1px solid var(--rule);
-  color: var(--ink);
+  grid-template-columns: minmax(0, .91fr) minmax(0, 1.28fr);
+  grid-template-areas: "copy image";
+  width: min(1220px, calc(100% - 44px));
+  margin: 16px auto clamp(25px, 5vw, 68px);
+  overflow: hidden;
+  border-radius: 15px;
+  background: var(--banner-bg);
+  color: #fff;
 }
-.book-work--sister-squad-2 .book-intro { --intro-tint: #dce9fb; --intro-edge: #aec6e5; }
-html[data-theme="dark"] .book-work .book-intro {
-  --intro-tint: #262e51;
-  --intro-edge: #465782;
-  --intro-cover-shadow: #040611a8;
+.ss-book-banner--2 {
+  --banner-bg: #0e192b;
+  --banner-tint: #1b3653;
+  --banner-color: #c6e5ff;
+  --banner-framing: 50% 72%;
 }
-.book-intro-title { grid-area: title; min-width: 0; }
-html[data-theme] body.book-work .book-intro .book-intro-series {
+.ss-book-banner-art {
+  position: relative;
+  grid-area: image;
+  min-height: 100%;
+  background: var(--banner-tint);
+}
+.ss-book-banner-art img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--banner-framing);
+}
+.ss-book-banner-copy {
+  grid-area: copy;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  min-width: 0;
+  min-height: clamp(325px, 37vw, 480px);
+  padding: clamp(22px, 4.1vw, 63px);
+  background: linear-gradient(150deg, var(--banner-tint), var(--banner-bg) 69%);
+}
+html body.book-work .ss-book-banner .ss-book-banner-series {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
-  margin: 0 0 15px;
-  color: var(--accent) !important;
-  font: 800 clamp(.77rem, 1.4vw, .98rem)/1.2 Pretendard, Inter, sans-serif;
-  letter-spacing: .09em;
+  gap: 10px;
+  margin: 0 0 13px;
+  color: var(--banner-color) !important;
+  font: 800 .78rem/1.2 Pretendard, Inter, sans-serif;
+  letter-spacing: .135em;
 }
-.book-intro-series span {
+.ss-book-banner-series span {
   display: grid;
   place-items: center;
-  min-width: 24px;
-  min-height: 24px;
-  padding: 0 4px;
+  min-width: 23px;
+  min-height: 23px;
   border: 1px solid currentColor;
   border-radius: 3px;
   letter-spacing: 0;
-  font-size: .78rem;
 }
-html[data-theme] body.book-work .book-intro h1 {
+html body.book-work .ss-book-banner h1 {
   margin: 0;
-  color: var(--ink) !important;
+  color: #fff !important;
   -webkit-text-fill-color: currentColor !important;
-  font: 800 clamp(2.8rem, 6.9vw, 6.4rem)/1.04 Pretendard, Inter, sans-serif !important;
+  font: 800 clamp(2.25rem, 5.05vw, 4.75rem)/1.08 Pretendard, Inter, sans-serif !important;
   letter-spacing: -.065em;
-  overflow-wrap: anywhere;
   text-wrap: balance;
   word-break: keep-all;
+  overflow-wrap: anywhere;
 }
-.book-intro-art {
-  grid-area: art;
-  display: grid;
-  place-items: center;
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  min-height: 310px;
-  padding: clamp(22px, 4vw, 48px);
-  border-radius: 4px 38px 4px 4px;
-  background: repeating-linear-gradient(135deg, transparent 0 27px, var(--intro-edge) 28px 29px),
-              radial-gradient(ellipse at 62% 25%, var(--panel), var(--intro-tint) 78%);
+html body.book-work .ss-book-banner .ss-book-banner-line {
+  margin: 12px 0 0;
+  color: #e2e8f8 !important;
+  font-size: clamp(.9rem, 1.55vw, 1.05rem);
+  line-height: 1.57;
+  word-break: keep-all;
 }
-.book-intro-cover {
-  display: block;
-  width: auto;
-  max-width: 100%;
-  height: auto;
-  max-height: 330px;
-  border-radius: 2px 5px 5px 2px;
-  box-shadow: 2px 0 #e4e4ea, 4px 0 #a2a6bc, 12px 15px 28px var(--intro-cover-shadow);
-}
-.book-intro-actions { grid-area: actions; display: flex; align-items: center; flex-wrap: wrap; gap: 7px 20px; }
-.book-intro .book-intro-buy {
+.ss-book-banner-actions { display: grid; gap: 7px; width: 100%; margin-top: 20px; }
+html body.book-work .ss-book-banner .ss-book-banner-buy {
   display: inline-flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
-  gap: 14px;
-  min-height: 47px;
+  justify-self: start;
+  gap: 16px;
+  min-height: 46px;
   padding: 10px 15px;
-  border-radius: 4px;
-  background: var(--accent);
-  color: var(--on-accent) !important;
-  font-weight: 780;
+  border-radius: 5px;
+  background: var(--banner-color);
+  color: var(--banner-bg) !important;
   text-decoration: none;
+  font-weight: 800;
 }
-.book-intro-links { display: flex; align-items: center; flex-wrap: wrap; gap: 0 15px; }
-.book-intro-links a {
+.ss-book-banner-links { display: flex; flex-wrap: wrap; gap: 0 16px; }
+html body.book-work .ss-book-banner .ss-book-banner-links a {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
   min-height: 44px;
-  color: var(--ink) !important;
-  text-underline-offset: .25em;
-  font-size: .9rem;
+  gap: 6px;
+  color: #fff !important;
+  text-underline-offset: .24em;
+  font-size: .86rem;
   font-weight: 720;
 }
-.book-intro-links a:hover { text-decoration: underline; color: var(--accent) !important; }
-@media (max-width: 640px) {
-  .book-intro {
-    grid-template-columns: minmax(0, 1fr) minmax(85px, 38%);
-    grid-template-areas: "title art" "actions actions";
-    grid-template-rows: auto auto;
-    align-items: center;
-    gap: 16px 12px;
-    width: calc(100% - 32px);
-    margin-top: 11px;
-    padding: 15px 0 9px;
+.ss-book-banner-links a:hover { text-decoration: underline; }
+.book-work .ss-book-banner a:focus-visible { outline-color: #fff; }
+@media (max-width: 650px) {
+  .ss-book-banner {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "image" "copy";
+    width: calc(100% - 24px);
+    margin-top: 12px;
+    border-radius: 12px;
   }
-  html[data-theme] body.book-work .book-intro .book-intro-series { margin-bottom: 10px; letter-spacing: .035em; }
-  html[data-theme] body.book-work .book-intro h1 { font-size: clamp(1.72rem, 7.25vw, 3.45rem) !important; }
-  .book-intro-art { min-height: 0; padding: 13px; border-radius: 3px 22px 3px 3px; }
-  .book-intro-cover { width: 100%; max-width: 150px; max-height: none; }
-  .book-intro-actions { display: grid; gap: 4px; }
-  .book-intro-links { justify-content: center; gap: 0 14px; }
+  .ss-book-banner-art { min-height: 0; aspect-ratio: 1.68; }
+  .ss-book-banner-copy { min-height: 0; padding: 17px 16px 8px; }
+  html body.book-work .ss-book-banner .ss-book-banner-series { margin-bottom: 8px; }
+  html body.book-work .ss-book-banner h1 { font-size: clamp(1.78rem, 7.5vw, 3rem) !important; text-wrap: wrap; }
+  html body.book-work .ss-book-banner .ss-book-banner-line { margin-top: 7px; }
+  .ss-book-banner-actions { margin-top: 14px; }
+  html body.book-work .ss-book-banner .ss-book-banner-buy { justify-self: stretch; }
 }

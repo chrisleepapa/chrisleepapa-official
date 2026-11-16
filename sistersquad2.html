@@ -397,6 +397,72 @@
   <meta name="robots" content="index, follow">
     <link rel="stylesheet" href="/css/creator.css">
     <link rel="stylesheet" href="/css/book-work.css?v=1">
+    <style>
+        .ss2-shorts { margin: clamp(40px, 8vw, 100px) auto; scroll-margin-top: 96px; }
+        .ss2-shorts + .ss2-story-section .ss2-full-story { margin-top: 0; }
+        .ss2-shorts-heading { margin-bottom: 20px; }
+        .ss2-shorts-heading h2, .ss2-shorts-feature h3, .ss2-shorts-bar h3 {
+            color: inherit; font-family: Pretendard, Inter, system-ui, sans-serif;
+            line-height: 1.12; letter-spacing: -.045em; overflow-wrap: anywhere; word-break: keep-all;
+        }
+        .ss2-shorts-heading h2 { margin: 0 0 9px; font-size: clamp(1.75rem, 5vw, 3.65rem); color: var(--ink); }
+        .ss2-shorts-heading p { margin: 0; color: var(--subtle); word-break: keep-all; }
+        .ss2-shorts-feature {
+            display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .45fr);
+            align-items: center; gap: clamp(12px, 4vw, 46px);
+            min-height: 156px; padding: clamp(16px, 4vw, 42px); overflow: hidden;
+            background: radial-gradient(ellipse at 90% 35%, #4254d4, transparent 70%), #151c4a;
+            border-radius: 16px; color: #fff !important; text-decoration: none;
+        }
+        .ss2-shorts-feature img {
+            display: block; width: auto; max-width: 100%; max-height: clamp(108px, 23vw, 215px);
+            height: auto; justify-self: center; border-radius: 4px 8px 8px 4px;
+            box-shadow: 3px 0 #aeb9ee, 12px 10px 25px #0b1034;
+            transform: rotate(5deg); transition: transform .23s;
+        }
+        .ss2-shorts-feature h3 { margin: 6px 0 14px; font-size: clamp(1.42rem, 4vw, 3rem); }
+        .ss2-shorts-tag { margin: 0; color: #d1dbff; font-size: .84rem; font-weight: 750; }
+        .ss2-shorts-watch { color: inherit; font-size: .81rem; font-weight: 730; }
+        .ss2-shorts-bar { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin: 20px 0 10px; }
+        .ss2-shorts-bar h3 { margin: 0; color: var(--ink); font-size: clamp(1.14rem, 3vw, 1.7rem); }
+        .ss2-shorts-controls { display: flex; gap: 6px; }
+        .ss2-shorts-controls button {
+            display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
+            border: 1px solid var(--rule); background: var(--panel); color: var(--ink); cursor: pointer;
+        }
+        .ss2-shorts-controls button[aria-disabled="true"] { opacity: .46; cursor: default; }
+        .ss2-shorts-sr {
+            position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+        }
+        .ss2-shorts-track {
+            display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - 24px) / 3); gap: 12px;
+            margin: 0; padding: 5px 5px 12px; list-style: none;
+            overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 5px;
+            scrollbar-color: var(--accent) var(--paper);
+        }
+        .ss2-shorts-track > li { min-width: 0; scroll-snap-align: start; }
+        .ss2-shorts-card {
+            display: flex; flex-direction: column; align-items: flex-start; gap: 7px; height: 100%; min-height: 154px;
+            padding: 14px; border: 1px solid var(--rule); border-radius: 11px; background: var(--panel);
+            color: var(--ink) !important; text-decoration: none; word-break: keep-all; overflow-wrap: anywhere;
+        }
+        .ss2-shorts-episode {
+            display: flex; justify-content: space-between; width: 100%; gap: 8px;
+            color: var(--accent); font-size: .8rem; font-weight: 760;
+        }
+        .ss2-shorts-track > li:nth-child(3n + 1) .ss2-shorts-card { border-top: 3px solid #667cff; }
+        .ss2-shorts-track > li:nth-child(3n + 2) .ss2-shorts-card { border-top: 3px solid #b664d1; }
+        .ss2-shorts-track > li:nth-child(3n) .ss2-shorts-card { border-top: 3px solid #36a5aa; }
+        .ss2-shorts-card strong { font-size: 1.08rem; line-height: 1.32; }
+        .ss2-shorts-card p { margin: 0 0 5px; color: var(--subtle); font-size: .87rem; line-height: 1.46; }
+        .ss2-shorts-card .ss2-shorts-watch { margin-top: auto; color: var(--accent); }
+        @media (hover: hover) {
+            .ss2-shorts-feature:hover img { transform: rotate(0); }
+            .ss2-shorts-card:hover { border-color: var(--accent); }
+        }
+        @media (max-width: 720px) { .ss2-shorts-track { grid-auto-columns: min(77%, 280px); } }
+        @media (prefers-reduced-motion: reduce) { .ss2-shorts-feature img { transition: none; } }
+    </style>
 </head>
 <body class="creator-page book-work book-work--sister-squad-2">
 <!-- Google Tag Manager (noscript) -->
@@ -414,6 +480,7 @@
             <div class="book-work-actions">
                 <a class="book-work-buy" href="/shop#shop-sister-squad-2"><span class="nav-label-ko" lang="ko">책 구매처 보기</span><span class="nav-label-en" lang="en">Where to buy</span> <span aria-hidden="true">→</span></a>
                 <a href="#ss2-reading-guide"><span class="nav-label-ko" lang="ko">읽는 길잡이</span><span class="nav-label-en" lang="en">Reading guide</span> <span aria-hidden="true">↓</span></a>
+                <a href="#ss2-shorts"><span class="nav-label-ko" lang="ko">쇼츠</span><span class="nav-label-en" lang="en">Shorts</span> <span aria-hidden="true">↓</span></a>
                 <a href="#ss2-story-video"><span class="nav-label-ko" lang="ko">영상</span><span class="nav-label-en" lang="en">Watch</span> <span aria-hidden="true">↓</span></a>
             </div>
         </div>
@@ -485,6 +552,85 @@
                 </article>
             </div>
             </details>
+        </section>
+
+        <section class="ss2-shorts" id="ss2-shorts" aria-labelledby="ss2-shorts-title">
+            <header class="ss2-shorts-heading">
+                <h2 id="ss2-shorts-title"><span class="nav-label-ko" lang="ko">본편 밖의 시스터스쿼드</span><span class="nav-label-en" lang="en">Sister Squad off script</span></h2>
+                <p><span class="nav-label-ko" lang="ko">대환장 NG부터 불과 얼음의 그리핀이 합류한 에픽 댄스까지.</span><span class="nav-label-en" lang="en">From bloopers to an epic dance battle with the fire and ice griffins.</span></p>
+            </header>
+            <a class="ss2-shorts-feature" href="https://www.facebook.com/reel/28359338567077419/" target="_blank" rel="noopener noreferrer">
+                <div>
+                    <p class="ss2-shorts-tag"><span class="nav-label-ko" lang="ko">촬영 비하인드</span><span class="nav-label-en" lang="en">Behind the scenes</span></p>
+                    <h3><span class="nav-label-ko" lang="ko">대환장 NG 모음</span><span class="nav-label-en" lang="en">Bloopers &amp; outtakes</span></h3>
+                    <span class="ss2-shorts-watch"><span class="nav-label-ko" lang="ko">Facebook에서 보기</span><span class="nav-label-en" lang="en">Watch on Facebook</span> <span aria-hidden="true">↗</span></span>
+                </div>
+                <img src="/assets/shop/sister-squad-2.webp" width="537" height="760" loading="lazy" alt="">
+            </a>
+            <div class="ss2-shorts-bar">
+                <h3 id="ss2-dance-title"><span class="nav-label-ko" lang="ko">에픽 댄스 챌린지</span><span class="nav-label-en" lang="en">Epic dance challenge</span></h3>
+                <div class="ss2-shorts-controls" hidden>
+                    <button type="button" data-step="-1" aria-controls="ss2-dance-track">
+                        <span class="ss2-shorts-sr"><span class="nav-label-ko" lang="ko">이전 편</span><span class="nav-label-en" lang="en">Previous episode</span></span><span aria-hidden="true">←</span>
+                    </button>
+                    <button type="button" data-step="1" aria-controls="ss2-dance-track">
+                        <span class="ss2-shorts-sr"><span class="nav-label-ko" lang="ko">다음 편</span><span class="nav-label-en" lang="en">Next episode</span></span><span aria-hidden="true">→</span>
+                    </button>
+                </div>
+            </div>
+            <ol id="ss2-dance-track" class="ss2-shorts-track" aria-labelledby="ss2-dance-title">
+                <li>
+                    <a class="ss2-shorts-card" href="https://www.facebook.com/reel/1086306934222013/" target="_blank" rel="noopener noreferrer">
+                        <span class="ss2-shorts-episode"><span class="nav-label-ko" lang="ko">1편</span><span class="nav-label-en" lang="en">Episode 1</span> <span aria-hidden="true">▶</span></span>
+                        <strong><span class="nav-label-ko" lang="ko">비트에 올라타기</span><span class="nav-label-en" lang="en">Catch the beat</span></strong>
+                        <p><span class="nav-label-ko" lang="ko">리듬을 잘게 쪼개는 첫 스텝.</span><span class="nav-label-en" lang="en">The first steps play with the rhythm.</span></p>
+                        <span class="ss2-shorts-watch"><span class="nav-label-ko" lang="ko">Facebook에서 보기</span><span class="nav-label-en" lang="en">Watch on Facebook</span> <span aria-hidden="true">↗</span></span>
+                    </a>
+                </li>
+                <li>
+                    <a class="ss2-shorts-card" href="https://www.facebook.com/reel/29110127591933339/" target="_blank" rel="noopener noreferrer">
+                        <span class="ss2-shorts-episode"><span class="nav-label-ko" lang="ko">2편</span><span class="nav-label-en" lang="en">Episode 2</span> <span aria-hidden="true">▶</span></span>
+                        <strong><span class="nav-label-ko" lang="ko">리듬 이어가기</span><span class="nav-label-en" lang="en">Keep the rhythm</span></strong>
+                        <p><span class="nav-label-ko" lang="ko">캐릭터들의 에픽 댄스 두 번째 라운드.</span><span class="nav-label-en" lang="en">Round two of the character dance challenge.</span></p>
+                        <span class="ss2-shorts-watch"><span class="nav-label-ko" lang="ko">Facebook에서 보기</span><span class="nav-label-en" lang="en">Watch on Facebook</span> <span aria-hidden="true">↗</span></span>
+                    </a>
+                </li>
+                <li>
+                    <a class="ss2-shorts-card" href="https://www.facebook.com/reel/1814318627040965/" target="_blank" rel="noopener noreferrer">
+                        <span class="ss2-shorts-episode"><span class="nav-label-ko" lang="ko">3편</span><span class="nav-label-en" lang="en">Episode 3</span> <span aria-hidden="true">▶</span></span>
+                        <strong><span class="nav-label-ko" lang="ko">프레임까지 쪼갠 스텝</span><span class="nav-label-en" lang="en">Frame-by-frame moves</span></strong>
+                        <p><span class="nav-label-ko" lang="ko">밤마다 렌더링하며 다듬은 세 번째 춤.</span><span class="nav-label-en" lang="en">The third routine, fine-tuned through late-night renders.</span></p>
+                        <span class="ss2-shorts-watch"><span class="nav-label-ko" lang="ko">Facebook에서 보기</span><span class="nav-label-en" lang="en">Watch on Facebook</span> <span aria-hidden="true">↗</span></span>
+                    </a>
+                </li>
+                <li>
+                    <a class="ss2-shorts-card" href="https://www.facebook.com/reel/1632640358503345/" target="_blank" rel="noopener noreferrer">
+                        <span class="ss2-shorts-episode"><span class="nav-label-ko" lang="ko">4편</span><span class="nav-label-en" lang="en">Episode 4</span> <span aria-hidden="true">▶</span></span>
+                        <strong><span class="nav-label-ko" lang="ko">불과 얼음의 그리핀</span><span class="nav-label-en" lang="en">Fire &amp; ice griffins</span></strong>
+                        <p><span class="nav-label-ko" lang="ko">그리핀까지 합류한 댄스 배틀.</span><span class="nav-label-en" lang="en">The griffins join the dance battle.</span></p>
+                        <span class="ss2-shorts-watch"><span class="nav-label-ko" lang="ko">Facebook에서 보기</span><span class="nav-label-en" lang="en">Watch on Facebook</span> <span aria-hidden="true">↗</span></span>
+                    </a>
+                </li>
+                <li>
+                    <a class="ss2-shorts-card" href="https://www.facebook.com/reel/1697304078765115/" target="_blank" rel="noopener noreferrer">
+                        <span class="ss2-shorts-episode"><span class="nav-label-ko" lang="ko">5편</span><span class="nav-label-en" lang="en">Episode 5</span> <span aria-hidden="true">▶</span></span>
+                        <strong><span class="nav-label-ko" lang="ko">선글라스 자매</span><span class="nav-label-en" lang="en">Sisters in shades</span></strong>
+                        <p><span class="nav-label-ko" lang="ko">선글라스를 쓴 두 자매의 칼군무.</span><span class="nav-label-en" lang="en">The sisters dance in sync in their shades.</span></p>
+                        <span class="ss2-shorts-watch"><span class="nav-label-ko" lang="ko">Facebook에서 보기</span><span class="nav-label-en" lang="en">Watch on Facebook</span> <span aria-hidden="true">↗</span></span>
+                    </a>
+                </li>
+                <li>
+                    <a class="ss2-shorts-card" href="https://www.facebook.com/reel/1472730781461473/" target="_blank" rel="noopener noreferrer">
+                        <span class="ss2-shorts-episode"><span class="nav-label-ko" lang="ko">6편</span><span class="nav-label-en" lang="en">Episode 6</span> <span aria-hidden="true">▶</span></span>
+                        <strong><span class="nav-label-ko" lang="ko">댄스 파티 피날레</span><span class="nav-label-en" lang="en">Dance party finale</span></strong>
+                        <p><span class="nav-label-ko" lang="ko">강렬한 비트와 칼군무로 마무리하는 여섯 번째 춤.</span><span class="nav-label-en" lang="en">The sixth round closes out the dance party at full energy.</span></p>
+                        <span class="ss2-shorts-watch"><span class="nav-label-ko" lang="ko">Facebook에서 보기</span><span class="nav-label-en" lang="en">Watch on Facebook</span> <span aria-hidden="true">↗</span></span>
+                    </a>
+                </li>
+            </ol>
+        </section>
+
+        <section class="ss2-story-section" aria-labelledby="ss2-full-story-title">
             <div class="ss2-full-story" id="ss2-full-story" role="region" aria-labelledby="ss2-full-story-title">
                 <span class="ss2-full-story-kicker" data-i18n="story_video_full_kicker">✦ 본편 상영 ✦</span>
                 <h3 id="ss2-full-story-title" data-i18n="story_video_full_title">본편 영상</h3>
@@ -931,5 +1077,28 @@
 
 
 
+    <script>
+        (() => {
+            const track = document.getElementById('ss2-dance-track');
+            const controls = document.querySelector('#ss2-shorts .ss2-shorts-controls');
+            const [previous, next] = controls.querySelectorAll('button');
+            const update = () => {
+                previous.setAttribute('aria-disabled', String(track.scrollLeft <= 2));
+                next.setAttribute('aria-disabled',
+                    String(track.scrollWidth - track.clientWidth - track.scrollLeft <= 2));
+            };
+            controls.addEventListener('click', (event) => {
+                const button = event.target.closest('button');
+                if (!button || button.getAttribute('aria-disabled') === 'true') return;
+                const step = track.children[1].offsetLeft - track.firstElementChild.offsetLeft;
+                const behavior = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth';
+                track.scrollBy({ left: step * Number(button.dataset.step), behavior });
+            });
+            track.addEventListener('scroll', update, { passive: true });
+            window.addEventListener('resize', update);
+            update();
+            controls.hidden = false;
+        })();
+    </script>
 </body>
 </html>

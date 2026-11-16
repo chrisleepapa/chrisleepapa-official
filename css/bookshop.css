@@ -81,50 +81,75 @@
 .shop-hero-art > .shop-book { width: min(100%, 268px); }
 
 .shop-book {
-  --book-depth: clamp(12px, 2vw, 23px);
-  --book-angle: -21deg;
+  --book-depth: clamp(31px, 3.4vw, 47px);
+  --book-rotation: rotateY(var(--book-angle)) rotateX(-10deg);
+  --book-angle: -34deg;
   --book-binding: #252a40;
   position: relative;
   z-index: 1;
   display: block;
   transform-style: preserve-3d;
-  transform: rotateX(3deg) rotateY(var(--book-angle));
+  transform: var(--book-rotation);
 }
 .shop-book--sister-squad-1 { --book-binding: #3d274a; }
 .shop-book--sister-squad-2 { --book-binding: #142242; }
 .shop-book--miracle-shot { --book-binding: #17413d; }
 .shop-book img {
+  position: relative;
+  transform: translateZ(1px);
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 2px 4px 4px 2px;
+  border-radius: 2px 7px 7px 2px;
   box-shadow: 0 0 0 1px var(--book-binding);
 }
 
-/* The paper block folds back from the outer edge of the cover. */
+/* The page block wraps from the fore-edge across the top of the book. */
+.shop-book::before,
+.shop-book-top {
+  position: absolute;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, #bba68a55 0%, transparent 29%, #fff8e955 67%, #9c775a55 100%),
+    repeating-linear-gradient(90deg, #d1c1a6 0 1px, #f9f0df 1px 2.6px);
+}
 .shop-book::before {
   content: "";
-  position: absolute;
-  top: 3px;
-  bottom: 3px;
-  left: 100%;
+  top: 4px;
+  bottom: 4px;
+  left: calc(100% - 2px);
   width: var(--book-depth);
-  border-inline: 2px solid var(--book-binding);
-  border-radius: 1px;
-  background:
-    linear-gradient(90deg, rgba(55, 43, 34, .33), transparent 36%, rgba(255,255,255,.32) 73%, rgba(55, 43, 34, .2)),
-    repeating-linear-gradient(90deg, #e5dcc9 0 1px, #faf3e5 1px 2.5px);
   transform-origin: left center;
   transform: rotateY(90deg);
 }
+.shop-book-top {
+  top: 4px;
+  left: 5px;
+  right: 2px;
+  height: var(--book-depth);
+  background:
+    linear-gradient(180deg, #bcaa8d44, transparent),
+    repeating-linear-gradient(0deg, #d6c7ae 0 1px, #f9f0df 1px 2.6px);
+  transform-origin: top center;
+  transform: rotateX(-90deg);
+}
+.shop-book-back {
+  position: absolute;
+  inset: -1px;
+  border: 2px solid #ffffff25;
+  border-radius: 2px 8px 8px 2px;
+  background: var(--book-binding);
+  transform: translateZ(calc(-1 * var(--book-depth)));
+}
+
 .shop-book::after {
   content: "";
   position: absolute;
   inset: 0;
-  border-radius: 2px 4px 4px 2px;
-  background: linear-gradient(90deg, rgba(0,0,0,.58), rgba(0,0,0,.13) 2%, rgba(255,255,255,.2) 3%, transparent 6%, transparent 97%, rgba(0,0,0,.26));
+  border-radius: 2px 7px 7px 2px;
+  background: linear-gradient(90deg, rgba(0,0,0,.58), rgba(0,0,0,.13) 2%, rgba(255,255,255,.2) 3%, transparent 6%, transparent 98%, rgba(0,0,0,.16));
   pointer-events: none;
-  transform: translateZ(1px);
+  transform: translateZ(2px);
 }
 
 .shop-hero-art::before,
@@ -144,11 +169,12 @@
   content: "";
   position: absolute;
   z-index: -2;
-  inset-inline: 10%;
+  inset-inline: 23% 17%;
   bottom: 1px;
-  height: 12px;
+  height: 7px;
   border-radius: 50%;
   background: var(--book-stand);
+  filter: blur(3px);
 }
 
 .shop-index { border-bottom: 1px solid var(--rule); background: var(--panel); }
@@ -211,7 +237,7 @@ html[data-theme="dark"] #shop-miracle-shot .shop-shelf-art { background: #243d39
 }
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
   .shop-shelf-art .shop-book { transition: transform .22s ease; }
-  .shop-shelf-art a:hover .shop-book { transform: rotateX(3deg) rotateY(-12deg) translateY(-4px); }
+  .shop-shelf-art a:hover .shop-book { transform: rotateY(-29deg) rotateX(-8deg) translateY(-3px); }
 }
 .shop-category { margin: 0 0 10px; color: var(--accent); font-size: .86rem; font-weight: 800; }
 .shop-shelf-copy { min-width: 0; }
@@ -299,7 +325,7 @@ html[data-theme="dark"] #shop-miracle-shot .shop-shelf-art { background: #243d39
   .shop-masthead-inner { gap: 21px; padding-block: 25px 31px; }
   .shop-hero-art { grid-row: 1; }
   .shop-hero-art > .shop-book { width: min(52%, 166px); }
-  .shop-book { --book-angle: -17deg; }
+  .shop-book { --book-angle: -29deg; --book-depth: 29px; }
   .shop-hero-copy h1 { font-size: clamp(2rem, 9vw, 3.15rem); }
   .shop-hero-feature { margin-top: 17px; }
   .shop-index-links { gap: 0 4px; }

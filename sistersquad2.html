@@ -171,9 +171,6 @@
             border:0; background:#000;
         }
         #ss2-full-story { scroll-margin-top: 88px; }
-        .ss2-trailers { margin-top: 22px; }
-        .ss2-trailers summary { cursor: pointer; padding: 12px; border: 1px solid currentColor; border-radius: 10px; }
-        .ss2-trailers[open] .ss2-story-videos { margin-top: 14px; }
         .ss2-full-story {
             position:relative; isolation:isolate; width:100%; overflow:hidden;
             display:flex; flex-direction:column; align-items:center;
@@ -398,9 +395,8 @@
     <link rel="stylesheet" href="/css/creator.css">
     <link rel="stylesheet" href="/css/book-work.css?v=2">
     <style>
-        .ss2-making-of { max-width: 620px; margin: 16px auto 0; }
         .ss2-shorts { margin: clamp(38px, 7vw, 84px) auto; scroll-margin-top: 96px; }
-        .ss2-shorts + .ss2-story-section .ss2-full-story { margin-top: 0; }
+        #ss2-story-video .ss2-full-story { margin-top: 0; }
         .ss2-shorts h2, .ss2-shorts-series {
             color: var(--ink); margin: 0 0 16px;
             font: 800 clamp(1.5rem, 5vw, 3.15rem)/1.12 Pretendard, Inter, system-ui, sans-serif;
@@ -486,6 +482,20 @@
     </header>
 
     <main class="container">
+        <section class="ss2-story-section" id="ss2-story-video" aria-labelledby="ss2-full-story-title">
+            <div class="ss2-full-story" id="ss2-full-story" role="region" aria-labelledby="ss2-full-story-title">
+                <span class="ss2-full-story-kicker" data-i18n="story_video_full_kicker">✦ 본편 상영 ✦</span>
+                <h3 id="ss2-full-story-title" data-i18n="story_video_full_title">본편 영상</h3>
+                <p class="ss2-full-story-note" data-i18n="story_video_full_note">12분 54초의 판타지 모험. 죽음의 늪의 글루톤과 고대 유적의 시련, 쌍둥이 그리핀 스콜과 게일의 전투를 지나 월광초로 저주받은 루미나를 정화하는 이야기입니다. 포포의 희생과 가족의 귀환까지 본편의 여정을 감상해 보세요.</p>
+                <div class="ss2-story-video-shell">
+                    <iframe src="https://www.youtube-nocookie.com/embed/sKkPYaMM75A?playsinline=1&rel=0" title="SISTER SQUAD 2 본편 영상" data-i18n-title="video_title_10" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+                <div class="ss2-full-video-cta">
+                    <a href="https://youtu.be/sKkPYaMM75A?si=zUwDcwd493RIvkdH" target="_blank" rel="noopener noreferrer" data-i18n="story_video_full_watch">▶ 유튜브에서 본편 보기 ↗</a>
+                </div>
+            </div>
+        </section>
+
 <section class="book-editorial" aria-labelledby="ss2-reading-guide">
 <div>
 <p data-i18n="themes_journey_kicker">주제와 여정</p>
@@ -587,31 +597,6 @@
             </dialog>
         </section>
 
-        <section class="ss2-story-section" id="ss2-story-video" aria-labelledby="ss2-full-story-title">
-            <div class="ss2-full-story" id="ss2-full-story" role="region" aria-labelledby="ss2-full-story-title">
-                <span class="ss2-full-story-kicker" data-i18n="story_video_full_kicker">✦ 본편 상영 ✦</span>
-                <h3 id="ss2-full-story-title" data-i18n="story_video_full_title">본편 영상</h3>
-                <p class="ss2-full-story-note" data-i18n="story_video_full_note">12분 54초의 판타지 모험. 죽음의 늪의 글루톤과 고대 유적의 시련, 쌍둥이 그리핀 스콜과 게일의 전투를 지나 월광초로 저주받은 루미나를 정화하는 이야기입니다. 포포의 희생과 가족의 귀환까지 본편의 여정을 감상해 보세요.</p>
-                <div class="ss2-story-video-shell">
-                    <iframe src="https://www.youtube-nocookie.com/embed/sKkPYaMM75A?playsinline=1&rel=0" title="SISTER SQUAD 2 본편 영상" data-i18n-title="video_title_10" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                </div>
-                <div class="ss2-full-video-cta">
-                    <a href="https://youtu.be/sKkPYaMM75A?si=zUwDcwd493RIvkdH" target="_blank" rel="noopener noreferrer" data-i18n="story_video_full_watch">▶ 유튜브에서 본편 보기 ↗</a>
-                </div>
-            </div>
-            <details class="ss2-trailers">
-                <summary><span data-i18n="trailer_details">제작 뒷이야기 보기</span></summary>
-                <div class="ss2-making-of">
-                    <article class="ss2-story-video-card">
-                    <h3 data-i18n="story_video_ng_title">실수 장면과 제작 뒷이야기</h3>
-                    <p class="ss2-video-caption" data-i18n="story_video_ng_desc">시간 정지와 시공간 왜곡, 프리티와의 재회 등 본편의 판타지 장면을 담은 NG 컷과 제작 비하인드입니다.</p>
-                    <div class="ss2-story-video-shell">
-                        <iframe src="https://www.youtube-nocookie.com/embed/c1PrzobN_MI?playsinline=1&rel=0" title="SISTER SQUAD 2 제작 뒷이야기" data-i18n-title="video_title_9" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                    </div>
-                </article>
-                </div>
-            </details>
-        </section>
 
         <h2 class="section-title" data-i18n="char_sec_title">가족</h2>
         <div class="character-grid">
@@ -766,7 +751,6 @@
                 jung_alt: "정이",
                 related_aria: "SISTER SQUAD 관련 콘텐츠",
                 book_region_aria: "책 구매",
-                video_title_9: "SISTER SQUAD 2 제작 뒷이야기",
                 video_title_10: "SISTER SQUAD 2 본편 영상",
                 meta_title: "SISTER SQUAD 2 — 저주받은 요정마을 | Chris LEE.PAPA",
                 og_title: "SISTER SQUAD 2 — 저주받은 요정마을 | Chris LEE.PAPA",
@@ -780,7 +764,6 @@
                 related_title: "SISTER SQUAD 더 보기",
                 related_journal_link: "제작기 7편",
 
-                trailer_details: "제작 뒷이야기 보기",
 
                 share_desc:       '잿빛으로 물든 요정마을을 구하는 자매의 두 번째 여정을 소중한 사람들에게 전하세요.',
                 themes_journey_kicker: '주제와 여정',
@@ -841,8 +824,6 @@
                 villain_griffin_name: '쌍둥이 그리핀, 스콜 &amp; 게일',
                 villain_griffin_desc: '전설의 약초 \'월광초\'를 지키는 냉기와 화염의 수호자. 생명과 감각이 서로 이어져 있어 완벽한 팀워크로만 공략할 수 있다.',
                 ost_note_p:       'SISTER SQUAD 2의 놀라운 오리지널 사운드트랙을 지금 만나보세요. 유튜브, 애플뮤직, 스포티파이 등 주요 스트리밍 플랫폼에 출시되었습니다.',
-                story_video_ng_title: "실수 장면과 제작 뒷이야기",
-                story_video_ng_desc: '시간 정지와 시공간 왜곡, 프리티와의 재회 등 본편의 판타지 장면을 담은 NG 컷과 제작 비하인드입니다.',
                 story_video_full_kicker: "✦ 본편 상영 ✦",
                 story_video_full_title: '본편 영상',
                 story_video_full_note: '12분 54초의 판타지 모험. 루미나를 되살리기 위한 자매의 시련과 선택, 포포의 희생, 마을의 회복과 귀환을 함께 만나보세요.',
@@ -860,7 +841,6 @@
                 jung_alt: "Jung",
                 related_aria: "Related SISTER SQUAD content",
                 book_region_aria: "Get the book",
-                video_title_9: "SISTER SQUAD 2 Behind the Scenes",
                 video_title_10: "SISTER SQUAD 2 Full Film",
                 meta_title: "SISTER SQUAD 2 — The Cursed Fairy Village | Chris LEE.PAPA",
                 og_title: "SISTER SQUAD 2 — The Cursed Fairy Village | Chris LEE.PAPA",
@@ -873,7 +853,6 @@
                 about_author_title: "✦ About the Author",
                 related_title: "Explore SISTER SQUAD",
                 related_journal_link: "Journal 07",
-                trailer_details: "Watch the making-of",
 
                 share_desc:       'Share the sisters\' second journey to save a cursed fairy village.',
                 themes_journey_kicker: 'THEMES & JOURNEY',
@@ -934,8 +913,6 @@
                 villain_griffin_name: 'Twin Griffins, Squall & Gale',
                 villain_griffin_desc: 'The final guardians of the legendary Moonlight Herb, wielding frost and flame. Their lives and senses are linked — only perfect teamwork can defeat them.',
                 ost_note_p:       'Discover the amazing original soundtrack of Sister Squad 2, now streaming on YouTube, Apple Music, Spotify and more.',
-                story_video_ng_title: 'Bloopers · Behind the Scenes',
-                story_video_ng_desc: 'Outtakes and production moments around the story’s time-stop magic, space-time distortions, and reunion with Preety.',
                 story_video_full_kicker: '✦ THE FEATURE PRESENTATION ✦',
                 story_video_full_title: 'Full Story',
                 story_video_full_note: 'A 12-minute-54-second fantasy adventure: the sisters’ trials and choices, Popo’s sacrifice, Lumina’s restoration, and the journey home.',

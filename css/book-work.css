@@ -1,0 +1,215 @@
+.book-work {
+  --book-blue: #243b9b;
+  --book-night: #10152b;
+  --book-wash: color-mix(in srgb, var(--accent) 7%, var(--panel));
+}
+.book-work.book-work--sister-squad-2 { --book-blue: #2949bd; }
+.book-work.book-work--miracle-shot { --book-blue: #285b9b; }
+
+.book-work-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, .63fr);
+  align-items: center;
+  gap: clamp(20px, 5vw, 74px);
+  width: min(1200px, calc(100% - 48px));
+  margin: calc(var(--nav-height, 70px) + 16px) auto clamp(24px, 5vw, 64px);
+  padding: clamp(24px, 5vw, 70px);
+  border-radius: 22px;
+  background: radial-gradient(ellipse at 88% 22%, var(--book-blue), transparent 66%),
+              linear-gradient(112deg, var(--book-night), #1c2755);
+  color: #fff;
+}
+.book-work #site-nav + .book-work-hero { margin-top: 16px; }
+.book-work-hero h1 {
+  margin: 0 0 9px;
+  color: #fff;
+  font: 800 clamp(2rem, 6.3vw, 5.7rem)/.98 Pretendard, Inter, sans-serif;
+  letter-spacing: -.065em;
+  text-wrap: balance;
+}
+.book-work-hero p {
+  margin: 0;
+  color: #e0e7ff;
+  font-size: clamp(1.03rem, 2.25vw, 1.48rem);
+  font-weight: 670;
+  line-height: 1.42;
+  overflow-wrap: anywhere;
+  word-break: keep-all;
+}
+.book-work-cover {
+  display: block;
+  justify-self: center;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: clamp(180px, 33vw, 380px);
+  border-radius: 4px 8px 8px 4px;
+  box-shadow: 2px 0 0 #cbd2ef, 4px 0 0 #8692c0, 14px 18px 32px #050816a6;
+}
+.book-work-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: clamp(16px, 3vw, 29px); }
+.book-work .book-work-actions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 9px 13px;
+  border: 1px solid #b8c7ff89;
+  border-radius: 8px;
+  color: #fff !important;
+  font-size: .9rem;
+  font-weight: 760;
+  line-height: 1.25;
+}
+.book-work .book-work-actions .book-work-buy { background: #edf1ff; border-color: #edf1ff; color: #171f47 !important; }
+.book-work .book-work-actions a:hover { border-color: #fff; }
+.book-work .book-work-actions a:focus-visible { outline-color: #fff; }
+
+.book-work > main.container {
+  width: min(1100px, calc(100% - 48px));
+  padding: 0 0 100px !important;
+  margin-inline: auto;
+}
+.book-work main [id] { scroll-margin-top: calc(var(--nav-height, 70px) + 22px); }
+.book-work main :is(.section-title, .seo-main-title, .seo-heading, .section-label, .back-link) {
+  color: var(--accent) !important;
+  border-color: var(--rule) !important;
+}
+.book-work main :is(.synopsis-section, .char-card, .faction-item, .english-edition-note, .ss2-story-section, .seo-box, section.seo-block, .world-card) {
+  background: var(--panel) !important;
+  border-color: var(--rule) !important;
+  box-shadow: none !important;
+}
+.book-work main :is(.char-name, .faction-name, .album-title, .world-card h3, .ss2-story-copy h2, .english-edition-note h2, section.seo-block h2, section.seo-block h3) {
+  color: var(--ink) !important;
+}
+.book-work main :is(.char-desc, .char-quote, .faction-desc, .synopsis-text, .seo-text, section.seo-block p, .ss2-story-copy p, .english-edition-note p) {
+  color: var(--subtle) !important;
+}
+.book-work main :is(.seo-box, .seo-block, .synopsis-section, .book-editorial, .ss2-story-copy, .english-edition-note) :is(h2, h3, p, li, blockquote) {
+  overflow-wrap: anywhere;
+  word-break: keep-all;
+}
+.book-work main :is(.book-editorial, .ss2-story-copy, .english-edition-note, .seo-box, section.seo-block) a:not(.get-book-button) {
+  color: var(--accent) !important;
+  text-underline-offset: .17em;
+}
+.book-work main .get-book-button {
+  min-height: 48px;
+  padding: 12px clamp(15px, 3vw, 24px) !important;
+  border: 1px solid var(--accent) !important;
+  border-radius: 8px !important;
+  background: var(--accent) !important;
+  color: var(--on-accent) !important;
+  box-shadow: none !important;
+  letter-spacing: 0;
+}
+.book-work main .get-book-button::after { content: none; }
+.book-work main .get-book-button :is(span, .get-book-arrow) { color: inherit !important; }
+
+.book-work main .book-editorial,
+.book-work main .english-edition-note {
+  width: 100%;
+  max-width: 920px;
+  margin: clamp(26px, 5vw, 60px) auto;
+  padding: clamp(18px, 4vw, 42px);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  background: var(--panel);
+  color: var(--ink);
+  text-align: left;
+}
+.book-work main .ms-theme-content { border: 0 !important; padding: 0 !important; }
+.book-work main .book-editorial h2,
+.book-work main .english-edition-note h2 {
+  margin: 0 0 18px;
+  color: var(--ink) !important;
+  font-family: Pretendard, Inter, sans-serif !important;
+  font-size: clamp(1.42rem, 4.5vw, 2.4rem) !important;
+  line-height: 1.24 !important;
+  letter-spacing: -.035em;
+}
+.book-work main .book-editorial h3,
+.book-work main .book-reading-list strong {
+  display: block;
+  margin: clamp(18px, 3vw, 30px) 0 7px !important;
+  padding-top: 13px;
+  border-top: 1px solid var(--rule);
+  color: var(--ink) !important;
+  font-family: Pretendard, Inter, sans-serif !important;
+  font-size: clamp(1.02rem, 3.8vw, 1.27rem) !important;
+  font-weight: 750;
+  line-height: 1.42 !important;
+  letter-spacing: -.02em;
+}
+.book-work main .book-editorial p,
+.book-work main .english-edition-note p,
+.book-work main .ss2-story-copy p,
+.book-work main :is(.seo-box, section.seo-block) p {
+  max-width: 67ch;
+  margin: 0 0 14px;
+  color: var(--subtle);
+  font-size: clamp(.97rem, 2vw, 1.09rem) !important;
+  font-weight: 400;
+  line-height: 1.72 !important;
+  text-align: left;
+}
+.book-work main .book-editorial :is([data-i18n$="_kicker"], .ms-theme-kicker),
+.book-work main .english-edition-note [data-i18n$="_kicker"] {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--accent) !important;
+  font-size: .82rem !important;
+  font-weight: 750;
+  letter-spacing: 0;
+}
+.book-work main .book-editorial p:last-child { margin-bottom: 0; }
+.book-work main .book-reading-list { margin: 10px 0 0; padding-inline-start: 1.35rem; }
+.book-work main .book-reading-list li::marker { color: var(--accent); font-weight: 750; }
+.book-work main .book-reading-list p { padding: 4px 0; }
+.book-work main .book-editorial article + article { margin-top: 12px; }
+.book-work main .book-work-related { background: var(--book-wash); }
+.book-work main .ss2-story-copy { text-align: left; }
+.book-work main .ss2-story-copy h2 { white-space: normal; }
+.book-work main .ss2-story-copy blockquote {
+  max-width: 62ch;
+  margin: 16px 0;
+  padding: 12px 15px;
+  border-inline-start: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  background: var(--book-wash);
+  color: var(--ink);
+  font-size: 1rem;
+  line-height: 1.72;
+}
+@media (max-width: 640px) {
+  .book-work-hero {
+    grid-template-columns: minmax(0, 1fr) minmax(0, .54fr);
+    width: calc(100% - 24px);
+    margin-bottom: 24px;
+    padding: 18px 15px;
+    gap: 13px;
+    border-radius: 14px;
+  }
+  .book-work-hero h1 { font-size: clamp(1.55rem, 6.25vw, 2.6rem); text-wrap: wrap; }
+  .book-work-actions { gap: 6px; }
+  .book-work .book-work-actions a { padding-inline: 8px; font-size: .79rem; }
+  .book-work-cover { max-height: 174px; }
+  .book-work > main.container { width: calc(100% - 24px); padding-bottom: 105px !important; }
+  .book-work main :is(.book-editorial, .seo-box, section.seo-block, .ss2-story-section, .english-edition-note, .synopsis-section) {
+    max-width: 100%;
+    padding: 16px !important;
+    margin-inline: auto;
+  }
+  .book-work main .seo-section { width: 100%; padding-inline: 0; }
+  .book-work main .seo-box .seo-block { padding-inline: 0 !important; }
+}
+
+.book-work main :is(.ss2-story-kicker, .char-tag, .ost-pill, .creation-journal-list a) { color: var(--accent) !important; }
+.book-work main :is(.char-tag, .ost-pill) { border-color: var(--rule) !important; }
+.book-work main .ss2-story-video-card {
+  border-color: var(--rule) !important;
+  background: var(--book-wash) !important;
+}
+.book-work main .ss2-story-video-card :is(h3, p) { color: var(--ink) !important; }
+.book-work main .ss2-story-promo { color: var(--subtle) !important; border-color: var(--accent); }

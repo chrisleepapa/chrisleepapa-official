@@ -234,8 +234,10 @@
   --banner-bg: #0e192b;
   --banner-tint: #1b3653;
   --banner-color: #c6e5ff;
-  --banner-framing: 50% 72%;
+  --banner-framing: 50% 34%;
+  grid-template-columns: minmax(0, 1.03fr) minmax(0, 1fr);
 }
+.ss-book-banner--2 .ss-book-banner-copy { min-height: clamp(405px, 45vw, 570px); }
 .ss-book-banner-art {
   position: relative;
   grid-area: image;
@@ -333,6 +335,9 @@ html body.book-work .ss-book-banner .ss-book-banner-links a {
     margin-top: 12px;
     border-radius: 12px;
   }
+  .ss-book-banner--2 { grid-template-columns: minmax(0, 1fr); }
+  .ss-book-banner--2 .ss-book-banner-art { aspect-ratio: 1.02; }
+  .ss-book-banner--2 .ss-book-banner-copy { min-height: 0; }
   .ss-book-banner-art { min-height: 0; aspect-ratio: 1.68; }
   .ss-book-banner-copy { min-height: 0; padding: 17px 16px 8px; }
   html body.book-work .ss-book-banner .ss-book-banner-series { margin-bottom: 8px; }

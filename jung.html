@@ -265,6 +265,24 @@ body::before{display:none!important}
 @media(max-width:560px){.character-story{padding:82px 16px 0}.story-hero{border-radius:18px}.hero-art{min-height:340px}.hero-copy{padding:28px 23px 34px}.hero-kicker{margin-top:18px}.hero-copy h1{font-size:3.25rem}.hero-intro{font-size:.95rem;margin-top:18px}.story-intro,.ability-stage,.story-depth,.gallery-section{padding-top:58px;padding-bottom:58px}.ability-stage{margin:0 -16px;padding-left:16px;padding-right:16px}.ability-feature{grid-template-columns:1fr;gap:18px}.ability-symbol{width:76px;height:76px;font-size:2.5rem}.power-grid{grid-template-columns:1fr}.gallery-mosaic{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.gallery-head{align-items:start;flex-direction:column}.gallery-tile.gallery-featured{grid-column:span 2;grid-row:span 1;aspect-ratio:1.5}.character-next{margin:0 -16px;border-radius:0}.story-crumb{font-size:.72rem}}
 @media(prefers-reduced-motion:reduce){.gallery-tile img{transition:none}}
 
+
+.hero-actions{margin-top:30px;display:flex;gap:0;align-items:center;border-bottom:1px solid rgba(255,255,255,.35);width:min(100%,420px)}
+.hero-actions a,.hero-actions a:first-child{background:transparent!important;border:0!important;border-radius:0!important;color:white!important;flex:1;padding:14px 6px!important;font-size:.86rem;letter-spacing:0;font-weight:650;text-align:left}
+.hero-actions a+a{text-align:right}
+.hero-actions a:hover{color:#c8dbff!important}
+.story-crumb a,.depth-stack a{border-bottom:1px solid currentColor;text-underline-offset:5px}
+.character-next{border-radius:0;background:#eef2f7;color:#26354b;gap:20px;padding:35px 0}
+.character-next p{color:#64748b}.character-next a{color:var(--story-dark)}
+.story-depth .depth-feature,.depth-stack article,.power-card{box-shadow:none}
+.artwork-dialog{padding:0;border:0;border-radius:12px;background:#11151e;color:#fff;max-width:min(96vw,1400px);max-height:94vh;width:100%;height:90vh;overflow:hidden}
+.artwork-dialog::backdrop{background:rgba(5,9,19,.92)}
+.artwork-dialog>img{width:100%;height:100%;object-fit:contain;padding:55px 70px 35px;box-sizing:border-box}
+.lightbox-controls{position:absolute;top:0;left:0;right:0;height:52px;display:flex;justify-content:space-between;align-items:center;padding:0 16px;background:linear-gradient(#111b,#1110);z-index:2;font-size:.82rem}
+.lightbox-controls button,.artwork-prev,.artwork-next{color:white;background:rgba(255,255,255,.13);border:0;cursor:pointer;border-radius:50%;width:38px;height:38px;font-size:1.2rem}
+.artwork-prev,.artwork-next{position:absolute;top:50%;transform:translateY(-50%);font-size:2.2rem;width:46px;height:46px}
+.artwork-prev{left:12px}.artwork-next{right:12px}
+.gallery-tile:focus-visible,.artwork-dialog button:focus-visible{outline:3px solid var(--story-accent);outline-offset:2px}
+@media(max-width:560px){.artwork-dialog{height:88vh;max-height:92vh}.artwork-dialog>img{padding:55px 9px 60px}.artwork-prev,.artwork-next{top:auto;bottom:10px;transform:none}.artwork-prev{left:calc(50% - 62px)}.artwork-next{right:calc(50% - 62px)}}
 </style>
   <meta name="robots" content="index, follow">
 </head>
@@ -285,7 +303,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <h1 id="story-name"><span data-i18n="name_ko">정이</span></h1>
  <p class="hero-age"><span data-i18n="age">8 YEARS OLD</span> <span>·</span> <span data-i18n="role_tag">순수의 활 · 교감</span></p>
  <div class="hero-intro"><span data-i18n="bio_desc2">다정함으로 마음을 열고, 두려움 속에서도 손을 내미는 동생.</span></div>
- <div class="hero-actions"><a href="#story-journey">STORY ↓</a><a href="#story-gallery">GALLERY ↗</a></div>
+ <nav class="hero-actions" aria-label="페이지 바로가기"><a href="#story-journey">인물 이야기 <span aria-hidden="true">↘</span></a><a href="#story-gallery">일러스트 보기 <span aria-hidden="true">↗</span></a></nav>
  </div>
  <figure class="hero-art"><img src="images/jung01.png" alt="정이 캐릭터 대표 일러스트" fetchpriority="high"><figcaption>EMPATHY / HEALING</figcaption></figure>
  <span class="hero-index" aria-hidden="true">02</span>
@@ -302,8 +320,87 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="story-depth" aria-labelledby="depth-heading"><div class="section-marker"><span>03 / BEYOND THE STORY</span><h2 id="depth-heading">다정함 너머의 용기</h2></div>
  <div class="depth-grid"><article class="depth-feature"><p class="eyebrow">PERSONALITY</p><h3><span data-i18n="seo_personality_title">Personality</span></h3><p><span data-i18n="seo_personality_desc"></span></p></article><div class="depth-stack"><article><p class="eyebrow">SISTERS</p><h3><span data-i18n="seo_relationship_title">Relationship</span></h3><p><span data-i18n="seo_relationship_desc"></span></p><a href="/yul">율이 만나기 ↗</a></article><article><p class="eyebrow">FROM THE CREATOR</p><h3><span data-i18n="seo_origin_title">Origin</span></h3><p><span data-i18n="seo_origin_desc"></span></p></article></div></div>
 </section>
-<section class="gallery-section" id="story-gallery" aria-labelledby="gallery-heading"><div class="gallery-head"><div class="section-marker"><span>04 / VISUAL ARCHIVE</span><h2 id="gallery-heading"><span data-i18n="gallery_title">Visual Archives</span></h2></div><p>13 ARTWORKS · CLICK TO EXPLORE</p></div>
+<section class="gallery-section" id="story-gallery" aria-labelledby="gallery-heading"><div class="gallery-head"><div class="section-marker"><span>04 / VISUAL ARCHIVE</span><h2 id="gallery-heading"><span data-i18n="gallery_title">Visual Archives</span></h2></div><p>이미지를 누르면 크게 볼 수 있습니다</p></div>
  <div class="gallery-mosaic"><button type="button" class="gallery-tile gallery-featured" aria-label="정 (Jung) — Sister Squad 캐릭터 일러스트 1 확대"><img src="images/jung01.png" alt="정 (Jung) — Sister Squad 캐릭터 일러스트 1" loading="lazy"><span class="tile-index">01</span></button><button type="button" class="gallery-tile" aria-label="정 (Jung) — 교감의 마스터 일러스트 2 확대"><img src="images/jung02.jpg" alt="정 (Jung) — 교감의 마스터 일러스트 2" loading="lazy"><span class="tile-index">02</span></button><button type="button" class="gallery-tile" aria-label="정 (Jung) — 하트 위버 페어리 타운 일러스트 3 확대"><img src="images/jung03.jpg" alt="정 (Jung) — 하트 위버 페어리 타운 일러스트 3" loading="lazy"><span class="tile-index">03</span></button><button type="button" class="gallery-tile" aria-label="정 (Jung) — 순수의 활 일러스트 4 확대"><img src="images/jung04.jpg" alt="정 (Jung) — 순수의 활 일러스트 4" loading="lazy"><span class="tile-index">04</span></button><button type="button" class="gallery-tile" aria-label="정 (Jung) — 테이밍 능력 일러스트 5 확대"><img src="images/jung05.jpg" alt="정 (Jung) — 테이밍 능력 일러스트 5" loading="lazy"><span class="tile-index">05</span></button><button type="button" class="gallery-tile" aria-label="정 (Jung) — 요정 교감 일러스트 6 확대"><img src="images/jung06.jpg" alt="정 (Jung) — 요정 교감 일러스트 6" loading="lazy"><span class="tile-index">06</span></button><button type="button" class="gallery-tile" aria-label="정 (Jung) — 어둠 치유 일러스트 7 확대"><img src="images/jung07.jpg" alt="정 (Jung) — 어둠 치유 일러스트 7" loading="lazy"><span class="tile-index">07</span></button><button type="button" class="gallery-tile" aria-label="정 (Jung) — 율과 Sister Squad 일러스트 8 확대"><img src="images/jung08.png" alt="정 (Jung) — 율과 Sister Squad 일러스트 8" loading="lazy"><span class="tile-index">08</span></button><button type="button" class="gallery-tile" aria-label="정 (Jung) — 동물 교감 일러스트 9 확대"><img src="images/jung09.jpg" alt="정 (Jung) — 동물 교감 일러스트 9" loading="lazy"><span class="tile-index">09</span></button><button type="button" class="gallery-tile" aria-label="정 (Jung) — 페어리 타운 모험 일러스트 10 확대"><img src="images/jung10.jpg" alt="정 (Jung) — 페어리 타운 모험 일러스트 10" loading="lazy"><span class="tile-index">10</span></button><button type="button" class="gallery-tile" aria-label="정 (Jung) — 요정 언어 일러스트 11 확대"><img src="images/jung11.jpg" alt="정 (Jung) — 요정 언어 일러스트 11" loading="lazy"><span class="tile-index">11</span></button><button type="button" class="gallery-tile" aria-label="정 (Jung) — Sister Squad 일러스트 12 확대"><img src="images/jung12.jpg" alt="정 (Jung) — Sister Squad 일러스트 12" loading="lazy"><span class="tile-index">12</span></button><button type="button" class="gallery-tile" aria-label="정 (Jung) — Chris LEE.PAPA 원작 일러스트 13 확대"><img src="images/jung13.jpg" alt="정 (Jung) — Chris LEE.PAPA 원작 일러스트 13" loading="lazy"><span class="tile-index">13</span></button></div>
 </section>
-</body>
-</html>
+<div id="site-footer"></div>
+<dialog id="artworkDialog" class="artwork-dialog" aria-label="이미지 확대 보기"><div class="lightbox-controls"><span id="artworkCount"></span><button type="button" id="artworkClose" aria-label="닫기">✕</button></div><button type="button" id="artworkPrev" class="artwork-prev" aria-label="이전 이미지">‹</button><img id="artworkLarge" alt=""><button type="button" id="artworkNext" class="artwork-next" aria-label="다음 이미지">›</button></dialog>
+<script>window.PAGE_I18N = {
+            ko: {
+                share_title: "SHARE JUNG'S PROFILE",
+                share_desc: "따뜻한 감성과 교감의 마스터, 정이를 소개해보세요.",
+                header_title: "JUNG",
+                header_slogan: "The Heart Weaver",
+                back_link: "‹ SisterSquad로 돌아가기",
+                name_ko: "정이 (Jung)",
+                age: "8 YEARS OLD",
+                role_tag: "순수의 활, 교감의 마스터",
+                bio_title: "Character Profile",
+                bio_desc1: "현재 8살인 정이는 세상 모든 것에 호기심을 느끼고 소통하는 순수한 소녀입니다. 1권에서는 7살의 나이로 언니 율이와 함께 요정마을을 침략한 어둠의 세력들과 맞서 싸우며, 생명과 교감하는 힘으로 요정들과 친구가 되어 요정마을을 지키는 데 힘을 보탭니다. 2권에서는 좀비로 인해 폐허가 된 요정마을을 회복시키기 위해 다시 모험에 나섭니다. 죽음의 늪을 지나고 그리핀과의 전투를 견뎌내며, 마침내 월광초를 구해 요정마을을 치유하는 놀라운 모험을 함께 완성합니다.",
+                bio_desc2: "정이의 가장 큰 힘은 파괴가 아니라 교감입니다. 언니 율이가 이성과 염력으로 앞길을 열면, 정이는 생명과 마음을 이해하는 힘으로 길을 완성합니다. 두 번의 모험을 거치며 정이는 자신이 가진 따뜻함과 용기가 세상을 회복시키는 힘이 될 수 있다는 것을 깨닫고, 언니와 함께 성장합니다.",
+                special_title: "Special Abilities",
+                special_desc: "<strong>Taming & Empathy (테이밍 & 교감):</strong> 그녀의 잠재 능력인 테이밍은 모든 살아 숨 쉬는 것들과 친구가 되고 싶어 하는 순수한 마음에서 비롯되었습니다. 노래하는 나비, 흉포한 숲의 괴수, 심지어 어둠의 공간까지, 그녀는 진심 어린 교감을 통해 그들의 마음을 열고 친구로 만듭니다. 전투 상황에서는 파괴력보다 평화적인 해결책을 제시합니다.",
+                quote: "\"괜찮아, 무섭지 않아<br> 너도 사실은 외로웠구나.<br>우리 친구 할까?\"",
+                gallery_title: "Visual Archives",
+                seo_personality_title: "💗 PERSONALITY — F형 마음의 마법사",
+                seo_personality_desc: "정은 전형적인 <strong style=\"color:#ffb6c1;\">F(감정형)</strong> 캐릭터입니다. 논리보다 감정을, 분석보다 공감을 먼저 선택하는 소녀. 언니 율이 \"왜?\"를 묻는다면, 정은 \"어떤 기분이야?\"를 묻습니다. 겁이 많고 낯선 것에 쉽게 울음을 터뜨리지만, 그 순수한 두려움이 오히려 세상 모든 존재의 마음을 여는 <strong style=\"color:#ffb6c1;\">열쇠</strong>가 됩니다. 어둠의 군주가 지배하는 페어리 타운에서 가장 많은 생명을 구한 것은 강력한 마법이 아니라 정의 <strong style=\"color:#e8d08a;\">진심 어린 한마디</strong>였습니다.",
+                seo_ability_title: "🌿 SPECIAL ABILITY — 테이밍 & 교감 (Taming & Empathy)",
+                seo_animal_label: "동물 교감",
+                seo_animal_desc: "노래하는 나비부터 흉포한 숲의 괴수까지. 정의 목소리를 들은 동물은 공격을 멈추고 친구가 됩니다.",
+                seo_fairy_label: "요정 언어",
+                seo_fairy_desc: "페어리 타운의 요정들과 자연스럽게 교감합니다. 요정들이 자신의 슬픔을 가장 먼저 털어놓는 존재.",
+                seo_dark_label: "어둠 치유",
+                seo_dark_desc: "어둠에 잠식된 존재들의 진짜 마음을 읽어냅니다. 파괴 대신 치유와 평화로 전투를 종결시킵니다.",
+                seo_relationship_title: "💫 RELATIONSHIP — 율(Yul)과의 관계",
+                seo_relationship_desc: "정에게 언니 율은 동경과 안도의 존재입니다. 차갑고 무뚝뚝해 보이는 언니지만, 항상 앞에서 싸우고 자신을 지켜준다는 걸 누구보다 잘 압니다. 반면 율은 처음에 동생이 짐이 된다고 느꼈지만, 정이 불가능한 상황을 <strong style=\"color:#ffb6c1;\">공감 하나로 해결</strong>하는 장면들을 보며 인식이 바뀝니다. 두 자매는 서로 다르기 때문에 완전합니다. 이성과 감성, 힘과 치유 — 율과 정이 함께일 때 페어리 타운은 희망을 가집니다.",
+                seo_origin_title: "🎨 ORIGIN — 캐릭터 탄생 비하인드",
+                seo_origin_desc: "정이라는 캐릭터에는 제 둘째 딸의 마음이 그대로 담겨 있습니다. 딸은 낯선 것 앞에서 곧잘 눈물을 보이지만, 동시에 처음 만난 강아지에게도 제일 먼저 다가가 이름을 불러주는 아이예요. 무섭다고 하면서도 결국은 다가가 손을 내미는 그 모순이 저에게는 늘 신비로웠습니다. 정이 어둠에 물든 존재의 진심을 알아채고 <strong style=\"color:#ffb6c1;\">\"너도 사실은 외로웠구나\"</strong>라고 말하는 장면은, 실제로 딸이 유치원에서 혼자 있던 친구에게 다가가 손을 잡아준 일화에서 그대로 가져온 것입니다. <strong style=\"color:#e8d08a;\">딸의 다정함이 한 세계를 구하는 힘</strong>이 될 수 있다면 좋겠다는 마음으로 이 캐릭터를 그렸습니다.",
+                seo_quote: "\"괜찮아, 무섭지 않아.<br>너도 사실은 외로웠구나.<br>우리 친구 할까?\"",
+                seo_quote_caption: "— 정, Sister Squad Vol.1"
+            },
+            en: {
+                share_title: "SHARE JUNG'S PROFILE",
+                share_desc: "Introduce Jung, the master of warm emotion and empathy.",
+                header_title: "JUNG",
+                header_slogan: "The Heart Weaver",
+                back_link: "‹ Back to SisterSquad",
+                name_ko: "Jung",
+                age: "8 YEARS OLD",
+                role_tag: "Bow of Purity, Master of Empathy",
+                bio_title: "Character Profile",
+                bio_desc1: "Now 8 years old, Jung is a pure-hearted girl who is curious about the world and communicates with living things. At age 7 in Sister Squad Vol.1, she fought alongside Yul against the forces of darkness invading the fairy village, using her gift of empathy to connect with the fairies and help protect their home. In Vol.2, she joins the journey to restore the village after it is devastated by zombies, crossing the Death Swamp, facing griffins, and helping recover the Moonlight Herb that heals the fairy village."
+                bio_desc2: "Jung's greatest strength is not destruction but empathy. While Yul opens the way with reason and psychokinesis, Jung completes the journey by understanding life and the hearts of others. Through their two adventures, she discovers that warmth and courage can become a force that restores a broken world."
+                special_title: "Special Abilities",
+                special_desc: "<strong>Taming & Empathy:</strong> Her potential ability, taming, comes from a pure desire to become friends with all living and breathing things. From singing butterflies to ferocious forest monsters, and even dark spaces, she opens their hearts and makes them friends through sincere empathy. In combat situations, she presents peaceful solutions rather than destructive power.",
+                quote: "\"It's okay, don't be scared.<br> You were actually lonely too.<br>Shall we be friends?\"",
+                gallery_title: "Visual Archives",
+                seo_personality_title: "💗 PERSONALITY — Wizard of the Heart (F-type)",
+                seo_personality_desc: "Jung is a textbook <strong style=\"color:#ffb6c1;\">F (Feeling)</strong> character. A girl who chooses emotion over logic, and empathy over analysis. Where her older sister Yul asks \"why?\", Jung asks \"how do you feel?\" She's easily frightened and cries at the unfamiliar, yet that very pure fear becomes the <strong style=\"color:#ffb6c1;\">key</strong> that opens the hearts of every being in the world. In Fairy Town, ruled by the lord of darkness, it wasn't powerful magic but Jung's <strong style=\"color:#e8d08a;\">heartfelt words</strong> that saved the most lives.",
+                seo_ability_title: "🌿 SPECIAL ABILITY — Taming & Empathy",
+                seo_animal_label: "Animal Bond",
+                seo_animal_desc: "From singing butterflies to ferocious forest beasts. Any animal that hears Jung's voice stops attacking and becomes a friend.",
+                seo_fairy_label: "Fairy Tongue",
+                seo_fairy_desc: "She naturally bonds with the fairies of Fairy Town. She is the first one the fairies open up to about their sorrows.",
+                seo_dark_label: "Healing Darkness",
+                seo_dark_desc: "She reads the true hearts of beings consumed by darkness. She ends battles with healing and peace instead of destruction.",
+                seo_relationship_title: "💫 RELATIONSHIP — Bond with Yul",
+                seo_relationship_desc: "For Jung, her older sister Yul is a figure of admiration and reassurance. Though Yul seems cold and blunt, Jung knows better than anyone that she always fights up front to protect her. Yul, meanwhile, once felt her sister was a burden, but her perception changes as she watches Jung <strong style=\"color:#ffb6c1;\">solve impossible situations with nothing but empathy</strong>. The two sisters are complete precisely because they are different. Reason and emotion, strength and healing — when Yul and Jung are together, Fairy Town has hope.",
+                seo_origin_title: "🎨 ORIGIN — Behind the Character",
+                seo_origin_desc: "Jung carries the heart of my youngest daughter exactly as she is. In real life, she tears up easily around anything unfamiliar — yet she's also the first to walk up to a strange dog and start calling it by name. That contradiction, being scared and still reaching out, has always fascinated me. The scene where Jung senses the true feelings behind a darkness-corrupted creature and says <strong style=\"color:#ffb6c1;\">\"you were lonely too, weren't you\"</strong> is taken directly from a real moment: my daughter walking over to take the hand of a classmate sitting alone in kindergarten. I drew this character hoping that a child's gentleness really could be strong enough to save a whole world.",
+                seo_quote: "\"It's okay, don't be scared.<br>You were actually lonely too.<br>Shall we be friends?\"",
+                seo_quote_caption: "— Jung, Sister Squad Vol.1"
+            }
+        };</script>
+<script src="js/main.js"></script>
+<script>
+(function(){
+const tiles=[...document.querySelectorAll('.gallery-tile')], dialog=document.getElementById('artworkDialog'), large=document.getElementById('artworkLarge'), count=document.getElementById('artworkCount');let active=0;
+function show(n){active=(n+tiles.length)%tiles.length;const img=tiles[active].querySelector('img');large.src=img.getAttribute('src');large.alt=img.alt;count.textContent=(active+1)+' / '+tiles.length;}
+tiles.forEach((tile,i)=>tile.addEventListener('click',()=>{show(i);if(!dialog.open)dialog.showModal();}));
+document.getElementById('artworkClose').addEventListener('click',()=>dialog.close());
+document.getElementById('artworkPrev').addEventListener('click',()=>show(active-1));
+document.getElementById('artworkNext').addEventListener('click',()=>show(active+1));
+dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close();});
+dialog.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')show(active-1);if(e.key==='ArrowRight')show(active+1);});
+})();
+</script></body></html>

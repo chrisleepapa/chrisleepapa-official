@@ -82,14 +82,13 @@
 
 .shop-book {
   --book-depth: clamp(31px, 3.4vw, 47px);
-  --book-rotation: rotateY(var(--book-angle)) rotateX(-10deg);
   --book-angle: -34deg;
   --book-binding: #252a40;
   position: relative;
   z-index: 1;
   display: block;
   transform-style: preserve-3d;
-  transform: var(--book-rotation);
+  transform: rotateY(var(--book-angle));
 }
 .shop-book--sister-squad-1 { --book-binding: #3d274a; }
 .shop-book--sister-squad-2 { --book-binding: #142242; }
@@ -237,7 +236,7 @@ html[data-theme="dark"] #shop-miracle-shot .shop-shelf-art { background: #243d39
 }
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
   .shop-shelf-art .shop-book { transition: transform .22s ease; }
-  .shop-shelf-art a:hover .shop-book { transform: rotateY(-29deg) rotateX(-8deg) translateY(-3px); }
+  .shop-shelf-art a:hover .shop-book { transform: rotateY(-29deg); }
 }
 .shop-category { margin: 0 0 10px; color: var(--accent); font-size: .86rem; font-weight: 800; }
 .shop-shelf-copy { min-width: 0; }

@@ -52,7 +52,7 @@ function render(){
     :'앨범을 펼치면 작업의 출발점과 제작 방향, 감상 포인트를 볼 수 있습니다.';
   list.replaceChildren(...Object.entries(R).map(([title,original],index)=>{
     const notes=lang==='en'&&EN[title]?EN[title]:original;
-    const album=musicData.find(item=>item.title===title);
+    const album=(typeof musicData!=='undefined'&&Array.isArray(musicData)?musicData:[]).find(item=>item.title===title);
     const entry=document.createElement('details');
     entry.className='music-note-entry';
     entry.name='music-editorial-notes';

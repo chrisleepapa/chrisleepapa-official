@@ -213,3 +213,124 @@
 }
 .book-work main .ss2-story-video-card :is(h3, p) { color: var(--ink) !important; }
 .book-work main .ss2-story-promo { color: var(--subtle) !important; border-color: var(--accent); }
+
+/* Sister Squad book openings. */
+.book-intro {
+  --intro-tint: #e2e5f7;
+  --intro-edge: #c1c8e8;
+  --intro-cover-shadow: #20294c54;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, .73fr);
+  grid-template-areas: "title art" "actions art";
+  grid-template-rows: 1fr auto;
+  align-items: end;
+  gap: 24px clamp(28px, 6vw, 88px);
+  width: min(1100px, calc(100% - 48px));
+  margin: 22px auto clamp(30px, 5.5vw, 72px);
+  padding: clamp(22px, 5vw, 65px) 0;
+  border-block: 1px solid var(--rule);
+  color: var(--ink);
+}
+.book-work--sister-squad-2 .book-intro { --intro-tint: #dce9fb; --intro-edge: #aec6e5; }
+html[data-theme="dark"] .book-work .book-intro {
+  --intro-tint: #262e51;
+  --intro-edge: #465782;
+  --intro-cover-shadow: #040611a8;
+}
+.book-intro-title { grid-area: title; min-width: 0; }
+html[data-theme] body.book-work .book-intro .book-intro-series {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0 0 15px;
+  color: var(--accent) !important;
+  font: 800 clamp(.77rem, 1.4vw, .98rem)/1.2 Pretendard, Inter, sans-serif;
+  letter-spacing: .09em;
+}
+.book-intro-series span {
+  display: grid;
+  place-items: center;
+  min-width: 24px;
+  min-height: 24px;
+  padding: 0 4px;
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  letter-spacing: 0;
+  font-size: .78rem;
+}
+html[data-theme] body.book-work .book-intro h1 {
+  margin: 0;
+  color: var(--ink) !important;
+  -webkit-text-fill-color: currentColor !important;
+  font: 800 clamp(2.8rem, 6.9vw, 6.4rem)/1.04 Pretendard, Inter, sans-serif !important;
+  letter-spacing: -.065em;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+  word-break: keep-all;
+}
+.book-intro-art {
+  grid-area: art;
+  display: grid;
+  place-items: center;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  min-height: 310px;
+  padding: clamp(22px, 4vw, 48px);
+  border-radius: 4px 38px 4px 4px;
+  background: repeating-linear-gradient(135deg, transparent 0 27px, var(--intro-edge) 28px 29px),
+              radial-gradient(ellipse at 62% 25%, var(--panel), var(--intro-tint) 78%);
+}
+.book-intro-cover {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 330px;
+  border-radius: 2px 5px 5px 2px;
+  box-shadow: 2px 0 #e4e4ea, 4px 0 #a2a6bc, 12px 15px 28px var(--intro-cover-shadow);
+}
+.book-intro-actions { grid-area: actions; display: flex; align-items: center; flex-wrap: wrap; gap: 7px 20px; }
+.book-intro .book-intro-buy {
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  min-height: 47px;
+  padding: 10px 15px;
+  border-radius: 4px;
+  background: var(--accent);
+  color: var(--on-accent) !important;
+  font-weight: 780;
+  text-decoration: none;
+}
+.book-intro-links { display: flex; align-items: center; flex-wrap: wrap; gap: 0 15px; }
+.book-intro-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 44px;
+  color: var(--ink) !important;
+  text-underline-offset: .25em;
+  font-size: .9rem;
+  font-weight: 720;
+}
+.book-intro-links a:hover { text-decoration: underline; color: var(--accent) !important; }
+@media (max-width: 640px) {
+  .book-intro {
+    grid-template-columns: minmax(0, 1fr) minmax(85px, 38%);
+    grid-template-areas: "title art" "actions actions";
+    grid-template-rows: auto auto;
+    align-items: center;
+    gap: 16px 12px;
+    width: calc(100% - 32px);
+    margin-top: 11px;
+    padding: 15px 0 9px;
+  }
+  html[data-theme] body.book-work .book-intro .book-intro-series { margin-bottom: 10px; letter-spacing: .035em; }
+  html[data-theme] body.book-work .book-intro h1 { font-size: clamp(1.72rem, 7.25vw, 3.45rem) !important; }
+  .book-intro-art { min-height: 0; padding: 13px; border-radius: 3px 22px 3px 3px; }
+  .book-intro-cover { width: 100%; max-width: 150px; max-height: none; }
+  .book-intro-actions { display: grid; gap: 4px; }
+  .book-intro-links { justify-content: center; gap: 0 14px; }
+}

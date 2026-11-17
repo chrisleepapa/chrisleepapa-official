@@ -129,6 +129,26 @@ html[lang="ko"] .afterword-en,html[lang="en"] .afterword-ko{display:none!importa
 .author-afterword .afterword-en p:last-child{font-size:16px;line-height:2;color:#4b5058}
 .pull-quote blockquote{overflow-wrap:normal;word-break:keep-all;text-wrap:pretty}
 @media(max-width:560px){.pull-quote{padding:30px 0!important;margin:55px auto 24px!important}.pull-quote blockquote{font-size:clamp(20px,5.2vw,26px)!important;line-height:1.8!important;letter-spacing:-.065em!important;margin:22px 0!important;word-break:keep-all!important;overflow-wrap:normal!important}.pull-quote blockquote br{display:none}.pull-quote>p{font-size:11px!important}.author-afterword section{padding-bottom:30px}}
+
+/* Responsive Korean word wrapping: keep syllables within words together. */
+.portrait :is(h1,h2,h3,p,blockquote,figcaption,.cover-meta,.portrait-index,.next-story a){
+  word-break:keep-all;
+  overflow-wrap:break-word;
+  line-break:strict;
+}
+.portrait :is(h1,h2,h3,blockquote){text-wrap:balance}
+.portrait .essay-body p,.portrait .author-afterword p,.portrait .ability-line p{word-break:keep-all;overflow-wrap:break-word}
+.portrait .cover-type h1{font-size:clamp(46px,7.6vw,112px);letter-spacing:-.07em;word-break:keep-all;white-space:nowrap;line-height:1.14}
+.portrait .cover-type h1 [data-i18n="name_ko"]{white-space:nowrap}
+@media(max-width:820px){
+ .portrait .cover-type h1{font-size:clamp(42px,10.5vw,76px);letter-spacing:-.085em;white-space:nowrap}
+ .portrait .essay-rail h2,.portrait .author-afterword h2,.portrait .insight h2{font-size:clamp(24px,6vw,34px);line-height:1.55;letter-spacing:-.045em;word-break:keep-all;overflow-wrap:break-word;text-wrap:pretty}
+}
+@media(max-width:560px){
+ .portrait .cover-type h1{font-size:clamp(37px,9.2vw,59px);letter-spacing:-.085em;white-space:nowrap}
+ .portrait .essay-rail h2,.portrait .author-afterword h2,.portrait .insight h2{font-size:clamp(23px,5.7vw,31px);line-height:1.55}
+ .portrait .essay-body p,.portrait .author-afterword p{word-break:keep-all;overflow-wrap:break-word;line-break:strict}
+}
 </style>
 </head><body><div id="site-nav"></div>
 <main class="portrait">

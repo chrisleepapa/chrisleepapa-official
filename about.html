@@ -53,6 +53,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="/css/creator.css?v=archive-paths">
 
     <script id="about-schema" type="application/ld+json">
     {
@@ -158,10 +159,27 @@ html[data-theme="dark"] .about-action-primary{background:#e9e7e0;color:#202b35!i
 @media(max-width:900px){.about-hero{grid-template-columns:1fr;min-height:0}.about-hero-art{min-height:390px}.about-statement{grid-template-columns:1fr;gap:0}.about-statement>p:last-child{grid-column:1}.about-work-grid{grid-template-columns:1fr 1fr}.about-work-feature{grid-column:span 2}.about-method{grid-template-columns:1fr;gap:10px}}
 @media(max-width:600px){.about-modern{padding-bottom:0}.about-hero{padding:44px 22px 65px;gap:32px}.about-hero h1{font-size:clamp(54px,13vw,82px);margin-bottom:23px}.about-hero-art{min-height:310px}.about-statement,.about-works,.about-method,.about-milestones,.about-connect{padding:65px 22px}.about-statement>p:last-child{font-size:16px}.about-work-grid{grid-template-columns:1fr}.about-work-feature{grid-column:auto}.about-work-visual{height:215px}.about-work-meta{padding:23px 22px 35px}.about-milestone-grid{grid-template-columns:1fr;gap:22px}.about-connect{display:block}.about-socials{margin-top:30px}.about-socials a{font-size:13px;padding:12px}.about-section-heading h2,.about-method h2,.about-connect h2{font-size:clamp(30px,8vw,43px)}}
 @media(prefers-reduced-motion:reduce){.about-work-card{transition:none}}
+
+/* Shared main-site footer theme and five-work portfolio grid. */
+.about-modern .about-work-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.about-modern .about-work-feature{grid-column:span 2}
+.about-modern .about-work-visual img{display:block;width:100%;height:100%;object-fit:cover}
+.about-modern .about-work-sister img{object-position:center 28%}
+.about-modern .about-work-faith{background:linear-gradient(145deg,#d8f0eb,#83bfb8)}
+.about-modern .about-work-kids{background:linear-gradient(145deg,#f7e3b8,#f1b8b8)}
+.about-modern .about-work-faith img,.about-modern .about-work-kids img{width:min(68%,190px);height:auto;aspect-ratio:1;object-fit:contain;border-radius:23%;box-shadow:0 12px 28px rgba(0,0,0,.12)}
+.about-modern .about-work-meta strong small{font-size:.47em;font-weight:700;letter-spacing:.02em;vertical-align:middle}
+.about-modern .about-work-meta p{min-height:0}
+body.creator-page #site-footer footer{background:var(--panel)!important;color:var(--subtle)!important;border-top:1px solid var(--rule)!important;box-shadow:none!important}
+body.creator-page #site-footer footer p:first-child{color:var(--subtle)!important}
+body.creator-page #site-footer .footer-policy a{color:var(--accent)!important;text-shadow:none!important}
+body.creator-page #site-footer .footer-divider{color:var(--subtle)!important}
+@media(max-width:1050px){.about-modern .about-work-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.about-modern .about-work-feature{grid-column:span 2}}
+@media(max-width:600px){.about-modern .about-work-grid{grid-template-columns:1fr}.about-modern .about-work-feature{grid-column:auto}.about-modern .about-work-faith img,.about-modern .about-work-kids img{width:155px}.about-modern .about-work-visual{height:220px}}
 </style>
 </head>
 
-<body>
+<body class="creator-page">
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NGDTQNVG"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -181,9 +199,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="about-statement" aria-labelledby="about-statement-title"><p class="about-eyebrow"><span lang="ko">창작자 소개</span><span lang="en">THE CREATOR</span></p><h2 id="about-statement-title"><span lang="ko">두 딸의 아빠이자,<br>이야기를 만드는 사람.</span><span lang="en">A father of two.<br>A maker of stories.</span></h2><p data-i18n="philosophy_p1">이곳 The Creative Archive에는 두 딸과 시작한 SISTER SQUAD, 오리지널 책·영상·음악, 그리고 직접 만들고 출판하며 배운 과정을 담았습니다.</p></section>
 <section class="about-works" aria-labelledby="about-works-title"><div class="about-section-heading"><p class="about-eyebrow">01 / SELECTED WORK</p><h2 id="about-works-title"><span lang="ko">만들고 있는 세계들</span><span lang="en">Worlds in progress</span></h2></div>
 <div class="about-work-grid">
-<a href="/sistersquad-hub" class="about-work-card about-work-feature"><div class="about-work-visual about-work-sister"><span class="about-work-symbol">S<span>✳</span>S</span></div><div class="about-work-meta"><span>01 / ORIGINAL IP</span><strong>SISTER SQUAD</strong><p><span lang="ko">두 자매의 모험을 담은 오리지널 판타지 시리즈</span><span lang="en">An original fantasy series about two sisters</span></p><span class="about-work-arrow">↗</span></div></a>
-<a href="/music" class="about-work-card"><div class="about-work-visual about-work-music"><span class="about-work-symbol">♫</span></div><div class="about-work-meta"><span>02 / SOUND</span><strong>MUSIC</strong><p><span lang="ko">음악으로 확장되는 이야기와 감정</span><span lang="en">Stories and emotions expressed through music</span></p><span class="about-work-arrow">↗</span></div></a>
-<a href="/journal" class="about-work-card"><div class="about-work-visual about-work-journal"><span class="about-work-symbol">✎</span></div><div class="about-work-meta"><span>03 / PROCESS</span><strong>JOURNAL</strong><p><span lang="ko">아이디어부터 완성까지의 실제 제작 기록</span><span lang="en">Real notes from first idea to finished work</span></p><span class="about-work-arrow">↗</span></div></a>
+<a href="/sistersquad-hub" class="about-work-card about-work-feature"><div class="about-work-visual about-work-sister"><img src="/images/sistersquad2_poster.jpg" alt="SISTER SQUAD 두 자매의 모험 일러스트" loading="lazy"></div><div class="about-work-meta"><span>01 / ORIGINAL STORIES</span><strong>SISTER SQUAD</strong><p><span lang="ko">율이와 정이, 두 자매가 함께 성장하는 판타지 모험. 책과 일러스트, 영상으로 이어지는 오리지널 이야기입니다.</span><span lang="en">Follow Yul and Jung through an original fantasy adventure, told in books, illustrations, and videos.</span></p><span class="about-work-arrow">↗</span></div></a>
+<a href="/music" class="about-work-card"><div class="about-work-visual about-work-music"><span class="about-work-symbol">♫</span></div><div class="about-work-meta"><span>02 / ORIGINAL MUSIC</span><strong>MUSIC</strong><p><span lang="ko">이야기와 감정을 음악으로 표현한 오리지널 곡과 앨범.</span><span lang="en">Original songs and albums that bring stories and emotions to life.</span></p><span class="about-work-arrow">↗</span></div></a>
+<a href="https://faith.chrisleepapa.com/" class="about-work-card"><div class="about-work-visual about-work-faith"><img src="https://faith.chrisleepapa.com/icons/icon-512.png?v=faith-teal" alt="Faith 청록색 C 로고" loading="lazy"></div><div class="about-work-meta"><span>03 / BIBLE & REFLECTION</span><strong>FAITH</strong><p><span lang="ko">성경 읽기, 말씀 묵상과 기도 기록, 찬송과 워십을 위한 별도의 공간입니다.</span><span lang="en">A dedicated space for Bible reading, reflection, prayer, hymns, and worship.</span></p><span class="about-work-arrow">↗</span></div></a>
+<a href="https://www.youtube.com/channel/UCUXFyPjXoUTEXy0Je7VcdyQ" class="about-work-card" target="_blank" rel="noopener noreferrer"><div class="about-work-visual about-work-kids"><img src="https://yt3.googleusercontent.com/VtwBxjnqTmXhYbFMlp71_Nsy4MDoc46LnBLkkOoXDWOj1ezEqwouWgQDY0FAdnP8aWNvUnJO=s900-c-k-c0x00ffffff-no-rj" alt="꾸꾸꼬꼬 KUKUKOKO 유튜브 채널 공식 아이콘" loading="lazy"></div><div class="about-work-meta"><span>04 / KIDS CHANNEL</span><strong>꾸꾸꼬꼬 <small>KUKUKOKO</small></strong><p><span lang="ko">뚜뚜·뿌뿌·삐삐와 함께하는 노래, 이야기, 애니메이션. 유튜브에서 만나는 어린이 채널입니다.</span><span lang="en">Songs, stories, and animation with TUTU, PUPU, and PIPPI on our kids’ YouTube channel.</span></p><span class="about-work-arrow">↗</span></div></a>
+<a href="/journal" class="about-work-card"><div class="about-work-visual about-work-journal"><span class="about-work-symbol">✎</span></div><div class="about-work-meta"><span>05 / BEHIND THE WORK</span><strong>JOURNAL</strong><p><span lang="ko">책, 음악, 영상이 완성되기까지의 선택과 실험을 기록합니다.</span><span lang="en">Behind-the-scenes notes on making books, music, and films.</span></p><span class="about-work-arrow">↗</span></div></a>
 </div></section>
 <section class="about-method" aria-labelledby="about-method-title"><div><p class="about-eyebrow">02 / CREATIVE PROCESS</p><h2 id="about-method-title"><span lang="ko">상상을 작품으로<br>옮기는 과정</span><span lang="en">Turning imagination<br>into finished work</span></h2></div><div class="about-method-content"><p data-i18n="process_p1">이야기, 영상, 음악 작업을 시작할 때는 먼저 관객이나 독자에게 남기고 싶은 감정이나 질문을 정합니다.</p><p data-i18n="process_p2">AI 도구는 초안을 실험하고 표현을 비교하도록 돕습니다. 결과물을 고르고 수정하고 공개할지 결정하는 과정은 창작자의 몫입니다.</p><a href="/journal"><span lang="ko">제작 과정 자세히 보기</span><span lang="en">Read the making-of notes</span> ↗</a></div></section>
 <section class="about-milestones" aria-labelledby="about-milestones-title"><div class="about-section-heading"><p class="about-eyebrow">03 / MILESTONES</p><h2 id="about-milestones-title"><span lang="ko">창작의 발자취</span><span lang="en">A creative timeline</span></h2></div><div class="about-milestone-grid"><article><span>2025</span><strong>SISTER SQUAD</strong><p data-i18n="time2_desc">첫 번째 오리지널 IP, SISTER SQUAD가 탄생했습니다.</p></article><article><span>2026</span><strong>THE CREATIVE ARCHIVE</strong><p data-i18n="time5_desc">음악, 문학, 영상과 오리지널 창작 프로젝트를 한곳에 모으기 시작했습니다.</p></article><article><span>2026</span><strong>SISTER SQUAD 2</strong><p data-i18n="time7_desc">SISTER SQUAD의 새로운 이야기로 시리즈를 이어갔습니다.</p></article></div></section>

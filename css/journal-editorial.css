@@ -1,0 +1,46 @@
+/* Journal 01–06 · editorial redesign, 2026-11-17 */
+:root{--journal-ink:#172532;--journal-muted:#64717b;--journal-line:#dce4e8;--journal-accent:#236a7a}
+html{scroll-behavior:smooth}
+body:has(.journal-reading){background:#f6f7f5!important;color:var(--journal-ink)!important;font-family:Inter,'Noto Sans KR',Pretendard,sans-serif!important}
+body:has(.journal-reading)::before{display:none!important}
+.journal-reading.page-wrapper{max-width:1120px!important;width:min(100% - 44px,1120px)!important;margin:0 auto!important;padding:clamp(108px,12vw,152px) 0 90px!important;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,760px) minmax(0,1fr);align-content:start;gap:0}
+.journal-reading.page-wrapper>*{grid-column:2;min-width:0}
+.journal-reading .back-link{justify-self:start!important;text-align:left!important;display:inline-flex!important;align-items:center;min-height:40px;color:#45616e!important;font-size:.86rem!important;font-weight:650!important;margin:0 0 28px!important}
+.journal-reading .page-header{background:transparent!important;border:0!important;text-align:left!important;margin:0 0 36px!important;padding:0!important;opacity:1!important;transform:none!important;animation:none!important}
+.journal-reading .page-header-tag,.journal-reading .tag{display:inline-flex!important;color:var(--journal-accent)!important;font-family:Inter,'Noto Sans KR',sans-serif!important;font-size:.73rem!important;font-weight:800!important;letter-spacing:.15em!important;margin:0 0 18px!important;text-transform:uppercase}
+.journal-reading .page-header-tag::before{content:'CHRIS LEE.PAPA  /  ';color:#87949c}
+.journal-reading .article-meta-row,.journal-reading .meta{justify-content:flex-start!important;text-align:left!important;color:var(--journal-muted)!important;font-size:.8rem!important;gap:9px!important;margin:0 0 18px!important}
+.journal-reading .cat{color:var(--journal-accent)!important;background:#e8f0f1!important;border:1px solid #d2e1e5!important;border-radius:999px!important;padding:5px 12px!important}
+.journal-reading h1,.journal-reading .page-title{font-family:'Noto Sans KR',Inter,sans-serif!important;font-size:clamp(2.05rem,4.7vw,3.7rem)!important;font-weight:800!important;line-height:1.3!important;letter-spacing:-.055em!important;text-align:left!important;color:#182936!important;word-break:keep-all!important;margin:0 0 20px!important}
+.journal-reading .page-header-divider,.journal-reading .divider{width:100%!important;height:1px!important;background:var(--journal-line)!important;margin:26px 0 0!important}
+.journal-reading .article-card{width:100%!important;max-width:none!important;background:#fff!important;color:var(--journal-ink)!important;border:1px solid #e6e9e8!important;border-radius:20px!important;box-shadow:0 12px 45px rgba(24,46,55,.045)!important;backdrop-filter:none!important;padding:clamp(24px,5.5vw,64px)!important;margin:0 0 32px!important;opacity:1!important;transform:none!important;animation:none!important;box-sizing:border-box}
+.journal-reading .journal-body{color:var(--journal-ink)!important}
+.journal-reading .journal-body p,.journal-reading .journal-body li{font-family:'Noto Sans KR',Pretendard,sans-serif!important;font-size:clamp(.98rem,1.35vw,1.065rem)!important;line-height:1.95!important;letter-spacing:-.025em!important;color:#374852!important;word-break:keep-all!important;margin-bottom:1.4em!important}
+.journal-reading .journal-body p:first-child{font-size:clamp(1.08rem,1.8vw,1.22rem)!important;line-height:1.85!important;color:#203d49!important;font-weight:500}
+.journal-reading .journal-body h2,.journal-reading .journal-subhead,.journal-reading .subhead{font-family:'Noto Sans KR',sans-serif!important;font-size:clamp(1.28rem,2.1vw,1.62rem)!important;line-height:1.5!important;letter-spacing:-.04em!important;font-weight:800!important;color:#183542!important;border:0!important;border-left:0!important;padding:0!important;margin:2.3em 0 .85em!important;word-break:keep-all}
+.journal-reading .journal-body h2::before,.journal-reading .journal-subhead::before,.journal-reading .subhead::before{content:'';display:block;width:38px;height:3px;border-radius:3px;background:#3d8894;margin-bottom:15px}
+.journal-reading .journal-body strong{color:#15596b!important;font-weight:750!important}
+.journal-reading .journal-body a,.journal-reading .article-footer a,.journal-reading .journal-nav a{color:#176879!important;text-decoration-thickness:1px;text-underline-offset:4px}
+.journal-reading .journal-check,.journal-reading .journal-prompt,.journal-reading .journal-dialogue,.journal-reading .journal-quote,.journal-reading .quote{background:#eff5f5!important;color:#284450!important;border:1px solid #d8e8e8!important;border-left:4px solid #4c9099!important;border-radius:12px!important;padding:clamp(16px,3vw,28px)!important;margin:30px 0!important;box-shadow:none!important}
+.journal-reading .journal-check p,.journal-reading .journal-prompt p,.journal-reading .journal-dialogue p,.journal-reading .quote p{color:#36545c!important}
+.journal-reading .journal-table-wrap{overflow-x:auto;max-width:100%}
+.journal-reading .journal-table{width:100%;border-collapse:collapse!important;background:#fff!important;color:#273d49!important;font-size:.9rem!important}
+.journal-reading .journal-table th,.journal-reading .journal-table td{border:1px solid #dce5e7!important;padding:12px 14px!important;color:#273d49!important}
+.journal-reading .journal-table th{background:#eef4f4!important;font-weight:750}
+.journal-reading .journal-evidence{background:#fff!important;color:#263f4a!important;border:1px solid #e0e9eb!important;border-radius:16px!important;padding:clamp(18px,3vw,30px)!important;margin-bottom:28px!important}
+.journal-reading .journal-evidence *{max-width:100%}
+.journal-reading .article-footer{color:#5b6b75!important;border-color:#dbe5e6!important}
+.journal-reading .journal-nav{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important;margin:24px 0 0!important}
+.journal-reading .journal-nav a{display:flex!important;flex-direction:column!important;gap:8px!important;justify-content:center!important;background:#fff!important;border:1px solid #dfe7e9!important;border-radius:14px!important;padding:20px!important;min-height:96px!important;color:#20434f!important;text-align:left!important;text-decoration:none!important;transition:transform .2s,border-color .2s}
+.journal-reading .journal-nav a:hover{transform:translateY(-3px);border-color:#83b2ba!important}
+.journal-reading .journal-nav .ttl{font-size:.94rem!important;font-weight:750!important;line-height:1.5!important;color:#1c3947!important}
+.journal-reading .journal-nav .dir{font-size:.75rem!important;color:#56717b!important}
+.journal-reading .journal-body img{max-width:100%;height:auto;border-radius:12px}
+.journal-series-nav{grid-column:2!important;display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:0 0 22px;padding:0 0 18px;border-bottom:1px solid #dce4e8}
+.journal-series-nav span{font-size:.7rem;font-weight:800;letter-spacing:.12em;color:#7a8b92;margin-right:10px}
+.journal-series-nav a{font-size:.8rem;font-weight:700;color:#4c6973;text-decoration:none;border:1px solid #dce6e7;border-radius:999px;padding:7px 12px;background:#fff}
+.journal-series-nav a[aria-current=page]{background:#205d6b;color:#fff;border-color:#205d6b}
+.journal-series-nav a:hover{border-color:#438b98}
+.journal-reading .lang-panel:not(.active){display:none!important}
+@media(max-width:700px){.journal-reading.page-wrapper{display:block!important;width:calc(100% - 32px)!important;padding-top:104px!important;padding-bottom:60px!important}.journal-reading .article-card{padding:26px 20px!important;border-radius:14px!important}.journal-reading .journal-nav{grid-template-columns:1fr!important}.journal-reading .journal-evidence-grid{grid-template-columns:1fr!important}.journal-series-nav{gap:6px}.journal-series-nav span{flex-basis:100%;margin-bottom:4px}.journal-reading h1,.journal-reading .page-title{font-size:clamp(1.95rem,8vw,2.65rem)!important}.journal-reading .journal-body p{line-height:1.85!important}}
+@media(prefers-reduced-motion:reduce){.journal-reading *{animation:none!important;transition:none!important}}

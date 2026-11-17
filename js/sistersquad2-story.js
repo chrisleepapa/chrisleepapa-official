@@ -47,87 +47,80 @@
     }
   };
 
+
   const render=()=>{
     if(document.getElementById('ss2-story-expansion')) return;
-    const container=document.querySelector('.container');
     const family=document.querySelector('.character-grid');
-    if(!container || !family) return;
-
+    if(!family) return;
     const section=document.createElement('section');
     section.id='ss2-story-expansion';
+    section.className='ss2-editorial-journey';
     section.innerHTML=`
-      <style>
-        #ss2-story-expansion{margin:0 0 90px}
-        #ss2-story-expansion .ss2-story-box{border:1px solid rgba(201,168,76,.16);border-radius:24px;background:linear-gradient(145deg,rgba(20,24,35,.72),rgba(8,9,14,.82));padding:46px 34px;box-shadow:0 25px 60px rgba(0,0,0,.28)}
-        #ss2-story-expansion .ss2-kicker{text-align:center;color:#6fd7ff;font-family:Cinzel,serif;font-size:.7rem;letter-spacing:.28em;margin-bottom:10px}
-        #ss2-story-expansion h2{text-align:center;color:#e8d08a;font-family:Cinzel,serif;font-size:clamp(1.35rem,3vw,2rem);letter-spacing:.12em;margin:0 0 14px;word-break:keep-all;overflow-wrap:normal;text-wrap:balance}
-        #ss2-story-expansion .ss2-lead{text-align:center;max-width:820px;margin:0 auto 38px;color:#cdd6f4;font-size:.95rem;line-height:2;word-break:keep-all}
-        #ss2-story-expansion .ss2-journey{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:38px}
-        #ss2-story-expansion .ss2-stage{position:relative;padding:22px 20px;border:1px solid rgba(255,255,255,.08);border-radius:17px;background:rgba(255,255,255,.025);min-height:150px}
-        #ss2-story-expansion .ss2-stage-num{color:#6fd7ff;font-family:Cinzel,serif;font-size:.62rem;letter-spacing:.16em}
-        #ss2-story-expansion .ss2-stage h3{color:#fff;font-size:1rem;margin:10px 0 8px}
-        #ss2-story-expansion .ss2-stage p{color:#9fa4b4;font-size:.78rem;line-height:1.75;margin:0;word-break:keep-all}
-        #ss2-story-expansion .ss2-themes{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-        #ss2-story-expansion .ss2-theme{padding:22px 20px;border-radius:17px;background:rgba(201,168,76,.045);border:1px solid rgba(201,168,76,.12)}
-        #ss2-story-expansion .ss2-theme strong{display:block;color:#e8d08a;font-family:Cinzel,serif;font-size:.78rem;letter-spacing:.08em;margin-bottom:9px}
-        #ss2-story-expansion .ss2-theme span{display:block;color:#b7b7c4;font-size:.78rem;line-height:1.8;word-break:keep-all}
-        @media(max-width:760px){#ss2-story-expansion .ss2-story-box{padding:34px 18px}#ss2-story-expansion h2{font-size:clamp(1.12rem,5vw,1.3rem);letter-spacing:.02em;line-height:1.4;max-width:100%;margin-inline:auto}#ss2-story-expansion .ss2-journey,#ss2-story-expansion .ss2-themes{grid-template-columns:1fr}.ss2-stage{min-height:auto}}
-      </style>
-      <div class="ss2-story-box">
-        <div class="ss2-kicker" data-ss2-story="kicker"></div>
-        <h2 data-ss2-story="title"></h2>
-        <p class="ss2-lead" data-ss2-story="lead"></p>
-        <div class="ss2-journey" aria-label="SISTER SQUAD 2의 여정">
-          ${translations.ko.stages.map((_,i)=>`<article class="ss2-stage"><div class="ss2-stage-num" data-ss2-stage-number="${i}"></div><h3 data-ss2-stage-title="${i}"></h3><p data-ss2-stage-desc="${i}"></p></article>`).join('')}
-        </div>
-        <div class="ss2-themes">
-          ${translations.ko.themes.map((_,i)=>`<div class="ss2-theme"><strong data-ss2-theme-title="${i}"></strong><span data-ss2-theme-desc="${i}"></span></div>`).join('')}
-        </div>
-      </div>`;
+<style>
+#ss2-story-expansion{margin:clamp(45px,8vw,95px) auto 90px;max-width:1100px;scroll-margin-top:110px;color:#f4f0e9}
+#ss2-story-expansion *{box-sizing:border-box}
+#ss2-story-expansion .journey-shell{background:#202a37;border:1px solid #415063;border-radius:22px;overflow:hidden;box-shadow:none}
+#ss2-story-expansion .journey-intro{padding:clamp(27px,5vw,65px);background:linear-gradient(125deg,#24394a,#202a37);text-align:left}
+#ss2-story-expansion .journey-kicker{color:#9bd8e8;font-size:12px;letter-spacing:.13em;font-weight:750;margin:0 0 16px}
+#ss2-story-expansion h2{font-size:clamp(25px,3.5vw,42px);font-family:'Noto Serif KR',serif;line-height:1.4;color:#f7e9c7;letter-spacing:-.04em;margin:0 0 20px;word-break:keep-all;overflow-wrap:break-word;text-align:left}
+#ss2-story-expansion .journey-lead{color:#e2e8f0;max-width:800px;font-size:clamp(15px,1.7vw,18px);line-height:1.9;word-break:keep-all;overflow-wrap:break-word;margin:0}
+#ss2-story-expansion .journey-lead b{color:#e6c987!important;font-weight:700}
+#ss2-story-expansion .journey-summary{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid #506071}
+#ss2-story-expansion .journey-summary>div{padding:24px 28px;border-right:1px solid #506071}
+#ss2-story-expansion .journey-summary>div:last-child{border-right:0}
+#ss2-story-expansion .journey-summary span{display:block;font-size:11px;color:#9bd8e8;letter-spacing:.12em;margin-bottom:9px}
+#ss2-story-expansion .journey-summary strong{font-size:15px;color:#fff;line-height:1.6;word-break:keep-all}
+#ss2-story-expansion .journey-detail{padding:clamp(25px,5vw,60px);background:#f8f7f3;color:#202b37}
+#ss2-story-expansion .journey-detail-head{display:flex;align-items:baseline;justify-content:space-between;gap:18px;border-bottom:1px solid #d4d8d9;padding-bottom:18px;margin-bottom:12px}
+#ss2-story-expansion .journey-detail h3{font-size:clamp(21px,2.8vw,31px);font-family:'Noto Serif KR',serif;letter-spacing:-.05em;margin:0;color:#202b37;word-break:keep-all}
+#ss2-story-expansion .journey-detail-head p{font-size:12px;color:#66717d;margin:0}
+#ss2-story-expansion .journey-list{list-style:none;margin:0;padding:0}
+#ss2-story-expansion .journey-list li{border-bottom:1px solid #dce0e1}
+#ss2-story-expansion .journey-list button{display:grid;grid-template-columns:42px 1fr 22px;gap:12px;align-items:center;width:100%;padding:20px 0;background:none;border:0;color:#273341;text-align:left;cursor:pointer;font:inherit}
+#ss2-story-expansion .journey-list button span{font-size:12px;font-weight:750;color:#376d88}
+#ss2-story-expansion .journey-list button strong{font-size:17px;line-height:1.5;word-break:keep-all}
+#ss2-story-expansion .journey-list button i{font-size:20px;font-style:normal;transition:transform .2s}
+#ss2-story-expansion .journey-list button[aria-expanded="true"] i{transform:rotate(45deg)}
+#ss2-story-expansion .journey-list p{padding:0 30px 20px 54px;margin:0;color:#52606c;font-size:15px;line-height:1.9;word-break:keep-all;overflow-wrap:break-word}
+#ss2-story-expansion .journey-growth{padding:clamp(28px,5vw,60px);border-top:1px solid #dce0e1;background:#f1eee7;color:#202b37}
+#ss2-story-expansion .journey-growth h3{font-size:clamp(21px,2.8vw,30px);font-family:'Noto Serif KR',serif;margin:0 0 23px;letter-spacing:-.04em}
+#ss2-story-expansion .growth-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+#ss2-story-expansion .growth-grid article{border-top:2px solid #a77958;padding-top:17px}
+#ss2-story-expansion .growth-grid strong{font-size:17px;line-height:1.55;display:block;word-break:keep-all}
+#ss2-story-expansion .growth-grid p{font-size:14px;line-height:1.85;color:#52606c;word-break:keep-all;margin:12px 0 0}
+html[data-theme="light"] #ss2-story-expansion .journey-intro{background:linear-gradient(125deg,#24394a,#202a37)}
+@media(max-width:700px){#ss2-story-expansion{margin:40px 0 60px}#ss2-story-expansion .journey-shell{border-radius:15px}#ss2-story-expansion .journey-summary{grid-template-columns:1fr}#ss2-story-expansion .journey-summary>div{border-right:0;border-bottom:1px solid #506071;padding:15px 25px}#ss2-story-expansion .journey-detail-head{display:block}#ss2-story-expansion .journey-detail-head p{margin-top:8px}#ss2-story-expansion .growth-grid{grid-template-columns:1fr;gap:24px}#ss2-story-expansion .journey-list button{grid-template-columns:30px 1fr 20px;gap:9px}#ss2-story-expansion .journey-list button strong{font-size:15px}#ss2-story-expansion .journey-list p{padding:0 0 19px 39px;font-size:14px}}
+</style>
+<div class="journey-shell">
+<header class="journey-intro"><p class="journey-kicker" data-ss2-story="kicker"></p><h2 data-ss2-story="title"></h2><p class="journey-lead" data-ss2-story="lead"></p></header>
+<div class="journey-summary" aria-label="Story highlights"><div><span>01 · START</span><strong data-ss2-summary="0"></strong></div><div><span>02 · QUEST</span><strong data-ss2-summary="1"></strong></div><div><span>03 · HOPE</span><strong data-ss2-summary="2"></strong></div></div>
+<div class="journey-detail"><div class="journey-detail-head"><h3 data-ss2-heading="stages"></h3><p data-ss2-heading="hint"></p></div><ol class="journey-list">${translations.ko.stages.map((_,i)=>`<li><button type="button" aria-expanded="false" aria-controls="ss2-stage-panel-${i}"><span>${String(i+1).padStart(2,'0')}</span><strong data-ss2-stage-title="${i}"></strong><i aria-hidden="true">+</i></button><p id="ss2-stage-panel-${i}" data-ss2-stage-desc="${i}" hidden></p></li>`).join('')}</ol></div>
+<div class="journey-growth"><h3 data-ss2-heading="growth"></h3><div class="growth-grid">${translations.ko.themes.map((_,i)=>`<article><strong data-ss2-theme-title="${i}"></strong><p data-ss2-theme-desc="${i}"></p></article>`).join('')}</div></div>
+</div>`;
     family.insertAdjacentElement('afterend',section);
-
+    section.querySelectorAll('.journey-list button').forEach(button=>button.addEventListener('click',()=>{
+      const expanded=button.getAttribute('aria-expanded')==='true';
+      button.setAttribute('aria-expanded',String(!expanded));
+      document.getElementById(button.getAttribute('aria-controls')).hidden=expanded;
+    }));
     const applyLanguage=()=>{
-      const lang=document.documentElement.lang==='en'?'en':'ko';
+      const lang=document.documentElement.lang.toLowerCase().startsWith('en')?'en':'ko';
       const t=translations[lang];
-      const kicker=section.querySelector('[data-ss2-story="kicker"]');
-      const title=section.querySelector('[data-ss2-story="title"]');
-      const lead=section.querySelector('[data-ss2-story="lead"]');
-      if(kicker) kicker.textContent=t.kicker;
-      if(title) title.textContent=t.title;
-      if(lead) lead.innerHTML=t.lead;
-      section.querySelector('.ss2-journey').setAttribute('aria-label',t.journey);
-      section.querySelectorAll('[data-ss2-stage-number]').forEach(el=>{
-        const i=Number(el.dataset.ss2StageNumber);
-        el.textContent=`0${i+1} · ${t.stops[i]}`;
-      });
-      section.querySelectorAll('[data-ss2-stage-title]').forEach(el=>{
-        const i=Number(el.dataset.ss2StageTitle);
-        el.textContent=t.stages[i][0];
-      });
-      section.querySelectorAll('[data-ss2-stage-desc]').forEach(el=>{
-        const i=Number(el.dataset.ss2StageDesc);
-        el.textContent=t.stages[i][1];
-      });
-      section.querySelectorAll('[data-ss2-theme-title]').forEach(el=>{
-        const i=Number(el.dataset.ss2ThemeTitle);
-        el.textContent=t.themes[i][0];
-      });
-      section.querySelectorAll('[data-ss2-theme-desc]').forEach(el=>{
-        const i=Number(el.dataset.ss2ThemeDesc);
-        el.textContent=t.themes[i][1];
-      });
+      const labels=lang==='ko'?{stages:'여정의 여섯 장면',hint:'궁금한 장면을 펼쳐 보세요',growth:'이 모험이 남긴 변화',summary:['저주받은 루미나','월광초를 찾아 떠나는 길','서로를 믿는 가족']}:{stages:'Six moments of the journey',hint:'Open a chapter to read more',growth:'How the journey changes them',summary:['A cursed Lumina','The search for Moonlight Herb','A family learning to trust']};
+      section.querySelector('[data-ss2-story="kicker"]').textContent=t.kicker;
+      section.querySelector('[data-ss2-story="title"]').textContent=t.title;
+      section.querySelector('[data-ss2-story="lead"]').innerHTML=t.lead;
+      section.querySelector('[data-ss2-heading="stages"]').textContent=labels.stages;
+      section.querySelector('[data-ss2-heading="hint"]').textContent=labels.hint;
+      section.querySelector('[data-ss2-heading="growth"]').textContent=labels.growth;
+      section.querySelectorAll('[data-ss2-summary]').forEach(el=>el.textContent=labels.summary[Number(el.dataset.ss2Summary)]);
+      section.querySelectorAll('[data-ss2-stage-title]').forEach(el=>el.textContent=t.stages[Number(el.dataset.ss2StageTitle)][0]);
+      section.querySelectorAll('[data-ss2-stage-desc]').forEach(el=>el.textContent=t.stages[Number(el.dataset.ss2StageDesc)][1]);
+      section.querySelectorAll('[data-ss2-theme-title]').forEach(el=>el.textContent=t.themes[Number(el.dataset.ss2ThemeTitle)][0]);
+      section.querySelectorAll('[data-ss2-theme-desc]').forEach(el=>el.textContent=t.themes[Number(el.dataset.ss2ThemeDesc)][1]);
     };
-
-    window.applySS2StoryLanguage=applyLanguage;
-    applyLanguage();
-
-    const observer=new MutationObserver(mutations=>{
-      if(mutations.some(m=>m.type==='attributes' && m.attributeName==='lang')) applyLanguage();
-    });
-    observer.observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
-
+    window.applySS2StoryLanguage=applyLanguage;applyLanguage();
+    new MutationObserver(m=>{if(m.some(x=>x.attributeName==='lang'))applyLanguage()}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
   };
-
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',render,{once:true});
-  else render();
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',render,{once:true});else render();
 })();

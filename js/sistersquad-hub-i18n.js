@@ -17,7 +17,7 @@
     yul:'실제 아이의 성격과 모습을 바탕으로 이야기를 이끌어가는 언니 캐릭터입니다.',jung:'실제 아이의 성격과 모습을 바탕으로 언니와 함께 모험을 만들어가는 동생 캐릭터입니다.',
     realTitle:'놀라운 모험의 이야기를 시리즈로 담다',realCards:['가족의 사랑','두 자매의 모험','함께 극복하기'],realText:['실제 경험에서 느낀 가족의 사랑과 두 자매의 존재가 출발점이 되었습니다.','현실의 마음을 판타지 세계와 모험 속에 녹여냈습니다.','서로 의지하며 시련을 극복하고 한 걸음씩 나아가는 이야기를 담았습니다.'],
     artTitle:'이야기를 그림으로 이어가다',art:['SISTER SQUAD의 그림은 이야기 속 캐릭터와 세계, 그리고 모험의 순간을 시각적으로 담아냅니다.','책에서 상상했던 장면과 감정을 그림으로 다시 표현하고, 이야기가 펼쳐지는 세계를 한눈에 느낄 수 있도록 확장했습니다.'],
-    exploreTitle:'작품과 세계, 게임 만나보기',cards:['첫 번째 이야기 · 줄거리 · 캐릭터 · OST →','두 번째 이야기 · 줄거리 · 캐릭터 · OST →','두 권을 연결하는 공식 세계관 →','SISTER SQUAD 게임과 PLAY 콘텐츠 →'],note:'“가족이 서로에게 가장 든든한 편이 되어주기를.”',cite:'CREATOR’S NOTE · CHRIS LEE.PAPA',meta:'SISTER SQUAD의 탄생 배경과 창작 철학, 두 자매의 이야기, 작품과 OST, 게임으로 이어지는 오리지널 IP를 소개합니다.'
+    exploreTitle:'작품과 세계 만나보기',cards:['첫 번째 이야기 · 줄거리 · 캐릭터 · OST →','두 번째 이야기 · 줄거리 · 캐릭터 · OST →','두 권을 연결하는 공식 세계관 →','SISTER SQUAD 캐릭터와 갤러리 →'],note:'“가족이 서로에게 가장 든든한 편이 되어주기를.”',cite:'CREATOR’S NOTE · CHRIS LEE.PAPA',meta:'SISTER SQUAD 공식 세계관 아카이브. 율이와 정이, 루미나와 아르카디아의 이야기, 1·2권 작품 안내와 캐릭터 갤러리를 만나보세요.'
   };
 
   const EN = {
@@ -29,7 +29,7 @@
     yul:'The older sister character, inspired by a real child’s personality and the way she sees the world.',jung:'The younger sister character, inspired by a real child’s personality and the way she creates adventures with her sister.',
     realTitle:'Amazing Adventures Told as a Series',realCards:['Family Love','Two Sisters’ Adventure','Overcoming Together'],realText:['The love of family and the presence of two sisters, experienced in real life, became the starting point.','Those real feelings were woven into a fantasy world and an adventure.','The story is about relying on one another, overcoming trials, and moving forward one step at a time.'],
     artTitle:'The Story Continues Through Art',art:['SISTER SQUAD’s artwork brings its characters, world, and moments of adventure to life visually.','Scenes and emotions imagined in the books are reinterpreted through art, expanding the world of the story so it can be experienced at a glance.'],
-    exploreTitle:'Explore the World of SISTER SQUAD',cards:['The first story · Story · Characters · OST →','The second story · Story · Characters · OST →','The official world lore connecting both books →','SISTER SQUAD games and PLAY content →'],note:'“May family always be each other’s strongest ally.”',cite:'CREATOR’S NOTE · CHRIS LEE.PAPA',meta:'Discover the origins and creative philosophy of SISTER SQUAD, the sisters’ story, and the original IP expanding through books, music, and games.'
+    exploreTitle:'Explore the World of SISTER SQUAD',cards:['The first story · Story · Characters · OST →','The second story · Story · Characters · OST →','The official world lore connecting both books →','SISTER SQUAD characters and gallery →'],note:'“May family always be each other’s strongest ally.”',cite:'CREATOR’S NOTE · CHRIS LEE.PAPA',meta:'Explore the official SISTER SQUAD world: Yul and Jung, Lumina and Arcadia, Books 1 and 2, and the character gallery.'
   };
 
   function setText(el,text){if(el)el.textContent=text;}
@@ -45,7 +45,7 @@
       setText(note.querySelector('blockquote'),d.note);
       setText(note.querySelector('cite'),d.cite);
     }
-    document.title='SISTER SQUAD | Chris LEE.PAPA';
+    document.title=lang==='en'?'SISTER SQUAD — Amazing Sisters | Chris LEE.PAPA':'SISTER SQUAD — 놀라운 자매들 | Chris LEE.PAPA';
     const meta=document.querySelector('meta[name="description"]');
     if(meta)meta.setAttribute('content',d.meta);
   }

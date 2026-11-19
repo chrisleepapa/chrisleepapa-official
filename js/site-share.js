@@ -17,7 +17,7 @@
   var previewLink=document.getElementById('sharePreviewLink');
   var lastFocus, shareInfo, open=false;
   function meta(selector){return document.querySelector(selector)?.getAttribute('content')?.trim()||'';}
-  function fullUrl(path){try{return new URL(path,location.origin).href}catch(_){return location.origin+'/images/og_share.png';}}
+  function fullUrl(path){try{var u=new URL(path,location.origin);if(u.hostname==='chrisleepapa.com'&&location.hostname!=='chrisleepapa.com')return new URL(u.pathname+u.search,location.origin).href;return u.href}catch(_){return location.origin+'/images/og_share.png';}}
   function pageInfo(href, label){
     var url=new URL(href||location.href,location.origin);
     if(url.origin!==location.origin)return null;

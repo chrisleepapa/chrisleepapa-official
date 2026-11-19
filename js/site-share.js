@@ -34,7 +34,10 @@
       title='Chris LEE.PAPA | 책, 영상, 음악 그리고 제작기';
       desc='Chris LEE.PAPA의 창작 세계 — SISTER SQUAD 3, 도서와 음악, 영상, 제작기';
       img='/images/ss3_front.jpg';
-      if(url.hash!=='#sistersquad3-premiere')url.hash='';
+      if(url.hash==='#sistersquad3-premiere'){
+        title='SISTER SQUAD 3 | 2050 로봇 전쟁';
+        desc='마법을 넘어 2050년 로봇의 도시로. 율이와 정이의 새로운 모험, SISTER SQUAD 3.';
+      }else url.hash='';
     }
     if(!title)title=label||'Chris LEE.PAPA';
     if(!desc)desc='Chris LEE.PAPA — Books, music, films and creative stories.';

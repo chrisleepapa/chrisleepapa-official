@@ -9,11 +9,6 @@
 #shareOverlay .site-share-buttons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:13px}
 #shareOverlay .site-share-buttons button{padding:11px 7px;font-size:12px;min-height:44px;border:1px solid rgba(125,135,158,.35);border-radius:10px;cursor:pointer}
 #shareOverlay #shareCloseBtn{margin-top:10px;min-height:42px}
-.site-share-linkrow{display:flex;align-items:stretch;min-width:0;gap:3px;width:100%}
-.site-share-linkrow>a{flex:1;min-width:0}
-.site-share-linkbtn{display:inline-grid;place-items:center;align-self:center;flex:none;width:34px;height:34px;border:1px solid transparent;border-radius:8px;cursor:pointer;background:transparent;color:inherit;opacity:.65}
-.site-share-linkbtn:hover,.site-share-linkbtn:focus-visible{border-color:currentColor;opacity:1}
-.site-share-linkbtn svg{width:15px;height:15px}
 .site-share-page-action{display:flex;align-items:center;gap:7px;justify-content:center;min-height:42px;margin:24px auto 16px;padding:8px 16px;border:1px solid var(--rule,var(--border,#6b7280));border-radius:24px;background:transparent;color:inherit;cursor:pointer;font-family:inherit;font-size:13px;font-weight:650}
 .site-share-page-action svg{width:17px;height:17px}
 .site-share-page-action:hover{background:rgba(130,140,160,.11)}
@@ -23,14 +18,3 @@ html[data-theme="dark"] #shareOverlay .share-modal{background:#202638;color:#f4f
 html[data-theme="dark"] #shareOverlay .site-share-buttons button{background:#2e3650;color:#fff}
 @media(max-width:760px){#shareOverlay .share-modal{padding:16px}.site-share-page-action{margin-bottom:80px}}
 @media(prefers-reduced-motion:reduce){#shareOverlay *{scroll-behavior:auto!important}}
-
-/* Individual primary-navigation sharing without replacing the navigation destinations */
-#desktopNav .site-share-navrow{display:inline-flex;align-items:center;min-width:0;gap:1px}
-#desktopNav .site-share-navrow>.desktop-nav-link{flex:none}
-.site-share-navbtn{display:inline-grid;place-items:center;flex:none;border:0;border-radius:6px;background:transparent;color:inherit;opacity:.65;cursor:pointer;width:24px;height:34px}
-.site-share-navbtn:hover,.site-share-navbtn:focus-visible{opacity:1;background:rgba(140,150,170,.18)}
-.site-share-navbtn svg{width:14px;height:14px}
-#mobileBottomNav .site-share-navrow--mobile{position:relative;display:flex;flex:1;min-width:0;height:100%}
-#mobileBottomNav .site-share-navrow--mobile>.mobile-nav-item{display:flex;flex:1;min-width:0}
-#mobileBottomNav .site-share-navrow--mobile>.site-share-navbtn{position:absolute;right:0;top:0;width:24px;height:27px;z-index:1;opacity:.8}
-#mobileBottomNav .site-share-navrow--mobile>.site-share-navbtn svg{width:13px;height:13px}

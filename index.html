@@ -43,11 +43,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="og:url" content="https://chrisleepapa.com/">
 <meta property="og:title" content="Chris LEE.PAPA | 책, 영상, 음악 그리고 제작기">
 <meta property="og:description" content="두 딸과 시작한 판타지 SISTER SQUAD부터 독립출판, 영상, 음악까지. Chris LEE.PAPA의 작품과 직접 만든 과정을 만나보세요.">
-<meta property="og:image" content="https://chrisleepapa.com/images/sistersquad2_poster.jpg">
+<meta property="og:image" content="https://chrisleepapa.com/images/ss3_front.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Chris LEE.PAPA | 책, 영상, 음악 그리고 제작기">
 <meta name="twitter:description" content="두 딸과 시작한 판타지 SISTER SQUAD부터 독립출판, 영상, 음악까지. Chris LEE.PAPA의 작품과 직접 만든 과정을 만나보세요.">
-<meta name="twitter:image" content="https://chrisleepapa.com/images/sistersquad2_poster.jpg">
+<meta name="twitter:image" content="https://chrisleepapa.com/images/ss3_front.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap">
@@ -238,6 +238,21 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .home-kdp { grid-template-columns: minmax(0, 1fr); border-radius: 14px; }
 }
 </style>
+<!-- SISTER SQUAD promo dialog styles: homepage only -->
+<style id="ss-promo-styles">
+  .ss-promo[hidden]{display:none!important}
+  .ss-promo{position:fixed;inset:0;z-index:2147483000;display:grid;place-items:center;padding:12px;background:rgba(10,15,25,.58);overflow-y:auto;overscroll-behavior:contain}
+  .ss-promo__dialog{position:relative;display:flex;flex-direction:column;width:max-content;max-width:min(94vw,760px);max-height:calc(100dvh - 24px);overflow:hidden;background:#111b2d;color:#fff;border-radius:16px;box-shadow:0 20px 65px rgba(0,0,0,.38);outline:none}
+  .ss-promo__close{position:absolute;right:10px;top:10px;z-index:2;display:grid;place-items:center;width:44px;height:44px;border:1px solid rgba(255,255,255,.5);border-radius:50%;background:rgba(13,24,42,.88);color:white;cursor:pointer;font-size:27px;line-height:1}
+  .ss-promo__art{display:block;min-height:0;line-height:0;text-align:center;background:#111b2d}
+  .ss-promo__art img{display:block;width:auto;height:auto;max-width:100%;max-height:calc(100dvh - 104px);object-fit:contain}
+  .ss-promo__copy{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;min-height:66px;padding:10px 15px;text-align:center}
+  .ss-promo__go{display:inline-flex;justify-content:center;align-items:center;min-height:42px;padding:10px 20px;border-radius:9px;background:#f0cb86;color:#192740;text-decoration:none;font-size:14px;font-weight:800}
+  .ss-promo__go:hover{background:#ffe0a5}
+  .ss-promo__never{padding:9px 6px;border:0;background:transparent;color:#d3dbe9;text-decoration:underline;text-underline-offset:3px;cursor:pointer;font-size:12px}
+  .ss-promo__go:focus-visible,.ss-promo__close:focus-visible,.ss-promo__never:focus-visible,.ss-promo__art:focus-visible{outline:3px solid #f6c46b;outline-offset:-3px}
+  @media(max-width:600px){.ss-promo{padding:8px}.ss-promo__dialog{max-width:calc(100vw - 16px);max-height:calc(100dvh - 16px);border-radius:12px}.ss-promo__art img{max-height:calc(100dvh - 102px)}.ss-promo__copy{min-height:62px;gap:8px;padding:8px}.ss-promo__go{font-size:13px;padding:9px 12px}.ss-promo__never{font-size:11px}}
+</style>
 </head>
 <body class="creator-page creator-home">
 <!-- Google Tag Manager (noscript) -->
@@ -392,5 +407,85 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div id="site-footer"></div>
 <script src="/js/main.js" defer></script>
 <script src="/js/creative-motion.js" defer></script>
+<!-- SISTER SQUAD promo: homepage only; the share page is a separate destination -->
+<div class="ss-promo" id="ss-promo" hidden>
+  <div class="ss-promo__dialog" role="dialog" aria-modal="true" aria-labelledby="ss-promo-title" aria-describedby="ss-promo-description" tabindex="-1">
+    <button class="ss-promo__close" type="button" id="ss-promo-close" aria-label="홍보 팝업 닫기">×</button>
+    <a class="ss-promo__art" href="/sistersquad-share" aria-label="SISTER SQUAD 영문판 소개 페이지로 이동">
+      <img src="/images/sistersquad_amazon.png" alt="SISTER SQUAD 영문판 시리즈 홍보 이미지" decoding="async">
+    </a>
+    <div class="ss-promo__copy">
+      <a class="ss-promo__go" href="/sistersquad-share" id="ss-promo-title" aria-label="SISTER SQUAD English edition details">Detail ↗</a>
+      <button class="ss-promo__never" type="button" id="ss-promo-never">다시 보지 않기</button>
+      <span id="ss-promo-description" class="ss-promo__sr" hidden>SISTER SQUAD 영문판 도서와 OST 홍보</span>
+    </div>
+  </div>
+</div>
+<script id="ss-promo-script">
+(function () {
+  'use strict';
+  // Avoid interfering with the author's reading experience after the first visit.
+  // The promo is scoped to the homepage even if this script is reused elsewhere.
+  if (location.pathname !== '/' && location.pathname !== '/index.html') return;
+  var layer = document.getElementById('ss-promo');
+  if (!layer) return;
+  var dialog = layer.querySelector('[role="dialog"]');
+  var closeButton = document.getElementById('ss-promo-close');
+  var neverButton = document.getElementById('ss-promo-never');
+  var key = 'chrisleepapa:ss-amazon-promo:v1';
+  // Explicit preview on the develop host for testing mobile browsers after dismissal.
+  // Never bypass suppression on the production host.
+  var preview = location.hostname === 'develop.chrisleepapa.com' &&
+    new URLSearchParams(location.search).get('promo') === 'preview';
+  var weekMs = 7 * 24 * 60 * 60 * 1000;
+  var previousFocus = null;
+  var oldOverflow = '';
+  var open = false;
+  function status() {
+    try {
+      var v = JSON.parse(localStorage.getItem(key) || 'null');
+      if (v && (v.never === true || (typeof v.until === 'number' && v.until > Date.now()))) return 'hidden';
+    } catch (err) { /* Storage blocked: show only once during this page load. */ }
+    return 'show';
+  }
+  function remember(never) {
+    if (preview) return;
+    try { localStorage.setItem(key, JSON.stringify(never ? {never:true} : {until:Date.now()+weekMs})); } catch (err) {}
+  }
+  function focusable() {
+    return Array.prototype.filter.call(dialog.querySelectorAll('a[href],button:not([disabled])'), function(el){ return el.getClientRects().length > 0; });
+  }
+  function keydown(e) {
+    if (!open) return;
+    if (e.key === 'Escape') { e.preventDefault(); dismiss(false); return; }
+    if (e.key !== 'Tab') return;
+    var els = focusable(); if (!els.length) {e.preventDefault();dialog.focus();return;}
+    var first = els[0], last = els[els.length-1];
+    if (e.shiftKey && (document.activeElement === first || document.activeElement === dialog)) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
+  function dismiss(never) {
+    if (!open) return;
+    remember(never);
+    open = false;
+    layer.hidden = true;
+    document.documentElement.style.overflow = oldOverflow;
+    document.removeEventListener('keydown', keydown);
+    if (previousFocus && previousFocus.isConnected) previousFocus.focus({preventScroll:true});
+  }
+  closeButton.addEventListener('click',function(){ dismiss(false); });
+  neverButton.addEventListener('click',function(){ dismiss(true); });
+  layer.addEventListener('click',function(e){ if(e.target === layer) dismiss(false); });
+  // Show right away after the DOM is parsed: no auto playing media or page redirect.
+  if (!preview && status() === 'hidden') return;
+  previousFocus = document.activeElement;
+  oldOverflow = document.documentElement.style.overflow;
+  layer.hidden = false;
+  open = true;
+  document.documentElement.style.overflow = 'hidden';
+  document.addEventListener('keydown',keydown);
+  closeButton.focus({preventScroll:true});
+})();
+</script>
 </body>
 </html>

@@ -18,3 +18,13 @@ html[data-theme="dark"] #shareOverlay .share-modal{background:#202638;color:#f4f
 html[data-theme="dark"] #shareOverlay .site-share-buttons button{background:#2e3650;color:#fff}
 @media(max-width:760px){#shareOverlay .share-modal{padding:16px}.site-share-page-action{margin-bottom:80px}}
 @media(prefers-reduced-motion:reduce){#shareOverlay *{scroll-behavior:auto!important}}
+
+/* Inline sharing placement: visible at the start of each page rather than after long content. */
+.site-share-content-tools{display:flex;align-items:center;justify-content:flex-end;width:100%;max-width:1360px;margin:0 auto;padding:12px clamp(12px,2.5vw,24px);box-sizing:border-box;grid-column:1/-1;flex:none;position:relative;z-index:2;clear:both}
+.site-share-content-tools .site-share-page-action{display:inline-flex;align-items:center;gap:8px;width:auto;min-height:42px;margin:0;padding:9px 15px;border:1px solid #8b97ad;border-radius:22px;background:rgba(115,130,155,.12);color:inherit;font-weight:750;font-size:13px;line-height:1.3;cursor:pointer;white-space:nowrap}
+.site-share-content-tools .site-share-page-action:hover,.site-share-content-tools .site-share-page-action:focus-visible{background:rgba(115,130,155,.25);outline-offset:3px}
+.site-share-content-tools .site-share-page-action svg{width:16px;height:16px;flex:none}
+.site-share-content-tools--ss3{justify-content:flex-start;padding:12px 0 0;margin:12px 0 0}
+.ss3-home .site-share-content-tools--ss3 .site-share-page-action{background:rgba(215,235,255,.14);border-color:rgba(202,224,255,.7);color:#f7fbff}
+html[data-theme="light"] .ss3-home .site-share-content-tools--ss3 .site-share-page-action{color:#fff}
+@media(max-width:760px){.site-share-content-tools{padding:12px 14px}.site-share-content-tools--ss3{padding:12px 0 0}.site-share-content-tools .site-share-page-action{margin:0;min-height:44px}}

@@ -34,7 +34,7 @@
       title='Chris LEE.PAPA | 책, 영상, 음악 그리고 제작기';
       desc='Chris LEE.PAPA의 창작 세계 — SISTER SQUAD 3, 도서와 음악, 영상, 제작기';
       img='/images/ss3_front.jpg';
-      url.hash='';
+      if(url.hash!=='#sistersquad3-premiere')url.hash='';
     }
     if(!title)title=label||'Chris LEE.PAPA';
     if(!desc)desc='Chris LEE.PAPA — Books, music, films and creative stories.';
@@ -131,14 +131,25 @@
   });
   /* Page sharing belongs to the content, never individual navigation links. */
   var glyph='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="m8.5 10.8 7-4.2m-7 6.6 7 4.2"/></svg>';
-  /* Current-page share affordance on each content page, without adding another top navigation item. */
+  /* Each page declares its visible share action in its actual content markup. */
+  document.querySelectorAll('[data-site-share-action]').forEach(function(button){
+    button.addEventListener('click',function(){
+      var target=button.getAttribute('data-site-share-url');
+      var label=button.getAttribute('data-site-share-title')||'';
+      show(target||location.href,label);
+    });
+  });
+  /* Fallback for a page that has not been explicitly upgraded yet. */
   var main=document.querySelector('main');
-  if(main && !document.querySelector('.site-share-page-action')){
-    var action=document.createElement('button');action.type='button';action.className='site-share-page-action';
+  if(main&&!main.querySelector('[data-site-share-action]')){
+    var tools=document.createElement('div');
+    tools.className='site-share-content-tools';
+    var action=document.createElement('button');
+    action.type='button';action.className='site-share-page-action';
     action.setAttribute('aria-label','현재 페이지 공유 / Share this page');
-    action.title='Share this page';
     action.innerHTML=glyph+'<span class="nav-label-ko" lang="ko">이 페이지 공유</span><span class="nav-label-en" lang="en">Share page</span>';
-    main.appendChild(action);
+    tools.appendChild(action);
+    main.insertBefore(tools,main.firstChild);
     action.addEventListener('click',function(){show()});
   }
 })();

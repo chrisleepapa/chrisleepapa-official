@@ -350,3 +350,23 @@ html body.book-work .ss-book-banner .ss-book-banner-links a {
   .ss-book-banner-actions { margin-top: 14px; }
   html body.book-work .ss-book-banner .ss-book-banner-buy { justify-self: stretch; }
 }
+
+
+/* MIRACLE SHOT hero contrast: the global light-theme heading rule must not
+   paint a dark heading onto this permanently dark, illustrated banner. */
+html[data-theme="light"] body.book-work--miracle-shot .book-work-hero h1,
+html[data-theme="dark"] body.book-work--miracle-shot .book-work-hero h1 {
+  color: #fff !important;
+  text-shadow: 0 3px 18px rgba(2, 8, 26, .5) !important;
+}
+html[data-theme="light"] body.book-work--miracle-shot .book-work-hero p,
+html[data-theme="dark"] body.book-work--miracle-shot .book-work-hero p {
+  color: #e8f1ff !important;
+}
+html[data-theme="light"] body.book-work--miracle-shot .book-work-hero .book-work-actions a:not(.book-work-buy) {
+  color: #fff !important;
+  border-color: rgba(207, 224, 255, .65);
+}
+html[data-theme="light"] body.book-work--miracle-shot .book-work-hero .book-work-actions .book-work-buy {
+  color: #171f47 !important;
+}

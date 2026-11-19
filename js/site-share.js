@@ -19,18 +19,27 @@
   function meta(selector){return document.querySelector(selector)?.getAttribute('content')?.trim()||'';}
   function fullUrl(path){try{var u=new URL(path,location.origin);if(u.hostname==='chrisleepapa.com'&&location.hostname!=='chrisleepapa.com')return new URL(u.pathname+u.search,location.origin).href;return u.href}catch(_){return location.origin+'/images/og_share.png';}}
   function pageInfo(href, label){
+    /* Always share public URLs, even when testing on the develop subdomain. */
     var url=new URL(href||location.href,location.origin);
-    if(url.origin!==location.origin)return null;
+    if(url.origin!==location.origin&&url.origin!=='https://chrisleepapa.com')return null;
     url.searchParams.delete('promo');
-    var current=url.pathname===location.pathname;
+    url.protocol='https:';
+    url.host='chrisleepapa.com';
+    var path=url.pathname.replace(/\/$/,'')||'/';
+    var current=path===(location.pathname.replace(/\/$/,'')||'/');
     var title=current?(meta('meta[property="og:title"]')||document.title):'';
     var desc=current?(meta('meta[property="og:description"]')||meta('meta[name="description"]')):'';
     var img=current?meta('meta[property="og:image"]'):'';
-    if(!title)title=label||document.title||'Chris LEE.PAPA';
+    if(path==='/'){
+      title='Chris LEE.PAPA | 책, 영상, 음악 그리고 제작기';
+      desc='Chris LEE.PAPA의 창작 세계 — SISTER SQUAD 3, 도서와 음악, 영상, 제작기';
+      img='/images/ss3_front.jpg';
+      url.hash='';
+    }
+    if(!title)title=label||'Chris LEE.PAPA';
     if(!desc)desc='Chris LEE.PAPA — Books, music, films and creative stories.';
     if(!img) {
-      var path=url.pathname.replace(/\/$/,'');
-      var imgMap={'/':'/images/sistersquad2_poster.jpg','/sistersquad':'/images/sistersquad1.png','/sistersquad2':'/images/sistersquad2_poster.jpg','/sistersquad-hub':'/images/sistersquad1.png','/sistersquad-share':'/images/sistersquad_amazon.png','/shop':'/assets/shop/sister-squad-2.webp','/miracleshot':'/assets/shop/miracle-shot.webp','/wallpaper':'/images/wallpaper01.png','/yul':'/images/yul01.png','/jung':'/images/jung01.png'};
+      var imgMap={'/sistersquad':'/images/sistersquad1.png','/sistersquad2':'/images/sistersquad2_poster.jpg','/sistersquad-hub':'/images/sistersquad_amazon.png','/sistersquad-share':'/images/sistersquad_amazon.png','/shop':'/images/sistersquad2_poster.jpg','/miracleshot':'/images/miracleshot1.png','/music':'/images/music.jpg','/movie':'/images/movie.png','/wallpaper':'/images/wallpaper01.png','/yul':'/images/yul01.png','/jung':'/images/jung01.png'};
       img=imgMap[path]||'/images/og_share.png';
     }
     return {title:title,description:desc,url:url.href,image:fullUrl(img)};
@@ -76,8 +85,8 @@
     var ok=false;try{ok=document.execCommand('copy')}catch(_){}
     node.remove();return ok;
   }
-  openBtn?.addEventListener('click',function(){show()});
-  mobileBtn?.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();show()});
+  openBtn?.addEventListener('click',function(){show('/')});
+  mobileBtn?.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();show('/')});
   closeBtn?.addEventListener('click',close);
   overlay.addEventListener('click',function(e){if(e.target===overlay)close()});
   overlay.addEventListener('keydown',function(e){
@@ -120,40 +129,8 @@
       feedback('이미지를 저장했습니다. 링크는 별도 복사해 주세요.','Image downloaded. Copy the link separately.');
     }catch(err){if(err.name!=='AbortError')feedback('이미지 공유를 지원하지 않는 브라우저입니다. 링크 공유를 이용해 주세요.','Image sharing is not supported here. Please share the link.')}
   });
-  /* Share glyphs next to each actual menu destination (desktop and mobile Works submenus). */
+  /* Page sharing belongs to the content, never individual navigation links. */
   var glyph='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="m8.5 10.8 7-4.2m-7 6.6 7 4.2"/></svg>';
-  document.querySelectorAll('#worksSubmenu a[href],#mobileWorksMenu a[href]').forEach(function(link){
-    if(link.closest('.site-share-linkrow'))return;
-    var target=link.getAttribute('href');if(!target||target.charAt(0)!=='/')return;
-    var wrap=document.createElement('span');wrap.className='site-share-linkrow';
-    link.parentNode.insertBefore(wrap,link);wrap.appendChild(link);
-    var b=document.createElement('button');b.type='button';b.className='site-share-linkbtn';
-    b.setAttribute('aria-label',(selectedLang()==='en'?'Share ':'공유: ')+escapeText(link.textContent));
-    b.title=selectedLang()==='en'?'Share this menu page':'이 메뉴의 URL 공유';
-    b.innerHTML=glyph;
-    wrap.appendChild(b);
-    b.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();show(target,escapeText(link.textContent))});
-  });
-  /* Primary desktop and mobile bottom-navigation page URLs also get their own share icon. */
-  document.querySelectorAll('#desktopNav > a[href],#mobileBottomNav > a[href]').forEach(function(link){
-    var target=link.getAttribute('href');
-    if(!target || target.charAt(0)!=='/' || link.parentNode.classList.contains('site-share-navrow'))return;
-    var row=document.createElement('span');
-    row.className='site-share-navrow'+(link.classList.contains('mobile-nav-item')?' site-share-navrow--mobile':'');
-    link.parentNode.insertBefore(row,link);
-    row.appendChild(link);
-    var button=document.createElement('button');
-    button.type='button';
-    button.className='site-share-navbtn';
-    button.setAttribute('aria-label',(selectedLang()==='en'?'Share ':'공유: ')+escapeText(link.textContent));
-    button.title='Share '+escapeText(link.textContent);
-    button.innerHTML=glyph;
-    row.appendChild(button);
-    button.addEventListener('click',function(event){
-      event.preventDefault();event.stopPropagation();
-      show(target,escapeText(link.textContent));
-    });
-  });
   /* Current-page share affordance on each content page, without adding another top navigation item. */
   var main=document.querySelector('main');
   if(main && !document.querySelector('.site-share-page-action')){

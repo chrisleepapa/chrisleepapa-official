@@ -76,6 +76,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <div class="shop-story-links">
         <a href="/sistersquad" data-i18n="shop_story_link">작품 소개 보기 ↗</a>
       </div>
+      <div class="shop-story-links" aria-label="SISTER SQUAD 1 구매 안내">
+        <p class="nav-label-ko" lang="ko">처음 만나신다면 1권부터 · 전자책 5,000원 · 구매 후 바로 읽기</p>
+        <p class="nav-label-en" lang="en">Start with Book 1 · Korean PDF eBook ₩5,000 · Instant download</p>
+        <a class="shop-button" data-book-outbound="ss1_ebook_yes24" href="https://m.yes24.com/goods/detail/154234770" target="_blank" rel="noopener noreferrer"><span class="nav-label-ko" lang="ko">1권 전자책 구매 · YES24 ↗</span><span class="nav-label-en" lang="en">Buy Book 1 eBook · YES24 ↗</span></a>
+        <a class="shop-button shop-button--outline" data-book-outbound="ss1_print_yes24" href="https://m.yes24.com/goods/detail/155292789" target="_blank" rel="noopener noreferrer"><span class="nav-label-ko" lang="ko">종이책 구매 · YES24 ↗</span><span class="nav-label-en" lang="en">Buy paperback · YES24 ↗</span></a>
+      </div>
       <ul class="shop-editions">
         <li class="shop-edition">
           <div class="shop-edition-copy"><h3 data-i18n="print_label">종이책</h3><p data-i18n="ss1_print_desc">놀라운 자매들의 첫 번째 모험을 종이책으로 만나보세요.</p></div>
@@ -186,6 +192,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <p class="shop-endnote" data-i18n="shop_note">각 구매 버튼은 해당 공식 서점 또는 플랫폼의 상품 페이지로 연결됩니다.</p>
   </div>
 </main>
+<script>
+document.addEventListener('click', function (event) {
+  var link = event.target.closest('[data-book-outbound]');
+  if (!link) return;
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event: 'book_store_click',
+    book_id: 'sister_squad_1',
+    book_destination: link.getAttribute('data-book-outbound'),
+    outbound_url: link.href,
+    source_page: '/shop'
+  });
+});
+</script>
 <div id="site-footer"></div>
 <script>
 window.PAGE_I18N={

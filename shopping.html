@@ -25,17 +25,38 @@ article:target{outline:2px solid var(--cta);outline-offset:3px}
 .links a{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:.55rem .95rem;border-radius:.6rem;background:var(--cta);color:var(--button-text);text-decoration:none;font-weight:700;flex:1 1 auto}
 a:focus-visible{outline:2px solid currentColor;outline-offset:3px}
 footer{padding:1em 0 2.5rem}
+
+:root{--bg:#f5f1e9;--paper:#fffdf8;--ink:#24211d;--muted:#635b50;--line:#ded3c0;--cta:#332b22;--button-text:#fff9eb;--gold:#80602d}
+@media(prefers-color-scheme:dark){:root{--bg:#151515;--paper:#20201f;--ink:#f8f1e5;--muted:#c9bfae;--line:#494137;--cta:#d7b77c;--button-text:#211b12;--gold:#d7b77c}}
+main,footer{width:min(100% - 2rem,70rem)}
+header{margin-top:1rem;padding:clamp(2rem,7vw,5rem);border-radius:1.5rem;background:linear-gradient(125deg,#171715,#30281d);color:#fff5e4;position:relative;overflow:hidden}
+header p,header .brand{color:#e1d2b9}
+header .brand{display:block;margin-bottom:2.5rem}
+.eyebrow,.category{font-size:.73rem;letter-spacing:.15em;font-weight:700;color:var(--gold)}
+.eyebrow{color:#e2c38b}
+h1{font-family:Georgia,serif;font-size:clamp(3rem,9vw,6rem);letter-spacing:-.045em}
+h1 span{display:block;font:600 clamp(1rem,3vw,1.6rem)/1.5 system-ui,sans-serif;letter-spacing:-.03em;margin-top:1rem;color:#e2c38b}
+.collection{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+article{margin:0;padding:clamp(1.25rem,3vw,2.5rem);display:flex;flex-direction:column;gap:.65rem;min-width:0}
+article:first-child{grid-column:1/-1;background:var(--paper)}
+article h2{font-size:clamp(1.3rem,3vw,2rem);letter-spacing:-.04em}
+.links{margin-top:auto;padding-top:1rem}
+.links a{transition:opacity .2s}
+.links a:hover{opacity:.8}
+.disclosure{margin:1.5rem 0;color:var(--muted)}
+@media(max-width:600px){.collection{grid-template-columns:1fr}header{padding:2rem 1.4rem}.links a{flex-basis:100%}}
 </style>
 </head>
 <body>
 <main>
 <header>
 <a class="brand" href="/">Chris LEE.PAPA</a>
-<h1>쇼핑 추천</h1>
+<span class="eyebrow">CHRIS LEE.PAPA · LIFESTYLE COLLECTION</span>
+<h1>PAPA'S PICK<span>일상에 특별함을 더하다.</span></h1>
 <p>영상에서 소개한 상품과 구매처를 한곳에 모았어요.</p>
 </header>
 <p class="disclosure">이 페이지는 네이버 쇼핑 커넥트 및 쿠팡 파트너스 활동의 일환으로, 제휴 링크를 통해 구매가 이루어지면 수수료를 제공받습니다.</p>
-<article id="kkochi">
+<section class="collection" aria-label="추천 상품"><article id="kkochi"><span class="category">01 / FAMILY &amp; FUN</span>
 <h2>꼬치의 달인</h2>
 <p>주문 카드에 맞춰 꼬치를 완성하는 가족 순발력 보드게임.</p>
 <div class="links">
@@ -43,16 +64,17 @@ footer{padding:1em 0 2.5rem}
 <a href="https://link.coupang.com/a/iZpBk6ICPs" rel="sponsored" aria-label="꼬치의 달인 쿠팡에서 보기">쿠팡에서 보기</a>
 </div>
 </article>
-<article id="duplex">
+<article id="duplex"><span class="category">02 / LIVING</span>
 <h2>듀플렉스 무드등 가습기</h2>
 <p>은은한 조명이 들어오는 3.5L 가습기 DP-G50UH.</p>
 <div class="links"><a href="https://naver.me/xNp6tFiE" rel="sponsored" aria-label="듀플렉스 가습기 네이버에서 보기">네이버에서 보기</a></div>
 </article>
-<article id="leto">
+<article id="leto"><span class="category">03 / CHRISTMAS</span>
 <h2>레토 크리스마스 오르골 무드등</h2>
 <p>작은 트리와 반짝이는 눈을 담은 스노우볼 무드등.</p>
 <div class="links"><a href="https://naver.me/F2LydYYm" rel="sponsored" aria-label="레토 무드등 네이버에서 보기">네이버에서 보기</a></div>
 </article>
+</section>
 </main>
 <footer><a href="/shop">Chris LEE.PAPA 공식 북스토어</a></footer>
 </body>

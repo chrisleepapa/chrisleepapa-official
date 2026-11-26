@@ -892,3 +892,6 @@ html[data-theme="dark"] :where(a,button,input,select,textarea):focus-visible { o
 :root{--brand-accent:#2544cb;--brand-accent-dark:#a6b5ff}
 :where(#site-nav,#site-footer) a:focus-visible{outline:3px solid var(--brand-accent);outline-offset:3px}
 html[data-theme="dark"] :where(#site-nav,#site-footer) a:focus-visible{outline-color:var(--brand-accent-dark)}
+
+/* Retire redundant content share controls, including static legacy markup. */
+.site-share-content-tools,.site-share-page-action,[data-site-share-action]{display:none!important}

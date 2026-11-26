@@ -49,6 +49,28 @@ body.shopping-page{--pick-bg:#f5f1e9;--pick-paper:#fffdf8;--pick-ink:#24211d;--p
 @media(max-width:600px){#shopping-content .collection{grid-template-columns:1fr}#shopping-content header{padding:2rem 1.4rem}#shopping-content .links a{flex-basis:100%}}
 
 #shopping-content{margin:0 auto;padding:1rem 0 3rem}#shopping-content .shopping-hero{position:relative}body.shopping-page{margin:0} 
+#shopping-content header{padding:1.5rem 1.25rem;margin-top:.5rem}
+#shopping-content h1{font-size:clamp(2rem,7vw,3.8rem);margin:.3rem 0}
+#shopping-content h1 span{margin-top:.4rem;font-size:1rem}
+#shopping-content header p{font-size:.9rem;margin:.4rem 0}
+#shopping-content .eyebrow{font-size:.65rem;letter-spacing:.08em}
+#shopping-content .disclosure{font-size:.75rem;margin:.8rem 0}
+#shopping-content .pick-tools{margin:1rem 0}
+#shopping-content .pick-tools label{display:block;font-weight:700;margin-bottom:.35rem}
+#shopping-content input{width:100%;min-height:44px;border:1px solid var(--pick-line);border-radius:.6rem;background:var(--pick-paper);color:var(--pick-ink);padding:.6rem .8rem;font:inherit}
+#shopping-content .pick-filters{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.6rem}
+#shopping-content .pick-filters button{border:1px solid var(--pick-line);border-radius:2rem;padding:.45rem .8rem;background:var(--pick-paper);color:var(--pick-ink);font:inherit;font-size:.85rem;cursor:pointer}
+#shopping-content .pick-filters button[aria-pressed=true]{background:var(--pick-cta);color:var(--pick-button-text)}
+#shopping-content article{padding:1rem;gap:.3rem}
+#shopping-content article[hidden]{display:none}
+#shopping-content article:first-child{grid-column:auto}
+#shopping-content .pick-number{display:inline-block;background:var(--pick-cta);color:var(--pick-button-text);padding:.2rem .5rem;border-radius:.35rem;margin-right:.4rem;font-size:.9rem}
+#shopping-content .links{padding-top:.5rem;gap:.4rem}
+#shopping-content .links a{font-size:.85rem;min-height:44px;flex:1 1 40%}
+#shopping-content .links a[href*="naver.me"]{background:#08783d;color:white}
+#shopping-content .links a[href*="coupang.com"]{background:#1755a6;color:white}
+#shopping-content article p{font-size:.9rem;margin:.3rem 0}
+@media(min-width:800px){#shopping-content .collection{grid-template-columns:repeat(3,minmax(0,1fr))}}
 </style>
 </head>
 <body class="creator-page shopping-page">
@@ -56,13 +78,13 @@ body.shopping-page{--pick-bg:#f5f1e9;--pick-paper:#fffdf8;--pick-ink:#24211d;--p
 <main id="shopping-content">
 <div class="site-share-content-tools"><button class="site-share-page-action" type="button" data-site-share-action><span class="nav-label-ko">이 페이지 공유</span><span class="nav-label-en">Share this page</span></button></div>
 <header class="shopping-hero">
-<a class="brand" href="/">Chris LEE.PAPA</a>
+
 <span class="eyebrow">CHRIS LEE.PAPA · LIFESTYLE COLLECTION</span>
 <h1>PAPA'S PICK<span>일상에 특별함을 더하다.</span></h1>
 <p>영상에서 소개한 상품과 구매처를 한곳에 모았어요.</p>
 </header>
 <p class="disclosure">이 페이지는 네이버 쇼핑 커넥트 및 쿠팡 파트너스 활동의 일환으로, 제휴 링크를 통해 구매가 이루어지면 수수료를 제공받습니다.</p>
-<section class="collection" aria-label="추천 상품"><article id="kkochi"><span class="category">01 / FAMILY &amp; FUN</span>
+<div class="pick-tools"><label for="pick-search">상품 찾기</label><input id="pick-search" type="search" placeholder="상품명 또는 번호 검색 (예: 01)"><div class="pick-filters" role="group" aria-label="상품 분류"><button type="button" data-filter="all" aria-pressed="true">전체</button><button type="button" data-filter="kkochi">보드게임</button><button type="button" data-filter="duplex">생활용품</button><button type="button" data-filter="leto">시즌상품</button></div><p id="pick-count" aria-live="polite">추천 상품 3개</p></div><section class="collection" aria-label="추천 상품"><article id="kkochi"><span class="category"><b class="pick-number">No.01</b> 보드게임</span>
 <h2>꼬치의 달인</h2>
 <p>주문 카드에 맞춰 꼬치를 완성하는 가족 순발력 보드게임.</p>
 <div class="links">
@@ -70,12 +92,12 @@ body.shopping-page{--pick-bg:#f5f1e9;--pick-paper:#fffdf8;--pick-ink:#24211d;--p
 <a href="https://link.coupang.com/a/iZpBk6ICPs" rel="sponsored" aria-label="꼬치의 달인 쿠팡에서 보기">쿠팡에서 보기</a>
 </div>
 </article>
-<article id="duplex"><span class="category">02 / LIVING</span>
+<article id="duplex"><span class="category"><b class="pick-number">No.02</b> 생활용품</span>
 <h2>듀플렉스 무드등 가습기</h2>
 <p>은은한 조명이 들어오는 3.5L 가습기 DP-G50UH.</p>
 <div class="links"><a href="https://naver.me/xNp6tFiE" rel="sponsored" aria-label="듀플렉스 가습기 네이버에서 보기">네이버에서 보기</a></div>
 </article>
-<article id="leto"><span class="category">03 / CHRISTMAS</span>
+<article id="leto"><span class="category"><b class="pick-number">No.03</b> 시즌상품</span>
 <h2>레토 크리스마스 오르골 무드등</h2>
 <p>작은 트리와 반짝이는 눈을 담은 스노우볼 무드등.</p>
 <div class="links"><a href="https://naver.me/F2LydYYm" rel="sponsored" aria-label="레토 무드등 네이버에서 보기">네이버에서 보기</a></div>
@@ -84,5 +106,7 @@ body.shopping-page{--pick-bg:#f5f1e9;--pick-paper:#fffdf8;--pick-ink:#24211d;--p
 </main>
 <div id="site-footer"></div>
 <script src="/js/main.js?v=20261119-content-share"></script>
-</body>
+<script>
+(()=>{const root=document.querySelector('#shopping-content'),input=root.querySelector('#pick-search'),buttons=[...root.querySelectorAll('[data-filter]')],cards=[...root.querySelectorAll('article')];let filter='all';function render(){const q=input.value.trim().toLowerCase();let count=0;cards.forEach(c=>{c.hidden=!( (filter==='all'||c.id===filter)&&c.textContent.toLowerCase().includes(q));if(!c.hidden)count++});root.querySelector('#pick-count').textContent=count?'추천 상품 '+count+'개':'검색 결과가 없습니다.'}input.addEventListener('input',render);buttons.forEach(b=>b.addEventListener('click',()=>{filter=b.dataset.filter;buttons.forEach(v=>v.setAttribute('aria-pressed',String(v===b)));render()}));})();
+</script></body>
 </html>

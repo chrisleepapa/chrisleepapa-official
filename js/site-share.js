@@ -132,27 +132,6 @@
       feedback('이미지를 저장했습니다. 링크는 별도 복사해 주세요.','Image downloaded. Copy the link separately.');
     }catch(err){if(err.name!=='AbortError')feedback('이미지 공유를 지원하지 않는 브라우저입니다. 링크 공유를 이용해 주세요.','Image sharing is not supported here. Please share the link.')}
   });
-  /* Page sharing belongs to the content, never individual navigation links. */
-  var glyph='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="m8.5 10.8 7-4.2m-7 6.6 7 4.2"/></svg>';
-  /* Each page declares its visible share action in its actual content markup. */
-  document.querySelectorAll('[data-site-share-action]').forEach(function(button){
-    button.addEventListener('click',function(){
-      var target=button.getAttribute('data-site-share-url');
-      var label=button.getAttribute('data-site-share-title')||'';
-      show(target||location.href,label);
-    });
-  });
-  /* Fallback for a page that has not been explicitly upgraded yet. */
-  var main=document.querySelector('main');
-  if(main&&!main.querySelector('[data-site-share-action]')){
-    var tools=document.createElement('div');
-    tools.className='site-share-content-tools';
-    var action=document.createElement('button');
-    action.type='button';action.className='site-share-page-action';
-    action.setAttribute('aria-label','현재 페이지 공유 / Share this page');
-    action.innerHTML=glyph+'<span class="nav-label-ko" lang="ko">이 페이지 공유</span><span class="nav-label-en" lang="en">Share page</span>';
-    tools.appendChild(action);
-    main.insertBefore(tools,main.firstChild);
-    action.addEventListener('click',function(){show()});
-  }
+  /* Keep only the shared header controls; remove legacy content share controls. */
+  document.querySelectorAll('main .site-share-content-tools, main .site-share-page-action, main [data-site-share-action]').forEach(function(node){node.remove();});
 })();

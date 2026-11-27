@@ -1,0 +1,71 @@
+/* Shared editorial layout for the main studio pages. */
+.studio-editorial { --studio-type: Pretendard, Inter, system-ui, sans-serif; --studio-gap: clamp(32px, 6vw, 76px); }
+.studio-editorial :is(main, .page-wrapper) { font-family: var(--studio-type); }
+.studio-editorial :is(.ss1-reader-intro, .english-edition-note, .ss2-author-note, .ms-theme-section, .shop-reading-guide, .music-creation-notes, .media-reading) {
+  border: 0 !important; border-radius: 0 !important; box-shadow: none !important;
+  background: transparent !important;
+}
+.studio-editorial :is(.ss1-reader-intro, .english-edition-note, .ss2-author-note, .ms-theme-section) {
+  padding: 0 !important; margin-block: 0 var(--studio-gap);
+}
+.studio-editorial .studio-book-opening {
+  display: grid; grid-template-columns: minmax(120px, .7fr) minmax(0, 1.3fr);
+  gap: clamp(24px, 6vw, 80px); align-items: center;
+  max-width: 990px; margin: 0 auto var(--studio-gap);
+}
+.studio-book-opening > img { width: 100%; max-width: 275px; height: auto; justify-self: center; }
+.studio-editorial .studio-book-opening .ss1-reader-intro { margin: 0; }
+.studio-editorial .studio-book-opening h2 { font-size: clamp(1.9rem,5vw,3.8rem); line-height: 1.07; letter-spacing: -.055em; }
+.studio-editorial .studio-book-opening p { font-size: 1.0625rem; line-height: 1.75; max-width: 46ch; }
+.studio-editorial .studio-book-actions { display: flex; flex-wrap: wrap; column-gap: 18px; align-items: center; margin-top: 18px; }
+.studio-editorial .studio-book-actions a {
+  display: inline-flex; align-items: center; min-height: 44px; gap: 8px;
+  color: inherit; text-decoration: underline; text-underline-offset: .3em; font-weight: 700;
+}
+.studio-editorial .ss1-character-grid > article,
+.studio-editorial :is(.shop-guide-item, .journal-reading-paths .archive-path) {
+  background: transparent !important; border: 0 !important; border-radius: 0 !important;
+  border-top: 1px solid currentColor !important; box-shadow: none !important; padding: 14px 0 !important;
+}
+.studio-editorial .journal-grid {
+  grid-template-columns: repeat(2,minmax(0,1fr)); gap: 0 28px;
+}
+.studio-editorial .journal-card:not(.journal-card--featured) {
+  border: 0; border-top: 1px solid var(--rule, #83858b); border-radius: 0;
+  background: transparent; box-shadow: none; padding-inline: 0;
+}
+.studio-editorial .journal-reading-paths { margin-top: var(--studio-gap); }
+.studio-editorial .journal-grid .journal-card--featured { grid-column: 1 / -1; }
+.studio-editorial .shorts-page .shorts-hero {
+  padding: clamp(30px,7vw,94px) clamp(18px,5vw,64px);
+  background: #111929; color: #fff; border-radius: 0;
+}
+.studio-editorial .shorts-page .shorts-hero :is(h1,p,a) { color: #fff; }
+.studio-editorial .shorts-page .shorts-hero h1 { font: 800 clamp(3.5rem,12vw,9rem)/.9 var(--studio-type); letter-spacing: -.07em; }
+.studio-editorial .music-creation-notes { padding-inline: 0; }
+.studio-editorial .shop-reading-guide { padding-inline: 0; }
+.studio-editorial .feedback-section { box-shadow: none; }
+.studio-editorial .v3-works { gap: clamp(8px,2vw,22px); }
+.studio-editorial .v3-works .v3-card { border-radius: 8px; }
+@media (max-width: 600px) {
+  .studio-editorial .studio-book-opening { grid-template-columns: minmax(0,1fr); gap: 22px; }
+  .studio-book-opening > img { max-width: min(58vw, 240px); justify-self: start; }
+  .studio-editorial .journal-grid { grid-template-columns: minmax(0,1fr); }
+}
+
+.studio-editorial #shopping-content .shopping-hero {
+  text-align: left; border: 0; border-radius: 0; box-shadow: none;
+  padding-inline: 0; background: transparent;
+}
+.studio-editorial #shopping-content .shopping-hero h1 {
+  font-family: var(--studio-type); font-weight: 800; letter-spacing: -.06em;
+}
+.studio-editorial #shopping-content .collection article {
+  border: 0; border-top: 1px solid currentColor; border-radius: 0;
+  background: transparent; box-shadow: none;
+}
+.studio-editorial .page-wrapper .business-card,
+.studio-editorial .page-wrapper .feedback-section {
+  border: 0; border-radius: 0; background: transparent; box-shadow: none;
+}
+.studio-editorial.media-music .media-section { min-width: 0; }

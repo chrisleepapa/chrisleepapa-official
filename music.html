@@ -87,6 +87,27 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 .media-music #releases #release-picker{font-size:1.35rem;line-height:1.35;letter-spacing:-.04em}
 .media-music #releases .music-section-heading p{font-size:.85rem;line-height:1.65;word-break:keep-all}
 }
+</style><style>
+.media-music #album-details .music-tracklists{padding:0;border:0;background:none;box-shadow:none}
+.media-music #album-details .music-tracklists>summary{font-size:1.35rem;font-weight:750;padding:12px 0 18px;letter-spacing:-.025em}
+.media-music #archive-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;gap:12px}
+.media-music .record-track-card{min-width:0;border:1px solid color-mix(in srgb,currentColor 13%,transparent);border-radius:14px;background:color-mix(in srgb,currentColor 3%,transparent);overflow:hidden}
+.media-music .record-track-head{display:grid;grid-template-columns:56px minmax(0,1fr) 16px;align-items:center;gap:12px;padding:12px;cursor:pointer;list-style:none}
+.media-music .record-track-head::-webkit-details-marker{display:none}
+.media-music .record-track-head img{width:56px;height:56px;object-fit:cover;border-radius:7px}
+.media-music .record-track-meta{display:grid;gap:5px;min-width:0}
+.media-music .record-track-meta strong{font-size:.95rem;line-height:1.35;overflow-wrap:anywhere}
+.media-music .record-track-meta small{font-size:.75rem;opacity:.75}
+.media-music .record-chevron{width:8px;height:8px;border-bottom:2px solid currentColor;border-right:2px solid currentColor;transform:rotate(45deg);transition:transform .2s}
+.media-music .record-track-card[open] .record-chevron{transform:rotate(225deg)}
+.media-music .record-track-body{padding:0 12px 12px}
+.media-music .record-track-list{list-style:none;margin:0;padding:0}
+.media-music .record-track-list li{display:grid;grid-template-columns:30px minmax(0,1fr);gap:8px;align-items:center;min-height:44px;padding:8px 4px;border-top:1px solid color-mix(in srgb,currentColor 10%,transparent);font-size:.85rem;line-height:1.45;overflow-wrap:anywhere}
+.media-music .record-track-number{font-size:.72rem;opacity:.65;font-variant-numeric:tabular-nums}
+.media-music .record-track-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding-top:12px}
+.media-music .record-track-actions button{font:inherit;font-size:.8rem;font-weight:650;color:inherit;background:transparent;border:1px solid currentColor;border-radius:20px;padding:10px 14px;cursor:pointer}
+.media-music .record-track-actions a,.media-music .record-track-hint{font-size:.78rem;color:inherit}
+@media(max-width:700px){.media-music #archive-list{grid-template-columns:minmax(0,1fr);gap:9px}.media-music #album-details .music-tracklists>summary{font-size:1.2rem}}
 </style></head>
 <body class="creator-page media-page media-music">
 <!-- Google Tag Manager (noscript) -->
@@ -146,7 +167,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div id="playlist-container"></div>
 </section>
 <section class="media-section media-reading" id="album-details">
-  <details class="music-tracklists">
+  <details class="music-tracklists" open>
     <summary><span class="i18n-ko">앨범별 수록곡 보기</span><span class="i18n-en" lang="en">Browse album tracklists</span></summary>
     <div id="archive-list" class="archive-list"></div><p id="archive-total" class="archive-total"></p>
   </details>
@@ -384,7 +405,19 @@ function renderActive(){
 byId('spotlight-listen').addEventListener('click',()=>{
   if(playerSession)requestPlayback(playerSession);
 });
-function renderArchive(){const box=document.getElementById('archive-list');let total=0,allCountsKnown=true;box.innerHTML=musicData.map(a=>{const count=a.trackCount??(a.tracks.length?a.tracks.length:null);if(count===null)allCountsKnown=false;else total+=count;const hasCompleteTrackList=a.tracks.length>0&&(a.trackCount==null||a.tracks.length===a.trackCount);const shown=hasCompleteTrackList?`<div class="archive-tracks">${a.tracks.map((t,i)=>`<div class="archive-track"><b>${i+1}</b> ${t}</div>`).join('')}</div>`:`<div class="archive-track">${musicT('music_tracklist_spotify')}</div>`;const countLabel=count===null?'':` · ${count} ${musicTrackLabel(count)}`;return `<div class="archive-album"><div class="archive-album-title">${a.title} · ${musicType(a.type)}${countLabel}</div>${shown}</div>`}).join('');const totalEl=document.getElementById('archive-total');if(totalEl)totalEl.textContent=allCountsKnown?`${musicT('music_total')} ${total} ${musicT('music_tracks')}`:''}
+function renderArchive(){
+ const box=byId('archive-list');const opened=new Set([...box.querySelectorAll('details[open]')].map(d=>d.dataset.release));box.replaceChildren();
+ musicData.forEach((a,index)=>{
+ const count=a.trackCount??(a.tracks.length||null),complete=a.tracks.length>0&&(a.trackCount==null||a.tracks.length===a.trackCount);
+ const card=document.createElement('details');card.className='record-track-card';card.dataset.release=a.id;card.open=opened.has(a.id)||(!opened.size&&index===active);
+ const head=document.createElement('summary');head.className='record-track-head';head.innerHTML='<img alt="" loading="lazy" width="56" height="56"><span class="record-track-meta"><strong></strong><small></small></span><span class="record-chevron" aria-hidden="true"></span>';
+ setImageSource(head.querySelector('img'),a);head.querySelector('strong').textContent=a.title;head.querySelector('small').textContent=musicType(a.type)+(count===null?'':' · '+count+' '+musicTrackLabel(count));card.append(head);
+ const body=document.createElement('div');body.className='record-track-body';
+ if(a.tracks.length){const list=document.createElement('ol');list.className='record-track-list';a.tracks.forEach((title,i)=>{const li=document.createElement('li');const num=document.createElement('span');num.className='record-track-number';num.textContent=String(i+1).padStart(2,'0');const name=document.createElement('span');name.textContent=title;li.append(num,name);list.append(li)});body.append(list)}
+ if(!complete){const msg=document.createElement('p');msg.className='record-track-hint';msg.textContent=text('전체 수록곡은 Spotify에서 확인할 수 있습니다.','See the full tracklist on Spotify.');body.append(msg)}
+ const actions=document.createElement('div');actions.className='record-track-actions';const listen=document.createElement('button');listen.type='button';listen.textContent=text('▶ 앨범 감상','▶ Listen to album');listen.onclick=()=>selectAlbum(index,'music-feature');const link=document.createElement('a');link.href=spotify(a.id);link.target='_blank';link.rel='noopener';link.textContent='Spotify ↗';actions.append(listen,link);body.append(actions);card.append(body);box.append(card);
+ });byId('archive-total').textContent='';
+}
 function refreshMusicLanguage(){
   showSpotlight();
   renderPlaylist();

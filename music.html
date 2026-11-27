@@ -47,6 +47,28 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 .music-selected-story{margin-top:18px;padding:16px 0 4px;border-top:1px solid currentColor;border-color:color-mix(in srgb,currentColor 18%,transparent)}
 .music-selected-story h3{font-family:inherit;font-size:.78rem;letter-spacing:.12em;font-weight:700;margin:0 0 8px;opacity:.8}
 .music-feature .music-selected-story #spotlight-story{font-size:.95rem;line-height:1.75;margin:0;max-width:65ch;color:inherit;opacity:.9}
+</style><style>
+.media-music #music-feature{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);align-items:center;gap:24px;overflow:hidden}
+.media-music #music-feature .music-feature-copy{grid-column:1;grid-row:1;min-width:0}
+.media-music #music-feature .music-feature-visual{grid-column:2;grid-row:1;position:relative;display:grid;place-items:center;isolation:isolate;width:100%;height:auto;min-height:0;aspect-ratio:1.18;perspective:900px;padding:0}
+.media-music #music-feature .music-selected-story{grid-column:1/-1;margin:0;padding:18px 0 0}
+.media-music #music-feature .music-selected-story #spotlight-story{max-width:none}
+.media-music #music-feature #spotlight-cover{position:absolute;left:3%;top:20%;width:55%;height:auto;aspect-ratio:1;object-fit:cover;border-radius:4px;z-index:3;box-shadow:9px 18px 30px #0008;transform:rotate(-5deg) rotateY(-9deg);transition:transform .8s}
+.media-music #music-feature .vinyl-deck{position:absolute;inset:5% 0 5% 24%;transform:rotateX(12deg) rotateZ(-6deg);filter:drop-shadow(8px 18px 12px #0008);border-radius:12px;background:linear-gradient(145deg,#4c5057,#16181c 65%,#08090b);box-shadow:inset 0 1px 2px #ffffff60,0 7px 0 #0b0b0c}
+.media-music #music-feature .feature-disc{position:absolute;inset:5% auto auto 5%;width:83%;height:auto;aspect-ratio:1;border-radius:50%;background:repeating-radial-gradient(circle,#111 0px,#222 1px,#101010 3px,#151515 4px);box-shadow:0 4px 0 #050505,0 6px 9px #0009;transform:none;animation:vinyl-spin 3s linear infinite;animation-play-state:paused;overflow:hidden}
+.media-music #music-feature .feature-disc:before{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 20deg,transparent,#ffffff28 25deg,transparent 65deg,transparent 170deg,#ffffff20 205deg,transparent 245deg);pointer-events:none}
+.media-music #music-feature .vinyl-label{position:absolute;inset:33%;border-radius:50%;background:var(--vinyl-art) center/cover;box-shadow:0 0 0 2px #333;animation:none}
+.media-music #music-feature .vinyl-label:after{content:"";position:absolute;inset:46%;border-radius:50%;background:#bbb;box-shadow:0 0 0 1px #111}
+.media-music #music-feature .vinyl-arm{position:absolute;right:5%;top:8%;width:7%;height:64%;z-index:2;transform-origin:50% 7%;transform:rotate(-12deg);transition:transform .8s}
+.media-music #music-feature .vinyl-arm:before{content:"";position:absolute;top:0;left:0;width:100%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#aaa,#333 65%,#111)}
+.media-music #music-feature .vinyl-arm i{position:absolute;top:8%;left:40%;width:25%;height:80%;background:linear-gradient(90deg,#555,#eee,#666);border-radius:4px;box-shadow:2px 2px 3px #000}
+.media-music #music-feature .vinyl-arm i:after{content:"";position:absolute;bottom:-5%;left:-90%;width:280%;height:12%;background:#222;border-radius:2px}
+.media-music #music-feature.music-playing .feature-disc{animation-play-state:running}
+.media-music #music-feature.music-playing .vinyl-arm{transform:rotate(23deg)}
+.media-music #music-feature.music-playing #spotlight-cover{transform:translateX(-8%) rotate(-8deg) rotateY(-12deg)}
+@keyframes vinyl-spin{to{transform:rotate(360deg)}}
+@media(max-width:700px){.media-music #music-feature{grid-template-columns:minmax(0,1fr);gap:16px}.media-music #music-feature .music-feature-visual{grid-column:1;grid-row:1;max-width:350px;justify-self:center}.media-music #music-feature .music-feature-copy{grid-column:1;grid-row:2}.media-music #music-feature .music-selected-story{grid-row:3}}
+@media(prefers-reduced-motion:reduce){.media-music #music-feature .feature-disc{animation:none}.media-music #music-feature .vinyl-arm,.media-music #music-feature #spotlight-cover{transition:none}}
 </style></head>
 <body class="creator-page media-page media-music">
 <!-- Google Tag Manager (noscript) -->
@@ -77,20 +99,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <a id="main-youtube-link" target="_blank" rel="noopener" hidden>YouTube ↗</a>
       </div>
     </div>
+
+  </div>
+  <div class="music-feature-visual">
+    <div class="vinyl-deck" aria-hidden="true"><div class="feature-disc"><div class="vinyl-label"></div></div><div class="vinyl-arm"><i></i></div></div>
+    <img id="spotlight-cover" src="https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0253e94f322d970ccb2781d471" alt="" width="380" height="380" fetchpriority="high">
+  </div>
     <section class="music-selected-story" aria-labelledby="selected-story-heading">
       <h3 id="selected-story-heading"><span class="i18n-ko">앨범 이야기</span><span class="i18n-en">About this release</span></h3>
       <p id="spotlight-story"><span class="i18n-ko">멈춰버린 도시의 시간에 사랑하는 사람과의 추억을 담았습니다.</span><span class="i18n-en" lang="en">Memories of a loved one, held in a city that seems to stand still.</span></p>
     </section>
-  </div>
-  <div class="music-feature-visual">
-    <div class="feature-disc" aria-hidden="true"></div>
-    <img id="spotlight-cover" src="https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0253e94f322d970ccb2781d471" alt="" width="380" height="380" fetchpriority="high">
-  </div>
-  <div class="music-feature-picks" role="group" aria-label="추천 작품 선택">
-    <button type="button" aria-pressed="true" data-feature="0">When the city stood still</button>
-    <button type="button" aria-pressed="false" data-feature="1">We own the Cup</button>
-    <button type="button" aria-pressed="false" data-feature="5">Ensemble</button>
-  </div>
 </header>
 <section class="media-section record-shelf" id="releases" aria-labelledby="release-picker">
   <div class="music-section-heading">
@@ -165,8 +183,8 @@ function showSpotlight(){
   byId('spotlight-story').textContent=storyFor(album);
   byId('spotlight-cover').src=coverCache[album.id];
   byId('music-feature').dataset.release=album.id;
-  const isFeatured=[0,1,5].includes(active);
-  byId('spotlight-label').textContent=isFeatured?text('먼저 들어볼 작품','Featured releases'):text('선택한 앨범','Selected release');
+  byId('spotlight-label').textContent=text('선택한 앨범','Selected release');
+  byId('music-feature').style.setProperty('--vinyl-art','url("'+coverCache[album.id]+'")');
   document.querySelectorAll('[data-feature]').forEach(button=>{
     button.setAttribute('aria-pressed',String(Number(button.dataset.feature)===active));
   });

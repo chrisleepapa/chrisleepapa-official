@@ -1858,103 +1858,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .get-book-section {
         display: flex;
         justify-content: center;
-        align-items: center;
-        width: min(100% - 32px, 560px);
-        margin: 42px auto 28px;
-        padding: 0;
-        background: transparent !important;
-        border: 0 !important;
-        box-shadow: none !important;
-    }
-    .get-book-button {
-        position: relative;
-        isolation: isolate;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 22px;
-        width: 100%;
-        min-height: 112px;
-        box-sizing: border-box;
-        padding: 28px 32px;
-        overflow: hidden;
-        border: 1px solid rgba(201,168,76, .72);
-        border-radius: 16px;
-        color: #f7e6b0;
-        background:
-            radial-gradient(ellipse at 85% 10%, rgba(201,168,76, .22), transparent 42%),
-            radial-gradient(ellipse at 12% 100%, rgba(69, 76, 130, .26), transparent 48%),
-            linear-gradient(125deg, #080b18 0%, #111a30 52%, #07101d 100%);
-        box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 14px 34px rgba(0,0,0,.26);
-        font-family: 'Cinzel', serif;
-        font-size: clamp(.9rem, 2.4vw, 1.08rem);
-        font-weight: 700;
-        letter-spacing: .17em;
-        text-transform: uppercase;
-        text-decoration: none;
-        transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
-    }
-    .get-book-button::before {
-        content: "";
-        position: absolute;
-        inset: 7px;
-        z-index: -1;
-        border: 1px solid rgba(201,168,76, .24);
-        border-radius: 10px;
-        pointer-events: none;
-    }
-    .get-book-button::after {
-        content: "✦";
-        position: absolute;
-        right: 76px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #c9a84c;
-        opacity: .26;
-        font-size: 3.4rem;
-        line-height: 1;
-        pointer-events: none;
-    }
-    .get-book-button,
-    .get-book-button > span[data-i18n="book_button"] {
-        color: #fff !important;
-        -webkit-text-fill-color: #fff;
-    }
-    .get-book-button .get-book-arrow {
-        color: #fff !important;
-        -webkit-text-fill-color: #fff;
-        border-color: rgba(255,255,255,.72);
-    }
-    .get-book-button:hover {
-        color: #fff;
-        border-color: rgba(201,168,76, 1);
-        transform: translateY(-3px);
-        box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 20px 42px rgba(0,0,0,.34), 0 0 24px rgba(201,168,76, .12);
-    }
-    .get-book-arrow {
-        display: inline-flex;
-        flex: 0 0 38px;
-        align-items: center;
-        justify-content: center;
-        width: 38px;
-        height: 38px;
-        border: 1px solid rgba(201,168,76, .55);
-        border-radius: 50%;
-        color: #c9a84c;
-        font-family: sans-serif;
-        font-size: 1.2rem;
-        letter-spacing: 0;
-        transition: transform .2s ease, background .2s ease;
-    }
-    .get-book-button:hover .get-book-arrow {
-        transform: translateX(4px);
-        background: rgba(201,168,76, .12);
-    }
-    @media (max-width: 600px) {
-        .get-book-section { width: calc(100% - 28px); margin: 30px auto 22px; }
-        .get-book-button { min-height: 94px; padding: 22px 20px; gap: 12px; font-size: .78rem; letter-spacing: .12em; }
-        .get-book-button::after { right: 58px; font-size: 2.5rem; }
-        .get-book-arrow { flex-basis: 34px; width: 34px; height: 34px; }
+        margin: clamp(24px, 4vw, 40px) auto;
+        padding-inline: 16px;
     }
     
     /* ── 배너형 페이지 타이틀: SISTER SQUAD 2와 동일한 레이아웃 ── */
@@ -2036,6 +1941,44 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <link rel="stylesheet" href="/css/creator.css">
     <link rel="stylesheet" href="/css/book-work.css?v=3">
 <style>
+.english-edition-note .ss1-sample-link,
+.get-book-section .ss1-book-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .65rem;
+    min-height: 44px;
+    max-width: 100%;
+    box-sizing: border-box;
+    font: 650 .9375rem/1.4 Pretendard, Inter, system-ui, sans-serif;
+    letter-spacing: -.015em;
+}
+.english-edition-note .ss1-sample-link {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: currentColor;
+    text-underline-offset: .3em;
+}
+.english-edition-note .ss1-sample-link:hover {
+    text-decoration-thickness: 2px;
+}
+.get-book-section .ss1-book-link {
+    padding: .65rem 1.25rem;
+    border: 1px solid #334a72;
+    border-radius: 999px;
+    background: #243555;
+    color: #fff;
+    text-decoration: none;
+}
+.get-book-section .ss1-book-link:hover {
+    background: #344b72;
+}
+.english-edition-note .ss1-sample-link:focus-visible,
+.get-book-section .ss1-book-link:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 4px;
+}
+
 .ss1-reader { width: min(930px, 100%); margin: clamp(34px, 6vw, 78px) auto; }
 .ss1-reader :is(h2, h3) {
     margin: 0; color: var(--ink); font-family: Pretendard, Inter, system-ui, sans-serif;
@@ -2178,13 +2121,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <span data-i18n="english_edition_kicker"><span class="nav-label-ko" lang="ko">영문판</span><span class="nav-label-en" lang="en">English edition</span></span>
   <h2 data-i18n="english_edition_title"><span class="nav-label-ko" lang="ko">SISTER SQUAD 1 영문판</span><span class="nav-label-en" lang="en">SISTER SQUAD 1 — English edition</span></h2>
   <p><span class="nav-label-ko" lang="ko">율이와 정이가 힘을 합쳐 요정 마을을 지키는 첫 모험을 영문판으로 만나보세요.</span><span class="nav-label-en" lang="en">Discover Yul and Jung’s first magical adventure in English as they join forces to protect Fairy Town.</span></p>
-  <a class="get-book-button" href="https://read.amazon.com/sample/B0HHNBK12Q?clientId=share" target="_blank" rel="noopener noreferrer"><span class="nav-label-ko" lang="ko">영문판 미리 읽기</span><span class="nav-label-en" lang="en">Read a sample</span> <span aria-hidden="true">↗</span></a>
+  <a class="ss1-sample-link" href="https://read.amazon.com/sample/B0HHNBK12Q?clientId=share" target="_blank" rel="noopener noreferrer"><span class="nav-label-ko" lang="ko">영문판 미리 읽기</span><span class="nav-label-en" lang="en">Read a sample</span> <span aria-hidden="true">↗</span></a>
 </section>
 
 <div class="get-book-section" role="region" aria-label="Get the Book">
-    <a href="/shop#shop-sister-squad" class="get-book-button" data-i18n-aria-label="book_button_aria" aria-label="Get the Sister Squad book">
+    <a href="/shop#shop-sister-squad" class="ss1-book-link" data-i18n-aria-label="book_button_aria" aria-label="Get the Sister Squad book">
         <span data-i18n="book_button">GET THE BOOK</span>
-        <span class="get-book-arrow" aria-hidden="true">→</span>
+        <span aria-hidden="true">→</span>
     </a>
 </div>
 

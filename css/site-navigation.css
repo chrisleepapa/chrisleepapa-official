@@ -190,3 +190,41 @@ html[data-theme="light"] .works-series-more>a:hover,html[data-theme="light"] .wo
   #mobileBottomNav .mobile-nav-item { font-size: .75rem; }
   #mobileBottomNav .v3-shop-links { top: auto; bottom: calc(100% + 10px); right: 8px; }
 }
+
+#main-nav .nav-works-wrapper { position: static; }
+#main-nav .nav-works-menu {
+  top: 100%; left: 0; right: 0; min-width: 0;
+  padding: 22px max(24px, calc((100vw - 1120px) / 2));
+  border: 0; border-radius: 0; background: var(--nav-surface);
+}
+#main-nav .nav-works-wrapper:not(.open) .nav-works-menu {
+  visibility: hidden; opacity: 0; pointer-events: none;
+}
+.works-gallery { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; }
+#main-nav .nav-works-menu .works-tile, .mobile-works-menu .works-tile {
+  position: relative; display: block; overflow: hidden; min-width: 0;
+  padding: 0; border-radius: 10px; background: #161c2d; color: #fff;
+  text-decoration: none;
+}
+.works-tile img { display: block; width: 100%; aspect-ratio: 2.15; object-fit: cover; }
+.works-tile > span {
+  position: absolute; inset: auto 0 0; display: flex; justify-content: space-between;
+  padding: 18px 14px 10px; background: linear-gradient(transparent, #090d18e8);
+  color: #fff; font-size: 1.1rem; font-weight: 750;
+}
+.works-tile:focus-visible { outline: 3px solid #5475ff; outline-offset: -3px; }
+.works-gallery-more { display: flex; flex-wrap: wrap; gap: 12px; }
+.works-gallery-more a { min-height: 44px; display: inline-flex; align-items: center; color: inherit; }
+@media (max-width:760px) {
+  .mobile-works-menu {
+    inset: auto 0 var(--mobile-nav-height,70px); z-index: 10003;
+    max-height: min(73svh, 660px); padding: 0 0 8px;
+    border-radius: 20px 20px 0 0; border-inline: 0; overscroll-behavior: contain;
+  }
+  .mobile-works-head { position: sticky; top: 0; z-index: 1; padding: 6px 16px; background: inherit; }
+  .mobile-works-head button { min-width: 44px; min-height: 44px; }
+  .mobile-works-menu .works-gallery { grid-template-columns: 1fr; gap: 5px; }
+  .mobile-works-menu .works-tile { border-radius: 0; }
+  .mobile-works-menu .works-tile img { aspect-ratio: 3.25; }
+  .mobile-works-menu .works-gallery-more { padding-inline: 16px; }
+}

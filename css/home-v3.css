@@ -56,3 +56,12 @@ html[data-theme="light"] body.home-v3 {
   .v3-home .v3-card { grid-template-columns: clamp(68px, 23vw, 108px) 1fr auto; padding: 0 0 10px; }
   .v3-card img { grid-column: auto; }
 }
+
+@media (max-width:760px) {
+  .v3-home { width: 100%; padding-top: 0; }
+  .v3-home .v3-hero {
+    border-radius: 0; padding: 30px 22px;
+    min-height: max(420px, calc(100svh - 68px - var(--mobile-nav-height,70px)));
+  }
+  .v3-home .v3-section, .v3-home .v3-promo, .v3-home > .v3-links { margin-inline: 18px; }
+}

@@ -214,8 +214,6 @@ html[data-theme="light"] .works-series-more>a:hover,html[data-theme="light"] .wo
   color: #fff; font-size: 1.1rem; font-weight: 750;
 }
 .works-tile:focus-visible { outline: 3px solid #5475ff; outline-offset: -3px; }
-.works-gallery-more { display: flex; flex-wrap: wrap; gap: 12px; }
-.works-gallery-more a { min-height: 44px; display: inline-flex; align-items: center; color: inherit; }
 @media (max-width:760px) {
   .mobile-works-menu {
     inset: auto 0 var(--mobile-nav-height,70px); z-index: 10003;
@@ -224,8 +222,25 @@ html[data-theme="light"] .works-series-more>a:hover,html[data-theme="light"] .wo
   }
   .mobile-works-head { position: sticky; top: 0; z-index: 1; padding: 6px 16px; background: inherit; }
   .mobile-works-head button { min-width: 44px; min-height: 44px; }
-  .mobile-works-menu .works-gallery { grid-template-columns: 1fr; gap: 5px; }
-  .mobile-works-menu .works-tile { border-radius: 0; }
-  .mobile-works-menu .works-tile img { aspect-ratio: 2.7; }
-  .mobile-works-menu .works-gallery-more { padding-inline: 16px; }
+  .mobile-works-menu .works-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-inline: 12px; }
+  .mobile-works-menu .works-books { grid-column: 1 / -1; }
+  .mobile-works-menu .works-tile img { height: clamp(68px, 11svh, 100px); }
+  .mobile-works-menu .works-wallpaper { margin-inline: 12px; }
+}
+
+.works-gallery { align-items: start; }
+.works-books { min-width: 0; }
+.works-book-links { display: grid; gap: 4px; margin-top: 6px; }
+#main-nav .nav-works-menu :is(.works-book-links a, .works-wallpaper),
+.mobile-works-menu :is(.works-book-links a, .works-wallpaper) {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  box-sizing: border-box; min-height: 44px; padding: 8px 12px;
+  border-radius: 8px; background: rgba(128,140,170,.12);
+  color: inherit; text-decoration: none; font-size: .9375rem;
+  line-height: 1.35; font-weight: 650;
+}
+#main-nav .nav-works-menu .works-wallpaper, .mobile-works-menu .works-wallpaper { margin-top: 10px; }
+#main-nav .nav-works-menu :is(.works-book-links a, .works-wallpaper):is(:hover,:focus-visible),
+.mobile-works-menu :is(.works-book-links a, .works-wallpaper):is(:hover,:focus-visible) {
+  background: #2544cb; color: #fff;
 }

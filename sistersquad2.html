@@ -542,7 +542,7 @@
                         <strong><span class="nav-label-ko" lang="ko">리듬 이어가기</span><span class="nav-label-en" lang="en">Keep the rhythm</span></strong>
                     </div>
                 </a>
-                <a class="ss2-clip" href="https://drive.google.com/file/d/1yKwgc7kkehk9SOVkgREaSUJKe9Pb63AN/view" data-drive-id="1yKwgc7kkehk9SOVkgREaSUJKe9Pb63AN" target="_blank" rel="noopener noreferrer">
+                <a class="ss2-clip" href="https://vt.tiktok.com/ZSsBSmmtk/" data-tiktok-link="true" target="_blank" rel="noopener noreferrer">
                     <div class="ss2-clip-image">
                         <img src="/assets/sister-squad-2/reel-4.jpg" alt="" loading="lazy" decoding="async">
                         <span class="ss2-clip-play" aria-hidden="true">▶</span>
@@ -980,7 +980,7 @@
             const title = dialog.querySelector('h3');
             gallery.addEventListener('click', (event) => {
                 const clip = event.target.closest('.ss2-clip');
-                if (!clip || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || !dialog.showModal) return;
+                if (!clip || clip.dataset.tiktokLink || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || !dialog.showModal) return;
                 event.preventDefault();
                 title.textContent = clip.querySelector('strong').innerText;
                 dialog.showModal();

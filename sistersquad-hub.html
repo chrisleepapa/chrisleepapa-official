@@ -95,6 +95,37 @@
 .sq-photo-count{min-width:70px;text-align:center;font-size:.83rem;color:#e0e2f5}
 html:has(.sq-photo-viewer[open]){overflow:hidden}
 </style>
+<style>
+.sq-wrap .sq-hero {
+  display: grid; align-content: end; min-height: clamp(230px, 43vw, 460px);
+  padding: clamp(22px, 5vw, 56px); border-radius: 18px; text-align: left;
+  background: linear-gradient(0deg,#091124ed 0%,#09112420 75%), url('/assets/home/sister-squad.webp') center 42% / cover;
+}
+.sq-wrap .sq-hero .sq-title {
+  margin: 0; font: 800 clamp(1.8rem, 7vw, 5rem)/1 system-ui, sans-serif;
+  letter-spacing: -.055em; color: #fff; background: none; -webkit-text-fill-color: #fff;
+}
+.sq-wrap .sq-hero .sq-lead { margin: 10px 0 0; color: #edf0ff; font: 500 1rem/1.55 system-ui, sans-serif; }
+.sq-section-nav { display: flex; flex-wrap: wrap; gap: 0 20px; margin: 8px 0 26px; border-bottom: 1px solid currentColor; }
+.sq-section-nav a, .sq-editions { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; color: inherit; font: 700 .95rem/1.4 system-ui, sans-serif; }
+.sq-section-nav a:hover, .sq-editions:hover { text-decoration: underline; text-underline-offset: .3em; }
+.sq-wrap :is(.sq-section, .ss3-teaser) { scroll-margin-top: 92px; }
+.sq-wrap .sq-section :is(.sq-h2, .sq-protagonist-head h2) { font-family: system-ui, sans-serif; letter-spacing: -.035em; }
+.sq-wrap #series .sq-series-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: clamp(16px,4vw,48px); }
+.sq-wrap #series .sq-series-card {
+  display: grid; gap: 8px; justify-items: start; align-content: start; min-height: 0;
+  padding: 0; background: none; border: 0; box-shadow: none; color: inherit;
+}
+.sq-wrap #series .sq-series-card::before, .sq-wrap #series .sq-series-card::after { display: none; }
+.sq-wrap #series .sq-series-card img { width: 100%; height: auto; aspect-ratio: 3/4; object-fit: contain; background: #151c2d; border-radius: 10px; }
+.sq-wrap #series .sq-series-card h3 { margin: 0; color: inherit; font: 750 1rem/1.4 system-ui, sans-serif; }
+.sq-wrap #series .sq-series-card p { margin: 0; color: inherit; font-size: .9375rem; line-height: 1.6; }
+.sq-editions { margin-top: 8px; }
+@media (max-width: 520px) {
+  .sq-section-nav { column-gap: 14px; }
+  .sq-wrap #series .sq-series-card p { font-size: .875rem; }
+}
+</style>
 </head>
 <body>
   <!-- Google Tag Manager (noscript) -->
@@ -103,14 +134,26 @@ html:has(.sq-photo-viewer[open]){overflow:hidden}
 <div id="site-nav"></div>
 <main class="sq-wrap">
 
-<section class="sq-hero"><span class="sq-kicker">ORIGINAL IP · CHRIS LEE.PAPA</span><h1 class="sq-title">SISTER SQUAD</h1><p class="sq-lead">A story about family, sisterhood, courage, and hope.</p></section>
-<section class="sq-explore" aria-label="SISTER SQUAD exploration">
-<a href="#other-characters"><span class="icon">👧</span><b>CHARACTERS</b><span data-sq-i18n="exploreCharacters">Yul, Jung, and the key people in their story.</span></a>
-<a href="#world"><span class="icon">🗺</span><b>WORLD</b><span data-sq-i18n="exploreWorld">Explore Lumina, Arcadia, magic, and history.</span></a>
-<a href="#series"><span class="icon">📚</span><b>SERIES</b><span data-sq-i18n="exploreSeries">Explore the stories of Books 1 and 2.</span></a>
-<a href="#gallery"><span class="icon">🎨</span><b>GALLERY</b><span data-sq-i18n="exploreGallery">Explore key visuals from the series in one place.</span></a>
-<a href="#protagonists"><span class="icon">✨</span><b>CHARACTER DEEP DIVE</b><span data-sq-i18n="exploreDeepDive">Discover detailed profiles of the two sisters.</span></a>
+<section class="sq-hero">
+  <h1 class="sq-title">SISTER SQUAD</h1>
+  <p class="sq-lead"><span class="nav-label-ko" lang="ko">율이와 정이, 두 자매의 모험</span><span class="nav-label-en" lang="en">The adventures of sisters Yul and Jung</span></p>
 </section>
+<nav class="sq-section-nav" aria-label="Sister Squad">
+  <a href="#series"><span class="nav-label-ko" lang="ko">시리즈</span><span class="nav-label-en" lang="en">Books</span></a>
+  <a href="#protagonists"><span class="nav-label-ko" lang="ko">인물</span><span class="nav-label-en" lang="en">Characters</span></a>
+  <a href="#world"><span class="nav-label-ko" lang="ko">세계관</span><span class="nav-label-en" lang="en">World</span></a>
+  <a href="#gallery"><span class="nav-label-ko" lang="ko">갤러리</span><span class="nav-label-en" lang="en">Gallery</span></a>
+</nav>
+<section class="sq-section" id="series">
+<h2 class="sq-h2"><span class="nav-label-ko" lang="ko">시리즈 읽기</span><span class="nav-label-en" lang="en">Read the series</span></h2>
+<div class="sq-series-grid">
+<a class="sq-series-card" href="/sistersquad" ><img src="/assets/shop/sister-squad-1.webp" alt="" width="300" height="400"><h3>SISTER SQUAD 1</h3><p data-sq-i18n="series1Desc">The sisters enter Fairy Town through the Book of Whispers and begin their first adventure.</p></a>
+<a class="sq-series-card" href="/sistersquad2" ><img src="/assets/shop/sister-squad-2.webp" alt="" width="300" height="400"><h3>SISTER SQUAD 2</h3><p data-sq-i18n="series2Desc">The sisters and their dad, Chris, set out again to save cursed Lumina.</p></a>
+</div>
+<a class="sq-editions" href="/sistersquad-share"><span class="nav-label-ko" lang="ko">영문판과 OST</span><span class="nav-label-en" lang="en">English editions and OST</span> <span aria-hidden="true">↗</span></a>
+</section>
+
+
 
 <section class="sq-section" id="protagonists">
 <div class="sq-protagonist-head"><div class="sq-eyebrow">MAIN CHARACTERS</div><h2 data-sq-i18n="protagonistsTitle">Meet Yul and Jung, the Heart of the Story</h2><p data-sq-i18n="protagonistsDesc">Get to know the two heroines of SISTER SQUAD.</p></div>
@@ -166,15 +209,6 @@ html:has(.sq-photo-viewer[open]){overflow:hidden}
 
 </div>
 </section>
-<section class="sq-section" id="series">
-<div class="sq-eyebrow">SERIES</div><h2 class="sq-h2" data-sq-i18n="seriesTitle">The Adventure Continues</h2>
-<div class="sq-series-grid">
-<a class="sq-series-card" href="/sistersquad" style="background-image:url('/images/sistersquad1.png')"><h3>SISTER SQUAD 1</h3><p data-sq-i18n="series1Desc">The sisters enter Fairy Town through the Book of Whispers and begin their first adventure.</p></a>
-<a class="sq-series-card" href="/sistersquad2" style="background-image:url('/images/sistersquad2_poster.jpg')"><h3>SISTER SQUAD 2</h3><p data-sq-i18n="series2Desc">The sisters and their dad, Chris, set out again to save cursed Lumina.</p></a>
-</div>
-<p style="margin:22px 0 4px"><a href="/sistersquad-share" style="display:inline-flex;align-items:center;min-height:44px;padding:11px 18px;border:1px solid #8aa0c8;border-radius:10px;color:inherit;text-decoration:none;font-weight:700">English Editions &amp; OST ↗</a></p>
-</section>
-
 <section class="ss3-teaser" id="sistersquad3" aria-labelledby="ss3-title">
 <div class="ss3-inner">
 <div class="ss3-status">TOP SECRET · PROJECT 2050 · IN PRODUCTION</div>

@@ -201,46 +201,59 @@ html[data-theme="light"] .works-series-more>a:hover,html[data-theme="light"] .wo
 #main-nav .nav-works-wrapper:not(.open) .nav-works-menu {
   visibility: hidden; opacity: 0; pointer-events: none;
 }
-.works-gallery { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; }
+.works-gallery {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px;
+}
 #main-nav .nav-works-menu .works-tile, .mobile-works-menu .works-tile {
   position: relative; display: block; overflow: hidden; min-width: 0;
-  padding: 0; border-radius: 10px; background: #161c2d; color: #fff;
+  padding: 0; border-radius: 12px; background: #161c2d; color: #fff;
   text-decoration: none;
 }
-.works-tile img { display: block; width: 100%; aspect-ratio: 2.15; object-fit: cover; }
+.works-tile img {
+  display: block; width: 100%; aspect-ratio: 1.7; object-fit: cover;
+}
 .works-tile > span {
-  position: absolute; inset: auto 0 0; display: flex; justify-content: space-between;
-  padding: 18px 14px 10px; background: linear-gradient(transparent, #090d18e8);
-  color: #fff; font-size: 1.1rem; font-weight: 750;
+  position: absolute; inset: auto 0 0; display: flex; align-items: end;
+  justify-content: space-between; gap: 8px; padding: 24px 12px 10px;
+  background: linear-gradient(transparent, #090d18f5);
+  color: #fff; font-size: 1.0625rem; font-weight: 750;
+}
+.works-tile-title small {
+  display: block; font-size: .8125rem; font-weight: 600;
 }
 .works-tile:focus-visible { outline: 3px solid #5475ff; outline-offset: -3px; }
-@media (max-width:760px) {
+.works-book-links {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px;
+  padding-top: 12px; margin-top: 12px; border-top: 1px solid var(--nav-rule);
+}
+#main-nav .nav-works-menu .works-book-links a, .mobile-works-menu .works-book-links a {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center; gap: 10px; min-height: 48px;
+  box-sizing: border-box; padding: 6px 10px;
+  border: 1px solid var(--nav-rule); border-radius: 9px;
+  color: var(--nav-ink); text-decoration: none; font-size: .875rem;
+  line-height: 1.35; font-weight: 700;
+}
+.works-book-links img {
+  display: block; width: 30px; height: 40px; object-fit: cover; border-radius: 3px;
+}
+#main-nav .nav-works-menu .works-book-links a:is(:hover,:focus-visible),
+.mobile-works-menu .works-book-links a:is(:hover,:focus-visible) {
+  background: #2544cb; color: #fff;
+}
+@media (max-width: 760px) {
   .mobile-works-menu {
     inset: auto 0 var(--mobile-nav-height,70px); z-index: 10003;
-    max-height: min(73svh, 660px); padding: 0 0 8px;
+    max-height: min(78svh, 660px); padding: 0 0 12px;
     border-radius: 20px 20px 0 0; border-inline: 0; overscroll-behavior: contain;
   }
   .mobile-works-head { position: sticky; top: 0; z-index: 1; padding: 6px 16px; background: inherit; }
   .mobile-works-head button { min-width: 44px; min-height: 44px; }
-  .mobile-works-menu .works-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-inline: 12px; }
-  .mobile-works-menu .works-books { grid-column: 1 / -1; }
-  .mobile-works-menu .works-tile img { height: clamp(68px, 11svh, 100px); }
-  .mobile-works-menu .works-wallpaper { margin-inline: 12px; }
-}
-
-.works-gallery { align-items: start; }
-.works-books { min-width: 0; }
-.works-book-links { display: grid; gap: 4px; margin-top: 6px; }
-#main-nav .nav-works-menu :is(.works-book-links a, .works-wallpaper),
-.mobile-works-menu :is(.works-book-links a, .works-wallpaper) {
-  display: flex; align-items: center; justify-content: space-between; gap: 10px;
-  box-sizing: border-box; min-height: 44px; padding: 8px 12px;
-  border-radius: 8px; background: rgba(128,140,170,.12);
-  color: inherit; text-decoration: none; font-size: .9375rem;
-  line-height: 1.35; font-weight: 650;
-}
-#main-nav .nav-works-menu .works-wallpaper, .mobile-works-menu .works-wallpaper { margin-top: 10px; }
-#main-nav .nav-works-menu :is(.works-book-links a, .works-wallpaper):is(:hover,:focus-visible),
-.mobile-works-menu :is(.works-book-links a, .works-wallpaper):is(:hover,:focus-visible) {
-  background: #2544cb; color: #fff;
+  .mobile-works-menu .works-gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-inline: 12px;
+  }
+  .mobile-works-menu .works-tile img { height: clamp(75px, 12svh, 112px); }
+  .mobile-works-menu .works-book-links {
+    grid-template-columns: minmax(0, 1fr); gap: 5px; margin-inline: 12px;
+  }
 }

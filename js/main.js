@@ -233,7 +233,7 @@ function initActiveNavLink(){
   const work = /^(?:sistersquad(?:-hub|2)?|yul|jung|miracleshot|music|movie|wallpaper)$/.test(page);
   const section = journal ? 'journal' : work ? 'works' : page;
   function update(){
-    const activeSection = page === 'index' && location.hash === '#works' ? 'works' : section;
+    const activeSection = page === 'index' && location.hash === '#series-media' ? 'series-media' : section;
     document.querySelectorAll('#site-nav [data-page]').forEach(link => {
       const active = link.dataset.page === activeSection;
       link.classList.toggle('active', active);

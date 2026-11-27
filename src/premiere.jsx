@@ -4,7 +4,7 @@ import {createRoot} from 'react-dom/client';
 const scenes = [
   ['SISTER SQUAD 3', '2050, 로봇 전쟁', '2050, Robot War', '강철의 도시에서, 엄마와 똑같은 목소리가 들려왔다.', 'In a city of steel, they heard a voice that sounded like Mom.', '/images/ss3_front.jpg', '/sistersquad-hub#sistersquad3', '3권 미리보기', 'Preview Book 3'],
   ['SISTER SQUAD 2', '저주받은 요정마을', 'The Cursed Fairy Village', '두 자매와 아빠가 저주받은 루미나로 향합니다.', 'The sisters and their dad set out for cursed Lumina.', '/assets/home/sister-squad-2.webp', '/sistersquad2#ss2-full-story', '본편 감상', 'Watch the film'],
-  ['MIRACLE SHOT', '미라클 샷', 'Miracle Shot', '풋살 코트에서 시작된 아이들의 이야기.', 'A story of friendship on the futsal court.', '/assets/home/miracle-shot.webp', '/miracleshot', '작품 보기', 'Explore the story']
+  ['SISTER SQUAD 1', '놀라운 자매들', 'Amazing Sisters', '오래된 책이 열리고 두 자매의 첫 모험이 시작됩니다.', 'An old book opens on the sisters’ first adventure.', '/assets/home/sister-squad.webp', '/sistersquad', '1권부터 읽기', 'Start with Book 1']
 ];
 function Label({ko,en}) {
   return <><span className="nav-label-ko" lang="ko">{ko}</span><span className="nav-label-en" lang="en">{en}</span></>;
@@ -27,9 +27,9 @@ function Premiere() {
   }}>
     <img key={image} className="premiere-art" alt="" src={image} fetchPriority="high"/>
     <div className="premiere-copy" aria-live="polite">
-      <p>{series}</p><h1 id="home-title"><Label ko={title} en={en}/></h1>
+      <p>{series}{index === 0 && <> · <Label ko="제작 중" en="In production"/></>}</p><h1 id="home-title"><Label ko={title} en={en}/></h1>
       <p><Label ko={hook} en={enHook}/></p>
-      <a href={url}><Label ko={cta} en={enCta}/> ↗</a>
+      <a href={url}><Label ko={cta} en={enCta}/> ↗</a>{index === 0 && <a style={{marginInlineStart:'1.2rem'}} href="/sistersquad"><Label ko="1권부터 읽기" en="Start with Book 1"/> →</a>}
     </div>
     <div className="premiere-switch">{scenes.map(([name],i)=><button type="button" key={name} aria-pressed={index===i} onClick={()=>setIndex(i)}>{name}</button>)}</div>
   </div>;

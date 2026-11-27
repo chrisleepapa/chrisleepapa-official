@@ -1,6 +1,6 @@
 (() => {
   const key = 'studio-last-work';
-  const works = new Set(["/sistersquad","/sistersquad2","/sistersquad-hub","/miracleshot","/music","/movie","/wallpaper","/journal","/journal-1","/journal-2","/journal-3","/journal-4","/journal-5","/journal-6","/yul","/jung","/sistersquad-share"]);
+  const works = new Set(["/sistersquad","/sistersquad2","/sistersquad-hub","/journal","/journal-1","/journal-2","/journal-3","/journal-4","/journal-5","/journal-6","/yul","/jung","/sistersquad-share"]);
   const path = location.pathname.replace(/\.html$/, '').replace(/\/$/, '');
   try {
     if (works.has(path)) {

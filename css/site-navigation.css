@@ -167,3 +167,24 @@ html[data-theme="light"] .works-series-more>a:hover,html[data-theme="light"] .wo
 .mobile-works-menu .works-series-more summary{padding:10px}
 #mobileBottomNav .mobile-nav-item{font-family:Inter,'Noto Sans KR',system-ui,sans-serif;font-weight:600;letter-spacing:-.02em}
 @media(max-width:760px){.mobile-works-menu{max-height:min(62vh,430px)}#mobileBottomNav .mobile-nav-item{font-size:11px}}
+
+/* Shop destinations are disclosed on demand on both navigation bars. */
+.site-navigation .v3-shop, #mobileBottomNav .v3-shop { position: relative; }
+.v3-shop > summary { cursor: pointer; list-style: none; }
+.v3-shop > summary::-webkit-details-marker { display: none; }
+.v3-shop-links {
+  position: absolute; z-index: 3500; top: 100%; right: 0; min-width: 170px;
+  padding: 6px; border: 1px solid var(--nav-rule); border-radius: 12px;
+  background: var(--nav-surface); box-shadow: 0 12px 32px #0003;
+}
+.v3-shop:not([open]) > .v3-shop-links { display: none; }
+.v3-shop-links a {
+  display: flex; align-items: center; min-height: 44px; padding: 0 10px;
+  color: var(--nav-ink); text-decoration: none; white-space: nowrap;
+}
+.v3-shop-links a:hover, .v3-shop-links a:focus-visible { color: var(--nav-accent); }
+@media (max-width: 760px) {
+  #mobileBottomNav { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  #mobileBottomNav .mobile-nav-item { font-size: .75rem; }
+  #mobileBottomNav .v3-shop-links { top: auto; bottom: calc(100% + 10px); right: 8px; }
+}

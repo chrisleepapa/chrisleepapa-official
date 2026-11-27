@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<link rel="stylesheet" href="/css/support-feedback.css">
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -221,12 +222,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="page-wrapper">
 <div class="site-share-content-tools"><button class="site-share-page-action" type="button" data-site-share-action aria-label="이 페이지 공유"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="m8.5 10.8 7-4.2m-7 6.6 7 4.2"/></svg><span class="nav-label-ko" lang="ko">이 페이지 공유</span><span class="nav-label-en" lang="en">Share this page</span></button></div>
         <div class="glass-card">
-            <h1 class="title" data-i18n="page_title">CONTACT</h1>
+            <h1 class="title" data-i18n="page_title">지원</h1>
             <p class="content-text" data-i18n="page_desc">
                 새로운 비즈니스 제안, 콜라보레이션 등<br>다양한 형태의 협업을 기다리고 있습니다.
             </p>
             <p class="contact-notice" data-i18n="contact_notice">✉ 이메일 문의를 확인한 뒤 순차적으로 답변드립니다.</p>
 
+            <section class="feedback-section" aria-labelledby="feedback-title">
+  <h2 id="feedback-title"><span class="nav-label-ko" lang="ko">의견 남기기</span><span class="nav-label-en" lang="en">Send feedback</span></h2>
+  <form id="support-feedback" action="/api/support-feedback" method="post">
+    <label for="feedback-category"><span class="nav-label-ko" lang="ko">유형</span><span class="nav-label-en" lang="en">Category</span></label>
+    <select id="feedback-category" name="category" required></select>
+    <label for="feedback-subject"><span class="nav-label-ko" lang="ko">제목</span><span class="nav-label-en" lang="en">Subject</span></label>
+    <input id="feedback-subject" name="subject" maxlength="100" required>
+    <label for="feedback-message"><span class="nav-label-ko" lang="ko">내용</span><span class="nav-label-en" lang="en">Message</span></label>
+    <textarea id="feedback-message" name="message" rows="6" maxlength="3000" required></textarea>
+    <div hidden><label for="feedback-website">Website</label><input id="feedback-website" name="website" tabindex="-1" autocomplete="off"></div>
+    <button type="submit" disabled><span class="nav-label-ko" lang="ko">의견 보내기</span><span class="nav-label-en" lang="en">Send feedback</span></button>
+    <p id="feedback-status" role="status" aria-live="polite"></p>
+    <noscript><a href="mailto:papamunglog@gmail.com">papamunglog@gmail.com</a></noscript>
+  </form>
+</section>
             <section class="business-card" aria-label="Chris LEE.PAPA digital business card">
                 <div class="business-card-photo">
                     <img src="/images/chris01.png" alt="Chris LEE.PAPA 캐릭터 일러스트" loading="eager">
@@ -260,7 +276,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 og_title:       'CONTACT – Chris LEE.PAPA',
                 og_description: '음악 협업, 창작 콜라보, 비즈니스 제안 — Chris LEE.PAPA와 연결하세요. 협업 문의를 받습니다.',
                 share_desc:     '비즈니스 제안 페이지를 공유하세요.',
-                page_title:     'CONTACT',
+                page_title:     'Support',
                 page_desc:      '새로운 비즈니스 제안, 콜라보레이션 등<br>다양한 형태의 협업을 기다리고 있습니다.',
                 contact_notice: '✉ 이메일 문의를 확인한 뒤 순차적으로 답변드립니다.',
                 card_kicker: '크리에이터 · 프로듀서 · 작가',
@@ -284,7 +300,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 og_title:       'CONTACT – Chris LEE.PAPA',
                 og_description: 'Music collaborations, creative partnerships, business proposals — connect with Chris LEE.PAPA. Collaboration inquiries are welcome.',
                 share_desc:     'Share the business proposal page.',
-                page_title:     'CONTACT',
+                page_title:     'Support',
                 page_desc:      'We look forward to various forms of collaboration,<br>including new business proposals and joint projects.',
                 contact_notice: '✉ Email inquiries are reviewed and answered in order.',
                 card_kicker: 'CREATOR · PRODUCER · WRITER',
@@ -308,5 +324,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- ★ 공통 스크립트 -->
     <script src="js/main.js?v=20261119-content-share"></script>
 
+<script src="/js/support-feedback.js" defer></script>
 </body>
 </html>

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>쇼핑 추천 | Chris LEE.PAPA</title>
-<meta name="description" content="Chris LEE.PAPA가 영상에서 소개한 보드게임, 가습기, 무드등의 구매처를 한곳에서 확인하세요.">
+<meta name="description" content="Chris LEE.PAPA가 영상에서 소개한 보드게임, 가습기, 무드등, 보풀제거기의 구매처를 한곳에서 확인하세요.">
 <link rel="canonical" href="https://chrisleepapa.com/shopping">
 <link rel="icon" href="/images/favicon.png">
 <link rel="stylesheet" href="/css/common.css">
@@ -86,7 +86,7 @@ body.shopping-page .site-share-content-tools,body.shopping-page main .site-share
 <p>영상에서 소개한 상품과 구매처를 한곳에 모았어요.</p>
 </header>
 <p class="disclosure">이 페이지는 네이버 쇼핑 커넥트 및 쿠팡 파트너스 활동의 일환으로, 제휴 링크를 통해 구매가 이루어지면 수수료를 제공받습니다.</p>
-<div class="pick-tools"><label for="pick-search">상품 찾기</label><input id="pick-search" type="search" placeholder="상품명 또는 번호 검색 (예: 01)"><div class="pick-filters" role="group" aria-label="상품 분류"><button type="button" data-filter="all" aria-pressed="true">전체</button><button type="button" data-filter="kkochi">보드게임</button><button type="button" data-filter="duplex">생활용품</button><button type="button" data-filter="leto">시즌상품</button></div><p id="pick-count" aria-live="polite">추천 상품 3개</p></div><section class="collection" aria-label="추천 상품"><article id="kkochi"><span class="category"><b class="pick-number">No.01</b> 보드게임</span>
+<div class="pick-tools"><label for="pick-search">상품 찾기</label><input id="pick-search" type="search" placeholder="상품명 또는 번호 검색 (예: 01)"><div class="pick-filters" role="group" aria-label="상품 분류"><button type="button" data-filter="all" aria-pressed="true">전체</button><button type="button" data-filter="kkochi">보드게임</button><button type="button" data-filter="duplex">생활용품</button><button type="button" data-filter="leto">시즌상품</button></div><p id="pick-count" aria-live="polite">추천 상품 4개</p></div><section class="collection" aria-label="추천 상품"><article id="kkochi"><span class="category"><b class="pick-number">No.01</b> 보드게임</span>
 <img class="pick-photo" src="/images/shopping-03.png" alt="꼬치의 달인" loading="lazy" decoding="async">
 <h2>꼬치의 달인</h2>
 <p>주문 카드에 맞춰 꼬치를 완성하는 가족 순발력 보드게임.</p>
@@ -107,6 +107,12 @@ body.shopping-page .site-share-content-tools,body.shopping-page main .site-share
 <p>작은 트리와 반짝이는 눈을 담은 스노우볼 무드등.</p>
 <div class="links"><a href="https://naver.me/F2LydYYm" rel="sponsored" aria-label="레토 무드등 네이버에서 보기">네이버에서 보기</a><a href="https://link.coupang.com/a/iZJNIC4qKi" rel="sponsored" aria-label="레토 무드등 쿠팡에서 보기">쿠팡에서 보기</a></div>
 </article>
+<article id="meliens" data-pick-number="04"><span class="category">생활용품</span>
+<img class="pick-photo" src="/images/shopping-04.png" alt="멜리언스 1세대 무선 충전식 보풀제거기" loading="lazy" decoding="async">
+<h2>멜리언스 무선 충전식 보풀제거기</h2>
+<p>니트와 의류 관리에 사용하는 1세대 충전식 무선 6중날 보풀제거기.</p>
+<div class="links"><a href="https://naver.me/GArcuWtL" rel="sponsored" aria-label="멜리언스 보풀제거기 네이버에서 보기">네이버에서 보기</a><a href="https://link.coupang.com/a/i0XeAdF04O" rel="sponsored" aria-label="멜리언스 보풀제거기 쿠팡에서 보기">쿠팡에서 보기</a></div>
+</article>
 </section>
 <section class="partner-banner" aria-label="쿠팡 추천 상품">
 <h2>쿠팡 추천 상품</h2>
@@ -122,6 +128,6 @@ if(window.PartnersCoupang){new PartnersCoupang.G({"id":1059950,"template":"carou
 <div id="site-footer"></div>
 <script src="/js/main.js?v=20261119-content-share"></script>
 <script>
-(()=>{const root=document.querySelector('#shopping-content'),input=root.querySelector('#pick-search'),buttons=[...root.querySelectorAll('[data-filter]')],cards=[...root.querySelectorAll('article')];let filter='all';function render(){const q=input.value.trim().toLowerCase();let count=0;cards.forEach(c=>{c.hidden=!( (filter==='all'||c.id===filter)&&c.textContent.toLowerCase().includes(q));if(!c.hidden)count++});root.querySelector('#pick-count').textContent=count?'추천 상품 '+count+'개':'검색 결과가 없습니다.'}input.addEventListener('input',render);buttons.forEach(b=>b.addEventListener('click',()=>{filter=b.dataset.filter;buttons.forEach(v=>v.setAttribute('aria-pressed',String(v===b)));render()}));})();
+(()=>{const root=document.querySelector('#shopping-content'),input=root.querySelector('#pick-search'),buttons=[...root.querySelectorAll('[data-filter]')],cards=[...root.querySelectorAll('article')];let filter='all';function render(){const q=input.value.trim().toLowerCase();let count=0;cards.forEach(c=>{c.hidden=!( (filter==='all'||c.id===filter||(filter==='duplex'&&c.id==='meliens'))&&c.textContent.toLowerCase().includes(q));if(!c.hidden)count++});root.querySelector('#pick-count').textContent=count?'추천 상품 '+count+'개':'검색 결과가 없습니다.'}input.addEventListener('input',render);buttons.forEach(b=>b.addEventListener('click',()=>{filter=b.dataset.filter;buttons.forEach(v=>v.setAttribute('aria-pressed',String(v===b)));render()}));})();
 </script></body>
 </html>
